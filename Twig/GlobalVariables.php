@@ -22,7 +22,7 @@ class GlobalVariables
     /**
      * @var ContainerInterface
      *
-     * @deprecated Since version 3.x, will be removed in 4.0.
+     * @deprecated Since version 3.5, will be removed in 4.0.
      * NEXT_MAJOR : remove this property
      */
     protected $container;
@@ -41,7 +41,7 @@ class GlobalVariables
         if ($adminPool instanceof ContainerInterface) {
             @trigger_error(
                 'Using an instance of Symfony\Component\DependencyInjection\ContainerInterface is deprecated since 
-                version 3.x and will be removed in 4.0. Use Sonata\AdminBundle\Admin\Pool instead.',
+                version 3.5 and will be removed in 4.0. Use Sonata\AdminBundle\Admin\Pool instead.',
                 E_USER_DEPRECATED
             );
 

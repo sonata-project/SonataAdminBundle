@@ -31,7 +31,7 @@ class ChoiceType extends AbstractType
     const TYPE_EQUAL = 3;
 
     /**
-     * @deprecated since 3.x, to be removed with 4.0
+     * @deprecated since 3.5, to be removed with 4.0
      *
      * @var TranslatorInterface
      */
