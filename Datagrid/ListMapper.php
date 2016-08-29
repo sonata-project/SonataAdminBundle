@@ -18,7 +18,6 @@ use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Mapper\BaseMapper;
 
 /**
- * Class ListMapper
  * This class is used to simulate the Form API.
  *
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
