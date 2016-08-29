@@ -275,7 +275,7 @@ class AdminObjectAclData
     }
 
     /**
-     * Tests if the current user as the OWNER right.
+     * Tests if the current user has the OWNER right.
      *
      * @return bool
      */
