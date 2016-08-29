@@ -169,6 +169,7 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
+        // NEXT_MAJOR: Remove check, when bumping requirements to SF 2.5+
         if (interface_exists('Symfony\Component\Validator\Mapping\MetadataInterface')) { //sf2.5+
             $metadata = $this->getMock('Symfony\Component\Validator\Mapping\MetadataInterface');
         } else {
@@ -180,6 +181,7 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('Acme\Entity\Foo'))
             ->will($this->returnValue($metadata));
 
+        // NEXT_MAJOR: Remove check, when bumping requirements to SF 2.5+
         if (class_exists('Symfony\Component\Validator\Mapping\GenericMetadata')) {
             $class = 'GenericMetadata';
         } else {
