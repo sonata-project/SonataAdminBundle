@@ -321,7 +321,8 @@ EOT;
 
             if ($method) {
                 @trigger_error(
-                    'Option "associated_tostring" is deprecated since version 2.3. Use "associated_property" instead.',
+                    'Option "associated_tostring" is deprecated since version 2.3 and will be removed in 4.0. '
+                    .'Use "associated_property" instead.',
                     E_USER_DEPRECATED
                 );
             } else {
