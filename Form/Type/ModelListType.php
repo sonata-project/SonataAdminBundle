@@ -66,8 +66,9 @@ class ModelListType extends AbstractType
         $view->vars['btn_catalogue'] = $options['btn_catalogue'];
     }
 
-    // NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+
     /**
+     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+
+     *
      * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -98,8 +99,9 @@ class ModelListType extends AbstractType
         return 'text';
     }
 
-    // NEXT_MAJOR: Remove when dropping Symfony <2.8 support
     /**
+     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support
+     *
      * {@inheritdoc}
      */
     public function getName()

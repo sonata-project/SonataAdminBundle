@@ -45,8 +45,9 @@ class ChoiceType extends AbstractType
         $this->translator = $translator;
     }
 
-    // NEXT_MAJOR: Remove when dropping Symfony <2.8 support
     /**
+     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support
+     *
      * {@inheritdoc}
      */
     public function getName()
@@ -100,8 +101,9 @@ class ChoiceType extends AbstractType
         ;
     }
 
-    // NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+
     /**
+     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+
+     *
      * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)

@@ -33,8 +33,9 @@ class RoleSecurityHandler implements SecurityHandlerInterface
      */
     protected $superAdminRoles;
 
-    // NEXT_MAJOR: Go back to signature class check when bumping requirements to SF 2.6+
     /**
+     * NEXT_MAJOR: Go back to signature class check when bumping requirements to SF 2.6+
+     *
      * @param AuthorizationCheckerInterface|SecurityContextInterface $authorizationChecker
      * @param array                                                  $superAdminRoles
      */

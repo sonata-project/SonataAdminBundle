@@ -32,8 +32,9 @@ class CollectionType extends AbstractType
             'collection';
     }
 
-    // NEXT_MAJOR: Remove when dropping Symfony <2.8 support
     /**
+     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support
+     *
      * {@inheritdoc}
      */
     public function getName()

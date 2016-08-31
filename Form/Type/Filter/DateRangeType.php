@@ -42,8 +42,9 @@ class DateRangeType extends AbstractType
         $this->translator = $translator;
     }
 
-    // NEXT_MAJOR: Remove when dropping Symfony <2.8 support
     /**
+     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support
+     *
      * {@inheritdoc}
      */
     public function getName()
