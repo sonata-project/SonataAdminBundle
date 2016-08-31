@@ -68,7 +68,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     protected $maskBuilderClass;
 
     /**
-     * NEXT_MAJOR: Go back to signature class check when bumping requirements to SF 2.6+
+     * NEXT_MAJOR: Go back to signature class check when bumping requirements to SF 2.6+.
      *
      * @param TokenStorageInterface|SecurityContextInterface $tokenStorage
      * @param TokenStorageInterface|SecurityContextInterface $authorizationChecker

@@ -33,7 +33,7 @@ class ModelReferenceType extends AbstractType
     }
 
     /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+
+     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
      *
      * {@inheritdoc}
      */
@@ -63,7 +63,7 @@ class ModelReferenceType extends AbstractType
     }
 
     /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support
+     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
      *
      * {@inheritdoc}
      */

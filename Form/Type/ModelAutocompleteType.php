@@ -95,7 +95,7 @@ class ModelAutocompleteType extends AbstractType
     }
 
     /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+
+     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
      *
      * {@inheritdoc}
      */
