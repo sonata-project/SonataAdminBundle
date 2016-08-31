@@ -43,9 +43,9 @@ class DateRangeType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
      *
-     * @todo Remove when dropping Symfony <2.8 support
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -97,10 +97,10 @@ class DateRangeType extends AbstractType
         ;
     }
 
+    // NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+
+
     /**
      * {@inheritdoc}
-     *
-     * @todo Remove it when bumping requirements to SF 2.7+
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {

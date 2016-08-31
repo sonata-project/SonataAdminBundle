@@ -68,13 +68,23 @@ class ExplainAdminCommand extends ContainerAwareCommand
         $output->writeln('');
         $output->writeln('<info>Datagrid Columns</info>');
         foreach ($admin->getListFieldDescriptions() as $name => $fieldDescription) {
-            $output->writeln(sprintf('  - % -25s  % -15s % -15s', $name, $fieldDescription->getType(), $fieldDescription->getTemplate()));
+            $output->writeln(sprintf(
+                '  - % -25s  % -15s % -15s',
+                $name,
+                $fieldDescription->getType(),
+                $fieldDescription->getTemplate()
+            ));
         }
 
         $output->writeln('');
         $output->writeln('<info>Datagrid Filters</info>');
         foreach ($admin->getFilterFieldDescriptions() as $name => $fieldDescription) {
-            $output->writeln(sprintf('  - % -25s  % -15s % -15s', $name, $fieldDescription->getType(), $fieldDescription->getTemplate()));
+            $output->writeln(sprintf(
+                '  - % -25s  % -15s % -15s',
+                $name,
+                $fieldDescription->getType(),
+                $fieldDescription->getTemplate()
+            ));
         }
 
         $output->writeln('');
@@ -86,7 +96,12 @@ class ExplainAdminCommand extends ContainerAwareCommand
         $output->writeln('');
         $output->writeln('<info>Form Fields</info>');
         foreach ($admin->getFormFieldDescriptions() as $name => $fieldDescription) {
-            $output->writeln(sprintf('  - % -25s  % -15s % -15s', $name, $fieldDescription->getType(), $fieldDescription->getTemplate()));
+            $output->writeln(sprintf(
+                '  - % -25s  % -15s % -15s',
+                $name,
+                $fieldDescription->getType(),
+                $fieldDescription->getTemplate()
+            ));
         }
 
         $metadata = false;
@@ -115,7 +130,11 @@ class ExplainAdminCommand extends ContainerAwareCommand
                 $output->writeln(sprintf('  - %s', $name));
 
                 foreach ($property->getConstraints() as $constraint) {
-                    $output->writeln(sprintf('    % -70s %s', get_class($constraint), implode('|', $constraint->groups)));
+                    $output->writeln(sprintf(
+                        '    % -70s %s',
+                        get_class($constraint),
+                        implode('|', $constraint->groups)
+                    ));
                 }
             }
         }
@@ -130,7 +149,11 @@ class ExplainAdminCommand extends ContainerAwareCommand
                 $output->writeln(sprintf('  - %s', $name));
 
                 foreach ($property->getConstraints() as $constraint) {
-                    $output->writeln(sprintf('    % -70s %s', get_class($constraint), implode('|', $constraint->groups)));
+                    $output->writeln(sprintf(
+                        '    % -70s %s',
+                        get_class($constraint),
+                        implode('|', $constraint->groups)
+                    ));
                 }
             }
         }

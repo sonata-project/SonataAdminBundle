@@ -54,9 +54,9 @@ class DateTimeType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
      *
-     * @todo Remove when dropping Symfony <2.8 support
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -114,9 +114,9 @@ class DateTimeType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
      *
-     * @todo Remove it when bumping requirements to SF 2.7+
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
