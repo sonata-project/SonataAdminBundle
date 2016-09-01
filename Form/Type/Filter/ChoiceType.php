@@ -86,7 +86,8 @@ class ChoiceType extends AbstractType
         }
 
         $operatorChoices = array();
-        if ($options['operator_type'] !== 'hidden') {
+        // NEXT_MAJOR: Remove first check (when requirement of Symfony is >= 2.8)
+        if ($options['operator_type'] !== 'hidden' && $options['operator_type'] !== 'Symfony\Component\Form\Extension\Core\Type\HiddenType') {
             $operatorChoices['choices'] = $choices;
 
             // NEXT_MAJOR: Remove this hack, when dropping support for symfony <2.7
@@ -119,7 +120,9 @@ class ChoiceType extends AbstractType
         $resolver->setDefaults(array(
             'field_type' => 'choice',
             'field_options' => array(),
-            'operator_type' => 'choice',
+            'operator_type' => method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+                ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
+                : 'choice', // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
             'operator_options' => array(),
         ));
     }
