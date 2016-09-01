@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.6.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.5.0...3.6.0) - 2016-09-01
+### Added
+- Added new methods to set default values for the list view
+
+### Fixed
+- Auto-detect type when adding `FormBuilderInterface` to `FormMapper`
+- Type for `Filter` to be compatible with Symfony 2.8+
+- Type for `Filter Operator` to be compatible with Symfony 2.8+
+
 ## [3.5.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.4.0...3.5.0) - 2016-08-29
 ### Added
 - Export fields names are now translated
