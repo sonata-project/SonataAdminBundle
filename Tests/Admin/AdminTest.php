@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Route\RoutesCache;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentWithCustomRouteAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\FilteredAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\ModelAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostWithCustomRouteAdmin;
@@ -1761,6 +1762,61 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('list', $admin->getDashboardActions());
         $this->assertArrayHasKey('create', $admin->getDashboardActions());
+    }
+
+    public function testDefaultFilters()
+    {
+        $admin = new FilteredAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'SonataFooBundle:ModelAdmin');
+
+        $subjectId = uniqid();
+
+        $request = $this->getMock('Symfony\Component\HttpFoundation\Request', array('get'));
+        $request->query->set('filter', array(
+            'a' => array(
+                'value' => 'b',
+            ),
+            'foo' => array(
+                'type' => '1',
+                'value' => 'bar',
+            ),
+            'baz' => array(
+                'type' => '5',
+                'value' => 'test',
+            ),
+        ));
+
+        $request->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue($subjectId));
+
+        $admin->setRequest($request);
+
+        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager->expects($this->any())
+            ->method('getDefaultSortValues')
+            ->will($this->returnValue(array()));
+
+        $admin->setModelManager($modelManager);
+
+        $this->assertEquals(array(
+            'foo' => array(
+                'type' => '1',
+                'value' => 'bar',
+            ),
+            'baz' => array(
+                'type' => '5',
+                'value' => 'test',
+            ),
+            '_page' => 1,
+            '_per_page' => 32,
+            'a' => array(
+                'value' => 'b',
+            ),
+        ), $admin->getFilterParameters());
+
+        $this->assertTrue($admin->isDefaultFilter('foo'));
+        $this->assertFalse($admin->isDefaultFilter('bar'));
+        $this->assertFalse($admin->isDefaultFilter('a'));
     }
 
     /**

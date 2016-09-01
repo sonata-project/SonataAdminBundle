@@ -329,19 +329,18 @@ If you don't need the advanced filters, or all your ``operator_type`` are hidden
 Default filters
 ^^^^^^^^^^^^^^^
 
-Default filters can be added to the datagrid values by overriding the ``$datagridValues`` property which is also used for default sorting.
+Default filters can be added to the datagrid values by using the ``configureDefaultFilterValues`` method.
 A filter has a ``value`` and an optional ``type``. If no ``type`` is given the default type ``is equal`` is used.
 
 .. code-block:: php
 
-    protected $datagridValues = array(
-        '_page' => 1,
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'id',
-        'foo' => array(
-            'value' => 'bar'
-        )
-    );
+    public function configureDefaultFilterValues(array &$filterValues)
+    {
+        $filterValues['foo'] = array(
+            'type'  => ChoiceFilter::TYPE_CONTAINS,
+            'value' => 'bar',
+        );
+    }
 
 Available types are represented through classes which can be found here:
 https://github.com/sonata-project/SonataCoreBundle/tree/master/Form/Type
