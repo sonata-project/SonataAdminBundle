@@ -69,31 +69,30 @@ class ChoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
-            self::TYPE_CONTAINS => 'label_type_contains',
-            self::TYPE_NOT_CONTAINS => 'label_type_not_contains',
-            self::TYPE_EQUAL => 'label_type_equals',
+            'label_type_contains' => self::TYPE_CONTAINS,
+            'label_type_not_contains' => self::TYPE_NOT_CONTAINS,
+            'label_type_equals' => self::TYPE_EQUAL,
         );
-
-        if (!method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
-            $choices = array_flip($choices);
-        }
-
-        // NEXT_MAJOR: Remove this hack, when dropping support for symfony <2.7
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            foreach ($choices as $key => $value) {
-                $choices[$key] = $this->translator->trans($value, array(), 'SonataAdminBundle');
-            }
-        }
-
         $operatorChoices = array();
+
         // NEXT_MAJOR: Remove first check (when requirement of Symfony is >= 2.8)
         if ($options['operator_type'] !== 'hidden' && $options['operator_type'] !== 'Symfony\Component\Form\Extension\Core\Type\HiddenType') {
-            $operatorChoices['choices'] = $choices;
-
-            // NEXT_MAJOR: Remove this hack, when dropping support for symfony <2.7
-            if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            // NEXT_MAJOR: Remove (when requirement of Symfony is >= 2.7)
+            if (!method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
+                $choices = array_flip($choices);
+                foreach ($choices as $key => $value) {
+                    $choices[$key] = $this->translator->trans($value, array(), 'SonataAdminBundle');
+                }
+            } else {
                 $operatorChoices['choice_translation_domain'] = 'SonataAdminBundle';
+
+                // NEXT_MAJOR: Remove (when requirement of Symfony is >= 3.0)
+                if (method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+                    $operatorChoices['choices_as_values'] = true;
+                }
             }
+
+            $operatorChoices['choices'] = $choices;
         }
 
         $builder
