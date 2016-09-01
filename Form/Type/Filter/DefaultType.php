@@ -68,9 +68,13 @@ class DefaultType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'operator_type' => 'hidden',
+            'operator_type' => method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+                ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
+                : 'hidden', // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
             'operator_options' => array(),
-            'field_type' => 'text',
+            'field_type' => method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+                ? 'Symfony\Component\Form\Extension\Core\Type\TextType'
+                : 'text', // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
             'field_options' => array(),
         ));
     }
