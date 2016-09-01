@@ -778,6 +778,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
             $parameters = array_merge(
                 $this->getModelManager()->getDefaultSortValues($this->getClass()),
                 $this->datagridValues,
+                $this->getDefaultFilterValues(),
                 $filters
             );
 
@@ -2937,6 +2938,25 @@ EOT;
     }
 
     /**
+     * Checks if a filter type is set to a default value.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    final public function isDefaultFilter($name)
+    {
+        $filter = $this->getFilterParameters();
+        $default = $this->getDefaultFilterValues();
+
+        if (!array_key_exists($name, $filter) || !array_key_exists($name, $default)) {
+            return false;
+        }
+
+        return $filter[$name] == $default[$name];
+    }
+
+    /**
      * Check object existence and access, without throw Exception.
      *
      * @param string $action
@@ -2947,6 +2967,27 @@ EOT;
     public function canAccessObject($action, $object)
     {
         return $object && $this->id($object) && $this->hasAccess($action, $object);
+    }
+
+    /**
+     * Returns a list of default filters.
+     *
+     * @return array
+     */
+    final protected function getDefaultFilterValues()
+    {
+        $defaultFilterValues = array();
+
+        $this->configureDefaultFilterValues($defaultFilterValues);
+
+        foreach ($this->getExtensions() as $extension) {
+            // NEXT_MAJOR: remove method check in next major release
+            if (method_exists($extension, 'configureDefaultFilterValues')) {
+                $extension->configureDefaultFilterValues($this, $defaultFilterValues);
+            }
+        }
+
+        return $defaultFilterValues;
     }
 
     /**
@@ -3217,6 +3258,15 @@ EOT;
         }
 
         return $access;
+    }
+
+    /**
+     * Returns a list of default filters.
+     *
+     * @param array $filterValues
+     */
+    protected function configureDefaultFilterValues(array &$filterValues)
+    {
     }
 
     /**
