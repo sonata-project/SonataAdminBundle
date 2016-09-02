@@ -249,7 +249,6 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             'Sonata\\AdminBundle\\Datagrid\\ProxyQueryInterface',
             'Sonata\\AdminBundle\\Exception\\ModelManagerException',
             'Sonata\\AdminBundle\\Exception\\NoValueException',
-            'Sonata\\AdminBundle\\Export\\Exporter',
             'Sonata\\AdminBundle\\Filter\\Filter',
             'Sonata\\AdminBundle\\Filter\\FilterFactory',
             'Sonata\\AdminBundle\\Filter\\FilterFactoryInterface',
