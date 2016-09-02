@@ -103,7 +103,10 @@ class NumberType extends AbstractType
         }
 
         $builder
-            ->add('type', 'choice', $choiceOptions)
+            // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
+            ->add('type', method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+                ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
+                : 'choice', $choiceOptions)
             ->add('value', $options['field_type'], array_merge(array('required' => false), $options['field_options']))
         ;
     }
