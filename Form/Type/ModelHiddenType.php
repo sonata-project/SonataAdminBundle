@@ -60,7 +60,10 @@ class ModelHiddenType extends AbstractType
      */
     public function getParent()
     {
-        return 'hidden';
+        // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
+        return method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+            ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
+            : 'hidden';
     }
 
     /**

@@ -45,6 +45,9 @@ class ModelHiddenTypeTest extends TypeTestCase
     public function testGetParent()
     {
         $type = new ModelHiddenType();
-        $this->assertSame('hidden', $type->getParent());
+        // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
+        $this->assertSame(method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+            ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
+            : 'hidden', $type->getParent());
     }
 }
