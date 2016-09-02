@@ -66,30 +66,29 @@ class DateRangeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
-            self::TYPE_BETWEEN => 'label_date_type_between',
-            self::TYPE_NOT_BETWEEN => 'label_date_type_not_between',
+            'label_date_type_between' => self::TYPE_BETWEEN,
+            'label_date_type_not_between' => self::TYPE_NOT_BETWEEN,
         );
-
-        if (!method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
-            $choices = array_flip($choices);
-        }
-
-        // NEXT_MAJOR: Remove this hack, when dropping support for symfony <2.7
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            foreach ($choices as $key => $value) {
-                $choices[$key] = $this->translator->trans($value, array(), 'SonataAdminBundle');
-            }
-        }
-
         $choiceOptions = array(
-            'choices' => $choices,
             'required' => false,
         );
 
-        // NEXT_MAJOR: Remove this hack, when dropping support for symfony <2.7
-        if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+        // NEXT_MAJOR: Remove (when requirement of Symfony is >= 2.7)
+        if (!method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
+            $choices = array_flip($choices);
+            foreach ($choices as $key => $value) {
+                $choices[$key] = $this->translator->trans($value, array(), 'SonataAdminBundle');
+            }
+        } else {
             $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
+
+            // NEXT_MAJOR: Remove (when requirement of Symfony is >= 3.0)
+            if (method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+                $choiceOptions['choices_as_values'] = true;
+            }
         }
+
+        $choiceOptions['choices'] = $choices;
 
         $builder
             // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
