@@ -74,33 +74,32 @@ class NumberType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
-            self::TYPE_EQUAL => 'label_type_equal',
-            self::TYPE_GREATER_EQUAL => 'label_type_greater_equal',
-            self::TYPE_GREATER_THAN => 'label_type_greater_than',
-            self::TYPE_LESS_EQUAL => 'label_type_less_equal',
-            self::TYPE_LESS_THAN => 'label_type_less_than',
+            'label_type_equal' => self::TYPE_EQUAL,
+            'label_type_greater_equal' => self::TYPE_GREATER_EQUAL,
+            'label_type_greater_than' => self::TYPE_GREATER_THAN,
+            'label_type_less_equal' => self::TYPE_LESS_EQUAL,
+            'label_type_less_than' => self::TYPE_LESS_THAN,
         );
-
-        if (!method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
-            $choices = array_flip($choices);
-        }
-
-        // NEXT_MAJOR: Remove this hack, when dropping support for symfony <2.7
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            foreach ($choices as $key => $value) {
-                $choices[$key] = $this->translator->trans($value, array(), 'SonataAdminBundle');
-            }
-        }
-
         $choiceOptions = array(
-            'choices' => $choices,
             'required' => false,
         );
 
-        // NEXT_MAJOR: Remove this hack, when dropping support for symfony <2.7
-        if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+        // NEXT_MAJOR: Remove (when requirement of Symfony is >= 2.7)
+        if (!method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
+            $choices = array_flip($choices);
+            foreach ($choices as $key => $value) {
+                $choices[$key] = $this->translator->trans($value, array(), 'SonataAdminBundle');
+            }
+        } else {
             $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
+
+            // NEXT_MAJOR: Remove (when requirement of Symfony is >= 3.0)
+            if (method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+                $choiceOptions['choices_as_values'] = true;
+            }
         }
+
+        $choiceOptions['choices'] = $choices;
 
         $builder
             // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
