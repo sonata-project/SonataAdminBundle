@@ -97,6 +97,17 @@ forget to enable SonataAdminBundle too:
     that match the version of SonataAdminBundle you are using, you can make bower
     use the local bower dependency file, like this : ``bower install ./vendor/sonata-project/admin-bundle/bower.json``
 
+.. note::
+
+    You must enable translator service in `config.yml`.
+
+    .. code-block:: yaml
+
+        framework:
+            translator: { fallbacks: ["%locale%"] }
+
+    For more information: http://symfony.com/doc/current/translation.html#configuration
+
 Configuring SonataAdminBundle dependencies
 ------------------------------------------
 
