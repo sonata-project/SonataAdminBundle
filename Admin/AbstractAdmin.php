@@ -1648,7 +1648,7 @@ which is not the one registered with this admin class ("%s").
 This is deprecated since 3.x and will no longer be supported in 4.0.
 EOT;
 
-            trigger_error(
+            @trigger_error(
                 sprintf($message, get_class($subject), $this->class),
                 E_USER_DEPRECATED
             ); // NEXT_MAJOR : throw an exception instead
