@@ -2109,10 +2109,6 @@ EOT;
     {
         $domain = $domain ?: $this->getTranslationDomain();
 
-        if (!$this->translator) {
-            return $id;
-        }
-
         return $this->translator->trans($id, $parameters, $domain, $locale);
     }
 
@@ -2130,10 +2126,6 @@ EOT;
     public function transChoice($id, $count, array $parameters = array(), $domain = null, $locale = null)
     {
         $domain = $domain ?: $this->getTranslationDomain();
-
-        if (!$this->translator) {
-            return $id;
-        }
 
         return $this->translator->transChoice($id, $count, $parameters, $domain, $locale);
     }
