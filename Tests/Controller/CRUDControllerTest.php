@@ -11,6 +11,8 @@
 
 namespace Sonata\AdminBundle\Tests\Controller;
 
+use Exporter\Exporter;
+use Exporter\Writer\JsonWriter;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\Pool;
@@ -178,11 +180,16 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                 }
             }));
 
-        $exporter = $this->getMock('Sonata\AdminBundle\Export\Exporter');
+        // NEXT_MAJOR : require sonata/exporter ^1.7 and remove conditional
+        if (class_exists('Exporter\Exporter')) {
+            $exporter = new Exporter(array(new JsonWriter('/tmp/sonataadmin/export.json')));
+        } else {
+            $exporter = $this->getMock('Sonata\AdminBundle\Export\Exporter');
 
-        $exporter->expects($this->any())
-            ->method('getResponse')
-            ->will($this->returnValue(new StreamedResponse()));
+            $exporter->expects($this->any())
+                ->method('getResponse')
+                ->will($this->returnValue(new StreamedResponse()));
+        }
 
         $this->auditManager = $this->getMockBuilder('Sonata\AdminBundle\Model\AuditManager')
             ->disableOriginalConstructor()
