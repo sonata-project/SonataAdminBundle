@@ -281,6 +281,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      * The translator component.
      *
      * @var \Symfony\Component\Translation\TranslatorInterface
+     *
+     * @deprecated since 3.x, to be removed with 4.0
      */
     protected $translator;
 
@@ -2108,6 +2110,11 @@ EOT;
      */
     public function trans($id, array $parameters = array(), $domain = null, $locale = null)
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            E_USER_DEPRECATED
+        );
+
         $domain = $domain ?: $this->getTranslationDomain();
 
         if (!$this->translator) {
@@ -2127,9 +2134,16 @@ EOT;
      * @param string|null $locale
      *
      * @return string the translated string
+     *
+     * @deprecated since 3.x, to be removed with 4.0
      */
     public function transChoice($id, $count, array $parameters = array(), $domain = null, $locale = null)
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            E_USER_DEPRECATED
+        );
+
         $domain = $domain ?: $this->getTranslationDomain();
 
         if (!$this->translator) {
@@ -2157,17 +2171,31 @@ EOT;
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated since 3.x, to be removed with 4.0
      */
     public function setTranslator(TranslatorInterface $translator)
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            E_USER_DEPRECATED
+        );
+
         $this->translator = $translator;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated since 3.x, to be removed with 4.0
      */
     public function getTranslator()
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            E_USER_DEPRECATED
+        );
+
         return $this->translator;
     }
 

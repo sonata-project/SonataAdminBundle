@@ -50,7 +50,7 @@ file that was distributed with this source code.
         <div class="box box-primary">
             <div class="box-header">
                 <h1 class="box-title">
-                    {{ admin.trans('element.tree_site_label') }}
+                    {{ 'element.tree_site_label'|trans({}, admin.translationdomain) }}
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                             <strong class="text-info">{{ currentSite.name }}</strong> <span class="caret"></span>

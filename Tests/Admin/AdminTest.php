@@ -1193,6 +1193,9 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('sonata.post.admin.post', $admin->getObjectIdentifier());
     }
 
+    /**
+     * @group Legacy
+     */
     public function testTransWithNoTranslator()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
@@ -1200,6 +1203,9 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('foo', $admin->trans('foo'));
     }
 
+    /**
+     * @group Legacy
+     */
     public function testTrans()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
@@ -1216,6 +1222,9 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('fooTranslated', $admin->trans('foo'));
     }
 
+    /**
+     * @group Legacy
+     */
     public function testTransWithMessageDomain()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
@@ -1231,6 +1240,9 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('fooTranslated', $admin->trans('foo', array('name' => 'Andrej'), 'fooMessageDomain'));
     }
 
+    /**
+     * @group Legacy
+     */
     public function testTransChoiceWithNoTranslator()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
@@ -1238,6 +1250,9 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('foo', $admin->transChoice('foo', 2));
     }
 
+    /**
+     * @group Legacy
+     */
     public function testTransChoice()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
@@ -1254,6 +1269,9 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('fooTranslated', $admin->transChoice('foo', 2));
     }
 
+    /**
+     * @group Legacy
+     */
     public function testTransChoiceWithMessageDomain()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');

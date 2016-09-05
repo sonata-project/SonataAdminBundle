@@ -35,7 +35,7 @@ file that was distributed with this source code.
                 {% if name %}
                     <tr class="sonata-ba-view-title">
                         <td colspan="2">
-                            {{ admin.trans(name) }}
+                            {{ name|trans({}, admin.translationdomain) }}
                         </td>
                     </tr>
                 {% endif %}

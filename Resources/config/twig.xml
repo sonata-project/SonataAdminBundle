@@ -24,6 +24,7 @@
             <tag name="twig.extension"/>
             <argument type="service" id="sonata.admin.pool"/>
             <argument type="service" id="logger" on-invalid="ignore"/>
+            <argument type="service" id="translator"/>
             <call method="setXEditableTypeMapping">
                 <argument>%sonata.admin.twig.extension.x_editable_type_mapping%</argument>
             </call>
