@@ -187,7 +187,7 @@ the search field to use the ``name`` property of the Category:
                 ->add('title')
                 ->add('category', null, array(), 'entity', array(
                     'class'    => 'AppBundle\Entity\Category',
-                    'property' => 'name',
+                    'choice_label' => 'name', // In Symfony2: 'property' => 'name'
                 ))
             ;
         }
