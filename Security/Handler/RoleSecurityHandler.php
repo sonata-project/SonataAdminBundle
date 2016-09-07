@@ -62,12 +62,12 @@ class RoleSecurityHandler implements SecurityHandlerInterface
             $attributes[$pos] = sprintf($this->getBaseRole($admin), $attribute);
         }
 
-        $checkAllRole = sprintf($this->getBaseRole($admin), 'ALL');
+        $allRole = sprintf($this->getBaseRole($admin), 'ALL');
 
         try {
             return $this->authorizationChecker->isGranted($this->superAdminRoles)
                 || $this->authorizationChecker->isGranted($attributes, $object)
-                || $this->authorizationChecker->isGranted($checkAllRole, $object);
+                || $this->authorizationChecker->isGranted($allRole, $object);
         } catch (AuthenticationCredentialsNotFoundException $e) {
             return false;
         }
