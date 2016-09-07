@@ -10,6 +10,6 @@ file that was distributed with this source code.
 #}
 {% if admin.canAccessObject('show', object) and admin.show|length > 0 and admin.hasRoute('show') %}
     <a class="sonata-action-element" href="{{ admin.generateObjectUrl('show', object) }}">
-        <i class="fa fa-eye"></i>
+        <i class="fa fa-eye" aria-hidden="true"></i>
         {{ 'link_action_show'|trans({}, 'SonataAdminBundle') }}</a>
 {% endif %}
