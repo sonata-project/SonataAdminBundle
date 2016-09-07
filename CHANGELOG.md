@@ -2,6 +2,21 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.7.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.6.0...3.7.0) - 2016-09-07
+### Added
+- Added additional `_ALL` role check to `RolesecurityHandler`
+
+### Changed
+- Improve accessibility by adding `aria-hidden="true"`
+
+## Fixed
+- Set `choices_as_values` to `true` on choice type based to be compatible with Symfony 3
+- Use class name when referencing `Form Type` to be compatible with Symfony 2.8+
+- Remove `Sonata\CoreBundle\Exporter\Exporter` from classes to compile to cache to avoid deprecation warning
+
+### Removed
+- The admin no longer checks for the `translator` service before translating.
+
 ## [3.6.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.5.0...3.6.0) - 2016-09-01
 ### Added
 - Added new methods to set default values for the list view
