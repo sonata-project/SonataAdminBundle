@@ -109,19 +109,20 @@ either a super admin (``ROLE_SUPER_ADMIN``) **or** has the permission.
 
 The permissions are:
 
-==========   ========================================
+==========   ==================================================
 Permission   Description
-==========   ========================================
+==========   ==================================================
 LIST         view the list of objects
 VIEW         view the detail of one object
 CREATE       create a new object
 EDIT         update an existing object
 DELETE       delete an existing object
 EXPORT       (for the native Sonata export links)
-==========   ========================================
+ALL          grants LIST, VIEW, CREATE, EDIT, DELETE and EXPORT
+==========   ==================================================
 
 Each permission is relative to an admin: if you try to get a list in FooAdmin (declared as ``app.admin.foo``
-service), Sonata will check if the user has the ``ROLE_APP_ADMIN_FOO_EDIT`` role.
+service), Sonata will check if the user has the ``ROLE_APP_ADMIN_FOO_EDIT`` or ``ROLE_APP_ADMIN_FOO_ALL`` roles.
 
 The role name will be based on the name of your admin service. For instance, ``acme.blog.post.admin`` will become ``ROLE_ACME_BLOG_POST_ADMIN_{ACTION}``.
 
@@ -156,6 +157,9 @@ So our ``security.yml`` file may look something like this:
                 ROLE_STAFF:             [ROLE_USER, ROLE_SONATA_FOO_READER]
                 ROLE_ADMIN:             [ROLE_STAFF, ROLE_SONATA_FOO_EDITOR, ROLE_SONATA_FOO_ADMIN]
                 ROLE_SUPER_ADMIN:       [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+                # you could alternatively use for an admin who has all rights 
+                ROLE_ALL_ADMIN:         [ROLE_STAFF, ROLE_SONATA_FOO_ALL]
 
             # set access_strategy to unanimous, else you may have unexpected behaviors
             access_decision_manager:
