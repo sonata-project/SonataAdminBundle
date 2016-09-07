@@ -16,7 +16,7 @@ file that was distributed with this source code.
         {% if not form.parent %}<div class="alert alert-danger">{% endif %}
             <ul class="list-unstyled">
                 {% for error in errors %}
-                    <li><i class="fa fa-exclamation-circle"></i> {{ error.message }}</li>
+                    <li><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ error.message }}</li>
                 {% endfor %}
             </ul>
         {% if not form.parent %}</div>{% endif %}
@@ -381,7 +381,7 @@ file that was distributed with this source code.
             <div class="row">
                 <div class="col-xs-1">
                     <a href="#" class="btn btn-link sonata-collection-delete">
-                        <i class="fa fa-minus-circle"></i>
+                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
                     </a>
                 </div>
                 <div class="col-xs-11">
@@ -411,7 +411,7 @@ file that was distributed with this source code.
         {% endfor %}
         {{ form_rest(form) }}
         {% if allow_add %}
-            <div><a href="#" class="btn btn-link sonata-collection-add"><i class="fa fa-plus-circle"></i></a></div>
+            <div><a href="#" class="btn btn-link sonata-collection-add"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></div>
         {% endif %}
     </div>
 {% endspaceless %}
