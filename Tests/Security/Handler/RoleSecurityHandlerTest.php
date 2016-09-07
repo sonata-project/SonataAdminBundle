@@ -180,6 +180,7 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
 
             // ALL role
             array(true, array(), 'foo.bar.baz', 'LIST'),
+            array(true, array(), 'foo.bar.baz', array('LIST', 'EDIT')),
         );
     }
 
