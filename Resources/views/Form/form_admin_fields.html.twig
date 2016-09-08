@@ -467,7 +467,7 @@ file that was distributed with this source code.
             var allFields = {{ all_fields|json_encode|raw }};
             var map = {{ map|json_encode|raw }};
 
-            showMaskChoiceEl = jQuery('#{{ main_form_name }}{{ name }}');
+            var showMaskChoiceEl = jQuery('#{{ main_form_name }}{{ name }}');
 
             showMaskChoiceEl.on('change', function () {
                 choice_field_mask_show(jQuery(this).val());
