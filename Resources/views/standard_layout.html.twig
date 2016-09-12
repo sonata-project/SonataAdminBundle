@@ -64,7 +64,7 @@ file that was distributed with this source code.
                 {% endfor %}
             {% endblock %}
 
-            {% block javascripts_sonata_localised %}
+            {% block javascripts_sonata_l10n %}
                 {% set locale = app.request.locale %}
                 {# localize moment #}
                 {% if locale[:2] != 'en' %}
