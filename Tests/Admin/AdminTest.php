@@ -1646,14 +1646,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
         $admin->setRouteGenerator($routeGenerator);
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $pool = $this->getMock('Sonata\AdminBundle\Admin\Pool', array(), array($container, 'Sonata Admin', '/path/to/pic.png', array('foo' => 'bar')));
-        $pool
-            ->expects($this->once())
-            ->method('getTemplate')
-            ->with('button_create')
-            ->will($this->returnValue('Foo.html.twig'));
-        $admin->setConfigurationPool($pool);
+        $admin->setTemplate('button_create', 'Foo.html.twig');
 
         $this->assertSame($expected, $admin->getActionButtons('list', null));
     }
@@ -1754,10 +1747,6 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             }));
 
         $admin->setSecurityHandler($securityHandler);
-
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $pool = $this->getMock('Sonata\AdminBundle\Admin\Pool', array(), array($container, 'Sonata Admin', '/path/to/pic.png', array('foo' => 'bar')));
-        $admin->setConfigurationPool($pool);
 
         $this->assertArrayHasKey('list', $admin->getDashboardActions());
         $this->assertArrayHasKey('create', $admin->getDashboardActions());

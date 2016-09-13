@@ -2795,7 +2795,7 @@ EOT;
             && $this->hasRoute('create')
         ) {
             $list['create'] = array(
-                'template' => $this->getConfigurationPool()->getTemplate('button_create'),
+                'template' => $this->getTemplate('button_create'),
             );
         }
 
@@ -2804,7 +2804,7 @@ EOT;
             && $this->hasRoute('edit')
         ) {
             $list['edit'] = array(
-                'template' => $this->getConfigurationPool()->getTemplate('button_edit'),
+                'template' => $this->getTemplate('button_edit'),
             );
         }
 
@@ -2813,7 +2813,7 @@ EOT;
             && $this->hasRoute('history')
         ) {
             $list['history'] = array(
-                'template' => $this->getConfigurationPool()->getTemplate('button_history'),
+                'template' => $this->getTemplate('button_history'),
             );
         }
 
@@ -2823,7 +2823,7 @@ EOT;
             && $this->hasRoute('acl')
         ) {
             $list['acl'] = array(
-                'template' => $this->getConfigurationPool()->getTemplate('button_acl'),
+                'template' => $this->getTemplate('button_acl'),
             );
         }
 
@@ -2833,7 +2833,7 @@ EOT;
             && $this->hasRoute('show')
         ) {
             $list['show'] = array(
-                'template' => $this->getConfigurationPool()->getTemplate('button_show'),
+                'template' => $this->getTemplate('button_show'),
             );
         }
 
@@ -2842,7 +2842,7 @@ EOT;
             && $this->hasRoute('list')
         ) {
             $list['list'] = array(
-                'template' => $this->getConfigurationPool()->getTemplate('button_list'),
+                'template' => $this->getTemplate('button_list'),
             );
         }
 
@@ -2882,7 +2882,7 @@ EOT;
             $actions['create'] = array(
                 'label' => 'link_add',
                 'translation_domain' => 'SonataAdminBundle',
-                'template' => $this->getConfigurationPool()->getTemplate('action_create'),
+                'template' => $this->getTemplate('action_create'),
                 'url' => $this->generateUrl('create'),
                 'icon' => 'plus-circle',
             );
