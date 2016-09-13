@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.7.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.7.0...3.7.1) - 2016-09-13
+### Fixed
+- The `ALL` role needs to be checked separately, otherwise the `AuthorizationChecker` return `false` all the time.
+- Added `var` keyword to explicitly define the "showMaskChoiceEl" variable
+
 ## [3.7.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.6.0...3.7.0) - 2016-09-07
 ### Added
 - Added additional `_ALL` role check to `RolesecurityHandler`
