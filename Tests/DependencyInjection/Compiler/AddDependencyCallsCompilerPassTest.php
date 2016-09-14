@@ -254,6 +254,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
                 case 'setTemplates':
                     $this->assertSame('foobar.twig.html', $parameters[0]['user_block']);
                     $this->assertSame('SonataAdminBundle:Pager:results.html.twig', $parameters[0]['pager_results']);
+                    $this->assertSame('SonataAdminBundle:Button:create_button.html.twig', $parameters[0]['button_create']);
                     break;
 
                 case 'setLabel':
