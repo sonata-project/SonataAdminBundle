@@ -288,6 +288,13 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('pager_results')->defaultValue('SonataAdminBundle:Pager:results.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('tab_menu_template')->defaultValue('SonataAdminBundle:Core:tab_menu_template.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('knp_menu_template')->defaultValue('SonataAdminBundle:Menu:sonata_menu.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('action_create')->defaultValue('SonataAdminBundle:CRUD:dashboard__action_create.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('button_acl')->defaultValue('SonataAdminBundle:Button:acl_button.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('button_create')->defaultValue('SonataAdminBundle:Button:create_button.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('button_edit')->defaultValue('SonataAdminBundle:Button:edit_button.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('button_history')->defaultValue('SonataAdminBundle:Button:history_button.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('button_list')->defaultValue('SonataAdminBundle:Button:list_button.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('button_show')->defaultValue('SonataAdminBundle:Button:show_button.html.twig')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
 
