@@ -37,7 +37,7 @@ file that was distributed with this source code.
         {% endblock %}
 
         {% block javascripts %}
-            {% block javascripts_sonata_config %}
+            {% block sonata_javascript_config %}
                 <script>
                     window.SONATA_CONFIG = {
                         CONFIRM_EXIT: {% if sonata_admin.adminPool.getOption('confirm_exit') %}true{% else %}false{% endif %},
@@ -58,7 +58,7 @@ file that was distributed with this source code.
                 </script>
             {% endblock %}
 
-            {% block javascripts_sonata_pool %}
+            {% block sonata_javascript_pool %}
                 {% for javascript in sonata_admin.adminPool.getOption('javascripts', []) %}
                     <script src="{{ asset(javascript) }}"></script>
                 {% endfor %}
