@@ -1624,7 +1624,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     {
         $expected = array(
             'create' => array(
-                'template' => 'SonataAdminBundle:Button:create_button.html.twig',
+                'template' => 'Foo.html.twig',
             ),
         );
 
@@ -1645,6 +1645,8 @@ class AdminTest extends \PHPUnit_Framework_TestCase
             ->with($admin, 'create')
             ->will($this->returnValue(true));
         $admin->setRouteGenerator($routeGenerator);
+
+        $admin->setTemplate('button_create', 'Foo.html.twig');
 
         $this->assertSame($expected, $admin->getActionButtons('list', null));
     }

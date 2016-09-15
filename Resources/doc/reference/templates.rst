@@ -140,6 +140,13 @@ You can specify your templates in the config.yml file, like so:
                 history_revision_timestamp:     SonataAdminBundle:CRUD:history_revision_timestamp.html.twig
                 short_object_description:       SonataAdminBundle:Helper:short-object-description.html.twig
                 search_result_block:            SonataAdminBundle:Block:block_search_result.html.twig
+                action_create:                  SonataAdminBundle:CRUD:dashboard__action_create.html.twig
+                button_acl:                     SonataAdminBundle:Button:acl_button.html.twig
+                button_create:                  SonataAdminBundle:Button:create_button.html.twig
+                button_edit:                    SonataAdminBundle:Button:edit_button.html.twig
+                button_history:                 SonataAdminBundle:Button:history_button.html.twig
+                button_list:                    SonataAdminBundle:Button:list_button.html.twig
+                button_show:                    SonataAdminBundle:Button:show_button.html.twig
 
 Notice that this is a global change, meaning it will affect all model mappings automatically,
 both for ``Admin`` mappings defined by you and by other bundles.
