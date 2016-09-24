@@ -3030,7 +3030,7 @@ EOT;
      }
 
     /**
-     * DEPRECATED: Use configureTabMenu instead.
+     * NEXT_MAJOR: remove this method.
      *
      * @param MenuItemInterface $menu
      * @param                   $action
