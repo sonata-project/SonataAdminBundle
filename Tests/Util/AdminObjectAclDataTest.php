@@ -74,8 +74,6 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group legacy
-     *
-     * @deprecated
      */
     public function testSetForm()
     {
@@ -92,8 +90,6 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
      * @depends testSetForm
      *
      * @group legacy
-     *
-     * @deprecated
      */
     public function testGetForm($adminObjectAclData)
     {
