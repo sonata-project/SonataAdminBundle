@@ -937,7 +937,7 @@ interface AdminInterface
     public function getPersistentParameters();
 
     /**
-     * Returns an array of persistent parameters which will be saved on url generation
+     * Returns an array of persistent parameters which will be saved on url generation.
      *
      * @param string $code
      *
