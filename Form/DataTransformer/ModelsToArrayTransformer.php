@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
+use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -107,7 +108,12 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         }
 
         if (count($notFound) > 0) {
-            throw new TransformationFailedException(sprintf('The entities with keys "%s" could not be found', implode('", "', $notFound)));
+            throw new TransformationFailedException(
+                sprintf(
+                    'The entities with keys "%s" could not be found',
+                    implode('", "', $notFound)
+                )
+            );
         }
 
         return $collection;
