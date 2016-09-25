@@ -126,10 +126,25 @@ class ModelsToArrayTransformer implements DataTransformerInterface
      */
     private function getIdentifierValues($entity)
     {
+        if (!is_object($entity)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expected an entity class, received %s',
+                    var_export($entity, true)
+                )
+            );
+        }
         try {
             return $this->modelManager->getIdentifierValues($entity);
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($entity)), 0, $e);
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Unable to retrieve the identifier values for entity %s',
+                    ClassUtils::getClass($entity)
+                ),
+                0,
+                $e
+            );
         }
     }
 }

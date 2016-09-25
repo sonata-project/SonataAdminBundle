@@ -79,6 +79,22 @@ class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
         $this->invokeMethod($transformer, 'getIdentifierValues', array($this->entity));
     }
 
+    public function testGetIdentifierValuesHandlesNull()
+    {
+        $transformer = new ModelsToArrayTransformer(
+            $this->choiceList->reveal(),
+            $this->modelManager->reveal(),
+            $this->class
+        );
+
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            'Expected an entity class, received NULL'
+        );
+
+        $this->invokeMethod($transformer, 'getIdentifierValues', array(null));
+    }
+
     /**
      * Invoke a private or protected method for sakes of testing.
      *
