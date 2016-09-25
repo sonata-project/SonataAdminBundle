@@ -937,6 +937,14 @@ interface AdminInterface
     public function getPersistentParameters();
 
     /**
+     * Returns an array of persistent parameters which will be saved on url generation
+     *
+     * @param string $code
+     * @return array
+     */
+    public function sharePersistentParameters($code);
+
+    /**
      * NEXT_MAJOR: remove this signature
      * Get breadcrumbs for $action.
      *

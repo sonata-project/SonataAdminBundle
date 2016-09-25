@@ -105,7 +105,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
 
         // allows to define persistent parameters
         if ($admin->hasRequest()) {
-            $parameters = array_merge($admin->getPersistentParameters(), $parameters);
+            $parameters = array_merge($admin->sharePersistentParameters($name), $parameters);
         }
 
         $code = $this->getCode($admin, $name);

@@ -1983,6 +1983,14 @@ EOT;
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function sharePersistentParameters($code)
+    {
+        return $this->getPersistentParameters();
+    }
+
+    /**
      * @param string $name
      *
      * @return null|mixed
