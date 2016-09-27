@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class SonataAdminExtension.
@@ -36,18 +37,32 @@ class SonataAdminExtension extends \Twig_Extension
     protected $logger;
 
     /**
+     * @var TranslatorInterface|null
+     */
+    protected $translator;
+
+    /**
      * @var string[]
      */
     private $xEditableTypeMapping = array();
 
     /**
-     * @param Pool            $pool
-     * @param LoggerInterface $logger
+     * @param Pool                $pool
+     * @param LoggerInterface     $logger
+     * @param TranslatorInterface $translator
      */
-    public function __construct(Pool $pool, LoggerInterface $logger = null)
+    public function __construct(Pool $pool, LoggerInterface $logger = null, TranslatorInterface $translator = null)
     {
+        // NEXT_MAJOR: make the translator parameter required
+        if (null === $translator) {
+            @trigger_error(
+                'The $translator parameter will be required fields with the 4.0 release.',
+                E_USER_DEPRECATED
+            );
+        }
         $this->pool = $pool;
         $this->logger = $logger;
+        $this->translator = $translator;
     }
 
     /**
@@ -408,7 +423,15 @@ EOT;
                 $xEditableChoices = $choices;
             } else {
                 foreach ($choices as $value => $text) {
-                    $text = $catalogue ? $fieldDescription->getAdmin()->trans($text, array(), $catalogue) : $text;
+                    if ($catalogue) {
+                        if (null !== $this->translator) {
+                            $this->translator->trans($text, array(), $catalogue);
+                        // NEXT_MAJOR: Remove this check
+                        } elseif (method_exists($fieldDescription->getAdmin(), 'trans')) {
+                            $text = $fieldDescription->getAdmin()->trans($text, array(), $catalogue);
+                        }
+                    }
+
                     $xEditableChoices[] = array(
                         'value' => $value,
                         'text' => $text,
