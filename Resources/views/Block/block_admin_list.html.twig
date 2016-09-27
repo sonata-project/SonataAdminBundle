@@ -30,7 +30,7 @@ file that was distributed with this source code.
                                 {% if admin.dashboardActions|length > 0 %}
                                             <tr>
                                                 <td class="sonata-ba-list-label" width="40%">
-                                                    {{ label|trans({}, admin.translationdomain) }}
+                                                    {{ admin.label|trans({}, admin.translationdomain) }}
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
