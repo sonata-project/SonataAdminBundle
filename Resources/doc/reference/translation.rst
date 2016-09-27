@@ -49,10 +49,10 @@ translate messages within the ``configureFields`` method or in templates.
     {{ 'message_create_snapshots'|trans({}, 'SonataPageBundle') }}
 
     {# by using the admin trans method with hardcoded catalogue #}
-    {{ admin.trans('message_create_snapshots', {}, 'SonataPageBundle') }}
+    {{ 'message_create_snapshots'|trans({}, 'SonataPageBundle') }}
 
     {# by using the admin trans with the configured catalogue #}
-    {{ admin.trans('message_create_snapshots') }}
+    {{ 'message_create_snapshots'|trans({}, admin.translationdomain) }}
 
 The last solution is most flexible, as no catalogue parameters are hardcoded, and is the recommended one to use.
 
