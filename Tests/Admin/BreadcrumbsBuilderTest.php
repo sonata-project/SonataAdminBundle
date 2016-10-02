@@ -12,6 +12,11 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
+use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment;
+use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\DummySubject;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * This test class contains unit and integration tests. Maybe it could be
@@ -42,7 +47,7 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $leafMenu->getParent()->willReturn($childMenu);
 
         $action = 'my_action';
-        $breadcrumbsBuilder = new BreadcrumbsBuilder();
+        $breadcrumbsBuilder = new BreadcrumbsBuilder(array('child_admin_route' => 'show'));
         $admin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
         $admin->isChild()->willReturn(false);
 
@@ -57,15 +62,17 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
             'breadcrumb',
             'link'
         )->willReturn('Dashboard');
-        $admin->trans('Dashboard', array(), 'SonataAdminBundle')->willReturn(
-            'Tableau de bord'
-        );
 
         $routeGenerator = $this->prophesize('Sonata\AdminBundle\Route\RouteGeneratorInterface');
         $routeGenerator->generate('sonata_admin_dashboard')->willReturn('/dashboard');
 
         $admin->getRouteGenerator()->willReturn($routeGenerator->reveal());
-        $menu->addChild('Tableau de bord', array('uri' => '/dashboard'))->willReturn(
+        $menu->addChild('Dashboard', array(
+            'uri' => '/dashboard',
+            'extras' => array(
+                'translation_domain' => 'SonataAdminBundle',
+            ),
+        ))->willReturn(
             $dashboardMenu->reveal()
         );
         $labelTranslatorStrategy->getLabel(
@@ -81,6 +88,7 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $childAdmin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
         $childAdmin->isChild()->willReturn(true);
         $childAdmin->getParent()->willReturn($admin->reveal());
+        $childAdmin->getTranslationDomain()->willReturn('ChildBundle');
         $childAdmin->getLabelTranslatorStrategy()
             ->shouldBeCalled()
             ->willReturn($labelTranslatorStrategy->reveal());
@@ -88,11 +96,14 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $childAdmin->hasRoute('list')->willReturn(true);
         $childAdmin->isGranted('LIST')->willReturn(true);
         $childAdmin->generateUrl('list')->willReturn('/myadmin/my-object/mychildadmin/list');
-        $childAdmin->trans('My child class', array(), null)->willReturn('Ma classe fille');
         $childAdmin->getCurrentChildAdmin()->willReturn(null);
         $childAdmin->hasSubject()->willReturn(true);
         $childAdmin->getSubject()->willReturn('my subject');
         $childAdmin->toString('my subject')->willReturn('My subject');
+
+        $admin->hasAccess('show', 'my subject')->willReturn(true)->shouldBeCalled();
+        $admin->hasRoute('show')->willReturn(true);
+        $admin->generateUrl('show', array('id' => 'my-object'))->willReturn('/myadmin/my-object');
 
         $admin->trans('My class', array(), null)->willReturn('Ma classe');
         $admin->hasRoute('list')->willReturn(true);
@@ -110,25 +121,39 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $admin->hasSubject()->willReturn(true);
         $admin->getSubject()->willReturn('my subject');
         $admin->toString('my subject')->willReturn('My subject');
+        $admin->getTranslationDomain()->willReturn('FooBundle');
         $admin->getLabelTranslatorStrategy()->willReturn(
             $labelTranslatorStrategy->reveal()
         );
         $admin->getClassnameLabel()->willReturn('my_class_name');
 
-        $dashboardMenu->addChild('Ma classe', array(
+        $dashboardMenu->addChild('My class', array(
+            'extras' => array(
+                'translation_domain' => 'FooBundle',
+            ),
             'uri' => '/myadmin/list',
         ))->shouldBeCalled()->willReturn($adminListMenu->reveal());
 
         $adminListMenu->addChild('My subject', array(
             'uri' => '/myadmin/my-object',
+            'extras' => array(
+                'translation_domain' => false,
+            ),
         ))->shouldBeCalled()->willReturn($adminSubjectMenu->reveal());
 
-        $adminSubjectMenu->addChild('Ma classe fille', array(
+        $adminSubjectMenu->addChild('My child class', array(
+            'extras' => array(
+                'translation_domain' => 'ChildBundle',
+            ),
             'uri' => '/myadmin/my-object/mychildadmin/list',
         ))->shouldBeCalled()->willReturn($childMenu->reveal());
+        $adminSubjectMenu->setExtra('safe_label', false)->willReturn($childMenu);
 
-        $childMenu->addChild('My subject')
-            ->shouldBeCalled()->willReturn($leafMenu->reveal());
+        $childMenu->addChild('My subject', array(
+            'extras' => array(
+                'translation_domain' => false,
+            ),
+        ))->shouldBeCalled()->willReturn($leafMenu->reveal());
 
         $breadcrumbs = $breadcrumbsBuilder->getBreadcrumbs($childAdmin->reveal(), $action);
         $this->assertCount(5, $breadcrumbs);
@@ -164,14 +189,16 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
             'breadcrumb',
             'link'
         )->willReturn('Dashboard');
-        $admin->trans('Dashboard', array(), 'SonataAdminBundle')->willReturn(
-            'Tableau de bord'
-        );
 
         $routeGenerator = $this->prophesize('Sonata\AdminBundle\Route\RouteGeneratorInterface');
         $routeGenerator->generate('sonata_admin_dashboard')->willReturn('/dashboard');
         $admin->getRouteGenerator()->willReturn($routeGenerator->reveal());
-        $menu->addChild('Tableau de bord', array('uri' => '/dashboard'))->willReturn(
+        $menu->addChild('Dashboard', array(
+            'uri' => '/dashboard',
+            'extras' => array(
+                'translation_domain' => 'SonataAdminBundle',
+            ),
+        ))->willReturn(
             $menu->reveal()
         );
         $labelTranslatorStrategy->getLabel(
@@ -195,19 +222,20 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
                 'breadcrumb',
                 'link'
             )->willReturn('create my object');
-            $admin->trans('create my object', array(), null)->willReturn('Créer mon objet')->shouldBeCalled();
-            $menu->addChild('Créer mon objet', array())->willReturn($menu);
+            $menu->addChild('create my object', array(
+                'extras' => array(
+                    'translation_domain' => 'FooBundle',
+                ),
+            ))->willReturn($menu);
         }
         $childAdmin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
+        $childAdmin->getTranslationDomain()->willReturn('ChildBundle');
         $childAdmin->getLabelTranslatorStrategy()->willReturn($labelTranslatorStrategy->reveal());
         $childAdmin->getClassnameLabel()->willReturn('my_child_class_name');
         $childAdmin->hasRoute('list')->willReturn(false);
-        $childAdmin->trans('My child class', array(), null)->willReturn('Ma classe fille');
-        $childAdmin->trans('My action', array(), null)->willReturn('Mon action');
         $childAdmin->getCurrentChildAdmin()->willReturn(null);
         $childAdmin->hasSubject()->willReturn(false);
 
-        $admin->trans('My class', array(), null)->willReturn('Ma classe');
         $admin->hasRoute('list')->willReturn(true);
         $admin->isGranted('LIST')->willReturn(true);
         $admin->generateUrl('list')->willReturn('/myadmin/list');
@@ -227,18 +255,41 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $admin->hasSubject()->willReturn(true);
         $admin->getSubject()->willReturn('my subject');
         $admin->toString('my subject')->willReturn('My subject');
+        $admin->getTranslationDomain()->willReturn('FooBundle');
         $admin->getLabelTranslatorStrategy()->willReturn(
             $labelTranslatorStrategy->reveal()
         );
         $admin->getClassnameLabel()->willReturn('my_class_name');
 
-        $menu->addChild('Ma classe', array(
+        $menu->addChild('My class', array(
             'uri' => '/myadmin/list',
+            'extras' => array(
+                'translation_domain' => 'FooBundle',
+            ),
         ))->willReturn($menu->reveal());
-        $menu->addChild('My subject')->willReturn($menu);
-        $menu->addChild('My subject', array('uri' => null))->willReturn($menu);
-        $menu->addChild('Ma classe fille', array('uri' => null))->willReturn($menu);
-        $menu->addChild('Mon action', array())->willReturn($menu);
+        $menu->addChild('My subject', array(
+            'extras' => array(
+                'translation_domain' => false,
+            ),
+        ))->willReturn($menu);
+        $menu->addChild('My subject', array(
+            'uri' => null,
+            'extras' => array(
+                'translation_domain' => false,
+            ),
+        ))->willReturn($menu);
+        $menu->addChild('My child class', array(
+            'extras' => array(
+                'translation_domain' => 'ChildBundle',
+            ),
+            'uri' => null,
+        ))->willReturn($menu);
+        $menu->setExtra('safe_label', false)->willReturn($menu);
+        $menu->addChild('My action', array(
+            'extras' => array(
+                'translation_domain' => 'ChildBundle',
+            ),
+        ))->willReturn($menu);
 
         $reflection = new \ReflectionMethod('Sonata\AdminBundle\Admin\BreadcrumbsBuilder', 'buildBreadcrumbs');
         $reflection->setAccessible(true);

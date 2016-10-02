@@ -191,4 +191,14 @@ interface AdminExtensionInterface
       * @return array
       */
      public function configureActionButtons(AdminInterface $admin, $list, $action, $object);
+
+    /*
+     * NEXT_MAJOR: Uncomment in next major release
+     *
+     * Returns a list of default filters
+     *
+     * @param AdminInterface $admin
+     * @param array          $filterValues
+     */
+    // public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues);
 }

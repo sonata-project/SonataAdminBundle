@@ -68,13 +68,13 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     protected $maskBuilderClass;
 
     /**
+     * NEXT_MAJOR: Go back to signature class check when bumping requirements to SF 2.6+.
+     *
      * @param TokenStorageInterface|SecurityContextInterface $tokenStorage
      * @param TokenStorageInterface|SecurityContextInterface $authorizationChecker
      * @param MutableAclProviderInterface                    $aclProvider
      * @param string                                         $maskBuilderClass
      * @param array                                          $superAdminRoles
-     *
-     * @todo Go back to signature class check when bumping requirements to SF 2.6+
      */
     public function __construct($tokenStorage, $authorizationChecker, MutableAclProviderInterface $aclProvider, $maskBuilderClass, array $superAdminRoles)
     {

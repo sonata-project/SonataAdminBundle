@@ -11,9 +11,9 @@ file that was distributed with this source code.
 
 {% extends base_template %}
 
-{% block actions %}
+{%- block actions -%}
     {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
-{% endblock %}
+{%- endblock -%}
 
 {% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': sonata_admin.adminPool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
 
@@ -32,12 +32,12 @@ file that was distributed with this source code.
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
 
-                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> {{ 'btn_delete'|trans({}, 'SonataAdminBundle') }}</button>
+                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> {{ 'btn_delete'|trans({}, 'SonataAdminBundle') }}</button>
                     {% if admin.hasRoute('edit') and admin.isGranted('EDIT', object) %}
                         {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
 
                         <a class="btn btn-success" href="{{ admin.generateObjectUrl('edit', object) }}">
-                            <i class="fa fa-pencil"></i>
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
                             {{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}</a>
                     {% endif %}
                 </form>

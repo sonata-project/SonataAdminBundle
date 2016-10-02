@@ -47,6 +47,90 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.8.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.7.1...3.8.0) - 2016-09-20
+### Added
+- Added three new sub-blocks to standard_layouts javascript block
+
+### Changed
+- Moved the raw references of buttons templates from `Admin\AbstractAdmin` to configuration options
+
+## [3.7.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.7.0...3.7.1) - 2016-09-13
+### Fixed
+- The `ALL` role needs to be checked separately, otherwise the `AuthorizationChecker` return `false` all the time.
+- Added `var` keyword to explicitly define the "showMaskChoiceEl" variable
+
+## [3.7.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.6.0...3.7.0) - 2016-09-07
+### Added
+- Added additional `_ALL` role check to `RolesecurityHandler`
+
+### Changed
+- Improve accessibility by adding `aria-hidden="true"`
+
+## Fixed
+- Set `choices_as_values` to `true` on choice type based to be compatible with Symfony 3
+- Use class name when referencing `Form Type` to be compatible with Symfony 2.8+
+- Remove `Sonata\CoreBundle\Exporter\Exporter` from classes to compile to cache to avoid deprecation warning
+
+### Removed
+- The admin no longer checks for the `translator` service before translating.
+
+## [3.6.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.5.0...3.6.0) - 2016-09-01
+### Added
+- Added new methods to set default values for the list view
+
+### Fixed
+- Auto-detect type when adding `FormBuilderInterface` to `FormMapper`
+- Type for `Filter` to be compatible with Symfony 2.8+
+- Type for `Filter Operator` to be compatible with Symfony 2.8+
+
+## [3.5.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.4.0...3.5.0) - 2016-08-29
+### Added
+- Export fields names are now translated
+- Added PL translations
+- Configuration to change the default route used to generate the link to the parent object inside a breadcrumb, when in a child admin
+- Docs for this configuration
+- Twig blocks to simplify the template override.
+- Added test for `AdminBundle\Menu\Matcher\Voter\ChildrenVoter`
+- Added class name support for `AbstractAdmin::configureDatagridFilters`
+- Added `ShowMapper::removeGroup` method
+
+### Changed
+- Changed css `margin-left: -20px` of checkbox.
+- Updated spanish batch confirmation message translation.
+- Changed injection of `$container` to `$adminPool` in `Twig/GlobalVariables`
+- use `RuntimeException` instead of non existing `RunTimeException`
+- `AbstractAdmin::setSubject` in order to check that given `$subject` matches registered admin class entity.
+- Added the action name to title_batch_confirmation translation.
+- Added the object name to message_delete_confirmation translation.
+- Added the action name to title_batch_confirmation translation.
+- Move actions buttons display logic from templates to `AbstractAdmin::configureActionButtons`
+- Moved translation of breadcrumbs to twig template
+- Moved translation of batch action_label to twig template
+- Move actions buttons display logic from templates to `AbstractAdmin::configureActionButtons`
+- Widget tests should extend `AbstractWidgetTestCase`
+
+### Deprecated
+- The `$container` property in `Twig/GlobalVariables`
+
+### Fixed
+- The "batch" checkbox at the top of the list would not work when iCheck is disabled.
+- Not working `read_only` option on Twig with Symfony 3
+- Fixed PT-BR translations
+- XSS Vulnerability in breadcrumbs
+- Handle Symfony BC for Datagrid hidden types
+- Fixed duplicate translation for list filters
+- Fixed visibility of block `sonata_top_nav_menu` contents
+- Fix how metadata information are retrieved when admin information are dumped
+- Symfony 3 support in `AclMatrixType`
+- Symfony 3 type support in `AclMatrixType`
+- Fixed translation in browser titles breadcrumb
+- Fixed translation of entities in breadcrumb
+- Standardize the global form error
+
+### Removed
+- Internal test classes are now excluded from the autoloader
+- Removed unnecessary security checks in `standard_layout.html.twig`
+
 ## [3.4.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.3.2...3.4.0) - 2016-07-05
 ### Added
 - Support for select2 v4 (`select2.full.js` file is needed)

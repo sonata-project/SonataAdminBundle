@@ -11,9 +11,9 @@ file that was distributed with this source code.
 
 {% extends base_template %}
 
-{% block actions %}
+{%- block actions -%}
     {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
-{% endblock %}
+{%- endblock -%}
 
 {% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': sonata_admin.adminPool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
 
@@ -21,6 +21,9 @@ file that was distributed with this source code.
     <div class="sonata-ba-delete">
         <div class="box box-danger">
             <div class="box-header">
+                {% if batch_translation_domain is not same as(false) %}
+                    {% set action_label = action_label|trans({}, batch_translation_domain) %}
+                {% endif %}
                 <h4 class="box-title">{% trans with {'%action%': action_label} from 'SonataAdminBundle' %}title_batch_confirmation{% endtrans %}</h4>
             </div>
             <div class="box-body">
@@ -46,7 +49,7 @@ file that was distributed with this source code.
                         {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
 
                         <a class="btn btn-success" href="{{ admin.generateUrl('list') }}">
-                            <i class="fa fa-th-list"></i> {{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}
+                            <i class="fa fa-th-list" aria-hidden="true"></i> {{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}
                         </a>
                     {% endif %}
                 </form>

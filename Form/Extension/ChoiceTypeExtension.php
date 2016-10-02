@@ -25,9 +25,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ChoiceTypeExtension extends AbstractTypeExtension
 {
     /**
-     * {@inheritdoc}
+     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
      *
-     * @todo Remove it when bumping requirements to SF 2.7+
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {

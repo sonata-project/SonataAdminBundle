@@ -27,7 +27,7 @@
     {% spaceless %}
         {% if item.extra('on_top') is defined and not item.extra('on_top') %}
             {% set translation_domain = item.extra('translation_domain', 'messages') %}
-            {% set icon = item.attribute('icon')|default(item.level > 1 ? '<i class="fa fa-angle-double-right"></i>' : '') %}
+            {% set icon = item.attribute('icon')|default(item.level > 1 ? '<i class="fa fa-angle-double-right" aria-hidden="true"></i>' : '') %}
         {% else %}
             {% set icon = item.extra('icon') %}
         {% endif %}

@@ -72,7 +72,11 @@ class AdminObjectAclManipulator
      */
     public function createForm(AdminObjectAclData $data)
     {
-        trigger_error('createForm() is deprecated since version 3.0. Use createAclUsersForm() instead.', E_USER_DEPRECATED);
+        @trigger_error(
+            'createForm() is deprecated since version 3.0 and will be removed in 4.0. '
+            .'Use createAclUsersForm() instead.',
+            E_USER_DEPRECATED
+        );
 
         return $this->createAclUsersForm($data);
     }
@@ -146,7 +150,11 @@ class AdminObjectAclManipulator
      */
     public function updateAcl(AdminObjectAclData $data)
     {
-        trigger_error('updateAcl() is deprecated since version 3.0. Use updateAclUsers() instead.', E_USER_DEPRECATED);
+        @trigger_error(
+            'updateAcl() is deprecated since version 3.0 and will be removed in 4.0.'
+            .'Use updateAclUsers() instead.',
+            E_USER_DEPRECATED
+        );
 
         $this->updateAclUsers($data);
     }
@@ -272,7 +280,12 @@ class AdminObjectAclManipulator
                 );
             }
 
-            $formBuilder->add($key, new AclMatrixType(), array('permissions' => $permissions, 'acl_value' => $aclValue));
+            // NEXT_MAJOR: remove when dropping Symfony <2.8 support
+            $type = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ?
+                'Sonata\AdminBundle\Form\Type\AclMatrixType' :
+                new AclMatrixType();
+
+            $formBuilder->add($key, $type, array('permissions' => $permissions, 'acl_value' => $aclValue));
         }
 
         return $formBuilder->getForm();

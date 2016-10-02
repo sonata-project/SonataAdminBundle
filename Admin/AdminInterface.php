@@ -290,12 +290,16 @@ interface AdminInterface
     /**
      * translate a message id.
      *
+     * NEXT_MAJOR: remove this method
+     *
      * @param string $id
      * @param array  $parameters
      * @param null   $domain
      * @param null   $locale
      *
      * @return string the translated string
+     *
+     * @deprecated since 3.x, to be removed in 4.0
      */
     public function trans($id, array $parameters = array(), $domain = null, $locale = null);
 
@@ -1098,4 +1102,31 @@ interface AdminInterface
        * @param bool $isShown
        */
       public function showMosaicButton($isShown);
+
+    /*
+     * Configure buttons for an action
+     *
+     * @param string $action
+     * @param object $object
+     *
+     */
+    // public function configureActionButtons($action, $object = null);
+
+    /*
+     * Checks if a filter type is set to a default value
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+//    NEXT_MAJOR: uncomment this method in 4.0
+    // public function isDefaultFilter($name);
+
+    /*
+     * Returns a list of default filters.
+     *
+     * @return array
+     */
+//    NEXT_MAJOR: uncomment this method in 4.0
+    // public function getDefaultFilterValues();
 }

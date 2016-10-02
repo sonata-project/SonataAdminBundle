@@ -33,17 +33,31 @@ class AclMatrixType extends AbstractType
         $aclValueType = $options['acl_value'] instanceof UserInterface ? 'user' : 'role';
         $aclValueData = $options['acl_value'] instanceof UserInterface ? $options['acl_value']->getUsername() : $options['acl_value'];
 
-        $builder->add($aclValueType, 'hidden', array('data' => $aclValueData));
+        $builder->add(
+            $aclValueType,
+            // NEXT_MAJOR: remove when dropping Symfony <2.8 support
+            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+                ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
+                : 'hidden',
+            array('data' => $aclValueData)
+        );
 
         foreach ($options['permissions'] as $permission => $attributes) {
-            $builder->add($permission, 'checkbox', $attributes);
+            $builder->add(
+                $permission,
+                // NEXT_MAJOR: remove when dropping Symfony <2.8 support
+                method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+                    ? 'Symfony\Component\Form\Extension\Core\Type\CheckboxType'
+                    : 'checkbox',
+                $attributes
+            );
         }
     }
 
     /**
-     * {@inheritdoc}
+     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
      *
-     * @todo Remove it when bumping requirements to SF 2.7+
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -72,9 +86,9 @@ class AclMatrixType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
      *
-     * @todo Remove when dropping Symfony <2.8 support
+     * {@inheritdoc}
      */
     public function getName()
     {

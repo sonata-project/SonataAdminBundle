@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Admin;
 
 use Knp\Menu\ItemInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Stateless breadcrumbs builder (each method needs an Admin object).
@@ -20,6 +21,32 @@ use Knp\Menu\ItemInterface;
  */
 final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
 {
+    /**
+     * @var string[]
+     */
+    protected $config = array();
+
+    /**
+     * @param string[] $config
+     */
+    public function __construct(array $config = array())
+    {
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+
+        $this->config = $resolver->resolve($config);
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'child_admin_route' => 'edit',
+        ));
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -71,7 +98,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
             $admin,
             $menu,
             sprintf('%s_list', $admin->getClassnameLabel()),
-            null,
+            $admin->getTranslationDomain(),
             array(
                 'uri' => $admin->hasRoute('list') && $admin->isGranted('LIST') ?
                 $admin->generateUrl('list') :
@@ -87,11 +114,16 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
             $menu = $menu->addChild(
                 $admin->toString($admin->getSubject()),
                 array(
-                    'uri' => $admin->hasRoute('edit') && $admin->isGranted('EDIT') ?
-                    $admin->generateUrl('edit', array('id' => $id)) :
+                    'uri' => $admin->hasRoute($this->config['child_admin_route']) && $admin->hasAccess($this->config['child_admin_route'], $admin->getSubject()) ?
+                    $admin->generateUrl($this->config['child_admin_route'], array('id' => $id)) :
                     null,
+                    'extras' => array(
+                        'translation_domain' => false,
+                    ),
                 )
             );
+
+            $menu->setExtra('safe_label', false);
 
             return $this->buildBreadcrumbs($childAdmin, $action, $menu);
         }
@@ -99,12 +131,17 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         if ('list' === $action && $admin->isChild()) {
             $menu->setUri(false);
         } elseif ('create' !== $action && $admin->hasSubject()) {
-            $menu = $menu->addChild($admin->toString($admin->getSubject()));
+            $menu = $menu->addChild($admin->toString($admin->getSubject()), array(
+                'extras' => array(
+                    'translation_domain' => false,
+                ),
+            ));
         } else {
             $menu = $this->createMenuItem(
                 $admin,
                 $menu,
-                sprintf('%s_%s', $admin->getClassnameLabel(), $action)
+                sprintf('%s_%s', $admin->getClassnameLabel(), $action),
+                $admin->getTranslationDomain()
             );
         }
 
@@ -130,15 +167,17 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         $translationDomain = null,
         $options = array()
     ) {
+        $options = array_merge(array(
+            'extras' => array(
+                'translation_domain' => $translationDomain,
+            ),
+        ), $options);
+
         return $menu->addChild(
-            $admin->trans(
-                $admin->getLabelTranslatorStrategy()->getLabel(
-                    $name,
-                    'breadcrumb',
-                    'link'
-                ),
-                array(),
-                $translationDomain
+            $admin->getLabelTranslatorStrategy()->getLabel(
+                $name,
+                'breadcrumb',
+                'link'
             ),
             $options
         );

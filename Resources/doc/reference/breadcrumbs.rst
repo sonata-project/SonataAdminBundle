@@ -13,3 +13,16 @@ Getting the breadcrumbs for a given action of a given admin is done like this:
 
    <?php
    $this->get('sonata.admin.breadcrumbs_builder')->getBreadcrumbs($admin, $action);
+
+Configuration
+-------------
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # app/config/config.yml
+
+        sonata_admin:
+            breadcrumbs:
+               # use this to change the default route used to generate the link to the parent object inside a breadcrumb, when in a child admin
+               child_admin_route: edit

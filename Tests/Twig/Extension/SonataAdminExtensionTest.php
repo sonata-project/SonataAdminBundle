@@ -28,6 +28,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Test for SonataAdminExtension.
@@ -81,6 +82,11 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
      */
     private $xEditableTypeMapping;
 
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
     public function setUp()
     {
         date_default_timezone_set('Europe/London');
@@ -109,7 +115,19 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             'url' => 'url',
         );
 
-        $this->twigExtension = new SonataAdminExtension($this->pool, $this->logger);
+        // translation extension
+        $translator = new Translator('en', new MessageSelector());
+        $translator->addLoader('xlf', new XliffFileLoader());
+        $translator->addResource(
+            'xlf',
+            __DIR__.'/../../../Resources/translations/SonataAdminBundle.en.xliff',
+            'en',
+            'SonataAdminBundle'
+        );
+
+        $this->translator = $translator;
+
+        $this->twigExtension = new SonataAdminExtension($this->pool, $this->logger, $this->translator);
         $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
 
         $loader = new StubFilesystemLoader(array(
@@ -123,16 +141,6 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             'optimizations' => 0,
         ));
         $this->environment->addExtension($this->twigExtension);
-
-        // translation extension
-        $translator = new Translator('en', new MessageSelector());
-        $translator->addLoader('xlf', new XliffFileLoader());
-        $translator->addResource(
-            'xlf',
-            __DIR__.'/../../../Resources/translations/SonataAdminBundle.en.xliff',
-            'en',
-            'SonataAdminBundle'
-        );
         $this->environment->addExtension(new TranslationExtension($translator));
 
         // routing extension
@@ -897,7 +905,7 @@ EOT
         data-title="Data"
         data-pk="12345"
         data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
-        data-source="[{&quot;value&quot;:&quot;Foo&quot;,&quot;text&quot;:&quot;Delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
+        data-source="[{&quot;value&quot;:&quot;Foo&quot;,&quot;text&quot;:&quot;action_delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
          Delete
     </span>
 </td>
