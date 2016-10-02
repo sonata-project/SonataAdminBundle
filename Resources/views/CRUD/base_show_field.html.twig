@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-<th{% if(is_diff|default(false)) %} class="diff"{% endif %}>{% block name %}{{ field_description.label|trans({}, field_description.translationDomain) }}{% endblock %}</th>
+<th{% if(is_diff|default(false)) %} class="diff"{% endif %}>{% block name %}{{ field_description.label|trans({}, field_description.translationDomain ?: admin.translationDomain) }}{% endblock %}</th>
 <td>{% block field %}{% if field_description.options.safe %}{{ value|raw }}{% else %}{{ value|nl2br }}{% endif %}{% endblock %}</td>
 
 {% block field_compare %}
