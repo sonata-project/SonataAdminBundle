@@ -26,6 +26,13 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($config['options']['use_icheck']);
     }
 
+    public function testBreadcrumbsChildRouteDefaultsToEdit()
+    {
+        $config = $this->process(array());
+
+        $this->assertSame('edit', $config['breadcrumbs']['child_admin_route']);
+    }
+
     public function testOptionsWithInvalidFormat()
     {
         $this->setExpectedException('Symfony\Component\Config\Definition\Exception\InvalidTypeException');

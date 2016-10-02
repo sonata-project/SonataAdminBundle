@@ -15,23 +15,44 @@ use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class GlobalVariables.
- *
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class GlobalVariables
 {
     /**
      * @var ContainerInterface
+     *
+     * @deprecated Since version 3.5, will be removed in 4.0.
+     * NEXT_MAJOR : remove this property
      */
     protected $container;
 
     /**
-     * @param ContainerInterface $container
+     * @var Pool
      */
-    public function __construct(ContainerInterface $container)
+    protected $adminPool;
+
+    /**
+     * @param ContainerInterface|Pool $adminPool
+     */
+    public function __construct($adminPool)
     {
-        $this->container = $container;
+        // NEXT_MAJOR : remove this block and set adminPool from parameter.
+        if ($adminPool instanceof ContainerInterface) {
+            @trigger_error(
+                'Using an instance of Symfony\Component\DependencyInjection\ContainerInterface is deprecated since 
+                version 3.5 and will be removed in 4.0. Use Sonata\AdminBundle\Admin\Pool instead.',
+                E_USER_DEPRECATED
+            );
+
+            $this->adminPool = $adminPool->get('sonata.admin.pool');
+        } elseif ($adminPool instanceof Pool) {
+            $this->adminPool = $adminPool;
+        } else {
+            throw new \InvalidArgumentException(
+                '$adminPool should be an instance of Sonata\AdminBundle\Admin\Pool'
+            );
+        }
     }
 
     /**
@@ -39,7 +60,7 @@ class GlobalVariables
      */
     public function getAdminPool()
     {
-        return $this->container->get('sonata.admin.pool');
+        return $this->adminPool;
     }
 
     /**
@@ -81,7 +102,7 @@ class GlobalVariables
      */
     private function getCodeAction($code, $action)
     {
-        if ($pipe = strpos('|', $code)) {
+        if ($pipe = strpos($code, '|')) {
             // convert code=sonata.page.admin.page|sonata.page.admin.snapshot, action=list
             // to => sonata.page.admin.page|sonata.page.admin.snapshot.list
             $action = $code.'.'.$action;

@@ -89,6 +89,11 @@ class FormMapper extends BaseGroupedMapper
 
         $group = $this->addFieldToCurrentGroup($label);
 
+        // Try to autodetect type
+        if ($name instanceof FormBuilderInterface && null === $type) {
+            $fieldDescriptionOptions['type'] = get_class($name->getType()->getInnerType());
+        }
+
         if (!isset($fieldDescriptionOptions['type']) && is_string($type)) {
             $fieldDescriptionOptions['type'] = $type;
         }

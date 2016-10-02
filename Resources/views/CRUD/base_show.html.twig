@@ -13,9 +13,9 @@ file that was distributed with this source code.
 
 {% import 'SonataAdminBundle:CRUD:base_show_macro.html.twig' as show_helper %}
 
-{% block actions %}
+{%- block actions -%}
     {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
-{% endblock %}
+{%- endblock -%}
 
 {% block tab_menu %}
     {{ knp_menu_render(admin.sidemenu(action), {
@@ -37,8 +37,8 @@ file that was distributed with this source code.
                     {% for name, show_tab in admin.showtabs %}
                         <li{% if loop.first %} class="active"{% endif %}>
                             <a href="#tab_{{ admin.uniqid }}_{{ loop.index }}" data-toggle="tab">
-                                <i class="fa fa-exclamation-circle has-errors hide"></i>
-                                {{ admin.trans(name, {}, show_tab.translation_domain) }}
+                                <i class="fa fa-exclamation-circle has-errors hide" aria-hidden="true"></i>
+                                {{ name|trans({}, show_tab.translation_domain) }}
                             </a>
                         </li>
                     {% endfor %}

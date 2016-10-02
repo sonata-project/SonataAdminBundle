@@ -59,7 +59,7 @@ class AdminType extends AbstractType
                 $parentSubject = $admin->getParentFieldDescription()->getAdmin()->getSubject();
                 if ($parentSubject !== null && $parentSubject !== false) {
                     // for PropertyAccessor < 2.5
-                    // @todo remove this code for old PropertyAccessor after dropping support for Symfony 2.3
+                    // NEXT_MAJOR: remove this code for old PropertyAccessor after dropping support for Symfony 2.3
                     if (!method_exists($p, 'isReadable')) {
                         $subjectCollection = $p->getValue(
                             $parentSubject,
@@ -101,9 +101,9 @@ class AdminType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
      *
-     * @todo Remove it when bumping requirements to SF 2.7+
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -135,9 +135,9 @@ class AdminType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
      *
-     * @todo Remove when dropping Symfony <2.8 support
+     * {@inheritdoc}
      */
     public function getName()
     {

@@ -49,6 +49,9 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
     public function testGetParent()
     {
         $type = new ChoiceFieldMaskType();
-        $this->assertSame('choice', $type->getParent());
+        // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
+        $this->assertSame(method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+            ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
+            : 'choice', $type->getParent());
     }
 }

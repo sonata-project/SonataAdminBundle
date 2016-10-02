@@ -19,7 +19,9 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     {
         $filter = new FooFilter();
 
-        $this->assertSame('text', $filter->getFieldType());
+        $this->assertSame(method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+            ? 'Symfony\Component\Form\Extension\Core\Type\TextType'
+            : 'text', $filter->getFieldType());
         $this->assertSame(array('required' => false), $filter->getFieldOptions());
         $this->assertNull($filter->getLabel());
 
@@ -99,7 +101,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RunTimeException
+     * @expectedException RuntimeException
      */
     public function testExceptionOnNonDefinedFieldName()
     {

@@ -24,7 +24,9 @@
             <argument type="service" id="service_container"/>
             <argument/>
         </service>
-        <service id="sonata.admin.breadcrumbs_builder" class="Sonata\AdminBundle\Admin\BreadcrumbsBuilder"/>
+        <service id="sonata.admin.breadcrumbs_builder" class="Sonata\AdminBundle\Admin\BreadcrumbsBuilder">
+            <argument>%sonata.admin.configuration.breadcrumbs%</argument>
+        </service>
         <!-- Services used to format the label, default is sonata.admin.label.strategy.noop -->
         <service id="sonata.admin.label.strategy.bc" class="Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy" public="false"/>
         <service id="sonata.admin.label.strategy.native" class="Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy" public="false"/>
@@ -66,7 +68,7 @@
         </service>
         <!-- twig -->
         <service id="sonata.admin.twig.global" class="Sonata\AdminBundle\Twig\GlobalVariables">
-            <argument type="service" id="service_container"/>
+            <argument type="service" id="sonata.admin.pool"/>
         </service>
     </services>
 </container>

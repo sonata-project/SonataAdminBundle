@@ -91,6 +91,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
         $container->setParameter('sonata.admin.configuration.dashboard_blocks', $config['dashboard']['blocks']);
         $container->setParameter('sonata.admin.configuration.sort_admins', $config['options']['sort_admins']);
+        $container->setParameter('sonata.admin.configuration.breadcrumbs', $config['breadcrumbs']);
 
         if (null === $config['security']['acl_user_manager'] && isset($bundles['FOSUserBundle'])) {
             $container->setParameter('sonata.admin.security.acl_user_manager', 'fos_user.user_manager');
@@ -248,7 +249,6 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
             'Sonata\\AdminBundle\\Datagrid\\ProxyQueryInterface',
             'Sonata\\AdminBundle\\Exception\\ModelManagerException',
             'Sonata\\AdminBundle\\Exception\\NoValueException',
-            'Sonata\\AdminBundle\\Export\\Exporter',
             'Sonata\\AdminBundle\\Filter\\Filter',
             'Sonata\\AdminBundle\\Filter\\FilterFactory',
             'Sonata\\AdminBundle\\Filter\\FilterFactoryInterface',
