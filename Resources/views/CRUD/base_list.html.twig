@@ -220,7 +220,7 @@ file that was distributed with this source code.
                         {% set filterActive = ((filter.isActive() or filter.options['show_filter']) and not admin.isDefaultFilter(filter.formName)) %}
                         <li>
                             <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
-                                <i class="fa {{ (filter.isActive() or filter.options['show_filter']) ? 'fa-check-square-o' : 'fa-square-o' }}"></i>{{ filter.label|trans({}, filter.translationDomain) }}
+                                <i class="fa {{ (filter.isActive() or filter.options['show_filter']) ? 'fa-check-square-o' : 'fa-square-o' }}"></i>{{ filter.label|trans({}, filter.translationDomain ?: admin.translationDomain) }}
                             </a>
                         </li>
                     {% endfor %}
@@ -248,7 +248,7 @@ file that was distributed with this source code.
                                     {% set filterVisible = filter.options['show_filter'] is same as(true) or filter.options['show_filter'] is null %}
                                     <div class="form-group {% block sonata_list_filter_group_class %}{% endblock %}" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ filterVisible ? 'true' : 'false' }}" style="display: {% if filterActive %}block{% else %}none{% endif %}">
                                         {% if filter.label is not same as(false) %}
-                                            <label for="{{ form.children[filter.formName].children['value'].vars.id }}" class="col-sm-3 control-label">{{ filter.label|trans({}, filter.translationDomain) }}</label>
+                                            <label for="{{ form.children[filter.formName].children['value'].vars.id }}" class="col-sm-3 control-label">{{ filter.label|trans({}, filter.translationDomain ?: admin.translationDomain) }}</label>
                                         {% endif %}
                                         {% set attr = form.children[filter.formName].children['type'].vars.attr|default({}) %}
 
