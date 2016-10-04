@@ -10,9 +10,11 @@
         <service id="sonata.admin.sidebar_menu" class="Knp\Menu\MenuItem">
             <tag name="knp_menu.menu" alias="sonata_admin_sidebar"/>
         </service>
+        <!--NEXT_MAJOR: Replace empty argument with security.authorization_checker service when bumping requirements to >=Symfony 2.6 -->
         <service id="sonata.admin.menu.group_provider" class="Sonata\AdminBundle\Menu\Provider\GroupMenuProvider" public="false">
             <argument type="service" id="knp_menu.factory"/>
             <argument type="service" id="sonata.admin.pool"/>
+            <argument/>
             <tag name="knp_menu.provider"/>
         </service>
         <service id="sonata.admin.menu.matcher.voter.admin" class="Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter">

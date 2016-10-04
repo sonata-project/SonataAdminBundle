@@ -55,6 +55,31 @@ Add the controller route as an item of the menu:
                               route_params: { articleId: 3 }
                               label:        Article
 
+If you want to show your route to user with different roles, you can configure this for each route. If this is not set,
+group roles will be checked.
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # app/config/config.yml
+
+        sonata_admin:
+            dashboard:
+                groups:
+                    news:
+                        label:                ~
+                        label_catalogue:      ~
+                        items:
+                            - sonata.news.admin.post
+                            - route:        blog_home
+                              label:        Blog
+                              roles:        [ ROLE_FOO, ROLE_BAR ]
+                            - route:        blog_article
+                              route_params: { articleId: 3 }
+                              label:        Article
+                        roles: [ ROLE_ADMIN, ROLE_SONATA_ADMIN]
+
 You can also override the template of knp_menu used by sonata. The default one is `SonataAdminBundle:Menu:sonata_menu.html.twig`:
 
 .. configuration-block::
