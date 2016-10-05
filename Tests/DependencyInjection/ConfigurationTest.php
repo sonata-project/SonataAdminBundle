@@ -148,6 +148,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'route' => '',
                 'route_params' => array(),
                 'route_absolute' => true,
+                'roles' => array(),
             )
         );
         $this->assertSame(
@@ -158,6 +159,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'route' => '',
                 'route_params' => array(),
                 'route_absolute' => true,
+                'roles' => array(),
             )
         );
         $this->assertSame(
@@ -168,6 +170,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'route_params' => array('bar' => 'foo'),
                 'route_absolute' => true,
                 'admin' => '',
+                'roles' => array(),
             )
         );
         $this->assertSame(
@@ -177,6 +180,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'route' => 'barRoute',
                 'route_params' => array(),
                 'admin' => '',
+                'roles' => array(),
                 'route_absolute' => true,
             )
         );
