@@ -277,7 +277,7 @@ interface AdminInterface
      *
      * @return string the translated string
      *
-     * @deprecated since 3.x, to be removed in 4.0
+     * @deprecated since 3.9, to be removed in 4.0
      */
     public function trans($id, array $parameters = array(), $domain = null, $locale = null);
 
