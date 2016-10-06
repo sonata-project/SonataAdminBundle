@@ -284,7 +284,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      *
      * @var \Symfony\Component\Translation\TranslatorInterface
      *
-     * @deprecated since 3.x, to be removed with 4.0
+     * @deprecated since 3.9, to be removed with 4.0
      */
     protected $translator;
 
@@ -2113,7 +2113,7 @@ EOT;
     public function trans($id, array $parameters = array(), $domain = null, $locale = null)
     {
         @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.'.
             E_USER_DEPRECATED
         );
 
@@ -2135,12 +2135,12 @@ EOT;
      *
      * @return string the translated string
      *
-     * @deprecated since 3.x, to be removed with 4.0
+     * @deprecated since 3.9, to be removed with 4.0
      */
     public function transChoice($id, $count, array $parameters = array(), $domain = null, $locale = null)
     {
         @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.'.
             E_USER_DEPRECATED
         );
 
@@ -2170,12 +2170,12 @@ EOT;
      *
      * NEXT_MAJOR: remove this method
      *
-     * @deprecated since 3.x, to be removed with 4.0
+     * @deprecated since 3.9, to be removed with 4.0
      */
     public function setTranslator(TranslatorInterface $translator)
     {
         @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.'.
             E_USER_DEPRECATED
         );
 
@@ -2187,12 +2187,12 @@ EOT;
      *
      * NEXT_MAJOR: remove this method
      *
-     * @deprecated since 3.x, to be removed with 4.0
+     * @deprecated since 3.9, to be removed with 4.0
      */
     public function getTranslator()
     {
         @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.'.
+            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.'.
             E_USER_DEPRECATED
         );
 

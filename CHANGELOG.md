@@ -2,6 +2,25 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.9.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.8.0...3.9.0) - 2016-10-06
+### Added
+- Added `CRUDController::trans` method
+
+### Changed
+- Translation in twig templates uses the twig translation filter
+
+### Deprecated
+- Deprecated `AdminInterface::trans` method
+- Deprecated `AbstractAdmin::$translator` property
+- Deprecated `AbstractAdmin::trans` method
+- Deprecated `AbstractAdmin::transChoice` method
+- Deprecated `AbstractAdmin::getTranslator` method
+- Deprecated `AbstractAdmin::setTranslator` method
+
+### Fixed
+- Fixed missing default `translationDomain`
+- Fixed deprecated `BaseBlockService` usage
+
 ## [3.8.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.7.1...3.8.0) - 2016-09-20
 ### Added
 - Added three new sub-blocks to standard_layouts javascript block
