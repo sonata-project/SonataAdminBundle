@@ -2113,7 +2113,7 @@ EOT;
     public function trans($id, array $parameters = array(), $domain = null, $locale = null)
     {
         @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.'.
+            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
             E_USER_DEPRECATED
         );
 
@@ -2140,7 +2140,7 @@ EOT;
     public function transChoice($id, $count, array $parameters = array(), $domain = null, $locale = null)
     {
         @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.'.
+            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
             E_USER_DEPRECATED
         );
 
@@ -2175,7 +2175,7 @@ EOT;
     public function setTranslator(TranslatorInterface $translator)
     {
         @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.'.
+            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
             E_USER_DEPRECATED
         );
 
@@ -2192,7 +2192,7 @@ EOT;
     public function getTranslator()
     {
         @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.'.
+            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
             E_USER_DEPRECATED
         );
 
