@@ -64,6 +64,8 @@ class AdminObjectAclManipulator
     /**
      * Gets the form.
      *
+     * NEXT_MAJOR: remove this method.
+     *
      * @param AdminObjectAclData $data
      *
      * @return Form
@@ -143,6 +145,8 @@ class AdminObjectAclManipulator
 
     /**
      * Updates ACl.
+     *
+     * NEXT_MAJOR: remove this method.
      *
      * @param AdminObjectAclData $data
      *

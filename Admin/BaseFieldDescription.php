@@ -417,6 +417,8 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * Camelize a string.
      *
+     * NEXT_MAJOR: remove this method.
+     *
      * @static
      *
      * @param string $property

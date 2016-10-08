@@ -168,6 +168,8 @@ class AdminObjectAclData
     /**
      * Sets form.
      *
+     * NEXT_MAJOR: remove this method.
+     *
      * @param Form $form
      *
      * @return AdminObjectAclData
@@ -187,6 +189,8 @@ class AdminObjectAclData
 
     /**
      * Gets form.
+     *
+     * NEXT_MAJOR: remove this method.
      *
      * @return Form
      *
