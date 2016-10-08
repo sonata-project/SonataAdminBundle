@@ -23,6 +23,8 @@ namespace Sonata\AdminBundle\Form\Type;
  *   - a list modal to select the targeted entities
  *   - a clear selection link.
  *
+ * NEXT_MAJOR: remove this class.
+ *
  * @deprecated since version 3.5, to be removed in 4.0. Use ModelListType instead
  */
 class ModelTypeList extends ModelListType

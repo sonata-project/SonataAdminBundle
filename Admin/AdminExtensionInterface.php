@@ -56,6 +56,8 @@ interface AdminExtensionInterface
     /**
      * DEPRECATED: Use configureTabMenu instead.
      *
+     * NEXT_MAJOR: remove this method.
+     *
      * @param AdminInterface    $admin
      * @param MenuItemInterface $menu
      * @param string            $action

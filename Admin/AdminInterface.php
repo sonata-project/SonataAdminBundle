@@ -735,6 +735,8 @@ interface AdminInterface
     public function hasSubject();
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * @param ErrorElement $errorElement
      * @param mixed        $object
      *
@@ -976,7 +978,7 @@ interface AdminInterface
     public function getTranslationLabel($label, $context = '', $type = '');
 
     /**
-     * DEPRECATED: Use buildTabMenu instead.
+     * NEXT_MAJOR: remove this method.
      *
      * @param string         $action
      * @param AdminInterface $childAdmin

@@ -14,6 +14,8 @@ namespace Sonata\AdminBundle\Export;
 use Sonata\CoreBundle\Exporter\Exporter as BaseExporter;
 
 /**
+ * NEXT_MAJOR: remove this class.
+ *
  * @deprecated
  */
 class Exporter extends BaseExporter
