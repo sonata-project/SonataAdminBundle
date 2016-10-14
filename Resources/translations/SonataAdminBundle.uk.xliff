@@ -36,7 +36,7 @@
             </trans-unit>
             <trans-unit id="btn_advanced_filters">
                 <source>btn_advanced_filters</source>
-                <target>btn_advanced_filters</target>
+                <target>Розширені фільтри</target>
             </trans-unit>
             <trans-unit id="btn_update">
                 <source>btn_update</source>
@@ -144,7 +144,7 @@
             </trans-unit>
             <trans-unit id="flash_batch_empty">
                 <source>flash_batch_empty</source>
-                <target>Невибрано жодного об’єкту.</target>
+                <target>Невибрано жодного об’єкта.</target>
             </trans-unit>
             <trans-unit id="flash_create_success">
                 <source>flash_create_success</source>
@@ -152,7 +152,7 @@
             </trans-unit>
             <trans-unit id="flash_create_error">
                 <source>flash_create_error</source>
-                <target>При створенні об’єкту виникла помилка.</target>
+                <target>При створенні об’єкта виникла помилка.</target>
             </trans-unit>
             <trans-unit id="flash_edit_success">
                 <source>flash_edit_success</source>
@@ -160,11 +160,11 @@
             </trans-unit>
             <trans-unit id="flash_edit_error">
                 <source>flash_edit_error</source>
-                <target>При редагуванні об’єкту виникла помилка</target>
+                <target>При редагуванні об’єкта виникла помилка</target>
             </trans-unit>
             <trans-unit id="flash_lock_error">
                 <source>flash_lock_error</source>
-                <target>flash_lock_error</target>
+                <target>Інший користувач змінив елемент "%name%". Будь ласка, %link_start%натисніть тут%link_end%, щоб перезавантажити сторінку і застосувати зміни знову.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
@@ -184,7 +184,7 @@
             </trans-unit>
             <trans-unit id="form_not_available">
                 <source>form_not_available</source>
-                <target>form_not_available</target>
+                <target>Форма не доступна.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -316,7 +316,7 @@
             </trans-unit>
             <trans-unit id="td_compare">
                 <source>td_compare</source>
-                <target>td_compare</target>
+                <target>Порівняти</target>
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
@@ -340,11 +340,11 @@
             </trans-unit>
             <trans-unit id="label_compare_revision">
                 <source>label_compare_revision</source>
-                <target>label_compare_revision</target>
+                <target>Порівняти зміни</target>
             </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
-                <target>list_results_count_prefix</target>
+                <target>Як мінімум</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
@@ -452,19 +452,19 @@
             </trans-unit>
             <trans-unit id="stats_view_more">
                 <source>stats_view_more</source>
-                <target>stats_view_more</target>
+                <target>Показати ще</target>
             </trans-unit>
             <trans-unit id="title_select_subclass">
                 <source>title_select_subclass</source>
-                <target>title_select_subclass</target>
+                <target>Оберіть тип об'єкта</target>
             </trans-unit>
             <trans-unit id="no_subclass_available">
                 <source>no_subclass_available</source>
-                <target>no_subclass_available</target>
+                <target>Немає доступних типів об'єкта</target>
             </trans-unit>
             <trans-unit id="label_unknown_user">
                 <source>label_unknown_user</source>
-                <target>label_unknown_user</target>
+                <target>невідомий</target>
             </trans-unit>
         </body>
     </file>
