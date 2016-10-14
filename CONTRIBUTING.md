@@ -181,9 +181,9 @@ namespace Foo;
 
 interface BarInterface
 {
-
-  // NEXT_MAJOR: Uncomment this method
   /**
+   * NEXT_MAJOR: Uncomment this method
+   *
    * This method does useful stuff.
    */
   // public function usefulMethod();
