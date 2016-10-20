@@ -315,7 +315,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                     return true;
                 }
 
-                if ($id == 'security.csrf.token_manager' && Kernel::MAJOR_VERSION >= 3  && $tthis->getCsrfProvider() !== null) {
+                if ($id == 'security.csrf.token_manager' && Kernel::MAJOR_VERSION >= 3 && $tthis->getCsrfProvider() !== null) {
                     return true;
                 }
 
