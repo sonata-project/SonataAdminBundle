@@ -15,55 +15,50 @@ use Sonata\AdminBundle\Filter\FilterFactory;
 
 class FilterFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @expectedException RuntimeException
-     */
     public function testEmptyType()
     {
+        $this->setExpectedException('\RuntimeException', 'The type must be defined');
+
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $filter = new FilterFactory($container, array());
         $filter->create('test', null);
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function testUnknownType()
     {
+        $this->setExpectedException('\RuntimeException', 'No attached service to type named `mytype`');
+
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $filter = new FilterFactory($container, array());
         $filter->create('test', 'mytype');
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function testUnknownClassType()
     {
+        $this->setExpectedException('\RuntimeException', 'No attached service to type named `Sonata\AdminBundle\Form\Type\Filter\FooType`');
+
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $filter = new FilterFactory($container, array());
         $filter->create('test', 'Sonata\AdminBundle\Form\Type\Filter\FooType');
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function testClassType()
     {
+        $this->setExpectedException('\RuntimeException', 'The service `Sonata\AdminBundle\Form\Type\Filter\DefaultType` must implement `FilterInterface`');
+
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $filter = new FilterFactory($container, array());
         $filter->create('test', 'Sonata\AdminBundle\Form\Type\Filter\DefaultType');
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function testInvalidTypeInstance()
     {
+        $this->setExpectedException('\RuntimeException', 'The service `mytype` must implement `FilterInterface`');
+
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->once())
             ->method('get')
