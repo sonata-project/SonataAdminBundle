@@ -40,6 +40,28 @@ class FilterFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException RuntimeException
      */
+    public function testUnknownClassType()
+    {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+
+        $filter = new FilterFactory($container, array());
+        $filter->create('test', 'Sonata\AdminBundle\Form\Type\Filter\FooType');
+    }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testClassType()
+    {
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+
+        $filter = new FilterFactory($container, array());
+        $filter->create('test', 'Sonata\AdminBundle\Form\Type\Filter\DefaultType');
+    }
+
+    /**
+     * @expectedException RuntimeException
+     */
     public function testInvalidTypeInstance()
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
