@@ -563,7 +563,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                 array(),
             ),
             array(
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> 
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
                     <a href="mailto:admin@admin.com">admin@admin.com</a> </td>',
                 'email',
                 'admin@admin.com',
@@ -576,21 +576,21 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                 array('as_string' => true),
             ),
             array(
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">  
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
                     <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('subject' => 'Main Theme', 'body' => 'Message Body')).'">admin@admin.com</a>  </td>',
                 'email',
                 'admin@admin.com',
                 array('subject' => 'Main Theme', 'body' => 'Message Body'),
             ),
             array(
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">  
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
                     <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('subject' => 'Main Theme')).'">admin@admin.com</a>  </td>',
                 'email',
                 'admin@admin.com',
                 array('subject' => 'Main Theme'),
             ),
             array(
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">  
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
                     <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('body' => 'Message Body')).'">admin@admin.com</a>  </td>',
                 'email',
                 'admin@admin.com',
