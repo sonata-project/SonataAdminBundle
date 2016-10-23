@@ -2138,6 +2138,43 @@ EOT
         $this->assertSame(1234567, $this->twigExtension->getUrlsafeIdentifier($entity, $this->adminBar));
     }
 
+    public function xEditableChoicesProvider()
+    {
+        return array(
+            'needs processing' => array(array('Status1' => 'Alias1', 'Status2' => 'Alias2')),
+            'already processed' => array(array(
+                array('value' => 'Status1', 'text' => 'Alias1'),
+                array('value' => 'Status2', 'text' => 'Alias2'),
+            )),
+        );
+    }
+
+    /**
+     * @dataProvider xEditablechoicesProvider
+     */
+    public function testGetXEditableChoicesIsIdempotent(array $input)
+    {
+        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription->expects($this->exactly(2))
+            ->method('getOption')
+            ->withConsecutive(
+                array('choices', array()),
+                array('catalogue')
+            )
+            ->will($this->onConsecutiveCalls(
+                $input,
+                'MyCatalogue'
+            ));
+
+        $this->assertSame(
+            array(
+                array('value' => 'Status1', 'text' => 'Alias1'),
+                array('value' => 'Status2', 'text' => 'Alias2'),
+            ),
+            $this->twigExtension->getXEditableChoices($fieldDescription)
+        );
+    }
+
     /**
      * This method generates url part for Twig layout. Allows to keep BC for PHP 5.3.
      *
