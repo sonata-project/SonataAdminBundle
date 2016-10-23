@@ -251,7 +251,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @return int
      */
-    public function getFirstIndice()
+    public function getFirstIndex()
     {
         if ($this->page == 0) {
             return 1;
@@ -265,7 +265,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @return int
      */
-    public function getLastIndice()
+    public function getLastIndex()
     {
         if ($this->page == 0) {
             return $this->nbResults;

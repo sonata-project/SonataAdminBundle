@@ -435,41 +435,41 @@ class PagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetFirstIndice()
     {
-        $this->assertSame(1, $this->pager->getFirstIndice());
+        $this->assertSame(1, $this->pager->getFirstIndex());
 
         $this->pager->setMaxPerPage(0);
         $this->pager->setPage(0);
-        $this->assertSame(1, $this->pager->getFirstIndice());
+        $this->assertSame(1, $this->pager->getFirstIndex());
 
         $this->pager->setPage(2);
         $this->pager->setMaxPerPage(10);
-        $this->assertSame(11, $this->pager->getFirstIndice());
+        $this->assertSame(11, $this->pager->getFirstIndex());
 
         $this->pager->setPage(4);
         $this->pager->setMaxPerPage(7);
-        $this->assertSame(22, $this->pager->getFirstIndice());
+        $this->assertSame(22, $this->pager->getFirstIndex());
     }
 
     public function testGetLastIndice()
     {
-        $this->assertSame(0, $this->pager->getLastIndice());
+        $this->assertSame(0, $this->pager->getLastIndex());
 
         $this->pager->setMaxPerPage(0);
         $this->pager->setPage(0);
-        $this->assertSame(0, $this->pager->getLastIndice());
+        $this->assertSame(0, $this->pager->getLastIndex());
 
         $this->callMethod($this->pager, 'setNbResults', array(100));
 
-        $this->assertSame(100, $this->pager->getLastIndice());
+        $this->assertSame(100, $this->pager->getLastIndex());
 
         $this->pager->setPage(2);
-        $this->assertSame(0, $this->pager->getLastIndice());
+        $this->assertSame(0, $this->pager->getLastIndex());
 
         $this->pager->setMaxPerPage(10);
-        $this->assertSame(20, $this->pager->getLastIndice());
+        $this->assertSame(20, $this->pager->getLastIndex());
 
         $this->pager->setPage(11);
-        $this->assertSame(100, $this->pager->getLastIndice());
+        $this->assertSame(100, $this->pager->getLastIndex());
     }
 
     public function testGetNext()
