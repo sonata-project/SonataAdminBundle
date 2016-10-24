@@ -563,7 +563,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                 array(),
             ),
             array(
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> 
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
                     <a href="mailto:admin@admin.com">admin@admin.com</a> </td>',
                 'email',
                 'admin@admin.com',
@@ -576,21 +576,21 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                 array('as_string' => true),
             ),
             array(
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">  
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
                     <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('subject' => 'Main Theme', 'body' => 'Message Body')).'">admin@admin.com</a>  </td>',
                 'email',
                 'admin@admin.com',
                 array('subject' => 'Main Theme', 'body' => 'Message Body'),
             ),
             array(
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">  
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
                     <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('subject' => 'Main Theme')).'">admin@admin.com</a>  </td>',
                 'email',
                 'admin@admin.com',
                 array('subject' => 'Main Theme'),
             ),
             array(
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">  
+                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
                     <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('body' => 'Message Body')).'">admin@admin.com</a>  </td>',
                 'email',
                 'admin@admin.com',
@@ -2136,6 +2136,43 @@ EOT
             ->will($this->returnValue(1234567));
 
         $this->assertSame(1234567, $this->twigExtension->getUrlsafeIdentifier($entity, $this->adminBar));
+    }
+
+    public function xEditableChoicesProvider()
+    {
+        return array(
+            'needs processing' => array(array('Status1' => 'Alias1', 'Status2' => 'Alias2')),
+            'already processed' => array(array(
+                array('value' => 'Status1', 'text' => 'Alias1'),
+                array('value' => 'Status2', 'text' => 'Alias2'),
+            )),
+        );
+    }
+
+    /**
+     * @dataProvider xEditablechoicesProvider
+     */
+    public function testGetXEditableChoicesIsIdempotent(array $input)
+    {
+        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription->expects($this->exactly(2))
+            ->method('getOption')
+            ->withConsecutive(
+                array('choices', array()),
+                array('catalogue')
+            )
+            ->will($this->onConsecutiveCalls(
+                $input,
+                'MyCatalogue'
+            ));
+
+        $this->assertSame(
+            array(
+                array('value' => 'Status1', 'text' => 'Alias1'),
+                array('value' => 'Status2', 'text' => 'Alias2'),
+            ),
+            $this->twigExtension->getXEditableChoices($fieldDescription)
+        );
     }
 
     /**
