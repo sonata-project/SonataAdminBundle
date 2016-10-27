@@ -433,7 +433,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(20, $this->pager->getPreviousPage());
     }
 
-    public function testGetFirstIndice()
+    public function testGetFirstIndex()
     {
         $this->assertSame(1, $this->pager->getFirstIndex());
 
@@ -450,7 +450,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(22, $this->pager->getFirstIndex());
     }
 
-    public function testGetLastIndice()
+    public function testGetLastIndex()
     {
         $this->assertSame(0, $this->pager->getLastIndex());
 
