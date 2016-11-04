@@ -24,6 +24,7 @@
             <argument type="service" id="service_container"/>
             <argument/>
         </service>
+        <service id="sonata.admin.action_builder" class="Sonata\AdminBundle\Admin\ActionBuilder"/>
         <service id="sonata.admin.breadcrumbs_builder" class="Sonata\AdminBundle\Admin\BreadcrumbsBuilder">
             <argument>%sonata.admin.configuration.breadcrumbs%</argument>
         </service>
