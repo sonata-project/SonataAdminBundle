@@ -11,10 +11,6 @@ file that was distributed with this source code.
 
 {% extends 'SonataAdminBundle:CRUD:base_show.html.twig' %}
 
-{% block show_title %}
-    {{ name|trans({}, admin.translationdomain) }}
-{% endblock %}
-
 {% block show_field %}
     <tr class="sonata-ba-view-container history-audit-compare">
         {% if elements[field_name] is defined %}
