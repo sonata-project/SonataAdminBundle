@@ -11,8 +11,6 @@ file that was distributed with this source code.
 
 {% extends base_template %}
 
-{% import 'SonataAdminBundle:CRUD:base_show_macro.html.twig' as show_helper %}
-
 {%- block actions -%}
     {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
 {%- endblock -%}
@@ -56,7 +54,8 @@ file that was distributed with this source code.
                                         <p>{{ show_tab.description|raw }}</p>
                                     {% endif %}
 
-                                    {{ show_helper.render_groups(admin, object, elements, show_tab.groups, has_tab) }}
+                                    {% set groups = show_tab.groups %}
+                                    {{ block('show_groups') }}
                                 </div>
                             </div>
                         </div>
@@ -64,7 +63,8 @@ file that was distributed with this source code.
                 </div>
             </div>
         {% elseif admin.showtabs is iterable %}
-            {{ show_helper.render_groups(admin, object, elements, admin.showtabs.default.groups, has_tab) }}
+            {% set groups = admin.showtabs.default.groups %}
+            {{ block('show_groups') }}
         {% endif %}
 
     </div>
@@ -72,3 +72,40 @@ file that was distributed with this source code.
     {{ sonata_block_render_event('sonata.admin.show.bottom', { 'admin': admin, 'object': object }) }}
 {% endblock %}
 
+{% block show_groups %}
+    <div class="row">
+        {% block field_row %}
+            {% for code in groups %}
+                {% set show_group = admin.showgroups[code] %}
+
+                <div class="{{ show_group.class|default('col-md-12') }} {{ no_padding|default(false) ? 'nopadding' }}">
+                    <div class="{{ show_group.box_class }}">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                {% block show_title %}
+                                    {{ admin.trans(show_group.name, {}, show_group.translation_domain) }}
+                                {% endblock %}
+                            </h4>
+                        </div>
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table">
+                                <tbody>
+                                {% for field_name in show_group.fields %}
+                                    {% block show_field %}
+                                        <tr class="sonata-ba-view-container">
+                                            {% if elements[field_name] is defined %}
+                                                {{ elements[field_name]|render_view_element(object)}}
+                                            {% endif %}
+                                        </tr>
+                                    {% endblock %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endblock %}
+
+    </div>
+{% endblock %}
