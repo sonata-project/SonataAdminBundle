@@ -260,7 +260,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $container->expects($this->any())->method('get')->will($this->returnValue($admin));
 
         $adminExtension = $this->getMock('\Twig_ExtensionInterface', array('renderListElement', 'initRuntime', 'getTokenParsers', 'getNodeVisitors', 'getFilters', 'getTests', 'getFunctions', 'getOperators', 'getGlobals', 'getName'));
-        $adminExtension->expects($this->once())->method('getName')->will($this->returnValue('sonata_admin'));
+        $adminExtension->expects($this->any())->method('getName')->will($this->returnValue('sonata_admin'));
         $adminExtension->expects($this->once())->method('renderListElement')->will($this->returnValue('<foo />'));
 
         $twig = new \Twig_Environment($this->getMock('\Twig_LoaderInterface'));
@@ -320,7 +320,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $formExtension = $this->getMock('\Twig_ExtensionInterface', array('renderListElement', 'initRuntime', 'getTokenParsers', 'getNodeVisitors', 'getFilters', 'getTests', 'getFunctions', 'getOperators', 'getGlobals', 'getName'));
 
-        $formExtension->expects($this->once())->method('getName')->will($this->returnValue('form'));
+        $formExtension->expects($this->any())->method('getName')->will($this->returnValue('form'));
         $formExtension->renderer = $mockRenderer;
 
         $twig = new \Twig_Environment($this->getMock('\Twig_LoaderInterface'));
@@ -404,7 +404,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(new Response()));
 
         $formExtension = $this->getMock('\Twig_ExtensionInterface', array('renderListElement', 'initRuntime', 'getTokenParsers', 'getNodeVisitors', 'getFilters', 'getTests', 'getFunctions', 'getOperators', 'getGlobals', 'getName'));
-        $formExtension->expects($this->once())->method('getName')->will($this->returnValue('form'));
+        $formExtension->expects($this->any())->method('getName')->will($this->returnValue('form'));
         $formExtension->renderer = $mockRenderer;
 
         $twig = new \Twig_Environment($this->getMock('\Twig_LoaderInterface'));
