@@ -91,11 +91,17 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->admin->expects($this->any())
             ->method('getListFieldDescriptions')
-            ->will($this->returnValue(array('fooTextField' => $fieldDescription1, 'barDateTimeField' => $fieldDescription2)));
+            ->will($this->returnValue(array(
+                'fooTextField' => $fieldDescription1,
+                'barDateTimeField' => $fieldDescription2,
+            )));
 
         $this->admin->expects($this->any())
             ->method('getFilterFieldDescriptions')
-            ->will($this->returnValue(array('fooTextField' => $fieldDescription1, 'barDateTimeField' => $fieldDescription2)));
+            ->will($this->returnValue(array(
+                'fooTextField' => $fieldDescription1,
+                'barDateTimeField' => $fieldDescription2,
+            )));
 
         $this->admin->expects($this->any())
             ->method('getFormTheme')
@@ -103,7 +109,10 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->admin->expects($this->any())
             ->method('getFormFieldDescriptions')
-            ->will($this->returnValue(array('fooTextField' => $fieldDescription1, 'barDateTimeField' => $fieldDescription2)));
+            ->will($this->returnValue(array(
+                'fooTextField' => $fieldDescription1,
+                'barDateTimeField' => $fieldDescription2,
+            )));
 
         $this->admin->expects($this->any())
             ->method('isChild')
@@ -121,16 +130,24 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
                 return $adminParent;
             }));
 
-        if (interface_exists('Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface')) { // Prefer Symfony 2.5+ interfaces
-            $this->validatorFactory = $this->getMock('Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface');
+        if (interface_exists(
+            'Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface'
+        )) { // Prefer Symfony 2.5+ interfaces
+            $this->validatorFactory = $this->getMock(
+                'Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface'
+            );
 
             $validator = $this->getMock('Symfony\Component\Validator\Validator\ValidatorInterface');
-            $validator->expects($this->any())->method('getMetadataFor')->will($this->returnValue($this->validatorFactory));
+            $validator->expects($this->any())->method('getMetadataFor')->will(
+                $this->returnValue($this->validatorFactory)
+            );
         } else {
             $this->validatorFactory = $this->getMock('Symfony\Component\Validator\MetadataFactoryInterface');
 
             $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
-            $validator->expects($this->any())->method('getMetadataFactory')->will($this->returnValue($this->validatorFactory));
+            $validator->expects($this->any())->method('getMetadataFactory')->will(
+                $this->returnValue($this->validatorFactory)
+            );
         }
 
         // php 5.3 BC
@@ -188,12 +205,18 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
         }
 
         $propertyMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\\'.$class);
-        $propertyMetadata->constraints = array(new NotNull(), new Length(array('min' => 2, 'max' => 50, 'groups' => array('create', 'edit'))));
+        $propertyMetadata->constraints = array(
+            new NotNull(),
+            new Length(array('min' => 2, 'max' => 50, 'groups' => array('create', 'edit'))),
+        );
 
         $metadata->properties = array('firstName' => $propertyMetadata);
 
         $getterMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\\'.$class);
-        $getterMetadata->constraints = array(new NotNull(), new Email(array('groups' => array('registration', 'edit'))));
+        $getterMetadata->constraints = array(
+            new NotNull(),
+            new Email(array('groups' => array('registration', 'edit'))),
+        );
 
         $metadata->getters = array('email' => $getterMetadata);
 
@@ -227,7 +250,13 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(array('command' => $command->getName(), 'admin' => 'acme.admin.foo'));
 
-        $this->assertSame(sprintf(str_replace("\n", PHP_EOL, file_get_contents(__DIR__.'/../Fixtures/Command/explain_admin.txt')), get_class($this->admin), get_class($modelManager), get_class($datagridBuilder), get_class($listBuilder)), $commandTester->getDisplay());
+        $this->assertSame(sprintf(
+            str_replace("\n", PHP_EOL, file_get_contents(__DIR__.'/../Fixtures/Command/explain_admin.txt')),
+            get_class($this->admin),
+            get_class($modelManager),
+            get_class($datagridBuilder),
+            get_class($listBuilder)
+        ), $commandTester->getDisplay());
     }
 
     public function testExecuteEmptyValidator()
@@ -276,7 +305,17 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(array('command' => $command->getName(), 'admin' => 'acme.admin.foo'));
 
-        $this->assertSame(sprintf(str_replace("\n", PHP_EOL, file_get_contents(__DIR__.'/../Fixtures/Command/explain_admin_empty_validator.txt')), get_class($this->admin), get_class($modelManager), get_class($datagridBuilder), get_class($listBuilder)), $commandTester->getDisplay());
+        $this->assertSame(sprintf(
+            str_replace(
+                "\n",
+                PHP_EOL,
+                file_get_contents(__DIR__.'/../Fixtures/Command/explain_admin_empty_validator.txt')
+            ),
+            get_class($this->admin),
+            get_class($modelManager),
+            get_class($datagridBuilder),
+            get_class($listBuilder)
+        ), $commandTester->getDisplay());
     }
 
     public function testExecuteNonAdminService()
