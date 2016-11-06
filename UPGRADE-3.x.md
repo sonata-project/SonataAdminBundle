@@ -36,6 +36,7 @@ UPGRADE FROM 3.9 to 3.10
 ## Deprecated AbstractAdmin methods
 
 - `buildDatagrid`, `buildShow`, `buildForm` and `buildList` are deprecated, and no replacement is given, they will become internal methods.
+- `showBuilder`, `listBuilder` and `datagridBuilder` are deprecated in favor of the homonym properties of the `sonata.admin.admin_builder` service.
 - `getShow`, `getList`, `getForm` and `getDatagrid` are deprecated in favor of the homonym method of the `sonata.admin.admin_builder` service.
 - The admin builder accessors are deprecated, the `sonata.admin.admin_builder` service should be used directly instead.
 

@@ -294,23 +294,35 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     protected $formContractor;
 
     /**
+     * NEXT_MAJOR: move property to AdminBuilder.
+     *
      * The related list builder.
      *
      * @var ListBuilderInterface
+     *
+     * @deprecated since 3.x, to be removed in 4.0
      */
     protected $listBuilder;
 
     /**
+     * NEXT_MAJOR: move property to AdminBuilder.
+     *
      * The related view builder.
      *
      * @var ShowBuilderInterface
+     *
+     * @deprecated since 3.x, to be removed in 4.0
      */
     protected $showBuilder;
 
     /**
+     * NEXT_MAJOR: move property to AdminBuilder.
+     *
      * The related datagrid builder.
      *
      * @var DatagridBuilderInterface
+     *
+     * @deprecated since 3.x, to be removed in 4.0
      */
     protected $datagridBuilder;
 
@@ -2287,7 +2299,11 @@ EOT;
     }
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * {@inheritdoc}
+     *
+     * @deprecated since 3.x, to be removed with 4.0
      */
     public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder)
     {
@@ -2295,7 +2311,11 @@ EOT;
     }
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * {@inheritdoc}
+     *
+     * @deprecated since 3.x, to be removed with 4.0
      */
     public function getDatagridBuilder()
     {
@@ -2303,7 +2323,11 @@ EOT;
     }
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * {@inheritdoc}
+     *
+     * @deprecated since 3.x, to be removed with 4.0
      */
     public function setListBuilder(ListBuilderInterface $listBuilder)
     {
@@ -2311,7 +2335,11 @@ EOT;
     }
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * {@inheritdoc}
+     *
+     * @deprecated since 3.x, to be removed with 4.0
      */
     public function getListBuilder()
     {
@@ -2319,7 +2347,11 @@ EOT;
     }
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * @param ShowBuilderInterface $showBuilder
+     *
+     * @deprecated since 3.x, to be removed with 4.0
      */
     public function setShowBuilder(ShowBuilderInterface $showBuilder)
     {
@@ -2327,7 +2359,11 @@ EOT;
     }
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * @return ShowBuilderInterface
+     *
+     * @deprecated since 3.x, to be removed with 4.0
      */
     public function getShowBuilder()
     {
