@@ -91,11 +91,17 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->admin->expects($this->any())
             ->method('getListFieldDescriptions')
-            ->will($this->returnValue(array('fooTextField' => $fieldDescription1, 'barDateTimeField' => $fieldDescription2)));
+            ->will($this->returnValue(array(
+                'fooTextField' => $fieldDescription1,
+                'barDateTimeField' => $fieldDescription2,
+            )));
 
         $this->admin->expects($this->any())
             ->method('getFilterFieldDescriptions')
-            ->will($this->returnValue(array('fooTextField' => $fieldDescription1, 'barDateTimeField' => $fieldDescription2)));
+            ->will($this->returnValue(array(
+                'fooTextField' => $fieldDescription1,
+                'barDateTimeField' => $fieldDescription2,
+            )));
 
         $this->admin->expects($this->any())
             ->method('getFormTheme')
@@ -103,7 +109,10 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->admin->expects($this->any())
             ->method('getFormFieldDescriptions')
-            ->will($this->returnValue(array('fooTextField' => $fieldDescription1, 'barDateTimeField' => $fieldDescription2)));
+            ->will($this->returnValue(array(
+                'fooTextField' => $fieldDescription1,
+                'barDateTimeField' => $fieldDescription2,
+            )));
 
         $this->admin->expects($this->any())
             ->method('isChild')
@@ -121,16 +130,24 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
                 return $adminParent;
             }));
 
-        if (interface_exists('Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface')) { // Prefer Symfony 2.5+ interfaces
-            $this->validatorFactory = $this->getMock('Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface');
+        if (interface_exists(
+            'Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface'
+        )) { // Prefer Symfony 2.5+ interfaces
+            $this->validatorFactory = $this->getMock(
+                'Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface'
+            );
 
             $validator = $this->getMock('Symfony\Component\Validator\Validator\ValidatorInterface');
-            $validator->expects($this->any())->method('getMetadataFor')->will($this->returnValue($this->validatorFactory));
+            $validator->expects($this->any())->method('getMetadataFor')->will(
+                $this->returnValue($this->validatorFactory)
+            );
         } else {
             $this->validatorFactory = $this->getMock('Symfony\Component\Validator\MetadataFactoryInterface');
 
             $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
-            $validator->expects($this->any())->method('getMetadataFactory')->will($this->returnValue($this->validatorFactory));
+            $validator->expects($this->any())->method('getMetadataFactory')->will(
+                $this->returnValue($this->validatorFactory)
+            );
         }
 
         // php 5.3 BC
@@ -169,6 +186,7 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
+        // NEXT_MAJOR: Remove check, when bumping requirements to SF 2.5+
         if (interface_exists('Symfony\Component\Validator\Mapping\MetadataInterface')) { //sf2.5+
             $metadata = $this->getMock('Symfony\Component\Validator\Mapping\MetadataInterface');
         } else {
@@ -180,6 +198,7 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('Acme\Entity\Foo'))
             ->will($this->returnValue($metadata));
 
+        // NEXT_MAJOR: Remove check, when bumping requirements to SF 2.5+
         if (class_exists('Symfony\Component\Validator\Mapping\GenericMetadata')) {
             $class = 'GenericMetadata';
         } else {
@@ -188,12 +207,18 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
         }
 
         $propertyMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\\'.$class);
-        $propertyMetadata->constraints = array(new NotNull(), new Length(array('min' => 2, 'max' => 50, 'groups' => array('create', 'edit'))));
+        $propertyMetadata->constraints = array(
+            new NotNull(),
+            new Length(array('min' => 2, 'max' => 50, 'groups' => array('create', 'edit'))),
+        );
 
         $metadata->properties = array('firstName' => $propertyMetadata);
 
         $getterMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\\'.$class);
-        $getterMetadata->constraints = array(new NotNull(), new Email(array('groups' => array('registration', 'edit'))));
+        $getterMetadata->constraints = array(
+            new NotNull(),
+            new Email(array('groups' => array('registration', 'edit'))),
+        );
 
         $metadata->getters = array('email' => $getterMetadata);
 
@@ -203,13 +228,11 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getModelManager')
             ->will($this->returnValue($modelManager));
 
-        // @todo Mock of \Traversable is available since Phpunit 3.8. This should be completed after stable release of Phpunit 3.8.
-        // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
-        // $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilderInterface');
-        //
-        // $this->admin->expects($this->any())
-        //     ->method('getFormBuilder')
-        //     ->will($this->returnValue($formBuilder));
+        $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilderInterface');
+
+        $this->admin->expects($this->any())
+             ->method('getFormBuilder')
+             ->will($this->returnValue($formBuilder));
 
         $datagridBuilder = $this->getMock('\Sonata\AdminBundle\Builder\DatagridBuilderInterface');
 
@@ -227,7 +250,14 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(array('command' => $command->getName(), 'admin' => 'acme.admin.foo'));
 
-        $this->assertSame(sprintf(str_replace("\n", PHP_EOL, file_get_contents(__DIR__.'/../Fixtures/Command/explain_admin.txt')), get_class($this->admin), get_class($modelManager), get_class($datagridBuilder), get_class($listBuilder)), $commandTester->getDisplay());
+        $this->assertSame(sprintf(
+            str_replace("\n", PHP_EOL, file_get_contents(__DIR__.'/../Fixtures/Command/explain_admin.txt')),
+            get_class($this->admin),
+            get_class($modelManager),
+            get_class($formBuilder),
+            get_class($datagridBuilder),
+            get_class($listBuilder)
+        ), $commandTester->getDisplay());
     }
 
     public function testExecuteEmptyValidator()
@@ -252,13 +282,11 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
             ->method('getModelManager')
             ->will($this->returnValue($modelManager));
 
-        // @todo Mock of \Traversable is available since Phpunit 3.8. This should be completed after stable release of Phpunit 3.8.
-        // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
-        // $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilderInterface');
-        //
-        // $this->admin->expects($this->any())
-        //     ->method('getFormBuilder')
-        //     ->will($this->returnValue($formBuilder));
+        $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilderInterface');
+
+        $this->admin->expects($this->any())
+             ->method('getFormBuilder')
+             ->will($this->returnValue($formBuilder));
 
         $datagridBuilder = $this->getMock('\Sonata\AdminBundle\Builder\DatagridBuilderInterface');
 
@@ -276,7 +304,18 @@ class ExplainAdminCommandTest extends \PHPUnit_Framework_TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(array('command' => $command->getName(), 'admin' => 'acme.admin.foo'));
 
-        $this->assertSame(sprintf(str_replace("\n", PHP_EOL, file_get_contents(__DIR__.'/../Fixtures/Command/explain_admin_empty_validator.txt')), get_class($this->admin), get_class($modelManager), get_class($datagridBuilder), get_class($listBuilder)), $commandTester->getDisplay());
+        $this->assertSame(sprintf(
+            str_replace(
+                "\n",
+                PHP_EOL,
+                file_get_contents(__DIR__.'/../Fixtures/Command/explain_admin_empty_validator.txt')
+            ),
+            get_class($this->admin),
+            get_class($modelManager),
+            get_class($formBuilder),
+            get_class($datagridBuilder),
+            get_class($listBuilder)
+        ), $commandTester->getDisplay());
     }
 
     public function testExecuteNonAdminService()
