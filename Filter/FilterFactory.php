@@ -46,19 +46,21 @@ class FilterFactory implements FilterFactoryInterface
     public function create($name, $type, array $options = array())
     {
         if (!$type) {
-            throw new \RunTimeException('The type must be defined');
+            throw new \RuntimeException('The type must be defined');
         }
 
         $id = isset($this->types[$type]) ? $this->types[$type] : false;
 
-        if (!$id) {
-            throw new \RunTimeException(sprintf('No attached service to type named `%s`', $type));
+        if ($id) {
+            $filter = $this->container->get($id);
+        } elseif (class_exists($type)) {
+            $filter = new $type();
+        } else {
+            throw new \RuntimeException(sprintf('No attached service to type named `%s`', $type));
         }
 
-        $filter = $this->container->get($id);
-
         if (!$filter instanceof FilterInterface) {
-            throw new \RunTimeException(sprintf('The service `%s` must implement `FilterInterface`', $id));
+            throw new \RuntimeException(sprintf('The service `%s` must implement `FilterInterface`', $type));
         }
 
         $filter->initialize($name, $options);

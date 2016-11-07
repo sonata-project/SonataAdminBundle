@@ -26,6 +26,13 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($config['options']['use_icheck']);
     }
 
+    public function testBreadcrumbsChildRouteDefaultsToEdit()
+    {
+        $config = $this->process(array());
+
+        $this->assertSame('edit', $config['breadcrumbs']['child_admin_route']);
+    }
+
     public function testOptionsWithInvalidFormat()
     {
         $this->setExpectedException('Symfony\Component\Config\Definition\Exception\InvalidTypeException');
@@ -141,6 +148,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'route' => '',
                 'route_params' => array(),
                 'route_absolute' => true,
+                'roles' => array(),
             )
         );
         $this->assertSame(
@@ -151,6 +159,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'route' => '',
                 'route_params' => array(),
                 'route_absolute' => true,
+                'roles' => array(),
             )
         );
         $this->assertSame(
@@ -161,6 +170,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'route_params' => array('bar' => 'foo'),
                 'route_absolute' => true,
                 'admin' => '',
+                'roles' => array(),
             )
         );
         $this->assertSame(
@@ -170,6 +180,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'route' => 'barRoute',
                 'route_params' => array(),
                 'admin' => '',
+                'roles' => array(),
                 'route_absolute' => true,
             )
         );

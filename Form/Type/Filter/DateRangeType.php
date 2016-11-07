@@ -28,6 +28,10 @@ class DateRangeType extends AbstractType
     const TYPE_NOT_BETWEEN = 2;
 
     /**
+     * NEXT_MAJOR: remove this property.
+     *
+     * @deprecated since 3.5, to be removed with 4.0
+     *
      * @var TranslatorInterface
      */
     protected $translator;
@@ -41,9 +45,9 @@ class DateRangeType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
      *
-     * @todo Remove when dropping Symfony <2.8 support
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -64,24 +68,43 @@ class DateRangeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array(
-            self::TYPE_BETWEEN => $this->translator->trans('label_date_type_between', array(), 'SonataAdminBundle'),
-            self::TYPE_NOT_BETWEEN => $this->translator->trans('label_date_type_not_between', array(), 'SonataAdminBundle'),
+            'label_date_type_between' => self::TYPE_BETWEEN,
+            'label_date_type_not_between' => self::TYPE_NOT_BETWEEN,
+        );
+        $choiceOptions = array(
+            'required' => false,
         );
 
-        if (!method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+        // NEXT_MAJOR: Remove (when requirement of Symfony is >= 2.7)
+        if (!method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
             $choices = array_flip($choices);
+            foreach ($choices as $key => $value) {
+                $choices[$key] = $this->translator->trans($value, array(), 'SonataAdminBundle');
+            }
+        } else {
+            $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
+
+            // NEXT_MAJOR: Remove (when requirement of Symfony is >= 3.0)
+            if (method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+                $choiceOptions['choices_as_values'] = true;
+            }
         }
 
+        $choiceOptions['choices'] = $choices;
+
         $builder
-            ->add('type', 'choice', array('choices' => $choices, 'required' => false))
+            // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
+            ->add('type', method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+                ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
+                : 'choice', $choiceOptions)
             ->add('value', $options['field_type'], $options['field_options'])
         ;
     }
 
+    // NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+
+
     /**
      * {@inheritdoc}
-     *
-     * @todo Remove it when bumping requirements to SF 2.7+
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {

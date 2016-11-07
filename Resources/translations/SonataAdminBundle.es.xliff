@@ -204,11 +204,11 @@
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
-                <target>Confirme la operación</target>
+                <target>Confirme la operación "%action%"</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>{0}¿Está seguro de que quiere confirmar y ejecutar esta acción para todos los elementos seleccionados?|[1,+Inf[¿Está seguro que quiere confirmar y ejecutar esta acción para todos los %count% elementos seleccionados?</target>
+                <target>¿Está seguro de que quiere confirmar y ejecutar esta acción para el elemento seleccionado?|¿Está seguro que quiere confirmar y ejecutar esta acción para todos los %count% elementos seleccionados?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>

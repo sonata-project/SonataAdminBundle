@@ -12,7 +12,7 @@
 namespace Sonata\AdminBundle\Form\Type;
 
 @trigger_error(
-    'The '.__NAMESPACE__.'\ModelTypeList class is deprecated since version 3.x and will be removed in 4.0.'
+    'The '.__NAMESPACE__.'\ModelTypeList class is deprecated since version 3.5 and will be removed in 4.0.'
     .' Use '.__NAMESPACE__.'\ModelListType instead.',
     E_USER_DEPRECATED
 );
@@ -23,7 +23,9 @@ namespace Sonata\AdminBundle\Form\Type;
  *   - a list modal to select the targeted entities
  *   - a clear selection link.
  *
- * @deprecated since version 3.x, to be removed in 4.0. Use ModelListType instead
+ * NEXT_MAJOR: remove this class.
+ *
+ * @deprecated since version 3.5, to be removed in 4.0. Use ModelListType instead
  */
 class ModelTypeList extends ModelListType
 {

@@ -34,10 +34,10 @@ class RoleSecurityHandler implements SecurityHandlerInterface
     protected $superAdminRoles;
 
     /**
+     * NEXT_MAJOR: Go back to signature class check when bumping requirements to SF 2.6+.
+     *
      * @param AuthorizationCheckerInterface|SecurityContextInterface $authorizationChecker
      * @param array                                                  $superAdminRoles
-     *
-     * @todo Go back to signature class check when bumping requirements to SF 2.6+
      */
     public function __construct($authorizationChecker, array $superAdminRoles)
     {
@@ -62,9 +62,12 @@ class RoleSecurityHandler implements SecurityHandlerInterface
             $attributes[$pos] = sprintf($this->getBaseRole($admin), $attribute);
         }
 
+        $allRole = sprintf($this->getBaseRole($admin), 'ALL');
+
         try {
             return $this->authorizationChecker->isGranted($this->superAdminRoles)
-                || $this->authorizationChecker->isGranted($attributes, $object);
+                || $this->authorizationChecker->isGranted($attributes, $object)
+                || $this->authorizationChecker->isGranted(array($allRole), $object);
         } catch (AuthenticationCredentialsNotFoundException $e) {
             return false;
         }

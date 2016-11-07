@@ -79,6 +79,8 @@ class AdminHelper
     }
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * @deprecated
      *
      * @param string $code
@@ -218,6 +220,8 @@ class AdminHelper
 
     /**
      * Camelize a string.
+     *
+     * NEXT_MAJOR: remove this method.
      *
      * @static
      *

@@ -164,11 +164,11 @@
             </trans-unit>
             <trans-unit id="flash_lock_error">
                 <source>flash_lock_error</source>
-                <target>Outro usuário modificou o item "%name%". Por favor, %link_start%clique aqui%link_end% to para recarregar a página e aplicar as mudanças novamente.</target>
+                <target>Outro usuário modificou o item "%name%". Por favor, %link_start%clique aqui%link_end% para recarregar a página e aplicar as mudanças novamente.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
-                <target>Itens solucionados foram deletados com sucesso.</target>
+                <target>Itens selecionados foram deletados com sucesso.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
@@ -376,7 +376,7 @@
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
-                <target>Previsualização</target>
+                <target>Pré-visualização</target>
             </trans-unit>
             <trans-unit id="btn_preview_approve">
                 <source>btn_preview_approve</source>
@@ -464,7 +464,7 @@
             </trans-unit>
             <trans-unit id="label_unknown_user">
                 <source>label_unknown_user</source>
-                <target>label_unknown_user</target>
+                <target>Usuário desconhecido</target>
             </trans-unit>
         </body>
     </file>

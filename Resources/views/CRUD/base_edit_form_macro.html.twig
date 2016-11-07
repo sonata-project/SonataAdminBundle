@@ -8,7 +8,7 @@
             <div class="{{ form_group.box_class }}">
                 <div class="box-header">
                     <h4 class="box-title">
-                        {{ admin.trans(form_group.name, {}, form_group.translation_domain) }}
+                        {{ form_group.name|trans({}, form_group.translation_domain ?: admin.translationDomain) }}
                     </h4>
                 </div>
                 <div class="box-body">

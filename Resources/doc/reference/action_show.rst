@@ -58,6 +58,33 @@ To specify options, do as follow:
             ;
     }
 
+When extending an existing Admin, you may want to remove some fields, groups or tabs.
+Here is an example of how to achieve this :
+
+.. code-block:: php
+
+    <?php
+    // src/AppBundle/Admin/PersonAdmin.php
+
+    class PersonAdmin extends ParentAdmin
+    {
+        public function configureShowFields(ShowMapper $showMapper)
+        {
+            parent::configureShowFields($showMapper);
+
+            // remove just one field
+            $showMapper->remove('field_to_remove');
+
+            // remove a group from the "default" tab
+            $showMapper->removeGroup('GroupToRemove1');
+
+            // remove a group from a specific tab
+            $showMapper->removeGroup('GroupToRemove2', 'Tab2');
+
+            // remove a group from a specific tab and also remove the tab if it ends up being empty
+            $showMapper->removeGroup('GroupToRemove3', 'Tab3', true);
+    }
+
 Customising the query used to show the object from within your Admin class
 --------------------------------------------------------------------------
 

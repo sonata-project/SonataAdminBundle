@@ -26,12 +26,12 @@ file that was distributed with this source code.
                         <span class="badge">{{ pager.getNbResults() }}</span>
                     {% elseif admin.hasRoute('create') and admin.isGranted('CREATE') %}
                         <a href="{{ admin.generateUrl('create') }}" class="btn btn-box-tool">
-                            <i class="fa fa-plus"></i>
+                            <i class="fa fa-plus" aria-hidden="true"></i>
                         </a>
                     {% endif %}
                     {% if admin.hasRoute('list') and admin.isGranted('LIST') %}
                         <a href="{{ admin.generateUrl('list') }}" class="btn btn-box-tool">
-                            <i class="fa fa-list"></i>
+                            <i class="fa fa-list" aria-hidden="true"></i>
                         </a>
                     {% endif %}
                 </div>

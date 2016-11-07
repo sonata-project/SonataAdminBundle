@@ -98,6 +98,17 @@ line in the `app/AppKernel.php` file of your project:
 
         $ bower install ./vendor/sonata-project/admin-bundle/bower.json
 
+.. note::
+
+    You must enable translator service in `config.yml`.
+
+    .. code-block:: yaml
+
+        framework:
+            translator: { fallbacks: ["%locale%"] }
+
+    For more information: http://symfony.com/doc/current/translation.html#configuration
+
 Step 3: Configure the Installed Bundles
 ---------------------------------------
 
@@ -137,7 +148,18 @@ You can do this by importing them in the routing configuration:
         resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
         prefix: /admin
 
-Step 5: Preparing your Environment
+Step 5: Enable the "translator" service
+---------------------------------------
+
+The translator service is required by SonataAdmin to display all labels properly.
+
+.. code-block:: yaml
+
+    # app/config/config.yml
+    framework:
+        translator: { fallbacks: [en] }
+
+Step 6: Preparing your Environment
 ----------------------------------
 
 As with all bundles you install, it's a good practice to clear the cache and
@@ -145,8 +167,8 @@ install the assets:
 
 .. code-block:: bash
 
-    $ php app/console cache:clear
-    $ php app/console assets:install
+    $ php bin/console cache:clear
+    $ php bin/console assets:install
 
 The Admin Interface
 -------------------
@@ -157,7 +179,7 @@ server, you can now visit the admin page on http://localhost:8000/admin
 .. note::
 
     This tutorial assumes you are using the build-in server using the
-    ``php app/console server:start`` (or ``server:run``) command.
+    ``php bin/console server:start`` (or ``server:run``) command.
 
 .. image:: ../images/getting_started_empty_dashboard.png
 

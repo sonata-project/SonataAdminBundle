@@ -1,5 +1,26 @@
 UPGRADE 3.x
+
+## Deprecated passing no 3rd argument to GroupMenuProvider
+
+Passing no 3rd argument to `Menu\Provider\GroupMenuProvider` is deprecated.
+Pass `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface` as 3rd argument.
+
 ===========
+
+UPGRADE FROM 3.8 to 3.9
+=======================
+
+## Deprecated admin translator
+
+The `$translator` property and the corresponding methods (`setTranslator`, `getTranslator`, `trans` and `transChoice`) in `AbstractAdmin` are deprecated.
+Please use `CRUDController::trans` or twig templates instead.
+
+UPGRADE FROM 3.4 to 3.5
+=======================
+
+## Deprecated injection of container to GlobalVariables
+
+The `$container` property in `Twig/GlobalVariables` is deprecated.
 
 ## Deprecated ModelTypeList for rename
 

@@ -140,6 +140,8 @@ var Admin = {
     },
 
     /**
+     * NEXT_MAJOR: remove this function.
+     *
      * @deprecated in version 3.0
      */
     add_pretty_errors: function() {

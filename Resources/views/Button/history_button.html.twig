@@ -9,8 +9,8 @@ file that was distributed with this source code.
 
 #}
 
-{% if admin.hasroute('history') and admin.id(object) and admin.isGranted('EDIT', object) %}
+{% if admin.canAccessObject('history', object) and admin.hasRoute('history') %}
     <a class="sonata-action-element" href="{{ admin.generateObjectUrl('history', object) }}">
-        <i class="fa fa-archive"></i>
+        <i class="fa fa-archive" aria-hidden="true"></i>
         {{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}</a>
 {% endif %}

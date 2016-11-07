@@ -91,6 +91,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
         $container->setParameter('sonata.admin.configuration.dashboard_blocks', $config['dashboard']['blocks']);
         $container->setParameter('sonata.admin.configuration.sort_admins', $config['options']['sort_admins']);
+        $container->setParameter('sonata.admin.configuration.breadcrumbs', $config['breadcrumbs']);
 
         if (null === $config['security']['acl_user_manager'] && isset($bundles['FOSUserBundle'])) {
             $container->setParameter('sonata.admin.security.acl_user_manager', 'fos_user.user_manager');
@@ -134,7 +135,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
         $loader->load('security.xml');
 
         // Set the SecurityContext for Symfony <2.6
-        // TODO: Go back to simple xml configuration when bumping requirements to SF 2.6+
+        // NEXT_MAJOR: Go back to simple xml configuration when bumping requirements to SF 2.6+
         if (interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')) {
             $tokenStorageReference = new Reference('security.token_storage');
             $authorizationCheckerReference = new Reference('security.authorization_checker');
@@ -142,14 +143,21 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
             $tokenStorageReference = new Reference('security.context');
             $authorizationCheckerReference = new Reference('security.context');
         }
+
         $container
             ->getDefinition('sonata.admin.security.handler.role')
             ->replaceArgument(0, $authorizationCheckerReference)
         ;
+
         $container
             ->getDefinition('sonata.admin.security.handler.acl')
             ->replaceArgument(0, $tokenStorageReference)
             ->replaceArgument(1, $authorizationCheckerReference)
+        ;
+
+        $container
+            ->getDefinition('sonata.admin.menu.group_provider')
+            ->replaceArgument(2, $authorizationCheckerReference)
         ;
 
         $container->setParameter('sonata.admin.extension.map', $config['extensions']);
@@ -248,7 +256,6 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
             'Sonata\\AdminBundle\\Datagrid\\ProxyQueryInterface',
             'Sonata\\AdminBundle\\Exception\\ModelManagerException',
             'Sonata\\AdminBundle\\Exception\\NoValueException',
-            'Sonata\\AdminBundle\\Export\\Exporter',
             'Sonata\\AdminBundle\\Filter\\Filter',
             'Sonata\\AdminBundle\\Filter\\FilterFactory',
             'Sonata\\AdminBundle\\Filter\\FilterFactoryInterface',

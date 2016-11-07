@@ -9,8 +9,8 @@ file that was distributed with this source code.
 
 #}
 
-{% if admin.hasroute('list') and admin.isGranted('LIST') %}
+{% if admin.hasAccess('list') and admin.hasRoute('list') %}
     <a class="sonata-action-element" href="{{ admin.generateUrl('list') }}">
-        <i class="fa fa-list"></i>
+        <i class="fa fa-list" aria-hidden="true"></i>
         {{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}</a>
 {% endif %}

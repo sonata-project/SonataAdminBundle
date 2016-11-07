@@ -11,6 +11,8 @@
 
 namespace Sonata\AdminBundle\Tests\Controller;
 
+use Exporter\Exporter;
+use Exporter\Writer\JsonWriter;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\Pool;
@@ -108,6 +110,11 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
     private $kernel;
 
     /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -119,6 +126,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->pool->setAdminServiceIds(array('foo.admin'));
         $this->request->attributes->set('_sonata_admin', 'foo.admin');
         $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
         $this->parameters = array();
         $this->template = '';
 
@@ -160,6 +168,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $request = $this->request;
         $admin = $this->admin;
         $session = $this->session;
+        $translator = $this->translator;
 
         $twig = $this->getMockBuilder('Twig_Environment')
             ->disableOriginalConstructor()
@@ -178,11 +187,16 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                 }
             }));
 
-        $exporter = $this->getMock('Sonata\AdminBundle\Export\Exporter');
+        // NEXT_MAJOR : require sonata/exporter ^1.7 and remove conditional
+        if (class_exists('Exporter\Exporter')) {
+            $exporter = new Exporter(array(new JsonWriter('/tmp/sonataadmin/export.json')));
+        } else {
+            $exporter = $this->getMock('Sonata\AdminBundle\Export\Exporter');
 
-        $exporter->expects($this->any())
-            ->method('getResponse')
-            ->will($this->returnValue(new StreamedResponse()));
+            $exporter->expects($this->any())
+                ->method('getResponse')
+                ->will($this->returnValue(new StreamedResponse()));
+        }
 
         $this->auditManager = $this->getMockBuilder('Sonata\AdminBundle\Model\AuditManager')
             ->disableOriginalConstructor()
@@ -272,7 +286,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                 $requestStack,
                 $csrfProvider,
                 $logger,
-                $kernel
+                $kernel,
+                $translator
             ) {
                 switch ($id) {
                     case 'sonata.admin.pool':
@@ -302,6 +317,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                         return $logger;
                     case 'kernel':
                         return $kernel;
+                    case 'translator':
+                        return $translator;
                 }
             }));
 
@@ -328,6 +345,10 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                 }
 
                 if ($id == 'templating') {
+                    return true;
+                }
+
+                if ($id == 'translator') {
                     return true;
                 }
 
@@ -3378,11 +3399,6 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getBatchActions')
             ->will($this->returnValue($batchActions));
 
-        $this->admin->expects($this->once())
-            ->method('trans')
-            ->with($this->equalTo('Foo Bar'), $this->anything(), $this->equalTo('FooBarBaz'))
-            ->will($this->returnValue('Foo Bar'));
-
         $data = array('action' => 'delete', 'idx' => array('123', '456'), 'all_elements' => false);
 
         $this->request->setMethod('POST');
@@ -3642,7 +3658,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     private function expectTranslate($id, array $parameters = array(), $domain = null, $locale = null)
     {
-        $this->admin->expects($this->once())
+        $this->translator->expects($this->once())
             ->method('trans')
             ->with($this->equalTo($id), $this->equalTo($parameters), $this->equalTo($domain), $this->equalTo($locale))
             ->will($this->returnValue($id));

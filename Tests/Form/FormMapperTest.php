@@ -338,7 +338,41 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue('foo'));
 
+        $formType = $this
+            ->getMockBuilder('Symfony\Component\Form\ResolvedFormTypeInterface')
+            ->getMock();
+
+        $innerType = $this
+            ->getMockBuilder('Symfony\Component\Form\Extension\Core\Type\FormType')
+            ->getMock();
+
+        $formType->expects($this->once())
+            ->method('getInnerType')
+            ->will($this->returnValue($innerType));
+
+        $formBuilder->expects($this->once())
+            ->method('getType')
+            ->will($this->returnValue($formType));
+
         $this->formMapper->add($formBuilder);
+        $this->assertSame($this->formMapper->get('foo'), $formBuilder);
+    }
+
+    public function testAddFormBuilderWithType()
+    {
+        $formBuilder = $this
+            ->getMockBuilder('Symfony\Component\Form\FormBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $formBuilder->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('foo'));
+
+        $formBuilder->expects($this->never())
+            ->method('getType');
+
+        $this->formMapper->add($formBuilder, 'Symfony\Component\Form\Extension\Core\Type\FormType');
         $this->assertSame($this->formMapper->get('foo'), $formBuilder);
     }
 

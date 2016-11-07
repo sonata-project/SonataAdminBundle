@@ -11,9 +11,9 @@ file that was distributed with this source code.
 
 {% extends base_template %}
 
-{% block actions %}
+{%- block actions -%}
     {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
-{% endblock %}
+{%- endblock -%}
 
 {% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': sonata_admin.adminPool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
 
@@ -61,7 +61,7 @@ file that was distributed with this source code.
                                             {% spaceless %}
                                                 <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}{% if field_description.options.header_class is defined %} {{ field_description.options.header_class }}{% endif %}"{% if field_description.options.header_style is defined %} style="{{ field_description.options.header_style }}"{% endif %}>
                                                     {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters) }}">{% endif %}
-                                                    {{ admin.trans(field_description.label, {}, field_description.translationDomain) }}
+                                                    {{ field_description.label|trans({}, field_description.translationDomain) }}
                                                     {% if sortable %}</a>{% endif %}
                                                 </th>
                                             {% endspaceless %}
@@ -81,20 +81,22 @@ file that was distributed with this source code.
                         {% endblock %}
                     </table>
                 {% else %}
-                    <div class="info-box">
-                        <span class="info-box-icon bg-aqua"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">{{ 'no_result'|trans({}, 'SonataAdminBundle') }}</span>
-                            <div class="progress">
-                                <div class="progress-bar" style="width: 0%"></div>
-                            </div>
-                            <span class="progress-description">
-                                {% if not app.request.xmlHttpRequest %}
-                                    {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
-                                {% endif %}
-                            </span>
-                        </div><!-- /.info-box-content -->
-                    </div>
+                    {% block no_result_content %}
+                        <div class="info-box">
+                            <span class="info-box-icon bg-aqua"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">{{ 'no_result'|trans({}, 'SonataAdminBundle') }}</span>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: 0%"></div>
+                                </div>
+                                <span class="progress-description">
+                                    {% if not app.request.xmlHttpRequest %}
+                                        {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
+                                    {% endif %}
+                                </span>
+                            </div><!-- /.info-box-content -->
+                        </div>
+                    {% endblock %}
                 {% endif %}
 
                 {{ sonata_block_render_event('sonata.admin.list.table.bottom', { 'admin': admin }) }}
@@ -110,16 +112,22 @@ file that was distributed with this source code.
                                             <script>
                                                 {% block batch_javascript %}
                                                     jQuery(document).ready(function ($) {
-                                                        $('#list_batch_checkbox').on('ifChanged', function () {
-                                                            $(this)
+                                                        // Toggle individual checkboxes when the batch checkbox is changed
+                                                        $('#list_batch_checkbox').on('ifChanged change', function () {
+                                                            var checkboxes = $(this)
                                                                 .closest('table')
                                                                 .find('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
-                                                                .iCheck($(this).is(':checked') ? 'check' : 'uncheck')
                                                             ;
+                                                            if (window.SONATA_CONFIG.USE_ICHECK) {
+                                                                checkboxes.iCheck($(this).is(':checked') ? 'check' : 'uncheck');
+                                                            } else {
+                                                                checkboxes.prop('checked', this.checked);
+                                                            }
                                                         });
 
+                                                        // Add a CSS class to rows when they are selected
                                                         $('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
-                                                            .on('ifChanged', function () {
+                                                            .on('ifChanged change', function () {
                                                                 $(this)
                                                                     .closest('tr, div.sonata-ba-list-field-batch')
                                                                     .toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'))
@@ -155,7 +163,7 @@ file that was distributed with this source code.
                                     {% if admin.hasRoute('export') and admin.isGranted('EXPORT') and admin.getExportFormats()|length %}
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fa fa-share-square-o"></i>
+                                                <i class="fa fa-share-square-o" aria-hidden="true"></i>
                                                 {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
                                                 <span class="caret"></span>
                                             </button>
@@ -163,7 +171,7 @@ file that was distributed with this source code.
                                                 {% for format in admin.getExportFormats() %}
                                                 <li>
                                                     <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">
-                                                        <i class="fa fa-arrow-circle-o-down"></i>
+                                                        <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
                                                         {{ ("export_format_" ~ format)|trans({}, 'SonataAdminBundle') }}
                                                     </a>
                                                 <li>
@@ -203,15 +211,16 @@ file that was distributed with this source code.
 
             <li class="dropdown sonata-actions">
                 <a href="#" class="dropdown-toggle sonata-ba-action" data-toggle="dropdown">
-                    <i class="fa fa-filter"></i>
+                    <i class="fa fa-filter" aria-hidden="true"></i>
                     {{ 'link_filters'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b>
                 </a>
 
                 <ul class="dropdown-menu" role="menu">
                     {% for filter in admin.datagrid.filters if (filter.options['show_filter'] is same as(true) or filter.options['show_filter'] is null) %}
+                        {% set filterActive = ((filter.isActive() or filter.options['show_filter']) and not admin.isDefaultFilter(filter.formName)) %}
                         <li>
                             <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
-                                <i class="fa {{ (filter.isActive() or filter.options['show_filter']) ? 'fa-check-square-o' : 'fa-square-o' }}"></i>{{ admin.trans(filter.label, {}, filter.translationDomain) }}
+                                <i class="fa {{ (filter.isActive() or filter.options['show_filter']) ? 'fa-check-square-o' : 'fa-square-o' }}"></i>{{ filter.label|trans({}, filter.translationDomain ?: admin.translationDomain) }}
                             </a>
                         </li>
                     {% endfor %}
@@ -235,9 +244,11 @@ file that was distributed with this source code.
                             <div class="col-sm-9">
                                 {% set withAdvancedFilter = false %}
                                 {% for filter in admin.datagrid.filters %}
-                                    <div class="form-group {% block sonata_list_filter_group_class %}{% endblock %}" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ (filter.options['show_filter'] is same as(true) or filter.options['show_filter'] is null) ? 'true' : 'false' }}" style="display: {% if (filter.isActive() and filter.options['show_filter'] is null) or (filter.options['show_filter'] is same as(true)) %}block{% else %}none{% endif %}">
+                                    {% set filterActive = ((filter.isActive() and filter.options['show_filter'] is null) or (filter.options['show_filter'] is same as(true))) and not admin.isDefaultFilter(filter.formName) %}
+                                    {% set filterVisible = filter.options['show_filter'] is same as(true) or filter.options['show_filter'] is null %}
+                                    <div class="form-group {% block sonata_list_filter_group_class %}{% endblock %}" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ filterVisible ? 'true' : 'false' }}" style="display: {% if filterActive %}block{% else %}none{% endif %}">
                                         {% if filter.label is not same as(false) %}
-                                            <label for="{{ form.children[filter.formName].children['value'].vars.id }}" class="col-sm-3 control-label">{{ admin.trans(filter.label, {}, filter.translationDomain) }}</label>
+                                            <label for="{{ form.children[filter.formName].children['value'].vars.id }}" class="col-sm-3 control-label">{{ filter.label|trans({}, filter.translationDomain ?: admin.translationDomain) }}</label>
                                         {% endif %}
                                         {% set attr = form.children[filter.formName].children['type'].vars.attr|default({}) %}
 
@@ -252,7 +263,7 @@ file that was distributed with this source code.
                                         <div class="col-sm-1">
                                             <label class="control-label">
                                                 <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
-                                                    <i class="fa fa-minus-circle"></i>
+                                                    <i class="fa fa-minus-circle" aria-hidden="true"></i>
                                                 </a>
                                             </label>
                                         </div>
@@ -271,7 +282,7 @@ file that was distributed with this source code.
 
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="fa fa-filter"></i> {{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}
+                                        <i class="fa fa-filter" aria-hidden="true"></i> {{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}
                                     </button>
 
                                     <a class="btn btn-default" href="{{ admin.generateUrl('list', {filters: 'reset'}) }}">
@@ -282,7 +293,7 @@ file that was distributed with this source code.
                                 {% if withAdvancedFilter %}
                                     <div class="form-group">
                                         <a href="#" data-toggle="advanced-filter">
-                                            <i class="fa fa-cogs"></i>
+                                            <i class="fa fa-cogs" aria-hidden="true"></i>
                                             {{ 'btn_advanced_filters'|trans({}, 'SonataAdminBundle') }}
                                         </a>
                                     </div>

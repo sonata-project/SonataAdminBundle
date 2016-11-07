@@ -16,7 +16,7 @@ file that was distributed with this source code.
         {% if not form.parent %}<div class="alert alert-danger">{% endif %}
             <ul class="list-unstyled">
                 {% for error in errors %}
-                    <li><i class="fa fa-exclamation-circle"></i> {{ error.message }}</li>
+                    <li><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ error.message }}</li>
                 {% endfor %}
             </ul>
         {% if not form.parent %}</div>{% endif %}
@@ -134,7 +134,7 @@ file that was distributed with this source code.
             {% if not sonata_admin.admin %}
                 {{- label|trans({}, translation_domain) -}}
             {% else %}
-                {{ sonata_admin.admin.trans(label, {}, sonata_admin.field_description.translationDomain) }}
+                {{ label|trans({}, sonata_admin.field_description.translationDomain ?: admin.translationDomain) }}
             {% endif %}
         </label>
     {% endif %}
@@ -358,7 +358,7 @@ file that was distributed with this source code.
             {% endif %}
 
             {% if sonata_admin is defined and sonata_admin_enabled and sonata_admin.field_description.help|default(false) %}
-                <span class="help-block sonata-ba-field-help">{{ sonata_admin.admin.trans(sonata_admin.field_description.help, {}, sonata_admin.field_description.translationDomain)|raw }}</span>
+                <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans({}, sonata_admin.field_description.translationDomain ?: admin.translationDomain)|raw }}</span>
             {% endif %}
         </div>
     </div>
@@ -381,7 +381,7 @@ file that was distributed with this source code.
             <div class="row">
                 <div class="col-xs-1">
                     <a href="#" class="btn btn-link sonata-collection-delete">
-                        <i class="fa fa-minus-circle"></i>
+                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
                     </a>
                 </div>
                 <div class="col-xs-11">
@@ -411,7 +411,7 @@ file that was distributed with this source code.
         {% endfor %}
         {{ form_rest(form) }}
         {% if allow_add %}
-            <div><a href="#" class="btn btn-link sonata-collection-add"><i class="fa fa-plus-circle"></i></a></div>
+            <div><a href="#" class="btn btn-link sonata-collection-add"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></div>
         {% endif %}
     </div>
 {% endspaceless %}
@@ -467,7 +467,7 @@ file that was distributed with this source code.
             var allFields = {{ all_fields|json_encode|raw }};
             var map = {{ map|json_encode|raw }};
 
-            showMaskChoiceEl = jQuery('#{{ main_form_name }}{{ name }}');
+            var showMaskChoiceEl = jQuery('#{{ main_form_name }}{{ name }}');
 
             showMaskChoiceEl.on('change', function () {
                 choice_field_mask_show(jQuery(this).val());
