@@ -267,4 +267,4 @@ The full ``CarAdmin.php`` example looks like this:
     rendering should happen the routing, which usually sets the value of this
     parameter, is not involved at all, and then you will get an error "There is no
     _sonata_admin defined for the controller
-    AppBundle\Controller\XxxxCRUDController and the current route ''."
+    AppBundle\Controller\XxxxCRUDController and the current route ' '."
