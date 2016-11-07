@@ -145,8 +145,8 @@ install the assets:
 
 .. code-block:: bash
 
-    $ php app/console cache:clear
-    $ php app/console assets:install
+    $ php bin/console cache:clear
+    $ php bin/console assets:install
 
 The Admin Interface
 -------------------
