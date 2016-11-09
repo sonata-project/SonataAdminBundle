@@ -50,15 +50,8 @@ final class SonataAdminExtension extends \Twig_Extension
      * @param LoggerInterface     $logger
      * @param TranslatorInterface $translator
      */
-    public function __construct(Pool $pool, LoggerInterface $logger = null, TranslatorInterface $translator = null)
+    public function __construct(Pool $pool, LoggerInterface $logger = null, TranslatorInterface $translator)
     {
-        // NEXT_MAJOR: make the translator parameter required
-        if (null === $translator) {
-            @trigger_error(
-                'The $translator parameter will be required fields with the 4.0 release.',
-                E_USER_DEPRECATED
-            );
-        }
         $this->pool = $pool;
         $this->logger = $logger;
         $this->translator = $translator;
@@ -350,12 +343,7 @@ final class SonataAdminExtension extends \Twig_Extension
             } else {
                 foreach ($choices as $value => $text) {
                     if ($catalogue) {
-                        if (null !== $this->translator) {
-                            $this->translator->trans($text, array(), $catalogue);
-                        // NEXT_MAJOR: Remove this check
-                        } elseif (method_exists($fieldDescription->getAdmin(), 'trans')) {
-                            $text = $fieldDescription->getAdmin()->trans($text, array(), $catalogue);
-                        }
+                        $this->translator->trans($text, array(), $catalogue);
                     }
 
                     $xEditableChoices[] = array(

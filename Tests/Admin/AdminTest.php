@@ -1757,26 +1757,6 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('create', $admin->getDashboardActions());
     }
 
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @group legacy
-     */
-    public function testCreateQueryLegacyCallWorks()
-    {
-        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AbstractAdmin', array(
-            'admin.my_code', 'My\Class', 'MyBundle:ClassAdmin',
-        ));
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
-        $modelManager->expects($this->once())
-            ->method('createQuery')
-            ->with('My\Class')
-            ->willReturn('a query');
-
-        $admin->setModelManager($modelManager);
-        $this->assertSame('a query', $admin->createQuery('list'));
-    }
-
     public function testGetDataSourceIterator()
     {
         $datagrid = $this->getMock('Sonata\AdminBundle\Datagrid\DatagridInterface');

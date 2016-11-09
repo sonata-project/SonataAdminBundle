@@ -511,21 +511,21 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
-                    <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('subject' => 'Main Theme', 'body' => 'Message Body')).'">admin@admin.com</a>  </td>',
+                    <a href="mailto:admin@admin.com?'.urlencode(http_build_query(['subject' => 'Main Theme', 'body' => 'Message Body'], '', '&')).'">admin@admin.com</a>  </td>',
                 'email',
                 'admin@admin.com',
                 array('subject' => 'Main Theme', 'body' => 'Message Body'),
             ),
             array(
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
-                    <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('subject' => 'Main Theme')).'">admin@admin.com</a>  </td>',
+                    <a href="mailto:admin@admin.com?'.urlencode(http_build_query(['subject' => 'Main Theme'], '', '&')).'">admin@admin.com</a>  </td>',
                 'email',
                 'admin@admin.com',
                 array('subject' => 'Main Theme'),
             ),
             array(
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
-                    <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('body' => 'Message Body')).'">admin@admin.com</a>  </td>',
+                    <a href="mailto:admin@admin.com?'.urlencode(http_build_query(['subject' => 'Main Theme'], '', '&')).'">admin@admin.com</a>  </td>',
                 'email',
                 'admin@admin.com',
                 array('body' => 'Message Body'),
@@ -1555,19 +1555,19 @@ EOT
                 array(),
             ),
             array(
-                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('subject' => 'Main Theme', 'body' => 'Message Body')).'">admin@admin.com</a></td>',
+                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.urlencode(http_build_query(['subject' => 'Main Theme', 'body' => 'Message Body'], '', '&')).'">admin@admin.com</a></td>',
                 'email',
                 'admin@admin.com',
                 array('subject' => 'Main Theme', 'body' => 'Message Body'),
             ),
             array(
-                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('subject' => 'Main Theme')).'">admin@admin.com</a></td>',
+                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.urlencode(http_build_query(['subject' => 'Main Theme'], '', '&')).'">admin@admin.com</a></td>',
                 'email',
                 'admin@admin.com',
                 array('subject' => 'Main Theme'),
             ),
             array(
-                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(array('body' => 'Message Body')).'">admin@admin.com</a></td>',
+                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.urlencode(http_build_query(['subject' => 'Main Theme'], '', '&')).'">admin@admin.com</a></td>',
                 'email',
                 'admin@admin.com',
                 array('body' => 'Message Body'),
@@ -2093,25 +2093,6 @@ EOT
             ),
             $this->twigExtension->getXEditableChoices($fieldDescription)
         );
-    }
-
-    /**
-     * This method generates url part for Twig layout. Allows to keep BC for PHP 5.3.
-     *
-     * Remove this method for next major release only if PHP 5.3 support will be dropped.
-     *
-     * @param array $url
-     *
-     * @return string
-     */
-    private function buildTwigLikeUrl($url)
-    {
-        if (defined('PHP_QUERY_RFC3986')) {
-            // add htmlspecialchars because twig add it auto
-            return htmlspecialchars(http_build_query($url, '', '&', PHP_QUERY_RFC3986));
-        }
-
-        return htmlspecialchars(http_build_query($url, '', '&'));
     }
 
     private function getMethodAsPublic($privateMethod)

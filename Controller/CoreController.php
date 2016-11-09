@@ -116,27 +116,6 @@ class CoreController extends Controller
     }
 
     /**
-     * Get the request object from the container.
-     *
-     * This method is compatible with both Symfony 2.3 and Symfony 3
-     *
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated Use the Request action argument. This method will be removed
-     *             in SonataAdminBundle 4.0 and the action methods adjusted
-     *
-     * @return Request
-     */
-    public function getRequest()
-    {
-        if ($this->container->has('request_stack')) {
-            return $this->container->get('request_stack')->getCurrentRequest();
-        }
-
-        return $this->container->get('request');
-    }
-
-    /**
      * @return Pool
      */
     protected function getAdminPool()

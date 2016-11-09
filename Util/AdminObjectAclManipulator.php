@@ -62,28 +62,6 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Gets the form.
-     *
-     * NEXT_MAJOR: remove this method.
-     *
-     * @param AdminObjectAclData $data
-     *
-     * @return Form
-     *
-     * @deprecated Deprecated since version 3.0. Use createAclUsersForm() instead
-     */
-    public function createForm(AdminObjectAclData $data)
-    {
-        @trigger_error(
-            'createForm() is deprecated since version 3.0 and will be removed in 4.0. '
-            .'Use createAclUsersForm() instead.',
-            E_USER_DEPRECATED
-        );
-
-        return $this->createAclUsersForm($data);
-    }
-
-    /**
      * Gets the ACL users form.
      *
      * @param AdminObjectAclData $data
@@ -141,26 +119,6 @@ class AdminObjectAclManipulator
         $form = $data->getAclRolesForm();
 
         $this->buildAcl($data, $form, $aclValues);
-    }
-
-    /**
-     * Updates ACl.
-     *
-     * NEXT_MAJOR: remove this method.
-     *
-     * @param AdminObjectAclData $data
-     *
-     * @deprecated Deprecated since version 3.0. Use updateAclUsers() instead
-     */
-    public function updateAcl(AdminObjectAclData $data)
-    {
-        @trigger_error(
-            'updateAcl() is deprecated since version 3.0 and will be removed in 4.0.'
-            .'Use updateAclUsers() instead.',
-            E_USER_DEPRECATED
-        );
-
-        $this->updateAclUsers($data);
     }
 
     /**

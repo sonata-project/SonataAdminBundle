@@ -54,20 +54,6 @@ interface AdminExtensionInterface
     public function configureRoutes(AdminInterface $admin, RouteCollection $collection);
 
     /**
-     * DEPRECATED: Use configureTabMenu instead.
-     *
-     * NEXT_MAJOR: remove this method.
-     *
-     * @param AdminInterface    $admin
-     * @param MenuItemInterface $menu
-     * @param string            $action
-     * @param AdminInterface    $childAdmin
-     *
-     * @deprecated
-     */
-    public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null);
-
-    /**
      * Builds the tab menu.
      *
      * @param AdminInterface    $admin
@@ -195,12 +181,10 @@ interface AdminExtensionInterface
      public function configureActionButtons(AdminInterface $admin, $list, $action, $object);
 
     /*
-     * NEXT_MAJOR: Uncomment in next major release
-     *
      * Returns a list of default filters
      *
      * @param AdminInterface $admin
      * @param array          $filterValues
      */
-    // public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues);
+    public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues);
 }
