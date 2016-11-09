@@ -26,6 +26,7 @@ class GlobalVariables
 
     /**
      * @param ContainerInterface|Pool $adminPool
+     * @throws InvalidArgumentException
      */
     public function __construct($adminPool)
     {
@@ -34,7 +35,7 @@ class GlobalVariables
               '$adminPool should be an instance of Sonata\AdminBundle\Admin\Pool'
           );
         }
-        
+
         $this->adminPool = $adminPool;
     }
 

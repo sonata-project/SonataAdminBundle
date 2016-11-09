@@ -1527,9 +1527,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
             $message = <<<'EOT'
 You are trying to set entity an instance of "%s",
 which is not the one registered with this admin class ("%s").
-This is deprecated since 3.5 and will no longer be supported in 4.0.
 EOT;
-          throw new \Exception($message)
+          throw new \InvalidArgumentException($message);
         }
 
         $this->subject = $subject;
