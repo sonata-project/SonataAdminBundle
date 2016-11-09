@@ -26,7 +26,6 @@ use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 
