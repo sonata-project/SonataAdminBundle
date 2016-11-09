@@ -2703,6 +2703,24 @@ EOT;
     }
 
     /**
+     * Returns a list of default filters.
+     *
+     * @return array
+     */
+    final public function getDefaultFilterValues()
+    {
+        $defaultFilterValues = array();
+
+        $this->configureDefaultFilterValues($defaultFilterValues);
+
+        foreach ($this->getExtensions() as $extension) {
+            $extension->configureDefaultFilterValues($this, $defaultFilterValues);
+        }
+
+        return $defaultFilterValues;
+    }
+
+    /**
      * Hook to run after initilization.
      */
     protected function configure()
@@ -2720,24 +2738,6 @@ EOT;
     final protected function urlize($word, $sep = '_')
     {
         return strtolower(preg_replace('/[^a-z0-9_]/i', $sep.'$1', $word));
-    }
-
-    /**
-     * Returns a list of default filters.
-     *
-     * @return array
-     */
-    final public function getDefaultFilterValues()
-    {
-        $defaultFilterValues = array();
-
-        $this->configureDefaultFilterValues($defaultFilterValues);
-
-        foreach ($this->getExtensions() as $extension) {
-            $extension->configureDefaultFilterValues($this, $defaultFilterValues);
-        }
-
-        return $defaultFilterValues;
     }
 
     /**
