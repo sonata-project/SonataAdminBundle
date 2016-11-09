@@ -2727,7 +2727,7 @@ EOT;
      *
      * @return array
      */
-    final protected function getDefaultFilterValues()
+    final public function getDefaultFilterValues()
     {
         $defaultFilterValues = array();
 
