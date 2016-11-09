@@ -30,7 +30,7 @@ class GlobalVariables
      */
     public function __construct($adminPool)
     {
-        if (false === ($adminPool instanceof Pool) {
+        if (!$adminPool instanceof Pool) {
             throw new \InvalidArgumentException(
                 '$adminPool should be an instance of Sonata\AdminBundle\Admin\Pool'
             );
