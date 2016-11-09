@@ -71,20 +71,6 @@ interface AdminInterface
     public function getDatagridBuilder();
 
     /**
-     * Set translator.
-     *
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator);
-
-    /**
-     * Get translator.
-     *
-     * @return TranslatorInterface
-     */
-    public function getTranslator();
-
-    /**
      * @param Request $request
      */
     public function setRequest(Request $request);
