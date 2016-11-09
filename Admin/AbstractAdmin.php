@@ -43,7 +43,6 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 
@@ -1528,7 +1527,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
 You are trying to set entity an instance of "%s",
 which is not the one registered with this admin class ("%s").
 EOT;
-          throw new \InvalidArgumentException($message);
+            throw new \InvalidArgumentException($message);
         }
 
         $this->subject = $subject;

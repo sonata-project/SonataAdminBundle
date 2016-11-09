@@ -23,7 +23,6 @@ use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\CoreBundle\Model\Metadata;
-use Sonata\CoreBundle\Validator\ErrorElement;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -610,6 +609,7 @@ interface AdminInterface
 
     /**
      * @param object $subject
+     *
      * @throws \InvalidArgumentException
      */
     public function setSubject($subject);
