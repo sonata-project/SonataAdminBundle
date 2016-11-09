@@ -610,6 +610,7 @@ interface AdminInterface
 
     /**
      * @param object $subject
+     * @throws \InvalidArgumentException
      */
     public function setSubject($subject);
 
