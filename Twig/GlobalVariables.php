@@ -26,6 +26,7 @@ class GlobalVariables
 
     /**
      * @param ContainerInterface|Pool $adminPool
+     *
      * @throws \InvalidArgumentException
      */
     public function __construct($adminPool)
