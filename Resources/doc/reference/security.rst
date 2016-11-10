@@ -388,13 +388,13 @@ In ``app/config/security.yml``:
             acl:
                 connection: default
 
-- Install the ACL tables ``php app/console init:acl``
+- Install the ACL tables ``php bin/console init:acl``
 
 - Create a new root user:
 
 .. code-block:: bash
 
-    $ php app/console fos:user:create --super-admin
+    $ php bin/console fos:user:create --super-admin
         Please choose a username:root
         Please choose an email:root@domain.com
         Please choose a password:root
@@ -404,7 +404,7 @@ If you have Admin classes, you can install or update the related CRUD ACL rules:
 
 .. code-block:: bash
 
-    $ php app/console sonata:admin:setup-acl
+    $ php bin/console sonata:admin:setup-acl
     Starting ACL AdminBundle configuration
     > install ACL for sonata.media.admin.media
        - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_GUEST, permissions: ["VIEW","LIST"]
@@ -418,7 +418,7 @@ object of an admin:
 
 .. code-block:: bash
 
-    $ php app/console sonata:admin:generate-object-acl
+    $ php bin/console sonata:admin:generate-object-acl
 
 Optionally, you can specify an object owner, and step through each admin. See
 the help of the command for more information.
@@ -628,7 +628,7 @@ Usage
 ~~~~~
 
 Every time you create a new ``Admin`` class, you should start with the command
-``php app/console sonata:admin:setup-acl`` so the ACL database will be updated
+``php bin/console sonata:admin:setup-acl`` so the ACL database will be updated
 with the latest roles and permissions.
 
 In the templates, or in your code, you can use the Admin method ``isGranted()``:
