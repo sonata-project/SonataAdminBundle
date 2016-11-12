@@ -247,13 +247,13 @@ You can view all of the current routes defined for an Admin class by using the c
 
 .. code-block:: bash
 
- $ php app/console sonata:admin:explain <<admin.service.name>>
+ $ php bin/console sonata:admin:explain <<admin.service.name>>
 
 for example if your Admin is called sonata.admin.foo you would run
 
 .. code-block:: bash
 
-    $ php app/console sonata:admin:explain app.admin.foo
+    $ php bin/console sonata:admin:explain app.admin.foo
 
 Sonata internally checks for the existence of a route before linking to it. As a result, removing a
 route will prevent links to that action from appearing in the administrative interface. For example,

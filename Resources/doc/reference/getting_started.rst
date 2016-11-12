@@ -282,7 +282,7 @@ Install your assets:
 
 .. code-block:: bash
 
-    $ php app/console assets:install
+    $ php bin/console assets:install
 
 Now you can change your project's main config.yml file:
 
