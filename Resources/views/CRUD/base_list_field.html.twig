@@ -9,7 +9,11 @@ file that was distributed with this source code.
 
 #}
 
-<td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}"{% if field_description.options.row_align is defined %} style="text-align:{{ field_description.options.row_align }}"{% endif %}>
+{% set cell_style = field_description.options.cell_style|default('') %}
+{% if field_description.options.row_align is defined %}
+    {% set cell_style = cell_style~'text-align:'~field_description.options.row_align %}
+{% endif %}
+<td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}"{% if cell_style %} style="{{cell_style}}"{% endif %}>
     {% set route = field_description.options.route.name|default(null) %}
     {% set action = route == 'show' ? 'VIEW' : route|upper %}
 
@@ -21,7 +25,19 @@ file that was distributed with this source code.
         and admin.isGranted(action, action in ['VIEW', 'EDIT'] ? object : null)
     %}
         <a class="sonata-link-identifier" href="{{ admin.generateObjectUrl(route, object, field_description.options.route.parameters) }}">
-            {%- block field %}{{ value }}{% endblock -%}
+            {%- block field %}
+                {% spaceless %}
+                {% if field_description.options.collapse is defined %}
+                    {% set collapse = field_description.options.collapse %}
+                    <div class="sonata-readmore"
+                          data-readmore-height="{{ collapse.height|default(40) }}"
+                          data-readmore-more="{{ collapse.more|default('read_more')|trans({}, 'SonataAdminBundle') }}"
+                          data-readmore-less="{{ collapse.less|default('read_less')|trans({}, 'SonataAdminBundle') }}">{{ value }}</div>
+                {% else %}
+                    {{ value }}
+                {% endif %}
+                {% endspaceless %}
+            {% endblock -%}
         </a>
     {% else %}
         {% set isEditable = field_description.options.editable is defined and field_description.options.editable and admin.isGranted('EDIT', object) %}
