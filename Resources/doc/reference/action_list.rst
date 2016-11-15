@@ -525,7 +525,6 @@ You can :
 
 - `header_style`: Customize the style of header (width, color, background, align...)
 - `header_class`: Customize the class of the header
-- `cell_style`: Customize the style of inner cells (width, color, background, align...)
 - `collapse`: Allow to collapse long text fields with a "read more" link
 - `row_align`:    Customize the alignment of the rendered inner cells
 
