@@ -14,13 +14,13 @@ cache:create-cache-class
 ------------------------
 
 The ``cache:create-cache-class`` command generates the cache class
-(``app/cache/...env.../classes.php``) from the classes.map file.
+(``var/cache/...env.../classes.php``) from the classes.map file.
 
 Usage example:
 
 .. code-block:: bash
 
-    $ php app/console cache:create-cache-class
+    $ php bin/console cache:create-cache-class
 
 sonata:admin:generate
 ---------------------
@@ -52,7 +52,7 @@ Usage example:
 
 .. code-block:: bash
 
-    $ php app/console sonata:admin:generate AppBundle/Entity/Foo
+    $ php bin/console sonata:admin:generate AppBundle/Entity/Foo
 
 sonata:admin:list
 -----------------
@@ -66,7 +66,7 @@ Usage example:
 
 .. code-block:: bash
 
-    $ php app/console sonata:admin:list
+    $ php bin/console sonata:admin:list
 
 
 .. figure:: ../images/console_admin_list.png
@@ -86,7 +86,7 @@ Usage example:
 
 .. code-block:: bash
 
-    $ php app/console sonata:admin:explain sonata.news.admin.post
+    $ php bin/console sonata:admin:explain sonata.news.admin.post
 
 .. figure:: ../images/console_admin_explain.png
    :align: center
@@ -108,7 +108,7 @@ Usage example:
 
 .. code-block:: bash
 
-    $ php app/console sonata:admin:setup-acl
+    $ php bin/console sonata:admin:setup-acl
 
 sonata:admin:generate-object-acl
 --------------------------------

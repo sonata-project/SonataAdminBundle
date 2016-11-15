@@ -105,7 +105,7 @@ class CRUDController extends Controller
         $formView = $datagrid->getForm()->createView();
 
         // set the theme for the current Admin Form
-        $this->get('twig')->getExtension('form')->renderer->setTheme($formView, $this->admin->getFilterTheme());
+        $this->get('twig')->getExtension('Symfony\Bridge\Twig\Extension\FormExtension')->renderer->setTheme($formView, $this->admin->getFilterTheme());
 
         return $this->render($this->admin->getTemplate('list'), array(
             'action' => 'list',
@@ -256,10 +256,7 @@ class CRUDController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            //TODO: remove this check for 4.0
-            if (method_exists($this->admin, 'preValidate')) {
-                $this->admin->preValidate($object);
-            }
+            $this->admin->preValidate($object);
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
@@ -321,7 +318,7 @@ class CRUDController extends Controller
         $view = $form->createView();
 
         // set the theme for the current Admin Form
-        $this->get('twig')->getExtension('form')->renderer->setTheme($view, $this->admin->getFormTheme());
+        $this->get('twig')->getExtension('Symfony\Bridge\Twig\Extension\FormExtension')->renderer->setTheme($view, $this->admin->getFormTheme());
 
         return $this->render($this->admin->getTemplate($templateKey), array(
             'action' => 'edit',
@@ -371,22 +368,13 @@ class CRUDController extends Controller
             unset($data['_sonata_csrf_token']);
         }
 
-        // NEXT_MAJOR: Remove reflection check.
-        $reflector = new \ReflectionMethod($this->admin, 'getBatchActions');
-        if ($reflector->getDeclaringClass()->getName() === get_class($this->admin)) {
-            @trigger_error('Override Sonata\AdminBundle\Admin\AbstractAdmin::getBatchActions method'
-                .' is deprecated since version 3.2.'
-                .' Use Sonata\AdminBundle\Admin\AbstractAdmin::configureBatchActions instead.'
-                .' The method will be final in 4.0.', E_USER_DEPRECATED
-            );
-        }
         $batchActions = $this->admin->getBatchActions();
         if (!array_key_exists($action, $batchActions)) {
             throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
         }
 
         $camelizedAction = Inflector::classify($action);
-        $isRelevantAction = sprintf('batchAction%sIsRelevant', $camelizedAction);
+        $isRelevantAction = sprintf('batchAction%sIsRelevant', ucfirst($camelizedAction));
 
         if (method_exists($this, $isRelevantAction)) {
             $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $allElements);
@@ -504,10 +492,7 @@ class CRUDController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            //TODO: remove this check for 4.0
-            if (method_exists($this->admin, 'preValidate')) {
-                $this->admin->preValidate($object);
-            }
+            $this->admin->preValidate($object);
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
@@ -564,7 +549,7 @@ class CRUDController extends Controller
         $view = $form->createView();
 
         // set the theme for the current Admin Form
-        $this->get('twig')->getExtension('form')->renderer->setTheme($view, $this->admin->getFormTheme());
+        $this->get('twig')->getExtension('Symfony\Bridge\Twig\Extension\FormExtension')->renderer->setTheme($view, $this->admin->getFormTheme());
 
         return $this->render($this->admin->getTemplate($templateKey), array(
             'action' => 'create',
