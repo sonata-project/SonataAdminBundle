@@ -105,7 +105,7 @@ class CRUDController extends Controller
         $formView = $datagrid->getForm()->createView();
 
         // set the theme for the current Admin Form
-        $this->get('twig')->getExtension('form')->renderer->setTheme($formView, $this->admin->getFilterTheme());
+        $this->get('twig.form.renderer')->setTheme($formView, $this->admin->getFilterTheme());
 
         return $this->render($this->admin->getTemplate('list'), array(
             'action' => 'list',
