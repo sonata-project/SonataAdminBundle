@@ -21,7 +21,19 @@ file that was distributed with this source code.
         and admin.isGranted(action, action in ['VIEW', 'EDIT'] ? object : null)
     %}
         <a class="sonata-link-identifier" href="{{ admin.generateObjectUrl(route, object, field_description.options.route.parameters) }}">
-            {%- block field %}{{ value }}{% endblock -%}
+            {%- block field %}
+                {% spaceless %}
+                {% if field_description.options.collapse is defined %}
+                    {% set collapse = field_description.options.collapse %}
+                    <div class="sonata-readmore"
+                          data-readmore-height="{{ collapse.height|default(40) }}"
+                          data-readmore-more="{{ collapse.more|default('read_more')|trans({}, 'SonataAdminBundle') }}"
+                          data-readmore-less="{{ collapse.less|default('read_less')|trans({}, 'SonataAdminBundle') }}">{{ value }}</div>
+                {% else %}
+                    {{ value }}
+                {% endif %}
+                {% endspaceless %}
+            {% endblock -%}
         </a>
     {% else %}
         {% set isEditable = field_description.options.editable is defined and field_description.options.editable and admin.isGranted('EDIT', object) %}

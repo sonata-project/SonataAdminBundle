@@ -466,6 +466,14 @@
                 <source>label_unknown_user</source>
                 <target>непознат</target>
             </trans-unit>
+            <trans-unit id="read_more">
+                <source>read_more</source>
+                <target>read_more</target>
+            </trans-unit>
+            <trans-unit id="read_less">
+                <source>read_less</source>
+                <target>read_less</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -357,6 +357,7 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonataadmin/vendor/slimScroll/jquery.slimscroll.min.js',
                                 'bundles/sonataadmin/vendor/waypoints/lib/jquery.waypoints.min.js',
                                 'bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js',
+                                'bundles/sonataadmin/vendor/readmore-js/readmore.min.js',
 
                                 'bundles/sonataadmin/Admin.js',
                                 'bundles/sonataadmin/treeview.js',
