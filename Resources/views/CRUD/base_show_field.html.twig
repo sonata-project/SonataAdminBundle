@@ -10,7 +10,25 @@ file that was distributed with this source code.
 #}
 
 <th{% if(is_diff|default(false)) %} class="diff"{% endif %}>{% block name %}{{ field_description.label|trans({}, field_description.translationDomain ?: admin.translationDomain) }}{% endblock %}</th>
-<td>{% block field %}{% if field_description.options.safe %}{{ value|raw }}{% else %}{{ value|nl2br }}{% endif %}{% endblock %}</td>
+<td>
+    {%- block field -%}
+        {% spaceless %}
+            {% set collapse = field_description.options.collapse|default(false) %}
+            {% if collapse %}
+                <div class="sonata-readmore"
+                      data-readmore-height="{{ collapse.height|default(40) }}"
+                      data-readmore-more="{{ collapse.more|default('read_more')|trans({}, 'SonataAdminBundle') }}"
+                      data-readmore-less="{{ collapse.less|default('read_less')|trans({}, 'SonataAdminBundle') }}">
+                    {% block field_value %}
+                        {% if field_description.options.safe %}{{ value|raw }}{% else %}{{ value|nl2br }}{% endif %}
+                    {% endblock %}
+                </div>
+            {% else %}
+                {{ block('field_value') }}
+            {% endif %}
+        {% endspaceless %}
+    {%- endblock -%}
+</td>
 
 {% block field_compare %}
     {% if(value_compare is defined) %}
