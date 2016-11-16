@@ -1149,6 +1149,45 @@ EOT
                     ),
                 ),
             ),
+
+            array(
+                <<<'EOT'
+<td class="sonata-ba-list-field sonata-ba-list-field-text" objectId="12345">
+<div
+    class="sonata-readmore"
+    data-readmore-height="40"
+    data-readmore-more="Read more"
+    data-readmore-less="Close">A very long string</div>
+</td>
+EOT
+                ,
+                'text',
+                'A very long string',
+                array(
+                    'collapse' => true,
+                ),
+            ),
+            array(
+                <<<'EOT'
+<td class="sonata-ba-list-field sonata-ba-list-field-text" objectId="12345">
+<div
+    class="sonata-readmore"
+    data-readmore-height="10"
+    data-readmore-more="More"
+    data-readmore-less="Less">A very long string</div>
+</td>
+EOT
+                ,
+                'text',
+                'A very long string',
+                array(
+                    'collapse' => array(
+                        'height' => 10,
+                        'more' => 'More',
+                        'less' => 'Less',
+                    ),
+                ),
+            ),
         );
     }
 
@@ -1225,15 +1264,17 @@ EOT
                 }
             }));
 
-        $this->assertSame($expected, trim(preg_replace(
-            '/\s+/',
-            ' ',
-            $this->twigExtension->renderViewElement(
-                $this->environment,
-                $this->fieldDescription,
-                $this->object
-            )
-        )));
+
+        $this->assertSame(
+                $this->removeExtraWhitespace($expected),
+                $this->removeExtraWhitespace(
+                    $this->twigExtension->renderViewElement(
+                        $this->environment,
+                        $this->fieldDescription,
+                        $this->object
+                    )
+                )
+            );
     }
 
     public function getRenderViewElementTests()
@@ -1707,6 +1748,47 @@ EOT
                 'url',
                 new NoValueException(),
                 array('route' => array('name' => 'sonata_admin_foo')),
+            ),
+
+            array(
+                <<<'EOT'
+<th>Data</th> <td><div
+        class="sonata-readmore"
+        data-readmore-height="40"
+        data-readmore-more="Read more"
+        data-readmore-less="Close">
+            A very long string
+</div></td>
+EOT
+                ,
+                'text',
+                ' A very long string ',
+                array(
+                    'collapse' => true,
+                    'safe' => false,
+                ),
+            ),
+            array(
+                <<<'EOT'
+<th>Data</th> <td><div
+        class="sonata-readmore"
+        data-readmore-height="10"
+        data-readmore-more="More"
+        data-readmore-less="Less">
+            A very long string
+</div></td>
+EOT
+                ,
+                'text',
+                ' A very long string ',
+                array(
+                    'collapse' => array(
+                        'height' => 10,
+                        'more' => 'More',
+                        'less' => 'Less',
+                    ),
+                    'safe' => false,
+                ),
             ),
         );
     }
