@@ -110,7 +110,7 @@ class HelperController
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
 
-        $extension = $this->twig->getExtension('form');
+        $extension = $this->twig->getExtension('Symfony\Bridge\Twig\Extension\FormExtension');
         $extension->initRuntime($this->twig);
         $extension->renderer->setTheme($view, $admin->getFormTheme());
 
@@ -158,7 +158,7 @@ class HelperController
 
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
-        $extension = $this->twig->getExtension('form');
+        $extension = $this->twig->getExtension('Symfony\Bridge\Twig\Extension\FormExtension');
         $extension->initRuntime($this->twig);
         $extension->renderer->setTheme($view, $admin->getFormTheme());
 
@@ -301,7 +301,7 @@ class HelperController
 
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
-        $extension = $this->twig->getExtension('sonata_admin');
+        $extension = $this->twig->getExtension('Sonata\AdminBundle\Twig\Extension\SonataAdminExtension');
 
         $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription);
 
