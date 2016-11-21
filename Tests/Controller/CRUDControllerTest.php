@@ -182,7 +182,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getExtension')
             ->will($this->returnCallback(function ($name) use ($formExtension) {
                 switch ($name) {
-                    case 'form':
+                    case 'Symfony\Bridge\Twig\Extension\FormExtension':
                         return $formExtension;
                 }
             }));

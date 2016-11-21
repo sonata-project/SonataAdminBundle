@@ -56,7 +56,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     {
         $environment = parent::getEnvironment();
         $environment->addGlobal('sonata_admin', $this->getSonataAdmin());
-        if (!$environment->hasExtension('translator')) {
+        if (!$environment->hasExtension('Symfony\Bridge\Twig\Extension\TranslationExtension')) {
             $environment->addExtension(new TranslationExtension(new StubTranslator()));
         }
 
