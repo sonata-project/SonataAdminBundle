@@ -333,8 +333,6 @@ class CRUDController extends Controller
     /**
      * Batch action.
      *
-     * @param Request $request
-     *
      * @return Response|RedirectResponse
      *
      * @throws NotFoundHttpException If the HTTP method is not POST
@@ -460,8 +458,6 @@ class CRUDController extends Controller
     /**
      * Create action.
      *
-     * @param Request $request
-     *
      * @return Response
      *
      * @throws AccessDeniedException If access is not granted
@@ -577,7 +573,6 @@ class CRUDController extends Controller
      * Show action.
      *
      * @param int|string|null $id
-     * @param Request         $request
      *
      * @return Response
      *
@@ -615,7 +610,6 @@ class CRUDController extends Controller
      * Show history revisions for object.
      *
      * @param int|string|null $id
-     * @param Request         $request
      *
      * @return Response
      *
@@ -663,7 +657,6 @@ class CRUDController extends Controller
      *
      * @param int|string|null $id
      * @param string|null     $revision
-     * @param Request         $request
      *
      * @return Response
      *
@@ -725,7 +718,6 @@ class CRUDController extends Controller
      * @param int|string|null $id
      * @param int|string|null $base_revision
      * @param int|string|null $compare_revision
-     * @param Request         $request
      *
      * @return Response
      *
@@ -842,7 +834,6 @@ class CRUDController extends Controller
      * Returns the Response object associated to the acl action.
      *
      * @param int|string|null $id
-     * @param Request         $request
      *
      * @return Response|RedirectResponse
      *
@@ -1110,8 +1101,6 @@ class CRUDController extends Controller
     /**
      * Returns true if the preview is requested to be shown.
      *
-     * @param Request $request
-     *
      * @return bool
      */
     protected function isPreviewRequested()
@@ -1123,8 +1112,6 @@ class CRUDController extends Controller
 
     /**
      * Returns true if the preview has been approved.
-     *
-     * @param Request $request
      *
      * @return bool
      */
@@ -1141,8 +1128,6 @@ class CRUDController extends Controller
      * That means either a preview is requested or the preview has already been shown
      * and it got approved/declined.
      *
-     * @param Request $request
-     *
      * @return bool
      */
     protected function isInPreviewMode()
@@ -1155,8 +1140,6 @@ class CRUDController extends Controller
 
     /**
      * Returns true if the preview has been declined.
-     *
-     * @param Request $request
      *
      * @return bool
      */
