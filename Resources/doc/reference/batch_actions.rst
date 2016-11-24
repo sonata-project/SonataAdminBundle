@@ -38,7 +38,7 @@ merges them onto a single target item. It should only be available when two cond
         ) {
             $actions['merge'] = array(
                 'label' => 'action_merge',
-                'translation_domain' => 'SonataAdminBundle'
+                'translation_domain' => 'SonataAdminBundle',
                 'ask_confirmation' => true
             );
 

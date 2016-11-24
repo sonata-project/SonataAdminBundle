@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
  * @author  Michael Williams <michael.williams@funsational.com>
  */
-class SonataAdminExtension extends Extension implements PrependExtensionInterface
+final class SonataAdminExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * @param array            $configs   An array of configuration settings
