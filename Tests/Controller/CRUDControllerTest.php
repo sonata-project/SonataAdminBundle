@@ -187,6 +187,19 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
                 }
             }));
 
+        $twig->expects($this->any())
+            ->method('getRuntime')
+            ->will($this->returnCallback(function ($name) use ($twigRenderer) {
+                switch ($name) {
+                    case 'Symfony\Bridge\Twig\Form\TwigRenderer':
+                        if (Kernel::MAJOR_VERSION >= 3 && Kernel::MINOR_VERSION >= 2) {
+                            return $twigRenderer;
+                        }
+
+                        throw new \Twig_Error_Runtime('This runtime exists when Symony >= 3.2.');
+                }
+            }));
+
         // NEXT_MAJOR : require sonata/exporter ^1.7 and remove conditional
         if (class_exists('Exporter\Exporter')) {
             $exporter = new Exporter(array(new JsonWriter('/tmp/sonataadmin/export.json')));
