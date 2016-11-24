@@ -1,4 +1,4 @@
-<!-- THE PR TEMPLATE IS NOT AN OPTION. DO NOT DELETE IT! -->
+<!-- THE PR TEMPLATE IS NOT AN OPTION. DO NOT DELETE IT, MAKE SURE YOU READ AND EDIT IT! -->
 
 <!--
     Show us you choose the right branch.
@@ -7,15 +7,14 @@
     - master is for deprecation removals and other changes that cannot be done without a BC-break
     More details here: https://github.com/sonata-project/SonataAdminBundle/blob/3.x/CONTRIBUTING.md#the-base-branch
 -->
-I am targetting this branch, because…
+I am targetting this branch, because {reason}.
 
 <!--
     Specify which issues will be fixed/closed.
     Remove it if this is not related.
 -->
 
-Closes #
-Fixes #
+Closes #{put_issue_number_here}
 
 ## Changelog
 
