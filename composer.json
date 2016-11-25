@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "php": "^5.3 || ^7.0",
+        "php": "^5.6 || ^7.0",
         "doctrine/common": "^2.2",
         "doctrine/inflector": "^1.0",
         "knplabs/knp-menu-bundle": "^2.1.1",

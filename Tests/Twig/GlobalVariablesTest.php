@@ -64,44 +64,4 @@ class GlobalVariablesTest extends \PHPUnit_Framework_TestCase
 
         $globalVariables->objectUrl($this->code, $this->action, 'foo', array('bar'));
     }
-
-    /**
-     * @group legacy
-     * NEXT_MAJOR: remove this method
-     */
-    public function testWithContainer()
-    {
-        $this->admin->expects($this->once())
-            ->method('generateUrl')
-            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', array('foo'), false)
-            ->willReturn(true);
-
-        $this->pool->expects($this->once())
-            ->method('getAdminByAdminCode')
-            ->with('sonata.page.admin.page')
-            ->willReturn($this->admin);
-
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $container->expects($this->once())
-            ->method('get')
-            ->with('sonata.admin.pool')
-            ->willReturn($this->pool);
-
-        $globalVariables = new GlobalVariables($container);
-
-        $globalVariables->url($this->code, $this->action, array('foo'));
-    }
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     */
-    public function testInvalidArgumentException()
-    {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            '$adminPool should be an instance of Sonata\AdminBundle\Admin\Pool'
-        );
-
-        new GlobalVariables('foo');
-    }
 }

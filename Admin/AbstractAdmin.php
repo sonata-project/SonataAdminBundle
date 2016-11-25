@@ -43,7 +43,6 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 
@@ -276,17 +275,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      * @var \Symfony\Component\HttpFoundation\Request
      */
     protected $request;
-
-    /**
-     * The translator component.
-     *
-     * NEXT_MAJOR: remove this property
-     *
-     * @var \Symfony\Component\Translation\TranslatorInterface
-     *
-     * @deprecated since 3.9, to be removed with 4.0
-     */
-    protected $translator;
 
     /**
      * The related form contractor.
@@ -577,14 +565,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
         foreach ($this->getExportFields() as $key => $field) {
             $label = $this->getTranslationLabel($field, 'export', 'label');
             $transLabel = $this->trans($label);
-
-            // NEXT_MAJOR: Remove this hack, because all field labels will be translated with the major release
-            // No translation key exists
-            if ($transLabel == $label) {
-                $fields[$key] = $field;
-            } else {
-                $fields[$transLabel] = $field;
-            }
         }
 
         return $this->getModelManager()->getDataSourceIterator($datagrid, $fields);
@@ -1546,13 +1526,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
             $message = <<<'EOT'
 You are trying to set entity an instance of "%s",
 which is not the one registered with this admin class ("%s").
-This is deprecated since 3.5 and will no longer be supported in 4.0.
 EOT;
-
-            @trigger_error(
-                sprintf($message, get_class($subject), $this->class),
-                E_USER_DEPRECATED
-            ); // NEXT_MAJOR : throw an exception instead
+            throw new \InvalidArgumentException($message);
         }
 
         $this->subject = $subject;
@@ -1938,33 +1913,6 @@ EOT;
     }
 
     /**
-     * Translate a message id.
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @param string      $id
-     * @param int         $count
-     * @param array       $parameters
-     * @param string|null $domain
-     * @param string|null $locale
-     *
-     * @return string the translated string
-     *
-     * @deprecated since 3.9, to be removed with 4.0
-     */
-    public function transChoice($id, $count, array $parameters = array(), $domain = null, $locale = null)
-    {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
-
-        $domain = $domain ?: $this->getTranslationDomain();
-
-        return $this->translator->transChoice($id, $count, $parameters, $domain, $locale);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function setTranslationDomain($translationDomain)
@@ -1978,40 +1926,6 @@ EOT;
     public function getTranslationDomain()
     {
         return $this->translationDomain;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @deprecated since 3.9, to be removed with 4.0
-     */
-    public function setTranslator(TranslatorInterface $translator)
-    {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
-
-        $this->translator = $translator;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @deprecated since 3.9, to be removed with 4.0
-     */
-    public function getTranslator()
-    {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
-
-        return $this->translator;
     }
 
     /**
@@ -2789,6 +2703,24 @@ EOT;
     }
 
     /**
+     * Returns a list of default filters.
+     *
+     * @return array
+     */
+    final public function getDefaultFilterValues()
+    {
+        $defaultFilterValues = array();
+
+        $this->configureDefaultFilterValues($defaultFilterValues);
+
+        foreach ($this->getExtensions() as $extension) {
+            $extension->configureDefaultFilterValues($this, $defaultFilterValues);
+        }
+
+        return $defaultFilterValues;
+    }
+
+    /**
      * Hook to run after initilization.
      */
     protected function configure()
@@ -2806,27 +2738,6 @@ EOT;
     final protected function urlize($word, $sep = '_')
     {
         return strtolower(preg_replace('/[^a-z0-9_]/i', $sep.'$1', $word));
-    }
-
-    /**
-     * Returns a list of default filters.
-     *
-     * @return array
-     */
-    final protected function getDefaultFilterValues()
-    {
-        $defaultFilterValues = array();
-
-        $this->configureDefaultFilterValues($defaultFilterValues);
-
-        foreach ($this->getExtensions() as $extension) {
-            // NEXT_MAJOR: remove method check in next major release
-            if (method_exists($extension, 'configureDefaultFilterValues')) {
-                $extension->configureDefaultFilterValues($this, $defaultFilterValues);
-            }
-        }
-
-        return $defaultFilterValues;
     }
 
     /**
@@ -2889,21 +2800,6 @@ EOT;
      {
          return $actions;
      }
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @param MenuItemInterface $menu
-     * @param                   $action
-     * @param AdminInterface    $childAdmin
-     *
-     * @return mixed
-     *
-     * @deprecated Use configureTabMenu instead
-     */
-    protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
-    {
-    }
 
     /**
      * Configures the tab menu in your admin.

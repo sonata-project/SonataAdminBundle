@@ -40,7 +40,6 @@ class GroupMenuProvider implements MenuProviderInterface
     private $checker;
 
     /**
-     * NEXT_MAJOR: Remove default value null of $checker.
      * NEXT_MAJOR: Allow only injection of AuthorizationCheckerInterface when bumping requirements to >=Symfony 2.6.
      *
      * @param FactoryInterface $menuFactory
@@ -48,26 +47,19 @@ class GroupMenuProvider implements MenuProviderInterface
      * @param \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface|
      *        \Symfony\Component\Security\Core\SecurityContextInterface|null  $checker
      */
-    public function __construct(FactoryInterface $menuFactory, Pool $pool, $checker = null)
+    public function __construct(FactoryInterface $menuFactory, Pool $pool, $checker)
     {
         $this->menuFactory = $menuFactory;
         $this->pool = $pool;
 
         /*
-         * NEXT_MAJOR: Remove this if blocks.
          * NEXT_MAJOR: Remove instance type checking when bumping requirements to >=Symfony 2.6.
          */
-        if (null === $checker) {
-            @trigger_error(
-                'Passing no 3rd argument is deprecated since version 3.x and will be mandatory in 4.0.
-                Pass Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as 3rd argument.',
-                E_USER_DEPRECATED
-            );
-        } elseif (!$checker instanceof \Symfony\Component\Security\Core\SecurityContextInterface
+        if (!$checker instanceof \Symfony\Component\Security\Core\SecurityContextInterface
             && !$checker instanceof \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface
         ) {
             throw new \InvalidArgumentException(
-                'Argument 3 must be an instance of either \Symfony\Component\Security\Core\SecurityContextInterface or 
+                'Argument 3 must be an instance of either \Symfony\Component\Security\Core\SecurityContextInterface or
                 \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'
             );
         }
@@ -113,13 +105,10 @@ class GroupMenuProvider implements MenuProviderInterface
                         'admin' => $admin,
                     );
                 } else {
-                    //NEXT_MAJOR: Remove if statement of null checker.
-                    if (null !== $this->checker) {
-                        if ((!empty($item['roles']) && !$this->checker->isGranted($item['roles']))
-                            || (!empty($group['roles']) && !$this->checker->isGranted($group['roles'], $item['route']))
-                        ) {
-                            continue;
-                        }
+                    if ((!empty($item['roles']) && !$this->checker->isGranted($item['roles']))
+                        || (!empty($group['roles']) && !$this->checker->isGranted($group['roles'], $item['route']))
+                    ) {
+                        continue;
                     }
 
                     $label = $item['label'];

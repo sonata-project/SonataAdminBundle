@@ -79,20 +79,6 @@ class AdminHelper
     }
 
     /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated
-     *
-     * @param string $code
-     *
-     * @return AdminInterface
-     */
-    public function getAdmin($code)
-    {
-        return $this->pool->getInstance($code);
-    }
-
-    /**
      * Note:
      *   This code is ugly, but there is no better way of doing it.
      *   For now the append form element action used to add a new row works
@@ -216,33 +202,6 @@ class AdminHelper
         }
 
         $object->$method($instance);
-    }
-
-    /**
-     * Camelize a string.
-     *
-     * NEXT_MAJOR: remove this method.
-     *
-     * @static
-     *
-     * @param string $property
-     *
-     * @return string
-     *
-     * @deprecated Deprecated since version 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead
-     */
-    public function camelize($property)
-    {
-        @trigger_error(
-            sprintf(
-                'The %s method is deprecated since 3.1 and will be removed in 4.0. '.
-                'Use \Doctrine\Common\Inflector\Inflector::classify() instead.',
-                __METHOD__
-            ),
-            E_USER_DEPRECATED
-        );
-
-        return Inflector::classify($property);
     }
 
     /**

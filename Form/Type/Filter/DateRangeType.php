@@ -28,15 +28,6 @@ class DateRangeType extends AbstractType
     const TYPE_NOT_BETWEEN = 2;
 
     /**
-     * NEXT_MAJOR: remove this property.
-     *
-     * @deprecated since 3.5, to be removed with 4.0
-     *
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
      * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)

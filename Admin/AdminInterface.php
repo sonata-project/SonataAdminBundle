@@ -23,11 +23,9 @@ use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\CoreBundle\Model\Metadata;
-use Sonata\CoreBundle\Validator\ErrorElement;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 
@@ -70,20 +68,6 @@ interface AdminInterface
      * @return DatagridBuilderInterface
      */
     public function getDatagridBuilder();
-
-    /**
-     * Set translator.
-     *
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator);
-
-    /**
-     * Get translator.
-     *
-     * @return TranslatorInterface
-     */
-    public function getTranslator();
 
     /**
      * @param Request $request
@@ -201,11 +185,9 @@ interface AdminInterface
     public function getManagerType();
 
     /**
-     * @param string $context NEXT_MAJOR: remove this argument
-     *
      * @return ProxyQueryInterface
      */
-    public function createQuery($context = 'list');
+    public function createQuery();
 
     /**
      * @return FormBuilderInterface the form builder
@@ -286,22 +268,6 @@ interface AdminInterface
      * @return bool
      */
     public function hasParentFieldDescription();
-
-    /**
-     * translate a message id.
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @param string $id
-     * @param array  $parameters
-     * @param null   $domain
-     * @param null   $locale
-     *
-     * @return string the translated string
-     *
-     * @deprecated since 3.9, to be removed in 4.0
-     */
-    public function trans($id, array $parameters = array(), $domain = null, $locale = null);
 
     /**
      * Returns the list of available urls.
@@ -628,6 +594,8 @@ interface AdminInterface
 
     /**
      * @param object $subject
+     *
+     * @throws \InvalidArgumentException
      */
     public function setSubject($subject);
 
@@ -759,17 +727,6 @@ interface AdminInterface
      * @return bool
      */
     public function hasSubject();
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @param ErrorElement $errorElement
-     * @param mixed        $object
-     *
-     * @deprecated this feature cannot be stable, use a custom validator,
-     *             the feature will be removed with Symfony 2.2
-     */
-    public function validate(ErrorElement $errorElement, $object);
 
     /**
      * @param string $context
@@ -1112,14 +1069,12 @@ interface AdminInterface
      *
      * @return bool
      */
-//    NEXT_MAJOR: uncomment this method in 4.0
-    // public function isDefaultFilter($name);
+     public function isDefaultFilter($name);
 
     /*
      * Returns a list of default filters.
      *
      * @return array
      */
-//    NEXT_MAJOR: uncomment this method in 4.0
-    // public function getDefaultFilterValues();
+     public function getDefaultFilterValues();
 }
