@@ -2,6 +2,25 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.10.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.9.0...3.10.0) - 2016-11-25
+### Added
+- Added new `roles` configuration field to configuration of menu item routes.
+- Improved class support for filter factory
+- Add a length option to truncate columns on list view
+
+### Changed
+- Update adminLTE dependency to 2.3.6
+- Use block instead of macro to render show groups
+
+### Fixed
+- Fixed missing access check for menu route items.
+- Fixed `trigger_error` calls - `E_USER_DEPRECATED` was concatenated to the sentence, not passed as argument
+- Deep arrays can now be displayed without error, and recursively
+- Fixed bug in revisions compare view
+
+### Deprecated
+- Deprecated `base_show_macro.html.twig`
+
 ## [3.9.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.8.0...3.9.0) - 2016-10-06
 ### Added
 - Added `CRUDController::trans` method
