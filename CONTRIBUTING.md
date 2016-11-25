@@ -208,6 +208,21 @@ if (/* some condition showing the user is using the legacy way */) {
 }
 ```
 
+Additionally, and when applicable, you must use the `@deprecated` tag on classes or methods you wish to deprecate,
+along with a message directed at the end user (as opposed to other contributors).
+
+
+```php
+/**
+ * NEXT_MAJOR: remove this method
+ *
+ * @deprecated since 3.x, to be removed in 4.0. Use Foo::bar instead.
+ */
+public function baz()
+{
+}
+```
+
 In that case, unit tests might show your deprecation notice. You must mark such tests with the `@group legacy` annotation,
 and if need be, isolate them in a new test method that can simply be removed in the non-BC PR.
 
