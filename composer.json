@@ -5,6 +5,12 @@
     "keywords": ["Admin Generator", "admin", "sonata", "bootstrap"],
     "homepage": "https://sonata-project.org/bundles/admin",
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/greg0ire/twig-bridge"
+        }
+    ],
     "authors": [
         {
             "name": "Thomas Rabaix",
@@ -37,7 +43,7 @@
         "symfony/security-bundle": "^2.3 || ^3.0",
         "symfony/templating": "^2.3 || ^3.0",
         "symfony/translation": "^2.3 || ^3.0",
-        "symfony/twig-bridge": "^2.3.5 || ^3.0",
+        "symfony/twig-bridge": "dev-pr_20769 as 3.2.0",
         "symfony/validator": "^2.3 || ^3.0",
         "twig/extensions": "^1.0",
         "twig/twig": "^1.26"
