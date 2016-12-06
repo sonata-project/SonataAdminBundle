@@ -423,6 +423,18 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $twig = new \Twig_Environment($this->getMock('\Twig_LoaderInterface'));
         $twig->addExtension(new FormExtension($mockRenderer));
+        if (Kernel::MAJOR_VERSION >= 3 && Kernel::MINOR_VERSION >= 2) {
+            $runtimeLoader = $this
+                ->getMockBuilder('Twig_RuntimeLoaderInterface')
+                ->getMock();
+
+            $runtimeLoader->expects($this->once())
+                ->method('load')
+                ->with($this->equalTo('Symfony\Bridge\Twig\Form\TwigRenderer'))
+                ->will($this->returnValue($mockRenderer));
+
+            $twig->addRuntimeLoader($runtimeLoader);
+        }
         $request = new Request(array(
             'code' => 'sonata.post.admin',
             'objectId' => 42,
