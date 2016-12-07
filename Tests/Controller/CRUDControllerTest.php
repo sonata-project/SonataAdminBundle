@@ -192,7 +192,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function ($name) use ($twigRenderer) {
                 switch ($name) {
                     case 'Symfony\Bridge\Twig\Form\TwigRenderer':
-                        if (Kernel::MAJOR_VERSION >= 3 && Kernel::MINOR_VERSION >= 2) {
+                        if (method_exists('Symfony\Bridge\Twig\AppVariable', 'getToken')) {
                             return $twigRenderer;
                         }
 
