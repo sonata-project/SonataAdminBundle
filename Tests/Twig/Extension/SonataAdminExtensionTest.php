@@ -1375,7 +1375,6 @@ EOT
                 }
             }));
 
-
         $this->assertSame(
                 $this->removeExtraWhitespace($expected),
                 $this->removeExtraWhitespace(

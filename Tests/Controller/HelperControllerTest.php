@@ -20,7 +20,6 @@ use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 
@@ -106,7 +105,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @dataProvider getValidatorInterfaces
      */
     public function testgetShortObjectDescriptionActionInvalidAdmin($validatorInterface)
@@ -330,7 +329,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
         $twig = new \Twig_Environment($this->getMock('\Twig_LoaderInterface'));
         $twig->addExtension(new FormExtension($mockRenderer));
 
-        if (Kernel::MAJOR_VERSION >= 3 && Kernel::MINOR_VERSION >= 2) {
+        if (method_exists('Symfony\Bridge\Twig\AppVariable', 'getToken')) {
             $runtimeLoader = $this
                 ->getMockBuilder('Twig_RuntimeLoaderInterface')
                 ->getMock();
@@ -423,7 +422,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $twig = new \Twig_Environment($this->getMock('\Twig_LoaderInterface'));
         $twig->addExtension(new FormExtension($mockRenderer));
-        if (Kernel::MAJOR_VERSION >= 3 && Kernel::MINOR_VERSION >= 2) {
+        if (method_exists('Symfony\Bridge\Twig\AppVariable', 'getToken')) {
             $runtimeLoader = $this
                 ->getMockBuilder('Twig_RuntimeLoaderInterface')
                 ->getMock();
@@ -514,7 +513,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @exceptionMessage Invalid format
      */
     public function testRetrieveAutocompleteItemsActionNotGranted()
@@ -537,7 +536,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @exceptionMessage Invalid format
      */
     public function testRetrieveFilterAutocompleteItemsActionNotGranted()
@@ -561,7 +560,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @exceptionMessage Autocomplete list can`t be retrieved because the form element is disabled or read_only.
      */
     public function testRetrieveAutocompleteItemsActionDisabledFormelememt()
@@ -631,7 +630,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
     public function testRetrieveAutocompleteItemsActionNotGrantedTarget()
     {
