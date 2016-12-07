@@ -106,7 +106,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @dataProvider getValidatorInterfaces
      */
     public function testgetShortObjectDescriptionActionInvalidAdmin($validatorInterface)
@@ -514,7 +514,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @exceptionMessage Invalid format
      */
     public function testRetrieveAutocompleteItemsActionNotGranted()
@@ -537,7 +537,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @exceptionMessage Invalid format
      */
     public function testRetrieveFilterAutocompleteItemsActionNotGranted()
@@ -561,7 +561,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @exceptionMessage Autocomplete list can`t be retrieved because the form element is disabled or read_only.
      */
     public function testRetrieveAutocompleteItemsActionDisabledFormelememt()
@@ -631,7 +631,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
     public function testRetrieveAutocompleteItemsActionNotGrantedTarget()
     {
