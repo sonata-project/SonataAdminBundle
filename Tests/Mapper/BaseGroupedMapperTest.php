@@ -103,7 +103,7 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        RuntimeException
+     * @expectedException        \RuntimeException
      * @expectedExceptionMessage You should close previous group "fooGroup1" with end() before adding new tab "fooGroup2".
      */
     public function testGroupNotClosedException()
@@ -113,7 +113,7 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        RuntimeException
+     * @expectedException        \RuntimeException
      * @expectedExceptionMessage New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields.
      */
     public function testGroupInTabException()
@@ -123,7 +123,7 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        RuntimeException
+     * @expectedException        \RuntimeException
      * @expectedExceptionMessage You should close previous tab "fooTab" with end() before adding new tab "barTab".
      */
     public function testTabInTabException()
@@ -144,7 +144,7 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        RuntimeException
+     * @expectedException        \RuntimeException
      * @expectedExceptionMessage No open tabs or groups, you cannot use end()
      */
     public function testEndException()

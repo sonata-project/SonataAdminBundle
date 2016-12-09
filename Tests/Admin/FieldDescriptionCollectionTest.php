@@ -48,7 +48,7 @@ class FieldDescriptionCollectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        InvalidArgumentException
+     * @expectedException        \InvalidArgumentException
      * @expectedExceptionMessage Element "foo" does not exist.
      */
     public function testNonExistentField()
@@ -58,7 +58,7 @@ class FieldDescriptionCollectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        RuntimeException
+     * @expectedException        \RuntimeException
      * @expectedExceptionMessage Cannot set value, use add
      */
     public function testArrayAccessSetField()
