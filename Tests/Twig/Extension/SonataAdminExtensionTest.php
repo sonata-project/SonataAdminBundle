@@ -1297,7 +1297,7 @@ EOT
     }
 
     /**
-     * @expectedException        Twig_Error_Loader
+     * @expectedException        \Twig_Error_Loader
      * @expectedExceptionMessage Unable to find template "base_list_nonexistent_field.html.twig"
      * @group                    legacy
      */

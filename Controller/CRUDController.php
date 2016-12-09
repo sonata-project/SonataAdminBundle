@@ -1348,28 +1348,6 @@ class CRUDController extends Controller
     }
 
     /**
-     * Sets the admin form theme to form view. Used for compatibility between Symfony versions.
-     *
-     * @param FormView $formView
-     */
-    protected function setFormTheme(FormView $formView)
-    {
-        $twig = $this->get('twig');
-
-        try {
-            $twig
-                ->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')
-                ->setTheme($formView, $this->admin->getFilterTheme());
-        } catch (\Twig_Error_Runtime $e) {
-            // BC for Symfony < 3.2 where this runtime not exists
-            $twig
-                ->getExtension('Symfony\Bridge\Twig\Extension\FormExtension')
-                ->renderer
-                ->setTheme($formView, $this->admin->getFilterTheme());
-        }
-    }
-
-    /**
      * Translate a message id.
      *
      * @param string $id
@@ -1384,5 +1362,27 @@ class CRUDController extends Controller
         $domain = $domain ?: $this->admin->getTranslationDomain();
 
         return $this->get('translator')->trans($id, $parameters, $domain, $locale);
+    }
+
+    /**
+     * Sets the admin form theme to form view. Used for compatibility between Symfony versions.
+     *
+     * @param FormView $formView
+     */
+    private function setFormTheme(FormView $formView)
+    {
+        $twig = $this->get('twig');
+
+        try {
+            $twig
+                ->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')
+                ->setTheme($formView, $this->admin->getFilterTheme());
+        } catch (\Twig_Error_Runtime $e) {
+            // BC for Symfony < 3.2 where this runtime not exists
+            $twig
+                ->getExtension('Symfony\Bridge\Twig\Extension\FormExtension')
+                ->renderer
+                ->setTheme($formView, $this->admin->getFilterTheme());
+        }
     }
 }
