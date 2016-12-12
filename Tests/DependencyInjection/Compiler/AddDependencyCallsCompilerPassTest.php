@@ -55,7 +55,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass::process
+     * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass::process
      */
     public function testProcessParsingFullValidConfig()
     {
@@ -115,7 +115,7 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass::process
+     * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass::process
      */
     public function testProcessResultingConfig()
     {
