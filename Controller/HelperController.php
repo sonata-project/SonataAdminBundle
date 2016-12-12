@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
+use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -108,13 +109,10 @@ class HelperController
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
 
         // render the widget
-        // todo : fix this, the twig environment variable is not set inside the extension ...
+        $renderer = $this->getFormRenderer();
+        $renderer->setTheme($view, $admin->getFormTheme());
 
-        $extension = $this->twig->getExtension('Symfony\Bridge\Twig\Extension\FormExtension');
-        $extension->initRuntime($this->twig);
-        $extension->renderer->setTheme($view, $admin->getFormTheme());
-
-        return new Response($extension->renderer->searchAndRenderBlock($view, 'widget'));
+        return new Response($renderer->searchAndRenderBlock($view, 'widget'));
     }
 
     /**
@@ -157,12 +155,10 @@ class HelperController
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
 
         // render the widget
-        // todo : fix this, the twig environment variable is not set inside the extension ...
-        $extension = $this->twig->getExtension('Symfony\Bridge\Twig\Extension\FormExtension');
-        $extension->initRuntime($this->twig);
-        $extension->renderer->setTheme($view, $admin->getFormTheme());
+        $renderer = $this->getFormRenderer();
+        $renderer->setTheme($view, $admin->getFormTheme());
 
-        return new Response($extension->renderer->searchAndRenderBlock($view, 'widget'));
+        return new Response($renderer->searchAndRenderBlock($view, 'widget'));
     }
 
     /**
@@ -496,5 +492,24 @@ class HelperController
         }
 
         return $fieldDescription;
+    }
+
+    /**
+     * @return TwigRenderer
+     */
+    private function getFormRenderer()
+    {
+        try {
+            $runtime = $this->twig->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer');
+            $runtime->setEnvironment($this->twig);
+
+            return $runtime;
+        } catch (\Twig_Error_Runtime $e) {
+            // BC for Symfony < 3.2 where this runtime not exists
+            $extension = $this->twig->getExtension('Symfony\Bridge\Twig\Extension\FormExtension');
+            $extension->initRuntime($this->twig);
+
+            return $extension->renderer;
+        }
     }
 }
