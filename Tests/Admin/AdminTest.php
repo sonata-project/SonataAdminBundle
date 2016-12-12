@@ -44,7 +44,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::__construct
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::__construct
      */
     public function testConstructor()
     {
@@ -225,12 +225,12 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::hasChild
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::addChild
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::getChild
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::isChild
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::hasChildren
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::getChildren
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::hasChild
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::addChild
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getChild
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::isChild
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::hasChildren
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getChildren
      */
     public function testChildren()
     {
@@ -254,7 +254,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::configure
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::configure
      */
     public function testConfigure()
     {
@@ -385,7 +385,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      */
     public function testGetBaseRoutePatternWithUnreconizedClassname()
     {
@@ -556,8 +556,8 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::setUniqid
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::getUniqid
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::setUniqid
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getUniqid
      */
     public function testUniqid()
     {
@@ -599,14 +599,14 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::getSubClasses
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::getSubClass
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::setSubClasses
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::hasSubClass
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubClass
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubclassCode
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::getClass
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getSubClasses
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getSubClass
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::setSubClasses
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::hasSubClass
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubClass
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubclassCode
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getClass
      */
     public function testSubClass()
     {
@@ -681,7 +681,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass
      */
     public function testOnlyOneSubclassNeededToBeActive()
     {
@@ -1624,7 +1624,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::configureActionButtons
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::configureActionButtons
      */
     public function testGetActionButtonsList()
     {
@@ -1658,7 +1658,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::configureActionButtons
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::configureActionButtons
      */
     public function testGetActionButtonsListCreateDisabled()
     {
@@ -1676,7 +1676,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::configureBatchActions
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::configureBatchActions
      */
     public function getBatchActions()
     {
@@ -1697,7 +1697,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::showMosaicButton
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::showMosaicButton
      */
     public function testShowMosaicButton()
     {
@@ -1710,7 +1710,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::showMosaicButton
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::showMosaicButton
      */
     public function testShowMosaicButtonHideMosaic()
     {
@@ -1724,7 +1724,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\Admin\AbstractAdmin::getDashboardActions
+     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getDashboardActions
      * @dataProvider provideGetBaseRouteName
      */
     public function testDefaultDashboardActionsArePresent($objFqn, $expected)

@@ -40,7 +40,6 @@ class AdminPermissionMap implements PermissionMapInterface
      * @var array
      */
     private $map = array(
-
         self::PERMISSION_VIEW => array(
             MaskBuilder::MASK_VIEW,
             MaskBuilder::MASK_LIST,
