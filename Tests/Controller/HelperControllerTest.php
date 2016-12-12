@@ -105,7 +105,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @dataProvider getValidatorInterfaces
      */
     public function testgetShortObjectDescriptionActionInvalidAdmin($validatorInterface)
@@ -328,6 +328,20 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $twig = new \Twig_Environment($this->getMock('\Twig_LoaderInterface'));
         $twig->addExtension(new FormExtension($mockRenderer));
+
+        if (method_exists('Symfony\Bridge\Twig\AppVariable', 'getToken')) {
+            $runtimeLoader = $this
+                ->getMockBuilder('Twig_RuntimeLoaderInterface')
+                ->getMock();
+
+            $runtimeLoader->expects($this->once())
+                ->method('load')
+                ->with($this->equalTo('Symfony\Bridge\Twig\Form\TwigRenderer'))
+                ->will($this->returnValue($mockRenderer));
+
+            $twig->addRuntimeLoader($runtimeLoader);
+        }
+
         $request = new Request(array(
             'code' => 'sonata.post.admin',
             'objectId' => 42,
@@ -368,7 +382,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getValidatorInterfaces
      */
-    public function testretrieveFormFieldElementAction($validatorInterface)
+    public function testRetrieveFormFieldElementAction($validatorInterface)
     {
         $object = new AdminControllerHelper_Foo();
 
@@ -408,6 +422,18 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
 
         $twig = new \Twig_Environment($this->getMock('\Twig_LoaderInterface'));
         $twig->addExtension(new FormExtension($mockRenderer));
+        if (method_exists('Symfony\Bridge\Twig\AppVariable', 'getToken')) {
+            $runtimeLoader = $this
+                ->getMockBuilder('Twig_RuntimeLoaderInterface')
+                ->getMock();
+
+            $runtimeLoader->expects($this->once())
+                ->method('load')
+                ->with($this->equalTo('Symfony\Bridge\Twig\Form\TwigRenderer'))
+                ->will($this->returnValue($mockRenderer));
+
+            $twig->addRuntimeLoader($runtimeLoader);
+        }
         $request = new Request(array(
             'code' => 'sonata.post.admin',
             'objectId' => 42,
@@ -487,7 +513,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @exceptionMessage Invalid format
      */
     public function testRetrieveAutocompleteItemsActionNotGranted()
@@ -510,7 +536,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @exceptionMessage Invalid format
      */
     public function testRetrieveFilterAutocompleteItemsActionNotGranted()
@@ -534,7 +560,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @exceptionMessage Autocomplete list can`t be retrieved because the form element is disabled or read_only.
      */
     public function testRetrieveAutocompleteItemsActionDisabledFormelememt()
@@ -604,7 +630,7 @@ class HelperControllerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
     public function testRetrieveAutocompleteItemsActionNotGrantedTarget()
     {
