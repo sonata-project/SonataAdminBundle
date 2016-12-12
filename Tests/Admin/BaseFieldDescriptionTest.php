@@ -146,7 +146,7 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Sonata\AdminBundle\Exception\NoValueException
+     * @expectedException \Sonata\AdminBundle\Exception\NoValueException
      */
     public function testGetValueNoValueException()
     {
@@ -166,7 +166,7 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      */
     public function testExceptionOnNonArrayOption()
     {
