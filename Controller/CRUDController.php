@@ -23,6 +23,7 @@ use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -105,7 +106,7 @@ class CRUDController extends Controller
         $formView = $datagrid->getForm()->createView();
 
         // set the theme for the current Admin Form
-        $this->get('twig')->getExtension('Symfony\Bridge\Twig\Extension\FormExtension')->renderer->setTheme($formView, $this->admin->getFilterTheme());
+        $this->setFormTheme($formView);
 
         return $this->render($this->admin->getTemplate('list'), array(
             'action' => 'list',
@@ -318,14 +319,13 @@ class CRUDController extends Controller
             }
         }
 
-        $view = $form->createView();
-
+        $formView = $form->createView();
         // set the theme for the current Admin Form
-        $this->get('twig')->getExtension('Symfony\Bridge\Twig\Extension\FormExtension')->renderer->setTheme($view, $this->admin->getFormTheme());
+        $this->setFormTheme($formView);
 
         return $this->render($this->admin->getTemplate($templateKey), array(
             'action' => 'edit',
-            'form' => $view,
+            'form' => $formView,
             'object' => $object,
         ), null);
     }
@@ -557,14 +557,13 @@ class CRUDController extends Controller
             }
         }
 
-        $view = $form->createView();
-
+        $formView = $form->createView();
         // set the theme for the current Admin Form
-        $this->get('twig')->getExtension('Symfony\Bridge\Twig\Extension\FormExtension')->renderer->setTheme($view, $this->admin->getFormTheme());
+        $this->setFormTheme($formView);
 
         return $this->render($this->admin->getTemplate($templateKey), array(
             'action' => 'create',
-            'form' => $view,
+            'form' => $formView,
             'object' => $object,
         ), null);
     }
@@ -1346,6 +1345,28 @@ class CRUDController extends Controller
      */
     protected function preList(Request $request)
     {
+    }
+
+    /**
+     * Sets the admin form theme to form view. Used for compatibility between Symfony versions.
+     *
+     * @param FormView $formView
+     */
+    protected function setFormTheme(FormView $formView)
+    {
+        $twig = $this->get('twig');
+
+        try {
+            $twig
+                ->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')
+                ->setTheme($formView, $this->admin->getFilterTheme());
+        } catch (\Twig_Error_Runtime $e) {
+            // BC for Symfony < 3.2 where this runtime not exists
+            $twig
+                ->getExtension('Symfony\Bridge\Twig\Extension\FormExtension')
+                ->renderer
+                ->setTheme($formView, $this->admin->getFilterTheme());
+        }
     }
 
     /**
