@@ -111,8 +111,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
                         'VIEW' => array('VIEW'),
                         'DELETE' => array('DELETE'),
                         'EXPORT' => array('EXPORT'),
-                        'OPERATOR' => array('OPERATOR'),
-                        'MASTER' => array('MASTER'),
+                        'ALL' => array('ALL'),
                     );
                 }
                 break;
