@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.10.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.10.0...3.10.1) - 2016-12-13
+### Fixed
+- Fix compatibility with Symfony 3.2 form renderer.
+- Fix permissions when setting role for the security handler
+- Translation in twig templates uses the twig translation filter
+
 ## [3.10.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.9.0...3.10.0) - 2016-11-25
 ### Added
 - Added new `roles` configuration field to configuration of menu item routes.
