@@ -106,7 +106,7 @@ class CRUDController extends Controller
         $formView = $datagrid->getForm()->createView();
 
         // set the theme for the current Admin Form
-        $this->setFormTheme($formView);
+        $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
         return $this->render($this->admin->getTemplate('list'), array(
             'action' => 'list',
@@ -321,7 +321,7 @@ class CRUDController extends Controller
 
         $formView = $form->createView();
         // set the theme for the current Admin Form
-        $this->setFormTheme($formView);
+        $this->setFormTheme($formView, $this->admin->getFormTheme());
 
         return $this->render($this->admin->getTemplate($templateKey), array(
             'action' => 'edit',
@@ -559,7 +559,7 @@ class CRUDController extends Controller
 
         $formView = $form->createView();
         // set the theme for the current Admin Form
-        $this->setFormTheme($formView);
+        $this->setFormTheme($formView, $this->admin->getFormTheme());
 
         return $this->render($this->admin->getTemplate($templateKey), array(
             'action' => 'create',
@@ -1368,21 +1368,22 @@ class CRUDController extends Controller
      * Sets the admin form theme to form view. Used for compatibility between Symfony versions.
      *
      * @param FormView $formView
+     * @param string   $theme
      */
-    private function setFormTheme(FormView $formView)
+    private function setFormTheme(FormView $formView, $theme)
     {
         $twig = $this->get('twig');
 
         try {
             $twig
                 ->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')
-                ->setTheme($formView, $this->admin->getFilterTheme());
+                ->setTheme($formView, $theme);
         } catch (\Twig_Error_Runtime $e) {
             // BC for Symfony < 3.2 where this runtime not exists
             $twig
                 ->getExtension('Symfony\Bridge\Twig\Extension\FormExtension')
                 ->renderer
-                ->setTheme($formView, $this->admin->getFilterTheme());
+                ->setTheme($formView, $theme);
         }
     }
 }
