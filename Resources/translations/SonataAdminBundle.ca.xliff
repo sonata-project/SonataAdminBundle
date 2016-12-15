@@ -344,7 +344,7 @@
             </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
-                <target>list_results_count_prefix</target>
+                <target>al menys</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
