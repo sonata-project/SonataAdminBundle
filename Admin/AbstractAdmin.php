@@ -2172,12 +2172,14 @@ EOT;
      *
      * @deprecated since 3.9, to be removed with 4.0
      */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator, $deprecation = true)
     {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
+        if ($deprecation) {
+            @trigger_error(
+                'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
+                E_USER_DEPRECATED
+            );
+        }
 
         $this->translator = $translator;
     }
