@@ -275,7 +275,12 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $method = 'set'.Inflector::classify($attr);
 
             if (isset($overwriteAdminConfiguration[$attr]) || !$definition->hasMethodCall($method)) {
-                $definition->addMethodCall($method, array(new Reference(isset($overwriteAdminConfiguration[$attr]) ? $overwriteAdminConfiguration[$attr] : $addServiceId)));
+                $args = array(new Reference(isset($overwriteAdminConfiguration[$attr]) ? $overwriteAdminConfiguration[$attr] : $addServiceId));
+                if ('translator' === $attr) {
+                    $args[] = false;
+                }
+
+                $definition->addMethodCall($method, $args);
             }
         }
 
