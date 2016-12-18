@@ -55,7 +55,7 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\DependencyInjection\SonataAdminExtension::load
+     * @covers \Sonata\AdminBundle\DependencyInjection\SonataAdminExtension::load
      */
     public function testAdminExtensionLoad()
     {
@@ -73,7 +73,7 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::flattenExtensionConfiguration
+     * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::flattenExtensionConfiguration
      */
     public function testFlattenEmptyExtensionConfiguration()
     {
@@ -103,7 +103,7 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::flattenExtensionConfiguration
+     * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::flattenExtensionConfiguration
      */
     public function testFlattenExtensionConfiguration()
     {
@@ -177,7 +177,7 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::process
+     * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::process
      * @expectedException \InvalidArgumentException
      */
     public function testProcessWithInvalidExtensionId()
@@ -200,7 +200,7 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::process
+     * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::process
      */
     public function testProcessWithInvalidAdminId()
     {
@@ -224,7 +224,7 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::process
+     * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::process
      */
     public function testProcess()
     {

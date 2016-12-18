@@ -1192,19 +1192,6 @@ EOT
     }
 
     /**
-     * @expectedException        Twig_Error_Loader
-     * @expectedExceptionMessage Unable to find template "list_nonexistent_template.html.twig"
-     */
-    public function testRenderListElementErrorLoadingTemplate()
-    {
-        $this->fieldDescription->expects($this->once())
-            ->method('getTemplate')
-            ->will($this->returnValue('SonataAdminBundle:CRUD:list_nonexistent_template.html.twig'));
-
-        $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription);
-    }
-
-    /**
      * @dataProvider getRenderViewElementTests
      */
     public function testRenderViewElement($expected, $type, $value, array $options)
@@ -1263,7 +1250,6 @@ EOT
                         return false;
                 }
             }));
-
 
         $this->assertSame(
                 $this->removeExtraWhitespace($expected),

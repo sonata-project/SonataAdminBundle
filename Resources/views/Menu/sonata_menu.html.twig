@@ -43,7 +43,7 @@
             {% set icon = item.extra('icon')|default('') %}
             {{ icon|raw }}
             {{ parent() }}
-            <i class="fa pull-right fa-angle-left"></i>
+            <span class="pull-right-container"><i class="fa pull-right fa-angle-left"></i></span>
         </a>
     {% endspaceless %}
 {% endblock %}

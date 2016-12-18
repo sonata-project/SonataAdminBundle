@@ -1,11 +1,13 @@
 UPGRADE 3.x
+===========
+
+UPGRADE FROM 3.9 to 3.10
+========================
 
 ## Deprecated passing no 3rd argument to GroupMenuProvider
 
 Passing no 3rd argument to `Menu\Provider\GroupMenuProvider` is deprecated.
 Pass `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface` as 3rd argument.
-
-===========
 
 UPGRADE FROM 3.8 to 3.9
 =======================
