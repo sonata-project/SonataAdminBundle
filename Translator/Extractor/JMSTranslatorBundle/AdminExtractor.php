@@ -107,8 +107,17 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
 
         $this->catalogue = new MessageCatalogue();
 
+        foreach ($this->adminPool->getAdminGroups() as $name => $group) {
+            $this->trans($name, array(), $group['label_catalogue']);
+        }
+
         foreach ($this->adminPool->getAdminServiceIds() as $id) {
             $admin = $this->getAdmin($id);
+
+            $label = $admin->getLabel();
+            if (!empty($label)) {
+                $this->trans($label, array(), $admin->getTranslationDomain());
+            }
 
             $this->translator = $admin->getTranslator();
             $this->labelStrategy = $admin->getLabelTranslatorStrategy();

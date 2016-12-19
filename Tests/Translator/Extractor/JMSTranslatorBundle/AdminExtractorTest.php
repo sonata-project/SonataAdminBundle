@@ -79,14 +79,18 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
 
         $this->pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
         $this->pool->expects($this->any())
             ->method('getAdminServiceIds')
             ->will($this->returnValue(array('foo_admin', 'bar_admin')));
         $this->pool->expects($this->any())
             ->method('getContainer')
             ->will($this->returnValue($container));
+        $this->pool->expects($this->any())
+            ->method('getAdminGroups')
+            ->will($this->returnValue(array('group' => array(
+                'label_catalogue' => 'admin_domain',
+            ))));
 
         $this->adminExtractor = new AdminExtractor($this->pool, $logger);
         $this->adminExtractor->setLogger($logger);
@@ -117,8 +121,16 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
 
                 return;
             }));
+        $this->fooAdmin->expects($this->any())
+            ->method('getLabel')
+            ->willReturn('foo_label');
+        $this->fooAdmin->expects($this->any())
+            ->method('getTranslationDomain')
+            ->willReturn('foo_admin_domain');
 
         $catalogue = $this->adminExtractor->extract();
+
+        $this->assertCount(2, $catalogue->getDomains());
 
         $this->assertTrue($catalogue->has(new Message('foo', 'foo_admin_domain')));
         $this->assertFalse($catalogue->has(new Message('nonexistent', 'foo_admin_domain')));
@@ -128,6 +140,9 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
         $message = $catalogue->get('foo', 'foo_admin_domain');
         $this->assertSame('foo', $message->getId());
         $this->assertSame('foo_admin_domain', $message->getDomain());
+
+        $this->assertTrue($catalogue->has(new Message('group', 'admin_domain')));
+        $this->assertTrue($catalogue->has(new Message('foo_label', 'foo_admin_domain')));
     }
 
     public function testExtractWithException()
