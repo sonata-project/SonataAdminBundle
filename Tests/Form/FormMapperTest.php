@@ -268,7 +268,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        RuntimeException
+     * @expectedException        \RuntimeException
      * @expectedExceptionMessage Cannot nest ifTrue or ifFalse call
      */
     public function testIfTrueNested()
@@ -278,7 +278,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        RuntimeException
+     * @expectedException        \RuntimeException
      * @expectedExceptionMessage Cannot nest ifTrue or ifFalse call
      */
     public function testIfFalseNested()
@@ -288,7 +288,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        RuntimeException
+     * @expectedException        \RuntimeException
      * @expectedExceptionMessage Cannot nest ifTrue or ifFalse call
      */
     public function testIfCombinationNested()
@@ -298,7 +298,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        RuntimeException
+     * @expectedException        \RuntimeException
      * @expectedExceptionMessage Cannot nest ifTrue or ifFalse call
      */
     public function testIfFalseCombinationNested2()
@@ -308,7 +308,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        RuntimeException
+     * @expectedException        \RuntimeException
      * @expectedExceptionMessage Cannot nest ifTrue or ifFalse call
      */
     public function testIfFalseCombinationNested3()
@@ -318,7 +318,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException        RuntimeException
+     * @expectedException        \RuntimeException
      * @expectedExceptionMessage Cannot nest ifTrue or ifFalse call
      */
     public function testIfFalseCombinationNested4()

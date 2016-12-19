@@ -59,7 +59,7 @@ class GroupMenuProvider implements MenuProviderInterface
          */
         if (null === $checker) {
             @trigger_error(
-                'Passing no 3rd argument is deprecated since version 3.x and will be mandatory in 4.0.
+                'Passing no 3rd argument is deprecated since version 3.10 and will be mandatory in 4.0.
                 Pass Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as 3rd argument.',
                 E_USER_DEPRECATED
             );
