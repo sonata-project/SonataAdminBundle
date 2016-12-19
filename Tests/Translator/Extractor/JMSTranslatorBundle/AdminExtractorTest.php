@@ -77,8 +77,16 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
 
         $logger = $this->getMock('Psr\Log\LoggerInterface');
 
-        $this->pool = new Pool($container, '', '');
-        $this->pool->setAdminServiceIds(array('foo_admin', 'bar_admin'));
+        $this->pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->pool->expects($this->any())
+            ->method('getAdminServiceIds')
+            ->will($this->returnValue(array('foo_admin', 'bar_admin')));
+        $this->pool->expects($this->any())
+            ->method('getContainer')
+            ->will($this->returnValue($container));
 
         $this->adminExtractor = new AdminExtractor($this->pool, $logger);
         $this->adminExtractor->setLogger($logger);
