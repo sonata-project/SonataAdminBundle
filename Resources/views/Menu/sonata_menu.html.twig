@@ -41,9 +41,16 @@
         <a href="#">
             {% set translation_domain = item.extra('label_catalogue') %}
             {% set icon = item.extra('icon')|default('') %}
+            {% set spanElement_parent = parent() %}
             {{ icon|raw }}
-            {{ parent() }}
-            <span class="pull-right-container"><i class="fa pull-right fa-angle-left"></i></span>
+            {% block spanElementContent %}
+                {{ spanElement_parent|raw }}
+            {% endblock %}
+            <span class="pull-right-container">
+                {% block spanElementPull %}
+                    <i class="fa pull-right fa-angle-left"></i>
+                {% endblock %}
+            </span>
         </a>
     {% endspaceless %}
 {% endblock %}
