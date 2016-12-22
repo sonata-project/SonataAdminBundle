@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.10.3](https://github.com/sonata-project/SonataAdminBundle/compare/3.10.2...3.10.3) - 2016-12-22
+### Fixed
+- A bug with the side menu arrow position
+- Display correct name of group uses default translation domain
+
+### Removed
+- A Twig deprecation added in Twig 1.28.0
+- A Sonata deprecation called by Sonata itself by adding a way to disable it when called internally
+
 ## [3.10.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.10.1...3.10.2) - 2016-12-15
 ### Fixed
 - Filter form theme was used for create and edit forms too.
