@@ -58,7 +58,7 @@ we are manipulating form fields we do this from within ``ImageAdmin::configureFo
             if ($image && ($webPath = $image->getWebPath())) {
                 // get the container so the full path to the image can be set
                 $container = $this->getConfigurationPool()->getContainer();
-                $fullPath = $container->get('request')->getBasePath().'/'.$webPath;
+                $fullPath = $container->get('request_stack')->getCurrentRequest()->getBasePath().'/'.$webPath;
 
                 // add a 'help' option containing the preview's img tag
                 $fileFieldOptions['help'] = '<img src="'.$fullPath.'" class="admin-preview" />';
