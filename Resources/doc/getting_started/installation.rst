@@ -98,16 +98,6 @@ line in the `app/AppKernel.php` file of your project:
 
         $ bower install ./vendor/sonata-project/admin-bundle/bower.json
 
-.. note::
-
-    You must enable translator service in `config.yml`.
-
-    .. code-block:: yaml
-
-        framework:
-            translator: { fallbacks: ["%locale%"] }
-
-    For more information: http://symfony.com/doc/current/translation.html#configuration
 
 Step 3: Configure the Installed Bundles
 ---------------------------------------
@@ -158,6 +148,8 @@ The translator service is required by SonataAdmin to display all labels properly
     # app/config/config.yml
     framework:
         translator: { fallbacks: [en] }
+        
+For more information: http://symfony.com/doc/current/translation.html#configuration
 
 Step 6: Preparing your Environment
 ----------------------------------
