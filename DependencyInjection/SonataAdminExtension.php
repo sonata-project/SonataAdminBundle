@@ -216,7 +216,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
     {
         $bundles = $container->getParameter('kernel.bundles');
 
-        if (!isset($bundles['JMSDiExtraBundle'])) {
+        if (isset($bundles['JMSDiExtraBundle'])) {
             $container->prependExtensionConfig(
                 'jms_di_extra',
                 array(
