@@ -419,6 +419,18 @@ class MockAdmin extends AbstractAdmin
 {
 }
 
+class MockAbstractServiceAdmin extends AbstractAdmin
+{
+    private $extraArgument;
+
+    public function __construct($code, $class, $baseControllerName, $extraArgument)
+    {
+        $this->extraArgument = $extraArgument;
+
+        parent::__construct($code, $class, $baseControllerName);
+    }
+}
+
 class Post
 {
 }
