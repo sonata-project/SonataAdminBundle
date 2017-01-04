@@ -229,6 +229,10 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
     public function testRenderListElement($expected, $type, $value, array $options)
     {
         $this->admin->expects($this->any())
+            ->method('getPersistentParameters')
+            ->will($this->returnValue(array('context' => 'foo')));
+
+        $this->admin->expects($this->any())
             ->method('isGranted')
             ->will($this->returnValue(true));
 
