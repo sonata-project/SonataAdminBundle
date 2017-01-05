@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
 
 /**
  * @author     Tiago Garcia
@@ -469,6 +470,63 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
         } catch (\RuntimeException $e) {
             $this->fail('An expected exception has been raised.');
         }
+    }
+
+    public function testProcessAbstractAdminServiceInServiceDefinition()
+    {
+        $container = $this->getContainer();
+
+        $config = $this->config;
+        $config['dashboard']['groups'] = array();
+
+        $this->extension->load(array($config), $container);
+
+        $compilerPass = new AddDependencyCallsCompilerPass();
+        $container
+            ->register('sonata_abstract_post_admin')
+            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\Post', ''))
+            ->setAbstract(true);
+
+        $adminDefinition = new DefinitionDecorator('sonata_abstract_post_admin');
+        $adminDefinition
+            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAbstractServiceAdmin')
+            ->setArguments(array(0 => 'extra_argument_1'))
+            ->addTag('sonata.admin', array('group' => 'sonata_post_one_group', 'manager_type' => 'orm'));
+
+        $adminTwoDefinition = new DefinitionDecorator('sonata_abstract_post_admin');
+        $adminTwoDefinition
+            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAbstractServiceAdmin')
+            ->setArguments(array(0 => 'extra_argument_2', 'index_0' => 'should_not_override'))
+            ->addTag('sonata.admin', array('group' => 'sonata_post_two_group', 'manager_type' => 'orm'));
+
+        $container->addDefinitions(array(
+            'sonata_post_one_admin' => $adminDefinition,
+            'sonata_post_two_admin' => $adminTwoDefinition,
+        ));
+
+        $compilerPass->process($container);
+        $container->compile();
+
+        $pool = $container->get('sonata.admin.pool');
+        $adminServiceIds = $pool->getAdminServiceIds();
+
+        $this->assertContains('sonata_post_one_admin', $adminServiceIds);
+        $this->assertContains('sonata_post_two_admin', $adminServiceIds);
+
+        $this->assertTrue($container->hasDefinition('sonata_post_one_admin'));
+        $this->assertTrue($container->hasDefinition('sonata_post_two_admin'));
+
+        $definition = $container->getDefinition('sonata_post_one_admin');
+        $this->assertSame('sonata_post_one_admin', $definition->getArgument(0));
+        $this->assertSame('Sonata\AdminBundle\Tests\DependencyInjection\Post', $definition->getArgument(1));
+        $this->assertSame('SonataAdminBundle:CRUD', $definition->getArgument(2));
+        $this->assertSame('extra_argument_1', $definition->getArgument(3));
+
+        $definition = $container->getDefinition('sonata_post_two_admin');
+        $this->assertSame('sonata_post_two_admin', $definition->getArgument(0));
+        $this->assertSame('Sonata\AdminBundle\Tests\DependencyInjection\Post', $definition->getArgument(1));
+        $this->assertSame('SonataAdminBundle:CRUD', $definition->getArgument(2));
+        $this->assertSame('extra_argument_2', $definition->getArgument(3));
     }
 
     /**
