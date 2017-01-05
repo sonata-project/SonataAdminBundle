@@ -443,7 +443,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     /**
      * The Access mapping.
      *
-     * @var array
+     * @var array [action1 => requiredRole1, action2 => [requiredRole2, requiredRole3]]
      */
     protected $accessMapping = array();
 
