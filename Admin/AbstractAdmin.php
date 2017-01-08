@@ -1092,7 +1092,16 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
             );
         }
 
-        $actions = $this->configureBatchActions($actions);
+        $confActions = $this->configureBatchActions($actions);
+
+        // NEXT_MAJOR: remove this check
+        if ($confActions != $actions) {
+            @trigger_error(
+                'Calling AbstractAdmin::configureBatchActions by value is deprecated since 3.x and will be changed in 4.0.',
+                E_USER_DEPRECATED
+            );
+            $actions = $confActions;
+        }
 
         foreach ($this->getExtensions() as $extension) {
             // TODO: remove method check in next major release
@@ -3063,7 +3072,7 @@ EOT;
       *
       * @return array
       */
-     protected function configureBatchActions($actions)
+     protected function configureBatchActions(&$actions)
      {
          return $actions;
      }
