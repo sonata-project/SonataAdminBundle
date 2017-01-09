@@ -1,6 +1,10 @@
 UPGRADE 3.x
 ===========
 
+## Renamed Pager::getFirstIndice() and Pager::getLastIndice()
+
+Please use `Pager::getFirstIndex()` and `Pager::getLastIndex()` instead!
+
 UPGRADE FROM 3.9 to 3.10
 ========================
 
