@@ -14,9 +14,7 @@ namespace Sonata\AdminBundle\Util;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class FormBuilderIterator.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class FormBuilderIterator extends \RecursiveArrayIterator
 {

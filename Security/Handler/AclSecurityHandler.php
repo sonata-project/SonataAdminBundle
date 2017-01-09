@@ -26,9 +26,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
- * Class AclSecurityHandler.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AclSecurityHandler implements AclSecurityHandlerInterface
 {

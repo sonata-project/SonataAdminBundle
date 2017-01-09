@@ -18,9 +18,7 @@ use Symfony\Bridge\Twig\Tests\Extension\Fixtures\StubFilesystemLoader;
 use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslator;
 
 /**
- * Class BaseTemplateTest.
- *
- * Base class for tests checking rendering of twig templates
+ * Base class for tests checking rendering of twig templates.
  */
 abstract class BaseMenuTest extends \PHPUnit_Framework_TestCase
 {

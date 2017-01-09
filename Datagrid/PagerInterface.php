@@ -14,7 +14,7 @@ namespace Sonata\AdminBundle\Datagrid;
 /**
  * Interface PagerInterface.
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface PagerInterface
 {

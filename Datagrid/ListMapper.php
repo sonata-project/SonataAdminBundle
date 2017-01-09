@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Mapper\BaseMapper;
 /**
  * This class is used to simulate the Form API.
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ListMapper extends BaseMapper
 {

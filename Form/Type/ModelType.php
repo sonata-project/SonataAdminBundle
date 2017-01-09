@@ -27,10 +27,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
- * Class ModelType
  * This type define a standard select input with a + sign to add new associated object.
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ModelType extends AbstractType
 {

@@ -17,11 +17,9 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 /**
- * Class ModelsToArrayTransformer.
+ * This class should be used with Symfony <2.7 only and will be deprecated with 3.0.
  *
- * This class should be use with sf < 2.7 only and will be deprecated with version 3.0
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class LegacyModelsToArrayTransformer implements DataTransformerInterface
 {

@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 /**
  * Interface ListBuilderInterface.
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface ListBuilderInterface extends BuilderInterface
 {

@@ -26,7 +26,7 @@ use Symfony\Component\EventDispatcher\Event;
  *   - sonata.admin.event.configure.[form|list|datagrid|show]
  *   - sonata.admin.event.configure.[admin_code].[form|list|datagrid|show] (not implemented yet)
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ConfigureEvent extends Event
 {
