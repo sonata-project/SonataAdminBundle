@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\Reference;
  * Add all dependencies to the Admin class, this avoid to write too many lines
  * in the configuration files.
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AddDependencyCallsCompilerPass implements CompilerPassInterface
 {

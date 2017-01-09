@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 
 /**
- * @author     Tiago Garcia
+ * @author Tiago Garcia
  */
 class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
 {

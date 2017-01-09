@@ -18,9 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Class ModelReferenceType.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ModelReferenceType extends AbstractType
 {

@@ -27,9 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 
 /**
- * Class HelperController.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class HelperController
 {

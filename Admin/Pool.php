@@ -16,9 +16,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
- * Class Pool.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class Pool
 {

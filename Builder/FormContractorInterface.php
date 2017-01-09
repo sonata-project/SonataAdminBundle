@@ -18,7 +18,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 /**
  * This interface should be implemented in persistence bundles.
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface FormContractorInterface extends BuilderInterface
 {

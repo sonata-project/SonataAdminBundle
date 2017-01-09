@@ -30,10 +30,8 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
- * Class GenerateAdminCommand.
- *
- * @author  Marek Stipek <mario.dweller@seznam.cz>
- * @author  Simon Cosandey <simon.cosandey@simseo.ch>
+ * @author Marek Stipek <mario.dweller@seznam.cz>
+ * @author Simon Cosandey <simon.cosandey@simseo.ch>
  */
 class GenerateAdminCommand extends ContainerAwareCommand
 {

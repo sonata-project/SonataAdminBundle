@@ -22,9 +22,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 /**
- * Class ModelsToArrayTransformer.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ModelsToArrayTransformer implements DataTransformerInterface
 {

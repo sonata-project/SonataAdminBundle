@@ -19,7 +19,7 @@ use Symfony\Component\Security\Acl\Model\AclInterface;
 /**
  * Interface AdminAclManipulatorInterface.
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface AdminAclManipulatorInterface
 {

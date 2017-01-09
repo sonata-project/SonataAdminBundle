@@ -21,9 +21,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**
- * Class ModelChoiceList.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ModelChoiceList extends SimpleChoiceList
 {

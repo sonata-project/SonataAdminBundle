@@ -18,7 +18,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 /**
  * Transform object to ID and property label.
  *
- * @author  Andrej Hudec <pulzarraider@gmail.com>
+ * @author Andrej Hudec <pulzarraider@gmail.com>
  */
 class ModelToIdPropertyTransformer implements DataTransformerInterface
 {
