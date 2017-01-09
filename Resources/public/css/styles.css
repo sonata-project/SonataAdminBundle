@@ -496,3 +496,16 @@ div.sonata-filters-box div.form-group span.input-group-addon {
     padding: 3px 10px;
     font-size: 13px;
 }
+
+/* table list scrollbar */
+.box .box-body {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.sonata-ba-list .pull-right.fix-overflow {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
