@@ -249,7 +249,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @return int
      */
-    public function getFirstIndice()
+    public function getFirstIndex()
     {
         if ($this->page == 0) {
             return 1;
@@ -259,11 +259,27 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
+     * @deprecated since 3.x, will be removed in 4.0
+     */
+    public function getFirstIndice()
+    {
+        @trigger_error(
+            'Method '.__METHOD__.' is deprecated since version 3.x and will be removed in 4.0, '.
+            'please use getFirstIndex() instead.',
+            E_USER_DEPRECATED
+        );
+
+        return $this->getFirstIndex();
+    }
+
+    /**
      * Returns the last index on the current page.
      *
      * @return int
      */
-    public function getLastIndice()
+    public function getLastIndex()
     {
         if ($this->page == 0) {
             return $this->nbResults;
@@ -273,6 +289,22 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         }
 
         return $this->page * $this->maxPerPage;
+    }
+
+    /**
+     * NEXT_MAJOR: remove this method.
+     *
+     * @deprecated since 3.x, will be removed in 4.0
+     */
+    public function getLastIndice()
+    {
+        @trigger_error(
+            'Method '.__METHOD__.' is deprecated since version 3.x and will be removed in 4.0, '.
+            'please use getLastIndex() instead.',
+            E_USER_DEPRECATED
+        );
+
+        return $this->getLastIndex();
     }
 
     /**
