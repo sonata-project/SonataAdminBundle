@@ -19,10 +19,8 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * Class SonataAdminExtension.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
- * @author  Michael Williams <michael.williams@funsational.com>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Michael Williams <michael.williams@funsational.com>
  */
 class SonataAdminExtension extends Extension implements PrependExtensionInterface
 {

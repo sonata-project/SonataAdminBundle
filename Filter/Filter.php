@@ -12,9 +12,7 @@
 namespace Sonata\AdminBundle\Filter;
 
 /**
- * Class Filter.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 abstract class Filter implements FilterInterface
 {

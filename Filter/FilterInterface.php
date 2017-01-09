@@ -16,7 +16,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 /**
  * Interface FilterInterface.
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface FilterInterface
 {

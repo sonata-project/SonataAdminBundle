@@ -17,8 +17,6 @@ use Symfony\Bridge\Twig\Form\TwigRendererEngine;
 use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslator;
 
 /**
- * Class BaseWidgetTest.
- *
  * Base class for tests checking rendering of form widgets with form_admin_fields.html.twig and
  * filter_admin_fields.html.twig. Template to use is defined by $this->type variable, that needs to be overridden in
  * child classes.

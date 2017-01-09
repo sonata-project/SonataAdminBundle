@@ -22,7 +22,7 @@ namespace Sonata\AdminBundle\Admin;
  *
  * @deprecated since version 3.1, to be removed in 4.0. Use Sonata\AdminBundle\AbstractAdmin instead
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 abstract class Admin extends AbstractAdmin
 {

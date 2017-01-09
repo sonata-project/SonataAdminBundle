@@ -12,10 +12,8 @@
 namespace Sonata\AdminBundle\Datagrid;
 
 /**
- * Class Pager.
- *
- * @author  Fabien Potencier <fabien.potencier@symfony-project.com>
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInterface
 {

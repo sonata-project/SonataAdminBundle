@@ -14,7 +14,7 @@ namespace Sonata\AdminBundle\Translator;
 /**
  * Interface LabelTranslatorStrategyInterface.
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface LabelTranslatorStrategyInterface
 {
