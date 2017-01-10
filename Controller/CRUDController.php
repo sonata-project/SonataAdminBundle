@@ -111,7 +111,7 @@ class CRUDController extends Controller
             'form' => $formView,
             'datagrid' => $datagrid,
             'csrf_token' => $this->getCsrfToken('sonata.batch'),
-        ), null, $request);
+        ), null);
     }
 
     /**
@@ -505,7 +505,7 @@ class CRUDController extends Controller
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
-            if ($isFormValid && (!$this->isInPreviewMode($request) || $this->isPreviewApproved($request))) {
+            if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
                 $this->admin->checkAccess('create', $object);
 
                 try {
@@ -646,7 +646,7 @@ class CRUDController extends Controller
             'object' => $object,
             'revisions' => $revisions,
             'currentRevision' => $revisions ? current($revisions) : false,
-        ), null, $request);
+        ), null);
     }
 
     /**
@@ -900,7 +900,7 @@ class CRUDController extends Controller
             'roles' => $aclRoles,
             'aclUsersForm' => $aclUsersForm->createView(),
             'aclRolesForm' => $aclRolesForm->createView(),
-        ), null, $request);
+        ), null);
     }
 
     /**
