@@ -46,7 +46,7 @@ class AdminHelper
      * @param FormBuilderInterface $formBuilder
      * @param string               $elementId
      *
-     * @return FormBuilderInterface
+     * @return FormBuilderInterface|null
      */
     public function getChildFormBuilder(FormBuilderInterface $formBuilder, $elementId)
     {

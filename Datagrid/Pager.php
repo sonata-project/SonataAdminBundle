@@ -56,7 +56,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     protected $currentMaxLink = 1;
 
     /**
-     * @var bool
+     * @var mixed bool|int
      */
     protected $maxRecordLimit = false;
 
@@ -67,7 +67,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     // used by iterator interface
     /**
-     * @var array|null
+     * @var \Traversable|array|null
      */
     protected $results = null;
 
