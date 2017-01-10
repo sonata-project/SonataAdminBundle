@@ -144,7 +144,7 @@ class HelperController
 
         $admin->setSubject($subject);
 
-        $formBuilder = $admin->getFormBuilder($subject);
+        $formBuilder = $admin->getFormBuilder();
 
         $form = $formBuilder->getForm();
         $form->handleRequest($request);
