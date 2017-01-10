@@ -40,7 +40,7 @@ class SearchHandler
      * @param int            $page
      * @param int            $offset
      *
-     * @return PagerInterface
+     * @return PagerInterface|false
      *
      * @throws \RuntimeException
      */
