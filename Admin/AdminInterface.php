@@ -403,7 +403,7 @@ interface AdminInterface
      *
      * @param string $name
      *
-     * @return array|null
+     * @return FieldDescriptionInterface|null
      */
     public function getFilterFieldDescription($name);
 

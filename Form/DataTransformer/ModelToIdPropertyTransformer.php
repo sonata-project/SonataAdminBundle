@@ -43,7 +43,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
     protected $multiple;
 
     /**
-     * @var callback
+     * @var callable|null
      */
     protected $toStringCallback;
 

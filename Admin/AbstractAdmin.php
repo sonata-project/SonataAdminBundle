@@ -1433,7 +1433,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     /**
      * Returns the master admin.
      *
-     * @return Admin the root admin class
+     * @return AbstractAdmin the root admin class
      */
     public function getRoot()
     {
