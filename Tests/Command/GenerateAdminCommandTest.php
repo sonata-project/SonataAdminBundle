@@ -23,6 +23,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
+ * @group admin-gen
  */
 class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -48,6 +49,8 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
+
         // create temp dir
         $tempfile = tempnam(sys_get_temp_dir(), 'sonata_admin');
         if (file_exists($tempfile)) {
@@ -82,7 +85,7 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
         $this->application->add($this->command);
     }
 
-    public function tearDown()
+    public function tearown()
     {
         if ($this->tempDirectory) {
             if (file_exists($this->tempDirectory.'/Controller/FooAdminController.php')) {
@@ -383,5 +386,52 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('InvalidArgumentException', 'Invalid manager type "baz". Available manager types are "".');
         $this->command->validateManagerType('baz');
+    }
+
+    public function testAnswerUpdateServicesWithNo()
+    {
+        $questionHelper = $this->getMock('Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper', array('ask'));
+
+        $this->container->set('sonata.admin.manager.foo', $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
+
+        $modelEntity = 'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo';
+        $questionHelper->expects($this->any())
+            ->method('ask')
+            ->will($this->returnCallback(function (InputInterface $input, OutputInterface $output, Question $question) use ($modelEntity) {
+                $questionClean = substr($question->getQuestion(), 6, strpos($question->getQuestion(), '</info>') - 6);
+
+                echo $questionClean . PHP_EOL;
+                switch ($questionClean) {
+                    // confirmations
+                    case 'Do you want to generate a controller':
+                        return false;
+
+                    case 'Do you want to update the services YAML configuration file':
+                        return false;
+
+                    // inputs
+                    case 'The fully qualified model class':
+                        return $modelEntity;
+
+                    case 'The bundle name':
+                        return 'AcmeDemoBundle';
+
+                    case 'The admin class basename':
+                        return 'FooAdmin';
+                }
+
+                return false;
+            }));
+
+        $command = $this->application->find('sonata:admin:generate');
+        $command->getHelperSet()->set($questionHelper, 'question');
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(array(
+            'command' => $command->getName(),
+            'model' => $modelEntity,
+        ));
+
+        $this->assertFalse(file_exists($this->tempDirectory.'/Resources/config/services.yml'));
     }
 }
