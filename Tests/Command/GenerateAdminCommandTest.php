@@ -397,7 +397,6 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function (InputInterface $input, OutputInterface $output, Question $question) use ($modelEntity) {
                 $questionClean = substr($question->getQuestion(), 6, strpos($question->getQuestion(), '</info>') - 6);
 
-                echo $questionClean . PHP_EOL;
                 switch ($questionClean) {
                     // confirmations
                     case 'Do you want to generate a controller':
