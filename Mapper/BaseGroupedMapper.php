@@ -19,17 +19,17 @@ namespace Sonata\AdminBundle\Mapper;
 abstract class BaseGroupedMapper extends BaseMapper
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $currentGroup;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $currentTab;
 
     /**
-     * @var bool
+     * @var bool|null
      */
     protected $apply;
 

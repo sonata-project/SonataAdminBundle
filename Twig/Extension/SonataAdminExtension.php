@@ -447,7 +447,7 @@ EOT;
      * @param FieldDescriptionInterface $fieldDescription
      * @param string                    $defaultTemplate
      *
-     * @return \Twig_Template
+     * @return \Twig_TemplateInterface
      */
     protected function getTemplate(
         FieldDescriptionInterface $fieldDescription,

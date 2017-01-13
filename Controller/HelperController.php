@@ -16,7 +16,6 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -145,7 +144,7 @@ class HelperController
 
         $admin->setSubject($subject);
 
-        $formBuilder = $admin->getFormBuilder($subject);
+        $formBuilder = $admin->getFormBuilder();
 
         $form = $formBuilder->getForm();
         $form->handleRequest($request);
@@ -444,7 +443,7 @@ class HelperController
      * @param AdminInterface $admin
      * @param string         $field
      *
-     * @return FormInterface
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      *
      * @throws \RuntimeException
      */
@@ -471,7 +470,7 @@ class HelperController
      * @param AdminInterface $admin
      * @param string         $field
      *
-     * @return FormInterface
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      *
      * @throws \RuntimeException
      */

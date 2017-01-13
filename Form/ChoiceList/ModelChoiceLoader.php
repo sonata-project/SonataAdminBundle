@@ -26,6 +26,8 @@ use Symfony\Component\PropertyAccess\PropertyPath;
  */
 class ModelChoiceLoader implements ChoiceLoaderInterface
 {
+    public $identifier;
+
     /**
      * @var \Sonata\AdminBundle\Model\ModelManagerInterface
      */

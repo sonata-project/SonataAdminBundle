@@ -214,7 +214,7 @@ class Pool
      *
      * @param string $adminCode
      *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface|null
+     * @return \Sonata\AdminBundle\Admin\AdminInterface|false|null
      */
     public function getAdminByAdminCode($adminCode)
     {
