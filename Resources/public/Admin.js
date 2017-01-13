@@ -15,7 +15,7 @@ var Admin = {
 
     /**
      * This function must be called when an ajax call is done, to ensure
-     * retrieved html is properly setup
+     * the retrieved html is properly setup
      *
      * @param subject
      */
