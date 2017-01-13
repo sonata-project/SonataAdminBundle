@@ -49,8 +49,6 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
-
         // create temp dir
         $tempfile = tempnam(sys_get_temp_dir(), 'sonata_admin');
         if (file_exists($tempfile)) {
@@ -85,7 +83,7 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
         $this->application->add($this->command);
     }
 
-    public function tearown()
+    public function tearDown()
     {
         if ($this->tempDirectory) {
             if (file_exists($this->tempDirectory.'/Controller/FooAdminController.php')) {
