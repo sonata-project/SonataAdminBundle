@@ -23,7 +23,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
- * @group admin-gen
  */
 class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
 {
