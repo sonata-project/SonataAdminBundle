@@ -14,8 +14,8 @@ var Admin = {
     collectionCounters: [],
 
     /**
-     * This function must called when a ajax call is done, to ensure
-     * retrieve html is properly setup
+     * This function must be called when an ajax call is done, to ensure
+     * retrieved html is properly setup
      *
      * @param subject
      */
