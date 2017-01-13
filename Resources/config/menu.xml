@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="sonata.admin.menu.matcher.voter.admin.class">Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter</parameter>
+        <parameter key="sonata.admin.menu.matcher.voter.children.class">Sonata\AdminBundle\Menu\Matcher\Voter\ChildrenVoter</parameter>
+        <parameter key="sonata.admin.menu.matcher.voter.active.class">Sonata\AdminBundle\Menu\Matcher\Voter\ActiveVoter</parameter>
+    </parameters>
     <services>
         <service id="sonata.admin.menu_builder" class="Sonata\AdminBundle\Menu\MenuBuilder">
             <argument type="service" id="sonata.admin.pool"/>
@@ -17,14 +22,14 @@
             <argument/>
             <tag name="knp_menu.provider"/>
         </service>
-        <service id="sonata.admin.menu.matcher.voter.admin" class="Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter">
+        <service id="sonata.admin.menu.matcher.voter.admin" class="%sonata.admin.menu.matcher.voter.admin.class%">
             <tag name="knp_menu.voter" request="true"/>
         </service>
-        <service id="sonata.admin.menu.matcher.voter.children" class="Sonata\AdminBundle\Menu\Matcher\Voter\ChildrenVoter">
+        <service id="sonata.admin.menu.matcher.voter.children" class="%sonata.admin.menu.matcher.voter.children.class%">
             <argument type="service" id="knp_menu.matcher"/>
             <tag name="knp_menu.voter"/>
         </service>
-        <service id="sonata.admin.menu.matcher.voter.active" class="Sonata\AdminBundle\Menu\Matcher\Voter\ActiveVoter">
+        <service id="sonata.admin.menu.matcher.voter.active" class="%sonata.admin.menu.matcher.voter.active.class%">
             <tag name="knp_menu.voter"/>
         </service>
     </services>
