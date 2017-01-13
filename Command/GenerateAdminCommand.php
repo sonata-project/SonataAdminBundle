@@ -53,7 +53,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
             ->addOption('admin', 'a', InputOption::VALUE_OPTIONAL, 'The admin class basename')
             ->addOption('controller', 'c', InputOption::VALUE_OPTIONAL, 'The controller class basename')
             ->addOption('manager', 'm', InputOption::VALUE_OPTIONAL, 'The model manager type')
-            ->addOption('services', 'y', InputOption::VALUE_OPTIONAL, 'The services YAML file', 'services.yml')
+            ->addOption('services', 'y', InputOption::VALUE_OPTIONAL, 'The services YAML file', null)
             ->addOption('id', 'i', InputOption::VALUE_OPTIONAL, 'The admin service ID')
         ;
     }
