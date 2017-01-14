@@ -797,7 +797,10 @@ class AdminTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(array(), $admin->getSecurityInformation());
 
-        $securityInformation = array('ROLE_FOO', 'ROLE_BAR');
+        $securityInformation = array(
+            'GUEST' => array('VIEW', 'LIST'),
+            'STAFF' => array('EDIT', 'LIST', 'CREATE'),
+        );
 
         $admin->setSecurityInformation($securityInformation);
         $this->assertSame($securityInformation, $admin->getSecurityInformation());
