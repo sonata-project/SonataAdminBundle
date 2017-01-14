@@ -55,6 +55,8 @@ var Admin = {
             padding: 15,
             overflow: 'auto'
         });
+      
+        jQuery(modal).trigger('sonata-admin-setup-list-modal');
     },
     setup_select2: function(subject) {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2) {
