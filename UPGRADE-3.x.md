@@ -1,7 +1,10 @@
 UPGRADE 3.x
 ===========
 
-## Renamed Pager::getFirstIndice() and Pager::getLastIndice()
+UPGRADE FROM 3.10 to 3.11
+=========================
+
+## Deprecated Pager::getFirstIndice() and Pager::getLastIndice()
 
 Please use `Pager::getFirstIndex()` and `Pager::getLastIndex()` instead!
 

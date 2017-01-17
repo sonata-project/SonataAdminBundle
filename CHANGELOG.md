@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.11.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.10.3...3.11.0) - 2017-01-17
+### Added
+- Extract admin group and label translations
+- JQuery event trigger to Admin.setup_list_modal()
+
+### Changed
+- Updated compiler pass to support parent definition when using abstract service for admin.
+
+### Fixed
+- Fixed behaviour of persistent parameters in list editables
+- JMSDiExtraBundle is configured correctly to pick up Sonata annotations.
+
 ## [3.10.3](https://github.com/sonata-project/SonataAdminBundle/compare/3.10.2...3.10.3) - 2016-12-22
 ### Fixed
 - A bug with the side menu arrow position

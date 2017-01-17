@@ -259,12 +259,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @deprecated since 3.x, will be removed in 4.0
+     * @deprecated since 3.11, will be removed in 4.0
      */
     public function getFirstIndice()
     {
         @trigger_error(
-            'Method '.__METHOD__.' is deprecated since version 3.x and will be removed in 4.0, '.
+            'Method '.__METHOD__.' is deprecated since version 3.11 and will be removed in 4.0, '.
             'please use getFirstIndex() instead.',
             E_USER_DEPRECATED
         );
@@ -292,12 +292,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @deprecated since 3.x, will be removed in 4.0
+     * @deprecated since 3.11, will be removed in 4.0
      */
     public function getLastIndice()
     {
         @trigger_error(
-            'Method '.__METHOD__.' is deprecated since version 3.x and will be removed in 4.0, '.
+            'Method '.__METHOD__.' is deprecated since version 3.11 and will be removed in 4.0, '.
             'please use getLastIndex() instead.',
             E_USER_DEPRECATED
         );
