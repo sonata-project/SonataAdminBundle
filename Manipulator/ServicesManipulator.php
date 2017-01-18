@@ -147,6 +147,8 @@ XML;
     }
 
     /**
+     * Replaces all service-definition placeholders with the given values and appends it to a existing services definition
+     *
      * @param string $servicesContent
      * @param string $serviceId
      * @param string $adminClass
@@ -158,11 +160,16 @@ XML;
      */
     private function createServiceDefinitionXmlNode($servicesContent, $serviceId, $adminClass, $modelClass, $controllerName, $managerType)
     {
+        $serviceDefinition = sprintf(
+            $this->xmlServiceDefinitionTemplate,
+            $serviceId,
+            $adminClass,
+            $modelClass,
+            $controllerName,
+            $managerType,
+            current(array_slice(explode('\\', $modelClass), -1))
+        );
 
-        $template = sprintf($this->xmlServiceDefinitionTemplate, $serviceId, $adminClass, $modelClass, $controllerName, $managerType, current(array_slice(explode('\\', $modelClass), -1)));
-
-        $content = str_replace('</services>', $template, $servicesContent);
-
-        return $content;
+        return str_replace('</services>', $serviceDefinition, $servicesContent);
     }
 }

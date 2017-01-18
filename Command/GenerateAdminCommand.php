@@ -249,13 +249,15 @@ class GenerateAdminCommand extends ContainerAwareCommand
     }
 
     /**
+     * Returns the absolute path to the services config-dir
+     *
      * @param string $bundleName
      *
      * @return string
      */
     private function determineConfigDir($bundleName)
     {
-        $bundleConfigDir = $this->getBundle($bundleName)->getPath().'/Resources/config/';
+        $bundleConfigDir = $this->getBundle($bundleName)->getPath() . '/Resources/config/';
 
         if (!is_dir($bundleConfigDir)) {
             return $this->getKernel()->getRootDir() . '/config';
@@ -272,7 +274,7 @@ class GenerateAdminCommand extends ContainerAwareCommand
     /**
      * @param string $configDir
      *
-     * @return Finder|SplFileInfo[]
+     * @return SplFileInfo[]
      */
     private function findServicesConfigFiles($configDir)
     {

@@ -156,7 +156,7 @@ XML;
             'manager_type'
         );
 
-$expectedServiceDefinition = <<<XML
+        $expectedServiceDefinition = <<<XML
 <?xml version="1.0" ?>
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
