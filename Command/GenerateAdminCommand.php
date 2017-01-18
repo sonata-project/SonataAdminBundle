@@ -228,6 +228,8 @@ class GenerateAdminCommand extends ContainerAwareCommand
             );
             $input->setOption('services', $servicesFile);
             $input->setOption('id', $id);
+        } else {
+            $input->setOption('services', false);
         }
 
         $input->setArgument('model', $modelClass);
