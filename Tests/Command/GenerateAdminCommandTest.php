@@ -385,9 +385,6 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
         $this->command->validateManagerType('baz');
     }
 
-    /**
-     * @group admin-gen
-     */
     public function testAnswerUpdateServicesWithNo()
     {
         $this->container->set('sonata.admin.manager.foo', $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
@@ -396,6 +393,8 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
 
         $command = $this->application->find('sonata:admin:generate');
 
+        // NEXT_MAJOR: Remove this BC code for SensioGeneratorBundle 2.3/2.4 after dropping support for Symfony 2.3
+        // DialogHelper does not exist in SensioGeneratorBundle 2.5+
         if (class_exists('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper')) {
             $dialog = $this->getMock('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper', array('askConfirmation', 'askAndValidate'));
 
