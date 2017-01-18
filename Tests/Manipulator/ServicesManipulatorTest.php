@@ -12,9 +12,11 @@
 namespace Sonata\AdminBundle\Tests\Generator;
 
 use Sonata\AdminBundle\Manipulator\ServicesManipulator;
+use Symfony\Component\Config\Util\XmlUtils;
 
 /**
  * @author Marek Stipek <mario.dweller@seznam.cz>
+ * @group xml-services
  */
 class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -124,5 +126,49 @@ class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
             - { name: sonata.admin, manager_type: manager_type, group: admin, label: class }\n",
             file_get_contents($this->file)
         );
+    }
+
+    public function testAddXmlServiceDefinition()
+    {
+        $emptyServicesXmlFile ='<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="test-service" class="\stdClass"></service>
+
+    </services>
+
+</container>        
+';
+        $this->file = __DIR__ . '/services.xml';
+        file_put_contents($this->file, $emptyServicesXmlFile);
+
+        $this->servicesManipulator = new ServicesManipulator($this->file);
+
+        $this->servicesManipulator->addResource(
+            'service_id',
+            'class',
+            'admin_class',
+            'controller_name',
+            'manager_type'
+        );
+
+        $servicesDocument = XmlUtils::loadFile($this->file);
+
+        $servicesNode = $servicesDocument->childNodes->item(0)->childNodes->item(1);
+
+        $registeredServices = array();
+        foreach ($servicesNode->childNodes as $node) {
+            if ($node instanceof \DOMElement) {
+                $registeredServices[] = $node;
+            }
+        }
+
+        $this->assertEquals(2, count($registeredServices));
+
+
     }
 }
