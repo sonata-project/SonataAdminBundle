@@ -154,7 +154,7 @@ XML;
      * @param string $controllerName
      * @param string $managerType
      *
-     * @return string mixed
+     * @return string
      */
     private function createServiceDefinitionXmlNode($servicesContent, $serviceId, $adminClass, $modelClass, $controllerName, $managerType)
     {
