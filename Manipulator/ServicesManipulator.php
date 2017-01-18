@@ -78,66 +78,69 @@ XML;
      */
     public function addResource($serviceId, $modelClass, $adminClass, $controllerName, $managerType)
     {
-        if (preg_match('/\.xml/', $this->file) !== 0) {
+        $serviceDefinition = '';
+        if (is_file($this->file)) {
+            $serviceDefinition = trim(file_get_contents($this->file));
+        }
 
-            if (is_file($this->file)) {
-                $servicesContent = file_get_contents($this->file);
-            } else {
-                fopen($this->file, 'x+');
-                $servicesContent = $this->emptyXmlServiceDefinition;
+        $fileInfo = pathinfo($this->file);
+
+        if ($fileInfo['extension'] == 'xml') {
+
+            if ($serviceDefinition == '') {
+                $serviceDefinition = $this->emptyXmlServiceDefinition;
             }
-            $servicesContent = $this->createServiceDefinitionXmlNode(
-                $servicesContent,
+            $serviceDefinition = $this->createServiceDefinitionXmlNode(
+                $serviceDefinition,
                 $serviceId,
                 $modelClass,
                 $adminClass,
                 $controllerName,
                 $managerType
             );
-            file_put_contents($this->file, $servicesContent);
 
-            return;
-        }
-
-        $code = "services:\n";
-
-        if (is_file($this->file)) {
-            $code = rtrim(file_get_contents($this->file));
-            $data = (array) Yaml::parse($code);
-
-            if ($code !== '') {
-                $code .= "\n";
-            }
-
-            if (array_key_exists('services', $data)) {
-                if (array_key_exists($serviceId, (array) $data['services'])) {
-                    throw new \RuntimeException(sprintf(
-                        'The service "%s" is already defined in the file "%s".',
-                        $serviceId,
-                        realpath($this->file)
-                    ));
-                }
-
-                if ($data['services'] !== null) {
-                    $code .= "\n";
-                }
+        } else {
+            if ($serviceDefinition == '') {
+                $serviceDefinition = "services:\n";
             } else {
-                $code .= $code === '' ? '' : "\n"."services:\n";
+                $data = (array) Yaml::parse($serviceDefinition);
+
+                if ($serviceDefinition !== '') {
+                    $serviceDefinition .= "\n";
+                }
+
+                // check if admin-service exists
+                if (array_key_exists('services', $data)) {
+                    if (array_key_exists($serviceId, (array) $data['services'])) {
+                        throw new \RuntimeException(sprintf(
+                            'The service "%s" is already defined in the file "%s".',
+                            $serviceId,
+                            realpath($this->file)
+                        ));
+                    }
+
+                    if ($data['services'] !== null) {
+                        $serviceDefinition .= "\n";
+                    }
+                } else {
+                    $serviceDefinition .= $serviceDefinition === '' ? '' : "\n"."services:\n";
+                }
             }
+
+            $serviceDefinition .= sprintf(
+                $this->yamlTemplate,
+                $serviceId,
+                $adminClass,
+                $modelClass,
+                $controllerName,
+                $managerType,
+                current(array_slice(explode('\\', $modelClass), -1))
+            );
         }
 
-        $code .= sprintf(
-            $this->yamlTemplate,
-            $serviceId,
-            $adminClass,
-            $modelClass,
-            $controllerName,
-            $managerType,
-            current(array_slice(explode('\\', $modelClass), -1))
-        );
         @mkdir(dirname($this->file), 0777, true);
 
-        if (@file_put_contents($this->file, $code) === false) {
+        if (@file_put_contents($this->file, $serviceDefinition) === false) {
             throw new \RuntimeException(sprintf(
                 'Unable to append service "%s" to the file "%s". You will have to do it manually.',
                 $serviceId,
