@@ -35,15 +35,29 @@ class ServicesManipulator
             - { name: sonata.admin, manager_type: %s, group: admin, label: %s }
 ';
 
-    private $xmlTemplate = '
-        <service id="%s" class="%s">
+    private $emptyXmlServiceDefinition = <<<XML
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+    </services>
+</container>
+XML;
+
+    private $xmlServiceDefinitionTemplate = <<<XML
+    <service id="%s" class="%s">
             <argument />
             <argument>%s</argument>
             <argument>%s</argument>
 
-            <tag name="sonata.admin" manager_type="%s" group="%s" label="%s" />
-        </service>    
-';
+            <tag name="sonata.admin" manager_type="%s" group="admin" label="%s" />
+        </service>
+        
+    </services>
+XML;
+
 
     /**
      * @param string $file
@@ -65,31 +79,13 @@ class ServicesManipulator
     public function addResource($serviceId, $modelClass, $adminClass, $controllerName, $managerType)
     {
         if (preg_match('/\.xml/', $this->file) !== 0) {
-//            $dom = new \DOMDocument();
-//            $dom->preserveWhiteSpace = false;
-//            $dom->formatOutput = true;
-//            $dom->load($this->file);
-//
-//            $servicesTag = $dom->childNodes->item(0)->childNodes->item(0);
-//
-//            $serviceTag = $this->createServiceDefinitionXmlNode(
-//                $dom,
-//                $serviceId,
-//                $modelClass,
-//                $adminClass,
-//                $controllerName,
-//                $managerType
-//            );
-//
-//            $lineNode = $dom->createElement('empty', '\n');
-//            $servicesTag->appendChild($lineNode);
-//            $servicesTag->appendChild($serviceTag);
-//
-//            $servicesTag->removeChild($lineNode);
-//
-//            $xml = str_replace("  ", "    ", $dom->saveXML());
 
-            $servicesContent = file_get_contents($this->file);
+            if (is_file($this->file)) {
+                $servicesContent = file_get_contents($this->file);
+            } else {
+                fopen($this->file, 'x+');
+                $servicesContent = $this->emptyXmlServiceDefinition;
+            }
             $servicesContent = $this->createServiceDefinitionXmlNode(
                 $servicesContent,
                 $serviceId,
@@ -150,48 +146,23 @@ class ServicesManipulator
         }
     }
 
+    /**
+     * @param string $servicesContent
+     * @param string $serviceId
+     * @param string $adminClass
+     * @param string $modelClass
+     * @param string $controllerName
+     * @param string $managerType
+     *
+     * @return string mixed
+     */
     private function createServiceDefinitionXmlNode($servicesContent, $serviceId, $adminClass, $modelClass, $controllerName, $managerType)
     {
-$template = <<<XML
-    <service id="%s" class="%s">
-            <argument />
-            <argument>%s</argument>
-            <argument>%s</argument>
 
-            <tag name="sonata.admin" manager_type="%s" group="admin" label="%s" />
-        </service>
-        
-    </services>
-XML;
-
-        $template = sprintf($template, $serviceId, $adminClass, $modelClass, $controllerName, $managerType, current(array_slice(explode('\\', $modelClass), -1)));
+        $template = sprintf($this->xmlServiceDefinitionTemplate, $serviceId, $adminClass, $modelClass, $controllerName, $managerType, current(array_slice(explode('\\', $modelClass), -1)));
 
         $content = str_replace('</services>', $template, $servicesContent);
 
-//        $serviceElement = $dom->createElement('service');
-//        $serviceElement->setAttribute('id', $serviceId);
-//        $serviceElement->setAttribute('class', $adminClass);
-//
-//        $argumentElement1 = $dom->createElement('argument');
-//        $argumentElement2 = $dom->createElement('argument');
-//        $argumentElement2->nodeValue = $modelClass;
-//        $argumentElement3 = $dom->createElement('argument');
-//        $argumentElement3->nodeValue = $controllerName;
-//
-//        $tagElement = $dom->createElement('tag');
-//        $tagElement->setAttribute('name', 'sonata.admin');
-//        $tagElement->setAttribute('manager_type', $managerType);
-//        $tagElement->setAttribute('group', 'admin');
-//        $tagElement->setAttribute('label', current(array_slice(explode('\\', $modelClass), -1)));
-//
-//        $serviceElement->appendChild($argumentElement1);
-//        $serviceElement->appendChild($argumentElement2);
-//        $serviceElement->appendChild($argumentElement3);
-//        $serviceElement->appendChild($tagElement);
-
         return $content;
-
-
-
     }
 }

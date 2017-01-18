@@ -16,7 +16,6 @@ use Symfony\Component\Config\Util\XmlUtils;
 
 /**
  * @author Marek Stipek <mario.dweller@seznam.cz>
- * @group xml-services
  */
 class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -130,7 +129,8 @@ class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
 
     public function testAddXmlServiceDefinition()
     {
-        $emptyServicesXmlFile ='<?xml version="1.0" ?>
+$emptyServicesXmlFile = <<<XML
+<?xml version="1.0" ?>
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
@@ -141,8 +141,8 @@ class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
 
     </services>
 
-</container>        
-';
+</container>
+XML;
         $this->file = __DIR__ . '/services.xml';
         file_put_contents($this->file, $emptyServicesXmlFile);
 
@@ -156,19 +156,64 @@ class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
             'manager_type'
         );
 
-        $servicesDocument = XmlUtils::loadFile($this->file);
+$expectedServiceDefinition = <<<XML
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-        $servicesNode = $servicesDocument->childNodes->item(0)->childNodes->item(1);
+    <services>
 
-        $registeredServices = array();
-        foreach ($servicesNode->childNodes as $node) {
-            if ($node instanceof \DOMElement) {
-                $registeredServices[] = $node;
-            }
-        }
+        <service id="test-service" class="\stdClass"></service>
 
-        $this->assertEquals(2, count($registeredServices));
+        <service id="service_id" class="class">
+            <argument />
+            <argument>admin_class</argument>
+            <argument>controller_name</argument>
 
+            <tag name="sonata.admin" manager_type="manager_type" group="admin" label="admin_class" />
+        </service>
+        
+    </services>
 
+</container>
+XML;
+
+        $this->assertEquals($expectedServiceDefinition, file_get_contents($this->file));
+    }
+
+    public function testCreateServicesXmlFileIfNotExists()
+    {
+        $this->file = __DIR__ . '/services.xml';
+        $this->servicesManipulator = new ServicesManipulator($this->file);
+
+        $this->servicesManipulator->addResource(
+            'service_id',
+            'class',
+            'admin_class',
+            'controller_name',
+            'manager_type'
+        );
+
+        $expectedServiceDefinition = <<<XML
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="service_id" class="class">
+            <argument />
+            <argument>admin_class</argument>
+            <argument>controller_name</argument>
+
+            <tag name="sonata.admin" manager_type="manager_type" group="admin" label="admin_class" />
+        </service>
+        
+    </services>
+</container>
+XML;
+
+        $this->assertEquals($expectedServiceDefinition, file_get_contents($this->file));
     }
 }
