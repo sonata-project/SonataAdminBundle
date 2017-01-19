@@ -39,7 +39,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 It\'s required by SonataAdmin to display all labels properly.
 
                 To learn how to enable the translator service please visit:
-                http://symfony.com/doc/current/book/translation.html#book-translation-configuration
+                http://symfony.com/doc/current/translation.html#configuration
              ');
         }
 
