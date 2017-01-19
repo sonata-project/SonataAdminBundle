@@ -37,7 +37,7 @@ class LegacyModelsToArrayTransformer implements DataTransformerInterface
     {
         if (interface_exists('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface')) {
             @trigger_error(
-                'The '.__CLASS__.' class is deprecated since 3.x, to be removed in 4.0. '.
+                'The '.__CLASS__.' class is deprecated since 3.11, to be removed in 4.0. '.
                 'Use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer instead.',
                 E_USER_DEPRECATED
             );

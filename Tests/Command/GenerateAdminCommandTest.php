@@ -403,6 +403,109 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
         $this->command->validateManagerType('baz');
     }
 
+    public function testAnswerUpdateServicesWithNo()
+    {
+        $this->container->set('sonata.admin.manager.foo', $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
+
+        $modelEntity = 'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo';
+
+        $command = $this->application->find('sonata:admin:generate');
+
+        // NEXT_MAJOR: Remove this BC code for SensioGeneratorBundle 2.3/2.4 after dropping support for Symfony 2.3
+        // DialogHelper does not exist in SensioGeneratorBundle 2.5+
+        if (class_exists('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper')) {
+            $dialog = $this->getMock('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper', array('askConfirmation', 'askAndValidate'));
+
+            $dialog->expects($this->any())
+                ->method('askConfirmation')
+                ->will($this->returnCallback(function (OutputInterface $output, $question, $default) {
+                    $questionClean = substr($question, 6, strpos($question, '</info>') - 6);
+
+                    switch ($questionClean) {
+                        case 'Do you want to generate a controller':
+                            return false;
+
+                        case 'Do you want to update the services YAML configuration file':
+                            return false;
+                    }
+
+                    return $default;
+                }));
+
+            $dialog->expects($this->any())
+                ->method('askAndValidate')
+                ->will($this->returnCallback(function (OutputInterface $output, $question, $validator, $attempts = false, $default = null) use ($modelEntity) {
+                    $questionClean = substr($question, 6, strpos($question, '</info>') - 6);
+
+                    switch ($questionClean) {
+                        case 'The fully qualified model class':
+                            return $modelEntity;
+
+                        case 'The bundle name':
+                            return 'AcmeDemoBundle';
+
+                        case 'The admin class basename':
+                            return 'FooAdmin';
+
+                        case 'The controller class basename':
+                            return 'FooAdminController';
+
+                        case 'The services YAML configuration file':
+                            return 'admin.yml';
+
+                        case 'The admin service ID':
+                            return 'acme_demo_admin.admin.foo';
+
+                        case 'The manager type':
+                            return 'foo';
+                    }
+
+                    return $default;
+                }));
+
+            $command->getHelperSet()->set($dialog, 'dialog');
+        } else {
+            $questionHelper = $this->getMock('Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper', array('ask'));
+
+            $questionHelper->expects($this->any())
+                ->method('ask')
+                ->will($this->returnCallback(function (InputInterface $input, OutputInterface $output, Question $question) use ($modelEntity) {
+                    $questionClean = substr($question->getQuestion(), 6, strpos($question->getQuestion(), '</info>') - 6);
+
+                    switch ($questionClean) {
+                        // confirmations
+                        case 'Do you want to generate a controller':
+                            return false;
+
+                        case 'Do you want to update the services YAML configuration file':
+                            return false;
+
+                        // inputs
+                        case 'The fully qualified model class':
+                            return $modelEntity;
+
+                        case 'The bundle name':
+                            return 'AcmeDemoBundle';
+
+                        case 'The admin class basename':
+                            return 'FooAdmin';
+                    }
+
+                    return false;
+                }));
+
+            $command->getHelperSet()->set($questionHelper, 'question');
+        }
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(array(
+            'command' => $command->getName(),
+            'model' => $modelEntity,
+        ));
+
+        $this->assertFalse(file_exists($this->tempDirectory.'/Resources/config/services.yml'));
+    }
+
     public function testWriteXMLServiceDefinitionToApplicationConfigs()
     {
         mkdir($this->tempDirectory . '/config');
