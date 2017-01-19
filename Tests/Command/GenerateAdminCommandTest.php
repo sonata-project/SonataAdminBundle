@@ -442,7 +442,7 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
                             return $modelEntity;
 
                         case 'The bundle name':
-                            return 'AcmeDemoBundle';
+                            return 'DemoAdminBundle';
 
                         case 'The admin class basename':
                             return 'FooAdmin';
@@ -485,7 +485,7 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
                             return $modelEntity;
 
                         case 'The bundle name':
-                            return 'AcmeDemoBundle';
+                            return 'DemoAdminBundle';
 
                         case 'The admin class basename':
                             return 'FooAdmin';
