@@ -208,6 +208,8 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecuteInteractive($modelEntity)
     {
+        mkdir($this->tempDirectory . '/Resources/config', 0777, true);
+
         $this->command->setContainer($this->container);
         $this->container->set('sonata.admin.manager.foo', $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
         $this->container->set('sonata.admin.manager.bar', $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
@@ -401,12 +403,21 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
         $this->command->validateManagerType('baz');
     }
 
-    /**
-     * @group xml
-     */
     public function testWriteXMLServiceDefinitionToApplicationConfigs()
     {
         mkdir($this->tempDirectory . '/config');
+        $emptyServiceDefinition = <<<XML
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+    </services>
+</container>
+XML;
+
+        file_put_contents($this->tempDirectory . '/config/services.xml', $emptyServiceDefinition);
 
         $this->command->setContainer($this->container);
         $this->container->set('sonata.admin.manager.foo', $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
@@ -450,18 +461,6 @@ XML;
     public function testWriteXMLServiceDefinitionToBundleConfigs()
     {
         mkdir($this->tempDirectory . '/Resources/config', 0777, true);
-        $emptyServiceDefinition = <<<XML
-<?xml version="1.0" ?>
-<container xmlns="http://symfony.com/schema/dic/services"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
-    <services>
-    </services>
-</container>
-XML;
-
-        file_put_contents($this->tempDirectory . '/Resources/config/services.xml', $emptyServiceDefinition);
 
         $this->command->setContainer($this->container);
         $this->container->set('sonata.admin.manager.foo', $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface'));

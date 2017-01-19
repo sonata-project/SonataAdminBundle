@@ -257,18 +257,19 @@ class GenerateAdminCommand extends ContainerAwareCommand
      */
     private function determineConfigDir($bundleName)
     {
+        $applicationConfigDir = $this->getKernel()->getRootDir() . '/config';
         $bundleConfigDir = $this->getBundle($bundleName)->getPath() . '/Resources/config/';
 
-        if (!is_dir($bundleConfigDir)) {
-            return $this->getKernel()->getRootDir() . '/config';
-        }
-
-        $configFiles = $this->findServicesConfigFiles($bundleConfigDir);
-        if (count($configFiles) !== 0) {
+        if (!is_dir($applicationConfigDir)) {
             return $bundleConfigDir;
         }
 
-        return $this->getKernel()->getRootDir() . '/config';
+        $configFiles = $this->findServicesConfigFiles($applicationConfigDir);
+        if (count($configFiles) !== 0) {
+            return $applicationConfigDir;
+        }
+
+        return $bundleConfigDir;
     }
 
     /**
