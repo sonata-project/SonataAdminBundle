@@ -1,6 +1,10 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated Sonata\AdminBundle\Controller\CoreController::getRequest()
+
+Inject `Symfony\Component\HttpFoundation\Request` in your actions directly as an argument.
+
 UPGRADE FROM 3.10 to 3.11
 =========================
 
