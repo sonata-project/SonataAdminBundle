@@ -26,8 +26,6 @@ use Symfony\Component\HttpFoundation\Response;
 class CoreController extends Controller
 {
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     public function dashboardAction()
