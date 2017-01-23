@@ -1124,6 +1124,9 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($admin->determinedPerPageValue(103));
     }
 
+    /**
+     * @group legacy
+     */
     public function testIsGranted()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'Acme\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');

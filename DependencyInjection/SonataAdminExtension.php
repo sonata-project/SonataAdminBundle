@@ -97,7 +97,9 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             $container->setParameter('sonata.admin.security.acl_user_manager', $config['security']['acl_user_manager']);
         }
 
-        $container->setAlias('sonata.admin.security.handler', $config['security']['handler']);
+        // NEXT_MAJOR: use DefinitionDecorator/ChildDefinition instead.
+        $securityHandler = $container->register('sonata.admin.security.handler', 'Sonata\AdminBundle\Security\Handler\CacheSecurityHandler');
+        $securityHandler->setArguments(array(new Reference($config['security']['handler'])));
 
         switch ($config['security']['handler']) {
             case 'sonata.admin.security.handler.role':

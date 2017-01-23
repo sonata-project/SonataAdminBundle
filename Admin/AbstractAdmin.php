@@ -422,8 +422,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      */
     protected $securityInformation = array();
 
-    protected $cacheIsGranted = array();
-
     /**
      * Action list for the search result.
      *
@@ -540,6 +538,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     private $breadcrumbsBuilder;
 
     /**
+     * @var array
+     *
+     * @deprecated since 3.x, to be removed in 4.0
+     * NEXT_MAJOR: remove this property, the __get, __set, __isset, __unset magic methods and the
+     * triggerPropertyDeprecation method.
+     */
+    private $cacheIsGranted = array();
+
+    /**
      * @param string $code
      * @param string $class
      * @param string $baseControllerName
@@ -552,6 +559,52 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
 
         $this->predefinePerPageOptions();
         $this->datagridValues['_per_page'] = $this->maxPerPage;
+    }
+
+    /**
+     * @internal
+     */
+    public function __get($name)
+    {
+        if ('cacheIsGranted' === $name) {
+            $this->triggerPropertyDeprecation($name);
+        }
+
+        return $this->$name;
+    }
+
+    /**
+     * @internal
+     */
+    public function __set($name, $value)
+    {
+        if ('cacheIsGranted' === $name) {
+            $this->triggerPropertyDeprecation($name);
+        }
+        $this->$name = $value;
+    }
+
+    /**
+     * @internal
+     */
+    public function __isset($name)
+    {
+        if ('cacheIsGranted' === $name) {
+            $this->triggerPropertyDeprecation($name);
+        }
+
+        return isset($this->$name);
+    }
+
+    /**
+     * @internal
+     */
+    public function __unset($name)
+    {
+        if ('cacheIsGranted' === $name) {
+            $this->triggerPropertyDeprecation($name);
+        }
+        unset($this->$name);
     }
 
     /**
@@ -1084,7 +1137,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     {
         $actions = array();
 
-        if ($this->hasRoute('delete') && $this->isGranted('DELETE')) {
+        if ($this->hasRoute('delete') && $this->securityHandler->isGranted($this, 'DELETE', $this)) {
             $actions['delete'] = array(
                 'label' => 'action_delete',
                 'translation_domain' => 'SonataAdminBundle',
@@ -2446,7 +2499,7 @@ EOT;
             case self::CONTEXT_DASHBOARD:
             case self::CONTEXT_MENU:
             default:
-                return $this->isGranted($this->getPermissionsShow($context));
+                return $this->securityHandler->isGranted($this, $this->getPermissionsShow($context), $this);
         }
     }
 
@@ -2479,13 +2532,14 @@ EOT;
      */
     public function isGranted($name, $object = null)
     {
-        $key = md5(json_encode($name).($object ? '/'.spl_object_hash($object) : ''));
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.12 and will be removed in 4.0.'.
+            ' Use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface::isGranted'.
+            ' or sonata_is_granted Twig function instead.',
+            E_USER_DEPRECATED
+        );
 
-        if (!array_key_exists($key, $this->cacheIsGranted)) {
-            $this->cacheIsGranted[$key] = $this->securityHandler->isGranted($this, $name, $object ?: $this);
-        }
-
-        return $this->cacheIsGranted[$key];
+        return $this->securityHandler->isGranted($this, $name, $object ?: $this);
     }
 
     /**
@@ -2787,7 +2841,7 @@ EOT;
         }
 
         foreach ($access[$action] as $role) {
-            if (false === $this->isGranted($role, $object)) {
+            if (false === $this->securityHandler->isGranted($this, $role, $object ?: $this)) {
                 throw new AccessDeniedException(sprintf('Access Denied to the action %s and role %s', $action, $role));
             }
         }
@@ -2814,7 +2868,7 @@ EOT;
         }
 
         foreach ($access[$action] as $role) {
-            if (false === $this->isGranted($role, $object)) {
+            if (false === $this->securityHandler->isGranted($this, $role, $object ?: $this)) {
                 return false;
             }
         }
@@ -2917,7 +2971,7 @@ EOT;
     {
         $actions = array();
 
-        if ($this->hasRoute('create') && $this->isGranted('CREATE')) {
+        if ($this->hasRoute('create') && $this->securityHandler->isGranted($this, 'CREATE', $this)) {
             $actions['create'] = array(
                 'label' => 'link_add',
                 'translation_domain' => 'SonataAdminBundle',
@@ -2927,7 +2981,7 @@ EOT;
             );
         }
 
-        if ($this->hasRoute('list') && $this->isGranted('LIST')) {
+        if ($this->hasRoute('list') && $this->securityHandler->isGranted($this, 'LIST', $this)) {
             $actions['list'] = array(
                 'label' => 'link_list',
                 'translation_domain' => 'SonataAdminBundle',
@@ -3325,5 +3379,17 @@ EOT;
         foreach ($this->getExtensions() as $extension) {
             $extension->configureRoutes($this, $this->routes);
         }
+    }
+
+    /**
+     * @internal
+     */
+    private function triggerPropertyDeprecation($name)
+    {
+        @trigger_error(sprintf(
+                'Using the "%s::$%s" property is deprecated since version 3.x and will be removed in 4.0.',
+                __CLASS__,
+                $name
+            ), E_USER_DEPRECATED);
     }
 }

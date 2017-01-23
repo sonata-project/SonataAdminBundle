@@ -75,6 +75,9 @@ class CRUDController extends Controller
 
         $parameters['admin_pool'] = $this->get('sonata.admin.pool');
 
+        //Set the default admin in twig security extension.
+        $this->get('sonata.admin.twig.extension.security')->setAdmin($parameters['admin']);
+
         return parent::render($view, $parameters, $response);
     }
 
