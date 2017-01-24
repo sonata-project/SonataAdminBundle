@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\DummySubject;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -24,7 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Grégoire Paris <postmaster@greg0ire.fr>
  */
-class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
+class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @group legacy
@@ -52,19 +53,19 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $admin->initialize();
         $commentAdmin->setCurrentChild($subCommentAdmin);
 
-        $menuFactory = $this->getMock('Knp\Menu\FactoryInterface');
-        $menu = $this->getMock('Knp\Menu\ItemInterface');
-        $translatorStrategy = $this->getMock(
+        $menuFactory = $this->getMockForAbstractClass('Knp\Menu\FactoryInterface');
+        $menu = $this->getMockForAbstractClass('Knp\Menu\ItemInterface');
+        $translatorStrategy = $this->getMockForAbstractClass(
             'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
         );
-        $routeGenerator = $this->getMock(
+        $routeGenerator = $this->getMockForAbstractClass(
             'Sonata\AdminBundle\Route\RouteGeneratorInterface'
         );
-        $modelManager = $this->getMock(
+        $modelManager = $this->getMockForAbstractClass(
             'Sonata\AdminBundle\Model\ModelManagerInterface'
         );
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())
             ->method('getParameter')
             ->with('sonata.admin.configuration.breadcrumbs')
@@ -225,12 +226,12 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $commentAdmin->initialize();
         $admin->initialize();
 
-        $menuFactory = $this->getMock('Knp\Menu\FactoryInterface');
-        $menu = $this->getMock('Knp\Menu\ItemInterface');
-        $translatorStrategy = $this->getMock(
+        $menuFactory = $this->getMockForAbstractClass('Knp\Menu\FactoryInterface');
+        $menu = $this->getMockForAbstractClass('Knp\Menu\ItemInterface');
+        $translatorStrategy = $this->getMockForAbstractClass(
             'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
         );
-        $routeGenerator = $this->getMock(
+        $routeGenerator = $this->getMockForAbstractClass(
             'Sonata\AdminBundle\Route\RouteGeneratorInterface'
         );
 
@@ -274,7 +275,7 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue($menu));
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())
             ->method('getParameter')
             ->with('sonata.admin.configuration.breadcrumbs')
