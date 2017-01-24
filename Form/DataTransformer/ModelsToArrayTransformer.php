@@ -106,7 +106,12 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         }
 
         if (count($notFound) > 0) {
-            throw new TransformationFailedException(sprintf('The entities with keys "%s" could not be found', implode('", "', $notFound)));
+            throw new TransformationFailedException(
+                sprintf(
+                    'The entities with keys "%s" could not be found',
+                    implode('", "', $notFound)
+                )
+            );
         }
 
         return $collection;
@@ -119,10 +124,25 @@ class ModelsToArrayTransformer implements DataTransformerInterface
      */
     private function getIdentifierValues($entity)
     {
+        if (!is_object($entity)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expected an entity class, received %s',
+                    var_export($entity, true)
+                )
+            );
+        }
         try {
             return $this->modelManager->getIdentifierValues($entity);
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($entity)), 0, $e);
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Unable to retrieve the identifier values for entity %s',
+                    ClassUtils::getClass($entity)
+                ),
+                0,
+                $e
+            );
         }
     }
 }
