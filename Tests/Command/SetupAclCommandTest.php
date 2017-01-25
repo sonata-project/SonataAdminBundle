@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Command;
 
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\SetupAclCommand;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Sonata\AdminBundle\Util\AdminAclManipulatorInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -20,16 +21,16 @@ use Symfony\Component\Console\Tester\CommandTester;
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class SetupAclCommandTest extends \PHPUnit_Framework_TestCase
+class SetupAclCommandTest extends PHPUnit_Framework_TestCase
 {
     public function testExecute()
     {
         $application = new Application();
         $command = new SetupAclCommand();
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
-        $aclManipulator = $this->getMock('Sonata\AdminBundle\Util\AdminAclManipulatorInterface');
+        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $aclManipulator = $this->createMock('Sonata\AdminBundle\Util\AdminAclManipulatorInterface');
 
         $container->expects($this->any())
             ->method('get')
@@ -67,7 +68,7 @@ class SetupAclCommandTest extends \PHPUnit_Framework_TestCase
         $application = new Application();
         $command = new SetupAclCommand();
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $container->expects($this->any())
             ->method('get')
@@ -98,8 +99,8 @@ class SetupAclCommandTest extends \PHPUnit_Framework_TestCase
         $application = new Application();
         $command = new SetupAclCommand();
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
 
         $container->expects($this->any())
             ->method('get')
