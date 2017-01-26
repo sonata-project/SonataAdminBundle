@@ -12,9 +12,10 @@
 namespace Sonata\AdminBundle\Tests;
 
 use Sonata\AdminBundle\DependencyInjection\Configuration;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Config\Definition\Processor;
 
-class ConfigurationTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTest extends PHPUnit_Framework_TestCase
 {
     public function testOptions()
     {
@@ -35,7 +36,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
     public function testOptionsWithInvalidFormat()
     {
-        $this->setExpectedException('Symfony\Component\Config\Definition\Exception\InvalidTypeException');
+        $this->expectException('Symfony\Component\Config\Definition\Exception\InvalidTypeException');
 
         $config = $this->process(array(array(
             'options' => array(
@@ -188,7 +189,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
     public function testDashboardGroupsWithBadItemsParams()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Expected either parameters "route" and "label" for array items');
+        $this->expectException('\InvalidArgumentException', 'Expected either parameters "route" and "label" for array items');
 
         $config = $this->process(array(array(
             'dashboard' => array(
