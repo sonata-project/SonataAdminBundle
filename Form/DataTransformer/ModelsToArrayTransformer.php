@@ -39,6 +39,9 @@ class ModelsToArrayTransformer implements DataTransformerInterface
 
     /**
      * @var ModelChoiceList
+     *
+     * @deprecated since 3.x, to be removed in 4.0
+     * NEXT_MAJOR: remove this property
      */
     protected $choiceList;
 
@@ -51,18 +54,69 @@ class ModelsToArrayTransformer implements DataTransformerInterface
      *
      * @throws RuntimeException
      */
-    public function __construct($choiceList, ModelManagerInterface $modelManager, $class)
+    public function __construct($choiceList, $modelManager, $class = null)
     {
-        if (!$choiceList instanceof ModelChoiceList
-            && !$choiceList instanceof ModelChoiceLoader
-            && !$choiceList instanceof LazyChoiceList) {
-            throw new RuntimeException('First param passed to ModelsToArrayTransformer should be instance of
-                ModelChoiceLoader or ModelChoiceList or LazyChoiceList');
+        /*
+        NEXT_MAJOR: Remove condition , magic methods, legacyConstructor() method, $choiceList property and argument
+        __construct() signature should be : public function __construct(ModelManager $modelManager, $class)
+         */
+
+        $args = func_get_args();
+
+        if (func_num_args() == 3) {
+            $this->legacyConstructor($args);
+        } else {
+            $this->modelManager = $args[0];
+            $this->class = $args[1];
+        }
+    }
+
+    /**
+     * @internal
+     */
+    public function __get($name)
+    {
+        if ('choiceList' === $name) {
+            $this->triggerDeprecation();
         }
 
-        $this->choiceList = $choiceList;
-        $this->modelManager = $modelManager;
-        $this->class = $class;
+        return $this->$name;
+    }
+
+    /**
+     * @internal
+     */
+    public function __set($name, $value)
+    {
+        if ('choiceList' === $name) {
+            $this->triggerDeprecation();
+        }
+
+        $this->$name = $value;
+    }
+
+    /**
+     * @internal
+     */
+    public function __isset($name)
+    {
+        if ('choiceList' === $name) {
+            $this->triggerDeprecation();
+        }
+
+        return isset($this->$name);
+    }
+
+    /**
+     * @internal
+     */
+    public function __unset($name)
+    {
+        if ('choiceList' === $name) {
+            $this->triggerDeprecation();
+        }
+
+        unset($this->$name);
     }
 
     /**
@@ -113,6 +167,29 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     }
 
     /**
+     * Simulates the old constructor for BC.
+     *
+     * @param array $args
+     *
+     * @throws RuntimeException
+     */
+    private function legacyConstructor($args)
+    {
+        $choiceList = $args[0];
+
+        if (!$choiceList instanceof ModelChoiceList
+            && !$choiceList instanceof ModelChoiceLoader
+            && !$choiceList instanceof LazyChoiceList) {
+            throw new RuntimeException('First param passed to ModelsToArrayTransformer should be instance of
+                ModelChoiceLoader or ModelChoiceList or LazyChoiceList');
+        }
+
+        $this->choiceList = $choiceList;
+        $this->modelManager = $args[1];
+        $this->class = $args[2];
+    }
+
+    /**
      * @param object $entity
      *
      * @return array
@@ -124,5 +201,17 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         } catch (\Exception $e) {
             throw new \InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($entity)), 0, $e);
         }
+    }
+
+    /**
+     * @internal
+     */
+    private function triggerDeprecation()
+    {
+        @trigger_error(sprintf(
+                'Using the "%s::$choiceList" property is deprecated since version 3.x and will be removed in 4.0.',
+                __CLASS__),
+            E_USER_DEPRECATED)
+        ;
     }
 }
