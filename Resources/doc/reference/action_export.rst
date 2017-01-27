@@ -22,7 +22,7 @@ and will use the field name as a fallback.
 Customizing export
 ~~~~~~~~~~~~~~~~~~
 
-To customize available export formats just overwrite getExportFormats() method of AbstractAdmin class
+To customize available export formats just overwrite AbstractAdmin::getExportFormats()
 
 .. code-block:: php
 
@@ -42,7 +42,7 @@ To customize available export formats just overwrite getExportFormats() method o
         }
     }
 
-If you want to customize the list of fields to export, overwrite getExportFields() method of AbstractAdmin class like
+If you want to customize the list of fields to export, overwrite AbstractAdmin::getExportFields() like
 this:
 
 .. code-block:: php
@@ -65,9 +65,11 @@ this:
         }
     }
 
-Note that you can use 'contact.phone' to access the 'phone' property of 'Contact' entity
+.. note::
 
-To add more customization to your export you can overwrite getDataSourceIterator() method of AbstractAdmin class.
+    Note that you can use `contact.phone` to access the `phone` property of `Contact` entity
+
+To add more customization to your export you can overwrite AbstractAdmin::getDataSourceIterator().
 Supposing you want to change date format in your export file. You can do it like this:
 
 .. code-block:: php
@@ -79,9 +81,9 @@ Supposing you want to change date format in your export file. You can do it like
     {
         public function getDataSourceIterator()
         {
-            $datasourceit = parent::getDataSourceIterator();
-            $datasourceit->setDateTimeFormat('d/m/Y'); //change this to suit your needs
-            return $datasourceit;
+            $iterator = parent::getDataSourceIterator();
+            $iterator->setDateTimeFormat('d/m/Y'); //change this to suit your needs
+            return $iterator;
         }
     }
 
@@ -89,9 +91,8 @@ Supposing you want to change date format in your export file. You can do it like
 
     **TODO**:
     * any global (yml) options that affect the export actions
-    * how to disable (some of) the default formats
     * how to add new export formats
-    * customising the templates used to render the output
     * customising the query used to fetch the results
 
 .. _`issues on Github`: https://github.com/sonata-project/SonataAdminBundle/issues/1519
+.. _`the exporter bundle documentation`: https://github.com/sonata-project/exporter/blob/1.x/docs/reference/symfony.rst
