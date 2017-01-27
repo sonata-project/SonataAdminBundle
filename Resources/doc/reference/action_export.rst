@@ -19,6 +19,72 @@ All field names are translated by default.
 An internal mechanism checks if a field matching the translator strategy label exists in the current translation file
 and will use the field name as a fallback.
 
+Customizing export
+~~~~~~~~~~~~~~~~~~
+
+To customize available export formats just overwrite getExportFormats() method of AbstractAdmin class
+
+.. code-block:: php
+
+    <?php
+    // src/AppBundle/Admin/PersonAdmin.php
+
+    class PersonAdmin extends AbstractAdmin
+    {
+        /**
+         * {@inheritdoc}
+         */
+        public function getExportFormats()
+        {
+            return array(
+                'json', 'xml', 'csv', 'xls',
+            );
+        }
+    }
+
+If you want to customize the list of fields to export, overwrite getExportFields() method of AbstractAdmin class like
+this:
+
+.. code-block:: php
+
+    <?php
+    // src/AppBundle/Admin/PersonAdmin.php
+
+    class PersonAdmin extends AbstractAdmin
+    {
+        /**
+         * @return array
+         */
+        public function getExportFields() {
+            return array(
+                'Id' => 'id',
+                'First Name' => 'firstName',
+                'Last Name' => 'lastName',
+                'Contact' => 'contact.phone',
+            );
+        }
+    }
+
+Note that you can use 'contact.phone' to access the 'phone' property of 'Contact' entity
+
+To add more customization to your export you can overwrite getDataSourceIterator() method of AbstractAdmin class.
+Supposing you want to change date format in your export file. You can do it like this:
+
+.. code-block:: php
+
+    <?php
+    // src/AppBundle/Admin/PersonAdmin.php
+
+    class PersonAdmin extends AbstractAdmin
+    {
+        public function getDataSourceIterator()
+        {
+            $datasourceit = parent::getDataSourceIterator();
+            $datasourceit->setDateTimeFormat('d/m/Y'); //change this to suit your needs
+            return $datasourceit;
+        }
+    }
+
 .. note::
 
     **TODO**:
