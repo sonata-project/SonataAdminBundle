@@ -13,13 +13,14 @@ namespace Sonata\AdminBundle\Tests\Generator;
 
 use Sonata\AdminBundle\Generator\AdminGenerator;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
  * @author Marek Stipek <mario.dweller@seznam.cz>
  */
-class AdminGeneratorTest extends \PHPUnit_Framework_TestCase
+class AdminGeneratorTest extends PHPUnit_Framework_TestCase
 {
     /** @var AdminGenerator */
     private $adminGenerator;
@@ -60,15 +61,9 @@ class AdminGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('ModelAdmin.php', basename($file));
         $this->assertFileEquals(__DIR__.'/../Fixtures/Admin/ModelAdmin.php', $file);
 
-        try {
-            $this->adminGenerator->generate($this->bundleMock, 'ModelAdmin', 'Model');
-        } catch (\RuntimeException $e) {
-            $this->assertContains('already exists', $e->getMessage());
+        $this->expectException('\RuntimeException', 'already exists');
 
-            return;
-        }
-
-        $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+        $this->adminGenerator->generate($this->bundleMock, 'ModelAdmin', 'Model');
     }
 
     /**
@@ -76,7 +71,7 @@ class AdminGeneratorTest extends \PHPUnit_Framework_TestCase
      */
     private function createModelManagerMock()
     {
-        $modelManagerMock = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManagerMock = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
         $modelManagerMock
             ->expects($this->any())
             ->method('getExportFields')
@@ -92,7 +87,7 @@ class AdminGeneratorTest extends \PHPUnit_Framework_TestCase
      */
     private function createBundleMock()
     {
-        $bundleMock = $this->getMock('Symfony\Component\HttpKernel\Bundle\BundleInterface');
+        $bundleMock = $this->getMockForAbstractClass('Symfony\Component\HttpKernel\Bundle\BundleInterface');
         $bundleMock
             ->expects($this->any())
             ->method('getNamespace')
