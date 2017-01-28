@@ -14,8 +14,9 @@ namespace Sonata\AdminBundle\Tests\Event;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Event\ConfigureEvent;
 use Sonata\AdminBundle\Mapper\BaseMapper;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class ConfigureEventTest extends \PHPUnit_Framework_TestCase
+class ConfigureEventTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var ConfigureEvent
@@ -34,7 +35,7 @@ class ConfigureEventTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
         $this->mapper = $this->getMockBuilder('Sonata\AdminBundle\Mapper\BaseMapper')
             ->disableOriginalConstructor()
             ->getMock();

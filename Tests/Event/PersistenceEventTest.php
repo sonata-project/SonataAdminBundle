@@ -13,8 +13,9 @@ namespace Sonata\AdminBundle\Tests\Event;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Event\PersistenceEvent;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class PersistenceEventTest extends \PHPUnit_Framework_TestCase
+class PersistenceEventTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var PersistenceEvent
@@ -33,7 +34,7 @@ class PersistenceEventTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $this->object = new \stdClass();
 
         $this->event = new PersistenceEvent($this->admin, $this->object, 'Foo');
