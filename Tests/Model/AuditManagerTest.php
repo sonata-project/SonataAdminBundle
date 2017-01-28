@@ -12,20 +12,21 @@
 namespace Sonata\AdminBundle\Tests\Model;
 
 use Sonata\AdminBundle\Model\AuditManager;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
 /**
  * Test for AuditManager.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class AuditManagerTest extends \PHPUnit_Framework_TestCase
+class AuditManagerTest extends PHPUnit_Framework_TestCase
 {
     public function testGetReader()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
 
-        $fooReader = $this->getMock('Sonata\AdminBundle\Model\AuditReaderInterface');
-        $barReader = $this->getMock('Sonata\AdminBundle\Model\AuditReaderInterface');
+        $fooReader = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\AuditReaderInterface');
+        $barReader = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\AuditReaderInterface');
 
         $container->expects($this->any())
             ->method('get')
@@ -53,9 +54,9 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetReaderWithException()
     {
-        $this->setExpectedException('\RuntimeException', 'The class "Foo\Foo" does not have any reader manager');
+        $this->expectException('\RuntimeException', 'The class "Foo\Foo" does not have any reader manager');
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
         $auditManager = new AuditManager($container);
 
         $auditManager->getReader('Foo\Foo');
