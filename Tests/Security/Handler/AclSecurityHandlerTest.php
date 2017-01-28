@@ -21,11 +21,11 @@ class AclSecurityHandlerTest extends \PHPUnit_Framework_TestCase
         // Set the SecurityContext for Symfony <2.6
         // TODO: Remove conditional return when bumping requirements to SF 2.6+
         if (interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')) {
-            return $this->getMock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
-            $this->authorizationChecker = $this->getMock('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
+            return $this->getMockForAbstractClass('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
+            $this->authorizationChecker = $this->getMockForAbstractClass('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
         }
 
-        return $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        return $this->getMockForAbstractClass('Symfony\Component\Security\Core\SecurityContextInterface');
     }
 
     public function getAuthorizationCheckerMock()
@@ -33,15 +33,15 @@ class AclSecurityHandlerTest extends \PHPUnit_Framework_TestCase
         // Set the SecurityContext for Symfony <2.6
         // TODO: Remove conditional return when bumping requirements to SF 2.6+
         if (interface_exists('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface')) {
-            return $this->getMock('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
+            return $this->getMockForAbstractClass('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
         }
 
-        return $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        return $this->getMockForAbstractClass('Symfony\Component\Security\Core\SecurityContextInterface');
     }
 
     public function testAcl()
     {
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->any())
             ->method('getCode')
             ->will($this->returnValue('test'));
@@ -51,7 +51,7 @@ class AclSecurityHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('isGranted')
             ->will($this->returnValue(true));
 
-        $aclProvider = $this->getMock('Symfony\Component\Security\Acl\Model\MutableAclProviderInterface');
+        $aclProvider = $this->getMockForAbstractClass('Symfony\Component\Security\Acl\Model\MutableAclProviderInterface');
 
         $handler = new AclSecurityHandler($this->getTokenStorageMock(), $authorizationChecker, $aclProvider, 'Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder', array());
 
@@ -76,7 +76,7 @@ class AclSecurityHandlerTest extends \PHPUnit_Framework_TestCase
         );
 
         $authorizationChecker = $this->getAuthorizationCheckerMock();
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())
             ->method('getCode')
             ->will($this->returnValue('test'));
@@ -85,7 +85,7 @@ class AclSecurityHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('getSecurityInformation')
             ->will($this->returnValue($informations));
 
-        $aclProvider = $this->getMock('Symfony\Component\Security\Acl\Model\MutableAclProviderInterface');
+        $aclProvider = $this->getMockForAbstractClass('Symfony\Component\Security\Acl\Model\MutableAclProviderInterface');
 
         $handler = new AclSecurityHandler($this->getTokenStorageMock(), $authorizationChecker, $aclProvider, 'Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder', array());
 
@@ -96,14 +96,14 @@ class AclSecurityHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testWithAuthenticationCredentialsNotFoundException()
     {
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
 
         $authorizationChecker = $this->getAuthorizationCheckerMock();
         $authorizationChecker->expects($this->any())
             ->method('isGranted')
             ->will($this->throwException(new AuthenticationCredentialsNotFoundException('FAIL')));
 
-        $aclProvider = $this->getMock('Symfony\Component\Security\Acl\Model\MutableAclProviderInterface');
+        $aclProvider = $this->getMockForAbstractClass('Symfony\Component\Security\Acl\Model\MutableAclProviderInterface');
 
         $handler = new AclSecurityHandler($this->getTokenStorageMock(), $authorizationChecker, $aclProvider, 'Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder', array());
 
@@ -115,14 +115,14 @@ class AclSecurityHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testWithNonAuthenticationCredentialsNotFoundException()
     {
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
 
         $authorizationChecker = $this->getAuthorizationCheckerMock();
         $authorizationChecker->expects($this->any())
             ->method('isGranted')
             ->will($this->throwException(new \RuntimeException('FAIL')));
 
-        $aclProvider = $this->getMock('Symfony\Component\Security\Acl\Model\MutableAclProviderInterface');
+        $aclProvider = $this->getMockForAbstractClass('Symfony\Component\Security\Acl\Model\MutableAclProviderInterface');
 
         $handler = new AclSecurityHandler($this->getTokenStorageMock(), $authorizationChecker, $aclProvider, 'Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder', array());
 

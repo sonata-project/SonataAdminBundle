@@ -21,10 +21,10 @@ class QueryStringBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuild(array $expectedRoutes, $hasReader, $aclEnabled, $getParent)
     {
-        $audit = $this->getMock('Sonata\AdminBundle\Model\AuditManagerInterface');
+        $audit = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\AuditManagerInterface');
         $audit->expects($this->once())->method('hasReader')->will($this->returnValue($hasReader));
 
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('getParent')->will($this->returnValue($getParent));
         $admin->expects($this->any())->method('getChildren')->will($this->returnValue(array()));
         $admin->expects($this->once())->method('isAclEnabled')->will($this->returnValue($aclEnabled));
@@ -54,7 +54,7 @@ class QueryStringBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildWithChildren()
     {
-        $audit = $this->getMock('Sonata\AdminBundle\Model\AuditManagerInterface');
+        $audit = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\AuditManagerInterface');
         $audit->expects($this->once())->method('hasReader')->will($this->returnValue(true));
 
         $childRouteCollection1 = new RouteCollection('child1.Code.Route', 'child1RouteName', 'child1RoutePattern', 'child1ControllerName');
@@ -64,13 +64,13 @@ class QueryStringBuilderTest extends \PHPUnit_Framework_TestCase
         $childRouteCollection2 = new RouteCollection('child2.Code.Route', 'child2RouteName', 'child2RoutePattern', 'child2ControllerName');
         $childRouteCollection2->add('baz');
 
-        $child1 = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $child1 = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $child1->expects($this->once())->method('getRoutes')->will($this->returnValue($childRouteCollection1));
 
-        $child2 = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $child2 = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $child2->expects($this->once())->method('getRoutes')->will($this->returnValue($childRouteCollection2));
 
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('getParent')->will($this->returnValue(null));
         $admin->expects($this->once())->method('getChildren')->will($this->returnValue(array($child1, $child2)));
         $admin->expects($this->once())->method('isAclEnabled')->will($this->returnValue(true));

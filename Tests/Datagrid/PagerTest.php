@@ -12,11 +12,12 @@
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use Sonata\AdminBundle\Datagrid\Pager;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class PagerTest extends \PHPUnit_Framework_TestCase
+class PagerTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var Pager
@@ -137,7 +138,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetQuery()
     {
-        $query = $this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $query = $this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
 
         $this->pager->setQuery($query);
         $this->assertSame($query, $this->pager->getQuery());
@@ -359,7 +360,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
 
         $this->callMethod($this->pager, 'setNbResults', array(3));
 
-        $query = $this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $query = $this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
 
         $query->expects($this->any())
             ->method('setFirstResult')
@@ -487,7 +488,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
 
         $this->callMethod($this->pager, 'setNbResults', array(3));
 
-        $query = $this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $query = $this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
 
         $query->expects($this->any())
             ->method('setFirstResult')
@@ -545,7 +546,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
 
         $this->callMethod($this->pager, 'setNbResults', array(3));
 
-        $query = $this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $query = $this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
 
         $query->expects($this->any())
             ->method('setFirstResult')

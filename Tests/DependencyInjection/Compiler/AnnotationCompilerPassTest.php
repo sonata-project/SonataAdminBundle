@@ -13,8 +13,9 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use JMS\DiExtraBundle\Metadata\ClassMetadata;
 use Sonata\AdminBundle\Annotation\Admin;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class AnnotationCompilerPassTest extends \PHPUnit_Framework_TestCase
+class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
 {
     public function testInvalidAdminAnnotation()
     {
@@ -22,7 +23,7 @@ class AnnotationCompilerPassTest extends \PHPUnit_Framework_TestCase
          * @Admin(class="Sonata\AdminBundle\Tests\Fixtures\Foo")
          */
 
-        $this->setExpectedException(
+        $this->expectException(
             'LogicException',
             'Unable to generate admin group and label for class Sonata\AdminBundle\Tests\Fixtures\Foo.'
         );

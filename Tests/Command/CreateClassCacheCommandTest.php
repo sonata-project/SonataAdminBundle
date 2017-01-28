@@ -12,13 +12,14 @@
 namespace Sonata\AdminBundle\Tests\Command;
 
 use Sonata\AdminBundle\Command\CreateClassCacheCommand;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class CreateClassCacheCommandTest extends \PHPUnit_Framework_TestCase
+class CreateClassCacheCommandTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var string
@@ -47,8 +48,8 @@ class CreateClassCacheCommandTest extends \PHPUnit_Framework_TestCase
         $this->application = new Application();
         $command = new CreateClassCacheCommand();
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $kernel = $this->getMock('Symfony\Component\HttpKernel\KernelInterface');
+        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $kernel = $this->createMock('Symfony\Component\HttpKernel\KernelInterface');
 
         $kernel->expects($this->any())
             ->method('getCacheDir')
@@ -92,7 +93,7 @@ class CreateClassCacheCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        return;
+        $this->markTestSkipped();
         $this->assertFileExists($this->tempDirectory.'/classes.map');
         $this->assertFileNotExists($this->tempDirectory.'/classes.php');
 

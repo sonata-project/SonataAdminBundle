@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Tests\Guesser;
 
 use Sonata\AdminBundle\Guesser\TypeGuesserChain;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Form\Guess\Guess;
 use Symfony\Component\Form\Guess\TypeGuess;
 
@@ -20,11 +21,11 @@ use Symfony\Component\Form\Guess\TypeGuess;
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class TypeGuesserChainTest extends \PHPUnit_Framework_TestCase
+class TypeGuesserChainTest extends PHPUnit_Framework_TestCase
 {
     public function testConstructorWithException()
     {
-        $this->setExpectedException('Symfony\Component\Form\Exception\UnexpectedTypeException');
+        $this->expectException('Symfony\Component\Form\Exception\UnexpectedTypeException');
 
         $typeGuesserChain = new TypeGuesserChain(array(new \stdClass()));
     }
@@ -32,24 +33,24 @@ class TypeGuesserChainTest extends \PHPUnit_Framework_TestCase
     public function testGuessType()
     {
         $typeGuess1 = new TypeGuess('foo1', array(), Guess::MEDIUM_CONFIDENCE);
-        $guesser1 = $this->getMock('Sonata\AdminBundle\Guesser\TypeGuesserInterface');
+        $guesser1 = $this->getMockForAbstractClass('Sonata\AdminBundle\Guesser\TypeGuesserInterface');
         $guesser1->expects($this->any())
                 ->method('guessType')
                 ->will($this->returnValue($typeGuess1));
 
         $typeGuess2 = new TypeGuess('foo2', array(), Guess::HIGH_CONFIDENCE);
-        $guesser2 = $this->getMock('Sonata\AdminBundle\Guesser\TypeGuesserInterface');
+        $guesser2 = $this->getMockForAbstractClass('Sonata\AdminBundle\Guesser\TypeGuesserInterface');
         $guesser2->expects($this->any())
                 ->method('guessType')
                 ->will($this->returnValue($typeGuess2));
 
         $typeGuess3 = new TypeGuess('foo3', array(), Guess::LOW_CONFIDENCE);
-        $guesser3 = $this->getMock('Sonata\AdminBundle\Guesser\TypeGuesserInterface');
+        $guesser3 = $this->getMockForAbstractClass('Sonata\AdminBundle\Guesser\TypeGuesserInterface');
         $guesser3->expects($this->any())
                 ->method('guessType')
                 ->will($this->returnValue($typeGuess3));
 
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
 
         $class = '\stdClass';
         $property = 'firstName';
@@ -58,7 +59,7 @@ class TypeGuesserChainTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($typeGuess2, $typeGuesserChain->guessType($class, $property, $modelManager));
 
         $typeGuess4 = new TypeGuess('foo4', array(), Guess::LOW_CONFIDENCE);
-        $guesser4 = $this->getMock('Sonata\AdminBundle\Guesser\TypeGuesserInterface');
+        $guesser4 = $this->getMockForAbstractClass('Sonata\AdminBundle\Guesser\TypeGuesserInterface');
         $guesser4->expects($this->any())
                 ->method('guessType')
                 ->will($this->returnValue($typeGuess4));

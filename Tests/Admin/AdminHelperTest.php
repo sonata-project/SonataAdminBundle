@@ -13,10 +13,11 @@ namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 
-class AdminHelperTest extends \PHPUnit_Framework_TestCase
+class AdminHelperTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var AdminHelper
@@ -25,7 +26,7 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $pool = new Pool($container, 'title', 'logo.png');
         $this->helper = new AdminHelper($pool);
@@ -33,8 +34,8 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testGetChildFormBuilder()
     {
-        $formFactory = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
-        $eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $formFactory = $this->createMock('Symfony\Component\Form\FormFactoryInterface');
+        $eventDispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
         $formBuilder = new FormBuilder('test', 'stdClass', $eventDispatcher, $formFactory);
 
@@ -58,14 +59,16 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testAddNewInstance()
     {
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
 
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(array('fieldName' => 'fooBar')));
 
-        $object = $this->getMock('stdClass', array('addFooBar'));
+        $object = $this->getMockBuilder('stdClass')
+            ->setMethods(array('addFooBar'))
+            ->getMock();
         $object->expects($this->once())->method('addFooBar');
 
         $this->helper->addNewInstance($object, $fieldDescription);
@@ -73,14 +76,16 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testAddNewInstancePlural()
     {
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
 
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(array('fieldName' => 'fooBars')));
 
-        $object = $this->getMock('stdClass', array('addFooBar'));
+        $object = $this->getMockBuilder('stdClass')
+            ->setMethods(array('addFooBar'))
+            ->getMock();
         $object->expects($this->once())->method('addFooBar');
 
         $this->helper->addNewInstance($object, $fieldDescription);
@@ -88,14 +93,16 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testAddNewInstanceInflector()
     {
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
 
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(array('fieldName' => 'entries')));
 
-        $object = $this->getMock('stdClass', array('addEntry'));
+        $object = $this->getMockBuilder('stdClass')
+            ->setMethods(array('addEntry'))
+            ->getMock();
         $object->expects($this->once())->method('addEntry');
 
         $this->helper->addNewInstance($object, $fieldDescription);
@@ -103,9 +110,15 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
 
     public function testGetElementAccessPath()
     {
-        $object = $this->getMock('stdClass', array('getPathToObject'));
-        $subObject = $this->getMock('stdClass', array('getAnother'));
-        $sub2Object = $this->getMock('stdClass', array('getMoreThings'));
+        $object = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getPathToObject'))
+            ->getMock();
+        $subObject = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getAnother'))
+            ->getMock();
+        $sub2Object = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getMoreThings'))
+            ->getMock();
 
         $object->expects($this->atLeastOnce())->method('getPathToObject')->will($this->returnValue(array($subObject)));
         $subObject->expects($this->atLeastOnce())->method('getAnother')->will($this->returnValue($sub2Object));
@@ -119,28 +132,42 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
     public function testItThrowsExceptionWhenDoesNotFindTheFullPath()
     {
         $path = 'uniquePartOfId_path_to_object_0_more_calls';
-        $object = $this->getMock('stdClass', array('getPathToObject'));
-        $subObject = $this->getMock('stdClass', array('getMore'));
+        $object = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getPathToObject'))
+            ->getMock();
+        $subObject = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getMore'))
+            ->getMock();
 
         $object->expects($this->atLeastOnce())->method('getPathToObject')->will($this->returnValue(array($subObject)));
         $subObject->expects($this->atLeastOnce())->method('getMore')->will($this->returnValue('Value'));
 
-        $this->setExpectedException('Exception', 'Could not get element id from '.$path.' Failing part: calls');
+        $this->expectException('Exception', 'Could not get element id from '.$path.' Failing part: calls');
 
         $this->helper->getElementAccessPath($path, $object);
     }
 
     public function testAppendFormFieldElementNested()
     {
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
-        $object = $this->getMock('stdClass', array('getSubObject'));
-        $simpleObject = $this->getMock('stdClass', array('getSubObject'));
-        $subObject = $this->getMock('stdClass', array('getAnd'));
-        $sub2Object = $this->getMock('stdClass', array('getMore'));
-        $sub3Object = $this->getMock('stdClass', array('getFinalData'));
-        $dataMapper = $this->getMock('Symfony\Component\Form\DataMapperInterface');
-        $formFactory = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
-        $eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $object = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getSubObject'))
+            ->getMock();
+        $simpleObject = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getSubObject'))
+            ->getMock();
+        $subObject = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getAnd'))
+            ->getMock();
+        $sub2Object = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getMore'))
+            ->getMock();
+        $sub3Object = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getFinalData'))
+            ->getMock();
+        $dataMapper = $this->createMock('Symfony\Component\Form\DataMapperInterface');
+        $formFactory = $this->createMock('Symfony\Component\Form\FormFactoryInterface');
+        $eventDispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $formBuilder = new FormBuilder('test', get_class($simpleObject), $eventDispatcher, $formFactory);
         $childFormBuilder = new FormBuilder('subObject', get_class($subObject), $eventDispatcher, $formFactory);
 
@@ -156,7 +183,7 @@ class AdminHelperTest extends \PHPUnit_Framework_TestCase
         $admin->expects($this->once())->method('getFormBuilder')->will($this->returnValue($formBuilder));
         $admin->expects($this->once())->method('getSubject')->will($this->returnValue($object));
 
-        $this->setExpectedException('Exception', 'unknown collection class');
+        $this->expectException('Exception', 'unknown collection class');
 
         $this->helper->appendFormFieldElement($admin, $simpleObject, 'uniquePartOfId_sub_object_0_and_more_0_final_data');
     }

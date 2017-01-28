@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Tests\Translator\Extractor\JMSTranslatorBundle;
 use JMS\TranslationBundle\Model\Message;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor;
 
 /**
@@ -21,7 +22,7 @@ use Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor;
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class AdminExtractorTest extends \PHPUnit_Framework_TestCase
+class AdminExtractorTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var AdminExtractor
@@ -54,14 +55,14 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('JMS Translator Bundle does not exist');
         }
 
-        $this->fooAdmin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
-        $this->barAdmin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->fooAdmin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->barAdmin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
 
         // php 5.3 BC
         $fooAdmin = $this->fooAdmin;
         $barAdmin = $this->barAdmin;
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($id) use ($fooAdmin, $barAdmin) {
@@ -75,7 +76,7 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
                 return;
             }));
 
-        $logger = $this->getMock('Psr\Log\LoggerInterface');
+        $logger = $this->getMockForAbstractClass('Psr\Log\LoggerInterface');
 
         $this->pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
             ->disableOriginalConstructor()
@@ -95,7 +96,7 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
         $this->adminExtractor = new AdminExtractor($this->pool, $logger);
         $this->adminExtractor->setLogger($logger);
 
-        $this->breadcrumbsBuilder = $this->getMock('Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface');
+        $this->breadcrumbsBuilder = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface');
         $this->adminExtractor->setBreadcrumbsBuilder($this->breadcrumbsBuilder);
     }
 
@@ -147,7 +148,7 @@ class AdminExtractorTest extends \PHPUnit_Framework_TestCase
 
     public function testExtractWithException()
     {
-        $this->setExpectedException('RuntimeException', 'Foo throws exception');
+        $this->expectException('RuntimeException', 'Foo throws exception');
 
         $this->fooAdmin->expects($this->any())
             ->method('getShow')
