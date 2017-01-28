@@ -25,7 +25,7 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function getPool(AdminInterface $admin = null)
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($admin) {
             if ($id == 'fake') {
                 throw new ServiceNotFoundException('Fake service does not exist');
@@ -39,13 +39,13 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildPagerWithNoGlobalSearchField()
     {
-        $filter = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter = $this->getMockForAbstractClass('Sonata\AdminBundle\Filter\FilterInterface');
         $filter->expects($this->once())->method('getOption')->will($this->returnValue(false));
 
-        $datagrid = $this->getMock('Sonata\AdminBundle\Datagrid\DatagridInterface');
+        $datagrid = $this->getMockForAbstractClass('Sonata\AdminBundle\Datagrid\DatagridInterface');
         $datagrid->expects($this->once())->method('getFilters')->will($this->returnValue(array($filter)));
 
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('getDatagrid')->will($this->returnValue($datagrid));
 
         $handler = new SearchHandler($this->getPool($admin));
@@ -54,19 +54,19 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildPagerWithGlobalSearchField()
     {
-        $filter = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter = $this->getMockForAbstractClass('Sonata\AdminBundle\Filter\FilterInterface');
         $filter->expects($this->once())->method('getOption')->will($this->returnValue(true));
 
-        $pager = $this->getMock('Sonata\AdminBundle\Datagrid\PagerInterface');
+        $pager = $this->getMockForAbstractClass('Sonata\AdminBundle\Datagrid\PagerInterface');
         $pager->expects($this->once())->method('setPage');
         $pager->expects($this->once())->method('setMaxPerPage');
 
-        $datagrid = $this->getMock('Sonata\AdminBundle\Datagrid\DatagridInterface');
+        $datagrid = $this->getMockForAbstractClass('Sonata\AdminBundle\Datagrid\DatagridInterface');
         $datagrid->expects($this->once())->method('getFilters')->will($this->returnValue(array($filter)));
         $datagrid->expects($this->once())->method('setValue');
         $datagrid->expects($this->once())->method('getPager')->will($this->returnValue($pager));
 
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('getDatagrid')->will($this->returnValue($datagrid));
 
         $handler = new SearchHandler($this->getPool($admin));
