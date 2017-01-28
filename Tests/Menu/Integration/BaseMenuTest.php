@@ -51,7 +51,7 @@ abstract class BaseMenuTest extends \PHPUnit_Framework_TestCase
         $this->renderer = new TwigRenderer(
             $this->environment,
             $this->getTemplate(),
-            $this->getMock('Knp\Menu\Matcher\MatcherInterface')
+            $this->getMockForAbstractClass('Knp\Menu\Matcher\MatcherInterface')
         );
 
         return $this->renderer->render($item, $options);
