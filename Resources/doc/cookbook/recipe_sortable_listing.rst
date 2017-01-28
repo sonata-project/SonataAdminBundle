@@ -184,17 +184,17 @@ And add the following call the ``admin.yml``
 
 .. code-block:: yaml
 
-	services:
-	    app.admin.client:
-	        class: AppBundle\Admin\ClientAdmin
-	        tags:
-	            - { name: sonata.admin, manager_type: orm, label: "Clients" }
-	        arguments:
-	            - ~
-	            - AppBundle\Entity\Client
-	            - 'PixSortableBehaviorBundle:SortableAdmin'
+    services:
+        app.admin.client:
+            class: AppBundle\Admin\ClientAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, label: "Clients" }
+            arguments:
+                - ~
+                - AppBundle\Entity\Client
+                - 'PixSortableBehaviorBundle:SortableAdmin'
             calls:
-                 - [ setPositionService, ["@pix_sortable_behavior.position"]]
+                - [ setPositionService, ["@pix_sortable_behavior.position"]]
 
 You should now have in your listing a new action column with 4 arrows to sort your records.
 
