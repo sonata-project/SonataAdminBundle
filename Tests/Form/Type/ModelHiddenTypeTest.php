@@ -20,7 +20,7 @@ class ModelHiddenTypeTest extends TypeTestCase
     public function testGetDefaultOptions()
     {
         $type = new ModelHiddenType();
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
         $optionResolver = new OptionsResolver();
 
         if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {

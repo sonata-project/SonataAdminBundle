@@ -12,8 +12,9 @@
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class AddFilterTypeCompilerPassTest extends \PHPUnit_Framework_TestCase
+class AddFilterTypeCompilerPassTest extends PHPUnit_Framework_TestCase
 {
     private $filterFactory;
 
@@ -23,14 +24,14 @@ class AddFilterTypeCompilerPassTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->filterFactory = $this->getMock('Symfony\Component\DependencyInjection\Definition');
-        $this->fooFilter = $this->getMock('Symfony\Component\DependencyInjection\Definition');
-        $this->barFilter = $this->getMock('Symfony\Component\DependencyInjection\Definition');
+        $this->filterFactory = $this->createMock('Symfony\Component\DependencyInjection\Definition');
+        $this->fooFilter = $this->createMock('Symfony\Component\DependencyInjection\Definition');
+        $this->barFilter = $this->createMock('Symfony\Component\DependencyInjection\Definition');
     }
 
     public function testProcess()
     {
-        $containerBuilderMock = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
+        $containerBuilderMock = $this->createMock('Symfony\Component\DependencyInjection\ContainerBuilder');
 
         $containerBuilderMock->expects($this->any())
             ->method('getDefinition')

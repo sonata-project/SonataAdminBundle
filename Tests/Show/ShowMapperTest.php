@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 
 /**
@@ -23,7 +24,7 @@ use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ShowMapperTest extends \PHPUnit_Framework_TestCase
+class ShowMapperTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var ShowMapper
@@ -57,9 +58,9 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->showBuilder = $this->getMock('Sonata\AdminBundle\Builder\ShowBuilderInterface');
+        $this->showBuilder = $this->getMockForAbstractClass('Sonata\AdminBundle\Builder\ShowBuilderInterface');
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
-        $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
 
         $this->admin->expects($this->any())
             ->method('getLabel')
@@ -96,7 +97,7 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
                 $groups = $showGroups;
             }));
 
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
 
         // php 5.3 BC
         $fieldDescription = $this->getFieldDescriptionMock();
@@ -326,31 +327,18 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
 
     public function testAddException()
     {
-        try {
-            $this->showMapper->add(12345);
-        } catch (\RuntimeException $e) {
-            $this->assertContains('invalid state', $e->getMessage());
+        $this->expectException('\RuntimeException', 'invalid state');
 
-            return;
-        }
-
-        $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+        $this->showMapper->add(12345);
     }
 
     public function testAddDuplicateFieldNameException()
     {
         $name = 'name';
+        $this->expectException('\RuntimeException', sprintf('Duplicate field %s "name" in show mapper. Names should be unique.', $name));
 
-        try {
-            $this->showMapper->add($name);
-            $this->showMapper->add($name);
-        } catch (\RuntimeException $e) {
-            $this->assertContains(sprintf('Duplicate field name "%s" in show mapper. Names should be unique.', $name), $e->getMessage());
-
-            return;
-        }
-
-        $this->fail('Failed asserting that duplicate field name exception of type "\RuntimeException" is thrown.');
+        $this->showMapper->add($name);
+        $this->showMapper->add($name);
     }
 
     public function testKeys()
@@ -449,7 +437,7 @@ class ShowMapperTest extends \PHPUnit_Framework_TestCase
 
     private function cleanShowMapper()
     {
-        $this->showBuilder = $this->getMock('Sonata\AdminBundle\Builder\ShowBuilderInterface');
+        $this->showBuilder = $this->getMockForAbstractClass('Sonata\AdminBundle\Builder\ShowBuilderInterface');
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
         $this->admin = new CleanAdmin('code', 'class', 'controller');
         $this->showMapper = new ShowMapper($this->showBuilder, $this->fieldDescriptionCollection, $this->admin);

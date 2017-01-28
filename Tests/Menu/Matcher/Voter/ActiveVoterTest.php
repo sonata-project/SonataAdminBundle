@@ -43,7 +43,7 @@ class ActiveVoterTest extends AbstractVoterTest
      */
     protected function createItem($data)
     {
-        $item = $this->getMock('Knp\Menu\ItemInterface');
+        $item = $this->getMockForAbstractClass('Knp\Menu\ItemInterface');
         $item->expects($this->any())
              ->method('getExtra')
              ->with('active')

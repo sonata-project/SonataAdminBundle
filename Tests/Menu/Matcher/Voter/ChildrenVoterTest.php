@@ -46,14 +46,14 @@ class ChildrenVoterTest extends AbstractVoterTest
     {
         $childItems = array();
         foreach ($data as $childData) {
-            $childItem = $this->getMock('Knp\Menu\ItemInterface');
+            $childItem = $this->getMockForAbstractClass('Knp\Menu\ItemInterface');
             $childItem->expects($this->any())
                 ->method('isCurrent')
                 ->willReturn($childData);
             $childItems[] = $childItem;
         }
 
-        $item = $this->getMock('Knp\Menu\ItemInterface');
+        $item = $this->getMockForAbstractClass('Knp\Menu\ItemInterface');
         $item->expects($this->any())
             ->method('getChildren')
             ->will($this->returnValue($childItems));

@@ -13,8 +13,9 @@ namespace Sonata\AdminBundle\Tests\Form\ChoiceList;
 
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class ModelChoiceListTest extends \PHPUnit_Framework_TestCase
+class ModelChoiceListTest extends PHPUnit_Framework_TestCase
 {
     private $modelManager = null;
 
@@ -24,7 +25,7 @@ class ModelChoiceListTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Test only available for < SF3.0');
         }
 
-        $this->modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $this->modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
 
         $this->modelManager->expects($this->any())
             ->method('getIdentifierFieldNames')

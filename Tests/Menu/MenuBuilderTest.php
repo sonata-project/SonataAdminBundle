@@ -28,9 +28,9 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')->disableOriginalConstructor()->getMock();
-        $this->provider = $this->getMock('Knp\Menu\Provider\MenuProviderInterface');
+        $this->provider = $this->getMockForAbstractClass('Knp\Menu\Provider\MenuProviderInterface');
         $this->factory = new MenuFactory();
-        $this->eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->eventDispatcher = $this->getMockForAbstractClass('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
         $this->builder = new MenuBuilder($this->pool, $this->factory, $this->provider, $this->eventDispatcher);
     }
