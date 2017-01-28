@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Security\Handler;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\RoleSecurityHandler;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -22,7 +23,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
+class RoleSecurityHandlerTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var AdminInterface
@@ -38,12 +39,12 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
     {
         // Set the SecurityContext for Symfony <2.6
         if (interface_exists('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface')) {
-            $this->authorizationChecker = $this->getMock('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
+            $this->authorizationChecker = $this->getMockForAbstractClass('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
         } else {
-            $this->authorizationChecker = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+            $this->authorizationChecker = $this->getMockForAbstractClass('Symfony\Component\Security\Core\SecurityContextInterface');
         }
 
-        $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
     }
 
     /**
@@ -186,7 +187,7 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testIsGrantedWithException()
     {
-        $this->setExpectedException('RuntimeException', 'Something is wrong');
+        $this->expectException('RuntimeException', 'Something is wrong');
 
         $this->admin->expects($this->any())
             ->method('getCode')
@@ -233,6 +234,6 @@ class RoleSecurityHandlerTest extends \PHPUnit_Framework_TestCase
      */
     private function getSonataAdminObject()
     {
-        return $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        return $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
     }
 }
