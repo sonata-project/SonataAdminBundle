@@ -13,8 +13,9 @@ namespace Sonata\AdminBundle\Tests\Form\ChoiceList;
 
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class ModelChoiceLoaderTest extends \PHPUnit_Framework_TestCase
+class ModelChoiceLoaderTest extends PHPUnit_Framework_TestCase
 {
     private $modelManager = null;
 
@@ -24,7 +25,7 @@ class ModelChoiceLoaderTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Test only available for > SF2.7');
         }
 
-        $this->modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $this->modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
     }
 
     public function testLoadFromEntityWithSamePropertyValues()
