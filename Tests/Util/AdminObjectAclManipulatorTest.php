@@ -28,6 +28,6 @@ class AdminObjectAclManipulatorTest extends \PHPUnit_Framework_TestCase
 
     protected function createAdminObjectAclManipulator()
     {
-        return new AdminObjectAclManipulator($this->getMock('Symfony\Component\Form\FormFactoryInterface'), self::MASK_BUILDER_CLASS);
+        return new AdminObjectAclManipulator($this->getMockForAbstractClass('Symfony\Component\Form\FormFactoryInterface'), self::MASK_BUILDER_CLASS);
     }
 }
