@@ -1225,8 +1225,7 @@ class CRUDController extends Controller
     /**
      * Validate CSRF token for action without form.
      *
-     * @param string  $intention
-     * @param Request $request
+     * @param string $intention
      *
      * @throws HttpException
      */
