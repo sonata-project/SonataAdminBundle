@@ -103,6 +103,8 @@ class AdminHelper
      * @param string         $elementId
      *
      * @return array
+     *
+     * @throws \Exception
      */
     public function appendFormFieldElement(AdminInterface $admin, $subject, $elementId)
     {
