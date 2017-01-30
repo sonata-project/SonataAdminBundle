@@ -385,7 +385,7 @@ class CRUDController extends Controller
         $isRelevantAction = sprintf('batchAction%sIsRelevant', $camelizedAction);
 
         if (method_exists($this, $isRelevantAction)) {
-            $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $allElements);
+            $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $allElements, $request);
         } else {
             $nonRelevantMessage = count($idx) != 0 || $allElements; // at least one item is selected
         }
@@ -450,7 +450,7 @@ class CRUDController extends Controller
             $query = null;
         }
 
-        return call_user_func(array($this, $finalAction), $query);
+        return call_user_func(array($this, $finalAction), $query, $request);
     }
 
     /**
@@ -1225,8 +1225,7 @@ class CRUDController extends Controller
     /**
      * Validate CSRF token for action without form.
      *
-     * @param string  $intention
-     * @param Request $request
+     * @param string $intention
      *
      * @throws HttpException
      */
