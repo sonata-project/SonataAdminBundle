@@ -45,11 +45,17 @@ class SonataAdminExtension extends \Twig_Extension
     private $xEditableTypeMapping = array();
 
     /**
+     * @var string
+     */
+    private $roleSonataAdmin;
+
+    /**
      * @param Pool                $pool
+     * @param string              $roleSonataAdmin
      * @param LoggerInterface     $logger
      * @param TranslatorInterface $translator
      */
-    public function __construct(Pool $pool, LoggerInterface $logger = null, TranslatorInterface $translator = null)
+    public function __construct(Pool $pool, $roleSonataAdmin, LoggerInterface $logger = null, TranslatorInterface $translator = null)
     {
         // NEXT_MAJOR: make the translator parameter required
         if (null === $translator) {
@@ -61,6 +67,7 @@ class SonataAdminExtension extends \Twig_Extension
         $this->pool = $pool;
         $this->logger = $logger;
         $this->translator = $translator;
+        $this->roleSonataAdmin = $roleSonataAdmin;
     }
 
     /**
@@ -108,6 +115,19 @@ class SonataAdminExtension extends \Twig_Extension
             new \Twig_SimpleFilter(
                 'sonata_xeditable_choices',
                 array($this, 'getXEditableChoices')
+            ),
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFunctions()
+    {
+        return array(
+            new \Twig_SimpleFunction(
+                'role_sonata_admin',
+                array($this, 'getSonataRoleAdmin')
             ),
         );
     }
@@ -479,5 +499,15 @@ EOT;
         }
 
         return $template;
+    }
+
+    /**
+     * Get ROLE_SONATA_ADMIN.
+     *
+     * @return string
+     */
+    private function getSonataRoleAdmin()
+    {
+        return $this->roleSonataAdmin;
     }
 }

@@ -184,7 +184,7 @@ file that was distributed with this source code.
                         </div>
 
                         {% block sonata_top_nav_menu %}
-                            {% if app.user and is_granted('ROLE_SONATA_ADMIN') %}
+                            {% if app.user and is_granted(role_sonata_admin()) %}
                                 <div class="navbar-custom-menu">
                                     <ul class="nav navbar-nav">
                                         {% block sonata_top_nav_menu_add_block %}
