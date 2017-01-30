@@ -66,9 +66,6 @@
             "Tests/"
         ]
     },
-    "autoload-dev": {
-        "psr-4": { "Sonata\\AdminBundle\\Tests\\": "Tests/" }
-     },
     "config": {
         "sort-packages": true
     },
