@@ -27,6 +27,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $universalExtensions = array();
+        $targets = array();
 
         foreach ($container->findTaggedServiceIds('sonata.admin.extension') as $id => $tags) {
             foreach ($tags as $attributes) {
@@ -44,10 +45,12 @@ class ExtensionCompilerPass implements CompilerPassInterface
                     continue;
                 }
 
-                $container
-                    ->getDefinition($target)
-                    ->addMethodCall('addExtension', array(new Reference($id)))
-                ;
+                if (!isset($targets[$target])) {
+                    $targets[$target] = new \SplPriorityQueue();
+                }
+
+                $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
+                $targets[$target]->insert(new Reference($id), $priority);
             }
         }
 
@@ -57,17 +60,36 @@ class ExtensionCompilerPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $attributes) {
             $admin = $container->getDefinition($id);
 
+            if (!isset($targets[$id])) {
+                $targets[$id] = new \SplPriorityQueue();
+            }
+
             foreach ($universalExtensions as $extension) {
-                $admin->addMethodCall('addExtension', array(new Reference($extension)));
+                $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
+                $targets[$id]->insert(new Reference($extension), $priority);
             }
 
             $extensions = $this->getExtensionsForAdmin($id, $admin, $container, $extensionMap);
 
             foreach ($extensions as $extension) {
                 if (!$container->has($extension)) {
-                    throw new \InvalidArgumentException(sprintf('Unable to find extension service for id %s', $extension));
+                    throw new \InvalidArgumentException(
+                        sprintf('Unable to find extension service for id %s', $extension)
+                    );
                 }
-                $admin->addMethodCall('addExtension', array(new Reference($extension)));
+
+                $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
+                $targets[$id]->insert(new Reference($extension), $priority);
+            }
+        }
+
+        foreach ($targets as $target => $extensions) {
+            $extensions = iterator_to_array($extensions);
+            ksort($extensions);
+            $admin = $container->getDefinition($target);
+
+            foreach (array_values($extensions) as $extension) {
+                $admin->addMethodCall('addExtension', array($extension));
             }
         }
     }
