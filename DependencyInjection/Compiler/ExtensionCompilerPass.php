@@ -38,19 +38,14 @@ class ExtensionCompilerPass implements CompilerPassInterface
                 }
 
                 if (isset($attributes['global']) && $attributes['global']) {
-                    $universalExtensions[] = $id;
+                    $universalExtensions[$id] = $attributes;
                 }
 
                 if (!$target || !$container->hasDefinition($target)) {
                     continue;
                 }
 
-                if (!isset($targets[$target])) {
-                    $targets[$target] = new \SplPriorityQueue();
-                }
-
-                $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
-                $targets[$target]->insert(new Reference($id), $priority);
+                $this->addExtension($targets, $target, $id, $attributes);
             }
         }
 
@@ -64,9 +59,8 @@ class ExtensionCompilerPass implements CompilerPassInterface
                 $targets[$id] = new \SplPriorityQueue();
             }
 
-            foreach ($universalExtensions as $extension) {
-                $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
-                $targets[$id]->insert(new Reference($extension), $priority);
+            foreach ($universalExtensions as $extension => $extensionAttributes) {
+                $this->addExtension($targets, $id, $extension, $extensionAttributes);
             }
 
             $extensions = $this->getExtensionsForAdmin($id, $admin, $container, $extensionMap);
@@ -78,8 +72,8 @@ class ExtensionCompilerPass implements CompilerPassInterface
                     );
                 }
 
-                $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
-                $targets[$id]->insert(new Reference($extension), $priority);
+                $this->addExtension($targets, $id, $extension, $attributes);
+
             }
         }
 
@@ -218,5 +212,23 @@ class ExtensionCompilerPass implements CompilerPassInterface
         }
 
         return $this->hasTrait($parentClass, $traitName);
+    }
+
+    /**
+     * Add extension configuration to the targets array
+     *
+     * @param array $targets
+     * @param string $target
+     * @param string $extension
+     * @param array $attributes
+     */
+    private function addExtension(array &$targets, $target, $extension, $attributes)
+    {
+        if (!isset($targets[$target])) {
+            $targets[$target] = new \SplPriorityQueue();
+        }
+
+        $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
+        $targets[$target]->insert(new Reference($extension), $priority);
     }
 }
