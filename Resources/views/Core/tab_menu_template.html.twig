@@ -83,6 +83,7 @@
 {% endblock %}
 
 {% block linkElement %}
+    {% import "knp_menu.html.twig" as macros %}
     <a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes) }}>
         {% if item.attribute('icon') is not empty  %}
             <i class="{{ item.attribute('icon') }}"></i>
@@ -92,6 +93,7 @@
 {% endblock %}
 
 {% block spanElement %}
+    {% import "knp_menu.html.twig" as macros %}
     <span {{ macros.attributes(item.labelAttributes) }}>
         {% if item.attribute('icon') is not empty  %}
             <i class="{{ item.attribute('icon') }}"></i>
@@ -101,6 +103,7 @@
 {% endblock %}
 
 {% block dropdownElement %}
+    {% import "knp_menu.html.twig" as macros %}
     {%- set classes = item.linkAttribute('class') is not empty ? [item.linkAttribute('class')] : [] %}
     {%- set classes = classes|merge(['dropdown-toggle']) %}
     {%- set attributes = item.linkAttributes %}
