@@ -52,6 +52,11 @@ Set the *global* attribute to *true* and the extension will be added to all admi
                 tags:
                     - { name: sonata.admin.extension, global: true }
 
+            app.important.extension:
+                class: AppBundle\Admin\Extension\ImportantAdminExtension
+                tags:
+                    - { name: sonata.admin.extension, priority: 5 }
+
 The second option is to add it to your config.yml file.
 
 .. configuration-block::
