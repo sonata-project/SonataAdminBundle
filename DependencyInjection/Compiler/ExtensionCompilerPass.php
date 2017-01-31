@@ -73,7 +73,6 @@ class ExtensionCompilerPass implements CompilerPassInterface
                 }
 
                 $this->addExtension($targets, $id, $extension, $attributes);
-
             }
         }
 
