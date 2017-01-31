@@ -16,8 +16,6 @@ use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 
 /**
- * Interface AclSecurityHandlerInterface.
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface AclSecurityHandlerInterface extends SecurityHandlerInterface

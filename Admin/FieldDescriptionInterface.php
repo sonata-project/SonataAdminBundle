@@ -12,8 +12,6 @@
 namespace Sonata\AdminBundle\Admin;
 
 /**
- * Interface FieldDescriptionInterface.
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface FieldDescriptionInterface
