@@ -35,6 +35,8 @@ You can include this information in the service definition of your extension.
 Add the tag *sonata.admin.extension* and use the *target* attribute to point to
 the admin you want to modify. Please note you can specify as many tags you want.
 Set the *global* attribute to *true* and the extension will be added to all admins.
+The *priority* attribute is *0* by default and can be a positive or negative integer.
+The higher the priority, the earlier it's executed.
 
 .. configuration-block::
 

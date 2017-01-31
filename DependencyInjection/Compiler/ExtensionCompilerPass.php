@@ -78,7 +78,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
 
         foreach ($targets as $target => $extensions) {
             $extensions = iterator_to_array($extensions);
-            ksort($extensions);
+            krsort($extensions);
             $admin = $container->getDefinition($target);
 
             foreach (array_values($extensions) as $extension) {
