@@ -154,8 +154,6 @@ class CoreController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
      * @return string
      */
     protected function getBaseTemplate()
