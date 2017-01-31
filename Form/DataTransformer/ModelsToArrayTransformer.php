@@ -40,7 +40,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * @var ModelChoiceList
      *
-     * @deprecated since 3.x, to be removed in 4.0
+     * @deprecated since 3.12, to be removed in 4.0
      * NEXT_MAJOR: remove this property
      */
     protected $choiceList;
@@ -209,7 +209,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     private function triggerDeprecation()
     {
         @trigger_error(sprintf(
-                'Using the "%s::$choiceList" property is deprecated since version 3.x and will be removed in 4.0.',
+                'Using the "%s::$choiceList" property is deprecated since version 3.12 and will be removed in 4.0.',
                 __CLASS__),
             E_USER_DEPRECATED)
         ;

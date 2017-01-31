@@ -1,13 +1,12 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.11 to 3.12
+=========================
+
 ## Deprecated ModelsToArrayTransformer::$choiceList property
 
 When instantiating a ModelsToArrayTransformer object, please use the 2 parameter signature ($modelManager, $class).
-
-## Deprecated Sonata\AdminBundle\Controller\CoreController::getRequest()
-
-Inject `Symfony\Component\HttpFoundation\Request` in your actions directly as an argument.
 
 UPGRADE FROM 3.10 to 3.11
 =========================
