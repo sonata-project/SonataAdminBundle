@@ -79,7 +79,10 @@ class DatagridMapper extends BaseMapper
                 array_merge($filterOptions, $fieldDescriptionOptions)
             );
         } else {
-            throw new \RuntimeException('Unknown field name in datagrid mapper. Field name should be either of FieldDescriptionInterface interface or string.');
+            throw new \RuntimeException(
+                'Unknown field name in datagrid mapper.'
+                .' Field name should be either of FieldDescriptionInterface interface or string.'
+            );
         }
 
         // add the field with the DatagridBuilder
