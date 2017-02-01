@@ -292,7 +292,13 @@ class GenerateAdminCommand extends ContainerAwareCommand
 
         // NEXT_MAJOR: Remove this BC code for SensioGeneratorBundle 2.3/2.4 after dropping support for Symfony 2.3
         if ($questionHelper instanceof DialogHelper) {
-            return $questionHelper->askAndValidate($output, $questionHelper->getQuestion($questionText, $default), $validator, false, $default);
+            return $questionHelper->askAndValidate(
+                $output,
+                $questionHelper->getQuestion($questionText, $default),
+                $validator,
+                false,
+                $default
+            );
         }
 
         $question = new Question($questionHelper->getQuestion($questionText, $default), $default);
