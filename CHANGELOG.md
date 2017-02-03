@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.13.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.12.0...3.13.0) - 2017-02-03
+### Added
+- Added support for priority attribute in the Extension compiler pass
+
+### Fixed
+- Compatibility of ajax actions with Twig 2.0
+
 ## [3.12.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.11.0...3.12.0) - 2017-01-31
 ### Added
 - Compatibility with Twig 2.0
