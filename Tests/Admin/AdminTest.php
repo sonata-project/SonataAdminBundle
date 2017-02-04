@@ -1221,7 +1221,7 @@ class AdminTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @group Legacy
+     * @group legacy
      */
     public function testTransWithMessageDomain()
     {
@@ -1255,7 +1255,7 @@ class AdminTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @group Legacy
+     * @group legacy
      */
     public function testTransChoiceWithMessageDomain()
     {
