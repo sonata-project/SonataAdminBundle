@@ -26,6 +26,10 @@ class ActiveVoter implements VoterInterface
      */
     public function matchItem(ItemInterface $item)
     {
+        if (!$item->getExtra('sonata_admin', false)) {
+            return;
+        }
+
         return $item->getExtra('active', null);
     }
 }

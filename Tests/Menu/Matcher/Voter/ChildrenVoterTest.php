@@ -58,6 +58,11 @@ class ChildrenVoterTest extends AbstractVoterTest
             ->method('getChildren')
             ->will($this->returnValue($childItems));
 
+        $item->expects($this->any())
+             ->method('getExtra')
+             ->with('sonata_admin')
+             ->will($this->returnValue(true));
+
         return $item;
     }
 }
