@@ -48,7 +48,7 @@ class CoreController extends Controller
             'blocks' => $blocks,
         );
 
-        if (!$this->getRequest()->isXmlHttpRequest()) {
+        if (!$this->getCurrentRequest()->isXmlHttpRequest()) {
             $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
         }
 
@@ -125,16 +125,13 @@ class CoreController extends Controller
      */
     public function getRequest()
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since 3.0 and will be removed in 4.0.'.
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since 3.0 and will be removed in 4.0.'.
             ' Inject the Symfony\Component\HttpFoundation\Request into the actions instead.',
             E_USER_DEPRECATED
         );
 
-        if ($this->container->has('request_stack')) {
-            return $this->container->get('request_stack')->getCurrentRequest();
-        }
-
-        return $this->container->get('request');
+        return $this->getCurrentRequest();
     }
 
     /**
@@ -158,10 +155,25 @@ class CoreController extends Controller
      */
     protected function getBaseTemplate()
     {
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($this->getCurrentRequest()->isXmlHttpRequest()) {
             return $this->getAdminPool()->getTemplate('ajax');
         }
 
         return $this->getAdminPool()->getTemplate('layout');
+    }
+
+    /**
+     * Get the request object from the container.
+     *
+     * @return Request
+     */
+    private function getCurrentRequest()
+    {
+        // NEXT_MAJOR: simplify this when dropping sf < 2.4
+        if ($this->container->has('request_stack')) {
+            return $this->container->get('request_stack')->getCurrentRequest();
+        }
+
+        return $this->container->get('request');
     }
 }
