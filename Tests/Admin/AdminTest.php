@@ -951,6 +951,9 @@ class AdminTest extends PHPUnit_Framework_TestCase
         $this->assertSame('foo', $admin->getTranslationDomain());
     }
 
+    /**
+     * @group legacy
+     */
     public function testGetTranslator()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
@@ -1204,6 +1207,9 @@ class AdminTest extends PHPUnit_Framework_TestCase
         $this->assertSame('sonata.post.admin.post', $admin->getObjectIdentifier());
     }
 
+    /**
+     * @group legacy
+     */
     public function testTrans()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
@@ -1238,6 +1244,9 @@ class AdminTest extends PHPUnit_Framework_TestCase
         $this->assertSame('fooTranslated', $admin->trans('foo', array('name' => 'Andrej'), 'fooMessageDomain'));
     }
 
+    /**
+     * @group legacy
+     */
     public function testTransChoice()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
