@@ -215,15 +215,15 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $bundles = $container->getParameter('kernel.bundles');
 
         if (isset($bundles['JMSDiExtraBundle'])) {
-            if (!$container->hasParameter('jms_di_extra.annotation_patterns')){
+            if (!$container->hasParameter('jms_di_extra.annotation_patterns')) {
                 $container->setParameter(
                     'jms_di_extra.annotation_patterns',
                     array(
                         'JMS\DiExtraBundle\Annotation',
-                        'Sonata\AdminBundle\Annotation'
+                        'Sonata\AdminBundle\Annotation',
                     )
                 );
-            }else{
+            } else {
                 $container->prependExtensionConfig(
                     'jms_di_extra',
                     array(
