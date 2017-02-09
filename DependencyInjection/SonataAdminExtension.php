@@ -233,7 +233,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         foreach ($diExtraConfigs as $diExtraConfig) {
             if (isset($diExtraConfig['annotation_patterns'])) {
                 // don't add our own pattern if user has already done so
-                if (array_search($sonataAdminPattern, $diExtraConfig['annotation_patterns'])) {
+                if (array_search($sonataAdminPattern, $diExtraConfig['annotation_patterns']) !== false) {
                     return;
                 }
                 $annotationPatternsConfigured = true;
