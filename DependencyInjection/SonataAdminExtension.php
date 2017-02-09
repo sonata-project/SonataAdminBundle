@@ -218,6 +218,12 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             return;
         }
 
+        $configs = $container->getExtensionConfig($this->getAlias());
+        $config = $this->processConfiguration(new Configuration(), $configs);
+        if (!$config['options']['enable_jms_di_extra_autoregistration']) {
+            return;
+        }
+
         $sonataAdminPattern = 'Sonata\AdminBundle\Annotation';
         $annotationPatternsConfigured = false;
 

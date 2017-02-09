@@ -10,6 +10,17 @@ All annotations require jms/di-extra-bundle, it can easily be installed by compo
 
 if you want to know more: http://jmsyst.com/bundles/JMSDiExtraBundle
 
+The annotations get registered with JMSDiExtraBundle automatically if it is installed.
+If you need to disable this for some reason, you can do this via the configuration:
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        sonata_admin:
+            options:
+                enable_jms_di_extra_autoregistration: false
+
 
 Define Admins
 ^^^^^^^^^^^^^
