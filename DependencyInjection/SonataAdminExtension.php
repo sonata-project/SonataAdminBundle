@@ -214,13 +214,41 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
     {
         $bundles = $container->getParameter('kernel.bundles');
 
-        if (isset($bundles['JMSDiExtraBundle'])) {
+        if (!isset($bundles['JMSDiExtraBundle'])) {
+            return;
+        }
+
+        $sonataAdminPattern = 'Sonata\AdminBundle\Annotation';
+        $annotationPatternsConfigured = false;
+
+        $diExtraConfigs = $container->getExtensionConfig('jms_di_extra');
+        foreach ($diExtraConfigs as $diExtraConfig) {
+            if (isset($diExtraConfig['annotation_patterns'])) {
+                $annotationPatternsConfigured = true;
+                break;
+            }
+        }
+
+        if ($annotationPatternsConfigured) {
             $container->prependExtensionConfig(
                 'jms_di_extra',
                 array(
-                    'annotation_patterns' => array(
-                        'Sonata\AdminBundle\Annotation',
-                    ),
+                    'annotation_patterns' => array($sonataAdminPattern)
+                )
+            );
+        } else {
+            // get annotation_patterns default from DiExtraBundle configuration
+            $diExtraConfigDefinition = new \JMS\DiExtraBundle\DependencyInjection\Configuration();
+            // FIXME: this will break if DiExtraBundle adds any mandatory configuration
+            $diExtraConfig = $this->processConfiguration($diExtraConfigDefinition, array());
+
+            $annotationPatterns = $diExtraConfig['annotation_patterns'];
+            $annotationPatterns[] = $sonataAdminPattern;
+
+            $container->prependExtensionConfig(
+                'jms_di_extra',
+                array(
+                    'annotation_patterns' => $annotationPatterns
                 )
             );
         }
