@@ -208,6 +208,8 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
     /**
      * Allow an extension to prepend the extension configurations.
      *
+     * NEXT_MAJOR: remove all code that deals with JMSDiExtraBundle
+     *
      * @param ContainerBuilder $container
      */
     public function prepend(ContainerBuilder $container)
@@ -230,10 +232,19 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $diExtraConfigs = $container->getExtensionConfig('jms_di_extra');
         foreach ($diExtraConfigs as $diExtraConfig) {
             if (isset($diExtraConfig['annotation_patterns'])) {
+                // don't add our own pattern if user has already done so
+                if (array_search($sonataAdminPattern, $diExtraConfig['annotation_patterns'])) {
+                    return;
+                }
                 $annotationPatternsConfigured = true;
                 break;
             }
         }
+
+        @trigger_error(
+            'Automatic registration of annotations is deprecated since 3.14, to be removed in 4.0.',
+            E_USER_DEPRECATED
+        );
 
         if ($annotationPatternsConfigured) {
             $container->prependExtensionConfig(

@@ -21,6 +21,19 @@ If you need to disable this for some reason, you can do this via the configurati
             options:
                 enable_jms_di_extra_autoregistration: false
 
+.. note::
+
+    Starting with version 4.0, SonataAdminBundle will no longer register
+    annotations with JMSDiExtraBundle automatically. Please add the following to
+    your config.yml to register the annotations yourself:
+
+    .. code-block:: yaml
+
+        jms_di_extra:
+            annotation_patterns:
+                - JMS\DiExtraBundle\Annotation
+                - Sonata\AdminBundle\Annotation
+
 
 Define Admins
 ^^^^^^^^^^^^^
