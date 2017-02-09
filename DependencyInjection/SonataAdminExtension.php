@@ -239,7 +239,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             $container->prependExtensionConfig(
                 'jms_di_extra',
                 array(
-                    'annotation_patterns' => array($sonataAdminPattern)
+                    'annotation_patterns' => array($sonataAdminPattern),
                 )
             );
         } else {
@@ -254,7 +254,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             $container->prependExtensionConfig(
                 'jms_di_extra',
                 array(
-                    'annotation_patterns' => $annotationPatterns
+                    'annotation_patterns' => $annotationPatterns,
                 )
             );
         }
