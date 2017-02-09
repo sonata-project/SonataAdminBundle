@@ -247,12 +247,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         );
 
         if ($annotationPatternsConfigured) {
-            $container->prependExtensionConfig(
-                'jms_di_extra',
-                array(
-                    'annotation_patterns' => array($sonataAdminPattern),
-                )
-            );
+            $annotationPatterns = array($sonataAdminPattern);
         } else {
             // get annotation_patterns default from DiExtraBundle configuration
             $diExtraConfigDefinition = new \JMS\DiExtraBundle\DependencyInjection\Configuration();
@@ -261,14 +256,14 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
             $annotationPatterns = $diExtraConfig['annotation_patterns'];
             $annotationPatterns[] = $sonataAdminPattern;
-
-            $container->prependExtensionConfig(
-                'jms_di_extra',
-                array(
-                    'annotation_patterns' => $annotationPatterns,
-                )
-            );
         }
+
+        $container->prependExtensionConfig(
+            'jms_di_extra',
+            array(
+                'annotation_patterns' => $annotationPatterns,
+            )
+        );
     }
 
     public function configureClassesToCompile()
