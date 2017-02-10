@@ -104,6 +104,10 @@ class Configuration implements ConfigurationInterface
                             ->defaultFalse()
                             ->info('Enable locking when editing an object, if the corresponding object manager supports it.')
                         ->end()
+                        ->booleanNode('enable_jms_di_extra_autoregistration') // NEXT_MAJOR: remove this option
+                            ->defaultTrue()
+                            ->info('Enable automatic registration of annotations with JMSDiExtraBundle')
+                        ->end()
                     ->end()
                 ->end()
                 ->arrayNode('dashboard')
