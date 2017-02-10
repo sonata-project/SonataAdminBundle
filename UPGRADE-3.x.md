@@ -1,21 +1,19 @@
 UPGRADE 3.x
 ===========
 
-UPGRADE FROM 3.13 to 3.14
-=========================
-
 ## Deprecated automatic annotation registration with JMSDiExtraBundle
 
 Starting with version 4.0, SonataAdminBundle will no longer register
 annotations with JMSDiExtraBundle automatically. Please add the following to
 your config.yml to register the annotations yourself:
 
-.. code-block:: yaml
 
-    jms_di_extra:
-        annotation_patterns:
-            - JMS\DiExtraBundle\Annotation
-            - Sonata\AdminBundle\Annotation
+```yaml
+jms_di_extra:
+    annotation_patterns:
+        - JMS\DiExtraBundle\Annotation
+        - Sonata\AdminBundle\Annotation
+```
 
 
 UPGRADE FROM 3.11 to 3.12
