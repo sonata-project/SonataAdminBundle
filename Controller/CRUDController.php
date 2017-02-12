@@ -22,7 +22,6 @@ use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
