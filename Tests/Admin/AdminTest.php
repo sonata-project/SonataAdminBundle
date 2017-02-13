@@ -1703,22 +1703,63 @@ class AdminTest extends PHPUnit_Framework_TestCase
     /**
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::configureBatchActions
      */
-    public function getBatchActions()
+    public function testGetBatchActions()
     {
         $expected = array(
-            'action' => array(
+            'delete' => array(
                 'label' => 'action_delete',
                 'translation_domain' => 'SonataAdminBundle',
                 'ask_confirmation' => true, // by default always true
             ),
             'foo' => array(
                 'label' => 'action_foo',
+                'translation_domain' => 'SonataAdminBundle',
+            ),
+            'bar' => array(
+                'label' => 'batch.label_bar',
+                'translation_domain' => 'SonataAdminBundle',
+            ),
+            'baz' => array(
+                'label' => 'action_baz',
+                'translation_domain' => 'AcmeAdminBundle',
             ),
         );
 
-        $modelAdmin = new PostAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'SonataFooBundle:ModelAdmin');
+        $pathInfo = new \Sonata\AdminBundle\Route\PathInfoBuilder($this->createMock('Sonata\AdminBundle\Model\AuditManagerInterface'));
 
-        $this->assertSame($expected, $modelAdmin->getBatchActions());
+        $labelTranslatorStrategy = $this->createMock('Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface');
+        $labelTranslatorStrategy->expects($this->any())
+            ->method('getLabel')
+            ->will($this->returnCallback(function ($label, $context = '', $type = '') {
+                return $context.'.'.$type.'_'.$label;
+            }));
+
+        $admin = new PostAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'SonataFooBundle:ModelAdmin');
+        $admin->setRouteBuilder($pathInfo);
+        $admin->setTranslationDomain('SonataAdminBundle');
+        $admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
+
+        $routeGenerator = $this->createMock('Sonata\AdminBundle\Route\RouteGeneratorInterface');
+        $routeGenerator
+            ->expects($this->once())
+            ->method('hasAdminRoute')
+            ->with($admin, 'delete')
+            ->will($this->returnValue(true));
+        $admin->setRouteGenerator($routeGenerator);
+
+        $securityHandler = $this->createMock('Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface');
+        $securityHandler->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
+                if ($admin == $adminIn && $attributes == 'DELETE') {
+                    return true;
+                }
+
+                return false;
+            }));
+        $admin->setSecurityHandler($securityHandler);
+
+        $this->assertSame($expected, $admin->getBatchActions());
     }
 
     /**

@@ -1101,6 +1101,16 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
             }
         }
 
+        foreach ($actions  as $name => &$action) {
+            if (!array_key_exists('label', $action)) {
+                $action['label'] = $this->getTranslationLabel($name, 'batch', 'label');
+            }
+
+            if (!array_key_exists('translation_domain', $action)) {
+                $action['translation_domain'] = $this->getTranslationDomain();
+            }
+        }
+
         return $actions;
     }
 

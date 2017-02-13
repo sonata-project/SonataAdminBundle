@@ -9,10 +9,13 @@ Defining new actions
 
 To create a new custom batch action which appears in the list view follow these steps:
 
-Override ``getBatchActions()`` in your ``Admin`` class to define the new batch actions
-by adding them to the ``$actions`` array. Each entry has two settings:
+Override ``configureBatchActions()`` in your ``Admin`` class to define the new batch actions
+by adding them to the ``$actions`` array. Each key represent a batch action and could contain these settings:
 
 - **label**: The name to use when offering this option to users, should be passed through the translator
+  (default: the label is generated via the labelTranslatorStrategy)
+- **translation_domain**: The domain which will be used to translate the key.
+  (default: the translation domain of the admin)
 - **ask_confirmation**: defaults to true and means that the user will be asked
   for confirmation before the batch action is processed
 
@@ -27,18 +30,13 @@ merges them onto a single target item. It should only be available when two cond
     <?php
     // in your Admin class
 
-    public function getBatchActions()
+    public function configureBatchActions($actions)
     {
-        // retrieve the default batch actions (currently only delete)
-        $actions = parent::getBatchActions();
-
         if (
           $this->hasRoute('edit') && $this->isGranted('EDIT') && 
           $this->hasRoute('delete') && $this->isGranted('DELETE')
         ) {
             $actions['merge'] = array(
-                'label' => 'action_merge',
-                'translation_domain' => 'SonataAdminBundle'
                 'ask_confirmation' => true
             );
 
