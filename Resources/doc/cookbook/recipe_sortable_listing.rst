@@ -28,7 +28,7 @@ Configuration
 Bundles
 ^^^^^^^
 - install ``gedmo/doctrine-extensions`` bundle in your project (check ``stof/doctrine-extensions-bundle`` for easier integration in your project) and enable the sortable feature in your config
-- install ``pixassociates/sortable-behavior-bundle`` at least version 1.1 in your project
+- install ``pixassociates/sortable-behavior-bundle`` at least version ^1.1 in your project
 
 
 The recipe
