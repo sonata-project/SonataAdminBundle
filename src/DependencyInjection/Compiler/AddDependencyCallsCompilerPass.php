@@ -308,17 +308,20 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->addMethodCall('setLabel', [$label]);
 
+
+        $persistFilters = $container->getParameter('sonata.admin.configuration.filters.persist');
+        // override default configuration with admin config if set
         if (isset($attributes['persist_filters'])) {
-            $persistFilters = (bool) $attributes['persist_filters'];
-        } else {
-            $persistFilters = (bool) $container->getParameter('sonata.admin.configuration.filters.persist');
+            $persistFilters = $attributes['persist_filters'];
         }
 
-        // if persist filters is a boolean use session persister as default
-        // if persist filters is a string, use service reference instead
-        if (is_bool($persistFilters)) {
-            $definition->addMethodCall('setPersistFilters', [$persistFilters]);
-        } else {
+        // if boolean config value provided, use the default persister : session
+        if (is_bool($persistFilters) && $persistFilters) {
+            $persistFilters = 'sonata.admin.filter_persister.session';
+        }
+
+        // configure filters persistence, if configured to
+        if ($persistFilters) {
             $definition->addMethodCall('setFilterPersister', [new Reference($persistFilters)]);
         }
 

@@ -26,7 +26,6 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
-use Sonata\AdminBundle\Filter\Persister\SessionFilterPersister;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -195,7 +194,20 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $label;
 
     /**
-     * @var FilterPersisterInterface|bool
+     * Whether or not to persist the filters in the session.
+     *
+     * NEXT_MAJOR: remove this property
+     *
+     * @var bool
+     *
+     * @deprecated since 3.x, to be removed in 4.0.
+     */
+    protected $persistFilters = false;
+
+    /**
+     * Component responsible for persisting filters.
+     *
+     * @var FilterPersisterInterface|null
      */
     protected $filterPersister;
 
@@ -730,17 +742,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         $parameters = [];
 
-        // if filter persister was configured with `true`, use the default persister (session)
-        if ($this->filterPersister === true) {
-            $this->filterPersister = new SessionFilterPersister($this->request->getSession());
-        }
-
         // build the values array
         if ($this->hasRequest()) {
             $filters = $this->request->query->get('filter', []);
 
             // if filter persistence is configured
-            if ($this->filterPersister instanceof FilterPersisterInterface) {
+            if ($this->filterPersister !== null) {
                 // if reset filters is asked, remove from storage
                 if ($this->request->query->get('filters') === 'reset') {
                     $this->filterPersister->reset($this->getCode());
@@ -1375,16 +1382,23 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     /**
      * @param bool $persist
+     *
+     * @deprecated since 3.x, to be removed in 4.0.
      */
     public function setPersistFilters($persist)
     {
-        $this->filterPersister = $persist;
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.',
+            E_USER_DEPRECATED
+        );
+
+        $this->persistFilters = $persist;
     }
 
     /**
-     * @param FilterPersisterInterface $filterPersister
+     * @param FilterPersisterInterface|null $filterPersister
      */
-    public function setFilterPersister($filterPersister)
+    public function setFilterPersister(FilterPersisterInterface $filterPersister = null)
     {
         $this->filterPersister = $filterPersister;
     }

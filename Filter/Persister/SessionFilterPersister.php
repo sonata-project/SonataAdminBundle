@@ -39,7 +39,7 @@ class SessionFilterPersister implements FilterPersisterInterface
      */
     public function get($admin)
     {
-        return $this->session->get($admin.'.filter.parameters', array());
+        return $this->session->get($this->buildStorageKey($admin), array());
     }
 
     /**
@@ -47,7 +47,7 @@ class SessionFilterPersister implements FilterPersisterInterface
      */
     public function set($admin, $filters)
     {
-        $this->session->set($admin.'.filter.parameters', $filters);
+        $this->session->set($this->buildStorageKey($admin), $filters);
     }
 
     /**
@@ -55,6 +55,18 @@ class SessionFilterPersister implements FilterPersisterInterface
      */
     public function reset($admin)
     {
-        $this->session->remove($admin.'.filter.parameters');
+        $this->session->remove($this->buildStorageKey($admin));
+    }
+
+    /**
+     * Build the session key, under which the filter should be stored for given admin code.
+     *
+     * @param string $admin The admin code
+     *
+     * @return string The storage key
+     */
+    protected function buildStorageKey($admin)
+    {
+        return $admin.'.filter.parameters';
     }
 }
