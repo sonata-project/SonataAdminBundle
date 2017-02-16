@@ -209,7 +209,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @var FilterPersisterInterface|null
      */
-    protected $filterPersister;
+    private $filterPersister;
 
     /**
      * Array of routes related to this admin.

@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  *
  * @author Yann Eugoné <eugone.yann@gmail.com>
  */
-class SessionFilterPersister implements FilterPersisterInterface
+final class SessionFilterPersister implements FilterPersisterInterface
 {
     /**
      * @var SessionInterface
@@ -65,7 +65,7 @@ class SessionFilterPersister implements FilterPersisterInterface
      *
      * @return string The storage key
      */
-    protected function buildStorageKey($admin)
+    private function buildStorageKey($admin)
     {
         return $admin.'.filter.parameters';
     }
