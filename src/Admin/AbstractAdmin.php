@@ -25,6 +25,8 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
+use Sonata\AdminBundle\Filter\Persister\SessionFilterPersister;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -193,11 +195,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $label;
 
     /**
-     * Whether or not to persist the filters in the session.
-     *
-     * @var bool
+     * @var FilterPersisterInterface|bool
      */
-    protected $persistFilters = false;
+    protected $filterPersister;
 
     /**
      * Array of routes related to this admin.
@@ -730,16 +730,28 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         $parameters = [];
 
+        // if filter persister was configured with `true`, use the default persister (session)
+        if ($this->filterPersister === true) {
+            $this->filterPersister = new SessionFilterPersister($this->request->getSession());
+        }
+
         // build the values array
         if ($this->hasRequest()) {
             $filters = $this->request->query->get('filter', []);
 
-            // if persisting filters, save filters to session, or pull them out of session if no new filters set
-            if ($this->persistFilters) {
-                if ($filters == [] && 'reset' != $this->request->query->get('filters')) {
-                    $filters = $this->request->getSession()->get($this->getCode().'.filter.parameters', []);
+            // if filter persistence is configured
+            if ($this->filterPersister instanceof FilterPersisterInterface) {
+                // if reset filters is asked, remove from storage
+                if ($this->request->query->get('filters') === 'reset') {
+                    $this->filterPersister->reset($this->getCode());
+                }
+
+                // if no filters, fetch from storage
+                // otherwise save to storage
+                if (empty($filters)) {
+                    $filters = $this->filterPersister->get($this->getCode());
                 } else {
-                    $this->request->getSession()->set($this->getCode().'.filter.parameters', $filters);
+                    $this->filterPersister->set($this->getCode(), $filters);
                 }
             }
 
@@ -1366,7 +1378,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function setPersistFilters($persist)
     {
-        $this->persistFilters = $persist;
+        $this->filterPersister = $persist;
+    }
+
+    /**
+     * @param FilterPersisterInterface $filterPersister
+     */
+    public function setFilterPersister($filterPersister)
+    {
+        $this->filterPersister = $filterPersister;
     }
 
     /**

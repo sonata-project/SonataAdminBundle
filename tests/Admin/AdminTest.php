@@ -1431,9 +1431,9 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
-        $this->assertAttributeSame(false, 'persistFilters', $admin);
+        $this->assertAttributeSame(null, 'filterPersister', $admin);
         $admin->setPersistFilters(true);
-        $this->assertAttributeSame(true, 'persistFilters', $admin);
+        $this->assertAttributeSame(true, 'filterPersister', $admin);
     }
 
     public function testGetRootCode()
