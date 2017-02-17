@@ -308,7 +308,6 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->addMethodCall('setLabel', [$label]);
 
-
         $persistFilters = $container->getParameter('sonata.admin.configuration.filters.persist');
         // override default configuration with admin config if set
         if (isset($attributes['persist_filters'])) {

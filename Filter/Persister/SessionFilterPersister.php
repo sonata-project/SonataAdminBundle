@@ -35,7 +35,7 @@ final class SessionFilterPersister implements FilterPersisterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get($admin)
     {
@@ -43,7 +43,7 @@ final class SessionFilterPersister implements FilterPersisterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function set($admin, $filters)
     {
@@ -51,7 +51,7 @@ final class SessionFilterPersister implements FilterPersisterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function reset($admin)
     {
