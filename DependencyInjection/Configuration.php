@@ -77,7 +77,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('global_search')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('show_empty_boxes')->defaultValue('show')->end()
+                        ->scalarNode('empty_boxes')->defaultValue('show')->end()
                     ->end()
                 ->end()
 

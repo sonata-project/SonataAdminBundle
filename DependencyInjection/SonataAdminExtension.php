@@ -84,7 +84,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             $container->removeDefinition('sonata.admin.lock.extension');
         }
 
-        $container->setParameter('sonata.admin.configuration.global_search.show_empty_boxes', $config['global_search']['show_empty_boxes']);
+        $container->setParameter('sonata.admin.configuration.global_search.show_empty_boxes', $config['global_search']['empty_boxes']);
         $container->setParameter('sonata.admin.configuration.templates', $config['templates']);
         $container->setParameter('sonata.admin.configuration.admin_services', $config['admin_services']);
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);

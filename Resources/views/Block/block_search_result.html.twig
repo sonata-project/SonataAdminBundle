@@ -12,7 +12,7 @@ file that was distributed with this source code.
 {% extends sonata_block.templates.block_base %}
 
 {% block block %}
-    {% set show_empty_boxes = sonata_admin.adminPool.container.getParameter('sonata.admin.configuration.global_search.show_empty_boxes') %}
+    {% set show_empty_boxes = sonata_admin.adminPool.container.getParameter('sonata.admin.configuration.global_search.empty_boxes') %}
     {% set visibility_class = '' %}
     {% if pager and not pager.getResults()|length %}
         {% if show_empty_boxes == 'show' %}
