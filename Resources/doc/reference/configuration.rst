@@ -215,3 +215,4 @@ Full Configuration Options
                     uses:                 []
             persist_filters:      false
             show_mosaic_button:   true
+            show_empty_boxes: show
