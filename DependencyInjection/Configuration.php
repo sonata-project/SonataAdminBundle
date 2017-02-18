@@ -73,6 +73,7 @@ class Configuration implements ConfigurationInterface
 
                 ->scalarNode('title')->defaultValue('Sonata Admin')->cannotBeEmpty()->end()
                 ->scalarNode('title_logo')->defaultValue('bundles/sonataadmin/logo_title.png')->cannotBeEmpty()->end()
+                ->scalarNode('show_empty_boxes')->defaultValue('show')->end()
                 ->arrayNode('breadcrumbs')
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -358,6 +359,8 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonataadmin/vendor/waypoints/lib/jquery.waypoints.min.js',
                                 'bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js',
                                 'bundles/sonataadmin/vendor/readmore-js/readmore.min.js',
+
+                                'bundles/sonataadmin/vendor/masonry/dist/masonry.pkgd.min.js',
 
                                 'bundles/sonataadmin/Admin.js',
                                 'bundles/sonataadmin/treeview.js',

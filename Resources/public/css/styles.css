@@ -496,3 +496,15 @@ div.sonata-filters-box div.form-group span.input-group-addon {
     padding: 3px 10px;
     font-size: 13px;
 }
+
+.hide {
+    display: none;
+}
+
+.fade {
+    opacity: 0.6;
+}
+
+.show {
+    display: block;
+}
