@@ -205,13 +205,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $persistFilters = false;
 
     /**
-     * Component responsible for persisting filters.
-     *
-     * @var FilterPersisterInterface|null
-     */
-    private $filterPersister;
-
-    /**
      * Array of routes related to this admin.
      *
      * @var RouteCollection
@@ -556,6 +549,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @var BreadcrumbsBuilderInterface
      */
     private $breadcrumbsBuilder;
+
+    /**
+     * Component responsible for persisting filters.
+     *
+     * @var FilterPersisterInterface|null
+     */
+    private $filterPersister;
 
     /**
      * @param string $code
