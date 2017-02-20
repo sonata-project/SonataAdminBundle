@@ -63,10 +63,10 @@ feature in your config.yml such as
 
 .. code-block:: yaml
 
-	stof_doctrine_extensions:
-	    orm:
-	        default:
-                    sortable: true
+    stof_doctrine_extensions:
+        orm:
+            default:
+                sortable: true
 
 
 In our ``ClientAdmin`` we are going to add a custom action in the ``configureListFields`` method
