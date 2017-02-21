@@ -15,15 +15,15 @@ file that was distributed with this source code.
             <i class="fa fa-plus-circle" aria-hidden="true"></i>
             {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }}</a>
     {% else %}
-        <li class="divider" role="presentation"></li>
-        {% for subclass in admin.subclasses|keys %}
-            <li>
-                <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">
-                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                    {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }} {{ subclass|trans({}, admin.translationdomain) }}
-                </a>
-            </li>
-        {% endfor %}
-        <li class="divider" role="presentation"></li>
+        <ul class="list-unstyled">
+            {% for subclass in admin.subclasses|keys %}
+                <li>
+                    <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }} {{ subclass|trans({}, admin.translationdomain) }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
     {% endif %}
 {% endif %}
