@@ -81,7 +81,7 @@ class Configuration implements ConfigurationInterface
                             ->defaultValue('show')
                             ->info('Perhaps one of the three options: show, fade, hide.')
                             ->validate()
-                                ->ifTrue(function ($v) { return !in_array($v, ['show', 'fade', 'hide']); })
+                                ->ifTrue(function ($v) { return !in_array($v, array('show', 'fade', 'hide')); })
                                 ->thenInvalid('Configuration value of "global_search.empty_boxes" must be one of show, fade or hide.')
                             ->end()
                         ->end()
