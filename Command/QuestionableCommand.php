@@ -19,7 +19,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
-abstract class QuestionableCommand extends ContainerAwareCommand {
+abstract class QuestionableCommand extends ContainerAwareCommand
+{
 
     /**
      * @param InputInterface  $input
@@ -105,5 +106,4 @@ abstract class QuestionableCommand extends ContainerAwareCommand {
 
         return $questionHelper;
     }
-
 }
