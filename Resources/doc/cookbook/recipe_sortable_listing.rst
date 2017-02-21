@@ -63,9 +63,9 @@ feature in your config.yml such as
 
 .. code-block:: yaml
 
-	stof_doctrine_extensions:
-	    orm:
-	        default:
+    stof_doctrine_extensions:
+        orm:
+            default:
                 sortable: true
 
 
@@ -74,15 +74,15 @@ and use the default twig template provided in the ``pixSortableBehaviorBundle``
 
 .. code-block:: php
 
-	$listMapper
-	    ->add('_action', null, array(
-            'actions' => array(
-                'move' => array(
-                    'template' => 'PixSortableBehaviorBundle:Default:_sort.html.twig'
-                ),
+    $listMapper
+        ->add('_action', null, array(
+                'actions' => array(
+                    'move' => array(
+                        'template' => 'PixSortableBehaviorBundle:Default:_sort.html.twig'
+                    ),
+                )
             )
-        )
-    );
+        );
 
 
 In order to add new routes for these actions we are also adding the following method
@@ -98,24 +98,24 @@ In order to add new routes for these actions we are also adding the following me
     // ...
 
     protected function configureRoutes(RouteCollection $collection)
-	{
-	    // ...
-	    $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
-	}
+    {
+        // ...
+        $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
+    }
 
 Now you can update your ``services.yml`` to use the handler provider by the ``pixSortableBehaviorBundle``
 
 .. code-block:: yaml
 
-	services:
-	    app.admin.client:
-	        class: AppBundle\Admin\ClientAdmin
-	        tags:
-	            - { name: sonata.admin, manager_type: orm, label: "Clients" }
-	        arguments:
-	            - ~
-	            - AppBundle\Entity\Client
-	            - 'PixSortableBehaviorBundle:SortableAdmin' # define the new controller via the third argument
+    services:
+        app.admin.client:
+            class: AppBundle\Admin\ClientAdmin
+            tags:
+              - { name: sonata.admin, manager_type: orm, label: "Clients" }
+            arguments:
+              - ~
+              - AppBundle\Entity\Client
+              - 'PixSortableBehaviorBundle:SortableAdmin' # define the new controller via the third argument
 
 Now we need to define the sort by field to be ``$position``:
 
