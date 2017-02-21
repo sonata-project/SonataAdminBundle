@@ -350,5 +350,4 @@ class GenerateAdminCommand extends QuestionableCommand
 
         return $application->getKernel();
     }
-
 }

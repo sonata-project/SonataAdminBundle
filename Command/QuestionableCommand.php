@@ -21,7 +21,6 @@ use Symfony\Component\Console\Question\Question;
 
 abstract class QuestionableCommand extends ContainerAwareCommand
 {
-
     /**
      * @param InputInterface  $input
      * @param OutputInterface $output
