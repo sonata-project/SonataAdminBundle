@@ -17,11 +17,11 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 /**
- * Class ModelsToArrayTransformer.
+ * NEXT_MAJOR: remove this class when dropping Symfony < 2.7 support.
  *
- * This class should be use with sf < 2.7 only and will be deprecated with version 3.0
+ * This class should be used with Symfony <2.7 only and will be deprecated with 3.0.
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class LegacyModelsToArrayTransformer implements DataTransformerInterface
 {
@@ -35,6 +35,13 @@ class LegacyModelsToArrayTransformer implements DataTransformerInterface
      */
     public function __construct(ModelChoiceList $choiceList)
     {
+        if (interface_exists('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface')) {
+            @trigger_error(
+                'The '.__CLASS__.' class is deprecated since 3.11, to be removed in 4.0. '.
+                'Use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer instead.',
+                E_USER_DEPRECATED
+            );
+        }
         $this->choiceList = $choiceList;
     }
 

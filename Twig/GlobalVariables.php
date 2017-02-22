@@ -15,7 +15,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class GlobalVariables
 {

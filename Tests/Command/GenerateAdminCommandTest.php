@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Command;
 
 use Sonata\AdminBundle\Command\GenerateAdminCommand;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\DemoAdminBundle;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,7 +25,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
+class GenerateAdminCommandTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var Application
@@ -59,7 +60,7 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
         $bundle = new DemoAdminBundle();
         $bundle->setPath($this->tempDirectory);
 
-        $kernel = $this->getMock('Symfony\Component\HttpKernel\KernelInterface');
+        $kernel = $this->createMock('Symfony\Component\HttpKernel\KernelInterface');
         $kernel->expects($this->any())
             ->method('getBundles')
             ->will($this->returnValue(array($bundle)));
@@ -122,7 +123,7 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
     public function testExecute()
     {
         $this->command->setContainer($this->container);
-        $this->container->set('sonata.admin.manager.foo', $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
+        $this->container->set('sonata.admin.manager.foo', $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
 
         $command = $this->application->find('sonata:admin:generate');
         $commandTester = new CommandTester($command);
@@ -170,7 +171,7 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteWithExceptionNoModelManagers()
     {
-        $this->setExpectedException('RuntimeException', 'There are no model managers registered.');
+        $this->expectException('RuntimeException', 'There are no model managers registered.');
 
         $this->command->setContainer($this->container);
 
@@ -193,15 +194,17 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
     public function testExecuteInteractive($modelEntity)
     {
         $this->command->setContainer($this->container);
-        $this->container->set('sonata.admin.manager.foo', $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
-        $this->container->set('sonata.admin.manager.bar', $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
+        $this->container->set('sonata.admin.manager.foo', $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
+        $this->container->set('sonata.admin.manager.bar', $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
 
         $command = $this->application->find('sonata:admin:generate');
 
         // NEXT_MAJOR: Remove this BC code for SensioGeneratorBundle 2.3/2.4 after dropping support for Symfony 2.3
         // DialogHelper does not exist in SensioGeneratorBundle 2.5+
         if (class_exists('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper')) {
-            $dialog = $this->getMock('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper', array('askConfirmation', 'askAndValidate'));
+            $dialog = $this->getMockBuilder('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper')
+                ->setMethods(array('askConfirmation', 'askAndValidate'))
+                ->getMock();
 
             $dialog->expects($this->any())
                 ->method('askConfirmation')
@@ -252,7 +255,9 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
 
             $command->getHelperSet()->set($dialog, 'dialog');
         } else {
-            $questionHelper = $this->getMock('Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper', array('ask'));
+            $questionHelper = $this->getMockBuilder('Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper')
+                ->setMethods(array('ask'))
+                ->getMock();
 
             $questionHelper->expects($this->any())
                 ->method('ask')
@@ -348,8 +353,8 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
     public function testValidateManagerType($expected, $managerType)
     {
         $this->command->setContainer($this->container);
-        $this->container->set('sonata.admin.manager.foo', $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
-        $this->container->set('sonata.admin.manager.bar', $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
+        $this->container->set('sonata.admin.manager.foo', $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
+        $this->container->set('sonata.admin.manager.bar', $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
 
         $this->assertSame($expected, $this->command->validateManagerType($managerType));
     }
@@ -372,16 +377,123 @@ class GenerateAdminCommandTest extends \PHPUnit_Framework_TestCase
     public function testValidateManagerTypeWithException2()
     {
         $this->command->setContainer($this->container);
-        $this->container->set('sonata.admin.manager.foo', $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
-        $this->container->set('sonata.admin.manager.bar', $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
+        $this->container->set('sonata.admin.manager.foo', $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
+        $this->container->set('sonata.admin.manager.bar', $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
 
-        $this->setExpectedException('InvalidArgumentException', 'Invalid manager type "baz". Available manager types are "foo", "bar".');
+        $this->expectException('InvalidArgumentException', 'Invalid manager type "baz". Available manager types are "foo", "bar".');
         $this->command->validateManagerType('baz');
     }
 
     public function testValidateManagerTypeWithException3()
     {
-        $this->setExpectedException('InvalidArgumentException', 'Invalid manager type "baz". Available manager types are "".');
+        $this->expectException('InvalidArgumentException', 'Invalid manager type "baz". Available manager types are "".');
         $this->command->validateManagerType('baz');
+    }
+
+    public function testAnswerUpdateServicesWithNo()
+    {
+        $this->container->set('sonata.admin.manager.foo', $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
+
+        $modelEntity = 'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo';
+
+        $command = $this->application->find('sonata:admin:generate');
+
+        // NEXT_MAJOR: Remove this BC code for SensioGeneratorBundle 2.3/2.4 after dropping support for Symfony 2.3
+        // DialogHelper does not exist in SensioGeneratorBundle 2.5+
+        if (class_exists('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper')) {
+            $dialog = $this->getMockBuilder('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper')
+                ->setMethods(array('askConfirmation', 'askAndValidate'))
+                ->getMock();
+
+            $dialog->expects($this->any())
+                ->method('askConfirmation')
+                ->will($this->returnCallback(function (OutputInterface $output, $question, $default) {
+                    $questionClean = substr($question, 6, strpos($question, '</info>') - 6);
+
+                    switch ($questionClean) {
+                        case 'Do you want to generate a controller':
+                            return false;
+
+                        case 'Do you want to update the services YAML configuration file':
+                            return false;
+                    }
+
+                    return $default;
+                }));
+
+            $dialog->expects($this->any())
+                ->method('askAndValidate')
+                ->will($this->returnCallback(function (OutputInterface $output, $question, $validator, $attempts = false, $default = null) use ($modelEntity) {
+                    $questionClean = substr($question, 6, strpos($question, '</info>') - 6);
+
+                    switch ($questionClean) {
+                        case 'The fully qualified model class':
+                            return $modelEntity;
+
+                        case 'The bundle name':
+                            return 'AcmeDemoBundle';
+
+                        case 'The admin class basename':
+                            return 'FooAdmin';
+
+                        case 'The controller class basename':
+                            return 'FooAdminController';
+
+                        case 'The services YAML configuration file':
+                            return 'admin.yml';
+
+                        case 'The admin service ID':
+                            return 'acme_demo_admin.admin.foo';
+
+                        case 'The manager type':
+                            return 'foo';
+                    }
+
+                    return $default;
+                }));
+
+            $command->getHelperSet()->set($dialog, 'dialog');
+        } else {
+            $questionHelper = $this->getMockBuilder('Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper')
+                ->setMethods(array('ask'))
+                ->getMock();
+
+            $questionHelper->expects($this->any())
+                ->method('ask')
+                ->will($this->returnCallback(function (InputInterface $input, OutputInterface $output, Question $question) use ($modelEntity) {
+                    $questionClean = substr($question->getQuestion(), 6, strpos($question->getQuestion(), '</info>') - 6);
+
+                    switch ($questionClean) {
+                        // confirmations
+                        case 'Do you want to generate a controller':
+                            return false;
+
+                        case 'Do you want to update the services YAML configuration file':
+                            return false;
+
+                        // inputs
+                        case 'The fully qualified model class':
+                            return $modelEntity;
+
+                        case 'The bundle name':
+                            return 'AcmeDemoBundle';
+
+                        case 'The admin class basename':
+                            return 'FooAdmin';
+                    }
+
+                    return false;
+                }));
+
+            $command->getHelperSet()->set($questionHelper, 'question');
+        }
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(array(
+            'command' => $command->getName(),
+            'model' => $modelEntity,
+        ));
+
+        $this->assertFalse(file_exists($this->tempDirectory.'/Resources/config/services.yml'));
     }
 }

@@ -21,15 +21,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class CoreController.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class CoreController extends Controller
 {
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     public function dashboardAction()
@@ -52,7 +48,7 @@ class CoreController extends Controller
             'blocks' => $blocks,
         );
 
-        if (!$this->getRequest()->isXmlHttpRequest()) {
+        if (!$this->getCurrentRequest()->isXmlHttpRequest()) {
             $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
         }
 
@@ -122,18 +118,20 @@ class CoreController extends Controller
      *
      * NEXT_MAJOR: remove this method.
      *
-     * @deprecated Use the Request action argument. This method will be removed
-     *             in SonataAdminBundle 4.0 and the action methods adjusted
+     * @deprecated since 3.0, to be removed in 4.0 and action methods will be adjusted.
+     *             Use Symfony\Component\HttpFoundation\Request as an action argument.
      *
      * @return Request
      */
     public function getRequest()
     {
-        if ($this->container->has('request_stack')) {
-            return $this->container->get('request_stack')->getCurrentRequest();
-        }
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since 3.0 and will be removed in 4.0.'.
+            ' Inject the Symfony\Component\HttpFoundation\Request into the actions instead.',
+            E_USER_DEPRECATED
+        );
 
-        return $this->container->get('request');
+        return $this->getCurrentRequest();
     }
 
     /**
@@ -153,16 +151,29 @@ class CoreController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
      * @return string
      */
     protected function getBaseTemplate()
     {
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($this->getCurrentRequest()->isXmlHttpRequest()) {
             return $this->getAdminPool()->getTemplate('ajax');
         }
 
         return $this->getAdminPool()->getTemplate('layout');
+    }
+
+    /**
+     * Get the request object from the container.
+     *
+     * @return Request
+     */
+    private function getCurrentRequest()
+    {
+        // NEXT_MAJOR: simplify this when dropping sf < 2.4
+        if ($this->container->has('request_stack')) {
+            return $this->container->get('request_stack')->getCurrentRequest();
+        }
+
+        return $this->container->get('request');
     }
 }

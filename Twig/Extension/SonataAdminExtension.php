@@ -20,9 +20,7 @@ use Sonata\AdminBundle\Exception\NoValueException;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Class SonataAdminExtension.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 final class SonataAdminExtension extends \Twig_Extension
 {
@@ -448,7 +446,7 @@ EOT;
      * @param FieldDescriptionInterface $fieldDescription
      * @param string                    $defaultTemplate
      *
-     * @return \Twig_Template
+     * @return \Twig_TemplateInterface
      */
     private function getTemplate(
         FieldDescriptionInterface $fieldDescription,

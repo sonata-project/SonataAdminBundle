@@ -14,9 +14,7 @@ namespace Sonata\AdminBundle\Security\Handler;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
 /**
- * Interface SecurityHandlerInterface.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface SecurityHandlerInterface
 {

@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * Menu builder event. Used for extending the menus.
  *
- * @author  Martin Hasoň <martin.hason@gmail.com>
+ * @author Martin Hasoň <martin.hason@gmail.com>
  */
 class ConfigureMenuEvent extends Event
 {

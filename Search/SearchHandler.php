@@ -17,9 +17,7 @@ use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 
 /**
- * Class SearchHandler.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class SearchHandler
 {
@@ -42,7 +40,7 @@ class SearchHandler
      * @param int            $page
      * @param int            $offset
      *
-     * @return PagerInterface
+     * @return PagerInterface|false
      *
      * @throws \RuntimeException
      */

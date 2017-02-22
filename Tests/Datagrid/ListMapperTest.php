@@ -15,12 +15,13 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ListMapperTest extends \PHPUnit_Framework_TestCase
+class ListMapperTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var ListMapper
@@ -39,9 +40,9 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $listBuilder = $this->getMock('Sonata\AdminBundle\Builder\ListBuilderInterface');
+        $listBuilder = $this->createMock('Sonata\AdminBundle\Builder\ListBuilderInterface');
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
-        $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
 
         $listBuilder->expects($this->any())
             ->method('addField')
@@ -49,7 +50,7 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
                 $list->add($fieldDescription);
             }));
 
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
 
         // php 5.3 BC
         $fieldDescription = $this->getFieldDescriptionMock();
@@ -161,29 +162,17 @@ class ListMapperTest extends \PHPUnit_Framework_TestCase
                 return false;
             }));
 
-        try {
-            $this->listMapper->add('fooName');
-            $this->listMapper->add('fooName');
-        } catch (\RuntimeException $e) {
-            $this->assertContains('Duplicate field name "fooName" in list mapper. Names should be unique.', $e->getMessage());
+        $this->expectException('RuntimeException', 'Duplicate field name "fooName" in list mapper. Names should be unique.');
 
-            return;
-        }
-
-        $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+        $this->listMapper->add('fooName');
+        $this->listMapper->add('fooName');
     }
 
     public function testAddWrongTypeException()
     {
-        try {
-            $this->listMapper->add(12345);
-        } catch (\RuntimeException $e) {
-            $this->assertContains('Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.', $e->getMessage());
+        $this->expectException('RuntimeException', 'Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.');
 
-            return;
-        }
-
-        $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+        $this->listMapper->add(12345);
     }
 
     public function testAutoAddVirtualOption()

@@ -151,12 +151,12 @@ You can modify the menu via events easily. You can register as many listeners as
         {
             $menu = $event->getMenu();
 
-            $child = $menu->addChild('reports', array(
+            $child = $menu->addChild('reports', [
+                'label' => 'Daily and monthly reports',
                 'route' => 'app_reports_index',
-                'labelAttributes' => array('icon' => 'fa fa-bar-chart'),
-            ));
-
-            $child->setLabel('Daily and monthly reports');
+            ])->setExtras([
+                'icon' => '<i class="fa fa-bar-chart"></i>',
+            ]);
         }
     }
 

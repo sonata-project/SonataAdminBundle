@@ -12,9 +12,7 @@
 namespace Sonata\AdminBundle\Translator;
 
 /**
- * Class FormLabelTranslatorStrategy.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class FormLabelTranslatorStrategy implements LabelTranslatorStrategyInterface
 {

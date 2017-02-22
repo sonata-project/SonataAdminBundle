@@ -19,10 +19,8 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * Class SonataAdminExtension.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
- * @author  Michael Williams <michael.williams@funsational.com>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Michael Williams <michael.williams@funsational.com>
  */
 final class SonataAdminExtension extends Extension implements PrependExtensionInterface
 {
@@ -210,22 +208,62 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
     /**
      * Allow an extension to prepend the extension configurations.
      *
+     * NEXT_MAJOR: remove all code that deals with JMSDiExtraBundle
+     *
      * @param ContainerBuilder $container
      */
     public function prepend(ContainerBuilder $container)
     {
         $bundles = $container->getParameter('kernel.bundles');
 
-        if (isset($bundles['JMSDiExtraBundle'])) {
-            $container->prependExtensionConfig(
-                'jms_di_extra',
-                array(
-                    'annotation_patterns' => array(
-                        'Sonata\AdminBundle\Annotation',
-                    ),
-                )
-            );
+        if (!isset($bundles['JMSDiExtraBundle'])) {
+            return;
         }
+
+        $configs = $container->getExtensionConfig($this->getAlias());
+        $config = $this->processConfiguration(new Configuration(), $configs);
+        if (!$config['options']['enable_jms_di_extra_autoregistration']) {
+            return;
+        }
+
+        $sonataAdminPattern = 'Sonata\AdminBundle\Annotation';
+        $annotationPatternsConfigured = false;
+
+        $diExtraConfigs = $container->getExtensionConfig('jms_di_extra');
+        foreach ($diExtraConfigs as $diExtraConfig) {
+            if (isset($diExtraConfig['annotation_patterns'])) {
+                // don't add our own pattern if user has already done so
+                if (array_search($sonataAdminPattern, $diExtraConfig['annotation_patterns']) !== false) {
+                    return;
+                }
+                $annotationPatternsConfigured = true;
+                break;
+            }
+        }
+
+        @trigger_error(
+            'Automatic registration of annotations is deprecated since 3.14, to be removed in 4.0.',
+            E_USER_DEPRECATED
+        );
+
+        if ($annotationPatternsConfigured) {
+            $annotationPatterns = array($sonataAdminPattern);
+        } else {
+            // get annotation_patterns default from DiExtraBundle configuration
+            $diExtraConfigDefinition = new \JMS\DiExtraBundle\DependencyInjection\Configuration();
+            // FIXME: this will break if DiExtraBundle adds any mandatory configuration
+            $diExtraConfig = $this->processConfiguration($diExtraConfigDefinition, array());
+
+            $annotationPatterns = $diExtraConfig['annotation_patterns'];
+            $annotationPatterns[] = $sonataAdminPattern;
+        }
+
+        $container->prependExtensionConfig(
+            'jms_di_extra',
+            array(
+                'annotation_patterns' => $annotationPatterns,
+            )
+        );
     }
 
     public function configureClassesToCompile()

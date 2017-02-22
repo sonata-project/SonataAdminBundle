@@ -57,6 +57,6 @@ class NoopSecurityHandlerTest extends \PHPUnit_Framework_TestCase
      */
     private function getSonataAdminObject()
     {
-        return $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        return $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
     }
 }

@@ -100,6 +100,13 @@ btn_add, btn_list, btn_delete and btn_catalogue:
 
     If you need to use a sortable ``sonata_type_model`` check the :doc:`../cookbook/recipe_sortable_sonata_type_model` page.
 
+.. note::
+
+    When using ``sonata_type_model`` with ``btn_add``, a jQuery event will be
+    triggered when a child form is added to the DOM
+    (``sonata-admin-setup-list-modal`` by default and
+    ``sonata-admin-append-form-element`` when using ``edit:inline``).
+
 sonata_type_model_hidden
 ^^^^^^^^^^^^^^^^^^^^^^^^
 Setting a field type of ``sonata_type_model_hidden`` will use an instance of

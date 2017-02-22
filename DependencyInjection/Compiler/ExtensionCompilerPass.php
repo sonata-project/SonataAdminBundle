@@ -17,9 +17,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Class ExtensionCompilerPass.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 final class ExtensionCompilerPass implements CompilerPassInterface
 {
@@ -29,6 +27,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $universalExtensions = array();
+        $targets = array();
 
         foreach ($container->findTaggedServiceIds('sonata.admin.extension') as $id => $tags) {
             foreach ($tags as $attributes) {
@@ -39,17 +38,14 @@ final class ExtensionCompilerPass implements CompilerPassInterface
                 }
 
                 if (isset($attributes['global']) && $attributes['global']) {
-                    $universalExtensions[] = $id;
+                    $universalExtensions[$id] = $attributes;
                 }
 
                 if (!$target || !$container->hasDefinition($target)) {
                     continue;
                 }
 
-                $container
-                    ->getDefinition($target)
-                    ->addMethodCall('addExtension', array(new Reference($id)))
-                ;
+                $this->addExtension($targets, $target, $id, $attributes);
             }
         }
 
@@ -59,17 +55,34 @@ final class ExtensionCompilerPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $attributes) {
             $admin = $container->getDefinition($id);
 
-            foreach ($universalExtensions as $extension) {
-                $admin->addMethodCall('addExtension', array(new Reference($extension)));
+            if (!isset($targets[$id])) {
+                $targets[$id] = new \SplPriorityQueue();
+            }
+
+            foreach ($universalExtensions as $extension => $extensionAttributes) {
+                $this->addExtension($targets, $id, $extension, $extensionAttributes);
             }
 
             $extensions = $this->getExtensionsForAdmin($id, $admin, $container, $extensionMap);
 
             foreach ($extensions as $extension) {
                 if (!$container->has($extension)) {
-                    throw new \InvalidArgumentException(sprintf('Unable to find extension service for id %s', $extension));
+                    throw new \InvalidArgumentException(
+                        sprintf('Unable to find extension service for id %s', $extension)
+                    );
                 }
-                $admin->addMethodCall('addExtension', array(new Reference($extension)));
+
+                $this->addExtension($targets, $id, $extension, $attributes);
+            }
+        }
+
+        foreach ($targets as $target => $extensions) {
+            $extensions = iterator_to_array($extensions);
+            krsort($extensions);
+            $admin = $container->getDefinition($target);
+
+            foreach (array_values($extensions) as $extension) {
+                $admin->addMethodCall('addExtension', array($extension));
             }
         }
     }
@@ -198,5 +211,23 @@ final class ExtensionCompilerPass implements CompilerPassInterface
         }
 
         return $this->hasTrait($parentClass, $traitName);
+    }
+
+    /**
+     * Add extension configuration to the targets array.
+     *
+     * @param array  $targets
+     * @param string $target
+     * @param string $extension
+     * @param array  $attributes
+     */
+    private function addExtension(array &$targets, $target, $extension, $attributes)
+    {
+        if (!isset($targets[$target])) {
+            $targets[$target] = new \SplPriorityQueue();
+        }
+
+        $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
+        $targets[$target]->insert(new Reference($extension), $priority);
     }
 }

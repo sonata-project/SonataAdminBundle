@@ -13,21 +13,22 @@ namespace Sonata\AdminBundle\Tests\Controller;
 
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\CoreController;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class CoreControllerTest extends \PHPUnit_Framework_TestCase
+class CoreControllerTest extends PHPUnit_Framework_TestCase
 {
     public function testdashboardActionStandardRequest()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $pool = new Pool($container, 'title', 'logo.png');
         $pool->setTemplates(array(
             'ajax' => 'ajax.html',
         ));
 
-        $templating = $this->getMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
+        $templating = $this->createMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
         $request = new Request();
 
         $requestStack = null;
@@ -36,7 +37,7 @@ class CoreControllerTest extends \PHPUnit_Framework_TestCase
             $requestStack->push($request);
         }
 
-        $breadcrumbsBuilder = $this->getMock('BreadcrumbsBuilderInterface');
+        $breadcrumbsBuilder = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface');
 
         $values = array(
             'sonata.admin.breadcrumbs_builder' => $breadcrumbsBuilder,
@@ -83,14 +84,14 @@ class CoreControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testdashboardActionAjaxLayout()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $pool = new Pool($container, 'title', 'logo.png');
         $pool->setTemplates(array(
             'ajax' => 'ajax.html',
         ));
 
-        $templating = $this->getMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
+        $templating = $this->createMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
         $request = new Request();
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 

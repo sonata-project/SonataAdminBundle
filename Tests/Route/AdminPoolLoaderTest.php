@@ -21,8 +21,11 @@ class AdminPoolLoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testSupports()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $pool = $this->getMock('Sonata\AdminBundle\Admin\Pool', array(), array($container, 'title', 'logoTitle'));
+        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
+        $pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
+            ->setMethods(array())
+            ->setConstructorArgs(array($container, 'title', 'logoTitle'))
+            ->getMock();
 
         $adminPoolLoader = new AdminPoolLoader($pool, array('foo_admin', 'bar_admin'), $container);
 
@@ -32,8 +35,11 @@ class AdminPoolLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testLoad()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $pool = $this->getMock('Sonata\AdminBundle\Admin\Pool', array(), array($container, 'title', 'logoTitle'));
+        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
+        $pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
+            ->setMethods(array())
+            ->setConstructorArgs(array($container, 'title', 'logoTitle'))
+            ->getMock();
 
         $adminPoolLoader = new AdminPoolLoader($pool, array('foo_admin', 'bar_admin'), $container);
 
@@ -44,12 +50,12 @@ class AdminPoolLoaderTest extends \PHPUnit_Framework_TestCase
         $routeCollection2->add('bar');
         $routeCollection2->add('baz');
 
-        $admin1 = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin1 = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $admin1->expects($this->once())
             ->method('getRoutes')
             ->will($this->returnValue($routeCollection1));
 
-        $admin2 = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin2 = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $admin2->expects($this->once())
             ->method('getRoutes')
             ->will($this->returnValue($routeCollection2));

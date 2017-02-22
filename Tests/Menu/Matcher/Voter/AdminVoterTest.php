@@ -53,7 +53,7 @@ class AdminVoterTest extends AbstractVoterTest
      */
     protected function createItem($data)
     {
-        $item = $this->getMock('Knp\Menu\ItemInterface');
+        $item = $this->getMockForAbstractClass('Knp\Menu\ItemInterface');
         $item->expects($this->any())
              ->method('getExtra')
              ->with($this->logicalOr(
@@ -71,7 +71,7 @@ class AdminVoterTest extends AbstractVoterTest
      */
     private function getAdmin($code, $list = false, $granted = false)
     {
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $admin
             ->expects($this->any())
             ->method('hasRoute')

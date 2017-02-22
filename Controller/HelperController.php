@@ -16,7 +16,6 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,9 +26,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 
 /**
- * Class HelperController.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class HelperController
 {
@@ -62,7 +59,11 @@ class HelperController
     public function __construct(\Twig_Environment $twig, Pool $pool, AdminHelper $helper, $validator)
     {
         if (!($validator instanceof ValidatorInterface) && !($validator instanceof LegacyValidatorInterface)) {
-            throw new \InvalidArgumentException('Argument 4 is an instance of '.get_class($validator).', expecting an instance of \Symfony\Component\Validator\Validator\ValidatorInterface or \Symfony\Component\Validator\ValidatorInterface');
+            throw new \InvalidArgumentException(
+                'Argument 4 is an instance of '.get_class($validator).', expecting an instance of'
+                .' \Symfony\Component\Validator\Validator\ValidatorInterface or'
+                .' \Symfony\Component\Validator\ValidatorInterface'
+            );
         }
 
         $this->twig = $twig;
@@ -139,7 +140,9 @@ class HelperController
         if ($objectId) {
             $subject = $admin->getModelManager()->find($admin->getClass(), $objectId);
             if (!$subject) {
-                throw new NotFoundHttpException(sprintf('Unable to find the object id: %s, class: %s', $objectId, $admin->getClass()));
+                throw new NotFoundHttpException(
+                    sprintf('Unable to find the object id: %s, class: %s', $objectId, $admin->getClass())
+                );
             }
         } else {
             $subject = $admin->getNewInstance();
@@ -147,7 +150,7 @@ class HelperController
 
         $admin->setSubject($subject);
 
-        $formBuilder = $admin->getFormBuilder($subject);
+        $formBuilder = $admin->getFormBuilder();
 
         $form = $formBuilder->getForm();
         $form->handleRequest($request);
@@ -260,7 +263,10 @@ class HelperController
         }
 
         if (!$fieldDescription->getOption('editable')) {
-            return new JsonResponse(array('status' => 'KO', 'message' => 'The field cannot be edit, editable option must be set to true'));
+            return new JsonResponse(array(
+                'status' => 'KO',
+                'message' => 'The field cannot be edit, editable option must be set to true',
+            ));
         }
 
         $propertyPath = new PropertyPath($field);
@@ -351,7 +357,9 @@ class HelperController
             $formAutocomplete = $admin->getForm()->get($fieldDescription->getName());
 
             if ($formAutocomplete->getConfig()->getAttribute('disabled')) {
-                throw new AccessDeniedException('Autocomplete list can`t be retrieved because the form element is disabled or read_only.');
+                throw new AccessDeniedException(
+                    'Autocomplete list can`t be retrieved because the form element is disabled or read_only.'
+                );
             }
 
             $property = $formAutocomplete->getConfig()->getAttribute('property');
@@ -389,7 +397,11 @@ class HelperController
                 // multiple properties
                 foreach ($property as $prop) {
                     if (!$datagrid->hasFilter($prop)) {
-                        throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $prop, get_class($targetAdmin)));
+                        throw new \RuntimeException(sprintf(
+                            'To retrieve autocomplete items,'
+                            .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
+                            $prop, get_class($targetAdmin)
+                        ));
                     }
 
                     $filter = $datagrid->getFilter($prop);
@@ -399,7 +411,12 @@ class HelperController
                 }
             } else {
                 if (!$datagrid->hasFilter($property)) {
-                    throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $property, get_class($targetAdmin)));
+                    throw new \RuntimeException(sprintf(
+                        'To retrieve autocomplete items,'
+                        .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
+                        $property,
+                        get_class($targetAdmin)
+                    ));
                 }
 
                 $datagrid->setValue($property, null, $searchText);
@@ -446,7 +463,7 @@ class HelperController
      * @param AdminInterface $admin
      * @param string         $field
      *
-     * @return FormInterface
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      *
      * @throws \RuntimeException
      */
@@ -473,7 +490,7 @@ class HelperController
      * @param AdminInterface $admin
      * @param string         $field
      *
-     * @return FormInterface
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      *
      * @throws \RuntimeException
      */

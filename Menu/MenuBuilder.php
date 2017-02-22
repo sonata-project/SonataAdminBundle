@@ -74,6 +74,7 @@ class MenuBuilder
                 'icon' => $group['icon'],
                 'label_catalogue' => $group['label_catalogue'],
                 'roles' => $group['roles'],
+                'sonata_admin' => true,
             );
 
             $menuProvider = isset($group['provider']) ? $group['provider'] : 'sonata_group_menu';

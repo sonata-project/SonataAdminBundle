@@ -20,7 +20,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * This information is solely responsible for how the different configuration
  * sections are normalized, and merged.
  *
- * @author  Michael Williams <mtotheikle@gmail.com>
+ * @author Michael Williams <mtotheikle@gmail.com>
  */
 final class Configuration implements ConfigurationInterface
 {
@@ -103,6 +103,10 @@ final class Configuration implements ConfigurationInterface
                         ->booleanNode('lock_protection')
                             ->defaultFalse()
                             ->info('Enable locking when editing an object, if the corresponding object manager supports it.')
+                        ->end()
+                        ->booleanNode('enable_jms_di_extra_autoregistration') // NEXT_MAJOR: remove this option
+                            ->defaultTrue()
+                            ->info('Enable automatic registration of annotations with JMSDiExtraBundle')
                         ->end()
                     ->end()
                 ->end()

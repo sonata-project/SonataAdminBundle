@@ -14,8 +14,8 @@ var Admin = {
     collectionCounters: [],
 
     /**
-     * This function must called when a ajax call is done, to ensure
-     * retrieve html is properly setup
+     * This function must be called when an ajax call is done, to ensure
+     * the retrieved html is properly setup
      *
      * @param subject
      */
@@ -55,6 +55,8 @@ var Admin = {
             padding: 15,
             overflow: 'auto'
         });
+      
+        jQuery(modal).trigger('sonata-admin-setup-list-modal');
     },
     setup_select2: function(subject) {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2) {

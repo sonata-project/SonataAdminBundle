@@ -12,8 +12,9 @@
 namespace Sonata\AdminBundle\Tests\Route;
 
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class RouteCollectionTest extends \PHPUnit_Framework_TestCase
+class RouteCollectionTest extends PHPUnit_Framework_TestCase
 {
     public function testGetter()
     {
@@ -88,7 +89,7 @@ class RouteCollectionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetWithException()
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Element "foo" does not exist.');
+        $this->expectException('\InvalidArgumentException', 'Element "foo" does not exist.');
 
         $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerName');
         $routeCollection->get('foo');

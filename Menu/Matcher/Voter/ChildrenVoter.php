@@ -42,6 +42,10 @@ class ChildrenVoter implements VoterInterface
      */
     public function matchItem(ItemInterface $item)
     {
+        if (!$item->getExtra('sonata_admin', false)) {
+            return;
+        }
+
         $children = $item->getChildren();
         $match = null;
         foreach ($children as $child) {

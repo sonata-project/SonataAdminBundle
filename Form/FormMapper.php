@@ -17,10 +17,9 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class FormMapper
  * This class is use to simulate the Form API.
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class FormMapper extends BaseGroupedMapper
 {

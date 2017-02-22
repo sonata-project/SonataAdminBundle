@@ -79,7 +79,7 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
         );
 
         $extensions = parent::getExtensions();
-        $guesser = $this->getMock('Symfony\Component\Form\FormTypeGuesserInterface');
+        $guesser = $this->getMockForAbstractClass('Symfony\Component\Form\FormTypeGuesserInterface');
         $extension = new TestExtension($guesser);
         $type = new ChoiceType($mock);
         $extension->addType($type);

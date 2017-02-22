@@ -30,8 +30,8 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
-        $builder = $this->getMock('Sonata\AdminBundle\Builder\BuilderInterface');
+        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $builder = $this->getMockForAbstractClass('Sonata\AdminBundle\Builder\BuilderInterface');
 
         $this->baseGroupedMapper = $this->getMockForAbstractClass('Sonata\AdminBundle\Mapper\BaseGroupedMapper', array($builder, $admin));
 

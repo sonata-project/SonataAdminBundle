@@ -12,18 +12,19 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class FieldDescriptionCollectionTest extends \PHPUnit_Framework_TestCase
+class FieldDescriptionCollectionTest extends PHPUnit_Framework_TestCase
 {
     public function testMethods()
     {
         $collection = new FieldDescriptionCollection();
 
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('title'));
         $collection->add($fieldDescription);
 
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('position'));
         $collection->add($fieldDescription);
 
@@ -72,11 +73,11 @@ class FieldDescriptionCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $collection = new FieldDescriptionCollection();
 
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('title'));
         $collection->add($fieldDescription);
 
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('position'));
         $collection->add($fieldDescription);
 
@@ -91,15 +92,15 @@ class FieldDescriptionCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $collection = new FieldDescriptionCollection();
 
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('title'));
         $collection->add($fieldDescription);
 
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('position'));
         $collection->add($fieldDescription);
 
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('batch'));
         $collection->add($fieldDescription);
 

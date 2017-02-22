@@ -18,10 +18,10 @@ class PathInfoBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public function testBuild()
     {
-        $audit = $this->getMock('Sonata\AdminBundle\Model\AuditManagerInterface');
+        $audit = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\AuditManagerInterface');
         $audit->expects($this->once())->method('hasReader')->will($this->returnValue(true));
 
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('getChildren')->will($this->returnValue(array()));
         $admin->expects($this->once())->method('isAclEnabled')->will($this->returnValue(true));
 

@@ -19,8 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class AdminListBlockService.
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminListBlockService extends AbstractBlockService

@@ -12,11 +12,12 @@
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use Sonata\AdminBundle\Datagrid\Pager;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class PagerTest extends \PHPUnit_Framework_TestCase
+class PagerTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var Pager
@@ -137,7 +138,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetQuery()
     {
-        $query = $this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $query = $this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
 
         $this->pager->setQuery($query);
         $this->assertSame($query, $this->pager->getQuery());
@@ -359,7 +360,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
 
         $this->callMethod($this->pager, 'setNbResults', array(3));
 
-        $query = $this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $query = $this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
 
         $query->expects($this->any())
             ->method('setFirstResult')
@@ -433,43 +434,43 @@ class PagerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(20, $this->pager->getPreviousPage());
     }
 
-    public function testGetFirstIndice()
+    public function testGetFirstIndex()
     {
-        $this->assertSame(1, $this->pager->getFirstIndice());
+        $this->assertSame(1, $this->pager->getFirstIndex());
 
         $this->pager->setMaxPerPage(0);
         $this->pager->setPage(0);
-        $this->assertSame(1, $this->pager->getFirstIndice());
+        $this->assertSame(1, $this->pager->getFirstIndex());
 
         $this->pager->setPage(2);
         $this->pager->setMaxPerPage(10);
-        $this->assertSame(11, $this->pager->getFirstIndice());
+        $this->assertSame(11, $this->pager->getFirstIndex());
 
         $this->pager->setPage(4);
         $this->pager->setMaxPerPage(7);
-        $this->assertSame(22, $this->pager->getFirstIndice());
+        $this->assertSame(22, $this->pager->getFirstIndex());
     }
 
-    public function testGetLastIndice()
+    public function testGetLastIndex()
     {
-        $this->assertSame(0, $this->pager->getLastIndice());
+        $this->assertSame(0, $this->pager->getLastIndex());
 
         $this->pager->setMaxPerPage(0);
         $this->pager->setPage(0);
-        $this->assertSame(0, $this->pager->getLastIndice());
+        $this->assertSame(0, $this->pager->getLastIndex());
 
         $this->callMethod($this->pager, 'setNbResults', array(100));
 
-        $this->assertSame(100, $this->pager->getLastIndice());
+        $this->assertSame(100, $this->pager->getLastIndex());
 
         $this->pager->setPage(2);
-        $this->assertSame(0, $this->pager->getLastIndice());
+        $this->assertSame(0, $this->pager->getLastIndex());
 
         $this->pager->setMaxPerPage(10);
-        $this->assertSame(20, $this->pager->getLastIndice());
+        $this->assertSame(20, $this->pager->getLastIndex());
 
         $this->pager->setPage(11);
-        $this->assertSame(100, $this->pager->getLastIndice());
+        $this->assertSame(100, $this->pager->getLastIndex());
     }
 
     public function testGetNext()
@@ -487,7 +488,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
 
         $this->callMethod($this->pager, 'setNbResults', array(3));
 
-        $query = $this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $query = $this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
 
         $query->expects($this->any())
             ->method('setFirstResult')
@@ -545,7 +546,7 @@ class PagerTest extends \PHPUnit_Framework_TestCase
 
         $this->callMethod($this->pager, 'setNbResults', array(3));
 
-        $query = $this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $query = $this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
 
         $query->expects($this->any())
             ->method('setFirstResult')

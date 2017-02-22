@@ -27,10 +27,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
- * Class ModelType
  * This type define a standard select input with a + sign to add new associated object.
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ModelType extends AbstractType
 {
@@ -52,7 +51,6 @@ class ModelType extends AbstractType
         if ($options['multiple']) {
             if (array_key_exists('choice_loader', $options) && $options['choice_loader'] !== null) { // SF2.7+
                 $builder->addViewTransformer(new ModelsToArrayTransformer(
-                    $options['choice_loader'],
                     $options['model_manager'],
                     $options['class']), true);
             } else {

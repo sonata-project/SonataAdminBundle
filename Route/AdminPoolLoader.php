@@ -18,9 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
 
 /**
- * Class AdminPoolLoader.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminPoolLoader extends Loader
 {

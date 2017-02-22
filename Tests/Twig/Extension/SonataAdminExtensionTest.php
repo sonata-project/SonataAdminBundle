@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
@@ -35,7 +36,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
+class SonataAdminExtensionTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var SonataAdminExtension
@@ -89,15 +90,19 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        // NEXT_MAJOR: remove this block when dropping symfony < 2.7 support
+        if (!class_exists('Symfony\Bridge\Twig\Extension\AssetExtension')) {
+            $this->markTestSkipped();
+        }
         date_default_timezone_set('Europe/London');
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $this->pool = new Pool($container, '', '');
         $this->pool->setAdminServiceIds(array('sonata_admin_foo_service'));
         $this->pool->setAdminClasses(array('fooClass' => array('sonata_admin_foo_service')));
 
-        $this->logger = $this->getMock('Psr\Log\LoggerInterface');
+        $this->logger = $this->getMockForAbstractClass('Psr\Log\LoggerInterface');
         $this->xEditableTypeMapping = array(
             'choice' => 'select',
             'boolean' => 'select',
@@ -160,7 +165,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $this->object = new \stdClass();
 
         // initialize admin
-        $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
 
         $this->admin->expects($this->any())
             ->method('getCode')
@@ -182,7 +187,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                 return $translator->trans($id, $parameters, $domain);
             }));
 
-        $this->adminBar = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->adminBar = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $this->adminBar->expects($this->any())
             ->method('isGranted')
             ->will($this->returnValue(true));
@@ -208,7 +213,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             }));
 
         // initialize field description
-        $this->fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $this->fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
 
         $this->fieldDescription->expects($this->any())
             ->method('getName')
@@ -1786,7 +1791,7 @@ EOT
     public function testGetValueFromFieldDescription()
     {
         $object = new \stdClass();
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
 
         $fieldDescription->expects($this->any())
             ->method('getValue')
@@ -1804,28 +1809,26 @@ EOT
 
     public function testGetValueFromFieldDescriptionWithRemoveLoopException()
     {
-        $object = $this->getMock('\ArrayAccess');
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $object = $this->createMock('\ArrayAccess');
+        $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
 
-        try {
-            $this->assertSame(
-                'anything',
-                $this->getMethodAsPublic('getValueFromFieldDescription')
-                    ->invoke($this->twigExtension, $object, $fieldDescription, array('loop' => true))
-            );
-        } catch (\RuntimeException $e) {
-            $this->assertContains('remove the loop requirement', $e->getMessage());
+        $this->expectException('\RuntimeException', 'remove the loop requirement');
 
-            return;
-        }
-
-        $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+        $this->assertSame(
+            'anything',
+            $this->getMethodAsPublic('getValueFromFieldDescription')->invoke(
+                $this->twigExtension,
+                $object,
+                $fieldDescription,
+                array('loop' => true)
+            )
+        );
     }
 
     public function testGetValueFromFieldDescriptionWithNoValueException()
     {
         $object = new \stdClass();
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
 
         $fieldDescription->expects($this->any())
             ->method('getValue')
@@ -1850,7 +1853,7 @@ EOT
     public function testGetValueFromFieldDescriptionWithNoValueExceptionNewAdminInstance()
     {
         $object = new \stdClass();
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
 
         $fieldDescription->expects($this->any())
             ->method('getValue')
@@ -1990,7 +1993,9 @@ EOT
                 }
             }));
 
-        $element = $this->getMock('stdClass', array('customToString'));
+        $element = $this->getMockBuilder('stdClass')
+            ->setMethods(array('customToString'))
+            ->getMock();
         $element->expects($this->any())
             ->method('customToString')
             ->will($this->returnValue('fooBar'));
@@ -2013,19 +2018,9 @@ EOT
             }));
 
         $element = new \stdClass();
+        $this->expectException('\RuntimeException', 'You must define an `associated_property` option or create a `stdClass::__toString');
 
-        try {
-            $this->twigExtension->renderRelationElement($element, $this->fieldDescription);
-        } catch (\RuntimeException $e) {
-            $this->assertContains(
-                'You must define an `associated_property` option or create a `stdClass::__toString',
-                $e->getMessage()
-            );
-
-            return;
-        }
-
-        $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+        $this->twigExtension->renderRelationElement($element, $this->fieldDescription);
     }
 
     public function testRenderRelationElementWithPropertyPath()
@@ -2146,7 +2141,7 @@ EOT
      */
     public function testGetXEditableChoicesIsIdempotent(array $input)
     {
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $fieldDescription->expects($this->exactly(2))
             ->method('getOption')
             ->withConsecutive(

@@ -37,6 +37,12 @@ class PostAdmin extends AbstractAdmin
         $actions['foo'] = array(
             'label' => 'action_foo',
         );
+        $actions['bar'] = array(
+        );
+        $actions['baz'] = array(
+            'label' => 'action_baz',
+            'translation_domain' => 'AcmeAdminBundle',
+        );
 
         return $actions;
     }

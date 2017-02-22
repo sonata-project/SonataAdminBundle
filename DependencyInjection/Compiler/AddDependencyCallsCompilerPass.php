@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\Reference;
  * Add all dependencies to the Admin class, this avoid to write too many lines
  * in the configuration files.
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 {
@@ -39,7 +39,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 It\'s required by SonataAdmin to display all labels properly.
 
                 To learn how to enable the translator service please visit:
-                http://symfony.com/doc/current/book/translation.html#book-translation-configuration
+                http://symfony.com/doc/current/translation.html#configuration
              ');
         }
 

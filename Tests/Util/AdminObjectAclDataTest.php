@@ -44,7 +44,9 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
 
     public function testSetAcl()
     {
-        $acl = $this->getMock('Symfony\Component\Security\Acl\Domain\Acl', array(), array(), '', false);
+        $acl = $this->getMockBuilder('Symfony\Component\Security\Acl\Domain\Acl')
+            ->disableOriginalConstructor()
+            ->getMock();
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setAcl($acl);
 
@@ -77,7 +79,9 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetForm()
     {
-        $form = $this->getMock('\Symfony\Component\Form\Form', array(), array(), '', false);
+        $form = $this->getMockBuilder('\Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setAclUsersForm($form);
 
@@ -98,7 +102,9 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
 
     public function testSetAclUsersForm()
     {
-        $form = $this->getMock('\Symfony\Component\Form\Form', array(), array(), '', false);
+        $form = $this->getMockBuilder('\Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setAclUsersForm($form);
 
@@ -117,7 +123,9 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
 
     public function testSetAclRolesForm()
     {
-        $form = $this->getMock('\Symfony\Component\Form\Form', array(), array(), '', false);
+        $form = $this->getMockBuilder('\Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setAclRolesForm($form);
 
@@ -207,7 +215,7 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
 
     protected function createAdmin($isOwner = true)
     {
-        $securityHandler = $this->getMock('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface');
+        $securityHandler = $this->getMockForAbstractClass('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface');
 
         $securityHandler->expects($this->any())
             ->method('getObjectPermissions')
@@ -220,7 +228,7 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(array()))
         ;
 
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
 
         $admin->expects($this->any())
             ->method('isGranted')

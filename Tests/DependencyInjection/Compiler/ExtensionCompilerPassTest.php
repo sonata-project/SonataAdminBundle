@@ -14,9 +14,10 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
+class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
 {
     /** @var SonataAdminExtension $extension */
     private $extension;
@@ -46,12 +47,12 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->root = 'sonata.admin';
         $this->hasTraits = version_compare(PHP_VERSION, '5.4.0', '>=');
 
-        $this->publishExtension = $this->getMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
-        $this->historyExtension = $this->getMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
-        $this->orderExtension = $this->getMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
-        $this->securityExtension = $this->getMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
-        $this->filterExtension = $this->getMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
-        $this->timestampExtension = $this->getMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
+        $this->publishExtension = $this->createMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
+        $this->historyExtension = $this->createMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
+        $this->orderExtension = $this->createMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
+        $this->securityExtension = $this->createMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
+        $this->filterExtension = $this->createMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
+        $this->timestampExtension = $this->createMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
     }
 
     /**
@@ -250,8 +251,8 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(4, $extensions);
 
         $this->assertInstanceOf(get_class($this->securityExtension), $extensions[0]);
-        $this->assertInstanceOf(get_class($this->publishExtension), $extensions[2]);
-        $this->assertInstanceOf(get_class($this->historyExtension), $extensions[3]);
+        $this->assertInstanceOf(get_class($this->publishExtension), $extensions[1]);
+        $this->assertInstanceOf(get_class($this->historyExtension), $extensions[2]);
 
         $def = $container->get('sonata_article_admin');
         $extensions = $def->getExtensions();
@@ -259,7 +260,7 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(get_class($this->securityExtension), $extensions[0]);
         $this->assertInstanceOf(get_class($this->publishExtension), $extensions[1]);
-        $this->assertInstanceOf(get_class($this->orderExtension), $extensions[3]);
+        $this->assertInstanceOf(get_class($this->orderExtension), $extensions[2]);
         $this->assertInstanceOf(get_class($this->filterExtension), $extensions[4]);
 
         $def = $container->get('sonata_news_admin');
@@ -267,14 +268,14 @@ class ExtensionCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(5, $extensions);
         $this->assertInstanceOf(get_class($this->securityExtension), $extensions[0]);
         $this->assertInstanceOf(get_class($this->orderExtension), $extensions[1]);
-        $this->assertInstanceOf(get_class($this->historyExtension), $extensions[3]);
+        $this->assertInstanceOf(get_class($this->historyExtension), $extensions[2]);
         $this->assertInstanceOf(get_class($this->filterExtension), $extensions[4]);
     }
 
     public function testProcessThrowsExceptionIfTraitsAreNotAvailable()
     {
         if (!$this->hasTraits) {
-            $this->setExpectedException('\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException', 'PHP >= 5.4.0 is required to use traits.');
+            $this->expectException('\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException', 'PHP >= 5.4.0 is required to use traits.');
         }
 
         $config = array(

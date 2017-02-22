@@ -15,12 +15,13 @@ use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Form\FormBuilder;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class DatagridTest extends \PHPUnit_Framework_TestCase
+class DatagridTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var Datagrid
@@ -49,9 +50,9 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->query = $this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $this->query = $this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
         $this->columns = new FieldDescriptionCollection();
-        $this->pager = $this->getMock('Sonata\AdminBundle\Datagrid\PagerInterface');
+        $this->pager = $this->createMock('Sonata\AdminBundle\Datagrid\PagerInterface');
 
         $this->formTypes = array();
 
@@ -73,8 +74,8 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
             }));
 
         // php 5.3 BC
-        $eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $formFactory = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
+        $eventDispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $formFactory = $this->createMock('Symfony\Component\Form\FormFactoryInterface');
 
         $this->formBuilder->expects($this->any())
             ->method('add')
@@ -110,7 +111,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->datagrid->hasFilter('foo'));
         $this->assertNull($this->datagrid->getFilter('foo'));
 
-        $filter = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('foo'));
@@ -130,17 +131,17 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(array(), $this->datagrid->getFilters());
 
-        $filter1 = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter1 = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter1->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('foo'));
 
-        $filter2 = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter2 = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter2->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('bar'));
 
-        $filter3 = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter3 = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter3->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('baz'));
@@ -160,17 +161,17 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(array(), $this->datagrid->getFilters());
 
-        $filter1 = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter1 = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter1->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('foo'));
 
-        $filter2 = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter2 = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter2->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('bar'));
 
-        $filter3 = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter3 = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter3->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('baz'));
@@ -211,7 +212,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertFalse($this->datagrid->hasActiveFilters());
 
-        $filter1 = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter1 = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter1->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('foo'));
@@ -223,7 +224,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->datagrid->hasActiveFilters());
 
-        $filter2 = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter2 = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter2->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('bar'));
@@ -243,7 +244,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function testHasDisplayableFiltersNotActive()
     {
-        $filter = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('foo'));
@@ -261,7 +262,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function testHasDisplayableFiltersActive()
     {
-        $filter = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('bar'));
@@ -279,7 +280,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function testHasDisplayableFiltersAlwaysShow()
     {
-        $filter = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('bar'));
@@ -314,7 +315,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildPager()
     {
-        $filter1 = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter1 = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter1->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('foo'));
@@ -330,7 +331,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->datagrid->addFilter($filter1);
 
-        $filter2 = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter2 = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter2->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('bar'));
@@ -365,7 +366,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildPagerWithException()
     {
-        $filter = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('foo'));
@@ -385,7 +386,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildPagerWithSortBy()
     {
-        $sortBy = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $sortBy = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $sortBy->expects($this->once())
             ->method('isSortable')
             ->will($this->returnValue(true));
@@ -402,7 +403,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, array('_sort_by' => $sortBy));
 
-        $filter = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('foo'));
@@ -434,7 +435,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildPagerWithPage($page, $perPage)
     {
-        $sortBy = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $sortBy = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $sortBy->expects($this->once())
             ->method('isSortable')
             ->will($this->returnValue(true));
@@ -451,7 +452,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, array('_sort_by' => $sortBy, '_page' => $page, '_per_page' => $perPage));
 
-        $filter = $this->getMock('Sonata\AdminBundle\Filter\FilterInterface');
+        $filter = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
         $filter->expects($this->once())
             ->method('getName')
             ->will($this->returnValue('foo'));

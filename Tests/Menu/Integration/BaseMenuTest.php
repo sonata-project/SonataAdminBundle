@@ -18,9 +18,7 @@ use Symfony\Bridge\Twig\Tests\Extension\Fixtures\StubFilesystemLoader;
 use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslator;
 
 /**
- * Class BaseTemplateTest.
- *
- * Base class for tests checking rendering of twig templates
+ * Base class for tests checking rendering of twig templates.
  */
 abstract class BaseMenuTest extends \PHPUnit_Framework_TestCase
 {
@@ -53,7 +51,7 @@ abstract class BaseMenuTest extends \PHPUnit_Framework_TestCase
         $this->renderer = new TwigRenderer(
             $this->environment,
             $this->getTemplate(),
-            $this->getMock('Knp\Menu\Matcher\MatcherInterface')
+            $this->getMockForAbstractClass('Knp\Menu\Matcher\MatcherInterface')
         );
 
         return $this->renderer->render($item, $options);
