@@ -18,8 +18,9 @@ use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Menu\Provider\GroupMenuProvider;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
+class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var MockObject|Pool
@@ -102,7 +103,7 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGroupMenuProviderThrowsExceptionWithInvalidArgument()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         new GroupMenuProvider($this->factory, $this->pool, 'foo');
     }
 
@@ -330,7 +331,7 @@ class GroupMenuProviderTest extends \PHPUnit_Framework_TestCase
      */
     private function getAdminMock($hasRoute = true, $isGranted = true)
     {
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())
             ->method('hasRoute')
             ->with($this->equalTo('list'))

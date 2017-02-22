@@ -48,7 +48,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 
 /**
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
 {
@@ -434,7 +434,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     /**
      * The Access mapping.
      *
-     * @var array
+     * @var array [action1 => requiredRole1, action2 => [requiredRole2, requiredRole3]]
      */
     protected $accessMapping = array();
 
@@ -1006,6 +1006,16 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
             $actions = $extension->configureBatchActions($this, $actions);
         }
 
+        foreach ($actions  as $name => &$action) {
+            if (!array_key_exists('label', $action)) {
+                $action['label'] = $this->getTranslationLabel($name, 'batch', 'label');
+            }
+
+            if (!array_key_exists('translation_domain', $action)) {
+                $action['translation_domain'] = $this->getTranslationDomain();
+            }
+        }
+
         return $actions;
     }
 
@@ -1329,7 +1339,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     /**
      * Returns the master admin.
      *
-     * @return Admin the root admin class
+     * @return AbstractAdmin the root admin class
      */
     public function getRoot()
     {
@@ -2334,7 +2344,10 @@ EOT;
     {
         // TODO: Remove it when bumping requirements to SF 2.5+
         if (!$validator instanceof ValidatorInterface && !$validator instanceof LegacyValidatorInterface) {
-            throw new \InvalidArgumentException('Argument 1 must be an instance of Symfony\Component\Validator\Validator\ValidatorInterface or Symfony\Component\Validator\ValidatorInterface');
+            throw new \InvalidArgumentException(
+                'Argument 1 must be an instance of Symfony\Component\Validator\Validator\ValidatorInterface'
+                .' or Symfony\Component\Validator\ValidatorInterface'
+            );
         }
 
         $this->validator = $validator;
@@ -2594,7 +2607,11 @@ EOT;
         $access = $this->getAccess();
 
         if (!array_key_exists($action, $access)) {
-            throw new \InvalidArgumentException(sprintf('Action "%s" could not be found in access mapping. Please make sure your action is defined into your admin class accessMapping property.', $action));
+            throw new \InvalidArgumentException(sprintf(
+                'Action "%s" could not be found in access mapping.'
+                .' Please make sure your action is defined into your admin class accessMapping property.',
+                $action
+            ));
         }
 
         if (!is_array($access[$action])) {
@@ -2957,12 +2974,16 @@ EOT;
         $mapper = new ListMapper($this->getListBuilder(), $this->list, $this);
 
         if (count($this->getBatchActions()) > 0) {
-            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance($this->getClass(), 'batch', array(
-                'label' => 'batch',
-                'code' => '_batch',
-                'sortable' => false,
-                'virtual_field' => true,
-            ));
+            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
+                $this->getClass(),
+                'batch',
+                array(
+                    'label' => 'batch',
+                    'code' => '_batch',
+                    'sortable' => false,
+                    'virtual_field' => true,
+                )
+            );
 
             $fieldDescription->setAdmin($this);
             $fieldDescription->setTemplate($this->getTemplate('batch'));
@@ -2977,12 +2998,16 @@ EOT;
         }
 
         if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
-            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance($this->getClass(), 'select', array(
-                'label' => false,
-                'code' => '_select',
-                'sortable' => false,
-                'virtual_field' => false,
-            ));
+            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
+                $this->getClass(),
+                'select',
+                array(
+                    'label' => false,
+                    'code' => '_select',
+                    'sortable' => false,
+                    'virtual_field' => false,
+                )
+            );
 
             $fieldDescription->setAdmin($this);
             $fieldDescription->setTemplate($this->getTemplate('select'));
@@ -3036,7 +3061,11 @@ EOT;
             return $this->subClasses[$name];
         }
 
-        throw new \RuntimeException(sprintf('Unable to find the subclass `%s` for admin `%s`', $name, get_class($this)));
+        throw new \RuntimeException(sprintf(
+            'Unable to find the subclass `%s` for admin `%s`',
+            $name,
+            get_class($this)
+        ));
     }
 
     /**

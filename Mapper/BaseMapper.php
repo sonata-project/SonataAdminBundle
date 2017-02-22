@@ -15,10 +15,9 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\BuilderInterface;
 
 /**
- * Class BaseMapper
  * This class is used to simulate the Form API.
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 abstract class BaseMapper
 {

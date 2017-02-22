@@ -54,7 +54,7 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
     protected function getExtensions()
     {
         $extensions = parent::getExtensions();
-        $guesser = $this->getMock('Symfony\Component\Form\FormTypeGuesserInterface');
+        $guesser = $this->getMockForAbstractClass('Symfony\Component\Form\FormTypeGuesserInterface');
         $extension = new TestExtension($guesser);
         if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
             $extension->addType(new CollectionType());

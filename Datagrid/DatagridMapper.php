@@ -17,10 +17,9 @@ use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Mapper\BaseMapper;
 
 /**
- * Class DatagridMapper
  * This class is use to simulate the Form API.
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class DatagridMapper extends BaseMapper
 {
@@ -80,7 +79,10 @@ class DatagridMapper extends BaseMapper
                 array_merge($filterOptions, $fieldDescriptionOptions)
             );
         } else {
-            throw new \RuntimeException('Unknown field name in datagrid mapper. Field name should be either of FieldDescriptionInterface interface or string.');
+            throw new \RuntimeException(
+                'Unknown field name in datagrid mapper.'
+                .' Field name should be either of FieldDescriptionInterface interface or string.'
+            );
         }
 
         // add the field with the DatagridBuilder

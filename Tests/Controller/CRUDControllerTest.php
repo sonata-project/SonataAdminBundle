@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -42,7 +43,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class CRUDControllerTest extends \PHPUnit_Framework_TestCase
+class CRUDControllerTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var CRUDController
@@ -119,14 +120,14 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $this->container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $this->request = new Request();
         $this->pool = new Pool($this->container, 'title', 'logo.png');
         $this->pool->setAdminServiceIds(array('foo.admin'));
         $this->request->attributes->set('_sonata_admin', 'foo.admin');
-        $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
-        $this->translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
+        $this->admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->translator = $this->createMock('Symfony\Component\Translation\TranslatorInterface');
         $this->parameters = array();
         $this->template = '';
 
@@ -134,11 +135,9 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $params = &$this->parameters;
         $template = &$this->template;
 
-        $templating = $this->getMock(
-            'Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine',
-            array(),
-            array($this->container, array())
-        );
+        $templating = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine')
+            ->setConstructorArgs(array($this->container, array()))
+            ->getMock();
 
         $templating->expects($this->any())
             ->method('renderResponse')
@@ -174,7 +173,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $twigRenderer = $this->getMock('Symfony\Bridge\Twig\Form\TwigRendererInterface');
+        $twigRenderer = $this->createMock('Symfony\Bridge\Twig\Form\TwigRendererInterface');
 
         $formExtension = new FormExtension($twigRenderer);
 
@@ -204,7 +203,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         if (class_exists('Exporter\Exporter')) {
             $exporter = new Exporter(array(new JsonWriter('/tmp/sonataadmin/export.json')));
         } else {
-            $exporter = $this->getMock('Sonata\AdminBundle\Export\Exporter');
+            $exporter = $this->createMock('Sonata\AdminBundle\Export\Exporter');
 
             $exporter->expects($this->any())
                 ->method('getResponse')
@@ -272,7 +271,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         // php 5.3 BC
         $csrfProvider = $this->csrfProvider;
 
-        $this->logger = $this->getMock('Psr\Log\LoggerInterface');
+        $this->logger = $this->createMock('Psr\Log\LoggerInterface');
         $logger = $this->logger; // php 5.3 BC
 
         $requestStack = null;
@@ -281,7 +280,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             $requestStack->push($request);
         }
 
-        $this->kernel = $this->getMock('Symfony\Component\HttpKernel\KernelInterface');
+        $this->kernel = $this->createMock('Symfony\Component\HttpKernel\KernelInterface');
         $kernel = $this->kernel; // php 5.3 BC
 
         $this->container->expects($this->any())
@@ -549,7 +548,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('isChild')
             ->will($this->returnValue(true));
 
-        $adminParent = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $adminParent = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
         $this->admin->expects($this->once())
             ->method('getParent')
             ->will($this->returnValue($adminParent));
@@ -563,7 +562,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testConfigureWithException()
     {
-        $this->setExpectedException(
+        $this->expectException(
             'RuntimeException',
             'There is no `_sonata_admin` defined for the controller `Sonata\AdminBundle\Controller\CRUDController`'
         );
@@ -574,7 +573,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testConfigureWithException2()
     {
-        $this->setExpectedException(
+        $this->expectException(
             'RuntimeException',
             'Unable to find the admin class related to the current controller '.
             '(Sonata\AdminBundle\Controller\CRUDController)'
@@ -668,7 +667,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testListActionAccessDenied()
     {
-        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+        $this->expectException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -700,7 +699,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testListAction()
     {
-        $datagrid = $this->getMock('Sonata\AdminBundle\Datagrid\DatagridInterface');
+        $datagrid = $this->createMock('Sonata\AdminBundle\Datagrid\DatagridInterface');
 
         $this->admin->expects($this->any())
             ->method('hasRoute')
@@ -718,7 +717,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $form->expects($this->once())
             ->method('createView')
-            ->will($this->returnValue($this->getMock('Symfony\Component\Form\FormView')));
+            ->will($this->returnValue($this->createMock('Symfony\Component\Form\FormView')));
 
         $this->admin->expects($this->once())
             ->method('getDatagrid')
@@ -745,19 +744,19 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testBatchActionDeleteAccessDenied()
     {
-        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+        $this->expectException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('batchDelete'))
             ->will($this->throwException(new AccessDeniedException()));
 
-        $this->controller->batchActionDelete($this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
+        $this->controller->batchActionDelete($this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
     }
 
     public function testBatchActionDelete()
     {
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -772,7 +771,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getFilterParameters')
             ->will($this->returnValue(array('foo' => 'bar')));
 
-        $result = $this->controller->batchActionDelete($this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
+        $result = $this->controller->batchActionDelete($this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
         $this->assertSame(array('flash_batch_delete_success'), $this->session->getFlashBag()->get('sonata_flash_success'));
@@ -781,7 +780,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testBatchActionDeleteWithModelManagerException()
     {
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
         $this->assertLoggerLogsModelManagerException($modelManager, 'batchDelete');
 
         $this->admin->expects($this->once())
@@ -792,7 +791,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getFilterParameters')
             ->will($this->returnValue(array('foo' => 'bar')));
 
-        $result = $this->controller->batchActionDelete($this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
+        $result = $this->controller->batchActionDelete($this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
         $this->assertSame(array('flash_batch_delete_error'), $this->session->getFlashBag()->get('sonata_flash_error'));
@@ -801,8 +800,8 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testBatchActionDeleteWithModelManagerExceptionInDebugMode()
     {
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
-        $this->setExpectedException('Sonata\AdminBundle\Exception\ModelManagerException');
+        $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $this->expectException('Sonata\AdminBundle\Exception\ModelManagerException');
 
         $modelManager->expects($this->once())
             ->method('batchDelete')
@@ -818,12 +817,12 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('isDebug')
             ->will($this->returnValue(true));
 
-        $this->controller->batchActionDelete($this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
+        $this->controller->batchActionDelete($this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
     }
 
     public function testShowActionNotFoundException()
     {
-        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
 
         $this->admin->expects($this->once())
             ->method('getObject')
@@ -834,7 +833,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testShowActionAccessDenied()
     {
-        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+        $this->expectException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
 
         $this->admin->expects($this->once())
             ->method('getObject')
@@ -883,7 +882,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('show'))
             ->will($this->returnValue(true));
 
-        $show = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionCollection');
+        $show = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionCollection');
 
         $this->admin->expects($this->once())
             ->method('getShow')
@@ -975,7 +974,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteActionNotFoundException()
     {
-        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
 
         $this->admin->expects($this->once())
             ->method('getObject')
@@ -986,7 +985,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteActionAccessDenied()
     {
-        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+        $this->expectException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
 
         $this->admin->expects($this->once())
             ->method('getObject')
@@ -1162,7 +1161,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteActionWithModelManagerExceptionInDebugMode()
     {
-        $this->setExpectedException('Sonata\AdminBundle\Exception\ModelManagerException');
+        $this->expectException('Sonata\AdminBundle\Exception\ModelManagerException');
 
         $object = new \stdClass();
 
@@ -1387,7 +1386,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testEditActionNotFoundException()
     {
-        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
 
         $this->admin->expects($this->once())
             ->method('getObject')
@@ -1398,7 +1397,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testEditActionAccessDenied()
     {
-        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+        $this->expectException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
 
         $this->admin->expects($this->once())
             ->method('getObject')
@@ -1455,7 +1454,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getForm')
             ->will($this->returnValue($form));
 
-        $formView = $this->getMock('Symfony\Component\Form\FormView');
+        $formView = $this->createMock('Symfony\Component\Form\FormView');
 
         $form->expects($this->any())
             ->method('createView')
@@ -1576,7 +1575,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->request->setMethod('POST');
 
-        $formView = $this->getMock('Symfony\Component\Form\FormView');
+        $formView = $this->createMock('Symfony\Component\Form\FormView');
 
         $form->expects($this->any())
             ->method('createView')
@@ -1680,7 +1679,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->request->setMethod('POST');
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
-        $formView = $this->getMock('Symfony\Component\Form\FormView');
+        $formView = $this->createMock('Symfony\Component\Form\FormView');
 
         $form->expects($this->any())
             ->method('createView')
@@ -1744,7 +1743,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
         $this->request->setMethod('POST');
 
-        $formView = $this->getMock('Symfony\Component\Form\FormView');
+        $formView = $this->createMock('Symfony\Component\Form\FormView');
 
         $form->expects($this->any())
             ->method('createView')
@@ -1790,7 +1789,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('supportsPreviewMode')
             ->will($this->returnValue(true));
 
-        $formView = $this->getMock('Symfony\Component\Form\FormView');
+        $formView = $this->createMock('Symfony\Component\Form\FormView');
 
         $form->expects($this->any())
             ->method('createView')
@@ -1865,7 +1864,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo($object))
             ->will($this->returnValue($class));
 
-        $formView = $this->getMock('Symfony\Component\Form\FormView');
+        $formView = $this->createMock('Symfony\Component\Form\FormView');
 
         $form->expects($this->any())
             ->method('createView')
@@ -1882,7 +1881,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateActionAccessDenied()
     {
-        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+        $this->expectException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -1943,7 +1942,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getForm')
             ->will($this->returnValue($form));
 
-        $formView = $this->getMock('Symfony\Component\Form\FormView');
+        $formView = $this->createMock('Symfony\Component\Form\FormView');
 
         $form->expects($this->any())
             ->method('createView')
@@ -2044,7 +2043,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateActionAccessDenied2()
     {
-        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+        $this->expectException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
 
         $object = new \stdClass();
 
@@ -2135,7 +2134,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->request->setMethod('POST');
 
-        $formView = $this->getMock('Symfony\Component\Form\FormView');
+        $formView = $this->createMock('Symfony\Component\Form\FormView');
 
         $form->expects($this->any())
             ->method('createView')
@@ -2200,7 +2199,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->request->setMethod('POST');
 
-        $formView = $this->getMock('Symfony\Component\Form\FormView');
+        $formView = $this->createMock('Symfony\Component\Form\FormView');
 
         $form->expects($this->any())
             ->method('createView')
@@ -2319,7 +2318,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->request->setMethod('POST');
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
-        $formView = $this->getMock('Symfony\Component\Form\FormView');
+        $formView = $this->createMock('Symfony\Component\Form\FormView');
 
         $form->expects($this->any())
             ->method('createView')
@@ -2368,7 +2367,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('supportsPreviewMode')
             ->will($this->returnValue(true));
 
-        $formView = $this->getMock('Symfony\Component\Form\FormView');
+        $formView = $this->createMock('Symfony\Component\Form\FormView');
 
         $form->expects($this->any())
             ->method('createView')
@@ -2401,7 +2400,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testExportActionAccessDenied()
     {
-        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+        $this->expectException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -2413,7 +2412,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testExportActionWrongFormat()
     {
-        $this->setExpectedException('RuntimeException', 'Export in format `csv` is not allowed for class: `Foo`. Allowed formats are: `json`');
+        $this->expectException('RuntimeException', 'Export in format `csv` is not allowed for class: `Foo`. Allowed formats are: `json`');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -2444,7 +2443,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getExportFormats')
             ->will($this->returnValue(array('json')));
 
-        $dataSourceIterator = $this->getMock('Exporter\Source\SourceIteratorInterface');
+        $dataSourceIterator = $this->createMock('Exporter\Source\SourceIteratorInterface');
 
         $this->admin->expects($this->once())
             ->method('getDataSourceIterator')
@@ -2460,7 +2459,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testHistoryActionAccessDenied()
     {
-        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+        $this->expectException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
 
         $this->admin->expects($this->any())
             ->method('getObject')
@@ -2476,7 +2475,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testHistoryActionNotFoundException()
     {
-        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
 
         $this->admin->expects($this->once())
             ->method('getObject')
@@ -2487,7 +2486,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testHistoryActionNoReader()
     {
-        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the audit reader for class : Foo');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the audit reader for class : Foo');
 
         $this->request->query->set('id', 123);
 
@@ -2538,7 +2537,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('Foo'))
             ->will($this->returnValue(true));
 
-        $reader = $this->getMock('Sonata\AdminBundle\Model\AuditReaderInterface');
+        $reader = $this->createMock('Sonata\AdminBundle\Model\AuditReaderInterface');
 
         $this->auditManager->expects($this->once())
             ->method('getReader')
@@ -2566,14 +2565,14 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testAclActionAclNotEnabled()
     {
-        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'ACL are not enabled for this admin');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'ACL are not enabled for this admin');
 
         $this->controller->aclAction(null, $this->request);
     }
 
     public function testAclActionNotFoundException()
     {
-        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
 
         $this->admin->expects($this->once())
             ->method('isAclEnabled')
@@ -2588,7 +2587,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testAclActionAccessDenied()
     {
-        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+        $this->expectException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
 
         $this->admin->expects($this->once())
             ->method('isAclEnabled')
@@ -2640,7 +2639,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $aclUsersForm->expects($this->once())
             ->method('createView')
-            ->will($this->returnValue($this->getMock('Symfony\Component\Form\FormView')));
+            ->will($this->returnValue($this->createMock('Symfony\Component\Form\FormView')));
 
         $aclRolesForm = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
@@ -2648,7 +2647,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $aclRolesForm->expects($this->once())
             ->method('createView')
-            ->will($this->returnValue($this->getMock('Symfony\Component\Form\FormView')));
+            ->will($this->returnValue($this->createMock('Symfony\Component\Form\FormView')));
 
         $this->adminObjectAclManipulator->expects($this->once())
             ->method('createAclUsersForm')
@@ -2727,7 +2726,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $aclUsersForm->expects($this->once())
             ->method('createView')
-            ->will($this->returnValue($this->getMock('Symfony\Component\Form\FormView')));
+            ->will($this->returnValue($this->createMock('Symfony\Component\Form\FormView')));
 
         $aclRolesForm = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
@@ -2735,7 +2734,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $aclRolesForm->expects($this->once())
             ->method('createView')
-            ->will($this->returnValue($this->getMock('Symfony\Component\Form\FormView')));
+            ->will($this->returnValue($this->createMock('Symfony\Component\Form\FormView')));
 
         $this->adminObjectAclManipulator->expects($this->once())
             ->method('createAclUsersForm')
@@ -2812,7 +2811,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $aclUsersForm->expects($this->any())
             ->method('createView')
-            ->will($this->returnValue($this->getMock('Symfony\Component\Form\FormView')));
+            ->will($this->returnValue($this->createMock('Symfony\Component\Form\FormView')));
 
         $aclRolesForm = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
@@ -2820,7 +2819,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $aclRolesForm->expects($this->any())
             ->method('createView')
-            ->will($this->returnValue($this->getMock('Symfony\Component\Form\FormView')));
+            ->will($this->returnValue($this->createMock('Symfony\Component\Form\FormView')));
 
         $aclRolesForm->expects($this->once())
             ->method('isValid')
@@ -2860,7 +2859,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testHistoryViewRevisionActionAccessDenied()
     {
-        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+        $this->expectException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
 
         $this->admin->expects($this->any())
             ->method('getObject')
@@ -2876,7 +2875,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testHistoryViewRevisionActionNotFoundException()
     {
-        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the object with id : 123');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the object with id : 123');
 
         $this->request->query->set('id', 123);
 
@@ -2889,7 +2888,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testHistoryViewRevisionActionNoReader()
     {
-        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the audit reader for class : Foo');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the audit reader for class : Foo');
 
         $this->request->query->set('id', 123);
 
@@ -2918,7 +2917,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testHistoryViewRevisionActionNotFoundRevision()
     {
-        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the targeted object `123` from the revision `456` with classname : `Foo`');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the targeted object `123` from the revision `456` with classname : `Foo`');
 
         $this->request->query->set('id', 123);
 
@@ -2942,7 +2941,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('Foo'))
             ->will($this->returnValue(true));
 
-        $reader = $this->getMock('Sonata\AdminBundle\Model\AuditReaderInterface');
+        $reader = $this->createMock('Sonata\AdminBundle\Model\AuditReaderInterface');
 
         $this->auditManager->expects($this->once())
             ->method('getReader')
@@ -2981,7 +2980,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('Foo'))
             ->will($this->returnValue(true));
 
-        $reader = $this->getMock('Sonata\AdminBundle\Model\AuditReaderInterface');
+        $reader = $this->createMock('Sonata\AdminBundle\Model\AuditReaderInterface');
 
         $this->auditManager->expects($this->once())
             ->method('getReader')
@@ -3022,7 +3021,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testHistoryCompareRevisionsActionAccessDenied()
     {
-        $this->setExpectedException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
+        $this->expectException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -3034,7 +3033,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testHistoryCompareRevisionsActionNotFoundException()
     {
-        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the object with id : 123');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the object with id : 123');
 
         $this->request->query->set('id', 123);
 
@@ -3052,7 +3051,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testHistoryCompareRevisionsActionNoReader()
     {
-        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the audit reader for class : Foo');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the audit reader for class : Foo');
 
         $this->request->query->set('id', 123);
 
@@ -3081,7 +3080,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testHistoryCompareRevisionsActionNotFoundBaseRevision()
     {
-        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the targeted object `123` from the revision `456` with classname : `Foo`');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the targeted object `123` from the revision `456` with classname : `Foo`');
 
         $this->request->query->set('id', 123);
 
@@ -3105,7 +3104,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('Foo'))
             ->will($this->returnValue(true));
 
-        $reader = $this->getMock('Sonata\AdminBundle\Model\AuditReaderInterface');
+        $reader = $this->createMock('Sonata\AdminBundle\Model\AuditReaderInterface');
 
         $this->auditManager->expects($this->once())
             ->method('getReader')
@@ -3123,7 +3122,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testHistoryCompareRevisionsActionNotFoundCompareRevision()
     {
-        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the targeted object `123` from the revision `789` with classname : `Foo`');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the targeted object `123` from the revision `789` with classname : `Foo`');
 
         $this->request->query->set('id', 123);
 
@@ -3147,7 +3146,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('Foo'))
             ->will($this->returnValue(true));
 
-        $reader = $this->getMock('Sonata\AdminBundle\Model\AuditReaderInterface');
+        $reader = $this->createMock('Sonata\AdminBundle\Model\AuditReaderInterface');
 
         $this->auditManager->expects($this->once())
             ->method('getReader')
@@ -3195,7 +3194,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('Foo'))
             ->will($this->returnValue(true));
 
-        $reader = $this->getMock('Sonata\AdminBundle\Model\AuditReaderInterface');
+        $reader = $this->createMock('Sonata\AdminBundle\Model\AuditReaderInterface');
 
         $this->auditManager->expects($this->once())
             ->method('getReader')
@@ -3245,14 +3244,14 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testBatchActionWrongMethod()
     {
-        $this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'Invalid request type "GET", POST expected');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'Invalid request type "GET", POST expected');
 
         $this->controller->batchAction($this->request);
     }
 
     public function testBatchActionActionNotDefined()
     {
-        $this->setExpectedException('RuntimeException', 'The `foo` batch action is not defined');
+        $this->expectException('RuntimeException', 'The `foo` batch action is not defined');
 
         $batchActions = array();
 
@@ -3283,7 +3282,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testBatchActionMethodNotExist()
     {
-        $this->setExpectedException('RuntimeException', 'A `Sonata\AdminBundle\Controller\CRUDController::batchActionFoo` method must be callable');
+        $this->expectException('RuntimeException', 'A `Sonata\AdminBundle\Controller\CRUDController::batchActionFoo` method must be callable');
 
         $batchActions = array('foo' => array('label' => 'Foo Bar', 'ask_confirmation' => false));
 
@@ -3291,7 +3290,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getBatchActions')
             ->will($this->returnValue($batchActions));
 
-        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+        $datagrid = $this->createMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
         $this->admin->expects($this->once())
             ->method('getDatagrid')
             ->will($this->returnValue($datagrid));
@@ -3311,9 +3310,9 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getBatchActions')
             ->will($this->returnValue($batchActions));
 
-        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+        $datagrid = $this->createMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
 
-        $query = $this->getMock('\Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $query = $this->createMock('\Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
         $datagrid->expects($this->once())
             ->method('getQuery')
             ->will($this->returnValue($query));
@@ -3322,7 +3321,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getDatagrid')
             ->will($this->returnValue($datagrid));
 
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -3361,9 +3360,9 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getBatchActions')
             ->will($this->returnValue($batchActions));
 
-        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+        $datagrid = $this->createMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
 
-        $query = $this->getMock('\Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $query = $this->createMock('\Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
         $datagrid->expects($this->once())
             ->method('getQuery')
             ->will($this->returnValue($query));
@@ -3372,7 +3371,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getDatagrid')
             ->will($this->returnValue($datagrid));
 
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -3418,7 +3417,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
         $this->request->request->set('data', json_encode($data));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
-        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+        $datagrid = $this->createMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
 
         $this->admin->expects($this->once())
             ->method('getDatagrid')
@@ -3430,7 +3429,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
 
         $form->expects($this->once())
             ->method('createView')
-            ->will($this->returnValue($this->getMock('Symfony\Component\Form\FormView')));
+            ->will($this->returnValue($this->createMock('Symfony\Component\Form\FormView')));
 
         $datagrid->expects($this->once())
             ->method('getForm')
@@ -3464,7 +3463,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getBatchActions')
             ->will($this->returnValue($batchActions));
 
-        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+        $datagrid = $this->createMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
 
         $this->admin->expects($this->once())
             ->method('getDatagrid')
@@ -3493,7 +3492,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getBatchActions')
             ->will($this->returnValue($batchActions));
 
-        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+        $datagrid = $this->createMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
 
         $this->admin->expects($this->once())
             ->method('getDatagrid')
@@ -3519,7 +3518,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getBatchActions')
             ->will($this->returnValue($batchActions));
 
-        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+        $datagrid = $this->createMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
 
         $this->admin->expects($this->once())
             ->method('getDatagrid')
@@ -3548,9 +3547,9 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getBatchActions')
             ->will($this->returnValue($batchActions));
 
-        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+        $datagrid = $this->createMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
 
-        $query = $this->getMock('\Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $query = $this->createMock('\Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
         $datagrid->expects($this->once())
             ->method('getQuery')
             ->will($this->returnValue($query));
@@ -3559,7 +3558,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getDatagrid')
             ->will($this->returnValue($datagrid));
 
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
 
         $this->admin->expects($this->any())
             ->method('getModelManager')
@@ -3588,9 +3587,9 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getBatchActions')
             ->will($this->returnValue($batchActions));
 
-        $datagrid = $this->getMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
+        $datagrid = $this->createMock('\Sonata\AdminBundle\Datagrid\DatagridInterface');
 
-        $query = $this->getMock('\Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $query = $this->createMock('\Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
         $datagrid->expects($this->once())
             ->method('getQuery')
             ->will($this->returnValue($query));
@@ -3599,7 +3598,7 @@ class CRUDControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getDatagrid')
             ->will($this->returnValue($datagrid));
 
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')

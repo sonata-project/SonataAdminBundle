@@ -22,7 +22,6 @@ use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -34,9 +33,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
 /**
- * Class CRUDController.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class CRUDController extends Controller
 {
@@ -113,7 +110,7 @@ class CRUDController extends Controller
             'form' => $formView,
             'datagrid' => $datagrid,
             'csrf_token' => $this->getCsrfToken('sonata.batch'),
-        ), null, $request);
+        ), null);
     }
 
     /**
@@ -375,7 +372,7 @@ class CRUDController extends Controller
         $isRelevantAction = sprintf('batchAction%sIsRelevant', ucfirst($camelizedAction));
 
         if (method_exists($this, $isRelevantAction)) {
-            $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $allElements);
+            $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $allElements, $request);
         } else {
             $nonRelevantMessage = count($idx) != 0 || $allElements; // at least one item is selected
         }
@@ -440,7 +437,7 @@ class CRUDController extends Controller
             $query = null;
         }
 
-        return call_user_func(array($this, $finalAction), $query);
+        return call_user_func(array($this, $finalAction), $query, $request);
     }
 
     /**
@@ -492,7 +489,7 @@ class CRUDController extends Controller
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
-            if ($isFormValid && (!$this->isInPreviewMode($request) || $this->isPreviewApproved($request))) {
+            if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
                 $this->admin->checkAccess('create', $object);
 
                 try {
@@ -633,7 +630,7 @@ class CRUDController extends Controller
             'object' => $object,
             'revisions' => $revisions,
             'currentRevision' => $revisions ? current($revisions) : false,
-        ), null, $request);
+        ), null);
     }
 
     /**
@@ -887,7 +884,7 @@ class CRUDController extends Controller
             'roles' => $aclRoles,
             'aclUsersForm' => $aclUsersForm->createView(),
             'aclRolesForm' => $aclRolesForm->createView(),
-        ), null, $request);
+        ), null);
     }
 
     /**
@@ -1212,8 +1209,7 @@ class CRUDController extends Controller
     /**
      * Validate CSRF token for action without form.
      *
-     * @param string  $intention
-     * @param Request $request
+     * @param string $intention
      *
      * @throws HttpException
      */

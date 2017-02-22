@@ -13,27 +13,28 @@ namespace Sonata\AdminBundle\Tests\Command;
 
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\ListAdminCommand;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ListAdminCommandTest extends \PHPUnit_Framework_TestCase
+class ListAdminCommandTest extends PHPUnit_Framework_TestCase
 {
     public function testExecute()
     {
         $application = new Application();
         $command = new ListAdminCommand();
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
-        $admin1 = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin1 = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin1->expects($this->any())
             ->method('getClass')
             ->will($this->returnValue('Acme\Entity\Foo'));
 
-        $admin2 = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin2 = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin2->expects($this->any())
             ->method('getClass')
             ->will($this->returnValue('Acme\Entity\Bar'));

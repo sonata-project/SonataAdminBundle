@@ -14,10 +14,8 @@ namespace Sonata\AdminBundle\Datagrid;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Class SimplePager.
- *
- * @author  Lukas Kahwe Smith <smith@pooteeweet.org>
- * @author  Sjoerd Peters <sjoerd.peters@gmail.com>
+ * @author Lukas Kahwe Smith <smith@pooteeweet.org>
+ * @author Sjoerd Peters <sjoerd.peters@gmail.com>
  */
 class SimplePager extends Pager
 {

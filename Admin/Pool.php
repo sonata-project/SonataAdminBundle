@@ -16,9 +16,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
- * Class Pool.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class Pool
 {
@@ -194,7 +192,11 @@ class Pool
         }
 
         if (count($this->adminClasses[$class]) > 1) {
-            throw new \RuntimeException(sprintf('Unable to find a valid admin for the class: %s, there are too many registered: %s', $class, implode(',', $this->adminClasses[$class])));
+            throw new \RuntimeException(sprintf(
+                'Unable to find a valid admin for the class: %s, there are too many registered: %s',
+                $class,
+                implode(',', $this->adminClasses[$class])
+            ));
         }
 
         return $this->getInstance($this->adminClasses[$class][0]);
@@ -216,7 +218,7 @@ class Pool
      *
      * @param string $adminCode
      *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface|null
+     * @return \Sonata\AdminBundle\Admin\AdminInterface|false|null
      */
     public function getAdminByAdminCode($adminCode)
     {

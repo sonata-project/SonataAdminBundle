@@ -23,7 +23,7 @@ use Symfony\Component\EventDispatcher\Event;
  *   - sonata.admin.event.configure.query
  *   - sonata.admin.event.configure.[admin_code].query  (not implemented yet)
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ConfigureQueryEvent extends Event
 {

@@ -29,7 +29,7 @@ class ModelTypeTest extends TypeTestCase
 
     public function testGetDefaultOptions()
     {
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
 
         $optionResolver = new OptionsResolver();
 
@@ -67,7 +67,7 @@ class ModelTypeTest extends TypeTestCase
      */
     public function testCompoundOption($expectedCompound, $multiple, $expanded)
     {
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
         $optionResolver = new OptionsResolver();
 
         if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {

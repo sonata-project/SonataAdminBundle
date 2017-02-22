@@ -23,7 +23,7 @@ class AclMatrixTypeTest extends TypeTestCase
     public function testGetDefaultOptions()
     {
         $type = new AclMatrixType();
-        $user = $this->getMock('Symfony\Component\Security\Core\User\UserInterface');
+        $user = $this->getMockForAbstractClass('Symfony\Component\Security\Core\User\UserInterface');
 
         $permissions = array(
             'OWNER' => array(

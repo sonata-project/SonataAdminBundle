@@ -32,9 +32,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 
 /**
- * Interface AdminInterface.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface AdminInterface
 {
@@ -418,7 +416,7 @@ interface AdminInterface
      *
      * @param string $name
      *
-     * @return array|null
+     * @return FieldDescriptionInterface|null
      */
     public function getFilterFieldDescription($name);
 

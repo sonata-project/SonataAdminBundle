@@ -20,8 +20,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * This type define an ACL matrix.
  *
- * @author  Samuel Roze <samuel@sroze.io>
- * @author  Baptiste Meyer <baptiste@les-tilleuls.coop>
+ * @author Samuel Roze <samuel@sroze.io>
+ * @author Baptiste Meyer <baptiste@les-tilleuls.coop>
  */
 class AclMatrixType extends AbstractType
 {

@@ -12,12 +12,13 @@
 namespace Sonata\AdminBundle\Tests\Form\Extension\Field\Type;
 
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormConfigBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
+class FormTypeFieldExtensionTest extends PHPUnit_Framework_TestCase
 {
     public function testExtendedType()
     {
@@ -55,7 +56,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testbuildViewWithNoSonataAdminArray()
     {
-        $eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $eventDispatcher = $this->getMockForAbstractClass('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
         $parentFormView = new FormView();
         $parentFormView->vars['sonata_admin_enabled'] = false;
@@ -91,10 +92,10 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testbuildViewWithWithSonataAdmin()
     {
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->exactly(2))->method('getCode')->will($this->returnValue('my.admin.reference'));
 
-        $eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $eventDispatcher = $this->getMockForAbstractClass('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
         $formView = new FormView();
         $options = array();
@@ -137,7 +138,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testbuildViewWithNestedForm()
     {
-        $eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $eventDispatcher = $this->getMockForAbstractClass('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
         $formView = new FormView();
         $formView->vars['name'] = 'format';
@@ -195,7 +196,7 @@ class FormTypeFieldExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testbuildViewWithNestedFormWithNoParent()
     {
-        $eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $eventDispatcher = $this->getMockForAbstractClass('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
         $formView = new FormView();
         $options = array();

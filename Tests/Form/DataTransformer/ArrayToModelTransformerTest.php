@@ -13,17 +13,18 @@ namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ArrayToModelTransformerTest extends \PHPUnit_Framework_TestCase
+class ArrayToModelTransformerTest extends PHPUnit_Framework_TestCase
 {
     private $modelManager = null;
 
     public function setUp()
     {
-        $this->modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $this->modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
     }
 
     public function testReverseTransformEntity()

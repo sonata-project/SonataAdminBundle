@@ -12,25 +12,24 @@
 namespace Sonata\AdminBundle\Mapper;
 
 /**
- * Class BaseGroupedMapper
  * This class is used to simulate the Form API.
  *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 abstract class BaseGroupedMapper extends BaseMapper
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $currentGroup;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $currentTab;
 
     /**
-     * @var bool
+     * @var bool|null
      */
     protected $apply;
 

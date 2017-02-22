@@ -18,9 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Class ChoiceTypeExtension.
- *
- * @author  Amine Zaghdoudi <amine.zaghdoudi@ekino.com>
+ * @author Amine Zaghdoudi <amine.zaghdoudi@ekino.com>
  */
 class ChoiceTypeExtension extends AbstractTypeExtension
 {

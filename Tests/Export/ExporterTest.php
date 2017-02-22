@@ -13,18 +13,19 @@ namespace Sonata\AdminBundle\Tests\Filter;
 
 use Exporter\Source\ArraySourceIterator;
 use Sonata\AdminBundle\Export\Exporter;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
 /**
  * @group legacy
  */
-class ExporterTest extends \PHPUnit_Framework_TestCase
+class ExporterTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException \RuntimeException
      */
     public function testFilter()
     {
-        $source = $this->getMock('Exporter\Source\SourceIteratorInterface');
+        $source = $this->createMock('Exporter\Source\SourceIteratorInterface');
 
         $exporter = new Exporter();
         $exporter->getResponse('foo', 'foo', $source);

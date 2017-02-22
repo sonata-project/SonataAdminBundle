@@ -11,12 +11,13 @@
 
 namespace Sonata\AdminBundle\Tests\Twig;
 
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Sonata\AdminBundle\Twig\GlobalVariables;
 
 /**
  * @author Ahmet Akbana <ahmetakbana@gmail.com>
  */
-class GlobalVariablesTest extends \PHPUnit_Framework_TestCase
+class GlobalVariablesTest extends PHPUnit_Framework_TestCase
 {
     private $code;
     private $action;
@@ -27,7 +28,7 @@ class GlobalVariablesTest extends \PHPUnit_Framework_TestCase
     {
         $this->code = 'sonata.page.admin.page|sonata.page.admin.snapshot';
         $this->action = 'list';
-        $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $this->pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')->disableOriginalConstructor()->getMock();
     }
 
@@ -81,7 +82,7 @@ class GlobalVariablesTest extends \PHPUnit_Framework_TestCase
             ->with('sonata.page.admin.page')
             ->willReturn($this->admin);
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->once())
             ->method('get')
             ->with('sonata.admin.pool')
@@ -97,7 +98,7 @@ class GlobalVariablesTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidArgumentException()
     {
-        $this->setExpectedException(
+        $this->expectException(
             'InvalidArgumentException',
             '$adminPool should be an instance of Sonata\AdminBundle\Admin\Pool'
         );

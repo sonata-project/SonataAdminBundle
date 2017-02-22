@@ -47,6 +47,41 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.13.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.12.0...3.13.0) - 2017-02-03
+### Added
+- Added support for priority attribute in the Extension compiler pass
+
+### Fixed
+- Compatibility of ajax actions with Twig 2.0
+
+## [3.12.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.11.0...3.12.0) - 2017-01-31
+### Added
+- Compatibility with Twig 2.0
+
+### Changed
+- `--services` default-value to null in `Sonata\AdminBundle\Command\GenerateAdminCommand`
+
+### Deprecated
+- `ModelToArrayTransformer::$choiceList` property
+- `ModelToArrayTransformer::$choiceList::__construct()` three-argument-signature is deprecated
+
+### Fixed
+- "Silent display of undefined block" Twig deprecation
+- Twig deprecation notice when using template inheritance to get a macro
+- The `request` parameter is passed to custom batch actions.
+
+## [3.11.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.10.3...3.11.0) - 2017-01-17
+### Added
+- Extract admin group and label translations
+- JQuery event trigger to Admin.setup_list_modal()
+
+### Changed
+- Updated compiler pass to support parent definition when using abstract service for admin.
+
+### Fixed
+- Fixed behaviour of persistent parameters in list editables
+- JMSDiExtraBundle is configured correctly to pick up Sonata annotations.
+
 ## [3.10.3](https://github.com/sonata-project/SonataAdminBundle/compare/3.10.2...3.10.3) - 2016-12-22
 ### Fixed
 - A bug with the side menu arrow position

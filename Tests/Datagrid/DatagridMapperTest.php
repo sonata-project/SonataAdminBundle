@@ -13,11 +13,12 @@ namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class DatagridMapperTest extends \PHPUnit_Framework_TestCase
+class DatagridMapperTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var DatagridMapper
@@ -31,18 +32,18 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $datagridBuilder = $this->getMock('Sonata\AdminBundle\Builder\DatagridBuilderInterface');
+        $datagridBuilder = $this->createMock('Sonata\AdminBundle\Builder\DatagridBuilderInterface');
 
-        $proxyQuery = $this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
-        $pager = $this->getMock('Sonata\AdminBundle\Datagrid\PagerInterface');
-        $fieldDescriptionCollection = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionCollection');
+        $proxyQuery = $this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $pager = $this->createMock('Sonata\AdminBundle\Datagrid\PagerInterface');
+        $fieldDescriptionCollection = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionCollection');
         $formBuilder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
                      ->disableOriginalConstructor()
                      ->getMock();
 
         $this->datagrid = new Datagrid($proxyQuery, $fieldDescriptionCollection, $pager, $formBuilder, array());
 
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
 
         // php 5.3 BC
         $filter = $this->getMockForAbstractClass('Sonata\AdminBundle\Filter\Filter');
@@ -61,7 +62,7 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
                 $datagrid->addFilter($filterClone);
             }));
 
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
 
         // php 5.3 BC
         $fieldDescription = $this->getFieldDescriptionMock();
@@ -190,15 +191,9 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
 
     public function testAddException()
     {
-        try {
-            $this->datagridMapper->add(12345);
-        } catch (\RuntimeException $e) {
-            $this->assertContains('Unknown field name in datagrid mapper. Field name should be either of FieldDescriptionInterface interface or string', $e->getMessage());
+        $this->expectException('\RuntimeException', 'Unknown field name in datagrid mapper. Field name should be either of FieldDescriptionInterface interface or string');
 
-            return;
-        }
-
-        $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+        $this->datagridMapper->add(12345);
     }
 
     public function testAddDuplicateNameException()
@@ -216,16 +211,10 @@ class DatagridMapperTest extends \PHPUnit_Framework_TestCase
                 return false;
             }));
 
-        try {
-            $this->datagridMapper->add('fooName');
-            $this->datagridMapper->add('fooName');
-        } catch (\RuntimeException $e) {
-            $this->assertContains('Duplicate field name "fooName" in datagrid mapper. Names should be unique.', $e->getMessage());
+        $this->expectException('RuntimeException', 'Duplicate field name "fooName" in datagrid mapper. Names should be unique.');
 
-            return;
-        }
-
-        $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+        $this->datagridMapper->add('fooName');
+        $this->datagridMapper->add('fooName');
     }
 
     public function testKeys()

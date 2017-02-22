@@ -12,9 +12,7 @@
 namespace Sonata\AdminBundle\Model;
 
 /**
- * Interface AuditManagerInterface.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface AuditManagerInterface
 {

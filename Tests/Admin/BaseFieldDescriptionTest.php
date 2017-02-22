@@ -15,8 +15,9 @@ use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooCall;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
+class BaseFieldDescriptionTest extends PHPUnit_Framework_TestCase
 {
     public function testSetName()
     {
@@ -79,11 +80,11 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
     {
         $description = new FieldDescription();
 
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $description->setAdmin($admin);
         $this->isInstanceOf('Sonata\AdminBundle\Admin\AdminInterface', $description->getAdmin());
 
-        $associationAdmin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $associationAdmin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $associationAdmin->expects($this->once())->method('setParentFieldDescription');
 
         $this->assertFalse($description->hasAssociationAdmin());
@@ -91,7 +92,7 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($description->hasAssociationAdmin());
         $this->isInstanceOf('Sonata\AdminBundle\Admin\AdminInterface', $description->getAssociationAdmin());
 
-        $parent = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $parent = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $description->setParent($parent);
         $this->isInstanceOf('Sonata\AdminBundle\Admin\AdminInterface', $description->getParent());
     }
@@ -101,7 +102,9 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $description = new FieldDescription();
         $description->setOption('code', 'getFoo');
 
-        $mock = $this->getMock('stdClass', array('getFoo'));
+        $mock = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getFoo'))
+            ->getMock();
         $mock->expects($this->once())->method('getFoo')->will($this->returnValue(42));
 
         $this->assertSame(42, $description->getFieldValue($mock, 'fake'));
@@ -115,7 +118,9 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $description1->setOption('code', 'getWithOneParameter');
         $description1->setOption('parameters', $oneParameter);
 
-        $mock1 = $this->getMock('stdClass', array('getWithOneParameter'));
+        $mock1 = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getWithOneParameter'))
+            ->getMock();
         $returnValue1 = $arg1 + 2;
         $mock1->expects($this->once())->method('getWithOneParameter')->with($this->equalTo($arg1))->will($this->returnValue($returnValue1));
 
@@ -130,7 +135,9 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $description2->setOption('code', 'getWithTwoParameters');
         $description2->setOption('parameters', $twoParameters);
 
-        $mock2 = $this->getMock('stdClass', array('getWithTwoParameters'));
+        $mock2 = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getWithTwoParameters'))
+            ->getMock();
         $returnValue2 = $arg1 + $arg2;
         $mock2->expects($this->any())->method('getWithTwoParameters')->with($this->equalTo($arg1), $this->equalTo($arg2))->will($this->returnValue($returnValue2));
         $this->assertSame(42, $description2->getFieldValue($mock2, 'fake'));
@@ -139,7 +146,9 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
          * Test with underscored attribute name
          */
         $description3 = new FieldDescription();
-        $mock3 = $this->getMock('stdClass', array('getFake'));
+        $mock3 = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getFake'))
+            ->getMock();
 
         $mock3->expects($this->once())->method('getFake')->will($this->returnValue(42));
         $this->assertSame(42, $description3->getFieldValue($mock3, '_fake'));
@@ -151,7 +160,9 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
     public function testGetValueNoValueException()
     {
         $description = new FieldDescription();
-        $mock = $this->getMock('stdClass', array('getFoo'));
+        $mock = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getFoo'))
+            ->getMock();
 
         $description->getFieldValue($mock, 'fake');
     }
@@ -159,7 +170,9 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
     public function testGetVirtualValue()
     {
         $description = new FieldDescription();
-        $mock = $this->getMock('stdClass', array('getFoo'));
+        $mock = $this->getMockBuilder('stdClass')
+            ->setMethods(array('getFoo'))
+            ->getMock();
 
         $description->setOption('virtual_field', true);
         $description->getFieldValue($mock, 'fake');
@@ -179,7 +192,7 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
     {
         $description = new FieldDescription();
 
-        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
         $description->setAdmin($admin);
 
         $admin->expects($this->once())
@@ -212,7 +225,7 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $description = new FieldDescription();
         $this->assertSame('Bar', $description->getFieldValue($foo, 'bar'));
 
-        $this->setExpectedException('Sonata\AdminBundle\Exception\NoValueException');
+        $this->expectException('Sonata\AdminBundle\Exception\NoValueException');
         $description->getFieldValue($foo, 'inexistantMethod');
     }
 
@@ -227,7 +240,7 @@ class BaseFieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Baz', $description->getFieldValue($foo, 'inexistantMethod'));
 
         $description->setOption('code', 'inexistantMethod');
-        $this->setExpectedException('Sonata\AdminBundle\Exception\NoValueException');
+        $this->expectException('Sonata\AdminBundle\Exception\NoValueException');
         $description->getFieldValue($foo, 'inexistantMethod');
     }
 

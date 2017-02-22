@@ -16,10 +16,8 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
- * Class AdminGenerator.
- *
- * @author  Marek Stipek <mario.dweller@seznam.cz>
- * @author  Simon Cosandey <simon.cosandey@simseo.ch>
+ * @author Marek Stipek <mario.dweller@seznam.cz>
+ * @author Simon Cosandey <simon.cosandey@simseo.ch>
  */
 class AdminGenerator extends Generator
 {

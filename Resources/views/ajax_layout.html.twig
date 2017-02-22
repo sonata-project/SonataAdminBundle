@@ -10,9 +10,9 @@ file that was distributed with this source code.
 #}
 
 {% block content %}
-    {% set _list_table           = block('list_table')|trim %}
-    {% set _list_filters         = block('list_filters')|trim %}
-    {% set _list_filters_actions = block('list_filters_actions') %}
+    {% set _list_table = block('list_table') is defined ? block('list_table')|trim : null %}
+    {% set _list_filters = block('list_filters') is defined ? block('list_filters')|trim : null %}
+    {% set _list_filters_actions = block('list_filters_actions') is defined ? block('list_filters_actions') : null %}
 
     {% block preview %}{% endblock %}
     {% block form %}{% endblock %}

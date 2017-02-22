@@ -19,7 +19,7 @@ class DateTimeRangeTypeTest extends TypeTestCase
 {
     public function testGetDefaultOptions()
     {
-        $stub = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
+        $stub = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
 
         $type = new DateTimeRangeType($stub);
 

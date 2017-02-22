@@ -28,7 +28,7 @@ Configuration
 Bundles
 ^^^^^^^
 - install ``gedmo/doctrine-extensions`` bundle in your project (check ``stof/doctrine-extensions-bundle`` for easier integration in your project) and enable the sortable feature in your config
-- install ``pixassociates/sortable-behavior-bundle`` in your project
+- install ``pixassociates/sortable-behavior-bundle`` at least version ^1.1 in your project
 
 
 The recipe
@@ -63,9 +63,9 @@ feature in your config.yml such as
 
 .. code-block:: yaml
 
-	stof_doctrine_extensions:
-	    orm:
-	        default:
+    stof_doctrine_extensions:
+        orm:
+            default:
                 sortable: true
 
 
@@ -74,15 +74,15 @@ and use the default twig template provided in the ``pixSortableBehaviorBundle``
 
 .. code-block:: php
 
-	$listMapper
-	    ->add('_action', null, array(
-            'actions' => array(
-                'move' => array(
-                    'template' => 'PixSortableBehaviorBundle:Default:_sort.html.twig'
-                ),
+    $listMapper
+        ->add('_action', null, array(
+                'actions' => array(
+                    'move' => array(
+                        'template' => 'PixSortableBehaviorBundle:Default:_sort.html.twig'
+                    ),
+                )
             )
-        )
-    );
+        );
 
 
 In order to add new routes for these actions we are also adding the following method
@@ -98,29 +98,26 @@ In order to add new routes for these actions we are also adding the following me
     // ...
 
     protected function configureRoutes(RouteCollection $collection)
-	{
-	    // ...
-	    $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
-	}
+    {
+        // ...
+        $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
+    }
 
 Now you can update your ``services.yml`` to use the handler provider by the ``pixSortableBehaviorBundle``
 
 .. code-block:: yaml
 
-	services:
-	    app.admin.client:
-	        class: AppBundle\Admin\ClientAdmin
-	        tags:
-	            - { name: sonata.admin, manager_type: orm, label: "Clients" }
-	        arguments:
-	            - ~
-	            - AppBundle\Entity\Client
-	            - 'PixSortableBehaviorBundle:SortableAdmin' # define the new controller via the third argument
+    services:
+        app.admin.client:
+            class: AppBundle\Admin\ClientAdmin
+            tags:
+              - { name: sonata.admin, manager_type: orm, label: "Clients" }
+            arguments:
+              - ~
+              - AppBundle\Entity\Client
+              - 'PixSortableBehaviorBundle:SortableAdmin' # define the new controller via the third argument
 
-Last tricky part, in order to get the last position available in our twig template
-we inject the position service into our admin class, define a public variable ``$last_position``
-and retrieve the value from our service in the ``configureListFields`` method. We
-also define the sort by field to be position:
+Now we need to define the sort by field to be ``$position``:
 
 .. code-block:: php
 
@@ -135,20 +132,11 @@ also define the sort by field to be position:
 
     class ClientAdmin extends AbstractAdmin
     {
-        public $last_position = 0;
-
-        private $positionService;
-
         protected $datagridValues = array(
             '_page' => 1,
             '_sort_order' => 'ASC',
             '_sort_by' => 'position',
         );
-
-        public function setPositionService(\Pix\SortableBehaviorBundle\Services\PositionHandler $positionHandler)
-        {
-            $this->positionService = $positionHandler;
-        }
 
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -160,8 +148,6 @@ also define the sort by field to be position:
 
         protected function configureListFields(ListMapper $listMapper)
         {
-            $this->last_position = $this->positionService->getLastPosition($this->getRoot()->getClass());
-
             $listMapper
                 ->addIdentifier('name')
                 ->add('enabled')
@@ -175,28 +161,6 @@ also define the sort by field to be position:
             ;
         }
     }
-
-.. note::
-
-   To avoid pitfalls, do not rename ``$last_position`` to ``$lastPosition``, as ``$last_position`` is used directly in the template.
-
-And add the following call the ``admin.yml``
-
-.. code-block:: yaml
-
-	services:
-	    app.admin.client:
-	        class: AppBundle\Admin\ClientAdmin
-	        tags:
-	            - { name: sonata.admin, manager_type: orm, label: "Clients" }
-	        arguments:
-	            - ~
-	            - AppBundle\Entity\Client
-	            - 'PixSortableBehaviorBundle:SortableAdmin'
-            calls:
-                 - [ setPositionService, ["@pix_sortable_behavior.position"]]
-
-You should now have in your listing a new action column with 4 arrows to sort your records.
 
 Enjoy ;)
 

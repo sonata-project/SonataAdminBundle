@@ -12,9 +12,7 @@
 namespace Sonata\AdminBundle\Translator;
 
 /**
- * Class BCLabelTranslatorStrategy.
- *
- * @author  Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class BCLabelTranslatorStrategy implements LabelTranslatorStrategyInterface
 {
