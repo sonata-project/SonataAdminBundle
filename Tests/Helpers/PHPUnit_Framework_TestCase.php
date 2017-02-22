@@ -14,7 +14,7 @@ namespace Sonata\AdminBundle\Tests\Helpers;
 /**
  * This is helpers class for supporting old and new PHPUnit versions.
  *
- * @todo NEXT_MAJOR: Remove this class when dropping support for < PHPUnit 5.4.
+ * @todo NEXT_MAJOR: Remove this class when dropping support for < PHPUnit 5.4
  *
  * @author Oleksandr Savchenko <savchenko.oleksandr.ua@gmail.com>
  */
