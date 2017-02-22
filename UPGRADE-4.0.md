@@ -1,6 +1,10 @@
 UPGRADE FROM 3.x to 4.0
 =======================
 
+## Removed `famfamfam` icon set
+
+If you still need it, please set it up on your own!
+
 ## Deprecations
 
 All the deprecated code introduced on 3.x is removed on 4.0.
