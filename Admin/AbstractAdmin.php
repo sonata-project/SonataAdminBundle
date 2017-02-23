@@ -838,14 +838,24 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
 
         // ok, try to limit to add parent filter
         if ($this->isChild() && $this->getParentAssociationMapping() && !$mapper->has($this->getParentAssociationMapping())) {
+            // NEXT_MAJOR: Keep FQCN when bumping Symfony requirement to 2.8+.
+            $modelHiddenType = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+                ? 'Sonata\AdminBundle\Form\Type\ModelHiddenType'
+                : 'sonata_type_model_hidden';
+
+            // NEXT_MAJOR: Keep FQCN when bumping Symfony requirement to 2.8+.
+            $hiddenType = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+                ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
+                : 'hidden';
+
             $mapper->add($this->getParentAssociationMapping(), null, array(
                 'show_filter' => false,
                 'label' => false,
-                'field_type' => 'sonata_type_model_hidden',
+                'field_type' => $modelHiddenType,
                 'field_options' => array(
                     'model_manager' => $this->getModelManager(),
                 ),
-                'operator_type' => 'hidden',
+                'operator_type' => $hiddenType,
             ), null, null, array(
                 'admin_code' => $this->getParent()->getCode(),
             ));
