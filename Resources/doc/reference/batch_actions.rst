@@ -189,7 +189,7 @@ granularity), the passed query is ``null``.
             throw new AccessDeniedException();
         }
 
-        $request = $this->get('request');
+        $request = $this->get('request_stack')->getCurrentRequest();
         $modelManager = $this->admin->getModelManager();
 
         $target = $modelManager->find($this->admin->getClass(), $request->get('targetId'));
