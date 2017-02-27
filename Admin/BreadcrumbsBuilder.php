@@ -78,14 +78,12 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         if (!$menu) {
             $menu = $admin->getMenuFactory()->createItem('root');
 
-            $menu = $this->createMenuItem(
-                $admin,
-                $menu,
-                'dashboard',
-                'SonataAdminBundle',
-                array('uri' => $admin->getRouteGenerator()->generate(
-                    'sonata_admin_dashboard'
-                ))
+            $menu = $menu->addChild(
+                'breadcrumb.link_dashboard',
+                array(
+                    'uri' => $admin->getRouteGenerator()->generate('sonata_admin_dashboard'),
+                    'extras' => array('translation_domain' => 'SonataAdminBundle'),
+                )
             );
         }
 
