@@ -109,53 +109,43 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
             ->with('sonata_admin_dashboard')
             ->will($this->returnValue('http://somehost.com'));
 
-        $translatorStrategy->expects($this->exactly(18))
+        $translatorStrategy->expects($this->exactly(13))
             ->method('getLabel')
             ->withConsecutive(
-                array('dashboard'),
                 array('DummySubject_list'),
                 array('Comment_list'),
                 array('Comment_repost'),
 
-                array('dashboard'),
                 array('DummySubject_list'),
                 array('Comment_list'),
                 array('Comment_flag'),
 
-                array('dashboard'),
                 array('DummySubject_list'),
                 array('Comment_list'),
                 array('Comment_edit'),
 
-                array('dashboard'),
                 array('DummySubject_list'),
                 array('Comment_list'),
 
-                array('dashboard'),
                 array('DummySubject_list'),
                 array('Comment_list')
             )
             ->will($this->onConsecutiveCalls(
-                'someLabel',
                 'someOtherLabel',
                 'someInterestingLabel',
                 'someFancyLabel',
 
-                'someCoolLabel',
                 'someTipTopLabel',
                 'someFunkyLabel',
                 'someAwesomeLabel',
 
-                'someLikeableLabel',
                 'someMildlyInterestingLabel',
                 'someWTFLabel',
                 'someBadLabel',
 
-                'someBoringLabel',
                 'someLongLabel',
                 'someEndlessLabel',
 
-                'someAlmostThereLabel',
                 'someOriginalLabel',
                 'someOkayishLabel'
             ));
@@ -163,30 +153,30 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
         $menu->expects($this->exactly(24))
             ->method('addChild')
             ->withConsecutive(
-                array('someLabel'),
+                array('breadcrumb.link_dashboard'),
                 array('someOtherLabel'),
                 array('dummy subject representation'),
                 array('someInterestingLabel'),
                 array('someFancyLabel'),
 
-                array('someCoolLabel'),
+                array('breadcrumb.link_dashboard'),
                 array('someTipTopLabel'),
                 array('dummy subject representation'),
                 array('someFunkyLabel'),
                 array('someAwesomeLabel'),
 
-                array('someLikeableLabel'),
+                array('breadcrumb.link_dashboard'),
                 array('someMildlyInterestingLabel'),
                 array('dummy subject representation'),
                 array('someWTFLabel'),
                 array('someBadLabel'),
 
-                array('someBoringLabel'),
+                array('breadcrumb.link_dashboard'),
                 array('someLongLabel'),
                 array('dummy subject representation'),
                 array('someEndlessLabel'),
 
-                array('someAlmostThereLabel'),
+                array('breadcrumb.link_dashboard'),
                 array('someOriginalLabel'),
                 array('dummy subject representation'),
                 array('someOkayishLabel'),
@@ -247,29 +237,26 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
         $translatorStrategy->expects($this->any())
             ->method('getLabel')
             ->withConsecutive(
-                array('dashboard'),
                 array('DummySubject_list'),
                 array('DummySubject_repost'),
 
-                array('dashboard'),
                 array('DummySubject_list')
             )
             ->will($this->onConsecutiveCalls(
-                'someLabel',
                 'someOtherLabel',
                 'someInterestingLabel',
-                'someFancyLabel',
+
                 'someCoolLabel'
             ));
 
         $menu->expects($this->any())
             ->method('addChild')
             ->withConsecutive(
-                array('someLabel'),
+                array('breadcrumb.link_dashboard'),
                 array('someOtherLabel'),
                 array('someInterestingLabel'),
-                array('someFancyLabel'),
 
+                array('breadcrumb.link_dashboard'),
                 array('someCoolLabel'),
                 array('dummy subject representation')
             )
@@ -326,17 +313,12 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
         $labelTranslatorStrategy = $this->prophesize(
             'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
         );
-        $labelTranslatorStrategy->getLabel(
-            'dashboard',
-            'breadcrumb',
-            'link'
-        )->willReturn('Dashboard');
 
         $routeGenerator = $this->prophesize('Sonata\AdminBundle\Route\RouteGeneratorInterface');
         $routeGenerator->generate('sonata_admin_dashboard')->willReturn('/dashboard');
 
         $admin->getRouteGenerator()->willReturn($routeGenerator->reveal());
-        $menu->addChild('Dashboard', array(
+        $menu->addChild('breadcrumb.link_dashboard', array(
             'uri' => '/dashboard',
             'extras' => array(
                 'translation_domain' => 'SonataAdminBundle',
@@ -453,16 +435,11 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
         $labelTranslatorStrategy = $this->prophesize(
             'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
         );
-        $labelTranslatorStrategy->getLabel(
-            'dashboard',
-            'breadcrumb',
-            'link'
-        )->willReturn('Dashboard');
 
         $routeGenerator = $this->prophesize('Sonata\AdminBundle\Route\RouteGeneratorInterface');
         $routeGenerator->generate('sonata_admin_dashboard')->willReturn('/dashboard');
         $admin->getRouteGenerator()->willReturn($routeGenerator->reveal());
-        $menu->addChild('Dashboard', array(
+        $menu->addChild('breadcrumb.link_dashboard', array(
             'uri' => '/dashboard',
             'extras' => array(
                 'translation_domain' => 'SonataAdminBundle',
