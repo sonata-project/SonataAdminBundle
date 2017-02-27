@@ -121,7 +121,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
             return $this->buildBreadcrumbs($childAdmin, $action, $menu);
         }
 
-        if ('list' === $action && $admin->isChild()) {
+        if ('list' === $action) {
             $menu->setUri(false);
         } elseif ('create' !== $action && $admin->hasSubject()) {
             $menu = $menu->addChild($admin->toString($admin->getSubject()), array(
