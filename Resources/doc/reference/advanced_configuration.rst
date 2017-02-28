@@ -359,7 +359,7 @@ You can add custom items to the actions menu for a specific action by overriding
 
 .. code-block:: php
 
-    protected function configureActionButtons($buttonList, $action, $object = null)
+    public function configureActionButtons($buttonList, $action, $object = null)
     {
         if (in_array($action, array('show', 'edit', 'acl')) && $object) {
             $buttonList['custom'] = array(
