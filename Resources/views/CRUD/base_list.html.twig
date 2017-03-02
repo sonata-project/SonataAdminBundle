@@ -22,7 +22,7 @@ file that was distributed with this source code.
         The list template can be used in nested mode,
         so we define the title corresponding to the parent's admin.
     #}
-    
+
     {% if admin.isChild and admin.parent.subject %}
         {{ "title_edit"|trans({'%name%': admin.parent.toString(admin.parent.subject)|truncate(15) }, 'SonataAdminBundle') }}
     {% endif %}
@@ -106,7 +106,9 @@ file that was distributed with this source code.
                                 </div>
                                 <span class="progress-description">
                                     {% if not app.request.xmlHttpRequest %}
+                                    <ul class="list-unstyled">
                                         {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
+                                    </ul>
                                     {% endif %}
                                 </span>
                             </div><!-- /.info-box-content -->
