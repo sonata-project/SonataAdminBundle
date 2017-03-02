@@ -361,6 +361,7 @@ class Configuration implements ConfigurationInterface
 
                                 'bundles/sonataadmin/Admin.js',
                                 'bundles/sonataadmin/treeview.js',
+                                'bundles/sonataadmin/inlineDeleteCheckboxes.js',
                             ))
                             ->prototype('scalar')->end()
                         ->end()
