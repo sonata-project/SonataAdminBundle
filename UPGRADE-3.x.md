@@ -5,6 +5,13 @@ UPGRADE 3.x
 
 Inject `Symfony\Component\HttpFoundation\Request` in your actions directly as an argument.
 
+UPGRADE FROM 3.13 to 3.14
+=========================
+
+## Added new default script
+
+If you are overriding the default javascript assets array you now need to add bundles/sonataadmin/inlineDeleteCheckboxes.js
+
 UPGRADE FROM 3.10 to 3.11
 =========================
 

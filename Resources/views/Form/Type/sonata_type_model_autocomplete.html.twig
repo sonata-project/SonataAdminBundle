@@ -41,6 +41,9 @@ file that was distributed with this source code.
                 dropdownAutoWidth: {{ dropdown_auto_width ? 'true' : 'false' }},
                 containerCssClass: '{{ container_css_class ~ ' form-control' }}',
                 dropdownCssClass: '{{ dropdown_css_class }}',
+                initSelection : function (element, callback) {
+                    callback(element.val());
+                },
                 ajax: {
                     url:  '{{ url ?: path(route.name, route.parameters|default([]))|e('js') }}',
                     dataType: 'json',
