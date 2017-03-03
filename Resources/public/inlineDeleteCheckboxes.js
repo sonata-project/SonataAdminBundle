@@ -18,7 +18,11 @@ var handleInlineDeleteCheckboxes = function() {
         checkboxes.on(eventType, function() {
             var id = jQuery(this).prop('id');
 
+<<<<<<< HEAD
             jQuery('[id^=' + id.split('__')[0] + ']')
+=======
+            jQuery('*[id^=' + id.split('__')[0] + ']')
+>>>>>>> 4d0f9c0ab72d384b3cbf7ef06419b0a584be657e
                 .not('#' + id)
                 .prop('disabled', jQuery(this).is(':checked'))
             ;
