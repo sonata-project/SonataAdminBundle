@@ -11,7 +11,7 @@ See also the [diff code](https://github.com/sonata-project/SonataAdminBundle/com
 
 ## Final classes
 
-Some classes and methods are now `final` and should not be overridden:
+Some classes and methods are now `final` and should not be overwritten:
 
 * `Sonata\Admin\AbstractAdmin::getActionButtons`
 * `Sonata\Admin\AbstractAdmin::getBatchActions`
