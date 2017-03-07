@@ -324,7 +324,7 @@ template
     {% block sonata_type_model_autocomplete_selection_format %}'<b>'+item.label+'</b>'{% endblock %}
 
 sonata_type_choice_field_mask
-^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Setting a field type of ``sonata_type_choice_field_mask`` will use an instance of
 ``ChoiceFieldMaskType`` to render choice field.
