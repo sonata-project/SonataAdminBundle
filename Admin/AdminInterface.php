@@ -27,7 +27,6 @@ use Sonata\CoreBundle\Validator\ErrorElement;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 
@@ -68,20 +67,6 @@ interface AdminInterface
      * @return DatagridBuilderInterface
      */
     public function getDatagridBuilder();
-
-    /**
-     * Set translator.
-     *
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator);
-
-    /**
-     * Get translator.
-     *
-     * @return TranslatorInterface
-     */
-    public function getTranslator();
 
     /**
      * @param Request $request
@@ -284,22 +269,6 @@ interface AdminInterface
      * @return bool
      */
     public function hasParentFieldDescription();
-
-    /**
-     * translate a message id.
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @param string $id
-     * @param array  $parameters
-     * @param null   $domain
-     * @param null   $locale
-     *
-     * @return string the translated string
-     *
-     * @deprecated since 3.9, to be removed in 4.0
-     */
-    public function trans($id, array $parameters = array(), $domain = null, $locale = null);
 
     /**
      * Returns the list of available urls.
