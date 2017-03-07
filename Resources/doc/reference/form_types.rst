@@ -330,10 +330,10 @@ template
     {# change the default selection format #}
     {% block sonata_type_model_autocomplete_selection_format %}'<b>'+item.label+'</b>'{% endblock %}
 
-sonata_choice_field_mask
-^^^^^^^^^^^^^^^^^^^^^^^^
+sonata_type_choice_field_mask
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Setting a field type of ``sonata_choice_field_mask`` will use an instance of
+Setting a field type of ``sonata_type_choice_field_mask`` will use an instance of
 ``ChoiceFieldMaskType`` to render choice field.
 
 According the choice made only associated fields are displayed. The others fields are hidden.
