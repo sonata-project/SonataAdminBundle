@@ -106,4 +106,32 @@ The service declaration where the ``UserManager`` is injected into the Admin cla
             </call>
         </service>
 
+
+Hooking in the Controller
+-------------------------
+
+You may have noticed that the hooks present in the **Admin** do not allow you
+to interact with the process of deletion: you can't cancel it. To achieve this
+you should be aware that there is also a way to hook on actions in the Controller.
+
+If you define a custom controller that inherits from ``CRUDController``, you can
+redefine the following methods:
+
+- new object : ``preCreate($object)``
+- edited object : ``preEdit($object)``
+- deleted object : ``preDelete($object)``
+- show object : ``preShow($object)``
+- list objects : ``preList($object)``
+
+If these methods return a **Response**, the process is interrupted and the response
+will be returned as is by the controller (if it returns null, the process continues). You
+can generate easily a redirection to the object show page by using the method
+``redirectTo($object)``.
+
+.. note::
+
+    Use case: you need to prohibit the deletion of a specific item. You may do a simple
+    check in the ``preDelete($object)`` method.
+
+
 .. _FOSUserBundle on GitHub: https://github.com/FriendsOfSymfony/FOSUserBundle/
