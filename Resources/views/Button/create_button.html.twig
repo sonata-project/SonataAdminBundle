@@ -15,23 +15,13 @@ file that was distributed with this source code.
             <i class="fa fa-plus-circle" aria-hidden="true"></i>
             {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }}</a>
     {% else %}
-        {% if 1 is same as (admin.subclasses|length) %}
-            {% set subclass = admin.subclasses|keys|first %}
-            <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }} {{ subclass|trans({}, admin.translationdomain) }}
-            </a>
-        {% else %}
-            <ul class="list-unstyled">
-                {% for subclass in admin.subclasses|keys %}
-                    <li>
-                        <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">
-                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                            {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }} {{ subclass|trans({}, admin.translationdomain) }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+        {% for subclass in admin.subclasses|keys %}
+            <li>
+                <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }} {{ subclass|trans({}, admin.translationdomain) }}
+                </a>
+            </li>
+        {% endfor %}
     {% endif %}
 {% endif %}
