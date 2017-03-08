@@ -1080,7 +1080,9 @@ class CRUDController extends Controller
 
         if (!$url) {
             foreach (array('edit', 'show') as $route) {
-                if ($this->admin->hasRoute($route) && $this->admin->isGranted(strtoupper($route), $object)) {
+                if ($this->admin->hasRoute($route) 
+                    && $this->admin->isGranted(strtoupper(str_replace('show', 'view', $route)), $object)
+                ) {
                     $url = $this->admin->generateObjectUrl($route, $object);
                     break;
                 }
