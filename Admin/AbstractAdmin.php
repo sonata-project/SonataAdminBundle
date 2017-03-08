@@ -560,22 +560,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
         $datagrid = $this->getDatagrid();
         $datagrid->buildPager();
 
-        $fields = array();
-
-        foreach ($this->getExportFields() as $key => $field) {
-            $label = $this->getTranslationLabel($field, 'export', 'label');
-            $transLabel = $this->trans($label);
-
-            // NEXT_MAJOR: Remove this hack, because all field labels will be translated with the major release
-            // No translation key exists
-            if ($transLabel == $label) {
-                $fields[$key] = $field;
-            } else {
-                $fields[$transLabel] = $field;
-            }
-        }
-
-        return $this->getModelManager()->getDataSourceIterator($datagrid, $fields);
+        return $this->getModelManager()->getDataSourceIterator($datagrid, $this->getExportFields());
     }
 
     /**
