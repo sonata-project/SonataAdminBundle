@@ -285,6 +285,11 @@ class HelperController
             $value = new \DateTime($value);
         }
 
+        // Handle boolean type transforming the value into a boolean
+        if ('' !== $value && $fieldDescription->getType() == 'boolean') {
+            $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+        }
+
         $this->pool->getPropertyAccessor()->setValue($object, $propertyPath, '' !== $value ? $value : null);
 
         $violations = $this->validator->validate($object);
