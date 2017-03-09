@@ -1774,7 +1774,7 @@ class AdminTest extends PHPUnit_Framework_TestCase
 
         $admin = $this->getMockBuilder('Sonata\AdminBundle\Admin\AbstractAdmin')
             ->disableOriginalConstructor()
-            ->setMethods(array('getDatagrid', 'getTranslationLabel', 'trans'))
+            ->setMethods(array('getDatagrid', 'getTranslationLabel'))
             ->getMockForAbstractClass();
         $admin->method('getDatagrid')->will($this->returnValue($datagrid));
         $admin->setModelManager($modelManager);
@@ -1783,15 +1783,6 @@ class AdminTest extends PHPUnit_Framework_TestCase
             ->method('getTranslationLabel')
             ->will($this->returnCallback(function ($label, $context = '', $type = '') {
                 return $context.'.'.$type.'_'.$label;
-            }));
-        $admin->expects($this->any())
-            ->method('trans')
-            ->will($this->returnCallback(function ($label) {
-                if ($label == 'export.label_field') {
-                    return 'Feld';
-                }
-
-                return $label;
             }));
 
         $admin->getDataSourceIterator();
