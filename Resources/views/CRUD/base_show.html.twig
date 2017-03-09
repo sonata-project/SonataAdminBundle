@@ -11,6 +11,14 @@ file that was distributed with this source code.
 
 {% extends base_template %}
 
+{% block title %}
+    {{ "title_show"|trans({'%name%': admin.toString(object)|truncate(15) }, 'SonataAdminBundle') }}
+{% endblock %}
+
+{% block navbar_title %}
+    {{ block('title') }}
+{% endblock %}
+
 {%- block actions -%}
     {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
 {%- endblock -%}
