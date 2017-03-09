@@ -43,11 +43,6 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
     /**
      * @var string|bool
      */
-    private $translator;
-
-    /**
-     * @var string|bool
-     */
     private $labelStrategy;
 
     /**
@@ -71,7 +66,6 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
 
         // state variable
         $this->catalogue = false;
-        $this->translator = false;
         $this->labelStrategy = false;
         $this->domain = false;
     }
@@ -119,11 +113,9 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
                 $this->trans($label, array(), $admin->getTranslationDomain());
             }
 
-            $this->translator = $admin->getTranslator();
             $this->labelStrategy = $admin->getLabelTranslatorStrategy();
             $this->domain = $admin->getTranslationDomain();
 
-            $admin->setTranslator($this);
             $admin->setSecurityHandler($this);
             $admin->setLabelTranslatorStrategy($this);
 
@@ -192,42 +184,6 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
         $this->catalogue = false;
 
         return $catalogue;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function trans($id, array $parameters = array(), $domain = null, $locale = null)
-    {
-        $this->addMessage($id, $domain);
-
-        return $id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null)
-    {
-        $this->addMessage($id, $domain);
-
-        return $id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLocale($locale)
-    {
-        $this->translator->setLocale($locale);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLocale()
-    {
-        return $this->translator->getLocale();
     }
 
     /**
