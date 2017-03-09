@@ -39,6 +39,9 @@ To specify options, do as follow:
 
     <?php
     // src/AppBundle/Admin/PersonAdmin.php
+    
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
+    use Sonata\AdminBundle\Show\ShowMapper;
 
     class PersonAdmin extends AbstractAdmin
     {
@@ -56,6 +59,7 @@ To specify options, do as follow:
                     ->end()
                 ->end()
             ;
+        }
     }
 
 When extending an existing Admin, you may want to remove some fields, groups or tabs.
@@ -65,6 +69,8 @@ Here is an example of how to achieve this :
 
     <?php
     // src/AppBundle/Admin/PersonAdmin.php
+    
+    use Sonata\AdminBundle\Show\ShowMapper;
 
     class PersonAdmin extends ParentAdmin
     {
@@ -83,6 +89,7 @@ Here is an example of how to achieve this :
 
             // remove a group from a specific tab and also remove the tab if it ends up being empty
             $showMapper->removeGroup('GroupToRemove3', 'Tab3', true);
+        }
     }
 
 Customising the query used to show the object from within your Admin class
