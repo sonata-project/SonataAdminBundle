@@ -389,7 +389,7 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
     public function testRetrieveFormFieldElementAction($validatorInterface)
     {
         $object = new AdminControllerHelper_Foo();
-        
+
         $request = new Request(array(
             'code' => 'sonata.post.admin',
             'objectId' => 42,
@@ -399,7 +399,6 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
         ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'POST'));
 
         $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
         $modelManager->expects($this->once())->method('find')->will($this->returnValue($object));
 
         $mockView = $this->getMockBuilder('Symfony\Component\Form\FormView')
