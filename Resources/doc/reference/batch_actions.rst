@@ -190,6 +190,7 @@ This method may return three different values:
     namespace AppBundle\Controller;
 
     use Sonata\AdminBundle\Controller\CRUDController as BaseController;
+    use Symfony\Component\HttpFoundation\Request;
 
     class CRUDController extends BaseController
     {
