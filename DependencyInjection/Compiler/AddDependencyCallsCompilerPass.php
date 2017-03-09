@@ -208,7 +208,6 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'show_builder',
             'list_builder',
             'datagrid_builder',
-            'translator',
             'configuration_pool',
             'router',
             'validator',
@@ -258,7 +257,6 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'show_builder' => sprintf('sonata.admin.builder.%s_show', $manager_type),
             'list_builder' => sprintf('sonata.admin.builder.%s_list', $manager_type),
             'datagrid_builder' => sprintf('sonata.admin.builder.%s_datagrid', $manager_type),
-            'translator' => 'translator',
             'configuration_pool' => 'sonata.admin.pool',
             'route_generator' => 'sonata.admin.route.default_generator',
             'validator' => 'validator',
@@ -276,10 +274,6 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
             if (isset($overwriteAdminConfiguration[$attr]) || !$definition->hasMethodCall($method)) {
                 $args = array(new Reference(isset($overwriteAdminConfiguration[$attr]) ? $overwriteAdminConfiguration[$attr] : $addServiceId));
-                if ('translator' === $attr) {
-                    $args[] = false;
-                }
-
                 $definition->addMethodCall($method, $args);
             }
         }
