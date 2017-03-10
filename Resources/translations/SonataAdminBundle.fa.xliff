@@ -86,6 +86,10 @@
                 <source>title_create</source>
                 <target>ایجاد</target>
             </trans-unit>
+            <trans-unit id="title_show">
+                <source>title_show</source>
+                <target>title_show</target>
+            </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
                 <target>داشبورد</target>
