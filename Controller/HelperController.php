@@ -153,6 +153,7 @@ class HelperController
         $formBuilder = $admin->getFormBuilder();
 
         $form = $formBuilder->getForm();
+        $form->setData($subject);
         $form->handleRequest($request);
 
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
