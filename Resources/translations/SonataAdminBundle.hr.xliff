@@ -191,7 +191,7 @@
                 <target>form_not_available</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
-                <source>breadcrumb.link_dashboard</source>
+                <source>link_breadcrumb_dashboard</source>
                 <target>Početna stranica</target>
             </trans-unit>
             <trans-unit id="title_delete">

@@ -153,30 +153,30 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
         $menu->expects($this->exactly(24))
             ->method('addChild')
             ->withConsecutive(
-                array('breadcrumb.link_dashboard'),
+                array('link_breadcrumb_dashboard'),
                 array('someOtherLabel'),
                 array('dummy subject representation'),
                 array('someInterestingLabel'),
                 array('someFancyLabel'),
 
-                array('breadcrumb.link_dashboard'),
+                array('link_breadcrumb_dashboard'),
                 array('someTipTopLabel'),
                 array('dummy subject representation'),
                 array('someFunkyLabel'),
                 array('someAwesomeLabel'),
 
-                array('breadcrumb.link_dashboard'),
+                array('link_breadcrumb_dashboard'),
                 array('someMildlyInterestingLabel'),
                 array('dummy subject representation'),
                 array('someWTFLabel'),
                 array('someBadLabel'),
 
-                array('breadcrumb.link_dashboard'),
+                array('link_breadcrumb_dashboard'),
                 array('someLongLabel'),
                 array('dummy subject representation'),
                 array('someEndlessLabel'),
 
-                array('breadcrumb.link_dashboard'),
+                array('link_breadcrumb_dashboard'),
                 array('someOriginalLabel'),
                 array('dummy subject representation'),
                 array('someOkayishLabel'),
@@ -252,11 +252,11 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
         $menu->expects($this->any())
             ->method('addChild')
             ->withConsecutive(
-                array('breadcrumb.link_dashboard'),
+                array('link_breadcrumb_dashboard'),
                 array('someOtherLabel'),
                 array('someInterestingLabel'),
 
-                array('breadcrumb.link_dashboard'),
+                array('link_breadcrumb_dashboard'),
                 array('someCoolLabel'),
                 array('dummy subject representation')
             )
@@ -318,7 +318,7 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
         $routeGenerator->generate('sonata_admin_dashboard')->willReturn('/dashboard');
 
         $admin->getRouteGenerator()->willReturn($routeGenerator->reveal());
-        $menu->addChild('breadcrumb.link_dashboard', array(
+        $menu->addChild('link_breadcrumb_dashboard', array(
             'uri' => '/dashboard',
             'extras' => array(
                 'translation_domain' => 'SonataAdminBundle',
@@ -439,7 +439,7 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
         $routeGenerator = $this->prophesize('Sonata\AdminBundle\Route\RouteGeneratorInterface');
         $routeGenerator->generate('sonata_admin_dashboard')->willReturn('/dashboard');
         $admin->getRouteGenerator()->willReturn($routeGenerator->reveal());
-        $menu->addChild('breadcrumb.link_dashboard', array(
+        $menu->addChild('link_breadcrumb_dashboard', array(
             'uri' => '/dashboard',
             'extras' => array(
                 'translation_domain' => 'SonataAdminBundle',
