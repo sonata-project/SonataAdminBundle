@@ -60,7 +60,7 @@
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
-                <target>Volver a la lista</target>
+                <target>Volver al listado</target>
             </trans-unit>
             <trans-unit id="link_action_show">
                 <source>link_action_show</source>
@@ -88,7 +88,7 @@
             </trans-unit>
             <trans-unit id="title_show">
                 <source>title_show</source>
-                <target>title_show</target>
+                <target>Mostrar "%name%"</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
@@ -132,7 +132,7 @@
             </trans-unit>
             <trans-unit id="confirm_msg">
                 <source>confirm_msg</source>
-                <target>¿Está seguro?</target>
+                <target>¿Estás seguro?</target>
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
@@ -148,31 +148,31 @@
             </trans-unit>
             <trans-unit id="flash_batch_empty">
                 <source>flash_batch_empty</source>
-                <target>Acción cancelada. Ningún item seleccionado.</target>
+                <target>Acción cancelada. Ningún elemento ha sido seleccionado.</target>
             </trans-unit>
             <trans-unit id="flash_create_success">
                 <source>flash_create_success</source>
-                <target>Elemento creado satisfactoriamente.</target>
+                <target>El elemento "%name%" ha sido creado con éxito.</target>
             </trans-unit>
             <trans-unit id="flash_create_error">
                 <source>flash_create_error</source>
-                <target>Se ha producido un error durante la creación del elemento.</target>
+                <target>Se ha producido un error durante la creación del elemento "%name%".</target>
             </trans-unit>
             <trans-unit id="flash_edit_success">
                 <source>flash_edit_success</source>
-                <target>Elemento actualizado satisfactoriamente.</target>
+                <target>El elemento "%name%" ha sido actualizado con éxito.</target>
             </trans-unit>
             <trans-unit id="flash_edit_error">
                 <source>flash_edit_error</source>
-                <target>Se ha producido un error durante la actualización del elemento.</target>
+                <target>Se ha producido un error durante la actualización del elemento "%name%".</target>
             </trans-unit>
             <trans-unit id="flash_lock_error">
                 <source>flash_lock_error</source>
-                <target>flash_lock_error</target>
+                <target>Otro usuario ha modificado el elemento "%name%". Por favor %link_start%clica aquí%link_end% para recargar la página y aplicar los cambios de nuevo.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
-                <target>Los elementos seleccionados fueron eliminados satisfactoriamente.</target>
+                <target>Los elementos seleccionados han sido eliminados con éxito.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
@@ -180,15 +180,15 @@
             </trans-unit>
             <trans-unit id="flash_delete_error">
                 <source>flash_delete_error</source>
-                <target>Se ha producido un error durante la eliminación del elemento.</target>
+                <target>Se ha producido un error durante la eliminación del elemento "%name%".</target>
             </trans-unit>
             <trans-unit id="flash_delete_success">
                 <source>flash_delete_success</source>
-                <target>Elemento eliminado satisfactoriamente.</target>
+                <target>El elemento "%name%" se ha eliminado con éxito.</target>
             </trans-unit>
             <trans-unit id="form_not_available">
                 <source>form_not_available</source>
-                <target>form_not_available</target>
+                <target>El formulario no está disponible.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>breadcrumb.link_dashboard</source>
@@ -196,11 +196,11 @@
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
-                <target>Confirmar borrado</target>
+                <target>Confirma el borrado</target>
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>¿Está seguro de que quiere borrar el elemento seleccionado "%object%"?</target>
+                <target>¿Estás seguro que quieres borrar el elemento seleccionado "%object%"?</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
@@ -208,15 +208,15 @@
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
-                <target>Confirme la operación "%action%"</target>
+                <target>Confirma la operación "%action%"</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>¿Está seguro de que quiere confirmar y ejecutar esta acción para el elemento seleccionado?|¿Está seguro que quiere confirmar y ejecutar esta acción para todos los %count% elementos seleccionados?</target>
+                <target>¿Estás seguro que quieres confirmar y ejecutar esta acción para el elemento seleccionado?|¿Estás seguro que quieres confirmar y ejecutar esta acción para todos los %count% elementos seleccionados?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
-                <target>¿Está seguro de que quiere confirmar y ejecutar esta acción para todos los elementos?</target>
+                <target>¿Estás seguro que quieres confirmar y ejecutar esta acción para todos los elementos?</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
@@ -320,7 +320,7 @@
             </trans-unit>
             <trans-unit id="td_compare">
                 <source>td_compare</source>
-                <target>td_compare</target>
+                <target>Compara</target>
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
@@ -344,7 +344,7 @@
             </trans-unit>
             <trans-unit id="label_compare_revision">
                 <source>label_compare_revision</source>
-                <target>label_compare_revision</target>
+                <target>Comparar la revision</target>
             </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
@@ -376,11 +376,11 @@
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
-                <target>Cargando información...</target>
+                <target>Cargando información…</target>
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
-                <target>Vista preliminar</target>
+                <target>Vista previa</target>
             </trans-unit>
             <trans-unit id="btn_preview_approve">
                 <source>btn_preview_approve</source>
@@ -444,7 +444,7 @@
             </trans-unit>
             <trans-unit id="noscript_warning">
                 <source>noscript_warning</source>
-                <target>Su navegador no soporta JavaScript o se encuentra deshabilitado  Algunas características no funcionarán correctamente.</target>
+                <target>Javascript esta deshabilitado en tu navegador. Algunas características no funcionarán correctamente.</target>
             </trans-unit>
             <trans-unit id="message_form_group_empty">
                 <source>message_form_group_empty</source>
@@ -460,23 +460,23 @@
             </trans-unit>
             <trans-unit id="title_select_subclass">
                 <source>title_select_subclass</source>
-                <target>title_select_subclass</target>
+                <target>Selecciona el tipo de elemento</target>
             </trans-unit>
             <trans-unit id="no_subclass_available">
                 <source>no_subclass_available</source>
-                <target>no_subclass_available</target>
+                <target>No hay disponible ningún tipo de elemento</target>
             </trans-unit>
             <trans-unit id="label_unknown_user">
                 <source>label_unknown_user</source>
-                <target>label_unknown_user</target>
+                <target>desconocido</target>
             </trans-unit>
             <trans-unit id="read_more">
                 <source>read_more</source>
-                <target>read_more</target>
+                <target>Leer más</target>
             </trans-unit>
             <trans-unit id="read_less">
                 <source>read_less</source>
-                <target>read_less</target>
+                <target>Cerrar</target>
             </trans-unit>
         </body>
     </file>
