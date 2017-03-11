@@ -18,10 +18,9 @@ The demo website can be found at http://demo.sonata-project.org.
 * `SonataPageBundle <https://github.com/sonata-project/SonataPageBundle>`_: a page (CMS like) bundle
 * `SonataUserBundle <https://github.com/sonata-project/SonataUserBundle>`_: integration of FOSUserBundle and SonataAdminBundle
 
-Getting Started
----------------
-
 .. toctree::
+    :caption: Getting Started
+    :name: getting-started
     :maxdepth: 1
     :numbered:
 
@@ -30,10 +29,9 @@ Getting Started
     getting_started/the_form_view
     getting_started/the_list_view
 
-Reference Guide
----------------
-
 .. toctree::
+   :caption: Reference Guide
+   :name: reference-guide
    :maxdepth: 1
    :numbered:
 
@@ -57,10 +55,9 @@ Reference Guide
    reference/troubleshooting
    reference/breadcrumbs
 
-Advanced Options
-----------------
-
 .. toctree::
+   :caption: Advanced Options
+   :name: advanced-options
    :maxdepth: 1
    :numbered:
 
@@ -75,10 +72,9 @@ Advanced Options
    reference/annotations
    reference/preview_mode
 
-Cookbook
---------
-
 .. toctree::
+   :caption: Cookbook
+   :name: cookbook
    :maxdepth: 1
    :numbered:
 
