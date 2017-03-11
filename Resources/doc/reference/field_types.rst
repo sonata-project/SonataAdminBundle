@@ -118,6 +118,7 @@ Parameter                               Description
 ======================================  ==================================================================
 **hide_protocol**                       remove protocol part from the link text
 **url**                                 URL address (e.g. ``http://example.com``)
+**attributes**                          array of html tag attributes (e.g. ``array('target' => '_blank')``)
 **route.name**                          route name (e.g. ``acme_blog_homepage``)
 **route.parameters**                    array of route parameters (e.g. ``array('type' => 'example', 'display' => 'full')``)
 **route.absolute**                      boolean value, create absolute or relative url address based on ``route.name`` and  ``route.parameters`` (default ``false``)

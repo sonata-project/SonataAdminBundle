@@ -1034,6 +1034,14 @@ EOT
             ),
             array(
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                <a href="https://example.com" target="_blank">https://example.com</a>
+                </td>',
+                'url',
+                'https://example.com',
+                array('attributes' => array('target' => '_blank')),
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="http://example.com">example.com</a>
                 </td>',
                 'url',
@@ -1566,6 +1574,12 @@ EOT
                 'url',
                 'http://example.com',
                 array('safe' => false),
+            ),
+            array(
+                '<th>Data</th> <td><a href="http://example.com" target="_blank" class="fooLink">http://example.com</a></td>',
+                'url',
+                'http://example.com',
+                array('safe' => false, 'attributes' => array('target' => '_blank', 'class' => 'fooLink')),
             ),
             array(
                 '<th>Data</th> <td><a href="https://example.com">https://example.com</a></td>',
