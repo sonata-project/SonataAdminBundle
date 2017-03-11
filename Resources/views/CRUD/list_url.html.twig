@@ -42,12 +42,7 @@ file that was distributed with this source code.
             {% set value = value|replace({'http://': '', 'https://': ''}) %}
         {% endif %}
 
-        {% set attributes = "" %}
-        {% for attribute, value in field_description.options.attributes|default([]) %}
-            {% set attributes = attributes ~ ' ' ~ attribute|escape ~ '="' ~ value|escape('html_attr') ~ '"' %}
-        {% endfor %}
-
-        <a href="{{ url_address }}"{{ attributes|raw }}>{{ value }}</a>
+        <a href="{{ url_address }}"{% for attribute, value in field_description.options.attributes|default([]) %} {{ attribute }}="{{ value|escape('html_attr') }}"{% endfor %}>{{ value }}</a>
     {% endif %}
 {% endspaceless %}
 {% endblock %}
