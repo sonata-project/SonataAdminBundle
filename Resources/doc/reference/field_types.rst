@@ -135,6 +135,12 @@ Parameter                               Description
             ->add('targetUrl', 'url')
 
             // Output for value `http://example.com`:
+            // `<a href="http://example.com" target="_blank">example.com</a>`
+            ->add('targetUrl', 'url', array(
+                'attributes' => array('target' => '_blank')
+            ))
+
+            // Output for value `http://example.com`:
             // `<a href="http://example.com">example.com</a>`
             ->add('targetUrl', 'url', array(
                 'hide_protocol' => true
