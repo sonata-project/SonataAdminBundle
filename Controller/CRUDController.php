@@ -110,6 +110,9 @@ class CRUDController extends Controller
             'form' => $formView,
             'datagrid' => $datagrid,
             'csrf_token' => $this->getCsrfToken('sonata.batch'),
+            'export_formats' => $this->has('sonata.admin.admin_exporter') ?
+                $this->get('sonata.admin.admin_exporter')->getAvailableFormats($this->admin) :
+                $this->admin->getExportFormats(),
         ), null);
     }
 
@@ -799,7 +802,29 @@ class CRUDController extends Controller
 
         $format = $request->get('format');
 
-        $allowedExportFormats = (array) $this->admin->getExportFormats();
+        // NEXT_MAJOR: remove the check
+        if (!$this->has('sonata.admin.admin_exporter')) {
+            @trigger_error(
+                'Not registering the exporter bundle is deprecated since version 3.x.'
+                .' You must register it to be able to use the export action in 4.0.',
+                E_USER_DEPRECATED
+            );
+            $allowedExportFormats = (array) $this->admin->getExportFormats();
+
+            $class = $this->admin->getClass();
+            $filename = sprintf(
+                'export_%s_%s.%s',
+                strtolower(substr($class, strripos($class, '\\') + 1)),
+                date('Y_m_d_H_i_s', strtotime('now')),
+                $format
+            );
+            $exporter = $this->get('sonata.admin.exporter');
+        } else {
+            $adminExporter = $this->get('sonata.admin.admin_exporter');
+            $allowedExportFormats = $adminExporter->getAvailableFormats($this->admin);
+            $filename = $adminExporter->getExportFilename($this->admin, $format);
+            $exporter = $this->get('sonata.exporter.exporter');
+        }
 
         if (!in_array($format, $allowedExportFormats)) {
             throw new \RuntimeException(
@@ -812,14 +837,7 @@ class CRUDController extends Controller
             );
         }
 
-        $filename = sprintf(
-            'export_%s_%s.%s',
-            strtolower(substr($this->admin->getClass(), strripos($this->admin->getClass(), '\\') + 1)),
-            date('Y_m_d_H_i_s', strtotime('now')),
-            $format
-        );
-
-        return $this->get('sonata.admin.exporter')->getResponse(
+        return $exporter->getResponse(
             $format,
             $filename,
             $this->admin->getDataSourceIterator()

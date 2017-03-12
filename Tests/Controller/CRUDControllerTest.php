@@ -42,6 +42,8 @@ use Symfony\Component\Security\Csrf\CsrfToken;
  * Test for CRUDController.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
+ *
+ * @group legacy
  */
 class CRUDControllerTest extends PHPUnit_Framework_TestCase
 {
@@ -2427,7 +2429,7 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->method('getExportFormats')
             ->will($this->returnValue(array('json')));
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->any())
             ->method('getClass')
             ->will($this->returnValue('Foo'));
 

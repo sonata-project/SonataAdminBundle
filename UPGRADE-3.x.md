@@ -65,6 +65,12 @@ All files under the ``Tests`` directory are now correctly handled as internal te
 You can't extend them anymore, because they are only loaded when running internal tests.
 More information can be found in the [composer docs](https://getcomposer.org/doc/04-schema.md#autoload-dev).
 
+### Exporter service and class
+
+The `sonata.admin.exporter` is deprecated in favor of the `sonata.exporter.exporter` service.
+To make this service available, you have to install `sonata-project.exporter` ^1.7
+and enable the bundle as described in the documentation.
+
 UPGRADE FROM 3.2 to 3.3
 =======================
 
