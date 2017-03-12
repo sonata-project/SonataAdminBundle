@@ -11,9 +11,9 @@
 
 namespace Sonata\AdminBundle\Admin;
 
+use Sonata\AdminBundle\Builder\DatagridBuilderInterface as DatagridBuilder;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
-use Sonata\AdminBundle\Builder\DatagridBuilderInterface as DatagridBuilder;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
@@ -44,7 +44,7 @@ final class AdminBuilder implements FormBuilderInterface, DatagridBuilderInterfa
      * @param ListBuilderInterface $listBuilder
      * @param DatagridBuilder      $datagridBuilder
      */
-    public function __construct(ShowBuilderInterface $showBuilder, ListBuilderInterface $listBuilder,  DatagridBuilder $datagridBuilder)
+    public function __construct(ShowBuilderInterface $showBuilder, ListBuilderInterface $listBuilder, DatagridBuilder $datagridBuilder)
     {
         $this->showBuilder = $showBuilder;
         $this->listBuilder = $listBuilder;
