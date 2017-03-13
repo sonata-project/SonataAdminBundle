@@ -421,6 +421,7 @@ class CRUDController extends Controller
                 $this->admin->getTranslationDomain();
 
             $formView = $datagrid->getForm()->createView();
+            $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
             return $this->render($this->admin->getTemplate('batch_confirmation'), array(
                 'action' => 'list',
