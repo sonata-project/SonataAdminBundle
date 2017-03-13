@@ -89,7 +89,13 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
 
         $twig = new \Twig_Environment($this->createMock('\Twig_LoaderInterface'));
         $helper = new AdminHelper($pool);
-        $validator = $this->createMock('Symfony\Component\Validator\Validator\ValidatorInterface');
+
+        // NEXT_MAJOR: Remove this when dropping support for SF < 2.8
+        if (interface_exists('Symfony\Component\Validator\ValidatorInterface')) {
+            $validator = $this->createMock('Symfony\Component\Validator\ValidatorInterface');
+        } else {
+            $validator = $this->createMock('Symfony\Component\Validator\Validator\ValidatorInterface');
+        }
         $this->controller = new HelperController($twig, $pool, $helper, $validator);
 
         // php 5.3 BC
@@ -274,6 +280,7 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
 
         $loader = $this->createMock('\Twig_LoaderInterface');
 
+        // NEXT_MAJOR: Remove this check when dropping support for twig < 2
         if (method_exists('\Twig_LoaderInterface', 'getSourceContext')) {
             $loader->method('getSourceContext')->will($this->returnValue(new \Twig_Source('<foo />', 'foo')));
         } else {
