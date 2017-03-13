@@ -249,7 +249,7 @@ class HelperController
         }
 
         // check user permission
-        if (false === $admin->isGranted('EDIT', $object)) {
+        if (false === $admin->hasAccess('edit', $object)) {
             return new JsonResponse(array('status' => 'KO', 'message' => 'Invalid permissions'));
         }
 
@@ -332,14 +332,9 @@ class HelperController
         $admin->setRequest($request);
         $context = $request->get('_context', '');
 
-        if ($context === 'filter' && false === $admin->isGranted('LIST')) {
-            throw new AccessDeniedException();
-        }
-
-        if ($context !== 'filter'
-            && false === $admin->isGranted('CREATE')
-            && false === $admin->isGranted('EDIT')
-        ) {
+        if ($context === 'filter') {
+            $admin->checkAccess('list');
+        } elseif (!$admin->hasAccess('create') && !$admin->hasAccess('edit')) {
             throw new AccessDeniedException();
         }
 
@@ -381,9 +376,7 @@ class HelperController
         $targetAdmin = $fieldDescription->getAssociationAdmin();
 
         // check user permission
-        if (false === $targetAdmin->isGranted('LIST')) {
-            throw new AccessDeniedException();
-        }
+        $targetAdmin->checkAccess('list');
 
         if (mb_strlen($searchText, 'UTF-8') < $minimumInputLength) {
             return new JsonResponse(array('status' => 'KO', 'message' => 'Too short search string.'), 403);

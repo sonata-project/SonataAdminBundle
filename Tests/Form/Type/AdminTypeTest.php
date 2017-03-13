@@ -62,7 +62,7 @@ class AdminTypeTest extends TypeTestCase
         $admin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
         $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(false);
         $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
-        $admin->isGranted('DELETE')->shouldBeCalled()->willReturn(false);
+        $admin->hasAccess('delete')->shouldBeCalled()->willReturn(false);
         $admin->setSubject(null)->shouldBeCalled();
         $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
         $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);

@@ -331,15 +331,15 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
      */
     private function getAdminMock($hasRoute = true, $isGranted = true)
     {
-        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->createMock('Sonata\AdminBundle\Admin\AbstractAdmin');
         $admin->expects($this->once())
             ->method('hasRoute')
             ->with($this->equalTo('list'))
             ->will($this->returnValue($hasRoute));
 
         $admin->expects($this->any())
-            ->method('isGranted')
-            ->with($this->equalTo('LIST'))
+            ->method('hasAccess')
+            ->with($this->equalTo('list'))
             ->will($this->returnValue($isGranted));
 
         $admin->expects($this->any())

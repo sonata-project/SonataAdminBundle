@@ -93,7 +93,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
             sprintf('%s_list', $admin->getClassnameLabel()),
             $admin->getTranslationDomain(),
             array(
-                'uri' => $admin->hasRoute('list') && $admin->isGranted('LIST') ?
+                'uri' => $admin->hasRoute('list') && $admin->hasAccess('list') ?
                 $admin->generateUrl('list') :
                 null,
             )

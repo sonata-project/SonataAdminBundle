@@ -42,7 +42,7 @@ class ListMapperTest extends PHPUnit_Framework_TestCase
     {
         $listBuilder = $this->createMock('Sonata\AdminBundle\Builder\ListBuilderInterface');
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
-        $this->admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->admin = $this->createMock('Sonata\AdminBundle\Admin\AbstractAdmin');
 
         $listBuilder->expects($this->any())
             ->method('addField')
