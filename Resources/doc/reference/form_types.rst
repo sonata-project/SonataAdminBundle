@@ -452,7 +452,7 @@ btn_add, btn_list, btn_delete and btn_catalogue:
 sonata_type_collection
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``Collection Type`` is meant to handle creation and editing of model
+The ``CollectionType`` is meant to handle creation and editing of model
 collections. Rows can be added and deleted, and your model abstraction layer may
 allow you to edit fields inline. You can use ``type_options`` to pass values
 to the underlying forms.
