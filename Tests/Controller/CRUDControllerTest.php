@@ -118,6 +118,11 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
     private $translator;
 
     /**
+     * @var \Twig_Extension
+     */
+    private $securityExtension;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -287,6 +292,9 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
         $this->kernel = $this->createMock('Symfony\Component\HttpKernel\KernelInterface');
         $kernel = $this->kernel; // php 5.3 BC
 
+        $this->securityExtension = $this->getMock('Twig_Extension', array('setAdmin'));
+        $securityExtension = $this->securityExtension; // php 5.3 BC
+
         $this->container->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($id) use (
@@ -303,7 +311,8 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
                 $csrfProvider,
                 $logger,
                 $kernel,
-                $translator
+                $translator,
+                $securityExtension
             ) {
                 switch ($id) {
                     case 'sonata.admin.pool':
@@ -335,6 +344,8 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
                         return $kernel;
                     case 'translator':
                         return $translator;
+                    case 'sonata.admin.twig.extension.security':
+                        return $securityExtension;
                 }
             }));
 

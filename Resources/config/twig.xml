@@ -29,5 +29,8 @@
                 <argument>%sonata.admin.twig.extension.x_editable_type_mapping%</argument>
             </call>
         </service>
+        <service id="sonata.admin.twig.extension.security" class="Sonata\AdminBundle\Twig\Extension\SecurityExtension">
+            <tag name="twig.extension"/>
+        </service>
     </services>
 </container>
