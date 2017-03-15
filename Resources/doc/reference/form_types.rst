@@ -357,7 +357,7 @@ According the choice made only associated fields are displayed. The others field
                         'route' => array('route', 'parameters'),
                         'uri' => array('uri'),
                     ),
-                    'empty_value' => 'Choose an option',
+                    'placeholder' => 'Choose an option',
                     'required' => false
                 ))
                 ->add('route', 'text')
