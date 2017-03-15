@@ -497,14 +497,14 @@ div.sonata-filters-box div.form-group span.input-group-addon {
     font-size: 13px;
 }
 
-.hide {
+.sonata-search-result-hide {
     display: none;
 }
 
-.fade {
+.sonata-search-result-fade {
     opacity: 0.6;
 }
 
-.show {
+.sonata-search-result-show {
     display: block;
 }

@@ -16,11 +16,11 @@ file that was distributed with this source code.
     {% set visibility_class = '' %}
     {% if pager and not pager.getResults()|length %}
         {% if show_empty_boxes == 'show' %}
-            {% set visibility_class = show_empty_boxes %}
+            {% set visibility_class = 'sonata-search-result-show' %}
         {% elseif show_empty_boxes == 'hide' %}
-            {% set visibility_class = show_empty_boxes %}
+            {% set visibility_class = 'sonata-search-result-hide' %}
         {% elseif show_empty_boxes == 'fade'%}
-            {% set visibility_class = show_empty_boxes %}
+            {% set visibility_class = 'sonata-search-result-fade' %}
         {% endif %}
     {% endif %}
 
