@@ -232,11 +232,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     protected $baseCodeRoute = '';
 
     /**
-     * The related field reflection, ie if OrderElement is linked to Order,
-     * then the $parentReflectionProperty must be the ReflectionProperty of
-     * the order (OrderElement::$order).
+     * The related parent association, ie if OrderElement has a parent property named order,
+     * then the $parentAssociationMapping must be a string named `order`.
      *
-     * @var \ReflectionProperty
+     * @var string
      */
     protected $parentAssociationMapping = null;
 
@@ -556,6 +555,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
 
     /**
      * {@inheritdoc}
+     *
+     * NEXT_MAJOR: return null to indicate no override
      */
     public function getExportFormats()
     {
@@ -838,14 +839,24 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
 
         // ok, try to limit to add parent filter
         if ($this->isChild() && $this->getParentAssociationMapping() && !$mapper->has($this->getParentAssociationMapping())) {
+            // NEXT_MAJOR: Keep FQCN when bumping Symfony requirement to 2.8+.
+            $modelHiddenType = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+                ? 'Sonata\AdminBundle\Form\Type\ModelHiddenType'
+                : 'sonata_type_model_hidden';
+
+            // NEXT_MAJOR: Keep FQCN when bumping Symfony requirement to 2.8+.
+            $hiddenType = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+                ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
+                : 'hidden';
+
             $mapper->add($this->getParentAssociationMapping(), null, array(
                 'show_filter' => false,
                 'label' => false,
-                'field_type' => 'sonata_type_model_hidden',
+                'field_type' => $modelHiddenType,
                 'field_options' => array(
                     'model_manager' => $this->getModelManager(),
                 ),
-                'operator_type' => 'hidden',
+                'operator_type' => $hiddenType,
             ), null, null, array(
                 'admin_code' => $this->getParent()->getCode(),
             ));
@@ -1084,7 +1095,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     {
         $actions = array();
 
-        if ($this->hasRoute('delete') && $this->isGranted('DELETE')) {
+        if ($this->hasRoute('delete') && $this->hasAccess('delete')) {
             $actions['delete'] = array(
                 'label' => 'action_delete',
                 'translation_domain' => 'SonataAdminBundle',
@@ -1098,6 +1109,16 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
             // TODO: remove method check in next major release
             if (method_exists($extension, 'configureBatchActions')) {
                 $actions = $extension->configureBatchActions($this, $actions);
+            }
+        }
+
+        foreach ($actions  as $name => &$action) {
+            if (!array_key_exists('label', $action)) {
+                $action['label'] = $this->getTranslationLabel($name, 'batch', 'label');
+            }
+
+            if (!array_key_exists('translation_domain', $action)) {
+                $action['translation_domain'] = $this->getTranslationDomain();
             }
         }
 
@@ -2050,7 +2071,9 @@ EOT;
             E_USER_DEPRECATED
         );
         if ($this->breadcrumbsBuilder === null) {
-            $this->breadcrumbsBuilder = new BreadcrumbsBuilder($this->getConfigurationPool()->getContainer()->getParameter('sonata.admin.configuration.breadcrumbs'));
+            $this->breadcrumbsBuilder = new BreadcrumbsBuilder(
+                $this->getConfigurationPool()->getContainer()->getParameter('sonata.admin.configuration.breadcrumbs')
+            );
         }
 
         return $this->breadcrumbsBuilder;
@@ -2519,7 +2542,10 @@ EOT;
     {
         // TODO: Remove it when bumping requirements to SF 2.5+
         if (!$validator instanceof ValidatorInterface && !$validator instanceof LegacyValidatorInterface) {
-            throw new \InvalidArgumentException('Argument 1 must be an instance of Symfony\Component\Validator\Validator\ValidatorInterface or Symfony\Component\Validator\ValidatorInterface');
+            throw new \InvalidArgumentException(
+                'Argument 1 must be an instance of Symfony\Component\Validator\Validator\ValidatorInterface'
+                .' or Symfony\Component\Validator\ValidatorInterface'
+            );
         }
 
         $this->validator = $validator;
@@ -2779,7 +2805,11 @@ EOT;
         $access = $this->getAccess();
 
         if (!array_key_exists($action, $access)) {
-            throw new \InvalidArgumentException(sprintf('Action "%s" could not be found in access mapping. Please make sure your action is defined into your admin class accessMapping property.', $action));
+            throw new \InvalidArgumentException(sprintf(
+                'Action "%s" could not be found in access mapping.'
+                .' Please make sure your action is defined into your admin class accessMapping property.',
+                $action
+            ));
         }
 
         if (!is_array($access[$action])) {
@@ -2917,7 +2947,7 @@ EOT;
     {
         $actions = array();
 
-        if ($this->hasRoute('create') && $this->isGranted('CREATE')) {
+        if ($this->hasRoute('create') && $this->hasAccess('create')) {
             $actions['create'] = array(
                 'label' => 'link_add',
                 'translation_domain' => 'SonataAdminBundle',
@@ -2927,7 +2957,7 @@ EOT;
             );
         }
 
-        if ($this->hasRoute('list') && $this->isGranted('LIST')) {
+        if ($this->hasRoute('list') && $this->hasAccess('list')) {
             $actions['list'] = array(
                 'label' => 'link_list',
                 'translation_domain' => 'SonataAdminBundle',
@@ -3132,12 +3162,16 @@ EOT;
         $mapper = new ListMapper($this->getListBuilder(), $this->list, $this);
 
         if (count($this->getBatchActions()) > 0) {
-            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance($this->getClass(), 'batch', array(
-                'label' => 'batch',
-                'code' => '_batch',
-                'sortable' => false,
-                'virtual_field' => true,
-            ));
+            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
+                $this->getClass(),
+                'batch',
+                array(
+                    'label' => 'batch',
+                    'code' => '_batch',
+                    'sortable' => false,
+                    'virtual_field' => true,
+                )
+            );
 
             $fieldDescription->setAdmin($this);
             $fieldDescription->setTemplate($this->getTemplate('batch'));
@@ -3152,12 +3186,16 @@ EOT;
         }
 
         if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
-            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance($this->getClass(), 'select', array(
-                'label' => false,
-                'code' => '_select',
-                'sortable' => false,
-                'virtual_field' => false,
-            ));
+            $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
+                $this->getClass(),
+                'select',
+                array(
+                    'label' => false,
+                    'code' => '_select',
+                    'sortable' => false,
+                    'virtual_field' => false,
+                )
+            );
 
             $fieldDescription->setAdmin($this);
             $fieldDescription->setTemplate($this->getTemplate('select'));
@@ -3211,7 +3249,11 @@ EOT;
             return $this->subClasses[$name];
         }
 
-        throw new \RuntimeException(sprintf('Unable to find the subclass `%s` for admin `%s`', $name, get_class($this)));
+        throw new \RuntimeException(sprintf(
+            'Unable to find the subclass `%s` for admin `%s`',
+            $name,
+            get_class($this)
+        ));
     }
 
     /**

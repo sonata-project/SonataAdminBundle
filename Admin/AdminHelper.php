@@ -103,6 +103,8 @@ class AdminHelper
      * @param string         $elementId
      *
      * @return array
+     *
+     * @throws \Exception
      */
     public function appendFormFieldElement(AdminInterface $admin, $subject, $elementId)
     {
@@ -208,7 +210,9 @@ class AdminHelper
                 $method = sprintf('add%s', Inflector::classify(Inflector::singularize($mapping['fieldName'])));
 
                 if (!method_exists($object, $method)) {
-                    throw new \RuntimeException(sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object)));
+                    throw new \RuntimeException(
+                        sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object))
+                    );
                 }
             }
         }
@@ -246,7 +250,8 @@ class AdminHelper
     /**
      * Get access path to element which works with PropertyAccessor.
      *
-     * @param string $elementId expects string in format used in form id field. (uniqueIdentifier_model_sub_model or uniqueIdentifier_model_1_sub_model etc.)
+     * @param string $elementId expects string in format used in form id field.
+     *                          (uniqueIdentifier_model_sub_model or uniqueIdentifier_model_1_sub_model etc.)
      * @param mixed  $entity
      *
      * @return string
@@ -275,7 +280,9 @@ class AdminHelper
         }
 
         if (!empty($currentPath)) {
-            throw new \Exception(sprintf('Could not get element id from %s Failing part: %s', $elementId, $currentPath));
+            throw new \Exception(
+                sprintf('Could not get element id from %s Failing part: %s', $elementId, $currentPath)
+            );
         }
 
         return $totalPath;

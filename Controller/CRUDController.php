@@ -22,7 +22,6 @@ use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -111,6 +110,9 @@ class CRUDController extends Controller
             'form' => $formView,
             'datagrid' => $datagrid,
             'csrf_token' => $this->getCsrfToken('sonata.batch'),
+            'export_formats' => $this->has('sonata.admin.admin_exporter') ?
+                $this->get('sonata.admin.admin_exporter')->getAvailableFormats($this->admin) :
+                $this->admin->getExportFormats(),
         ), null);
     }
 
@@ -385,7 +387,7 @@ class CRUDController extends Controller
         $isRelevantAction = sprintf('batchAction%sIsRelevant', $camelizedAction);
 
         if (method_exists($this, $isRelevantAction)) {
-            $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $allElements);
+            $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $allElements, $request);
         } else {
             $nonRelevantMessage = count($idx) != 0 || $allElements; // at least one item is selected
         }
@@ -419,6 +421,7 @@ class CRUDController extends Controller
                 $this->admin->getTranslationDomain();
 
             $formView = $datagrid->getForm()->createView();
+            $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
             return $this->render($this->admin->getTemplate('batch_confirmation'), array(
                 'action' => 'list',
@@ -450,7 +453,7 @@ class CRUDController extends Controller
             $query = null;
         }
 
-        return call_user_func(array($this, $finalAction), $query);
+        return call_user_func(array($this, $finalAction), $query, $request);
     }
 
     /**
@@ -800,7 +803,29 @@ class CRUDController extends Controller
 
         $format = $request->get('format');
 
-        $allowedExportFormats = (array) $this->admin->getExportFormats();
+        // NEXT_MAJOR: remove the check
+        if (!$this->has('sonata.admin.admin_exporter')) {
+            @trigger_error(
+                'Not registering the exporter bundle is deprecated since version 3.x.'
+                .' You must register it to be able to use the export action in 4.0.',
+                E_USER_DEPRECATED
+            );
+            $allowedExportFormats = (array) $this->admin->getExportFormats();
+
+            $class = $this->admin->getClass();
+            $filename = sprintf(
+                'export_%s_%s.%s',
+                strtolower(substr($class, strripos($class, '\\') + 1)),
+                date('Y_m_d_H_i_s', strtotime('now')),
+                $format
+            );
+            $exporter = $this->get('sonata.admin.exporter');
+        } else {
+            $adminExporter = $this->get('sonata.admin.admin_exporter');
+            $allowedExportFormats = $adminExporter->getAvailableFormats($this->admin);
+            $filename = $adminExporter->getExportFilename($this->admin, $format);
+            $exporter = $this->get('sonata.exporter.exporter');
+        }
 
         if (!in_array($format, $allowedExportFormats)) {
             throw new \RuntimeException(
@@ -813,14 +838,7 @@ class CRUDController extends Controller
             );
         }
 
-        $filename = sprintf(
-            'export_%s_%s.%s',
-            strtolower(substr($this->admin->getClass(), strripos($this->admin->getClass(), '\\') + 1)),
-            date('Y_m_d_H_i_s', strtotime('now')),
-            $format
-        );
-
-        return $this->get('sonata.admin.exporter')->getResponse(
+        return $exporter->getResponse(
             $format,
             $filename,
             $this->admin->getDataSourceIterator()
@@ -1081,7 +1099,7 @@ class CRUDController extends Controller
 
         if (!$url) {
             foreach (array('edit', 'show') as $route) {
-                if ($this->admin->hasRoute($route) && $this->admin->isGranted(strtoupper($route), $object)) {
+                if ($this->admin->hasRoute($route) && $this->admin->hasAccess($route, $object)) {
                     $url = $this->admin->generateObjectUrl($route, $object);
                     break;
                 }
@@ -1225,8 +1243,7 @@ class CRUDController extends Controller
     /**
      * Validate CSRF token for action without form.
      *
-     * @param string  $intention
-     * @param Request $request
+     * @param string $intention
      *
      * @throws HttpException
      */

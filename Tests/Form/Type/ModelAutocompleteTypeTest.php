@@ -20,7 +20,7 @@ class ModelAutocompleteTypeTest extends TypeTestCase
     public function testGetDefaultOptions()
     {
         $type = new ModelAutocompleteType();
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
         $optionResolver = new OptionsResolver();
 
         if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {

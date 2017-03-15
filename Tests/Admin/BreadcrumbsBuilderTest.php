@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\DummySubject;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -24,7 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Grégoire Paris <postmaster@greg0ire.fr>
  */
-class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
+class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @group legacy
@@ -52,19 +53,19 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $admin->initialize();
         $commentAdmin->setCurrentChild($subCommentAdmin);
 
-        $menuFactory = $this->getMock('Knp\Menu\FactoryInterface');
-        $menu = $this->getMock('Knp\Menu\ItemInterface');
-        $translatorStrategy = $this->getMock(
+        $menuFactory = $this->getMockForAbstractClass('Knp\Menu\FactoryInterface');
+        $menu = $this->getMockForAbstractClass('Knp\Menu\ItemInterface');
+        $translatorStrategy = $this->getMockForAbstractClass(
             'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
         );
-        $routeGenerator = $this->getMock(
+        $routeGenerator = $this->getMockForAbstractClass(
             'Sonata\AdminBundle\Route\RouteGeneratorInterface'
         );
-        $modelManager = $this->getMock(
+        $modelManager = $this->getMockForAbstractClass(
             'Sonata\AdminBundle\Model\ModelManagerInterface'
         );
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())
             ->method('getParameter')
             ->with('sonata.admin.configuration.breadcrumbs')
@@ -108,53 +109,43 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
             ->with('sonata_admin_dashboard')
             ->will($this->returnValue('http://somehost.com'));
 
-        $translatorStrategy->expects($this->exactly(18))
+        $translatorStrategy->expects($this->exactly(13))
             ->method('getLabel')
             ->withConsecutive(
-                array('dashboard'),
                 array('DummySubject_list'),
                 array('Comment_list'),
                 array('Comment_repost'),
 
-                array('dashboard'),
                 array('DummySubject_list'),
                 array('Comment_list'),
                 array('Comment_flag'),
 
-                array('dashboard'),
                 array('DummySubject_list'),
                 array('Comment_list'),
                 array('Comment_edit'),
 
-                array('dashboard'),
                 array('DummySubject_list'),
                 array('Comment_list'),
 
-                array('dashboard'),
                 array('DummySubject_list'),
                 array('Comment_list')
             )
             ->will($this->onConsecutiveCalls(
-                'someLabel',
                 'someOtherLabel',
                 'someInterestingLabel',
                 'someFancyLabel',
 
-                'someCoolLabel',
                 'someTipTopLabel',
                 'someFunkyLabel',
                 'someAwesomeLabel',
 
-                'someLikeableLabel',
                 'someMildlyInterestingLabel',
                 'someWTFLabel',
                 'someBadLabel',
 
-                'someBoringLabel',
                 'someLongLabel',
                 'someEndlessLabel',
 
-                'someAlmostThereLabel',
                 'someOriginalLabel',
                 'someOkayishLabel'
             ));
@@ -162,30 +153,30 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $menu->expects($this->exactly(24))
             ->method('addChild')
             ->withConsecutive(
-                array('someLabel'),
+                array('link_breadcrumb_dashboard'),
                 array('someOtherLabel'),
                 array('dummy subject representation'),
                 array('someInterestingLabel'),
                 array('someFancyLabel'),
 
-                array('someCoolLabel'),
+                array('link_breadcrumb_dashboard'),
                 array('someTipTopLabel'),
                 array('dummy subject representation'),
                 array('someFunkyLabel'),
                 array('someAwesomeLabel'),
 
-                array('someLikeableLabel'),
+                array('link_breadcrumb_dashboard'),
                 array('someMildlyInterestingLabel'),
                 array('dummy subject representation'),
                 array('someWTFLabel'),
                 array('someBadLabel'),
 
-                array('someBoringLabel'),
+                array('link_breadcrumb_dashboard'),
                 array('someLongLabel'),
                 array('dummy subject representation'),
                 array('someEndlessLabel'),
 
-                array('someAlmostThereLabel'),
+                array('link_breadcrumb_dashboard'),
                 array('someOriginalLabel'),
                 array('dummy subject representation'),
                 array('someOkayishLabel'),
@@ -225,12 +216,12 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $commentAdmin->initialize();
         $admin->initialize();
 
-        $menuFactory = $this->getMock('Knp\Menu\FactoryInterface');
-        $menu = $this->getMock('Knp\Menu\ItemInterface');
-        $translatorStrategy = $this->getMock(
+        $menuFactory = $this->getMockForAbstractClass('Knp\Menu\FactoryInterface');
+        $menu = $this->getMockForAbstractClass('Knp\Menu\ItemInterface');
+        $translatorStrategy = $this->getMockForAbstractClass(
             'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
         );
-        $routeGenerator = $this->getMock(
+        $routeGenerator = $this->getMockForAbstractClass(
             'Sonata\AdminBundle\Route\RouteGeneratorInterface'
         );
 
@@ -246,35 +237,32 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $translatorStrategy->expects($this->any())
             ->method('getLabel')
             ->withConsecutive(
-                array('dashboard'),
                 array('DummySubject_list'),
                 array('DummySubject_repost'),
 
-                array('dashboard'),
                 array('DummySubject_list')
             )
             ->will($this->onConsecutiveCalls(
-                'someLabel',
                 'someOtherLabel',
                 'someInterestingLabel',
-                'someFancyLabel',
+
                 'someCoolLabel'
             ));
 
         $menu->expects($this->any())
             ->method('addChild')
             ->withConsecutive(
-                array('someLabel'),
+                array('link_breadcrumb_dashboard'),
                 array('someOtherLabel'),
                 array('someInterestingLabel'),
-                array('someFancyLabel'),
 
+                array('link_breadcrumb_dashboard'),
                 array('someCoolLabel'),
                 array('dummy subject representation')
             )
             ->will($this->returnValue($menu));
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())
             ->method('getParameter')
             ->with('sonata.admin.configuration.breadcrumbs')
@@ -325,17 +313,12 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $labelTranslatorStrategy = $this->prophesize(
             'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
         );
-        $labelTranslatorStrategy->getLabel(
-            'dashboard',
-            'breadcrumb',
-            'link'
-        )->willReturn('Dashboard');
 
         $routeGenerator = $this->prophesize('Sonata\AdminBundle\Route\RouteGeneratorInterface');
         $routeGenerator->generate('sonata_admin_dashboard')->willReturn('/dashboard');
 
         $admin->getRouteGenerator()->willReturn($routeGenerator->reveal());
-        $menu->addChild('Dashboard', array(
+        $menu->addChild('link_breadcrumb_dashboard', array(
             'uri' => '/dashboard',
             'extras' => array(
                 'translation_domain' => 'SonataAdminBundle',
@@ -362,7 +345,7 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
             ->willReturn($labelTranslatorStrategy->reveal());
         $childAdmin->getClassnameLabel()->willReturn('my_child_class_name');
         $childAdmin->hasRoute('list')->willReturn(true);
-        $childAdmin->isGranted('LIST')->willReturn(true);
+        $childAdmin->hasAccess('list')->willReturn(true);
         $childAdmin->generateUrl('list')->willReturn('/myadmin/my-object/mychildadmin/list');
         $childAdmin->getCurrentChildAdmin()->willReturn(null);
         $childAdmin->hasSubject()->willReturn(true);
@@ -375,7 +358,7 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
 
         $admin->trans('My class', array(), null)->willReturn('Ma classe');
         $admin->hasRoute('list')->willReturn(true);
-        $admin->isGranted('LIST')->willReturn(true);
+        $admin->hasAccess('list')->willReturn(true);
         $admin->generateUrl('list')->willReturn('/myadmin/list');
         $admin->getCurrentChildAdmin()->willReturn($childAdmin->reveal());
         $request = $this->prophesize('Symfony\Component\HttpFoundation\Request');
@@ -383,7 +366,7 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
 
         $admin->getIdParameter()->willReturn('slug');
         $admin->hasRoute('edit')->willReturn(true);
-        $admin->isGranted('EDIT')->willReturn(true);
+        $admin->hasAccess('edit')->willReturn(true);
         $admin->generateUrl('edit', array('id' => 'my-object'))->willReturn('/myadmin/my-object');
         $admin->getRequest()->willReturn($request->reveal());
         $admin->hasSubject()->willReturn(true);
@@ -452,16 +435,11 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $labelTranslatorStrategy = $this->prophesize(
             'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
         );
-        $labelTranslatorStrategy->getLabel(
-            'dashboard',
-            'breadcrumb',
-            'link'
-        )->willReturn('Dashboard');
 
         $routeGenerator = $this->prophesize('Sonata\AdminBundle\Route\RouteGeneratorInterface');
         $routeGenerator->generate('sonata_admin_dashboard')->willReturn('/dashboard');
         $admin->getRouteGenerator()->willReturn($routeGenerator->reveal());
-        $menu->addChild('Dashboard', array(
+        $menu->addChild('link_breadcrumb_dashboard', array(
             'uri' => '/dashboard',
             'extras' => array(
                 'translation_domain' => 'SonataAdminBundle',
@@ -505,7 +483,7 @@ class BreadcrumbsBuilderTest extends \PHPUnit_Framework_TestCase
         $childAdmin->hasSubject()->willReturn(false);
 
         $admin->hasRoute('list')->willReturn(true);
-        $admin->isGranted('LIST')->willReturn(true);
+        $admin->hasAccess('list')->willReturn(true);
         $admin->generateUrl('list')->willReturn('/myadmin/list');
         $admin->getCurrentChildAdmin()->willReturn(
             $action == 'my_action' ? $childAdmin->reveal() : false

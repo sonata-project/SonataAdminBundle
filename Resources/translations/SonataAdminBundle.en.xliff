@@ -86,6 +86,10 @@
                 <source>title_create</source>
                 <target>Create</target>
             </trans-unit>
+            <trans-unit id="title_show">
+                <source>title_show</source>
+                <target>Show "%name%"</target>
+            </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
                 <target>Dashboard</target>
@@ -187,7 +191,7 @@
                 <target>Form is not available.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
-                <source>breadcrumb.link_dashboard</source>
+                <source>link_breadcrumb_dashboard</source>
                 <target><![CDATA[<i class="fa fa-home"></i>]]></target>
             </trans-unit>
             <trans-unit id="title_delete">
@@ -204,7 +208,7 @@
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
-                <target>Confirm batch action '%action%'</target>
+                <target>Confirm batch action "%action%"</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>

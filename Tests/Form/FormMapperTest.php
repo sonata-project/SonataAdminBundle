@@ -13,9 +13,10 @@ namespace Sonata\AdminBundle\Tests\Form;
 
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Form\FormBuilder;
 
-class FormMapperTest extends \PHPUnit_Framework_TestCase
+class FormMapperTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var \Sonata\AdminBundle\Builder\FormContractorInterface
@@ -39,16 +40,16 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->contractor = $this->getMock('Sonata\AdminBundle\Builder\FormContractorInterface');
+        $this->contractor = $this->getMockForAbstractClass('Sonata\AdminBundle\Builder\FormContractorInterface');
 
-        $formFactory = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
-        $eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $formFactory = $this->getMockForAbstractClass('Symfony\Component\Form\FormFactoryInterface');
+        $eventDispatcher = $this->getMockForAbstractClass('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
         $formBuilder = new FormBuilder('test', 'stdClass', $eventDispatcher, $formFactory);
 
         $this->admin = new CleanAdmin('code', 'class', 'controller');
 
-        $this->modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $this->modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
 
         // php 5.3 BC
         $fieldDescription = $this->getFieldDescriptionMock();
@@ -65,7 +66,7 @@ class FormMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->admin->setModelManager($this->modelManager);
 
-        $labelTranslatorStrategy = $this->getMock('Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface');
+        $labelTranslatorStrategy = $this->getMockForAbstractClass('Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface');
         $this->admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
 
         $this->formMapper = new FormMapper(

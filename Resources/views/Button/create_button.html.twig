@@ -11,19 +11,20 @@ file that was distributed with this source code.
 
 {% if admin.hasAccess('create') and admin.hasRoute('create') %}
     {% if admin.subClasses is empty %}
-        <a class="sonata-action-element" href="{{ admin.generateUrl('create') }}">
-            <i class="fa fa-plus-circle" aria-hidden="true"></i>
-            {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }}</a>
+        <li>
+            <a class="sonata-action-element" href="{{ admin.generateUrl('create') }}">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }}
+            </a>
+        </li>
     {% else %}
-        <li class="divider" role="presentation"></li>
         {% for subclass in admin.subclasses|keys %}
             <li>
-                <a href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">
+                <a class="sonata-action-element" href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">
                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
                     {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }} {{ subclass|trans({}, admin.translationdomain) }}
                 </a>
             </li>
         {% endfor %}
-        <li class="divider" role="presentation"></li>
     {% endif %}
 {% endif %}

@@ -11,14 +11,12 @@ file that was distributed with this source code.
 
 <td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}"{% if field_description.options.row_align is defined %} style="text-align:{{ field_description.options.row_align }}"{% endif %}>
     {% set route = field_description.options.route.name|default(null) %}
-    {% set action = route == 'show' ? 'VIEW' : route|upper %}
 
     {% if
         field_description.options.identifier is defined
         and route
-        and action
         and admin.hasRoute(route)
-        and admin.isGranted(action, action in ['VIEW', 'EDIT'] ? object : null)
+        and admin.hasAccess(route, route in ['show', 'edit'] ? object : null)
     %}
         <a class="sonata-link-identifier" href="{{ admin.generateObjectUrl(route, object, field_description.options.route.parameters) }}">
             {%- block field %}
@@ -36,7 +34,7 @@ file that was distributed with this source code.
             {% endblock -%}
         </a>
     {% else %}
-        {% set isEditable = field_description.options.editable is defined and field_description.options.editable and admin.isGranted('EDIT', object) %}
+        {% set isEditable = field_description.options.editable is defined and field_description.options.editable and admin.hasAccess('edit', object) %}
         {% set xEditableType = field_description.type|sonata_xeditable_type %}
 
         {% if isEditable and xEditableType %}

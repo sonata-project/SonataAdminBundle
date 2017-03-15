@@ -40,19 +40,22 @@
         "symfony/twig-bridge": "^2.3.5 || ^3.0",
         "symfony/validator": "^2.3 || ^3.0",
         "twig/extensions": "^1.0",
-        "twig/twig": "^1.26"
+        "twig/twig": "^1.28 || ^2.0"
     },
     "require-dev": {
         "jms/di-extra-bundle": "^1.7",
         "jms/translation-bundle": "^1.2",
+        "matthiasnoback/symfony-dependency-injection-test": "^0.1 || ^1.0",
         "sensio/generator-bundle": "^2.3 || ^3.0",
         "sllh/php-cs-fixer-styleci-bridge": "^2.0",
+        "sonata-project/exporter": "^1.7",
         "sonata-project/intl-bundle": "^2.2.4",
         "symfony/phpunit-bridge": "^2.7 || ^3.0",
         "symfony/yaml": "^2.3 || ^3.0"
     },
     "conflict": {
-        "jms/di-extra-bundle": "<1.7.0"
+        "jms/di-extra-bundle": "<1.7.0",
+        "sonata-project/exporter": "1.6.0"
     },
     "suggest": {
         "jms/di-extra-bundle": "Annotations for Admin definition",
@@ -66,9 +69,6 @@
             "Tests/"
         ]
     },
-    "autoload-dev": {
-        "psr-4": { "Sonata\\AdminBundle\\Tests\\": "Tests/" }
-     },
     "config": {
         "sort-packages": true
     },

@@ -12,18 +12,19 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
 class BaseAdminModelManager_Admin extends AbstractAdmin
 {
 }
 
-class BaseAdminModelManagerTest extends \PHPUnit_Framework_TestCase
+class BaseAdminModelManagerTest extends PHPUnit_Framework_TestCase
 {
     public function testHook()
     {
-        $securityHandler = $this->getMock('Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface');
+        $securityHandler = $this->getMockForAbstractClass('Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface');
 
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
         $modelManager->expects($this->once())->method('create');
         $modelManager->expects($this->once())->method('update');
         $modelManager->expects($this->once())->method('delete');
@@ -41,7 +42,7 @@ class BaseAdminModelManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testObject()
     {
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
         $modelManager->expects($this->once())->method('find')->will($this->returnCallback(function ($class, $id) {
             if ($class != 'class') {
                 throw new \RuntimeException('Invalid class argument');
@@ -59,7 +60,7 @@ class BaseAdminModelManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateQuery()
     {
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
         $modelManager->expects($this->once())->method('createQuery')->will($this->returnCallback(function ($class) {
             if ($class != 'class') {
                 throw new \RuntimeException('Invalid class argument');
@@ -73,7 +74,7 @@ class BaseAdminModelManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testId()
     {
-        $modelManager = $this->getMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
         $modelManager->expects($this->exactly(2))->method('getNormalizedIdentifier');
 
         $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');

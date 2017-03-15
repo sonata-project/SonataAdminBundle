@@ -233,7 +233,7 @@ ACL
 ^^^
 
 Though the route linked by a menu may be protected the Tab Menu will not automatically check the ACl for you.
-The link will still appear unless you manually check it using the `isGranted` method:
+The link will still appear unless you manually check it using the `hasAccess` method:
 
 .. code-block:: php
 
@@ -245,7 +245,7 @@ The link will still appear unless you manually check it using the `isGranted` me
         $menu->addChild($this->trans('Show'), array('uri' => $admin->generateUrl('show', array('id' => $id))));
 
         // Link will only appear if access to ACL protected URL is granted
-        if ($this->isGranted('EDIT')) {
+        if ($this->hasAccess('edit')) {
             $menu->addChild($this->trans('Edit'), array('uri' => $admin->generateUrl('edit', array('id' => $id))));
         }
     }
@@ -359,10 +359,8 @@ You can add custom items to the actions menu for a specific action by overriding
 
 .. code-block:: php
 
-    public function configureActionButtons($action, $object = null)
+    public function configureActionButtons(AdminInterface $admin, $list, $action, $object)
     {
-        $list = parent::configureActionButtons($action, $object);
-
         if (in_array($action, array('show', 'edit', 'acl')) && $object) {
             $list['custom'] = array(
                 'template' => 'AppBundle:Button:custom_button.html.twig',

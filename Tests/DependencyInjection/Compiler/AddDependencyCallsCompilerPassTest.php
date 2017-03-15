@@ -13,13 +13,14 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 
 /**
  * @author Tiago Garcia
  */
-class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
+class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
 {
     /** @var SonataAdminExtension $extension */
     private $extension;
@@ -37,12 +38,12 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
 
     public function testTranslatorDisabled()
     {
-        $this->setExpectedException(
+        $this->expectException(
           'RuntimeException', 'The "translator" service is not yet enabled.
                 It\'s required by SonataAdmin to display all labels properly.
 
                 To learn how to enable the translator service please visit:
-                http://symfony.com/doc/current/book/translation.html#book-translation-configuration
+                http://symfony.com/doc/current/translation.html#configuration
              '
         );
 
@@ -337,15 +338,9 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
 
         $compilerPass = new AddDependencyCallsCompilerPass();
 
-        try {
-            $compilerPass->process($container);
-        } catch (\RuntimeException $e) {
-            $this->assertSame('You can\'t use "on_top" option with multiple same name groups.', $e->getMessage());
+        $this->expectException('\RuntimeException', 'You can\'t use "on_top" option with multiple same name groups.');
 
-            return;
-        }
-
-        $this->fail('An expected exception has not been raised.');
+        $compilerPass->process($container);
     }
 
     public function testProcessMultipleOnTopOptionsAdditionalGroup()
@@ -379,15 +374,9 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
 
         $compilerPass = new AddDependencyCallsCompilerPass();
 
-        try {
-            $compilerPass->process($container);
-        } catch (\RuntimeException $e) {
-            $this->assertSame('You can\'t use "on_top" option with multiple same name groups.', $e->getMessage());
+        $this->expectException('\RuntimeException', 'You can\'t use "on_top" option with multiple same name groups.');
 
-            return;
-        }
-
-        $this->fail('An expected exception has not been raised.');
+        $compilerPass->process($container);
     }
 
     public function testProcessMultipleOnTopOptionsInServiceDefinition()
@@ -406,15 +395,9 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportOne', 'SonataAdminBundle:CRUD'))
             ->addTag('sonata.admin', array('group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true));
 
-        try {
-            $compilerPass->process($container);
-        } catch (\RuntimeException $e) {
-            $this->assertSame('You can\'t use "on_top" option with multiple same name groups.', $e->getMessage());
+        $this->expectException('\RuntimeException', 'You can\'t use "on_top" option with multiple same name groups.');
 
-            return;
-        }
-
-        $this->fail('An expected exception has not been raised.');
+        $compilerPass->process($container);
     }
 
     public function testProcessMultipleOnTopOptionsInServiceDefinition1()
@@ -433,15 +416,9 @@ class AddDependencyCallsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportOne', 'SonataAdminBundle:CRUD'))
             ->addTag('sonata.admin', array('group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => false));
 
-        try {
-            $compilerPass->process($container);
-        } catch (\RuntimeException $e) {
-            $this->assertSame('You can\'t use "on_top" option with multiple same name groups.', $e->getMessage());
+        $this->expectException('\RuntimeException', 'You can\'t use "on_top" option with multiple same name groups.');
 
-            return;
-        }
-
-        $this->fail('An expected exception has not been raised.');
+        $compilerPass->process($container);
     }
 
     public function testProcessMultipleOnTopOptionsInServiceDefinition2()

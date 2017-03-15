@@ -59,7 +59,11 @@ class HelperController
     public function __construct(\Twig_Environment $twig, Pool $pool, AdminHelper $helper, $validator)
     {
         if (!($validator instanceof ValidatorInterface) && !($validator instanceof LegacyValidatorInterface)) {
-            throw new \InvalidArgumentException('Argument 4 is an instance of '.get_class($validator).', expecting an instance of \Symfony\Component\Validator\Validator\ValidatorInterface or \Symfony\Component\Validator\ValidatorInterface');
+            throw new \InvalidArgumentException(
+                'Argument 4 is an instance of '.get_class($validator).', expecting an instance of'
+                .' \Symfony\Component\Validator\Validator\ValidatorInterface or'
+                .' \Symfony\Component\Validator\ValidatorInterface'
+            );
         }
 
         $this->twig = $twig;
@@ -136,7 +140,9 @@ class HelperController
         if ($objectId) {
             $subject = $admin->getModelManager()->find($admin->getClass(), $objectId);
             if (!$subject) {
-                throw new NotFoundHttpException(sprintf('Unable to find the object id: %s, class: %s', $objectId, $admin->getClass()));
+                throw new NotFoundHttpException(
+                    sprintf('Unable to find the object id: %s, class: %s', $objectId, $admin->getClass())
+                );
             }
         } else {
             $subject = $admin->getNewInstance();
@@ -147,6 +153,7 @@ class HelperController
         $formBuilder = $admin->getFormBuilder();
 
         $form = $formBuilder->getForm();
+        $form->setData($subject);
         $form->handleRequest($request);
 
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
@@ -242,7 +249,7 @@ class HelperController
         }
 
         // check user permission
-        if (false === $admin->isGranted('EDIT', $object)) {
+        if (false === $admin->hasAccess('edit', $object)) {
             return new JsonResponse(array('status' => 'KO', 'message' => 'Invalid permissions'));
         }
 
@@ -257,7 +264,10 @@ class HelperController
         }
 
         if (!$fieldDescription->getOption('editable')) {
-            return new JsonResponse(array('status' => 'KO', 'message' => 'The field cannot be edit, editable option must be set to true'));
+            return new JsonResponse(array(
+                'status' => 'KO',
+                'message' => 'The field cannot be edit, editable option must be set to true',
+            ));
         }
 
         $propertyPath = new PropertyPath($field);
@@ -274,6 +284,11 @@ class HelperController
         // Handle date type has setter expect a DateTime object
         if ('' !== $value && $fieldDescription->getType() == 'date') {
             $value = new \DateTime($value);
+        }
+
+        // Handle boolean type transforming the value into a boolean
+        if ('' !== $value && $fieldDescription->getType() == 'boolean') {
+            $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
         }
 
         $this->pool->getPropertyAccessor()->setValue($object, $propertyPath, '' !== $value ? $value : null);
@@ -317,14 +332,9 @@ class HelperController
         $admin->setRequest($request);
         $context = $request->get('_context', '');
 
-        if ($context === 'filter' && false === $admin->isGranted('LIST')) {
-            throw new AccessDeniedException();
-        }
-
-        if ($context !== 'filter'
-            && false === $admin->isGranted('CREATE')
-            && false === $admin->isGranted('EDIT')
-        ) {
+        if ($context === 'filter') {
+            $admin->checkAccess('list');
+        } elseif (!$admin->hasAccess('create') && !$admin->hasAccess('edit')) {
             throw new AccessDeniedException();
         }
 
@@ -348,7 +358,9 @@ class HelperController
             $formAutocomplete = $admin->getForm()->get($fieldDescription->getName());
 
             if ($formAutocomplete->getConfig()->getAttribute('disabled')) {
-                throw new AccessDeniedException('Autocomplete list can`t be retrieved because the form element is disabled or read_only.');
+                throw new AccessDeniedException(
+                    'Autocomplete list can`t be retrieved because the form element is disabled or read_only.'
+                );
             }
 
             $property = $formAutocomplete->getConfig()->getAttribute('property');
@@ -364,9 +376,7 @@ class HelperController
         $targetAdmin = $fieldDescription->getAssociationAdmin();
 
         // check user permission
-        if (false === $targetAdmin->isGranted('LIST')) {
-            throw new AccessDeniedException();
-        }
+        $targetAdmin->checkAccess('list');
 
         if (mb_strlen($searchText, 'UTF-8') < $minimumInputLength) {
             return new JsonResponse(array('status' => 'KO', 'message' => 'Too short search string.'), 403);
@@ -386,7 +396,11 @@ class HelperController
                 // multiple properties
                 foreach ($property as $prop) {
                     if (!$datagrid->hasFilter($prop)) {
-                        throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $prop, get_class($targetAdmin)));
+                        throw new \RuntimeException(sprintf(
+                            'To retrieve autocomplete items,'
+                            .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
+                            $prop, get_class($targetAdmin)
+                        ));
                     }
 
                     $filter = $datagrid->getFilter($prop);
@@ -396,7 +410,12 @@ class HelperController
                 }
             } else {
                 if (!$datagrid->hasFilter($property)) {
-                    throw new \RuntimeException(sprintf('To retrieve autocomplete items, you should add filter "%s" to "%s" in configureDatagridFilters() method.', $property, get_class($targetAdmin)));
+                    throw new \RuntimeException(sprintf(
+                        'To retrieve autocomplete items,'
+                        .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
+                        $property,
+                        get_class($targetAdmin)
+                    ));
                 }
 
                 $datagrid->setValue($property, null, $searchText);

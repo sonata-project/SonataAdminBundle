@@ -28,7 +28,7 @@ file that was distributed with this source code.
             {% if display %}
                 {% for admin in group.items %}
                     {% set count = count + 1 %}
-                    {% if admin.hasRoute('create') and admin.isGranted('CREATE') or admin.hasRoute('list') and admin.isGranted('LIST') %}
+                    {% if admin.hasRoute('create') and admin.hasAccess('create') or admin.hasRoute('list') and admin.hasAccess('list') %}
                         {{ sonata_block_render({
                             'type': 'sonata.admin.block.search_result'
                         }, {

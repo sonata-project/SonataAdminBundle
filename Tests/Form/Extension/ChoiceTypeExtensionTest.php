@@ -12,15 +12,16 @@
 namespace Sonata\AdminBundle\Tests\Form\Extension;
 
 use Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Sonata\CoreBundle\Form\Extension\DependencyInjectionExtension;
 use Symfony\Component\Form\Forms;
 
-class ChoiceTypeExtensionTest extends \PHPUnit_Framework_TestCase
+class ChoiceTypeExtensionTest extends PHPUnit_Framework_TestCase
 {
     protected function setup()
     {
         if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+            $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
             $container->expects($this->any())->method('has')->will($this->returnValue(true));
             $container->expects($this->any())->method('get')
                 ->with($this->equalTo('sonata.admin.form.choice_extension'))

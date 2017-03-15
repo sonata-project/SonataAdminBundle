@@ -14,8 +14,9 @@ namespace Sonata\AdminBundle\Tests\Event;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Event\ConfigureQueryEvent;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class ConfigureQueryEventTest extends \PHPUnit_Framework_TestCase
+class ConfigureQueryEventTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var ConfigureQueryEvent
@@ -34,8 +35,8 @@ class ConfigureQueryEventTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
-        $this->proxyQuery = $this->getMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $this->admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->proxyQuery = $this->getMockForAbstractClass('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
 
         $this->event = new ConfigureQueryEvent($this->admin, $this->proxyQuery, 'Foo');
     }

@@ -13,6 +13,12 @@ namespace Sonata\AdminBundle\Export;
 
 use Sonata\CoreBundle\Exporter\Exporter as BaseExporter;
 
+@trigger_error(
+    'The '.__NAMESPACE__.'\Exporter class is deprecated since version 3.x and will be removed in 4.0.'.
+    ' Use Exporter\Exporter instead',
+    E_USER_DEPRECATED
+);
+
 /**
  * NEXT_MAJOR: remove this class.
  *

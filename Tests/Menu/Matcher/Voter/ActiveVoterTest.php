@@ -43,11 +43,20 @@ class ActiveVoterTest extends AbstractVoterTest
      */
     protected function createItem($data)
     {
-        $item = $this->getMock('Knp\Menu\ItemInterface');
+        $item = $this->getMockForAbstractClass('Knp\Menu\ItemInterface');
         $item->expects($this->any())
              ->method('getExtra')
-             ->with('active')
-             ->will($this->returnValue($data))
+             ->with($this->logicalOr(
+                $this->equalTo('active'),
+                $this->equalTo('sonata_admin')
+             ))
+             ->will($this->returnCallback(function ($name) use ($data) {
+                 if ('active' === $name) {
+                     return $data;
+                 }
+
+                 return true;
+             }))
         ;
 
         return $item;

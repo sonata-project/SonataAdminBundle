@@ -21,8 +21,6 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Validator\ErrorElement;
 
 /**
- * Interface AdminExtensionInterface.
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface AdminExtensionInterface

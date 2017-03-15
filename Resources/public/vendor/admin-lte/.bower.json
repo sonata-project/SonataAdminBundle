@@ -30,12 +30,12 @@
     "composer.json",
     "documentation"
   ],
-  "version": "2.3.6",
-  "_release": "2.3.6",
+  "version": "2.3.11",
+  "_release": "2.3.11",
   "_resolution": {
     "type": "version",
-    "tag": "v2.3.6",
-    "commit": "be11566d9539370b196ac85f22a6baf9f42c87cb"
+    "tag": "v2.3.11",
+    "commit": "2be703222af2edcb87e562d3da2299e4352bff8a"
   },
   "_source": "https://github.com/almasaeed2010/AdminLTE.git",
   "_target": "^2.3",

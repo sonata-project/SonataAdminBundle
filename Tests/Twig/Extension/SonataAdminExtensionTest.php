@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
+use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
@@ -35,7 +36,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
+class SonataAdminExtensionTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var SonataAdminExtension
@@ -89,15 +90,19 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        // NEXT_MAJOR: remove this block when dropping symfony < 2.7 support
+        if (!class_exists('Symfony\Bridge\Twig\Extension\AssetExtension')) {
+            $this->markTestSkipped();
+        }
         date_default_timezone_set('Europe/London');
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $this->pool = new Pool($container, '', '');
         $this->pool->setAdminServiceIds(array('sonata_admin_foo_service'));
         $this->pool->setAdminClasses(array('fooClass' => array('sonata_admin_foo_service')));
 
-        $this->logger = $this->getMock('Psr\Log\LoggerInterface');
+        $this->logger = $this->getMockForAbstractClass('Psr\Log\LoggerInterface');
         $this->xEditableTypeMapping = array(
             'choice' => 'select',
             'boolean' => 'select',
@@ -160,7 +165,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
         $this->object = new \stdClass();
 
         // initialize admin
-        $this->admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->admin = $this->createMock('Sonata\AdminBundle\Admin\AbstractAdmin');
 
         $this->admin->expects($this->any())
             ->method('getCode')
@@ -182,9 +187,9 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
                 return $translator->trans($id, $parameters, $domain);
             }));
 
-        $this->adminBar = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->adminBar = $this->createMock('Sonata\AdminBundle\Admin\AbstractAdmin');
         $this->adminBar->expects($this->any())
-            ->method('isGranted')
+            ->method('hasAccess')
             ->will($this->returnValue(true));
         $this->adminBar->expects($this->any())
             ->method('getNormalizedIdentifier')
@@ -208,7 +213,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             }));
 
         // initialize field description
-        $this->fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $this->fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
 
         $this->fieldDescription->expects($this->any())
             ->method('getName')
@@ -233,7 +238,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(array('context' => 'foo')));
 
         $this->admin->expects($this->any())
-            ->method('isGranted')
+            ->method('hasAccess')
             ->will($this->returnValue(true));
 
         $this->admin->expects($this->any())
@@ -314,7 +319,7 @@ class SonataAdminExtensionTest extends \PHPUnit_Framework_TestCase
     public function testDeprecatedRenderListElement($expected, $value, array $options)
     {
         $this->admin->expects($this->any())
-            ->method('isGranted')
+            ->method('hasAccess')
             ->will($this->returnValue(true));
 
         $this->admin->expects($this->any())
@@ -975,7 +980,7 @@ EOT
         data-title="Data"
         data-pk="12345"
         data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
-        data-source="[{&quot;value&quot;:&quot;Foo&quot;,&quot;text&quot;:&quot;action_delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
+        data-source="[{&quot;value&quot;:&quot;Foo&quot;,&quot;text&quot;:&quot;Delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
          Delete
     </span>
 </td>
@@ -1026,6 +1031,22 @@ EOT
                 'url',
                 'https://example.com',
                 array(),
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                <a href="https://example.com" target="_blank">https://example.com</a>
+                </td>',
+                'url',
+                'https://example.com',
+                array('attributes' => array('target' => '_blank')),
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                <a href="https://example.com" target="_blank" class="fooLink">https://example.com</a>
+                </td>',
+                'url',
+                'https://example.com',
+                array('attributes' => array('target' => '_blank', 'class' => 'fooLink')),
             ),
             array(
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
@@ -1563,6 +1584,18 @@ EOT
                 array('safe' => false),
             ),
             array(
+                '<th>Data</th> <td><a href="http://example.com" target="_blank">http://example.com</a></td>',
+                'url',
+                'http://example.com',
+                array('safe' => false, 'attributes' => array('target' => '_blank')),
+            ),
+            array(
+                '<th>Data</th> <td><a href="http://example.com" target="_blank" class="fooLink">http://example.com</a></td>',
+                'url',
+                'http://example.com',
+                array('safe' => false, 'attributes' => array('target' => '_blank', 'class' => 'fooLink')),
+            ),
+            array(
                 '<th>Data</th> <td><a href="https://example.com">https://example.com</a></td>',
                 'url',
                 'https://example.com',
@@ -1910,7 +1943,7 @@ EOT
     public function testGetValueFromFieldDescription()
     {
         $object = new \stdClass();
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
 
         $fieldDescription->expects($this->any())
             ->method('getValue')
@@ -1921,27 +1954,21 @@ EOT
 
     public function testGetValueFromFieldDescriptionWithRemoveLoopException()
     {
-        $object = $this->getMock('\ArrayAccess');
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $object = $this->createMock('\ArrayAccess');
+        $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
 
-        try {
-            $this->assertSame(
-                'anything',
-                $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription, array('loop' => true))
-            );
-        } catch (\RuntimeException $e) {
-            $this->assertContains('remove the loop requirement', $e->getMessage());
+        $this->expectException('\RuntimeException', 'remove the loop requirement');
 
-            return;
-        }
-
-        $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+        $this->assertSame(
+            'anything',
+            $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription, array('loop' => true))
+        );
     }
 
     public function testGetValueFromFieldDescriptionWithNoValueException()
     {
         $object = new \stdClass();
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
 
         $fieldDescription->expects($this->any())
             ->method('getValue')
@@ -1959,7 +1986,7 @@ EOT
     public function testGetValueFromFieldDescriptionWithNoValueExceptionNewAdminInstance()
     {
         $object = new \stdClass();
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
 
         $fieldDescription->expects($this->any())
             ->method('getValue')
@@ -2083,7 +2110,9 @@ EOT
                 }
             }));
 
-        $element = $this->getMock('stdClass', array('customToString'));
+        $element = $this->getMockBuilder('stdClass')
+            ->setMethods(array('customToString'))
+            ->getMock();
         $element->expects($this->any())
             ->method('customToString')
             ->will($this->returnValue('fooBar'));
@@ -2106,19 +2135,9 @@ EOT
             }));
 
         $element = new \stdClass();
+        $this->expectException('\RuntimeException', 'You must define an `associated_property` option or create a `stdClass::__toString');
 
-        try {
-            $this->twigExtension->renderRelationElement($element, $this->fieldDescription);
-        } catch (\RuntimeException $e) {
-            $this->assertContains(
-                'You must define an `associated_property` option or create a `stdClass::__toString',
-                $e->getMessage()
-            );
-
-            return;
-        }
-
-        $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
+        $this->twigExtension->renderRelationElement($element, $this->fieldDescription);
     }
 
     public function testRenderRelationElementWithPropertyPath()
@@ -2239,7 +2258,7 @@ EOT
      */
     public function testGetXEditableChoicesIsIdempotent(array $input)
     {
-        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $fieldDescription->expects($this->exactly(2))
             ->method('getOption')
             ->withConsecutive(
