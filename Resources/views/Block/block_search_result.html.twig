@@ -15,13 +15,7 @@ file that was distributed with this source code.
     {% set show_empty_boxes = sonata_admin.adminPool.container.getParameter('sonata.admin.configuration.global_search.empty_boxes') %}
     {% set visibility_class = '' %}
     {% if pager and not pager.getResults()|length %}
-        {% if show_empty_boxes == 'show' %}
-            {% set visibility_class = 'sonata-search-result-show' %}
-        {% elseif show_empty_boxes == 'hide' %}
-            {% set visibility_class = 'sonata-search-result-hide' %}
-        {% elseif show_empty_boxes == 'fade'%}
-            {% set visibility_class = 'sonata-search-result-fade' %}
-        {% endif %}
+        {% set visibility_class = 'sonata-search-result-' ~ show_empty_boxes %}
     {% endif %}
 
     <div class="col-lg-4 col-md-6 search-box-item {{ visibility_class }}">
