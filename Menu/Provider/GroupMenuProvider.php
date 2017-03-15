@@ -67,7 +67,7 @@ class GroupMenuProvider implements MenuProviderInterface
             && !$checker instanceof \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface
         ) {
             throw new \InvalidArgumentException(
-                'Argument 3 must be an instance of either \Symfony\Component\Security\Core\SecurityContextInterface or 
+                'Argument 3 must be an instance of either \Symfony\Component\Security\Core\SecurityContextInterface or
                 \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'
             );
         }
@@ -102,7 +102,7 @@ class GroupMenuProvider implements MenuProviderInterface
                     $admin = $this->pool->getInstance($item['admin']);
 
                     // skip menu item if no `list` url is available or user doesn't have the LIST access rights
-                    if (!$admin->hasRoute('list') || !$admin->isGranted('LIST')) {
+                    if (!$admin->hasRoute('list') || !$admin->hasAccess('list')) {
                         continue;
                     }
 
@@ -145,7 +145,7 @@ class GroupMenuProvider implements MenuProviderInterface
                     $admin = $this->pool->getInstance($item['admin']);
 
                     // skip menu item if no `list` url is available or user doesn't have the LIST access rights
-                    if (!$admin->hasRoute('list') || !$admin->isGranted('LIST')) {
+                    if (!$admin->hasRoute('list') || !$admin->hasAccess('list')) {
                         continue;
                     }
 

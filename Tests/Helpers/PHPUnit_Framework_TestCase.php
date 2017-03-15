@@ -49,6 +49,10 @@ class PHPUnit_Framework_TestCase extends \PHPUnit_Framework_TestCase
             return parent::createMock($originalClassName);
         }
 
-        return parent::getMock($originalClassName);
+        return parent::getMockBuilder($originalClassName)
+            ->disableOriginalConstructor()
+            ->disableOriginalClone()
+            ->disableArgumentCloning()
+            ->getMock();
     }
 }

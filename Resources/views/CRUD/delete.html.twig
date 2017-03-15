@@ -33,7 +33,7 @@ file that was distributed with this source code.
                     <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
 
                     <button type="submit" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> {{ 'btn_delete'|trans({}, 'SonataAdminBundle') }}</button>
-                    {% if admin.hasRoute('edit') and admin.isGranted('EDIT', object) %}
+                    {% if admin.hasRoute('edit') and admin.hasAccess('edit', object) %}
                         {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
 
                         <a class="btn btn-success" href="{{ admin.generateObjectUrl('edit', object) }}">

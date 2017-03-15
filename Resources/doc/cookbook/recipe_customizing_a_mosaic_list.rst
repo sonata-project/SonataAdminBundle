@@ -62,9 +62,9 @@ The ``list_outer_rows_mosaic.html.twig`` is the name of one mosaic's tile. You s
     {% endblock %}
 
     {% block sonata_mosaic_description %}
-        {% if admin.isGranted('EDIT', object) and admin.hasRoute('edit') %}
+        {% if admin.hasAccess('edit', object) and admin.hasRoute('edit') %}
             <a href="{{ admin.generateUrl('edit', {'id' : object|sonata_urlsafeid(admin) }) }}">{{ meta.title|truncate(40) }}</a>
-        {% elseif admin.isGranted('VIEW', object) and admin.hasRoute('show') %}
+        {% elseif admin.hasAccess('show', object) and admin.hasRoute('show') %}
             <a href="{{ admin.generateUrl('show', {'id' : object|sonata_urlsafeid(admin) }) }}">{{ meta.title|truncate(40) }}</a>
         {% else %}
             {{ meta.title|truncate(40) }}

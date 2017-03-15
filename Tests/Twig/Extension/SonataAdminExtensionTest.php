@@ -165,7 +165,7 @@ class SonataAdminExtensionTest extends PHPUnit_Framework_TestCase
         $this->object = new \stdClass();
 
         // initialize admin
-        $this->admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->admin = $this->createMock('Sonata\AdminBundle\Admin\AbstractAdmin');
 
         $this->admin->expects($this->any())
             ->method('getCode')
@@ -187,9 +187,9 @@ class SonataAdminExtensionTest extends PHPUnit_Framework_TestCase
                 return $translator->trans($id, $parameters, $domain);
             }));
 
-        $this->adminBar = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->adminBar = $this->createMock('Sonata\AdminBundle\Admin\AbstractAdmin');
         $this->adminBar->expects($this->any())
-            ->method('isGranted')
+            ->method('hasAccess')
             ->will($this->returnValue(true));
         $this->adminBar->expects($this->any())
             ->method('getNormalizedIdentifier')
@@ -238,7 +238,7 @@ class SonataAdminExtensionTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue(array('context' => 'foo')));
 
         $this->admin->expects($this->any())
-            ->method('isGranted')
+            ->method('hasAccess')
             ->will($this->returnValue(true));
 
         $this->admin->expects($this->any())
@@ -319,7 +319,7 @@ class SonataAdminExtensionTest extends PHPUnit_Framework_TestCase
     public function testDeprecatedRenderListElement($expected, $value, array $options)
     {
         $this->admin->expects($this->any())
-            ->method('isGranted')
+            ->method('hasAccess')
             ->will($this->returnValue(true));
 
         $this->admin->expects($this->any())

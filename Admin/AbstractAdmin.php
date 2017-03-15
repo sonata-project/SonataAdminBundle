@@ -1095,7 +1095,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     {
         $actions = array();
 
-        if ($this->hasRoute('delete') && $this->isGranted('DELETE')) {
+        if ($this->hasRoute('delete') && $this->hasAccess('delete')) {
             $actions['delete'] = array(
                 'label' => 'action_delete',
                 'translation_domain' => 'SonataAdminBundle',
@@ -2947,7 +2947,7 @@ EOT;
     {
         $actions = array();
 
-        if ($this->hasRoute('create') && $this->isGranted('CREATE')) {
+        if ($this->hasRoute('create') && $this->hasAccess('create')) {
             $actions['create'] = array(
                 'label' => 'link_add',
                 'translation_domain' => 'SonataAdminBundle',
@@ -2957,7 +2957,7 @@ EOT;
             );
         }
 
-        if ($this->hasRoute('list') && $this->isGranted('LIST')) {
+        if ($this->hasRoute('list') && $this->hasAccess('list')) {
             $actions['list'] = array(
                 'label' => 'link_list',
                 'translation_domain' => 'SonataAdminBundle',
