@@ -16,7 +16,7 @@ file that was distributed with this source code.
         field_description.options.identifier is defined
         and route
         and admin.hasRoute(route)
-        and admin.hasAccess(route, action in ['show', 'edit'] ? object : null)
+        and admin.hasAccess(route, route in ['show', 'edit'] ? object : null)
     %}
         <a class="sonata-link-identifier" href="{{ admin.generateObjectUrl(route, object, field_description.options.route.parameters) }}">
             {%- block field %}
