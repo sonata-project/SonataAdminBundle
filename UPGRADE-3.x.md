@@ -23,6 +23,13 @@ UPGRADE FROM 3.11 to 3.12
 
 When instantiating a ModelsToArrayTransformer object, please use the 2 parameter signature ($modelManager, $class).
 
+UPGRADE FROM 3.13 to 3.14
+=========================
+
+## Added new default script
+
+If you are overriding the default javascript assets array you now need to add bundles/sonataadmin/inlineDeleteCheckboxes.js
+
 UPGRADE FROM 3.10 to 3.11
 =========================
 
