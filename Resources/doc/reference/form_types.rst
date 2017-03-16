@@ -248,7 +248,7 @@ to_string_callback
     ;
 
 multiple
-  defaults to false. Set to true, if you`re field is in many-to-many relation.
+  defaults to false. Set to true, if you're field is in many-to-many relation.
 
 placeholder
   defaults to "". Placeholder is shown when no item is selected.
