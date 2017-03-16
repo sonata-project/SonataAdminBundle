@@ -135,6 +135,15 @@ The following is a working example of a ShowAction
         }
     }
 
+.. tip::
+    To customize the displayed label of a show field you can use the ``label`` option:
+
+    .. code-block:: php
+    
+        $showMapper->add('name', null, array('label' => 'UserName'));
+
+    Setting this option to ``false`` will make the label empty.
+
 Setting up a custom show template (very useful)
 ===============================================
 
