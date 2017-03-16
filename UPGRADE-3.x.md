@@ -1,6 +1,9 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.13 to 3.14
+=========================
+
 ## Deprecated automatic annotation registration with JMSDiExtraBundle
 
 Starting with version 4.0, SonataAdminBundle will no longer register
@@ -15,6 +18,11 @@ jms_di_extra:
         - Sonata\AdminBundle\Annotation
 ```
 
+### Exporter service and class
+
+The `sonata.admin.exporter` is deprecated in favor of the `sonata.exporter.exporter` service.
+To make this service available, you have to install `sonata-project.exporter` ^1.7
+and enable the bundle as described in the documentation.
 
 UPGRADE FROM 3.11 to 3.12
 =========================
@@ -64,12 +72,6 @@ Use `Sonata\AdminBundle\Form\Type\ModelListType` instead.
 All files under the ``Tests`` directory are now correctly handled as internal test classes.
 You can't extend them anymore, because they are only loaded when running internal tests.
 More information can be found in the [composer docs](https://getcomposer.org/doc/04-schema.md#autoload-dev).
-
-### Exporter service and class
-
-The `sonata.admin.exporter` is deprecated in favor of the `sonata.exporter.exporter` service.
-To make this service available, you have to install `sonata-project.exporter` ^1.7
-and enable the bundle as described in the documentation.
 
 UPGRADE FROM 3.2 to 3.3
 =======================
