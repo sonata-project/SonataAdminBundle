@@ -70,11 +70,11 @@ class FormMapper extends BaseGroupedMapper
         }
 
         // "Dot" notation is not allowed as form name, but can be used as property path to access nested data.
-        if (!$name instanceof FormBuilderInterface && strpos($fieldName, '.') !== false && !isset($options['property_path'])) {
+        if (!$name instanceof FormBuilderInterface && !isset($options['property_path'])) {
             $options['property_path'] = $fieldName;
 
-             // fix the form name
-             $fieldName = str_replace('.', '__', $fieldName);
+            // fix the form name
+            $fieldName = $this->sanitizeFieldName($fieldName);
         }
 
         // change `collection` to `sonata_type_native_collection` form type to
@@ -153,6 +153,7 @@ class FormMapper extends BaseGroupedMapper
      */
     public function get($name)
     {
+        $name = $this->sanitizeFieldName($name);
         return $this->formBuilder->get($name);
     }
 
@@ -161,6 +162,7 @@ class FormMapper extends BaseGroupedMapper
      */
     public function has($key)
     {
+        $key = $this->sanitizeFieldName($key);
         return $this->formBuilder->has($key);
     }
 
@@ -177,6 +179,7 @@ class FormMapper extends BaseGroupedMapper
      */
     public function remove($key)
     {
+        $key = $this->sanitizeFieldName($key);
         $this->admin->removeFormFieldDescription($key);
         $this->admin->removeFieldFromFormGroup($key);
         $this->formBuilder->remove($key);
@@ -304,5 +307,21 @@ class FormMapper extends BaseGroupedMapper
     protected function setTabs(array $tabs)
     {
         $this->admin->setFormTabs($tabs);
+    }
+
+
+    /**
+     * Symfony default form class sadly can't handle
+     * form element with dots in its name (when data
+     * get bound, the default dataMapper is a PropertyPathMapper).
+     * So use this trick to avoid any issue.
+     *
+     * @param string $fieldName
+     *
+     * @return string
+     */
+    public function sanitizeFieldName($fieldName)
+    {
+        return str_replace(['__', '.'], ['____', '__'], $fieldName);
     }
 }

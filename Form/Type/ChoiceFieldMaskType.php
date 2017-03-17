@@ -27,16 +27,19 @@ class ChoiceFieldMaskType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $allFieldNames = array();
+        $sanitizedMap = array();
         foreach ($options['map'] as $value => $fieldNames) {
             foreach ($fieldNames as $fieldName) {
-                $allFieldNames[$fieldName] = $fieldName;
+                $sanitizedMap[$value][] =
+                    str_replace(['__', '.'], ['____', '__'], $fieldName);
             }
         }
-        $allFieldNames = array_values($allFieldNames);
+
+        $allFieldNames = call_user_func_array('array_merge', $sanitizedMap);
+        $allFieldNames = array_unique($allFieldNames);
 
         $view->vars['all_fields'] = $allFieldNames;
-        $view->vars['map'] = $options['map'];
+        $view->vars['map'] = $sanitizedMap;
 
         $options['expanded'] = false;
 
