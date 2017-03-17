@@ -370,6 +370,9 @@ According the choice made only associated fields are displayed. The others field
 map
   Associative array. Describes the fields that are displayed for each choice.
 
+**TIP**: To mask a subfield replace `.` by `__`.
+
+
 
 sonata_type_admin
 ^^^^^^^^^^^^^^^^^
