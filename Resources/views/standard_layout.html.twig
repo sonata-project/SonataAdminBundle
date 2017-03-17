@@ -67,7 +67,11 @@ file that was distributed with this source code.
             {% set locale = app.request.locale %}
             {# localize moment #}
             {% if locale[:2] != 'en' %}
-                <script src="{{ asset('bundles/sonatacore/vendor/moment/locale/' ~ locale|replace({'_':'-'}) ~ '.js') }}"></script>
+                <script src="{{ asset(
+                    'bundles/sonatacore/vendor/moment/locale/' ~
+                    locale|lower|replace({'_':'-'}) ~
+                    '.js'
+                ) }}"></script>
             {% endif %}
 
             {# localize select2 #}
