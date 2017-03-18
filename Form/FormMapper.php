@@ -289,7 +289,7 @@ class FormMapper extends BaseGroupedMapper
      *
      * @return string
      */
-    public function sanitizeFieldName($fieldName)
+    protected function sanitizeFieldName($fieldName)
     {
         return str_replace(array('__', '.'), array('____', '__'), $fieldName);
     }
