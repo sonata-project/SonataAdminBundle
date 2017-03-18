@@ -31,7 +31,7 @@ class ChoiceFieldMaskType extends AbstractType
         foreach ($options['map'] as $value => $fieldNames) {
             foreach ($fieldNames as $fieldName) {
                 $sanitizedMap[$value][] =
-                    str_replace(['__', '.'], ['____', '__'], $fieldName);
+                    str_replace(array('__', '.'), array('____', '__'), $fieldName);
             }
         }
 
