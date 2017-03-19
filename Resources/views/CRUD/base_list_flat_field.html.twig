@@ -13,7 +13,7 @@ file that was distributed with this source code.
     {% if
             field_description.options.identifier is defined
         and field_description.options.route is defined
-        and admin.isGranted(field_description.options.route.name == 'show' ? 'VIEW' : field_description.options.route.name|upper, object)
+        and admin.hasAccess(field_description.options.route.name, object)
         and admin.hasRoute(field_description.options.route.name)
     %}
         <a href="{{ admin.generateObjectUrl(field_description.options.route.name, object, field_description.options.route.parameters) }}">

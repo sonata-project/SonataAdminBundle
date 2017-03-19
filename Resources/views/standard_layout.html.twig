@@ -155,7 +155,7 @@ file that was distributed with this source code.
                                                             {%- set label = label|trans(menu.extra('translation_params', {}), translation_domain) -%}
                                                         {%- endif -%}
 
-                                                        {% if not loop.last  %}
+                                                        {% if not loop.last %}
                                                             <li>
                                                                 {% if menu.uri is not empty %}
                                                                     <a href="{{ menu.uri }}">
@@ -166,7 +166,7 @@ file that was distributed with this source code.
                                                                         {% endif %}
                                                                     </a>
                                                                 {% else %}
-                                                                    {{ label }}
+                                                                    <span>{{ label }}</span>
                                                                 {% endif %}
                                                             </li>
                                                         {% else %}

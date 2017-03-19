@@ -41,12 +41,21 @@ class AdminType extends AbstractType
             $admin->getParentFieldDescription()->setAssociationAdmin($admin);
         }
 
-        if ($options['delete'] && $admin->isGranted('DELETE')) {
+        if ($options['delete'] && $admin->hasAccess('delete')) {
             if (!array_key_exists('translation_domain', $options['delete_options']['type_options'])) {
                 $options['delete_options']['type_options']['translation_domain'] = $admin->getTranslationDomain();
             }
 
-            $builder->add('_delete', $options['delete_options']['type'], $options['delete_options']['type_options']);
+            $builder->add(
+                '_delete',
+                $options['delete_options']['type'],
+                array_merge(
+                    $options['delete_options']['type_options'],
+                    array(
+                        'attr' => array('class' => 'sonata-admin-type-delete-checkbox'),
+                    )
+                )
+            );
         }
 
         // hack to make sure the subject is correctly set

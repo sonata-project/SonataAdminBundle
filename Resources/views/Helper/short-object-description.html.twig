@@ -1,5 +1,5 @@
 <span class="inner-field-short-description">
-    {% if object and admin.hasRoute('edit') and admin.isGranted('EDIT') %}
+    {% if object and admin.hasRoute('edit') and admin.hasAccess('edit') %}
         <a href="{{ admin.generateObjectUrl('edit', object, link_parameters) }}" target="new">{{ description }}</a>
     {% else %}
         {{ description }}

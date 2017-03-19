@@ -165,7 +165,7 @@ class SonataAdminExtensionTest extends PHPUnit_Framework_TestCase
         $this->object = new \stdClass();
 
         // initialize admin
-        $this->admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->admin = $this->createMock('Sonata\AdminBundle\Admin\AbstractAdmin');
 
         $this->admin->expects($this->any())
             ->method('getCode')
@@ -187,9 +187,9 @@ class SonataAdminExtensionTest extends PHPUnit_Framework_TestCase
                 return $translator->trans($id, $parameters, $domain);
             }));
 
-        $this->adminBar = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->adminBar = $this->createMock('Sonata\AdminBundle\Admin\AbstractAdmin');
         $this->adminBar->expects($this->any())
-            ->method('isGranted')
+            ->method('hasAccess')
             ->will($this->returnValue(true));
         $this->adminBar->expects($this->any())
             ->method('getNormalizedIdentifier')
@@ -238,7 +238,7 @@ class SonataAdminExtensionTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue(array('context' => 'foo')));
 
         $this->admin->expects($this->any())
-            ->method('isGranted')
+            ->method('hasAccess')
             ->will($this->returnValue(true));
 
         $this->admin->expects($this->any())
@@ -914,7 +914,7 @@ EOT
         data-title="Data"
         data-pk="12345"
         data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
-        data-source="[{&quot;value&quot;:&quot;Foo&quot;,&quot;text&quot;:&quot;action_delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
+        data-source="[{&quot;value&quot;:&quot;Foo&quot;,&quot;text&quot;:&quot;Delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
          Delete
     </span>
 </td>
@@ -965,6 +965,22 @@ EOT
                 'url',
                 'https://example.com',
                 array(),
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                <a href="https://example.com" target="_blank">https://example.com</a>
+                </td>',
+                'url',
+                'https://example.com',
+                array('attributes' => array('target' => '_blank')),
+            ),
+            array(
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                <a href="https://example.com" target="_blank" class="fooLink">https://example.com</a>
+                </td>',
+                'url',
+                'https://example.com',
+                array('attributes' => array('target' => '_blank', 'class' => 'fooLink')),
             ),
             array(
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
@@ -1442,6 +1458,18 @@ EOT
                 'url',
                 'http://example.com',
                 array('safe' => false),
+            ),
+            array(
+                '<th>Data</th> <td><a href="http://example.com" target="_blank">http://example.com</a></td>',
+                'url',
+                'http://example.com',
+                array('safe' => false, 'attributes' => array('target' => '_blank')),
+            ),
+            array(
+                '<th>Data</th> <td><a href="http://example.com" target="_blank" class="fooLink">http://example.com</a></td>',
+                'url',
+                'http://example.com',
+                array('safe' => false, 'attributes' => array('target' => '_blank', 'class' => 'fooLink')),
             ),
             array(
                 '<th>Data</th> <td><a href="https://example.com">https://example.com</a></td>',

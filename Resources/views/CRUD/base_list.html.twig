@@ -17,6 +17,21 @@ file that was distributed with this source code.
 
 {% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': sonata_admin.adminPool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
 
+{% block title %}
+    {#
+        The list template can be used in nested mode,
+        so we define the title corresponding to the parent's admin.
+    #}
+
+    {% if admin.isChild and admin.parent.subject %}
+        {{ "title_edit"|trans({'%name%': admin.parent.toString(admin.parent.subject)|truncate(15) }, 'SonataAdminBundle') }}
+    {% endif %}
+{% endblock %}
+
+{% block navbar_title %}
+    {{ block('title') }}
+{% endblock %}
+
 {% block list_table %}
     <div class="col-xs-12 col-md-12">
         {% set batchactions = admin.batchactions %}
@@ -91,7 +106,9 @@ file that was distributed with this source code.
                                 </div>
                                 <span class="progress-description">
                                     {% if not app.request.xmlHttpRequest %}
+                                    <ul class="list-unstyled">
                                         {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
+                                    </ul>
                                     {% endif %}
                                 </span>
                             </div><!-- /.info-box-content -->
@@ -159,8 +176,11 @@ file that was distributed with this source code.
                                 </div>
 
 
+                                {# NEXT_MAJOR : remove this assignment #}
+                                {% set export_formats = export_formats|default(admin.exportFormats) %}
+
                                 <div class="pull-right">
-                                    {% if admin.hasRoute('export') and admin.isGranted('EXPORT') and admin.getExportFormats()|length %}
+                                    {% if admin.hasRoute('export') and admin.hasAccess('export') and export_formats|length %}
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                                 <i class="fa fa-share-square-o" aria-hidden="true"></i>
@@ -168,7 +188,7 @@ file that was distributed with this source code.
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                {% for format in admin.getExportFormats() %}
+                                                {% for format in export_formats %}
                                                 <li>
                                                     <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">
                                                         <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>

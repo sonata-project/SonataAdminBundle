@@ -158,7 +158,7 @@ So our ``security.yml`` file may look something like this:
                 ROLE_ADMIN:             [ROLE_STAFF, ROLE_SONATA_FOO_EDITOR, ROLE_SONATA_FOO_ADMIN]
                 ROLE_SUPER_ADMIN:       [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
-                # you could alternatively use for an admin who has all rights 
+                # you could alternatively use for an admin who has all rights
                 ROLE_ALL_ADMIN:         [ROLE_STAFF, ROLE_SONATA_FOO_ALL]
 
             # set access_strategy to unanimous, else you may have unexpected behaviors
@@ -177,7 +177,7 @@ You can now test if a user is authorized from an Admin class:
 
 .. code-block:: php
 
-    if ($this->isGranted('LIST')) {
+    if ($this->hasAccess('list')) {
         // ...
     }
 
@@ -185,7 +185,7 @@ From a controller extending ``Sonata\AdminBundle\Controller\CRUDController``:
 
 .. code-block:: php
 
-    if ($this->admin->isGranted('LIST')) {
+    if ($this->admin->hasAccess('list')) {
         // ...
     }
 
@@ -326,9 +326,18 @@ The following configuration for the SonataUserBundle defines:
         parameters:
 
             # ...
-
-            security.acl.permission.map.class: Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap
-
+            # Symfony 3 and above
+            security.acl.permission.map:
+              class: Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap
+            
+            # optionally use a custom MaskBuilder
+            #sonata.admin.security.mask.builder:
+            #  class: Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder
+            
+            
+            # Symfony < 3
+            #security.acl.permission.map.class: Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap
+            
             # optionally use a custom MaskBuilder
             #sonata.admin.security.mask.builder.class: Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder
 
@@ -617,7 +626,7 @@ because for example you want to restrict access using extra rules:
 
 .. code-block:: html+jinja
 
-    {% if admin.isGranted('EDIT', user_object) %}
+    {% if admin.hasAccess('edit', user_object) %}
         {# ... #}
     {% endif %}
 
@@ -635,14 +644,14 @@ Every time you create a new ``Admin`` class, you should start with the command
 ``php bin/console sonata:admin:setup-acl`` so the ACL database will be updated
 with the latest roles and permissions.
 
-In the templates, or in your code, you can use the Admin method ``isGranted()``:
+In the templates, or in your code, you can use the Admin method ``hasAccess()``:
 
 - check for an admin that the user is allowed to ``EDIT``:
 
 .. code-block:: html+jinja
 
     {# use the admin security method  #}
-    {% if admin.isGranted('EDIT') %}
+    {% if admin.hasAccess('edit') %}
         {# ... #}
     {% endif %}
 
@@ -657,7 +666,7 @@ In the templates, or in your code, you can use the Admin method ``isGranted()``:
 .. code-block:: html+jinja
 
     {# use the admin security method  #}
-    {% if admin.isGranted('DELETE', object) %}
+    {% if admin.hasAccess('delete', object) %}
         {# ... #}
     {% endif %}
 

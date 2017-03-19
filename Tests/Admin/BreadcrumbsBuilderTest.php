@@ -53,17 +53,12 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
         $labelTranslatorStrategy = $this->prophesize(
             'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
         );
-        $labelTranslatorStrategy->getLabel(
-            'dashboard',
-            'breadcrumb',
-            'link'
-        )->willReturn('Dashboard');
 
         $routeGenerator = $this->prophesize('Sonata\AdminBundle\Route\RouteGeneratorInterface');
         $routeGenerator->generate('sonata_admin_dashboard')->willReturn('/dashboard');
 
         $admin->getRouteGenerator()->willReturn($routeGenerator->reveal());
-        $menu->addChild('Dashboard', array(
+        $menu->addChild('link_breadcrumb_dashboard', array(
             'uri' => '/dashboard',
             'extras' => array(
                 'translation_domain' => 'SonataAdminBundle',
@@ -90,7 +85,7 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
             ->willReturn($labelTranslatorStrategy->reveal());
         $childAdmin->getClassnameLabel()->willReturn('my_child_class_name');
         $childAdmin->hasRoute('list')->willReturn(true);
-        $childAdmin->isGranted('LIST')->willReturn(true);
+        $childAdmin->hasAccess('list')->willReturn(true);
         $childAdmin->generateUrl('list')->willReturn('/myadmin/my-object/mychildadmin/list');
         $childAdmin->getCurrentChildAdmin()->willReturn(null);
         $childAdmin->hasSubject()->willReturn(true);
@@ -103,7 +98,7 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
 
         $admin->trans('My class', array(), null)->willReturn('Ma classe');
         $admin->hasRoute('list')->willReturn(true);
-        $admin->isGranted('LIST')->willReturn(true);
+        $admin->hasAccess('list')->willReturn(true);
         $admin->generateUrl('list')->willReturn('/myadmin/list');
         $admin->getCurrentChildAdmin()->willReturn($childAdmin->reveal());
         $request = $this->prophesize('Symfony\Component\HttpFoundation\Request');
@@ -111,7 +106,7 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
 
         $admin->getIdParameter()->willReturn('slug');
         $admin->hasRoute('edit')->willReturn(true);
-        $admin->isGranted('EDIT')->willReturn(true);
+        $admin->hasAccess('edit')->willReturn(true);
         $admin->generateUrl('edit', array('id' => 'my-object'))->willReturn('/myadmin/my-object');
         $admin->getRequest()->willReturn($request->reveal());
         $admin->hasSubject()->willReturn(true);
@@ -180,16 +175,11 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
         $labelTranslatorStrategy = $this->prophesize(
             'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
         );
-        $labelTranslatorStrategy->getLabel(
-            'dashboard',
-            'breadcrumb',
-            'link'
-        )->willReturn('Dashboard');
 
         $routeGenerator = $this->prophesize('Sonata\AdminBundle\Route\RouteGeneratorInterface');
         $routeGenerator->generate('sonata_admin_dashboard')->willReturn('/dashboard');
         $admin->getRouteGenerator()->willReturn($routeGenerator->reveal());
-        $menu->addChild('Dashboard', array(
+        $menu->addChild('link_breadcrumb_dashboard', array(
             'uri' => '/dashboard',
             'extras' => array(
                 'translation_domain' => 'SonataAdminBundle',
@@ -233,7 +223,7 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
         $childAdmin->hasSubject()->willReturn(false);
 
         $admin->hasRoute('list')->willReturn(true);
-        $admin->isGranted('LIST')->willReturn(true);
+        $admin->hasAccess('list')->willReturn(true);
         $admin->generateUrl('list')->willReturn('/myadmin/list');
         $admin->getCurrentChildAdmin()->willReturn(
             $action == 'my_action' ? $childAdmin->reveal() : false

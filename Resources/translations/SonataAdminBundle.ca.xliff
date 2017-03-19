@@ -8,7 +8,7 @@
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
-                <target>Elimina</target>
+                <target>Esborrar</target>
             </trans-unit>
             <trans-unit id="btn_batch">
                 <source>btn_batch</source>
@@ -16,23 +16,23 @@
             </trans-unit>
             <trans-unit id="btn_create">
                 <source>btn_create</source>
-                <target>Crea</target>
+                <target>Crear</target>
             </trans-unit>
             <trans-unit id="btn_create_and_edit_again">
                 <source>btn_create_and_edit_again</source>
-                <target>Crea</target>
+                <target>Crear</target>
             </trans-unit>
             <trans-unit id="btn_create_and_create_a_new_one">
                 <source>btn_create_and_create_a_new_one</source>
-                <target>Crea i afegeix-ne un altre</target>
+                <target>Crear i afegir un altre</target>
             </trans-unit>
             <trans-unit id="btn_create_and_return_to_list">
                 <source>btn_create_and_return_to_list</source>
-                <target>Crea i tanca</target>
+                <target>Crear i tornar al llistat</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
-                <target>Filtra</target>
+                <target>Filtrar</target>
             </trans-unit>
             <trans-unit id="btn_advanced_filters">
                 <source>btn_advanced_filters</source>
@@ -40,43 +40,43 @@
             </trans-unit>
             <trans-unit id="btn_update">
                 <source>btn_update</source>
-                <target>Actualitza</target>
+                <target>Actualitzar</target>
             </trans-unit>
             <trans-unit id="btn_update_and_edit_again">
                 <source>btn_update_and_edit_again</source>
-                <target>Actualitza</target>
+                <target>Actualitzar</target>
             </trans-unit>
             <trans-unit id="btn_update_and_return_to_list">
                 <source>btn_update_and_return_to_list</source>
-                <target>Actualitza i tanca</target>
+                <target>Actualitzar i tancar</target>
             </trans-unit>
             <trans-unit id="link_delete">
                 <source>link_delete</source>
-                <target>Elimina</target>
+                <target>Esborrar</target>
             </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
-                <target>Afegeix</target>
+                <target>Afegir nou</target>
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
-                <target>Torna a la llista</target>
+                <target>Tornar al llistat</target>
             </trans-unit>
             <trans-unit id="link_action_show">
                 <source>link_action_show</source>
-                <target>Mostra</target>
+                <target>Mostrar</target>
             </trans-unit>
             <trans-unit id="link_action_edit">
                 <source>link_action_edit</source>
-                <target>Edita</target>
+                <target>Editar</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
-                <target>Afegeix</target>
+                <target>Afegir nou</target>
             </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
-                <target>Llista</target>
+                <target>Llistar</target>
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
@@ -84,19 +84,23 @@
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
-                <target>Crea</target>
+                <target>Crear</target>
+            </trans-unit>
+            <trans-unit id="title_show">
+                <source>title_show</source>
+                <target>Mostrar "%name%"</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
-                <target>Tauler</target>
+                <target>Tauler principal</target>
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
-                <target>Edita "%name%"</target>
+                <target>Editar "%name%"</target>
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
-                <target>Llista</target>
+                <target>Llistar</target>
             </trans-unit>
             <trans-unit id="link_next_pager">
                 <source>link_next_pager</source>
@@ -128,15 +132,15 @@
             </trans-unit>
             <trans-unit id="confirm_msg">
                 <source>confirm_msg</source>
-                <target>Esteu segur?</target>
+                <target>Estàs segur?</target>
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
-                <target>Edita</target>
+                <target>Editar</target>
             </trans-unit>
             <trans-unit id="action_show">
                 <source>action_show</source>
-                <target>Mostra</target>
+                <target>Mostrar</target>
             </trans-unit>
             <trans-unit id="all_elements">
                 <source>all_elements</source>
@@ -144,63 +148,63 @@
             </trans-unit>
             <trans-unit id="flash_batch_empty">
                 <source>flash_batch_empty</source>
-                <target>Acció interrompuda. No hi ha elements seleccionats.</target>
+                <target>Acció interrompuda. Cap element ha estat seleccionat.</target>
             </trans-unit>
             <trans-unit id="flash_create_success">
                 <source>flash_create_success</source>
-                <target>S'ha creat correctament l'element.</target>
+                <target>L'element "%name%" ha estat creat amb èxit.</target>
             </trans-unit>
             <trans-unit id="flash_create_error">
                 <source>flash_create_error</source>
-                <target>S'ha produït un error durant la creació de l'element.</target>
+                <target>S'ha produït un error a l'hora de crear l'element "%name%".</target>
             </trans-unit>
             <trans-unit id="flash_edit_success">
                 <source>flash_edit_success</source>
-                <target>S'ha actualitzat correctament l'element.</target>
+                <target>L'element "%name%" s'ha actualitzat amb èxit.</target>
             </trans-unit>
             <trans-unit id="flash_edit_error">
                 <source>flash_edit_error</source>
-                <target>S'ha produït un error durant l'actualització de l'element.</target>
+                <target>S'ha produït un error a l'hora d'actualitzar l'element "%name%".</target>
             </trans-unit>
             <trans-unit id="flash_lock_error">
                 <source>flash_lock_error</source>
-                <target>flash_lock_error</target>
+                <target>Un altre usuari ha modificat l'element "%name%". Si us plau, %link_start%clica aquí%link_end% per recarregar la pàgina i aplicar els canvis de nou.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
-                <target>S'han eliminat correctament els elements seleccionats.</target>
+                <target>Els elements seleccionats han estat esborrats amb èxit.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
-                <target>S'ha produït un error durant l'eliminació dels elements seleccionats.</target>
+                <target>S'ha produït un error a l'hora d'esborrar els elements seleccionats.</target>
             </trans-unit>
             <trans-unit id="flash_delete_error">
                 <source>flash_delete_error</source>
-                <target>S'ha produït un error durant l'eliminació de l'element.</target>
+                <target>S'ha produït un error a l'hora d'esborrar l'element "%name%".</target>
             </trans-unit>
             <trans-unit id="flash_delete_success">
                 <source>flash_delete_success</source>
-                <target>S'ha eliminat correctament l'element.</target>
+                <target>L'element "%name%" s'ha esborrat correctament.</target>
             </trans-unit>
             <trans-unit id="form_not_available">
                 <source>form_not_available</source>
-                <target>form_not_available</target>
+                <target>El formulari no està disponible</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
-                <source>breadcrumb.link_dashboard</source>
+                <source>link_breadcrumb_dashboard</source>
                 <target><![CDATA[<i class="fa fa-home"></i>]]></target>
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
-                <target>Confirma l'eliminació</target>
+                <target>Confirma l'esborrat</target>
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>Esteu segur que voleu eliminar l'element seleccionat?</target>
+                <target>Estàs segur que vols esborrar l'element seleccionat "%name%"?</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
-                <target>Sí, elimina</target>
+                <target>Sí, esborra</target>
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
@@ -208,11 +212,11 @@
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Esteu segur que voleu confirmar aquesta acció i executar-la per tots els elements seleccionats?|[1,+Inf[Esteu segur que voleu confirmar aquesta acció i executar-la per tots els %count% elements seleccionats?</target>
+                <target>Estàs segur que vols confirmar i executar aquesta acció per l'element seleccionat?|Estàs segur que vols confirmar i executar aquesta acció per tots els %count% elements seleccionats?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
-                <target>message_batch_all_confirmation</target>
+                <target>Estàs segur que vols confirmar i executar aquesta acció per tots els elements?</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
@@ -336,15 +340,15 @@
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
-                <target>Mostrar revisió</target>
+                <target>Veure Revisió</target>
             </trans-unit>
             <trans-unit id="label_compare_revision">
                 <source>label_compare_revision</source>
-                <target>Compara revisió</target>
+                <target>Comparar la revisió</target>
             </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
-                <target>list_results_count_prefix</target>
+                <target>al menys</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
@@ -372,7 +376,7 @@
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
-                <target>S'està carregant informació…</target>
+                <target>Carregant informació…</target>
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
@@ -440,7 +444,7 @@
             </trans-unit>
             <trans-unit id="noscript_warning">
                 <source>noscript_warning</source>
-                <target>Javascript està desconnectat al seu navegador web. Algunes característiques no funcionaran correctament.</target>
+                <target>Javascript està deshabilitat al teu navegador. Algunes característiques no funcionaran correctament.</target>
             </trans-unit>
             <trans-unit id="message_form_group_empty">
                 <source>message_form_group_empty</source>
@@ -452,27 +456,27 @@
             </trans-unit>
             <trans-unit id="stats_view_more">
                 <source>stats_view_more</source>
-                <target>Veure més gràfics</target>
+                <target>Veure més</target>
             </trans-unit>
             <trans-unit id="title_select_subclass">
                 <source>title_select_subclass</source>
-                <target>Escull tipus d'objecte</target>
+                <target>Escull el tipus d'element</target>
             </trans-unit>
             <trans-unit id="no_subclass_available">
                 <source>no_subclass_available</source>
-                <target>No hi ha tipus d'objecte disponibles</target>
+                <target>No hi ha cap tipus d'element disponible</target>
             </trans-unit>
             <trans-unit id="label_unknown_user">
                 <source>label_unknown_user</source>
-                <target>label_unknown_user</target>
+                <target>desconegut</target>
             </trans-unit>
             <trans-unit id="read_more">
                 <source>read_more</source>
-                <target>read_more</target>
+                <target>Llegir més</target>
             </trans-unit>
             <trans-unit id="read_less">
                 <source>read_less</source>
-                <target>read_less</target>
+                <target>Tancar</target>
             </trans-unit>
         </body>
     </file>

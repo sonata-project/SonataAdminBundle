@@ -33,8 +33,8 @@ merges them onto a single target item. It should only be available when two cond
     public function configureBatchActions($actions)
     {
         if (
-          $this->hasRoute('edit') && $this->isGranted('EDIT') && 
-          $this->hasRoute('delete') && $this->isGranted('DELETE')
+          $this->hasRoute('edit') && $this->hasAccess('edit') &&
+          $this->hasRoute('delete') && $this->hasAccess('delete')
         ) {
             $actions['merge'] = array(
                 'ask_confirmation' => true
@@ -68,6 +68,7 @@ granularity), the passed query is ``null``.
     use Sonata\AdminBundle\Controller\CRUDController as BaseController;
     use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
     use Symfony\Component\HttpFoundation\RedirectResponse;
+    use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
     class CRUDController extends BaseController
@@ -80,9 +81,8 @@ granularity), the passed query is ``null``.
          */
         public function batchActionMerge(ProxyQueryInterface $selectedModelQuery, Request $request = null)
         {
-            if (!$this->admin->isGranted('EDIT') || !$this->admin->isGranted('DELETE')) {
-                throw new AccessDeniedException();
-            }
+            $this->admin->checkAccess('edit');
+            $this->admin->checkAccess('delete');
 
             $modelManager = $this->admin->getModelManager();
 
@@ -130,8 +130,8 @@ granularity), the passed query is ``null``.
 
 A merge action requires two kinds of selection: a set of source objects to merge from
 and a target object to merge into. By default, batch_actions only let you select one set
-of objects to manipulate. We can override this behavior by changing our list template 
-(``list__batch.html.twig``) and adding a radio button to choose the target object. 
+of objects to manipulate. We can override this behavior by changing our list template
+(``list__batch.html.twig``) and adding a radio button to choose the target object.
 
 .. code-block:: html+jinja
 
@@ -169,9 +169,9 @@ for further explanation of overriding bundle templates.
 
 By default, batch actions are not executed if no object was selected, and the user is notified of
 this lack of selection. If your custom batch action needs more complex logic to determine if
-an action can be performed or not, just define a ``batchAction<MyAction>IsRelevant`` method 
-(e.g. ``batchActionMergeIsRelevant``) in your ``CRUDController`` class. This check is performed 
-before the user is asked for confirmation, to make sure there is actually something to confirm. 
+an action can be performed or not, just define a ``batchAction<MyAction>IsRelevant`` method
+(e.g. ``batchActionMergeIsRelevant``) in your ``CRUDController`` class. This check is performed
+before the user is asked for confirmation, to make sure there is actually something to confirm.
 
 This method may return three different values:
 
@@ -189,6 +189,7 @@ This method may return three different values:
     namespace AppBundle\Controller;
 
     use Sonata\AdminBundle\Controller\CRUDController as BaseController;
+    use Symfony\Component\HttpFoundation\Request;
 
     class CRUDController extends BaseController
     {

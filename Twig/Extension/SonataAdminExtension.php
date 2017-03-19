@@ -349,7 +349,7 @@ final class SonataAdminExtension extends \Twig_Extension
                 foreach ($choices as $value => $text) {
                     if ($catalogue) {
                         if (null !== $this->translator) {
-                            $this->translator->trans($text, array(), $catalogue);
+                            $text = $this->translator->trans($text, array(), $catalogue);
                         // NEXT_MAJOR: Remove this check
                         } elseif (method_exists($fieldDescription->getAdmin(), 'trans')) {
                             $text = $fieldDescription->getAdmin()->trans($text, array(), $catalogue);
