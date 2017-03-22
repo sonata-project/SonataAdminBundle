@@ -91,6 +91,11 @@ class Admin implements MetadataProcessorInterface
     public $showInDashboard = true;
 
     /**
+     * @var bool
+     */
+    public $keepOpen = false;
+
+    /**
      * @param ClassMetadata $metadata
      */
     public function processMetadata(ClassMetadata $metadata)
@@ -106,6 +111,7 @@ class Admin implements MetadataProcessorInterface
             'icon' => $this->icon,
             'pager_type' => $this->pagerType,
             'persist_filters' => $this->persistFilters,
+            'keep_open' => $this->keepOpen,
         );
 
         $tag = array_filter($tag, function ($v) {
