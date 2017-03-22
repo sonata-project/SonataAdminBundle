@@ -89,6 +89,11 @@ class Admin implements MetadataProcessorInterface
      * @var bool
      */
     public $showInDashboard = true;
+    
+    /**
+     * @var bool
+     */
+    public $onTop = false;
 
     /**
      * @param ClassMetadata $metadata
@@ -106,6 +111,7 @@ class Admin implements MetadataProcessorInterface
             'icon' => $this->icon,
             'pager_type' => $this->pagerType,
             'persist_filters' => $this->persistFilters,
+            'on_top' => $this->onTop,
         );
 
         $tag = array_filter($tag, function ($v) {
