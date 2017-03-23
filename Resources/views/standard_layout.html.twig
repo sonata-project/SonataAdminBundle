@@ -33,7 +33,7 @@ file that was distributed with this source code.
 
         {% block stylesheets %}
             {% for stylesheet in sonata_admin.adminPool.getOption('stylesheets', []) %}
-                    <link rel="stylesheet" href="{{ asset(stylesheet) }}">
+                <link rel="stylesheet" href="{{ asset(stylesheet) }}">
             {% endfor %}
         {% endblock %}
 
@@ -47,7 +47,7 @@ file that was distributed with this source code.
                         USE_STICKYFORMS: {% if sonata_admin.adminPool.getOption('use_stickyforms') %}true{% else %}false{% endif %}
                     };
                     window.SONATA_TRANSLATIONS = {
-                        CONFIRM_EXIT:  '{{ 'confirm_exit'|trans({}, 'SonataAdminBundle')|escape('js') }}'
+                        CONFIRM_EXIT: '{{ 'confirm_exit'|trans({}, 'SonataAdminBundle')|escape('js') }}'
                     };
 
                     // http://getbootstrap.com/getting-started/#support-ie10-width
@@ -97,7 +97,7 @@ file that was distributed with this source code.
                     -
                     {% for menu in breadcrumbs_builder.breadcrumbs(admin, action) %}
                         {% if not loop.first %}
-                            {%  if loop.index != 2 %}
+                            {% if loop.index != 2 %}
                                 &gt;
                             {% endif %}
 
@@ -111,7 +111,7 @@ file that was distributed with this source code.
                         {% endif %}
                     {% endfor %}
                 {% endif %}
-            {% endif%}
+            {% endif %}
         {% endblock %}
         </title>
     </head>
@@ -228,11 +228,11 @@ file that was distributed with this source code.
                                 <form action="{{ path('sonata_admin_search') }}" method="GET" class="sidebar-form" role="search">
                                     <div class="input-group custom-search-form">
                                         <input type="text" name="q" value="{{ app.request.get('q') }}" class="form-control" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-flat" type="submit">
-                                                    <i class="fa fa-search" aria-hidden="true"></i>
-                                                </button>
-                                            </span>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-flat" type="submit">
+                                                <i class="fa fa-search" aria-hidden="true"></i>
+                                            </button>
+                                        </span>
                                     </div>
                                 </form>
                             {% endblock sonata_sidebar_search %}
@@ -273,7 +273,7 @@ file that was distributed with this source code.
                                             <div class="navbar-collapse">
                                                 {% if _tab_menu is not empty %}
                                                     <div class="navbar-left">
-                                                            {{ _tab_menu|raw }}
+                                                        {{ _tab_menu|raw }}
                                                     </div>
                                                 {% endif %}
 
