@@ -47,7 +47,21 @@ file that was distributed with this source code.
                     'code': admin.code(object)
                 })
             ) %}
-            <span {% block field_span_attributes %}class="x-editable" data-type="{{ xEditableType }}" data-value="{{ field_description.type == 'date' and value is not empty ? value.format('Y-m-d') : value }}" data-title="{{ field_description.label|trans({}, field_description.translationDomain) }}" data-pk="{{ admin.id(object) }}" data-url="{{ url }}" {% endblock %}>
+
+            {% if field_description == 'date' and value is not empty %}
+                {% set data_value = value.format('Y-m-d') %}
+            {% elseif field_description.type == 'boolean' and value is empty %}
+                {% set data_value = 0 %}
+            {% else %}
+                {% set data_value = value %}
+            {% endif %}
+
+            <span {% block field_span_attributes %}class="x-editable"
+                  data-type="{{ xEditableType }}"
+                  data-value="{{ data_value }}"
+                  data-title="{{ field_description.label|trans({}, field_description.translationDomain) }}"
+                  data-pk="{{ admin.id(object) }}"
+                  data-url="{{ url }}" {% endblock %}>
                 {{ block('field') }}
             </span>
         {% else %}
