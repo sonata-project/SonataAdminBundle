@@ -415,33 +415,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
-     * Camelize a string.
-     *
-     * NEXT_MAJOR: remove this method.
-     *
-     * @static
-     *
-     * @param string $property
-     *
-     * @return string
-     *
-     * @deprecated Deprecated since version 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead
-     */
-    public static function camelize($property)
-    {
-        @trigger_error(
-            sprintf(
-                'The %s method is deprecated since 3.1 and will be removed in 4.0. '.
-                'Use \Doctrine\Common\Inflector\Inflector::classify() instead.',
-                __METHOD__
-            ),
-            E_USER_DEPRECATED
-        );
-
-        return Inflector::classify($property);
-    }
-
-    /**
      * Defines the help message.
      *
      * @param string $help
