@@ -688,7 +688,7 @@ EOT
     <span
         class="x-editable"
         data-type="select"
-        data-value=""
+        data-value="0"
         data-title="Data"
         data-pk="12345"
         data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
@@ -708,7 +708,7 @@ EOT
     <span
         class="x-editable"
         data-type="select"
-        data-value=""
+        data-value="0"
         data-title="Data"
         data-pk="12345"
         data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
