@@ -1,6 +1,9 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.13 to 3.14
+=========================
+
 ## Deprecated automatic annotation registration with JMSDiExtraBundle
 
 Starting with version 4.0, SonataAdminBundle will no longer register
@@ -15,6 +18,11 @@ jms_di_extra:
         - Sonata\AdminBundle\Annotation
 ```
 
+### Exporter service and class
+
+The `sonata.admin.exporter` is deprecated in favor of the `sonata.exporter.exporter` service.
+To make this service available, you have to install `sonata-project.exporter` ^1.7
+and enable the bundle as described in the documentation.
 
 UPGRADE FROM 3.11 to 3.12
 =========================

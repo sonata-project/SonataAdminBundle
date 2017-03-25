@@ -47,6 +47,48 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.14.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.13.0...3.14.0) - 2017-03-16
+### Added
+- Added `label` and `translation_domain` fallback for batch actions
+- Config option to disable autoregistration of annotations with `JMSDiExtraBundle`
+- Added missing titles to the CRUD show page.
+- Added `attributes` parameter for `url` field type
+- Added a missing variable placeholder to a translation unit.
+
+### Fixed
+- Missing title for nested admin
+- Setting data form on update form field element by using `sonata_type_model`
+- deprecation notices that could not be avoided in the `CoreController` class
+- Fix #4292: don't overwrite `JMSDiExtraBundle` default configuration
+- Fixed markup on list on Admin with subclasses
+- x-editable choices are now correctly translated
+- Default translation of Base Breadcrumb `Dashboard`
+- Remove duplicated breadcrumb on admin list
+- Breadcrumb without link are now displayed correctly
+- Unified styles between admins with subclasses and admins without subclasses
+- name of permission, use `VIEW` instead of `SHOW`
+- Handling of boolean types in `HelperController`
+- use `hasAccess` instead of `isGranted`
+- better readability of exception message when too many admins are registered
+- Improve Catalan and Spanish translations
+- Fixed inconsistent translation placeholder quoting.
+- Batch action breaks when coming from list view with filter using `doctrine_orm_model_autocomplete`
+- Fixed non-existent variable `action` in `base_list_field.html.twig`
+
+### Changed
+- The export and list actions now integrate the sonata exporter bundle
+- Changed `ActiveVoter` and `ChildrenVoter` to only work with menu items having the `SonataAdminBundle` extra set.
+- Updated AdminLTE to 2.3.11
+- Removed non FQCNs on form types on `AbstractAdmin`
+- When checking the delete checkbox of an inline child form of `CollectionType` the related fields are now disabled to avoid preventing submission of the form when one of those inputs is required.
+- Updated Luxembourgish translations
+- Changed inconsistent translation unit name.
+- Replaced `isGranted()` by `hasAccess()` or `checkAccess()`
+
+### Deprecated
+- Exporter class and service : use equivalents from `sonata-project/exporter` instead.
+- auto registration of `JMSDiExtraBundle` annotations is now discouraged in favor of doing it manually
+
 ## [3.13.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.12.0...3.13.0) - 2017-02-03
 ### Added
 - Added support for priority attribute in the Extension compiler pass

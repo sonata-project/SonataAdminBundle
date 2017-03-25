@@ -12,19 +12,16 @@ file that was distributed with this source code.
 {% block content %}
     {% set _list_table = block('list_table') is defined ? block('list_table')|trim : null %}
     {% set _list_filters = block('list_filters') is defined ? block('list_filters')|trim : null %}
-    {% set _list_filters_actions = block('list_filters_actions') is defined ? block('list_filters_actions') : null %}
+    {% set _list_filters_actions = block('list_filters_actions') is defined ? block('list_filters_actions')|trim : null %}
 
     {% block preview %}{% endblock %}
     {% block form %}{% endblock %}
     {% block list %}{% endblock %}
     {% block show %}{% endblock %}
 
-
-
     {% if _list_table is not empty or _list_filters is not empty %}
     <div class="container-fluid">
         <div class="row">
-
             <div class="navbar navbar-default sonata-list-table">
                 <div class="container-fluid">
                     <div class="navbar-collapse">
@@ -39,22 +36,20 @@ file that was distributed with this source code.
                         {% if _list_filters_actions is not empty %}
                             {{ _list_filters_actions|raw }}
                         {% endif %}
-
                     </div>
                 </div>
             </div>
         </div>
 
         {% if _list_filters|trim %}
-             <div class="row">
-                 {{ _list_filters|raw }}
-             </div>
+            <div class="row">
+                {{ _list_filters|raw }}
+            </div>
         {% endif %}
 
         <div class="row">
             {{ _list_table|raw }}
         </div>
     </div>
-     {% endif %}
-
+    {% endif %}
 {% endblock %}

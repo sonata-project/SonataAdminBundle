@@ -11,14 +11,12 @@ file that was distributed with this source code.
 
 <td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}"{% if field_description.options.row_align is defined %} style="text-align:{{ field_description.options.row_align }}"{% endif %}>
     {% set route = field_description.options.route.name|default(null) %}
-    {% set action = route == 'show' ? 'VIEW' : route|upper %}
 
     {% if
         field_description.options.identifier is defined
         and route
-        and action
         and admin.hasRoute(route)
-        and admin.isGranted(action, action in ['VIEW', 'EDIT'] ? object : null)
+        and admin.hasAccess(route, route in ['show', 'edit'] ? object : null)
     %}
         <a class="sonata-link-identifier" href="{{ admin.generateObjectUrl(route, object, field_description.options.route.parameters) }}">
             {%- block field %}
@@ -36,7 +34,7 @@ file that was distributed with this source code.
             {% endblock -%}
         </a>
     {% else %}
-        {% set isEditable = field_description.options.editable is defined and field_description.options.editable and admin.isGranted('EDIT', object) %}
+        {% set isEditable = field_description.options.editable is defined and field_description.options.editable and admin.hasAccess('edit', object) %}
         {% set xEditableType = field_description.type|sonata_xeditable_type %}
 
         {% if isEditable and xEditableType %}
@@ -49,7 +47,21 @@ file that was distributed with this source code.
                     'code': admin.code(object)
                 })
             ) %}
-            <span {% block field_span_attributes %}class="x-editable" data-type="{{ xEditableType }}" data-value="{{ field_description.type == 'date' and value is not empty ? value.format('Y-m-d') : value }}" data-title="{{ field_description.label|trans({}, field_description.translationDomain) }}" data-pk="{{ admin.id(object) }}" data-url="{{ url }}" {% endblock %}>
+
+            {% if field_description == 'date' and value is not empty %}
+                {% set data_value = value.format('Y-m-d') %}
+            {% elseif field_description.type == 'boolean' and value is empty %}
+                {% set data_value = 0 %}
+            {% else %}
+                {% set data_value = value %}
+            {% endif %}
+
+            <span {% block field_span_attributes %}class="x-editable"
+                  data-type="{{ xEditableType }}"
+                  data-value="{{ data_value }}"
+                  data-title="{{ field_description.label|trans({}, field_description.translationDomain) }}"
+                  data-pk="{{ admin.id(object) }}"
+                  data-url="{{ url }}" {% endblock %}>
                 {{ block('field') }}
             </span>
         {% else %}

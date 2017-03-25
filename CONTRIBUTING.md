@@ -97,6 +97,24 @@ Some rules have to be respected about the test:
 * Most of the time, the test class should have the same name as the targeted class, suffixed by `Test`.
 * The `@expectedException*` annotations are prohibited. Use `PHPUnit_Framework_TestCase::setExpectedException()`.
 
+##### Using test doubles
+
+Since version 4.5, PHPUnit requires and [integrates](https://phpunit.de/manual/current/en/test-doubles.html#test-doubles.prophecy)
+the [phpspec/prophecy](https://github.com/phpspec/prophecy).
+Historically, Sonata has been using [the built-in test doubles implementation](https://phpunit.de/manual/current/en/test-doubles.html),
+but [has decided to move to Prophecy](https://github.com/sonata-project/dev-kit/issues/89),
+which is more concise than its built-in counterpart is most cases.
+This means the current Sonata codebase currently uses both implementations.
+If you want to contribute a test that uses test doubles, please follow these rules :
+
+1. All new test classes MUST use Prophecy.
+2. If you are changing an existing test method, you MUST use the same implementation it already uses,
+and focus on the goal of your PR and only on that.
+3. If you are changing an existing test class, you MUST use the same implementation it already uses,
+to be more consistent.
+4. You MAY submit a PR that migrates a test class from the built-in test double implementation to Prophecy,
+but it must migrate it entirely. The PR should only be about the migration.
+
 ### Writing a Pull Request
 
 #### The subject

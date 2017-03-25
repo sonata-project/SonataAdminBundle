@@ -20,7 +20,6 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -66,9 +65,7 @@ class AdminSearchBlockService extends AbstractBlockService
             throw new \RuntimeException('The requested service is not an Admin instance');
         }
 
-        if (!$admin->isGranted('LIST')) {
-            throw new AccessDeniedException();
-        }
+        $admin->checkAccess('list');
 
         $pager = $this->searchHandler->search(
             $admin,

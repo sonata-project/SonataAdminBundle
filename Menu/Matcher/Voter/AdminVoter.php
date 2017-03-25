@@ -48,7 +48,7 @@ class AdminVoter implements VoterInterface
         $admin = $item->getExtra('admin');
         $match = null;
         if ($admin instanceof AdminInterface
-            && $admin->hasRoute('list') && $admin->isGranted('LIST')
+            && $admin->hasRoute('list') && $admin->hasAccess('list')
             && $this->request && $this->request->get('_sonata_admin') == $admin->getCode()
         ) {
             $match = true;

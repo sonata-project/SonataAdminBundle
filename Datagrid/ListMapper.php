@@ -52,7 +52,7 @@ class ListMapper extends BaseMapper
         $fieldDescriptionOptions['identifier'] = true;
 
         if (!isset($fieldDescriptionOptions['route']['name'])) {
-            $routeName = ($this->admin->isGranted('EDIT') && $this->admin->hasRoute('edit')) ? 'edit' : 'show';
+            $routeName = ($this->admin->hasAccess('edit') && $this->admin->hasRoute('edit')) ? 'edit' : 'show';
             $fieldDescriptionOptions['route']['name'] = $routeName;
         }
 

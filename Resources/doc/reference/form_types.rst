@@ -248,7 +248,7 @@ to_string_callback
     ;
 
 multiple
-  defaults to false. Set to true, if you`re field is in many-to-many relation.
+  defaults to false. Set to true, if you're field is in many-to-many relation.
 
 placeholder
   defaults to "". Placeholder is shown when no item is selected.
@@ -357,7 +357,7 @@ According the choice made only associated fields are displayed. The others field
                         'route' => array('route', 'parameters'),
                         'uri' => array('uri'),
                     ),
-                    'empty_value' => 'Choose an option',
+                    'placeholder' => 'Choose an option',
                     'required' => false
                 ))
                 ->add('route', 'text')
@@ -452,7 +452,7 @@ btn_add, btn_list, btn_delete and btn_catalogue:
 sonata_type_collection
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The ``Collection Type`` is meant to handle creation and editing of model
+The ``CollectionType`` is meant to handle creation and editing of model
 collections. Rows can be added and deleted, and your model abstraction layer may
 allow you to edit fields inline. You can use ``type_options`` to pass values
 to the underlying forms.
@@ -501,6 +501,9 @@ btn_add and btn_catalogue:
   with this parameters. Setting it to ``false`` will hide the
   corresponding button. You can also specify a custom translation catalogue
   for this label, which defaults to ``SonataAdminBundle``.
+
+When using ``edit: inline`` a delete checkbox will be rendered for each element of the collection.
+Checking it will disable the fields but the form needs to be submitted for the element to actually be removed from the collection.
 
 **TIP**: A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
 You can listen to this event to trigger custom JavaScript (eg: add a calendar widget to a newly added date field)

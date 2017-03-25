@@ -435,6 +435,13 @@ class ShowMapperTest extends PHPUnit_Framework_TestCase
         $this->assertSame(array(), $this->admin->getShowTabs());
     }
 
+    public function testEmptyFieldLabel()
+    {
+        $this->showMapper->add('foo', null, array('label' => false));
+
+        $this->assertFalse($this->showMapper->get('foo')->getOption('label'));
+    }
+
     private function cleanShowMapper()
     {
         $this->showBuilder = $this->getMockForAbstractClass('Sonata\AdminBundle\Builder\ShowBuilderInterface');

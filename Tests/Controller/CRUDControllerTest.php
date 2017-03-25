@@ -13,7 +13,7 @@ namespace Sonata\AdminBundle\Tests\Controller;
 
 use Exporter\Exporter;
 use Exporter\Writer\JsonWriter;
-use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -42,6 +42,8 @@ use Symfony\Component\Security\Csrf\CsrfToken;
  * Test for CRUDController.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
+ *
+ * @group legacy
  */
 class CRUDControllerTest extends PHPUnit_Framework_TestCase
 {
@@ -56,7 +58,7 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
     private $request;
 
     /**
-     * @var AdminInterface
+     * @var AbstractAdmin
      */
     private $admin;
 
@@ -126,7 +128,8 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
         $this->pool = new Pool($this->container, 'title', 'logo.png');
         $this->pool->setAdminServiceIds(array('foo.admin'));
         $this->request->attributes->set('_sonata_admin', 'foo.admin');
-        $this->admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->admin = $this->getMockBuilder('Sonata\AdminBundle\Admin\AdminInterface')
+            ->getMock();
         $this->translator = $this->createMock('Symfony\Component\Translation\TranslatorInterface');
         $this->parameters = array();
         $this->template = '';
@@ -548,7 +551,9 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->method('isChild')
             ->will($this->returnValue(true));
 
-        $adminParent = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $adminParent = $this->getMockBuilder('Sonata\AdminBundle\Admin\AdminInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->admin->expects($this->once())
             ->method('getParent')
             ->will($this->returnValue($adminParent));
@@ -923,8 +928,8 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
 
         $this->admin->expects($this->any())
-            ->method('isGranted')
-            ->with($this->equalTo(strtoupper($route)))
+            ->method('hasAccess')
+            ->with($this->equalTo($route))
             ->will($this->returnValue(true));
 
         $response = $this->protectedTestedMethods['redirectTo']->invoke($this->controller, $object, $this->request);
@@ -946,8 +951,8 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
 
         $this->admin->expects($this->any())
-            ->method('isGranted')
-            ->with($this->equalTo(strtoupper('edit')), $object)
+            ->method('hasAccess')
+            ->with($this->equalTo('edit'), $object)
             ->will($this->returnValue(false));
 
         $response = $this->protectedTestedMethods['redirectTo']->invoke($this->controller, $object, $this->request);
@@ -1498,8 +1503,8 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
 
         $this->admin->expects($this->once())
-            ->method('isGranted')
-            ->with($this->equalTo('EDIT'))
+            ->method('hasAccess')
+            ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
 
         $form = $this->getMockBuilder('Symfony\Component\Form\Form')
@@ -1993,8 +1998,8 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
 
         $this->admin->expects($this->once())
-            ->method('isGranted')
-            ->with($this->equalTo('EDIT'))
+            ->method('hasAccess')
+            ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
 
         $this->admin->expects($this->once())
@@ -2423,7 +2428,7 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->method('getExportFormats')
             ->will($this->returnValue(array('json')));
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->any())
             ->method('getClass')
             ->will($this->returnValue('Foo'));
 

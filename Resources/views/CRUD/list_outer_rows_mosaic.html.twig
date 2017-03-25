@@ -50,17 +50,21 @@ This template can be customized to match your needs. You should only extends the
                                 {% endblock %}
                             </div>
                         </div>
+
+                        {# NEXT_MAJOR : remove this assignment #}
+                        {% set export_formats = export_formats|default(admin.getExportFormats) %}
+
                         <div class="mosaic-inner-text">
-                            {% if (admin.hasRoute('batch') and batchactions|length > 0) or (admin.hasRoute('export') and admin.isGranted("EXPORT") and admin.getExportFormats()|length) %}
+                            {% if (admin.hasRoute('batch') and batchactions|length > 0) or (admin.hasRoute('export') and admin.hasAccess('export') and export_formats|length) %}
                                 <input type="checkbox" name="idx[]" value="{{ admin.id(object) }}">
                             {% else %}
                                 &nbsp;
                             {% endif %}
 
                             {% block sonata_mosaic_description %}
-                                {% if admin.isGranted('EDIT', object) and admin.hasRoute('edit') %}
+                                {% if admin.hasAccess('edit', object) and admin.hasRoute('edit') %}
                                     <a class="mosaic-inner-link" href="{{ admin.generateUrl('edit', {'id' : object|sonata_urlsafeid(admin) }) }}">{{ meta.title|truncate(40) }}</a>
-                                {% elseif admin.isGranted('SHOW', object) and admin.hasRoute('show') %}
+                                {% elseif admin.hasAccess('show', object) and admin.hasRoute('show') %}
                                     <a class="mosaic-inner-link" href="{{ admin.generateUrl('show', {'id' : object|sonata_urlsafeid(admin) }) }}">{{ meta.title|truncate(40) }}</a>
                                 {% else %}
                                     {{ meta.title|truncate(40) }}

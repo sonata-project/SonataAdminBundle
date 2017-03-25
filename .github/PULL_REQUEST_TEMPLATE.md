@@ -7,7 +7,7 @@
     - master is for deprecation removals and other changes that cannot be done without a BC-break
     More details here: https://github.com/sonata-project/SonataAdminBundle/blob/3.x/CONTRIBUTING.md#the-base-branch
 -->
-I am targetting this branch, because {reason}.
+I am targeting this branch, because {reason}.
 
 <!--
     Specify which issues will be fixed/closed.

@@ -195,7 +195,7 @@ class Pool
             throw new \RuntimeException(sprintf(
                 'Unable to find a valid admin for the class: %s, there are too many registered: %s',
                 $class,
-                implode(',', $this->adminClasses[$class])
+                implode(', ', $this->adminClasses[$class])
             ));
         }
 

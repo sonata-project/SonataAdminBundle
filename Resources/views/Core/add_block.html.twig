@@ -6,7 +6,7 @@
         {% set display_group = false %}
 
         {% for admin in group.items if display_group == false %}
-            {% if admin.hasRoute('create') and admin.isGranted('CREATE') %}
+            {% if admin.hasRoute('create') and admin.hasAccess('create') %}
                 {% set display_group = true %}
                 {% set groups = [group]|merge(groups) %}
             {% endif %}
@@ -46,7 +46,7 @@
                 </li>
 
                 {% for admin in group.items %}
-                    {% if admin.hasRoute('create') and admin.isGranted('CREATE') %}
+                    {% if admin.hasRoute('create') and admin.hasAccess('create') %}
                         {% if admin.subClasses is empty %}
                             <li role="presentation">
                                 <a role="menuitem" tabindex="-1" href="{{ admin.generateUrl('create')}}">{{ admin.label|trans({}, admin.translationdomain) }}</a>

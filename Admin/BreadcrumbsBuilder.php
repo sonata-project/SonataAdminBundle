@@ -83,14 +83,12 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         if (!$menu) {
             $menu = $admin->getMenuFactory()->createItem('root');
 
-            $menu = $this->createMenuItem(
-                $admin,
-                $menu,
-                'dashboard',
-                'SonataAdminBundle',
-                array('uri' => $admin->getRouteGenerator()->generate(
-                    'sonata_admin_dashboard'
-                ))
+            $menu = $menu->addChild(
+                'link_breadcrumb_dashboard',
+                array(
+                    'uri' => $admin->getRouteGenerator()->generate('sonata_admin_dashboard'),
+                    'extras' => array('translation_domain' => 'SonataAdminBundle'),
+                )
             );
         }
 
@@ -100,7 +98,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
             sprintf('%s_list', $admin->getClassnameLabel()),
             $admin->getTranslationDomain(),
             array(
-                'uri' => $admin->hasRoute('list') && $admin->isGranted('LIST') ?
+                'uri' => $admin->hasRoute('list') && $admin->hasAccess('list') ?
                 $admin->generateUrl('list') :
                 null,
             )
@@ -128,7 +126,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
             return $this->buildBreadcrumbs($childAdmin, $action, $menu);
         }
 
-        if ('list' === $action && $admin->isChild()) {
+        if ('list' === $action) {
             $menu->setUri(false);
         } elseif ('create' !== $action && $admin->hasSubject()) {
             $menu = $menu->addChild($admin->toString($admin->getSubject()), array(
