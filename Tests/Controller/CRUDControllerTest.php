@@ -128,8 +128,7 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
         $this->pool = new Pool($this->container, 'title', 'logo.png');
         $this->pool->setAdminServiceIds(array('foo.admin'));
         $this->request->attributes->set('_sonata_admin', 'foo.admin');
-        $this->admin = $this->getMockBuilder('Sonata\AdminBundle\Admin\AbstractAdmin')
-            ->disableOriginalConstructor()
+        $this->admin = $this->getMockBuilder('Sonata\AdminBundle\Admin\AdminInterface')
             ->getMock();
         $this->translator = $this->createMock('Symfony\Component\Translation\TranslatorInterface');
         $this->parameters = array();
@@ -552,7 +551,7 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->method('isChild')
             ->will($this->returnValue(true));
 
-        $adminParent = $this->getMockBuilder('Sonata\AdminBundle\Admin\AbstractAdmin')
+        $adminParent = $this->getMockBuilder('Sonata\AdminBundle\Admin\AdminInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $this->admin->expects($this->once())
