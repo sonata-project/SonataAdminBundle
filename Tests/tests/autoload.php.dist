@@ -4,8 +4,6 @@
 
 $files = array(
     __DIR__.'/../../vendor/autoload.php',
-    __DIR__.'/../../../../../app/autoload.php',
-    __DIR__.'/../../../../../apps/autoload.php',
 );
 
 $autoload = false;
