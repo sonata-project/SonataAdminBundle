@@ -1,6 +1,20 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated translator for ``AdminExtractor``
+
+The `$translator` property and the corresponding methods:
+* `setTranslator`,
+* `getTranslator`,
+* `trans`,
+* `transChoice`,
+* `setLocale`
+* `getLocale`)
+
+in `AdminExtractor` are deprecated.
+
+Please use `CRUDController::trans` or twig templates instead.
+
 UPGRADE FROM 3.13 to 3.14
 =========================
 
