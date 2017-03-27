@@ -145,7 +145,11 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
             );
 
             if ($this->logger) {
-                $this->logger->info(sprintf('Retrieving message from admin:%s - class: %s', $admin->getCode(), get_class($admin)));
+                $this->logger->info(sprintf(
+                    'Retrieving message from admin:%s - class: %s',
+                        $admin->getCode(),
+                        get_class($admin)
+                ));
             }
 
             foreach ($methods as $method) {
@@ -153,7 +157,11 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
                     $admin->$method();
                 } catch (\Exception $e) {
                     if ($this->logger) {
-                        $this->logger->error(sprintf('ERROR : admin:%s - Raise an exception : %s', $admin->getCode(), $e->getMessage()));
+                        $this->logger->error(sprintf(
+                            'ERROR : admin:%s - Raise an exception : %s',
+                                $admin->getCode(),
+                                $e->getMessage()
+                        ));
                     }
 
                     throw $e;
