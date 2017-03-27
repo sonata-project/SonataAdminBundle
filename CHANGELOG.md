@@ -2,6 +2,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.15.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.14.0...3.15.0) - 2017-03-27
+### Added
+- Add polish translation of `title_show`
+- Added the ability to leave the label of a show field empty by passing `label => false` to `ShowMapper::add()`
+
+### Changed
+- Make sure Moment.js translations work for every locale
+- The `sonata/exporter` constraint has been bumped to `^1.7`
+
+### Fixed
+- Sanitize masked fields in `ChoiceFieldMaskType`
+- Whitespaces are not taken into account when rendering blocks on `standard_layout`
+- fixed boolean handling for `xEditableType`
+
 ## [3.14.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.13.0...3.14.0) - 2017-03-16
 ### Added
 - Added `label` and `translation_domain` fallback for batch actions
