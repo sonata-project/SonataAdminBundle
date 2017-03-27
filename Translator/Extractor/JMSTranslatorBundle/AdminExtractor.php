@@ -123,13 +123,9 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
             $this->labelStrategy = $admin->getLabelTranslatorStrategy();
             $this->domain = $admin->getTranslationDomain();
 
-            $admin->setTranslator($this);
+            $admin->setTranslator($this); // NEXT_MAJOR: remove this line
             $admin->setSecurityHandler($this);
             $admin->setLabelTranslatorStrategy($this);
-
-//            foreach ($admin->getChildren() as $child) {
-//                $child->setTranslator($this);
-//            }
 
             // call the different public method
             $methods = array(
@@ -291,8 +287,6 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     private function addMessage($id, $domain)
     {
         $message = new Message($id, $domain);
-
-        //        $this->logger->debug(sprintf('extract: %s - domain:%s', $id, $domain));
 
         $trace = debug_backtrace(false);
         if (isset($trace[1]['file'])) {
