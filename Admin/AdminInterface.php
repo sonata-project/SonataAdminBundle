@@ -72,12 +72,16 @@ interface AdminInterface
     /**
      * Set translator.
      *
+     * NEXT_MAJOR: remove this method
+     *
      * @param TranslatorInterface $translator
      */
     public function setTranslator(TranslatorInterface $translator);
 
     /**
      * Get translator.
+     *
+     * NEXT_MAJOR: remove this method
      *
      * @return TranslatorInterface
      */
