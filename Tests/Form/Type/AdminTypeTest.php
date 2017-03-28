@@ -90,6 +90,10 @@ class AdminTypeTest extends TypeTestCase
 
     public function testDotFields()
     {
+        if (!method_exists('Symfony\Component\PropertyAccess\PropertyAccessor', 'isReadable')) {
+            return $this->markTestSkipped('Testing ancient versions would be more complicated.');
+        }
+
         $parentSubject = new \stdClass();
         $parentSubject->foo = 1;
 
