@@ -79,7 +79,7 @@ class AdminType extends AbstractType
                         // for PropertyAccessor >= 2.5
                         $subject = $p->getValue(
                             $parentSubject,
-                            $this->getFieldDescription($options)->getFieldName().$options['property_path']
+                            $options['property_path']
                         );
                     }
                     $builder->setData($subject);
