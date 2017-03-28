@@ -81,7 +81,6 @@ class AdminType extends AbstractType
                             $parentSubject,
                             $options['property_path']
                         );
-
                     }
                     $builder->setData($subject);
                 }

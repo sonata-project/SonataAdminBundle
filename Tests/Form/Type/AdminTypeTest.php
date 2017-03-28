@@ -120,7 +120,6 @@ class AdminTypeTest extends TypeTestCase
                 'delete' => false, // not needed
                 'property_path' => 'foo', // actual test case
             ));
-
         } catch (\Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException $exception) {
             $this->fail($exception->getMessage());
         }
