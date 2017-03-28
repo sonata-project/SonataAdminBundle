@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.15.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.15.0...3.15.1) - 2017-03-28
+### Added
+- Added Brazilian Portuguese translation of `title_show`
+
+### Changed
+- change show picto on list view to use the same than in edit view
+
+### Fixed
+- do not double `FieldDescription::Name` and `property_path` in `AdminType`
+
 ## [3.15.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.14.0...3.15.0) - 2017-03-27
 ### Added
 - Add polish translation of `title_show`
