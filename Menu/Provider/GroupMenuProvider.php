@@ -138,6 +138,9 @@ class GroupMenuProvider implements MenuProviderInterface
 
             if (false === $menuItem->hasChildren()) {
                 $menuItem->setDisplay(false);
+            } elseif (!empty($group['keep_open'])) {
+                $menuItem->setAttribute('class', 'keep-open');
+                $menuItem->setExtra('keep_open', $group['keep_open']);
             }
         } else {
             foreach ($group['items'] as $item) {

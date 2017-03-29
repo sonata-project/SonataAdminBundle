@@ -43,7 +43,9 @@
             {% set icon = item.extra('icon')|default('') %}
             {{ icon|raw }}
             {{ parent() }}
-            <span class="pull-right-container"><i class="fa pull-right fa-angle-left"></i></span>
+            {%- if item.extra('keep_open') is not defined or not item.extra('keep_open') -%}
+                <span class="pull-right-container"><i class="fa pull-right fa-angle-left"></i></span>
+            {%- endif -%}
         </a>
     {% endspaceless %}
 {% endblock %}

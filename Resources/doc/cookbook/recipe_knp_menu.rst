@@ -205,6 +205,32 @@ your admin services or simply remove menu items from the ``sonata_admin`` dashbo
                           label:        Blog
                         - sonata.news.admin.news
 
+Keeping menu group open
+-----------------------
+
+You can add the ``keep_open`` option to menu group to keep that group always
+open and ignore open/close effects:
+
+.. code-block:: yaml
+
+    # app/config/config.yml
+
+    sonata_admin:
+        dashboard:
+            groups:
+                sonata.admin.group.content:
+                    keep_open:            true
+                    label:                sonata_media
+                    label_catalogue:      SonataMediaBundle
+                    icon:                 '<i class="fa fa-image"></i>'
+                    items:
+                        - sonata.media.admin.media
+                        - sonata.media.admin.gallery
+
+.. figure:: ../images/keep_open.png
+   :align: center
+   :alt: The navigation side bar with a group which uses "keep_open" option
+
 Show menu item without treeview
 -------------------------------
 
