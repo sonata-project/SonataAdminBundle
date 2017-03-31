@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.16.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.15.1...3.16.0) - 2017-03-31
+### Added
+- Added `onTop` parameter on `@Admin` annotation
+- Added new `keep_open` option to keep menu group always open
+
+### Fixed
+- `field_description` comparison in `base_list_field.html.twig`
+
 ## [3.15.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.15.0...3.15.1) - 2017-03-28
 ### Added
 - Added Brazilian Portuguese translation of `title_show`
