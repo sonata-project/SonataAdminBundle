@@ -19,6 +19,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
+/**
+ * @author Nikita Volosihn https://github.com/sinoptik
+ */
 abstract class QuestionableCommand extends ContainerAwareCommand
 {
     /**
