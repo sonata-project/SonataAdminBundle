@@ -32,7 +32,7 @@ use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-interface AdminInterface extends FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface
+interface AdminInterface extends FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface
 {
     /**
      * @param FormContractorInterface $formContractor
@@ -431,38 +431,6 @@ interface AdminInterface extends FieldDescriptionRegistryInterface, LifecycleHoo
      * @return bool
      */
     public function supportsPreviewMode();
-
-    /**
-     * add an Admin child to the current one.
-     *
-     * @param AdminInterface $child
-     */
-    public function addChild(AdminInterface $child);
-
-    /**
-     * Returns true or false if an Admin child exists for the given $code.
-     *
-     * @param string $code Admin code
-     *
-     * @return bool True if child exist, false otherwise
-     */
-    public function hasChild($code);
-
-    /**
-     * Returns an collection of admin children.
-     *
-     * @return array list of Admin children
-     */
-    public function getChildren();
-
-    /**
-     * Returns an admin child with the given $code.
-     *
-     * @param string $code
-     *
-     * @return AdminInterface|null
-     */
-    public function getChild($code);
 
     /**
      * @return mixed a new object instance
