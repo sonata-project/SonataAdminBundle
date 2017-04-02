@@ -34,7 +34,7 @@ use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-interface AdminInterface
+interface AdminInterface extends FieldDescriptionRegistryInterface
 {
     /**
      * @param FormContractorInterface $formContractor
@@ -189,22 +189,6 @@ interface AdminInterface
     public function getFormBuilder();
 
     /**
-     * Return FormFieldDescription.
-     *
-     * @param string $name
-     *
-     * @return FieldDescriptionInterface
-     */
-    public function getFormFieldDescription($name);
-
-    /**
-     * Build and return the collection of form FieldDescription.
-     *
-     * @return array collection of form FieldDescription
-     */
-    public function getFormFieldDescriptions();
-
-    /**
      * Returns a form depend on the given $object.
      *
      * @return Form
@@ -325,92 +309,6 @@ interface AdminInterface
      * @return bool
      */
     // public function isCurrentRoute($name, $adminCode = null);
-
-    /**
-     * Returns true if the admin has a FieldDescription with the given $name.
-     *
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function hasShowFieldDescription($name);
-
-    /**
-     * add a FieldDescription.
-     *
-     * @param string                    $name
-     * @param FieldDescriptionInterface $fieldDescription
-     */
-    public function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription);
-
-    /**
-     * Remove a ShowFieldDescription.
-     *
-     * @param string $name
-     */
-    public function removeShowFieldDescription($name);
-
-    /**
-     * add a list FieldDescription.
-     *
-     * @param string                    $name
-     * @param FieldDescriptionInterface $fieldDescription
-     */
-    public function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription);
-
-    /**
-     * Remove a list FieldDescription.
-     *
-     * @param string $name
-     */
-    public function removeListFieldDescription($name);
-
-    /**
-     * Returns true if the filter FieldDescription exists.
-     *
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function hasFilterFieldDescription($name);
-
-    /**
-     * add a filter FieldDescription.
-     *
-     * @param string                    $name
-     * @param FieldDescriptionInterface $fieldDescription
-     */
-    public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription);
-
-    /**
-     * Remove a filter FieldDescription.
-     *
-     * @param string $name
-     */
-    public function removeFilterFieldDescription($name);
-
-    /**
-     * Returns the filter FieldDescription collection.
-     *
-     * @return FieldDescriptionInterface[]
-     */
-    public function getFilterFieldDescriptions();
-
-    /**
-     * Returns a filter FieldDescription.
-     *
-     * @param string $name
-     *
-     * @return FieldDescriptionInterface|null
-     */
-    public function getFilterFieldDescription($name);
-
-    /**
-     * Returns a list depend on the given $object.
-     *
-     * @return FieldDescriptionCollection
-     */
-    public function getList();
 
     /**
      * @param SecurityHandlerInterface $securityHandler
