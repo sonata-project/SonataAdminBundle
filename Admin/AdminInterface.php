@@ -34,7 +34,7 @@ use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-interface AdminInterface extends FieldDescriptionRegistryInterface
+interface AdminInterface extends FieldDescriptionRegistryInterface, LifecycleHookProviderInterface
 {
     /**
      * @param FormContractorInterface $formContractor
@@ -550,61 +550,6 @@ interface AdminInterface extends FieldDescriptionRegistryInterface
     public function getDataSourceIterator();
 
     public function configure();
-
-    /**
-     * @param mixed $object
-     *
-     * @return mixed
-     */
-    public function update($object);
-
-    /**
-     * @param mixed $object
-     *
-     * @return mixed
-     */
-    public function create($object);
-
-    /**
-     * @param mixed $object
-     */
-    public function delete($object);
-
-    //TODO: uncomment this method for 4.0
-    //    /**
-    //     * @param mixed $object
-    //     */
-    //    public function preValidate($object);
-
-    /**
-     * @param mixed $object
-     */
-    public function preUpdate($object);
-
-    /**
-     * @param mixed $object
-     */
-    public function postUpdate($object);
-
-    /**
-     * @param mixed $object
-     */
-    public function prePersist($object);
-
-    /**
-     * @param mixed $object
-     */
-    public function postPersist($object);
-
-    /**
-     * @param mixed $object
-     */
-    public function preRemove($object);
-
-    /**
-     * @param mixed $object
-     */
-    public function postRemove($object);
 
     /**
      * Call before the batch action, allow you to alter the query and the idx.
