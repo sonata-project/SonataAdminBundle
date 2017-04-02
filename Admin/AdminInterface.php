@@ -145,7 +145,7 @@ interface AdminInterface extends FieldDescriptionRegistryInterface
     public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = false);
 
     /**
-     * Generates an url for the given parameters.
+     * Generates a url for the given parameters.
      *
      * @param string $name
      * @param array  $parameters
@@ -156,7 +156,7 @@ interface AdminInterface extends FieldDescriptionRegistryInterface
     public function generateUrl($name, array $parameters = array(), $absolute = false);
 
     /**
-     * Generates an url for the given parameters.
+     * Generates a url for the given parameters.
      *
      * @param string $name
      * @param array  $parameters
@@ -331,7 +331,7 @@ interface AdminInterface extends FieldDescriptionRegistryInterface
     /**
      * @param mixed $entity
      *
-     * @return string a string representation of the id that is save to use in an url
+     * @return string a string representation of the id that is safe to use in a url
      */
     public function getUrlsafeIdentifier($entity);
 
