@@ -55,7 +55,7 @@ var Admin = {
             padding: 15,
             overflow: 'auto'
         });
-
+      
         jQuery(modal).trigger('sonata-admin-setup-list-modal');
     },
     setup_select2: function(subject) {
@@ -608,17 +608,6 @@ var Admin = {
                 lessLink: '<a href="#">'+jQuery(this).data('readmore-less')+'</a>'
             });
         });
-    },
-    handle_inline_delete_checkboxes: function() {
-        var eventType = window.SONATA_CONFIG.USE_ICHECK ? 'ifChanged': 'change';
-
-        $('.sonata-ba-form').on(eventType, '.sonata-admin-type-delete-checkbox', function() {
-            var id = jQuery(this).prop('id');
-
-            jQuery('[id^=' + id.split('__')[0] + ']:not("#' + id + '")')
-                .prop('disabled', jQuery(this).is(':checked'))
-            ;
-        });
     }
 };
 
@@ -631,7 +620,6 @@ jQuery(document).ready(function() {
     Admin.setup_per_page_switcher(document);
     Admin.setup_collection_buttons(document);
     Admin.shared_setup(document);
-    Admin.handle_inline_delete_checkboxes();
 });
 
 jQuery(document).on('sonata-admin-append-form-element', function(e) {
