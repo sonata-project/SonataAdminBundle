@@ -62,7 +62,14 @@ class ChoiceTypeExtensionTest extends PHPUnit_Framework_TestCase
     {
         $extension = new ChoiceTypeExtension();
 
-        $this->assertSame('choice', $extension->getExtendedType());
+        if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            $this->assertSame(
+                'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
+                $extension->getExtendedType()
+            );
+        } else {
+            $this->assertSame('choice', $extension->getExtendedType());
+        }
     }
 
     public function testDefaultOptionsWithSortable()
