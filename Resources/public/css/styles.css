@@ -496,3 +496,10 @@ div.sonata-filters-box div.form-group span.input-group-addon {
     padding: 3px 10px;
     font-size: 13px;
 }
+
+.right-side > .content-header {
+    padding: 15px 15px 0 15px;
+}
+.alert {
+    margin-left: 0;
+}
