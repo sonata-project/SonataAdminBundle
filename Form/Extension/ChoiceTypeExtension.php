@@ -60,7 +60,7 @@ class ChoiceTypeExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        /**
+        /*
          * NEXT_MAJOR: Remove when dropping Symfony <2.8 support. It should
          * simply be return 'Symfony\Component\Form\Extension\Core\Type\ChoiceType';
          */

@@ -62,7 +62,7 @@ class ChoiceTypeExtensionTest extends PHPUnit_Framework_TestCase
     {
         $extension = new ChoiceTypeExtension();
 
-        /**
+        /*
          * NEXT_MAJOR: Remove when dropping Symfony <2.8 support. It should
          * simply be:
          *
