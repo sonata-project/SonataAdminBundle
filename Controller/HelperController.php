@@ -352,23 +352,26 @@ class HelperController
             $itemsPerPage = $filterAutocomplete->getFieldOption('items_per_page', 10);
             $reqParamPageNumber = $filterAutocomplete->getFieldOption('req_param_name_page_number', '_page');
             $toStringCallback = $filterAutocomplete->getFieldOption('to_string_callback');
+            $targetAdminAccessAction = $filterAutocomplete->getFieldOption('target_admin_access_action');
         } else {
             // create/edit form
             $fieldDescription = $this->retrieveFormFieldDescription($admin, $request->get('field'));
             $formAutocomplete = $admin->getForm()->get($fieldDescription->getName());
 
-            if ($formAutocomplete->getConfig()->getAttribute('disabled')) {
+            $formAutocompleteConfig = $formAutocomplete->getConfig();
+            if ($formAutocompleteConfig->getAttribute('disabled')) {
                 throw new AccessDeniedException(
                     'Autocomplete list can`t be retrieved because the form element is disabled or read_only.'
                 );
             }
 
-            $property = $formAutocomplete->getConfig()->getAttribute('property');
-            $callback = $formAutocomplete->getConfig()->getAttribute('callback');
-            $minimumInputLength = $formAutocomplete->getConfig()->getAttribute('minimum_input_length');
-            $itemsPerPage = $formAutocomplete->getConfig()->getAttribute('items_per_page');
-            $reqParamPageNumber = $formAutocomplete->getConfig()->getAttribute('req_param_name_page_number');
-            $toStringCallback = $formAutocomplete->getConfig()->getAttribute('to_string_callback');
+            $property = $formAutocompleteConfig->getAttribute('property');
+            $callback = $formAutocompleteConfig->getAttribute('callback');
+            $minimumInputLength = $formAutocompleteConfig->getAttribute('minimum_input_length');
+            $itemsPerPage = $formAutocompleteConfig->getAttribute('items_per_page');
+            $reqParamPageNumber = $formAutocompleteConfig->getAttribute('req_param_name_page_number');
+            $toStringCallback = $formAutocompleteConfig->getAttribute('to_string_callback');
+            $targetAdminAccessAction = $formAutocompleteConfig->getAttribute('target_admin_access_action');
         }
 
         $searchText = $request->get('q');
@@ -376,7 +379,7 @@ class HelperController
         $targetAdmin = $fieldDescription->getAssociationAdmin();
 
         // check user permission
-        $targetAdmin->checkAccess('list');
+        $targetAdmin->checkAccess($targetAdminAccessAction);
 
         if (mb_strlen($searchText, 'UTF-8') < $minimumInputLength) {
             return new JsonResponse(array('status' => 'KO', 'message' => 'Too short search string.'), 403);
