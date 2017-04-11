@@ -291,6 +291,35 @@ class HelperController
             $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
         }
 
+        // Handle entity choice association type, transforming the value into entity
+        if ('' !== $value && $fieldDescription->getType() == 'choice' && $fieldDescription->getOption('class')) {
+
+            // Get existing associations for current object
+            $associations = $admin->getModelManager()
+                ->getEntityManager($admin->getClass())->getClassMetadata($admin->getClass())
+                ->getAssociationNames();
+
+            if (!in_array($field, $associations)) {
+                return new JsonResponse(array(
+                    'status' => 'KO',
+                    'message' => sprintf('Unknown association "%s", association does not exist in entity "%s", available associations are "%s".',
+                        $field, $this->admin->getClass(), implode(', ', $associations)),
+                ));
+            }
+
+            $value = $admin->getConfigurationPool()->getContainer()->get('doctrine')->getManager()
+                ->getRepository($fieldDescription->getOption('class'))
+                ->find($value);
+
+            if (!$value) {
+                return new JsonResponse(array(
+                    'status' => 'KO',
+                    'message' => sprintf('Edit failed, object with id %s not found in association %s.',
+                        $objectId, $field),
+                ));
+            }
+        }
+
         $this->pool->getPropertyAccessor()->setValue($object, $propertyPath, '' !== $value ? $value : null);
 
         $violations = $this->validator->validate($object);
