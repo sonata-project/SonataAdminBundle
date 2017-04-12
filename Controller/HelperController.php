@@ -235,39 +235,36 @@ class HelperController
 
         // alter should be done by using a post method
         if (!$request->isXmlHttpRequest()) {
-            return new JsonResponse(array('status' => 'KO', 'message' => 'Expected a XmlHttpRequest request header'));
+            return new JsonResponse('Expected a XmlHttpRequest request header', 405);
         }
 
         if ($request->getMethod() != 'POST') {
-            return new JsonResponse(array('status' => 'KO', 'message' => 'Expected a POST Request'));
+            return new JsonResponse('Expected a POST Request', 405);
         }
 
         $rootObject = $object = $admin->getObject($objectId);
 
         if (!$object) {
-            return new JsonResponse(array('status' => 'KO', 'message' => 'Object does not exist'));
+            return new JsonResponse('Object does not exist', 404);
         }
 
         // check user permission
         if (false === $admin->hasAccess('edit', $object)) {
-            return new JsonResponse(array('status' => 'KO', 'message' => 'Invalid permissions'));
+            return new JsonResponse('Invalid permissions', 403);
         }
 
         if ($context == 'list') {
             $fieldDescription = $admin->getListFieldDescription($field);
         } else {
-            return new JsonResponse(array('status' => 'KO', 'message' => 'Invalid context'));
+            return new JsonResponse('Invalid context', 400);
         }
 
         if (!$fieldDescription) {
-            return new JsonResponse(array('status' => 'KO', 'message' => 'The field does not exist'));
+            return new JsonResponse('The field does not exist', 400);
         }
 
         if (!$fieldDescription->getOption('editable')) {
-            return new JsonResponse(array(
-                'status' => 'KO',
-                'message' => 'The field cannot be edit, editable option must be set to true',
-            ));
+            return new JsonResponse('The field cannot be edit, editable option must be set to true', 400);
         }
 
         $propertyPath = new PropertyPath($field);
@@ -293,18 +290,14 @@ class HelperController
 
         // Handle entity choice association type, transforming the value into entity
         if ('' !== $value && $fieldDescription->getType() == 'choice' && $fieldDescription->getOption('class')) {
-
             // Get existing associations for current object
             $associations = $admin->getModelManager()
                 ->getEntityManager($admin->getClass())->getClassMetadata($admin->getClass())
                 ->getAssociationNames();
 
             if (!in_array($field, $associations)) {
-                return new JsonResponse(array(
-                    'status' => 'KO',
-                    'message' => sprintf('Unknown association "%s", association does not exist in entity "%s", available associations are "%s".',
-                        $field, $this->admin->getClass(), implode(', ', $associations)),
-                ));
+                return new JsonResponse(sprintf('Unknown association "%s", association does not exist in entity "%s", available associations are "%s".',
+                        $field, $this->admin->getClass(), implode(', ', $associations)), 404);
             }
 
             $value = $admin->getConfigurationPool()->getContainer()->get('doctrine')->getManager()
@@ -312,11 +305,8 @@ class HelperController
                 ->find($value);
 
             if (!$value) {
-                return new JsonResponse(array(
-                    'status' => 'KO',
-                    'message' => sprintf('Edit failed, object with id %s not found in association %s.',
-                        $originalValue, $field),
-                ));
+                return new JsonResponse(sprintf('Edit failed, object with id "%s" not found in association "%s".',
+                        $originalValue, $field), 404);
             }
         }
 
@@ -331,7 +321,7 @@ class HelperController
                 $messages[] = $violation->getMessage();
             }
 
-            return new JsonResponse(array('status' => 'KO', 'message' => implode("\n", $messages)));
+            return new JsonResponse(implode("\n", $messages), 400);
         }
 
         $admin->update($object);
@@ -342,7 +332,7 @@ class HelperController
 
         $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription);
 
-        return new JsonResponse(array('status' => 'OK', 'content' => $content));
+        return new JsonResponse($content, 200);
     }
 
     /**
