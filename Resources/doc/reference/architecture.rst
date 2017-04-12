@@ -356,5 +356,34 @@ Then, you have to set the CommentAdmin ``parentAssociationMapping`` attribute to
 
 It also possible to set a dot-separated value, like ``post.author``, if your parent and child admins are not directly related.
 
+Be wary that being a child admin is optional, which means that regular routes
+will be created regardless of whether you actually need them or not. To get rid
+of them, you may override the ``configureRoutes`` method::
+
+    <?php
+    namespace Sonata\NewsBundle\Admin;
+
+    use Sonata\AdminBundle\Route\RouteCollection;
+
+    class CommentAdmin extends AbstractAdmin
+    {
+        protected $parentAssociationMapping = 'post';
+
+        protected function configureRoutes(RouteCollection $collection)
+        {
+            if ($this->isChild()) {
+
+                // This is the route configuration as a child
+                $collection->clearExcept(['show', 'edit']);
+
+                return;
+            }
+
+            // This is the route configuration as a parent
+            $collection->clear();
+
+        }
+    }
+
 .. _`Django Project Website`: http://www.djangoproject.com/
 .. _`CRUD`: http://en.wikipedia.org/wiki/CRUD
