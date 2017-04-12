@@ -296,8 +296,13 @@ class HelperController
                 ->getAssociationNames();
 
             if (!in_array($field, $associations)) {
-                return new JsonResponse(sprintf('Unknown association "%s", association does not exist in entity "%s", available associations are "%s".',
-                        $field, $this->admin->getClass(), implode(', ', $associations)), 404);
+                return new JsonResponse(
+                    sprintf(
+                        'Unknown association "%s", association does not exist in entity "%s", available associations are "%s".',
+                        $field,
+                        $this->admin->getClass(),
+                        implode(', ', $associations)),
+                    404);
             }
 
             $value = $admin->getConfigurationPool()->getContainer()->get('doctrine')->getManager()
@@ -305,8 +310,12 @@ class HelperController
                 ->find($value);
 
             if (!$value) {
-                return new JsonResponse(sprintf('Edit failed, object with id "%s" not found in association "%s".',
-                        $originalValue, $field), 404);
+                return new JsonResponse(
+                    sprintf(
+                        'Edit failed, object with id "%s" not found in association "%s".',
+                        $originalValue,
+                        $field),
+                    404);
             }
         }
 
