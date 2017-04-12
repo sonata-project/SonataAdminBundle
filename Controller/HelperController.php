@@ -227,7 +227,7 @@ class HelperController
         $field = $request->get('field');
         $code = $request->get('code');
         $objectId = $request->get('objectId');
-        $value = $request->get('value');
+        $value = $originalValue = $request->get('value');
         $context = $request->get('context');
 
         $admin = $this->pool->getInstance($code);
@@ -315,7 +315,7 @@ class HelperController
                 return new JsonResponse(array(
                     'status' => 'KO',
                     'message' => sprintf('Edit failed, object with id %s not found in association %s.',
-                        $objectId, $field),
+                        $originalValue, $field),
                 ));
             }
         }
