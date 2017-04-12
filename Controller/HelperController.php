@@ -235,11 +235,11 @@ class HelperController
 
         // alter should be done by using a post method
         if (!$request->isXmlHttpRequest()) {
-            return new JsonResponse('Expected a XmlHttpRequest request header', 405);
+            return new JsonResponse('Expected an XmlHttpRequest request header', 405);
         }
 
         if ($request->getMethod() != 'POST') {
-            return new JsonResponse('Expected a POST Request', 405);
+            return new JsonResponse('Expected an POST Request', 405);
         }
 
         $rootObject = $object = $admin->getObject($objectId);
@@ -264,7 +264,7 @@ class HelperController
         }
 
         if (!$fieldDescription->getOption('editable')) {
-            return new JsonResponse('The field cannot be edit, editable option must be set to true', 400);
+            return new JsonResponse('The field cannot be edited, editable option must be set to true', 400);
         }
 
         $propertyPath = new PropertyPath($field);
