@@ -239,7 +239,7 @@ class HelperController
         }
 
         if ($request->getMethod() != 'POST') {
-            return new JsonResponse('Expected an POST Request', 405);
+            return new JsonResponse('Expected a POST Request', 405);
         }
 
         $rootObject = $object = $admin->getObject($objectId);
