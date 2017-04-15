@@ -190,6 +190,10 @@ class HelperController
         if ($uniqid) {
             $admin->setUniqid($uniqid);
         }
+        
+        if(!$objectId){
+            $objectId = null;
+        }
 
         if (!$objectId) {
             $objectId = null;
