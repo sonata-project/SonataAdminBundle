@@ -679,6 +679,13 @@ ChoiceType
         // ...
     }
 
+- ``required``: Default value is at ``true``.
+
+.. code-block:: php
+
+        <?php
+        $form->add('notImportantStatus', null, array('required' => false);
+
 .. _`Symfony field types`: http://symfony.com/doc/current/book/forms.html#built-in-field-types
 .. _`Symfony choice Field Type docs`: http://symfony.com/doc/current/reference/forms/types/choice.html
 .. _`Symfony PropertyPath`: http://api.symfony.com/2.0/Symfony/Component/Form/Util/PropertyPath.html
