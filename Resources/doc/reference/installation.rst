@@ -21,6 +21,9 @@ for older versions:
 
     Please provide a version constraint for the sonata-project/admin-bundle requirement: dev-master
 
+.. note::
+    Since dev-master is not a stable version you will need to add :mod:`sonata-project/core-bundle:dev-master` too. `More information <http://stackoverflow.com/a/20784251/842697>`_.
+
 Selecting and downloading a storage bundle
 ------------------------------------------
 
