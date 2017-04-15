@@ -11,12 +11,12 @@ file that was distributed with this source code.
 
 {% extends admin.getTemplate('base_list_field') %}
 
-{% block field%}
+{% block field %}
     {%- if value is empty -%}
         &nbsp;
     {%- elseif field_description.options.format is defined -%}
         {{ value|date(field_description.options.format) }}
     {%- else -%}
-        {{ value|date('F j, Y') }}
+        {{ value|localizeddate('full', 'none') }}
     {%- endif -%}
 {% endblock %}

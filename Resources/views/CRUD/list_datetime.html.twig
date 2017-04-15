@@ -20,6 +20,6 @@ file that was distributed with this source code.
     {%- elseif field_description.options.timezone is defined -%}
         {{ value|date(null, field_description.options.timezone) }}
     {%- else -%}
-        {{ value|date }}
+        {{ value|localizeddate('full', 'none') }}, {{ value|localizeddate('none', 'short') }}
     {%- endif -%}
 {% endblock %}

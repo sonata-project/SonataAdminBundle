@@ -17,6 +17,6 @@ file that was distributed with this source code.
     {%- elseif field_description.options.format is defined -%}
         {{ value|date(field_description.options.format) }}
     {%- else -%}
-        {{ value|date }}
+        {{ value | localizeddate('full', 'none') }}, {{ value | localizeddate('none, 'short') }}
     {%- endif -%}
 {% endblock %}
