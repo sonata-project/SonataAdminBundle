@@ -82,6 +82,14 @@
                 <source>link_reset_filter</source>
                 <target>Effacer</target>
             </trans-unit>
+            <trans-unit id="link_edit_profile">
+                <source>link_edit_profile</source>
+                <target>Modifier votre profil</target>
+            </trans-unit>
+            <trans-unit id="link_edit_authentication">
+                <source>link_edit_authentication</source>
+                <target>Modifier l'authentification</target>
+            </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
                 <target>Créer</target>
