@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<serializer>
+    <class name="Sonata\AdminBundle\Datagrid\Pager" exclusion-policy="all" xml-root-name="pager">
+        <property name="page"
+                  type="integer"
+                  expose="true"
+                  since-version="1.0"
+                  read-only="true"
+                  groups="sonata_api_read,sonata_search" />
+        <property name="lastPage"
+                  type="integer"
+                  expose="true"
+                  since-version="1.0"
+                  read-only="true"
+                  groups="sonata_api_read,sonata_search" />
+        <property name="maxPerPage"
+                  serialized-name="per_page"
+                  method="getMaxPerPage"
+                  type="integer"
+                  expose="true"
+                  since-version="1.0"
+                  read-only="true"
+                  groups="sonata_api_read,sonata_search" />
+        <property name="nbResults"
+                  serialized-name="total"
+                  method="getNbResults"
+                  type="integer"
+                  expose="true"
+                  since-version="1.0"
+                  read-only="true"
+                  groups="sonata_api_read,sonata_search" />
+        <property name="results"
+                  serialized-name="entries"
+                  expose="true"
+                  since-version="1.0"
+                  read-only="true"
+                  groups="sonata_api_read,sonata_search"
+                  access-type="public_method"
+                  accessor-getter="getResults" />
+    </class>
+</serializer>
