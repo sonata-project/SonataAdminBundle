@@ -46,6 +46,10 @@ class SearchHandler
      */
     public function search(AdminInterface $admin, $term, $page = 0, $offset = 20)
     {
+        if(null===$admin->getClass()) {
+            return false;
+        }
+        
         $datagrid = $admin->getDatagrid();
 
         $found = false;
