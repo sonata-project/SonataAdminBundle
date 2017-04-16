@@ -146,13 +146,8 @@ class Datagrid implements DatagridInterface
         $this->form = $this->formBuilder->getForm();
         $this->form->submit($this->values);
 
-        $data = $this->form->getData();
-
-        foreach ($this->getFilters() as $name => $filter) {
-            $this->values[$name] = isset($this->values[$name]) ? $this->values[$name] : null;
-            $filter->apply($this->query, $data[$filter->getFormName()]);
-        }
-
+        $this->applyFilters();
+        
         if (isset($this->values['_sort_by'])) {
             if (!$this->values['_sort_by'] instanceof FieldDescriptionInterface) {
                 throw new UnexpectedTypeException($this->values['_sort_by'], 'FieldDescriptionInterface');
@@ -318,4 +313,16 @@ class Datagrid implements DatagridInterface
 
         return $this->form;
     }
+
+    protected function applyFilters()
+    {
+        $data = $this->form->getData();
+
+        foreach ($this->getFilters() as $name => $filter) {
+            $this->values[$name] = isset($this->values[$name]) ? $this->values[$name] : null;
+            $filter->apply($this->query, $data[$filter->getFormName()]);
+        }
+    
+    }
+    
 }
