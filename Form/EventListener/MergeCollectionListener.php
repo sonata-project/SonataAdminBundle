@@ -61,17 +61,14 @@ class MergeCollectionListener implements EventSubscriberInterface
             $this->modelManager->collectionClear($collection);
         } else {
             // merge $data into $collection
-            foreach ($collection as $entity) {
-                if (!$this->modelManager->collectionHasElement($data, $entity)) {
-                    $this->modelManager->collectionRemoveElement($collection, $entity);
-                } else {
-                    $this->modelManager->collectionRemoveElement($data, $entity);
+            $newCollection = $data;
+            $this->modelManager->collectionClear($newCollection);
+            foreach ($data as $entity) {
+                if ($this->modelManager->collectionHasElement($collection, $entity)) {
+                    $this->modelManager->collectionAddElement($newCollection, $entity);
                 }
             }
-
-            foreach ($data as $entity) {
-                $this->modelManager->collectionAddElement($collection, $entity);
-            }
+            $collection = $newCollection;
         }
 
         $event->setData($collection);
