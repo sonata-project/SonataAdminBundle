@@ -258,6 +258,8 @@ file that was distributed with this source code.
             <div class="box box-primary" >
                 <div class="box-body">
                     <form class="sonata-filter-form form-horizontal {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET" role="form">
+                        {{ sonata_block_render_event('sonata.admin.list.filter.top', { 'admin': admin }) }}
+
                         {{ form_errors(form) }}
 
                         <div class="row">
@@ -324,6 +326,8 @@ file that was distributed with this source code.
                         {% for paramKey, paramValue in admin.persistentParameters %}
                             <input type="hidden" name="{{ paramKey }}" value="{{ paramValue }}">
                         {% endfor %}
+
+                        {{ sonata_block_render_event('sonata.admin.list.filter.bottom', { 'admin': admin }) }}
                     </form>
                 </div>
             </div>
