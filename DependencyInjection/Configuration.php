@@ -341,6 +341,7 @@ final class Configuration implements ConfigurationInterface
                                 'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js',
 
                                 'bundles/sonatacore/vendor/moment/min/moment.min.js',
+                                'bundles/sonatacore/vendor/moment/min/locales.min.js',
 
                                 'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js',
                                 'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js',
