@@ -110,7 +110,7 @@ class ModelAutocompleteType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $compound = function (Options $options) {
-            return $options['multiple'];
+            return $options['multiple'] || $options['compound'];
         };
 
         $resolver->setDefaults(array(
