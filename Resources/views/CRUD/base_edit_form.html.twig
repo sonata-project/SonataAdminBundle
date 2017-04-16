@@ -2,7 +2,7 @@
     {% import "SonataAdminBundle:CRUD:base_edit_form_macro.html.twig" as form_helper %}
     {{ sonata_block_render_event('sonata.admin.edit.form.top', { 'admin': admin, 'object': object }) }}
 
-    {% set url = admin.id(object) is not null ? 'edit' : 'create' %}
+    {% set url = url|default(admin.id(object) is not null ? 'edit' : 'create') %}
 
     {% if not admin.hasRoute(url)%}
         <div>
