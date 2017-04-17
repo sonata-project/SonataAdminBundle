@@ -40,6 +40,14 @@ class DatagridMapper extends BaseMapper
     }
 
     /**
+     * @return DatagridInterface
+     */
+    public function getDatagrid()
+    {
+        return $this->datagrid;
+    }
+
+    /**
      * @throws \RuntimeException
      *
      * @param string $name
