@@ -74,6 +74,8 @@ class AdminType extends AbstractType
                         );
                         if ($subjectCollection instanceof Collection) {
                             $subject = $subjectCollection->get(trim($options['property_path'], '[]'));
+                        } else {
+                            $subject = $subjectCollection;
                         }
                     } else {
                         // for PropertyAccessor >= 2.5
