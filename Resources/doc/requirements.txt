@@ -1,3 +1,2 @@
-Sphinx
 git+https://github.com/fabpot/sphinx-php.git
 sphinx_rtd_theme
