@@ -102,6 +102,9 @@ over-rides that setting for one of the fields:
         ->end()
     ;
 
+Translation can also be disabled on a specific field by setting
+``translation_domain`` to ``false``.
+
 Setting the label name
 ^^^^^^^^^^^^^^^^^^^^^^
 
