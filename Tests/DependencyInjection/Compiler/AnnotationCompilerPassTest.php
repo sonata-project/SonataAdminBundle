@@ -17,6 +17,13 @@ use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
 class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        if (!class_exists('JMS\DiExtraBundle\Metadata\ClassMetadata')) {
+            $this->markTestSkipped('JMSDiExtraBundle not available');
+        }
+    }
+
     public function testInvalidAdminAnnotation()
     {
         /*
