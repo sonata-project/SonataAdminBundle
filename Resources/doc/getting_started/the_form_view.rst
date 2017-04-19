@@ -190,7 +190,7 @@ order to tweak the styling:
             ->with('Content', array('class' => 'col-md-9'))
                 // ...
             ->end()
-            ->with('Meta data', array('class' => 'col-md-3')
+            ->with('Meta data', array('class' => 'col-md-3'))
                 // ...
             ->end()
         ;
