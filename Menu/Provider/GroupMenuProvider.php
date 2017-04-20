@@ -147,8 +147,9 @@ class GroupMenuProvider implements MenuProviderInterface
                 if (isset($item['admin']) && !empty($item['admin'])) {
                     $admin = $this->pool->getInstance($item['admin']);
 
-                    // skip menu item if no `list` url is available or user doesn't have the LIST access rights
+                    // Do not display group if no `list` url is available or user doesn't have the LIST access rights
                     if (!$admin->hasRoute('list') || !$admin->hasAccess('list')) {
+                        $menuItem->setDisplay(false);
                         continue;
                     }
 
