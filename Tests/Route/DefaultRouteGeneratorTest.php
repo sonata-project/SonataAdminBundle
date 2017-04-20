@@ -59,7 +59,7 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
         $admin->expects($this->once())->method('hasRequest')->will($this->returnValue(true));
         $admin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('foo_code'));
-        $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
+        $admin->expects($this->once())->method('sharePersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
         $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
         $admin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
 
@@ -106,7 +106,7 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Route'));
         $admin->expects($this->once())->method('hasParentFieldDescription')->will($this->returnValue(false));
         $admin->expects($this->once())->method('hasRequest')->will($this->returnValue(true));
-        $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(array()));
+        $admin->expects($this->once())->method('sharePersistentParameters')->will($this->returnValue(array()));
         $admin->expects($this->exactly(2))->method('getRoutes')->will($this->returnValue(new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'BundleName:ControllerName')));
         $admin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
 
@@ -139,7 +139,7 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
         $admin->expects($this->any())->method('hasRequest')->will($this->returnValue(true));
         $admin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('foo_code'));
-        $admin->expects($this->any())->method('getPersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
+        $admin->expects($this->any())->method('sharePersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
         $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($childCollection));
         $admin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
 
@@ -150,7 +150,7 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
         $parentAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
 
         // no request attached in this test, so this will not be used
-        $parentAdmin->expects($this->never())->method('getPersistentParameters')->will($this->returnValue(array('from' => 'parent')));
+        $parentAdmin->expects($this->never())->method('sharePersistentParameters')->will($this->returnValue(array('from' => 'parent')));
 
         $request = $this->createMock('Symfony\Component\HttpFoundation\Request');
         $request->attributes = $this->createMock('Symfony\Component\HttpFoundation\ParameterBag');
@@ -223,7 +223,7 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
         $admin->expects($this->once())->method('hasRequest')->will($this->returnValue(true));
         $admin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('foo_code'));
-        $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
+        $admin->expects($this->once())->method('sharePersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
         $admin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
         $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
 
@@ -296,7 +296,7 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
         $admin->expects($this->any())->method('hasParentFieldDescription')->will($this->returnValue(false));
         $admin->expects($this->any())->method('hasRequest')->will($this->returnValue(true));
         $admin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
-        $admin->expects($this->any())->method('getPersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
+        $admin->expects($this->any())->method('sharePersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
         $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($childCollection));
         $admin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
 
@@ -307,7 +307,7 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
         $parentAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
 
         // no request attached in this test, so this will not be used
-        $parentAdmin->expects($this->never())->method('getPersistentParameters')->will($this->returnValue(array('from' => 'parent')));
+        $parentAdmin->expects($this->never())->method('sharePersistentParameters')->will($this->returnValue(array('from' => 'parent')));
 
         $request = $this->createMock('Symfony\Component\HttpFoundation\Request');
         $request->attributes = $this->createMock('Symfony\Component\HttpFoundation\ParameterBag');
@@ -331,7 +331,7 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
         $standaloneAdmin->expects($this->once())->method('hasParentFieldDescription')->will($this->returnValue(false));
         $standaloneAdmin->expects($this->once())->method('hasRequest')->will($this->returnValue(true));
         $standaloneAdmin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
-        $standaloneAdmin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
+        $standaloneAdmin->expects($this->once())->method('sharePersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
         $standaloneAdmin->expects($this->any())->method('getRoutes')->will($this->returnValue($standaloneCollection));
         $standaloneAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
 
