@@ -30,7 +30,7 @@ abstract class QuestionableCommand extends ContainerAwareCommand
      *
      * @return mixed
      */
-    protected function askAndValidate(InputInterface $input, OutputInterface $output, $questionText, $default, $validator)
+    final protected function askAndValidate(InputInterface $input, OutputInterface $output, $questionText, $default, $validator)
     {
         $questionHelper = $this->getQuestionHelper();
 
@@ -61,7 +61,7 @@ abstract class QuestionableCommand extends ContainerAwareCommand
      *
      * @return string
      */
-    protected function askConfirmation(InputInterface $input, OutputInterface $output, $questionText, $default, $separator)
+    final protected function askConfirmation(InputInterface $input, OutputInterface $output, $questionText, $default, $separator)
     {
         $questionHelper = $this->getQuestionHelper();
 
@@ -84,7 +84,7 @@ abstract class QuestionableCommand extends ContainerAwareCommand
     /**
      * @return QuestionHelper|DialogHelper
      */
-    protected function getQuestionHelper()
+    final protected function getQuestionHelper()
     {
         // NEXT_MAJOR: Remove this BC code for SensioGeneratorBundle 2.3/2.4 after dropping support for Symfony 2.3
         if (class_exists('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper')) {
