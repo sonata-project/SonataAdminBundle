@@ -48,6 +48,7 @@ class ModelAutocompleteType extends AbstractType
             || (array_key_exists('read_only', $options) && $options['read_only'])
         );
         $builder->setAttribute('to_string_callback', $options['to_string_callback']);
+        $builder->setAttribute('target_admin_access_action', $options['target_admin_access_action']);
 
         if ($options['multiple']) {
             $resizeListener = new ResizeFormListener(
@@ -139,6 +140,9 @@ class ModelAutocompleteType extends AbstractType
             'req_param_name_search' => 'q',
             'req_param_name_page_number' => '_page',
             'req_param_name_items_per_page' => '_per_page',
+
+            // security
+            'target_admin_access_action' => 'list',
 
             // CSS classes
             'container_css_class' => '',
