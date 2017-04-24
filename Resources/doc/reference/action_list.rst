@@ -67,6 +67,17 @@ Here is an example:
                 'editable' => true
             ))
 
+            // editable association field
+            ->add('status', 'choice', array(
+                'editable' => true,
+                'class' => 'Vendor\ExampleBundle\Entity\ExampleStatus',
+                'choices' => array(
+                    1 => 'Active',
+                    2 => 'Inactive',
+                    3 => 'Draft',
+                ),
+            ))
+
             // we can add options to the field depending on the type
             ->add('price', 'currency', array(
                 'currency' => $this->currencyDetector->getCurrency()->getLabel()
@@ -141,6 +152,8 @@ Available types and associated options
 |           | delimiter      | Separator of values if multiple.                                      |
 +           +----------------+-----------------------------------------------------------------------+
 |           | catalogue      | Translation catalogue.                                                |
++           +----------------+-----------------------------------------------------------------------+
+|           | class          | Class path for editable association field.                            |
 +-----------+----------------+-----------------------------------------------------------------------+
 | currency  | currency (m)   | A currency string (EUR or USD for instance).                          |
 +-----------+----------------+-----------------------------------------------------------------------+

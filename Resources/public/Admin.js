@@ -55,7 +55,7 @@ var Admin = {
             padding: 15,
             overflow: 'auto'
         });
-      
+
         jQuery(modal).trigger('sonata-admin-setup-list-modal');
     },
     setup_select2: function(subject) {
@@ -114,17 +114,14 @@ var Admin = {
             container: 'body',
             placement: 'auto',
             success: function(response) {
-                if('KO' === response.status) {
-                    return response.message;
-                }
-
-                var html = jQuery(response.content);
+                var html = jQuery(response);
                 Admin.setup_xeditable(html);
-
                 jQuery(this)
                     .closest('td')
-                    .replaceWith(html)
-                ;
+                    .replaceWith(html);
+            },
+            error: function(xhr, statusText, errorThrown) {
+                return xhr.responseText;
             }
         });
     },
@@ -241,22 +238,20 @@ var Admin = {
         this.log(jQuery('a.sonata-ba-edit-inline', subject));
         jQuery('a.sonata-ba-edit-inline', subject).click(function(event) {
             Admin.stopEvent(event);
-
             var subject = jQuery(this);
             jQuery.ajax({
                 url: subject.attr('href'),
                 type: 'POST',
-                success: function(json) {
-                    if(json.status === "OK") {
-                        var elm = jQuery(subject).parent();
-                        elm.children().remove();
-                        // fix issue with html comment ...
-                        elm.html(jQuery(json.content.replace(/<!--[\s\S]*?-->/g, "")).html());
-                        elm.effect("highlight", {'color' : '#57A957'}, 2000);
-                        Admin.set_object_field_value(elm);
-                    } else {
-                        jQuery(subject).parent().effect("highlight", {'color' : '#C43C35'}, 2000);
-                    }
+                success: function(response) {
+                    var elm = jQuery(subject).parent();
+                    elm.children().remove();
+                    // fix issue with html comment ...
+                    elm.html(jQuery(response.replace(/<!--[\s\S]*?-->/g, "")).html());
+                    elm.effect("highlight", {'color' : '#57A957'}, 2000);
+                    Admin.set_object_field_value(elm);
+                },
+                error: function(xhr, statusText, errorThrown) {
+                    jQuery(subject).parent().effect("highlight", {'color' : '#C43C35'}, 2000);
                 }
             });
         });

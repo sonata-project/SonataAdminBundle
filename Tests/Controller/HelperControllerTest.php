@@ -305,7 +305,7 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
 
         $response = $controller->setObjectFieldValueAction($request);
 
-        $this->assertSame('{"status":"OK","content":"\u003Cfoo \/\u003E"}', $response->getContent());
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     /**
@@ -538,7 +538,8 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
 
         $response = $controller->setObjectFieldValueAction($request);
 
-        $this->assertSame('{"status":"KO","message":"error1\nerror2"}', $response->getContent());
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertSame(json_encode("error1\nerror2"), $response->getContent());
     }
 
     /**
