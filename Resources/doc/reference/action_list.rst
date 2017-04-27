@@ -93,7 +93,7 @@ Here is an example:
             ->add('image.name')
 
             // You may also specify the actions you want to be displayed in the list
-            ->add('_action', null, array(
+            ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
                     'edit' => array(),
