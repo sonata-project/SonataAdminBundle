@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Form;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
@@ -75,6 +76,19 @@ class FormMapper extends BaseGroupedMapper
 
             // fix the form name
             $fieldName = $this->sanitizeFieldName($fieldName);
+        }
+
+        $classEntity = $this->admin->getClass();
+        if (!isset($options['required']) && property_exists($classEntity, $name)) {
+            $reflectionProperty = new \ReflectionProperty($classEntity, $name);
+            $annotationReader = new AnnotationReader();
+            $columnAnnotation = $annotationReader->getPropertyAnnotation(
+                $reflectionProperty,
+                'Doctrine\ORM\Mapping\Column'
+            );
+            if (null !== $columnAnnotation && true === $columnAnnotation->nullable) {
+                $options['required'] = false;
+            }
         }
 
         // change `collection` to `sonata_type_native_collection` form type to
