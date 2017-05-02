@@ -64,15 +64,16 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getRenderingEngine()
+    protected function getRenderingEngine(\Twig_Environment $environment = null)
     {
         if (!in_array($this->type, array('form', 'filter'))) {
             throw new \Exception('Please override $this->type in your test class specifying template to use (either form or filter)');
         }
 
-        return new TwigRendererEngine(array(
-            $this->type.'_admin_fields.html.twig',
-        ));
+        return new TwigRendererEngine(
+            array($this->type.'_admin_fields.html.twig'),
+            $environment
+        );
     }
 
     /**

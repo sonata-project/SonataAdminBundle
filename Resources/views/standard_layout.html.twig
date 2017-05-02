@@ -8,18 +8,19 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 
 #}
-{% set _preview              = block('preview') is defined ? block('preview') : null %}
-{% set _form                 = block('form') is defined ? block('form') : null %}
-{% set _show                 = block('show') is defined ? block('show') : null %}
-{% set _list_table           = block('list_table') is defined ? block('list_table') : null %}
-{% set _list_filters         = block('list_filters') is defined ? block('list_filters') : null %}
-{% set _tab_menu             = block('tab_menu') is defined ? block('tab_menu') : null %}
-{% set _content              = block('content') is defined ? block('content') : null %}
-{% set _title                = block('title') is defined ? block('title') : null %}
-{% set _breadcrumb           = block('breadcrumb') is defined ? block('breadcrumb') : null %}
-{% set _actions              = block('actions') is defined ? block('actions') : null %}
-{% set _navbar_title         = block('navbar_title') is defined ? block('navbar_title') : null %}
-{% set _list_filters_actions = block('list_filters_actions') is defined ? block('list_filters_actions') : null %}
+
+{% set _preview = block('preview') is defined ? block('preview')|trim : null %}
+{% set _form = block('form') is defined ? block('form')|trim : null %}
+{% set _show = block('show') is defined ? block('show')|trim : null %}
+{% set _list_table = block('list_table') is defined ? block('list_table')|trim : null %}
+{% set _list_filters = block('list_filters') is defined ? block('list_filters')|trim : null %}
+{% set _tab_menu = block('tab_menu') is defined ? block('tab_menu')|trim : null %}
+{% set _content = block('content') is defined ? block('content')|trim : null %}
+{% set _title = block('title') is defined ? block('title')|trim : null %}
+{% set _breadcrumb = block('breadcrumb') is defined ? block('breadcrumb')|trim : null %}
+{% set _actions = block('actions') is defined ? block('actions')|trim : null %}
+{% set _navbar_title = block('navbar_title') is defined ? block('navbar_title')|trim : null %}
+{% set _list_filters_actions = block('list_filters_actions') is defined ? block('list_filters_actions')|trim : null %}
 
 <!DOCTYPE html>
 <html {% block html_attributes %}class="no-js"{% endblock %}>
@@ -32,7 +33,7 @@ file that was distributed with this source code.
 
         {% block stylesheets %}
             {% for stylesheet in sonata_admin.adminPool.getOption('stylesheets', []) %}
-                    <link rel="stylesheet" href="{{ asset(stylesheet) }}">
+                <link rel="stylesheet" href="{{ asset(stylesheet) }}">
             {% endfor %}
         {% endblock %}
 
@@ -46,7 +47,7 @@ file that was distributed with this source code.
                         USE_STICKYFORMS: {% if sonata_admin.adminPool.getOption('use_stickyforms') %}true{% else %}false{% endif %}
                     };
                     window.SONATA_TRANSLATIONS = {
-                        CONFIRM_EXIT:  '{{ 'confirm_exit'|trans({}, 'SonataAdminBundle')|escape('js') }}'
+                        CONFIRM_EXIT: '{{ 'confirm_exit'|trans({}, 'SonataAdminBundle')|escape('js') }}'
                     };
 
                     // http://getbootstrap.com/getting-started/#support-ie10-width
@@ -67,7 +68,11 @@ file that was distributed with this source code.
             {% set locale = app.request.locale %}
             {# localize moment #}
             {% if locale[:2] != 'en' %}
-                <script src="{{ asset('bundles/sonatacore/vendor/moment/locale/' ~ locale|replace({'_':'-'}) ~ '.js') }}"></script>
+                <script src="{{ asset(
+                    'bundles/sonatacore/vendor/moment/locale/' ~
+                    locale|lower|replace({'_':'-'}) ~
+                    '.js'
+                ) }}"></script>
             {% endif %}
 
             {# localize select2 #}
@@ -92,7 +97,7 @@ file that was distributed with this source code.
                     -
                     {% for menu in breadcrumbs_builder.breadcrumbs(admin, action) %}
                         {% if not loop.first %}
-                            {%  if loop.index != 2 %}
+                            {% if loop.index != 2 %}
                                 &gt;
                             {% endif %}
 
@@ -106,7 +111,7 @@ file that was distributed with this source code.
                         {% endif %}
                     {% endfor %}
                 {% endif %}
-            {% endif%}
+            {% endif %}
         {% endblock %}
         </title>
     </head>
@@ -223,11 +228,11 @@ file that was distributed with this source code.
                                 <form action="{{ path('sonata_admin_search') }}" method="GET" class="sidebar-form" role="search">
                                     <div class="input-group custom-search-form">
                                         <input type="text" name="q" value="{{ app.request.get('q') }}" class="form-control" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-flat" type="submit">
-                                                    <i class="fa fa-search" aria-hidden="true"></i>
-                                                </button>
-                                            </span>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-flat" type="submit">
+                                                <i class="fa fa-search" aria-hidden="true"></i>
+                                            </button>
+                                        </span>
                                     </div>
                                 </form>
                             {% endblock sonata_sidebar_search %}
@@ -266,11 +271,11 @@ file that was distributed with this source code.
                                             {% endblock %}
 
                                             <div class="navbar-collapse">
-                                                <div class="navbar-left">
-                                                    {% if _tab_menu is not empty %}
+                                                {% if _tab_menu is not empty %}
+                                                    <div class="navbar-left">
                                                         {{ _tab_menu|raw }}
-                                                    {% endif %}
-                                                </div>
+                                                    </div>
+                                                {% endif %}
 
                                                 {% if admin is defined and action is defined and action == 'list' and admin.listModes|length > 1 %}
                                                     <div class="nav navbar-right btn-group">
@@ -331,17 +336,16 @@ file that was distributed with this source code.
                                 <div class="sonata-ba-form">{{ _form|raw }}</div>
                             {% endif %}
 
-                            {% if _list_table is not empty or _list_filters is not empty %}
-                                {% if _list_filters|trim %}
-                                    <div class="row">
-                                        {{ _list_filters|raw }}
-                                    </div>
-                                {% endif %}
+                            {% if _list_filters is not empty %}
+                                <div class="row">
+                                    {{ _list_filters|raw }}
+                                </div>
+                            {% endif %}
 
+                            {% if _list_table is not empty %}
                                 <div class="row">
                                     {{ _list_table|raw }}
                                 </div>
-
                             {% endif %}
                         {% endblock sonata_admin_content %}
                     </section>

@@ -429,6 +429,20 @@ class FormMapperTest extends PHPUnit_Framework_TestCase
         $this->assertSame(array('foo', 'baz'), $this->formMapper->keys());
     }
 
+    public function testFieldNameIsSanitized()
+    {
+        $this->contractor->expects($this->any())
+            ->method('getDefaultOptions')
+            ->will($this->returnValue(array()));
+
+        $this->formMapper
+            ->add('fo.o', 'bar')
+            ->add('ba__z', 'foobaz')
+        ;
+
+        $this->assertSame(array('fo__o', 'ba____z'), $this->formMapper->keys());
+    }
+
     private function getFieldDescriptionMock($name = null, $label = null, $translationDomain = null)
     {
         $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BaseFieldDescription');

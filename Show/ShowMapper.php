@@ -73,7 +73,7 @@ class ShowMapper extends BaseGroupedMapper
             throw new \RuntimeException('invalid state');
         }
 
-        if (!$fieldDescription->getLabel()) {
+        if (!$fieldDescription->getLabel() && false !== $fieldDescription->getOption('label')) {
             $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
         }
 

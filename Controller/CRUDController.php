@@ -806,7 +806,7 @@ class CRUDController extends Controller
         // NEXT_MAJOR: remove the check
         if (!$this->has('sonata.admin.admin_exporter')) {
             @trigger_error(
-                'Not registering the exporter bundle is deprecated since version 3.x.'
+                'Not registering the exporter bundle is deprecated since version 3.14.'
                 .' You must register it to be able to use the export action in 4.0.',
                 E_USER_DEPRECATED
             );

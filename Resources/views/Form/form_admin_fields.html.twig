@@ -131,7 +131,9 @@ file that was distributed with this source code.
         {% endif %}
 
         <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
-            {% if not sonata_admin.admin %}
+            {% if translation_domain is same as(false) %}
+                {{- label -}}
+            {% elseif not sonata_admin.admin %}
                 {{- label|trans({}, translation_domain) -}}
             {% else %}
                 {{ label|trans({}, sonata_admin.field_description.translationDomain ?: admin.translationDomain) }}

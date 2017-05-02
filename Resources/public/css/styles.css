@@ -216,6 +216,11 @@ body.fixed .content-header .navbar {
     padding: 15px;
 }
 
+.sidebar-menu li.keep-open > .treeview-menu {
+    display: block !important;
+    height: auto !important;
+}
+
 .arrow {
     float: right;
 }

@@ -83,6 +83,9 @@ exclude_patterns = ['_build']
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
+# This will be used when using the shorthand notation
+highlight_language = 'php'
+
 # A list of ignored prefixes for module index sorting.
 #modindex_common_prefix = []
 

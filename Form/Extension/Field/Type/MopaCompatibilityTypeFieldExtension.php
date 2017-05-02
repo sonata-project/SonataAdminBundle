@@ -58,12 +58,16 @@ class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * Returns the name of the type being extended.
-     *
-     * @return string The name of the type being extended
+     * {@inheritdoc}
      */
     public function getExtendedType()
     {
-        return 'form';
+        /*
+         * NEXT_MAJOR: Remove when dropping Symfony <2.8 support. It should
+         * simply be return 'Symfony\Component\Form\Extension\Core\Type\FormType';
+         */
+        return method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+            ? 'Symfony\Component\Form\Extension\Core\Type\FormType'
+            : 'form';
     }
 }

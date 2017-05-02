@@ -811,24 +811,12 @@ interface AdminInterface
      */
     public function setFormGroups(array $formGroups);
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFormTabs();
 
-    /**
-     * {@inheritdoc}
-     */
     public function setFormTabs(array $formTabs);
 
-    /**
-     * {@inheritdoc}
-     */
     public function getShowTabs();
 
-    /**
-     * {@inheritdoc}
-     */
     public function setShowTabs(array $showTabs);
 
     /**
@@ -1084,12 +1072,4 @@ interface AdminInterface
      */
 //    NEXT_MAJOR: uncomment this method in 4.0
     // public function isDefaultFilter($name);
-
-    /*
-     * Returns a list of default filters.
-     *
-     * @return array
-     */
-//    NEXT_MAJOR: uncomment this method in 4.0
-    // public function getDefaultFilterValues();
 }
