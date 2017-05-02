@@ -18,8 +18,7 @@ file that was distributed with this source code.
 
     {% if query is defined and query is not same as(false) %}
         {% set count = 0 %}
-        <div class="row">
-
+        <div class="row" data-masonry='{ "itemSelector": ".search-box-item" }'>
         {% for group in groups %}
             {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
             {% for role in group.roles if not display %}

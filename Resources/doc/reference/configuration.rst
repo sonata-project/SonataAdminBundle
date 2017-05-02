@@ -218,3 +218,5 @@ Full Configuration Options
                     uses:                 []
             persist_filters:      false
             show_mosaic_button:   true
+            global_search:
+                show_empty_boxes: show

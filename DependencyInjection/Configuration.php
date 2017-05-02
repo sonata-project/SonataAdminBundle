@@ -73,6 +73,23 @@ class Configuration implements ConfigurationInterface
 
                 ->scalarNode('title')->defaultValue('Sonata Admin')->cannotBeEmpty()->end()
                 ->scalarNode('title_logo')->defaultValue('bundles/sonataadmin/logo_title.png')->cannotBeEmpty()->end()
+
+                ->arrayNode('global_search')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('empty_boxes')
+                            ->defaultValue('show')
+                            ->info('Perhaps one of the three options: show, fade, hide.')
+                            ->validate()
+                                ->ifTrue(function ($v) {
+                                    return !in_array($v, array('show', 'fade', 'hide'));
+                                })
+                                ->thenInvalid('Configuration value of "global_search.empty_boxes" must be one of show, fade or hide.')
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+
                 ->arrayNode('breadcrumbs')
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -363,6 +380,8 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonataadmin/vendor/waypoints/lib/jquery.waypoints.min.js',
                                 'bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js',
                                 'bundles/sonataadmin/vendor/readmore-js/readmore.min.js',
+
+                                'bundles/sonataadmin/vendor/masonry/dist/masonry.pkgd.min.js',
 
                                 'bundles/sonataadmin/Admin.js',
                                 'bundles/sonataadmin/treeview.js',
