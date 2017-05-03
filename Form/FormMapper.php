@@ -29,6 +29,11 @@ class FormMapper extends BaseGroupedMapper
     protected $formBuilder;
 
     /**
+     * @var string
+     */
+    protected $defaultAdminCode;
+
+    /**
      * @param FormContractorInterface $formContractor
      * @param FormBuilderInterface    $formBuilder
      * @param AdminInterface          $admin
@@ -50,6 +55,16 @@ class FormMapper extends BaseGroupedMapper
     }
 
     /**
+     * Sets the default admin_code.
+     *
+     * @param $defaultAdminCode
+     */
+    public function setDefaultAdminCode($defaultAdminCode)
+    {
+        $this->defaultAdminCode = $defaultAdminCode;
+    }
+
+    /**
      * @param string $name
      * @param string $type
      * @param array  $options
@@ -61,6 +76,11 @@ class FormMapper extends BaseGroupedMapper
     {
         if ($this->apply !== null && !$this->apply) {
             return $this;
+        }
+
+        // If a default admin_code exist, and none is given, set the default admin_code
+        if ($this->defaultAdminCode && !array_key_exists('admin_code', $fieldDescriptionOptions)) {
+            $fieldDescriptionOptions['admin_code'] = $this->defaultAdminCode;
         }
 
         if ($name instanceof FormBuilderInterface) {
