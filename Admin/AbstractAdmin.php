@@ -43,7 +43,6 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 
@@ -275,17 +274,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      * @var \Symfony\Component\HttpFoundation\Request
      */
     protected $request;
-
-    /**
-     * The translator component.
-     *
-     * NEXT_MAJOR: remove this property
-     *
-     * @var \Symfony\Component\Translation\TranslatorInterface
-     *
-     * @deprecated since 3.9, to be removed with 4.0
-     */
-    protected $translator;
 
     /**
      * The related form contractor.
@@ -573,22 +561,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
         $datagrid = $this->getDatagrid();
         $datagrid->buildPager();
 
-        $fields = array();
-
-        foreach ($this->getExportFields() as $key => $field) {
-            $label = $this->getTranslationLabel($field, 'export', 'label');
-            $transLabel = $this->trans($label);
-
-            // NEXT_MAJOR: Remove this hack, because all field labels will be translated with the major release
-            // No translation key exists
-            if ($transLabel == $label) {
-                $fields[$key] = $field;
-            } else {
-                $fields[$transLabel] = $field;
-            }
-        }
-
-        return $this->getModelManager()->getDataSourceIterator($datagrid, $fields);
+        return $this->getModelManager()->getDataSourceIterator($datagrid, $this->getExportFields());
     }
 
     /**
@@ -1936,48 +1909,6 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function trans($id, array $parameters = array(), $domain = null, $locale = null)
-    {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
-
-        $domain = $domain ?: $this->getTranslationDomain();
-
-        return $this->translator->trans($id, $parameters, $domain, $locale);
-    }
-
-    /**
-     * Translate a message id.
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @param string      $id
-     * @param int         $count
-     * @param array       $parameters
-     * @param string|null $domain
-     * @param string|null $locale
-     *
-     * @return string the translated string
-     *
-     * @deprecated since 3.9, to be removed with 4.0
-     */
-    public function transChoice($id, $count, array $parameters = array(), $domain = null, $locale = null)
-    {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
-
-        $domain = $domain ?: $this->getTranslationDomain();
-
-        return $this->translator->transChoice($id, $count, $parameters, $domain, $locale);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setTranslationDomain($translationDomain)
     {
         $this->translationDomain = $translationDomain;
@@ -1989,43 +1920,6 @@ EOT;
     public function getTranslationDomain()
     {
         return $this->translationDomain;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @deprecated since 3.9, to be removed with 4.0
-     */
-    public function setTranslator(TranslatorInterface $translator)
-    {
-        $args = func_get_args();
-        if (isset($args[1]) && $args[1]) {
-            @trigger_error(
-                'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        $this->translator = $translator;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @deprecated since 3.9, to be removed with 4.0
-     */
-    public function getTranslator()
-    {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
-
-        return $this->translator;
     }
 
     /**
