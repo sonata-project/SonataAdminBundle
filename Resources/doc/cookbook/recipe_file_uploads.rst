@@ -49,20 +49,20 @@ upload timestamp.
             repositoryClass: AppBundle\Entity\Repositories\ImageRepository
             table: images
             id:
-            id:
-                type:         integer
-                generator:    { strategy: AUTO }
+                id:
+                    type:         integer
+                    generator:    { strategy: AUTO }
             fields:
-            filename:
-                type:         string
-                length:       100
+                filename:
+                    type:         string
+                    length:       100
 
-            # changed when files are uploaded, to force preUpdate and postUpdate to fire
-            updated:
-                type:         datetime
-                nullable:     true
+                # changed when files are uploaded, to force preUpdate and postUpdate to fire
+                updated:
+                    type:         datetime
+                    nullable:     true
 
-            # ... other fields ...
+                # ... other fields ...
             lifecycleCallbacks:
                 prePersist:   [ lifecycleFileUpload ]
                 preUpdate:    [ lifecycleFileUpload ]
