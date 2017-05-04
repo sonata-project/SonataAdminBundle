@@ -11,7 +11,7 @@ file that was distributed with this source code.
 {% spaceless %}
 
     <input type="text" id="{{ id }}_autocomplete_input" value=""
-        {% for attribute,value in attr %} {{attribute}}="{{value}}" {% endfor %}
+        {%- for attribute,value in attr %} {{attribute}}="{{value}}" {% endfor -%}
         {%- if disabled %} disabled="disabled"{% endif -%}
         {%- if required %} required="required"{% endif %}
     />
