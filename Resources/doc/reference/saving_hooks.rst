@@ -119,6 +119,7 @@ redefine the following methods:
 
 - new object : ``preCreate($object)``
 - edited object : ``preEdit($object)``
+- new/edited object: ``preFormCheck($form, $object)
 - deleted object : ``preDelete($object)``
 - show object : ``preShow($object)``
 - list objects : ``preList($object)``

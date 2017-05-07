@@ -251,10 +251,15 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
 
-        /** @var $form Form */
+        /** @var $form \Symfony\Component\Form\Form */
         $form = $this->admin->getForm();
         $form->setData($object);
         $form->handleRequest($request);
+
+        $preResponse = $this->preFormCheck($form, $object);
+        if ($preResponse !== null) {
+            return $preResponse;
+        }
 
         if ($form->isSubmitted()) {
             //TODO: remove this check for 4.0
@@ -499,6 +504,11 @@ class CRUDController extends Controller
         $form = $this->admin->getForm();
         $form->setData($object);
         $form->handleRequest($request);
+
+        $preResponse = $this->preFormCheck($form, $object);
+        if ($preResponse !== null) {
+            return $preResponse;
+        }
 
         if ($form->isSubmitted()) {
             //TODO: remove this check for 4.0
@@ -1296,6 +1306,21 @@ class CRUDController extends Controller
         }
 
         return false;
+    }
+
+
+    /**
+     * This method can be overloaded in your custom CRUD controller.
+     * It's called from createAction and editAction.
+     *
+     * @param Form $form
+     * @param mixed   $object
+     *
+     * @return Response|null
+     */
+    protected function preFormCheck(Form $form, $object)
+    {
+
     }
 
     /**

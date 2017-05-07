@@ -157,6 +157,7 @@ In your overloaded CRUDController you can overload also these methods to limit
 the number of duplicated code from SonataAdmin:
 * ``preCreate``: called from ``createAction``
 * ``preEdit``: called from ``editAction``
+* ``preFormCheck``: called from ``createAction`` and ``editAction``
 * ``preDelete``: called from ``deleteAction``
 * ``preShow``: called from ``showAction``
 * ``preList``: called from ``listAction``
