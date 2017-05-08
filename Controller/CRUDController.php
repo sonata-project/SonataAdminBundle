@@ -23,6 +23,7 @@ use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -251,7 +252,7 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
 
-        /** @var $form \Symfony\Component\Form\Form */
+        /** @var $form Form */
         $form = $this->admin->getForm();
         $form->setData($object);
         $form->handleRequest($request);
@@ -500,7 +501,7 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
 
-        /** @var $form \Symfony\Component\Form\Form */
+        /** @var $form Form */
         $form = $this->admin->getForm();
         $form->setData($object);
         $form->handleRequest($request);
@@ -1313,8 +1314,8 @@ class CRUDController extends Controller
      * This method can be overloaded in your custom CRUD controller.
      * It's called from createAction and editAction.
      *
-     * @param Form $form
-     * @param mixed   $object
+     * @param Form  $form
+     * @param mixed $object
      *
      * @return Response|null
      */
