@@ -1309,7 +1309,6 @@ class CRUDController extends Controller
         return false;
     }
 
-
     /**
      * This method can be overloaded in your custom CRUD controller.
      * It's called from createAction and editAction.
@@ -1321,7 +1320,6 @@ class CRUDController extends Controller
      */
     protected function preFormCheck(Form $form, $object)
     {
-
     }
 
     /**
