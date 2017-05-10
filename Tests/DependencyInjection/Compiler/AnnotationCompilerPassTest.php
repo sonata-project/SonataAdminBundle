@@ -59,6 +59,7 @@ class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
                 'group' => 'Admin',
                 'label' => 'Tests\Fixtures\Foo',
                 'show_in_dashboard' => false,
+                'on_top' => false,
             )
         );
     }
@@ -82,6 +83,7 @@ class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
                 'group' => 'Admin',
                 'label' => 'Foo',
                 'show_in_dashboard' => true,
+                'on_top' => false,
             )
         );
     }
@@ -104,6 +106,7 @@ class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
         $annotation->label = 'myLabel';
         $annotation->showInDashboard = false;
         $annotation->translationDomain = 'OMG';
+        $annotation->onTop = true;
 
         $meta = new ClassMetadata('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo');
 
@@ -116,6 +119,7 @@ class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
                 'group' => 'myGroup',
                 'label' => 'myLabel',
                 'show_in_dashboard' => false,
+                'on_top' => true,
             )
         );
 
