@@ -338,8 +338,7 @@ class HelperController
             throw new AccessDeniedException();
         }
 
-        // subject will be empty to avoid unnecessary database requests and keep autocomplete function fast
-        $admin->setSubject($admin->getNewInstance());
+        $admin->setSubject($request->query->has('id') ? $admin->getObject($request->query->get('id')) : $admin->getNewInstance());
 
         if ($context === 'filter') {
             // filter

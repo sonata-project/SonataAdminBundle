@@ -65,6 +65,9 @@ file that was distributed with this source code.
                                 {% if sonata_admin.admin is not null %}
                                     'uniqid': '{{ sonata_admin.admin.uniqid }}',
                                     'admin_code': '{{ sonata_admin.admin.code }}',
+                                    {% if sonata_admin.admin.id(sonata_admin.admin.subject) %}
+                                        'id': '{{ sonata_admin.admin.id(sonata_admin.admin.subject) }}',
+                                    {% endif %}
                                 {% elseif admin_code %}
                                     'admin_code':  '{{ admin_code }}',
                                 {% endif %}
