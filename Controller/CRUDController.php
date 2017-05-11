@@ -388,7 +388,7 @@ class CRUDController extends Controller
         $datagrid->buildPager();
 
         if (true !== $nonRelevantMessage) {
-            $this->addFlash('sonata_flash_info', $nonRelevantMessage);
+            $this->addFlash('sonata_flash_info', $this->admin->trans($nonRelevantMessage, array(), 'SonataAdminBundle'));
 
             return new RedirectResponse(
                 $this->admin->generateUrl(
