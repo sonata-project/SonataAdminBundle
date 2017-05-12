@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.18.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.18.0...3.18.1) - 2017-05-12
+### Fixed
+- Fixed select2 width calculation when using select2 v4
+- Compatibility with Select2 v4 on model autocomplete type
+
 ## [3.18.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.17.0...3.18.0) - 2017-05-09
 ### Added
 - Added new configuration parameter named `empty_boxes` with 3 variable: show, hide, fade
