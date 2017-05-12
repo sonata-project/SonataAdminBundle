@@ -6,5 +6,4 @@ use Sonata\AdminBundle\Controller\CRUDController;
 
 class ModelAdminController extends CRUDController
 {
-
 }
