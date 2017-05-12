@@ -180,7 +180,7 @@ class Configuration implements ConfigurationInterface
                                                             'label' => '',
                                                             'route' => '',
                                                             'route_params' => array(),
-                                                            'route_absolute' => true,
+                                                            'route_absolute' => false,
                                                         );
                                                     }
                                                 }
