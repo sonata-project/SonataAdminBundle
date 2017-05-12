@@ -204,7 +204,7 @@ class Configuration implements ConfigurationInterface
                                                 ->end()
                                                 ->booleanNode('route_absolute')
                                                     ->info('Whether the generated url should be absolute')
-                                                    ->defaultTrue()
+                                                    ->defaultFalse()
                                                 ->end()
                                             ->end()
                                         ->end()
