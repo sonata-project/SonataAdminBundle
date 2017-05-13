@@ -282,6 +282,11 @@ var Admin = {
 
     setup_collection_buttons: function(subject) {
 
+        // Remove previously attached event(s) which causing function to be called multiple times
+        jQuery(subject).on('click', '.sonata-collection-add', function(event){
+            return false;
+        });
+
         jQuery(subject).on('click', '.sonata-collection-add', function(event) {
             Admin.stopEvent(event);
 
