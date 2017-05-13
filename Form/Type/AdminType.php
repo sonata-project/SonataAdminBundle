@@ -60,6 +60,7 @@ class AdminType extends AbstractType
 
         // hack to make sure the subject is correctly set
         // https://github.com/sonata-project/SonataAdminBundle/pull/2076
+        $subject = null;
         if ($builder->getData() === null) {
             $p = new PropertyAccessor(false, true);
             try {
@@ -82,14 +83,17 @@ class AdminType extends AbstractType
                             $this->getFieldDescription($options)->getFieldName().$options['property_path']
                         );
                     }
-                    $builder->setData($subject);
                 }
             } catch (NoSuchIndexException $e) {
                 // no object here
             }
         }
 
-        $admin->setSubject($builder->getData());
+        if (null !== $subject) {
+            $admin->setSubject($subject);
+        } else {
+            $admin->setSubject($builder->getData());
+        }
 
         $admin->defineFormBuilder($builder);
 
