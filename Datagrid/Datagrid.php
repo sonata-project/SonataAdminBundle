@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Datagrid;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Filter\Filter;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -144,12 +145,24 @@ class Datagrid implements DatagridInterface
         $this->formBuilder->add('_per_page', $hiddenType);
 
         $this->form = $this->formBuilder->getForm();
-        $this->form->submit($this->values);
+
+        $values = array();
+        foreach ($this->values as $name => $value) {
+            $name = str_replace('.', '__', $name);
+            $values[$name] = $value;
+        }
+        $this->form->submit($values);
+
 
         $data = $this->form->getData();
 
+        /**
+         * @var string $name
+         * @var Filter $filter
+         */
         foreach ($this->getFilters() as $name => $filter) {
             $this->values[$name] = isset($this->values[$name]) ? $this->values[$name] : null;
+
             $filter->apply($this->query, $data[$filter->getFormName()]);
         }
 
