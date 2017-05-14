@@ -36,6 +36,7 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\CoreBundle\Model\Metadata;
 use Sonata\CoreBundle\Validator\Constraints\InlineConstraint;
 use Sonata\CoreBundle\Validator\ErrorElement;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -1202,9 +1203,20 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
         $adminCode = $fieldDescription->getOption('admin_code');
 
         if ($adminCode !== null) {
-            $admin = $pool->getAdminByAdminCode($adminCode);
+            try {
+                $admin = $pool->getAdminByAdminCode($adminCode);
+            } catch (ServiceNotFoundException $e) {
+                throw new \RuntimeException('Unable to find the Admin instance', $e->getCode(), $e);
+            }
         } else {
-            $admin = $pool->getAdminByClass($fieldDescription->getTargetEntity());
+            $targetEntity = $fieldDescription->getTargetEntity();
+            $admin = $pool->getAdminByClass($targetEntity);
+            if ($targetEntity && !$admin) {
+                throw new \RuntimeException(sprintf(
+                    'Unable to find a valid admin for the class: `%s`',
+                    $targetEntity
+                ));
+            }
         }
 
         if (!$admin) {
