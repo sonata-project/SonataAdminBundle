@@ -406,7 +406,7 @@ class HelperController
                     $filter = $datagrid->getFilter($prop);
                     $filter->setCondition(FilterInterface::CONDITION_OR);
 
-                    $datagrid->setValue($prop, null, $searchText);
+                    $datagrid->setValue($filter->getFormName(), null, $searchText);
                 }
             } else {
                 if (!$datagrid->hasFilter($property)) {
@@ -418,7 +418,8 @@ class HelperController
                     ));
                 }
 
-                $datagrid->setValue($property, null, $searchText);
+                $filter = $datagrid->getFilter($property);
+                $datagrid->setValue($filter->getFormName(), null, $searchText);
             }
         }
 
