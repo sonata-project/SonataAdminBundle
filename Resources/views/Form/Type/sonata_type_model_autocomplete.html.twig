@@ -21,6 +21,9 @@ file that was distributed with this source code.
         {%- if disabled %} disabled="disabled"{% endif -%}
         {%- if required %} required="required"{% endif %}
     >
+        {%- for idx, val  in value if idx~'' != '_labels' -%}
+            <option value="{{ val }}" selected>{{ value['_labels'][idx] }}</option>
+        {%- endfor -%}
     </select>
 
     <div id="{{ id }}_hidden_inputs_wrap">
