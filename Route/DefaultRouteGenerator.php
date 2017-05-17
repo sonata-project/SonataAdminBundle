@@ -135,6 +135,9 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
      */
     private function getCode(AdminInterface $admin, $name)
     {
+        $this->loaded = array();
+        $this->caches = array();
+
         $this->loadCache($admin);
 
         if ($admin->isChild()) {
