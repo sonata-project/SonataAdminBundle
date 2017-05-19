@@ -158,7 +158,8 @@ class GroupMenuProvider implements MenuProviderInterface
                     $menuItem->setExtra('on_top', $group['on_top']);
                     $menuItem->setUri($options);
                 } else {
-                    $menuItem->setUri($item['route']);
+                    $router = $this->pool->getContainer()->get('router');
+                    $menuItem->setUri($router->generate($item['route']));
                 }
             }
         }
