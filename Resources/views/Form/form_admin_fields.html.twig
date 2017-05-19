@@ -435,7 +435,7 @@ file that was distributed with this source code.
 
 {% block sonata_type_immutable_array_widget_row %}
     {% spaceless %}
-        <div class="form-group{% if child.vars.errors|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ id }}-{{ key }}">
+        <div class="form-group{% if child.vars.errors|default([])|length > 0%} error{%endif%}" id="sonata-ba-field-container-{{ id }}-{{ key }}">
 
             {{ form_label(child) }}
 
@@ -444,11 +444,11 @@ file that was distributed with this source code.
                 {% set div_class = 'col-sm-9' %}
             {% endif%}
 
-            <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if child.vars.errors|length > 0 %}sonata-ba-field-error{% endif %}">
+            <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if child.vars.errors|default([])|length > 0 %}sonata-ba-field-error{% endif %}">
                 {{ form_widget(child, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
             </div>
 
-            {% if child.vars.errors|length > 0 %}
+            {% if child.vars.errors|default([])|length > 0 %}
                 <div class="help-block sonata-ba-field-error-messages">
                     {{ form_errors(child) }}
                 </div>
