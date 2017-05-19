@@ -9,7 +9,7 @@ the ``Admin`` class itself contains an empty ``validate`` method. This is automa
 .. code-block:: php
 
     // add this to your existing use statements
-    use Sonata\CoreBundle\Validator\ErrorElement;
+    use Sonata\AdminBundle\Validator\ErrorElement;
 
     class MyAdmin extends AbstractAdmin
     {
