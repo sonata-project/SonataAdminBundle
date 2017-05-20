@@ -451,7 +451,8 @@ div.mosaic-box-outter {
 }
 
 div.mosaic-inner-box {
-    height: 100px;
+    height: auto;
+    min-height: 50px;
     border-bottom: none;
     overflow: hidden;
 }
