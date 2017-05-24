@@ -265,6 +265,9 @@ class CRUDController extends Controller
 
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
+                $object = $form->getData();
+                $this->admin->setSubject($object);
+                
                 try {
                     $object = $this->admin->update($object);
 
@@ -509,6 +512,8 @@ class CRUDController extends Controller
 
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
+                $object = $form->getData();
+                $this->admin->setSubject($object);
                 $this->admin->checkAccess('create', $object);
 
                 try {
