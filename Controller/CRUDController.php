@@ -267,7 +267,7 @@ class CRUDController extends Controller
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
                 $object = $form->getData();
                 $this->admin->setSubject($object);
-                
+
                 try {
                     $object = $this->admin->update($object);
 
