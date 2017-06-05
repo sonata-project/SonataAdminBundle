@@ -358,7 +358,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                 return call_user_func_array(array($providedObject, $providedMethod), $parameters);
             } elseif (is_callable($code)) {
                 return $code(...$parameters);
-            } elseif (is_string($code))  {
+            } elseif (is_string($code)) {
                 $getters[] = $code;
             } else {
                 throw new \RuntimeException(
