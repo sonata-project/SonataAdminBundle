@@ -120,12 +120,13 @@ class CRUDController extends Controller
      * Execute a batch delete.
      *
      * @param ProxyQueryInterface $query
+     * @param Request $request
      *
      * @return RedirectResponse
      *
      * @throws AccessDeniedException If access is not granted
      */
-    public function batchActionDelete(ProxyQueryInterface $query)
+    public function batchActionDelete(ProxyQueryInterface $query, Request $request)
     {
         $this->admin->checkAccess('batchDelete');
 
