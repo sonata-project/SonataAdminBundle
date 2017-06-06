@@ -9,6 +9,8 @@
 -->
 I am targeting this branch, because {reason}.
 
+In case of bug fix, `3.x` **MUST** be targeted.
+
 <!--
     Specify which issues will be fixed/closed.
     Remove it if this is not related.
