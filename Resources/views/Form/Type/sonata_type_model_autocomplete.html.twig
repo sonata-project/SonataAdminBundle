@@ -19,7 +19,6 @@ file that was distributed with this source code.
     <select id="{{ id }}_autocomplete_input_v4" data-sonata-select2="false"
         {%- if read_only is defined and read_only %} readonly="readonly"{% endif -%}
         {%- if disabled %} disabled="disabled"{% endif -%}
-        {%- if required %} required="required"{% endif %}
     >
         {%- for idx, val  in value if idx~'' != '_labels' -%}
             <option value="{{ val }}" selected>{{ value['_labels'][idx] }}</option>
