@@ -1690,7 +1690,9 @@ EOT;
     {
         if ($this->subject === null && $this->request) {
             $id = $this->request->get($this->getIdParameter());
-            $this->subject = $this->getModelManager()->find($this->class, $id);
+            if (!\is_array($id)) {
+                $this->subject = $this->getModelManager()->find($this->class, $id);
+            }
         }
 
         return $this->subject;
