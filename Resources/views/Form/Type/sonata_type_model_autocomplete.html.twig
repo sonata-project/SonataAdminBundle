@@ -43,7 +43,7 @@ file that was distributed with this source code.
             var usedInputRef = window.Select2 ? '#{{ id }}_autocomplete_input' : '#{{ id }}_autocomplete_input_v4';
             var unusedInputRef = window.Select2 ? '#{{ id }}_autocomplete_input_v4' : '#{{ id }}_autocomplete_input';
 
-            $(unusedInputRef).hide();
+            $(unusedInputRef).remove();
             var autocompleteInput = $(usedInputRef);
 
             var select2Options = {
