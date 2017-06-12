@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.19.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.18.2...3.19.0) - 2017-06-12
+### Changed
+- compatibility with immutable entities was improved
+
+### Fixed
+- Show icon for nav items when using `on_top` option
+- use generated route instead of plain route in nav items
+- it is no longer possible to get core bundle versions incompatible with sf3
+- Missing admin-lte image file
+- forms with a required autocomplete ajax field can be submitted again
+
 ## [3.18.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.18.1...3.18.2) - 2017-05-15
 ### Fixed
 - Selected values issue with Select2 v4 on model autocomplete type
