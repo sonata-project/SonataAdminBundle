@@ -15,7 +15,7 @@
                 <div class="box-header">
                     <h4 class="box-title">
                         {% block show_title %}
-                            {{ show_group.name|trans({}, show_group.translation_domain ?: admin.translationDomain) }}
+                            {{ show_group.label|trans({}, show_group.translation_domain ?: admin.translationDomain) }}
                         {% endblock %}
                     </h4>
                 </div>
