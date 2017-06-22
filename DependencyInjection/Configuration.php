@@ -436,6 +436,12 @@ class Configuration implements ConfigurationInterface
                     ->info('Show mosaic button on all admin screens')
                 ->end()
 
+                // NEXT_MAJOR : remove this option
+                ->booleanNode('translate_group_label')
+                    ->defaultFalse()
+                    ->info('Translate group label')
+                ->end()
+
             ->end()
         ->end();
 
