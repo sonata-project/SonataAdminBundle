@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.20.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.20.0...3.20.1) - 2017-06-27
+### Fixed
+- Fixed undefined `view_group` variable in show template
+- Fixed compatibility with Symfony's IdentityTranslator when translator is disabled
+
 ## [3.20.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.19.0...3.20.0) - 2017-06-22
 ### Added
 - Group and tabs translations
