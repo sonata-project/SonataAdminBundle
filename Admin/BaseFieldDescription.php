@@ -327,17 +327,47 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
         $camelizedFieldName = Inflector::classify($fieldName);
 
+        // Getters will be populated with all possible getters variations, if string provided was not
+        // method name, but property name
         $getters = array();
-        $parameters = array();
+        // Parameters given
+        $parameters = $this->getOption('parameters') ? $this->getOption('parameters') : array();
+
+        $code = $this->getOption('code');
 
         // prefer method name given in the code option
-        if ($this->getOption('code')) {
-            $getters[] = $this->getOption('code');
+        if ($code) {
+            // Checking if getter is array with 1 argument as object and second method name
+            if (is_array($code)) {
+                if (count($code) < 2 || !is_object($code[0]) || !is_string($code[1])) {
+                    throw new \RuntimeException(
+                        'If you use array in `code`, you need to specify object and string methodName of specified object.
+                         Like this: [$someObject, \'someMethod\']'
+                    );
+                }
+
+                $providedObject = $code[0];
+                $providedMethod = $code[1];
+
+                if (!method_exists($providedObject, $providedMethod)) {
+                    throw new \RuntimeException(
+                        sprintf('Method %s does not exist in provided instance of class %s', get_class($providedObject), $providedMethod)
+                    );
+                }
+
+                return call_user_func_array(array($providedObject, $providedMethod), $parameters);
+            } elseif (is_callable($code)) {
+                return $code(...$parameters);
+            } elseif (is_string($code)) {
+                $getters[] = $code;
+            } else {
+                throw new \RuntimeException(
+                    'Provided incorrect value for `code` option. It can be string for method name of admin object,
+                    can be array with object and string method name for provided object and it can be function'
+                );
+            }
         }
-        // parameters for the method given in the code option
-        if ($this->getOption('parameters')) {
-            $parameters = $this->getOption('parameters');
-        }
+
         $getters[] = 'get'.$camelizedFieldName;
         $getters[] = 'is'.$camelizedFieldName;
 
