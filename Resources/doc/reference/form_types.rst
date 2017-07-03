@@ -461,6 +461,7 @@ that looks like this:
                     - 'SonataAdminBundle:CRUD'
                 calls:
                     - [ setTranslationDomain, [AppBundle]]
+                public: true
 
 .. note::
 
