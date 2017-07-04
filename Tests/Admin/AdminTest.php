@@ -837,6 +837,11 @@ class AdminTest extends PHPUnit_Framework_TestCase
         $this->assertSame($modelManager, $admin->getModelManager());
     }
 
+    /**
+     * NEXT_MAJOR: remove this method.
+     *
+     * @group legacy
+     */
     public function testGetBaseCodeRoute()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
@@ -846,6 +851,30 @@ class AdminTest extends PHPUnit_Framework_TestCase
         $admin->setBaseCodeRoute('foo');
         $this->assertSame('foo', $admin->getBaseCodeRoute());
     }
+
+    // NEXT_MAJOR: uncomment this method.
+    // public function testGetBaseCodeRoute()
+    // {
+    //     $postAdmin = new PostAdmin(
+    //         'sonata.post.admin.post',
+    //         'NewsBundle\Entity\Post',
+    //         'SonataNewsBundle:PostAdmin'
+    //     );
+    //     $commentAdmin = new CommentAdmin(
+    //         'sonata.post.admin.comment',
+    //         'Application\Sonata\NewsBundle\Entity\Comment',
+    //         'SonataNewsBundle:CommentAdmin'
+    //     );
+    //
+    //     $this->assertSame($postAdmin->getCode(), $postAdmin->getBaseCodeRoute());
+    //
+    //     $postAdmin->addChild($commentAdmin);
+    //
+    //     $this->assertSame(
+    //         'sonata.post.admin.post|sonata.post.admin.comment',
+    //         $commentAdmin->getBaseCodeRoute()
+    //     );
+    // }
 
     public function testGetRouteGenerator()
     {

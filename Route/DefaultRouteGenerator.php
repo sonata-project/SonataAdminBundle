@@ -137,21 +137,27 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
     {
         $this->loadCache($admin);
 
-        if ($admin->isChild()) {
-            return $admin->getBaseCodeRoute().'.'.$name;
+        // someone provide the fullname
+        if (!$admin->isChild() && array_key_exists($name, $this->caches)) {
+            return $name;
         }
 
-        // someone provide the fullname
-        if (array_key_exists($name, $this->caches)) {
-            return $name;
+        // NEXT_MAJOR: Uncomment the following line.
+        // $codePrefix = $admin->getBaseCodeRoute();
+
+        // NEXT_MAJOR: Remove next 5 lines.
+        $codePrefix = $admin->getCode();
+
+        if ($admin->isChild()) {
+            $codePrefix = $admin->getBaseCodeRoute();
         }
 
         // someone provide a code, so it is a child
         if (strpos($name, '.')) {
-            return $admin->getCode().'|'.$name;
+            return $codePrefix.'|'.$name;
         }
 
-        return $admin->getCode().'.'.$name;
+        return $codePrefix.'.'.$name;
     }
 
     /**

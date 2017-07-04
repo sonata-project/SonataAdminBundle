@@ -627,6 +627,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
             $this->classnameLabel = substr($this->getClass(), strrpos($this->getClass(), '\\') + 1);
         }
 
+        // NEXT_MAJOR: Remove this line.
+        $this->baseCodeRoute = $this->getCode();
+
         $this->configure();
     }
 
