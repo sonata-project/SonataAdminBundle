@@ -227,6 +227,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     /**
      * The base code route refer to the prefix used to generate the route name.
      *
+     * NEXT_MAJOR: remove this attribute.
+     *
+     * @deprecated This attribute is deprecated since 3.31 and will be removed in 4.0
+     *
      * @var string
      */
     protected $baseCodeRoute = '';
@@ -622,8 +626,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
         if (!$this->classnameLabel) {
             $this->classnameLabel = substr($this->getClass(), strrpos($this->getClass(), '\\') + 1);
         }
-
-        $this->baseCodeRoute = $this->getCode();
 
         $this->configure();
     }
@@ -1140,7 +1142,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      */
     public function getRouterIdParameter()
     {
-        return $this->isChild() ? '{childId}' : '{id}';
+        return '{'.$this->getIdParameter().'}';
     }
 
     /**
@@ -1148,7 +1150,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      */
     public function getIdParameter()
     {
-        return $this->isChild() ? 'childId' : 'id';
+        $parameter = 'id';
+
+        for ($admin = $this; $admin->isChild(); $admin = $admin->getParent()) {
+            $parameter = 'child'.ucfirst($parameter);
+        }
+
+        return $parameter;
     }
 
     /**
@@ -1895,7 +1903,6 @@ EOT;
     {
         $this->children[$child->getCode()] = $child;
 
-        $child->setBaseCodeRoute($this->getCode().'|'.$child->getCode());
         $child->setParent($this);
     }
 
@@ -2370,10 +2377,19 @@ EOT;
     }
 
     /**
+     * NEXT_MAJOR: Remove this function.
+     *
+     * @deprecated This method is deprecated since 3.21 and will be removed in 4.0
+     *
      * @param string $baseCodeRoute
      */
     public function setBaseCodeRoute($baseCodeRoute)
     {
+        @trigger_error(
+            'The '.__METHOD__.' is deprecated since 3.21 and will be removed in 4.0.',
+            E_USER_DEPRECATED
+        );
+
         $this->baseCodeRoute = $baseCodeRoute;
     }
 
@@ -2382,6 +2398,13 @@ EOT;
      */
     public function getBaseCodeRoute()
     {
+        if ($this->isChild()) {
+            return $this->getParent()->getBaseCodeRoute().'|'.$this->getCode();
+        }
+
+        // NEXT_MAJOR: Uncomment the following line and remove the next one.
+        // return $this->getCode();
+
         return $this->baseCodeRoute;
     }
 

@@ -1015,8 +1015,8 @@ class CRUDController extends Controller
 
         $rootAdmin = $this->admin;
 
-        if ($this->admin->isChild()) {
-            $this->admin->setCurrentChild(true);
+        while ($rootAdmin->isChild()) {
+            $rootAdmin->setCurrentChild(true);
             $rootAdmin = $rootAdmin->getParent();
         }
 
