@@ -905,8 +905,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
                 }
             }
 
-            $this->cachedBaseRoutePattern = sprintf('%s/{id}/%s',
+            $this->cachedBaseRoutePattern = sprintf('%s/%s/%s',
                 $this->getParent()->getBaseRoutePattern(),
+                $this->getParent()->getRouterIdParameter(),
                 $this->baseRoutePattern ?: $this->urlize($matches[5], '-')
             );
         } elseif ($this->baseRoutePattern) {
