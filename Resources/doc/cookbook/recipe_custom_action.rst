@@ -70,6 +70,7 @@ or by adding it to your ``admin.yml``:
                 - null
                 - AppBundle\Entity\Car
                 - AppBundle:CRUD
+            public: true
 
 For more information about service configuration please refer to Step 3 of :doc:`../reference/getting_started`
 

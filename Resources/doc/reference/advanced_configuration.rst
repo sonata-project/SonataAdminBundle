@@ -63,6 +63,7 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
                 - ~
                 - AppBundle\Entity\Project
                 - ~
+            public: true
 
 * With a method call, more verbose
 
@@ -105,6 +106,7 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
             calls:
                 - [ setLabelTranslatorStrategy, [ "@sonata.admin.label.strategy.native" ]]
                 - [ setRouteBuilder, [ "@sonata.admin.route.path_info" ]]
+            public: true
 
 If you want to modify the service that is going to be injected, add the following code to your
 application's config file:
