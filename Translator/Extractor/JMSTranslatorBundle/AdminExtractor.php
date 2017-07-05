@@ -23,6 +23,9 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
+/**
+ * NEXT_MAJOR: do not implement TranslatorInterface anymore.
+ */
 class AdminExtractor implements ExtractorInterface, TranslatorInterface, SecurityHandlerInterface, LabelTranslatorStrategyInterface
 {
     /**
@@ -41,6 +44,8 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     private $catalogue;
 
     /**
+     * NEXT_MAJOR: remove this property.
+     *
      * @var string|bool
      */
     private $translator;
@@ -66,12 +71,18 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
      */
     public function __construct(Pool $adminPool, LoggerInterface $logger = null)
     {
+        @trigger_error(
+            'Implementing the Symfony\Component\Translation\TranslatorInterface for '.__CLASS__
+            .' is deprecated since version 3.x and will be removed in 4.0.',
+            E_USER_DEPRECATED
+        );
+
         $this->logger = $logger;
         $this->adminPool = $adminPool;
 
         // state variable
         $this->catalogue = false;
-        $this->translator = false;
+        $this->translator = false; // NEXT_MAJOR: remove this line
         $this->labelStrategy = false;
         $this->domain = false;
     }
@@ -123,13 +134,9 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
             $this->labelStrategy = $admin->getLabelTranslatorStrategy();
             $this->domain = $admin->getTranslationDomain();
 
-            $admin->setTranslator($this);
+            $admin->setTranslator($this); // NEXT_MAJOR: remove this line
             $admin->setSecurityHandler($this);
             $admin->setLabelTranslatorStrategy($this);
-
-//            foreach ($admin->getChildren() as $child) {
-//                $child->setTranslator($this);
-//            }
 
             // call the different public method
             $methods = array(
@@ -149,7 +156,11 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
             );
 
             if ($this->logger) {
-                $this->logger->info(sprintf('Retrieving message from admin:%s - class: %s', $admin->getCode(), get_class($admin)));
+                $this->logger->info(sprintf(
+                    'Retrieving message from admin:%s - class: %s',
+                        $admin->getCode(),
+                        get_class($admin)
+                ));
             }
 
             foreach ($methods as $method) {
@@ -157,7 +168,11 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
                     $admin->$method();
                 } catch (\Exception $e) {
                     if ($this->logger) {
-                        $this->logger->error(sprintf('ERROR : admin:%s - Raise an exception : %s', $admin->getCode(), $e->getMessage()));
+                        $this->logger->error(sprintf(
+                            'ERROR : admin:%s - Raise an exception : %s',
+                                $admin->getCode(),
+                                $e->getMessage()
+                        ));
                     }
 
                     throw $e;
@@ -191,38 +206,66 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     }
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * {@inheritdoc}
      */
     public function trans($id, array $parameters = array(), $domain = null, $locale = null)
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.',
+            E_USER_DEPRECATED
+        );
+
         $this->addMessage($id, $domain);
 
         return $id;
     }
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * {@inheritdoc}
      */
     public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null)
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.',
+            E_USER_DEPRECATED
+        );
+
         $this->addMessage($id, $domain);
 
         return $id;
     }
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * {@inheritdoc}
      */
     public function setLocale($locale)
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.',
+            E_USER_DEPRECATED
+        );
+
         $this->translator->setLocale($locale);
     }
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * {@inheritdoc}
      */
     public function getLocale()
     {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.',
+            E_USER_DEPRECATED
+        );
+
         return $this->translator->getLocale();
     }
 
@@ -291,8 +334,6 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     private function addMessage($id, $domain)
     {
         $message = new Message($id, $domain);
-
-        //        $this->logger->debug(sprintf('extract: %s - domain:%s', $id, $domain));
 
         $trace = debug_backtrace(false);
         if (isset($trace[1]['file'])) {
