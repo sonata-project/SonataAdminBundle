@@ -71,12 +71,14 @@ class LockExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->modelManager->getLockVersion(array())->willReturn(1);
 
-        // NEXT_MAJOR: remove the check and add the FQCN
-        $hiddenType = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ?
-            'Symfony\Component\Form\Extension\Core\Type\HiddenType' :
-            'hidden';
-
-        $form->add('_lock_version', $hiddenType, array('mapped' => false, 'data' => 1))->shouldBeCalled();
+        $form->add(
+            '_lock_version',
+            // NEXT_MAJOR: remove the check and add the FQCN
+            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+                ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
+                : 'hidden',
+            array('mapped' => false, 'data' => 1)
+        )->shouldBeCalled();
 
         $this->lockExtension->configureFormFields($formMapper);
         $this->eventDispatcher->dispatch(FormEvents::PRE_SET_DATA, $event);
