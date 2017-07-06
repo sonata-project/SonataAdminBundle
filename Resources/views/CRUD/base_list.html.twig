@@ -35,7 +35,8 @@ file that was distributed with this source code.
 {% block list_table %}
     <div class="col-xs-12 col-md-12">
         {% set batchactions = admin.batchactions %}
-        {% if admin.hasRoute('batch') and batchactions|length %}
+        {% set show_batchactions = batchactions|length and admin.hasRoute('batch') and not app.request.isXmlHttpRequest %}
+        {% if show_batchactions %}
             <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST" >
             <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
         {% endif %}
@@ -53,10 +54,12 @@ file that was distributed with this source code.
                             <thead>
                                 <tr class="sonata-ba-list-field-header">
                                     {% for field_description in admin.list.elements %}
-                                        {% if admin.hasRoute('batch') and field_description.getOption('code') == '_batch' and batchactions|length > 0 %}
-                                            <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
-                                              <input type="checkbox" id="list_batch_checkbox">
-                                            </th>
+                                        {% if field_description.getOption('code') == '_batch' %}
+                                            {% if show_batchactions %}
+                                                <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
+                                                  <input type="checkbox" id="list_batch_checkbox">
+                                                </th>
+                                            {% endif %}
                                         {% elseif field_description.getOption('code') == '_select' %}
                                             <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
                                         {% elseif field_description.name == '_action' and app.request.isXmlHttpRequest %}
@@ -124,7 +127,7 @@ file that was distributed with this source code.
                         <div class="form-inline clearfix">
                             {% if not app.request.isXmlHttpRequest %}
                                 <div class="pull-left">
-                                    {% if admin.hasRoute('batch') and batchactions|length > 0  %}
+                                    {% if show_batchactions %}
                                         {% block batch %}
                                             <script>
                                                 {% block batch_javascript %}
@@ -219,7 +222,7 @@ file that was distributed with this source code.
                 {% endif %}
             {% endblock %}
         </div>
-        {% if admin.hasRoute('batch') and batchactions|length %}
+        {% if show_batchactions %}
             </form>
         {% endif %}
     </div>
