@@ -125,9 +125,9 @@ class CRUDController extends Controller
      *
      * @throws AccessDeniedException If access is not granted
      */
-    public function batchActionDelete(ProxyQueryInterface $query)
+    public function deleteBatchAction(ProxyQueryInterface $query)
     {
-        $this->admin->checkAccess('batchDelete');
+        $this->admin->checkAccess('deleteBatch');
 
         $modelManager = $this->admin->getModelManager();
         try {
@@ -387,7 +387,7 @@ class CRUDController extends Controller
         }
 
         $camelizedAction = Inflector::classify($action);
-        $isRelevantAction = sprintf('batchAction%sIsRelevant', $camelizedAction);
+        $isRelevantAction = sprintf('%sBatchActionIsRelevant', $camelizedAction);
 
         if (method_exists($this, $isRelevantAction)) {
             $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $allElements, $request);
@@ -437,8 +437,8 @@ class CRUDController extends Controller
             ), null);
         }
 
-        // execute the action, batchActionXxxxx
-        $finalAction = sprintf('batchAction%s', $camelizedAction);
+        // execute the action, xxxxxBatchAction
+        $finalAction = sprintf('%sBatchAction', $camelizedAction);
         if (!is_callable(array($this, $finalAction))) {
             throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', get_class($this), $finalAction));
         }
