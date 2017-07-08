@@ -46,19 +46,29 @@ class AdminVoter implements VoterInterface
     public function matchItem(ItemInterface $item)
     {
         $admin = $item->getExtra('admin');
-        $match = null;
+
         if ($admin instanceof AdminInterface
             && $admin->hasRoute('list') && $admin->hasAccess('list')
-            && $this->request && $this->request->get('_sonata_admin') == $admin->getCode()
+            && $this->request
         ) {
-            $match = true;
+            $requestCode = $this->request->get('_sonata_admin');
+
+            if ($admin->getCode() === $requestCode) {
+                return true;
+            }
+
+            foreach ($admin->getChildren() as $child) {
+                if ($child->getBaseCodeRoute() === $requestCode) {
+                    return true;
+                }
+            }
         }
 
         $route = $item->getExtra('route');
         if ($route && $this->request && $route == $this->request->get('_route')) {
-            $match = true;
+            return true;
         }
 
-        return $match;
+        return null;
     }
 }
