@@ -210,6 +210,14 @@ class ConfigurationTest extends TestCase
         ]]);
     }
 
+    public function testSecurityConfigurationDefaults()
+    {
+        $config = $this->process([[]]);
+
+        $this->assertSame('ROLE_SONATA_ADMIN', $config['security']['role_admin']);
+        $this->assertSame('ROLE_SUPER_ADMIN', $config['security']['role_super_admin']);
+    }
+
     /**
      * Processes an array of configurations and returns a compiled version.
      *

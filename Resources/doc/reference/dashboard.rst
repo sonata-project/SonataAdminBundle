@@ -182,8 +182,9 @@ Secondly, we declare a ``app.admin.group.blog`` group as having all its default 
 
 We also use the ``roles`` option here, which means that only users with the ``ROLE_ONE``
 or ``ROLE_TWO`` privileges will be able to see this group, as opposed to the default setting
-which allows everyone to see a given group. Users with ``ROLE_SUPER_ADMIN`` are always
-able to see groups that would otherwise be hidden by this configuration option.
+which allows everyone to see a given group. Users with ``ROLE_SUPER_ADMIN`` (or the role
+specified in the configuration) are always able to see groups that would otherwise be hidden
+by this configuration option.
 
 The third group, ``app.admin.group.misc``, is set up as a group which uses all its
 default values, as declared in the service declarations.
