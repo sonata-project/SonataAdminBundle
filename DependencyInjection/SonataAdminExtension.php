@@ -85,6 +85,8 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
         $config['options']['javascripts'] = $config['assets']['javascripts'];
         $config['options']['stylesheets'] = $config['assets']['stylesheets'];
+        $config['options']['role_admin'] = $config['security']['role_admin'];
+        $config['options']['role_super_admin'] = $config['security']['role_super_admin'];
 
         $pool = $container->getDefinition('sonata.admin.pool');
         $pool->replaceArgument(1, $config['title']);
@@ -170,6 +172,8 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
                 break;
         }
 
+        $container->setParameter('sonata.admin.configuration.security.role_admin', $config['security']['role_admin']);
+        $container->setParameter('sonata.admin.configuration.security.role_super_admin', $config['security']['role_super_admin']);
         $container->setParameter('sonata.admin.configuration.security.information', $config['security']['information']);
         $container->setParameter('sonata.admin.configuration.security.admin_permissions', $config['security']['admin_permissions']);
         $container->setParameter('sonata.admin.configuration.security.object_permissions', $config['security']['object_permissions']);
