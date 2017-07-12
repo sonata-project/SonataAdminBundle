@@ -101,7 +101,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     'label' => !empty($attributes['label']) ? $attributes['label'] : '',
                     'route' => '',
                     'route_params' => array(),
-                    'route_absolute' => true,
+                    'route_absolute' => false,
                 );
 
                 if (isset($groupDefaults[$resolvedGroupName]['on_top']) && $groupDefaults[$resolvedGroupName]['on_top']
