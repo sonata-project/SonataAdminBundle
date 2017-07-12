@@ -38,7 +38,7 @@ If you need to disable this for some reason, you can do this via the configurati
 Define Admins
 ^^^^^^^^^^^^^
 
-All you have to do is include Sonata\AdminBundleAnnotations and define the values you need.
+All you have to do is include `Sonata\AdminBundleAnnotation` and define the values you need.
 
 .. code-block:: php
 
@@ -70,6 +70,28 @@ All you have to do is include Sonata\AdminBundleAnnotations and define the value
     {
     }
 
+
+
+Define Blocks
+^^^^^^^^^^^^^
+
+All you have to do is include `Sonata\AdminBundleAnnotation` and define the values you need.
+
+.. code-block:: php
+
+    <?php
+
+    namespace AcmeBundle\Block;
+
+    use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+    use Sonata\AdminBundle\Annotation as Sonata;
+
+    /**
+     * @Sonata\Block()
+     */
+    class MyBlock extends AbstractBlockService
+    {
+    }
 
 .. note::
 
