@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use JMS\DiExtraBundle\Metadata\ClassMetadata;
 use Sonata\AdminBundle\Annotation\Admin;
+use Sonata\AdminBundle\Annotation\Block;
 use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
 class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
@@ -87,6 +88,23 @@ class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
                 'keep_open' => false,
                 'on_top' => false,
             )
+        );
+    }
+
+    public function testMinimalBlock()
+    {
+        /*
+         * @Block()
+         */
+        $annotation = new Block();
+
+        $meta = new ClassMetadata('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo');
+
+        $annotation->processMetadata($meta);
+
+        $this->assertSame(
+            $meta->tags['sonata.block'][0],
+            array()
         );
     }
 

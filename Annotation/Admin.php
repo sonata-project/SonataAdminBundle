@@ -123,6 +123,9 @@ class Admin implements MetadataProcessorInterface
         $tag = array_filter($tag, function ($v) {
             return !is_null($v);
         });
+        if (!empty($this->id)) {
+            $metadata->id = $this->id;
+        }
         $metadata->tags['sonata.admin'][] = $tag;
         $metadata->arguments = array($this->id, $this->class, $this->baseControllerName);
 
