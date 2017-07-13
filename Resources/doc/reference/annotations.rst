@@ -38,7 +38,7 @@ If you need to disable this for some reason, you can do this via the configurati
 Define Admins
 ^^^^^^^^^^^^^
 
-All you have to do is include Sonata\AdminBundleAnnotations and define the values you need.
+All you have to do is include ``Sonata\AdminBundle\Annotation`` and define the values you need.
 
 .. code-block:: php
 
