@@ -148,7 +148,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
                 'label' => '',
                 'route' => '',
                 'route_params' => array(),
-                'route_absolute' => true,
+                'route_absolute' => false,
                 'roles' => array(),
             )
         );
@@ -159,7 +159,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
                 'label' => '',
                 'route' => '',
                 'route_params' => array(),
-                'route_absolute' => true,
+                'route_absolute' => false,
                 'roles' => array(),
             )
         );
@@ -182,7 +182,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
                 'route_params' => array(),
                 'admin' => '',
                 'roles' => array(),
-                'route_absolute' => true,
+                'route_absolute' => false,
             )
         );
     }
