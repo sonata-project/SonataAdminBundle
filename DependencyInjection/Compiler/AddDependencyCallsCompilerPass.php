@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
 use Doctrine\Common\Inflector\Inflector;
 use Sonata\AdminBundle\Datagrid\Pager;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -51,9 +52,12 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $tags) {
             foreach ($tags as $attributes) {
                 $definition = $container->getDefinition($id);
-                $parentDefinition = $definition instanceof DefinitionDecorator ?
-                    $container->getDefinition($definition->getParent()) :
-                    null;
+                $parentDefinition = null;
+
+                // NEXT_MAJOR: Remove check for DefinitionDecorator instance when dropping Symfony <3.3 support
+                if ($definition instanceof ChildDefinition || $definition instanceof DefinitionDecorator) {
+                    $parentDefinition = $container->getDefinition($definition->getParent());
+                }
 
                 $this->replaceDefaultArguments(array(
                     0 => $id,
