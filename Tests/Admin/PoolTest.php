@@ -216,6 +216,26 @@ class PoolTest extends PHPUnit_Framework_TestCase
         $this->assertSame('commentAdminClass', $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.comment'));
     }
 
+    public function testGetAdminByAdminCodeForChildInvalidClass()
+    {
+        $adminMock = $this->getMockBuilder('Sonata\AdminBundle\Admin\AdminInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $adminMock->expects($this->any())
+            ->method('hasChild')
+            ->will($this->returnValue(false));
+
+        $containerMock = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $containerMock->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue($adminMock));
+
+        $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
+        $this->pool->setAdminServiceIds(array('sonata.news.admin.post'));
+
+        $this->assertSame(false, $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid'));
+    }
+
     public function testGetAdminClasses()
     {
         $this->pool->setAdminClasses(array('someclass' => 'sonata.user.admin.group1'));
