@@ -1905,6 +1905,17 @@ EOT;
      */
     public function addChild(AdminInterface $child)
     {
+        for ($parentAdmin = $this; null !== $parentAdmin; $parentAdmin = $parentAdmin->getParent()) {
+            if ($parentAdmin->getCode() !== $child->getCode()) {
+                continue;
+            }
+
+            throw new \RuntimeException(sprintf(
+                'Circular reference detected! The child admin `%s` is already in the parent tree of the `%s` admin.',
+                $child->getCode(), $this->getCode()
+            ));
+        }
+
         $this->children[$child->getCode()] = $child;
 
         $child->setParent($this);

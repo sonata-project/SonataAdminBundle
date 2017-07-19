@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Route\DefaultRouteGenerator;
 use Sonata\AdminBundle\Route\RoutesCache;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentVoteAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentWithCustomRouteAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FilteredAdmin;
@@ -2092,6 +2093,69 @@ class AdminTest extends PHPUnit_Framework_TestCase
             }));
 
         $admin->getDataSourceIterator();
+    }
+
+    public function testCircularChildAdmin()
+    {
+        $this->expectException(
+            'RuntimeException',
+            'Circular reference detected! The child admin `sonata.post.admin.post` is already in the parent tree of the `sonata.post.admin.comment` admin.'
+        );
+
+        $postAdmin = new PostAdmin(
+            'sonata.post.admin.post',
+            'Application\Sonata\NewsBundle\Entity\Post',
+            'SonataNewsBundle:PostAdmin'
+        );
+        $commentAdmin = new CommentAdmin(
+            'sonata.post.admin.comment',
+            'Application\Sonata\NewsBundle\Entity\Comment',
+            'SonataNewsBundle:CommentAdmin'
+        );
+        $postAdmin->addChild($commentAdmin);
+        $commentAdmin->addChild($postAdmin);
+    }
+
+    public function testCircularChildAdminTripleLevel()
+    {
+        $this->expectException(
+            'RuntimeException',
+            'Circular reference detected! The child admin `sonata.post.admin.post` is already in the parent tree of the `sonata.post.admin.comment_vote` admin.'
+        );
+
+        $postAdmin = new PostAdmin(
+            'sonata.post.admin.post',
+            'Application\Sonata\NewsBundle\Entity\Post',
+            'SonataNewsBundle:PostAdmin'
+        );
+        $commentAdmin = new CommentAdmin(
+            'sonata.post.admin.comment',
+            'Application\Sonata\NewsBundle\Entity\Comment',
+            'SonataNewsBundle:CommentAdmin'
+        );
+        $commentVoteAdmin = new CommentVoteAdmin(
+            'sonata.post.admin.comment_vote',
+            'Application\Sonata\NewsBundle\Entity\CommentVote',
+            'SonataNewsBundle:CommentViteAdmin'
+        );
+        $postAdmin->addChild($commentAdmin);
+        $commentAdmin->addChild($commentVoteAdmin);
+        $commentVoteAdmin->addChild($postAdmin);
+    }
+
+    public function testCircularChildAdminWithItself()
+    {
+        $this->expectException(
+            'RuntimeException',
+            'Circular reference detected! The child admin `sonata.post.admin.post` is already in the parent tree of the `sonata.post.admin.post` admin.'
+        );
+
+        $postAdmin = new PostAdmin(
+            'sonata.post.admin.post',
+            'Application\Sonata\NewsBundle\Entity\Post',
+            'SonataNewsBundle:PostAdmin'
+        );
+        $postAdmin->addChild($postAdmin);
     }
 
     private function createTagAdmin(Post $post)
