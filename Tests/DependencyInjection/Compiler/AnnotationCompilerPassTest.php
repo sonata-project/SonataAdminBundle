@@ -97,9 +97,9 @@ class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
          */
         $annotation = new Admin();
         $annotation->class = 'Sonata\AdminBundle\Entity\Foo';
+        $annotation->id = 'my.id';
 
         $meta = new ClassMetadata('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo');
-        $meta->id = 'my.id';
 
         $annotation->processMetadata($meta);
 
