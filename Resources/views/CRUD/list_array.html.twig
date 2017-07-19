@@ -9,10 +9,10 @@ file that was distributed with this source code.
 
 #}
 {% import _self as list %}
-{%  macro render_array(value) %}
+{%  macro render_array(value, list) %}
     {% for key, val in value %}
         {% if val is iterable %}
-            [{{ key }} => {{ list.render_array(val) }}}]
+            [{{ key }} => {{ list.render_array(val, list) }}]
         {%  else %}
             [{{ key }} => {{ val }}]
         {%  endif %}
@@ -22,5 +22,5 @@ file that was distributed with this source code.
 {% extends admin.getTemplate('base_list_field') %}
 
 {% block field %}
-    {{ list.render_array(value) }}
+    {{ list.render_array(value, list) }}
 {% endblock %}
