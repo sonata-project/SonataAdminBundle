@@ -1,0 +1,23 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+{% macro render_array(value, inline) %}
+    {% for key, val in value %}
+        {% if val is iterable %}
+            [{{ key }} => {{ _self.render_array(val, inline) }}]
+        {%  else %}
+            [{{ key }} => {{ val }}]
+        {%  endif %}
+
+        {% if not loop.last and not inline %}
+            <br>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
