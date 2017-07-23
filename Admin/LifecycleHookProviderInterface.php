@@ -44,11 +44,11 @@ interface LifecycleHookProviderInterface
      */
     public function delete($object);
 
-//NEXT_MAJOR: uncomment this method for 4.0
-//    /**
-//     * @param object $object
-//     */
-//    public function preValidate($object);
+    //NEXT_MAJOR: uncomment this method for 4.0
+    //    /**
+    //     * @param object $object
+    //     */
+    //    public function preValidate($object);
 
     /**
      * @param object $object

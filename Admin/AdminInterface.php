@@ -30,7 +30,7 @@ use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-interface AdminInterface extends FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
+interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
     /**
      * @param FormContractorInterface $formContractor
@@ -724,21 +724,6 @@ interface AdminInterface extends FieldDescriptionRegistryInterface, LifecycleHoo
      */
     public function getListMode();
 
-    /**
-     * Return the controller access mapping.
-     *
-     * @return array
-     */
-    public function getAccessMapping();
-
-    /**
-     * Hook to handle access authorization.
-     *
-     * @param string $action
-     * @param object $object
-     */
-    public function checkAccess($action, $object = null);
-
     /*
      * Configure buttons for an action
      *
@@ -747,17 +732,6 @@ interface AdminInterface extends FieldDescriptionRegistryInterface, LifecycleHoo
      *
      */
     // public function configureActionButtons($action, $object = null);
-
-//    TODO: uncomment this method for next major release
-//    /**
-//     * Hook to handle access authorization, without throw Exception
-//     *
-//     * @param string $action
-//     * @param object $object
-//     *
-//     * @return bool
-//     */
-//    public function hasAccess($action, $object = null);
 
     //TODO: uncomment this method for 4.0
     /*
