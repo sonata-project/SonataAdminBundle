@@ -20,6 +20,8 @@ namespace Sonata\AdminBundle\Admin;
 interface LifecycleHookProviderInterface
 {
     /**
+     * This method should call preUpdate, do the update, and call postUpdate.
+     *
      * @param object $object
      *
      * @return object
@@ -27,6 +29,8 @@ interface LifecycleHookProviderInterface
     public function update($object);
 
     /**
+     * This method should call prePersist, do the creation, and call postPersist.
+     *
      * @param object $object
      *
      * @return object
@@ -34,6 +38,8 @@ interface LifecycleHookProviderInterface
     public function create($object);
 
     /**
+     * This method should call preRemove, do the removal, and call postRemove.
+     *
      * @param object $object
      */
     public function delete($object);
