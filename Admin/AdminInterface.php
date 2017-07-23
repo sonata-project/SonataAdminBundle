@@ -16,8 +16,6 @@ use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\CoreBundle\Model\Metadata;
@@ -32,7 +30,7 @@ use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-interface AdminInterface extends FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface
+interface AdminInterface extends FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
     /**
      * @param FormContractorInterface $formContractor
@@ -92,11 +90,6 @@ interface AdminInterface extends FieldDescriptionRegistryInterface, LifecycleHoo
     public function setConfigurationPool(Pool $pool);
 
     /**
-     * @param RouteGeneratorInterface $routeGenerator
-     */
-    public function setRouteGenerator(RouteGeneratorInterface $routeGenerator);
-
-    /**
      * Returns subjectClass/class/subclass name managed
      * - subclass name if subclass parameter is defined
      * - subject class name if subject is defined
@@ -129,40 +122,6 @@ interface AdminInterface extends FieldDescriptionRegistryInterface, LifecycleHoo
      * @return string
      */
     public function getBaseControllerName();
-
-    /**
-     * Generates the object url with the given $name.
-     *
-     * @param string $name
-     * @param mixed  $object
-     * @param array  $parameters
-     * @param bool   $absolute
-     *
-     * @return string return a complete url
-     */
-    public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = false);
-
-    /**
-     * Generates a url for the given parameters.
-     *
-     * @param string $name
-     * @param array  $parameters
-     * @param bool   $absolute
-     *
-     * @return string return a complete url
-     */
-    public function generateUrl($name, array $parameters = array(), $absolute = false);
-
-    /**
-     * Generates a url for the given parameters.
-     *
-     * @param string $name
-     * @param array  $parameters
-     * @param bool   $absolute
-     *
-     * @return array return url parts: 'route', 'routeParameters', 'routeAbsolute'
-     */
-    public function generateMenuUrl($name, array $parameters = array(), $absolute = false);
 
     /**
      * @return \Sonata\AdminBundle\Model\ModelManagerInterface
@@ -262,20 +221,6 @@ interface AdminInterface extends FieldDescriptionRegistryInterface, LifecycleHoo
     public function trans($id, array $parameters = array(), $domain = null, $locale = null);
 
     /**
-     * Returns the list of available urls.
-     *
-     * @return RouteCollection the list of available urls
-     */
-    public function getRoutes();
-
-    /**
-     * Return the parameter name used to represent the id in the url.
-     *
-     * @return string
-     */
-    public function getRouterIdParameter();
-
-    /**
      * Returns the parameter representing request id, ie: id or childId.
      *
      * @return string
@@ -325,13 +270,6 @@ interface AdminInterface extends FieldDescriptionRegistryInterface, LifecycleHoo
      * @return bool
      */
     public function isGranted($name, $object = null);
-
-    /**
-     * @param mixed $entity
-     *
-     * @return string a string representation of the id that is safe to use in a url
-     */
-    public function getUrlsafeIdentifier($entity);
 
     /**
      * @param mixed $entity
