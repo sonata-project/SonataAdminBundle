@@ -114,6 +114,7 @@ class AdminTypeTest extends TypeTestCase
 
         $field = $this->prophesize('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $field->getAssociationAdmin()->shouldBeCalled()->willReturn($admin->reveal());
+        $field->getFieldName()->shouldBeCalled()->willReturn('foo');
 
         $this->builder->add('foo.bar');
 
