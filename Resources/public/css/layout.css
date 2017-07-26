@@ -175,6 +175,10 @@ th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active a:hov
     margin-top: -5px;
 }
 
+.sonata-ba-list-field-header-label-icon {
+  margin-right: 2px;
+}
+
 em.sonata-ba-field-help {
     display: block;
     color: #999;
