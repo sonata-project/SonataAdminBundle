@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Menu\Provider;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Menu provider based on group options.
@@ -159,7 +160,7 @@ class GroupMenuProvider implements MenuProviderInterface
                     $menuItem->setUri($options);
                 } else {
                     $router = $this->pool->getContainer()->get('router');
-                    $menuItem->setUri($router->generate($item['route']));
+                    $menuItem->setUri($router->generate($item['route'], $item['route_params'], $item['route_absolute'] ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH));
                 }
             }
         }
