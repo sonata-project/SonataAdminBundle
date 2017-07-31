@@ -42,7 +42,8 @@ Globally :
         # app/config/config.yml
 
         sonata_admin:
-            persist_filters: filter_persister_service_id
+            persist_filters: true
+            filter_persister: filter_persister_service_id
 
 
 Per Admin (using XML) :
@@ -53,10 +54,10 @@ Per Admin (using XML) :
 
         <!-- src/AppBundle/Resources/config/admin.xml -->
 
-        <service id="app.admin.car" class="AppBundle\Admin\CarAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="Demo" label="Car" persist_filters="filter_persister_service_id" />
+        <service id="app.admin.user" class="AppBundle\Admin\UserAdmin">
+            <tag name="sonata.admin" manager_type="orm" filters_persister="filter_persister_service_id" />
             <argument />
-            <argument>AppBundle\Entity\Car</argument>
+            <argument>AppBundle\Entity\User</argument>
             <argument />
         </service>
 
@@ -70,16 +71,68 @@ Per Admin (using YAML) :
         # src/AppBundle/Resources/config/admin.yml
 
         services:
-            app.admin.car:
-                class: AppBundle\Admin\CarAdmin
+            app.admin.user:
+                class: AppBundle\Admin\UserAdmin
                 tags:
                     -
                         name: sonata.admin
                         manager_type: orm
-                        group: Demo
-                        label: Car
-                        persist_filters: filter_persister_service_id
+                        filters_persister: filter_persister_service_id
                 arguments:
                     - null
-                    - AppBundle\Entity\Car
+                    - AppBundle\Entity\User
                     - null
+
+
+Disable filters persistence for some Admin
+------------------------------------------
+
+When you enable the filters persistence by setting ``persist_filters`` to ``true``.
+All registered Admins will have the feature enabled.
+
+You can disable it per Admin if you want.
+
+
+Using XML :
+
+.. configuration-block::
+
+    .. code-block:: xml
+
+        <!-- src/AppBundle/Resources/config/admin.xml -->
+
+        <service id="app.admin.user" class="AppBundle\Admin\UserAdmin">
+            <tag name="sonata.admin" manager_type="orm" persist_filters="false" />
+            <argument />
+            <argument>AppBundle\Entity\User</argument>
+            <argument />
+        </service>
+
+
+Using YAML :
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # src/AppBundle/Resources/config/admin.yml
+
+        services:
+            app.admin.user:
+                class: AppBundle\Admin\UserAdmin
+                tags:
+                    -
+                        name: sonata.admin
+                        manager_type: orm
+                        persist_filters: false
+                arguments:
+                    - null
+                    - AppBundle\Entity\User
+                    - null
+
+
+.. note::
+
+    Both ``persist_filters`` and ``filter_persister`` can be used globally and per-admin.
+    Which provide you the most flexible way to configure this feature.
+

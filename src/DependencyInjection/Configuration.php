@@ -463,6 +463,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
 
                 ->scalarNode('persist_filters')->defaultFalse()->end()
+                ->scalarNode('filters_persister')->defaultValue('sonata.admin.filter_persister.session')->end()
 
                 ->booleanNode('show_mosaic_button')
                     ->defaultTrue()
