@@ -25,9 +25,11 @@ Choose the persistence strategy
 -------------------------------
 
 When you enable the filters persistence by setting ``persist_filters`` to ``true``.
-SonataAdmin will use the default filter persister : ``Sonata\AdminBundle\Filter\Persister\SessionFilterPersister`` (which is, by now, the only one provided).
+SonataAdmin will use the default filter persister : ``Sonata\AdminBundle\Filter\Persister\SessionFilterPersister``
+(which is, by now, the only one provided).
 
-You can implement your own filter persister by creating a new class that implement the ``Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface`` interface and registering it as a service.
+You can implement your own filter persister by creating a new class that implements the
+``Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface`` interface and registering it as a service.
 Then the only thing to do is to tell SonataAdmin to use this service as filter persister.
 
 
@@ -71,7 +73,12 @@ Per Admin (using YAML) :
             app.admin.car:
                 class: AppBundle\Admin\CarAdmin
                 tags:
-                    - { name: sonata.admin, manager_type: orm, group: Demo, label: Car, persist_filters: filter_persister_service_id }
+                    -
+                        name: sonata.admin
+                        manager_type: orm
+                        group: Demo
+                        label: Car
+                        persist_filters: filter_persister_service_id
                 arguments:
                     - null
                     - AppBundle\Entity\Car
