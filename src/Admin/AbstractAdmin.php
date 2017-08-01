@@ -1396,18 +1396,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->persistFilters = $persist;
 
         if ($persist === true) {
-            try {
-                $request = $this->getRequest();
-                $session = $request->getSession();
+            $request = $this->getRequest();
+            $session = $request->getSession();
 
-                if ($session === null) {
-                    throw new \RuntimeException('The Request object has not session available');
-                }
-
-                $this->filterPersister = new SessionFilterPersister($session);
-            } catch (\RuntimeException $exception) {
-                // no request nor session
+            if ($session === null) {
+                throw new \RuntimeException('The Request object has not session available');
             }
+
+            $this->filterPersister = new SessionFilterPersister($session);
         } else {
             $this->filterPersister = null;
         }
