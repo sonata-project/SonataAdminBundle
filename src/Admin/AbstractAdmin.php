@@ -26,6 +26,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
+use Sonata\AdminBundle\Filter\Persister\SessionFilterPersister;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -1393,6 +1394,23 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         );
 
         $this->persistFilters = $persist;
+
+        if ($persist === true) {
+            try {
+                $request = $this->getRequest();
+                $session = $request->getSession();
+
+                if ($session === null) {
+                    throw new \RuntimeException('The Request object has not session available');
+                }
+
+                $this->filterPersister = new SessionFilterPersister($session);
+            } catch (\RuntimeException $exception) {
+                // no request nor session
+            }
+        } else {
+            $this->filterPersister = null;
+        }
     }
 
     /**
