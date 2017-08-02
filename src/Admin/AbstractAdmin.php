@@ -26,7 +26,6 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
-use Sonata\AdminBundle\Filter\Persister\SessionFilterPersister;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -748,7 +747,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             $filters = $this->request->query->get('filter', []);
 
             // if filter persistence is configured
-            if ($this->filterPersister !== null) {
+            // NEXT_MAJOR: remove `$this->persistFilters !== false` from the condition
+            if ($this->persistFilters !== false && $this->filterPersister !== null) {
                 // if reset filters is asked, remove from storage
                 if ($this->request->query->get('filters') === 'reset') {
                     $this->filterPersister->reset($this->getCode());
@@ -1384,6 +1384,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * @param bool $persist
      *
+     * NEXT_MAJOR: remove this method
+     *
      * @deprecated since 3.x, to be removed in 4.0.
      */
     public function setPersistFilters($persist)
@@ -1394,19 +1396,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         );
 
         $this->persistFilters = $persist;
-
-        if ($persist === true) {
-            $request = $this->getRequest();
-            $session = $request->getSession();
-
-            if ($session === null) {
-                throw new \RuntimeException('The Request object has not session available');
-            }
-
-            $this->filterPersister = new SessionFilterPersister($session);
-        } else {
-            $this->filterPersister = null;
-        }
     }
 
     /**
