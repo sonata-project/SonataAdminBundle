@@ -1688,7 +1688,7 @@ EOT;
      */
     public function getSubject()
     {
-        if ($this->subject === null && $this->request) {
+        if ($this->subject === null && $this->request && !$this->hasParentFieldDescription()) {
             $id = $this->request->get($this->getIdParameter());
             $this->subject = $this->getModelManager()->find($this->class, $id);
         }
