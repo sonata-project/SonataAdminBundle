@@ -130,6 +130,7 @@ class CRUDController extends Controller
         $this->admin->checkAccess('batchDelete');
 
         $modelManager = $this->admin->getModelManager();
+
         try {
             $modelManager->batchDelete($this->admin->getClass(), $query);
             $this->addFlash('sonata_flash_success', 'flash_batch_delete_success');
@@ -250,6 +251,7 @@ class CRUDController extends Controller
         }
 
         $this->admin->setSubject($existingObject);
+        $objectId = $this->admin->getNormalizedIdentifier($existingObject);
 
         /** @var $form Form */
         $form = $this->admin->getForm();
@@ -274,7 +276,7 @@ class CRUDController extends Controller
                     if ($this->isXmlHttpRequest()) {
                         return $this->renderJson(array(
                             'result' => 'ok',
-                            'objectId' => $this->admin->getNormalizedIdentifier($existingObject),
+                            'objectId' => $objectId,
                             'objectName' => $this->escapeHtml($this->admin->toString($existingObject)),
                         ), 200, array());
                     }
@@ -330,6 +332,7 @@ class CRUDController extends Controller
             'action' => 'edit',
             'form' => $formView,
             'object' => $existingObject,
+            'objectId' => $objectId,
         ), null);
     }
 
@@ -571,6 +574,7 @@ class CRUDController extends Controller
             'action' => 'create',
             'form' => $formView,
             'object' => $newObject,
+            'objectId' => null,
         ), null);
     }
 
@@ -1106,6 +1110,7 @@ class CRUDController extends Controller
             foreach (array('edit', 'show') as $route) {
                 if ($this->admin->hasRoute($route) && $this->admin->hasAccess($route, $object)) {
                     $url = $this->admin->generateObjectUrl($route, $object);
+
                     break;
                 }
             }
