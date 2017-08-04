@@ -52,7 +52,15 @@ class ModelAutocompleteType extends AbstractType
 
         if ($options['multiple']) {
             $resizeListener = new ResizeFormListener(
-                'hidden', array(), true, true, true
+                // NEXT_MAJOR: Remove ternary and keep 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
+                // (when requirement of Symfony is >= 2.8)
+                method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+                    ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
+                    : 'hidden',
+                array(),
+                true,
+                true,
+                true
             );
 
             $builder->addEventSubscriber($resizeListener);
