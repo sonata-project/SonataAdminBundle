@@ -21,4 +21,4 @@ chmod u+x "${HOME}/bin/coveralls"
 # https://github.com/composer/composer/issues/5030
 composer update --prefer-dist --no-interaction --prefer-stable --quiet --ignore-platform-reqs
 
-travis_wait composer update --prefer-dist --no-interaction --prefer-stable ${COMPOSER_FLAGS}
+composer update --prefer-dist --no-interaction --prefer-stable ${COMPOSER_FLAGS}
