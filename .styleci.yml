@@ -26,3 +26,5 @@ finder:
     - 'Tests/Fixtures'
     # ecommerce special case:
     - 'Resources/skeleton'
+    # ignore vendor assets
+    - 'Resources/public/vendor'
