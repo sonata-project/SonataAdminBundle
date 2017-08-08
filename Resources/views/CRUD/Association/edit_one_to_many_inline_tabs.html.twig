@@ -1,0 +1,63 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+<div class="sonata-ba-tabs">
+    {% for nested_group_field in form.children %}
+        <div>
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    {% for name, form_group in associationAdmin.formgroups %}
+                        <li class="{% if loop.first %}active{% endif %}">
+                            <a
+                                href="#{{ associationAdmin.uniqid }}_{{ loop.parent.loop.index }}_{{ loop.index }}"
+                                data-toggle="tab"
+                            >
+                                <i class="icon-exclamation-sign has-errors hide"></i>
+                                {{ associationAdmin.trans(name, {}, form_group.translation_domain) }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="tab-content">
+                    {% for name, form_group in associationAdmin.formgroups %}
+                        <div
+                            class="tab-pane {% if loop.first %}active{% endif %}"
+                            id="{{ associationAdmin.uniqid }}_{{ loop.parent.loop.index }}_{{ loop.index }}"
+                        >
+                            <fieldset>
+                                <div class="sonata-ba-collapsed-fields">
+                                    {% for field_name in form_group.fields %}
+                                        {% set nested_field = nested_group_field.children[field_name] %}
+                                        <div class="sonata-ba-field-{{ id }}-{{ field_name }}">
+                                            {% if associationAdmin.formfielddescriptions[field_name] is defined %}
+                                                {{ form_row(nested_field, {
+                                                    'inline': 'natural',
+                                                    'edit'  : 'inline'
+                                                }) }}
+                                                {% set dummy = nested_group_field.setrendered %}
+                                            {% else %}
+                                                {{ form_row(nested_field) }}
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </fieldset>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% if nested_group_field['_delete'] is defined %}
+                {{ form_row(nested_group_field['_delete'], {'label': 'action_delete', 'translation_domain': 'SonataAdminBundle'}) }}
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
