@@ -1,0 +1,26 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field%}
+    <ul class="sonata-ba-show-one-to-many">
+    {% if field_description.hasassociationadmin and field_description.associationadmin.isGranted('EDIT') and field_description.associationadmin.hasRoute('edit') %}
+        {% for element in value%}
+            <li><a href="{{ field_description.associationadmin.generateObjectUrl(field_description.options.route.name, element, field_description.options.route.parameters) }}">{{ element|render_relation_element(field_description) }}</a></li>
+        {% endfor %}
+    {% else %}
+        {% for element in value%}
+            <li>{{ element|render_relation_element(field_description) }}</li>
+        {% endfor %}
+    {% endif %}
+    </ul>
+{% endblock %}
