@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="en" datatype="plaintext" original="">
+        <body>
+            <trans-unit id="sonata_administration">
+                <source>sonata_administration</source>
+                <target>Administrācija</target>
+            </trans-unit>
+            <trans-unit id="action_delete">
+                <source>action_delete</source>
+                <target>Dzēst</target>
+            </trans-unit>
+            <trans-unit id="btn_batch">
+                <source>btn_batch</source>
+                <target>OK</target>
+            </trans-unit>
+            <trans-unit id="btn_create">
+                <source>btn_create</source>
+                <target>Izveidot</target>
+            </trans-unit>
+            <trans-unit id="btn_create_and_edit_again">
+                <source>btn_create_and_edit_again</source>
+                <target>Izveidot</target>
+            </trans-unit>
+            <trans-unit id="btn_create_and_create_a_new_one">
+                <source>btn_create_and_create_a_new_one</source>
+                <target>Izveidot un pievienot vēl vienu</target>
+            </trans-unit>
+            <trans-unit id="btn_create_and_return_to_list">
+                <source>btn_create_and_return_to_list</source>
+                <target>Izveidot un atgriezties sarakstā</target>
+            </trans-unit>
+            <trans-unit id="btn_filter">
+                <source>btn_filter</source>
+                <target>Filtrēt</target>
+            </trans-unit>
+            <trans-unit id="btn_advanced_filters">
+                <source>btn_advanced_filters</source>
+                <target>Uzlabotie filtri</target>
+            </trans-unit>
+            <trans-unit id="btn_update">
+                <source>btn_update</source>
+                <target>Atjaunināt</target>
+            </trans-unit>
+            <trans-unit id="btn_update_and_edit_again">
+                <source>btn_update_and_edit_again</source>
+                <target>Atjaunināt</target>
+            </trans-unit>
+            <trans-unit id="btn_update_and_return_to_list">
+                <source>btn_update_and_return_to_list</source>
+                <target>Atjaunināt un aizvērt</target>
+            </trans-unit>
+            <trans-unit id="link_delete">
+                <source>link_delete</source>
+                <target>Dzēst</target>
+            </trans-unit>
+            <trans-unit id="link_action_create">
+                <source>link_action_create</source>
+                <target>Pievienot jaunu</target>
+            </trans-unit>
+            <trans-unit id="link_action_list">
+                <source>link_action_list</source>
+                <target>Atgriezties sarakstā</target>
+            </trans-unit>
+            <trans-unit id="link_action_show">
+                <source>link_action_show</source>
+                <target>Parādīt</target>
+            </trans-unit>
+            <trans-unit id="link_action_edit">
+                <source>link_action_edit</source>
+                <target>Rediģēt</target>
+            </trans-unit>
+            <trans-unit id="link_add">
+                <source>link_add</source>
+                <target>Pievienot jaunu</target>
+            </trans-unit>
+            <trans-unit id="link_list">
+                <source>link_list</source>
+                <target>Saraksts</target>
+            </trans-unit>
+            <trans-unit id="link_reset_filter">
+                <source>link_reset_filter</source>
+                <target>Atiestatīt</target>
+            </trans-unit>
+            <trans-unit id="title_create">
+                <source>title_create</source>
+                <target>Izveidot</target>
+            </trans-unit>
+            <trans-unit id="title_show">
+                <source>title_show</source>
+                <target>Parādīt "%name%"</target>
+            </trans-unit>
+            <trans-unit id="title_dashboard">
+                <source>title_dashboard</source>
+                <target>Informācijas panelis</target>
+            </trans-unit>
+            <trans-unit id="title_edit">
+                <source>title_edit</source>
+                <target>Rediģēt "%name%"</target>
+            </trans-unit>
+            <trans-unit id="title_list">
+                <source>title_list</source>
+                <target>Saraksts</target>
+            </trans-unit>
+            <trans-unit id="link_next_pager">
+                <source>link_next_pager</source>
+                <target>Nākošā</target>
+            </trans-unit>
+            <trans-unit id="link_previous_pager">
+                <source>link_previous_pager</source>
+                <target>Iepriekšējā</target>
+            </trans-unit>
+            <trans-unit id="link_first_pager">
+                <source>link_first_pager</source>
+                <target>Pirmā</target>
+            </trans-unit>
+            <trans-unit id="link_last_pager">
+                <source>link_last_pager</source>
+                <target>Pēdējā</target>
+            </trans-unit>
+            <trans-unit id="Admin">
+                <source>Admin</source>
+                <target>Administrācija</target>
+            </trans-unit>
+            <trans-unit id="link_expand">
+                <source>link_expand</source>
+                <target>paplašināt/samazināt</target>
+            </trans-unit>
+            <trans-unit id="no_result">
+                <source>no_result</source>
+                <target>Nav rezultātu</target>
+            </trans-unit>
+            <trans-unit id="confirm_msg">
+                <source>confirm_msg</source>
+                <target>Vai Jūs esat pārliecināti ?</target>
+            </trans-unit>
+            <trans-unit id="action_edit">
+                <source>action_edit</source>
+                <target>Rediģēt</target>
+            </trans-unit>
+            <trans-unit id="action_show">
+                <source>action_show</source>
+                <target>Parādīt</target>
+            </trans-unit>
+            <trans-unit id="all_elements">
+                <source>all_elements</source>
+                <target>Pielietot visiem</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_empty">
+                <source>flash_batch_empty</source>
+                <target>Darbība ir pārtraukta. Neviens objekts netika izvēlēts</target>
+            </trans-unit>
+            <trans-unit id="flash_create_success">
+                <source>flash_create_success</source>
+                <target>Objekts "%name%" bija veiksmīgi izveidots.</target>
+            </trans-unit>
+            <trans-unit id="flash_create_error">
+                <source>flash_create_error</source>
+                <target>Radusies kļūda objekta "%name%" izveidošanas laikā.</target>
+            </trans-unit>
+            <trans-unit id="flash_edit_success">
+                <source>flash_edit_success</source>
+                <target>Objekts "%name%" bija veiksmīgi atjaunināts.</target>
+            </trans-unit>
+            <trans-unit id="flash_edit_error">
+                <source>flash_edit_error</source>
+                <target>Radusies kļūda objekta "%name%" atjaunināšanas laikā.</target>
+            </trans-unit>
+            <trans-unit id="flash_lock_error">
+                <source>flash_lock_error</source>
+                <target>Cits lietotājs ir modificējis objektu "%name%". Lūdzu, %link_start%click here%link_end%, lai pārlādētu lapu un pielietotu izmaiņas vēlreiz.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_delete_success">
+                <source>flash_batch_delete_success</source>
+                <target>Izvēlētie objekti tika veiksmīgi dzēsti.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_delete_error">
+                <source>flash_batch_delete_error</source>
+                <target>Radusies kļūda izvēlētā objekta dzēšanas laikā.</target>
+            </trans-unit>
+            <trans-unit id="flash_delete_error">
+                <source>flash_delete_error</source>
+                <target>Radusies kļūda objekta "%name%" dzēšanas laikā.</target>
+            </trans-unit>
+            <trans-unit id="flash_delete_success">
+                <source>flash_delete_success</source>
+                <target>Objekts "%name%" tika veiksmīgi dzēsts.</target>
+            </trans-unit>
+            <trans-unit id="form_not_available">
+                <source>form_not_available</source>
+                <target>Forma nav pieejama.</target>
+            </trans-unit>
+            <trans-unit id="link_breadcrumb_dashboard">
+                <source>link_breadcrumb_dashboard</source>
+                <target><![CDATA[<i class="fa fa-home"></i>]]></target>
+            </trans-unit>
+            <trans-unit id="title_delete">
+                <source>title_delete</source>
+                <target>Apstipriniet dzēšanu</target>
+            </trans-unit>
+            <trans-unit id="message_delete_confirmation">
+                <source>message_delete_confirmation</source>
+                <target>Vai tiešām vēlaties dzēst izvēlēto "%object%" elementu?</target>
+            </trans-unit>
+            <trans-unit id="btn_delete">
+                <source>btn_delete</source>
+                <target>Jā, dzēst</target>
+            </trans-unit>
+            <trans-unit id="title_batch_confirmation">
+                <source>title_batch_confirmation</source>
+                <target>Apstipriniet partijas darbību "%action%"</target>
+            </trans-unit>
+            <trans-unit id="message_batch_confirmation">
+                <source>message_batch_confirmation</source>
+                <target>Vai tiešām vēlaties apstiprināt šo darbību un izpildīt to atlasītajam elementam?|Vai tiešām vēlaties apstiprināt šo darbību un izpildīt to %count% atlasītajiem elementiem?</target>
+            </trans-unit>
+            <trans-unit id="message_batch_all_confirmation">
+                <source>message_batch_all_confirmation</source>
+                <target>Vai tiešām vēlaties apstiprināt šo darbību un izpildīt to visiem atlasītajiem elementiem?</target>
+            </trans-unit>
+            <trans-unit id="btn_execute_batch_action">
+                <source>btn_execute_batch_action</source>
+                <target>Jā, izpildīt</target>
+            </trans-unit>
+            <trans-unit id="label_type_yes">
+                <source>label_type_yes</source>
+                <target>jā</target>
+            </trans-unit>
+            <trans-unit id="label_type_no">
+                <source>label_type_no</source>
+                <target>nē</target>
+            </trans-unit>
+            <trans-unit id="label_type_contains">
+                <source>label_type_contains</source>
+                <target>satur</target>
+            </trans-unit>
+            <trans-unit id="label_type_not_contains">
+                <source>label_type_not_contains</source>
+                <target>nesatur</target>
+            </trans-unit>
+            <trans-unit id="label_type_equals">
+                <source>label_type_equals</source>
+                <target>ir vienāds</target>
+            </trans-unit>
+            <trans-unit id="label_type_not_equals">
+                <source>label_type_not_equals</source>
+                <target>nav vienāds</target>
+            </trans-unit>
+            <trans-unit id="label_type_equal">
+                <source>label_type_equal</source>
+                <target>=</target>
+            </trans-unit>
+            <trans-unit id="label_type_greater_equal">
+                <source>label_type_greater_equal</source>
+                <target>&gt;=</target>
+            </trans-unit>
+            <trans-unit id="label_type_greater_than">
+                <source>label_type_greater_than</source>
+                <target>&gt;</target>
+            </trans-unit>
+            <trans-unit id="label_type_less_equal">
+                <source>label_type_less_equal</source>
+                <target>&lt;=</target>
+            </trans-unit>
+            <trans-unit id="label_type_less_than">
+                <source>label_type_less_than</source>
+                <target>&lt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_equal">
+                <source>label_date_type_equal</source>
+                <target>=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_greater_equal">
+                <source>label_date_type_greater_equal</source>
+                <target>&gt;=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_greater_than">
+                <source>label_date_type_greater_than</source>
+                <target>&gt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_less_equal">
+                <source>label_date_type_less_equal</source>
+                <target>&lt;=</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_less_than">
+                <source>label_date_type_less_than</source>
+                <target>&lt;</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_null">
+                <source>label_date_type_null</source>
+                <target>ir tukšs</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_not_null">
+                <source>label_date_type_not_null</source>
+                <target>nav tukšs</target>
+            </trans-unit>
+            <trans-unit id="label_date_type_between">
+                <source>label_date_type_between</source>
+                <target>starp</target>
+            </trans-unit>
+            <trans-unit id="label_date_not_between">
+                <source>label_date_type_not_between</source>
+                <target>ne starp</target>
+            </trans-unit>
+            <trans-unit id="label_filters">
+                <source>label_filters</source>
+                <target>Filtri</target>
+            </trans-unit>
+            <trans-unit id="delete_or">
+                <source>delete_or</source>
+                <target>vai</target>
+            </trans-unit>
+            <trans-unit id="link_action_history">
+                <source>link_action_history</source>
+                <target>Pārskatīšana</target>
+            </trans-unit>
+            <trans-unit id="td_action">
+                <source>td_action</source>
+                <target>Darbība</target>
+            </trans-unit>
+            <trans-unit id="td_compare">
+                <source>td_compare</source>
+                <target>Salīdzināt</target>
+            </trans-unit>
+            <trans-unit id="td_revision">
+                <source>td_revision</source>
+                <target>Pārskatīšana</target>
+            </trans-unit>
+            <trans-unit id="td_timestamp">
+                <source>td_timestamp</source>
+                <target>Datums</target>
+            </trans-unit>
+            <trans-unit id="td_username">
+                <source>td_username</source>
+                <target>Autors</target>
+            </trans-unit>
+            <trans-unit id="td_role">
+                <source>td_role</source>
+                <target>Loma</target>
+            </trans-unit>
+            <trans-unit id="label_view_revision">
+                <source>label_view_revision</source>
+                <target>Skatīt izmaiņas</target>
+            </trans-unit>
+            <trans-unit id="label_compare_revision">
+                <source>label_compare_revision</source>
+                <target>Salīdzināt izmaiņas</target>
+            </trans-unit>
+            <trans-unit id="list_results_count_prefix">
+                <source>list_results_count_prefix</source>
+                <target>vismaz</target>
+            </trans-unit>
+            <trans-unit id="list_results_count">
+                <source>list_results_count</source>
+                <target>{1} rezultāts|]1,Inf[ Ir %count% rezultāti</target>
+            </trans-unit>
+            <trans-unit id="label_export_download">
+                <source>label_export_download</source>
+                <target>Lejupielādēt</target>
+            </trans-unit>
+            <trans-unit id="export_format_json">
+                <source>export_format_json</source>
+                <target>JSON</target>
+            </trans-unit>
+            <trans-unit id="export_format_xml">
+                <source>export_format_xml</source>
+                <target>XML</target>
+            </trans-unit>
+            <trans-unit id="export_format_csv">
+                <source>export_format_csv</source>
+                <target>CSV</target>
+            </trans-unit>
+            <trans-unit id="export_format_xls">
+                <source>export_format_xls</source>
+                <target>XLS</target>
+            </trans-unit>
+            <trans-unit id="loading_information">
+                <source>loading_information</source>
+                <target>Informācijas lejupielādēšana…</target>
+            </trans-unit>
+            <trans-unit id="btn_preview">
+                <source>btn_preview</source>
+                <target>Priekšskatījums</target>
+            </trans-unit>
+            <trans-unit id="btn_preview_approve">
+                <source>btn_preview_approve</source>
+                <target>Apstiprināt</target>
+            </trans-unit>
+            <trans-unit id="btn_preview_decline">
+                <source>btn_preview_decline</source>
+                <target>Atteikties</target>
+            </trans-unit>
+            <trans-unit id="label_per_page">
+                <source>label_per_page</source>
+                <target>Ierakstu vienā lapā</target>
+            </trans-unit>
+            <trans-unit id="list_select">
+                <source>list_select</source>
+                <target>Izvēlieties</target>
+            </trans-unit>
+            <trans-unit id="confirm_exit">
+                <source>confirm_exit</source>
+                <target>Jums ir nesaglabātas izmaiņas.</target>
+            </trans-unit>
+            <trans-unit id="link_edit_acl">
+                <source>link_edit_acl</source>
+                <target>Rediģēt ACL</target>
+            </trans-unit>
+            <trans-unit id="btn_update_acl">
+                <source>btn_update_acl</source>
+                <target>Atjaunināt ACL</target>
+            </trans-unit>
+            <trans-unit id="flash_acl_update_success">
+                <source>flash_acl_edit_success</source>
+                <target>ACL tika veiksmīgi atjaunināts.</target>
+            </trans-unit>
+            <trans-unit id="link_action_acl">
+                <source>link_action_acl</source>
+                <target>ACL</target>
+            </trans-unit>
+            <trans-unit id="short_object_description_placeholder">
+                <source>short_object_description_placeholder</source>
+                <target>Nekas nav atlasīts</target>
+            </trans-unit>
+            <trans-unit id="title_search_results">
+                <source>title_search_results</source>
+                <target>Meklēšanas rezultāti: %query%</target>
+            </trans-unit>
+            <trans-unit id="search_placeholder">
+                <source>search_placeholder</source>
+                <target>Meklēšana</target>
+            </trans-unit>
+            <trans-unit id="no_results_found">
+                <source>no_results_found</source>
+                <target>rezultāts nav atrasts</target>
+            </trans-unit>
+            <trans-unit id="add_new_entry">
+                <source>add_new_entry</source>
+                <target>pievienot jaunu ierakstu</target>
+            </trans-unit>
+            <trans-unit id="link_actions">
+                <source>link_actions</source>
+                <target>Darbības</target>
+            </trans-unit>
+            <trans-unit id="noscript_warning">
+                <source>noscript_warning</source>
+                <target>Javascript ir izslēgts Jūsu pārlūkprogrammā. Dažas funkcijas var nedarboties pareizi.</target>
+            </trans-unit>
+            <trans-unit id="message_form_group_empty">
+                <source>message_form_group_empty</source>
+                <target>Nav pieejamu lauku.</target>
+            </trans-unit>
+            <trans-unit id="link_filters">
+                <source>link_filters</source>
+                <target>Filtri</target>
+            </trans-unit>
+            <trans-unit id="stats_view_more">
+                <source>stats_view_more</source>
+                <target>Skatīt vēl</target>
+            </trans-unit>
+            <trans-unit id="title_select_subclass">
+                <source>title_select_subclass</source>
+                <target>Izvēlieties objekta veidu</target>
+            </trans-unit>
+            <trans-unit id="no_subclass_available">
+                <source>no_subclass_available</source>
+                <target>Nav pieejami objekta veidi</target>
+            </trans-unit>
+            <trans-unit id="label_unknown_user">
+                <source>label_unknown_user</source>
+                <target>nezināms</target>
+            </trans-unit>
+            <trans-unit id="read_more">
+                <source>read_more</source>
+                <target>Lasīt vairāk</target>
+            </trans-unit>
+            <trans-unit id="read_less">
+                <source>read_less</source>
+                <target>Aizvērt</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
