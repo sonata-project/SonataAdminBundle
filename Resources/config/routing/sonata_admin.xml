@@ -28,4 +28,7 @@
     <route id="sonata_admin_retrieve_autocomplete_items" path="/core/get-autocomplete-items">
         <default key="_controller">sonata.admin.controller.admin:retrieveAutocompleteItemsAction</default>
     </route>
+    <route id="sonata_admin_stats" path="/core/getöstats">
+        <default key="_controller">SonataAdminBundle:Core:stats</default>
+    </route>
 </routes>

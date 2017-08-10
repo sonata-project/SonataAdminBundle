@@ -1,6 +1,14 @@
 UPGRADE 3.x
 ===========
 
+
+UPGRADE FROM 3.21 to 3.XX
+=========================
+
+## Deprecated AdminStatsBlockService template
+
+The `Block\block_stats.html.twig` template was deprecated in favor of different widget styles.
+
 UPGRADE FROM 3.20 to 3.21
 =========================
 
