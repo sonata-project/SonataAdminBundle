@@ -255,6 +255,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('translator')->defaultNull()->end()
                             ->scalarNode('configuration_pool')->defaultNull()->end()
                             ->scalarNode('route_generator')->defaultNull()->end()
+                            ->scalarNode('route_id_handler')->defaultNull()->end()
                             ->scalarNode('validator')->defaultNull()->end()
                             ->scalarNode('security_handler')->defaultNull()->end()
                             ->scalarNode('label')->defaultNull()->end()

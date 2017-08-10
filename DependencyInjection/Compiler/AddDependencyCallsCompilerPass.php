@@ -274,6 +274,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'translator' => 'translator',
             'configuration_pool' => 'sonata.admin.pool',
             'route_generator' => 'sonata.admin.route.default_generator',
+            'route_id_handler' => 'sonata.admin.default_route_id_handler',
             'validator' => 'validator',
             'security_handler' => 'sonata.admin.security.handler',
             'menu_factory' => 'knp_menu.factory',

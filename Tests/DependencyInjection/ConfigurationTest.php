@@ -77,6 +77,7 @@ class ConfigurationTest extends PHPUnit_Framework_TestCase
             'translator' => null,
             'configuration_pool' => null,
             'route_generator' => null,
+            'route_id_handler' => null,
             'validator' => null,
             'security_handler' => null,
             'label' => null,
