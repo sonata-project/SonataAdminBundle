@@ -150,6 +150,7 @@ class GroupMenuProvider implements MenuProviderInterface
                     // Do not display group if no `list` url is available or user doesn't have the LIST access rights
                     if (!$admin->hasRoute('list') || !$admin->hasAccess('list')) {
                         $menuItem->setDisplay(false);
+
                         continue;
                     }
 
