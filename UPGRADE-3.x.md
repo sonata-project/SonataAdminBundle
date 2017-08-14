@@ -1,6 +1,9 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.20 to 3.21
+=========================
+
 ## Deprecated ModelChoiceList class in favor of ModelChoiceLoader
 
 The `ModelChoiceList` class is no longer supported. Please use the `ModelChoiceLoader` class instead.
