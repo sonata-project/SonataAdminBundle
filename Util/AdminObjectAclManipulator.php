@@ -219,6 +219,7 @@ class AdminObjectAclManipulator
                 if ($currentAce->getSecurityIdentity()->equals($securityIdentity)) {
                     $index = $currentIndex;
                     $ace = $currentAce;
+
                     break;
                 }
             }

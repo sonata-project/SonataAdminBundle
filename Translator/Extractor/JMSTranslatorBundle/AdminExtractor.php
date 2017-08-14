@@ -127,9 +127,9 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
             $admin->setSecurityHandler($this);
             $admin->setLabelTranslatorStrategy($this);
 
-//            foreach ($admin->getChildren() as $child) {
-//                $child->setTranslator($this);
-//            }
+            //            foreach ($admin->getChildren() as $child) {
+            //                $child->setTranslator($this);
+            //            }
 
             // call the different public method
             $methods = array(
