@@ -3086,17 +3086,17 @@ EOT;
     {
     }
 
-     /**
-      * Allows you to customize batch actions.
-      *
-      * @param array $actions List of actions
-      *
-      * @return array
-      */
-     protected function configureBatchActions($actions)
-     {
-         return $actions;
-     }
+    /**
+     * Allows you to customize batch actions.
+     *
+     * @param array $actions List of actions
+     *
+     * @return array
+     */
+    protected function configureBatchActions($actions)
+    {
+        return $actions;
+    }
 
     /**
      * NEXT_MAJOR: remove this method.

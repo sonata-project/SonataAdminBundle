@@ -53,6 +53,7 @@ class AdminType extends AbstractType
         // https://github.com/sonata-project/SonataAdminBundle/pull/2076
         if ($builder->getData() === null) {
             $p = new PropertyAccessor(false, true);
+
             try {
                 $parentSubject = $admin->getParentFieldDescription()->getAdmin()->getSubject();
                 if ($parentSubject !== null && $parentSubject !== false) {
