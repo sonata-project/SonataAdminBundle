@@ -672,11 +672,11 @@ interface AdminInterface
      */
     public function delete($object);
 
-//TODO: uncomment this method for 4.0
-//    /**
-//     * @param mixed $object
-//     */
-//    public function preValidate($object);
+    //TODO: uncomment this method for 4.0
+    //    /**
+    //     * @param mixed $object
+    //     */
+    //    public function preValidate($object);
 
     /**
      * @param mixed $object

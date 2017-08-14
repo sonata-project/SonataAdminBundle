@@ -1501,14 +1501,17 @@ class AdminTest extends PHPUnit_Framework_TestCase
                 switch ($name) {
                     case 'foo':
                         $fieldDescription = $fooFieldDescription;
+
                         break;
 
                     case 'bar':
                         $fieldDescription = $barFieldDescription;
+
                         break;
 
                     case 'baz':
                         $fieldDescription = $bazFieldDescription;
+
                         break;
 
                     default:

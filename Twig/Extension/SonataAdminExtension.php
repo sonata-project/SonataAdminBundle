@@ -211,6 +211,7 @@ EOT;
         }
 
         $value = null;
+
         try {
             $value = $fieldDescription->getValue($object);
         } catch (NoValueException $e) {
@@ -424,7 +425,7 @@ EOT;
                     if ($catalogue) {
                         if (null !== $this->translator) {
                             $text = $this->translator->trans($text, array(), $catalogue);
-                        // NEXT_MAJOR: Remove this check
+                            // NEXT_MAJOR: Remove this check
                         } elseif (method_exists($fieldDescription->getAdmin(), 'trans')) {
                             $text = $fieldDescription->getAdmin()->trans($text, array(), $catalogue);
                         }
