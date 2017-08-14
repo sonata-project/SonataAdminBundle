@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
 use Doctrine\Common\Inflector\Inflector;
 use Sonata\AdminBundle\Datagrid\Pager;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -34,7 +35,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         // check if translator service exist
-        if (!$container->hasAlias('translator')) {
+        if (!$container->has('translator')) {
             throw new \RuntimeException('The "translator" service is not yet enabled.
                 It\'s required by SonataAdmin to display all labels properly.
 
@@ -51,9 +52,12 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $tags) {
             foreach ($tags as $attributes) {
                 $definition = $container->getDefinition($id);
-                $parentDefinition = $definition instanceof DefinitionDecorator ?
-                    $container->getDefinition($definition->getParent()) :
-                    null;
+                $parentDefinition = null;
+
+                // NEXT_MAJOR: Remove check for DefinitionDecorator instance when dropping Symfony <3.3 support
+                if ($definition instanceof ChildDefinition || $definition instanceof DefinitionDecorator) {
+                    $parentDefinition = $container->getDefinition($definition->getParent());
+                }
 
                 $this->replaceDefaultArguments(array(
                     0 => $id,
@@ -101,7 +105,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     'label' => !empty($attributes['label']) ? $attributes['label'] : '',
                     'route' => '',
                     'route_params' => array(),
-                    'route_absolute' => true,
+                    'route_absolute' => false,
                 );
 
                 if (isset($groupDefaults[$resolvedGroupName]['on_top']) && $groupDefaults[$resolvedGroupName]['on_top']

@@ -173,6 +173,7 @@ Create either a new ``admin.xml`` or ``admin.yml`` file inside the ``src/AppBund
                     - ~
                 calls:
                     - [ setTranslationDomain, [AppBundle]]
+                public: true
 
 The example above assumes that you're using ``SonataDoctrineORMAdminBundle``.
 If you're using ``SonataDoctrineMongoDBAdminBundle``, ``SonataPropelAdminBundle`` or ``SonataDoctrinePhpcrAdminBundle`` instead, set ``manager_type`` option to ``doctrine_mongodb``, ``propel`` or ``doctrine_phpcr`` respectively.

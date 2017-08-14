@@ -12,21 +12,19 @@
 
 #### Sonata packages
 
-```bash
-$ composer show sonata-project/*
-# Put the result here.
+```
+$ composer show --latest 'sonata-project/*'
 ```
 
 #### Symfony packages
 
-```bash
-$ composer show symfony/*
-# Put the result here.
+```
+$ composer show --latest 'symfony/*'
 ```
 
 #### PHP version
 
-```bash
+```
 $ php -v
 # Put the result here.
 ```

@@ -20,7 +20,17 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
+@trigger_error(
+    'The '.__CLASS__.' class is deprecated since 3.x and will be removed in 4.0.'
+    .' Use '.__NAMESPACE__.'\ModelChoiceLoader instead.',
+    E_USER_DEPRECATED
+);
+
 /**
+ * NEXT_MAJOR: Remove this class.
+ *
+ * @deprecated Since 3.x, to be removed in 4.0. Use Sonata\AdminBundle\ModelChoiceLoader instead
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ModelChoiceList extends SimpleChoiceList

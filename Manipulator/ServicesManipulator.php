@@ -32,6 +32,7 @@ class ServicesManipulator
         arguments: [~, %s, %s]
         tags:
             - { name: sonata.admin, manager_type: %s, group: admin, label: %s }
+        public: true
 ';
 
     /**
