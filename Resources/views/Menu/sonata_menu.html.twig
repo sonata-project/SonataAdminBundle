@@ -25,7 +25,7 @@
 
 {% block linkElement %}
     {% spaceless %}
-        {% set translation_domain = item.extra('translation_domain', 'messages') %}
+        {% set translation_domain = item.extra('label_catalogue', 'messages') %}
         {% if item.extra('on_top') is defined and not item.extra('on_top') %}
             {% set icon = item.extra('icon')|default(item.level > 1 ? '<i class="fa fa-angle-double-right" aria-hidden="true"></i>' : '') %}
         {% else %}
