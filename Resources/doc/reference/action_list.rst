@@ -198,7 +198,7 @@ If you have the SonataDoctrineORMAdminBundle installed, you have access to more 
 
     It is better to prefer non negative notions when possible for boolean
     values so use the `inverse` option if you really cannot find a good enough
-    antonym for the name you have
+    antonym for the name you have.
 
 Customizing the query used to generate the list
 -----------------------------------------------

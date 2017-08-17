@@ -16,11 +16,7 @@ file that was distributed with this source code.
         {% set text = 'label_type_no'|trans({}, 'SonataAdminBundle') %}
     {% endif %}
 
-    {% if field_description.options.inverse is defined and field_description.options.inverse %}
-        {% set isSuccess = not value %}
-    {% else %}
-        {% set isSuccess = value %}
-    {% endif %}
+    {% set isSuccess = field_description.options.inverse|default(false) ? not value : value %}
 
     {% if isSuccess %}
         {% set class = 'label-success' %}
