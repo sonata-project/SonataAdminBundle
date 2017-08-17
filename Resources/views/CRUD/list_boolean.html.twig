@@ -26,9 +26,21 @@ file that was distributed with this source code.
 {% block field %}
     {% spaceless %}
         {% if value %}
-            <span class="label label-success">{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}</span>
+            {% set text = 'label_type_yes'|trans({}, 'SonataAdminBundle') %}
         {% else %}
-            <span class="label label-danger">{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}</span>
+            {% set text = 'label_type_no'|trans({}, 'SonataAdminBundle') %}
         {% endif %}
+
+        {% if field_description.options.inverse is defined and field_description.options.inverse %}
+            {% set value = not value %}
+        {% endif %}
+
+        {% if value %}
+            {% set class = 'label-success' %}
+        {% else %}
+            {% set class = 'label-danger' %}
+        {% endif %}
+
+        <span class="label {{ class }}">{{ text }}</span>
     {% endspaceless %}
 {% endblock %}

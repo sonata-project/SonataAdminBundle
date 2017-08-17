@@ -142,8 +142,10 @@ Available types and associated options
 | array     |                | Displays an array                                                     |
 +-----------+----------------+-----------------------------------------------------------------------+
 | boolean   | ajax_hidden    | Yes/No; ajax_hidden allows to hide list field during an AJAX context. |
-+-----------+----------------+-----------------------------------------------------------------------+
-| boolean   | editable       | Yes/No; editable allows to edit directly from the list if authorized. |
++           +----------------+-----------------------------------------------------------------------+
+|           | editable       | Yes/No; editable allows to edit directly from the list if authorized. |
++           +----------------+-----------------------------------------------------------------------+
+|           | inverse        | Yes/No; reverses the background color (green for false, red for true) |
 +-----------+----------------+-----------------------------------------------------------------------+
 | choice    | choices        | Possible choices                                                      |
 +           +----------------+-----------------------------------------------------------------------+
@@ -191,6 +193,10 @@ Available types and associated options
 +-----------+----------------+-----------------------------------------------------------------------+
 
 If you have the SonataDoctrineORMAdminBundle installed, you have access to more field types, see `SonataDoctrineORMAdminBundle Documentation <https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html>`_.
+
+.. note::
+
+    It is better to prefer non negative notions when possible for boolean values
 
 Customizing the query used to generate the list
 -----------------------------------------------
