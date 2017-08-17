@@ -1470,7 +1470,19 @@ EOT
                 true,
                 array(),
             ),
+            array(
+                '<th>Data</th> <td><span class="label label-danger">yes</span></td>',
+                'boolean',
+                true,
+                array('inverse' => true),
+            ),
             array('<th>Data</th> <td><span class="label label-danger">no</span></td>', 'boolean', false, array()),
+            array(
+                '<th>Data</th> <td><span class="label label-success">no</span></td>',
+                'boolean',
+                false,
+                array('inverse' => true),
+            ),
             array(
                 '<th>Data</th> <td> Delete </td>',
                 'trans',

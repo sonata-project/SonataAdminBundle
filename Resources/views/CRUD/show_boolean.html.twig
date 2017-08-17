@@ -12,23 +12,5 @@ file that was distributed with this source code.
 {% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
 
 {% block field %}
-    {% spaceless %}
-        {% if value %}
-            {% set text = 'label_type_yes'|trans({}, 'SonataAdminBundle') %}
-        {% else %}
-            {% set text = 'label_type_no'|trans({}, 'SonataAdminBundle') %}
-        {% endif %}
-
-        {% if field_description.options.inverse is defined and field_description.options.inverse %}
-            {% set value = not value %}
-        {% endif %}
-
-        {% if value %}
-            {% set class = 'label-success' %}
-        {% else %}
-            {% set class = 'label-danger' %}
-        {% endif %}
-
-        <span class="label {{ class }}">{{ text }}</span>
-    {% endspaceless %}
+    {%- include 'SonataAdminBundle:CRUD:display_boolean.html.twig' -%}
 {% endblock %}
