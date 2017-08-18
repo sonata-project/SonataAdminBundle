@@ -23,6 +23,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Admin\FilteredAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\ModelAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostWithCustomRouteAdmin;
+use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
@@ -1649,6 +1650,36 @@ class AdminTest extends PHPUnit_Framework_TestCase
         $admin->setRequest(new Request(array('id' => $id)));
         $this->assertSame($entity, $admin->getSubject());
         $this->assertSame($entity, $admin->getSubject()); // model manager must be used only once
+    }
+
+    public function testGetSubjectWithParentDescription()
+    {
+        $adminId = 1;
+
+        $comment = new Comment();
+
+        $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager
+            ->expects($this->any())
+            ->method('find')
+            ->with('NewsBundle\Entity\Comment', $adminId)
+            ->will($this->returnValue($comment));
+
+        $request = new Request(array('id' => $adminId));
+
+        $postAdmin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $postAdmin->setRequest($request);
+
+        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
+        $commentAdmin->setRequest($request);
+        $commentAdmin->setModelManager($modelManager);
+
+        $this->assertEquals($comment, $commentAdmin->getSubject());
+
+        $commentAdmin->setSubject(null);
+        $commentAdmin->setParentFieldDescription(new FieldDescription());
+
+        $this->assertNull($commentAdmin->getSubject());
     }
 
     /**
