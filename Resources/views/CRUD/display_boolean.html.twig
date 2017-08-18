@@ -1,0 +1,26 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{%- spaceless %}
+    {% if value %}
+        {% set text = 'label_type_yes'|trans({}, 'SonataAdminBundle') %}
+    {% else %}
+        {% set text = 'label_type_no'|trans({}, 'SonataAdminBundle') %}
+    {% endif %}
+
+    {% if field_description.options.inverse|default(false) ? not value : value %}
+        {% set class = 'label-success' %}
+    {% else %}
+        {% set class = 'label-danger' %}
+    {% endif %}
+
+    <span class="label {{ class }}">{{ text }}</span>
+{% endspaceless -%}
