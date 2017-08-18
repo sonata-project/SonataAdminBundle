@@ -37,7 +37,7 @@ file that was distributed with this source code.
     </div>
 
     <script>
-        (function ($) {
+        jQuery(function ($) {
             // Select2 v3 does not used same input as v4.
             // NEXT_MAJOR: Remove this BC layer while upgrading to v4.
             var usedInputRef = window.Select2 ? '#{{ id }}_autocomplete_input' : '#{{ id }}_autocomplete_input_v4';
@@ -237,6 +237,6 @@ file that was distributed with this source code.
                 $(usedInputRef).remove();
                 return true;
             });
-        })(jQuery);
+        });
     </script>
 {% endspaceless %}
