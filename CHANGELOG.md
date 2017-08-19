@@ -2,6 +2,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.22.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.21.0...3.22.0) - 2017-08-19
+### Added
+- Added option to inverse background for boolean fields in list and show actions
+
+### Changed
+- Run the Select2 code for autocomplete form type at onload event
+
+### Fixed
+- Fixed AbstractAdmin::getSubject on admins with parentFieldDescription
+- Fixed deprecation when using hidden form type in model autocomplete
+- Fixed the extra option being retrieved. The translation catalogue to be used is inside the label_catalogue option, not translation_domain.
+- setting the column title 
+- Html tags do not appear in the meta title
+
 ## [3.21.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.20.1...3.21.0) - 2017-08-14
 ### Added
 - Allow label icon on CRUD list table headers.
