@@ -475,7 +475,7 @@ var Admin = {
         if (style !== undefined) {
             var attrs = style.split(';');
 
-            for (i = 0, l = attrs.length; i < l; i = i + 1) {
+            for (var i = 0, l = attrs.length; i < l; i = i + 1) {
                 var matches = attrs[i].replace(/\s/g, '').match(ereg);
                 if (matches !== null && matches.length >= 1)
                     return matches[1];
