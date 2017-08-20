@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Admin;
 
+use Knp\Menu\FactoryInterface as MenuFactoryInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
@@ -32,6 +33,16 @@ use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
  */
 interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
+    /**
+     * @param MenuFactoryInterface $menuFactory
+     */
+    public function setMenuFactory(MenuFactoryInterface $menuFactory);
+
+    /**
+     * @return MenuFactoryInterface
+     */
+    public function getMenuFactory();
+
     /**
      * @param FormContractorInterface $formContractor
      */

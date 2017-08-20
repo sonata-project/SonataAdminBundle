@@ -11,7 +11,6 @@
 
 namespace Sonata\AdminBundle\Admin;
 
-use Knp\Menu\FactoryInterface as MenuFactoryInterface;
 use Knp\Menu\ItemInterface;
 
 /**
@@ -21,16 +20,6 @@ use Knp\Menu\ItemInterface;
  */
 interface MenuBuilderInterface
 {
-    /**
-     * @param MenuFactoryInterface $menuFactory
-     */
-    public function setMenuFactory(MenuFactoryInterface $menuFactory);
-
-    /**
-     * @return MenuFactoryInterface
-     */
-    public function getMenuFactory();
-
     /**
      * NEXT_MAJOR: remove this method.
      *
