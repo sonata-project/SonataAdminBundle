@@ -251,6 +251,7 @@ class CRUDController extends Controller
         }
 
         $this->admin->setSubject($existingObject);
+        $objectId = $this->admin->getNormalizedIdentifier($existingObject);
 
         /** @var $form Form */
         $form = $this->admin->getForm();
@@ -275,7 +276,7 @@ class CRUDController extends Controller
                     if ($this->isXmlHttpRequest()) {
                         return $this->renderJson(array(
                             'result' => 'ok',
-                            'objectId' => $this->admin->getNormalizedIdentifier($existingObject),
+                            'objectId' => $objectId,
                             'objectName' => $this->escapeHtml($this->admin->toString($existingObject)),
                         ), 200, array());
                     }
@@ -331,6 +332,7 @@ class CRUDController extends Controller
             'action' => 'edit',
             'form' => $formView,
             'object' => $existingObject,
+            'objectId' => $objectId,
         ), null);
     }
 
@@ -572,6 +574,7 @@ class CRUDController extends Controller
             'action' => 'create',
             'form' => $formView,
             'object' => $newObject,
+            'objectId' => null,
         ), null);
     }
 
