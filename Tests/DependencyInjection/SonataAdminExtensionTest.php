@@ -16,6 +16,20 @@ use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 
 class SonataAdminExtensionTest extends AbstractExtensionTestCase
 {
+    public function testHasServiceDefinitionForLockExtension()
+    {
+        $this->container->setParameter('kernel.bundles', array());
+        $this->load(array('options' => array('lock_protection' => true)));
+        $this->assertContainerBuilderHasService('sonata.admin.lock.extension');
+    }
+
+    public function testNotHasServiceDefinitionForLockExtension()
+    {
+        $this->container->setParameter('kernel.bundles', array());
+        $this->load(array('options' => array('lock_protection' => false)));
+        $this->assertContainerBuilderNotHasService('sonata.admin.lock.extension');
+    }
+
     public function testLoadsExporterServiceDefinitionWhenExporterBundleIsRegistered()
     {
         $this->container->setParameter('kernel.bundles', array('SonataExporterBundle' => 'whatever'));
