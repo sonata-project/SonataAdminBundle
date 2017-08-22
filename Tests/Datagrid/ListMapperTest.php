@@ -16,7 +16,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
-use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
+use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -69,7 +69,7 @@ class ListMapperTest extends PHPUnit_Framework_TestCase
             ->method('getModelManager')
             ->will($this->returnValue($modelManager));
 
-        $labelTranslatorStrategy = new NoopLabelTranslatorStrategy();
+        $labelTranslatorStrategy = new NativeLabelTranslatorStrategy();
 
         $this->admin->expects($this->any())
             ->method('getLabelTranslatorStrategy')
