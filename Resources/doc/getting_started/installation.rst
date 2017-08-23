@@ -158,7 +158,44 @@ The translator service is required by SonataAdmin to display all labels properly
     framework:
         translator: { fallbacks: [en] }
 
-Step 6: Preparing your Environment
+Step 6: Define routes
+---------------------
+
+To be able to access SonataAdminBundle's pages, you need to add its routes
+to your application's routing file:
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # app/config/routing.yml
+
+        admin:
+            resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+            prefix: /admin
+
+        _sonata_admin:
+            resource: .
+            type: sonata_admin
+            prefix: /admin
+
+.. note::
+
+    If you're using XML or PHP to specify your application's configuration,
+    the above routing configuration must be placed in routing.xml or
+    routing.php according to your format (i.e. XML or PHP).
+
+.. note::
+
+    For those curious about the ``resource: .`` setting: it is unusual syntax but used
+    because Symfony requires a resource to be defined (which points to a real file).
+    Once this validation passes Sonata's ``AdminPoolLoader`` is in charge of processing
+    this route and it simply ignores the resource setting.
+
+At this point you can already access the (empty) admin dashboard by visiting the URL:
+``http://yoursite.local/admin/dashboard``.
+
+Step 7: Preparing your Environment
 ----------------------------------
 
 As with all bundles you install, it's a good practice to clear the cache and
