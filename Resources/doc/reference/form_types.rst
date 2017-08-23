@@ -49,6 +49,11 @@ Note that the third parameter to ``FormMapper::add()`` is optional so
 there is no need to pass in an empty array, it is shown here just to demonstrate
 where the options go when you want to use them.
 
+.. tip::
+
+    You need to create `ImageAdmin` class in this case to use `sonata_type_model` type.
+    :ref:`You can also use <FieldDescription-options>` use the `admin_code` parameter.
+
 The available options are:
 
 property
@@ -530,6 +535,9 @@ This bundle handle the native Symfony ``collection`` form type by adding:
     or before deleted (``sonata-collection-item-deleted``).
     A jQuery event is fired after a row has been deleted successfully (``sonata-collection-item-deleted-successful``)
     You can listen to these events to trigger custom JavaScript.
+
+
+.. _FieldDescription-options:
 
 FieldDescription options
 ^^^^^^^^^^^^^^^^^^^^^^^^
