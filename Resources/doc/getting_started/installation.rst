@@ -71,7 +71,6 @@ line in the `app/AppKernel.php` file of your project:
                 new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
                 // And finally, the storage and SonataAdminBundle
-                new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
                 new Sonata\AdminBundle\SonataAdminBundle(),
             );
 
