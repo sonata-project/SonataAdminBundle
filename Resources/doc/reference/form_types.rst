@@ -51,8 +51,8 @@ where the options go when you want to use them.
 
 .. tip::
 
-    You need to create ``ImageAdmin`` class in this case to use `sonata_type_model` type.
-    :ref:`You can also use <FieldDescription-options>` use the `admin_code` parameter.
+    You need to create ``ImageAdmin`` class in this case to use ``sonata_type_model`` type.
+    :ref:`You can also use <FieldDescription-options>` use the ``admin_code`` parameter.
 
 The available options are:
 
