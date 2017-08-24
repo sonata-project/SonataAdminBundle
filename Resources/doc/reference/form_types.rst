@@ -46,8 +46,8 @@ where the options go when you want to use them.
 
 Since the ``image1`` field refers to a related entity we do not need to specify
 any options. Sonata will calculate that the linked admin class is of type ``Image`` and,
-by default, retrieve a list of all existing Images to display as choices in the
-selector.
+by default, use the ``ImageAdmin`` class to retrieve a list of all existing Images
+to display as choices in the selector.
 
 .. tip::
 
