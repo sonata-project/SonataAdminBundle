@@ -40,18 +40,18 @@ All we need to do now is add a reference for this field in our ``PageAdmin`` cla
         }
     }
 
-Since the ``image1`` field refers to a related entity we do not need to specify
-any options. Sonata will calculate that the linked class is of type ``Image`` and,
-by default, retrieve a list of all existing Images to display as choices in the
-selector.
-
 Note that the third parameter to ``FormMapper::add()`` is optional so
 there is no need to pass in an empty array, it is shown here just to demonstrate
 where the options go when you want to use them.
 
+Since the ``image1`` field refers to a related entity we do not need to specify
+any options. Sonata will calculate that the linked admin class is of type ``Image`` and,
+by default, retrieve a list of all existing Images to display as choices in the
+selector.
+
 .. tip::
 
-    You need to create ``ImageAdmin`` class in this case to use ``sonata_type_model`` type.
+    To create the linked ``ImageAdmin`` class in this case to use ``sonata_type_model`` type.
     :ref:`You can also use <form_types_fielddescription_options>` use the ``admin_code`` parameter.
 
 The available options are:
