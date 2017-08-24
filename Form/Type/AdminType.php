@@ -119,7 +119,10 @@ class AdminType extends AbstractType
                 return $options['btn_delete'] !== false;
             },
             'delete_options' => array(
-                'type' => 'checkbox',
+                // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
+                'type' => method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+                    ? 'Symfony\Component\Form\Extension\Core\Type\CheckboxType'
+                    : 'checkbox',
                 'type_options' => array(
                     'required' => false,
                     'mapped' => false,
