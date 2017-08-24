@@ -49,6 +49,11 @@ Note that the third parameter to ``FormMapper::add()`` is optional so
 there is no need to pass in an empty array, it is shown here just to demonstrate
 where the options go when you want to use them.
 
+.. tip::
+
+    You need to create ``ImageAdmin`` class in this case to use ``sonata_type_model`` type.
+    :ref:`You can also use <form_types_fielddescription_options>` use the ``admin_code`` parameter.
+
 The available options are:
 
 property
