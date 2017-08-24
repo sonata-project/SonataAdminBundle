@@ -39,6 +39,7 @@ class SonataAdminBundle extends Bundle
      */
     public function boot()
     {
+        // Triggers a whole build
         $this->registerFormMapping();
     }
 
