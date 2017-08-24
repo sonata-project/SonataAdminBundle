@@ -51,7 +51,7 @@ to display as choices in the selector.
 
 .. tip::
 
-    To create the linked ``ImageAdmin`` class in this case to use ``sonata_type_model`` type.
+    You need to create ``ImageAdmin`` class in this case to use ``sonata_type_model`` type.
     :ref:`You can also use <form_types_fielddescription_options>` use the ``admin_code`` parameter.
 
 The available options are:
