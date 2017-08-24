@@ -122,11 +122,6 @@ class ListMapper extends BaseMapper
                 'label',
                 $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'list', 'label')
             );
-        } elseif ($fieldDescription->getLabel() !== false) {
-            $fieldDescription->setOption(
-                'label',
-                $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getLabel(), 'list', 'label')
-            );
         }
 
         // add the field with the FormBuilder
