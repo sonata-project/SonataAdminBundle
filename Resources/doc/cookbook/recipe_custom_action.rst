@@ -101,7 +101,7 @@ to implement a ``clone`` action.
             $object = $this->admin->getSubject();
 
             if (!$object) {
-                throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+                throw new NotFoundHttpException(sprintf('unable to find the object with id: %s', $id));
             }
 
             // Be careful, you may need to overload the __clone method of your object
