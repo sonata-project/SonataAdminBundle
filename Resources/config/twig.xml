@@ -23,6 +23,7 @@
         <service id="sonata.admin.twig.extension" class="Sonata\AdminBundle\Twig\Extension\SonataAdminExtension">
             <tag name="twig.extension"/>
             <argument type="service" id="sonata.admin.pool"/>
+            <argument>%sonata.admin.configuration.role_sonata_admin%</argument>
             <argument type="service" id="logger" on-invalid="ignore"/>
             <argument type="service" id="translator"/>
             <call method="setXEditableTypeMapping">
