@@ -365,11 +365,15 @@ To display the ``VideoAdmin`` extend the menu in your ``PlaylistAdmin`` class:
 
     namespace AppBundle\Admin;
 
-    class PlaylistAdmin extends Admin
+    use Knp\Menu\ItemInterface as MenuItemInterface;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
+    use Sonata\AdminBundle\Admin\AdminInterface;
+
+    class PlaylistAdmin extends AbstractAdmin
     {
         // ...
 
-        protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+        protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
         {
             if (!$childAdmin && !in_array($action, array('edit', 'show'))) {
                 return;
@@ -380,11 +384,11 @@ To display the ``VideoAdmin`` extend the menu in your ``PlaylistAdmin`` class:
 
             $menu->addChild('View Playlist', array('uri' => $admin->generateUrl('show', array('id' => $id))));
 
-            if (is_granted('EDIT') {
+            if ($this->isGranted('EDIT')) {
                 $menu->addChild('Edit Playlist', array('uri' => $admin->generateUrl('edit', array('id' => $id))));
             }
 
-            if (is_granted('LIST', $admin) {
+            if ($this->isGranted('LIST')) {
                 $menu->addChild('Manage Videos', array(
                     'uri' => $admin->generateUrl('sonata.admin.video.list', array('id' => $id))
                 ));
@@ -401,6 +405,7 @@ of them, you may override the ``configureRoutes`` method::
     <?php
     namespace Sonata\NewsBundle\Admin;
 
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Route\RouteCollection;
 
     class CommentAdmin extends AbstractAdmin
