@@ -199,22 +199,9 @@ var Admin = {
     },
 
     stopEvent: function(event) {
-        // https://github.com/sonata-project/SonataAdminBundle/issues/151
-        //if it is a standard browser use preventDefault otherwise it is IE then return false
-        if(event.preventDefault) {
-            event.preventDefault();
-        } else {
-            event.returnValue = false;
-        }
+        event.preventDefault();
 
-        //if it is a standard browser get target otherwise it is IE then adapt syntax and get target
-        if (typeof event.target != 'undefined') {
-            targetElement = event.target;
-        } else {
-            targetElement = event.srcElement;
-        }
-
-        return targetElement;
+        return event.target;
     },
 
     add_filters: function(subject) {
