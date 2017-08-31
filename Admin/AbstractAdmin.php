@@ -3029,6 +3029,11 @@ EOT;
     {
         return $object && $this->id($object) && $this->hasAccess($action, $object);
     }
+    
+    public function iDoNothing()
+    {
+        return null;
+    }
 
     /**
      * Returns a list of default filters.
