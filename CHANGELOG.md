@@ -2,6 +2,25 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.23.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.22.0...3.23.0) - 2017-09-01
+### Added
+- Reference %sonata.admin.configuration.templates% when possible
+- Added a `priority` option in `sonata_admin` extensions config
+
+### Changed
+- Passing object id in edit form from CRUD controller instead of getting it in twig
+
+### Fixed
+- Fixed the setting of the `translation_domain` twig variable. The value must change depending if the item has on_top set to true or false.
+- Escaping of list headers.
+- setting the column title
+- Fixed deprecation when using checkbox in admin form type
+- Fix knp menu extra configuration for domain translations in Group Menu
+- Not declared variable trowing errors on some browsers
+
+### Removed
+- Useless IE8 compatibility code
+
 ## [3.22.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.21.0...3.22.0) - 2017-08-19
 ### Added
 - Added option to inverse background for boolean fields in list and show actions
