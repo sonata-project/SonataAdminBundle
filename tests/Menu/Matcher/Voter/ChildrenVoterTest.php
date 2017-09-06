@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Menu\Matcher\Voter\ChildrenVoter;
 
 /**
  * @author Ahmet Akbana <ahmetakbana@gmail.com>
+ * @group legacy
  */
 class ChildrenVoterTest extends AbstractVoterTest
 {
