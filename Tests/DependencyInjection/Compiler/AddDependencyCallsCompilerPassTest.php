@@ -715,4 +715,41 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
 
         return $container;
     }
+
+    /**
+     *  By default label translation policy is 'sonata.admin.label.strategy.native'
+     */
+    public function testLabelTranslationStrategyDefaultConfig()
+    {
+        $container = $this->getContainer();
+
+        $this->extension->load([], $container);
+
+        $compilerPass = new AddDependencyCallsCompilerPass();
+        $compilerPass->process($container);
+
+        $container->compile();
+
+        $this->assertContains('sonata.admin.label.strategy.native', $container->getServiceIds());
+    }
+
+    /**
+     * Overwritten default label translation policy service should be available in a services pool
+     *
+     * @depends  testLabelTranslationStrategyDefaultConfig
+     */
+    public function testLabelTranslationStrategyOverwrittenConfig()
+    {
+        $a = ['sonata_admin' => ['admin_services' => ['label_translator_strategy' => 'sonata.admin.label.strategy.underscore' ]]];
+        $container = $this->getContainer();
+
+        $this->extension->load($a, $container);
+
+        $compilerPass = new AddDependencyCallsCompilerPass();
+        $compilerPass->process($container);
+
+        $container->compile();
+
+        $this->assertContains('sonata.admin.label.strategy.underscore', $container->getServiceIds());
+    }
 }
