@@ -175,9 +175,8 @@ SonataAdminBundle of the existence of this Admin class, you have to create a
 service and tag it with the ``sonata.admin`` tag:
 
 .. code-block:: yaml
-
-    # app/config/services.yml
-
+    
+    # src/AppBundle/Resources/config/services.yml
     services:
         # ...
         admin.category:
