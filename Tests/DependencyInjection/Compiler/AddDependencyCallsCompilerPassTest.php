@@ -740,7 +740,7 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
      */
     public function testLabelTranslationStrategyOverwrittenConfig()
     {
-        $a = array(
+        $config = array(
             'sonata_admin' => array(
                 'admin_services' => array(
                     'label_translator_strategy' => 'sonata.admin.label.strategy.underscore'
@@ -749,7 +749,7 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
         );
         $container = $this->getContainer();
 
-        $this->extension->load($a, $container);
+        $this->extension->load($config, $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
         $compilerPass->process($container);
