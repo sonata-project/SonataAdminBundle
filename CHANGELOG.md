@@ -47,6 +47,15 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.18.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.17.0...3.18.0) - 2017-05-09
+### Added
+- Added new configuration parameter named `empty_boxes` with 3 variable: show, hide, fade
+
+### Fixed
+- Undefined admin action error on `ModelAutocompleteFilter`
+- added missing italian translations
+- deprecations when using `sonata.admin.form.type.model_list`
+
 ## [3.17.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.16.0...3.17.0) - 2017-04-25
 ### Added
 - Added editable support for association fields from type choice in `ListMapper`

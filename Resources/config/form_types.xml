@@ -9,7 +9,7 @@
             <argument type="service" id="property_accessor"/>
             <tag name="form.type" alias="sonata_type_model"/>
         </service>
-        <service id="sonata.admin.form.type.model_list" class="Sonata\AdminBundle\Form\Type\ModelTypeList">
+        <service id="sonata.admin.form.type.model_list" class="Sonata\AdminBundle\Form\Type\ModelListType">
             <tag name="form.type" alias="sonata_type_model_list"/>
         </service>
         <service id="sonata.admin.form.type.model_reference" class="Sonata\AdminBundle\Form\Type\ModelReferenceType">

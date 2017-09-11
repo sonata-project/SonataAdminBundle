@@ -381,7 +381,7 @@ class HelperController
             $itemsPerPage = $filterAutocomplete->getFieldOption('items_per_page', 10);
             $reqParamPageNumber = $filterAutocomplete->getFieldOption('req_param_name_page_number', '_page');
             $toStringCallback = $filterAutocomplete->getFieldOption('to_string_callback');
-            $targetAdminAccessAction = $filterAutocomplete->getFieldOption('target_admin_access_action');
+            $targetAdminAccessAction = $filterAutocomplete->getFieldOption('target_admin_access_action', 'list');
         } else {
             // create/edit form
             $fieldDescription = $this->retrieveFormFieldDescription($admin, $request->get('field'));

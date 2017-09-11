@@ -50,7 +50,7 @@ class SonataAdminBundle extends Bundle
         FormHelper::registerFormTypeMapping(array(
             'sonata_type_admin' => 'Sonata\AdminBundle\Form\Type\AdminType',
             'sonata_type_model' => 'Sonata\AdminBundle\Form\Type\ModelType',
-            'sonata_type_model_list' => 'Sonata\AdminBundle\Form\Type\ModelTypeList',
+            'sonata_type_model_list' => 'Sonata\AdminBundle\Form\Type\ModelListType',
             'sonata_type_model_reference' => 'Sonata\AdminBundle\Form\Type\ModelReferenceType',
             'sonata_type_model_hidden' => 'Sonata\AdminBundle\Form\Type\ModelHiddenType',
             'sonata_type_model_autocomplete' => 'Sonata\AdminBundle\Form\Type\ModelAutocompleteType',
