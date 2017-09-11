@@ -1100,12 +1100,4 @@ interface AdminInterface
      */
 //    NEXT_MAJOR: uncomment this method in 4.0
     // public function isDefaultFilter($name);
-
-    /*
-     * Returns a list of default filters.
-     *
-     * @return array
-     */
-//    NEXT_MAJOR: uncomment this method in 4.0
-    // public function getDefaultFilterValues();
 }

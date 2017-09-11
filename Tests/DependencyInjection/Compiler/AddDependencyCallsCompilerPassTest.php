@@ -83,6 +83,7 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
         $this->assertSame('SonataAdminBundle', $dashboardGroupsSettings['sonata_group_one']['label_catalogue']);
         $this->assertSame(false, $dashboardGroupsSettings['sonata_group_one']['on_top']);
         $this->assertSame(true, $dashboardGroupsSettings['sonata_group_three']['on_top']);
+        $this->assertFalse($dashboardGroupsSettings['sonata_group_one']['keep_open']);
         $this->assertArrayHasKey('admin', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
         $this->assertArrayHasKey('route', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
         $this->assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
@@ -114,6 +115,9 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('sonata_group_two', $dashboardGroupsSettings);
         $this->assertArrayHasKey('provider', $dashboardGroupsSettings['sonata_group_two']);
         $this->assertContains('my_menu', $dashboardGroupsSettings['sonata_group_two']['provider']);
+
+        $this->assertArrayHasKey('sonata_group_five', $dashboardGroupsSettings);
+        $this->assertTrue($dashboardGroupsSettings['sonata_group_five']['keep_open']);
     }
 
     /**
@@ -152,6 +156,7 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
         $this->assertSame('SonataAdminBundle', $adminGroups['sonata_group_one']['label_catalogue']);
         $this->assertSame(false, $adminGroups['sonata_group_one']['on_top']);
         $this->assertSame(true, $adminGroups['sonata_group_three']['on_top']);
+        $this->assertFalse($adminGroups['sonata_group_one']['keep_open']);
         $this->assertContains('sonata_post_admin', $adminGroups['sonata_group_one']['items'][0]['admin']);
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['items']);
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['item_adds']);
@@ -161,6 +166,9 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('sonata_group_two', $adminGroups);
         $this->assertArrayHasKey('provider', $adminGroups['sonata_group_two']);
         $this->assertContains('my_menu', $adminGroups['sonata_group_two']['provider']);
+
+        $this->assertArrayHasKey('sonata_group_five', $adminGroups);
+        $this->assertTrue($adminGroups['sonata_group_five']['keep_open']);
 
         $this->assertArrayHasKey('Sonata\AdminBundle\Tests\DependencyInjection\Post', $adminClasses);
         $this->assertContains('sonata_post_admin', $adminClasses['Sonata\AdminBundle\Tests\DependencyInjection\Post']);
@@ -547,6 +555,9 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
                         'items' => array(
                             'sonata_post_admin',
                         ),
+                    ),
+                    'sonata_group_five' => array(
+                        'keep_open' => true,
                     ),
                 ),
             ),

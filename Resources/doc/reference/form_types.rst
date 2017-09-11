@@ -330,6 +330,58 @@ template
     {# change the default selection format #}
     {% block sonata_type_model_autocomplete_selection_format %}'<b>'+item.label+'</b>'{% endblock %}
 
+target_admin_access_action
+  defaults to ``list``.
+  By default, the user needs the ``LIST`` role (mapped to ``list`` access action)
+  to get the autocomplete items from the target admin's datagrid.
+  If you can't give some users this role because they will then have access to the target
+  admin's datagrid, you have to grant them another role.
+
+  In the example below we changed the ``target_admin_access_action`` from ``list`` to ``autocomplete``,
+  which is mapped in the target admin to ``AUTOCOMPLETE`` role. Please make sure that all valid users
+  have the ``AUTOCOMPLETE`` role.
+
+.. code-block:: php
+
+    <?php
+    // src/AppBundle/Admin/ArticleAdmin.php
+
+    class ArticleAdmin extends AbstractAdmin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            // the dropdown autocomplete list will show only Category
+            // entities that contain specified text in "title" attribute
+            $formMapper
+                ->add('category', 'sonata_type_model_autocomplete', array(
+                    'property' => 'title',
+                    'target_admin_access_action' => 'autocomplete'
+                ))
+            ;
+        }
+    }
+
+.. code-block:: php
+
+    <?php
+    // src/AppBundle/Admin/CategoryAdmin.php
+
+    class CategoryAdmin extends AbstractAdmin
+    {
+        protected $accessMapping = array(
+            'autocomplete' => 'AUTOCOMPLETE',
+        );
+
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        {
+            // this text filter will be used to retrieve autocomplete fields
+            // only the users with role AUTOCOMPLETE will be able to get the items
+            $datagridMapper
+                ->add('title')
+            ;
+        }
+    }
+
 sonata_type_choice_field_mask
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -501,9 +553,6 @@ btn_add and btn_catalogue:
   with this parameters. Setting it to ``false`` will hide the
   corresponding button. You can also specify a custom translation catalogue
   for this label, which defaults to ``SonataAdminBundle``.
-
-When using ``edit: inline`` a delete checkbox will be rendered for each element of the collection.
-Checking it will disable the fields but the form needs to be submitted for the element to actually be removed from the collection.
 
 **TIP**: A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
 You can listen to this event to trigger custom JavaScript (eg: add a calendar widget to a newly added date field)

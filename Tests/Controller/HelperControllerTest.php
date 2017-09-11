@@ -305,7 +305,7 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
 
         $response = $controller->setObjectFieldValueAction($request);
 
-        $this->assertSame('{"status":"OK","content":"\u003Cfoo \/\u003E"}', $response->getContent());
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     /**
@@ -538,7 +538,8 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
 
         $response = $controller->setObjectFieldValueAction($request);
 
-        $this->assertSame('{"status":"KO","message":"error1\nerror2"}', $response->getContent());
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertSame(json_encode("error1\nerror2"), $response->getContent());
     }
 
     /**
@@ -574,8 +575,6 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
             ->method('hasAccess')
             ->with('create')
             ->will($this->returnValue(true));
-
-        $entity = new Foo();
 
         $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
 
@@ -632,6 +631,265 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
         ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
 
         $this->controller->retrieveAutocompleteItemsAction($request);
+    }
+
+    public function testRetrieveAutocompleteItemsTooShortSearchString()
+    {
+        $this->admin->expects($this->once())
+            ->method('hasAccess')
+            ->with('create')
+            ->will($this->returnValue(true));
+
+        $targetAdmin = $this->createMock('Sonata\AdminBundle\Admin\AbstractAdmin');
+        $targetAdmin->expects($this->once())
+            ->method('checkAccess')
+            ->with('list')
+            ->will($this->returnValue(null));
+
+        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+
+        $fieldDescription->expects($this->once())
+            ->method('getTargetEntity')
+            ->will($this->returnValue('Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo'));
+
+        $fieldDescription->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('barField'));
+
+        $fieldDescription->expects($this->once())
+            ->method('getAssociationAdmin')
+            ->will($this->returnValue($targetAdmin));
+
+        $this->admin->expects($this->once())
+            ->method('getFormFieldDescriptions')
+            ->will($this->returnValue(null));
+
+        $this->admin->expects($this->once())
+            ->method('getFormFieldDescription')
+            ->with('barField')
+            ->will($this->returnValue($fieldDescription));
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $formType = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $form->expects($this->once())
+            ->method('get')
+            ->with('barField')
+            ->will($this->returnValue($formType));
+
+        $formConfig = $this->getMockBuilder('Symfony\Component\Form\FormConfigInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $formType->expects($this->once())
+            ->method('getConfig')
+            ->will($this->returnValue($formConfig));
+
+        $formConfig->expects($this->any())
+            ->method('getAttribute')
+            ->will($this->returnCallback(function ($name, $default = null) {
+                switch ($name) {
+                    case 'property':
+                        return 'foo';
+                    case 'callback':
+                        return;
+                    case 'minimum_input_length':
+                        return 3;
+                    case 'items_per_page':
+                        return 10;
+                    case 'req_param_name_page_number':
+                        return '_page';
+                    case 'to_string_callback':
+                        return;
+                    case 'disabled':
+                        return false;
+                    case 'target_admin_access_action':
+                        return 'list';
+                    default:
+                        throw new \RuntimeException(sprintf('Unkown parameter "%s" called.', $name));
+                }
+            }));
+
+        $request = new Request(array(
+            'admin_code' => 'foo.admin',
+            'field' => 'barField',
+            'q' => 'so',
+        ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
+
+        $response = $this->controller->retrieveAutocompleteItemsAction($request);
+        $this->isInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
+        $this->assertSame('application/json', $response->headers->get('Content-Type'));
+        $this->assertSame('{"status":"KO","message":"Too short search string."}', $response->getContent());
+    }
+
+    public function testRetrieveAutocompleteItems()
+    {
+        $entity = new Foo();
+        $this->admin->expects($this->once())
+            ->method('hasAccess')
+            ->with('create')
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->once())
+            ->method('id')
+            ->with($entity)
+            ->will($this->returnValue(123));
+
+        $targetAdmin = $this->createMock('Sonata\AdminBundle\Admin\AbstractAdmin');
+        $targetAdmin->expects($this->once())
+            ->method('checkAccess')
+            ->with('list')
+            ->will($this->returnValue(null));
+
+        $targetAdmin->expects($this->once())
+            ->method('setPersistFilters')
+            ->with(false)
+            ->will($this->returnValue(null));
+
+        $datagrid = $this->createMock('Sonata\AdminBundle\Datagrid\DatagridInterface');
+        $targetAdmin->expects($this->once())
+            ->method('getDatagrid')
+            ->with()
+            ->will($this->returnValue($datagrid));
+
+        $metadata = $this->createMock('Sonata\CoreBundle\Model\Metadata');
+        $metadata->expects($this->once())
+            ->method('getTitle')
+            ->with()
+            ->will($this->returnValue('FOO'));
+
+        $targetAdmin->expects($this->once())
+            ->method('getObjectMetadata')
+            ->with($entity)
+            ->will($this->returnValue($metadata));
+
+        $datagrid->expects($this->once())
+            ->method('hasFilter')
+            ->with('foo')
+            ->will($this->returnValue(true));
+
+        $datagrid->expects($this->exactly(3))
+            ->method('setValue')
+            ->withConsecutive(
+                array($this->equalTo('foo'), $this->equalTo(null), $this->equalTo('sonata')),
+                array($this->equalTo('_per_page'), $this->equalTo(null), $this->equalTo(10)),
+                array($this->equalTo('_page'), $this->equalTo(null), $this->equalTo(1))
+               )
+            ->will($this->returnValue(null));
+
+        $datagrid->expects($this->once())
+            ->method('buildPager')
+            ->with()
+            ->will($this->returnValue(null));
+
+        $pager = $this->createMock('Sonata\AdminBundle\Datagrid\Pager');
+        $datagrid->expects($this->once())
+            ->method('getPager')
+            ->with()
+            ->will($this->returnValue($pager));
+
+        $pager->expects($this->once())
+            ->method('getResults')
+            ->with()
+            ->will($this->returnValue(array($entity)));
+
+        $pager->expects($this->once())
+            ->method('isLastPage')
+            ->with()
+            ->will($this->returnValue(true));
+
+        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+
+        $fieldDescription->expects($this->once())
+            ->method('getTargetEntity')
+            ->will($this->returnValue('Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo'));
+
+        $fieldDescription->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('barField'));
+
+        $fieldDescription->expects($this->once())
+            ->method('getAssociationAdmin')
+            ->will($this->returnValue($targetAdmin));
+
+        $this->admin->expects($this->once())
+            ->method('getFormFieldDescriptions')
+            ->will($this->returnValue(null));
+
+        $this->admin->expects($this->once())
+            ->method('getFormFieldDescription')
+            ->with('barField')
+            ->will($this->returnValue($fieldDescription));
+
+        $form = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $formType = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $form->expects($this->once())
+            ->method('get')
+            ->with('barField')
+            ->will($this->returnValue($formType));
+
+        $formConfig = $this->getMockBuilder('Symfony\Component\Form\FormConfigInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $formType->expects($this->once())
+            ->method('getConfig')
+            ->will($this->returnValue($formConfig));
+
+        $formConfig->expects($this->any())
+            ->method('getAttribute')
+            ->will($this->returnCallback(function ($name, $default = null) {
+                switch ($name) {
+                    case 'property':
+                        return 'foo';
+                    case 'callback':
+                        return;
+                    case 'minimum_input_length':
+                        return 3;
+                    case 'items_per_page':
+                        return 10;
+                    case 'req_param_name_page_number':
+                        return '_page';
+                    case 'to_string_callback':
+                        return;
+                    case 'disabled':
+                        return false;
+                    case 'target_admin_access_action':
+                        return 'list';
+                    default:
+                        throw new \RuntimeException(sprintf('Unkown parameter "%s" called.', $name));
+                }
+            }));
+
+        $request = new Request(array(
+            'admin_code' => 'foo.admin',
+            'field' => 'barField',
+            'q' => 'sonata',
+        ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
+
+        $response = $this->controller->retrieveAutocompleteItemsAction($request);
+        $this->isInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
+        $this->assertSame('application/json', $response->headers->get('Content-Type'));
+        $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
 
     /**

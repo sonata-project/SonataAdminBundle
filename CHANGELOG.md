@@ -47,6 +47,57 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.17.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.16.0...3.17.0) - 2017-04-25
+### Added
+- Added editable support for association fields from type choice in `ListMapper`
+- Added also new `class` option for field description
+- Translation can now be disabled on specific form fields
+
+### Changed
+- Changed GroupMenuProvider::get to setDisplay(false) on menuItem if on_top used and no items could be displayed
+
+### Fixed
+- Fixed the bug that caused an error "The helper "dialog" is not defined." on Symfony3 with new `\Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper` when you run command "sonata:admin:generate-object-acl". 
+- Fixed issue on getExtendedType of MopaCompatibilityTypeFieldExtension and ChoiceTypeExtension because the method requires to return the fully-qualified class name (FQCN) since symfony version 2.8
+- `ModelType` have choices as values by default now on SF 2.7+.
+- Users without the `LIST` role can access the autocomplete items by configuring the `target_admin_access_action` option
+- Non existent `isSuperior` key on `FormView` error
+
+### Removed
+- recently introduced checkbox-disabling feature, which was not stable enough
+
+## [3.16.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.15.1...3.16.0) - 2017-03-31
+### Added
+- Added `onTop` parameter on `@Admin` annotation
+- Added new `keep_open` option to keep menu group always open
+
+### Fixed
+- `field_description` comparison in `base_list_field.html.twig`
+
+## [3.15.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.15.0...3.15.1) - 2017-03-28
+### Added
+- Added Brazilian Portuguese translation of `title_show`
+
+### Changed
+- change show picto on list view to use the same than in edit view
+
+### Fixed
+- do not double `FieldDescription::Name` and `property_path` in `AdminType`
+
+## [3.15.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.14.0...3.15.0) - 2017-03-27
+### Added
+- Add polish translation of `title_show`
+- Added the ability to leave the label of a show field empty by passing `label => false` to `ShowMapper::add()`
+
+### Changed
+- Make sure Moment.js translations work for every locale
+- The `sonata/exporter` constraint has been bumped to `^1.7`
+
+### Fixed
+- Sanitize masked fields in `ChoiceFieldMaskType`
+- Whitespaces are not taken into account when rendering blocks on `standard_layout`
+- fixed boolean handling for `xEditableType`
+
 ## [3.14.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.13.0...3.14.0) - 2017-03-16
 ### Added
 - Added `label` and `translation_domain` fallback for batch actions

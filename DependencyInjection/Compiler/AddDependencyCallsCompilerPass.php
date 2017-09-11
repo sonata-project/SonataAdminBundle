@@ -83,6 +83,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $labelCatalogue = isset($attributes['label_catalogue']) ? $attributes['label_catalogue'] : 'SonataAdminBundle';
                 $icon = isset($attributes['icon']) ? $attributes['icon'] : '<i class="fa fa-folder"></i>';
                 $onTop = isset($attributes['on_top']) ? $attributes['on_top'] : false;
+                $keepOpen = isset($attributes['keep_open']) ? $attributes['keep_open'] : false;
 
                 if (!isset($groupDefaults[$resolvedGroupName])) {
                     $groupDefaults[$resolvedGroupName] = array(
@@ -91,6 +92,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                         'icon' => $icon,
                         'roles' => array(),
                         'on_top' => false,
+                        'keep_open' => false,
                     );
                 }
 
@@ -107,6 +109,8 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     throw new \RuntimeException('You can\'t use "on_top" option with multiple same name groups.');
                 }
                 $groupDefaults[$resolvedGroupName]['on_top'] = $onTop;
+
+                $groupDefaults[$resolvedGroupName]['keep_open'] = $keepOpen;
             }
         }
 
@@ -122,6 +126,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                         'label' => $resolvedGroupName,
                         'roles' => array(),
                         'on_top' => false,
+                        'keep_open' => false,
                     );
                 }
 
@@ -155,6 +160,10 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 }
                 if (empty($group['on_top'])) {
                     $groups[$resolvedGroupName]['on_top'] = $groupDefaults[$resolvedGroupName]['on_top'];
+                }
+
+                if (empty($group['keep_open'])) {
+                    $groups[$resolvedGroupName]['keep_open'] = $groupDefaults[$resolvedGroupName]['keep_open'];
                 }
             }
         } elseif ($container->getParameter('sonata.admin.configuration.sort_admins')) {

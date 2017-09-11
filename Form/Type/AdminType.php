@@ -46,16 +46,7 @@ class AdminType extends AbstractType
                 $options['delete_options']['type_options']['translation_domain'] = $admin->getTranslationDomain();
             }
 
-            $builder->add(
-                '_delete',
-                $options['delete_options']['type'],
-                array_merge(
-                    $options['delete_options']['type_options'],
-                    array(
-                        'attr' => array('class' => 'sonata-admin-type-delete-checkbox'),
-                    )
-                )
-            );
+            $builder->add('_delete', $options['delete_options']['type'], $options['delete_options']['type_options']);
         }
 
         // hack to make sure the subject is correctly set
@@ -79,7 +70,7 @@ class AdminType extends AbstractType
                         // for PropertyAccessor >= 2.5
                         $subject = $p->getValue(
                             $parentSubject,
-                            $this->getFieldDescription($options)->getFieldName().$options['property_path']
+                            $options['property_path']
                         );
                     }
                     $builder->setData($subject);
