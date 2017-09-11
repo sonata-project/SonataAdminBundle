@@ -323,21 +323,19 @@ The following configuration for the SonataUserBundle defines:
 
         # src/AppBundle/Resources/config/services.yml
 
-        parameters:
-
-            # ...
-            # Symfony 3 and above
+        # Symfony >= 3
+        services:
             security.acl.permission.map:
               class: Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap
-            
+
             # optionally use a custom MaskBuilder
             #sonata.admin.security.mask.builder:
             #  class: Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder
-            
-            
-            # Symfony < 3
-            #security.acl.permission.map.class: Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap
-            
+
+        # Symfony < 3
+        parameters:
+            security.acl.permission.map.class: Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap
+
             # optionally use a custom MaskBuilder
             #sonata.admin.security.mask.builder.class: Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder
 

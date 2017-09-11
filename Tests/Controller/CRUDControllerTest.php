@@ -1511,6 +1511,10 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $form->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue($object));
+
         $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
@@ -1633,6 +1637,10 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->method('isValid')
             ->will($this->returnValue(true));
 
+        $form->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue($object));
+
         $this->admin->expects($this->once())
             ->method('getNormalizedIdentifier')
             ->with($this->equalTo($object))
@@ -1735,6 +1743,10 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
         $form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
+
+        $form->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue($object));
 
         $this->admin->expects($this->once())
             ->method('toString')
@@ -1850,6 +1862,10 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
         $form->expects($this->any())
             ->method('isValid')
             ->will($this->returnValue(true));
+
+        $form->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue($object));
 
         $this->admin->expects($this->any())
             ->method('getForm')
@@ -2030,6 +2046,10 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->method('isValid')
             ->will($this->returnValue(true));
 
+        $form->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue($object));
+
         $this->admin->expects($this->once())
             ->method('toString')
             ->with($this->equalTo($object))
@@ -2084,6 +2104,10 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
         $form->expects($this->once())
             ->method('isSubmitted')
             ->will($this->returnValue(true));
+
+        $form->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue($object));
 
         $form->expects($this->once())
             ->method('isValid')
@@ -2202,6 +2226,10 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->method('isSubmitted')
             ->will($this->returnValue(true));
 
+        $form->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue($object));
+
         $this->request->setMethod('POST');
 
         $formView = $this->createMock('Symfony\Component\Form\FormView');
@@ -2267,6 +2295,10 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
         $form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
+
+        $form->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue($object));
 
         $this->admin->expects($this->any())
             ->method('getClass')

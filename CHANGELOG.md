@@ -47,6 +47,26 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.19.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.18.2...3.19.0) - 2017-06-12
+### Changed
+- compatibility with immutable entities was improved
+
+### Fixed
+- Show icon for nav items when using `on_top` option
+- use generated route instead of plain route in nav items
+- it is no longer possible to get core bundle versions incompatible with sf3
+- Missing admin-lte image file
+- forms with a required autocomplete ajax field can be submitted again
+
+## [3.18.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.18.1...3.18.2) - 2017-05-15
+### Fixed
+- Selected values issue with Select2 v4 on model autocomplete type
+
+## [3.18.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.18.0...3.18.1) - 2017-05-12
+### Fixed
+- Fixed select2 width calculation when using select2 v4
+- Compatibility with Select2 v4 on model autocomplete type
+
 ## [3.18.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.17.0...3.18.0) - 2017-05-09
 ### Added
 - Added new configuration parameter named `empty_boxes` with 3 variable: show, hide, fade

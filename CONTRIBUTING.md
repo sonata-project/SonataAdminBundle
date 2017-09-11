@@ -191,6 +191,7 @@ Here is a short table resuming on which you have to start:
 Kind of modification | Backward Compatible (BC) | Type of release | Branch to target        | Label |
 -------------------- | ------------------------ | --------------- | ----------------------- | ----- |
 Bug fixes            | Yes                      | Patch           | `3.x`   | |
+Bug fixes            | Not on legacy            | Patch           | `3.x`   | |
 Bug fixes            | No (Only if no choice)   | Major           | `master` | |
 Feature              | Yes                      | Minor           | `3.x`   | |
 Feature              | No (Only if no choice)   | Major           | `master` | |
@@ -198,8 +199,12 @@ Deprecation          | Yes (Have to)            | Minor           | `3.x`   | |
 Deprecation removal  | No (Can't be)            | Major           | `master` | |
 
 Notes:
+  * Branch `3.x` is the branch of the **latest stable** patch releases and
+  has to be used for Backward Compatible bug fixes only.
   * Branch `3.x` is the branch of the **latest stable** minor release and
-  has to be used for Backward compatible PRs.
+  has to be used for Backward compatible enhancement PRs.
+  **No bug fix will be accepted here**, except if the bug fix concerns `3.x` and **only this one**.
+  Bug fixes merged on `3.x` will be ported on other branches by fallback merging.
   * If you PR is not **Backward Compatible** but can be, it **must** be:
     * Changing a function/method signature? Prefer create a new one and deprecate the old one.
     * Code deletion? Don't. Please deprecate it instead.

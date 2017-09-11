@@ -79,7 +79,7 @@ var Admin = {
                     width: function(){
                         // Select2 v3 and v4 BC. If window.Select2 is defined, then the v3 is installed.
                         // NEXT_MAJOR: Remove Select2 v3 support.
-                        return Admin.get_select2_width(window.Select2 ? this.element : jQuery(this));
+                        return Admin.get_select2_width(window.Select2 ? this.element : select);
                     },
                     dropdownAutoWidth: true,
                     minimumResultsForSearch: 10,
@@ -450,7 +450,7 @@ var Admin = {
             width: function(){
                 // Select2 v3 and v4 BC. If window.Select2 is defined, then the v3 is installed.
                 // NEXT_MAJOR: Remove Select2 v3 support.
-                return Admin.get_select2_width(window.Select2 ? this.element : jQuery(this));
+                return Admin.get_select2_width(window.Select2 ? this.element : subject);
             },
             dropdownAutoWidth: true,
             data: transformedData,
