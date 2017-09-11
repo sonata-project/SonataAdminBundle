@@ -356,11 +356,13 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         foreach ($definition->getMethodCalls() as $method) {
             if ($method[0] == 'setTemplates') {
                 $definedTemplates = array_merge($definedTemplates, $method[1][0]);
+
                 continue;
             }
 
             if ($method[0] == 'setTemplate') {
                 $definedTemplates[$method[1][0]] = $method[1][1];
+
                 continue;
             }
 

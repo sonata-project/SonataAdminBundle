@@ -1074,22 +1074,22 @@ interface AdminInterface
      */
     public function hasAccess($action, $object = null);
 
-     /**
-      * Returns the result link for an object.
-      *
-      * @param mixed $object
-      *
-      * @return string|null
-      */
-     public function getSearchResultLink($object);
+    /**
+     * Returns the result link for an object.
+     *
+     * @param mixed $object
+     *
+     * @return string|null
+     */
+    public function getSearchResultLink($object);
 
-      /**
-       * Setting to true will enable mosaic button for the admin screen.
-       * Setting to false will hide mosaic button for the admin screen.
-       *
-       * @param bool $isShown
-       */
-      public function showMosaicButton($isShown);
+    /**
+     * Setting to true will enable mosaic button for the admin screen.
+     * Setting to false will hide mosaic button for the admin screen.
+     *
+     * @param bool $isShown
+     */
+    public function showMosaicButton($isShown);
 
     /*
      * Checks if a filter type is set to a default value
