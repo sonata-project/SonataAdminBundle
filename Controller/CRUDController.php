@@ -130,6 +130,7 @@ class CRUDController extends Controller
         $this->admin->checkAccess('batchDelete');
 
         $modelManager = $this->admin->getModelManager();
+
         try {
             $modelManager->batchDelete($this->admin->getClass(), $query);
             $this->addFlash('sonata_flash_success', 'flash_batch_delete_success');
@@ -1091,6 +1092,7 @@ class CRUDController extends Controller
             foreach (array('edit', 'show') as $route) {
                 if ($this->admin->hasRoute($route) && $this->admin->hasAccess($route, $object)) {
                     $url = $this->admin->generateObjectUrl($route, $object);
+
                     break;
                 }
             }

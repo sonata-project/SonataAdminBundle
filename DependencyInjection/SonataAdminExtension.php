@@ -124,6 +124,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
                         'ALL' => array('ALL'),
                     );
                 }
+
                 break;
             case 'sonata.admin.security.handler.acl':
                 if (count($config['security']['information']) === 0) {
@@ -134,6 +135,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
                         'ADMIN' => array('MASTER'),
                     );
                 }
+
                 break;
         }
 
@@ -249,6 +251,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
                     return;
                 }
                 $annotationPatternsConfigured = true;
+
                 break;
             }
         }
