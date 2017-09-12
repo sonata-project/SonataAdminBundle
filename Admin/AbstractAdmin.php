@@ -1574,7 +1574,7 @@ EOT;
      */
     public function getSubject()
     {
-        if ($this->subject === null && $this->request) {
+        if ($this->subject === null && $this->request && !$this->hasParentFieldDescription()) {
             $id = $this->request->get($this->getIdParameter());
             $this->subject = $this->getModelManager()->find($this->class, $id);
         }
@@ -2899,17 +2899,17 @@ EOT;
         return $buttonList;
     }
 
-     /**
-      * Allows you to customize batch actions.
-      *
-      * @param array $actions List of actions
-      *
-      * @return array
-      */
-     protected function configureBatchActions($actions)
-     {
-         return $actions;
-     }
+    /**
+     * Allows you to customize batch actions.
+     *
+     * @param array $actions List of actions
+     *
+     * @return array
+     */
+    protected function configureBatchActions($actions)
+    {
+        return $actions;
+    }
 
     /**
      * NEXT_MAJOR: remove this method.

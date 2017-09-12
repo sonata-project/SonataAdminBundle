@@ -51,6 +51,7 @@ class ChildrenVoter implements VoterInterface
         foreach ($children as $child) {
             if ($this->matcher->isCurrent($child)) {
                 $match = true;
+
                 break;
             }
         }

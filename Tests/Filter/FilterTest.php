@@ -202,6 +202,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     {
         $filter = new FooFilter();
         $filter->initialize('foo');
+
         try {
             $filter->getAssociationMapping();
         } catch (\RuntimeException $e) {
