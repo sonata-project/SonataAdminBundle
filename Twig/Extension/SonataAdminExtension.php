@@ -148,7 +148,6 @@ final class SonataAdminExtension extends \Twig_Extension
         )), $environment);
     }
 
-
     /**
      * render a view element.
      *
