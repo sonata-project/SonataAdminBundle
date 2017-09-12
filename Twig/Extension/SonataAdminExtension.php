@@ -289,12 +289,12 @@ final class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * Get the identifiers as a string that is save to use in an url.
+     * Get the identifiers as a string that is safe to use in a url.
      *
      * @param object         $model
      * @param AdminInterface $admin
      *
-     * @return string string representation of the id that is save to use in an url
+     * @return string string representation of the id that is safe to use in a url
      */
     public function getUrlsafeIdentifier($model, AdminInterface $admin = null)
     {

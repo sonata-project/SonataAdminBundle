@@ -138,14 +138,14 @@ interface ModelManagerInterface
     public function getNormalizedIdentifier($model);
 
     /**
-     * Get the identifiers as a string that is save to use in an url.
+     * Get the identifiers as a string that is safe to use in a url.
      *
      * This is similar to getNormalizedIdentifier but guarantees an id that can
-     * be used in an URL.
+     * be used in a URL.
      *
      * @param object $model
      *
-     * @return string string representation of the id that is save to use in an url
+     * @return string string representation of the id that is safe to use in a url
      */
     public function getUrlsafeIdentifier($model);
 
