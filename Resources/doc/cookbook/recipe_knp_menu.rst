@@ -187,6 +187,7 @@ your admin services or simply remove menu items from the ``sonata_admin`` dashbo
         arguments: [~, Sonata\AdminBundle\Entity\Post, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, group: admin, label: Post, show_in_dashboard: false}
+        public: true
 
 .. code-block:: yaml
 
@@ -244,6 +245,7 @@ or in sonata_admin dashboard group configuration:
         arguments: [~, Sonata\AdminBundle\Entity\Post, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, group: admin, label: Post, on_top: true}
+        public: true
 
 .. code-block:: yaml
 

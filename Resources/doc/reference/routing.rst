@@ -209,6 +209,7 @@ For example, lets change the Controller for our MediaAdmin class to AppBundle:Me
                 - ~
                 - AppBundle\Entity\Page
                 - 'AppBundle:MediaCRUD' # define the new controller via the third argument
+            public: true
 
 We now need to create our Controller, the easiest way is to extend the basic Sonata CRUD controller:
 

@@ -25,6 +25,7 @@ var Admin = {
         Admin.add_filters(subject);
         Admin.setup_select2(subject);
         Admin.setup_icheck(subject);
+        Admin.setup_checkbox_range_selection(subject);
         Admin.setup_xeditable(subject);
         Admin.setup_form_tabs_for_errors(subject);
         Admin.setup_inline_form_errors(subject);
@@ -104,6 +105,55 @@ var Admin = {
                 radioClass: 'iradio_square-blue'
             });
         }
+    },
+    /**
+     * Setup checkbox range selection
+     *
+     * Clicking on a first checkbox then another with shift + click
+     * will check / uncheck all checkboxes between them
+     *
+     * @param {string|Object} subject The html selector or object on which function should be applied
+     */
+    setup_checkbox_range_selection: function(subject) {
+        Admin.log('[core|setup_checkbox_range_selection] configure checkbox range selection on', subject);
+
+        var previousIndex,
+            useICheck = window.SONATA_CONFIG && window.SONATA_CONFIG.USE_ICHECK
+        ;
+
+        // When a checkbox or an iCheck helper is clicked
+        jQuery('tbody input[type="checkbox"], tbody .iCheck-helper', subject).click(function (event) {
+            var input;
+
+            if (useICheck) {
+                input = jQuery(this).prev('input[type="checkbox"]');
+            } else {
+                input = jQuery(this);
+            }
+
+            if (input.length) {
+                var currentIndex = input.closest('tr').index();
+
+                if (event.shiftKey && previousIndex >= 0) {
+                    var isChecked = jQuery('tbody input[type="checkbox"]:nth(' + currentIndex + ')', subject).prop('checked');
+
+                    // Check all checkbox between previous and current one clicked
+                    jQuery('tbody input[type="checkbox"]', subject).each(function (i, e) {
+                        if (i > previousIndex && i < currentIndex || i > currentIndex && i < previousIndex) {
+                            if (useICheck) {
+                                jQuery(e).iCheck(isChecked ? 'check' : 'uncheck');
+
+                                return;
+                            }
+
+                            jQuery(e).prop('checked', isChecked);
+                        }
+                    });
+                }
+
+                previousIndex  = currentIndex;
+            }
+        });
     },
 
     setup_xeditable: function(subject) {

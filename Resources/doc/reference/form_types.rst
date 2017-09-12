@@ -75,7 +75,11 @@ preferred_choices
   defaults to array() - see the `Symfony choice Field Type docs`_ for more info
 
 choice_list
+  **(deprecated in favor of choice_loader since Symfony 2.7)**
   defaults to a ``ModelChoiceList`` built from the other options
+
+choice_loader
+  defaults to a ``ModelChoiceLoader`` built from the other options
 
 model_manager
   defaults to null, but is actually calculated from the linked Admin class.
@@ -461,6 +465,7 @@ that looks like this:
                     - 'SonataAdminBundle:CRUD'
                 calls:
                     - [ setTranslationDomain, [AppBundle]]
+                public: true
 
 .. note::
 
@@ -559,6 +564,11 @@ You can listen to this event to trigger custom JavaScript (eg: add a calendar wi
 
 **TIP**: Setting the 'required' option to true does not cause a requirement of 'at least one' child entity.
 Setting the 'required' option to false causes all nested form fields to become not required as well.
+
+.. tip::
+
+    You can check / uncheck a range of checkboxes by clicking a first one,
+    then a second one with shift + click.
 
 sonata_type_native_collection (previously collection)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

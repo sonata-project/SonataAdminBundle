@@ -53,7 +53,6 @@ class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
         $annotation->processMetadata($meta);
 
         $this->assertSame(
-            $meta->tags['sonata.admin'][0],
             array(
                 'manager_type' => 'orm',
                 'group' => 'Admin',
@@ -61,7 +60,8 @@ class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
                 'show_in_dashboard' => false,
                 'keep_open' => false,
                 'on_top' => false,
-            )
+            ),
+            $meta->tags['sonata.admin'][0]
         );
     }
 
@@ -78,7 +78,6 @@ class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
         $annotation->processMetadata($meta);
 
         $this->assertSame(
-            $meta->tags['sonata.admin'][0],
             array(
                 'manager_type' => 'orm',
                 'group' => 'Admin',
@@ -86,8 +85,25 @@ class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
                 'show_in_dashboard' => true,
                 'keep_open' => false,
                 'on_top' => false,
-            )
+            ),
+            $meta->tags['sonata.admin'][0]
         );
+    }
+
+    public function testIdForAdmin()
+    {
+        /*
+         * @Admin(class="Sonata\AdminBundle\Entity\Foo", id="my.id")
+         */
+        $annotation = new Admin();
+        $annotation->class = 'Sonata\AdminBundle\Entity\Foo';
+        $annotation->id = 'my.id';
+
+        $meta = new ClassMetadata('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo');
+
+        $annotation->processMetadata($meta);
+
+        $this->assertSame('my.id', $meta->id);
     }
 
     public function testAdmin()
@@ -118,7 +134,6 @@ class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
         $annotation->processMetadata($meta);
 
         $this->assertSame(
-            $meta->tags['sonata.admin'][0],
             array(
                 'manager_type' => 'doctrine_mongodb',
                 'group' => 'myGroup',
@@ -126,9 +141,10 @@ class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
                 'show_in_dashboard' => false,
                 'keep_open' => true,
                 'on_top' => true,
-            )
+            ),
+            $meta->tags['sonata.admin'][0]
         );
 
-        $this->assertSame($meta->methodCalls[0], array('setTranslationDomain', array('OMG')));
+        $this->assertSame(array('setTranslationDomain', array('OMG')), $meta->methodCalls[0]);
     }
 }

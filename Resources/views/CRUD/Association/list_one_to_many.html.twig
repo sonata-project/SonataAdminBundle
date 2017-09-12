@@ -1,0 +1,40 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
+    {% set route_name = field_description.options.route.name %}
+    {% if field_description.hasassociationadmin and field_description.associationadmin.hasRoute(route_name) %}
+        {% for element in value %}
+            {%- if field_description.associationadmin.hasAccess(route_name, element) -%}
+                {{ block('relation_link') }}
+            {%- else -%}
+                {{ block('relation_value') }}
+            {%- endif -%}
+            {% if not loop.last %}, {% endif %}
+        {% endfor %}
+    {% else %}
+        {% for element in value %}
+            {{ block('relation_value') }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{%- block relation_link -%}
+    <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, element, field_description.options.route.parameters) }}">
+        {{- element|render_relation_element(field_description) -}}
+    </a>
+{%- endblock -%}
+
+{%- block relation_value -%}
+    {{- element|render_relation_element(field_description) -}}
+{%- endblock -%}

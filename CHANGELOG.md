@@ -47,6 +47,35 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.21.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.20.1...3.21.0) - 2017-08-14
+### Added
+- Allow label icon on CRUD list table headers.
+- Allow to disable label on CRUD list table heades.
+- multidimensional arrays support in show array
+- inline option in list array
+- Added checkbox range selection with shift + click
+- Added the persistence independent association templates
+- Added Latvian translation of the bundle
+
+### Changed
+- Check for `ChildDefinition` instance when possible instead of `DefinitionDecorator` which got deprecated on Symfony 3.3
+
+### Deprecated
+- `ModelChoiceList` in favor of `ModelChoiceLoader`
+
+### Fixed
+- Fixes potentially wrong scheme in the sidebar urls by using relative urls
+- Fixed choice field mask type javascript in the twig templates to works with immutable array form types
+- `ServiceManipulator` now adds `public: true` to service declaration by default
+- Fixed deprecation for Sf 3. support
+- Sidebar menu elements are active when the current route is a child admin.
+- Take admin annotation id into account
+
+## [3.20.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.20.0...3.20.1) - 2017-06-27
+### Fixed
+- Fixed undefined `view_group` variable in show template
+- Fixed compatibility with Symfony's IdentityTranslator when translator is disabled
+
 ## [3.20.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.19.0...3.20.0) - 2017-06-22
 ### Added
 - Group and tabs translations

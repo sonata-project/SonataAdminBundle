@@ -49,6 +49,7 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
 
         $container = $this->getContainer();
         $container->removeAlias('translator');
+        $container->removeDefinition('translator');
         $this->extension->load(array($this->config), $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();

@@ -183,6 +183,7 @@ specify the templates to use in the ``Admin`` service definition:
                     - ~
                 calls:
                     - [ setTemplate, [edit, AppBundle:PostAdmin:edit.html.twig]]
+                public: true
 
 .. note::
 

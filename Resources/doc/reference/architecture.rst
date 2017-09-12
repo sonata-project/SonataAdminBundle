@@ -92,6 +92,7 @@ your ``Admin`` services. This is done using a ``call`` to the matching ``setter`
                     - ~
                 calls:
                     - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
+                public: true
 
 Here, we declare the same ``Admin`` service as in the :doc:`getting_started` chapter, but using a
 different label translator strategy, replacing the default one. Notice that
@@ -147,6 +148,7 @@ to set the controller to ``AppBundle:PostAdmin``:
                     - AppBundle:PostAdmin
                 calls:
                     - [ setTranslationDomain, [AppBundle]]
+                public: true
 
 When extending ``CRUDController``, remember that the ``Admin`` class already has
 a set of automatically injected dependencies that are useful when implementing several

@@ -41,6 +41,7 @@ To use `SimplePager` in your admin just define ``pager_type`` inside the service
                     - ~
                     - AppBundle\Entity\Post
                     - ~
+                public: true
 
 .. note::
 
