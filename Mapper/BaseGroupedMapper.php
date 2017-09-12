@@ -95,6 +95,7 @@ abstract class BaseGroupedMapper extends BaseMapper
                 if (isset($tabs[$this->currentTab]['auto_created']) && true === $tabs[$this->currentTab]['auto_created']) {
                     throw new \RuntimeException('New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields.');
                 }
+
                 throw new \RuntimeException(sprintf('You should close previous tab "%s" with end() before adding new tab "%s".', $this->currentTab, $name));
             } elseif ($this->currentGroup) {
                 throw new \RuntimeException(sprintf('You should open tab before adding new group "%s".', $name));
