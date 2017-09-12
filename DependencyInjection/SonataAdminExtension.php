@@ -214,7 +214,11 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
 
         $container->setParameter('sonata.admin.configuration.show.mosaic.button', $config['show_mosaic_button']);
 
-        $this->configureClassesToCompile();
+        $container->setParameter('sonata.admin.configuration.translate_group_label', $config['translate_group_label']);
+
+        if (\PHP_VERSION_ID < 70000) {
+            $this->configureClassesToCompile();
+        }
 
         $this->replacePropertyAccessor($container);
     }

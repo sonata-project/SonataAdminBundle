@@ -86,11 +86,6 @@ forget to enable SonataAdminBundle too:
 
 .. note::
 
-    If a dependency is already enabled somewhere in your ``AppKernel.php``,
-    you don't need to enable it again.
-
-.. note::
-
     Since version 2.3 SonatajQueryBundle is not required anymore as assets are available in this
     bundle. The bundle is also registered in `bower.io <https://github.com/sonata-project/SonataAdminBundle>`_ so
     you can use bower to handle your assets. To make sure you get the dependencies

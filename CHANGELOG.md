@@ -47,6 +47,13 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.20.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.19.0...3.20.0) - 2017-06-22
+### Added
+- Group and tabs translations
+
+### Fixed
+- Deprecation notices related to `addClassesToCompile`
+
 ## [3.19.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.18.2...3.19.0) - 2017-06-12
 ### Changed
 - compatibility with immutable entities was improved
