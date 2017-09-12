@@ -6,48 +6,9 @@ but inaccessible. You first need to configure it for your models before you can
 start using it. Here is a quick checklist of what is needed to quickly setup
 SonataAdminBundle and create your first admin interface for the models of your application:
 
-* Step 1: Define SonataAdminBundle routes
-* Step 2: Create an Admin class
-* Step 3: Create an Admin service
-* Step 4: Configuration
-
-Define SonataAdminBundle routes
--------------------------------
-
-To be able to access SonataAdminBundle's pages, you need to add its routes
-to your application's routing file:
-
-.. configuration-block::
-
-    .. code-block:: yaml
-
-        # app/config/routing.yml
-
-        admin:
-            resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
-            prefix: /admin
-
-        _sonata_admin:
-            resource: .
-            type: sonata_admin
-            prefix: /admin
-
-.. note::
-
-    If you're using XML or PHP to specify your application's configuration,
-    the above routing configuration must be placed in routing.xml or
-    routing.php according to your format (i.e. XML or PHP).
-
-.. note::
-
-    For those curious about the ``resource: .`` setting: it is unusual syntax but used
-    because Symfony requires a resource to be defined (which points to a real file).
-    Once this validation passes Sonata's ``AdminPoolLoader`` is in charge of processing
-    this route and it simply ignores the resource setting.
-
-At this point you can already access the (empty) admin dashboard by visiting the URL:
-``http://yoursite.local/admin/dashboard``.
-
+* Step 1: Create an Admin class
+* Step 2: Create an Admin service
+* Step 3: Configuration
 
 Create an Admin class
 ---------------------

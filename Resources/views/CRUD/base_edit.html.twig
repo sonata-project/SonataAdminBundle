@@ -12,7 +12,8 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block title %}
-    {% if admin.id(object) is not null %}
+    {# NEXT_MAJOR: remove default filter #}
+    {% if objectId|default(admin.id(object)) is not null %}
         {{ "title_edit"|trans({'%name%': admin.toString(object)|truncate(15) }, 'SonataAdminBundle') }}
     {% else %}
         {{ "title_create"|trans({}, 'SonataAdminBundle') }}

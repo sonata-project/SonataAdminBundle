@@ -83,7 +83,7 @@ To get sphinx, simply run the following command.
 pip install --requirement Resources/doc/requirements.txt --user
 ```
 
-Some python binaries should be downloaded in `~/.local/bin`,
+Some python binaries should be downloaded to `~/.local/bin` for Linux or `~/Library/Python/2.7/bin` for Mac OS,
 [modify your `$PATH` environment variable](http://www.linfo.org/path_env_var.html)
 so that it contains this path and then, from the root of the project, run `make docs`
 

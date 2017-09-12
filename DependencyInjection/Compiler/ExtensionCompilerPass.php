@@ -65,7 +65,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
 
             $extensions = $this->getExtensionsForAdmin($id, $admin, $container, $extensionMap);
 
-            foreach ($extensions as $extension) {
+            foreach ($extensions as $extension => $attributes) {
                 if (!$container->has($extension)) {
                     throw new \InvalidArgumentException(
                         sprintf('Unable to find extension service for id %s', $extension)
@@ -145,7 +145,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
         }
 
         if (isset($excludes[$id])) {
-            $extensions = array_diff($extensions, $excludes[$id]);
+            $extensions = array_diff_key($extensions, $excludes[$id]);
         }
 
         return $extensions;
@@ -167,7 +167,16 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     /**
      * @param array $config
      *
-     * @return array
+     * @return array An array with the following structure.
+     *
+     * array(
+     *     'excludes'   => array('<admin_id>'  => array('<extension_id>' => array('priority' => <int>))),
+     *     'admins'     => array('<admin_id>'  => array('<extension_id>' => array('priority' => <int>))),
+     *     'implements' => array('<interface>' => array('<extension_id>' => array('priority' => <int>))),
+     *     'extends'    => array('<class>'     => array('<extension_id>' => array('priority' => <int>))),
+     *     'instanceof' => array('<class>'     => array('<extension_id>' => array('priority' => <int>))),
+     *     'uses'       => array('<trait>'     => array('<extension_id>' => array('priority' => <int>))),
+     * )
      */
     protected function flattenExtensionConfiguration(array $config)
     {
@@ -181,12 +190,14 @@ final class ExtensionCompilerPass implements CompilerPassInterface
         );
 
         foreach ($config as $extension => $options) {
-            foreach ($options as $key => $value) {
+            $optionsMap = array_intersect_key($options, $extensionMap);
+
+            foreach ($optionsMap as $key => $value) {
                 foreach ($value as $source) {
                     if (!isset($extensionMap[$key][$source])) {
                         $extensionMap[$key][$source] = array();
                     }
-                    array_push($extensionMap[$key][$source], $extension);
+                    $extensionMap[$key][$source][$extension]['priority'] = $options['priority'];
                 }
             }
         }
@@ -221,7 +232,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
      * @param string $extension
      * @param array  $attributes
      */
-    private function addExtension(array &$targets, $target, $extension, $attributes)
+    private function addExtension(array &$targets, $target, $extension, array $attributes)
     {
         if (!isset($targets[$target])) {
             $targets[$target] = new \SplPriorityQueue();

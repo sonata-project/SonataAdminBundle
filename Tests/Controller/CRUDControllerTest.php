@@ -2912,7 +2912,7 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
 
     public function testHistoryViewRevisionActionNotFoundException()
     {
-        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the object with id : 123');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the object with id: 123');
 
         $this->request->query->set('id', 123);
 
@@ -3070,7 +3070,7 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
 
     public function testHistoryCompareRevisionsActionNotFoundException()
     {
-        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the object with id : 123');
+        $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the object with id: 123');
 
         $this->request->query->set('id', 123);
 

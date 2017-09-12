@@ -110,7 +110,7 @@ class ListMapperTest extends PHPUnit_Framework_TestCase
     public function testAdd()
     {
         $this->listMapper->add('fooName');
-        $this->listMapper->add('fooNameLabelBar', null, array('label' => 'fooBar'));
+        $this->listMapper->add('fooNameLabelBar', null, array('label' => 'Foo Bar'));
         $this->listMapper->add('fooNameLabelFalse', null, array('label' => false));
 
         $this->assertTrue($this->listMapper->has('fooName'));
@@ -122,7 +122,7 @@ class ListMapperTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Sonata\AdminBundle\Admin\FieldDescriptionInterface', $fieldDescription);
         $this->assertSame('fooName', $fieldDescription->getName());
         $this->assertSame('fooName', $fieldDescription->getOption('label'));
-        $this->assertSame('fooBar', $fieldLabelBar->getOption('label'));
+        $this->assertSame('Foo Bar', $fieldLabelBar->getOption('label'));
         $this->assertFalse($fieldLabelFalse->getOption('label'));
     }
 

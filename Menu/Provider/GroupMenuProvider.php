@@ -109,7 +109,7 @@ class GroupMenuProvider implements MenuProviderInterface
                     $label = $admin->getLabel();
                     $options = $admin->generateMenuUrl('list', array(), $item['route_absolute']);
                     $options['extras'] = array(
-                        'translation_domain' => $admin->getTranslationDomain(),
+                        'label_catalogue' => $admin->getTranslationDomain(),
                         'admin' => $admin,
                     );
                 } else {
@@ -128,7 +128,7 @@ class GroupMenuProvider implements MenuProviderInterface
                         'routeParameters' => $item['route_params'],
                         'routeAbsolute' => $item['route_absolute'],
                         'extras' => array(
-                            'translation_domain' => $group['label_catalogue'],
+                            'label_catalogue' => $group['label_catalogue'],
                         ),
                     );
                 }
