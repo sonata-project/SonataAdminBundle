@@ -403,14 +403,15 @@ will be created regardless of whether you actually need them or not. To get rid
 of them, you may override the ``configureRoutes`` method::
 
     <?php
-    namespace Sonata\NewsBundle\Admin;
+    
+    namespace AppBundle\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class CommentAdmin extends AbstractAdmin
+    class VideoAdmin extends AbstractAdmin
     {
-        protected $parentAssociationMapping = 'post';
+        protected $parentAssociationMapping = 'playlist';
 
         protected function configureRoutes(RouteCollection $collection)
         {
