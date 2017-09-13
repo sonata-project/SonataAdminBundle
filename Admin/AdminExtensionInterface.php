@@ -114,14 +114,14 @@ interface AdminExtensionInterface
      */
     public function getPersistentParameters(AdminInterface $admin);
 
-     /**
-      * Return the controller access mapping.
-      *
-      * @param AdminInterface $admin
-      *
-      * @return array
-      */
-     public function getAccessMapping(AdminInterface $admin);
+    /**
+     * Return the controller access mapping.
+     *
+     * @param AdminInterface $admin
+     *
+     * @return array
+     */
+    public function getAccessMapping(AdminInterface $admin);
 
     /**
      * Returns the list of batch actions.
@@ -180,17 +180,17 @@ interface AdminExtensionInterface
      */
     public function postRemove(AdminInterface $admin, $object);
 
-     /**
-      * Get all action buttons for an action.
-      *
-      * @param AdminInterface $admin
-      * @param array          $list
-      * @param string         $action
-      * @param object         $object
-      *
-      * @return array
-      */
-     public function configureActionButtons(AdminInterface $admin, $list, $action, $object);
+    /**
+     * Get all action buttons for an action.
+     *
+     * @param AdminInterface $admin
+     * @param array          $list
+     * @param string         $action
+     * @param object         $object
+     *
+     * @return array
+     */
+    public function configureActionButtons(AdminInterface $admin, $list, $action, $object);
 
     /*
      * NEXT_MAJOR: Uncomment in next major release
