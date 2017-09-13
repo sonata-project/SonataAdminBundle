@@ -1,0 +1,97 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+{% if not sonata_admin.field_description.hasassociationadmin %}
+    {% for element in value %}
+        {{ element|render_relation_element(sonata_admin.field_description) }}
+    {% endfor %}
+{% else %}
+
+    <div id="field_container_{{ id }}" class="field-container">
+        <span id="field_widget_{{ id }}" >
+            {% if sonata_admin.edit == 'inline' %}
+                {% if sonata_admin.inline == 'table' %}
+                    {% if form.children|length > 0 %}
+                        {% include 'SonataAdminBundle:CRUD/Association:edit_one_to_many_inline_table.html.twig' %}
+                    {% endif %}
+                {% elseif form.children|length > 0 %}
+                    {% set associationAdmin = sonata_admin.field_description.associationadmin %}
+                    {% include 'SonataAdminBundle:CRUD/Association:edit_one_to_many_inline_tabs.html.twig' %}
+
+                {% endif %}
+            {% else %}
+                {{ form_widget(form) }}
+            {% endif %}
+
+        </span>
+
+        {% set display_create_button = sonata_admin.field_description.associationadmin.hasroute('create')
+            and sonata_admin.field_description.associationadmin.isGranted('CREATE')
+            and btn_add
+            and (
+                sonata_admin.field_description.options.limit is not defined or
+                form.children|length < sonata_admin.field_description.options.limit
+            ) %}
+
+        {% if sonata_admin.edit == 'inline' %}
+
+            {% if display_create_button %}
+                <span id="field_actions_{{ id }}" >
+                    <a
+                        href="{{ sonata_admin.field_description.associationadmin.generateUrl(
+                            'create',
+                            sonata_admin.field_description.getOption('link_parameters', {})
+                        ) }}"
+                        onclick="return start_field_retrieve_{{ id }}(this);"
+                        class="btn btn-success btn-sm sonata-ba-action"
+                        title="{{ btn_add|trans({}, btn_catalogue) }}"
+                    >
+                        <i class="fa fa-plus-circle"></i>
+                        {{ btn_add|trans({}, btn_catalogue) }}
+                    </a>
+                </span>
+            {% endif %}
+
+            {# add code for the sortable options #}
+            {% if sonata_admin.field_description.options.sortable is defined %}
+                {% if sonata_admin.inline == 'table' %}
+                    {% include 'SonataAdminBundle:CRUD/Association:edit_one_to_many_sortable_script_table.html.twig' %}
+                {% else %}
+                    {% include 'SonataAdminBundle:CRUD/Association:edit_one_to_many_sortable_script_tabs.html.twig' %}
+                {% endif %}
+            {% endif %}
+
+            {# include association code #}
+            {% include 'SonataAdminBundle:CRUD/Association:edit_one_script.html.twig' %}
+
+        {% else %}
+            <span id="field_actions_{{ id }}" >
+                {% if display_create_button %}
+                    <a
+                        href="{{ sonata_admin.field_description.associationadmin.generateUrl(
+                            'create',
+                            sonata_admin.field_description.getOption('link_parameters', {})
+                        ) }}"
+                        onclick="return start_field_dialog_form_add_{{ id }}(this);"
+                        class="btn btn-success btn-sm sonata-ba-action"
+                        title="{{ btn_add|trans({}, btn_catalogue) }}"
+                    >
+                        <i class="fa fa-plus-circle"></i>
+                        {{ btn_add|trans({}, btn_catalogue) }}
+                    </a>
+                {% endif %}
+            </span>
+
+            {% include 'SonataAdminBundle:CRUD/Association:edit_modal.html.twig' %}
+
+            {% include 'SonataAdminBundle:CRUD/Association:edit_one_script.html.twig' %}
+        {% endif %}
+    </div>
+{% endif %}

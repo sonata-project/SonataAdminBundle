@@ -95,7 +95,39 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
             $container->removeDefinition('sonata.admin.lock.extension');
         }
 
-        $container->setParameter('sonata.admin.configuration.templates', $config['templates']);
+        $container->setParameter('sonata.admin.configuration.global_search.empty_boxes', $config['global_search']['empty_boxes']);
+        $container->setParameter('sonata.admin.configuration.templates', $config['templates'] + array(
+            'user_block' => 'SonataAdminBundle:Core:user_block.html.twig',
+            'add_block' => 'SonataAdminBundle:Core:add_block.html.twig',
+            'layout' => 'SonataAdminBundle::standard_layout.html.twig',
+            'ajax' => 'SonataAdminBundle::ajax_layout.html.twig',
+            'dashboard' => 'SonataAdminBundle:Core:dashboard.html.twig',
+            'list' => 'SonataAdminBundle:CRUD:list.html.twig',
+            'filter' => 'SonataAdminBundle:Form:filter_admin_fields.html.twig',
+            'show' => 'SonataAdminBundle:CRUD:show.html.twig',
+            'show_compare' => 'SonataAdminBundle:CRUD:show_compare.html.twig',
+            'edit' => 'SonataAdminBundle:CRUD:edit.html.twig',
+            'history' => 'SonataAdminBundle:CRUD:history.html.twig',
+            'history_revision_timestamp' => 'SonataAdminBundle:CRUD:history_revision_timestamp.html.twig',
+            'acl' => 'SonataAdminBundle:CRUD:acl.html.twig',
+            'action' => 'SonataAdminBundle:CRUD:action.html.twig',
+            'short_object_description' => 'SonataAdminBundle:Helper:short-object-description.html.twig',
+            'preview' => 'SonataAdminBundle:CRUD:preview.html.twig',
+            'list_block' => 'SonataAdminBundle:Block:block_admin_list.html.twig',
+            'delete' => 'SonataAdminBundle:CRUD:delete.html.twig',
+            'batch' => 'SonataAdminBundle:CRUD:list__batch.html.twig',
+            'select' => 'SonataAdminBundle:CRUD:list__select.html.twig',
+            'batch_confirmation' => 'SonataAdminBundle:CRUD:batch_confirmation.html.twig',
+            'inner_list_row' => 'SonataAdminBundle:CRUD:list_inner_row.html.twig',
+            'base_list_field' => 'SonataAdminBundle:CRUD:base_list_field.html.twig',
+            'pager_links' => 'SonataAdminBundle:Pager:links.html.twig',
+            'pager_results' => 'SonataAdminBundle:Pager:results.html.twig',
+            'tab_menu_template' => 'SonataAdminBundle:Core:tab_menu_template.html.twig',
+            'knp_menu_template' => 'SonataAdminBundle:Menu:sonata_menu.html.twig',
+            'outer_list_rows_mosaic' => 'SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig',
+            'outer_list_rows_list' => 'SonataAdminBundle:CRUD:list_outer_rows_list.html.twig',
+            'outer_list_rows_tree' => 'SonataAdminBundle:CRUD:list_outer_rows_tree.html.twig',
+        ));
         $container->setParameter('sonata.admin.configuration.admin_services', $config['admin_services']);
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
         $container->setParameter('sonata.admin.configuration.dashboard_blocks', $config['dashboard']['blocks']);
@@ -123,6 +155,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
                         'ALL' => array('ALL'),
                     );
                 }
+
                 break;
             case 'sonata.admin.security.handler.acl':
                 if (count($config['security']['information']) === 0) {
@@ -133,6 +166,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
                         'ADMIN' => array('MASTER'),
                     );
                 }
+
                 break;
         }
 
@@ -211,7 +245,11 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
 
         $container->setParameter('sonata.admin.configuration.show.mosaic.button', $config['show_mosaic_button']);
 
-        $this->configureClassesToCompile();
+        $container->setParameter('sonata.admin.configuration.translate_group_label', $config['translate_group_label']);
+
+        if (\PHP_VERSION_ID < 70000) {
+            $this->configureClassesToCompile();
+        }
 
         $this->replacePropertyAccessor($container);
     }
@@ -248,6 +286,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
                     return;
                 }
                 $annotationPatternsConfigured = true;
+
                 break;
             }
         }

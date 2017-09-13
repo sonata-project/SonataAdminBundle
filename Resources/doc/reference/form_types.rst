@@ -40,14 +40,19 @@ All we need to do now is add a reference for this field in our ``PageAdmin`` cla
         }
     }
 
-Since the ``image1`` field refers to a related entity we do not need to specify
-any options. Sonata will calculate that the linked class is of type ``Image`` and,
-by default, retrieve a list of all existing Images to display as choices in the
-selector.
-
 Note that the third parameter to ``FormMapper::add()`` is optional so
 there is no need to pass in an empty array, it is shown here just to demonstrate
 where the options go when you want to use them.
+
+Since the ``image1`` field refers to a related entity we do not need to specify
+any options. Sonata will calculate that the linked admin class is of type ``Image`` and,
+by default, use the ``ImageAdmin`` class to retrieve a list of all existing Images
+to display as choices in the selector.
+
+.. tip::
+
+    You need to create ``ImageAdmin`` class in this case to use ``sonata_type_model`` type.
+    :ref:`You can also use <form_types_fielddescription_options>` use the ``admin_code`` parameter.
 
 The available options are:
 
@@ -75,7 +80,11 @@ preferred_choices
   defaults to array() - see the `Symfony choice Field Type docs`_ for more info
 
 choice_list
+  **(deprecated in favor of choice_loader since Symfony 2.7)**
   defaults to a ``ModelChoiceList`` built from the other options
+
+choice_loader
+  defaults to a ``ModelChoiceLoader`` built from the other options
 
 model_manager
   defaults to null, but is actually calculated from the linked Admin class.
@@ -248,7 +257,7 @@ to_string_callback
     ;
 
 multiple
-  defaults to false. Set to true, if you're field is in many-to-many relation.
+  defaults to false. Set to true, if your field is in a many-to-many relation.
 
 placeholder
   defaults to "". Placeholder is shown when no item is selected.
@@ -330,6 +339,58 @@ template
     {# change the default selection format #}
     {% block sonata_type_model_autocomplete_selection_format %}'<b>'+item.label+'</b>'{% endblock %}
 
+target_admin_access_action
+  defaults to ``list``.
+  By default, the user needs the ``LIST`` role (mapped to ``list`` access action)
+  to get the autocomplete items from the target admin's datagrid.
+  If you can't give some users this role because they will then have access to the target
+  admin's datagrid, you have to grant them another role.
+
+  In the example below we changed the ``target_admin_access_action`` from ``list`` to ``autocomplete``,
+  which is mapped in the target admin to ``AUTOCOMPLETE`` role. Please make sure that all valid users
+  have the ``AUTOCOMPLETE`` role.
+
+.. code-block:: php
+
+    <?php
+    // src/AppBundle/Admin/ArticleAdmin.php
+
+    class ArticleAdmin extends AbstractAdmin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            // the dropdown autocomplete list will show only Category
+            // entities that contain specified text in "title" attribute
+            $formMapper
+                ->add('category', 'sonata_type_model_autocomplete', array(
+                    'property' => 'title',
+                    'target_admin_access_action' => 'autocomplete'
+                ))
+            ;
+        }
+    }
+
+.. code-block:: php
+
+    <?php
+    // src/AppBundle/Admin/CategoryAdmin.php
+
+    class CategoryAdmin extends AbstractAdmin
+    {
+        protected $accessMapping = array(
+            'autocomplete' => 'AUTOCOMPLETE',
+        );
+
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        {
+            // this text filter will be used to retrieve autocomplete fields
+            // only the users with role AUTOCOMPLETE will be able to get the items
+            $datagridMapper
+                ->add('title')
+            ;
+        }
+    }
+
 sonata_type_choice_field_mask
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -409,6 +470,7 @@ that looks like this:
                     - 'SonataAdminBundle:CRUD'
                 calls:
                     - [ setTranslationDomain, [AppBundle]]
+                public: true
 
 .. note::
 
@@ -502,14 +564,16 @@ btn_add and btn_catalogue:
   corresponding button. You can also specify a custom translation catalogue
   for this label, which defaults to ``SonataAdminBundle``.
 
-When using ``edit: inline`` a delete checkbox will be rendered for each element of the collection.
-Checking it will disable the fields but the form needs to be submitted for the element to actually be removed from the collection.
-
 **TIP**: A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
 You can listen to this event to trigger custom JavaScript (eg: add a calendar widget to a newly added date field)
 
 **TIP**: Setting the 'required' option to true does not cause a requirement of 'at least one' child entity.
 Setting the 'required' option to false causes all nested form fields to become not required as well.
+
+.. tip::
+
+    You can check / uncheck a range of checkboxes by clicking a first one,
+    then a second one with shift + click.
 
 sonata_type_native_collection (previously collection)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -530,6 +594,8 @@ This bundle handle the native Symfony ``collection`` form type by adding:
     or before deleted (``sonata-collection-item-deleted``).
     A jQuery event is fired after a row has been deleted successfully (``sonata-collection-item-deleted-successful``)
     You can listen to these events to trigger custom JavaScript.
+
+.. _form_types_fielddescription_options:
 
 FieldDescription options
 ^^^^^^^^^^^^^^^^^^^^^^^^

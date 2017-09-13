@@ -91,7 +91,7 @@ file that was distributed with this source code.
             {{ 'Admin'|trans({}, 'SonataAdminBundle') }}
 
             {% if _title is not empty %}
-                {{ _title|raw }}
+                {{ _title|striptags|raw }}
             {% else %}
                 {% if action is defined %}
                     -

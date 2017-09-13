@@ -48,7 +48,7 @@ file that was distributed with this source code.
                 })
             ) %}
 
-            {% if field_description == 'date' and value is not empty %}
+            {% if field_description.type == 'date' and value is not empty %}
                 {% set data_value = value.format('Y-m-d') %}
             {% elseif field_description.type == 'boolean' and value is empty %}
                 {% set data_value = 0 %}

@@ -5,6 +5,7 @@
         "Thomas Rabaix <thomas.rabaix@gmail.com>"
     ],
     "dependencies": {
+        "masonry": "~4.0.0",
         "jqueryui": "~1.10",
         "x-editable": "^1.5",
         "admin-lte": "^2.3",

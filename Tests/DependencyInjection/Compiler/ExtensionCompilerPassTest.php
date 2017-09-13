@@ -25,12 +25,6 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
     /** @var array $config */
     private $config;
 
-    private $publishExtension;
-    private $historyExtension;
-    private $orderExtension;
-    private $securityExtension;
-    private $filterExtension;
-    private $timestampExtension;
     private $hasTraits;
 
     /**
@@ -46,13 +40,6 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
         $this->config = $this->getConfig();
         $this->root = 'sonata.admin';
         $this->hasTraits = version_compare(PHP_VERSION, '5.4.0', '>=');
-
-        $this->publishExtension = $this->createMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
-        $this->historyExtension = $this->createMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
-        $this->orderExtension = $this->createMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
-        $this->securityExtension = $this->createMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
-        $this->filterExtension = $this->createMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
-        $this->timestampExtension = $this->createMock('Sonata\AdminBundle\Admin\AdminExtensionInterface');
     }
 
     /**
@@ -123,7 +110,7 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('admins', $extensionMap);
         $this->assertCount(1, $extensionMap['admins']);
 
-        $this->assertContains('sonata_extension_publish', $extensionMap['admins']['sonata_post_admin']);
+        $this->assertArrayHasKey('sonata_extension_publish', $extensionMap['admins']['sonata_post_admin']);
         $this->assertCount(1, $extensionMap['admins']['sonata_post_admin']);
 
         // Excludes
@@ -132,11 +119,11 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('sonata_article_admin', $extensionMap['excludes']);
         $this->assertCount(1, $extensionMap['excludes']['sonata_article_admin']);
-        $this->assertContains('sonata_extension_history', $extensionMap['excludes']['sonata_article_admin']);
+        $this->assertArrayHasKey('sonata_extension_history', $extensionMap['excludes']['sonata_article_admin']);
 
         $this->assertArrayHasKey('sonata_post_admin', $extensionMap['excludes']);
         $this->assertCount(1, $extensionMap['excludes']['sonata_post_admin']);
-        $this->assertContains('sonata_extension_order', $extensionMap['excludes']['sonata_post_admin']);
+        $this->assertArrayHasKey('sonata_extension_order', $extensionMap['excludes']['sonata_post_admin']);
 
         // Implements
         $this->assertArrayHasKey('implements', $extensionMap);
@@ -144,8 +131,8 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('Sonata\AdminBundle\Tests\DependencyInjection\Publishable', $extensionMap['implements']);
         $this->assertCount(2, $extensionMap['implements']['Sonata\AdminBundle\Tests\DependencyInjection\Publishable']);
-        $this->assertContains('sonata_extension_publish', $extensionMap['implements']['Sonata\AdminBundle\Tests\DependencyInjection\Publishable']);
-        $this->assertContains('sonata_extension_order', $extensionMap['implements']['Sonata\AdminBundle\Tests\DependencyInjection\Publishable']);
+        $this->assertArrayHasKey('sonata_extension_publish', $extensionMap['implements']['Sonata\AdminBundle\Tests\DependencyInjection\Publishable']);
+        $this->assertArrayHasKey('sonata_extension_order', $extensionMap['implements']['Sonata\AdminBundle\Tests\DependencyInjection\Publishable']);
 
         // Extends
         $this->assertArrayHasKey('extends', $extensionMap);
@@ -153,7 +140,7 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('Sonata\AdminBundle\Tests\DependencyInjection\Post', $extensionMap['extends']);
         $this->assertCount(1, $extensionMap['extends']['Sonata\AdminBundle\Tests\DependencyInjection\Post']);
-        $this->assertContains('sonata_extension_order', $extensionMap['extends']['Sonata\AdminBundle\Tests\DependencyInjection\Post']);
+        $this->assertArrayHasKey('sonata_extension_order', $extensionMap['extends']['Sonata\AdminBundle\Tests\DependencyInjection\Post']);
 
         // Instanceof
         $this->assertArrayHasKey('instanceof', $extensionMap);
@@ -161,7 +148,7 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('Sonata\AdminBundle\Tests\DependencyInjection\Post', $extensionMap['instanceof']);
         $this->assertCount(1, $extensionMap['instanceof']['Sonata\AdminBundle\Tests\DependencyInjection\Post']);
-        $this->assertContains('sonata_extension_history', $extensionMap['instanceof']['Sonata\AdminBundle\Tests\DependencyInjection\Post']);
+        $this->assertArrayHasKey('sonata_extension_history', $extensionMap['instanceof']['Sonata\AdminBundle\Tests\DependencyInjection\Post']);
 
         // Uses
         $this->assertArrayHasKey('uses', $extensionMap);
@@ -170,7 +157,7 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
             $this->assertCount(1, $extensionMap['uses']);
             $this->assertArrayHasKey('Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait', $extensionMap['uses']);
             $this->assertCount(1, $extensionMap['uses']['Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait']);
-            $this->assertContains('sonata_extension_post', $extensionMap['uses']['Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait']);
+            $this->assertArrayHasKey('sonata_extension_post', $extensionMap['uses']['Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait']);
         } else {
             $this->assertCount(0, $extensionMap['uses']);
             $this->assertArrayNotHasKey('Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait', $extensionMap['uses']);
@@ -246,30 +233,36 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($container->hasDefinition('sonata_article_admin'));
         $this->assertTrue($container->hasDefinition('sonata_news_admin'));
 
+        $securityExtension = $container->get('sonata_extension_security');
+        $publishExtension = $container->get('sonata_extension_publish');
+        $historyExtension = $container->get('sonata_extension_history');
+        $orderExtension = $container->get('sonata_extension_order');
+        $filterExtension = $container->get('sonata_extension_filter');
+
         $def = $container->get('sonata_post_admin');
         $extensions = $def->getExtensions();
         $this->assertCount(4, $extensions);
 
-        $this->assertInstanceOf(get_class($this->securityExtension), $extensions[0]);
-        $this->assertInstanceOf(get_class($this->publishExtension), $extensions[1]);
-        $this->assertInstanceOf(get_class($this->historyExtension), $extensions[2]);
+        $this->assertSame($historyExtension, $extensions[0]);
+        $this->assertSame($publishExtension, $extensions[2]);
+        $this->assertSame($securityExtension, $extensions[3]);
 
         $def = $container->get('sonata_article_admin');
         $extensions = $def->getExtensions();
         $this->assertCount(5, $extensions);
 
-        $this->assertInstanceOf(get_class($this->securityExtension), $extensions[0]);
-        $this->assertInstanceOf(get_class($this->publishExtension), $extensions[1]);
-        $this->assertInstanceOf(get_class($this->orderExtension), $extensions[2]);
-        $this->assertInstanceOf(get_class($this->filterExtension), $extensions[4]);
+        $this->assertSame($filterExtension, $extensions[0]);
+        $this->assertSame($securityExtension, $extensions[1]);
+        $this->assertSame($publishExtension, $extensions[2]);
+        $this->assertSame($orderExtension, $extensions[4]);
 
         $def = $container->get('sonata_news_admin');
         $extensions = $def->getExtensions();
         $this->assertCount(5, $extensions);
-        $this->assertInstanceOf(get_class($this->securityExtension), $extensions[0]);
-        $this->assertInstanceOf(get_class($this->orderExtension), $extensions[1]);
-        $this->assertInstanceOf(get_class($this->historyExtension), $extensions[2]);
-        $this->assertInstanceOf(get_class($this->filterExtension), $extensions[4]);
+        $this->assertSame($historyExtension, $extensions[0]);
+        $this->assertSame($securityExtension, $extensions[1]);
+        $this->assertSame($filterExtension, $extensions[2]);
+        $this->assertSame($orderExtension, $extensions[4]);
     }
 
     public function testProcessThrowsExceptionIfTraitsAreNotAvailable()
@@ -308,11 +301,13 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
                 'sonata_extension_history' => array(
                     'excludes' => array('sonata_article_admin'),
                     'instanceof' => array('Sonata\AdminBundle\Tests\DependencyInjection\Post'),
+                    'priority' => 255,
                 ),
                 'sonata_extension_order' => array(
                     'excludes' => array('sonata_post_admin'),
                     'extends' => array('Sonata\AdminBundle\Tests\DependencyInjection\Post'),
                     'implements' => array('Sonata\AdminBundle\Tests\DependencyInjection\Publishable'),
+                    'priority' => -128,
                 ),
             ),
         );
@@ -390,25 +385,27 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
             ->setClass('Symfony\Component\EventDispatcher\EventDispatcher');
 
         // Add admin extension definition's
+        $extensionClass = get_class($this->createMock('Sonata\AdminBundle\Admin\AdminExtensionInterface'));
+
         $container
             ->register('sonata_extension_publish')
-            ->setClass(get_class($this->publishExtension));
+            ->setClass($extensionClass);
         $container
             ->register('sonata_extension_history')
-            ->setClass(get_class($this->historyExtension));
+            ->setClass($extensionClass);
         $container
             ->register('sonata_extension_order')
-            ->setClass(get_class($this->orderExtension));
+            ->setClass($extensionClass);
         $container
             ->register('sonata_extension_timestamp')
-            ->setClass(get_class($this->timestampExtension));
+            ->setClass($extensionClass);
         $container
             ->register('sonata_extension_security')
-            ->setClass(get_class($this->securityExtension))
+            ->setClass($extensionClass)
             ->addTag('sonata.admin.extension', array('global' => true));
         $container
             ->register('sonata_extension_filter')
-            ->setClass(get_class($this->filterExtension))
+            ->setClass($extensionClass)
             ->addTag('sonata.admin.extension', array('target' => 'sonata_news_admin'))
             ->addTag('sonata.admin.extension', array('target' => 'sonata_article_admin'));
 

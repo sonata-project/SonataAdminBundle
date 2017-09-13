@@ -70,6 +70,7 @@ or by adding it to your ``admin.yml``:
                 - null
                 - AppBundle\Entity\Car
                 - AppBundle:CRUD
+            public: true
 
 For more information about service configuration please refer to Step 3 of :doc:`../reference/getting_started`
 
@@ -92,12 +93,15 @@ to implement a ``clone`` action.
 
     class CRUDController extends Controller
     {
-        public function cloneAction()
+        /**
+         * @param $id
+         */
+        public function cloneAction($id)
         {
             $object = $this->admin->getSubject();
 
             if (!$object) {
-                throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+                throw new NotFoundHttpException(sprintf('unable to find the object with id: %s', $id));
             }
 
             // Be careful, you may need to overload the __clone method of your object
@@ -117,7 +121,7 @@ to implement a ``clone`` action.
         }
     }
 
-Here we first get the id of the object, see if it exists then clone it and insert the clone
+Here we first get the object, see if it exists then clone it and insert the clone
 as a new object. Finally we set a flash message indicating success and redirect to the list view.
 
 If you want to add the current filter parameters to the redirect url you can add them to the `generateUrl` method:

@@ -46,22 +46,14 @@ class AdminType extends AbstractType
                 $options['delete_options']['type_options']['translation_domain'] = $admin->getTranslationDomain();
             }
 
-            $builder->add(
-                '_delete',
-                $options['delete_options']['type'],
-                array_merge(
-                    $options['delete_options']['type_options'],
-                    array(
-                        'attr' => array('class' => 'sonata-admin-type-delete-checkbox'),
-                    )
-                )
-            );
+            $builder->add('_delete', $options['delete_options']['type'], $options['delete_options']['type_options']);
         }
 
         // hack to make sure the subject is correctly set
         // https://github.com/sonata-project/SonataAdminBundle/pull/2076
         if ($builder->getData() === null) {
             $p = new PropertyAccessor(false, true);
+
             try {
                 $parentSubject = $admin->getParentFieldDescription()->getAdmin()->getSubject();
                 if ($parentSubject !== null && $parentSubject !== false) {
@@ -79,7 +71,7 @@ class AdminType extends AbstractType
                         // for PropertyAccessor >= 2.5
                         $subject = $p->getValue(
                             $parentSubject,
-                            $this->getFieldDescription($options)->getFieldName().$options['property_path']
+                            $options['property_path']
                         );
                     }
                     $builder->setData($subject);
@@ -127,7 +119,10 @@ class AdminType extends AbstractType
                 return $options['btn_delete'] !== false;
             },
             'delete_options' => array(
-                'type' => 'checkbox',
+                // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
+                'type' => method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+                    ? 'Symfony\Component\Form\Extension\Core\Type\CheckboxType'
+                    : 'checkbox',
                 'type_options' => array(
                     'required' => false,
                     'mapped' => false,

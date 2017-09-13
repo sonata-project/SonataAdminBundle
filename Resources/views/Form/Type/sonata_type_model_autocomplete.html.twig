@@ -16,6 +16,16 @@ file that was distributed with this source code.
         {%- if required %} required="required"{% endif %}
     />
 
+    <select id="{{ id }}_autocomplete_input_v4" data-sonata-select2="false"
+        {%- if read_only is defined and read_only %} readonly="readonly"{% endif -%}
+        {%- if disabled %} disabled="disabled"{% endif -%}
+        {%- if required %} required="required"{% endif %}
+    >
+        {%- for idx, val  in value if idx~'' != '_labels' -%}
+            <option value="{{ val }}" selected>{{ value['_labels'][idx] }}</option>
+        {%- endfor -%}
+    </select>
+
     <div id="{{ id }}_hidden_inputs_wrap">
         {% if multiple -%}
             {%- for idx, val in value if idx~'' != '_labels' -%}
@@ -27,9 +37,16 @@ file that was distributed with this source code.
     </div>
 
     <script>
-        (function ($) {
-            var autocompleteInput = $('#{{ id }}_autocomplete_input');
-            autocompleteInput.select2({
+        jQuery(function ($) {
+            // Select2 v3 does not used same input as v4.
+            // NEXT_MAJOR: Remove this BC layer while upgrading to v4.
+            var usedInputRef = window.Select2 ? '#{{ id }}_autocomplete_input' : '#{{ id }}_autocomplete_input_v4';
+            var unusedInputRef = window.Select2 ? '#{{ id }}_autocomplete_input_v4' : '#{{ id }}_autocomplete_input';
+
+            $(unusedInputRef).remove();
+            var autocompleteInput = $(usedInputRef);
+
+            var select2Options = {
                 {%- set allowClearPlaceholder = (not multiple and not required) ? ' ' : '' -%}
                 placeholder: '{{ placeholder ?: allowClearPlaceholder }}', // allowClear needs placeholder to work properly
                 allowClear: {{ required ? 'false' : 'true' }},
@@ -37,19 +54,27 @@ file that was distributed with this source code.
                 readonly: {{ read_only is defined and read_only or attr.readonly is defined and attr.readonly ? 'true' : 'false' }},
                 minimumInputLength: {{ minimum_input_length }},
                 multiple: {{ multiple ? 'true' : 'false' }},
-                width: '{{ width }}',
+                width: function() {
+                    // Select2 v3 and v4 BC. If window.Select2 is defined, then the v3 is installed.
+                    // NEXT_MAJOR: Remove Select2 v3 support.
+                    return Admin.get_select2_width(window.Select2 ? this.element : jQuery(this));
+                },
                 dropdownAutoWidth: {{ dropdown_auto_width ? 'true' : 'false' }},
                 containerCssClass: '{{ container_css_class ~ ' form-control' }}',
                 dropdownCssClass: '{{ dropdown_css_class }}',
-                initSelection : function (element, callback) {
-                    callback(element.val());
-                },
                 ajax: {
                     url:  '{{ url ?: path(route.name, route.parameters|default([]))|e('js') }}',
                     dataType: 'json',
                     quietMillis: {{ quiet_millis }},
                     cache: {{ cache ? 'true' : 'false' }},
                     data: function (term, page) { // page is the one-based page number tracked by Select2
+                        // Select2 v4 got a "params" unique argument
+                        // NEXT_MAJOR: Remove this BC layer.
+                        if (typeof page === 'undefined') {
+                            page = typeof term.page !== 'undefined' ? term.page : 1;
+                            term = term.term;
+                        }
+
                         {% block sonata_type_model_autocomplete_ajax_request_parameters %}
                         return {
                                 //search term
@@ -91,21 +116,59 @@ file that was distributed with this source code.
                         };
                         {% endblock %}
                     },
-                    results: function (data, page) {
-                        // notice we return the value of more so Select2 knows if more results can be loaded
-                        return {results: data.items, more: data.more};
-                    }
-                },
-                formatResult: function (item) {
-                    return {% block sonata_type_model_autocomplete_dropdown_item_format %}'<div class="{{ dropdown_item_css_class }}">'+item.label+'<\/div>'{% endblock %};// format of one dropdown item
-                },
-                formatSelection: function (item) {
-                    return {% block sonata_type_model_autocomplete_selection_format %}item.label{% endblock %};// format selected item '<b>'+item.label+'</b>';
                 },
                 escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
-            });
+            };
 
-            autocompleteInput.on('change', function(e) {
+            // Select2 v3/v4 special options.
+            // NEXT_MAJOR: Remove this BC layer while upgrading to v4.
+            var templateResult = function (item) {
+                return {% block sonata_type_model_autocomplete_dropdown_item_format %}'<div class="{{ dropdown_item_css_class }}">'+item.label+'<\/div>'{% endblock %};// format of one dropdown item
+            };
+            var templateSelection = function (item) {
+                // Select2 v4 BC select pre-selection.
+                if (typeof item.label === 'undefined') {
+                    item.label = item.text;
+                }
+                return {% block sonata_type_model_autocomplete_selection_format %}item.label{% endblock %};// format selected item '<b>'+item.label+'</b>';
+            };
+
+            if (window.Select2) {
+                select2Options.initSelection = function (element, callback) {
+                    callback(element.val());
+                };
+                select2Options.ajax.results = function (data, page) {
+                    // notice we return the value of more so Select2 knows if more results can be loaded
+                    return {results: data.items, more: data.more};
+                };
+                select2Options.formatResult = templateResult;
+                select2Options.formatSelection = templateSelection;
+            } else {
+                select2Options.ajax.processResults = function (data, params) {
+                    return {
+                        results: data.items,
+                        pagination: {
+                            more: data.more
+                        }
+                    };
+                };
+                select2Options.templateResult = templateResult;
+                select2Options.templateSelection = templateSelection;
+            }
+            // END Select2 v3/v4 special options
+
+            autocompleteInput.select2(select2Options);
+
+            // Events structure is different between v3 and v4
+            // NEXT_MAJOR: Remove BC layer.
+            var boundEvents = window.Select2 ? 'change' : 'select2:select select2:unselect';
+            autocompleteInput.on(boundEvents, function(e) {
+                if (e.type === 'select2:select') {
+                    e.added = e.params.data;
+                }
+                if (e.type === 'select2:unselect') {
+                    e.removed = e.params.data;
+                }
 
                 // console.log('change '+JSON.stringify({val:e.val, added:e.added, removed:e.removed}));
 
@@ -162,16 +225,18 @@ file that was distributed with this source code.
                 {%- if multiple -%} ] {%- endif -%};
             {% endif -%}
 
-            if (undefined==data.length || 0<data.length) { // Leave placeholder if no data set
+            // Select2 v3 data populate.
+            // NEXT_MAJOR: Remove while dropping v3 support.
+            if (window.Select2 && (undefined==data.length || 0<data.length)) { // Leave placeholder if no data set
                 autocompleteInput.select2('data', data);
             }
 
             // remove unneeded autocomplete text input before form submit
-            $('#{{ id }}_autocomplete_input').closest('form').submit(function()
+            $(usedInputRef).closest('form').submit(function()
             {
-                $('#{{ id }}_autocomplete_input').remove();
+                $(usedInputRef).remove();
                 return true;
             });
-        })(jQuery);
+        });
     </script>
 {% endspaceless %}

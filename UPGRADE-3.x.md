@@ -1,6 +1,17 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.20 to 3.21
+=========================
+
+## Deprecated ModelChoiceList class in favor of ModelChoiceLoader
+
+The `ModelChoiceList` class is no longer supported. Please use the `ModelChoiceLoader` class instead.
+
+The `ModelChoiceList` is usually used on the [`choice_list`](http://symfony.com/doc/2.8/reference/forms/types/choice.html#choice-list)
+option of a `FormBuilder`. The `ModelChoiceLoader` class must be replaced on the
+[`choice_loader`](http://symfony.com/doc/3.3/reference/forms/types/choice.html#choice-loader) option.
+
 UPGRADE FROM 3.13 to 3.14
 =========================
 

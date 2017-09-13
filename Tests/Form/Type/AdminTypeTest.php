@@ -88,6 +88,47 @@ class AdminTypeTest extends TypeTestCase
         $this->assertTrue($form->isSynchronized());
     }
 
+    public function testDotFields()
+    {
+        if (!method_exists('Symfony\Component\PropertyAccess\PropertyAccessor', 'isReadable')) {
+            return $this->markTestSkipped('Testing ancient versions would be more complicated.');
+        }
+
+        $parentSubject = new \stdClass();
+        $parentSubject->foo = 1;
+
+        $parentAdmin = $this->prophesize('Sonata\AdminBundle\Admin\AdminInterface');
+        $parentAdmin->getSubject()->shouldBeCalled()->willReturn($parentSubject);
+        $parentField = $this->prophesize('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
+
+        $modelManager = $this->prophesize('Sonata\AdminBundle\Model\ModelManagerInterface');
+
+        $admin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
+        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(false);
+        $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
+        $admin->setSubject(1)->shouldBeCalled();
+        $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
+        $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);
+        $admin->getClass()->shouldBeCalled()->willReturn('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo');
+
+        $field = $this->prophesize('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $field->getAssociationAdmin()->shouldBeCalled()->willReturn($admin->reveal());
+
+        $this->builder->add('foo.bar');
+
+        try {
+            $type = new AdminType();
+            $type->buildForm($this->builder, array(
+                'sonata_field_description' => $field->reveal(),
+                'delete' => false, // not needed
+                'property_path' => 'foo', // actual test case
+            ));
+        } catch (\Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException $exception) {
+            $this->fail($exception->getMessage());
+        }
+    }
+
     protected function getExtensions()
     {
         $extensions = parent::getExtensions();

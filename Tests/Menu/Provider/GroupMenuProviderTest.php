@@ -94,6 +94,14 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('route_label', $children);
         $this->assertInstanceOf('Knp\Menu\MenuItem', $menu['foo_admin_label']);
         $this->assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
+
+        $extras = $menu['foo_admin_label']->getExtras();
+        $this->assertArrayHasKey('label_catalogue', $extras);
+        $this->assertSame($extras['label_catalogue'], 'SonataAdminBundle');
+
+        $extras = $menu['route_label']->getExtras();
+        $this->assertArrayHasKey('label_catalogue', $extras);
+        $this->assertSame($extras['label_catalogue'], 'SonataAdminBundle');
     }
 
     /**
@@ -141,6 +149,10 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
         $this->assertArrayNotHasKey('route_label', $children);
         $this->assertInstanceOf('Knp\Menu\MenuItem', $menu['foo_admin_label']);
         $this->assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
+
+        $extras = $menu['foo_admin_label']->getExtras();
+        $this->assertArrayHasKey('label_catalogue', $extras);
+        $this->assertSame($extras['label_catalogue'], 'SonataAdminBundle');
     }
 
     /**
@@ -177,6 +189,14 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('route_label', $children);
         $this->assertInstanceOf('Knp\Menu\MenuItem', $menu['foo_admin_label']);
         $this->assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
+
+        $extras = $menu['foo_admin_label']->getExtras();
+        $this->assertArrayHasKey('label_catalogue', $extras);
+        $this->assertSame($extras['label_catalogue'], 'SonataAdminBundle');
+
+        $extras = $menu['route_label']->getExtras();
+        $this->assertArrayHasKey('label_catalogue', $extras);
+        $this->assertSame($extras['label_catalogue'], 'SonataAdminBundle');
     }
 
     /**
@@ -261,6 +281,37 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
         $this->assertCount(0, $menu->getChildren());
+    }
+
+    /**
+     * @param array $adminGroups
+     *
+     * @dataProvider getAdminGroups
+     */
+    public function testGetMenuProviderKeepOpenOption(array $adminGroups)
+    {
+        $this->pool->expects($this->once())
+            ->method('getInstance')
+            ->with($this->equalTo('sonata_admin_foo_service'))
+            ->will($this->returnValue($this->getAdminMock()));
+
+        $this->checker->expects($this->any())
+            ->method('isGranted')
+            ->willReturn(true);
+
+        $adminGroups['keep_open'] = true;
+
+        $menu = $this->provider->get(
+            'providerFoo',
+            array(
+                'name' => 'foo',
+                'group' => $adminGroups,
+            )
+        );
+
+        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
+        $this->assertSame('keep-open', $menu->getAttribute('class'));
+        $this->assertTrue($menu->getExtra('keep_open'));
     }
 
     /**
@@ -349,6 +400,10 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
         $admin->expects($this->any())
             ->method('generateMenuUrl')
             ->will($this->returnValue(array()));
+
+        $admin->expects($this->any())
+            ->method('getTranslationDomain')
+            ->will($this->returnValue('SonataAdminBundle'));
 
         return $admin;
     }

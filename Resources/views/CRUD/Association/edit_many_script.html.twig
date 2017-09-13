@@ -1,0 +1,423 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+
+{#
+
+This code manages the many-to-[one|many] association field popup
+
+#}
+
+{% autoescape false %}
+
+{% set associationadmin = sonata_admin.field_description.associationadmin %}
+
+<!-- edit many association -->
+
+<script type="text/javascript">
+
+    {#
+      handle link click in a list :
+        - if the parent has an objectId defined then the related input get updated
+        - if the parent has NO object then an ajax request is made to refresh the popup
+    #}
+
+    var field_dialog_form_list_link_{{ id }} = function(event) {
+        initialize_popup_{{ id }}();
+
+        var target = jQuery(this);
+
+        if (target.attr('href').length === 0 || target.attr('href') === '#') {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        Admin.log('[{{ id }}|field_dialog_form_list_link] handle link click in a list');
+
+        var element = jQuery(this).parents('#field_dialog_{{ id }} .sonata-ba-list-field');
+
+        // the user does not click on a row column
+        if (element.length == 0) {
+            Admin.log('[{{ id }}|field_dialog_form_list_link] the user does not click on a row column, make ajax call to retrieve inner html');
+            // make a recursive call (ie: reset the filter)
+            jQuery.ajax({
+                type: 'GET',
+                url: jQuery(this).attr('href'),
+                dataType: 'html',
+                success: function(html) {
+                    Admin.log('[{{ id }}|field_dialog_form_list_link] callback success, attach valid js event');
+
+                    field_dialog_content_{{ id }}.html(html);
+                    field_dialog_form_list_handle_action_{{ id }}();
+
+                    Admin.shared_setup(field_dialog_{{ id }});
+                }
+            });
+
+            return;
+        }
+
+        Admin.log('[{{ id }}|field_dialog_form_list_link] the user select one element, update input and hide the modal');
+
+        jQuery('#{{ id }}').val(element.attr('objectId'));
+        jQuery('#{{ id }}').trigger('change');
+
+        field_dialog_{{ id }}.modal('hide');
+    };
+
+    // this function handle action on the modal list when inside a selected list
+    var field_dialog_form_list_handle_action_{{ id }}  =  function() {
+        Admin.log('[{{ id }}|field_dialog_form_list_handle_action] attaching valid js event');
+
+        // capture the submit event to make an ajax call, ie : POST data to the
+        // related create admin
+        jQuery('a', field_dialog_{{ id }}).on('click', field_dialog_form_list_link_{{ id }});
+        jQuery('form', field_dialog_{{ id }}).on('submit', function(event) {
+            event.preventDefault();
+
+            var form = jQuery(this);
+
+            Admin.log('[{{ id }}|field_dialog_form_list_handle_action] catching submit event, sending ajax request');
+
+            jQuery(form).ajaxSubmit({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                dataType: 'html',
+                data: {_xml_http_request: true},
+                success: function(html) {
+
+                    Admin.log('[{{ id }}|field_dialog_form_list_handle_action] form submit success, restoring event');
+
+                    field_dialog_content_{{ id }}.html(html);
+                    field_dialog_form_list_handle_action_{{ id }}();
+
+                    Admin.shared_setup(field_dialog_{{ id }});
+                }
+            });
+        });
+    };
+
+    // handle the list link
+    var field_dialog_form_list_{{ id }} = function(event) {
+
+        initialize_popup_{{ id }}();
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        Admin.log('[{{ id }}|field_dialog_form_list] open the list modal');
+
+        var a = jQuery(this);
+
+        field_dialog_content_{{ id }}.html('');
+
+        // retrieve the form element from the related admin generator
+        jQuery.ajax({
+            url: a.attr('href'),
+            dataType: 'html',
+            success: function(html) {
+
+                Admin.log('[{{ id }}|field_dialog_form_list] retrieving the list content');
+
+                // populate the popup container
+                field_dialog_content_{{ id }}.html(html);
+
+                field_dialog_title_{{ id }}.html("{{ associationadmin.label|trans({}, associationadmin.translationdomain) }}");
+
+                Admin.shared_setup(field_dialog_{{ id }});
+
+                field_dialog_form_list_handle_action_{{ id }}();
+
+                // open the dialog in modal mode
+                field_dialog_{{ id }}.modal();
+
+                Admin.setup_list_modal(field_dialog_{{ id }});
+            }
+        });
+    };
+
+    // handle the add link
+    var field_dialog_form_add_{{ id }} = function(event) {
+        initialize_popup_{{ id }}();
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        var a = jQuery(this);
+
+        field_dialog_content_{{ id }}.html('');
+
+        Admin.log('[{{ id }}|field_dialog_form_add] add link action');
+
+        // retrieve the form element from the related admin generator
+        jQuery.ajax({
+            url: a.attr('href'),
+            dataType: 'html',
+            success: function(html) {
+
+                Admin.log('[{{ id }}|field_dialog_form_add] ajax success', field_dialog_{{ id }});
+
+                // populate the popup container
+                field_dialog_content_{{ id }}.html(html);
+                field_dialog_title_{{ id }}.html("{{ associationadmin.label|trans({}, associationadmin.translationdomain) }}");
+
+                Admin.shared_setup(field_dialog_{{ id }});
+
+                // capture the submit event to make an ajax call, ie : POST data to the
+                // related create admin
+                jQuery('a', field_dialog_{{ id }}).on('click', field_dialog_form_action_{{ id }});
+                jQuery('form', field_dialog_{{ id }}).on('submit', field_dialog_form_action_{{ id }});
+
+                // open the dialog in modal mode
+                field_dialog_{{ id }}.modal();
+
+                Admin.setup_list_modal(field_dialog_{{ id }});
+            }
+        });
+    };
+
+    // handle the post data
+    var field_dialog_form_action_{{ id }} = function(event) {
+
+        var element = jQuery(this);
+
+        // return if the link is an anchor inside the same page
+        if (
+            this.nodeName === 'A'
+            && (
+                element.attr('href').length === 0
+                || element.attr('href')[0] === '#'
+                || element.attr('href').substr(0, 11) === 'javascript:'
+            )
+        ) {
+            Admin.log('[{{ id }}|field_dialog_form_action] element is an anchor or a script, skipping action', this);
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        Admin.log('[{{ id }}|field_dialog_form_action] action catch', this);
+
+        initialize_popup_{{ id }}();
+
+        if (this.nodeName == 'FORM') {
+            var url  = element.attr('action');
+            var type = element.attr('method');
+        } else if (this.nodeName == 'A') {
+            var url  = element.attr('href');
+            var type = 'GET';
+        } else {
+            alert('unexpected element : @' + this.nodeName + '@');
+            return;
+        }
+
+        if (element.hasClass('sonata-ba-action')) {
+            Admin.log('[{{ id }}|field_dialog_form_action] reserved action stop catch all events');
+            return;
+        }
+
+        var data = {
+            _xml_http_request: true
+        }
+
+        var form = jQuery(this);
+
+        Admin.log('[{{ id }}|field_dialog_form_action] execute ajax call');
+
+        // the ajax post
+        jQuery(form).ajaxSubmit({
+            url: url,
+            type: type,
+            data: data,
+            success: function(data) {
+                Admin.log('[{{ id }}|field_dialog_form_action] ajax success');
+
+                // if the crud action return ok, then the element has been added
+                // so the widget container must be refresh with the last option available
+                if (typeof data != 'string' && data.result == 'ok') {
+                    field_dialog_{{ id }}.modal('hide');
+
+                    {% if sonata_admin.edit == 'list' %}
+                        {#
+                           in this case we update the hidden input, and call the change event to
+                           retrieve the post information
+                        #}
+                        jQuery('#{{ id }}').val(data.objectId);
+                        jQuery('#{{ id }}').change();
+
+                    {% else %}
+
+                        // reload the form element
+                        jQuery('#field_widget_{{ id }}').closest('form').ajaxSubmit({
+                            url: '{{ path('sonata_admin_retrieve_form_element', {
+                                'elementId': id,
+                                'subclass':  sonata_admin.admin.getActiveSubclassCode(),
+                                'objectId':  sonata_admin.admin.root.id(sonata_admin.admin.root.subject),
+                                'uniqid':    sonata_admin.admin.root.uniqid,
+                                'code':      sonata_admin.admin.root.code
+                            }) }}',
+                            data: {_xml_http_request: true },
+                            dataType: 'html',
+                            type: 'POST',
+                            success: function(html) {
+                                jQuery('#field_container_{{ id }}').replaceWith(html);
+                                var newElement = jQuery('#{{ id }} [value="' + data.objectId + '"]');
+                                if (newElement.is("input")) {
+                                    newElement.attr('checked', 'checked');
+                                } else {
+                                    newElement.attr('selected', 'selected');
+                                }
+
+                                jQuery('#field_container_{{ id }}').trigger('sonata-admin-append-form-element');
+                            }
+                        });
+
+                    {% endif %}
+
+                    return;
+                }
+
+                // otherwise, display form error
+                field_dialog_content_{{ id }}.html(data);
+
+                Admin.shared_setup(field_dialog_{{ id }});
+
+                // reattach the event
+                jQuery('form', field_dialog_{{ id }}).submit(field_dialog_form_action_{{ id }});
+            }
+        });
+
+        return false;
+    };
+
+    var field_dialog_{{ id }}         = false;
+    var field_dialog_content_{{ id }} = false;
+    var field_dialog_title_{{ id }}   = false;
+
+    function initialize_popup_{{ id }}() {
+        // initialize component
+        if (!field_dialog_{{ id }}) {
+            field_dialog_{{ id }}         = jQuery("#field_dialog_{{ id }}");
+            field_dialog_content_{{ id }} = jQuery(".modal-body", "#field_dialog_{{ id }}");
+            field_dialog_title_{{ id }}   = jQuery(".modal-title", "#field_dialog_{{ id }}");
+
+            // move the dialog as a child of the root element, nested form breaks html ...
+            jQuery(document.body).append(field_dialog_{{ id }});
+
+            Admin.log('[{{ id }}|field_dialog] move dialog container as a document child');
+        }
+    }
+
+    {#
+        This code is used to defined the "add" popup
+    #}
+    // this function initializes the popup
+    // this can be only done this way as popup can be cascaded
+    function start_field_dialog_form_add_{{ id }}(link) {
+
+        // remove the html event
+        link.onclick = null;
+
+        initialize_popup_{{ id }}();
+
+        // add the jQuery event to the a element
+        jQuery(link)
+            .click(field_dialog_form_add_{{ id }})
+            .trigger('click')
+        ;
+
+        return false;
+    }
+
+    if (field_dialog_{{ id }}) {
+        Admin.shared_setup(field_dialog_{{ id }});
+    }
+
+    {% if sonata_admin.edit == 'list' %}
+        {#
+            This code is used to defined the "list" popup
+        #}
+        // this function initializes the popup
+        // this can be only done this way as popup can be cascaded
+        function start_field_dialog_form_list_{{ id }}(link) {
+
+            link.onclick = null;
+
+            initialize_popup_{{ id }}();
+
+            // add the jQuery event to the a element
+            jQuery(link)
+                .click(field_dialog_form_list_{{ id }})
+                .trigger('click')
+            ;
+
+            return false;
+        }
+
+        function remove_selected_element_{{ id }}(link) {
+
+            link.onclick = null;
+
+            jQuery(link)
+                .click(field_remove_element_{{ id}})
+                .trigger('click')
+            ;
+
+            return false;
+        }
+
+        function field_remove_element_{{ id }}(event) {
+            event.preventDefault();
+
+            if (jQuery('#{{ id }} option').get(0)) {
+                jQuery('#{{ id }}').attr('selectedIndex', '-1').children("option:selected").attr("selected", false);
+            }
+
+            jQuery('#{{ id }}').val('');
+            jQuery('#{{ id }}').trigger('change');
+
+            return false;
+        }
+        {#
+          attach onchange event on the input
+        #}
+
+        // update the label
+        jQuery('#{{ id }}').on('change', function(event) {
+
+            Admin.log('[{{ id }}|on:change] update the label');
+
+            jQuery('#field_widget_{{ id }}').html("<span><img src=\"{{ asset('bundles/sonataadmin/ajax-loader.gif') }}\" style=\"vertical-align: middle; margin-right: 10px\"/>{{ 'loading_information'|trans([], 'SonataAdminBundle') }}</span>");
+            jQuery.ajax({
+                type: 'GET',
+                url: '{{ path('sonata_admin_short_object_information', {
+                    'objectId': 'OBJECT_ID',
+                    'uniqid': associationadmin.uniqid,
+                    'code': associationadmin.code,
+                    'linkParameters': sonata_admin.field_description.options.link_parameters
+                })}}'.replace('OBJECT_ID', jQuery(this).val()),
+                dataType: 'html',
+                success: function(html) {
+                    jQuery('#field_widget_{{ id }}').html(html);
+                }
+            });
+        });
+
+    {% endif %}
+
+
+</script>
+<!-- / edit many association -->
+
+{% endautoescape %}

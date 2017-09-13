@@ -109,7 +109,7 @@ class GroupMenuProvider implements MenuProviderInterface
                     $label = $admin->getLabel();
                     $options = $admin->generateMenuUrl('list', array(), $item['route_absolute']);
                     $options['extras'] = array(
-                        'translation_domain' => $admin->getTranslationDomain(),
+                        'label_catalogue' => $admin->getTranslationDomain(),
                         'admin' => $admin,
                     );
                 } else {
@@ -128,7 +128,7 @@ class GroupMenuProvider implements MenuProviderInterface
                         'routeParameters' => $item['route_params'],
                         'routeAbsolute' => $item['route_absolute'],
                         'extras' => array(
-                            'translation_domain' => $group['label_catalogue'],
+                            'label_catalogue' => $group['label_catalogue'],
                         ),
                     );
                 }
@@ -138,14 +138,19 @@ class GroupMenuProvider implements MenuProviderInterface
 
             if (false === $menuItem->hasChildren()) {
                 $menuItem->setDisplay(false);
+            } elseif (!empty($group['keep_open'])) {
+                $menuItem->setAttribute('class', 'keep-open');
+                $menuItem->setExtra('keep_open', $group['keep_open']);
             }
         } else {
             foreach ($group['items'] as $item) {
                 if (isset($item['admin']) && !empty($item['admin'])) {
                     $admin = $this->pool->getInstance($item['admin']);
 
-                    // skip menu item if no `list` url is available or user doesn't have the LIST access rights
+                    // Do not display group if no `list` url is available or user doesn't have the LIST access rights
                     if (!$admin->hasRoute('list') || !$admin->hasAccess('list')) {
+                        $menuItem->setDisplay(false);
+
                         continue;
                     }
 
@@ -154,7 +159,8 @@ class GroupMenuProvider implements MenuProviderInterface
                     $menuItem->setExtra('on_top', $group['on_top']);
                     $menuItem->setUri($options);
                 } else {
-                    $menuItem->setUri($item['route']);
+                    $router = $this->pool->getContainer()->get('router');
+                    $menuItem->setUri($router->generate($item['route']));
                 }
             }
         }

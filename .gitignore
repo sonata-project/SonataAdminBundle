@@ -9,6 +9,7 @@ phpunit.xml
 Resources/public/vendor/admin-lte/bootstrap
 Resources/public/vendor/admin-lte/build
 Resources/public/vendor/admin-lte/dist/img
+!Resources/public/vendor/admin-lte/dist/img/boxed-bg.jpg # Only image called in AdminLTe.css
 Resources/public/vendor/admin-lte/dist/js/app.js
 Resources/public/vendor/admin-lte/dist/js/demo.js
 Resources/public/vendor/admin-lte/dist/js/pages

@@ -12,14 +12,11 @@
 namespace Sonata\AdminBundle\Admin;
 
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
-use Knp\Menu\ItemInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\CoreBundle\Model\Metadata;
@@ -34,8 +31,18 @@ use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-interface AdminInterface
+interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
+    /**
+     * @param MenuFactoryInterface $menuFactory
+     */
+    public function setMenuFactory(MenuFactoryInterface $menuFactory);
+
+    /**
+     * @return MenuFactoryInterface
+     */
+    public function getMenuFactory();
+
     /**
      * @param FormContractorInterface $formContractor
      */
@@ -94,11 +101,6 @@ interface AdminInterface
     public function setConfigurationPool(Pool $pool);
 
     /**
-     * @param RouteGeneratorInterface $routeGenerator
-     */
-    public function setRouteGenerator(RouteGeneratorInterface $routeGenerator);
-
-    /**
      * Returns subjectClass/class/subclass name managed
      * - subclass name if subclass parameter is defined
      * - subject class name if subject is defined
@@ -131,40 +133,6 @@ interface AdminInterface
      * @return string
      */
     public function getBaseControllerName();
-
-    /**
-     * Generates the object url with the given $name.
-     *
-     * @param string $name
-     * @param mixed  $object
-     * @param array  $parameters
-     * @param bool   $absolute
-     *
-     * @return string return a complete url
-     */
-    public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = false);
-
-    /**
-     * Generates an url for the given parameters.
-     *
-     * @param string $name
-     * @param array  $parameters
-     * @param bool   $absolute
-     *
-     * @return string return a complete url
-     */
-    public function generateUrl($name, array $parameters = array(), $absolute = false);
-
-    /**
-     * Generates an url for the given parameters.
-     *
-     * @param string $name
-     * @param array  $parameters
-     * @param bool   $absolute
-     *
-     * @return array return url parts: 'route', 'routeParameters', 'routeAbsolute'
-     */
-    public function generateMenuUrl($name, array $parameters = array(), $absolute = false);
 
     /**
      * Sets a list of templates.
@@ -209,22 +177,6 @@ interface AdminInterface
      * @return FormBuilderInterface the form builder
      */
     public function getFormBuilder();
-
-    /**
-     * Return FormFieldDescription.
-     *
-     * @param string $name
-     *
-     * @return FieldDescriptionInterface
-     */
-    public function getFormFieldDescription($name);
-
-    /**
-     * Build and return the collection of form FieldDescription.
-     *
-     * @return array collection of form FieldDescription
-     */
-    public function getFormFieldDescriptions();
 
     /**
      * Returns a form depend on the given $object.
@@ -302,20 +254,6 @@ interface AdminInterface
     public function trans($id, array $parameters = array(), $domain = null, $locale = null);
 
     /**
-     * Returns the list of available urls.
-     *
-     * @return RouteCollection the list of available urls
-     */
-    public function getRoutes();
-
-    /**
-     * Return the parameter name used to represent the id in the url.
-     *
-     * @return string
-     */
-    public function getRouterIdParameter();
-
-    /**
      * Returns the parameter representing request id, ie: id or childId.
      *
      * @return string
@@ -342,92 +280,6 @@ interface AdminInterface
     public function isCurrentRoute($name, $adminCode = null);
 
     /**
-     * Returns true if the admin has a FieldDescription with the given $name.
-     *
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function hasShowFieldDescription($name);
-
-    /**
-     * add a FieldDescription.
-     *
-     * @param string                    $name
-     * @param FieldDescriptionInterface $fieldDescription
-     */
-    public function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription);
-
-    /**
-     * Remove a ShowFieldDescription.
-     *
-     * @param string $name
-     */
-    public function removeShowFieldDescription($name);
-
-    /**
-     * add a list FieldDescription.
-     *
-     * @param string                    $name
-     * @param FieldDescriptionInterface $fieldDescription
-     */
-    public function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription);
-
-    /**
-     * Remove a list FieldDescription.
-     *
-     * @param string $name
-     */
-    public function removeListFieldDescription($name);
-
-    /**
-     * Returns true if the filter FieldDescription exists.
-     *
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function hasFilterFieldDescription($name);
-
-    /**
-     * add a filter FieldDescription.
-     *
-     * @param string                    $name
-     * @param FieldDescriptionInterface $fieldDescription
-     */
-    public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription);
-
-    /**
-     * Remove a filter FieldDescription.
-     *
-     * @param string $name
-     */
-    public function removeFilterFieldDescription($name);
-
-    /**
-     * Returns the filter FieldDescription collection.
-     *
-     * @return FieldDescriptionInterface[]
-     */
-    public function getFilterFieldDescriptions();
-
-    /**
-     * Returns a filter FieldDescription.
-     *
-     * @param string $name
-     *
-     * @return FieldDescriptionInterface|null
-     */
-    public function getFilterFieldDescription($name);
-
-    /**
-     * Returns a list depend on the given $object.
-     *
-     * @return FieldDescriptionCollection
-     */
-    public function getList();
-
-    /**
      * @param SecurityHandlerInterface $securityHandler
      */
     public function setSecurityHandler(SecurityHandlerInterface $securityHandler);
@@ -444,13 +296,6 @@ interface AdminInterface
      * @return bool
      */
     public function isGranted($name, $object = null);
-
-    /**
-     * @param mixed $entity
-     *
-     * @return string a string representation of the id that is save to use in an url
-     */
-    public function getUrlsafeIdentifier($entity);
 
     /**
      * @param mixed $entity
@@ -516,16 +361,6 @@ interface AdminInterface
     public function getExtensions();
 
     /**
-     * @param \Knp\Menu\FactoryInterface $menuFactory
-     */
-    public function setMenuFactory(MenuFactoryInterface $menuFactory);
-
-    /**
-     * @return \Knp\Menu\FactoryInterface
-     */
-    public function getMenuFactory();
-
-    /**
      * @param RouteBuilderInterface $routeBuilder
      */
     public function setRouteBuilder(RouteBuilderInterface $routeBuilder);
@@ -560,38 +395,6 @@ interface AdminInterface
      * @return bool
      */
     public function supportsPreviewMode();
-
-    /**
-     * add an Admin child to the current one.
-     *
-     * @param AdminInterface $child
-     */
-    public function addChild(AdminInterface $child);
-
-    /**
-     * Returns true or false if an Admin child exists for the given $code.
-     *
-     * @param string $code Admin code
-     *
-     * @return bool True if child exist, false otherwise
-     */
-    public function hasChild($code);
-
-    /**
-     * Returns an collection of admin children.
-     *
-     * @return array list of Admin children
-     */
-    public function getChildren();
-
-    /**
-     * Returns an admin child with the given $code.
-     *
-     * @param string $code
-     *
-     * @return AdminInterface|null
-     */
-    public function getChild($code);
 
     /**
      * @return mixed a new object instance
@@ -679,60 +482,6 @@ interface AdminInterface
      * @return \Exporter\Source\SourceIteratorInterface
      */
     public function getDataSourceIterator();
-
-    /**
-     * @param mixed $object
-     *
-     * @return mixed
-     */
-    public function update($object);
-
-    /**
-     * @param mixed $object
-     *
-     * @return mixed
-     */
-    public function create($object);
-
-    /**
-     * @param mixed $object
-     */
-    public function delete($object);
-
-    /**
-     * @param mixed $object
-     */
-    public function preValidate($object);
-
-    /**
-     * @param mixed $object
-     */
-    public function preUpdate($object);
-
-    /**
-     * @param mixed $object
-     */
-    public function postUpdate($object);
-
-    /**
-     * @param mixed $object
-     */
-    public function prePersist($object);
-
-    /**
-     * @param mixed $object
-     */
-    public function postPersist($object);
-
-    /**
-     * @param mixed $object
-     */
-    public function preRemove($object);
-
-    /**
-     * @param mixed $object
-     */
-    public function postRemove($object);
 
     /**
      * Call before the batch action, allow you to alter the query and the idx.
@@ -1001,16 +750,6 @@ interface AdminInterface
     public function getTranslationLabel($label, $context = '', $type = '');
 
     /**
-     * Build the tab menu related to the current action.
-     *
-     * @param string         $action
-     * @param AdminInterface $childAdmin
-     *
-     * @return ItemInterface|bool
-     */
-    public function buildTabMenu($action, AdminInterface $childAdmin = null);
-
-    /**
      * @param $object
      *
      * @return Metadata
@@ -1035,21 +774,6 @@ interface AdminInterface
     public function getListMode();
 
     /**
-     * Return the controller access mapping.
-     *
-     * @return array
-     */
-    public function getAccessMapping();
-
-    /**
-     * Hook to handle access authorization.
-     *
-     * @param string $action
-     * @param object $object
-     */
-    public function checkAccess($action, $object = null);
-
-    /**
      * @param string $action
      * @param mixed  $object
      *
@@ -1065,47 +789,28 @@ interface AdminInterface
     public function getDashboardActions();
 
     /**
-     * Hook to handle access authorization, without throw Exception.
+     * Returns the result link for an object.
      *
-     * @param string $action
-     * @param object $object
+     * @param mixed $object
      *
-     * @return bool
+     * @return string|null
      */
-    public function hasAccess($action, $object = null);
+    public function getSearchResultLink($object);
 
-     /**
-      * Returns the result link for an object.
-      *
-      * @param mixed $object
-      *
-      * @return string|null
-      */
-     public function getSearchResultLink($object);
+    /**
+     * Setting to true will enable mosaic button for the admin screen.
+     * Setting to false will hide mosaic button for the admin screen.
+     *
+     * @param bool $isShown
+     */
+    public function showMosaicButton($isShown);
 
-      /**
-       * Setting to true will enable mosaic button for the admin screen.
-       * Setting to false will hide mosaic button for the admin screen.
-       *
-       * @param bool $isShown
-       */
-      public function showMosaicButton($isShown);
-
-    /*
-     * Checks if a filter type is set to a default value
+    /**
+     * Checks if a filter type is set to a default value.
      *
      * @param string $name
      *
      * @return bool
      */
-//    NEXT_MAJOR: uncomment this method in 4.0
-    // public function isDefaultFilter($name);
-
-    /*
-     * Returns a list of default filters.
-     *
-     * @return array
-     */
-//    NEXT_MAJOR: uncomment this method in 4.0
-    // public function getDefaultFilterValues();
+    public function isDefaultFilter($name);
 }

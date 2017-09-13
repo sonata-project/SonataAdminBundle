@@ -8,19 +8,10 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 
 #}
-{% import _self as list %}
-{%  macro render_array(value) %}
-    {% for key, val in value %}
-        {% if val is iterable %}
-            [{{ key }} => {{ list.render_array(val) }}}]
-        {%  else %}
-            [{{ key }} => {{ val }}]
-        {%  endif %}
-    {% endfor %}
-{% endmacro %}
+{% import 'SonataAdminBundle:CRUD:base_array_macro.html.twig' as list %}
 
 {% extends admin.getTemplate('base_list_field') %}
 
 {% block field %}
-    {{ list.render_array(value) }}
+    {{ list.render_array(value, field_description.options.inline is not defined or field_description.options.inline) }}
 {% endblock %}

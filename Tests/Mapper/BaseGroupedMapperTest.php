@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Tests\Mapper;
 
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 
 /**
@@ -30,7 +31,28 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockBuilder('Sonata\AdminBundle\Admin\AbstractAdmin')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $labelStrategy = $this->getMock('Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface');
+        $labelStrategy->expects($this->any())
+            ->method('getLabel')
+            ->will($this->returnCallback(function ($label) {
+                return 'label_'.strtolower($label);
+            }));
+
+        $admin->expects($this->any())
+            ->method('getLabelTranslatorStrategy')
+            ->will($this->returnValue($labelStrategy));
+
+        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
+        $configurationPool = new Pool($container, 'myTitle', 'myLogoTitle');
+
+        $admin->expects($this->any())
+            ->method('getConfigurationPool')
+            ->will($this->returnValue($configurationPool));
+
         $builder = $this->getMockForAbstractClass('Sonata\AdminBundle\Builder\BuilderInterface');
 
         $this->baseGroupedMapper = $this->getMockForAbstractClass('Sonata\AdminBundle\Mapper\BaseGroupedMapper', array($builder, $admin));
@@ -150,6 +172,42 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
     public function testEndException()
     {
         $this->baseGroupedMapper->end();
+    }
+
+    public function labelDataProvider()
+    {
+        return array(
+            'nominal use case not translated' => array(false, 'fooGroup1', null, 'fooGroup1'),
+            'nominal use case translated' => array(true, 'fooGroup1', null, 'label_foogroup1'),
+            'custom label not translated' => array(false, 'fooGroup1', 'custom_label', 'custom_label'),
+            'custom label translated' => array(true, 'fooGroup1', 'custom_label', 'custom_label'),
+        );
+    }
+
+    /**
+     * @dataProvider labelDataProvider
+     */
+    public function testLabel($translated, $name, $label, $expectedLabel)
+    {
+        $container = $this->baseGroupedMapper
+            ->getAdmin()
+            ->getConfigurationPool()
+            ->getContainer();
+
+        $container->expects($this->any())
+            ->method('getParameter')
+            ->will($this->returnValue($translated));
+
+        $options = array();
+
+        if (null !== $label) {
+            $options['label'] = $label;
+        }
+
+        $this->baseGroupedMapper->with($name, $options);
+
+        $this->assertSame($translated ? 'label_default' : 'default', $this->tabs['default']['label']);
+        $this->assertSame($expectedLabel, $this->groups[$name]['label']);
     }
 
     public function getTabs()

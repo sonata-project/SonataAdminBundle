@@ -26,7 +26,7 @@ html            display (and optionally truncate or strip tags from) raw html
 ============    =============================================
 
 Theses types accept an ``editable`` parameter to edit the value from within the list action.
-This is currently limited to scalar types (text, integer, url...).
+This is currently limited to scalar types (text, integer, url...) and choice types with association field.
 
 .. note::
 

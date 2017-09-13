@@ -131,7 +131,9 @@ file that was distributed with this source code.
         {% endif %}
 
         <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
-            {% if not sonata_admin.admin %}
+            {% if translation_domain is same as(false) %}
+                {{- label -}}
+            {% elseif not sonata_admin.admin %}
                 {{- label|trans({}, translation_domain) -}}
             {% else %}
                 {{ label|trans({}, sonata_admin.field_description.translationDomain ?: admin.translationDomain) }}
@@ -461,37 +463,41 @@ file that was distributed with this source code.
 
 {% block sonata_type_choice_field_mask_widget %}
     {{ block('choice_widget') }}
-    {% set main_form_name = id|slice(0, id|length - name|length) %}
+    {# Taking the form name excluding ending field glue character #}
+    {% set main_form_name = id|slice(0, (id|length - name|length)-1) %}
     <script>
         jQuery(document).ready(function() {
             var allFields = {{ all_fields|json_encode|raw }};
             var map = {{ map|json_encode|raw }};
 
-            var showMaskChoiceEl = jQuery('#{{ main_form_name }}{{ name }}');
+            var showMaskChoiceEl = jQuery('#{{ main_form_name }}_{{ name }}');
 
             showMaskChoiceEl.on('change', function () {
                 choice_field_mask_show(jQuery(this).val());
             });
 
-            function choice_field_mask_show(val)
-            {
+            function choice_field_mask_show(val) {
                 var controlGroupIdFunc = function (field) {
-                    return '#sonata-ba-field-container-{{ main_form_name }}' + field;
+                    // Most of fields are named with an underscore
+                    var defaultFieldId = '#sonata-ba-field-container-{{ main_form_name }}_' + field;
 
+                    // Some fields may be named with a dash (like keys of immutable array form type)
+                    if (jQuery(defaultFieldId).length === 0) {
+                        return '#sonata-ba-field-container-{{ main_form_name }}-' + field;
+                    }
+
+                    return defaultFieldId;
                 };
-                if (map[val] == undefined) {
-                    jQuery.each(allFields, function (i, field) {
-                        jQuery(controlGroupIdFunc(field)).hide();
-                    });
-                    return;
-                }
 
                 jQuery.each(allFields, function (i, field) {
                     jQuery(controlGroupIdFunc(field)).hide();
                 });
-                jQuery.each(map[val], function (i, field) {
-                    jQuery(controlGroupIdFunc(field)).show();
-                });
+
+                if (map[val]) {
+                    jQuery.each(map[val], function (i, field) {
+                        jQuery(controlGroupIdFunc(field)).show();
+                    });
+                }
             }
             choice_field_mask_show(showMaskChoiceEl.val());
         });

@@ -1,0 +1,127 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+{% if sonata_admin.field_description.hasassociationadmin %}
+    <div id="field_container_{{ id }}" class="field-container">
+        <span id="field_widget_{{ id }}" >
+            {% if sonata_admin.edit == 'inline' %}
+                {% if sonata_admin.inline == 'table' %}
+                    {% if form.children|length > 0 %}
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    {% for field_name, nested_field in form.children[0].children %}
+                                        {% if field_name == '_delete' %}
+                                            <th>{{ 'action_delete'|trans({}, 'SonataAdminBundle') }}</th>
+                                        {% else %}
+                                            <th {{ nested_field.vars['required']  ? 'class="required"' : '' }}>
+                                                {{ nested_field.vars['sonata_admin'].admin.trans(nested_field.vars.label) }}
+                                            </th>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody class="sonata-ba-tbody">
+                                {% for nested_group_field_name, nested_group_field in form.children %}
+                                    <tr>
+                                        {% for field_name, nested_field in nested_group_field.children %}
+                                            <td class="sonata-ba-td-{{ id }}-{{ field_name  }} control-group{% if nested_field.vars.errors|length > 0 %} error sonata-ba-field-error{% endif %}">
+                                                {% if sonata_admin.field_description.associationadmin.hasformfielddescriptions(field_name) is defined %}
+                                                    {{ form_widget(nested_field) }}
+
+                                                    {% set dummy = nested_group_field.setrendered %}
+                                                {% else %}
+                                                    {{ form_widget(nested_field) }}
+                                                {% endif %}
+                                                {% if nested_field.vars.errors|length > 0 %}
+                                                    <div class="help-inline sonata-ba-field-error-messages">
+                                                        {{ form_errors(nested_field) }}
+                                                    </div>
+                                                {% endif %}
+                                            </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                {% elseif form.children|length > 0 %}
+                    <div>
+                        {% for nested_group_field_name, nested_group_field in form.children %}
+                            {% for field_name, nested_field in nested_group_field.children %}
+                                {% if sonata_admin.field_description.associationadmin.hasformfielddescriptions(field_name) is defined %}
+                                    {{ form_row(nested_field, {
+                                        'inline': 'natural',
+                                        'edit'  : 'inline'
+                                    }) }}
+                                    {% set dummy = nested_group_field.setrendered %}
+                                {% else %}
+                                    {% if nested_field.vars.name == '_delete' %}
+                                        {{ form_row(nested_field, { 'label': ('action_delete'|trans({}, 'SonataAdminBundle')) }) }}
+                                    {% else %}
+                                        {{ form_row(nested_field) }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% else %}
+                {{ form_widget(form) }}
+            {% endif %}
+
+        </span>
+
+        {% if sonata_admin.edit == 'inline' %}
+
+            {% if sonata_admin.field_description.associationadmin.hasroute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
+                <span id="field_actions_{{ id }}" >
+                    <a
+                        href="{{ sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})) }}"
+                        onclick="return start_field_retrieve_{{ id }}(this);"
+                        class="btn btn-success btn-sm sonata-ba-action"
+                        title="{{ btn_add|trans({}, btn_catalogue) }}"
+                        >
+                        <i class="fa fa-plus-circle"></i>
+                        {{ btn_add|trans({}, btn_catalogue) }}
+                    </a>
+                </span>
+            {% endif %}
+
+            {# include association code #}
+            {% include 'SonataAdminBundle:CRUD/Association:edit_one_script.html.twig' %}
+
+        {% else %}
+            <div id="field_container_{{ id }}" class="field-container">
+                <span id="field_widget_{{ id }}" >
+                    {{ form_widget(form) }}
+                </span>
+
+                <span id="field_actions_{{ id }}" class="field-actions">
+                    {% if sonata_admin.field_description.associationadmin.hasRoute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
+                        <a
+                            href="{{ sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})) }}"
+                            onclick="return start_field_dialog_form_add_{{ id }}(this);"
+                            class="btn btn-success btn-sm sonata-ba-action"
+                            title="{{ btn_add|trans({}, btn_catalogue) }}"
+                            >
+                            <i class="fa fa-plus-circle"></i>
+                            {{ btn_add|trans({}, btn_catalogue) }}
+                        </a>
+                    {% endif %}
+                </span>
+
+                {% include 'SonataAdminBundle:CRUD/Association:edit_modal.html.twig' %}
+            </div>
+
+            {% include 'SonataAdminBundle:CRUD/Association:edit_many_script.html.twig' %}
+        {% endif %}
+    </div>
+{% endif %}

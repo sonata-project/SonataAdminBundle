@@ -73,6 +73,23 @@ final class Configuration implements ConfigurationInterface
 
                 ->scalarNode('title')->defaultValue('Sonata Admin')->cannotBeEmpty()->end()
                 ->scalarNode('title_logo')->defaultValue('bundles/sonataadmin/logo_title.png')->cannotBeEmpty()->end()
+
+                ->arrayNode('global_search')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('empty_boxes')
+                            ->defaultValue('show')
+                            ->info('Perhaps one of the three options: show, fade, hide.')
+                            ->validate()
+                                ->ifTrue(function ($v) {
+                                    return !in_array($v, array('show', 'fade', 'hide'));
+                                })
+                                ->thenInvalid('Configuration value of "global_search.empty_boxes" must be one of show, fade or hide.')
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+
                 ->arrayNode('breadcrumbs')
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -140,6 +157,7 @@ final class Configuration implements ConfigurationInterface
                                     ->scalarNode('label_catalogue')->end()
                                     ->scalarNode('icon')->defaultValue('<i class="fa fa-folder"></i>')->end()
                                     ->scalarNode('on_top')->defaultFalse()->info('Show menu item in side dashboard menu without treeview')->end()
+                                    ->scalarNode('keep_open')->defaultFalse()->info('Keep menu group always open')->end()
                                     ->scalarNode('provider')->end()
                                     ->arrayNode('items')
                                         ->beforeNormalization()
@@ -162,7 +180,7 @@ final class Configuration implements ConfigurationInterface
                                                             'label' => '',
                                                             'route' => '',
                                                             'route_params' => array(),
-                                                            'route_absolute' => true,
+                                                            'route_absolute' => false,
                                                         );
                                                     }
                                                 }
@@ -186,7 +204,7 @@ final class Configuration implements ConfigurationInterface
                                                 ->end()
                                                 ->booleanNode('route_absolute')
                                                     ->info('Whether the generated url should be absolute')
-                                                    ->defaultTrue()
+                                                    ->defaultFalse()
                                                 ->end()
                                             ->end()
                                         ->end()
@@ -363,6 +381,8 @@ final class Configuration implements ConfigurationInterface
                                 'bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js',
                                 'bundles/sonataadmin/vendor/readmore-js/readmore.min.js',
 
+                                'bundles/sonataadmin/vendor/masonry/dist/masonry.pkgd.min.js',
+
                                 'bundles/sonataadmin/Admin.js',
                                 'bundles/sonataadmin/treeview.js',
                             ))
@@ -405,6 +425,10 @@ final class Configuration implements ConfigurationInterface
                                     ->thenInvalid('PHP >= 5.4.0 is required to use traits.')
                                 ->end()
                             ->end()
+                            ->integerNode('priority')
+                                ->info('Positive or negative integer. The higher the priority, the earlier it’s executed.')
+                                ->defaultValue(0)
+                            ->end()
                         ->end()
                     ->end()
                 ->end()
@@ -414,6 +438,12 @@ final class Configuration implements ConfigurationInterface
                 ->booleanNode('show_mosaic_button')
                     ->defaultTrue()
                     ->info('Show mosaic button on all admin screens')
+                ->end()
+
+                // NEXT_MAJOR : remove this option
+                ->booleanNode('translate_group_label')
+                    ->defaultFalse()
+                    ->info('Translate group label')
                 ->end()
 
             ->end()

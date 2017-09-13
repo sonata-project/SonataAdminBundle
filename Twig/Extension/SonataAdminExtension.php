@@ -289,12 +289,12 @@ final class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * Get the identifiers as a string that is save to use in an url.
+     * Get the identifiers as a string that is safe to use in a url.
      *
      * @param object         $model
      * @param AdminInterface $admin
      *
-     * @return string string representation of the id that is save to use in an url
+     * @return string string representation of the id that is safe to use in a url
      */
     public function getUrlsafeIdentifier($model, AdminInterface $admin = null)
     {
@@ -350,7 +350,7 @@ final class SonataAdminExtension extends \Twig_Extension
                     if ($catalogue) {
                         if (null !== $this->translator) {
                             $text = $this->translator->trans($text, array(), $catalogue);
-                        // NEXT_MAJOR: Remove this check
+                            // NEXT_MAJOR: Remove this check
                         } elseif (method_exists($fieldDescription->getAdmin(), 'trans')) {
                             $text = $fieldDescription->getAdmin()->trans($text, array(), $catalogue);
                         }
@@ -429,6 +429,7 @@ EOT;
         }
 
         $value = null;
+
         try {
             $value = $fieldDescription->getValue($object);
         } catch (NoValueException $e) {

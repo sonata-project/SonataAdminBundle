@@ -25,6 +25,7 @@ var Admin = {
         Admin.add_filters(subject);
         Admin.setup_select2(subject);
         Admin.setup_icheck(subject);
+        Admin.setup_checkbox_range_selection(subject);
         Admin.setup_xeditable(subject);
         Admin.setup_form_tabs_for_errors(subject);
         Admin.setup_inline_form_errors(subject);
@@ -79,7 +80,7 @@ var Admin = {
                     width: function(){
                         // Select2 v3 and v4 BC. If window.Select2 is defined, then the v3 is installed.
                         // NEXT_MAJOR: Remove Select2 v3 support.
-                        return Admin.get_select2_width(window.Select2 ? this.element : jQuery(this));
+                        return Admin.get_select2_width(window.Select2 ? this.element : select);
                     },
                     dropdownAutoWidth: true,
                     minimumResultsForSearch: 10,
@@ -105,6 +106,55 @@ var Admin = {
             });
         }
     },
+    /**
+     * Setup checkbox range selection
+     *
+     * Clicking on a first checkbox then another with shift + click
+     * will check / uncheck all checkboxes between them
+     *
+     * @param {string|Object} subject The html selector or object on which function should be applied
+     */
+    setup_checkbox_range_selection: function(subject) {
+        Admin.log('[core|setup_checkbox_range_selection] configure checkbox range selection on', subject);
+
+        var previousIndex,
+            useICheck = window.SONATA_CONFIG && window.SONATA_CONFIG.USE_ICHECK
+        ;
+
+        // When a checkbox or an iCheck helper is clicked
+        jQuery('tbody input[type="checkbox"], tbody .iCheck-helper', subject).click(function (event) {
+            var input;
+
+            if (useICheck) {
+                input = jQuery(this).prev('input[type="checkbox"]');
+            } else {
+                input = jQuery(this);
+            }
+
+            if (input.length) {
+                var currentIndex = input.closest('tr').index();
+
+                if (event.shiftKey && previousIndex >= 0) {
+                    var isChecked = jQuery('tbody input[type="checkbox"]:nth(' + currentIndex + ')', subject).prop('checked');
+
+                    // Check all checkbox between previous and current one clicked
+                    jQuery('tbody input[type="checkbox"]', subject).each(function (i, e) {
+                        if (i > previousIndex && i < currentIndex || i > currentIndex && i < previousIndex) {
+                            if (useICheck) {
+                                jQuery(e).iCheck(isChecked ? 'check' : 'uncheck');
+
+                                return;
+                            }
+
+                            jQuery(e).prop('checked', isChecked);
+                        }
+                    });
+                }
+
+                previousIndex  = currentIndex;
+            }
+        });
+    },
 
     setup_xeditable: function(subject) {
         Admin.log('[core|setup_xeditable] configure xeditable on', subject);
@@ -114,17 +164,14 @@ var Admin = {
             container: 'body',
             placement: 'auto',
             success: function(response) {
-                if('KO' === response.status) {
-                    return response.message;
-                }
-
-                var html = jQuery(response.content);
+                var html = jQuery(response);
                 Admin.setup_xeditable(html);
-
                 jQuery(this)
                     .closest('td')
-                    .replaceWith(html)
-                ;
+                    .replaceWith(html);
+            },
+            error: function(xhr, statusText, errorThrown) {
+                return xhr.responseText;
             }
         });
     },
@@ -152,22 +199,9 @@ var Admin = {
     },
 
     stopEvent: function(event) {
-        // https://github.com/sonata-project/SonataAdminBundle/issues/151
-        //if it is a standard browser use preventDefault otherwise it is IE then return false
-        if(event.preventDefault) {
-            event.preventDefault();
-        } else {
-            event.returnValue = false;
-        }
+        event.preventDefault();
 
-        //if it is a standard browser get target otherwise it is IE then adapt syntax and get target
-        if (typeof event.target != 'undefined') {
-            targetElement = event.target;
-        } else {
-            targetElement = event.srcElement;
-        }
-
-        return targetElement;
+        return event.target;
     },
 
     add_filters: function(subject) {
@@ -241,22 +275,20 @@ var Admin = {
         this.log(jQuery('a.sonata-ba-edit-inline', subject));
         jQuery('a.sonata-ba-edit-inline', subject).click(function(event) {
             Admin.stopEvent(event);
-
             var subject = jQuery(this);
             jQuery.ajax({
                 url: subject.attr('href'),
                 type: 'POST',
-                success: function(json) {
-                    if(json.status === "OK") {
-                        var elm = jQuery(subject).parent();
-                        elm.children().remove();
-                        // fix issue with html comment ...
-                        elm.html(jQuery(json.content.replace(/<!--[\s\S]*?-->/g, "")).html());
-                        elm.effect("highlight", {'color' : '#57A957'}, 2000);
-                        Admin.set_object_field_value(elm);
-                    } else {
-                        jQuery(subject).parent().effect("highlight", {'color' : '#C43C35'}, 2000);
-                    }
+                success: function(response) {
+                    var elm = jQuery(subject).parent();
+                    elm.children().remove();
+                    // fix issue with html comment ...
+                    elm.html(jQuery(response.replace(/<!--[\s\S]*?-->/g, "")).html());
+                    elm.effect("highlight", {'color' : '#57A957'}, 2000);
+                    Admin.set_object_field_value(elm);
+                },
+                error: function(xhr, statusText, errorThrown) {
+                    jQuery(subject).parent().effect("highlight", {'color' : '#C43C35'}, 2000);
                 }
             });
         });
@@ -430,7 +462,7 @@ var Admin = {
         if (style !== undefined) {
             var attrs = style.split(';');
 
-            for (i = 0, l = attrs.length; i < l; i = i + 1) {
+            for (var i = 0, l = attrs.length; i < l; i = i + 1) {
                 var matches = attrs[i].replace(/\s/g, '').match(ereg);
                 if (matches !== null && matches.length >= 1)
                     return matches[1];
@@ -455,7 +487,7 @@ var Admin = {
             width: function(){
                 // Select2 v3 and v4 BC. If window.Select2 is defined, then the v3 is installed.
                 // NEXT_MAJOR: Remove Select2 v3 support.
-                return Admin.get_select2_width(window.Select2 ? this.element : jQuery(this));
+                return Admin.get_select2_width(window.Select2 ? this.element : subject);
             },
             dropdownAutoWidth: true,
             data: transformedData,
@@ -608,17 +640,6 @@ var Admin = {
                 lessLink: '<a href="#">'+jQuery(this).data('readmore-less')+'</a>'
             });
         });
-    },
-    handle_inline_delete_checkboxes: function() {
-        var eventType = window.SONATA_CONFIG.USE_ICHECK ? 'ifChanged': 'change';
-
-        $('.sonata-ba-form').on(eventType, '.sonata-admin-type-delete-checkbox', function() {
-            var id = jQuery(this).prop('id');
-
-            jQuery('[id^=' + id.split('__')[0] + ']:not("#' + id + '")')
-                .prop('disabled', jQuery(this).is(':checked'))
-            ;
-        });
     }
 };
 
@@ -631,7 +652,6 @@ jQuery(document).ready(function() {
     Admin.setup_per_page_switcher(document);
     Admin.setup_collection_buttons(document);
     Admin.shared_setup(document);
-    Admin.handle_inline_delete_checkboxes();
 });
 
 jQuery(document).on('sonata-admin-append-form-element', function(e) {

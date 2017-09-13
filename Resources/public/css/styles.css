@@ -216,6 +216,11 @@ body.fixed .content-header .navbar {
     padding: 15px;
 }
 
+.sidebar-menu li.keep-open > .treeview-menu {
+    display: block !important;
+    height: auto !important;
+}
+
 .arrow {
     float: right;
 }
@@ -495,4 +500,16 @@ div.sonata-filters-box div.form-group div.form-group {
 div.sonata-filters-box div.form-group span.input-group-addon {
     padding: 3px 10px;
     font-size: 13px;
+}
+
+.sonata-search-result-hide {
+    display: none;
+}
+
+.sonata-search-result-fade {
+    opacity: 0.6;
+}
+
+.sonata-search-result-show {
+    display: block;
 }

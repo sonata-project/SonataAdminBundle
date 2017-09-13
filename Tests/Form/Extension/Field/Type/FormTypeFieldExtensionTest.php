@@ -75,20 +75,20 @@ class FormTypeFieldExtensionTest extends PHPUnit_Framework_TestCase
         $this->assertNull($formView->vars['sonata_admin']);
     }
 
-//    public function testBuildForm()
-//    {
-//        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
-//        $admin->expects($this->once())->method('getCode')->will($this->returnValue('admin_code'));
-//
-//        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
-//        $fieldDescription->expects($this->once())->method('getAdmin')->will($this->returnValue($admin));
-//        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('name'));
-//
-//        $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilderInterface');
-//
-//        $extension = new FormTypeFieldExtension();
-//        $extension->buildForm($formBuilder, array());
-//    }
+    //    public function testBuildForm()
+    //    {
+    //        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+    //        $admin->expects($this->once())->method('getCode')->will($this->returnValue('admin_code'));
+    //
+    //        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+    //        $fieldDescription->expects($this->once())->method('getAdmin')->will($this->returnValue($admin));
+    //        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('name'));
+    //
+    //        $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilderInterface');
+    //
+    //        $extension = new FormTypeFieldExtension();
+    //        $extension->buildForm($formBuilder, array());
+    //    }
 
     public function testbuildViewWithWithSonataAdmin()
     {

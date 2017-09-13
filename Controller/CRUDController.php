@@ -130,6 +130,7 @@ class CRUDController extends Controller
         $this->admin->checkAccess('batchDelete');
 
         $modelManager = $this->admin->getModelManager();
+
         try {
             $modelManager->batchDelete($this->admin->getClass(), $query);
             $this->addFlash('sonata_flash_success', 'flash_batch_delete_success');
@@ -161,7 +162,7 @@ class CRUDController extends Controller
         $object = $this->admin->getObject($id);
 
         if (!$object) {
-            throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
+            throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
         $this->admin->checkAccess('delete', $object);
@@ -236,40 +237,44 @@ class CRUDController extends Controller
         $templateKey = 'edit';
 
         $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
+        $existingObject = $this->admin->getObject($id);
 
-        if (!$object) {
-            throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
+        if (!$existingObject) {
+            throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
-        $this->admin->checkAccess('edit', $object);
+        $this->admin->checkAccess('edit', $existingObject);
 
-        $preResponse = $this->preEdit($request, $object);
+        $preResponse = $this->preEdit($request, $existingObject);
         if ($preResponse !== null) {
             return $preResponse;
         }
 
-        $this->admin->setSubject($object);
+        $this->admin->setSubject($existingObject);
+        $objectId = $this->admin->getNormalizedIdentifier($existingObject);
 
         /** @var $form Form */
         $form = $this->admin->getForm();
-        $form->setData($object);
+        $form->setData($existingObject);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $this->admin->preValidate($object);
+            $this->admin->preValidate($existingObject);
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
+                $submittedObject = $form->getData();
+                $this->admin->setSubject($submittedObject);
+
                 try {
-                    $object = $this->admin->update($object);
+                    $existingObject = $this->admin->update($submittedObject);
 
                     if ($this->isXmlHttpRequest()) {
                         return $this->renderJson(array(
                             'result' => 'ok',
-                            'objectId' => $this->admin->getNormalizedIdentifier($object),
-                            'objectName' => $this->escapeHtml($this->admin->toString($object)),
+                            'objectId' => $objectId,
+                            'objectName' => $this->escapeHtml($this->admin->toString($existingObject)),
                         ), 200, array());
                     }
 
@@ -277,21 +282,21 @@ class CRUDController extends Controller
                         'sonata_flash_success',
                         $this->trans(
                             'flash_edit_success',
-                            array('%name%' => $this->escapeHtml($this->admin->toString($object))),
+                            array('%name%' => $this->escapeHtml($this->admin->toString($existingObject))),
                             'SonataAdminBundle'
                         )
                     );
 
                     // redirect to edit mode
-                    return $this->redirectTo($object);
+                    return $this->redirectTo($existingObject);
                 } catch (ModelManagerException $e) {
                     $this->handleModelManagerException($e);
 
                     $isFormValid = false;
                 } catch (LockException $e) {
                     $this->addFlash('sonata_flash_error', $this->trans('flash_lock_error', array(
-                        '%name%' => $this->escapeHtml($this->admin->toString($object)),
-                        '%link_start%' => '<a href="'.$this->admin->generateObjectUrl('edit', $object).'">',
+                        '%name%' => $this->escapeHtml($this->admin->toString($existingObject)),
+                        '%link_start%' => '<a href="'.$this->admin->generateObjectUrl('edit', $existingObject).'">',
                         '%link_end%' => '</a>',
                     ), 'SonataAdminBundle'));
                 }
@@ -304,7 +309,7 @@ class CRUDController extends Controller
                         'sonata_flash_error',
                         $this->trans(
                             'flash_edit_error',
-                            array('%name%' => $this->escapeHtml($this->admin->toString($object))),
+                            array('%name%' => $this->escapeHtml($this->admin->toString($existingObject))),
                             'SonataAdminBundle'
                         )
                     );
@@ -323,7 +328,8 @@ class CRUDController extends Controller
         return $this->render($this->admin->getTemplate($templateKey), array(
             'action' => 'edit',
             'form' => $formView,
-            'object' => $object,
+            'object' => $existingObject,
+            'objectId' => $objectId,
         ), null);
     }
 
@@ -474,35 +480,37 @@ class CRUDController extends Controller
             );
         }
 
-        $object = $this->admin->getNewInstance();
+        $newObject = $this->admin->getNewInstance();
 
-        $preResponse = $this->preCreate($request, $object);
+        $preResponse = $this->preCreate($request, $newObject);
         if ($preResponse !== null) {
             return $preResponse;
         }
 
-        $this->admin->setSubject($object);
+        $this->admin->setSubject($newObject);
 
         /** @var $form \Symfony\Component\Form\Form */
         $form = $this->admin->getForm();
-        $form->setData($object);
+        $form->setData($newObject);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $this->admin->preValidate($object);
+            $this->admin->preValidate($newObject);
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
             if ($isFormValid && (!$this->isInPreviewMode() || $this->isPreviewApproved())) {
-                $this->admin->checkAccess('create', $object);
+                $submittedObject = $form->getData();
+                $this->admin->setSubject($submittedObject);
+                $this->admin->checkAccess('create', $submittedObject);
 
                 try {
-                    $object = $this->admin->create($object);
+                    $newObject = $this->admin->create($submittedObject);
 
                     if ($this->isXmlHttpRequest()) {
                         return $this->renderJson(array(
                             'result' => 'ok',
-                            'objectId' => $this->admin->getNormalizedIdentifier($object),
+                            'objectId' => $this->admin->getNormalizedIdentifier($newObject),
                         ), 200, array());
                     }
 
@@ -510,13 +518,13 @@ class CRUDController extends Controller
                         'sonata_flash_success',
                         $this->trans(
                             'flash_create_success',
-                            array('%name%' => $this->escapeHtml($this->admin->toString($object))),
+                            array('%name%' => $this->escapeHtml($this->admin->toString($newObject))),
                             'SonataAdminBundle'
                         )
                     );
 
                     // redirect to edit mode
-                    return $this->redirectTo($object);
+                    return $this->redirectTo($newObject);
                 } catch (ModelManagerException $e) {
                     $this->handleModelManagerException($e);
 
@@ -531,7 +539,7 @@ class CRUDController extends Controller
                         'sonata_flash_error',
                         $this->trans(
                             'flash_create_error',
-                            array('%name%' => $this->escapeHtml($this->admin->toString($object))),
+                            array('%name%' => $this->escapeHtml($this->admin->toString($newObject))),
                             'SonataAdminBundle'
                         )
                     );
@@ -550,7 +558,8 @@ class CRUDController extends Controller
         return $this->render($this->admin->getTemplate($templateKey), array(
             'action' => 'create',
             'form' => $formView,
-            'object' => $object,
+            'object' => $newObject,
+            'objectId' => null,
         ), null);
     }
 
@@ -572,7 +581,7 @@ class CRUDController extends Controller
         $object = $this->admin->getObject($id);
 
         if (!$object) {
-            throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
+            throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
         $this->admin->checkAccess('show', $object);
@@ -609,7 +618,7 @@ class CRUDController extends Controller
         $object = $this->admin->getObject($id);
 
         if (!$object) {
-            throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
+            throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
         $this->admin->checkAccess('history', $object);
@@ -656,7 +665,7 @@ class CRUDController extends Controller
         $object = $this->admin->getObject($id);
 
         if (!$object) {
-            throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
+            throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
         $this->admin->checkAccess('historyViewRevision', $object);
@@ -720,7 +729,7 @@ class CRUDController extends Controller
         $object = $this->admin->getObject($id);
 
         if (!$object) {
-            throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
+            throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
         $manager = $this->get('sonata.admin.audit.manager');
@@ -853,7 +862,7 @@ class CRUDController extends Controller
         $object = $this->admin->getObject($id);
 
         if (!$object) {
-            throw $this->createNotFoundException(sprintf('unable to find the object with id : %s', $id));
+            throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
         $this->admin->checkAccess('acl', $object);
@@ -1086,6 +1095,7 @@ class CRUDController extends Controller
             foreach (array('edit', 'show') as $route) {
                 if ($this->admin->hasRoute($route) && $this->admin->hasAccess($route, $object)) {
                     $url = $this->admin->generateObjectUrl($route, $object);
+
                     break;
                 }
             }

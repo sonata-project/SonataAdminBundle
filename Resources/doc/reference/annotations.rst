@@ -38,7 +38,7 @@ If you need to disable this for some reason, you can do this via the configurati
 Define Admins
 ^^^^^^^^^^^^^
 
-All you have to do is include Sonata\AdminBundleAnnotations and define the values you need.
+All you have to do is include ``Sonata\AdminBundle\Annotation`` and define the values you need.
 
 .. code-block:: php
 
@@ -51,7 +51,19 @@ All you have to do is include Sonata\AdminBundleAnnotations and define the value
 
     /**
      * @Sonata\Admin(
-     *   class="AcmeBundle\Entity\MyEntity"
+     *   class="AcmeBundle\Entity\MyEntity",
+     *   id="service id (generated per default)",
+     *   managerType="doctrine_mongodb (orm per default)",
+     *   baseControllerName="SonataAdminBundle:CRUD",
+     *   group="myGroup",
+     *   label="myLabel",
+     *   showInDashboard=true,
+     *   translationDomain="OMG",
+     *   pagerType="",
+     *   persistFilters="",
+     *   icon="<i class='fa fa-folder'></i>",
+     *   keepOpen=false,
+     *   onTop=false
      * )
      */
     class MyAdmin extends AbstractAdmin
