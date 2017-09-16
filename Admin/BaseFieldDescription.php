@@ -340,6 +340,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
         $getters[] = 'get'.$camelizedFieldName;
         $getters[] = 'is'.$camelizedFieldName;
+        $getters[] = 'has'.$camelizedFieldName;
 
         foreach ($getters as $getter) {
             if (method_exists($object, $getter)) {

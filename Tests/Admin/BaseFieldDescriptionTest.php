@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Admin;
 
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\FooBoolean;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooCall;
 use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
@@ -144,13 +145,15 @@ class BaseFieldDescriptionTest extends PHPUnit_Framework_TestCase
         /*
          * Test with underscored attribute name
          */
-        $description3 = new FieldDescription();
-        $mock3 = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getFake'))
-            ->getMock();
+        foreach (array('getFake', 'isFake', 'hasFake') as $method) {
+            $description3 = new FieldDescription();
+            $mock3 = $this->getMockBuilder('stdClass')
+                ->setMethods(array($method))
+                ->getMock();
 
-        $mock3->expects($this->once())->method('getFake')->will($this->returnValue(42));
-        $this->assertSame(42, $description3->getFieldValue($mock3, '_fake'));
+            $mock3->expects($this->once())->method($method)->will($this->returnValue(42));
+            $this->assertSame(42, $description3->getFieldValue($mock3, '_fake'));
+        }
     }
 
     /**
@@ -213,6 +216,14 @@ class BaseFieldDescriptionTest extends PHPUnit_Framework_TestCase
 
         $description = new FieldDescription();
         $this->assertSame('Bar', $description->getFieldValue($foo, 'bar'));
+
+        $foo = new FooBoolean();
+        $foo->setBar(true);
+        $foo->setBaz(false);
+
+        $description = new FieldDescription();
+        $this->assertSame(true, $description->getFieldValue($foo, 'bar'));
+        $this->assertSame(false, $description->getFieldValue($foo, 'baz'));
 
         $this->expectException('Sonata\AdminBundle\Exception\NoValueException');
         $description->getFieldValue($foo, 'inexistantMethod');

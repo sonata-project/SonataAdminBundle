@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Model;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Exception\ModelManagerException;
 
 /**
  * A model manager is a bridge between the model classes and the admin
@@ -35,19 +36,21 @@ interface ModelManagerInterface
     /**
      * @param mixed $object
      *
-     * @return mixed
+     * @throws ModelManagerException
      */
     public function create($object);
 
     /**
      * @param mixed $object
      *
-     * @return mixed
+     * @throws ModelManagerException
      */
     public function update($object);
 
     /**
-     * @param object $object
+     * @param mixed $object
+     *
+     * @throws ModelManagerException
      */
     public function delete($object);
 
@@ -78,6 +81,8 @@ interface ModelManagerInterface
     /**
      * @param string              $class
      * @param ProxyQueryInterface $queryProxy
+     *
+     * @throws ModelManagerException
      */
     public function batchDelete($class, ProxyQueryInterface $queryProxy);
 
