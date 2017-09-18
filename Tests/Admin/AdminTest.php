@@ -371,6 +371,28 @@ class AdminTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expected.'/{id}/comment', $commentAdmin->getBaseRoutePattern());
     }
 
+    /**
+     * @dataProvider provideGetBaseRoutePattern
+     */
+    public function testGetBaseRoutePatternWithTwoNestedChildAdmin($objFqn, $expected)
+    {
+        $postAdmin = new PostAdmin('sonata.post.admin.post', $objFqn, 'SonataNewsBundle:PostAdmin');
+        $commentAdmin = new CommentAdmin(
+            'sonata.post.admin.comment',
+            'Application\Sonata\NewsBundle\Entity\Comment',
+            'SonataNewsBundle:CommentAdmin'
+        );
+        $commentVoteAdmin = new CommentVoteAdmin(
+            'sonata.post.admin.comment_vote',
+            'Application\Sonata\NewsBundle\Entity\CommentVote',
+            'SonataNewsBundle:CommentVoteAdmin'
+        );
+        $commentAdmin->setParent($postAdmin);
+        $commentVoteAdmin->setParent($commentAdmin);
+
+        $this->assertSame($expected.'/{id}/comment/{childId}/commentvote', $commentVoteAdmin->getBaseRoutePattern());
+    }
+
     public function testGetBaseRoutePatternWithSpecifedPattern()
     {
         $postAdmin = new PostWithCustomRouteAdmin('sonata.post.admin.post_with_custom_route', 'Application\Sonata\NewsBundle\Entity\Post', 'SonataNewsBundle:PostWithCustomRouteAdmin');
@@ -493,7 +515,11 @@ class AdminTest extends PHPUnit_Framework_TestCase
         $postAdmin->setRouteGenerator($routeGenerator);
         $postAdmin->initialize();
 
-        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
+        $commentAdmin = new CommentAdmin(
+            'sonata.post.admin.comment',
+            'Application\Sonata\NewsBundle\Entity\Comment',
+            'SonataNewsBundle:CommentAdmin'
+        );
         $container->set('sonata.post.admin.comment', $commentAdmin);
         $commentAdmin->setConfigurationPool($pool);
         $commentAdmin->setRouteBuilder($pathInfo);
@@ -501,14 +527,33 @@ class AdminTest extends PHPUnit_Framework_TestCase
         $commentAdmin->initialize();
 
         $postAdmin->addChild($commentAdmin);
-        $pool->setAdminServiceIds(array('sonata.post.admin.post', 'sonata.post.admin.comment'));
+
+        $commentVoteAdmin = new CommentVoteAdmin(
+            'sonata.post.admin.comment_vote',
+            'Application\Sonata\NewsBundle\Entity\CommentVote',
+            'SonataNewsBundle:CommentVoteAdmin'
+        );
+        $container->set('sonata.post.admin.comment_vote', $commentVoteAdmin);
+        $commentVoteAdmin->setConfigurationPool($pool);
+        $commentVoteAdmin->setRouteBuilder($pathInfo);
+        $commentVoteAdmin->setRouteGenerator($routeGenerator);
+        $commentVoteAdmin->initialize();
+
+        $commentAdmin->addChild($commentVoteAdmin);
+        $pool->setAdminServiceIds(array(
+            'sonata.post.admin.post',
+            'sonata.post.admin.comment',
+            'sonata.post.admin.comment_vote',
+        ));
 
         $this->assertSame($expected.'_comment', $commentAdmin->getBaseRouteName());
 
         $this->assertTrue($postAdmin->hasRoute('show'));
         $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post.show'));
         $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.show'));
+        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment|sonata.post.admin.comment_vote.show'));
         $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.comment.list'));
+        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.comment|sonata.post.admin.comment_vote.list'));
         $this->assertFalse($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.edit'));
         $this->assertFalse($commentAdmin->hasRoute('edit'));
 
@@ -529,8 +574,11 @@ class AdminTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($postAdmin->isCurrentRoute('list'));
         $this->assertFalse($postAdmin->isCurrentRoute('create'));
         $this->assertFalse($commentAdmin->isCurrentRoute('list'));
+        $this->assertFalse($commentVoteAdmin->isCurrentRoute('list'));
         $this->assertTrue($commentAdmin->isCurrentRoute('list', 'sonata.post.admin.post'));
         $this->assertFalse($commentAdmin->isCurrentRoute('edit', 'sonata.post.admin.post'));
+        $this->assertTrue($commentVoteAdmin->isCurrentRoute('list', 'sonata.post.admin.post'));
+        $this->assertFalse($commentVoteAdmin->isCurrentRoute('edit', 'sonata.post.admin.post'));
     }
 
     /**
@@ -556,6 +604,29 @@ class AdminTest extends PHPUnit_Framework_TestCase
         $commentAdmin->setParent($postAdmin);
 
         $this->assertSame('admin_sonata_news_post_comment_custom', $commentAdmin->getBaseRouteName());
+    }
+
+    public function testGetBaseRouteNameWithTwoNestedChildAdminAndWithSpecifiedName()
+    {
+        $postAdmin = new PostAdmin(
+            'sonata.post.admin.post',
+            'Application\Sonata\NewsBundle\Entity\Post',
+            'SonataNewsBundle:PostAdmin'
+        );
+        $commentAdmin = new CommentWithCustomRouteAdmin(
+            'sonata.post.admin.comment_with_custom_route',
+            'Application\Sonata\NewsBundle\Entity\Comment',
+            'SonataNewsBundle:CommentWithCustomRouteAdmin'
+        );
+        $commentVoteAdmin = new CommentVoteAdmin(
+            'sonata.post.admin.comment_vote',
+            'Application\Sonata\NewsBundle\Entity\CommentVote',
+            'SonataNewsBundle:CommentVoteAdmin'
+        );
+        $commentAdmin->setParent($postAdmin);
+        $commentVoteAdmin->setParent($commentAdmin);
+
+        $this->assertSame('admin_sonata_news_post_comment_custom_commentvote', $commentVoteAdmin->getBaseRouteName());
     }
 
     /**
@@ -1110,16 +1181,34 @@ class AdminTest extends PHPUnit_Framework_TestCase
 
     public function testGetIdParameter()
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $postAdmin = new PostAdmin(
+            'sonata.post.admin.post',
+            'NewsBundle\Entity\Post',
+            'SonataNewsBundle:PostAdmin'
+        );
 
-        $this->assertSame('id', $admin->getIdParameter());
-        $this->assertFalse($admin->isChild());
+        $this->assertSame('id', $postAdmin->getIdParameter());
+        $this->assertFalse($postAdmin->isChild());
 
-        $parentAdmin = new PostAdmin('sonata.post.admin.post_parent', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostParentAdmin');
-        $admin->setParent($parentAdmin);
+        $commentAdmin = new CommentAdmin(
+            'sonata.post.admin.comment',
+            'Application\Sonata\NewsBundle\Entity\Comment',
+            'SonataNewsBundle:CommentAdmin'
+        );
+        $commentAdmin->setParent($postAdmin);
 
-        $this->assertTrue($admin->isChild());
-        $this->assertSame('childId', $admin->getIdParameter());
+        $this->assertTrue($commentAdmin->isChild());
+        $this->assertSame('childId', $commentAdmin->getIdParameter());
+
+        $commentVoteAdmin = new CommentVoteAdmin(
+            'sonata.post.admin.comment_vote',
+            'Application\Sonata\NewsBundle\Entity\CommentVote',
+            'SonataNewsBundle:CommentVoteAdmin'
+        );
+        $commentVoteAdmin->setParent($commentAdmin);
+
+        $this->assertTrue($commentVoteAdmin->isChild());
+        $this->assertSame('childChildId', $commentVoteAdmin->getIdParameter());
     }
 
     public function testGetExportFormats()
