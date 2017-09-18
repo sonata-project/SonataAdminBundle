@@ -2136,7 +2136,7 @@ class AdminTest extends PHPUnit_Framework_TestCase
         $commentVoteAdmin = new CommentVoteAdmin(
             'sonata.post.admin.comment_vote',
             'Application\Sonata\NewsBundle\Entity\CommentVote',
-            'SonataNewsBundle:CommentViteAdmin'
+            'SonataNewsBundle:CommentVoteAdmin'
         );
         $postAdmin->addChild($commentAdmin);
         $commentAdmin->addChild($commentVoteAdmin);
@@ -2156,6 +2156,114 @@ class AdminTest extends PHPUnit_Framework_TestCase
             'SonataNewsBundle:PostAdmin'
         );
         $postAdmin->addChild($postAdmin);
+    }
+
+    public function testGetRootAncestor()
+    {
+        $postAdmin = new PostAdmin(
+            'sonata.post.admin.post',
+            'Application\Sonata\NewsBundle\Entity\Post',
+            'SonataNewsBundle:PostAdmin'
+        );
+        $commentAdmin = new CommentAdmin(
+            'sonata.post.admin.comment',
+            'Application\Sonata\NewsBundle\Entity\Comment',
+            'SonataNewsBundle:CommentAdmin'
+        );
+        $commentVoteAdmin = new CommentVoteAdmin(
+            'sonata.post.admin.comment_vote',
+            'Application\Sonata\NewsBundle\Entity\CommentVote',
+            'SonataNewsBundle:CommentVoteAdmin'
+        );
+
+        $this->assertSame($postAdmin, $postAdmin->getRootAncestor());
+        $this->assertSame($commentAdmin, $commentAdmin->getRootAncestor());
+        $this->assertSame($commentVoteAdmin, $commentVoteAdmin->getRootAncestor());
+
+        $postAdmin->addChild($commentAdmin);
+
+        $this->assertSame($postAdmin, $postAdmin->getRootAncestor());
+        $this->assertSame($postAdmin, $commentAdmin->getRootAncestor());
+        $this->assertSame($commentVoteAdmin, $commentVoteAdmin->getRootAncestor());
+
+        $commentAdmin->addChild($commentVoteAdmin);
+
+        $this->assertSame($postAdmin, $postAdmin->getRootAncestor());
+        $this->assertSame($postAdmin, $commentAdmin->getRootAncestor());
+        $this->assertSame($postAdmin, $commentVoteAdmin->getRootAncestor());
+    }
+
+    public function testGetChildDepth()
+    {
+        $postAdmin = new PostAdmin(
+            'sonata.post.admin.post',
+            'Application\Sonata\NewsBundle\Entity\Post',
+            'SonataNewsBundle:PostAdmin'
+        );
+        $commentAdmin = new CommentAdmin(
+            'sonata.post.admin.comment',
+            'Application\Sonata\NewsBundle\Entity\Comment',
+            'SonataNewsBundle:CommentAdmin'
+        );
+        $commentVoteAdmin = new CommentVoteAdmin(
+            'sonata.post.admin.comment_vote',
+            'Application\Sonata\NewsBundle\Entity\CommentVote',
+            'SonataNewsBundle:CommentVoteAdmin'
+        );
+
+        $this->assertSame(0, $postAdmin->getChildDepth());
+        $this->assertSame(0, $commentAdmin->getChildDepth());
+        $this->assertSame(0, $commentVoteAdmin->getChildDepth());
+
+        $postAdmin->addChild($commentAdmin);
+
+        $this->assertSame(0, $postAdmin->getChildDepth());
+        $this->assertSame(1, $commentAdmin->getChildDepth());
+        $this->assertSame(0, $commentVoteAdmin->getChildDepth());
+
+        $commentAdmin->addChild($commentVoteAdmin);
+
+        $this->assertSame(0, $postAdmin->getChildDepth());
+        $this->assertSame(1, $commentAdmin->getChildDepth());
+        $this->assertSame(2, $commentVoteAdmin->getChildDepth());
+    }
+
+    public function testGetCurrentLeafChildAdmin()
+    {
+        $postAdmin = new PostAdmin(
+            'sonata.post.admin.post',
+            'Application\Sonata\NewsBundle\Entity\Post',
+            'SonataNewsBundle:PostAdmin'
+        );
+        $commentAdmin = new CommentAdmin(
+            'sonata.post.admin.comment',
+            'Application\Sonata\NewsBundle\Entity\Comment',
+            'SonataNewsBundle:CommentAdmin'
+        );
+        $commentVoteAdmin = new CommentVoteAdmin(
+            'sonata.post.admin.comment_vote',
+            'Application\Sonata\NewsBundle\Entity\CommentVote',
+            'SonataNewsBundle:CommentVoteAdmin'
+        );
+
+        $postAdmin->addChild($commentAdmin);
+        $commentAdmin->addChild($commentVoteAdmin);
+
+        $this->assertNull($postAdmin->getCurrentLeafChildAdmin());
+        $this->assertNull($commentAdmin->getCurrentLeafChildAdmin());
+        $this->assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
+
+        $commentAdmin->setCurrentChild(true);
+
+        $this->assertSame($commentAdmin, $postAdmin->getCurrentLeafChildAdmin());
+        $this->assertNull($commentAdmin->getCurrentLeafChildAdmin());
+        $this->assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
+
+        $commentVoteAdmin->setCurrentChild(true);
+
+        $this->assertSame($commentVoteAdmin, $postAdmin->getCurrentLeafChildAdmin());
+        $this->assertSame($commentVoteAdmin, $commentAdmin->getCurrentLeafChildAdmin());
+        $this->assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
     }
 
     private function createTagAdmin(Post $post)

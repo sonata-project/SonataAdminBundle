@@ -1156,7 +1156,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
     {
         $parameter = 'id';
 
-        for ($admin = $this; $admin->isChild(); $admin = $admin->getParent()) {
+        for ($i = 0; $i < $this->getChildDepth(); ++$i) {
             $parameter = 'child'.ucfirst($parameter);
         }
 
@@ -1959,6 +1959,62 @@ EOT;
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * Return the root ancestor or itself if not a child.
+     *
+     * @return AdminInterface
+     */
+    final public function getRootAncestor()
+    {
+        $parent = $this;
+
+        while ($parent->isChild()) {
+            $parent = $parent->getParent();
+        }
+
+        return $parent;
+    }
+
+    /**
+     * Return the depth of the admin.
+     * e.g. 0 if not a child; 2 if child of a child; etc...
+     *
+     * @return int
+     */
+    final public function getChildDepth()
+    {
+        $parent = $this;
+        $depth = 0;
+
+        while ($parent->isChild()) {
+            $parent = $parent->getParent();
+            ++$depth;
+        }
+
+        return $depth;
+    }
+
+    /**
+     * Returns the current leaf child admin instance,
+     * or null if there's no current child.
+     *
+     * @return AdminInterface|null
+     */
+    final public function getCurrentLeafChildAdmin()
+    {
+        $child = $this->getCurrentChildAdmin();
+
+        if (null === $child) {
+            return;
+        }
+
+        for ($c = $child; null !== $c; $c = $child->getCurrentChildAdmin()) {
+            $child = $c;
+        }
+
+        return $child;
     }
 
     /**
