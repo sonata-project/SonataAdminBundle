@@ -188,6 +188,7 @@ class FormTypeFieldExtensionTest extends PHPUnit_Framework_TestCase
                  'class' => false,
                  'options' => array(),
             ),
+            'sonata_help' => 'help text',
             'sonata_admin_code' => 'parent_code',
         );
 
