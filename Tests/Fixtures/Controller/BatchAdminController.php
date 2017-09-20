@@ -14,7 +14,7 @@ class BatchAdminController extends CRUDController
     /**
      * Returns true if $idx contains 123 and 456
      */
-    public function batchActionFooIsRelevant(array $idx, $allElements)
+    public function fooBatchActionIsRelevant(array $idx, $allElements)
     {
         if (isset($idx[0]) && $idx[0]==123 && isset($idx[1]) && $idx[1]==456) {
             return true;
@@ -27,19 +27,19 @@ class BatchAdminController extends CRUDController
         return false;
     }
 
-    public function batchActionFoo(ProxyQueryInterface $query)
+    public function fooBatchAction(ProxyQueryInterface $query)
     {
     }
 
-    public function batchActionBarIsRelevant(array $idx, $allElements)
+    public function barBatchActionIsRelevant(array $idx, $allElements)
     {
         return true;
     }
 
-    public function batchActionBar(ProxyQueryInterface $query=null)
+    public function barBatchAction(ProxyQueryInterface $query=null)
     {
         if ($query === null) {
-            return new Response('batchActionBar executed');
+            return new Response('barBatchAction executed');
         }
 
         return false;

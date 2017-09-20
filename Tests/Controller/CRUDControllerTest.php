@@ -748,25 +748,25 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
         $this->assertSame('SonataAdminBundle:CRUD:list.html.twig', $this->template);
     }
 
-    public function testBatchActionDeleteAccessDenied()
+    public function testDeleteBatchActionAccessDenied()
     {
         $this->expectException('Symfony\Component\Security\Core\Exception\AccessDeniedException');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('batchDelete'))
+            ->with($this->equalTo('deleteBatch'))
             ->will($this->throwException(new AccessDeniedException()));
 
-        $this->controller->batchActionDelete($this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
+        $this->controller->deleteBatchAction($this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
     }
 
-    public function testBatchActionDelete()
+    public function testDeleteBatchAction()
     {
         $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('batchDelete'))
+            ->with($this->equalTo('deleteBatch'))
             ->will($this->returnValue(true));
 
         $this->admin->expects($this->once())
@@ -777,17 +777,17 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->method('getFilterParameters')
             ->will($this->returnValue(array('foo' => 'bar')));
 
-        $result = $this->controller->batchActionDelete($this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
+        $result = $this->controller->deleteBatchAction($this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
         $this->assertSame(array('flash_batch_delete_success'), $this->session->getFlashBag()->get('sonata_flash_success'));
         $this->assertSame('list?filter%5Bfoo%5D=bar', $result->getTargetUrl());
     }
 
-    public function testBatchActionDeleteWithModelManagerException()
+    public function testDeleteBatchActionWithModelManagerException()
     {
         $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
-        $this->assertLoggerLogsModelManagerException($modelManager, 'batchDelete');
+        $this->assertLoggerLogsModelManagerException($modelManager, 'deleteBatch');
 
         $this->admin->expects($this->once())
             ->method('getModelManager')
@@ -797,20 +797,20 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->method('getFilterParameters')
             ->will($this->returnValue(array('foo' => 'bar')));
 
-        $result = $this->controller->batchActionDelete($this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
+        $result = $this->controller->deleteBatchAction($this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
         $this->assertSame(array('flash_batch_delete_error'), $this->session->getFlashBag()->get('sonata_flash_error'));
         $this->assertSame('list?filter%5Bfoo%5D=bar', $result->getTargetUrl());
     }
 
-    public function testBatchActionDeleteWithModelManagerExceptionInDebugMode()
+    public function testDeleteBatchActionWithModelManagerExceptionInDebugMode()
     {
         $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
         $this->expectException('Sonata\AdminBundle\Exception\ModelManagerException');
 
         $modelManager->expects($this->once())
-            ->method('batchDelete')
+            ->method('deleteBatch')
             ->will($this->returnCallback(function () {
                 throw new ModelManagerException();
             }));
@@ -823,7 +823,7 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->method('isDebug')
             ->will($this->returnValue(true));
 
-        $this->controller->batchActionDelete($this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
+        $this->controller->deleteBatchAction($this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
     }
 
     public function testShowActionNotFoundException()
@@ -3330,7 +3330,7 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
      */
     public function testBatchActionMethodNotExist()
     {
-        $this->expectException('RuntimeException', 'A `Sonata\AdminBundle\Controller\CRUDController::batchActionFoo` method must be callable');
+        $this->expectException('RuntimeException', 'A `Sonata\AdminBundle\Controller\CRUDController::fooBatchAction` method must be callable');
 
         $batchActions = array('foo' => array('label' => 'Foo Bar', 'ask_confirmation' => false));
 
@@ -3659,7 +3659,7 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
         $result = $controller->batchAction($this->request);
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $result);
-        $this->assertSame('batchActionBar executed', $result->getContent());
+        $this->assertSame('barBatchAction executed', $result->getContent());
     }
 
     /**

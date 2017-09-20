@@ -48,7 +48,7 @@ merges them onto a single target item. It should only be available when two cond
 Define the core action logic
 ----------------------------
 
-The method ``batchAction<MyAction>`` will be executed to process your batch in your ``CRUDController`` class. The selected
+The method ``<MyAction>BatchAction`` will be executed to process your batch in your ``CRUDController`` class. The selected
 objects are passed to this method through a query argument which can be used to retrieve them.
 If for some reason it makes sense to perform your batch action without the default selection
 method (for example you defined another way, at template level, to select model at a lower
@@ -79,7 +79,7 @@ granularity), the passed query is ``null``.
          *
          * @return RedirectResponse
          */
-        public function batchActionMerge(ProxyQueryInterface $selectedModelQuery, Request $request = null)
+        public function mergeBatchAction(ProxyQueryInterface $selectedModelQuery, Request $request = null)
         {
             $this->admin->checkAccess('edit');
             $this->admin->checkAccess('delete');
@@ -169,8 +169,8 @@ for further explanation of overriding bundle templates.
 
 By default, batch actions are not executed if no object was selected, and the user is notified of
 this lack of selection. If your custom batch action needs more complex logic to determine if
-an action can be performed or not, just define a ``batchAction<MyAction>IsRelevant`` method
-(e.g. ``batchActionMergeIsRelevant``) in your ``CRUDController`` class. This check is performed
+an action can be performed or not, just define a ``<MyAction>BatchActionIsRelevant`` method
+(e.g. ``mergeBatchActionIsRelevant``) in your ``CRUDController`` class. This check is performed
 before the user is asked for confirmation, to make sure there is actually something to confirm.
 
 This method may return three different values:
@@ -193,7 +193,7 @@ This method may return three different values:
 
     class CRUDController extends BaseController
     {
-        public function batchActionMergeIsRelevant(array $selectedIds, $allEntitiesSelected, Request $request = null)
+        public function mergeBatchActionIsRelevant(array $selectedIds, $allEntitiesSelected, Request $request = null)
         {
             // here you have access to all POST parameters, if you use some custom ones
             // POST parameters are kept even after the confirmation page.
