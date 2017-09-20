@@ -125,18 +125,20 @@ class CRUDController extends Controller
      *
      * @throws AccessDeniedException If access is not granted
      */
-    public function batchActionDelete(ProxyQueryInterface $query)
+    public function batchActionDelete(ProxyQueryInterface $query = null)
     {
         $this->admin->checkAccess('batchDelete');
 
-        $modelManager = $this->admin->getModelManager();
+        if ($query) {
+            $modelManager = $this->admin->getModelManager();
 
-        try {
-            $modelManager->batchDelete($this->admin->getClass(), $query);
-            $this->addFlash('sonata_flash_success', 'flash_batch_delete_success');
-        } catch (ModelManagerException $e) {
-            $this->handleModelManagerException($e);
-            $this->addFlash('sonata_flash_error', 'flash_batch_delete_error');
+            try {
+                $modelManager->batchDelete($this->admin->getClass(), $query);
+                $this->addFlash('sonata_flash_success', 'flash_batch_delete_success');
+            } catch (ModelManagerException $e) {
+                $this->handleModelManagerException($e);
+                $this->addFlash('sonata_flash_error', 'flash_batch_delete_error');
+            }
         }
 
         return new RedirectResponse($this->admin->generateUrl(
