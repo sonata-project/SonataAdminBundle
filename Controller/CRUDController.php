@@ -133,10 +133,16 @@ class CRUDController extends Controller
 
         try {
             $modelManager->batchDelete($this->admin->getClass(), $query);
-            $this->addFlash('sonata_flash_success', 'flash_batch_delete_success');
+            $this->addFlash(
+                'sonata_flash_success',
+                $this->trans('flash_batch_delete_success', array(), 'SonataAdminBundle')
+            );
         } catch (ModelManagerException $e) {
             $this->handleModelManagerException($e);
-            $this->addFlash('sonata_flash_error', 'flash_batch_delete_error');
+            $this->addFlash(
+                'sonata_flash_error',
+                $this->trans('flash_batch_delete_error', array(), 'SonataAdminBundle')
+            );
         }
 
         return new RedirectResponse($this->admin->generateUrl(
@@ -406,7 +412,10 @@ class CRUDController extends Controller
         $datagrid->buildPager();
 
         if (true !== $nonRelevantMessage) {
-            $this->addFlash('sonata_flash_info', $nonRelevantMessage);
+            $this->addFlash(
+                'sonata_flash_info',
+                $this->trans($nonRelevantMessage, array(), 'SonataAdminBundle')
+            );
 
             return new RedirectResponse(
                 $this->admin->generateUrl(
@@ -912,7 +921,10 @@ class CRUDController extends Controller
 
                 if ($form->isValid()) {
                     $adminObjectAclManipulator->$updateMethod($adminObjectAclData);
-                    $this->addFlash('sonata_flash_success', 'flash_acl_edit_success');
+                    $this->addFlash(
+                        'sonata_flash_success',
+                        $this->trans('flash_acl_edit_success', array(), 'SonataAdminBundle')
+                    );
 
                     return new RedirectResponse($this->admin->generateObjectUrl('acl', $object));
                 }
