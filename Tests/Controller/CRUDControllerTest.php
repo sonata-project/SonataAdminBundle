@@ -776,6 +776,8 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->method('getFilterParameters')
             ->will($this->returnValue(array('foo' => 'bar')));
 
+        $this->expectTranslate('flash_batch_delete_success', array(), 'SonataAdminBundle');
+
         $result = $this->controller->batchActionDelete($this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
@@ -795,6 +797,8 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
         $this->admin->expects($this->once())
             ->method('getFilterParameters')
             ->will($this->returnValue(array('foo' => 'bar')));
+
+        $this->expectTranslate('flash_batch_delete_error', array(), 'SonataAdminBundle');
 
         $result = $this->controller->batchActionDelete($this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
 
@@ -2884,6 +2888,8 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->method('getSecurityHandler')
             ->will($this->returnValue($aclSecurityHandler));
 
+        $this->expectTranslate('flash_acl_edit_success', array(), 'SonataAdminBundle');
+
         $this->request->setMethod('POST');
 
         $response = $this->controller->aclAction(null, $this->request);
@@ -3378,6 +3384,8 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(array('123', '456')))
             ->will($this->returnValue(true));
 
+        $this->expectTranslate('flash_batch_delete_success', array(), 'SonataAdminBundle');
+
         $this->request->setMethod('POST');
         $this->request->request->set('data', json_encode(array('action' => 'delete', 'idx' => array('123', '456'), 'all_elements' => false)));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
@@ -3427,6 +3435,8 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->method('addIdentifiersToQuery')
             ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(array('123', '456')))
             ->will($this->returnValue(true));
+
+        $this->expectTranslate('flash_batch_delete_success', array(), 'SonataAdminBundle');
 
         $this->request->setMethod('POST');
         $this->request->request->set('action', 'delete');
@@ -3506,6 +3516,8 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->method('getDatagrid')
             ->will($this->returnValue($datagrid));
 
+        $this->expectTranslate('flash_batch_empty', array(), 'SonataAdminBundle');
+
         $this->request->setMethod('POST');
         $this->request->request->set('action', 'foo');
         $this->request->request->set('idx', array('789'));
@@ -3535,6 +3547,8 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->method('getDatagrid')
             ->will($this->returnValue($datagrid));
 
+        $this->expectTranslate('flash_foo_error', array(), 'SonataAdminBundle');
+
         $this->request->setMethod('POST');
         $this->request->request->set('action', 'foo');
         $this->request->request->set('idx', array('999'));
@@ -3560,6 +3574,8 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
         $this->admin->expects($this->once())
             ->method('getDatagrid')
             ->will($this->returnValue($datagrid));
+
+        $this->expectTranslate('flash_batch_empty', array(), 'SonataAdminBundle');
 
         $this->request->setMethod('POST');
         $this->request->request->set('action', 'delete');
@@ -3654,6 +3670,8 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->method('addIdentifiersToQuery')
             ->with($this->equalTo('Foo'), $this->equalTo($query), $this->equalTo(array('123', '456')))
             ->will($this->returnValue(true));
+
+        $this->expectTranslate('flash_batch_delete_success', array(), 'SonataAdminBundle');
 
         $this->request->setMethod('POST');
         $this->request->request->set('data', json_encode(array('action' => 'delete', 'idx' => array('123', '456'), 'all_elements' => false)));

@@ -41,9 +41,9 @@ matrix:
     - php: '7.1'
       env: SYMFONY=2.8.*
     - php: '7.1'
-      env: SYMFONY=3.1.*
-    - php: '7.1'
       env: SYMFONY=3.2.*
+    - php: '7.1'
+      env: SYMFONY=3.3.*
     - php: '7.1'
       env: SYMFONY=dev-master@dev
     - php: '7.1'
