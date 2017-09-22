@@ -1,0 +1,26 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+{% extends 'SonataAdminBundle:Block:block_stats_base.html.twig' %}
+
+{% block block_content %}
+    <div class="small-box {{ settings.color }}">
+        <div class="inner overlay-wrapper refresh-btn">
+            <h3 class="url-count">{{ pager.count() }}</h3>
+            <p>{{ settings.text }}</p>
+        </div>
+        <div class="icon">
+            <i class="{{ settings.icon }}"></i>
+        </div>
+        <a href="{{ admin.generateUrl('list', { filter: settings.filters }) }}" class="small-box-footer">
+            {{ 'stats_view_more'|trans({}, 'SonataAdminBundle') }} <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+        </a>
+    </div>
+{% endblock block_content %}

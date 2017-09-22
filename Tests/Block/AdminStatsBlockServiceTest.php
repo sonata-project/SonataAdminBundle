@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Tests\Block;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminStatsBlockService;
 use Sonata\BlockBundle\Test\AbstractBlockServiceTestCase;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -25,26 +26,33 @@ class AdminStatsBlockServiceTest extends AbstractBlockServiceTestCase
      */
     private $pool;
 
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
     protected function setUp()
     {
         parent::setUp();
 
         $this->pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')->disableOriginalConstructor()->getMock();
+        $this->translator = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')->disableOriginalConstructor()->getMock();
     }
 
     public function testDefaultSettings()
     {
-        $blockService = new AdminStatsBlockService('foo', $this->templating, $this->pool);
+        $blockService = new AdminStatsBlockService('foo', $this->templating, $this->pool, $this->translator);
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings(array(
-            'icon' => 'fa-line-chart',
+            'icon' => 'fa fa-line-chart',
             'text' => 'Statistics',
             'color' => 'bg-aqua',
             'code' => false,
+            'class' => '',
             'filters' => array(),
             'limit' => 1000,
-            'template' => 'SonataAdminBundle:Block:block_stats.html.twig',
+            'template' => 'SonataAdminBundle:Block:block_stats_simple.html.twig',
         ), $blockContext);
     }
 }

@@ -27,6 +27,9 @@
         <service id="sonata.admin.doctrine_orm.form.type.choice_field_mask" class="Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType">
             <tag name="form.type" alias="sonata_type_choice_field_mask"/>
         </service>
+        <service id="sonata.admin.form.type.yaml" class="Sonata\AdminBundle\Form\Type\YamlType">
+            <tag name="form.type" alias="sonata_type_yaml"/>
+        </service>
         <!-- Form Extension -->
         <service id="sonata.admin.form.extension.field" class="Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension">
             <tag name="form.type_extension" alias="form" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType"/>

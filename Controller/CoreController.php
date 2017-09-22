@@ -112,6 +112,47 @@ class CoreController extends Controller
     }
 
     /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     *
+     * @throws \RuntimeException
+     */
+    public function statsAction(Request $request)
+    {
+        try {
+            $admin = $this->getAdminPool()->getAdminByAdminCode($request->get('code'));
+        } catch (ServiceNotFoundException $e) {
+            throw new \RuntimeException('Unable to find the Admin instance', $e->getCode(), $e);
+        }
+
+        if (!$admin instanceof AdminInterface) {
+            throw new \RuntimeException('The requested service is not an Admin instance');
+        }
+
+        $datagrid = $admin->getDatagrid();
+
+        $filters = $request->get('filters', array());
+
+        if (!isset($filters['_per_page'])) {
+            $filters['_per_page'] = array('value' => $request->get('limit'));
+        }
+
+        foreach ($filters as $name => $data) {
+            $datagrid->setValue($name, isset($data['type']) ? $data['type'] : null, $data['value']);
+        }
+
+        $datagrid->buildPager();
+
+        $response = new JsonResponse(array(
+            'count' => $datagrid->getPager()->count(),
+        ));
+        $response->setPrivate();
+
+        return $response;
+    }
+
+    /**
      * Get the request object from the container.
      *
      * This method is compatible with both Symfony 2.3 and Symfony 3

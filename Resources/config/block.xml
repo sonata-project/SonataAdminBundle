@@ -19,6 +19,7 @@
             <argument>sonata.admin.block.stats</argument>
             <argument type="service" id="templating"/>
             <argument type="service" id="sonata.admin.pool"/>
+            <argument type="service" id="translator"/>
         </service>
     </services>
 </container>
