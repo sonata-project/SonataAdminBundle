@@ -1920,6 +1920,73 @@ class AdminTest extends PHPUnit_Framework_TestCase
         $admin->getDataSourceIterator();
     }
 
+    public function testAttachAdminClass()
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $object = new CommentAdmin('sonata.post.admin.comment', 'NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
+
+        $container = new Container();
+        $container->set('sonata.post.admin.comment', $object);
+        $pool = new Pool($container, 'Sonata Admin', '/path/to/pic.png');
+        $pool->setAdminServiceIds(array('sonata.post.admin.post', 'sonata.post.admin.comment'));
+        $pool->setAdminClasses(array('\NewsBundle\Entity\Comment' => array('sonata.post.admin.comment')));
+        $admin->setConfigurationPool($pool);
+
+        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription
+            ->method('getOption')
+            ->with($this->equalTo('admin_code'))
+            ->will($this->returnValue('sonata.post.admin.comment'));
+        $fieldDescription
+            ->expects($this->once())
+            ->method('setAssociationAdmin')
+            ->with($this->equalTo($object));
+        $admin->attachAdminClass($fieldDescription);
+
+        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription
+            ->method('getTargetEntity')
+            ->will($this->returnValue('\NewsBundle\Entity\Comment'));
+        $fieldDescription
+            ->expects($this->once())
+            ->method('setAssociationAdmin')
+            ->with($this->equalTo($object));
+        $admin->attachAdminClass($fieldDescription);
+
+        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription
+            ->method('getOption')
+            ->will($this->returnValue('sonata.post.admin.article'));
+
+        try {
+            $admin->attachAdminClass($fieldDescription);
+        } catch (\Exception $e) {
+            $this->assertTrue($e instanceof \InvalidArgumentException);
+        }
+
+        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription
+           ->method('getOption')
+           ->will($this->returnValue('sonata.post.admin.post'));
+
+        try {
+            $admin->attachAdminClass($fieldDescription);
+        } catch (\Exception $e) {
+            $this->assertTrue($e instanceof \RuntimeException);
+        }
+
+        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription
+            ->method('getTargetEntity')
+            ->will($this->returnValue('\NewsBundle\Entity\Post'));
+
+        try {
+            $admin->attachAdminClass($fieldDescription);
+        } catch (\Exception $e) {
+            $this->assertTrue($e instanceof \RuntimeException);
+        }
+    }
+
     private function createTagAdmin(Post $post)
     {
         $postAdmin = $this->getMockBuilder('Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin')
