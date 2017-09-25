@@ -14,11 +14,11 @@ namespace Sonata\AdminBundle\Form\Extension\Field\Type;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -164,10 +164,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return
-            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ?
-            'Symfony\Component\Form\Extension\Core\Type\FormType' :
-            'form';
+        return FormType::class;
     }
 
     /**
@@ -231,11 +228,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     protected function getClass(FormBuilderInterface $formBuilder)
     {
         foreach ($this->getTypes($formBuilder) as $type) {
-            if (!method_exists($type, 'getName')) { // SF3.0+
-                $name = get_class($type);
-            } else {
-                $name = $type->getName();
-            }
+            $name = get_class($type);
 
             if (isset($this->defaultClasses[$name])) {
                 return $this->defaultClasses[$name];

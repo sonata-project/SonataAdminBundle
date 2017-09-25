@@ -52,20 +52,12 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 
     protected function getParentClass()
     {
-        if (class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType')) {
-            return 'Sonata\AdminBundle\Form\Type\Filter\ChoiceType';
-        }
-
-        return 'sonata_type_filter_choice';
+        return 'Sonata\AdminBundle\Form\Type\Filter\ChoiceType';
     }
 
     protected function getChoiceClass()
     {
-        if (class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType')) {
-            return 'Symfony\Component\Form\Extension\Core\Type\ChoiceType';
-        }
-
-        return 'choice';
+        return 'Symfony\Component\Form\Extension\Core\Type\ChoiceType';
     }
 
     protected function getExtensions()

@@ -51,17 +51,14 @@ class FormMapperTest extends TestCase
 
         $this->modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
 
-        // php 5.3 BC
-        $fieldDescription = $this->getFieldDescriptionMock();
-
         $this->modelManager->expects($this->any())
             ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnCallback(function ($class, $name, array $options = []) use ($fieldDescription) {
-                $fieldDescriptionClone = clone $fieldDescription;
-                $fieldDescriptionClone->setName($name);
-                $fieldDescriptionClone->setOptions($options);
+            ->will($this->returnCallback(function ($class, $name, array $options = []) {
+                $fieldDescription = $this->getFieldDescriptionMock();
+                $fieldDescription->setName($name);
+                $fieldDescription->setOptions($options);
 
-                return $fieldDescriptionClone;
+                return $fieldDescription;
             }));
 
         $this->admin->setModelManager($this->modelManager);

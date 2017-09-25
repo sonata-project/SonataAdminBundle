@@ -31,6 +31,32 @@ class AdminObjectAclDataTest extends TestCase
         $this->isInstanceOf('stdClass', $adminObjectAclData->getObject());
     }
 
+    /**
+     * @group legacy
+     */
+    public function testSetForm()
+    {
+        $form = $this->getMockBuilder('\Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $adminObjectAclData = $this->createAdminObjectAclData();
+        $ret = $adminObjectAclData->setAclUsersForm($form);
+
+        $this->assertSame($adminObjectAclData, $ret);
+
+        return $adminObjectAclData;
+    }
+
+    /**
+     * @depends testSetForm
+     *
+     * @group legacy
+     */
+    public function testGetForm($adminObjectAclData)
+    {
+        $this->isInstanceOf('Symfony\Component\Form\Form', $adminObjectAclData->getAclUsersForm());
+    }
+
     public function testGetAclUsers()
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
@@ -73,32 +99,6 @@ class AdminObjectAclDataTest extends TestCase
             $this->assertInternalType('string', $key);
             $this->assertInternalType('int', $mask);
         }
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testSetForm()
-    {
-        $form = $this->getMockBuilder('\Symfony\Component\Form\Form')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $adminObjectAclData = $this->createAdminObjectAclData();
-        $ret = $adminObjectAclData->setAclUsersForm($form);
-
-        $this->assertSame($adminObjectAclData, $ret);
-
-        return $adminObjectAclData;
-    }
-
-    /**
-     * @depends testSetForm
-     *
-     * @group legacy
-     */
-    public function testGetForm($adminObjectAclData)
-    {
-        $this->isInstanceOf('Symfony\Component\Form\Form', $adminObjectAclData->getAclUsersForm());
     }
 
     public function testSetAclUsersForm()

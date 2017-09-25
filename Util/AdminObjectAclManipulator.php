@@ -285,12 +285,7 @@ class AdminObjectAclManipulator
                 ];
             }
 
-            // NEXT_MAJOR: remove when dropping Symfony <2.8 support
-            $type = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ?
-                'Sonata\AdminBundle\Form\Type\AclMatrixType' :
-                new AclMatrixType();
-
-            $formBuilder->add($key, $type, ['permissions' => $permissions, 'acl_value' => $aclValue]);
+            $formBuilder->add($key, AclMatrixType::class, ['permissions' => $permissions, 'acl_value' => $aclValue]);
         }
 
         return $formBuilder->getForm();

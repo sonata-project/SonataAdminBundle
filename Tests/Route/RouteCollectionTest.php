@@ -167,9 +167,7 @@ class RouteCollectionTest extends TestCase
         $this->assertArrayHasKey('debug', $route->getOptions());
         $this->assertSame($host, $route->getHost());
         $this->assertSame($methods, $route->getMethods());
-        if (method_exists($route, 'getCondition')) {
-            $this->assertSame($condition, $route->getCondition());
-        }
+        $this->assertSame($condition, $route->getCondition());
     }
 
     public function testRouteControllerService()

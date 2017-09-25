@@ -11,17 +11,14 @@
     <services>
         <service id="sonata.admin.security.handler.noop" class="%sonata.admin.security.handler.noop.class%" public="false"/>
         <service id="sonata.admin.security.handler.role" class="%sonata.admin.security.handler.role.class%" public="false">
-            <argument/>
-            <!-- security.authorization_checker or security.context for Symfony <2.6 -->
+            <argument type="service" id="security.authorization_checker"/>
             <argument type="collection">
                 <argument>ROLE_SUPER_ADMIN</argument>
             </argument>
         </service>
         <service id="sonata.admin.security.handler.acl" class="%sonata.admin.security.handler.acl.class%" public="false">
-            <argument/>
-            <!-- security.token_storage or security.context for Symfony <2.6 -->
-            <argument/>
-            <!-- security.authorization_checker or security.context for Symfony <2.6 -->
+            <argument type="service" id="security.token_storage"/>
+            <argument type="service" id="security.authorization_checker"/>
             <argument type="service" id="security.acl.provider" on-invalid="null"/>
             <argument>%sonata.admin.security.mask.builder.class%</argument>
             <argument type="collection">

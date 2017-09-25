@@ -70,13 +70,14 @@ abstract class BaseMapper
      */
     abstract public function remove($key);
 
-    // To be uncommented on 4.0.
     /**
+     * NEXT_MAJOR: To be uncommented on 4.0.
+     *
      * Returns configured keys.
      *
      * @return string[]
      */
-    //abstract public function keys();
+    // abstract public function keys();
 
     /**
      * @param array $keys field names
