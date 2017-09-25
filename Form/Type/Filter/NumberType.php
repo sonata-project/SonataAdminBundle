@@ -33,33 +33,6 @@ class NumberType extends AbstractType
     const TYPE_LESS_THAN = 5;
 
     /**
-     * NEXT_MAJOR: remove this property.
-     *
-     * @deprecated since 3.5, to be removed with 4.0
-     *
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getBlockPrefix()
@@ -84,40 +57,19 @@ class NumberType extends AbstractType
             'required' => false,
         );
 
-        // NEXT_MAJOR: Remove (when requirement of Symfony is >= 2.7)
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
-            $choices = array_flip($choices);
-            foreach ($choices as $key => $value) {
-                $choices[$key] = $this->translator->trans($value, array(), 'SonataAdminBundle');
-            }
-        } else {
-            $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
+        $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
 
-            // NEXT_MAJOR: Remove (when requirement of Symfony is >= 3.0)
-            if (method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
-                $choiceOptions['choices_as_values'] = true;
-            }
+        // NEXT_MAJOR: Remove (when requirement of Symfony is >= 3.0)
+        if (method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+            $choiceOptions['choices_as_values'] = true;
         }
 
         $choiceOptions['choices'] = $choices;
 
         $builder
-            // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
-            ->add('type', method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
-                : 'choice', $choiceOptions)
+            ->add('type', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', $choiceOptions)
             ->add('value', $options['field_type'], array_merge(array('required' => false), $options['field_options']))
         ;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
     }
 
     /**

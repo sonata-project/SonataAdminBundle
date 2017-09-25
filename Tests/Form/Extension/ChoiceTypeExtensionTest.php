@@ -62,28 +62,15 @@ class ChoiceTypeExtensionTest extends PHPUnit_Framework_TestCase
     {
         $extension = new ChoiceTypeExtension();
 
-        /*
-         * NEXT_MAJOR: Remove when dropping Symfony <2.8 support. It should
-         * simply be:
-         *
-         * $this->assertSame(
-         *     'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
-         *     $extension->getExtendedType()
-         * );
-         */
-        if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $this->assertSame(
-                'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
-                $extension->getExtendedType()
-            );
-        } else {
-            $this->assertSame('choice', $extension->getExtendedType());
-        }
+        $this->assertSame(
+            'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
+            $extension->getExtendedType()
+        );
     }
 
     public function testDefaultOptionsWithSortable()
     {
-        $name = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice';
+        $name = 'Symfony\Component\Form\Extension\Core\Type\ChoiceType';
 
         $view = $this->factory
             ->create($name, null, array(
@@ -97,7 +84,7 @@ class ChoiceTypeExtensionTest extends PHPUnit_Framework_TestCase
 
     public function testDefaultOptionsWithoutSortable()
     {
-        $name = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice';
+        $name = 'Symfony\Component\Form\Extension\Core\Type\ChoiceType';
 
         $view = $this->factory
             ->create($name, null, array())

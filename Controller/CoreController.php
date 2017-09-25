@@ -112,29 +112,6 @@ class CoreController extends Controller
     }
 
     /**
-     * Get the request object from the container.
-     *
-     * This method is compatible with both Symfony 2.3 and Symfony 3
-     *
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated since 3.0, to be removed in 4.0 and action methods will be adjusted.
-     *             Use Symfony\Component\HttpFoundation\Request as an action argument
-     *
-     * @return Request
-     */
-    public function getRequest()
-    {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since 3.0 and will be removed in 4.0.'.
-            ' Inject the Symfony\Component\HttpFoundation\Request into the actions instead.',
-            E_USER_DEPRECATED
-        );
-
-        return $this->getCurrentRequest();
-    }
-
-    /**
      * @return Pool
      */
     protected function getAdminPool()
@@ -169,11 +146,6 @@ class CoreController extends Controller
      */
     private function getCurrentRequest()
     {
-        // NEXT_MAJOR: simplify this when dropping sf < 2.4
-        if ($this->container->has('request_stack')) {
-            return $this->container->get('request_stack')->getCurrentRequest();
-        }
-
-        return $this->container->get('request');
+        return $this->container->get('request_stack')->getCurrentRequest();
     }
 }

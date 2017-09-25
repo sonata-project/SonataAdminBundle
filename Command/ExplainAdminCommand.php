@@ -106,13 +106,9 @@ class ExplainAdminCommand extends ContainerAwareCommand
 
         if ($this->getContainer()->has('validator.validator_factory')) {
             $factory = $this->getContainer()->get('validator.validator_factory');
-
-            if (method_exists($factory, 'getMetadataFor')) {
-                $metadata = $factory->getMetadataFor($admin->getClass());
-            }
+            $metadata = $factory->getMetadataFor($admin->getClass());
         }
 
-        // NEXT_MAJOR: remove method check in next major release
         if (!$metadata) {
             $metadata = $this->getContainer()->get('validator')->getMetadataFor($admin->getClass());
         }

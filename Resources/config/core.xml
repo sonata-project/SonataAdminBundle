@@ -53,8 +53,6 @@
         <service id="sonata.admin.audit.manager" class="Sonata\AdminBundle\Model\AuditManager">
             <argument type="service" id="service_container"/>
         </service>
-        <!-- NEXT_MAJOR : remove this service -->
-        <service id="sonata.admin.exporter" class="Sonata\AdminBundle\Export\Exporter"/>
         <service id="sonata.admin.search.handler" class="Sonata\AdminBundle\Search\SearchHandler">
             <argument type="service" id="sonata.admin.pool"/>
         </service>

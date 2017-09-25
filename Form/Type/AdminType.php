@@ -57,23 +57,7 @@ class AdminType extends AbstractType
             try {
                 $parentSubject = $admin->getParentFieldDescription()->getAdmin()->getSubject();
                 if ($parentSubject !== null && $parentSubject !== false) {
-                    // for PropertyAccessor < 2.5
-                    // NEXT_MAJOR: remove this code for old PropertyAccessor after dropping support for Symfony 2.3
-                    if (!method_exists($p, 'isReadable')) {
-                        $subjectCollection = $p->getValue(
-                            $parentSubject,
-                            $this->getFieldDescription($options)->getFieldName()
-                        );
-                        if ($subjectCollection instanceof Collection) {
-                            $subject = $subjectCollection->get(trim($options['property_path'], '[]'));
-                        }
-                    } else {
-                        // for PropertyAccessor >= 2.5
-                        $subject = $p->getValue(
-                            $parentSubject,
-                            $options['property_path']
-                        );
-                    }
+                    $subject = $p->getValue($parentSubject, $options['property_path']);
                     $builder->setData($subject);
                 }
             } catch (NoSuchIndexException $e) {
@@ -100,16 +84,6 @@ class AdminType extends AbstractType
     }
 
     /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -119,10 +93,7 @@ class AdminType extends AbstractType
                 return $options['btn_delete'] !== false;
             },
             'delete_options' => array(
-                // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
-                'type' => method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                    ? 'Symfony\Component\Form\Extension\Core\Type\CheckboxType'
-                    : 'checkbox',
+                'type' => 'Symfony\Component\Form\Extension\Core\Type\CheckboxType',
                 'type_options' => array(
                     'required' => false,
                     'mapped' => false,
@@ -134,16 +105,6 @@ class AdminType extends AbstractType
             'btn_delete' => 'link_delete',
             'btn_catalogue' => 'SonataAdminBundle',
         ));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**

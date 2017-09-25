@@ -35,33 +35,17 @@ class AclMatrixType extends AbstractType
 
         $builder->add(
             $aclValueType,
-            // NEXT_MAJOR: remove when dropping Symfony <2.8 support
-            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
-                : 'hidden',
+            'Symfony\Component\Form\Extension\Core\Type\HiddenType',
             array('data' => $aclValueData)
         );
 
         foreach ($options['permissions'] as $permission => $attributes) {
             $builder->add(
                 $permission,
-                // NEXT_MAJOR: remove when dropping Symfony <2.8 support
-                method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                    ? 'Symfony\Component\Form\Extension\Core\Type\CheckboxType'
-                    : 'checkbox',
+                'Symfony\Component\Form\Extension\Core\Type\CheckboxType',
                 $attributes
             );
         }
-    }
-
-    /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
     }
 
     /**
@@ -83,16 +67,6 @@ class AclMatrixType extends AbstractType
                 'acl_value' => array('string', '\Symfony\Component\Security\Core\User\UserInterface'),
             ));
         }
-    }
-
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**

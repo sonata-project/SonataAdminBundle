@@ -187,27 +187,14 @@ class ExplainAdminCommandTest extends PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        // NEXT_MAJOR: Remove check, when bumping requirements to SF 2.5+
-        if (interface_exists('Symfony\Component\Validator\Mapping\MetadataInterface')) { //sf2.5+
-            $metadata = $this->createMock('Symfony\Component\Validator\Mapping\MetadataInterface');
-        } else {
-            $metadata = $this->createMock('Symfony\Component\Validator\MetadataInterface');
-        }
+        $metadata = $this->createMock('Symfony\Component\Validator\Mapping\MetadataInterface');
 
         $this->validatorFactory->expects($this->once())
             ->method('getMetadataFor')
             ->with($this->equalTo('Acme\Entity\Foo'))
             ->will($this->returnValue($metadata));
 
-        // NEXT_MAJOR: Remove check, when bumping requirements to SF 2.5+
-        if (class_exists('Symfony\Component\Validator\Mapping\GenericMetadata')) {
-            $class = 'GenericMetadata';
-        } else {
-            // Symfony <2.5 compatibility
-            $class = 'ElementMetadata';
-        }
-
-        $propertyMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\\'.$class);
+        $propertyMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\\'.'GenericMetadata');
         $propertyMetadata->constraints = array(
             new NotNull(),
             new Length(array('min' => 2, 'max' => 50, 'groups' => array('create', 'edit'))),
@@ -215,7 +202,7 @@ class ExplainAdminCommandTest extends PHPUnit_Framework_TestCase
 
         $metadata->properties = array('firstName' => $propertyMetadata);
 
-        $getterMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\\'.$class);
+        $getterMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\\'.'GenericMetadata');
         $getterMetadata->constraints = array(
             new NotNull(),
             new Email(array('groups' => array('registration', 'edit'))),

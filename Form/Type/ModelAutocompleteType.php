@@ -44,19 +44,13 @@ class ModelAutocompleteType extends AbstractType
         $builder->setAttribute(
             'disabled',
             $options['disabled']
-            // NEXT_MAJOR: Remove this when bumping Symfony constraint to 2.8+
-            || (array_key_exists('read_only', $options) && $options['read_only'])
         );
         $builder->setAttribute('to_string_callback', $options['to_string_callback']);
         $builder->setAttribute('target_admin_access_action', $options['target_admin_access_action']);
 
         if ($options['multiple']) {
             $resizeListener = new ResizeFormListener(
-                // NEXT_MAJOR: Remove ternary and keep 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
-                // (when requirement of Symfony is >= 2.8)
-                method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                    ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
-                    : 'hidden',
+                'Symfony\Component\Form\Extension\Core\Type\HiddenType',
                 array(),
                 true,
                 true,
@@ -101,16 +95,6 @@ class ModelAutocompleteType extends AbstractType
         $view->vars['template'] = $options['template'];
 
         $view->vars['context'] = $options['context'];
-    }
-
-    /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
     }
 
     /**

@@ -26,16 +26,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension
 {
     /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -62,12 +52,6 @@ class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        /*
-         * NEXT_MAJOR: Remove when dropping Symfony <2.8 support. It should
-         * simply be return 'Symfony\Component\Form\Extension\Core\Type\FormType';
-         */
-        return method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-            ? 'Symfony\Component\Form\Extension\Core\Type\FormType'
-            : 'form';
+        return 'Symfony\Component\Form\Extension\Core\Type\FormType';
     }
 }
