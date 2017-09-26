@@ -403,7 +403,7 @@ will be created regardless of whether you actually need them or not. To get rid
 of them, you may override the ``configureRoutes`` method::
 
     <?php
-    
+
     namespace AppBundle\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -428,6 +428,13 @@ of them, you may override the ``configureRoutes`` method::
 
         }
     }
+
+You can nest admins as deep as you wish.
+
+Let's say you want to add comments to videos.
+
+You can then add your ``CommentAdmin`` admin service as a child of
+the ``VideoAdmin`` admin service.
 
 .. _`Django Project Website`: http://www.djangoproject.com/
 .. _`CRUD`: http://en.wikipedia.org/wiki/CRUD
