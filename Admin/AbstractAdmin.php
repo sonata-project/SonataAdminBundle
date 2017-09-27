@@ -50,7 +50,7 @@ use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
+abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, AdminTreeInterface
 {
     const CONTEXT_MENU = 'menu';
     const CONTEXT_DASHBOARD = 'dashboard';
@@ -1962,9 +1962,7 @@ EOT;
     }
 
     /**
-     * Return the root ancestor or itself if not a child.
-     *
-     * @return AdminInterface
+     * {@inheritdoc}
      */
     final public function getRootAncestor()
     {
@@ -1978,10 +1976,7 @@ EOT;
     }
 
     /**
-     * Return the depth of the admin.
-     * e.g. 0 if not a child; 2 if child of a child; etc...
-     *
-     * @return int
+     * {@inheritdoc}
      */
     final public function getChildDepth()
     {
@@ -1997,10 +1992,7 @@ EOT;
     }
 
     /**
-     * Returns the current leaf child admin instance,
-     * or null if there's no current child.
-     *
-     * @return AdminInterface|null
+     * {@inheritdoc}
      */
     final public function getCurrentLeafChildAdmin()
     {
