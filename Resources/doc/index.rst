@@ -39,6 +39,7 @@ The demo website can be found at http://demo.sonata-project.org.
    reference/getting_started
    reference/configuration
    reference/architecture
+   reference/child_admin
    reference/dashboard
    reference/search
    reference/action_list
