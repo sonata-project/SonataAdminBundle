@@ -120,3 +120,10 @@ Let's say you want to add comments to videos.
 
 You can then add your ``CommentAdmin`` admin service as a child of
 the ``VideoAdmin`` admin service.
+
+Finally, the admin interface will look like this:
+
+.. figure:: ../images/child_admin.png
+   :align: center
+   :alt: Child admin interface
+   :width: 700px
