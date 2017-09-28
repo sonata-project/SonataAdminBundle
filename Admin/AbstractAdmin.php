@@ -50,7 +50,7 @@ use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
+abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, AdminTreeInterface
 {
     const CONTEXT_MENU = 'menu';
     const CONTEXT_DASHBOARD = 'dashboard';
@@ -226,6 +226,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
 
     /**
      * The base code route refer to the prefix used to generate the route name.
+     *
+     * NEXT_MAJOR: remove this attribute.
+     *
+     * @deprecated This attribute is deprecated since 3.x and will be removed in 4.0
      *
      * @var string
      */
@@ -623,6 +627,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
             $this->classnameLabel = substr($this->getClass(), strrpos($this->getClass(), '\\') + 1);
         }
 
+        // NEXT_MAJOR: Remove this line.
         $this->baseCodeRoute = $this->getCode();
 
         $this->configure();
@@ -900,8 +905,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
                 }
             }
 
-            $this->cachedBaseRoutePattern = sprintf('%s/{id}/%s',
+            $this->cachedBaseRoutePattern = sprintf('%s/%s/%s',
                 $this->getParent()->getBaseRoutePattern(),
+                $this->getParent()->getRouterIdParameter(),
                 $this->baseRoutePattern ?: $this->urlize($matches[5], '-')
             );
         } elseif ($this->baseRoutePattern) {
@@ -1140,7 +1146,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      */
     public function getRouterIdParameter()
     {
-        return $this->isChild() ? '{childId}' : '{id}';
+        return '{'.$this->getIdParameter().'}';
     }
 
     /**
@@ -1148,7 +1154,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface
      */
     public function getIdParameter()
     {
-        return $this->isChild() ? 'childId' : 'id';
+        $parameter = 'id';
+
+        for ($i = 0; $i < $this->getChildDepth(); ++$i) {
+            $parameter = 'child'.ucfirst($parameter);
+        }
+
+        return $parameter;
     }
 
     /**
@@ -1893,9 +1905,19 @@ EOT;
      */
     public function addChild(AdminInterface $child)
     {
+        for ($parentAdmin = $this; null !== $parentAdmin; $parentAdmin = $parentAdmin->getParent()) {
+            if ($parentAdmin->getCode() !== $child->getCode()) {
+                continue;
+            }
+
+            throw new \RuntimeException(sprintf(
+                'Circular reference detected! The child admin `%s` is already in the parent tree of the `%s` admin.',
+                $child->getCode(), $this->getCode()
+            ));
+        }
+
         $this->children[$child->getCode()] = $child;
 
-        $child->setBaseCodeRoute($this->getCode().'|'.$child->getCode());
         $child->setParent($this);
     }
 
@@ -1937,6 +1959,54 @@ EOT;
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    final public function getRootAncestor()
+    {
+        $parent = $this;
+
+        while ($parent->isChild()) {
+            $parent = $parent->getParent();
+        }
+
+        return $parent;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    final public function getChildDepth()
+    {
+        $parent = $this;
+        $depth = 0;
+
+        while ($parent->isChild()) {
+            $parent = $parent->getParent();
+            ++$depth;
+        }
+
+        return $depth;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    final public function getCurrentLeafChildAdmin()
+    {
+        $child = $this->getCurrentChildAdmin();
+
+        if (null === $child) {
+            return;
+        }
+
+        for ($c = $child; null !== $c; $c = $child->getCurrentChildAdmin()) {
+            $child = $c;
+        }
+
+        return $child;
     }
 
     /**
@@ -2370,10 +2440,19 @@ EOT;
     }
 
     /**
+     * NEXT_MAJOR: Remove this function.
+     *
+     * @deprecated This method is deprecated since 3.x and will be removed in 4.0
+     *
      * @param string $baseCodeRoute
      */
     public function setBaseCodeRoute($baseCodeRoute)
     {
+        @trigger_error(
+            'The '.__METHOD__.' is deprecated since 3.x and will be removed in 4.0.',
+            E_USER_DEPRECATED
+        );
+
         $this->baseCodeRoute = $baseCodeRoute;
     }
 
@@ -2382,6 +2461,24 @@ EOT;
      */
     public function getBaseCodeRoute()
     {
+        // NEXT_MAJOR: Uncomment the following lines.
+        // if ($this->isChild()) {
+        //     return $this->getParent()->getBaseCodeRoute().'|'.$this->getCode();
+        // }
+        //
+        // return $this->getCode();
+
+        // NEXT_MAJOR: Remove all the code below.
+        if ($this->isChild()) {
+            $parentCode = $this->getParent()->getCode();
+
+            if ($this->getParent()->isChild()) {
+                $parentCode = $this->getParent()->getBaseCodeRoute();
+            }
+
+            return $parentCode.'|'.$this->getCode();
+        }
+
         return $this->baseCodeRoute;
     }
 

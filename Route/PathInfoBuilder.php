@@ -57,11 +57,6 @@ class PathInfoBuilder implements RouteBuilderInterface
             $collection->add('acl', $admin->getRouterIdParameter().'/acl');
         }
 
-        // an admin can have only one level of nested child
-        if ($admin->getParent()) {
-            return;
-        }
-
         // add children urls
         foreach ($admin->getChildren() as $children) {
             $collection->addCollection($children->getRoutes());
