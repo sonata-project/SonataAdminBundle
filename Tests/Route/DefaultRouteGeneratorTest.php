@@ -54,11 +54,10 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
 
         $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->any())->method('isChild')->will($this->returnValue(false));
-        $admin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Foo'));
+        $admin->expects($this->any())->method('getBaseCodeRoute')->will($this->returnValue('base.Code.Foo'));
         $admin->expects($this->once())->method('hasParentFieldDescription')->will($this->returnValue(false));
         $admin->expects($this->once())->method('hasRequest')->will($this->returnValue(true));
         $admin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
-        $admin->expects($this->any())->method('getCode')->will($this->returnValue('foo_code'));
         $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
         $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
         $admin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
@@ -103,7 +102,7 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
 
         $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->any())->method('isChild')->will($this->returnValue(false));
-        $admin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Route'));
+        $admin->expects($this->any())->method('getBaseCodeRoute')->will($this->returnValue('base.Code.Route'));
         $admin->expects($this->once())->method('hasParentFieldDescription')->will($this->returnValue(false));
         $admin->expects($this->once())->method('hasRequest')->will($this->returnValue(true));
         $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(array()));
@@ -132,13 +131,11 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
 
         $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->any())->method('isChild')->will($this->returnValue(true));
-        $admin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Child'));
         $admin->expects($this->any())->method('getBaseCodeRoute')->will($this->returnValue('base.Code.Parent|base.Code.Child'));
         $admin->expects($this->any())->method('getIdParameter')->will($this->returnValue('id'));
         $admin->expects($this->any())->method('hasParentFieldDescription')->will($this->returnValue(false));
         $admin->expects($this->any())->method('hasRequest')->will($this->returnValue(true));
         $admin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
-        $admin->expects($this->any())->method('getCode')->will($this->returnValue('foo_code'));
         $admin->expects($this->any())->method('getPersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
         $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($childCollection));
         $admin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
@@ -146,7 +143,7 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
         $parentAdmin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $parentAdmin->expects($this->any())->method('getIdParameter')->will($this->returnValue('childId'));
         $parentAdmin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
-        $parentAdmin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Parent'));
+        $parentAdmin->expects($this->any())->method('getBaseCodeRoute')->will($this->returnValue('base.Code.Parent'));
         $parentAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
 
         // no request attached in this test, so this will not be used
@@ -218,11 +215,11 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
         $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->any())->method('isChild')->will($this->returnValue(false));
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Parent'));
+        $admin->expects($this->any())->method('getBaseCodeRoute')->will($this->returnValue('base.Code.Parent'));
         // embeded admin (not nested ...)
         $admin->expects($this->once())->method('hasParentFieldDescription')->will($this->returnValue(true));
         $admin->expects($this->once())->method('hasRequest')->will($this->returnValue(true));
         $admin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
-        $admin->expects($this->any())->method('getCode')->will($this->returnValue('foo_code'));
         $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
         $admin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
         $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
@@ -327,7 +324,7 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
 
         $standaloneAdmin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $standaloneAdmin->expects($this->any())->method('isChild')->will($this->returnValue(false));
-        $standaloneAdmin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Child'));
+        $standaloneAdmin->expects($this->any())->method('getBaseCodeRoute')->will($this->returnValue('base.Code.Child'));
         $standaloneAdmin->expects($this->once())->method('hasParentFieldDescription')->will($this->returnValue(false));
         $standaloneAdmin->expects($this->once())->method('hasRequest')->will($this->returnValue(true));
         $standaloneAdmin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
