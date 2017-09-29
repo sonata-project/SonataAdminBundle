@@ -225,17 +225,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $parent = null;
 
     /**
-     * The base code route refer to the prefix used to generate the route name.
-     *
-     * NEXT_MAJOR: remove this attribute.
-     *
-     * @deprecated This attribute is deprecated since 3.x and will be removed in 4.0
-     *
-     * @var string
-     */
-    protected $baseCodeRoute = '';
-
-    /**
      * The related parent association, ie if OrderElement has a parent property named order,
      * then the $parentAssociationMapping must be a string named `order`.
      *
@@ -610,9 +599,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         if (!$this->classnameLabel) {
             $this->classnameLabel = substr($this->getClass(), strrpos($this->getClass(), '\\') + 1);
         }
-
-        // NEXT_MAJOR: Remove this line.
-        $this->baseCodeRoute = $this->getCode();
 
         $this->configure();
     }
@@ -2243,46 +2229,15 @@ EOT;
     }
 
     /**
-     * NEXT_MAJOR: Remove this function.
-     *
-     * @deprecated This method is deprecated since 3.x and will be removed in 4.0
-     *
-     * @param string $baseCodeRoute
-     */
-    public function setBaseCodeRoute($baseCodeRoute)
-    {
-        @trigger_error(
-            'The '.__METHOD__.' is deprecated since 3.x and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
-
-        $this->baseCodeRoute = $baseCodeRoute;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getBaseCodeRoute()
     {
-        // NEXT_MAJOR: Uncomment the following lines.
-        // if ($this->isChild()) {
-        //     return $this->getParent()->getBaseCodeRoute().'|'.$this->getCode();
-        // }
-        //
-        // return $this->getCode();
-
-        // NEXT_MAJOR: Remove all the code below.
         if ($this->isChild()) {
-            $parentCode = $this->getParent()->getCode();
-
-            if ($this->getParent()->isChild()) {
-                $parentCode = $this->getParent()->getBaseCodeRoute();
-            }
-
-            return $parentCode.'|'.$this->getCode();
+            return $this->getParent()->getBaseCodeRoute().'|'.$this->getCode();
         }
 
-        return $this->baseCodeRoute;
+        return $this->getCode();
     }
 
     /**
