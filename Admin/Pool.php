@@ -223,13 +223,24 @@ class Pool
     public function getAdminByAdminCode($adminCode)
     {
         $codes = explode('|', $adminCode);
-        $admin = false;
+
+        if (false === $codes) {
+            return false;
+        }
+
+        $admin = $this->getInstance($codes[0]);
+        array_shift($codes);
+
+        if (empty($codes)) {
+            return $admin;
+        }
+
         foreach ($codes as $code) {
-            if ($admin == false) {
-                $admin = $this->getInstance($code);
-            } elseif ($admin->hasChild($code)) {
-                $admin = $admin->getChild($code);
+            if (!$admin->hasChild($code)) {
+                return false;
             }
+
+            $admin = $admin->getChild($code);
         }
 
         return $admin;

@@ -74,7 +74,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
     public function generateMenuUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         // if the admin is a child we automatically append the parent's id
-        if ($admin->isChild() && $admin->hasRequest() && $admin->getRequest()->attributes->has($admin->getParent()->getIdParameter())) {
+        if ($admin->isChild() && $admin->hasRequest()) {
             // twig template does not accept variable hash key ... so cannot use admin.idparameter ...
             // switch value
             if (isset($parameters['id'])) {
@@ -82,7 +82,9 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
                 unset($parameters['id']);
             }
 
-            $parameters[$admin->getParent()->getIdParameter()] = $admin->getRequest()->attributes->get($admin->getParent()->getIdParameter());
+            for ($parentAdmin = $admin->getParent(); null !== $parentAdmin; $parentAdmin = $parentAdmin->getParent()) {
+                $parameters[$parentAdmin->getIdParameter()] = $admin->getRequest()->attributes->get($parentAdmin->getIdParameter());
+            }
         }
 
         // if the admin is linked to a parent FieldDescription (ie, embedded widget)
@@ -137,21 +139,27 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
     {
         $this->loadCache($admin);
 
-        if ($admin->isChild()) {
-            return $admin->getBaseCodeRoute().'.'.$name;
+        // someone provide the fullname
+        if (!$admin->isChild() && array_key_exists($name, $this->caches)) {
+            return $name;
         }
 
-        // someone provide the fullname
-        if (array_key_exists($name, $this->caches)) {
-            return $name;
+        // NEXT_MAJOR: Uncomment the following line.
+        // $codePrefix = $admin->getBaseCodeRoute();
+
+        // NEXT_MAJOR: Remove next 5 lines.
+        $codePrefix = $admin->getCode();
+
+        if ($admin->isChild()) {
+            $codePrefix = $admin->getBaseCodeRoute();
         }
 
         // someone provide a code, so it is a child
         if (strpos($name, '.')) {
-            return $admin->getCode().'|'.$name;
+            return $codePrefix.'|'.$name;
         }
 
-        return $admin->getCode().'.'.$name;
+        return $codePrefix.'.'.$name;
     }
 
     /**
