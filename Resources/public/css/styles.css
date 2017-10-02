@@ -28,6 +28,10 @@ body > .header .logo {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+.main-header {
+    height: 50px;
+}
+
 .logo img {
     display: inline;
     padding-bottom: 4px;
