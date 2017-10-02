@@ -532,12 +532,12 @@ var Admin = {
             var navbar  = jQuery(wrapper).find('nav.navbar');
             var footer  = jQuery(wrapper).find('.sonata-ba-form-actions');
 
-            jQuery(wrapper).css('padding-top', $(topNavbar).outerHeight());
-
             if (navbar.length) {
                 new Waypoint.Sticky({
                     element: navbar[0],
                     offset: function() {
+                        Admin.refreshNavbarStuckClass(topNavbar);
+
                         return jQuery(topNavbar).outerHeight();
                     },
                     handler: function( direction ) {
@@ -547,7 +547,7 @@ var Admin = {
                             jQuery(navbar).width(jQuery(wrapper).outerWidth());
                         }
 
-                        Admin.refreshTopNavbarStuckClass(topNavbar);
+                        Admin.refreshNavbarStuckClass(topNavbar);
                     }
                 });
             }
@@ -570,39 +570,39 @@ var Admin = {
                 });
             }
 
-            Admin.handleScroll(footer, navbar, wrapper, topNavbar);
+            Admin.handleScroll(footer, navbar, wrapper);
         }
     },
-    handleScroll: function(footer, navbar, wrapper, topNavbar) {
+    handleScroll: function(footer, navbar, wrapper) {
         if (footer.length && jQuery(window).scrollTop() + jQuery(window).height() != jQuery(document).height()) {
             jQuery(footer).addClass('stuck');
         }
 
-        jQuery(window).scroll(function() {
-            if (footer.length && jQuery(window).scrollTop() + jQuery(window).height() == jQuery(document).height()) {
-                jQuery(footer).removeClass('stuck');
-            }
+        jQuery(window).scroll(
+            Admin.debounce(function() {
+                if (footer.length && jQuery(window).scrollTop() + jQuery(window).height() == jQuery(document).height()) {
+                    jQuery(footer).removeClass('stuck');
+                }
 
-            if (navbar.length && jQuery(window).scrollTop() === 0) {
-                jQuery(navbar).removeClass('stuck');
-            }
-        });
+                if (navbar.length && jQuery(window).scrollTop() === 0) {
+                    jQuery(navbar).removeClass('stuck');
+                }
+            }, 250)
+        );
 
         jQuery('body').on('expanded.pushMenu collapsed.pushMenu', function() {
-            Admin.handleResize(footer, navbar, wrapper, topNavbar);
+            setTimeout(function() {
+                Admin.handleResize(footer, navbar, wrapper);
+            }, 350); // the animation takes 0.3s to execute, so we have to take the width, just after the animation ended
         });
 
-        jQuery(window).resize(function() {
-            Admin.handleResize(footer, navbar, wrapper, topNavbar);
-        });
+        jQuery(window).resize(
+            Admin.debounce(function() {
+                Admin.handleResize(footer, navbar, wrapper);
+            }, 250)
+        );
     },
-    handleResize: function(footer, navbar, wrapper, topNavbar) {
-        if (topNavbar.length) {
-            jQuery(wrapper).css('padding-top', jQuery(topNavbar).outerHeight());
-
-            Admin.refreshTopNavbarStuckClass(topNavbar);
-        }
-
+    handleResize: function(footer, navbar, wrapper) {
         if (navbar.length && jQuery(navbar).hasClass('stuck')) {
             jQuery(navbar).width(jQuery(wrapper).outerWidth());
         }
@@ -611,7 +611,7 @@ var Admin = {
             jQuery(footer).width(jQuery(wrapper).outerWidth());
         }
     },
-    refreshTopNavbarStuckClass: function (topNavbar) {
+    refreshNavbarStuckClass: function(topNavbar) {
         var stuck = jQuery('#navbar-stuck');
 
         if (!stuck.length) {
@@ -621,7 +621,33 @@ var Admin = {
             ;
         }
 
-        stuck.html('body.fixed .content-header .navbar.stuck { top: ' + jQuery(topNavbar).outerHeight() +'px; }');
+        stuck.html('body.fixed .content-header .navbar.stuck { top: ' + jQuery(topNavbar).outerHeight() + 'px; }');
+    },
+    // http://davidwalsh.name/javascript-debounce-function
+    debounce: function (func, wait, immediate) {
+        var timeout;
+
+        return function() {
+            var context = this,
+                args    = arguments;
+
+            var later = function() {
+                timeout = null;
+
+                if (!immediate) {
+                    func.apply(context, args);
+                }
+            };
+
+            var callNow = immediate && !timeout;
+
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+
+            if (callNow) {
+                func.apply(context, args);
+            }
+        };
     },
     setup_readmore_elements: function(subject) {
         Admin.log('[core|setup_readmore_elements] setup readmore elements on', subject);
@@ -633,8 +659,19 @@ var Admin = {
                 lessLink: '<a href="#">'+jQuery(this).data('readmore-less')+'</a>'
             });
         });
+    },
+    handle_top_navbar_height: function() {
+        jQuery('.content-wrapper').css('padding-top', jQuery('.navbar-static-top').outerHeight());
     }
 };
+
+jQuery(document).ready(function() {
+    Admin.handle_top_navbar_height();
+});
+
+jQuery(window).resize(function() {
+    Admin.handle_top_navbar_height();
+});
 
 jQuery(document).ready(function() {
     jQuery('html').removeClass('no-js');
