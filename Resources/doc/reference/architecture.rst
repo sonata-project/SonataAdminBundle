@@ -5,7 +5,7 @@ The architecture of the ``SonataAdminBundle`` is primarily inspired by the Djang
 Project, which is truly a great project. More information can be found at the
 `Django Project Website`_.
 
-If you followed the instructions on the :doc:`getting_started` page, you should by
+If you followed the instructions on the :doc:`../getting_started/creating_an_admin` page, you should by
 now have an ``Admin`` class and an ``Admin`` service. In this chapter, we'll discuss more in
 depth how it works.
 
@@ -15,7 +15,7 @@ The Admin Class
 The ``Admin`` class maps a specific model to the rich CRUD interface provided by
 ``SonataAdminBundle``. In other words, using your ``Admin`` classes, you can configure
 what is shown by ``SonataAdminBundle`` in each CRUD action for the associated model.
-By now you've seen 3 of those actions in the ``getting started`` page: list,
+By now you've seen 3 of those actions in the :doc:`../getting_started/creating_an_admin` page: list,
 filter and form (for creation/editing). However, a fully configured ``Admin`` class
 can define more actions:
 
@@ -94,7 +94,7 @@ your ``Admin`` services. This is done using a ``call`` to the matching ``setter`
                     - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
                 public: true
 
-Here, we declare the same ``Admin`` service as in the :doc:`getting_started` chapter, but using a
+Here, we declare the same ``Admin`` service as in the :doc:`../getting_started/creating_an_admin` chapter, but using a
 different label translator strategy, replacing the default one. Notice that
 ``sonata.admin.label.strategy.underscore`` is a service provided by ``SonataAdminBundle``,
 but you could just as easily use a service of your own.
