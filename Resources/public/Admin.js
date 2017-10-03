@@ -527,6 +527,7 @@ var Admin = {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_STICKYFORMS) {
             Admin.log('[core|setup_sticky_elements] setup sticky elements on', subject);
 
+            var topNavbar = jQuery(subject).find('.navbar-static-top');
             var wrapper = jQuery(subject).find('.content-wrapper');
             var navbar  = jQuery(wrapper).find('nav.navbar');
             var footer  = jQuery(wrapper).find('.sonata-ba-form-actions');
@@ -534,13 +535,19 @@ var Admin = {
             if (navbar.length) {
                 new Waypoint.Sticky({
                     element: navbar[0],
-                    offset:  50,
+                    offset: function() {
+                        Admin.refreshNavbarStuckClass(topNavbar);
+
+                        return jQuery(topNavbar).outerHeight();
+                    },
                     handler: function( direction ) {
                         if (direction == 'up') {
                             jQuery(navbar).width('auto');
                         } else {
                             jQuery(navbar).width(jQuery(wrapper).outerWidth());
                         }
+
+                        Admin.refreshNavbarStuckClass(topNavbar);
                     }
                 });
             }
@@ -584,7 +591,9 @@ var Admin = {
         );
 
         jQuery('body').on('expanded.pushMenu collapsed.pushMenu', function() {
-            Admin.handleResize(footer, navbar, wrapper);
+            setTimeout(function() {
+                Admin.handleResize(footer, navbar, wrapper);
+            }, 350); // the animation takes 0.3s to execute, so we have to take the width, just after the animation ended
         });
 
         jQuery(window).resize(
@@ -594,15 +603,25 @@ var Admin = {
         );
     },
     handleResize: function(footer, navbar, wrapper) {
-        setTimeout(function() {
-            if (navbar.length && jQuery(navbar).hasClass('stuck')) {
-                jQuery(navbar).width(jQuery(wrapper).outerWidth());
-            }
+        if (navbar.length && jQuery(navbar).hasClass('stuck')) {
+            jQuery(navbar).width(jQuery(wrapper).outerWidth());
+        }
 
-            if (footer.length && jQuery(footer).hasClass('stuck')) {
-                jQuery(footer).width(jQuery(wrapper).outerWidth());
-            }
-        }, 350); // the animation take 0.3s to execute, so we have to take the width, just after the animation ended
+        if (footer.length && jQuery(footer).hasClass('stuck')) {
+            jQuery(footer).width(jQuery(wrapper).outerWidth());
+        }
+    },
+    refreshNavbarStuckClass: function(topNavbar) {
+        var stuck = jQuery('#navbar-stuck');
+
+        if (!stuck.length) {
+            stuck = jQuery('<style id="navbar-stuck">')
+                .prop('type', 'text/css')
+                .appendTo('head')
+            ;
+        }
+
+        stuck.html('body.fixed .content-header .navbar.stuck { top: ' + jQuery(topNavbar).outerHeight() + 'px; }');
     },
     // http://davidwalsh.name/javascript-debounce-function
     debounce: function (func, wait, immediate) {
@@ -640,8 +659,19 @@ var Admin = {
                 lessLink: '<a href="#">'+jQuery(this).data('readmore-less')+'</a>'
             });
         });
+    },
+    handle_top_navbar_height: function() {
+        jQuery('.content-wrapper').css('padding-top', jQuery('.navbar-static-top').outerHeight());
     }
 };
+
+jQuery(document).ready(function() {
+    Admin.handle_top_navbar_height();
+});
+
+jQuery(window).resize(function() {
+    Admin.handle_top_navbar_height();
+});
 
 jQuery(document).ready(function() {
     jQuery('html').removeClass('no-js');
