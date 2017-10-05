@@ -10,19 +10,14 @@ file that was distributed with this source code.
 #}
 {% macro render_array(value, inline) %}
     {% from _self import render_array %}
-    {% if value is iterable %}
-        {% for key, val in value %}
-            {% if val is iterable %}
-                [{{ key }} => {{ render_array(val, inline) }}]
-            {%  else %}
-                [{{ key }} => {{ val }}]
-            {%  endif %}
-            {% if not loop.last and not inline %}
-                <br>
-            {% endif %}
-        {% endfor %}
-    {% else %}
-        {{ value }}
-    {% endif %}
-
+    {% for key, val in value %}
+        {% if val is iterable %}
+            [{{ key }} => {{ render_array(val, inline) }}]
+        {%  else %}
+            [{{ key }} => {{ val }}]
+        {%  endif %}
+        {% if not loop.last and not inline %}
+            <br>
+        {% endif %}
+    {% endfor %}
 {% endmacro %}
