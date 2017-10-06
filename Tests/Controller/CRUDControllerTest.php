@@ -143,26 +143,33 @@ class CRUDControllerTest extends PHPUnit_Framework_TestCase
             ->setConstructorArgs(array($this->container, array()))
             ->getMock();
 
+        $templatingRenderReturnCallback = $this->returnCallback(function (
+            $view,
+            array $parameters = array(),
+            Response $response = null
+        ) use (
+            &$params,
+            &$template
+        ) {
+            $template = $view;
+
+            if (null === $response) {
+                $response = new Response();
+            }
+
+            $params = $parameters;
+
+            return $response;
+        });
+
+        // SF < 3.3.10 BC
         $templating->expects($this->any())
             ->method('renderResponse')
-            ->will($this->returnCallback(function (
-                $view,
-                array $parameters = array(),
-                Response $response = null
-            ) use (
-                &$params,
-                &$template
-            ) {
-                $template = $view;
+            ->will($templatingRenderReturnCallback);
 
-                if (null === $response) {
-                    $response = new Response();
-                }
-
-                $params = $parameters;
-
-                return $response;
-            }));
+        $templating->expects($this->any())
+            ->method('render')
+            ->will($templatingRenderReturnCallback);
 
         $this->session = new Session(new MockArraySessionStorage());
 
