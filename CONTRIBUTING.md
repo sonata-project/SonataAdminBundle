@@ -191,7 +191,6 @@ Here is a short table resuming on which you have to start:
 Kind of modification | Backward Compatible (BC) | Type of release | Branch to target        | Label |
 -------------------- | ------------------------ | --------------- | ----------------------- | ----- |
 Bug fixes            | Yes                      | Patch           | `3.x`   | |
-Bug fixes            | Not on legacy            | Patch           | `3.x`   | |
 Bug fixes            | No (Only if no choice)   | Major           | `master` | |
 Feature              | Yes                      | Minor           | `3.x`   | |
 Feature              | No (Only if no choice)   | Major           | `master` | |
@@ -199,12 +198,8 @@ Deprecation          | Yes (Have to)            | Minor           | `3.x`   | |
 Deprecation removal  | No (Can't be)            | Major           | `master` | |
 
 Notes:
-  * Branch `3.x` is the branch of the **latest stable** patch releases and
-  has to be used for Backward Compatible bug fixes only.
   * Branch `3.x` is the branch of the **latest stable** minor release and
-  has to be used for Backward compatible enhancement PRs.
-  **No bug fix will be accepted here**, except if the bug fix concerns `3.x` and **only this one**.
-  Bug fixes merged on `3.x` will be ported on other branches by fallback merging.
+  has to be used for Backward compatible PRs.
   * If you PR is not **Backward Compatible** but can be, it **must** be:
     * Changing a function/method signature? Prefer create a new one and deprecate the old one.
     * Code deletion? Don't. Please deprecate it instead.
@@ -275,6 +270,25 @@ Be aware that pull requests with BC breaks could be rejected
 or postponed to next major release if BC is not possible.
 
 If you are not sure what should be done, don't hesitate to open an issue about your PR project.
+
+##### Dependency changes
+
+If you want to change some dependencies, here are the rules:
+
+- Don't add support for a version lower than the current one.
+- Don't change the highest supported version to a lower one.
+- Lower version dropping is accepted as a Backward Compatible change according to [semver][semver_dependencies_update],
+but some extra rules must be respected here:
+  - PHP versions that are under the [green zone][php_supported_versions] (actively maintained) **MUST NO** be dropped, even on master.
+  - If it's a Symfony package, at least the last LTS version **MUST** be supported, even on master.
+  - Generally, don't drop dependency version it it doesn't have a big impact on the code.
+
+##### Legacy branches
+
+Legacy branches are **NOT** supported at all. Any submitted Pull Request will be immediately closed.
+
+Core team members *may* cherry-pick some fixes from the stable branch to the legacy one if it's really needed
+and if the legacy one is not too old (~less than one month).
 
 #### The commit message
 
@@ -421,6 +435,17 @@ use the "Rebase and merge" feature.
 And finally, use your common sense : if you see a PR about a typo,
 or if there is a situation (faulty commit, revert needed) maybe you can merge it directly.
 
+#### Dependencies version dropping
+
+Do not merge any merge request dropping a dependency version support.
+To achieve that, mark them as `RTM`, and mention then on Slack when asking for a release.
+
+This rule should be applied for these reasons:
+
+- Even if it's semver compatible, we don't maintain minor branches.
+So it's preferable to give priority to bugfixes over version-dropping PRs.
+- Some dependencies need a dev-kit update. By the way, you can make a PR on dev-kit and link it to your own.
+
 ### Be nice to the contributor
 
 Thank them for contributing. Encourage them if you feel this is going to be long.
@@ -430,3 +455,5 @@ code yourself, or ping someone who can help.
 [sphinx_install]: http://www.sphinx-doc.org/en/stable/
 [pip_install]: https://pip.pypa.io/en/stable/installing/
 [sf_docs_standards]: https://symfony.com/doc/current/contributing/documentation/standards.html
+[semver_dependencies_update]: http://semver.org/#what-should-i-do-if-i-update-my-own-dependencies-without-changing-the-public-api
+[php_supported_versions]: http://php.net/supported-versions.php
