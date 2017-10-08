@@ -34,7 +34,7 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
             return $admin;
         }));
 
-        return new Pool($container, 'title', 'logo', array('asd'));
+        return new Pool($container, 'title', 'logo', ['asd']);
     }
 
     public function testBuildPagerWithNoGlobalSearchField()
@@ -43,7 +43,7 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
         $filter->expects($this->once())->method('getOption')->will($this->returnValue(false));
 
         $datagrid = $this->getMockForAbstractClass('Sonata\AdminBundle\Datagrid\DatagridInterface');
-        $datagrid->expects($this->once())->method('getFilters')->will($this->returnValue(array($filter)));
+        $datagrid->expects($this->once())->method('getFilters')->will($this->returnValue([$filter]));
 
         $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('getDatagrid')->will($this->returnValue($datagrid));
@@ -62,7 +62,7 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
         $pager->expects($this->once())->method('setMaxPerPage');
 
         $datagrid = $this->getMockForAbstractClass('Sonata\AdminBundle\Datagrid\DatagridInterface');
-        $datagrid->expects($this->once())->method('getFilters')->will($this->returnValue(array($filter)));
+        $datagrid->expects($this->once())->method('getFilters')->will($this->returnValue([$filter]));
         $datagrid->expects($this->once())->method('setValue');
         $datagrid->expects($this->once())->method('getPager')->will($this->returnValue($pager));
 

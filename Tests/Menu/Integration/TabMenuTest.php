@@ -36,7 +36,7 @@ class TabMenuTest extends BaseMenuTest
         $translatorProphecy
             ->trans(
                 'some-label',
-                array(),
+                [],
                 Argument::any(), //messages or null
                 null
             )
@@ -45,13 +45,13 @@ class TabMenuTest extends BaseMenuTest
         $this->translator = $translatorProphecy->reveal();
         $factory = new MenuFactory();
         $menu = new MenuItem('test-menu', $factory);
-        $menu->addChild('some-label', array('uri' => '/whatever'));
+        $menu->addChild('some-label', ['uri' => '/whatever']);
         $this->assertContains('my-translation', $this->renderMenu($menu));
     }
 
     public function testLabelTranslationWithParameters()
     {
-        $params = array('my' => 'param');
+        $params = ['my' => 'param'];
         $translatorProphecy = $this->prophesize(
             'Symfony\Component\Translation\TranslatorInterface'
         );
@@ -67,7 +67,7 @@ class TabMenuTest extends BaseMenuTest
         $this->translator = $translatorProphecy->reveal();
         $factory = new MenuFactory();
         $menu = new MenuItem('test-menu', $factory);
-        $menu->addChild('some-label', array('uri' => '/whatever'))
+        $menu->addChild('some-label', ['uri' => '/whatever'])
             ->setExtra('translation_params', $params);
 
         $this->assertContains('my-translation', $this->renderMenu($menu));
@@ -79,19 +79,19 @@ class TabMenuTest extends BaseMenuTest
             'Symfony\Component\Translation\TranslatorInterface'
         );
         $translatorProphecy
-            ->trans('some-label', array(), 'my_local_domain', null)
+            ->trans('some-label', [], 'my_local_domain', null)
             ->willReturn('my-translation');
         $translatorProphecy
-            ->trans('some-other-label', array(), 'my_global_domain', null)
+            ->trans('some-other-label', [], 'my_global_domain', null)
             ->willReturn('my-other-translation');
 
         $this->translator = $translatorProphecy->reveal();
         $factory = new MenuFactory();
         $menu = new MenuItem('test-menu', $factory);
         $menu->setExtra('translation_domain', 'my_global_domain');
-        $menu->addChild('some-label', array('uri' => '/whatever'))
+        $menu->addChild('some-label', ['uri' => '/whatever'])
             ->setExtra('translation_domain', 'my_local_domain');
-        $menu->addChild('some-other-label', array('uri' => '/whatever'));
+        $menu->addChild('some-other-label', ['uri' => '/whatever']);
 
         $html = $this->renderMenu($menu);
         $this->assertContains('my-translation', $html);

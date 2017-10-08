@@ -22,7 +22,7 @@ class PathInfoBuilderTest extends \PHPUnit_Framework_TestCase
         $audit->expects($this->once())->method('hasReader')->will($this->returnValue(true));
 
         $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
-        $admin->expects($this->once())->method('getChildren')->will($this->returnValue(array()));
+        $admin->expects($this->once())->method('getChildren')->will($this->returnValue([]));
         $admin->expects($this->once())->method('isAclEnabled')->will($this->returnValue(true));
 
         $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerName');

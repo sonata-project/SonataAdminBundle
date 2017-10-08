@@ -26,10 +26,10 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
 
     public function prototypeRenderingProvider()
     {
-        return array(
-            'shrinkable collection' => array(array('allow_delete' => true)),
-            'unshrinkable collection' => array(array('allow_delete' => false)),
-        );
+        return [
+            'shrinkable collection' => [['allow_delete' => true]],
+            'unshrinkable collection' => [['allow_delete' => false]],
+        ];
     }
 
     /**
@@ -40,7 +40,7 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
         $choice = $this->factory->create(
             $this->getChoiceClass(),
             null,
-            array('allow_add' => true) + $options
+            ['allow_add' => true] + $options
         );
 
         $html = $this->renderWidget($choice->createView());
@@ -60,9 +60,9 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
             $extension->addType(new CollectionType());
         }
 
-        $extension->addTypeExtension(new FormTypeFieldExtension(array(), array(
+        $extension->addTypeExtension(new FormTypeFieldExtension([], [
             'form_type' => 'vertical',
-        )));
+        ]));
         $extensions[] = $extension;
 
         return $extensions;

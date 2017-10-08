@@ -37,13 +37,13 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetKnpMenuWithDefaultProvider()
     {
-        $adminGroups = array(
-            'bar' => array(
+        $adminGroups = [
+            'bar' => [
                 'icon' => '<i class="fa fa-edit"></i>',
                 'label_catalogue' => '',
-                'roles' => array(),
-            ),
-        );
+                'roles' => [],
+            ],
+        ];
 
         $this->provider
             ->expects($this->once())
@@ -73,14 +73,14 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetKnpMenuWithSpecifiedProvider()
     {
-        $adminGroups = array(
-            'bar' => array(
+        $adminGroups = [
+            'bar' => [
                 'provider' => 'my_menu',
                 'label_catalogue' => '',
                 'icon' => '<i class="fa fa-edit"></i>',
-                'roles' => array(),
-            ),
-        );
+                'roles' => [],
+            ],
+        ];
 
         $this->provider
             ->expects($this->once())
@@ -110,16 +110,16 @@ class MenuBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetKnpMenuAndDispatchEvent()
     {
-        $adminGroups = array(
-            'bar' => array(
+        $adminGroups = [
+            'bar' => [
                 'label' => 'foo',
                 'icon' => '<i class="fa fa-edit"></i>',
                 'label_catalogue' => 'SonataAdminBundle',
-                'items' => array(),
-                'item_adds' => array(),
-                'roles' => array(),
-            ),
-        );
+                'items' => [],
+                'item_adds' => [],
+                'roles' => [],
+            ],
+        ];
 
         $this->preparePool($adminGroups);
 

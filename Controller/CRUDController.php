@@ -59,7 +59,7 @@ class CRUDController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function render($view, array $parameters = array(), Response $response = null)
+    public function render($view, array $parameters = [], Response $response = null)
     {
         if (!$this->isXmlHttpRequest()) {
             $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
@@ -105,7 +105,7 @@ class CRUDController extends Controller
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-        return $this->render($this->admin->getTemplate('list'), array(
+        return $this->render($this->admin->getTemplate('list'), [
             'action' => 'list',
             'form' => $formView,
             'datagrid' => $datagrid,
@@ -113,7 +113,7 @@ class CRUDController extends Controller
             'export_formats' => $this->has('sonata.admin.admin_exporter') ?
                 $this->get('sonata.admin.admin_exporter')->getAvailableFormats($this->admin) :
                 $this->admin->getExportFormats(),
-        ), null);
+        ], null);
     }
 
     /**
@@ -135,19 +135,19 @@ class CRUDController extends Controller
             $modelManager->batchDelete($this->admin->getClass(), $query);
             $this->addFlash(
                 'sonata_flash_success',
-                $this->trans('flash_batch_delete_success', array(), 'SonataAdminBundle')
+                $this->trans('flash_batch_delete_success', [], 'SonataAdminBundle')
             );
         } catch (ModelManagerException $e) {
             $this->handleModelManagerException($e);
             $this->addFlash(
                 'sonata_flash_error',
-                $this->trans('flash_batch_delete_error', array(), 'SonataAdminBundle')
+                $this->trans('flash_batch_delete_error', [], 'SonataAdminBundle')
             );
         }
 
         return new RedirectResponse($this->admin->generateUrl(
             'list',
-            array('filter' => $this->admin->getFilterParameters())
+            ['filter' => $this->admin->getFilterParameters()]
         ));
     }
 
@@ -188,14 +188,14 @@ class CRUDController extends Controller
                 $this->admin->delete($object);
 
                 if ($this->isXmlHttpRequest()) {
-                    return $this->renderJson(array('result' => 'ok'), 200, array());
+                    return $this->renderJson(['result' => 'ok'], 200, []);
                 }
 
                 $this->addFlash(
                     'sonata_flash_success',
                     $this->trans(
                         'flash_delete_success',
-                        array('%name%' => $this->escapeHtml($objectName)),
+                        ['%name%' => $this->escapeHtml($objectName)],
                         'SonataAdminBundle'
                     )
                 );
@@ -203,14 +203,14 @@ class CRUDController extends Controller
                 $this->handleModelManagerException($e);
 
                 if ($this->isXmlHttpRequest()) {
-                    return $this->renderJson(array('result' => 'error'), 200, array());
+                    return $this->renderJson(['result' => 'error'], 200, []);
                 }
 
                 $this->addFlash(
                     'sonata_flash_error',
                     $this->trans(
                         'flash_delete_error',
-                        array('%name%' => $this->escapeHtml($objectName)),
+                        ['%name%' => $this->escapeHtml($objectName)],
                         'SonataAdminBundle'
                     )
                 );
@@ -219,11 +219,11 @@ class CRUDController extends Controller
             return $this->redirectTo($object);
         }
 
-        return $this->render($this->admin->getTemplate('delete'), array(
+        return $this->render($this->admin->getTemplate('delete'), [
             'object' => $object,
             'action' => 'delete',
             'csrf_token' => $this->getCsrfToken('sonata.delete'),
-        ), null);
+        ], null);
     }
 
     /**
@@ -280,18 +280,18 @@ class CRUDController extends Controller
                     $existingObject = $this->admin->update($submittedObject);
 
                     if ($this->isXmlHttpRequest()) {
-                        return $this->renderJson(array(
+                        return $this->renderJson([
                             'result' => 'ok',
                             'objectId' => $objectId,
                             'objectName' => $this->escapeHtml($this->admin->toString($existingObject)),
-                        ), 200, array());
+                        ], 200, []);
                     }
 
                     $this->addFlash(
                         'sonata_flash_success',
                         $this->trans(
                             'flash_edit_success',
-                            array('%name%' => $this->escapeHtml($this->admin->toString($existingObject))),
+                            ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))],
                             'SonataAdminBundle'
                         )
                     );
@@ -303,11 +303,11 @@ class CRUDController extends Controller
 
                     $isFormValid = false;
                 } catch (LockException $e) {
-                    $this->addFlash('sonata_flash_error', $this->trans('flash_lock_error', array(
+                    $this->addFlash('sonata_flash_error', $this->trans('flash_lock_error', [
                         '%name%' => $this->escapeHtml($this->admin->toString($existingObject)),
                         '%link_start%' => '<a href="'.$this->admin->generateObjectUrl('edit', $existingObject).'">',
                         '%link_end%' => '</a>',
-                    ), 'SonataAdminBundle'));
+                    ], 'SonataAdminBundle'));
                 }
             }
 
@@ -318,7 +318,7 @@ class CRUDController extends Controller
                         'sonata_flash_error',
                         $this->trans(
                             'flash_edit_error',
-                            array('%name%' => $this->escapeHtml($this->admin->toString($existingObject))),
+                            ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))],
                             'SonataAdminBundle'
                         )
                     );
@@ -334,12 +334,12 @@ class CRUDController extends Controller
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFormTheme());
 
-        return $this->render($this->admin->getTemplate($templateKey), array(
+        return $this->render($this->admin->getTemplate($templateKey), [
             'action' => 'edit',
             'form' => $formView,
             'object' => $existingObject,
             'objectId' => $objectId,
-        ), null);
+        ], null);
     }
 
     /**
@@ -370,7 +370,7 @@ class CRUDController extends Controller
             $allElements = $data['all_elements'];
             $request->request->replace(array_merge($request->request->all(), $data));
         } else {
-            $request->request->set('idx', $request->get('idx', array()));
+            $request->request->set('idx', $request->get('idx', []));
             $request->request->set('all_elements', $request->get('all_elements', false));
 
             $action = $request->get('action');
@@ -399,7 +399,7 @@ class CRUDController extends Controller
         $isRelevantAction = sprintf('batchAction%sIsRelevant', $camelizedAction);
 
         if (method_exists($this, $isRelevantAction)) {
-            $nonRelevantMessage = call_user_func(array($this, $isRelevantAction), $idx, $allElements, $request);
+            $nonRelevantMessage = call_user_func([$this, $isRelevantAction], $idx, $allElements, $request);
         } else {
             $nonRelevantMessage = count($idx) != 0 || $allElements; // at least one item is selected
         }
@@ -414,13 +414,13 @@ class CRUDController extends Controller
         if (true !== $nonRelevantMessage) {
             $this->addFlash(
                 'sonata_flash_info',
-                $this->trans($nonRelevantMessage, array(), 'SonataAdminBundle')
+                $this->trans($nonRelevantMessage, [], 'SonataAdminBundle')
             );
 
             return new RedirectResponse(
                 $this->admin->generateUrl(
                     'list',
-                    array('filter' => $this->admin->getFilterParameters())
+                    ['filter' => $this->admin->getFilterParameters()]
                 )
             );
         }
@@ -438,7 +438,7 @@ class CRUDController extends Controller
             $formView = $datagrid->getForm()->createView();
             $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-            return $this->render($this->admin->getTemplate('batch_confirmation'), array(
+            return $this->render($this->admin->getTemplate('batch_confirmation'), [
                 'action' => 'list',
                 'action_label' => $actionLabel,
                 'batch_translation_domain' => $batchTranslationDomain,
@@ -446,12 +446,12 @@ class CRUDController extends Controller
                 'form' => $formView,
                 'data' => $data,
                 'csrf_token' => $this->getCsrfToken('sonata.batch'),
-            ), null);
+            ], null);
         }
 
         // execute the action, batchActionXxxxx
         $finalAction = sprintf('batchAction%s', $camelizedAction);
-        if (!is_callable(array($this, $finalAction))) {
+        if (!is_callable([$this, $finalAction])) {
             throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', get_class($this), $finalAction));
         }
 
@@ -468,7 +468,7 @@ class CRUDController extends Controller
             $query = null;
         }
 
-        return call_user_func(array($this, $finalAction), $query, $request);
+        return call_user_func([$this, $finalAction], $query, $request);
     }
 
     /**
@@ -491,11 +491,11 @@ class CRUDController extends Controller
         if ($class->isAbstract()) {
             return $this->render(
                 'SonataAdminBundle:CRUD:select_subclass.html.twig',
-                array(
+                [
                     'base_template' => $this->getBaseTemplate(),
                     'admin' => $this->admin,
                     'action' => 'create',
-                ),
+                ],
                 null,
                 $request
             );
@@ -532,17 +532,17 @@ class CRUDController extends Controller
                     $newObject = $this->admin->create($submittedObject);
 
                     if ($this->isXmlHttpRequest()) {
-                        return $this->renderJson(array(
+                        return $this->renderJson([
                             'result' => 'ok',
                             'objectId' => $this->admin->getNormalizedIdentifier($newObject),
-                        ), 200, array());
+                        ], 200, []);
                     }
 
                     $this->addFlash(
                         'sonata_flash_success',
                         $this->trans(
                             'flash_create_success',
-                            array('%name%' => $this->escapeHtml($this->admin->toString($newObject))),
+                            ['%name%' => $this->escapeHtml($this->admin->toString($newObject))],
                             'SonataAdminBundle'
                         )
                     );
@@ -563,7 +563,7 @@ class CRUDController extends Controller
                         'sonata_flash_error',
                         $this->trans(
                             'flash_create_error',
-                            array('%name%' => $this->escapeHtml($this->admin->toString($newObject))),
+                            ['%name%' => $this->escapeHtml($this->admin->toString($newObject))],
                             'SonataAdminBundle'
                         )
                     );
@@ -579,12 +579,12 @@ class CRUDController extends Controller
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFormTheme());
 
-        return $this->render($this->admin->getTemplate($templateKey), array(
+        return $this->render($this->admin->getTemplate($templateKey), [
             'action' => 'create',
             'form' => $formView,
             'object' => $newObject,
             'objectId' => null,
-        ), null);
+        ], null);
     }
 
     /**
@@ -617,11 +617,11 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
 
-        return $this->render($this->admin->getTemplate('show'), array(
+        return $this->render($this->admin->getTemplate('show'), [
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
-        ), null);
+        ], null);
     }
 
     /**
@@ -662,12 +662,12 @@ class CRUDController extends Controller
 
         $revisions = $reader->findRevisions($this->admin->getClass(), $id);
 
-        return $this->render($this->admin->getTemplate('history'), array(
+        return $this->render($this->admin->getTemplate('history'), [
             'action' => 'history',
             'object' => $object,
             'revisions' => $revisions,
             'currentRevision' => $revisions ? current($revisions) : false,
-        ), null);
+        ], null);
     }
 
     /**
@@ -723,11 +723,11 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
 
-        return $this->render($this->admin->getTemplate('show'), array(
+        return $this->render($this->admin->getTemplate('show'), [
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
-        ), null);
+        ], null);
     }
 
     /**
@@ -797,12 +797,12 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($base_object);
 
-        return $this->render($this->admin->getTemplate('show_compare'), array(
+        return $this->render($this->admin->getTemplate('show_compare'), [
             'action' => 'show',
             'object' => $base_object,
             'object_compare' => $compare_object,
             'elements' => $this->admin->getShow(),
-        ), null);
+        ], null);
     }
 
     /**
@@ -923,7 +923,7 @@ class CRUDController extends Controller
                     $adminObjectAclManipulator->$updateMethod($adminObjectAclData);
                     $this->addFlash(
                         'sonata_flash_success',
-                        $this->trans('flash_acl_edit_success', array(), 'SonataAdminBundle')
+                        $this->trans('flash_acl_edit_success', [], 'SonataAdminBundle')
                     );
 
                     return new RedirectResponse($this->admin->generateObjectUrl('acl', $object));
@@ -931,7 +931,7 @@ class CRUDController extends Controller
             }
         }
 
-        return $this->render($this->admin->getTemplate('acl'), array(
+        return $this->render($this->admin->getTemplate('acl'), [
             'action' => 'acl',
             'permissions' => $adminObjectAclData->getUserPermissions(),
             'object' => $object,
@@ -939,7 +939,7 @@ class CRUDController extends Controller
             'roles' => $aclRoles,
             'aclUsersForm' => $aclUsersForm->createView(),
             'aclRolesForm' => $aclRolesForm->createView(),
-        ), null);
+        ], null);
     }
 
     /**
@@ -963,7 +963,7 @@ class CRUDController extends Controller
      *
      * @return Response with json encoded data
      */
-    protected function renderJson($data, $status = 200, $headers = array())
+    protected function renderJson($data, $status = 200, $headers = [])
     {
         return new JsonResponse($data, $status, $headers);
     }
@@ -1079,7 +1079,7 @@ class CRUDController extends Controller
             throw $e;
         }
 
-        $context = array('exception' => $e);
+        $context = ['exception' => $e];
         if ($e->getPrevious()) {
             $context['previous_exception_message'] = $e->getPrevious()->getMessage();
         }
@@ -1107,7 +1107,7 @@ class CRUDController extends Controller
         }
 
         if (null !== $request->get('btn_create_and_create')) {
-            $params = array();
+            $params = [];
             if ($this->admin->hasActiveSubClass()) {
                 $params['subclass'] = $request->get('subclass');
             }
@@ -1119,7 +1119,7 @@ class CRUDController extends Controller
         }
 
         if (!$url) {
-            foreach (array('edit', 'show') as $route) {
+            foreach (['edit', 'show'] as $route) {
                 if ($this->admin->hasRoute($route) && $this->admin->hasAccess($route, $object)) {
                     $url = $this->admin->generateObjectUrl($route, $object);
 
@@ -1194,7 +1194,7 @@ class CRUDController extends Controller
      */
     protected function getAclUsers()
     {
-        $aclUsers = array();
+        $aclUsers = [];
 
         $userManagerServiceName = $this->container->getParameter('sonata.admin.security.acl_user_manager');
         if ($userManagerServiceName !== null && $this->has($userManagerServiceName)) {
@@ -1215,7 +1215,7 @@ class CRUDController extends Controller
      */
     protected function getAclRoles()
     {
-        $aclRoles = array();
+        $aclRoles = [];
         $roleHierarchy = $this->container->getParameter('security.role_hierarchy.roles');
         $pool = $this->container->get('sonata.admin.pool');
 
@@ -1394,7 +1394,7 @@ class CRUDController extends Controller
      *
      * @return string translated string
      */
-    final protected function trans($id, array $parameters = array(), $domain = null, $locale = null)
+    final protected function trans($id, array $parameters = [], $domain = null, $locale = null)
     {
         $domain = $domain ?: $this->admin->getTranslationDomain();
 

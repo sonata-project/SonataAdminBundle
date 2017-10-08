@@ -39,7 +39,7 @@ class ModelTypeTest extends TypeTestCase
             $this->type->configureOptions($optionResolver);
         }
 
-        $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'choices' => array()));
+        $options = $optionResolver->resolve(['model_manager' => $modelManager, 'choices' => []]);
 
         $this->assertFalse($options['compound']);
         $this->assertSame('choice', $options['template']);
@@ -76,7 +76,7 @@ class ModelTypeTest extends TypeTestCase
             $this->type->configureOptions($optionResolver);
         }
 
-        $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'choices' => array(), 'multiple' => $multiple, 'expanded' => $expanded));
+        $options = $optionResolver->resolve(['model_manager' => $modelManager, 'choices' => [], 'multiple' => $multiple, 'expanded' => $expanded]);
 
         $this->assertSame($expectedCompound, $options['compound']);
         $this->assertSame('choice', $options['template']);
@@ -102,11 +102,11 @@ class ModelTypeTest extends TypeTestCase
 
     public function getCompoundOptionTests()
     {
-        return array(
-            array(true, true, true), //checkboxes
-            array(false, true, false), //select tag (with multiple attribute)
-            array(true, false, true), //radio buttons
-            array(false, false, false), //select tag
-        );
+        return [
+            [true, true, true], //checkboxes
+            [false, true, false], //select tag (with multiple attribute)
+            [true, false, true], //radio buttons
+            [false, false, false], //select tag
+        ];
     }
 }

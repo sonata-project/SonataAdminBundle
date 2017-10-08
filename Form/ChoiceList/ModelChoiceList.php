@@ -56,7 +56,7 @@ class ModelChoiceList extends SimpleChoiceList
      *
      * @var mixed
      */
-    private $entities = array();
+    private $entities = [];
 
     /**
      * Contains the query builder that builds the query for fetching the
@@ -75,7 +75,7 @@ class ModelChoiceList extends SimpleChoiceList
      *
      * @var array
      */
-    private $identifier = array();
+    private $identifier = [];
 
     /**
      * A cache for \ReflectionProperty instances for the underlying class.
@@ -84,7 +84,7 @@ class ModelChoiceList extends SimpleChoiceList
      *
      * @var array
      */
-    private $reflProperties = array();
+    private $reflProperties = [];
 
     /**
      * @var PropertyPath
@@ -103,7 +103,7 @@ class ModelChoiceList extends SimpleChoiceList
      * @param null                  $query
      * @param array                 $choices
      */
-    public function __construct(ModelManagerInterface $modelManager, $class, $property = null, $query = null, $choices = array(), PropertyAccessorInterface $propertyAccessor = null)
+    public function __construct(ModelManagerInterface $modelManager, $class, $property = null, $query = null, $choices = [], PropertyAccessorInterface $propertyAccessor = null)
     {
         $this->modelManager = $modelManager;
         $this->class = $class;
@@ -243,11 +243,11 @@ class ModelChoiceList extends SimpleChoiceList
         }
 
         if (null === $entities) {
-            return array();
+            return [];
         }
 
-        $choices = array();
-        $this->entities = array();
+        $choices = [];
+        $this->entities = [];
 
         foreach ($entities as $key => $entity) {
             if ($this->propertyPath) {

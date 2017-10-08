@@ -37,14 +37,14 @@ class AdminStatsBlockServiceTest extends AbstractBlockServiceTestCase
         $blockService = new AdminStatsBlockService('foo', $this->templating, $this->pool);
         $blockContext = $this->getBlockContext($blockService);
 
-        $this->assertSettings(array(
+        $this->assertSettings([
             'icon' => 'fa-line-chart',
             'text' => 'Statistics',
             'color' => 'bg-aqua',
             'code' => false,
-            'filters' => array(),
+            'filters' => [],
             'limit' => 1000,
             'template' => 'SonataAdminBundle:Block:block_stats.html.twig',
-        ), $blockContext);
+        ], $blockContext);
     }
 }

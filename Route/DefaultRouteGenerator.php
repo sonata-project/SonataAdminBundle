@@ -33,12 +33,12 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
     /**
      * @var array
      */
-    private $caches = array();
+    private $caches = [];
 
     /**
      * @var string[]
      */
-    private $loaded = array();
+    private $loaded = [];
 
     /**
      * @param RouterInterface $router
@@ -53,7 +53,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate($name, array $parameters = array(), $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generate($name, array $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->router->generate($name, $parameters, $absolute);
     }
@@ -61,7 +61,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generateUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generateUrl(AdminInterface $admin, $name, array $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         $arrayRoute = $this->generateMenuUrl($admin, $name, $parameters, $absolute);
 
@@ -71,7 +71,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generateMenuUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generateMenuUrl(AdminInterface $admin, $name, array $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         // if the admin is a child we automatically append the parent's id
         if ($admin->isChild() && $admin->hasRequest()) {
@@ -90,7 +90,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         // if the admin is linked to a parent FieldDescription (ie, embedded widget)
         if ($admin->hasParentFieldDescription()) {
             // merge link parameter if any provided by the parent field
-            $parameters = array_merge($parameters, $admin->getParentFieldDescription()->getOption('link_parameters', array()));
+            $parameters = array_merge($parameters, $admin->getParentFieldDescription()->getOption('link_parameters', []));
 
             $parameters['uniqid'] = $admin->getUniqid();
             $parameters['code'] = $admin->getCode();
@@ -114,11 +114,11 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
             throw new \RuntimeException(sprintf('unable to find the route `%s`', $code));
         }
 
-        return array(
+        return [
             'route' => $this->caches[$code],
             'routeParameters' => $parameters,
             'routeAbsolute' => $absolute,
-        );
+        ];
     }
 
     /**

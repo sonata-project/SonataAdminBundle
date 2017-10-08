@@ -205,7 +205,7 @@ class AdminObjectAclManipulator
             // Restore OWNER and MASTER permissions
             if (!$data->isOwner()) {
                 foreach ($data->getOwnerPermissions() as $permission) {
-                    if ($acl->isGranted(array($masks[$permission]), array($securityIdentity))) {
+                    if ($acl->isGranted([$masks[$permission]], [$securityIdentity])) {
                         $maskBuilder->add($permission);
                     }
                 }
@@ -259,16 +259,16 @@ class AdminObjectAclManipulator
 
         foreach ($aclValues as $key => $aclValue) {
             $securityIdentity = $this->getSecurityIdentity($aclValue);
-            $permissions = array();
+            $permissions = [];
 
             foreach ($data->getUserPermissions() as $permission) {
                 try {
-                    $checked = $acl->isGranted(array($masks[$permission]), array($securityIdentity));
+                    $checked = $acl->isGranted([$masks[$permission]], [$securityIdentity]);
                 } catch (NoAceFoundException $e) {
                     $checked = false;
                 }
 
-                $attr = array();
+                $attr = [];
                 if (
                     self::ACL_ROLES_FORM_NAME === $formBuilder->getName()
                     && isset($securityInformation[$aclValue])
@@ -277,12 +277,12 @@ class AdminObjectAclManipulator
                     $attr['disabled'] = 'disabled';
                 }
 
-                $permissions[$permission] = array(
+                $permissions[$permission] = [
                     'required' => false,
                     'data' => $checked,
                     'disabled' => array_key_exists('disabled', $attr),
                     'attr' => $attr,
-                );
+                ];
             }
 
             // NEXT_MAJOR: remove when dropping Symfony <2.8 support
@@ -290,7 +290,7 @@ class AdminObjectAclManipulator
                 'Sonata\AdminBundle\Form\Type\AclMatrixType' :
                 new AclMatrixType();
 
-            $formBuilder->add($key, $type, array('permissions' => $permissions, 'acl_value' => $aclValue));
+            $formBuilder->add($key, $type, ['permissions' => $permissions, 'acl_value' => $aclValue]);
         }
 
         return $formBuilder->getForm();

@@ -63,10 +63,10 @@ class LockExtension extends AbstractAdminExtension
                 method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
                     ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
                     : 'hidden',
-                array(
+                [
                     'mapped' => false,
                     'data' => $lockVersion,
-                )
+                ]
             );
         });
     }

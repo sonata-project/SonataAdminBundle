@@ -49,10 +49,10 @@ class ModelHiddenType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'model_manager' => null,
             'class' => null,
-        ));
+        ]);
     }
 
     /**

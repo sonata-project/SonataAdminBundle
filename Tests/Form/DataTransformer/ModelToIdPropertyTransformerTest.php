@@ -48,8 +48,8 @@ class ModelToIdPropertyTransformerTest extends PHPUnit_Framework_TestCase
         $this->assertNull($transformer->reverseTransform(false));
         $this->assertNull($transformer->reverseTransform(''));
         $this->assertNull($transformer->reverseTransform(12));
-        $this->assertNull($transformer->reverseTransform(array(123)));
-        $this->assertNull($transformer->reverseTransform(array(123, 456, 789)));
+        $this->assertNull($transformer->reverseTransform([123]));
+        $this->assertNull($transformer->reverseTransform([123, 456, 789]));
         $this->assertSame($entity, $transformer->reverseTransform(123));
     }
 
@@ -109,12 +109,12 @@ class ModelToIdPropertyTransformerTest extends PHPUnit_Framework_TestCase
         $entity3->setBaz(789);
         $entity3->setBar('example3');
 
-        return array(
-            array(array(), null, $entity1, $entity2, $entity3),
-            array(array(), false, $entity1, $entity2, $entity3),
-            array(array($entity1), array(123, '_labels' => array('example')), $entity1, $entity2, $entity3),
-            array(array($entity1, $entity2, $entity3), array(123, 456, 789, '_labels' => array('example', 'example2', 'example3')), $entity1, $entity2, $entity3),
-        );
+        return [
+            [[], null, $entity1, $entity2, $entity3],
+            [[], false, $entity1, $entity2, $entity3],
+            [[$entity1], [123, '_labels' => ['example']], $entity1, $entity2, $entity3],
+            [[$entity1, $entity2, $entity3], [123, 456, 789, '_labels' => ['example', 'example2', 'example3']], $entity1, $entity2, $entity3],
+        ];
     }
 
     /**
@@ -142,13 +142,13 @@ class ModelToIdPropertyTransformerTest extends PHPUnit_Framework_TestCase
 
     public function getReverseTransformMultipleInvalidTypeTests()
     {
-        return array(
-            array(array(), true, 'boolean'),
-            array(array(), 12, 'integer'),
-            array(array(), 12.9, 'double'),
-            array(array(), '_labels', 'string'),
-            array(array(), new \stdClass(), 'object'),
-        );
+        return [
+            [[], true, 'boolean'],
+            [[], 12, 'integer'],
+            [[], 12.9, 'double'],
+            [[], '_labels', 'string'],
+            [[], new \stdClass(), 'object'],
+        ];
     }
 
     public function testTransform()
@@ -158,17 +158,17 @@ class ModelToIdPropertyTransformerTest extends PHPUnit_Framework_TestCase
 
         $this->modelManager->expects($this->once())
             ->method('getIdentifierValues')
-            ->will($this->returnValue(array(123)));
+            ->will($this->returnValue([123]));
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', false);
 
-        $this->assertSame(array(), $transformer->transform(null));
-        $this->assertSame(array(), $transformer->transform(false));
-        $this->assertSame(array(), $transformer->transform(''));
-        $this->assertSame(array(), $transformer->transform(0));
-        $this->assertSame(array(), $transformer->transform('0'));
+        $this->assertSame([], $transformer->transform(null));
+        $this->assertSame([], $transformer->transform(false));
+        $this->assertSame([], $transformer->transform(''));
+        $this->assertSame([], $transformer->transform(0));
+        $this->assertSame([], $transformer->transform('0'));
 
-        $this->assertSame(array(123, '_labels' => array('example')), $transformer->transform($entity));
+        $this->assertSame([123, '_labels' => ['example']], $transformer->transform($entity));
     }
 
     public function testTransformWorksWithArrayAccessEntity()
@@ -178,11 +178,11 @@ class ModelToIdPropertyTransformerTest extends PHPUnit_Framework_TestCase
 
         $this->modelManager->expects($this->once())
             ->method('getIdentifierValues')
-            ->will($this->returnValue(array(123)));
+            ->will($this->returnValue([123]));
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess', 'bar', false);
 
-        $this->assertSame(array(123, '_labels' => array('example')), $transformer->transform($entity));
+        $this->assertSame([123, '_labels' => ['example']], $transformer->transform($entity));
     }
 
     public function testTransformToStringCallback()
@@ -193,13 +193,13 @@ class ModelToIdPropertyTransformerTest extends PHPUnit_Framework_TestCase
 
         $this->modelManager->expects($this->once())
             ->method('getIdentifierValues')
-            ->will($this->returnValue(array(123)));
+            ->will($this->returnValue([123]));
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', false, function ($entity) {
             return $entity->getBaz();
         });
 
-        $this->assertSame(array(123, '_labels' => array('bazz')), $transformer->transform($entity));
+        $this->assertSame([123, '_labels' => ['bazz']], $transformer->transform($entity));
     }
 
     /**
@@ -214,7 +214,7 @@ class ModelToIdPropertyTransformerTest extends PHPUnit_Framework_TestCase
 
         $this->modelManager->expects($this->once())
             ->method('getIdentifierValues')
-            ->will($this->returnValue(array(123)));
+            ->will($this->returnValue([123]));
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', false, '987654');
 
@@ -241,34 +241,34 @@ class ModelToIdPropertyTransformerTest extends PHPUnit_Framework_TestCase
             ->method('getIdentifierValues')
             ->will($this->returnCallback(function ($value) use ($entity1, $entity2, $entity3) {
                 if ($value == $entity1) {
-                    return array(123);
+                    return [123];
                 }
 
                 if ($value == $entity2) {
-                    return array(456);
+                    return [456];
                 }
 
                 if ($value == $entity3) {
-                    return array(789);
+                    return [789];
                 }
 
-                return array(999);
+                return [999];
             }));
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', true);
 
-        $this->assertSame(array(), $transformer->transform(null));
-        $this->assertSame(array(), $transformer->transform(false));
-        $this->assertSame(array(), $transformer->transform(''));
-        $this->assertSame(array(), $transformer->transform(0));
-        $this->assertSame(array(), $transformer->transform('0'));
+        $this->assertSame([], $transformer->transform(null));
+        $this->assertSame([], $transformer->transform(false));
+        $this->assertSame([], $transformer->transform(''));
+        $this->assertSame([], $transformer->transform(0));
+        $this->assertSame([], $transformer->transform('0'));
 
-        $this->assertSame(array(
+        $this->assertSame([
             123,
-            '_labels' => array('foo', 'bar', 'baz'),
+            '_labels' => ['foo', 'bar', 'baz'],
             456,
             789,
-        ), $transformer->transform($collection));
+        ], $transformer->transform($collection));
     }
 
     /**

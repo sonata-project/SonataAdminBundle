@@ -24,10 +24,10 @@ class ObjectAclManipulatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->output = $this->prophesize('Symfony\Component\Console\Output\OutputInterface');
         $this->admin = $this->prophesize('Sonata\AdminBundle\Admin\AdminInterface');
-        $this->oids = new \ArrayIterator(array(
+        $this->oids = new \ArrayIterator([
             $this->prophesize('Symfony\Component\Security\Acl\Model\ObjectIdentityInterface')->reveal(),
             $this->prophesize('Symfony\Component\Security\Acl\Model\ObjectIdentityInterface')->reveal(),
-        ));
+        ]);
         $this->securityIdentity = new UserSecurityIdentity('Michael', 'stdClass');
     }
 
@@ -41,7 +41,7 @@ class ObjectAclManipulatorTest extends \PHPUnit_Framework_TestCase
         ))->shouldBeCalled();
         $manipulator = new DummyObjectAclManipulator();
         $this->assertSame(
-            array(0, 0),
+            [0, 0],
             $manipulator->configureAcls(
                 $this->output->reveal(),
                 $this->admin->reveal(),
@@ -69,8 +69,8 @@ class ObjectAclManipulatorTest extends \PHPUnit_Framework_TestCase
         $securityHandler->addObjectOwner($acl, Argument::type(
             'Symfony\Component\Security\Acl\Domain\UserSecurityIdentity'
         ))->shouldBeCalled();
-        $securityHandler->buildSecurityInformation($this->admin)->shouldBeCalled()->willReturn(array());
-        $securityHandler->addObjectClassAces($acl, array())->shouldBeCalled();
+        $securityHandler->buildSecurityInformation($this->admin)->shouldBeCalled()->willReturn([]);
+        $securityHandler->addObjectClassAces($acl, [])->shouldBeCalled();
         $securityHandler->updateAcl($acl)->shouldBeCalled()->willThrow(new \Exception('test exception'));
         $this->output->writeln(Argument::allof(
             Argument::containingString('ignoring'),
@@ -82,7 +82,7 @@ class ObjectAclManipulatorTest extends \PHPUnit_Framework_TestCase
         $manipulator = new DummyObjectAclManipulator();
 
         $this->assertSame(
-            array(1, 1),
+            [1, 1],
             $manipulator->configureAcls(
                 $this->output->reveal(),
                 $this->admin->reveal(),

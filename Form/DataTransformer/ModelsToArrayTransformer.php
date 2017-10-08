@@ -125,10 +125,10 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     public function transform($collection)
     {
         if (null === $collection) {
-            return array();
+            return [];
         }
 
-        $array = array();
+        $array = [];
         foreach ($collection as $key => $entity) {
             $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($entity));
 
@@ -148,7 +148,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         }
 
         $collection = $this->modelManager->getModelCollectionInstance($this->class);
-        $notFound = array();
+        $notFound = [];
 
         // optimize this into a SELECT WHERE IN query
         foreach ($keys as $key) {

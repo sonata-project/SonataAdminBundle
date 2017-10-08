@@ -33,7 +33,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     /**
      * @var array
      */
-    protected $sonataAdmin = array(
+    protected $sonataAdmin = [
         'name' => null,
         'admin' => null,
         'value' => null,
@@ -41,11 +41,11 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
         'inline' => 'natural',
         'field_description' => null,
         'block_name' => false,
-        'options' => array(
+        'options' => [
             'form_type' => 'vertical',
             'use_icheck' => true,
-        ),
-    );
+        ],
+    ];
 
     /**
      * {@inheritdoc}
@@ -66,12 +66,12 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
      */
     protected function getRenderingEngine(\Twig_Environment $environment = null)
     {
-        if (!in_array($this->type, array('form', 'filter'))) {
+        if (!in_array($this->type, ['form', 'filter'])) {
             throw new \Exception('Please override $this->type in your test class specifying template to use (either form or filter)');
         }
 
         return new TwigRendererEngine(
-            array($this->type.'_admin_fields.html.twig'),
+            [$this->type.'_admin_fields.html.twig'],
             $environment
         );
     }
@@ -89,8 +89,8 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
      */
     protected function getTemplatePaths()
     {
-        return array_merge(parent::getTemplatePaths(), array(
+        return array_merge(parent::getTemplatePaths(), [
             __DIR__.'/../../../Resources/views/Form',
-        ));
+        ]);
     }
 }

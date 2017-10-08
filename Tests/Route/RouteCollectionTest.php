@@ -76,7 +76,7 @@ class RouteCollectionTest extends PHPUnit_Framework_TestCase
         $routeCollection->add('view');
         $routeCollection->add('edit');
         $routeCollection->add('list');
-        $routeCollection->clearExcept(array('create', 'edit'));
+        $routeCollection->clearExcept(['create', 'edit']);
         $this->assertTrue($routeCollection->has('create'));
         $this->assertTrue($routeCollection->has('edit'));
         $this->assertFalse($routeCollection->has('view'));
@@ -136,23 +136,23 @@ class RouteCollectionTest extends PHPUnit_Framework_TestCase
 
         $name = 'view';
         $pattern = 'view';
-        $defaults = array(
+        $defaults = [
             '_controller' => 'BundleName:ControllerName:viewAction',
-        );
-        $requirements = array(
+        ];
+        $requirements = [
             'page' => '\d+',
-        );
-        $options = array(
+        ];
+        $options = [
             'debug' => true,
-        );
+        ];
         $host = 'test.local';
-        $schemes = array(
+        $schemes = [
             'https',
-        );
-        $methods = array(
+        ];
+        $methods = [
             'GET',
             'POST',
-        );
+        ];
         $condition = "context.getMethod() in ['GET', 'HEAD'] and request.headers.get('User-Agent') matches '/firefox/i'";
 
         $routeCollection->add($name, $pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition);

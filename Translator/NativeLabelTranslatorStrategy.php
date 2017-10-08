@@ -21,7 +21,7 @@ class NativeLabelTranslatorStrategy implements LabelTranslatorStrategyInterface
      */
     public function getLabel($label, $context = '', $type = '')
     {
-        $label = str_replace(array('_', '.'), ' ', $label);
+        $label = str_replace(['_', '.'], ' ', $label);
         $label = strtolower(preg_replace('~(?<=\\w)([A-Z])~', '_$1', $label));
 
         return trim(ucwords(str_replace('_', ' ', $label)));

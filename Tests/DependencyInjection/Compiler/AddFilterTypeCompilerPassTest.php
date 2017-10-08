@@ -36,27 +36,27 @@ class AddFilterTypeCompilerPassTest extends PHPUnit_Framework_TestCase
         $containerBuilderMock->expects($this->any())
             ->method('getDefinition')
             ->with($this->anything())
-            ->will($this->returnValueMap(array(
-                array('sonata.admin.builder.filter.factory', $this->filterFactory),
-                array('acme.demo.foo_filter', $this->fooFilter),
-                array('acme.demo.bar_filter', $this->barFilter),
-            )));
+            ->will($this->returnValueMap([
+                ['sonata.admin.builder.filter.factory', $this->filterFactory],
+                ['acme.demo.foo_filter', $this->fooFilter],
+                ['acme.demo.bar_filter', $this->barFilter],
+            ]));
 
         $containerBuilderMock->expects($this->once())
             ->method('findTaggedServiceIds')
             ->with($this->equalTo('sonata.admin.filter.type'))
-            ->will($this->returnValue(array(
-                'acme.demo.foo_filter' => array(
-                    'tag1' => array(
+            ->will($this->returnValue([
+                'acme.demo.foo_filter' => [
+                    'tag1' => [
                         'alias' => 'foo_filter_alias',
-                    ),
-                ),
-                'acme.demo.bar_filter' => array(
-                    'tag1' => array(
+                    ],
+                ],
+                'acme.demo.bar_filter' => [
+                    'tag1' => [
                         'alias' => 'bar_filter_alias',
-                    ),
-                ),
-            )));
+                    ],
+                ],
+            ]));
 
         $this->fooFilter->method('getClass')
             ->will($this->returnValue('Acme\Filter\FooFilter'));
@@ -66,12 +66,12 @@ class AddFilterTypeCompilerPassTest extends PHPUnit_Framework_TestCase
 
         $this->filterFactory->expects($this->once())
             ->method('replaceArgument')
-            ->with(1, $this->equalTo(array(
+            ->with(1, $this->equalTo([
                 'foo_filter_alias' => 'acme.demo.foo_filter',
                 'Acme\Filter\FooFilter' => 'acme.demo.foo_filter',
                 'bar_filter_alias' => 'acme.demo.bar_filter',
                 'Acme\Filter\BarFilter' => 'acme.demo.bar_filter',
-            )));
+            ]));
 
         $extensionsPass = new AddFilterTypeCompilerPass();
         $extensionsPass->process($containerBuilderMock);

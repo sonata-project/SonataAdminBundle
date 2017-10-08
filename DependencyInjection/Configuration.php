@@ -53,18 +53,18 @@ class Configuration implements ConfigurationInterface
                                 ->beforeNormalization()
                                     ->ifString()
                                     ->then(function ($v) {
-                                        return array($v);
+                                        return [$v];
                                     })
                                 ->end()
                                 ->prototype('scalar')->end()
                             ->end()
                         ->end()
                         ->arrayNode('admin_permissions')
-                            ->defaultValue(array('CREATE', 'LIST', 'DELETE', 'UNDELETE', 'EXPORT', 'OPERATOR', 'MASTER'))
+                            ->defaultValue(['CREATE', 'LIST', 'DELETE', 'UNDELETE', 'EXPORT', 'OPERATOR', 'MASTER'])
                             ->prototype('scalar')->end()
                         ->end()
                         ->arrayNode('object_permissions')
-                            ->defaultValue(array('VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER'))
+                            ->defaultValue(['VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER'])
                             ->prototype('scalar')->end()
                         ->end()
                         ->scalarNode('acl_user_manager')->defaultNull()->end()
@@ -82,7 +82,7 @@ class Configuration implements ConfigurationInterface
                             ->info('Perhaps one of the three options: show, fade, hide.')
                             ->validate()
                                 ->ifTrue(function ($v) {
-                                    return !in_array($v, array('show', 'fade', 'hide'));
+                                    return !in_array($v, ['show', 'fade', 'hide']);
                                 })
                                 ->thenInvalid('Configuration value of "global_search.empty_boxes" must be one of show, fade or hide.')
                             ->end()
@@ -113,7 +113,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('form_type')->defaultValue('standard')->end()
                         ->integerNode('dropdown_number_groups_per_colums')->defaultValue(2)->end()
                         ->enumNode('title_mode')
-                            ->values(array('single_text', 'single_image', 'both'))
+                            ->values(['single_text', 'single_image', 'both'])
                             ->defaultValue('both')
                             ->cannotBeEmpty()
                         ->end()
@@ -139,7 +139,7 @@ class Configuration implements ConfigurationInterface
                                     ->ifArray()
                                     ->then(function ($items) {
                                         if (isset($items['provider'])) {
-                                            $disallowedItems = array('items', 'label');
+                                            $disallowedItems = ['items', 'label'];
                                             foreach ($disallowedItems as $item) {
                                                 if (isset($items[$item])) {
                                                     throw new \InvalidArgumentException(sprintf('The config value "%s" cannot be used alongside "provider" config value', $item));
@@ -170,18 +170,18 @@ class Configuration implements ConfigurationInterface
                                                         }
 
                                                         if (!array_key_exists('route_params', $item)) {
-                                                            $items[$key]['route_params'] = array();
+                                                            $items[$key]['route_params'] = [];
                                                         }
 
                                                         $items[$key]['admin'] = '';
                                                     } else {
-                                                        $items[$key] = array(
+                                                        $items[$key] = [
                                                             'admin' => $item,
                                                             'label' => '',
                                                             'route' => '',
-                                                            'route_params' => array(),
+                                                            'route_params' => [],
                                                             'route_absolute' => false,
-                                                        );
+                                                        ];
                                                     }
                                                 }
 
@@ -196,7 +196,7 @@ class Configuration implements ConfigurationInterface
                                                 ->arrayNode('roles')
                                                     ->prototype('scalar')
                                                         ->info('Roles which will see the route in the menu')
-                                                        ->defaultValue(array())
+                                                        ->defaultValue([])
                                                     ->end()
                                                 ->end()
                                                 ->arrayNode('route_params')
@@ -213,29 +213,29 @@ class Configuration implements ConfigurationInterface
                                         ->prototype('scalar')->end()
                                     ->end()
                                     ->arrayNode('roles')
-                                        ->prototype('scalar')->defaultValue(array())->end()
+                                        ->prototype('scalar')->defaultValue([])->end()
                                     ->end()
                                 ->end()
                             ->end()
                         ->end()
                         ->arrayNode('blocks')
-                            ->defaultValue(array(array(
+                            ->defaultValue([[
                                 'position' => 'left',
-                                'settings' => array(),
+                                'settings' => [],
                                 'type' => 'sonata.admin.block.admin_list',
-                                'roles' => array(),
-                            )))
+                                'roles' => [],
+                            ]])
                             ->prototype('array')
                                 ->fixXmlConfig('setting')
                                 ->children()
                                     ->scalarNode('type')->cannotBeEmpty()->end()
                                     ->arrayNode('roles')
-                                        ->defaultValue(array())
+                                        ->defaultValue([])
                                         ->prototype('scalar')->end()
                                     ->end()
                                     ->arrayNode('settings')
                                         ->useAttributeAsKey('id')
-                                        ->prototype('variable')->defaultValue(array())->end()
+                                        ->prototype('variable')->defaultValue([])->end()
                                     ->end()
                                     ->scalarNode('position')->defaultValue('right')->end()
                                     ->scalarNode('class')->defaultValue('col-md-4')->end()
@@ -330,7 +330,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('stylesheets')
-                            ->defaultValue(array(
+                            ->defaultValue([
                                 'bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css',
                                 'bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css',
                                 'bundles/sonatacore/vendor/ionicons/css/ionicons.min.css',
@@ -350,11 +350,11 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonataadmin/css/styles.css',
                                 'bundles/sonataadmin/css/layout.css',
                                 'bundles/sonataadmin/css/tree.css',
-                            ))
+                            ])
                             ->prototype('scalar')->end()
                         ->end()
                         ->arrayNode('javascripts')
-                            ->defaultValue(array(
+                            ->defaultValue([
                                 'bundles/sonatacore/vendor/jquery/dist/jquery.min.js',
                                 'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js',
 
@@ -385,7 +385,7 @@ class Configuration implements ConfigurationInterface
 
                                 'bundles/sonataadmin/Admin.js',
                                 'bundles/sonataadmin/treeview.js',
-                            ))
+                            ])
                             ->prototype('scalar')->end()
                         ->end()
                     ->end()
@@ -393,7 +393,7 @@ class Configuration implements ConfigurationInterface
 
                 ->arrayNode('extensions')
                 ->useAttributeAsKey('id')
-                ->defaultValue(array('admins' => array(), 'excludes' => array(), 'implements' => array(), 'extends' => array(), 'instanceof' => array(), 'uses' => array()))
+                ->defaultValue(['admins' => [], 'excludes' => [], 'implements' => [], 'extends' => [], 'instanceof' => [], 'uses' => []])
                     ->prototype('array')
                         ->fixXmlConfig('admin')
                         ->fixXmlConfig('exclude')

@@ -222,14 +222,14 @@ interface FieldDescriptionInterface
      * @param string $name
      * @param array  $options
      */
-    public function mergeOption($name, array $options = array());
+    public function mergeOption($name, array $options = []);
 
     /**
      * merge options values.
      *
      * @param array $options
      */
-    public function mergeOptions(array $options = array());
+    public function mergeOptions(array $options = []);
 
     /**
      * set the original mapping type (only used if the field is linked to an entity).

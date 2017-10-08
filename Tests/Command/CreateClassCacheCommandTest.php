@@ -99,7 +99,7 @@ class CreateClassCacheCommandTest extends PHPUnit_Framework_TestCase
 
         $command = $this->application->find('cache:create-cache-class');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array('command' => $command->getName()));
+        $commandTester->execute(['command' => $command->getName()]);
 
         $this->assertRegExp('@Writing cache file ...\s+done!@', $commandTester->getDisplay());
 
@@ -115,7 +115,7 @@ class CreateClassCacheCommandTest extends PHPUnit_Framework_TestCase
         try {
             $command = $this->application->find('cache:create-cache-class');
             $commandTester = new CommandTester($command);
-            $commandTester->execute(array('command' => $command->getName()));
+            $commandTester->execute(['command' => $command->getName()]);
         } catch (\RuntimeException $e) {
             $this->assertSame(sprintf('The file %s/classes.map does not exist', $this->tempDirectory), $e->getMessage());
 

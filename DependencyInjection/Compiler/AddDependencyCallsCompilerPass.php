@@ -45,7 +45,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         }
 
         $parameterBag = $container->getParameterBag();
-        $groupDefaults = $admins = $classes = array();
+        $groupDefaults = $admins = $classes = [];
 
         $pool = $container->getDefinition('sonata.admin.pool');
 
@@ -59,10 +59,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $parentDefinition = $container->getDefinition($definition->getParent());
                 }
 
-                $this->replaceDefaultArguments(array(
+                $this->replaceDefaultArguments([
                     0 => $id,
                     2 => 'SonataAdminBundle:CRUD',
-                ), $definition, $parentDefinition);
+                ], $definition, $parentDefinition);
                 $this->applyConfigurationFromAttribute($definition, $attributes);
                 $this->applyDefaults($container, $id, $attributes);
 
@@ -73,7 +73,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $admins[] = $id;
 
                 if (!isset($classes[$arguments[1]])) {
-                    $classes[$arguments[1]] = array();
+                    $classes[$arguments[1]] = [];
                 }
 
                 $classes[$arguments[1]][] = $id;
@@ -90,23 +90,23 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $keepOpen = isset($attributes['keep_open']) ? $attributes['keep_open'] : false;
 
                 if (!isset($groupDefaults[$resolvedGroupName])) {
-                    $groupDefaults[$resolvedGroupName] = array(
+                    $groupDefaults[$resolvedGroupName] = [
                         'label' => $resolvedGroupName,
                         'label_catalogue' => $labelCatalogue,
                         'icon' => $icon,
-                        'roles' => array(),
+                        'roles' => [],
                         'on_top' => false,
                         'keep_open' => false,
-                    );
+                    ];
                 }
 
-                $groupDefaults[$resolvedGroupName]['items'][] = array(
+                $groupDefaults[$resolvedGroupName]['items'][] = [
                     'admin' => $id,
                     'label' => !empty($attributes['label']) ? $attributes['label'] : '',
                     'route' => '',
-                    'route_params' => array(),
+                    'route_params' => [],
                     'route_absolute' => false,
-                );
+                ];
 
                 if (isset($groupDefaults[$resolvedGroupName]['on_top']) && $groupDefaults[$resolvedGroupName]['on_top']
                     || $onTop && (count($groupDefaults[$resolvedGroupName]['items']) > 1)) {
@@ -125,13 +125,13 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             foreach ($dashboardGroupsSettings as $groupName => $group) {
                 $resolvedGroupName = $parameterBag->resolveValue($groupName);
                 if (!isset($groupDefaults[$resolvedGroupName])) {
-                    $groupDefaults[$resolvedGroupName] = array(
-                        'items' => array(),
+                    $groupDefaults[$resolvedGroupName] = [
+                        'items' => [],
                         'label' => $resolvedGroupName,
-                        'roles' => array(),
+                        'roles' => [],
                         'on_top' => false,
                         'keep_open' => false,
-                    );
+                    ];
                 }
 
                 if (empty($group['items'])) {
@@ -199,9 +199,9 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $groups = $groupDefaults;
         }
 
-        $pool->addMethodCall('setAdminServiceIds', array($admins));
-        $pool->addMethodCall('setAdminGroups', array($groups));
-        $pool->addMethodCall('setAdminClasses', array($classes));
+        $pool->addMethodCall('setAdminServiceIds', [$admins]);
+        $pool->addMethodCall('setAdminGroups', [$groups]);
+        $pool->addMethodCall('setAdminClasses', [$classes]);
 
         $routeLoader = $container->getDefinition('sonata.admin.route_loader');
         $routeLoader->replaceArgument(1, $admins);
@@ -215,7 +215,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
      */
     public function applyConfigurationFromAttribute(Definition $definition, array $attributes)
     {
-        $keys = array(
+        $keys = [
             'model_manager',
             'form_contractor',
             'show_builder',
@@ -229,7 +229,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'menu_factory',
             'route_builder',
             'label_translator_strategy',
-        );
+        ];
 
         foreach ($keys as $key) {
             $method = 'set'.Inflector::classify($key);
@@ -237,7 +237,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 continue;
             }
 
-            $definition->addMethodCall($method, array(new Reference($attributes[$key])));
+            $definition->addMethodCall($method, [new Reference($attributes[$key])]);
         }
     }
 
@@ -250,7 +250,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
      *
      * @return Definition
      */
-    public function applyDefaults(ContainerBuilder $container, $serviceId, array $attributes = array())
+    public function applyDefaults(ContainerBuilder $container, $serviceId, array $attributes = [])
     {
         $definition = $container->getDefinition($serviceId);
         $settings = $container->getParameter('sonata.admin.configuration.admin_services');
@@ -263,9 +263,9 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $manager_type = $attributes['manager_type'];
 
-        $overwriteAdminConfiguration = isset($settings[$serviceId]) ? $settings[$serviceId] : array();
+        $overwriteAdminConfiguration = isset($settings[$serviceId]) ? $settings[$serviceId] : [];
 
-        $defaultAddServices = array(
+        $defaultAddServices = [
             'model_manager' => sprintf('sonata.admin.manager.%s', $manager_type),
             'form_contractor' => sprintf('sonata.admin.builder.%s_form', $manager_type),
             'show_builder' => sprintf('sonata.admin.builder.%s_show', $manager_type),
@@ -280,15 +280,15 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'route_builder' => 'sonata.admin.route.path_info'.
                 (($manager_type == 'doctrine_phpcr') ? '_slashes' : ''),
             'label_translator_strategy' => 'sonata.admin.label.strategy.native',
-        );
+        ];
 
-        $definition->addMethodCall('setManagerType', array($manager_type));
+        $definition->addMethodCall('setManagerType', [$manager_type]);
 
         foreach ($defaultAddServices as $attr => $addServiceId) {
             $method = 'set'.Inflector::classify($attr);
 
             if (isset($overwriteAdminConfiguration[$attr]) || !$definition->hasMethodCall($method)) {
-                $args = array(new Reference(isset($overwriteAdminConfiguration[$attr]) ? $overwriteAdminConfiguration[$attr] : $addServiceId));
+                $args = [new Reference(isset($overwriteAdminConfiguration[$attr]) ? $overwriteAdminConfiguration[$attr] : $addServiceId)];
                 if ('translator' === $attr) {
                     $args[] = false;
                 }
@@ -305,7 +305,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $pagerType = Pager::TYPE_DEFAULT;
         }
 
-        $definition->addMethodCall('setPagerType', array($pagerType));
+        $definition->addMethodCall('setPagerType', [$pagerType]);
 
         if (isset($overwriteAdminConfiguration['label'])) {
             $label = $overwriteAdminConfiguration['label'];
@@ -315,7 +315,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $label = '-';
         }
 
-        $definition->addMethodCall('setLabel', array($label));
+        $definition->addMethodCall('setLabel', [$label]);
 
         if (isset($attributes['persist_filters'])) {
             $persistFilters = (bool) $attributes['persist_filters'];
@@ -323,7 +323,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $persistFilters = (bool) $container->getParameter('sonata.admin.configuration.filters.persist');
         }
 
-        $definition->addMethodCall('setPersistFilters', array($persistFilters));
+        $definition->addMethodCall('setPersistFilters', [$persistFilters]);
 
         if (isset($overwriteAdminConfiguration['show_mosaic_button'])) {
             $showMosaicButton = $overwriteAdminConfiguration['show_mosaic_button'];
@@ -333,12 +333,12 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $showMosaicButton = $container->getParameter('sonata.admin.configuration.show.mosaic.button');
         }
 
-        $definition->addMethodCall('showMosaicButton', array($showMosaicButton));
+        $definition->addMethodCall('showMosaicButton', [$showMosaicButton]);
 
-        $this->fixTemplates($container, $definition, isset($overwriteAdminConfiguration['templates']) ? $overwriteAdminConfiguration['templates'] : array('view' => array()));
+        $this->fixTemplates($container, $definition, isset($overwriteAdminConfiguration['templates']) ? $overwriteAdminConfiguration['templates'] : ['view' => []]);
 
         if ($container->hasParameter('sonata.admin.configuration.security.information') && !$definition->hasMethodCall('setSecurityInformation')) {
-            $definition->addMethodCall('setSecurityInformation', array('%sonata.admin.configuration.security.information%'));
+            $definition->addMethodCall('setSecurityInformation', ['%sonata.admin.configuration.security.information%']);
         }
 
         $definition->addMethodCall('initialize');
@@ -351,11 +351,11 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
      * @param Definition       $definition
      * @param array            $overwrittenTemplates
      */
-    public function fixTemplates(ContainerBuilder $container, Definition $definition, array $overwrittenTemplates = array())
+    public function fixTemplates(ContainerBuilder $container, Definition $definition, array $overwrittenTemplates = [])
     {
         $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
 
-        $methods = array();
+        $methods = [];
         $pos = 0;
         foreach ($definition->getMethodCalls() as $method) {
             if ($method[0] == 'setTemplates') {
@@ -390,9 +390,9 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $definedTemplates = $overwrittenTemplates['view'] + $definedTemplates;
 
         if ($container->getParameter('sonata.admin.configuration.templates') !== $definedTemplates) {
-            $definition->addMethodCall('setTemplates', array($definedTemplates));
+            $definition->addMethodCall('setTemplates', [$definedTemplates]);
         } else {
-            $definition->addMethodCall('setTemplates', array('%sonata.admin.configuration.templates%'));
+            $definition->addMethodCall('setTemplates', ['%sonata.admin.configuration.templates%']);
         }
     }
 
@@ -406,7 +406,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     private function replaceDefaultArguments(array $defaultArguments, Definition $definition, Definition $parentDefinition = null)
     {
         $arguments = $definition->getArguments();
-        $parentArguments = $parentDefinition ? $parentDefinition->getArguments() : array();
+        $parentArguments = $parentDefinition ? $parentDefinition->getArguments() : [];
 
         foreach ($defaultArguments as $index => $value) {
             $declaredInParent = $parentDefinition && array_key_exists($index, $parentArguments);
