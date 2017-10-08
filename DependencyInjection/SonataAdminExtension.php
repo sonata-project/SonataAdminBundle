@@ -34,20 +34,20 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
         if (isset($bundles['SonataUserBundle'])) {
             // integrate the SonataUserBundle / FOSUserBundle if the bundle exists
-            array_unshift($configs, array(
-                'templates' => array(
+            array_unshift($configs, [
+                'templates' => [
                     'user_block' => 'SonataUserBundle:Admin/Core:user_block.html.twig',
-                ),
-            ));
+                ],
+            ]);
         }
 
         if (isset($bundles['SonataIntlBundle'])) {
             // integrate the SonataUserBundle if the bundle exists
-            array_unshift($configs, array(
-                'templates' => array(
+            array_unshift($configs, [
+                'templates' => [
                     'history_revision_timestamp' => 'SonataIntlBundle:CRUD:history_revision_timestamp.html.twig',
-                ),
-            ));
+                ],
+            ]);
         }
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -74,7 +74,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         // TODO: Go back on xml configuration when bumping requirements to SF 2.6+
         $sidebarMenu = $container->getDefinition('sonata.admin.sidebar_menu');
         if (method_exists($sidebarMenu, 'setFactory')) {
-            $sidebarMenu->setFactory(array(new Reference('sonata.admin.menu_builder'), 'createSidebarMenu'));
+            $sidebarMenu->setFactory([new Reference('sonata.admin.menu_builder'), 'createSidebarMenu']);
         } else {
             $sidebarMenu->setFactoryService('sonata.admin.menu_builder');
             $sidebarMenu->setFactoryMethod('createSidebarMenu');
@@ -96,7 +96,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         }
 
         $container->setParameter('sonata.admin.configuration.global_search.empty_boxes', $config['global_search']['empty_boxes']);
-        $container->setParameter('sonata.admin.configuration.templates', $config['templates'] + array(
+        $container->setParameter('sonata.admin.configuration.templates', $config['templates'] + [
             'user_block' => 'SonataAdminBundle:Core:user_block.html.twig',
             'add_block' => 'SonataAdminBundle:Core:add_block.html.twig',
             'layout' => 'SonataAdminBundle::standard_layout.html.twig',
@@ -127,7 +127,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             'outer_list_rows_mosaic' => 'SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig',
             'outer_list_rows_list' => 'SonataAdminBundle:CRUD:list_outer_rows_list.html.twig',
             'outer_list_rows_tree' => 'SonataAdminBundle:CRUD:list_outer_rows_tree.html.twig',
-        ));
+        ]);
         $container->setParameter('sonata.admin.configuration.admin_services', $config['admin_services']);
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
         $container->setParameter('sonata.admin.configuration.dashboard_blocks', $config['dashboard']['blocks']);
@@ -145,26 +145,26 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         switch ($config['security']['handler']) {
             case 'sonata.admin.security.handler.role':
                 if (count($config['security']['information']) === 0) {
-                    $config['security']['information'] = array(
-                        'EDIT' => array('EDIT'),
-                        'LIST' => array('LIST'),
-                        'CREATE' => array('CREATE'),
-                        'VIEW' => array('VIEW'),
-                        'DELETE' => array('DELETE'),
-                        'EXPORT' => array('EXPORT'),
-                        'ALL' => array('ALL'),
-                    );
+                    $config['security']['information'] = [
+                        'EDIT' => ['EDIT'],
+                        'LIST' => ['LIST'],
+                        'CREATE' => ['CREATE'],
+                        'VIEW' => ['VIEW'],
+                        'DELETE' => ['DELETE'],
+                        'EXPORT' => ['EXPORT'],
+                        'ALL' => ['ALL'],
+                    ];
                 }
 
                 break;
             case 'sonata.admin.security.handler.acl':
                 if (count($config['security']['information']) === 0) {
-                    $config['security']['information'] = array(
-                        'GUEST' => array('VIEW', 'LIST'),
-                        'STAFF' => array('EDIT', 'LIST', 'CREATE'),
-                        'EDITOR' => array('OPERATOR', 'EXPORT'),
-                        'ADMIN' => array('MASTER'),
-                    );
+                    $config['security']['information'] = [
+                        'GUEST' => ['VIEW', 'LIST'],
+                        'STAFF' => ['EDIT', 'LIST', 'CREATE'],
+                        'EDITOR' => ['OPERATOR', 'EXPORT'],
+                        'ADMIN' => ['MASTER'],
+                    ];
                 }
 
                 break;
@@ -207,7 +207,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         /*
          * This is a work in progress, so for now it is hardcoded
          */
-        $classes = array(
+        $classes = [
             'email' => '',
             'textarea' => '',
             'text' => '',
@@ -224,7 +224,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             'Symfony\Component\Form\Extension\Core\Type\IntegerType' => '',
             'Symfony\Component\Form\Extension\Core\Type\TextareaType' => '',
             'Symfony\Component\Form\Extension\Core\Type\TextType' => '',
-        );
+        ];
 
         $container->getDefinition('sonata.admin.form.extension.field')
             ->replaceArgument(0, $classes)
@@ -297,12 +297,12 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         );
 
         if ($annotationPatternsConfigured) {
-            $annotationPatterns = array($sonataAdminPattern);
+            $annotationPatterns = [$sonataAdminPattern];
         } else {
             // get annotation_patterns default from DiExtraBundle configuration
             $diExtraConfigDefinition = new \JMS\DiExtraBundle\DependencyInjection\Configuration();
             // FIXME: this will break if DiExtraBundle adds any mandatory configuration
-            $diExtraConfig = $this->processConfiguration($diExtraConfigDefinition, array());
+            $diExtraConfig = $this->processConfiguration($diExtraConfigDefinition, []);
 
             $annotationPatterns = $diExtraConfig['annotation_patterns'];
             $annotationPatterns[] = $sonataAdminPattern;
@@ -310,15 +310,15 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
         $container->prependExtensionConfig(
             'jms_di_extra',
-            array(
+            [
                 'annotation_patterns' => $annotationPatterns,
-            )
+            ]
         );
     }
 
     public function configureClassesToCompile()
     {
-        $this->addClassesToCompile(array(
+        $this->addClassesToCompile([
             'Sonata\\AdminBundle\\Admin\\AbstractAdmin',
             'Sonata\\AdminBundle\\Admin\\AbstractAdminExtension',
             'Sonata\\AdminBundle\\Admin\\AdminExtensionInterface',
@@ -397,7 +397,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             'Sonata\\AdminBundle\\Util\\FormViewIterator',
             'Sonata\\AdminBundle\\Util\\ObjectAclManipulator',
             'Sonata\\AdminBundle\\Util\\ObjectAclManipulatorInterface',
-        ));
+        ]);
     }
 
     /**

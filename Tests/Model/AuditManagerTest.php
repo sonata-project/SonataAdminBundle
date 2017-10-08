@@ -46,7 +46,7 @@ class AuditManagerTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($auditManager->hasReader('Foo\Foo1'));
 
-        $auditManager->setReader('foo_reader', array('Foo\Foo1', 'Foo\Foo2'));
+        $auditManager->setReader('foo_reader', ['Foo\Foo1', 'Foo\Foo2']);
 
         $this->assertTrue($auditManager->hasReader('Foo\Foo1'));
         $this->assertSame($fooReader, $auditManager->getReader('Foo\Foo1'));

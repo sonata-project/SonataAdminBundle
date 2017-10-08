@@ -51,10 +51,10 @@ class LegacyModelsToArrayTransformer implements DataTransformerInterface
     public function transform($collection)
     {
         if (null === $collection) {
-            return array();
+            return [];
         }
 
-        $array = array();
+        $array = [];
 
         if (count($this->choiceList->getIdentifier()) > 1) {
             // load all choices
@@ -95,7 +95,7 @@ class LegacyModelsToArrayTransformer implements DataTransformerInterface
             throw new UnexpectedTypeException($keys, 'array');
         }
 
-        $notFound = array();
+        $notFound = [];
 
         // optimize this into a SELECT WHERE IN query
         foreach ($keys as $key) {

@@ -110,7 +110,7 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
      */
     public function getPersistentParameters(AdminInterface $admin)
     {
-        return array();
+        return [];
     }
 
     /**
@@ -118,7 +118,7 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
      */
     public function getAccessMapping(AdminInterface $admin)
     {
-        return array();
+        return [];
     }
 
     /**

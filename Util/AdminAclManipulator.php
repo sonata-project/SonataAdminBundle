@@ -70,14 +70,14 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
     /**
      * {@inheritdoc}
      */
-    public function addAdminClassAces(OutputInterface $output, AclInterface $acl, AclSecurityHandlerInterface $securityHandler, array $roleInformation = array())
+    public function addAdminClassAces(OutputInterface $output, AclInterface $acl, AclSecurityHandlerInterface $securityHandler, array $roleInformation = [])
     {
         if (count($securityHandler->getAdminPermissions()) > 0) {
             $builder = new $this->maskBuilderClass();
 
             foreach ($roleInformation as $role => $permissions) {
                 $aceIndex = $securityHandler->findClassAceIndexByRole($acl, $role);
-                $roleAdminPermissions = array();
+                $roleAdminPermissions = [];
 
                 foreach ($permissions as $permission) {
                     // add only the admin permissions

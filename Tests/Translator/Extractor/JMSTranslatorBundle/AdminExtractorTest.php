@@ -83,15 +83,15 @@ class AdminExtractorTest extends PHPUnit_Framework_TestCase
             ->getMock();
         $this->pool->expects($this->any())
             ->method('getAdminServiceIds')
-            ->will($this->returnValue(array('foo_admin', 'bar_admin')));
+            ->will($this->returnValue(['foo_admin', 'bar_admin']));
         $this->pool->expects($this->any())
             ->method('getContainer')
             ->will($this->returnValue($container));
         $this->pool->expects($this->any())
             ->method('getAdminGroups')
-            ->will($this->returnValue(array('group' => array(
+            ->will($this->returnValue(['group' => [
                 'label_catalogue' => 'admin_domain',
-            ))));
+            ]]));
 
         $this->adminExtractor = new AdminExtractor($this->pool, $logger);
         $this->adminExtractor->setLogger($logger);
@@ -117,8 +117,8 @@ class AdminExtractorTest extends PHPUnit_Framework_TestCase
         $this->fooAdmin->expects($this->any())
             ->method('getShow')
             ->will($this->returnCallback(function () use ($translator, $tester) {
-                $tester->assertEquals('foo', $translator->trans('foo', array(), 'foo_admin_domain'));
-                $tester->assertEquals('foo', $translator->transChoice('foo', 1, array(), 'foo_admin_domain'));
+                $tester->assertEquals('foo', $translator->trans('foo', [], 'foo_admin_domain'));
+                $tester->assertEquals('foo', $translator->transChoice('foo', 1, [], 'foo_admin_domain'));
 
                 return;
             }));

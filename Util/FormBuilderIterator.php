@@ -31,7 +31,7 @@ class FormBuilderIterator extends \RecursiveArrayIterator
     /**
      * @var array
      */
-    protected $keys = array();
+    protected $keys = [];
 
     /**
      * @var bool|string

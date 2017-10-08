@@ -27,24 +27,24 @@ class TypeGuesserChainTest extends PHPUnit_Framework_TestCase
     {
         $this->expectException('Symfony\Component\Form\Exception\UnexpectedTypeException');
 
-        $typeGuesserChain = new TypeGuesserChain(array(new \stdClass()));
+        $typeGuesserChain = new TypeGuesserChain([new \stdClass()]);
     }
 
     public function testGuessType()
     {
-        $typeGuess1 = new TypeGuess('foo1', array(), Guess::MEDIUM_CONFIDENCE);
+        $typeGuess1 = new TypeGuess('foo1', [], Guess::MEDIUM_CONFIDENCE);
         $guesser1 = $this->getMockForAbstractClass('Sonata\AdminBundle\Guesser\TypeGuesserInterface');
         $guesser1->expects($this->any())
                 ->method('guessType')
                 ->will($this->returnValue($typeGuess1));
 
-        $typeGuess2 = new TypeGuess('foo2', array(), Guess::HIGH_CONFIDENCE);
+        $typeGuess2 = new TypeGuess('foo2', [], Guess::HIGH_CONFIDENCE);
         $guesser2 = $this->getMockForAbstractClass('Sonata\AdminBundle\Guesser\TypeGuesserInterface');
         $guesser2->expects($this->any())
                 ->method('guessType')
                 ->will($this->returnValue($typeGuess2));
 
-        $typeGuess3 = new TypeGuess('foo3', array(), Guess::LOW_CONFIDENCE);
+        $typeGuess3 = new TypeGuess('foo3', [], Guess::LOW_CONFIDENCE);
         $guesser3 = $this->getMockForAbstractClass('Sonata\AdminBundle\Guesser\TypeGuesserInterface');
         $guesser3->expects($this->any())
                 ->method('guessType')
@@ -55,16 +55,16 @@ class TypeGuesserChainTest extends PHPUnit_Framework_TestCase
         $class = '\stdClass';
         $property = 'firstName';
 
-        $typeGuesserChain = new TypeGuesserChain(array($guesser1, $guesser2, $guesser3));
+        $typeGuesserChain = new TypeGuesserChain([$guesser1, $guesser2, $guesser3]);
         $this->assertSame($typeGuess2, $typeGuesserChain->guessType($class, $property, $modelManager));
 
-        $typeGuess4 = new TypeGuess('foo4', array(), Guess::LOW_CONFIDENCE);
+        $typeGuess4 = new TypeGuess('foo4', [], Guess::LOW_CONFIDENCE);
         $guesser4 = $this->getMockForAbstractClass('Sonata\AdminBundle\Guesser\TypeGuesserInterface');
         $guesser4->expects($this->any())
                 ->method('guessType')
                 ->will($this->returnValue($typeGuess4));
 
-        $typeGuesserChain = new TypeGuesserChain(array($guesser4, $typeGuesserChain));
+        $typeGuesserChain = new TypeGuesserChain([$guesser4, $typeGuesserChain]);
         $this->assertSame($typeGuess2, $typeGuesserChain->guessType($class, $property, $modelManager));
     }
 }

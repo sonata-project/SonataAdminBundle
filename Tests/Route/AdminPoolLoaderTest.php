@@ -23,11 +23,11 @@ class AdminPoolLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
         $pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
-            ->setMethods(array())
-            ->setConstructorArgs(array($container, 'title', 'logoTitle'))
+            ->setMethods([])
+            ->setConstructorArgs([$container, 'title', 'logoTitle'])
             ->getMock();
 
-        $adminPoolLoader = new AdminPoolLoader($pool, array('foo_admin', 'bar_admin'), $container);
+        $adminPoolLoader = new AdminPoolLoader($pool, ['foo_admin', 'bar_admin'], $container);
 
         $this->assertTrue($adminPoolLoader->supports('foo', 'sonata_admin'));
         $this->assertFalse($adminPoolLoader->supports('foo', 'bar'));
@@ -37,11 +37,11 @@ class AdminPoolLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
         $pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
-            ->setMethods(array())
-            ->setConstructorArgs(array($container, 'title', 'logoTitle'))
+            ->setMethods([])
+            ->setConstructorArgs([$container, 'title', 'logoTitle'])
             ->getMock();
 
-        $adminPoolLoader = new AdminPoolLoader($pool, array('foo_admin', 'bar_admin'), $container);
+        $adminPoolLoader = new AdminPoolLoader($pool, ['foo_admin', 'bar_admin'], $container);
 
         $routeCollection1 = new RouteCollection('base.Code.Route.foo', 'baseRouteNameFoo', 'baseRoutePatternFoo', 'baseControllerNameFoo');
         $routeCollection2 = new RouteCollection('base.Code.Route.bar', 'baseRouteNameBar', 'baseRoutePatternBar', 'baseControllerNameBar');

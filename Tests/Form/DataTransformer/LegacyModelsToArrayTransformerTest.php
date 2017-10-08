@@ -63,7 +63,7 @@ class LegacyModelsToArrayTransformerTest extends PHPUnit_Framework_TestCase
                     return $identifiers;
                 }
 
-                return array();
+                return [];
             }));
 
         $this->choiceList->expects($this->any())
@@ -75,7 +75,7 @@ class LegacyModelsToArrayTransformerTest extends PHPUnit_Framework_TestCase
         $this->choiceList->expects($this->any())
             ->method('getEntities')
             ->will($this->returnCallback(function () {
-                return array('bcd' => new FooEntity(array('bcd')), 'efg' => new FooEntity(array('efg')), 'abc' => new FooEntity(array('abc')));
+                return ['bcd' => new FooEntity(['bcd']), 'efg' => new FooEntity(['efg']), 'abc' => new FooEntity(['abc'])];
             }));
 
         $this->assertSame($expected, $transformer->transform($collection));
@@ -83,13 +83,13 @@ class LegacyModelsToArrayTransformerTest extends PHPUnit_Framework_TestCase
 
     public function getTransformTests()
     {
-        return array(
-            array(array(), null, array()),
-            array(array(), array(), array()),
-            array(array('id'), array(new FooEntity()), array('id')),
-            array(array('id', 'id'), array(new FooEntity(), new FooEntity()), array('id')),
-            array(array('abc', 'bcd', 'efg'), array(new FooEntity(array('abc')), new FooEntity(array('bcd')), new FooEntity(array('efg'))), array('id1', 'id2')),
-        );
+        return [
+            [[], null, []],
+            [[], [], []],
+            [['id'], [new FooEntity()], ['id']],
+            [['id', 'id'], [new FooEntity(), new FooEntity()], ['id']],
+            [['abc', 'bcd', 'efg'], [new FooEntity(['abc']), new FooEntity(['bcd']), new FooEntity(['efg'])], ['id1', 'id2']],
+        ];
     }
 
     public function testReverseTransformWithException1()
@@ -102,7 +102,7 @@ class LegacyModelsToArrayTransformerTest extends PHPUnit_Framework_TestCase
             ->method('getModelCollectionInstance')
             ->will($this->returnValue(null));
 
-        $transformer->reverseTransform(array());
+        $transformer->reverseTransform([]);
     }
 
     public function testReverseTransformWithException2()
@@ -134,10 +134,10 @@ class LegacyModelsToArrayTransformerTest extends PHPUnit_Framework_TestCase
 
     public function getReverseTransformEmptyTests()
     {
-        return array(
-            array(null),
-            array(''),
-        );
+        return [
+            [null],
+            [''],
+        ];
     }
 
     public function testReverseTransform()
@@ -148,9 +148,9 @@ class LegacyModelsToArrayTransformerTest extends PHPUnit_Framework_TestCase
             ->method('getModelCollectionInstance')
             ->will($this->returnValue(new ArrayCollection()));
 
-        $entity1 = new FooEntity(array('foo'));
-        $entity2 = new FooEntity(array('bar'));
-        $entity3 = new FooEntity(array('baz'));
+        $entity1 = new FooEntity(['foo']);
+        $entity2 = new FooEntity(['bar']);
+        $entity3 = new FooEntity(['baz']);
 
         $this->choiceList->expects($this->any())
             ->method('getEntity')
@@ -169,9 +169,9 @@ class LegacyModelsToArrayTransformerTest extends PHPUnit_Framework_TestCase
                 return;
             }));
 
-        $collection = $transformer->reverseTransform(array('foo', 'bar'));
+        $collection = $transformer->reverseTransform(['foo', 'bar']);
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $collection);
-        $this->assertSame(array($entity1, $entity2), $collection->getValues());
+        $this->assertSame([$entity1, $entity2], $collection->getValues());
         $this->assertCount(2, $collection);
     }
 
@@ -189,6 +189,6 @@ class LegacyModelsToArrayTransformerTest extends PHPUnit_Framework_TestCase
             ->method('getEntity')
             ->will($this->returnValue(false));
 
-        $transformer->reverseTransform(array('nonexistent'));
+        $transformer->reverseTransform(['nonexistent']);
     }
 }

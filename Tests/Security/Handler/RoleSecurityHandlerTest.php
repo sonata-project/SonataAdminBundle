@@ -52,7 +52,7 @@ class RoleSecurityHandlerTest extends PHPUnit_Framework_TestCase
      */
     public function testGetBaseRole($expected, $code)
     {
-        $handler = new RoleSecurityHandler($this->authorizationChecker, array('ROLE_BATMAN', 'ROLE_IRONMAN'));
+        $handler = new RoleSecurityHandler($this->authorizationChecker, ['ROLE_BATMAN', 'ROLE_IRONMAN']);
 
         $this->admin->expects($this->once())
             ->method('getCode')
@@ -63,12 +63,12 @@ class RoleSecurityHandlerTest extends PHPUnit_Framework_TestCase
 
     public function getBaseRoleTests()
     {
-        return array(
-            array('ROLE_FOO_BAR_%s', 'foo.bar'),
-            array('ROLE_FOO_BAR_%s', 'Foo.Bar'),
-            array('ROLE_FOO_BAR_BAZ_%s', 'foo.bar_baz'),
-            array('ROLE_FOO_BAR_%s', 'FOO.BAR'),
-        );
+        return [
+            ['ROLE_FOO_BAR_%s', 'foo.bar'],
+            ['ROLE_FOO_BAR_%s', 'Foo.Bar'],
+            ['ROLE_FOO_BAR_BAZ_%s', 'foo.bar_baz'],
+            ['ROLE_FOO_BAR_%s', 'FOO.BAR'],
+        ];
     }
 
     /**
@@ -117,72 +117,72 @@ class RoleSecurityHandlerTest extends PHPUnit_Framework_TestCase
 
     public function getIsGrantedTests()
     {
-        return array(
+        return [
             //empty
-            array(false, array(''), 'foo.bar', ''),
-            array(false, array(''), 'foo.bar', array('')),
-            array(false, array(''), 'foo.bar.abc', array('')),
-            array(false, array(''), 'foo.bar.def', array('')),
-            array(false, array(''), 'foo.bar.baz.xyz', ''),
-            array(false, array(''), 'foo.bar.baz.xyz', array('')),
+            [false, [''], 'foo.bar', ''],
+            [false, [''], 'foo.bar', ['']],
+            [false, [''], 'foo.bar.abc', ['']],
+            [false, [''], 'foo.bar.def', ['']],
+            [false, [''], 'foo.bar.baz.xyz', ''],
+            [false, [''], 'foo.bar.baz.xyz', ['']],
 
             //superadmins
-            array(true, array('ROLE_BATMAN', 'ROLE_IRONMAN'), 'foo.bar', 'BAZ'),
-            array(true, array('ROLE_BATMAN', 'ROLE_IRONMAN'), 'foo.bar', 'ANYTHING'),
-            array(true, array('ROLE_BATMAN', 'ROLE_IRONMAN'), 'foo.bar', array('BAZ', 'ANYTHING')),
-            array(true, array('ROLE_IRONMAN'), 'foo.bar', 'BAZ'),
-            array(true, array('ROLE_IRONMAN'), 'foo.bar', 'ANYTHING'),
-            array(true, array('ROLE_IRONMAN'), 'foo.bar.baz.xyz', 'ANYTHING'),
-            array(true, array('ROLE_IRONMAN'), 'foo.bar', ''),
-            array(true, array('ROLE_IRONMAN'), 'foo.bar', array('')),
+            [true, ['ROLE_BATMAN', 'ROLE_IRONMAN'], 'foo.bar', 'BAZ'],
+            [true, ['ROLE_BATMAN', 'ROLE_IRONMAN'], 'foo.bar', 'ANYTHING'],
+            [true, ['ROLE_BATMAN', 'ROLE_IRONMAN'], 'foo.bar', ['BAZ', 'ANYTHING']],
+            [true, ['ROLE_IRONMAN'], 'foo.bar', 'BAZ'],
+            [true, ['ROLE_IRONMAN'], 'foo.bar', 'ANYTHING'],
+            [true, ['ROLE_IRONMAN'], 'foo.bar.baz.xyz', 'ANYTHING'],
+            [true, ['ROLE_IRONMAN'], 'foo.bar', ''],
+            [true, ['ROLE_IRONMAN'], 'foo.bar', ['']],
 
             //operations
-            array(true, array('ROLE_SPIDERMAN'), 'foo.bar', 'ABC'),
-            array(true, array('ROLE_SPIDERMAN'), 'foo.bar', array('ABC')),
-            array(true, array('ROLE_SPIDERMAN'), 'foo.bar', array('ABC', 'DEF')),
-            array(true, array('ROLE_SPIDERMAN'), 'foo.bar', array('BAZ', 'ABC')),
-            array(false, array('ROLE_SPIDERMAN'), 'foo.bar', 'DEF'),
-            array(false, array('ROLE_SPIDERMAN'), 'foo.bar', array('DEF')),
-            array(false, array('ROLE_SPIDERMAN'), 'foo.bar', 'BAZ'),
-            array(false, array('ROLE_SPIDERMAN'), 'foo.bar', array('BAZ')),
-            array(true, array(), 'foo.bar', 'ABC'),
-            array(true, array(), 'foo.bar', array('ABC')),
-            array(false, array(), 'foo.bar', 'DEF'),
-            array(false, array(), 'foo.bar', array('DEF')),
-            array(false, array(), 'foo.bar', 'BAZ'),
-            array(false, array(), 'foo.bar', array('BAZ')),
-            array(false, array(), 'foo.bar.baz.xyz', 'ABC'),
-            array(false, array(), 'foo.bar.baz.xyz', array('ABC')),
-            array(false, array(), 'foo.bar.baz.xyz', array('ABC', 'DEF')),
-            array(false, array(), 'foo.bar.baz.xyz', 'DEF'),
-            array(false, array(), 'foo.bar.baz.xyz', array('DEF')),
-            array(false, array(), 'foo.bar.baz.xyz', 'BAZ'),
-            array(false, array(), 'foo.bar.baz.xyz', array('BAZ')),
+            [true, ['ROLE_SPIDERMAN'], 'foo.bar', 'ABC'],
+            [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['ABC']],
+            [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['ABC', 'DEF']],
+            [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['BAZ', 'ABC']],
+            [false, ['ROLE_SPIDERMAN'], 'foo.bar', 'DEF'],
+            [false, ['ROLE_SPIDERMAN'], 'foo.bar', ['DEF']],
+            [false, ['ROLE_SPIDERMAN'], 'foo.bar', 'BAZ'],
+            [false, ['ROLE_SPIDERMAN'], 'foo.bar', ['BAZ']],
+            [true, [], 'foo.bar', 'ABC'],
+            [true, [], 'foo.bar', ['ABC']],
+            [false, [], 'foo.bar', 'DEF'],
+            [false, [], 'foo.bar', ['DEF']],
+            [false, [], 'foo.bar', 'BAZ'],
+            [false, [], 'foo.bar', ['BAZ']],
+            [false, [], 'foo.bar.baz.xyz', 'ABC'],
+            [false, [], 'foo.bar.baz.xyz', ['ABC']],
+            [false, [], 'foo.bar.baz.xyz', ['ABC', 'DEF']],
+            [false, [], 'foo.bar.baz.xyz', 'DEF'],
+            [false, [], 'foo.bar.baz.xyz', ['DEF']],
+            [false, [], 'foo.bar.baz.xyz', 'BAZ'],
+            [false, [], 'foo.bar.baz.xyz', ['BAZ']],
 
             //objects
-            array(true, array('ROLE_SPIDERMAN'), 'foo.bar', array('DEF'), new \stdClass()),
-            array(true, array('ROLE_SPIDERMAN'), 'foo.bar', array('ABC'), new \stdClass()),
-            array(true, array('ROLE_SPIDERMAN'), 'foo.bar', array('ABC', 'DEF'), new \stdClass()),
-            array(true, array('ROLE_SPIDERMAN'), 'foo.bar', array('BAZ', 'DEF'), new \stdClass()),
-            array(true, array('ROLE_SPIDERMAN'), 'foo.bar', 'DEF', new \stdClass()),
-            array(true, array('ROLE_SPIDERMAN'), 'foo.bar', 'ABC', new \stdClass()),
-            array(false, array('ROLE_SPIDERMAN'), 'foo.bar', 'BAZ', new \stdClass()),
-            array(false, array('ROLE_SPIDERMAN'), 'foo.bar.baz.xyz', 'DEF', new \stdClass()),
-            array(false, array('ROLE_SPIDERMAN'), 'foo.bar.baz.xyz', 'ABC', new \stdClass()),
-            array(true, array(), 'foo.bar', array('ABC'), new \stdClass()),
-            array(true, array(), 'foo.bar', 'ABC', new \stdClass()),
-            array(true, array(), 'foo.bar', array('DEF'), new \stdClass()),
-            array(true, array(), 'foo.bar', 'DEF', new \stdClass()),
-            array(false, array(), 'foo.bar', array('BAZ'), new \stdClass()),
-            array(false, array(), 'foo.bar', 'BAZ', new \stdClass()),
-            array(false, array(), 'foo.bar.baz.xyz', 'BAZ', new \stdClass()),
-            array(false, array(), 'foo.bar.baz.xyz', array('BAZ'), new \stdClass()),
-            array(false, array('ROLE_AUTH_EXCEPTION'), 'foo.bar.baz.xyz', array('BAZ'), new \stdClass()),
+            [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['DEF'], new \stdClass()],
+            [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['ABC'], new \stdClass()],
+            [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['ABC', 'DEF'], new \stdClass()],
+            [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['BAZ', 'DEF'], new \stdClass()],
+            [true, ['ROLE_SPIDERMAN'], 'foo.bar', 'DEF', new \stdClass()],
+            [true, ['ROLE_SPIDERMAN'], 'foo.bar', 'ABC', new \stdClass()],
+            [false, ['ROLE_SPIDERMAN'], 'foo.bar', 'BAZ', new \stdClass()],
+            [false, ['ROLE_SPIDERMAN'], 'foo.bar.baz.xyz', 'DEF', new \stdClass()],
+            [false, ['ROLE_SPIDERMAN'], 'foo.bar.baz.xyz', 'ABC', new \stdClass()],
+            [true, [], 'foo.bar', ['ABC'], new \stdClass()],
+            [true, [], 'foo.bar', 'ABC', new \stdClass()],
+            [true, [], 'foo.bar', ['DEF'], new \stdClass()],
+            [true, [], 'foo.bar', 'DEF', new \stdClass()],
+            [false, [], 'foo.bar', ['BAZ'], new \stdClass()],
+            [false, [], 'foo.bar', 'BAZ', new \stdClass()],
+            [false, [], 'foo.bar.baz.xyz', 'BAZ', new \stdClass()],
+            [false, [], 'foo.bar.baz.xyz', ['BAZ'], new \stdClass()],
+            [false, ['ROLE_AUTH_EXCEPTION'], 'foo.bar.baz.xyz', ['BAZ'], new \stdClass()],
 
             // ALL role
-            array(true, array(), 'foo.bar.baz', 'LIST'),
-            array(true, array(), 'foo.bar.baz', array('LIST', 'EDIT')),
-        );
+            [true, [], 'foo.bar.baz', 'LIST'],
+            [true, [], 'foo.bar.baz', ['LIST', 'EDIT']],
+        ];
     }
 
     public function testIsGrantedWithException()
@@ -199,26 +199,26 @@ class RoleSecurityHandlerTest extends PHPUnit_Framework_TestCase
                 throw new \RuntimeException('Something is wrong');
             }));
 
-        $handler = $this->getRoleSecurityHandler(array('ROLE_BATMAN'));
+        $handler = $this->getRoleSecurityHandler(['ROLE_BATMAN']);
         $handler->isGranted($this->admin, 'BAZ');
     }
 
     public function testCreateObjectSecurity()
     {
-        $handler = $this->getRoleSecurityHandler(array('ROLE_FOO'));
+        $handler = $this->getRoleSecurityHandler(['ROLE_FOO']);
         $this->assertNull($handler->createObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
     }
 
     public function testDeleteObjectSecurity()
     {
-        $handler = $this->getRoleSecurityHandler(array('ROLE_FOO'));
+        $handler = $this->getRoleSecurityHandler(['ROLE_FOO']);
         $this->assertNull($handler->deleteObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
     }
 
     public function testBuildSecurityInformation()
     {
-        $handler = $this->getRoleSecurityHandler(array('ROLE_FOO'));
-        $this->assertSame(array(), $handler->buildSecurityInformation($this->getSonataAdminObject()));
+        $handler = $this->getRoleSecurityHandler(['ROLE_FOO']);
+        $this->assertSame([], $handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
     /**

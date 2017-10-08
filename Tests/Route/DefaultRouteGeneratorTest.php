@@ -59,14 +59,14 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
         $admin->expects($this->once())->method('hasRequest')->will($this->returnValue(true));
         $admin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('foo_code'));
-        $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
+        $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(['abc' => 'a123', 'efg' => 'e456']));
         $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
-        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
+        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
 
         $router = $this->getMockForAbstractClass('Symfony\Component\Routing\RouterInterface');
         $router->expects($this->once())
             ->method('generate')
-            ->will($this->returnCallback(function ($name, array $parameters = array()) {
+            ->will($this->returnCallback(function ($name, array $parameters = []) {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -91,10 +91,10 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function getGenerateUrlTests()
     {
-        return array(
-            array('/foo?abc=a123&efg=e456&default_param=default_val', 'foo', array('default_param' => 'default_val')),
-            array('/foo/bar?abc=a123&efg=e456&default_param=default_val', 'base.Code.Bar.bar', array('default_param' => 'default_val')),
-        );
+        return [
+            ['/foo?abc=a123&efg=e456&default_param=default_val', 'foo', ['default_param' => 'default_val']],
+            ['/foo/bar?abc=a123&efg=e456&default_param=default_val', 'base.Code.Bar.bar', ['default_param' => 'default_val']],
+        ];
     }
 
     public function testGenerateUrlWithException()
@@ -106,16 +106,16 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Route'));
         $admin->expects($this->once())->method('hasParentFieldDescription')->will($this->returnValue(false));
         $admin->expects($this->once())->method('hasRequest')->will($this->returnValue(true));
-        $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(array()));
+        $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue([]));
         $admin->expects($this->exactly(2))->method('getRoutes')->will($this->returnValue(new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'BundleName:ControllerName')));
-        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
+        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
 
         $router = $this->getMockForAbstractClass('Symfony\Component\Routing\RouterInterface');
 
         $cache = new RoutesCache($this->cacheTempFolder, true);
 
         $generator = new DefaultRouteGenerator($router, $cache);
-        $generator->generateUrl($admin, 'foo', array());
+        $generator->generateUrl($admin, 'foo', []);
     }
 
     /**
@@ -139,18 +139,18 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
         $admin->expects($this->any())->method('hasRequest')->will($this->returnValue(true));
         $admin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('foo_code'));
-        $admin->expects($this->any())->method('getPersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
+        $admin->expects($this->any())->method('getPersistentParameters')->will($this->returnValue(['abc' => 'a123', 'efg' => 'e456']));
         $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($childCollection));
-        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
+        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
 
         $parentAdmin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $parentAdmin->expects($this->any())->method('getIdParameter')->will($this->returnValue('childId'));
         $parentAdmin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
         $parentAdmin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Parent'));
-        $parentAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
+        $parentAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
 
         // no request attached in this test, so this will not be used
-        $parentAdmin->expects($this->never())->method('getPersistentParameters')->will($this->returnValue(array('from' => 'parent')));
+        $parentAdmin->expects($this->never())->method('getPersistentParameters')->will($this->returnValue(['from' => 'parent']));
 
         $request = $this->createMock('Symfony\Component\HttpFoundation\Request');
         $request->attributes = $this->createMock('Symfony\Component\HttpFoundation\ParameterBag');
@@ -171,7 +171,7 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
         $router = $this->getMockForAbstractClass('\Symfony\Component\Routing\RouterInterface');
         $router->expects($this->once())
             ->method('generate')
-            ->will($this->returnCallback(function ($name, array $parameters = array()) {
+            ->will($this->returnCallback(function ($name, array $parameters = []) {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -196,11 +196,11 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function getGenerateUrlChildTests()
     {
-        return array(
-            array('parent', '/foo?id=123&default_param=default_val', 'foo', array('id' => 123, 'default_param' => 'default_val')),
-            array('parent', '/foo/bar?id=123&default_param=default_val', 'base.Code.Child.bar', array('id' => 123, 'default_param' => 'default_val')),
-            array('child', '/foo/bar?abc=a123&efg=e456&default_param=default_val&childId=987654', 'bar', array('id' => 123, 'default_param' => 'default_val')),
-        );
+        return [
+            ['parent', '/foo?id=123&default_param=default_val', 'foo', ['id' => 123, 'default_param' => 'default_val']],
+            ['parent', '/foo/bar?id=123&default_param=default_val', 'base.Code.Child.bar', ['id' => 123, 'default_param' => 'default_val']],
+            ['child', '/foo/bar?abc=a123&efg=e456&default_param=default_val&childId=987654', 'bar', ['id' => 123, 'default_param' => 'default_val']],
+        ];
     }
 
     /**
@@ -223,14 +223,14 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
         $admin->expects($this->once())->method('hasRequest')->will($this->returnValue(true));
         $admin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('foo_code'));
-        $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
-        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
+        $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(['abc' => 'a123', 'efg' => 'e456']));
+        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
         $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
 
         $router = $this->getMockForAbstractClass('Symfony\Component\Routing\RouterInterface');
         $router->expects($this->once())
             ->method('generate')
-            ->will($this->returnCallback(function ($name, array $parameters = array()) {
+            ->will($this->returnCallback(function ($name, array $parameters = []) {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -247,12 +247,12 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
             }));
 
         $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
-        $fieldDescription->expects($this->once())->method('getOption')->will($this->returnValue(array()));
+        $fieldDescription->expects($this->once())->method('getOption')->will($this->returnValue([]));
 
         $parentAdmin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $parentAdmin->expects($this->any())->method('getUniqid')->will($this->returnValue('parent_foo_uniqueid'));
         $parentAdmin->expects($this->any())->method('getCode')->will($this->returnValue('parent_foo_code'));
-        $parentAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
+        $parentAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
 
         $fieldDescription->expects($this->any())->method('getAdmin')->will($this->returnValue($parentAdmin));
         $admin->expects($this->any())->method('getParentFieldDescription')->will($this->returnValue($fieldDescription));
@@ -266,11 +266,11 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function getGenerateUrlParentFieldDescriptionTests()
     {
-        return array(
-            array('/foo?abc=a123&efg=e456&default_param=default_val&uniqid=foo_uniqueid&code=base.Code.Parent&pcode=parent_foo_code&puniqid=parent_foo_uniqueid', 'foo', array('default_param' => 'default_val')),
+        return [
+            ['/foo?abc=a123&efg=e456&default_param=default_val&uniqid=foo_uniqueid&code=base.Code.Parent&pcode=parent_foo_code&puniqid=parent_foo_uniqueid', 'foo', ['default_param' => 'default_val']],
             // this second test does not make sense as we cannot have embeded admin with nested admin....
-            array('/foo/bar?abc=a123&efg=e456&default_param=default_val&uniqid=foo_uniqueid&code=base.Code.Parent&pcode=parent_foo_code&puniqid=parent_foo_uniqueid', 'base.Code.Child.bar', array('default_param' => 'default_val')),
-        );
+            ['/foo/bar?abc=a123&efg=e456&default_param=default_val&uniqid=foo_uniqueid&code=base.Code.Parent&pcode=parent_foo_code&puniqid=parent_foo_uniqueid', 'base.Code.Child.bar', ['default_param' => 'default_val']],
+        ];
     }
 
     /**
@@ -296,18 +296,18 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
         $admin->expects($this->any())->method('hasParentFieldDescription')->will($this->returnValue(false));
         $admin->expects($this->any())->method('hasRequest')->will($this->returnValue(true));
         $admin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
-        $admin->expects($this->any())->method('getPersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
+        $admin->expects($this->any())->method('getPersistentParameters')->will($this->returnValue(['abc' => 'a123', 'efg' => 'e456']));
         $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($childCollection));
-        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
+        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
 
         $parentAdmin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $parentAdmin->expects($this->any())->method('getIdParameter')->will($this->returnValue('childId'));
         $parentAdmin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
         $parentAdmin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Parent'));
-        $parentAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
+        $parentAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
 
         // no request attached in this test, so this will not be used
-        $parentAdmin->expects($this->never())->method('getPersistentParameters')->will($this->returnValue(array('from' => 'parent')));
+        $parentAdmin->expects($this->never())->method('getPersistentParameters')->will($this->returnValue(['from' => 'parent']));
 
         $request = $this->createMock('Symfony\Component\HttpFoundation\Request');
         $request->attributes = $this->createMock('Symfony\Component\HttpFoundation\ParameterBag');
@@ -331,14 +331,14 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
         $standaloneAdmin->expects($this->once())->method('hasParentFieldDescription')->will($this->returnValue(false));
         $standaloneAdmin->expects($this->once())->method('hasRequest')->will($this->returnValue(true));
         $standaloneAdmin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
-        $standaloneAdmin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(array('abc' => 'a123', 'efg' => 'e456')));
+        $standaloneAdmin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(['abc' => 'a123', 'efg' => 'e456']));
         $standaloneAdmin->expects($this->any())->method('getRoutes')->will($this->returnValue($standaloneCollection));
-        $standaloneAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue(array()));
+        $standaloneAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
 
         $router = $this->getMockForAbstractClass('\Symfony\Component\Routing\RouterInterface');
         $router->expects($this->exactly(2))
             ->method('generate')
-            ->will($this->returnCallback(function ($name, array $parameters = array()) {
+            ->will($this->returnCallback(function ($name, array $parameters = []) {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -365,8 +365,8 @@ class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function getGenerateUrlLoadCacheTests()
     {
-        return array(
-            array('/bar?abc=a123&efg=e456&id=123&default_param=default_val', 'bar', array('id' => 123, 'default_param' => 'default_val')),
-        );
+        return [
+            ['/bar?abc=a123&efg=e456&id=123&default_param=default_val', 'bar', ['id' => 123, 'default_param' => 'default_val']],
+        ];
     }
 }

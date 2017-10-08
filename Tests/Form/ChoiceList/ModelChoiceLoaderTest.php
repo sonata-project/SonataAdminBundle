@@ -40,12 +40,12 @@ class ModelChoiceLoaderTest extends PHPUnit_Framework_TestCase
 
         $this->modelManager->expects($this->once())
             ->method('findBy')
-            ->will($this->returnValue(array($fooA, $fooB)));
+            ->will($this->returnValue([$fooA, $fooB]));
 
         $this->modelManager->expects($this->any())
             ->method('getIdentifierValues')
             ->will($this->returnCallback(function (Foo $foo) {
-                return array($foo->getBar());
+                return [$foo->getBar()];
             }));
 
         $modelChoiceLoader = new ModelChoiceLoader(
@@ -54,10 +54,10 @@ class ModelChoiceLoaderTest extends PHPUnit_Framework_TestCase
             'baz'
         );
 
-        $expectedChoices = array(
+        $expectedChoices = [
             1 => 'baz (id: 1)',
             2 => 'baz (id: 2)',
-        );
+        ];
 
         $this->assertSame($expectedChoices, $modelChoiceLoader->loadChoiceList()->getOriginalKeys());
     }

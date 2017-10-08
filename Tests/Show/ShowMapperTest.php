@@ -68,10 +68,10 @@ class ShowMapperTest extends PHPUnit_Framework_TestCase
 
         $this->admin->expects($this->any())
             ->method('getShowTabs')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
-        $this->groups = array();
-        $this->listShowFields = array();
+        $this->groups = [];
+        $this->listShowFields = [];
 
         // php 5.3 BC
         $groups = &$this->groups;
@@ -104,7 +104,7 @@ class ShowMapperTest extends PHPUnit_Framework_TestCase
 
         $modelManager->expects($this->any())
             ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnCallback(function ($class, $name, array $options = array()) use ($fieldDescription) {
+            ->will($this->returnCallback(function ($class, $name, array $options = []) use ($fieldDescription) {
                 $fieldDescriptionClone = clone $fieldDescription;
                 $fieldDescriptionClone->setName($name);
                 $fieldDescriptionClone->setOptions($options);
@@ -148,7 +148,7 @@ class ShowMapperTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame($this->showMapper, $this->showMapper->add($fieldDescription));
         $this->assertSame($this->showMapper, $this->showMapper->remove('fooName'));
-        $this->assertSame($this->showMapper, $this->showMapper->reorder(array()));
+        $this->assertSame($this->showMapper, $this->showMapper->reorder([]));
     }
 
     public function testGet()
@@ -349,12 +349,12 @@ class ShowMapperTest extends PHPUnit_Framework_TestCase
         $this->showMapper->add($fieldDescription1);
         $this->showMapper->add($fieldDescription2);
 
-        $this->assertSame(array('fooName1', 'fooName2'), $this->showMapper->keys());
+        $this->assertSame(['fooName1', 'fooName2'], $this->showMapper->keys());
     }
 
     public function testReorder()
     {
-        $this->assertSame(array(), $this->admin->getShowGroups());
+        $this->assertSame([], $this->admin->getShowGroups());
 
         $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
         $fieldDescription2 = $this->getFieldDescriptionMock('fooName2', 'fooLabel2');
@@ -367,8 +367,8 @@ class ShowMapperTest extends PHPUnit_Framework_TestCase
         $this->showMapper->add($fieldDescription3);
         $this->showMapper->add($fieldDescription4);
 
-        $this->assertSame(array(
-            'Group1' => array(
+        $this->assertSame([
+            'Group1' => [
                 'collapsed' => false,
                 'class' => false,
                 'description' => false,
@@ -376,14 +376,14 @@ class ShowMapperTest extends PHPUnit_Framework_TestCase
                 'translation_domain' => null,
                 'name' => 'Group1',
                 'box_class' => 'box box-primary',
-                'fields' => array('fooName1' => 'fooName1', 'fooName2' => 'fooName2', 'fooName3' => 'fooName3', 'fooName4' => 'fooName4'),
-            ), ), $this->admin->getShowGroups());
+                'fields' => ['fooName1' => 'fooName1', 'fooName2' => 'fooName2', 'fooName3' => 'fooName3', 'fooName4' => 'fooName4'],
+            ], ], $this->admin->getShowGroups());
 
-        $this->showMapper->reorder(array('fooName3', 'fooName2', 'fooName1', 'fooName4'));
+        $this->showMapper->reorder(['fooName3', 'fooName2', 'fooName1', 'fooName4']);
 
         // print_r is used to compare order of items in associative arrays
-        $this->assertSame(print_r(array(
-            'Group1' => array(
+        $this->assertSame(print_r([
+            'Group1' => [
                 'collapsed' => false,
                 'class' => false,
                 'description' => false,
@@ -391,8 +391,8 @@ class ShowMapperTest extends PHPUnit_Framework_TestCase
                 'translation_domain' => null,
                 'name' => 'Group1',
                 'box_class' => 'box box-primary',
-                'fields' => array('fooName3' => 'fooName3', 'fooName2' => 'fooName2', 'fooName1' => 'fooName1', 'fooName4' => 'fooName4'),
-            ), ), true), print_r($this->admin->getShowGroups(), true));
+                'fields' => ['fooName3' => 'fooName3', 'fooName2' => 'fooName2', 'fooName1' => 'fooName1', 'fooName4' => 'fooName4'],
+            ], ], true), print_r($this->admin->getShowGroups(), true));
     }
 
     public function testGroupRemovingWithoutTab()
@@ -402,7 +402,7 @@ class ShowMapperTest extends PHPUnit_Framework_TestCase
         $this->showMapper->with('groupfoo1');
         $this->showMapper->removeGroup('groupfoo1');
 
-        $this->assertSame(array(), $this->admin->getShowGroups());
+        $this->assertSame([], $this->admin->getShowGroups());
     }
 
     public function testGroupRemovingWithTab()
@@ -412,7 +412,7 @@ class ShowMapperTest extends PHPUnit_Framework_TestCase
         $this->showMapper->tab('mytab')->with('groupfoo2');
         $this->showMapper->removeGroup('groupfoo2', 'mytab');
 
-        $this->assertSame(array(), $this->admin->getShowGroups());
+        $this->assertSame([], $this->admin->getShowGroups());
     }
 
     public function testGroupRemovingWithoutTabAndWithTabRemoving()
@@ -422,8 +422,8 @@ class ShowMapperTest extends PHPUnit_Framework_TestCase
         $this->showMapper->with('groupfoo3');
         $this->showMapper->removeGroup('groupfoo3', 'default', true);
 
-        $this->assertSame(array(), $this->admin->getShowGroups());
-        $this->assertSame(array(), $this->admin->getShowTabs());
+        $this->assertSame([], $this->admin->getShowGroups());
+        $this->assertSame([], $this->admin->getShowTabs());
     }
 
     public function testGroupRemovingWithTabAndWithTabRemoving()
@@ -433,13 +433,13 @@ class ShowMapperTest extends PHPUnit_Framework_TestCase
         $this->showMapper->tab('mytab2')->with('groupfoo4');
         $this->showMapper->removeGroup('groupfoo4', 'mytab2', true);
 
-        $this->assertSame(array(), $this->admin->getShowGroups());
-        $this->assertSame(array(), $this->admin->getShowTabs());
+        $this->assertSame([], $this->admin->getShowGroups());
+        $this->assertSame([], $this->admin->getShowTabs());
     }
 
     public function testEmptyFieldLabel()
     {
-        $this->showMapper->add('foo', null, array('label' => false));
+        $this->showMapper->add('foo', null, ['label' => false]);
 
         $this->assertFalse($this->showMapper->get('foo')->getOption('label'));
     }

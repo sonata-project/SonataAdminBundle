@@ -44,12 +44,12 @@ class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
         $blockService = new AdminSearchBlockService('foo', $this->templating, $this->pool, $this->searchHandler);
         $blockContext = $this->getBlockContext($blockService);
 
-        $this->assertSettings(array(
+        $this->assertSettings([
             'admin_code' => false,
             'query' => '',
             'page' => 0,
             'per_page' => 10,
             'icon' => '<i class="fa fa-list"></i>',
-        ), $blockContext);
+        ], $blockContext);
     }
 }

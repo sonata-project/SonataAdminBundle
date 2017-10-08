@@ -29,7 +29,7 @@ abstract class Filter implements FilterInterface
     /**
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * @var string
@@ -39,7 +39,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function initialize($name, array $options = array())
+    public function initialize($name, array $options = [])
     {
         $this->name = $name;
         $this->setOptions($options);
@@ -106,7 +106,7 @@ abstract class Filter implements FilterInterface
      */
     public function getFieldOptions()
     {
-        return $this->getOption('field_options', array('required' => false));
+        return $this->getOption('field_options', ['required' => false]);
     }
 
     /**
@@ -164,7 +164,7 @@ abstract class Filter implements FilterInterface
      */
     public function getParentAssociationMappings()
     {
-        return $this->getOption('parent_association_mappings', array());
+        return $this->getOption('parent_association_mappings', []);
     }
 
     /**
@@ -203,7 +203,7 @@ abstract class Filter implements FilterInterface
     public function setOptions(array $options)
     {
         $this->options = array_merge(
-            array('show_filter' => null, 'advanced_filter' => true),
+            ['show_filter' => null, 'advanced_filter' => true],
             $this->getDefaultOptions(),
             $options
         );

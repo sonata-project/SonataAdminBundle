@@ -70,7 +70,7 @@ class FilterChoiceWidgetTest extends BaseWidgetTest
 
     protected function getRequiredOption()
     {
-        return array('required' => true);
+        return ['required' => true];
     }
 
     protected function getChoiceClass()
@@ -91,13 +91,13 @@ class FilterChoiceWidgetTest extends BaseWidgetTest
             'Symfony\Component\Form\Tests\AbstractLayoutTest',
             'testSingleChoiceNonRequiredWithPlaceholder'
         )) {
-            return array(
+            return [
                 'placeholder' => 'Choose an option',
-            );
+            ];
         }
 
-        return array(
+        return [
                 'empty_value' => 'Choose an option',
-            );
+            ];
     }
 }

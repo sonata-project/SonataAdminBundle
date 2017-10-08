@@ -57,7 +57,7 @@ class ListMapperTest extends PHPUnit_Framework_TestCase
 
         $modelManager->expects($this->any())
             ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnCallback(function ($class, $name, array $options = array()) use ($fieldDescription) {
+            ->will($this->returnCallback(function ($class, $name, array $options = []) use ($fieldDescription) {
                 $fieldDescriptionClone = clone $fieldDescription;
                 $fieldDescriptionClone->setName($name);
                 $fieldDescriptionClone->setOptions($options);
@@ -84,7 +84,7 @@ class ListMapperTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame($this->listMapper, $this->listMapper->add($fieldDescription));
         $this->assertSame($this->listMapper, $this->listMapper->remove('fooName'));
-        $this->assertSame($this->listMapper, $this->listMapper->reorder(array()));
+        $this->assertSame($this->listMapper, $this->listMapper->reorder([]));
     }
 
     public function testGet()
@@ -110,8 +110,8 @@ class ListMapperTest extends PHPUnit_Framework_TestCase
     public function testAdd()
     {
         $this->listMapper->add('fooName');
-        $this->listMapper->add('fooNameLabelBar', null, array('label' => 'Foo Bar'));
-        $this->listMapper->add('fooNameLabelFalse', null, array('label' => false));
+        $this->listMapper->add('fooNameLabelBar', null, ['label' => 'Foo Bar']);
+        $this->listMapper->add('fooNameLabelFalse', null, ['label' => false]);
 
         $this->assertTrue($this->listMapper->has('fooName'));
 
@@ -132,7 +132,7 @@ class ListMapperTest extends PHPUnit_Framework_TestCase
     public function testLegacyAddViewInlineAction()
     {
         $this->assertFalse($this->listMapper->has('_action'));
-        $this->listMapper->add('_action', 'actions', array('actions' => array('view' => array())));
+        $this->listMapper->add('_action', 'actions', ['actions' => ['view' => []]]);
 
         $this->assertTrue($this->listMapper->has('_action'));
 
@@ -141,13 +141,13 @@ class ListMapperTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Sonata\AdminBundle\Admin\FieldDescriptionInterface', $fieldDescription);
         $this->assertSame('_action', $fieldDescription->getName());
         $this->assertCount(1, $fieldDescription->getOption('actions'));
-        $this->assertSame(array('show' => array()), $fieldDescription->getOption('actions'));
+        $this->assertSame(['show' => []], $fieldDescription->getOption('actions'));
     }
 
     public function testAddViewInlineAction()
     {
         $this->assertFalse($this->listMapper->has('_action'));
-        $this->listMapper->add('_action', 'actions', array('actions' => array('show' => array())));
+        $this->listMapper->add('_action', 'actions', ['actions' => ['show' => []]]);
 
         $this->assertTrue($this->listMapper->has('_action'));
 
@@ -156,7 +156,7 @@ class ListMapperTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Sonata\AdminBundle\Admin\FieldDescriptionInterface', $fieldDescription);
         $this->assertSame('_action', $fieldDescription->getName());
         $this->assertCount(1, $fieldDescription->getOption('actions'));
-        $this->assertSame(array('show' => array()), $fieldDescription->getOption('actions'));
+        $this->assertSame(['show' => []], $fieldDescription->getOption('actions'));
     }
 
     public function testAddRemove()
@@ -174,7 +174,7 @@ class ListMapperTest extends PHPUnit_Framework_TestCase
 
     public function testAddDuplicateNameException()
     {
-        $tmpNames = array();
+        $tmpNames = [];
         $this->admin->expects($this->any())
             ->method('hasListFieldDescription')
             ->will($this->returnCallback(function ($name) use (&$tmpNames) {
@@ -201,7 +201,7 @@ class ListMapperTest extends PHPUnit_Framework_TestCase
 
     public function testAutoAddVirtualOption()
     {
-        foreach (array('actions', 'batch', 'select') as $type) {
+        foreach (['actions', 'batch', 'select'] as $type) {
             $this->listMapper->add('_'.$type, $type);
         }
 
@@ -218,7 +218,7 @@ class ListMapperTest extends PHPUnit_Framework_TestCase
         $this->listMapper->add($fieldDescription1);
         $this->listMapper->add($fieldDescription2);
 
-        $this->assertSame(array('fooName1', 'fooName2'), $this->listMapper->keys());
+        $this->assertSame(['fooName1', 'fooName2'], $this->listMapper->keys());
     }
 
     public function testReorder()
@@ -233,22 +233,22 @@ class ListMapperTest extends PHPUnit_Framework_TestCase
         $this->listMapper->add($fieldDescription3);
         $this->listMapper->add($fieldDescription4);
 
-        $this->assertSame(array(
+        $this->assertSame([
             'fooName1' => $fieldDescription1,
             'fooName2' => $fieldDescription2,
             'fooName3' => $fieldDescription3,
             'fooName4' => $fieldDescription4,
-        ), $this->fieldDescriptionCollection->getElements());
+        ], $this->fieldDescriptionCollection->getElements());
 
-        $this->listMapper->reorder(array('fooName3', 'fooName2', 'fooName1', 'fooName4'));
+        $this->listMapper->reorder(['fooName3', 'fooName2', 'fooName1', 'fooName4']);
 
         // print_r is used to compare order of items in associative arrays
-        $this->assertSame(print_r(array(
+        $this->assertSame(print_r([
             'fooName3' => $fieldDescription3,
             'fooName2' => $fieldDescription2,
             'fooName1' => $fieldDescription1,
             'fooName4' => $fieldDescription4,
-        ), true), print_r($this->fieldDescriptionCollection->getElements(), true));
+        ], true), print_r($this->fieldDescriptionCollection->getElements(), true));
     }
 
     private function getFieldDescriptionMock($name = null, $label = null)

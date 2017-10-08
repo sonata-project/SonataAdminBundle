@@ -38,7 +38,7 @@ class SetupAclCommandTest extends PHPUnit_Framework_TestCase
                 switch ($id) {
                     case 'sonata.admin.pool':
                         $pool = new Pool($container, '', '');
-                        $pool->setAdminServiceIds(array('acme.admin.foo'));
+                        $pool->setAdminServiceIds(['acme.admin.foo']);
 
                         return $pool;
 
@@ -58,7 +58,7 @@ class SetupAclCommandTest extends PHPUnit_Framework_TestCase
 
         $command = $application->find('sonata:admin:setup-acl');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array('command' => $command->getName()));
+        $commandTester->execute(['command' => $command->getName()]);
 
         $this->assertRegExp('/Starting ACL AdminBundle configuration/', $commandTester->getDisplay());
     }
@@ -75,7 +75,7 @@ class SetupAclCommandTest extends PHPUnit_Framework_TestCase
             ->will($this->returnCallback(function ($id) use ($container) {
                 if ($id == 'sonata.admin.pool') {
                     $pool = new Pool($container, '', '');
-                    $pool->setAdminServiceIds(array('acme.admin.foo'));
+                    $pool->setAdminServiceIds(['acme.admin.foo']);
 
                     return $pool;
                 }
@@ -89,7 +89,7 @@ class SetupAclCommandTest extends PHPUnit_Framework_TestCase
 
         $command = $application->find('sonata:admin:setup-acl');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array('command' => $command->getName()));
+        $commandTester->execute(['command' => $command->getName()]);
 
         $this->assertRegExp('@Starting ACL AdminBundle configuration\s+Warning : The admin class cannot be initiated from the command line\s+Foo Exception@', $commandTester->getDisplay());
     }
@@ -108,7 +108,7 @@ class SetupAclCommandTest extends PHPUnit_Framework_TestCase
                 switch ($id) {
                     case 'sonata.admin.pool':
                         $pool = new Pool($container, '', '');
-                        $pool->setAdminServiceIds(array('acme.admin.foo'));
+                        $pool->setAdminServiceIds(['acme.admin.foo']);
 
                         return $pool;
 
@@ -128,7 +128,7 @@ class SetupAclCommandTest extends PHPUnit_Framework_TestCase
 
         $command = $application->find('sonata:admin:setup-acl');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array('command' => $command->getName()));
+        $commandTester->execute(['command' => $command->getName()]);
 
         $this->assertRegExp('@Starting ACL AdminBundle configuration\s+The interface "AdminAclManipulatorInterface" is not implemented for stdClass: ignoring@', $commandTester->getDisplay());
     }

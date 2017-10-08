@@ -52,7 +52,7 @@ class AdminStatsBlockService extends AbstractBlockService
         $filters = $blockContext->getSetting('filters');
 
         if (!isset($filters['_per_page'])) {
-            $filters['_per_page'] = array('value' => $blockContext->getSetting('limit'));
+            $filters['_per_page'] = ['value' => $blockContext->getSetting('limit')];
         }
 
         foreach ($filters as $name => $data) {
@@ -61,14 +61,14 @@ class AdminStatsBlockService extends AbstractBlockService
 
         $datagrid->buildPager();
 
-        return $this->renderPrivateResponse($blockContext->getTemplate(), array(
+        return $this->renderPrivateResponse($blockContext->getTemplate(), [
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
             'admin_pool' => $this->pool,
             'admin' => $admin,
             'pager' => $datagrid->getPager(),
             'datagrid' => $datagrid,
-        ), $response);
+        ], $response);
     }
 
     /**
@@ -84,14 +84,14 @@ class AdminStatsBlockService extends AbstractBlockService
      */
     public function configureSettings(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'icon' => 'fa-line-chart',
             'text' => 'Statistics',
             'color' => 'bg-aqua',
             'code' => false,
-            'filters' => array(),
+            'filters' => [],
             'limit' => 1000,
             'template' => 'SonataAdminBundle:Block:block_stats.html.twig',
-        ));
+        ]);
     }
 }

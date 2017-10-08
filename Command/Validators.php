@@ -55,7 +55,7 @@ class Validators
             ));
         }
 
-        return array(substr($entity, 0, $pos), substr($entity, $pos + 1));
+        return [substr($entity, 0, $pos), substr($entity, $pos + 1)];
     }
 
     /**

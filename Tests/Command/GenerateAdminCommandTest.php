@@ -63,7 +63,7 @@ class GenerateAdminCommandTest extends PHPUnit_Framework_TestCase
         $kernel = $this->createMock('Symfony\Component\HttpKernel\KernelInterface');
         $kernel->expects($this->any())
             ->method('getBundles')
-            ->will($this->returnValue(array($bundle)));
+            ->will($this->returnValue([$bundle]));
 
         $parameterBag = new ParameterBag();
         $this->container = new Container($parameterBag);
@@ -127,7 +127,7 @@ class GenerateAdminCommandTest extends PHPUnit_Framework_TestCase
 
         $command = $this->application->find('sonata:admin:generate');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array(
+        $commandTester->execute([
             'command' => $command->getName(),
             'model' => 'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo',
             '--bundle' => 'AcmeDemoBundle',
@@ -135,7 +135,7 @@ class GenerateAdminCommandTest extends PHPUnit_Framework_TestCase
             '--controller' => 'FooAdminController',
             '--services' => 'admin.yml',
             '--id' => 'acme_demo_admin.admin.foo',
-        ), array('interactive' => false));
+        ], ['interactive' => false]);
 
         $expectedOutput = '';
         $expectedOutput .= sprintf('%3$sThe admin class "Sonata\AdminBundle\Tests\Fixtures\Bundle\Admin\FooAdmin" has been generated under the file "%1$s%2$sAdmin%2$sFooAdmin.php".%3$s', $this->tempDirectory, DIRECTORY_SEPARATOR, PHP_EOL);
@@ -177,7 +177,7 @@ class GenerateAdminCommandTest extends PHPUnit_Framework_TestCase
 
         $command = $this->application->find('sonata:admin:generate');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array(
+        $commandTester->execute([
             'command' => $command->getName(),
             'model' => 'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo',
             '--bundle' => 'AcmeDemoBundle',
@@ -185,7 +185,7 @@ class GenerateAdminCommandTest extends PHPUnit_Framework_TestCase
             '--controller' => 'FooAdminController',
             '--services' => 'admin.yml',
             '--id' => 'acme_demo_admin.admin.foo',
-        ), array('interactive' => false));
+        ], ['interactive' => false]);
     }
 
     /**
@@ -203,7 +203,7 @@ class GenerateAdminCommandTest extends PHPUnit_Framework_TestCase
         // DialogHelper does not exist in SensioGeneratorBundle 2.5+
         if (class_exists('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper')) {
             $dialog = $this->getMockBuilder('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper')
-                ->setMethods(array('askConfirmation', 'askAndValidate'))
+                ->setMethods(['askConfirmation', 'askAndValidate'])
                 ->getMock();
 
             $dialog->expects($this->any())
@@ -256,7 +256,7 @@ class GenerateAdminCommandTest extends PHPUnit_Framework_TestCase
             $command->getHelperSet()->set($dialog, 'dialog');
         } else {
             $questionHelper = $this->getMockBuilder('Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper')
-                ->setMethods(array('ask'))
+                ->setMethods(['ask'])
                 ->getMock();
 
             $questionHelper->expects($this->any())
@@ -302,10 +302,10 @@ class GenerateAdminCommandTest extends PHPUnit_Framework_TestCase
         }
 
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array(
+        $commandTester->execute([
             'command' => $command->getName(),
             'model' => $modelEntity,
-            ));
+            ]);
 
         $expectedOutput = PHP_EOL.str_pad('', 41, ' ').PHP_EOL.'  Welcome to the Sonata admin generator  '.PHP_EOL.str_pad('', 41, ' ').PHP_EOL.PHP_EOL;
         $expectedOutput .= sprintf('%3$sThe admin class "Sonata\AdminBundle\Tests\Fixtures\Bundle\Admin\FooAdmin" has been generated under the file "%1$s%2$sAdmin%2$sFooAdmin.php".%3$s', $this->tempDirectory, DIRECTORY_SEPARATOR, PHP_EOL);
@@ -341,10 +341,10 @@ class GenerateAdminCommandTest extends PHPUnit_Framework_TestCase
 
     public function getExecuteInteractiveTests()
     {
-        return array(
-            array('Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo'),
-            array('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo'),
-        );
+        return [
+            ['Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo'],
+            ['Sonata\AdminBundle\Tests\Fixtures\Entity\Foo'],
+        ];
     }
 
     /**
@@ -361,10 +361,10 @@ class GenerateAdminCommandTest extends PHPUnit_Framework_TestCase
 
     public function getValidateManagerTypeTests()
     {
-        return array(
-            array('foo', 'foo'),
-            array('bar', 'bar'),
-        );
+        return [
+            ['foo', 'foo'],
+            ['bar', 'bar'],
+        ];
     }
 
     public function testValidateManagerTypeWithException1()
@@ -402,7 +402,7 @@ class GenerateAdminCommandTest extends PHPUnit_Framework_TestCase
         // DialogHelper does not exist in SensioGeneratorBundle 2.5+
         if (class_exists('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper')) {
             $dialog = $this->getMockBuilder('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper')
-                ->setMethods(array('askConfirmation', 'askAndValidate'))
+                ->setMethods(['askConfirmation', 'askAndValidate'])
                 ->getMock();
 
             $dialog->expects($this->any())
@@ -455,7 +455,7 @@ class GenerateAdminCommandTest extends PHPUnit_Framework_TestCase
             $command->getHelperSet()->set($dialog, 'dialog');
         } else {
             $questionHelper = $this->getMockBuilder('Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper')
-                ->setMethods(array('ask'))
+                ->setMethods(['ask'])
                 ->getMock();
 
             $questionHelper->expects($this->any())
@@ -489,10 +489,10 @@ class GenerateAdminCommandTest extends PHPUnit_Framework_TestCase
         }
 
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array(
+        $commandTester->execute([
             'command' => $command->getName(),
             'model' => $modelEntity,
-        ));
+        ]);
 
         $this->assertFalse(file_exists($this->tempDirectory.'/Resources/config/services.yml'));
     }

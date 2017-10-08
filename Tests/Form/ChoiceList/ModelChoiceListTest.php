@@ -29,7 +29,7 @@ class ModelChoiceListTest extends PHPUnit_Framework_TestCase
 
         $this->modelManager->expects($this->any())
             ->method('getIdentifierFieldNames')
-            ->will($this->returnValue(array('foo', 'bar')));
+            ->will($this->returnValue(['foo', 'bar']));
     }
 
     public function testLoadFromEntity()
@@ -40,7 +40,7 @@ class ModelChoiceListTest extends PHPUnit_Framework_TestCase
         $fooB = new Foo();
         $fooB->setBar(2);
 
-        $result = array($fooA, $fooB);
+        $result = [$fooA, $fooB];
 
         $this->modelManager->expects($this->once())
             ->method('findBy')
@@ -58,7 +58,7 @@ class ModelChoiceListTest extends PHPUnit_Framework_TestCase
     public function testLoadFromCustomQuery()
     {
         // Get choices From Custom Query, count($this->identifier) > 1
-        $result = array(1, 2);
+        $result = [1, 2];
 
         $this->modelManager->expects($this->any())
             ->method('executeQuery')
@@ -77,7 +77,7 @@ class ModelChoiceListTest extends PHPUnit_Framework_TestCase
     public function testLoadArrayOfChoices()
     {
         // Get choices from Array of choices, count($this->identifier) > 1
-        $result = array(1, 2);
+        $result = [1, 2];
         $modelChoice = new ModelChoiceList(
             $this->modelManager,
             'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo',

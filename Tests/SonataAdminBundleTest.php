@@ -29,7 +29,7 @@ class SonataAdminBundleTest extends \PHPUnit_Framework_TestCase
     public function testBuild()
     {
         $containerBuilder = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
-            ->setMethods(array('addCompilerPass'))
+            ->setMethods(['addCompilerPass'])
             ->getMock();
 
         $containerBuilder->expects($this->exactly(4))

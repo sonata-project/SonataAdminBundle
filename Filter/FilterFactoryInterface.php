@@ -23,5 +23,5 @@ interface FilterFactoryInterface
      *
      * @return mixed
      */
-    public function create($name, $type, array $options = array());
+    public function create($name, $type, array $options = []);
 }

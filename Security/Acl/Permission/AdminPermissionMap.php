@@ -39,73 +39,73 @@ class AdminPermissionMap implements PermissionMapInterface
      *
      * @var array
      */
-    private $map = array(
-        self::PERMISSION_VIEW => array(
+    private $map = [
+        self::PERMISSION_VIEW => [
             MaskBuilder::MASK_VIEW,
             MaskBuilder::MASK_LIST,
             MaskBuilder::MASK_EDIT,
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
             MaskBuilder::MASK_OWNER,
-        ),
+        ],
 
-        self::PERMISSION_EDIT => array(
+        self::PERMISSION_EDIT => [
             MaskBuilder::MASK_EDIT,
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
             MaskBuilder::MASK_OWNER,
-        ),
+        ],
 
-        self::PERMISSION_CREATE => array(
+        self::PERMISSION_CREATE => [
             MaskBuilder::MASK_CREATE,
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
             MaskBuilder::MASK_OWNER,
-        ),
+        ],
 
-        self::PERMISSION_DELETE => array(
+        self::PERMISSION_DELETE => [
             MaskBuilder::MASK_DELETE,
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
             MaskBuilder::MASK_OWNER,
-        ),
+        ],
 
-        self::PERMISSION_UNDELETE => array(
+        self::PERMISSION_UNDELETE => [
             MaskBuilder::MASK_UNDELETE,
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
             MaskBuilder::MASK_OWNER,
-        ),
+        ],
 
-        self::PERMISSION_LIST => array(
+        self::PERMISSION_LIST => [
             MaskBuilder::MASK_LIST,
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
             MaskBuilder::MASK_OWNER,
-        ),
+        ],
 
-        self::PERMISSION_EXPORT => array(
+        self::PERMISSION_EXPORT => [
             MaskBuilder::MASK_EXPORT,
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
             MaskBuilder::MASK_OWNER,
-        ),
+        ],
 
-        self::PERMISSION_OPERATOR => array(
+        self::PERMISSION_OPERATOR => [
             MaskBuilder::MASK_OPERATOR,
             MaskBuilder::MASK_MASTER,
             MaskBuilder::MASK_OWNER,
-        ),
+        ],
 
-        self::PERMISSION_MASTER => array(
+        self::PERMISSION_MASTER => [
             MaskBuilder::MASK_MASTER,
             MaskBuilder::MASK_OWNER,
-        ),
+        ],
 
-        self::PERMISSION_OWNER => array(
+        self::PERMISSION_OWNER => [
             MaskBuilder::MASK_OWNER,
-        ),
-    );
+        ],
+    ];
 
     /**
      * {@inheritdoc}

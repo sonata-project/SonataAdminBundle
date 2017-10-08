@@ -92,28 +92,28 @@ class ExplainAdminCommandTest extends PHPUnit_Framework_TestCase
 
         $this->admin->expects($this->any())
             ->method('getListFieldDescriptions')
-            ->will($this->returnValue(array(
+            ->will($this->returnValue([
                 'fooTextField' => $fieldDescription1,
                 'barDateTimeField' => $fieldDescription2,
-            )));
+            ]));
 
         $this->admin->expects($this->any())
             ->method('getFilterFieldDescriptions')
-            ->will($this->returnValue(array(
+            ->will($this->returnValue([
                 'fooTextField' => $fieldDescription1,
                 'barDateTimeField' => $fieldDescription2,
-            )));
+            ]));
 
         $this->admin->expects($this->any())
             ->method('getFormTheme')
-            ->will($this->returnValue(array('FooBundle::bar.html.twig')));
+            ->will($this->returnValue(['FooBundle::bar.html.twig']));
 
         $this->admin->expects($this->any())
             ->method('getFormFieldDescriptions')
-            ->will($this->returnValue(array(
+            ->will($this->returnValue([
                 'fooTextField' => $fieldDescription1,
                 'barDateTimeField' => $fieldDescription2,
-            )));
+            ]));
 
         $this->admin->expects($this->any())
             ->method('isChild')
@@ -161,7 +161,7 @@ class ExplainAdminCommandTest extends PHPUnit_Framework_TestCase
                 switch ($id) {
                     case 'sonata.admin.pool':
                         $pool = new Pool($container, '', '');
-                        $pool->setAdminServiceIds(array('acme.admin.foo', 'acme.admin.bar'));
+                        $pool->setAdminServiceIds(['acme.admin.foo', 'acme.admin.bar']);
 
                         return $pool;
 
@@ -208,20 +208,20 @@ class ExplainAdminCommandTest extends PHPUnit_Framework_TestCase
         }
 
         $propertyMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\\'.$class);
-        $propertyMetadata->constraints = array(
+        $propertyMetadata->constraints = [
             new NotNull(),
-            new Length(array('min' => 2, 'max' => 50, 'groups' => array('create', 'edit'))),
-        );
+            new Length(['min' => 2, 'max' => 50, 'groups' => ['create', 'edit']]),
+        ];
 
-        $metadata->properties = array('firstName' => $propertyMetadata);
+        $metadata->properties = ['firstName' => $propertyMetadata];
 
         $getterMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\\'.$class);
-        $getterMetadata->constraints = array(
+        $getterMetadata->constraints = [
             new NotNull(),
-            new Email(array('groups' => array('registration', 'edit'))),
-        );
+            new Email(['groups' => ['registration', 'edit']]),
+        ];
 
-        $metadata->getters = array('email' => $getterMetadata);
+        $metadata->getters = ['email' => $getterMetadata];
 
         $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
 
@@ -249,7 +249,7 @@ class ExplainAdminCommandTest extends PHPUnit_Framework_TestCase
 
         $command = $this->application->find('sonata:admin:explain');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array('command' => $command->getName(), 'admin' => 'acme.admin.foo'));
+        $commandTester->execute(['command' => $command->getName(), 'admin' => 'acme.admin.foo']);
 
         $this->assertSame(sprintf(
             str_replace("\n", PHP_EOL, file_get_contents(__DIR__.'/../Fixtures/Command/explain_admin.txt')),
@@ -274,8 +274,8 @@ class ExplainAdminCommandTest extends PHPUnit_Framework_TestCase
             ->with($this->equalTo('Acme\Entity\Foo'))
             ->will($this->returnValue($metadata));
 
-        $metadata->properties = array();
-        $metadata->getters = array();
+        $metadata->properties = [];
+        $metadata->getters = [];
 
         $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
 
@@ -303,7 +303,7 @@ class ExplainAdminCommandTest extends PHPUnit_Framework_TestCase
 
         $command = $this->application->find('sonata:admin:explain');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array('command' => $command->getName(), 'admin' => 'acme.admin.foo'));
+        $commandTester->execute(['command' => $command->getName(), 'admin' => 'acme.admin.foo']);
 
         $this->assertSame(sprintf(
             str_replace(
@@ -324,7 +324,7 @@ class ExplainAdminCommandTest extends PHPUnit_Framework_TestCase
         try {
             $command = $this->application->find('sonata:admin:explain');
             $commandTester = new CommandTester($command);
-            $commandTester->execute(array('command' => $command->getName(), 'admin' => 'nonexistent.service'));
+            $commandTester->execute(['command' => $command->getName(), 'admin' => 'nonexistent.service']);
         } catch (\RuntimeException $e) {
             $this->assertSame('Service "nonexistent.service" is not an admin class', $e->getMessage());
 
