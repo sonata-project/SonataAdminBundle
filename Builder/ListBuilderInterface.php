@@ -25,7 +25,7 @@ interface ListBuilderInterface extends BuilderInterface
      *
      * @return FieldDescriptionCollection
      */
-    public function getBaseList(array $options = array());
+    public function getBaseList(array $options = []);
 
     /**
      * Modify a field description to display it in the list view.

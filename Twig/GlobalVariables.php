@@ -71,7 +71,7 @@ class GlobalVariables
      *
      * @return string
      */
-    public function url($code, $action, $parameters = array(), $absolute = false)
+    public function url($code, $action, $parameters = [], $absolute = false)
     {
         list($action, $code) = $this->getCodeAction($code, $action);
 
@@ -87,7 +87,7 @@ class GlobalVariables
      *
      * @return string
      */
-    public function objectUrl($code, $action, $object, $parameters = array(), $absolute = false)
+    public function objectUrl($code, $action, $object, $parameters = [], $absolute = false)
     {
         list($action, $code) = $this->getCodeAction($code, $action);
 
@@ -109,6 +109,6 @@ class GlobalVariables
             $code = substr($code, 0, $pipe);
         }
 
-        return array($action, $code);
+        return [$action, $code];
     }
 }

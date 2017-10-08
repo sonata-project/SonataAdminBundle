@@ -29,11 +29,11 @@ class ActiveVoterTest extends AbstractVoterTest
      */
     public function provideData()
     {
-        return array(
-            'active' => array(true, null, true, true),
-            'no active' => array(false, null, false, false),
-            'null' => array(null, null, null, null),
-        );
+        return [
+            'active' => [true, null, true, true],
+            'no active' => [false, null, false, false],
+            'null' => [null, null, null, null],
+        ];
     }
 
     /**

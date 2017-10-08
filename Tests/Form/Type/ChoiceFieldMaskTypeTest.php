@@ -30,14 +30,14 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
         }
 
         $options = $optionResolver->resolve(
-            array(
-                'map' => array(
-                    'foo' => array('field1', 'field2'),
-                    'bar' => array('field3'),
-            ),
-        ));
+            [
+                'map' => [
+                    'foo' => ['field1', 'field2'],
+                    'bar' => ['field3'],
+            ],
+        ]);
 
-        $this->assertSame(array('foo' => array('field1', 'field2'), 'bar' => array('field3')), $options['map']);
+        $this->assertSame(['foo' => ['field1', 'field2'], 'bar' => ['field3']], $options['map']);
     }
 
     public function testGetName()

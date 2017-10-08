@@ -102,7 +102,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * @var array the option collection
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * @var AdminInterface|null the parent Admin instance
@@ -205,7 +205,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
 
         if (!isset($options['link_parameters'])) {
-            $options['link_parameters'] = array();
+            $options['link_parameters'] = [];
         }
 
         $this->options = $options;
@@ -327,8 +327,8 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
         $camelizedFieldName = Inflector::classify($fieldName);
 
-        $getters = array();
-        $parameters = array();
+        $getters = [];
+        $parameters = [];
 
         // prefer method name given in the code option
         if ($this->getOption('code')) {
@@ -344,12 +344,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
         foreach ($getters as $getter) {
             if (method_exists($object, $getter)) {
-                return call_user_func_array(array($object, $getter), $parameters);
+                return call_user_func_array([$object, $getter], $parameters);
             }
         }
 
         if (method_exists($object, '__call')) {
-            return call_user_func_array(array($object, '__call'), array($fieldName, $parameters));
+            return call_user_func_array([$object, '__call'], [$fieldName, $parameters]);
         }
 
         if (isset($object->{$fieldName})) {
@@ -378,10 +378,10 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * {@inheritdoc}
      */
-    public function mergeOption($name, array $options = array())
+    public function mergeOption($name, array $options = [])
     {
         if (!isset($this->options[$name])) {
-            $this->options[$name] = array();
+            $this->options[$name] = [];
         }
 
         if (!is_array($this->options[$name])) {
@@ -394,7 +394,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * {@inheritdoc}
      */
-    public function mergeOptions(array $options = array())
+    public function mergeOptions(array $options = [])
     {
         $this->setOptions(array_merge_recursive($this->options, $options));
     }

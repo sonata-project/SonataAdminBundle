@@ -22,7 +22,7 @@ class FilterFactoryTest extends PHPUnit_Framework_TestCase
 
         $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
 
-        $filter = new FilterFactory($container, array());
+        $filter = new FilterFactory($container, []);
         $filter->create('test', null);
     }
 
@@ -32,7 +32,7 @@ class FilterFactoryTest extends PHPUnit_Framework_TestCase
 
         $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
 
-        $filter = new FilterFactory($container, array());
+        $filter = new FilterFactory($container, []);
         $filter->create('test', 'mytype');
     }
 
@@ -42,7 +42,7 @@ class FilterFactoryTest extends PHPUnit_Framework_TestCase
 
         $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
 
-        $filter = new FilterFactory($container, array());
+        $filter = new FilterFactory($container, []);
         $filter->create('test', 'Sonata\AdminBundle\Form\Type\Filter\FooType');
     }
 
@@ -52,7 +52,7 @@ class FilterFactoryTest extends PHPUnit_Framework_TestCase
 
         $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
 
-        $filter = new FilterFactory($container, array());
+        $filter = new FilterFactory($container, []);
         $filter->create('test', 'Sonata\AdminBundle\Form\Type\Filter\DefaultType');
     }
 
@@ -65,7 +65,7 @@ class FilterFactoryTest extends PHPUnit_Framework_TestCase
             ->method('get')
             ->will($this->returnValue(false));
 
-        $filter = new FilterFactory($container, array('mytype' => 'mytype'));
+        $filter = new FilterFactory($container, ['mytype' => 'mytype']);
         $filter->create('test', 'mytype');
     }
 
@@ -80,7 +80,7 @@ class FilterFactoryTest extends PHPUnit_Framework_TestCase
             ->method('get')
             ->will($this->returnValue($filter));
 
-        $filter = new FilterFactory($container, array('mytype' => 'mytype'));
+        $filter = new FilterFactory($container, ['mytype' => 'mytype']);
         $filter->create('test', 'mytype');
     }
 }

@@ -26,7 +26,7 @@ class TypeGuesserChain implements TypeGuesserInterface
     /**
      * @var array
      */
-    protected $guessers = array();
+    protected $guessers = [];
 
     /**
      * @param array $guessers
@@ -67,7 +67,7 @@ class TypeGuesserChain implements TypeGuesserInterface
      */
     private function guess(\Closure $closure)
     {
-        $guesses = array();
+        $guesses = [];
 
         foreach ($this->guessers as $guesser) {
             if ($guess = $closure($guesser)) {

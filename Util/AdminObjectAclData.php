@@ -26,7 +26,7 @@ class AdminObjectAclData
     /**
      * @var array Permissions managed only by a OWNER
      */
-    protected static $ownerPermissions = array('MASTER', 'OWNER');
+    protected static $ownerPermissions = ['MASTER', 'OWNER'];
 
     /**
      * @var AdminInterface
@@ -323,7 +323,7 @@ class AdminObjectAclData
         $permissions = $this->getPermissions();
 
         $reflectionClass = new \ReflectionClass(new $this->maskBuilderClass());
-        $this->masks = array();
+        $this->masks = [];
         foreach ($permissions as $permission) {
             $this->masks[$permission] = $reflectionClass->getConstant('MASK_'.$permission);
         }

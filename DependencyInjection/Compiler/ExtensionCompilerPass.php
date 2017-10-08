@@ -26,8 +26,8 @@ class ExtensionCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $universalExtensions = array();
-        $targets = array();
+        $universalExtensions = [];
+        $targets = [];
 
         foreach ($container->findTaggedServiceIds('sonata.admin.extension') as $id => $tags) {
             foreach ($tags as $attributes) {
@@ -82,7 +82,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
             $admin = $container->getDefinition($target);
 
             foreach (array_values($extensions) as $extension) {
-                $admin->addMethodCall('addExtension', array($extension));
+                $admin->addMethodCall('addExtension', [$extension]);
             }
         }
     }
@@ -97,7 +97,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
      */
     protected function getExtensionsForAdmin($id, Definition $admin, ContainerBuilder $container, array $extensionMap)
     {
-        $extensions = array();
+        $extensions = [];
         $classReflection = $subjectReflection = null;
 
         $excludes = $extensionMap['excludes'];
@@ -180,14 +180,14 @@ class ExtensionCompilerPass implements CompilerPassInterface
      */
     protected function flattenExtensionConfiguration(array $config)
     {
-        $extensionMap = array(
-            'excludes' => array(),
-            'admins' => array(),
-            'implements' => array(),
-            'extends' => array(),
-            'instanceof' => array(),
-            'uses' => array(),
-        );
+        $extensionMap = [
+            'excludes' => [],
+            'admins' => [],
+            'implements' => [],
+            'extends' => [],
+            'instanceof' => [],
+            'uses' => [],
+        ];
 
         foreach ($config as $extension => $options) {
             $optionsMap = array_intersect_key($options, $extensionMap);
@@ -195,7 +195,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
             foreach ($optionsMap as $key => $value) {
                 foreach ($value as $source) {
                     if (!isset($extensionMap[$key][$source])) {
-                        $extensionMap[$key][$source] = array();
+                        $extensionMap[$key][$source] = [];
                     }
                     $extensionMap[$key][$source][$extension]['priority'] = $options['priority'];
                 }

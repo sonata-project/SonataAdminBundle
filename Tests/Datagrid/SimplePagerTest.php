@@ -35,7 +35,7 @@ class SimplePagerTest extends \PHPUnit_Framework_TestCase
         $pager = new SimplePager(10, 2);
         $this->proxyQuery->expects($this->once())
                 ->method('execute')
-                ->with(array(), null)
+                ->with([], null)
                 ->will($this->returnValue(new ArrayCollection(range(0, 12))));
 
         $this->proxyQuery->expects($this->once())
@@ -56,7 +56,7 @@ class SimplePagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxyQuery->expects($this->once())
             ->method('execute')
-            ->with(array(), null)
+            ->with([], null)
             ->will($this->returnValue(new ArrayCollection(range(0, 12))));
 
         $this->proxyQuery->expects($this->once())
@@ -98,8 +98,8 @@ class SimplePagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxyQuery->expects($this->once())
             ->method('execute')
-            ->with(array(), null)
-            ->will($this->returnValue(array()));
+            ->with([], null)
+            ->will($this->returnValue([]));
 
         $this->proxyQuery->expects($this->once())
             ->method('setMaxResults')

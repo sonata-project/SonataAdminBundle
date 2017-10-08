@@ -51,7 +51,7 @@ class DatagridMapper extends BaseMapper
      *
      * @return DatagridMapper
      */
-    public function add($name, $type = null, array $filterOptions = array(), $fieldType = null, $fieldOptions = null, array $fieldDescriptionOptions = array())
+    public function add($name, $type = null, array $filterOptions = [], $fieldType = null, $fieldOptions = null, array $fieldDescriptionOptions = [])
     {
         if (is_array($fieldOptions)) {
             $filterOptions['field_options'] = $fieldOptions;

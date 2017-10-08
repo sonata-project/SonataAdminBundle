@@ -25,7 +25,7 @@ interface ShowBuilderInterface extends BuilderInterface
      *
      * @param array $options
      */
-    public function getBaseList(array $options = array());
+    public function getBaseList(array $options = []);
 
     /**
      * @abstract

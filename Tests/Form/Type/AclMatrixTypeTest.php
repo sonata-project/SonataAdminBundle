@@ -25,14 +25,14 @@ class AclMatrixTypeTest extends TypeTestCase
         $type = new AclMatrixType();
         $user = $this->getMockForAbstractClass('Symfony\Component\Security\Core\User\UserInterface');
 
-        $permissions = array(
-            'OWNER' => array(
+        $permissions = [
+            'OWNER' => [
                 'required' => false,
                 'data' => false,
                 'disabled' => false,
-                'attr' => array(),
-            ),
-        );
+                'attr' => [],
+            ],
+        ];
 
         $optionResolver = new OptionsResolver();
 
@@ -42,10 +42,10 @@ class AclMatrixTypeTest extends TypeTestCase
             $type->configureOptions($optionResolver);
         }
 
-        $options = $optionResolver->resolve(array(
+        $options = $optionResolver->resolve([
             'acl_value' => $user,
             'permissions' => $permissions,
-        ));
+        ]);
 
         $this->assertInstanceOf('Symfony\Component\Security\Core\User\UserInterface', $options['acl_value']);
         $this->assertSame($user, $options['acl_value']);

@@ -53,7 +53,7 @@ class RoleSecurityHandler implements SecurityHandlerInterface
     public function isGranted(AdminInterface $admin, $attributes, $object = null)
     {
         if (!is_array($attributes)) {
-            $attributes = array($attributes);
+            $attributes = [$attributes];
         }
 
         foreach ($attributes as $pos => $attribute) {
@@ -65,7 +65,7 @@ class RoleSecurityHandler implements SecurityHandlerInterface
         try {
             return $this->authorizationChecker->isGranted($this->superAdminRoles)
                 || $this->authorizationChecker->isGranted($attributes, $object)
-                || $this->authorizationChecker->isGranted(array($allRole), $object);
+                || $this->authorizationChecker->isGranted([$allRole], $object);
         } catch (AuthenticationCredentialsNotFoundException $e) {
             return false;
         }
@@ -84,7 +84,7 @@ class RoleSecurityHandler implements SecurityHandlerInterface
      */
     public function buildSecurityInformation(AdminInterface $admin)
     {
-        return array();
+        return [];
     }
 
     /**

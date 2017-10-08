@@ -70,20 +70,20 @@ class MenuBuilder
         $menu = $this->factory->createItem('root');
 
         foreach ($this->pool->getAdminGroups() as $name => $group) {
-            $extras = array(
+            $extras = [
                 'icon' => $group['icon'],
                 'label_catalogue' => $group['label_catalogue'],
                 'roles' => $group['roles'],
                 'sonata_admin' => true,
-            );
+            ];
 
             $menuProvider = isset($group['provider']) ? $group['provider'] : 'sonata_group_menu';
             $subMenu = $this->provider->get(
                 $menuProvider,
-                array(
+                [
                     'name' => $name,
                     'group' => $group,
-                )
+                ]
             );
 
             $subMenu = $menu->addChild($subMenu);

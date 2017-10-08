@@ -46,7 +46,7 @@ class ShowMapper extends BaseGroupedMapper
      *
      * @return $this
      */
-    public function add($name, $type = null, array $fieldDescriptionOptions = array())
+    public function add($name, $type = null, array $fieldDescriptionOptions = [])
     {
         if ($this->apply !== null && !$this->apply) {
             return $this;

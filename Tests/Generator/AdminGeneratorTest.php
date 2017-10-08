@@ -76,7 +76,7 @@ class AdminGeneratorTest extends PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('getExportFields')
             ->with('Model')
-            ->will($this->returnValue(array('foo', 'bar', 'baz')))
+            ->will($this->returnValue(['foo', 'bar', 'baz']))
         ;
 
         return $modelManagerMock;

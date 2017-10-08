@@ -32,7 +32,7 @@ class FilterFactory implements FilterFactoryInterface
      * @param ContainerInterface $container
      * @param string[]           $types
      */
-    public function __construct(ContainerInterface $container, array $types = array())
+    public function __construct(ContainerInterface $container, array $types = [])
     {
         $this->container = $container;
         $this->types = $types;
@@ -41,7 +41,7 @@ class FilterFactory implements FilterFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create($name, $type, array $options = array())
+    public function create($name, $type, array $options = [])
     {
         if (!$type) {
             throw new \RuntimeException('The type must be defined');

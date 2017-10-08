@@ -64,10 +64,10 @@ class AdminHelperTest extends PHPUnit_Framework_TestCase
 
         $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(array('fieldName' => 'fooBar')));
+        $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(['fieldName' => 'fooBar']));
 
         $object = $this->getMockBuilder('stdClass')
-            ->setMethods(array('addFooBar'))
+            ->setMethods(['addFooBar'])
             ->getMock();
         $object->expects($this->once())->method('addFooBar');
 
@@ -81,10 +81,10 @@ class AdminHelperTest extends PHPUnit_Framework_TestCase
 
         $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(array('fieldName' => 'fooBars')));
+        $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(['fieldName' => 'fooBars']));
 
         $object = $this->getMockBuilder('stdClass')
-            ->setMethods(array('addFooBar'))
+            ->setMethods(['addFooBar'])
             ->getMock();
         $object->expects($this->once())->method('addFooBar');
 
@@ -98,10 +98,10 @@ class AdminHelperTest extends PHPUnit_Framework_TestCase
 
         $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
-        $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(array('fieldName' => 'entries')));
+        $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(['fieldName' => 'entries']));
 
         $object = $this->getMockBuilder('stdClass')
-            ->setMethods(array('addEntry'))
+            ->setMethods(['addEntry'])
             ->getMock();
         $object->expects($this->once())->method('addEntry');
 
@@ -111,16 +111,16 @@ class AdminHelperTest extends PHPUnit_Framework_TestCase
     public function testGetElementAccessPath()
     {
         $object = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getPathToObject'))
+            ->setMethods(['getPathToObject'])
             ->getMock();
         $subObject = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getAnother'))
+            ->setMethods(['getAnother'])
             ->getMock();
         $sub2Object = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getMoreThings'))
+            ->setMethods(['getMoreThings'])
             ->getMock();
 
-        $object->expects($this->atLeastOnce())->method('getPathToObject')->will($this->returnValue(array($subObject)));
+        $object->expects($this->atLeastOnce())->method('getPathToObject')->will($this->returnValue([$subObject]));
         $subObject->expects($this->atLeastOnce())->method('getAnother')->will($this->returnValue($sub2Object));
         $sub2Object->expects($this->atLeastOnce())->method('getMoreThings')->will($this->returnValue('Value'));
 
@@ -133,13 +133,13 @@ class AdminHelperTest extends PHPUnit_Framework_TestCase
     {
         $path = 'uniquePartOfId_path_to_object_0_more_calls';
         $object = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getPathToObject'))
+            ->setMethods(['getPathToObject'])
             ->getMock();
         $subObject = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getMore'))
+            ->setMethods(['getMore'])
             ->getMock();
 
-        $object->expects($this->atLeastOnce())->method('getPathToObject')->will($this->returnValue(array($subObject)));
+        $object->expects($this->atLeastOnce())->method('getPathToObject')->will($this->returnValue([$subObject]));
         $subObject->expects($this->atLeastOnce())->method('getMore')->will($this->returnValue('Value'));
 
         $this->expectException('Exception', 'Could not get element id from '.$path.' Failing part: calls');
@@ -151,19 +151,19 @@ class AdminHelperTest extends PHPUnit_Framework_TestCase
     {
         $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
         $object = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getSubObject'))
+            ->setMethods(['getSubObject'])
             ->getMock();
         $simpleObject = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getSubObject'))
+            ->setMethods(['getSubObject'])
             ->getMock();
         $subObject = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getAnd'))
+            ->setMethods(['getAnd'])
             ->getMock();
         $sub2Object = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getMore'))
+            ->setMethods(['getMore'])
             ->getMock();
         $sub3Object = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getFinalData'))
+            ->setMethods(['getFinalData'])
             ->getMock();
         $dataMapper = $this->createMock('Symfony\Component\Form\DataMapperInterface');
         $formFactory = $this->createMock('Symfony\Component\Form\FormFactoryInterface');
@@ -171,9 +171,9 @@ class AdminHelperTest extends PHPUnit_Framework_TestCase
         $formBuilder = new FormBuilder('test', get_class($simpleObject), $eventDispatcher, $formFactory);
         $childFormBuilder = new FormBuilder('subObject', get_class($subObject), $eventDispatcher, $formFactory);
 
-        $object->expects($this->atLeastOnce())->method('getSubObject')->will($this->returnValue(array($subObject)));
+        $object->expects($this->atLeastOnce())->method('getSubObject')->will($this->returnValue([$subObject]));
         $subObject->expects($this->atLeastOnce())->method('getAnd')->will($this->returnValue($sub2Object));
-        $sub2Object->expects($this->atLeastOnce())->method('getMore')->will($this->returnValue(array($sub3Object)));
+        $sub2Object->expects($this->atLeastOnce())->method('getMore')->will($this->returnValue([$sub3Object]));
         $sub3Object->expects($this->atLeastOnce())->method('getFinalData')->will($this->returnValue('value'));
 
         $formBuilder->setCompound(true);

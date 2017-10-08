@@ -27,16 +27,16 @@ class NativeLabelTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
 
     public function getLabelTests()
     {
-        return array(
-            array('Is Valid', 'isValid'),
-            array('Is Valid', 'is_Valid'),
-            array('Is0 Valid', 'is0Valid'),
-            array('Is Valid', '_isValid'),
-            array('Is Valid', '__isValid'),
-            array('Is Valid', 'isValid_'),
-            array('Is Valid', 'isValid__'),
-            array('Is Valid', '__isValid__'),
-            array('Is Valid Super Cool', 'isValid_SuperCool'),
-        );
+        return [
+            ['Is Valid', 'isValid'],
+            ['Is Valid', 'is_Valid'],
+            ['Is0 Valid', 'is0Valid'],
+            ['Is Valid', '_isValid'],
+            ['Is Valid', '__isValid'],
+            ['Is Valid', 'isValid_'],
+            ['Is Valid', 'isValid__'],
+            ['Is Valid', '__isValid__'],
+            ['Is Valid Super Cool', 'isValid_SuperCool'],
+        ];
     }
 }

@@ -68,12 +68,12 @@ class ChoiceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $choices = array(
+        $choices = [
             'label_type_contains' => self::TYPE_CONTAINS,
             'label_type_not_contains' => self::TYPE_NOT_CONTAINS,
             'label_type_equals' => self::TYPE_EQUAL,
-        );
-        $operatorChoices = array();
+        ];
+        $operatorChoices = [];
 
         // NEXT_MAJOR: Remove first check (when requirement of Symfony is >= 2.8)
         if ($options['operator_type'] !== 'hidden' && $options['operator_type'] !== 'Symfony\Component\Form\Extension\Core\Type\HiddenType') {
@@ -81,7 +81,7 @@ class ChoiceType extends AbstractType
             if (!method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
                 $choices = array_flip($choices);
                 foreach ($choices as $key => $value) {
-                    $choices[$key] = $this->translator->trans($value, array(), 'SonataAdminBundle');
+                    $choices[$key] = $this->translator->trans($value, [], 'SonataAdminBundle');
                 }
             } else {
                 $operatorChoices['choice_translation_domain'] = 'SonataAdminBundle';
@@ -96,8 +96,8 @@ class ChoiceType extends AbstractType
         }
 
         $builder
-            ->add('type', $options['operator_type'], array_merge(array('required' => false), $options['operator_options'], $operatorChoices))
-            ->add('value', $options['field_type'], array_merge(array('required' => false), $options['field_options']))
+            ->add('type', $options['operator_type'], array_merge(['required' => false], $options['operator_options'], $operatorChoices))
+            ->add('value', $options['field_type'], array_merge(['required' => false], $options['field_options']))
         ;
     }
 
@@ -116,13 +116,13 @@ class ChoiceType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'field_type' => 'choice',
-            'field_options' => array(),
+            'field_options' => [],
             'operator_type' => method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
                 ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
                 : 'choice', // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
-            'operator_options' => array(),
-        ));
+            'operator_options' => [],
+        ]);
     }
 }

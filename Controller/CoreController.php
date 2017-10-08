@@ -30,23 +30,23 @@ class CoreController extends Controller
      */
     public function dashboardAction()
     {
-        $blocks = array(
-            'top' => array(),
-            'left' => array(),
-            'center' => array(),
-            'right' => array(),
-            'bottom' => array(),
-        );
+        $blocks = [
+            'top' => [],
+            'left' => [],
+            'center' => [],
+            'right' => [],
+            'bottom' => [],
+        ];
 
         foreach ($this->container->getParameter('sonata.admin.configuration.dashboard_blocks') as $block) {
             $blocks[$block['position']][] = $block;
         }
 
-        $parameters = array(
+        $parameters = [
             'base_template' => $this->getBaseTemplate(),
             'admin_pool' => $this->container->get('sonata.admin.pool'),
             'blocks' => $blocks,
-        );
+        ];
 
         if (!$this->getCurrentRequest()->isXmlHttpRequest()) {
             $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
@@ -80,35 +80,35 @@ class CoreController extends Controller
 
             $handler = $this->getSearchHandler();
 
-            $results = array();
+            $results = [];
 
             if ($pager = $handler->search($admin, $request->get('q'), $request->get('page'), $request->get('offset'))) {
                 foreach ($pager->getResults() as $result) {
-                    $results[] = array(
+                    $results[] = [
                         'label' => $admin->toString($result),
                         'link' => $admin->generateObjectUrl('edit', $result),
                         'id' => $admin->id($result),
-                    );
+                    ];
                 }
             }
 
-            $response = new JsonResponse(array(
+            $response = new JsonResponse([
                 'results' => $results,
                 'page' => $pager ? (int) $pager->getPage() : false,
                 'total' => $pager ? (int) $pager->getNbResults() : false,
-            ));
+            ]);
             $response->setPrivate();
 
             return $response;
         }
 
-        return $this->render($this->container->get('sonata.admin.pool')->getTemplate('search'), array(
+        return $this->render($this->container->get('sonata.admin.pool')->getTemplate('search'), [
             'base_template' => $this->getBaseTemplate(),
             'breadcrumbs_builder' => $this->get('sonata.admin.breadcrumbs_builder'),
             'admin_pool' => $this->container->get('sonata.admin.pool'),
             'query' => $request->get('q'),
             'groups' => $this->getAdminPool()->getDashboardGroups(),
-        ));
+        ]);
     }
 
     /**

@@ -31,7 +31,7 @@ interface ModelManagerInterface
      *
      * @return FieldDescriptionInterface
      */
-    public function getNewFieldDescriptionInstance($class, $name, array $options = array());
+    public function getNewFieldDescriptionInstance($class, $name, array $options = []);
 
     /**
      * @param mixed $object
@@ -60,7 +60,7 @@ interface ModelManagerInterface
      *
      * @return array all objects matching the criteria
      */
-    public function findBy($class, array $criteria = array());
+    public function findBy($class, array $criteria = []);
 
     /**
      * @param string $class
@@ -68,7 +68,7 @@ interface ModelManagerInterface
      *
      * @return object an object matching the criteria or null if none match
      */
-    public function findOneBy($class, array $criteria = array());
+    public function findOneBy($class, array $criteria = []);
 
     /**
      * @param string $class
@@ -228,7 +228,7 @@ interface ModelManagerInterface
      * @param string $class
      * @param array  $array
      */
-    public function modelReverseTransform($class, array $array = array());
+    public function modelReverseTransform($class, array $array = []);
 
     /**
      * @param string $class

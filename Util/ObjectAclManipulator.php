@@ -41,7 +41,7 @@ abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
         if (!$securityHandler instanceof AclSecurityHandlerInterface) {
             $output->writeln(sprintf('Admin `%s` is not configured to use ACL : <info>ignoring</info>', $admin->getCode()));
 
-            return array(0, 0);
+            return [0, 0];
         }
 
         $acls = $securityHandler->findObjectAcls($oids);
@@ -69,6 +69,6 @@ abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
             }
         }
 
-        return array($countAdded, $countUpdated);
+        return [$countAdded, $countUpdated];
     }
 }

@@ -44,7 +44,7 @@ final class AdminExporter
         $adminExportFormats = $admin->getExportFormats();
 
         // NEXT_MAJOR : compare with null
-        if ($adminExportFormats != array('json', 'xml', 'csv', 'xls')) {
+        if ($adminExportFormats != ['json', 'xml', 'csv', 'xls']) {
             return $adminExportFormats;
         }
 

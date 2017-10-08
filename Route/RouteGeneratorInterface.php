@@ -26,7 +26,7 @@ interface RouteGeneratorInterface
      *
      * @return string
      */
-    public function generateUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = false);
+    public function generateUrl(AdminInterface $admin, $name, array $parameters = [], $absolute = false);
 
     /**
      * @param AdminInterface $admin
@@ -36,7 +36,7 @@ interface RouteGeneratorInterface
      *
      * @return array
      */
-    public function generateMenuUrl(AdminInterface $admin, $name, array $parameters = array(), $absolute = false);
+    public function generateMenuUrl(AdminInterface $admin, $name, array $parameters = [], $absolute = false);
 
     /**
      * @param string $name
@@ -45,7 +45,7 @@ interface RouteGeneratorInterface
      *
      * @return string
      */
-    public function generate($name, array $parameters = array(), $absolute = false);
+    public function generate($name, array $parameters = [], $absolute = false);
 
     /**
      * @param AdminInterface $admin

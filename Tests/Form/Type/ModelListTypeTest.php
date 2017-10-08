@@ -35,10 +35,10 @@ class ModelListTypeTest extends TypeTestCase
         $form = $this->factory->create(
             'Sonata\AdminBundle\Form\Type\ModelListType',
             null,
-            array(
+            [
                 'model_manager' => $this->modelManager->reveal(),
                 'class' => 'My\Entity',
-            )
+            ]
         );
         $this->modelManager->find('My\Entity', 42)->shouldBeCalled();
         $form->submit($formData);

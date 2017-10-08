@@ -42,7 +42,7 @@ class SonataAdminExtension extends \Twig_Extension
     /**
      * @var string[]
      */
-    private $xEditableTypeMapping = array();
+    private $xEditableTypeMapping = [];
 
     /**
      * @param Pool                $pool
@@ -68,48 +68,48 @@ class SonataAdminExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
+        return [
             new \Twig_SimpleFilter(
                 'render_list_element',
-                array($this, 'renderListElement'),
-                array(
-                    'is_safe' => array('html'),
+                [$this, 'renderListElement'],
+                [
+                    'is_safe' => ['html'],
                     'needs_environment' => true,
-                )
+                ]
             ),
             new \Twig_SimpleFilter(
                 'render_view_element',
-                array($this, 'renderViewElement'),
-                array(
-                    'is_safe' => array('html'),
+                [$this, 'renderViewElement'],
+                [
+                    'is_safe' => ['html'],
                     'needs_environment' => true,
-                )
+                ]
             ),
             new \Twig_SimpleFilter(
                 'render_view_element_compare',
-                array($this, 'renderViewElementCompare'),
-                array(
-                    'is_safe' => array('html'),
+                [$this, 'renderViewElementCompare'],
+                [
+                    'is_safe' => ['html'],
                     'needs_environment' => true,
-                )
+                ]
             ),
             new \Twig_SimpleFilter(
                 'render_relation_element',
-                array($this, 'renderRelationElement')
+                [$this, 'renderRelationElement']
             ),
             new \Twig_SimpleFilter(
                 'sonata_urlsafeid',
-                array($this, 'getUrlsafeIdentifier')
+                [$this, 'getUrlsafeIdentifier']
             ),
             new \Twig_SimpleFilter(
                 'sonata_xeditable_type',
-                array($this, 'getXEditableType')
+                [$this, 'getXEditableType']
             ),
             new \Twig_SimpleFilter(
                 'sonata_xeditable_choices',
-                array($this, 'getXEditableChoices')
+                [$this, 'getXEditableChoices']
             ),
-        );
+        ];
     }
 
     /**
@@ -133,7 +133,7 @@ class SonataAdminExtension extends \Twig_Extension
         \Twig_Environment $environment,
         $object,
         FieldDescriptionInterface $fieldDescription,
-        $params = array()
+        $params = []
     ) {
         $template = $this->getTemplate(
             $fieldDescription,
@@ -141,12 +141,12 @@ class SonataAdminExtension extends \Twig_Extension
             $environment
         );
 
-        return $this->output($fieldDescription, $template, array_merge($params, array(
+        return $this->output($fieldDescription, $template, array_merge($params, [
             'admin' => $fieldDescription->getAdmin(),
             'object' => $object,
             'value' => $this->getValueFromFieldDescription($object, $fieldDescription),
             'field_description' => $fieldDescription,
-        )), $environment);
+        ]), $environment);
     }
 
     /**
@@ -204,7 +204,7 @@ EOT;
     public function getValueFromFieldDescription(
         $object,
         FieldDescriptionInterface $fieldDescription,
-        array $params = array()
+        array $params = []
     ) {
         if (isset($params['loop']) && $object instanceof \ArrayAccess) {
             throw new \RuntimeException('remove the loop requirement');
@@ -248,12 +248,12 @@ EOT;
             $value = null;
         }
 
-        return $this->output($fieldDescription, $template, array(
+        return $this->output($fieldDescription, $template, [
             'field_description' => $fieldDescription,
             'object' => $object,
             'value' => $value,
             'admin' => $fieldDescription->getAdmin(),
-        ), $environment);
+        ], $environment);
     }
 
     /**
@@ -289,28 +289,28 @@ EOT;
             $compareValue = null;
         }
 
-        $baseValueOutput = $template->render(array(
+        $baseValueOutput = $template->render([
             'admin' => $fieldDescription->getAdmin(),
             'field_description' => $fieldDescription,
             'value' => $baseValue,
-        ));
+        ]);
 
-        $compareValueOutput = $template->render(array(
+        $compareValueOutput = $template->render([
             'field_description' => $fieldDescription,
             'admin' => $fieldDescription->getAdmin(),
             'value' => $compareValue,
-        ));
+        ]);
 
         // Compare the rendered output of both objects by using the (possibly) overridden field block
         $isDiff = $baseValueOutput !== $compareValueOutput;
 
-        return $this->output($fieldDescription, $template, array(
+        return $this->output($fieldDescription, $template, [
             'field_description' => $fieldDescription,
             'value' => $baseValue,
             'value_compare' => $compareValue,
             'is_diff' => $isDiff,
             'admin' => $fieldDescription->getAdmin(),
-        ), $environment);
+        ], $environment);
     }
 
     /**
@@ -353,7 +353,7 @@ EOT;
                 ));
             }
 
-            return call_user_func(array($element, $method));
+            return call_user_func([$element, $method]);
         }
 
         if (is_callable($propertyPath)) {
@@ -411,9 +411,9 @@ EOT;
      */
     public function getXEditableChoices(FieldDescriptionInterface $fieldDescription)
     {
-        $choices = $fieldDescription->getOption('choices', array());
+        $choices = $fieldDescription->getOption('choices', []);
         $catalogue = $fieldDescription->getOption('catalogue');
-        $xEditableChoices = array();
+        $xEditableChoices = [];
         if (!empty($choices)) {
             reset($choices);
             $first = current($choices);
@@ -424,17 +424,17 @@ EOT;
                 foreach ($choices as $value => $text) {
                     if ($catalogue) {
                         if (null !== $this->translator) {
-                            $text = $this->translator->trans($text, array(), $catalogue);
+                            $text = $this->translator->trans($text, [], $catalogue);
                             // NEXT_MAJOR: Remove this check
                         } elseif (method_exists($fieldDescription->getAdmin(), 'trans')) {
-                            $text = $fieldDescription->getAdmin()->trans($text, array(), $catalogue);
+                            $text = $fieldDescription->getAdmin()->trans($text, [], $catalogue);
                         }
                     }
 
-                    $xEditableChoices[] = array(
+                    $xEditableChoices[] = [
                         'value' => $value,
                         'text' => $text,
-                    );
+                    ];
                 }
             }
         }
@@ -475,7 +475,7 @@ EOT;
                     $templateName,
                     $fieldDescription->getFieldName(),
                     $defaultTemplate
-                ), array('exception' => $e));
+                ), ['exception' => $e]);
             }
         }
 

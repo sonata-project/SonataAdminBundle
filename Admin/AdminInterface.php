@@ -229,7 +229,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @deprecated since 3.9, to be removed in 4.0
      */
-    public function trans($id, array $parameters = array(), $domain = null, $locale = null);
+    public function trans($id, array $parameters = [], $domain = null, $locale = null);
 
     /**
      * Returns the parameter representing request id, ie: id or childId.

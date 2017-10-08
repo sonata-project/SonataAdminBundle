@@ -22,26 +22,26 @@ class FilterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
             ? 'Symfony\Component\Form\Extension\Core\Type\TextType'
             : 'text', $filter->getFieldType());
-        $this->assertSame(array('required' => false), $filter->getFieldOptions());
+        $this->assertSame(['required' => false], $filter->getFieldOptions());
         $this->assertNull($filter->getLabel());
 
-        $options = array(
+        $options = [
             'label' => 'foo',
             'field_type' => 'integer',
-            'field_options' => array('required' => true),
+            'field_options' => ['required' => true],
             'field_name' => 'name',
-        );
+        ];
 
         $filter->setOptions($options);
 
         $this->assertSame('foo', $filter->getOption('label'));
         $this->assertSame('foo', $filter->getLabel());
 
-        $expected = array_merge(array(
+        $expected = array_merge([
             'show_filter' => null,
             'advanced_filter' => true,
             'foo' => 'bar',
-        ), $options);
+        ], $options);
 
         $this->assertSame($expected, $filter->getOptions());
         $this->assertSame('name', $filter->getFieldName());
@@ -58,11 +58,11 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     public function testGetFieldOption()
     {
         $filter = new FooFilter();
-        $filter->initialize('name', array(
-            'field_options' => array('foo' => 'bar', 'baz' => 12345),
-        ));
+        $filter->initialize('name', [
+            'field_options' => ['foo' => 'bar', 'baz' => 12345],
+        ]);
 
-        $this->assertSame(array('foo' => 'bar', 'baz' => 12345), $filter->getFieldOptions());
+        $this->assertSame(['foo' => 'bar', 'baz' => 12345], $filter->getFieldOptions());
         $this->assertSame('bar', $filter->getFieldOption('foo'));
         $this->assertSame(12345, $filter->getFieldOption('baz'));
     }
@@ -70,12 +70,12 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     public function testSetFieldOption()
     {
         $filter = new FooFilter();
-        $this->assertSame(array('required' => false), $filter->getFieldOptions());
+        $this->assertSame(['required' => false], $filter->getFieldOptions());
 
         $filter->setFieldOption('foo', 'bar');
         $filter->setFieldOption('baz', 12345);
 
-        $this->assertSame(array('foo' => 'bar', 'baz' => 12345), $filter->getFieldOptions());
+        $this->assertSame(['foo' => 'bar', 'baz' => 12345], $filter->getFieldOptions());
         $this->assertSame('bar', $filter->getFieldOption('foo'));
         $this->assertSame(12345, $filter->getFieldOption('baz'));
     }
@@ -83,9 +83,9 @@ class FilterTest extends \PHPUnit_Framework_TestCase
     public function testInitialize()
     {
         $filter = new FooFilter();
-        $filter->initialize('name', array(
+        $filter->initialize('name', [
             'field_name' => 'bar',
-        ));
+        ]);
 
         $this->assertSame('name', $filter->getName());
         $this->assertSame('bar', $filter->getOption('field_name'));
@@ -126,13 +126,13 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
     public function isActiveData()
     {
-        return array(
-            array(false, array()),
-            array(false, array('value' => null)),
-            array(false, array('value' => '')),
-            array(false, array('value' => false)),
-            array(true, array('value' => 'active')),
-        );
+        return [
+            [false, []],
+            [false, ['value' => null]],
+            [false, ['value' => '']],
+            [false, ['value' => false]],
+            [true, ['value' => 'active']],
+        ];
     }
 
     public function testGetTranslationDomain()
@@ -161,7 +161,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
     public function testGetFieldMapping()
     {
-        $fieldMapping = array(
+        $fieldMapping = [
             'fieldName' => 'username',
             'type' => 'string',
             'columnName' => 'username',
@@ -169,7 +169,7 @@ class FilterTest extends \PHPUnit_Framework_TestCase
             'unique' => true,
             'nullable' => false,
             'declared' => 'Foo\Bar\User',
-        );
+        ];
 
         $filter = new FooFilter();
         $filter->setOption('field_mapping', $fieldMapping);
@@ -178,22 +178,22 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
     public function testGetParentAssociationMappings()
     {
-        $parentAssociationMapping = array(
-            0 => array('fieldName' => 'user',
+        $parentAssociationMapping = [
+            0 => ['fieldName' => 'user',
                 'targetEntity' => 'Foo\Bar\User',
-                'joinColumns' => array(
-                    0 => array(
+                'joinColumns' => [
+                    0 => [
                         'name' => 'user_id',
                         'referencedColumnName' => 'user_id',
-                    ),
-                ),
+                    ],
+                ],
                 'type' => 2,
                 'mappedBy' => null,
-            ),
-        );
+            ],
+        ];
 
         $filter = new FooFilter();
-        $this->assertSame(array(), $filter->getParentAssociationMappings());
+        $this->assertSame([], $filter->getParentAssociationMappings());
         $filter->setOption('parent_association_mappings', $parentAssociationMapping);
         $this->assertSame($parentAssociationMapping, $filter->getParentAssociationMappings());
     }
@@ -216,18 +216,18 @@ class FilterTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAssociationMapping()
     {
-        $associationMapping = array(
+        $associationMapping = [
             'fieldName' => 'user',
             'targetEntity' => 'Foo\Bar\User',
-            'joinColumns' => array(
-                0 => array(
+            'joinColumns' => [
+                0 => [
                     'name' => 'user_id',
                     'referencedColumnName' => 'user_id',
-                ),
-            ),
+                ],
+            ],
             'type' => 2,
             'mappedBy' => null,
-        );
+        ];
 
         $filter = new FooFilter();
         $filter->setOption('association_mapping', $associationMapping);

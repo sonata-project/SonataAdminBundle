@@ -40,11 +40,11 @@ class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'horizontal_label_class' => '',
             'horizontal_label_offset_class' => '',
             'horizontal_input_wrapper_class' => '',
-        ));
+        ]);
     }
 
     /**

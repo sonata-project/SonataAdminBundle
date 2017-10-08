@@ -74,13 +74,13 @@ class AdminSearchBlockService extends AbstractBlockService
             $blockContext->getSetting('per_page')
         );
 
-        return $this->renderPrivateResponse($admin->getTemplate('search_result_block'), array(
+        return $this->renderPrivateResponse($admin->getTemplate('search_result_block'), [
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
             'admin_pool' => $this->pool,
             'pager' => $pager,
             'admin' => $admin,
-        ), $response);
+        ], $response);
     }
 
     /**
@@ -96,12 +96,12 @@ class AdminSearchBlockService extends AbstractBlockService
      */
     public function configureSettings(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'admin_code' => false,
             'query' => '',
             'page' => 0,
             'per_page' => 10,
             'icon' => '<i class="fa fa-list"></i>',
-        ));
+        ]);
     }
 }

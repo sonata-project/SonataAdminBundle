@@ -47,7 +47,7 @@ class SonataAdminBundle extends Bundle
      */
     public function registerFormMapping()
     {
-        FormHelper::registerFormTypeMapping(array(
+        FormHelper::registerFormTypeMapping([
             'sonata_type_admin' => 'Sonata\AdminBundle\Form\Type\AdminType',
             'sonata_type_model' => 'Sonata\AdminBundle\Form\Type\ModelType',
             'sonata_type_model_list' => 'Sonata\AdminBundle\Form\Type\ModelListType',
@@ -64,9 +64,9 @@ class SonataAdminBundle extends Bundle
             'sonata_type_filter_datetime' => 'Sonata\AdminBundle\Form\Type\Filter\DateTimeType',
             'sonata_type_filter_datetime_range' => 'Sonata\AdminBundle\Form\Type\Filter\DateTimeRangeType',
             'tab' => 'Mopa\Bundle\BootstrapBundle\Form\Type\TabType',
-        ));
+        ]);
 
-        FormHelper::registerFormExtensionMapping('form', array(
+        FormHelper::registerFormExtensionMapping('form', [
             'sonata.admin.form.extension.field',
             'mopa_bootstrap.form.type_extension.help',
             'mopa_bootstrap.form.type_extension.legend',
@@ -75,18 +75,18 @@ class SonataAdminBundle extends Bundle
             'mopa_bootstrap.form.type_extension.horizontal',
             'mopa_bootstrap.form.type_extension.widget_collection',
             'mopa_bootstrap.form.type_extension.tabbed',
-        ));
+        ]);
 
-        FormHelper::registerFormExtensionMapping('choice', array(
+        FormHelper::registerFormExtensionMapping('choice', [
             'sonata.admin.form.extension.choice',
-        ));
+        ]);
 
-        FormHelper::registerFormExtensionMapping('button', array(
+        FormHelper::registerFormExtensionMapping('button', [
             'mopa_bootstrap.form.type_extension.button',
-        ));
+        ]);
 
-        FormHelper::registerFormExtensionMapping('date', array(
+        FormHelper::registerFormExtensionMapping('date', [
             'mopa_bootstrap.form.type_extension.date',
-        ));
+        ]);
     }
 }

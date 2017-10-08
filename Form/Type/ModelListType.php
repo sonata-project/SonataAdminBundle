@@ -81,14 +81,14 @@ class ModelListType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'model_manager' => null,
             'class' => null,
             'btn_add' => 'link_add',
             'btn_list' => 'link_list',
             'btn_delete' => 'link_delete',
             'btn_catalogue' => 'SonataAdminBundle',
-        ));
+        ]);
     }
 
     /**

@@ -49,7 +49,7 @@ interface UrlGeneratorInterface
      *
      * @return string return a complete url
      */
-    public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = false);
+    public function generateObjectUrl($name, $object, array $parameters = [], $absolute = false);
 
     /**
      * Generates a url for the given parameters.
@@ -60,7 +60,7 @@ interface UrlGeneratorInterface
      *
      * @return string return a complete url
      */
-    public function generateUrl($name, array $parameters = array(), $absolute = false);
+    public function generateUrl($name, array $parameters = [], $absolute = false);
 
     /**
      * Generates a url for the given parameters.
@@ -71,7 +71,7 @@ interface UrlGeneratorInterface
      *
      * @return array return url parts: 'route', 'routeParameters', 'routeAbsolute'
      */
-    public function generateMenuUrl($name, array $parameters = array(), $absolute = false);
+    public function generateMenuUrl($name, array $parameters = [], $absolute = false);
 
     /**
      * @param mixed $entity

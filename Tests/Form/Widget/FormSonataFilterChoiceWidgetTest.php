@@ -88,7 +88,7 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
             $reflection = new \ReflectionClass($extension);
             $property = $reflection->getProperty('types');
             $property->setAccessible(true);
-            $property->setValue($extension, array(get_class($type) => current($property->getValue($extension))));
+            $property->setValue($extension, [get_class($type) => current($property->getValue($extension))]);
         }
 
         $extensions[] = $extension;
@@ -98,10 +98,10 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 
     protected function getDefaultOption()
     {
-        return array('field_type' => $this->getChoiceClass(),
-             'field_options' => array(),
+        return ['field_type' => $this->getChoiceClass(),
+             'field_options' => [],
              'operator_type' => $this->getChoiceClass(),
-             'operator_options' => array(),
-        );
+             'operator_options' => [],
+        ];
     }
 }
