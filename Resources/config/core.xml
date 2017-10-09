@@ -27,7 +27,7 @@
         <service id="sonata.admin.breadcrumbs_builder" class="Sonata\AdminBundle\Admin\BreadcrumbsBuilder">
             <argument>%sonata.admin.configuration.breadcrumbs%</argument>
         </service>
-        <service id="sonata.admin.route_id_handler" class="Sonata\AdminBundle\Route\RouteIdHandler"/>
+        <service id="sonata.admin.route_id_handler" class="Sonata\AdminBundle\Route\Handler\RouteIdHandler"/>
         <service id="sonata.admin.default_route_id_handler" alias="sonata.admin.route_id_handler"/>
         <!-- Services used to format the label, default is sonata.admin.label.strategy.noop -->
         <service id="sonata.admin.label.strategy.bc" class="Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy"/>
