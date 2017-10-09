@@ -422,7 +422,7 @@ EOT;
     private function getValueFromFieldDescription(
         $object,
         FieldDescriptionInterface $fieldDescription,
-        array $params = array()
+        array $params = []
     ) {
         if (isset($params['loop']) && $object instanceof \ArrayAccess) {
             throw new \RuntimeException('remove the loop requirement');

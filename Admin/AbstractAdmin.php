@@ -3223,7 +3223,7 @@ EOT;
                 $filterParameters['_sort_by'] = $this->getModelManager()->getNewFieldDescriptionInstance(
                     $this->getClass(),
                     $filterParameters['_sort_by'],
-                    array()
+                    []
                 );
 
                 $this->getListBuilder()->buildField(null, $filterParameters['_sort_by'], $this);
@@ -3242,17 +3242,17 @@ EOT;
 
         // ok, try to limit to add parent filter
         if ($this->isChild() && $this->getParentAssociationMapping() && !$mapper->has($this->getParentAssociationMapping())) {
-            $mapper->add($this->getParentAssociationMapping(), null, array(
+            $mapper->add($this->getParentAssociationMapping(), null, [
                 'show_filter' => false,
                 'label' => false,
                 'field_type' => 'sonata_type_model_hidden',
-                'field_options' => array(
+                'field_options' => [
                     'model_manager' => $this->getModelManager(),
-                ),
+                ],
                 'operator_type' => 'hidden',
-            ), null, null, array(
+            ], null, null, [
                 'admin_code' => $this->getParent()->getCode(),
-            ));
+            ]);
         }
 
         foreach ($this->getExtensions() as $extension) {
