@@ -102,7 +102,7 @@ class Datagrid implements DatagridInterface
     {
         $this->buildPager();
 
-        if (!$this->results) {
+        if (null === $this->results) {
             $this->results = $this->pager->getResults();
         }
 
