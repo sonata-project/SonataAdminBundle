@@ -29,7 +29,7 @@ class ModelHiddenTypeTest extends TypeTestCase
             $type->configureOptions($optionResolver);
         }
 
-        $options = $optionResolver->resolve(array('model_manager' => $modelManager, 'class' => '\Foo'));
+        $options = $optionResolver->resolve(['model_manager' => $modelManager, 'class' => '\Foo']);
 
         $this->assertInstanceOf('Sonata\AdminBundle\Model\ModelManagerInterface', $options['model_manager']);
         $this->assertSame($modelManager, $options['model_manager']);

@@ -72,28 +72,28 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @var array
      */
-    protected $listFieldDescriptions = array();
+    protected $listFieldDescriptions = [];
 
     /**
      * The show FieldDescription constructed from the configureShowFields method.
      *
      * @var array
      */
-    protected $showFieldDescriptions = array();
+    protected $showFieldDescriptions = [];
 
     /**
      * The list FieldDescription constructed from the configureFormField method.
      *
      * @var array
      */
-    protected $formFieldDescriptions = array();
+    protected $formFieldDescriptions = [];
 
     /**
      * The filter FieldDescription constructed from the configureFilterField method.
      *
      * @var array
      */
-    protected $filterFieldDescriptions = array();
+    protected $filterFieldDescriptions = [];
 
     /**
      * The number of result to display in the list.
@@ -149,24 +149,24 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @var array
      */
-    protected $formOptions = array();
+    protected $formOptions = [];
 
     /**
      * Default values to the datagrid.
      *
      * @var array
      */
-    protected $datagridValues = array(
+    protected $datagridValues = [
         '_page' => 1,
         '_per_page' => 32,
-    );
+    ];
 
     /**
      * Predefined per page options.
      *
      * @var array
      */
-    protected $perPageOptions = array(16, 32, 64, 128, 192);
+    protected $perPageOptions = [16, 32, 64, 128, 192];
 
     /**
      * Pager type.
@@ -215,7 +215,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @var array
      */
-    protected $children = array();
+    protected $children = [];
 
     /**
      * Reference the parent collection.
@@ -357,32 +357,32 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * @var array
      */
-    protected $loaded = array(
+    protected $loaded = [
         'view_fields' => false,
         'view_groups' => false,
         'routes' => false,
         'tab_menu' => false,
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $formTheme = array();
+    protected $formTheme = [];
 
     /**
      * @var array
      */
-    protected $filterTheme = array();
+    protected $filterTheme = [];
 
     /**
      * @var array
      */
-    protected $templates = array();
+    protected $templates = [];
 
     /**
      * @var AdminExtensionInterface[]
      */
-    protected $extensions = array();
+    protected $extensions = [];
 
     /**
      * @var LabelTranslatorStrategyInterface
@@ -403,32 +403,32 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @var array [role] => array([permission], [permission])
      */
-    protected $securityInformation = array();
+    protected $securityInformation = [];
 
-    protected $cacheIsGranted = array();
+    protected $cacheIsGranted = [];
 
     /**
      * Action list for the search result.
      *
      * @var string[]
      */
-    protected $searchResultActions = array('edit', 'show');
+    protected $searchResultActions = ['edit', 'show'];
 
-    protected $listModes = array(
-        'list' => array(
+    protected $listModes = [
+        'list' => [
             'class' => 'fa fa-list fa-fw',
-        ),
-        'mosaic' => array(
+        ],
+        'mosaic' => [
             'class' => self::MOSAIC_ICON_CLASS,
-        ),
-    );
+        ],
+    ];
 
     /**
      * The Access mapping.
      *
      * @var array [action1 => requiredRole1, action2 => [requiredRole2, requiredRole3]]
      */
-    protected $accessMapping = array();
+    protected $accessMapping = [];
 
     /**
      * The class name managed by the admin class.
@@ -442,7 +442,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @var array
      */
-    private $subClasses = array();
+    private $subClasses = [];
 
     /**
      * The list collection.
@@ -537,9 +537,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function getExportFormats()
     {
-        return array(
+        return [
             'json', 'xml', 'csv', 'xls',
-        );
+        ];
     }
 
     /**
@@ -566,7 +566,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $datagrid = $this->getDatagrid();
         $datagrid->buildPager();
 
-        $fields = array();
+        $fields = [];
 
         foreach ($this->getExportFields() as $key => $field) {
             $label = $this->getTranslationLabel($field, 'export', 'label');
@@ -733,16 +733,16 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function getFilterParameters()
     {
-        $parameters = array();
+        $parameters = [];
 
         // build the values array
         if ($this->hasRequest()) {
-            $filters = $this->request->query->get('filter', array());
+            $filters = $this->request->query->get('filter', []);
 
             // if persisting filters, save filters to session, or pull them out of session if no new filters set
             if ($this->persistFilters) {
-                if ($filters == array() && $this->request->query->get('filters') != 'reset') {
-                    $filters = $this->request->getSession()->get($this->getCode().'.filter.parameters', array());
+                if ($filters == [] && $this->request->query->get('filters') != 'reset') {
+                    $filters = $this->request->getSession()->get($this->getCode().'.filter.parameters', []);
                 } else {
                     $this->request->getSession()->set($this->getCode().'.filter.parameters', $filters);
                 }
@@ -762,7 +762,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             // always force the parent value
             if ($this->isChild() && $this->getParentAssociationMapping()) {
                 $name = str_replace('.', '__', $this->getParentAssociationMapping());
-                $parameters[$name] = array('value' => $this->request->get($this->getParent()->getIdParameter()));
+                $parameters[$name] = ['value' => $this->request->get($this->getParent()->getIdParameter())];
             }
         }
 
@@ -983,14 +983,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     final public function getBatchActions()
     {
-        $actions = array();
+        $actions = [];
 
         if ($this->hasRoute('delete') && $this->hasAccess('delete')) {
-            $actions['delete'] = array(
+            $actions['delete'] = [
                 'label' => 'action_delete',
                 'translation_domain' => 'SonataAdminBundle',
                 'ask_confirmation' => true, // by default always true
-            );
+            ];
         }
 
         $actions = $this->configureBatchActions($actions);
@@ -1084,7 +1084,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function generateObjectUrl($name, $object, array $parameters = array(), $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generateObjectUrl($name, $object, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
     {
         $parameters['id'] = $this->getUrlsafeIdentifier($object);
 
@@ -1094,7 +1094,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function generateUrl($name, array $parameters = array(), $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generateUrl($name, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->routeGenerator->generateUrl($this, $name, $parameters, $absolute);
     }
@@ -1102,7 +1102,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function generateMenuUrl($name, array $parameters = array(), $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generateMenuUrl($name, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->routeGenerator->generateMenuUrl($this, $name, $parameters, $absolute);
     }
@@ -1932,7 +1932,7 @@ EOT;
      */
     public function getPersistentParameters()
     {
-        $parameters = array();
+        $parameters = [];
 
         foreach ($this->getExtensions() as $extension) {
             $params = $extension->getPersistentParameters($this);
@@ -1992,7 +1992,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function trans($id, array $parameters = array(), $domain = null, $locale = null)
+    public function trans($id, array $parameters = [], $domain = null, $locale = null)
     {
         @trigger_error(
             'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
@@ -2019,7 +2019,7 @@ EOT;
      *
      * @deprecated since 3.9, to be removed with 4.0
      */
-    public function transChoice($id, $count, array $parameters = array(), $domain = null, $locale = null)
+    public function transChoice($id, $count, array $parameters = [], $domain = null, $locale = null)
     {
         @trigger_error(
             'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
@@ -2311,7 +2311,7 @@ EOT;
             case self::CONTEXT_DASHBOARD:
             case self::CONTEXT_MENU:
             default:
-                return array('LIST');
+                return ['LIST'];
         }
     }
 
@@ -2668,7 +2668,7 @@ EOT;
         }
 
         if (!is_array($access[$action])) {
-            $access[$action] = array($access[$action]);
+            $access[$action] = [$access[$action]];
         }
 
         foreach ($access[$action] as $role) {
@@ -2690,7 +2690,7 @@ EOT;
         }
 
         if (!is_array($access[$action])) {
-            $access[$action] = array($access[$action]);
+            $access[$action] = [$access[$action]];
         }
 
         foreach ($access[$action] as $role) {
@@ -2707,62 +2707,62 @@ EOT;
      */
     final public function getActionButtons($action, $object = null)
     {
-        $buttonList = array();
+        $buttonList = [];
 
-        if (in_array($action, array('tree', 'show', 'edit', 'delete', 'list', 'batch'))
+        if (in_array($action, ['tree', 'show', 'edit', 'delete', 'list', 'batch'])
             && $this->hasAccess('create')
             && $this->hasRoute('create')
         ) {
-            $buttonList['create'] = array(
+            $buttonList['create'] = [
                 'template' => $this->getTemplate('button_create'),
-            );
+            ];
         }
 
-        if (in_array($action, array('show', 'delete', 'acl', 'history'))
+        if (in_array($action, ['show', 'delete', 'acl', 'history'])
             && $this->canAccessObject('edit', $object)
             && $this->hasRoute('edit')
         ) {
-            $buttonList['edit'] = array(
+            $buttonList['edit'] = [
                 'template' => $this->getTemplate('button_edit'),
-            );
+            ];
         }
 
-        if (in_array($action, array('show', 'edit', 'acl'))
+        if (in_array($action, ['show', 'edit', 'acl'])
             && $this->canAccessObject('history', $object)
             && $this->hasRoute('history')
         ) {
-            $buttonList['history'] = array(
+            $buttonList['history'] = [
                 'template' => $this->getTemplate('button_history'),
-            );
+            ];
         }
 
-        if (in_array($action, array('edit', 'history'))
+        if (in_array($action, ['edit', 'history'])
             && $this->isAclEnabled()
             && $this->canAccessObject('acl', $object)
             && $this->hasRoute('acl')
         ) {
-            $buttonList['acl'] = array(
+            $buttonList['acl'] = [
                 'template' => $this->getTemplate('button_acl'),
-            );
+            ];
         }
 
-        if (in_array($action, array('edit', 'history', 'acl'))
+        if (in_array($action, ['edit', 'history', 'acl'])
             && $this->canAccessObject('show', $object)
             && count($this->getShow()) > 0
             && $this->hasRoute('show')
         ) {
-            $buttonList['show'] = array(
+            $buttonList['show'] = [
                 'template' => $this->getTemplate('button_show'),
-            );
+            ];
         }
 
-        if (in_array($action, array('show', 'edit', 'delete', 'acl', 'batch'))
+        if (in_array($action, ['show', 'edit', 'delete', 'acl', 'batch'])
             && $this->hasAccess('list')
             && $this->hasRoute('list')
         ) {
-            $buttonList['list'] = array(
+            $buttonList['list'] = [
                 'template' => $this->getTemplate('button_list'),
-            );
+            ];
         }
 
         $buttonList = $this->configureActionButtons($buttonList, $action, $object);
@@ -2779,25 +2779,25 @@ EOT;
      */
     public function getDashboardActions()
     {
-        $actions = array();
+        $actions = [];
 
         if ($this->hasRoute('create') && $this->hasAccess('create')) {
-            $actions['create'] = array(
+            $actions['create'] = [
                 'label' => 'link_add',
                 'translation_domain' => 'SonataAdminBundle',
                 'template' => $this->getTemplate('action_create'),
                 'url' => $this->generateUrl('create'),
                 'icon' => 'plus-circle',
-            );
+            ];
         }
 
         if ($this->hasRoute('list') && $this->hasAccess('list')) {
-            $actions['list'] = array(
+            $actions['list'] = [
                 'label' => 'link_list',
                 'translation_domain' => 'SonataAdminBundle',
                 'url' => $this->generateUrl('list'),
                 'icon' => 'list',
-            );
+            ];
         }
 
         return $actions;
@@ -2809,7 +2809,7 @@ EOT;
     final public function showMosaicButton($isShown)
     {
         if ($isShown) {
-            $this->listModes['mosaic'] = array('class' => self::MOSAIC_ICON_CLASS);
+            $this->listModes['mosaic'] = ['class' => self::MOSAIC_ICON_CLASS];
         } else {
             unset($this->listModes['mosaic']);
         }
@@ -2888,7 +2888,7 @@ EOT;
      */
     final protected function getDefaultFilterValues()
     {
-        $defaultFilterValues = array();
+        $defaultFilterValues = [];
 
         $this->configureDefaultFilterValues($defaultFilterValues);
 
@@ -3030,12 +3030,12 @@ EOT;
             $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
                 $this->getClass(),
                 'batch',
-                array(
+                [
                     'label' => 'batch',
                     'code' => '_batch',
                     'sortable' => false,
                     'virtual_field' => true,
-                )
+                ]
             );
 
             $fieldDescription->setAdmin($this);
@@ -3054,12 +3054,12 @@ EOT;
             $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
                 $this->getClass(),
                 'select',
-                array(
+                [
                     'label' => false,
                     'code' => '_select',
                     'sortable' => false,
                     'virtual_field' => false,
-                )
+                ]
             );
 
             $fieldDescription->setAdmin($this);
@@ -3136,7 +3136,7 @@ EOT;
             $metadata = $this->validator->getMetadataFactory()->getMetadataFor($this->getClass());
         }
 
-        $metadata->addConstraint(new InlineConstraint(array(
+        $metadata->addConstraint(new InlineConstraint([
             'service' => $this,
             'method' => function (ErrorElement $errorElement, $object) use ($admin) {
                 /* @var \Sonata\AdminBundle\Admin\AdminInterface $admin */
@@ -3154,7 +3154,7 @@ EOT;
                 }
             },
             'serializingWarning' => true,
-        )));
+        ]));
     }
 
     /**
@@ -3174,7 +3174,7 @@ EOT;
      */
     protected function getAccess()
     {
-        $access = array_merge(array(
+        $access = array_merge([
             'acl' => 'MASTER',
             'export' => 'EXPORT',
             'historyCompareRevisions' => 'EDIT',
@@ -3186,7 +3186,7 @@ EOT;
             'delete' => 'DELETE',
             'batchDelete' => 'DELETE',
             'list' => 'LIST',
-        ), $this->getAccessMapping());
+        ], $this->getAccessMapping());
 
         foreach ($this->extensions as $extension) {
             $access = array_merge($access, $extension->getAccessMapping($this));

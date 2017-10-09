@@ -36,7 +36,7 @@ class GlobalVariablesTest extends PHPUnit_Framework_TestCase
     {
         $this->admin->expects($this->once())
             ->method('generateUrl')
-            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', array('foo'), false)
+            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', ['foo'], false)
             ->willReturn(true);
 
         $this->pool->expects($this->once())
@@ -46,14 +46,14 @@ class GlobalVariablesTest extends PHPUnit_Framework_TestCase
 
         $globalVariables = new GlobalVariables($this->pool);
 
-        $globalVariables->url($this->code, $this->action, array('foo'));
+        $globalVariables->url($this->code, $this->action, ['foo']);
     }
 
     public function testObjectUrl()
     {
         $this->admin->expects($this->once())
             ->method('generateObjectUrl')
-            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', 'foo', array('bar'), false)
+            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', 'foo', ['bar'], false)
             ->willReturn(true);
 
         $this->pool->expects($this->once())
@@ -63,7 +63,7 @@ class GlobalVariablesTest extends PHPUnit_Framework_TestCase
 
         $globalVariables = new GlobalVariables($this->pool);
 
-        $globalVariables->objectUrl($this->code, $this->action, 'foo', array('bar'));
+        $globalVariables->objectUrl($this->code, $this->action, 'foo', ['bar']);
     }
 
     /**
@@ -74,7 +74,7 @@ class GlobalVariablesTest extends PHPUnit_Framework_TestCase
     {
         $this->admin->expects($this->once())
             ->method('generateUrl')
-            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', array('foo'), false)
+            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', ['foo'], false)
             ->willReturn(true);
 
         $this->pool->expects($this->once())
@@ -90,7 +90,7 @@ class GlobalVariablesTest extends PHPUnit_Framework_TestCase
 
         $globalVariables = new GlobalVariables($container);
 
-        $globalVariables->url($this->code, $this->action, array('foo'));
+        $globalVariables->url($this->code, $this->action, ['foo']);
     }
 
     /**

@@ -62,10 +62,10 @@ class ControllerGenerator extends Generator
             ));
         }
 
-        $this->renderFile('AdminController.php.twig', $this->file, array(
+        $this->renderFile('AdminController.php.twig', $this->file, [
             'classBasename' => array_pop($parts),
             'namespace' => implode('\\', $parts),
-        ));
+        ]);
     }
 
     /**

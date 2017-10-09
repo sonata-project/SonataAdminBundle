@@ -27,17 +27,17 @@ class ChoiceTypeExtensionTest extends PHPUnit_Framework_TestCase
                 ->with($this->equalTo('sonata.admin.form.choice_extension'))
                 ->will($this->returnValue(new ChoiceTypeExtension()));
 
-            $typeServiceIds = array();
-            $typeExtensionServiceIds = array();
-            $guesserServiceIds = array();
-            $mappingTypes = array(
+            $typeServiceIds = [];
+            $typeExtensionServiceIds = [];
+            $guesserServiceIds = [];
+            $mappingTypes = [
                 'choice' => 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
-            );
-            $extensionTypes = array(
-                'choice' => array(
+            ];
+            $extensionTypes = [
+                'choice' => [
                     'sonata.admin.form.choice_extension',
-                ),
-            );
+                ],
+            ];
 
             $dependency = new DependencyInjectionExtension(
                 $container,
@@ -86,9 +86,9 @@ class ChoiceTypeExtensionTest extends PHPUnit_Framework_TestCase
         $name = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice';
 
         $view = $this->factory
-            ->create($name, null, array(
+            ->create($name, null, [
                 'sortable' => true,
-            ))
+            ])
             ->createView();
 
         $this->assertTrue(isset($view->vars['sortable']));
@@ -100,7 +100,7 @@ class ChoiceTypeExtensionTest extends PHPUnit_Framework_TestCase
         $name = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice';
 
         $view = $this->factory
-            ->create($name, null, array())
+            ->create($name, null, [])
             ->createView();
 
         $this->assertTrue(isset($view->vars['sortable']));

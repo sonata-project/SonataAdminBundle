@@ -45,8 +45,8 @@ class DefaultType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('type', $options['operator_type'], array_merge(array('required' => false), $options['operator_options']))
-            ->add('value', $options['field_type'], array_merge(array('required' => false), $options['field_options']))
+            ->add('type', $options['operator_type'], array_merge(['required' => false], $options['operator_options']))
+            ->add('value', $options['field_type'], array_merge(['required' => false], $options['field_options']))
         ;
     }
 
@@ -65,15 +65,15 @@ class DefaultType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'operator_type' => method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
                 ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
                 : 'hidden', // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
-            'operator_options' => array(),
+            'operator_options' => [],
             'field_type' => method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
                 ? 'Symfony\Component\Form\Extension\Core\Type\TextType'
                 : 'text', // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
-            'field_options' => array(),
-        ));
+            'field_options' => [],
+        ]);
     }
 }

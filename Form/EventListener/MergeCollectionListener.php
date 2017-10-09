@@ -39,9 +39,9 @@ class MergeCollectionListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            FormEvents::SUBMIT => array('onBind', 10),
-        );
+        return [
+            FormEvents::SUBMIT => ['onBind', 10],
+        ];
     }
 
     /**

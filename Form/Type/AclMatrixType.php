@@ -39,7 +39,7 @@ class AclMatrixType extends AbstractType
             method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
                 ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
                 : 'hidden',
-            array('data' => $aclValueData)
+            ['data' => $aclValueData]
         );
 
         foreach ($options['permissions'] as $permission => $attributes) {
@@ -69,19 +69,19 @@ class AclMatrixType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array(
+        $resolver->setRequired([
             'permissions',
             'acl_value',
-        ));
+        ]);
 
         if (method_exists($resolver, 'setDefined')) {
             $resolver->setAllowedTypes('permissions', 'array');
-            $resolver->setAllowedTypes('acl_value', array('string', '\Symfony\Component\Security\Core\User\UserInterface'));
+            $resolver->setAllowedTypes('acl_value', ['string', '\Symfony\Component\Security\Core\User\UserInterface']);
         } else {
-            $resolver->setAllowedTypes(array(
+            $resolver->setAllowedTypes([
                 'permissions' => 'array',
-                'acl_value' => array('string', '\Symfony\Component\Security\Core\User\UserInterface'),
-            ));
+                'acl_value' => ['string', '\Symfony\Component\Security\Core\User\UserInterface'],
+            ]);
         }
     }
 

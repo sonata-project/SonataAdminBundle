@@ -43,7 +43,7 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
         $leafMenu->getParent()->willReturn($childMenu);
 
         $action = 'my_action';
-        $breadcrumbsBuilder = new BreadcrumbsBuilder(array('child_admin_route' => 'show'));
+        $breadcrumbsBuilder = new BreadcrumbsBuilder(['child_admin_route' => 'show']);
         $admin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
         $admin->isChild()->willReturn(false);
 
@@ -58,12 +58,12 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
         $routeGenerator->generate('sonata_admin_dashboard')->willReturn('/dashboard');
 
         $admin->getRouteGenerator()->willReturn($routeGenerator->reveal());
-        $menu->addChild('link_breadcrumb_dashboard', array(
+        $menu->addChild('link_breadcrumb_dashboard', [
             'uri' => '/dashboard',
-            'extras' => array(
+            'extras' => [
                 'translation_domain' => 'SonataAdminBundle',
-            ),
-        ))->willReturn(
+            ],
+        ])->willReturn(
             $dashboardMenu->reveal()
         );
         $labelTranslatorStrategy->getLabel(
@@ -94,9 +94,9 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
 
         $admin->hasAccess('show', 'my subject')->willReturn(true)->shouldBeCalled();
         $admin->hasRoute('show')->willReturn(true);
-        $admin->generateUrl('show', array('id' => 'my-object'))->willReturn('/myadmin/my-object');
+        $admin->generateUrl('show', ['id' => 'my-object'])->willReturn('/myadmin/my-object');
 
-        $admin->trans('My class', array(), null)->willReturn('Ma classe');
+        $admin->trans('My class', [], null)->willReturn('Ma classe');
         $admin->hasRoute('list')->willReturn(true);
         $admin->hasAccess('list')->willReturn(true);
         $admin->generateUrl('list')->willReturn('/myadmin/list');
@@ -107,7 +107,7 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
         $admin->getIdParameter()->willReturn('slug');
         $admin->hasRoute('edit')->willReturn(true);
         $admin->hasAccess('edit')->willReturn(true);
-        $admin->generateUrl('edit', array('id' => 'my-object'))->willReturn('/myadmin/my-object');
+        $admin->generateUrl('edit', ['id' => 'my-object'])->willReturn('/myadmin/my-object');
         $admin->getRequest()->willReturn($request->reveal());
         $admin->hasSubject()->willReturn(true);
         $admin->getSubject()->willReturn('my subject');
@@ -118,33 +118,33 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
         );
         $admin->getClassnameLabel()->willReturn('my_class_name');
 
-        $dashboardMenu->addChild('My class', array(
-            'extras' => array(
+        $dashboardMenu->addChild('My class', [
+            'extras' => [
                 'translation_domain' => 'FooBundle',
-            ),
+            ],
             'uri' => '/myadmin/list',
-        ))->shouldBeCalled()->willReturn($adminListMenu->reveal());
+        ])->shouldBeCalled()->willReturn($adminListMenu->reveal());
 
-        $adminListMenu->addChild('My subject', array(
+        $adminListMenu->addChild('My subject', [
             'uri' => '/myadmin/my-object',
-            'extras' => array(
+            'extras' => [
                 'translation_domain' => false,
-            ),
-        ))->shouldBeCalled()->willReturn($adminSubjectMenu->reveal());
+            ],
+        ])->shouldBeCalled()->willReturn($adminSubjectMenu->reveal());
 
-        $adminSubjectMenu->addChild('My child class', array(
-            'extras' => array(
+        $adminSubjectMenu->addChild('My child class', [
+            'extras' => [
                 'translation_domain' => 'ChildBundle',
-            ),
+            ],
             'uri' => '/myadmin/my-object/mychildadmin/list',
-        ))->shouldBeCalled()->willReturn($childMenu->reveal());
+        ])->shouldBeCalled()->willReturn($childMenu->reveal());
         $adminSubjectMenu->setExtra('safe_label', false)->willReturn($childMenu);
 
-        $childMenu->addChild('My subject', array(
-            'extras' => array(
+        $childMenu->addChild('My subject', [
+            'extras' => [
                 'translation_domain' => false,
-            ),
-        ))->shouldBeCalled()->willReturn($leafMenu->reveal());
+            ],
+        ])->shouldBeCalled()->willReturn($leafMenu->reveal());
 
         $breadcrumbs = $breadcrumbsBuilder->getBreadcrumbs($childAdmin->reveal(), $action);
         $this->assertCount(5, $breadcrumbs);
@@ -152,12 +152,12 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
 
     public function actionProvider()
     {
-        return array(
-            array('my_action'),
-            array('list'),
-            array('edit'),
-            array('create'),
-        );
+        return [
+            ['my_action'],
+            ['list'],
+            ['edit'],
+            ['create'],
+        ];
     }
 
     /**
@@ -179,12 +179,12 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
         $routeGenerator = $this->prophesize('Sonata\AdminBundle\Route\RouteGeneratorInterface');
         $routeGenerator->generate('sonata_admin_dashboard')->willReturn('/dashboard');
         $admin->getRouteGenerator()->willReturn($routeGenerator->reveal());
-        $menu->addChild('link_breadcrumb_dashboard', array(
+        $menu->addChild('link_breadcrumb_dashboard', [
             'uri' => '/dashboard',
-            'extras' => array(
+            'extras' => [
                 'translation_domain' => 'SonataAdminBundle',
-            ),
-        ))->willReturn(
+            ],
+        ])->willReturn(
             $menu->reveal()
         );
         $labelTranslatorStrategy->getLabel(
@@ -208,11 +208,11 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
                 'breadcrumb',
                 'link'
             )->willReturn('create my object');
-            $menu->addChild('create my object', array(
-                'extras' => array(
+            $menu->addChild('create my object', [
+                'extras' => [
                     'translation_domain' => 'FooBundle',
-                ),
-            ))->willReturn($menu);
+                ],
+            ])->willReturn($menu);
         }
         $childAdmin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
         $childAdmin->getTranslationDomain()->willReturn('ChildBundle');
@@ -247,35 +247,35 @@ class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
         );
         $admin->getClassnameLabel()->willReturn('my_class_name');
 
-        $menu->addChild('My class', array(
+        $menu->addChild('My class', [
             'uri' => '/myadmin/list',
-            'extras' => array(
+            'extras' => [
                 'translation_domain' => 'FooBundle',
-            ),
-        ))->willReturn($menu->reveal());
-        $menu->addChild('My subject', array(
-            'extras' => array(
+            ],
+        ])->willReturn($menu->reveal());
+        $menu->addChild('My subject', [
+            'extras' => [
                 'translation_domain' => false,
-            ),
-        ))->willReturn($menu);
-        $menu->addChild('My subject', array(
+            ],
+        ])->willReturn($menu);
+        $menu->addChild('My subject', [
             'uri' => null,
-            'extras' => array(
+            'extras' => [
                 'translation_domain' => false,
-            ),
-        ))->willReturn($menu);
-        $menu->addChild('My child class', array(
-            'extras' => array(
+            ],
+        ])->willReturn($menu);
+        $menu->addChild('My child class', [
+            'extras' => [
                 'translation_domain' => 'ChildBundle',
-            ),
+            ],
             'uri' => null,
-        ))->willReturn($menu);
+        ])->willReturn($menu);
         $menu->setExtra('safe_label', false)->willReturn($menu);
-        $menu->addChild('My action', array(
-            'extras' => array(
+        $menu->addChild('My action', [
+            'extras' => [
                 'translation_domain' => 'ChildBundle',
-            ),
-        ))->willReturn($menu);
+            ],
+        ])->willReturn($menu);
 
         $reflection = new \ReflectionMethod('Sonata\AdminBundle\Admin\BreadcrumbsBuilder', 'buildBreadcrumbs');
         $reflection->setAccessible(true);

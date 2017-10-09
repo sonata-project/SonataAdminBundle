@@ -51,15 +51,15 @@ class ArrayToModelTransformerTest extends PHPUnit_Framework_TestCase
 
     public function getReverseTransformTests()
     {
-        return array(
-            array('Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity'),
-            array(array()),
-            array(array('foo' => 'bar')),
-            array('foo'),
-            array(123),
-            array(null),
-            array(false),
-        );
+        return [
+            ['Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity'],
+            [[]],
+            [['foo' => 'bar']],
+            ['foo'],
+            [123],
+            [null],
+            [false],
+        ];
     }
 
     /**
@@ -74,12 +74,12 @@ class ArrayToModelTransformerTest extends PHPUnit_Framework_TestCase
 
     public function getTransformTests()
     {
-        return array(
-            array(123, 123),
-            array('foo', 'foo'),
-            array(false, false),
-            array(null, null),
-            array(0, 0),
-        );
+        return [
+            [123, 123],
+            ['foo', 'foo'],
+            [false, false],
+            [null, null],
+            [0, 0],
+        ];
     }
 }

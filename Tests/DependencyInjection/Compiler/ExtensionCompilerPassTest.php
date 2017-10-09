@@ -47,7 +47,7 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
      */
     public function testAdminExtensionLoad()
     {
-        $this->extension->load(array(), $container = $this->getContainer());
+        $this->extension->load([], $container = $this->getContainer());
 
         $this->assertTrue($container->hasParameter($this->root.'.extension.map'));
         $this->assertTrue(is_array($extensionMap = $container->getParameter($this->root.'.extension.map')));
@@ -65,7 +65,7 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
      */
     public function testFlattenEmptyExtensionConfiguration()
     {
-        $this->extension->load(array(), $container = $this->getContainer());
+        $this->extension->load([], $container = $this->getContainer());
         $extensionMap = $container->getParameter($this->root.'.extension.map');
 
         $method = new \ReflectionMethod(
@@ -73,7 +73,7 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
         );
 
         $method->setAccessible(true);
-        $extensionMap = $method->invokeArgs(new ExtensionCompilerPass(), array($extensionMap));
+        $extensionMap = $method->invokeArgs(new ExtensionCompilerPass(), [$extensionMap]);
 
         $this->assertArrayHasKey('admins', $extensionMap);
         $this->assertArrayHasKey('excludes', $extensionMap);
@@ -96,7 +96,7 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
     public function testFlattenExtensionConfiguration()
     {
         $config = $this->getConfig();
-        $this->extension->load(array($config), $container = $this->getContainer());
+        $this->extension->load([$config], $container = $this->getContainer());
         $extensionMap = $container->getParameter($this->root.'.extension.map');
 
         $method = new \ReflectionMethod(
@@ -104,7 +104,7 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
         );
 
         $method->setAccessible(true);
-        $extensionMap = $method->invokeArgs(new ExtensionCompilerPass(), array($extensionMap));
+        $extensionMap = $method->invokeArgs(new ExtensionCompilerPass(), [$extensionMap]);
 
         // Admins
         $this->assertArrayHasKey('admins', $extensionMap);
@@ -170,17 +170,17 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
      */
     public function testProcessWithInvalidExtensionId()
     {
-        $config = array(
-            'extensions' => array(
-                'sonata_extension_unknown' => array(
-                    'excludes' => array('sonata_article_admin'),
-                    'instanceof' => array('Sonata\AdminBundle\Tests\DependencyInjection\Post'),
-                ),
-            ),
-        );
+        $config = [
+            'extensions' => [
+                'sonata_extension_unknown' => [
+                    'excludes' => ['sonata_article_admin'],
+                    'instanceof' => ['Sonata\AdminBundle\Tests\DependencyInjection\Post'],
+                ],
+            ],
+        ];
 
         $container = $this->getContainer();
-        $this->extension->load(array($config), $container);
+        $this->extension->load([$config], $container);
 
         $extensionsPass = new ExtensionCompilerPass();
         $extensionsPass->process($container);
@@ -192,17 +192,17 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
      */
     public function testProcessWithInvalidAdminId()
     {
-        $config = array(
-            'extensions' => array(
-                'sonata_extension_publish' => array(
-                    'admins' => array('sonata_unknown_admin'),
-                    'implements' => array('Sonata\AdminBundle\Tests\DependencyInjection\Publishable'),
-                ),
-            ),
-        );
+        $config = [
+            'extensions' => [
+                'sonata_extension_publish' => [
+                    'admins' => ['sonata_unknown_admin'],
+                    'implements' => ['Sonata\AdminBundle\Tests\DependencyInjection\Publishable'],
+                ],
+            ],
+        ];
 
         $container = $this->getContainer();
-        $this->extension->load(array($config), $container);
+        $this->extension->load([$config], $container);
 
         $extensionsPass = new ExtensionCompilerPass();
         $extensionsPass->process($container);
@@ -217,7 +217,7 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
     public function testProcess()
     {
         $container = $this->getContainer();
-        $this->extension->load(array($this->config), $container);
+        $this->extension->load([$this->config], $container);
 
         $extensionsPass = new ExtensionCompilerPass();
         $extensionsPass->process($container);
@@ -271,16 +271,16 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
             $this->expectException('\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException', 'PHP >= 5.4.0 is required to use traits.');
         }
 
-        $config = array(
-            'extensions' => array(
-                'sonata_extension_post' => array(
-                    'uses' => array('Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait'),
-                ),
-            ),
-        );
+        $config = [
+            'extensions' => [
+                'sonata_extension_post' => [
+                    'uses' => ['Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait'],
+                ],
+            ],
+        ];
 
         $container = $this->getContainer();
-        $this->extension->load(array($config), $container);
+        $this->extension->load([$config], $container);
 
         $extensionsPass = new ExtensionCompilerPass();
         $extensionsPass->process($container);
@@ -292,28 +292,28 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
      */
     protected function getConfig()
     {
-        $config = array(
-            'extensions' => array(
-                'sonata_extension_publish' => array(
-                    'admins' => array('sonata_post_admin'),
-                    'implements' => array('Sonata\AdminBundle\Tests\DependencyInjection\Publishable'),
-                ),
-                'sonata_extension_history' => array(
-                    'excludes' => array('sonata_article_admin'),
-                    'instanceof' => array('Sonata\AdminBundle\Tests\DependencyInjection\Post'),
+        $config = [
+            'extensions' => [
+                'sonata_extension_publish' => [
+                    'admins' => ['sonata_post_admin'],
+                    'implements' => ['Sonata\AdminBundle\Tests\DependencyInjection\Publishable'],
+                ],
+                'sonata_extension_history' => [
+                    'excludes' => ['sonata_article_admin'],
+                    'instanceof' => ['Sonata\AdminBundle\Tests\DependencyInjection\Post'],
                     'priority' => 255,
-                ),
-                'sonata_extension_order' => array(
-                    'excludes' => array('sonata_post_admin'),
-                    'extends' => array('Sonata\AdminBundle\Tests\DependencyInjection\Post'),
-                    'implements' => array('Sonata\AdminBundle\Tests\DependencyInjection\Publishable'),
+                ],
+                'sonata_extension_order' => [
+                    'excludes' => ['sonata_post_admin'],
+                    'extends' => ['Sonata\AdminBundle\Tests\DependencyInjection\Post'],
+                    'implements' => ['Sonata\AdminBundle\Tests\DependencyInjection\Publishable'],
                     'priority' => -128,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         if ($this->hasTraits) {
-            $config['extensions']['sonata_extension_post']['uses'] = array('Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait');
+            $config['extensions']['sonata_extension_post']['uses'] = ['Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait'];
         }
 
         return $config;
@@ -322,10 +322,10 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
     private function getContainer()
     {
         $container = new ContainerBuilder();
-        $container->setParameter('kernel.bundles', array(
+        $container->setParameter('kernel.bundles', [
             'SonataCoreBundle' => true,
             'KnpMenuBundle' => true,
-        ));
+        ]);
         $container->setParameter('kernel.cache_dir', '/tmp');
         $container->setParameter('kernel.debug', true);
 
@@ -368,17 +368,17 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
         $container
             ->register('sonata_post_admin')
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
-            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\Post', 'SonataAdminBundle:CRUD'))
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\Post', 'SonataAdminBundle:CRUD'])
             ->addTag('sonata.admin');
         $container
             ->register('sonata_news_admin')
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
-            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\News', 'SonataAdminBundle:CRUD'))
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\News', 'SonataAdminBundle:CRUD'])
             ->addTag('sonata.admin');
         $container
             ->register('sonata_article_admin')
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
-            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\Article', 'SonataAdminBundle:CRUD'))
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\Article', 'SonataAdminBundle:CRUD'])
             ->addTag('sonata.admin');
         $container
             ->register('event_dispatcher')
@@ -402,12 +402,12 @@ class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
         $container
             ->register('sonata_extension_security')
             ->setClass($extensionClass)
-            ->addTag('sonata.admin.extension', array('global' => true));
+            ->addTag('sonata.admin.extension', ['global' => true]);
         $container
             ->register('sonata_extension_filter')
             ->setClass($extensionClass)
-            ->addTag('sonata.admin.extension', array('target' => 'sonata_news_admin'))
-            ->addTag('sonata.admin.extension', array('target' => 'sonata_article_admin'));
+            ->addTag('sonata.admin.extension', ['target' => 'sonata_news_admin'])
+            ->addTag('sonata.admin.extension', ['target' => 'sonata_article_admin']);
 
         return $container;
     }

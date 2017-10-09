@@ -28,10 +28,10 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
 
     public function getValidateUsernameTests()
     {
-        return array(
-            array('Foo', 'Foo'),
-            array('abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789', 'abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789'),
-        );
+        return [
+            ['Foo', 'Foo'],
+            ['abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789', 'abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789'],
+        ];
     }
 
     /**
@@ -46,9 +46,9 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
 
     public function getValidateUsernameWithExceptionTests()
     {
-        return array(
-            array(null),
-        );
+        return [
+            [null],
+        ];
     }
 
     /**
@@ -61,11 +61,11 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
 
     public function getValidateEntityNameTests()
     {
-        return array(
-            array(array('AcmeBlogBundle', 'Post'), 'AcmeBlogBundle:Post'),
-            array(array('Foo\Bar\BlogBundle', 'Post'), 'Foo/Bar/BlogBundle:Post'),
-            array(array('Foo\Bar\BlogBundle', 'Post'), 'Foo\Bar\BlogBundle:Post'),
-        );
+        return [
+            [['AcmeBlogBundle', 'Post'], 'AcmeBlogBundle:Post'],
+            [['Foo\Bar\BlogBundle', 'Post'], 'Foo/Bar/BlogBundle:Post'],
+            [['Foo\Bar\BlogBundle', 'Post'], 'Foo\Bar\BlogBundle:Post'],
+        ];
     }
 
     /**
@@ -80,15 +80,15 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
 
     public function getValidateEntityNamesWithExceptionTests()
     {
-        return array(
-            array('Sonata\AdminBundle\Admin\AbstractAdmin'),
-            array('Sonata/AdminBundle/Admin/Admin'),
-            array('Foo/Bar/Controller'),
-            array('Foo/BarController'),
-            array('Foo_Bar'),
-            array('FooBarController'),
-            array('FooBarAdmin'),
-        );
+        return [
+            ['Sonata\AdminBundle\Admin\AbstractAdmin'],
+            ['Sonata/AdminBundle/Admin/Admin'],
+            ['Foo/Bar/Controller'],
+            ['Foo/BarController'],
+            ['Foo_Bar'],
+            ['FooBarController'],
+            ['FooBarAdmin'],
+        ];
     }
 
     /**
@@ -101,10 +101,10 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
 
     public function getValidateClassTests()
     {
-        return array(
-            array('Sonata\AdminBundle\Admin\AbstractAdmin', 'Sonata\AdminBundle\Admin\AbstractAdmin'),
-            array('Sonata\AdminBundle\Admin\AbstractAdmin', 'Sonata/AdminBundle/Admin/AbstractAdmin'),
-        );
+        return [
+            ['Sonata\AdminBundle\Admin\AbstractAdmin', 'Sonata\AdminBundle\Admin\AbstractAdmin'],
+            ['Sonata\AdminBundle\Admin\AbstractAdmin', 'Sonata/AdminBundle/Admin/AbstractAdmin'],
+        ];
     }
 
     /**
@@ -119,11 +119,11 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
 
     public function getValidateClassWithExceptionTests()
     {
-        return array(
-            array('Foo:BarAdmin'),
-            array('Foo:Bar:Admin'),
-            array('Foo/Bar/Admin'),
-        );
+        return [
+            ['Foo:BarAdmin'],
+            ['Foo:Bar:Admin'],
+            ['Foo/Bar/Admin'],
+        ];
     }
 
     /**
@@ -136,11 +136,11 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
 
     public function getValidateAdminClassBasenameTests()
     {
-        return array(
-            array('FooBarAdmin', 'FooBarAdmin'),
-            array('Foo\Foo\BarAdmin', 'Foo\Foo\BarAdmin'),
-            array('Foo\Foo\BarAdmin', 'Foo/Foo/BarAdmin'),
-        );
+        return [
+            ['FooBarAdmin', 'FooBarAdmin'],
+            ['Foo\Foo\BarAdmin', 'Foo\Foo\BarAdmin'],
+            ['Foo\Foo\BarAdmin', 'Foo/Foo/BarAdmin'],
+        ];
     }
 
     /**
@@ -155,11 +155,11 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
 
     public function getValidateAdminClassBasenameWithExceptionTests()
     {
-        return array(
-            array('Foo:BarAdmin'),
-            array('Foo:Bar:Admin'),
-            array('*+-!:@&^%'),
-        );
+        return [
+            ['Foo:BarAdmin'],
+            ['Foo:Bar:Admin'],
+            ['*+-!:@&^%'],
+        ];
     }
 
     /**
@@ -172,11 +172,11 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
 
     public function getValidateControllerClassBasenameTests()
     {
-        return array(
-            array('FooBarController', 'FooBarController'),
-            array('Foo\Foo\BarController', 'Foo/Foo/BarController'),
-            array('Foo\Foo\BarController', 'Foo\Foo\BarController'),
-        );
+        return [
+            ['FooBarController', 'FooBarController'],
+            ['Foo\Foo\BarController', 'Foo/Foo/BarController'],
+            ['Foo\Foo\BarController', 'Foo\Foo\BarController'],
+        ];
     }
 
     /**
@@ -191,28 +191,28 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
 
     public function getValidateControllerClassBasenameWithExceptionTests()
     {
-        return array(
-            array(' foobar '),
-            array(' FooBar'),
-            array('Foo Bar'),
-            array('Foo-Bar'),
-            array('foo*'),
-            array('foo+'),
-            array('foo-'),
-            array('foo!'),
-            array('foo@'),
-            array('foo&'),
-            array('foo%'),
-            array('foo^'),
-            array('foo(bar)'),
-            array('foo[bar]'),
-            array('foo{bar}'),
-            array('Foo/Bar'),
-            array('Foo\Bar'),
-            array('Foo/BarControllr'),
-            array('Foo\BarControllr'),
-            array('Foo:BarControllr'),
-        );
+        return [
+            [' foobar '],
+            [' FooBar'],
+            ['Foo Bar'],
+            ['Foo-Bar'],
+            ['foo*'],
+            ['foo+'],
+            ['foo-'],
+            ['foo!'],
+            ['foo@'],
+            ['foo&'],
+            ['foo%'],
+            ['foo^'],
+            ['foo(bar)'],
+            ['foo[bar]'],
+            ['foo{bar}'],
+            ['Foo/Bar'],
+            ['Foo\Bar'],
+            ['Foo/BarControllr'],
+            ['Foo\BarControllr'],
+            ['Foo:BarControllr'],
+        ];
     }
 
     /**
@@ -225,15 +225,15 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
 
     public function getValidateServicesFileTests()
     {
-        return array(
-            array('foobar', 'foobar'),
-            array('fooBar', 'fooBar'),
-            array(' foo Bar ', ' foo Bar '),
-            array('Foo/Bar', '/Foo/Bar/'),
-            array('Foo/BAR', '/Foo/BAR/'),
-            array('Foo/Bar', '/Foo/Bar'),
-            array('Foo/Bar', 'Foo/Bar/'),
-        );
+        return [
+            ['foobar', 'foobar'],
+            ['fooBar', 'fooBar'],
+            [' foo Bar ', ' foo Bar '],
+            ['Foo/Bar', '/Foo/Bar/'],
+            ['Foo/BAR', '/Foo/BAR/'],
+            ['Foo/Bar', '/Foo/Bar'],
+            ['Foo/Bar', 'Foo/Bar/'],
+        ];
     }
 
     /**
@@ -246,11 +246,11 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
 
     public function getValidateServiceIdTests()
     {
-        return array(
-            array('abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789'),
-            array('Foo_Bar_0123'),
-            array('Foo.Bar.0123'),
-        );
+        return [
+            ['abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789'],
+            ['Foo_Bar_0123'],
+            ['Foo.Bar.0123'],
+        ];
     }
 
     /**
@@ -265,25 +265,25 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
 
     public function getValidateServiceIdWithExceptionTests()
     {
-        return array(
-            array(' foobar '),
-            array(' FooBar'),
-            array('Foo Bar'),
-            array('Foo-Bar'),
-            array('foo*'),
-            array('foo+'),
-            array('foo-'),
-            array('foo!'),
-            array('foo@'),
-            array('foo&'),
-            array('foo%'),
-            array('foo^'),
-            array('foo:'),
-            array('foo(bar)'),
-            array('foo[bar]'),
-            array('foo{bar}'),
-            array('Foo/Bar'),
-            array('Foo\Bar'),
-        );
+        return [
+            [' foobar '],
+            [' FooBar'],
+            ['Foo Bar'],
+            ['Foo-Bar'],
+            ['foo*'],
+            ['foo+'],
+            ['foo-'],
+            ['foo!'],
+            ['foo@'],
+            ['foo&'],
+            ['foo%'],
+            ['foo^'],
+            ['foo:'],
+            ['foo(bar)'],
+            ['foo[bar]'],
+            ['foo{bar}'],
+            ['Foo/Bar'],
+            ['Foo\Bar'],
+        ];
     }
 }

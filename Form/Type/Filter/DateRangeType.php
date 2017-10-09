@@ -65,19 +65,19 @@ class DateRangeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $choices = array(
+        $choices = [
             'label_date_type_between' => self::TYPE_BETWEEN,
             'label_date_type_not_between' => self::TYPE_NOT_BETWEEN,
-        );
-        $choiceOptions = array(
+        ];
+        $choiceOptions = [
             'required' => false,
-        );
+        ];
 
         // NEXT_MAJOR: Remove (when requirement of Symfony is >= 2.7)
         if (!method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
             $choices = array_flip($choices);
             foreach ($choices as $key => $value) {
-                $choices[$key] = $this->translator->trans($value, array(), 'SonataAdminBundle');
+                $choices[$key] = $this->translator->trans($value, [], 'SonataAdminBundle');
             }
         } else {
             $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
@@ -114,9 +114,9 @@ class DateRangeType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'field_type' => 'sonata_type_date_range',
-            'field_options' => array('format' => 'yyyy-MM-dd'),
-        ));
+            'field_options' => ['format' => 'yyyy-MM-dd'],
+        ]);
     }
 }

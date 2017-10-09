@@ -37,7 +37,7 @@ class ChoiceTypeExtension extends AbstractTypeExtension
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $optionalOptions = array('sortable');
+        $optionalOptions = ['sortable'];
 
         if (method_exists($resolver, 'setDefined')) {
             $resolver->setDefined($optionalOptions);

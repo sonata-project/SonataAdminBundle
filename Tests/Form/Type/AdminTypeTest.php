@@ -56,7 +56,7 @@ class AdminTypeTest extends TypeTestCase
         $modelManager = $this->prophesize('Sonata\AdminBundle\Model\ModelManagerInterface');
         $modelManager->modelReverseTransform(
             'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo',
-            array()
+            []
         )->shouldBeCalled();
 
         $admin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
@@ -75,14 +75,14 @@ class AdminTypeTest extends TypeTestCase
         $field->getOption('edit', 'standard')->shouldBeCalled();
         $field->getOption('inline', 'natural')->shouldBeCalled();
         $field->getOption('block_name', false)->shouldBeCalled();
-        $formData = array();
+        $formData = [];
 
         $form = $this->factory->create(
             'Sonata\AdminBundle\Form\Type\AdminType',
             null,
-            array(
+            [
                 'sonata_field_description' => $field->reveal(),
-            )
+            ]
         );
         $form->submit($formData);
         $this->assertTrue($form->isSynchronized());
@@ -119,11 +119,11 @@ class AdminTypeTest extends TypeTestCase
 
         try {
             $type = new AdminType();
-            $type->buildForm($this->builder, array(
+            $type->buildForm($this->builder, [
                 'sonata_field_description' => $field->reveal(),
                 'delete' => false, // not needed
                 'property_path' => 'foo', // actual test case
-            ));
+            ]);
         } catch (\Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException $exception) {
             $this->fail($exception->getMessage());
         }
@@ -135,7 +135,7 @@ class AdminTypeTest extends TypeTestCase
         $guesser = $this->prophesize('Symfony\Component\Form\FormTypeGuesserInterface')->reveal();
         $extension = new TestExtension($guesser);
 
-        $extension->addTypeExtension(new FormTypeFieldExtension(array(), array()));
+        $extension->addTypeExtension(new FormTypeFieldExtension([], []));
         $extensions[] = $extension;
 
         return $extensions;

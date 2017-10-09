@@ -24,9 +24,9 @@ class CoreControllerTest extends PHPUnit_Framework_TestCase
         $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $pool = new Pool($container, 'title', 'logo.png');
-        $pool->setTemplates(array(
+        $pool->setTemplates([
             'ajax' => 'ajax.html',
-        ));
+        ]);
 
         $templating = $this->createMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
         $request = new Request();
@@ -39,13 +39,13 @@ class CoreControllerTest extends PHPUnit_Framework_TestCase
 
         $breadcrumbsBuilder = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface');
 
-        $values = array(
+        $values = [
             'sonata.admin.breadcrumbs_builder' => $breadcrumbsBuilder,
             'sonata.admin.pool' => $pool,
             'templating' => $templating,
             'request' => $request,
             'request_stack' => $requestStack,
-        );
+        ];
 
         $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($values) {
             return $values[$id];
@@ -63,7 +63,7 @@ class CoreControllerTest extends PHPUnit_Framework_TestCase
 
         $container->expects($this->any())->method('getParameter')->will($this->returnCallback(function ($name) {
             if ($name == 'sonata.admin.configuration.dashboard_blocks') {
-                return array();
+                return [];
             }
         }));
         $container->expects($this->any())->method('has')->will($this->returnCallback(function ($id) {
@@ -87,9 +87,9 @@ class CoreControllerTest extends PHPUnit_Framework_TestCase
         $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
         $pool = new Pool($container, 'title', 'logo.png');
-        $pool->setTemplates(array(
+        $pool->setTemplates([
             'ajax' => 'ajax.html',
-        ));
+        ]);
 
         $templating = $this->createMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
         $request = new Request();
@@ -101,12 +101,12 @@ class CoreControllerTest extends PHPUnit_Framework_TestCase
             $requestStack->push($request);
         }
 
-        $values = array(
+        $values = [
             'sonata.admin.pool' => $pool,
             'templating' => $templating,
             'request' => $request,
             'request_stack' => $requestStack,
-        );
+        ];
 
         $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($values) {
             return $values[$id];
@@ -124,7 +124,7 @@ class CoreControllerTest extends PHPUnit_Framework_TestCase
 
         $container->expects($this->any())->method('getParameter')->will($this->returnCallback(function ($name) {
             if ($name == 'sonata.admin.configuration.dashboard_blocks') {
-                return array();
+                return [];
             }
         }));
         $container->expects($this->any())->method('has')->will($this->returnCallback(function ($id) {

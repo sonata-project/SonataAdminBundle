@@ -47,7 +47,7 @@ class ListMapper extends BaseMapper
      *
      * @return ListMapper
      */
-    public function addIdentifier($name, $type = null, array $fieldDescriptionOptions = array())
+    public function addIdentifier($name, $type = null, array $fieldDescriptionOptions = [])
     {
         $fieldDescriptionOptions['identifier'] = true;
 
@@ -57,7 +57,7 @@ class ListMapper extends BaseMapper
         }
 
         if (!isset($fieldDescriptionOptions['route']['parameters'])) {
-            $fieldDescriptionOptions['route']['parameters'] = array();
+            $fieldDescriptionOptions['route']['parameters'] = [];
         }
 
         return $this->add($name, $type, $fieldDescriptionOptions);
@@ -72,10 +72,10 @@ class ListMapper extends BaseMapper
      *
      * @return ListMapper
      */
-    public function add($name, $type = null, array $fieldDescriptionOptions = array())
+    public function add($name, $type = null, array $fieldDescriptionOptions = [])
     {
         // Ensure batch and action pseudo-fields are tagged as virtual
-        if (in_array($type, array('actions', 'batch', 'select'))) {
+        if (in_array($type, ['actions', 'batch', 'select'])) {
             $fieldDescriptionOptions['virtual_field'] = true;
         }
 

@@ -19,10 +19,10 @@ class AdminExporterTest extends PHPUnit_Framework_TestCase
 {
     public function provideExportFormats()
     {
-        return array(
-            'no override' => array(array('xls'), array('json', 'xml', 'csv', 'xls'), array('xls')),
-            'override in admin' => array(array('csv'), array('csv'), array('xls')),
-        );
+        return [
+            'no override' => [['xls'], ['json', 'xml', 'csv', 'xls'], ['xls']],
+            'override in admin' => [['csv'], ['csv'], ['xls']],
+        ];
     }
 
     /**
@@ -30,7 +30,7 @@ class AdminExporterTest extends PHPUnit_Framework_TestCase
      */
     public function testAdminHasPriorityOverGlobalSettings(array $expectedFormats, array $adminFormats, array $globalFormats)
     {
-        $writers = array();
+        $writers = [];
         foreach ($globalFormats as $exportFormat) {
             $writer = $this->createMock('Exporter\Writer\TypedWriterInterface');
             $writer->expects($this->once())

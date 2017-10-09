@@ -53,14 +53,14 @@ class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
         $annotation->processMetadata($meta);
 
         $this->assertSame(
-            array(
+            [
                 'manager_type' => 'orm',
                 'group' => 'Admin',
                 'label' => 'Tests\Fixtures\Foo',
                 'show_in_dashboard' => false,
                 'keep_open' => false,
                 'on_top' => false,
-            ),
+            ],
             $meta->tags['sonata.admin'][0]
         );
     }
@@ -78,14 +78,14 @@ class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
         $annotation->processMetadata($meta);
 
         $this->assertSame(
-            array(
+            [
                 'manager_type' => 'orm',
                 'group' => 'Admin',
                 'label' => 'Foo',
                 'show_in_dashboard' => true,
                 'keep_open' => false,
                 'on_top' => false,
-            ),
+            ],
             $meta->tags['sonata.admin'][0]
         );
     }
@@ -134,17 +134,17 @@ class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
         $annotation->processMetadata($meta);
 
         $this->assertSame(
-            array(
+            [
                 'manager_type' => 'doctrine_mongodb',
                 'group' => 'myGroup',
                 'label' => 'myLabel',
                 'show_in_dashboard' => false,
                 'keep_open' => true,
                 'on_top' => true,
-            ),
+            ],
             $meta->tags['sonata.admin'][0]
         );
 
-        $this->assertSame(array('setTranslationDomain', array('OMG')), $meta->methodCalls[0]);
+        $this->assertSame(['setTranslationDomain', ['OMG']], $meta->methodCalls[0]);
     }
 }

@@ -38,9 +38,9 @@ class AdminListBlockServiceTest extends AbstractBlockServiceTestCase
         $blockService = new AdminListBlockService('foo', $this->templating, $this->pool);
         $blockContext = $this->getBlockContext($blockService);
 
-        $this->assertSettings(array(
+        $this->assertSettings([
             'groups' => false,
-        ), $blockContext);
+        ], $blockContext);
     }
 
     public function testOverriddenDefaultSettings()
@@ -48,9 +48,9 @@ class AdminListBlockServiceTest extends AbstractBlockServiceTestCase
         $blockService = new FakeBlockService('foo', $this->templating, $this->pool);
         $blockContext = $this->getBlockContext($blockService);
 
-        $this->assertSettings(array(
+        $this->assertSettings([
             'foo' => 'bar',
             'groups' => true,
-        ), $blockContext);
+        ], $blockContext);
     }
 }

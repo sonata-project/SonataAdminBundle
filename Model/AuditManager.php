@@ -21,12 +21,12 @@ class AuditManager implements AuditManagerInterface
     /**
      * @var array
      */
-    protected $classes = array();
+    protected $classes = [];
 
     /**
      * @var array
      */
-    protected $readers = array();
+    protected $readers = [];
 
     /**
      * @var ContainerInterface

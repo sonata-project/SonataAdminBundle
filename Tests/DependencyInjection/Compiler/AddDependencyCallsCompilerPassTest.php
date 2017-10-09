@@ -50,7 +50,7 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
         $container = $this->getContainer();
         $container->removeAlias('translator');
         $container->removeDefinition('translator');
-        $this->extension->load(array($this->config), $container);
+        $this->extension->load([$this->config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
         $compilerPass->process($container);
@@ -63,7 +63,7 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
     public function testProcessParsingFullValidConfig()
     {
         $container = $this->getContainer();
-        $this->extension->load(array($this->config), $container);
+        $this->extension->load([$this->config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
         $compilerPass->process($container);
@@ -99,7 +99,7 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
         $this->assertSame('', $dashboardGroupsSettings['sonata_group_one']['items'][1]['admin']);
         $this->assertSame('blog_name', $dashboardGroupsSettings['sonata_group_one']['items'][1]['route']);
         $this->assertSame('Blog', $dashboardGroupsSettings['sonata_group_one']['items'][1]['label']);
-        $this->assertSame(array(), $dashboardGroupsSettings['sonata_group_one']['items'][1]['route_params']);
+        $this->assertSame([], $dashboardGroupsSettings['sonata_group_one']['items'][1]['route_params']);
         $this->assertArrayHasKey('admin', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
         $this->assertArrayHasKey('route', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
         $this->assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
@@ -109,7 +109,7 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
         $this->assertSame('', $dashboardGroupsSettings['sonata_group_one']['items'][2]['admin']);
         $this->assertSame('blog_article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['route']);
         $this->assertSame('Article', $dashboardGroupsSettings['sonata_group_one']['items'][2]['label']);
-        $this->assertSame(array('articleId' => 3), $dashboardGroupsSettings['sonata_group_one']['items'][2]['route_params']);
+        $this->assertSame(['articleId' => 3], $dashboardGroupsSettings['sonata_group_one']['items'][2]['route_params']);
         $this->assertContains('sonata_news_admin', $dashboardGroupsSettings['sonata_group_one']['item_adds']);
         $this->assertContains('ROLE_ONE', $dashboardGroupsSettings['sonata_group_one']['roles']);
 
@@ -127,7 +127,7 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
     public function testProcessResultingConfig()
     {
         $container = $this->getContainer();
-        $this->extension->load(array($this->config), $container);
+        $this->extension->load([$this->config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
         $compilerPass->process($container);
@@ -209,7 +209,7 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
         $config['options']['sort_admins'] = true;
         unset($config['dashboard']['groups']);
 
-        $this->extension->load(array($config), $container);
+        $this->extension->load([$config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
         $compilerPass->process($container);
@@ -224,18 +224,18 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
 
     public function testProcessGroupNameAsParameter()
     {
-        $config = array(
-            'dashboard' => array(
-                'groups' => array(
-                    '%sonata.admin.parameter.groupname%' => array(),
-                ),
-            ),
-        );
+        $config = [
+            'dashboard' => [
+                'groups' => [
+                    '%sonata.admin.parameter.groupname%' => [],
+                ],
+            ],
+        ];
 
         $container = $this->getContainer();
         $container->setParameter('sonata.admin.parameter.groupname', 'resolved_group_name');
 
-        $this->extension->load(array($config), $container);
+        $this->extension->load([$config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
         $compilerPass->process($container);
@@ -251,7 +251,7 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
     {
         $container = $this->getContainer();
 
-        $this->extension->load(array($this->getConfig()), $container);
+        $this->extension->load([$this->getConfig()], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
         $compilerPass->process($container);
@@ -310,7 +310,7 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
     {
         $container = $this->getContainer();
 
-        $this->extension->load(array($this->getConfig()), $container);
+        $this->extension->load([$this->getConfig()], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
         $compilerPass->process($container);
@@ -343,13 +343,13 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
         $config = $this->config;
         $this->assertArrayHasKey('sonata_group_four', $config['dashboard']['groups']);
 
-        $config['dashboard']['groups']['sonata_group_four']['items'][] = array(
+        $config['dashboard']['groups']['sonata_group_four']['items'][] = [
             'route' => 'blog_article',
             'label' => 'Article',
-            'route_params' => array('articleId' => 3),
-        );
+            'route_params' => ['articleId' => 3],
+        ];
 
-        $this->extension->load(array($config), $container);
+        $this->extension->load([$config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
 
@@ -363,29 +363,29 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
         $container = $this->getContainer();
 
         $config = $this->config;
-        $config['dashboard']['groups']['sonata_group_five'] = array(
+        $config['dashboard']['groups']['sonata_group_five'] = [
             'label' => 'Group One Label',
             'label_catalogue' => 'SonataAdminBundle',
             'on_top' => true,
-            'items' => array(
+            'items' => [
                 'sonata_post_admin',
-                array(
+                [
                     'route' => 'blog_name',
                     'label' => 'Blog',
-                ),
-                array(
+                ],
+                [
                     'route' => 'blog_article',
                     'label' => 'Article',
-                    'route_params' => array('articleId' => 3),
-                ),
-            ),
-            'item_adds' => array(
+                    'route_params' => ['articleId' => 3],
+                ],
+            ],
+            'item_adds' => [
                 'sonata_news_admin',
-            ),
-            'roles' => array('ROLE_ONE'),
-        );
+            ],
+            'roles' => ['ROLE_ONE'],
+        ];
 
-        $this->extension->load(array($config), $container);
+        $this->extension->load([$config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
 
@@ -399,16 +399,16 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
         $container = $this->getContainer();
 
         $config = $this->config;
-        $config['dashboard']['groups'] = array();
+        $config['dashboard']['groups'] = [];
 
-        $this->extension->load(array($config), $container);
+        $this->extension->load([$config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
         $container
             ->register('sonata_report_one_admin')
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
-            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportOne', 'SonataAdminBundle:CRUD'))
-            ->addTag('sonata.admin', array('group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true));
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportOne', 'SonataAdminBundle:CRUD'])
+            ->addTag('sonata.admin', ['group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true]);
 
         $this->expectException('\RuntimeException', 'You can\'t use "on_top" option with multiple same name groups.');
 
@@ -420,16 +420,16 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
         $container = $this->getContainer();
 
         $config = $this->config;
-        $config['dashboard']['groups'] = array();
+        $config['dashboard']['groups'] = [];
 
-        $this->extension->load(array($config), $container);
+        $this->extension->load([$config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
         $container
             ->register('sonata_report_two_admin')
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
-            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportOne', 'SonataAdminBundle:CRUD'))
-            ->addTag('sonata.admin', array('group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => false));
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportOne', 'SonataAdminBundle:CRUD'])
+            ->addTag('sonata.admin', ['group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => false]);
 
         $this->expectException('\RuntimeException', 'You can\'t use "on_top" option with multiple same name groups.');
 
@@ -441,21 +441,21 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
         $container = $this->getContainer();
 
         $config = $this->config;
-        $config['dashboard']['groups'] = array();
+        $config['dashboard']['groups'] = [];
 
-        $this->extension->load(array($config), $container);
+        $this->extension->load([$config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
         $container
             ->register('sonata_document_one_admin')
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
-            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportOne', 'SonataAdminBundle:CRUD'))
-            ->addTag('sonata.admin', array('group' => 'sonata_document_group', 'manager_type' => 'orm', 'on_top' => false));
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportOne', 'SonataAdminBundle:CRUD'])
+            ->addTag('sonata.admin', ['group' => 'sonata_document_group', 'manager_type' => 'orm', 'on_top' => false]);
         $container
             ->register('sonata_document_two_admin')
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
-            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportOne', 'SonataAdminBundle:CRUD'))
-            ->addTag('sonata.admin', array('group' => 'sonata_document_group', 'manager_type' => 'orm', 'on_top' => false));
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportOne', 'SonataAdminBundle:CRUD'])
+            ->addTag('sonata.admin', ['group' => 'sonata_document_group', 'manager_type' => 'orm', 'on_top' => false]);
 
         try {
             $compilerPass->process($container);
@@ -469,32 +469,32 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
         $container = $this->getContainer();
 
         $config = $this->config;
-        $config['dashboard']['groups'] = array();
+        $config['dashboard']['groups'] = [];
 
-        $this->extension->load(array($config), $container);
+        $this->extension->load([$config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
         $container
             ->register('sonata_abstract_post_admin')
-            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\Post', ''))
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\Post', ''])
             ->setAbstract(true);
 
         $adminDefinition = new DefinitionDecorator('sonata_abstract_post_admin');
         $adminDefinition
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAbstractServiceAdmin')
-            ->setArguments(array(0 => 'extra_argument_1'))
-            ->addTag('sonata.admin', array('group' => 'sonata_post_one_group', 'manager_type' => 'orm'));
+            ->setArguments([0 => 'extra_argument_1'])
+            ->addTag('sonata.admin', ['group' => 'sonata_post_one_group', 'manager_type' => 'orm']);
 
         $adminTwoDefinition = new DefinitionDecorator('sonata_abstract_post_admin');
         $adminTwoDefinition
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAbstractServiceAdmin')
-            ->setArguments(array(0 => 'extra_argument_2', 'index_0' => 'should_not_override'))
-            ->addTag('sonata.admin', array('group' => 'sonata_post_two_group', 'manager_type' => 'orm'));
+            ->setArguments([0 => 'extra_argument_2', 'index_0' => 'should_not_override'])
+            ->addTag('sonata.admin', ['group' => 'sonata_post_two_group', 'manager_type' => 'orm']);
 
-        $container->addDefinitions(array(
+        $container->addDefinitions([
             'sonata_post_one_admin' => $adminDefinition,
             'sonata_post_two_admin' => $adminTwoDefinition,
-        ));
+        ]);
 
         $compilerPass->process($container);
         $container->compile();
@@ -526,63 +526,63 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
      */
     protected function getConfig()
     {
-        $config = array(
-            'dashboard' => array(
-                'groups' => array(
-                    'sonata_group_one' => array(
+        $config = [
+            'dashboard' => [
+                'groups' => [
+                    'sonata_group_one' => [
                         'label' => 'Group One Label',
                         'label_catalogue' => 'SonataAdminBundle',
-                        'items' => array(
+                        'items' => [
                             'sonata_post_admin',
-                            array(
+                            [
                                 'route' => 'blog_name',
                                 'label' => 'Blog',
-                            ),
-                            array(
+                            ],
+                            [
                                 'route' => 'blog_article',
                                 'label' => 'Article',
-                                'route_params' => array('articleId' => 3),
-                            ),
-                        ),
-                        'item_adds' => array(
+                                'route_params' => ['articleId' => 3],
+                            ],
+                        ],
+                        'item_adds' => [
                             'sonata_news_admin',
-                        ),
-                        'roles' => array('ROLE_ONE'),
-                    ),
-                    'sonata_group_two' => array(
+                        ],
+                        'roles' => ['ROLE_ONE'],
+                    ],
+                    'sonata_group_two' => [
                         'provider' => 'my_menu',
-                    ),
-                    'sonata_group_three' => array(
+                    ],
+                    'sonata_group_three' => [
                         'on_top' => true,
-                    ),
-                    'sonata_group_four' => array(
+                    ],
+                    'sonata_group_four' => [
                         'on_top' => true,
                         'label' => 'Group Four Label',
                         'label_catalogue' => 'SonataAdminBundle',
-                        'items' => array(
+                        'items' => [
                             'sonata_post_admin',
-                        ),
-                    ),
-                    'sonata_group_five' => array(
+                        ],
+                    ],
+                    'sonata_group_five' => [
                         'keep_open' => true,
-                    ),
-                ),
-            ),
-            'admin_services' => array(
-                'sonata_post_admin' => array(
-                    'templates' => array(
-                        'view' => array('user_block' => 'foobar.twig.html'),
-                    ),
-                ),
-                'sonata_news_admin' => array(
+                    ],
+                ],
+            ],
+            'admin_services' => [
+                'sonata_post_admin' => [
+                    'templates' => [
+                        'view' => ['user_block' => 'foobar.twig.html'],
+                    ],
+                ],
+                'sonata_news_admin' => [
                     'label' => 'Foo',
                     'pager_type' => 'simple',
-                    'templates' => array(
-                        'view' => array('user_block' => 'foo.twig.html'),
-                    ),
-                ),
-            ),
-        );
+                    'templates' => [
+                        'view' => ['user_block' => 'foo.twig.html'],
+                    ],
+                ],
+            ],
+        ];
 
         return $config;
     }
@@ -590,10 +590,10 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
     private function getContainer()
     {
         $container = new ContainerBuilder();
-        $container->setParameter('kernel.bundles', array(
+        $container->setParameter('kernel.bundles', [
             'SonataCoreBundle' => true,
             'KnpMenuBundle' => true,
-        ));
+        ]);
         $container->setParameter('kernel.cache_dir', '/tmp');
         $container->setParameter('kernel.debug', true);
 
@@ -622,9 +622,9 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
         $container
             ->register('form.factory')
             ->setClass('Symfony\Component\Form\FormFactoryInterface');
-        foreach (array(
+        foreach ([
             'doctrine_phpcr' => 'PHPCR',
-            'orm' => 'ORM', ) as $key => $bundleSubstring) {
+            'orm' => 'ORM', ] as $key => $bundleSubstring) {
             $container
                 ->register(sprintf('sonata.admin.manager.%s', $key))
                 ->setClass(sprintf(
@@ -679,33 +679,33 @@ class AddDependencyCallsCompilerPassTest extends PHPUnit_Framework_TestCase
         $container
             ->register('sonata_news_admin')
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
-            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\News', 'SonataAdminBundle:CRUD'))
-            ->addTag('sonata.admin', array('group' => 'sonata_group_two', 'label' => '5 Entry', 'manager_type' => 'orm'));
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\News', 'SonataAdminBundle:CRUD'])
+            ->addTag('sonata.admin', ['group' => 'sonata_group_two', 'label' => '5 Entry', 'manager_type' => 'orm']);
         $container
             ->register('sonata_post_admin')
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
-            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\Post', 'SonataAdminBundle:CRUD'))
-            ->addTag('sonata.admin', array('group' => 'sonata_group_one', 'manager_type' => 'orm'));
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\Post', 'SonataAdminBundle:CRUD'])
+            ->addTag('sonata.admin', ['group' => 'sonata_group_one', 'manager_type' => 'orm']);
         $container
             ->register('sonata_article_admin')
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
-            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\Article', 'SonataAdminBundle:CRUD'))
-            ->addTag('sonata.admin', array('group' => 'sonata_group_one', 'label' => '1 Entry', 'manager_type' => 'doctrine_phpcr'));
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\Article', 'SonataAdminBundle:CRUD'])
+            ->addTag('sonata.admin', ['group' => 'sonata_group_one', 'label' => '1 Entry', 'manager_type' => 'doctrine_phpcr']);
         $container
             ->register('sonata_report_admin')
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
-            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\Report', 'SonataAdminBundle:CRUD'))
-            ->addTag('sonata.admin', array('group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true));
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\Report', 'SonataAdminBundle:CRUD'])
+            ->addTag('sonata.admin', ['group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true]);
         $container
             ->register('sonata_report_one_admin')
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
-            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportOne', 'SonataAdminBundle:CRUD'))
-            ->addTag('sonata.admin', array('group' => 'sonata_report_one_group', 'manager_type' => 'orm', 'show_mosaic_button' => false));
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportOne', 'SonataAdminBundle:CRUD'])
+            ->addTag('sonata.admin', ['group' => 'sonata_report_one_group', 'manager_type' => 'orm', 'show_mosaic_button' => false]);
         $container
             ->register('sonata_report_two_admin')
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
-            ->setArguments(array('', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportTwo', 'SonataAdminBundle:CRUD'))
-            ->addTag('sonata.admin', array('group' => 'sonata_report_two_group', 'manager_type' => 'orm', 'show_mosaic_button' => true));
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\ReportTwo', 'SonataAdminBundle:CRUD'])
+            ->addTag('sonata.admin', ['group' => 'sonata_report_two_group', 'manager_type' => 'orm', 'show_mosaic_button' => true]);
 
         // translator
         $container

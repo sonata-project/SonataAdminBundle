@@ -37,10 +37,10 @@ class ModelReferenceTypeTest extends TypeTestCase
         $form = $this->factory->create(
             'Sonata\AdminBundle\Form\Type\ModelReferenceType',
             null,
-            array(
+            [
                 'model_manager' => $this->modelManager->reveal(),
                 'class' => 'My\Entity',
-            )
+            ]
         );
         $this->modelManager->find('My\Entity', 42)->shouldBeCalled();
         $form->submit($formData);
@@ -49,10 +49,10 @@ class ModelReferenceTypeTest extends TypeTestCase
 
     protected function getExtensions()
     {
-        return array(
-            new PreloadedExtension(array(
+        return [
+            new PreloadedExtension([
                 new ModelReferenceType($this->modelManager->reveal()),
-            ), array()),
-        );
+            ], []),
+        ];
     }
 }

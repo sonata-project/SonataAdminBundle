@@ -76,7 +76,7 @@ class SimplePager extends Pager
             return $this->results;
         }
 
-        $this->results = $this->getQuery()->execute(array(), $hydrationMode);
+        $this->results = $this->getQuery()->execute([], $hydrationMode);
         $this->thresholdCount = count($this->results);
         if (count($this->results) > $this->getMaxPerPage()) {
             $this->haveToPaginate = true;

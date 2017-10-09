@@ -155,7 +155,7 @@ class AdminHelper
             $data = $admin->getRequest()->get($formBuilder->getName());
 
             if (!isset($data[$childFormBuilder->getName()])) {
-                $data[$childFormBuilder->getName()] = array();
+                $data[$childFormBuilder->getName()] = [];
             }
 
             $objectCount = count($value);
@@ -164,7 +164,7 @@ class AdminHelper
             $fields = array_keys($fieldDescription->getAssociationAdmin()->getFormFieldDescriptions());
 
             // for now, not sure how to do that
-            $value = array();
+            $value = [];
             foreach ($fields as $name) {
                 $value[$name] = '';
             }
@@ -185,7 +185,7 @@ class AdminHelper
         // bind the data
         $finalForm->setData($form->getData());
 
-        return array($fieldDescription, $finalForm);
+        return [$fieldDescription, $finalForm];
     }
 
     /**

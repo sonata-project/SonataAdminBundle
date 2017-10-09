@@ -93,7 +93,7 @@ class ModelType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $options = array();
+        $options = [];
         $propertyAccessor = $this->propertyAccessor;
         if (interface_exists('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface')) { // SF2.7+
             $options['choice_loader'] = function (Options $options, $previousValue) use ($propertyAccessor) {
@@ -131,7 +131,7 @@ class ModelType extends AbstractType
             };
         }
 
-        $resolver->setDefaults(array_merge($options, array(
+        $resolver->setDefaults(array_merge($options, [
             'compound' => function (Options $options) {
                 if (isset($options['multiple']) && $options['multiple']) {
                     if (isset($options['expanded']) && $options['expanded']) {
@@ -159,13 +159,13 @@ class ModelType extends AbstractType
             'class' => null,
             'property' => null,
             'query' => null,
-            'choices' => array(),
-            'preferred_choices' => array(),
+            'choices' => [],
+            'preferred_choices' => [],
             'btn_add' => 'link_add',
             'btn_list' => 'link_list',
             'btn_delete' => 'link_delete',
             'btn_catalogue' => 'SonataAdminBundle',
-        )));
+        ]));
     }
 
     /**

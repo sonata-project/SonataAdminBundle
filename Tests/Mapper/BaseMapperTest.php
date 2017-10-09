@@ -36,7 +36,7 @@ class BaseMapperTest extends \PHPUnit_Framework_TestCase
         $this->admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
         $builder = $this->getMockForAbstractClass('Sonata\AdminBundle\Builder\BuilderInterface');
 
-        $this->baseMapper = $this->getMockForAbstractClass('Sonata\AdminBundle\Mapper\BaseMapper', array($builder, $this->admin));
+        $this->baseMapper = $this->getMockForAbstractClass('Sonata\AdminBundle\Mapper\BaseMapper', [$builder, $this->admin]);
     }
 
     public function testGetAdmin()

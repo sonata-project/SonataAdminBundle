@@ -83,7 +83,7 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
     {
         $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $pool = new Pool($container, 'title', 'logo.png');
-        $pool->setAdminServiceIds(array('foo.admin'));
+        $pool->setAdminServiceIds(['foo.admin']);
 
         $this->admin = $this->createMock('Sonata\AdminBundle\Admin\AbstractAdmin');
 
@@ -119,13 +119,13 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
     {
         $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $twig = new \Twig_Environment($this->createMock('\Twig_LoaderInterface'));
-        $request = new Request(array(
+        $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
             'uniqid' => 'asdasd123',
-        ));
+        ]);
         $pool = new Pool($container, 'title', 'logo');
-        $pool->setAdminServiceIds(array('sonata.post.admin'));
+        $pool->setAdminServiceIds(['sonata.post.admin']);
         $helper = new AdminHelper($pool);
         $validator = $this->createMock($validatorInterface);
         $controller = new HelperController($twig, $pool, $helper, $validator);
@@ -149,14 +149,14 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
         $container->expects($this->any())->method('get')->will($this->returnValue($admin));
 
         $twig = new \Twig_Environment($this->createMock('\Twig_LoaderInterface'));
-        $request = new Request(array(
+        $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
             'uniqid' => 'asdasd123',
-        ));
+        ]);
 
         $pool = new Pool($container, 'title', 'logo');
-        $pool->setAdminServiceIds(array('sonata.post.admin'));
+        $pool->setAdminServiceIds(['sonata.post.admin']);
 
         $helper = new AdminHelper($pool);
 
@@ -179,15 +179,15 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
         $container->expects($this->any())->method('get')->will($this->returnValue($admin));
 
         $twig = new \Twig_Environment($this->createMock('\Twig_LoaderInterface'));
-        $request = new Request(array(
+        $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => '',
             'uniqid' => 'asdasd123',
             '_format' => 'html',
-        ));
+        ]);
 
         $pool = new Pool($container, 'title', 'logo');
-        $pool->setAdminServiceIds(array('sonata.post.admin'));
+        $pool->setAdminServiceIds(['sonata.post.admin']);
 
         $helper = new AdminHelper($pool);
 
@@ -209,7 +209,7 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
         $admin->expects($this->once())->method('getTemplate')->will($this->returnValue($mockTemplate));
         $admin->expects($this->once())->method('getObject')->will($this->returnValue(new AdminControllerHelper_Foo()));
         $admin->expects($this->once())->method('toString')->will($this->returnValue('bar'));
-        $admin->expects($this->once())->method('generateObjectUrl')->will($this->returnCallback(function ($type, $object, $parameters = array()) {
+        $admin->expects($this->once())->method('generateObjectUrl')->will($this->returnCallback(function ($type, $object, $parameters = []) {
             if ($type != 'edit') {
                 return 'invalid name';
             }
@@ -228,15 +228,15 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
                 return sprintf('<a href="%s" target="new">%s</a>', $templateParams['admin']->generateObjectUrl('edit', $templateParams['object']), $templateParams['description']);
             }));
 
-        $request = new Request(array(
+        $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
             'uniqid' => 'asdasd123',
             '_format' => 'html',
-        ));
+        ]);
 
         $pool = new Pool($container, 'title', 'logo');
-        $pool->setAdminServiceIds(array('sonata.post.admin'));
+        $pool->setAdminServiceIds(['sonata.post.admin']);
 
         $helper = new AdminHelper($pool);
 
@@ -270,7 +270,7 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
         $container->expects($this->any())->method('get')->will($this->returnValue($admin));
 
         $pool = new Pool($container, 'title', 'logo');
-        $pool->setAdminServiceIds(array('sonata.post.admin'));
+        $pool->setAdminServiceIds(['sonata.post.admin']);
 
         $adminExtension = new SonataAdminExtension(
             $pool,
@@ -289,13 +289,13 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
 
         $twig = new \Twig_Environment($loader);
         $twig->addExtension($adminExtension);
-        $request = new Request(array(
+        $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
             'field' => 'enabled',
             'value' => 1,
             'context' => 'list',
-        ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
+        ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $helper = new AdminHelper($pool);
 
@@ -355,16 +355,16 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
             $twig->addRuntimeLoader($runtimeLoader);
         }
 
-        $request = new Request(array(
+        $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
             'field' => 'enabled',
             'value' => 1,
             'context' => 'list',
-        ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'POST'));
+        ], [], [], [], [], ['REQUEST_METHOD' => 'POST']);
 
         $pool = new Pool($container, 'title', 'logo');
-        $pool->setAdminServiceIds(array('sonata.post.admin'));
+        $pool->setAdminServiceIds(['sonata.post.admin']);
 
         $validator = $this->createMock($validatorInterface);
 
@@ -380,13 +380,13 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue($mockView));
 
         $helper = $this->getMockBuilder('Sonata\AdminBundle\Admin\AdminHelper')
-            ->setMethods(array('appendFormFieldElement', 'getChildFormView'))
-            ->setConstructorArgs(array($pool))
+            ->setMethods(['appendFormFieldElement', 'getChildFormView'])
+            ->setConstructorArgs([$pool])
             ->getMock();
-        $helper->expects($this->once())->method('appendFormFieldElement')->will($this->returnValue(array(
+        $helper->expects($this->once())->method('appendFormFieldElement')->will($this->returnValue([
             $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface'),
             $mockForm,
-        )));
+        ]));
         $helper->expects($this->once())->method('getChildFormView')->will($this->returnValue($mockView));
 
         $controller = new HelperController($twig, $pool, $helper, $validator);
@@ -402,13 +402,13 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
     {
         $object = new AdminControllerHelper_Foo();
 
-        $request = new Request(array(
+        $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
             'field' => 'enabled',
             'value' => 1,
             'context' => 'list',
-        ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'POST'));
+        ], [], [], [], [], ['REQUEST_METHOD' => 'POST']);
 
         $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
         $modelManager->expects($this->once())->method('find')->will($this->returnValue($object));
@@ -469,13 +469,13 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
         }
 
         $pool = new Pool($container, 'title', 'logo');
-        $pool->setAdminServiceIds(array('sonata.post.admin'));
+        $pool->setAdminServiceIds(['sonata.post.admin']);
 
         $validator = $this->createMock($validatorInterface);
 
         $helper = $this->getMockBuilder('Sonata\AdminBundle\Admin\AdminHelper')
-            ->setMethods(array('getChildFormView'))
-            ->setConstructorArgs(array($pool))
+            ->setMethods(['getChildFormView'])
+            ->setConstructorArgs([$pool])
             ->getMock();
         $helper->expects($this->once())->method('getChildFormView')->will($this->returnValue($mockView));
 
@@ -507,23 +507,23 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
         $container->expects($this->any())->method('get')->will($this->returnValue($admin));
 
         $twig = new \Twig_Environment($this->createMock('\Twig_LoaderInterface'));
-        $request = new Request(array(
+        $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
             'field' => 'bar.enabled',
             'value' => 1,
             'context' => 'list',
-        ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
+        ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $pool = new Pool($container, 'title', 'logo');
-        $pool->setAdminServiceIds(array('sonata.post.admin'));
+        $pool->setAdminServiceIds(['sonata.post.admin']);
 
         $helper = new AdminHelper($pool);
 
-        $violations = new ConstraintViolationList(array(
-            new ConstraintViolation('error1', null, array(), null, 'enabled', null),
-            new ConstraintViolation('error2', null, array(), null, 'enabled', null),
-        ));
+        $violations = new ConstraintViolationList([
+            new ConstraintViolation('error1', null, [], null, 'enabled', null),
+            new ConstraintViolation('error2', null, [], null, 'enabled', null),
+        ]);
 
         $validator = $this->createMock($validatorInterface);
 
@@ -558,9 +558,9 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
                 return;
             }));
 
-        $request = new Request(array(
+        $request = new Request([
             'admin_code' => 'foo.admin',
-        ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
+        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $this->controller->retrieveAutocompleteItemsAction($request);
     }
@@ -625,10 +625,10 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
             ->with('disabled')
             ->will($this->returnValue(true));
 
-        $request = new Request(array(
+        $request = new Request([
             'admin_code' => 'foo.admin',
             'field' => 'barField',
-        ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
+        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $this->controller->retrieveAutocompleteItemsAction($request);
     }
@@ -719,11 +719,11 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
                 }
             }));
 
-        $request = new Request(array(
+        $request = new Request([
             'admin_code' => 'foo.admin',
             'field' => 'barField',
             'q' => 'so',
-        ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
+        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
         $this->isInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
@@ -780,9 +780,9 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
         $datagrid->expects($this->exactly(3))
             ->method('setValue')
             ->withConsecutive(
-                array($this->equalTo('foo'), $this->equalTo(null), $this->equalTo('sonata')),
-                array($this->equalTo('_per_page'), $this->equalTo(null), $this->equalTo(10)),
-                array($this->equalTo('_page'), $this->equalTo(null), $this->equalTo(1))
+                [$this->equalTo('foo'), $this->equalTo(null), $this->equalTo('sonata')],
+                [$this->equalTo('_per_page'), $this->equalTo(null), $this->equalTo(10)],
+                [$this->equalTo('_page'), $this->equalTo(null), $this->equalTo(1)]
                )
             ->will($this->returnValue(null));
 
@@ -800,7 +800,7 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
         $pager->expects($this->once())
             ->method('getResults')
             ->with()
-            ->will($this->returnValue(array($entity)));
+            ->will($this->returnValue([$entity]));
 
         $pager->expects($this->once())
             ->method('isLastPage')
@@ -880,11 +880,11 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
                 }
             }));
 
-        $request = new Request(array(
+        $request = new Request([
             'admin_code' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
-        ), array(), array(), array(), array(), array('REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'));
+        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
         $this->isInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
@@ -898,16 +898,16 @@ class HelperControllerTest extends PHPUnit_Framework_TestCase
      */
     public function getValidatorInterfaces()
     {
-        $data = array();
+        $data = [];
 
         // For Symfony <= 2.8
         if (interface_exists('Symfony\Component\Validator\ValidatorInterface')) {
-            $data['2.4'] = array('Symfony\Component\Validator\ValidatorInterface');
+            $data['2.4'] = ['Symfony\Component\Validator\ValidatorInterface'];
         }
 
         // For Symfony >= 2.5
         if (interface_exists('Symfony\Component\Validator\Validator\ValidatorInterface')) {
-            $data['2.5'] = array('Symfony\Component\Validator\Validator\ValidatorInterface');
+            $data['2.5'] = ['Symfony\Component\Validator\Validator\ValidatorInterface'];
         }
 
         return $data;

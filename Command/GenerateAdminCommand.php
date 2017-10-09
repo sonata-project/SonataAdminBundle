@@ -189,7 +189,7 @@ class GenerateAdminCommand extends QuestionableCommand
                 $output,
                 'The manager type',
                 $input->getOption('manager') ?: $this->getDefaultManagerType(),
-                array($this, 'validateManagerType')
+                [$this, 'validateManagerType']
             );
             $input->setOption('manager', $managerType);
         }
@@ -323,11 +323,11 @@ class GenerateAdminCommand extends QuestionableCommand
         $container = $this->getContainer();
 
         if (!$container instanceof Container) {
-            return array();
+            return [];
         }
 
         if ($this->managerTypes === null) {
-            $this->managerTypes = array();
+            $this->managerTypes = [];
 
             foreach ($container->getServiceIds() as $id) {
                 if (strpos($id, 'sonata.admin.manager.') === 0) {
