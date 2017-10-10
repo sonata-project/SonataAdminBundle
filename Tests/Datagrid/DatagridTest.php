@@ -313,6 +313,16 @@ class DatagridTest extends PHPUnit_Framework_TestCase
         $this->assertSame(['foo', 'bar'], $this->datagrid->getResults());
     }
 
+    public function testEmptyResults()
+    {
+        $this->pager->expects($this->once())
+            ->method('getResults')
+            ->will($this->returnValue([]));
+
+        $this->assertSame([], $this->datagrid->getResults());
+        $this->assertSame([], $this->datagrid->getResults());
+    }
+
     public function testBuildPager()
     {
         $filter1 = $this->createMock('Sonata\AdminBundle\Filter\FilterInterface');
