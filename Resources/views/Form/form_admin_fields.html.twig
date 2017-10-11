@@ -110,7 +110,7 @@ file that was distributed with this source code.
     {% set label_class = label_class|default('') ~ ' control-label' %}
 
     {% if label is not same as(false) %}
-        {% set label_attr = label_attr|merge({'class': label_attr.class|default('') ~ label_class }) %}
+        {% set label_attr = label_attr|merge({'class': label_attr.class|default('') ~ ' ' ~ label_class }) %}
 
         {% if not compound %}
             {% set label_attr = label_attr|merge({'for': id}) %}
