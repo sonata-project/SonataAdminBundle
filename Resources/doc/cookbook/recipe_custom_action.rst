@@ -117,7 +117,7 @@ to implement a ``clone`` action.
             return new RedirectResponse($this->admin->generateUrl('list'));
 
             // if you have a filtered list and want to keep your filters after the redirect
-            // return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
+            // return new RedirectResponse($this->admin->generateUrl('list', array('filter' => $this->admin->getFilterParameters())));
         }
     }
 
