@@ -16,6 +16,8 @@ chmod u+x "${HOME}/bin/phpunit"
 wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar --output-document="${HOME}/bin/coveralls"
 chmod u+x "${HOME}/bin/coveralls"
 
+composer global require hirak/prestissimo --prefer-dist --no-interaction
+
 # To be removed when these issues are resolved:
 # https://github.com/composer/composer/issues/5355
 # https://github.com/composer/composer/issues/5030
