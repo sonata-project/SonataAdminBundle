@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 final class AdminExporter
 {
     /**
-     * @var Exporter service from the exporter bundle
+     * @var Exporter service from the exporter bundle.
      */
     private $exporter;
 
