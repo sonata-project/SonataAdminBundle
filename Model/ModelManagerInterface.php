@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Model;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Exception\ModelManagerException;
 
 /**
  * A model manager is a bridge between the model classes and the admin
@@ -30,24 +31,26 @@ interface ModelManagerInterface
      *
      * @return FieldDescriptionInterface
      */
-    public function getNewFieldDescriptionInstance($class, $name, array $options = array());
+    public function getNewFieldDescriptionInstance($class, $name, array $options = []);
 
     /**
      * @param mixed $object
      *
-     * @return mixed
+     * @throws ModelManagerException
      */
     public function create($object);
 
     /**
      * @param mixed $object
      *
-     * @return mixed
+     * @throws ModelManagerException
      */
     public function update($object);
 
     /**
-     * @param object $object
+     * @param mixed $object
+     *
+     * @throws ModelManagerException
      */
     public function delete($object);
 
@@ -57,7 +60,7 @@ interface ModelManagerInterface
      *
      * @return array all objects matching the criteria
      */
-    public function findBy($class, array $criteria = array());
+    public function findBy($class, array $criteria = []);
 
     /**
      * @param string $class
@@ -65,7 +68,7 @@ interface ModelManagerInterface
      *
      * @return object an object matching the criteria or null if none match
      */
-    public function findOneBy($class, array $criteria = array());
+    public function findOneBy($class, array $criteria = []);
 
     /**
      * @param string $class
@@ -78,6 +81,8 @@ interface ModelManagerInterface
     /**
      * @param string              $class
      * @param ProxyQueryInterface $queryProxy
+     *
+     * @throws ModelManagerException
      */
     public function batchDelete($class, ProxyQueryInterface $queryProxy);
 
@@ -138,14 +143,14 @@ interface ModelManagerInterface
     public function getNormalizedIdentifier($model);
 
     /**
-     * Get the identifiers as a string that is save to use in an url.
+     * Get the identifiers as a string that is safe to use in a url.
      *
      * This is similar to getNormalizedIdentifier but guarantees an id that can
-     * be used in an URL.
+     * be used in a URL.
      *
      * @param object $model
      *
-     * @return string string representation of the id that is save to use in an url
+     * @return string string representation of the id that is safe to use in a url
      */
     public function getUrlsafeIdentifier($model);
 
@@ -223,7 +228,7 @@ interface ModelManagerInterface
      * @param string $class
      * @param array  $array
      */
-    public function modelReverseTransform($class, array $array = array());
+    public function modelReverseTransform($class, array $array = []);
 
     /**
      * @param string $class

@@ -102,7 +102,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
      */
     public function transform($entityOrCollection)
     {
-        $result = array();
+        $result = [];
 
         if (!$entityOrCollection) {
             return $result;
@@ -119,11 +119,11 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
             }
         } else {
             if (substr(get_class($entityOrCollection), -1 * strlen($this->className)) == $this->className) {
-                $collection = array($entityOrCollection);
+                $collection = [$entityOrCollection];
             } elseif ($entityOrCollection instanceof \ArrayAccess) {
                 throw new \InvalidArgumentException('A single selection must be passed a single value not a collection. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
             } else {
-                $collection = array($entityOrCollection);
+                $collection = [$entityOrCollection];
             }
         }
 

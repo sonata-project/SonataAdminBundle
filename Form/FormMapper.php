@@ -57,7 +57,7 @@ class FormMapper extends BaseGroupedMapper
      *
      * @return $this
      */
-    public function add($name, $type = null, array $options = array(), array $fieldDescriptionOptions = array())
+    public function add($name, $type = null, array $options = [], array $fieldDescriptionOptions = [])
     {
         if ($this->apply !== null && !$this->apply) {
             return $this;
@@ -245,7 +245,7 @@ class FormMapper extends BaseGroupedMapper
      *
      * @return FormBuilderInterface
      */
-    public function create($name, $type = null, array $options = array())
+    public function create($name, $type = null, array $options = [])
     {
         return $this->formBuilder->create($name, $type, $options);
     }
@@ -255,7 +255,7 @@ class FormMapper extends BaseGroupedMapper
      *
      * @return FormMapper
      */
-    public function setHelps(array $helps = array())
+    public function setHelps(array $helps = [])
     {
         foreach ($helps as $name => $help) {
             $this->addHelp($name, $help);
@@ -291,7 +291,7 @@ class FormMapper extends BaseGroupedMapper
      */
     protected function sanitizeFieldName($fieldName)
     {
-        return str_replace(array('__', '.'), array('____', '__'), $fieldName);
+        return str_replace(['__', '.'], ['____', '__'], $fieldName);
     }
 
     /**

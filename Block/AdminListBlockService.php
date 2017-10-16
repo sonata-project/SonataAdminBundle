@@ -46,19 +46,19 @@ class AdminListBlockService extends AbstractBlockService
 
         $settings = $blockContext->getSettings();
 
-        $visibleGroups = array();
+        $visibleGroups = [];
         foreach ($dashboardGroups as $name => $dashboardGroup) {
             if (!$settings['groups'] || in_array($name, $settings['groups'])) {
                 $visibleGroups[] = $dashboardGroup;
             }
         }
 
-        return $this->renderPrivateResponse($this->pool->getTemplate('list_block'), array(
+        return $this->renderPrivateResponse($this->pool->getTemplate('list_block'), [
             'block' => $blockContext->getBlock(),
             'settings' => $settings,
             'admin_pool' => $this->pool,
             'groups' => $visibleGroups,
-        ), $response);
+        ], $response);
     }
 
     /**
@@ -74,17 +74,17 @@ class AdminListBlockService extends AbstractBlockService
      */
     public function configureSettings(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'groups' => false,
-        ));
+        ]);
 
         // Symfony < 2.6 BC
         if (method_exists($resolver, 'setNormalizer')) {
-            $resolver->setAllowedTypes('groups', array('bool', 'array'));
+            $resolver->setAllowedTypes('groups', ['bool', 'array']);
         } else {
-            $resolver->setAllowedTypes(array(
-                'groups' => array('bool', 'array'),
-            ));
+            $resolver->setAllowedTypes([
+                'groups' => ['bool', 'array'],
+            ]);
         }
     }
 }

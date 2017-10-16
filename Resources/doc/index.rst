@@ -39,6 +39,7 @@ The demo website can be found at http://demo.sonata-project.org.
    reference/getting_started
    reference/configuration
    reference/architecture
+   reference/child_admin
    reference/dashboard
    reference/search
    reference/action_list
@@ -82,6 +83,7 @@ The demo website can be found at http://demo.sonata-project.org.
    cookbook/recipe_knp_menu
    cookbook/recipe_file_uploads
    cookbook/recipe_image_previews
+   cookbook/recipe_hashid
    cookbook/recipe_row_templates
    cookbook/recipe_sortable_listing
    cookbook/recipe_dynamic_form_modification

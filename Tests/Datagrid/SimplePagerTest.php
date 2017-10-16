@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\SimplePager;
 
 /**
@@ -20,7 +21,7 @@ use Sonata\AdminBundle\Datagrid\SimplePager;
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Sjoerd Peters <sjoerd.peters@gmail.com>
  */
-class SimplePagerTest extends \PHPUnit_Framework_TestCase
+class SimplePagerTest extends TestCase
 {
     public function setUp()
     {
@@ -35,7 +36,7 @@ class SimplePagerTest extends \PHPUnit_Framework_TestCase
         $pager = new SimplePager(10, 2);
         $this->proxyQuery->expects($this->once())
                 ->method('execute')
-                ->with(array(), null)
+                ->with([], null)
                 ->will($this->returnValue(new ArrayCollection(range(0, 12))));
 
         $this->proxyQuery->expects($this->once())
@@ -56,7 +57,7 @@ class SimplePagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxyQuery->expects($this->once())
             ->method('execute')
-            ->with(array(), null)
+            ->with([], null)
             ->will($this->returnValue(new ArrayCollection(range(0, 12))));
 
         $this->proxyQuery->expects($this->once())
@@ -98,8 +99,8 @@ class SimplePagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxyQuery->expects($this->once())
             ->method('execute')
-            ->with(array(), null)
-            ->will($this->returnValue(array()));
+            ->with([], null)
+            ->will($this->returnValue([]));
 
         $this->proxyQuery->expects($this->once())
             ->method('setMaxResults')

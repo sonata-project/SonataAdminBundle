@@ -45,7 +45,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @throws \RuntimeException
      */
-    public function with($name, array $options = array())
+    public function with($name, array $options = [])
     {
         /*
          * The current implementation should work with the following workflow:
@@ -67,7 +67,7 @@ abstract class BaseGroupedMapper extends BaseMapper
          *        ->end();
          *
          */
-        $defaultOptions = array(
+        $defaultOptions = [
             'collapsed' => false,
             'class' => false,
             'description' => false,
@@ -76,7 +76,7 @@ abstract class BaseGroupedMapper extends BaseMapper
             'translation_domain' => null,
             'name' => $name,
             'box_class' => 'box box-primary',
-        );
+        ];
 
         // NEXT_MAJOR: remove this code
         if ($this->admin instanceof AbstractAdmin && $pool = $this->admin->getConfigurationPool()) {
@@ -102,13 +102,13 @@ abstract class BaseGroupedMapper extends BaseMapper
             }
 
             if (!isset($tabs[$name])) {
-                $tabs[$name] = array();
+                $tabs[$name] = [];
             }
 
-            $tabs[$code] = array_merge($defaultOptions, array(
+            $tabs[$code] = array_merge($defaultOptions, [
                 'auto_created' => false,
-                'groups' => array(),
-            ), $tabs[$code], $options);
+                'groups' => [],
+            ], $tabs[$code], $options);
 
             $this->currentTab = $code;
         } else {
@@ -118,11 +118,11 @@ abstract class BaseGroupedMapper extends BaseMapper
 
             if (!$this->currentTab) {
                 // no tab define
-                $this->with('default', array(
+                $this->with('default', [
                     'tab' => true,
                     'auto_created' => true,
                     'translation_domain' => isset($options['translation_domain']) ? $options['translation_domain'] : null,
-                )); // add new tab automatically
+                ]); // add new tab automatically
             }
 
             // if no tab is selected, we go the the main one named '_' ..
@@ -132,12 +132,12 @@ abstract class BaseGroupedMapper extends BaseMapper
 
             $groups = $this->getGroups();
             if (!isset($groups[$code])) {
-                $groups[$code] = array();
+                $groups[$code] = [];
             }
 
-            $groups[$code] = array_merge($defaultOptions, array(
-                'fields' => array(),
-            ), $groups[$code], $options);
+            $groups[$code] = array_merge($defaultOptions, [
+                'fields' => [],
+            ], $groups[$code], $options);
 
             $this->currentGroup = $code;
             $this->setGroups($groups);
@@ -211,9 +211,9 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @return $this
      */
-    public function tab($name, array $options = array())
+    public function tab($name, array $options = [])
     {
-        return $this->with($name, array_merge($options, array('tab' => true)));
+        return $this->with($name, array_merge($options, ['tab' => true]));
     }
 
     /**
@@ -307,7 +307,7 @@ abstract class BaseGroupedMapper extends BaseMapper
     protected function getCurrentGroupName()
     {
         if (!$this->currentGroup) {
-            $this->with($this->admin->getLabel(), array('auto_created' => true));
+            $this->with($this->admin->getLabel(), ['auto_created' => true]);
         }
 
         return $this->currentGroup;

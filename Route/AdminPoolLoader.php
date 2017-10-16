@@ -32,7 +32,7 @@ class AdminPoolLoader extends Loader
     /**
      * @var array
      */
-    protected $adminServiceIds = array();
+    protected $adminServiceIds = [];
 
     /**
      * @var ContainerInterface

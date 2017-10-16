@@ -200,7 +200,7 @@
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>Estàs segur que vols esborrar l'element seleccionat "%name%"?</target>
+                <target>Estàs segur que vols esborrar l'element seleccionat "%object%"?</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>

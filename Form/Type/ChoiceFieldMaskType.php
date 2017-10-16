@@ -27,11 +27,11 @@ class ChoiceFieldMaskType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $sanitizedMap = array();
+        $sanitizedMap = [];
         foreach ($options['map'] as $value => $fieldNames) {
             foreach ($fieldNames as $fieldName) {
                 $sanitizedMap[$value][] =
-                    str_replace(array('__', '.'), array('____', '__'), $fieldName);
+                    str_replace(['__', '.'], ['____', '__'], $fieldName);
             }
         }
 
@@ -68,9 +68,9 @@ class ChoiceFieldMaskType extends AbstractType
             parent::setDefaultOptions($resolver);
         }
 
-        $resolver->setDefaults(array(
-            'map' => array(),
-        ));
+        $resolver->setDefaults([
+            'map' => [],
+        ]);
     }
 
     /**

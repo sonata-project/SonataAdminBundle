@@ -11,16 +11,16 @@
 
 namespace Sonata\AdminBundle\Tests\Generator;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Generator\AdminGenerator;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
  * @author Marek Stipek <mario.dweller@seznam.cz>
  */
-class AdminGeneratorTest extends PHPUnit_Framework_TestCase
+class AdminGeneratorTest extends TestCase
 {
     /** @var AdminGenerator */
     private $adminGenerator;
@@ -76,7 +76,7 @@ class AdminGeneratorTest extends PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('getExportFields')
             ->with('Model')
-            ->will($this->returnValue(array('foo', 'bar', 'baz')))
+            ->will($this->returnValue(['foo', 'bar', 'baz']))
         ;
 
         return $modelManagerMock;

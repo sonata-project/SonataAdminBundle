@@ -28,27 +28,27 @@ class Pool
     /**
      * @var string[]
      */
-    protected $adminServiceIds = array();
+    protected $adminServiceIds = [];
 
     /**
      * @var array
      */
-    protected $adminGroups = array();
+    protected $adminGroups = [];
 
     /**
      * @var array
      */
-    protected $adminClasses = array();
+    protected $adminClasses = [];
 
     /**
      * @var string[]
      */
-    protected $templates = array();
+    protected $templates = [];
 
     /**
      * @var array
      */
-    protected $assets = array();
+    protected $assets = [];
 
     /**
      * @var string
@@ -76,7 +76,7 @@ class Pool
      * @param string             $logoTitle
      * @param array              $options
      */
-    public function __construct(ContainerInterface $container, $title, $logoTitle, $options = array(), PropertyAccessorInterface $propertyAccessor = null)
+    public function __construct(ContainerInterface $container, $title, $logoTitle, $options = [], PropertyAccessorInterface $propertyAccessor = null)
     {
         $this->container = $container;
         $this->title = $title;
@@ -161,7 +161,7 @@ class Pool
             throw new \InvalidArgumentException(sprintf('Group "%s" not found in admin pool.', $group));
         }
 
-        $admins = array();
+        $admins = [];
 
         if (!isset($this->adminGroups[$group]['items'])) {
             return $admins;
@@ -223,13 +223,24 @@ class Pool
     public function getAdminByAdminCode($adminCode)
     {
         $codes = explode('|', $adminCode);
-        $admin = false;
+
+        if (false === $codes) {
+            return false;
+        }
+
+        $admin = $this->getInstance($codes[0]);
+        array_shift($codes);
+
+        if (empty($codes)) {
+            return $admin;
+        }
+
         foreach ($codes as $code) {
-            if ($admin == false) {
-                $admin = $this->getInstance($code);
-            } elseif ($admin->hasChild($code)) {
-                $admin = $admin->getChild($code);
+            if (!$admin->hasChild($code)) {
+                return false;
             }
+
+            $admin = $admin->getChild($code);
         }
 
         return $admin;

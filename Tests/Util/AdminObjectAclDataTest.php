@@ -11,12 +11,13 @@
 
 namespace Sonata\AdminBundle\Tests\Util;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 
 /**
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
-class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
+class AdminObjectAclDataTest extends TestCase
 {
     public function testGetAdmin()
     {
@@ -195,7 +196,7 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
 
-        $this->assertSame(array(), $adminObjectAclData->getSecurityInformation());
+        $this->assertSame([], $adminObjectAclData->getSecurityInformation());
     }
 
     protected static function createAclUsers()
@@ -219,13 +220,13 @@ class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
 
         $securityHandler->expects($this->any())
             ->method('getObjectPermissions')
-            ->will($this->returnValue(array('VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER')))
+            ->will($this->returnValue(['VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER']))
         ;
 
         $securityHandler->expects($this->any())
             ->method('buildSecurityInformation')
             ->with($this->isInstanceOf('Sonata\AdminBundle\Admin\AdminInterface'))
-            ->will($this->returnValue(array()))
+            ->will($this->returnValue([]))
         ;
 
         $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');

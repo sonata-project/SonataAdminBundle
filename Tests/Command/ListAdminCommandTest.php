@@ -11,16 +11,16 @@
 
 namespace Sonata\AdminBundle\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\ListAdminCommand;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ListAdminCommandTest extends PHPUnit_Framework_TestCase
+class ListAdminCommandTest extends TestCase
 {
     public function testExecute()
     {
@@ -45,7 +45,7 @@ class ListAdminCommandTest extends PHPUnit_Framework_TestCase
                 switch ($id) {
                     case 'sonata.admin.pool':
                         $pool = new Pool($container, '', '');
-                        $pool->setAdminServiceIds(array('acme.admin.foo', 'acme.admin.bar'));
+                        $pool->setAdminServiceIds(['acme.admin.foo', 'acme.admin.bar']);
 
                         return $pool;
 
@@ -65,7 +65,7 @@ class ListAdminCommandTest extends PHPUnit_Framework_TestCase
 
         $command = $application->find('sonata:admin:list');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array('command' => $command->getName()));
+        $commandTester->execute(['command' => $command->getName()]);
 
         $this->assertRegExp('@Admin services:\s+acme.admin.foo\s+Acme\\\Entity\\\Foo\s+acme.admin.bar\s+Acme\\\Entity\\\Bar@', $commandTester->getDisplay());
     }

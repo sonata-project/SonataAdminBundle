@@ -2,8 +2,8 @@
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Filter;
 
-use Sonata\AdminBundle\Filter\Filter;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Filter\Filter;
 
 class FooFilter extends Filter
 {

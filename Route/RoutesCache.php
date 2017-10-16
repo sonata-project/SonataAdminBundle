@@ -53,8 +53,8 @@ class RoutesCache
 
         $cache = new ConfigCache($filename, $this->debug);
         if (!$cache->isFresh()) {
-            $resources = array();
-            $routes = array();
+            $resources = [];
+            $routes = [];
 
             $reflection = new \ReflectionObject($admin);
             if (file_exists($reflection->getFileName())) {

@@ -1,6 +1,16 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated AbstractAdmin::setBaseCodeRoute() and AbstractAdmin::baseCodeRoute property
+
+The `AbstractAdmin::baseCodeRoute` property is no longer supported.
+Please use the `AbstractAdmin::getBaseCodeRoute()` method instead.
+
+The `AbstractAdmin::setBaseCodeRoute()` method is no longer supported.
+There is no replacement for this method.
+You can still use the `AbstractAdmin::setCode()` method to set the code
+of an admin.
+
 UPGRADE FROM 3.20 to 3.21
 =========================
 

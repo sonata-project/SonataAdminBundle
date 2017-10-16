@@ -11,10 +11,11 @@
 
 namespace Sonata\AdminBundle\Tests\Security\Permission;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 
-class AdminPermissionMapTest extends \PHPUnit_Framework_TestCase
+class AdminPermissionMapTest extends TestCase
 {
     protected function setUp()
     {
@@ -50,18 +51,18 @@ class AdminPermissionMapTest extends \PHPUnit_Framework_TestCase
 
     public function permissionProvider()
     {
-        $dataSet = array();
+        $dataSet = [];
         $reflection = new \ReflectionClass(
             'Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap'
         );
 
         foreach ($reflection->getConstants() as $permission) {
-            $dataSet[$permission] = array(true, $permission);
+            $dataSet[$permission] = [true, $permission];
         }
 
-        return $dataSet + array(
-            'unknown permission' => array(false, 'unknown permission'),
-        );
+        return $dataSet + [
+            'unknown permission' => [false, 'unknown permission'],
+        ];
     }
 
     /**

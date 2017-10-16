@@ -108,7 +108,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         $this->catalogue = new MessageCatalogue();
 
         foreach ($this->adminPool->getAdminGroups() as $name => $group) {
-            $this->trans($name, array(), $group['label_catalogue']);
+            $this->trans($name, [], $group['label_catalogue']);
         }
 
         foreach ($this->adminPool->getAdminServiceIds() as $id) {
@@ -116,7 +116,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
 
             $label = $admin->getLabel();
             if (!empty($label)) {
-                $this->trans($label, array(), $admin->getTranslationDomain());
+                $this->trans($label, [], $admin->getTranslationDomain());
             }
 
             $this->translator = $admin->getTranslator();
@@ -132,21 +132,21 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
             //            }
 
             // call the different public method
-            $methods = array(
+            $methods = [
                 'getShow',
                 'getDatagrid',
                 'getList',
                 'getForm',
-            );
+            ];
 
-            $actions = array(
+            $actions = [
                 'list',
                 'edit',
                 'create',
                 'update',
                 'batch',
                 'delete',
-            );
+            ];
 
             if ($this->logger) {
                 $this->logger->info(sprintf('Retrieving message from admin:%s - class: %s', $admin->getCode(), get_class($admin)));
@@ -175,7 +175,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
                                 $admin->getCode(),
                                 $e->getMessage()
                             ),
-                            array('exception' => $e)
+                            ['exception' => $e]
                         );
                     }
 
@@ -193,7 +193,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     /**
      * {@inheritdoc}
      */
-    public function trans($id, array $parameters = array(), $domain = null, $locale = null)
+    public function trans($id, array $parameters = [], $domain = null, $locale = null)
     {
         $this->addMessage($id, $domain);
 
@@ -203,7 +203,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     /**
      * {@inheritdoc}
      */
-    public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null)
+    public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
     {
         $this->addMessage($id, $domain);
 

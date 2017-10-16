@@ -11,10 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class FieldDescriptionCollectionTest extends PHPUnit_Framework_TestCase
+class FieldDescriptionCollectionTest extends TestCase
 {
     public function testMethods()
     {
@@ -81,7 +81,7 @@ class FieldDescriptionCollectionTest extends PHPUnit_Framework_TestCase
         $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('position'));
         $collection->add($fieldDescription);
 
-        $newOrder = array('position', 'title');
+        $newOrder = ['position', 'title'];
         $collection->reorder($newOrder);
 
         $actualElements = array_keys($collection->getElements());
@@ -104,7 +104,7 @@ class FieldDescriptionCollectionTest extends PHPUnit_Framework_TestCase
         $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('batch'));
         $collection->add($fieldDescription);
 
-        $newOrder = array('position', 'title');
+        $newOrder = ['position', 'title'];
         $collection->reorder($newOrder);
         array_unshift($newOrder, 'batch');
 

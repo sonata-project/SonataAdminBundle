@@ -11,13 +11,14 @@
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\FooBoolean;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooCall;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class BaseFieldDescriptionTest extends PHPUnit_Framework_TestCase
+class BaseFieldDescriptionTest extends TestCase
 {
     public function testSetName()
     {
@@ -36,22 +37,22 @@ class BaseFieldDescriptionTest extends PHPUnit_Framework_TestCase
         $this->assertNull($description->getOption('bar'));
         $this->assertSame('bar', $description->getOption('foo'));
 
-        $description->mergeOptions(array('settings' => array('value_1', 'value_2')));
-        $description->mergeOptions(array('settings' => array('value_1', 'value_3')));
+        $description->mergeOptions(['settings' => ['value_1', 'value_2']]);
+        $description->mergeOptions(['settings' => ['value_1', 'value_3']]);
 
-        $this->assertSame(array('value_1', 'value_2', 'value_1', 'value_3'), $description->getOption('settings'));
+        $this->assertSame(['value_1', 'value_2', 'value_1', 'value_3'], $description->getOption('settings'));
 
-        $description->mergeOption('settings', array('value_4'));
-        $this->assertSame(array('value_1', 'value_2', 'value_1', 'value_3', 'value_4'), $description->getOption('settings'));
+        $description->mergeOption('settings', ['value_4']);
+        $this->assertSame(['value_1', 'value_2', 'value_1', 'value_3', 'value_4'], $description->getOption('settings'));
 
-        $description->mergeOption('bar', array('hello'));
+        $description->mergeOption('bar', ['hello']);
 
         $this->assertCount(1, $description->getOption('bar'));
 
         $description->setOption('label', 'trucmuche');
         $this->assertSame('trucmuche', $description->getLabel());
         $this->assertNull($description->getTemplate());
-        $description->setOptions(array('type' => 'integer', 'template' => 'foo.twig.html', 'help' => 'fooHelp'));
+        $description->setOptions(['type' => 'integer', 'template' => 'foo.twig.html', 'help' => 'fooHelp']);
 
         $this->assertSame('integer', $description->getType());
         $this->assertSame('foo.twig.html', $description->getTemplate());
@@ -66,7 +67,7 @@ class BaseFieldDescriptionTest extends PHPUnit_Framework_TestCase
         $this->assertSame('int', $description->getMappingType());
 
         $this->assertSame('short_object_description_placeholder', $description->getOption('placeholder'));
-        $description->setOptions(array('placeholder' => false));
+        $description->setOptions(['placeholder' => false]);
         $this->assertFalse($description->getOption('placeholder'));
 
         $description->setOption('sortable', false);
@@ -103,7 +104,7 @@ class BaseFieldDescriptionTest extends PHPUnit_Framework_TestCase
         $description->setOption('code', 'getFoo');
 
         $mock = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getFoo'))
+            ->setMethods(['getFoo'])
             ->getMock();
         $mock->expects($this->once())->method('getFoo')->will($this->returnValue(42));
 
@@ -113,13 +114,13 @@ class BaseFieldDescriptionTest extends PHPUnit_Framework_TestCase
          * Test with One parameter int
          */
         $arg1 = 38;
-        $oneParameter = array($arg1);
+        $oneParameter = [$arg1];
         $description1 = new FieldDescription();
         $description1->setOption('code', 'getWithOneParameter');
         $description1->setOption('parameters', $oneParameter);
 
         $mock1 = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getWithOneParameter'))
+            ->setMethods(['getWithOneParameter'])
             ->getMock();
         $returnValue1 = $arg1 + 2;
         $mock1->expects($this->once())->method('getWithOneParameter')->with($this->equalTo($arg1))->will($this->returnValue($returnValue1));
@@ -130,13 +131,13 @@ class BaseFieldDescriptionTest extends PHPUnit_Framework_TestCase
          * Test with Two parameters int
          */
         $arg2 = 4;
-        $twoParameters = array($arg1, $arg2);
+        $twoParameters = [$arg1, $arg2];
         $description2 = new FieldDescription();
         $description2->setOption('code', 'getWithTwoParameters');
         $description2->setOption('parameters', $twoParameters);
 
         $mock2 = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getWithTwoParameters'))
+            ->setMethods(['getWithTwoParameters'])
             ->getMock();
         $returnValue2 = $arg1 + $arg2;
         $mock2->expects($this->any())->method('getWithTwoParameters')->with($this->equalTo($arg1), $this->equalTo($arg2))->will($this->returnValue($returnValue2));
@@ -145,13 +146,15 @@ class BaseFieldDescriptionTest extends PHPUnit_Framework_TestCase
         /*
          * Test with underscored attribute name
          */
-        $description3 = new FieldDescription();
-        $mock3 = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getFake'))
-            ->getMock();
+        foreach (['getFake', 'isFake', 'hasFake'] as $method) {
+            $description3 = new FieldDescription();
+            $mock3 = $this->getMockBuilder('stdClass')
+                ->setMethods([$method])
+                ->getMock();
 
-        $mock3->expects($this->once())->method('getFake')->will($this->returnValue(42));
-        $this->assertSame(42, $description3->getFieldValue($mock3, '_fake'));
+            $mock3->expects($this->once())->method($method)->will($this->returnValue(42));
+            $this->assertSame(42, $description3->getFieldValue($mock3, '_fake'));
+        }
     }
 
     /**
@@ -161,7 +164,7 @@ class BaseFieldDescriptionTest extends PHPUnit_Framework_TestCase
     {
         $description = new FieldDescription();
         $mock = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getFoo'))
+            ->setMethods(['getFoo'])
             ->getMock();
 
         $description->getFieldValue($mock, 'fake');
@@ -171,7 +174,7 @@ class BaseFieldDescriptionTest extends PHPUnit_Framework_TestCase
     {
         $description = new FieldDescription();
         $mock = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getFoo'))
+            ->setMethods(['getFoo'])
             ->getMock();
 
         $description->setOption('virtual_field', true);
@@ -185,7 +188,7 @@ class BaseFieldDescriptionTest extends PHPUnit_Framework_TestCase
     {
         $description = new FieldDescription();
         $description->setOption('bar', 'hello');
-        $description->mergeOption('bar', array('exception'));
+        $description->mergeOption('bar', ['exception']);
     }
 
     public function testGetTranslationDomain()
@@ -225,6 +228,14 @@ class BaseFieldDescriptionTest extends PHPUnit_Framework_TestCase
         $description = new FieldDescription();
         $this->assertSame('Bar', $description->getFieldValue($foo, 'bar'));
 
+        $foo = new FooBoolean();
+        $foo->setBar(true);
+        $foo->setBaz(false);
+
+        $description = new FieldDescription();
+        $this->assertSame(true, $description->getFieldValue($foo, 'bar'));
+        $this->assertSame(false, $description->getFieldValue($foo, 'baz'));
+
         $this->expectException('Sonata\AdminBundle\Exception\NoValueException');
         $description->getFieldValue($foo, 'inexistantMethod');
     }
@@ -246,11 +257,11 @@ class BaseFieldDescriptionTest extends PHPUnit_Framework_TestCase
 
     public function testGetFieldValueMagicCall()
     {
-        $parameters = array('foo', 'bar');
+        $parameters = ['foo', 'bar'];
         $foo = new FooCall();
 
         $description = new FieldDescription();
         $description->setOption('parameters', $parameters);
-        $this->assertSame(array('inexistantMethod', $parameters), $description->getFieldValue($foo, 'inexistantMethod'));
+        $this->assertSame(['inexistantMethod', $parameters], $description->getFieldValue($foo, 'inexistantMethod'));
     }
 }

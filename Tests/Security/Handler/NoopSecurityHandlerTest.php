@@ -11,10 +11,11 @@
 
 namespace Sonata\AdminBundle\Tests\Security\Handler;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\NoopSecurityHandler;
 
-class NoopSecurityHandlerTest extends \PHPUnit_Framework_TestCase
+class NoopSecurityHandlerTest extends TestCase
 {
     /**
      * @var NoopSecurityHandler
@@ -28,13 +29,13 @@ class NoopSecurityHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testIsGranted()
     {
-        $this->assertTrue($this->handler->isGranted($this->getSonataAdminObject(), array('TOTO')));
+        $this->assertTrue($this->handler->isGranted($this->getSonataAdminObject(), ['TOTO']));
         $this->assertTrue($this->handler->isGranted($this->getSonataAdminObject(), 'TOTO'));
     }
 
     public function testBuildSecurityInformation()
     {
-        $this->assertSame(array(), $this->handler->buildSecurityInformation($this->getSonataAdminObject()));
+        $this->assertSame([], $this->handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
     public function testCreateObjectSecurity()

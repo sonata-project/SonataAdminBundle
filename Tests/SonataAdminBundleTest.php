@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
@@ -24,12 +25,12 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class SonataAdminBundleTest extends \PHPUnit_Framework_TestCase
+class SonataAdminBundleTest extends TestCase
 {
     public function testBuild()
     {
         $containerBuilder = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
-            ->setMethods(array('addCompilerPass'))
+            ->setMethods(['addCompilerPass'])
             ->getMock();
 
         $containerBuilder->expects($this->exactly(4))

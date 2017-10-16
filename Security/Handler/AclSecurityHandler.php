@@ -128,7 +128,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     public function isGranted(AdminInterface $admin, $attributes, $object = null)
     {
         if (!is_array($attributes)) {
-            $attributes = array($attributes);
+            $attributes = [$attributes];
         }
 
         try {
@@ -153,7 +153,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     {
         $baseRole = $this->getBaseRole($admin);
 
-        $results = array();
+        $results = [];
         foreach ($admin->getSecurityInformation() as $role => $permissions) {
             $results[sprintf($baseRole, $role)] = $permissions;
         }
@@ -208,7 +208,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function findObjectAcls(\Traversable $oids, array $sids = array())
+    public function findObjectAcls(\Traversable $oids, array $sids = [])
     {
         try {
             $acls = $this->aclProvider->findAcls(iterator_to_array($oids), $sids);
@@ -235,7 +235,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function addObjectClassAces(AclInterface $acl, array $roleInformation = array())
+    public function addObjectClassAces(AclInterface $acl, array $roleInformation = [])
     {
         $builder = new $this->maskBuilderClass();
 

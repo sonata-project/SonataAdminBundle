@@ -39,5 +39,5 @@ interface AdminAclManipulatorInterface
      *
      * @return bool TRUE if admin class ACEs are added, FALSE if not
      */
-    public function addAdminClassAces(OutputInterface $output, AclInterface $acl, AclSecurityHandlerInterface $securityHandler, array $roleInformation = array());
+    public function addAdminClassAces(OutputInterface $output, AclInterface $acl, AclSecurityHandlerInterface $securityHandler, array $roleInformation = []);
 }

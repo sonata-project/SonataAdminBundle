@@ -11,10 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class ModelToIdTransformerTest extends PHPUnit_Framework_TestCase
+class ModelToIdTransformerTest extends TestCase
 {
     private $modelManager = null;
 
@@ -32,7 +32,7 @@ class ModelToIdTransformerTest extends PHPUnit_Framework_TestCase
                 ->method('find')
                 ->will($this->returnValue(true));
 
-        $this->assertFalse(in_array(false, array('0', 0), true));
+        $this->assertFalse(in_array(false, ['0', 0], true));
 
         // we pass 0 as integer
         $this->assertTrue($transformer->reverseTransform(0));
@@ -61,12 +61,12 @@ class ModelToIdTransformerTest extends PHPUnit_Framework_TestCase
 
     public function getReverseTransformValues()
     {
-        return array(
-            array(null, null),
-            array(false, null),
-            array(array(), null),
-            array('', null),
-        );
+        return [
+            [null, null],
+            [false, null],
+            [[], null],
+            ['', null],
+        ];
     }
 
     public function testTransform()

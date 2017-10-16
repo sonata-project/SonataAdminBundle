@@ -11,15 +11,15 @@
 
 namespace Sonata\AdminBundle\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Command\CreateClassCacheCommand;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class CreateClassCacheCommandTest extends PHPUnit_Framework_TestCase
+class CreateClassCacheCommandTest extends TestCase
 {
     /**
      * @var string
@@ -99,7 +99,7 @@ class CreateClassCacheCommandTest extends PHPUnit_Framework_TestCase
 
         $command = $this->application->find('cache:create-cache-class');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(array('command' => $command->getName()));
+        $commandTester->execute(['command' => $command->getName()]);
 
         $this->assertRegExp('@Writing cache file ...\s+done!@', $commandTester->getDisplay());
 
@@ -115,7 +115,7 @@ class CreateClassCacheCommandTest extends PHPUnit_Framework_TestCase
         try {
             $command = $this->application->find('cache:create-cache-class');
             $commandTester = new CommandTester($command);
-            $commandTester->execute(array('command' => $command->getName()));
+            $commandTester->execute(['command' => $command->getName()]);
         } catch (\RuntimeException $e) {
             $this->assertSame(sprintf('The file %s/classes.map does not exist', $this->tempDirectory), $e->getMessage());
 

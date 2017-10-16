@@ -11,14 +11,14 @@
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
 class BaseAdminModelManager_Admin extends AbstractAdmin
 {
 }
 
-class BaseAdminModelManagerTest extends PHPUnit_Framework_TestCase
+class BaseAdminModelManagerTest extends TestCase
 {
     public function testHook()
     {

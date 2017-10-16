@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Menu\Integration;
 
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Renderer\TwigRenderer;
+use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Tests\Extension\Fixtures\StubFilesystemLoader;
 use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslator;
@@ -20,7 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslat
 /**
  * Base class for tests checking rendering of twig templates.
  */
-abstract class BaseMenuTest extends \PHPUnit_Framework_TestCase
+abstract class BaseMenuTest extends TestCase
 {
     /**
      * {@inheritdoc}
@@ -28,14 +29,14 @@ abstract class BaseMenuTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         // Adapt to both bundle and project-wide test strategy
-        $twigPaths = array_filter(array(
+        $twigPaths = array_filter([
             __DIR__.'/../../../../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views',
             __DIR__.'/../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views',
             __DIR__.'/../../../Resources/views',
-        ), 'is_dir');
+        ], 'is_dir');
 
         $loader = new StubFilesystemLoader($twigPaths);
-        $this->environment = new \Twig_Environment($loader, array('strict_variables' => true));
+        $this->environment = new \Twig_Environment($loader, ['strict_variables' => true]);
     }
 
     abstract protected function getTemplate();
@@ -45,7 +46,7 @@ abstract class BaseMenuTest extends \PHPUnit_Framework_TestCase
         return new StubTranslator();
     }
 
-    protected function renderMenu(ItemInterface $item, array $options = array())
+    protected function renderMenu(ItemInterface $item, array $options = [])
     {
         $this->environment->addExtension(new TranslationExtension($this->getTranslator()));
         $this->renderer = new TwigRenderer(

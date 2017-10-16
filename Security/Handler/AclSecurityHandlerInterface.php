@@ -79,7 +79,7 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
      *
      * @return \SplObjectStorage mapping the passed object identities to ACLs
      */
-    public function findObjectAcls(\Traversable $oids, array $sids = array());
+    public function findObjectAcls(\Traversable $oids, array $sids = []);
 
     /**
      * Add an object owner ACE to the object ACL.
@@ -97,7 +97,7 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
      * @param AclInterface $acl
      * @param array        $roleInformation
      */
-    public function addObjectClassAces(AclInterface $acl, array $roleInformation = array());
+    public function addObjectClassAces(AclInterface $acl, array $roleInformation = []);
 
     /**
      * Create an object ACL.

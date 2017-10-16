@@ -19,6 +19,7 @@ From the configuration file, you can add a new section named ``admin_services`` 
                 translator:                 translator
                 configuration_pool:         sonata.admin.pool
                 route_generator:            sonata.admin.route.default_generator
+                route_id_handler:           sonata.admin.default_route_id_handler
                 validator:                  validator
                 security_handler:           sonata.admin.security.handler
                 menu_factory:               knp_menu.factory

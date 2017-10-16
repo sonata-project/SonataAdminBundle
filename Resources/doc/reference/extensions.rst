@@ -100,6 +100,9 @@ uses:
     Requires PHP >= 5.4.0. Specify one or more traits. If the managed class of an admin uses one of the specified traits the extension will be
     added to that admin.
 
+priority:
+    Can be a positive or negative integer. The higher the priority, the earlier it’s executed.
+
 
 .. configuration-block::
 

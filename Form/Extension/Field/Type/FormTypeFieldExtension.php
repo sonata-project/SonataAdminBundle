@@ -28,7 +28,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     /**
      * @var array
      */
-    protected $defaultClasses = array();
+    protected $defaultClasses = [];
 
     /**
      * @var array
@@ -50,7 +50,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $sonataAdmin = array(
+        $sonataAdmin = [
             'name' => null,
             'admin' => null,
             'value' => null,
@@ -59,7 +59,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             'field_description' => null,
             'block_name' => false,
             'options' => $this->options,
-        );
+        ];
 
         $builder->setAttribute('sonata_admin_enabled', false);
         $builder->setAttribute('sonata_help', false);
@@ -87,13 +87,13 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $sonataAdmin = $form->getConfig()->getAttribute('sonata_admin');
+        $sonataAdminHelp = isset($options['sonata_help']) ? $options['sonata_help'] : null;
 
         /*
          * We have a child, so we need to upgrade block prefix
          */
         if ($view->parent && $view->parent->vars['sonata_admin_enabled'] && !$sonataAdmin['admin']) {
             $blockPrefixes = $view->vars['block_prefixes'];
-
             $baseName = str_replace('.', '_', $view->parent->vars['sonata_admin_code']);
 
             $baseType = $blockPrefixes[count($blockPrefixes) - 2];
@@ -105,7 +105,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
 
             $view->vars['block_prefixes'] = $blockPrefixes;
             $view->vars['sonata_admin_enabled'] = true;
-            $view->vars['sonata_admin'] = array(
+            $view->vars['sonata_admin'] = [
                 'admin' => false,
                 'field_description' => false,
                 'name' => false,
@@ -114,13 +114,12 @@ class FormTypeFieldExtension extends AbstractTypeExtension
                 'block_name' => false,
                 'class' => false,
                 'options' => $this->options,
-            );
+            ];
+            $view->vars['sonata_help'] = $sonataAdminHelp;
             $view->vars['sonata_admin_code'] = $view->parent->vars['sonata_admin_code'];
 
             return;
         }
-
-        $sonataAdminHelp = isset($options['sonata_help']) ? $options['sonata_help'] : null;
 
         // avoid to add extra information not required by non admin field
         if ($sonataAdmin && $form->getConfig()->getAttribute('sonata_admin_enabled', true)) {
@@ -186,14 +185,14 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'sonata_admin' => null,
             'sonata_field_description' => null,
 
             // be compatible with mopa if not installed, avoid generating an exception for invalid option
             'label_render' => true,
             'sonata_help' => null,
-        ));
+        ]);
     }
 
     /**
@@ -253,7 +252,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      */
     protected function getTypes(FormBuilderInterface $formBuilder)
     {
-        $types = array();
+        $types = [];
 
         for ($type = $formBuilder->getType(); null !== $type; $type = $type->getParent()) {
             array_unshift($types, $type->getInnerType());

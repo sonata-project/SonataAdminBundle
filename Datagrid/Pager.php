@@ -48,7 +48,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * @var array
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * @var int
@@ -84,7 +84,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * @var array
      */
-    protected $countColumn = array('id');
+    protected $countColumn = ['id'];
 
     /**
      * @param int $maxPerPage Number of records to display per page
@@ -136,7 +136,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         if ($nbLinks == null) {
             $nbLinks = $this->getMaxPageLinks();
         }
-        $links = array();
+        $links = [];
         $tmp = $this->page - floor($nbLinks / 2);
         $check = $this->lastPage - $nbLinks + 1;
         $limit = $check > 0 ? $check : 1;

@@ -76,7 +76,7 @@ class DateTimeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $choices = array(
+        $choices = [
             'label_date_type_equal' => self::TYPE_EQUAL,
             'label_date_type_greater_equal' => self::TYPE_GREATER_EQUAL,
             'label_date_type_greater_than' => self::TYPE_GREATER_THAN,
@@ -84,16 +84,16 @@ class DateTimeType extends AbstractType
             'label_date_type_less_than' => self::TYPE_LESS_THAN,
             'label_date_type_null' => self::TYPE_NULL,
             'label_date_type_not_null' => self::TYPE_NOT_NULL,
-        );
-        $choiceOptions = array(
+        ];
+        $choiceOptions = [
             'required' => false,
-        );
+        ];
 
         // NEXT_MAJOR: Remove (when requirement of Symfony is >= 2.7)
         if (!method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
             $choices = array_flip($choices);
             foreach ($choices as $key => $value) {
-                $choices[$key] = $this->translator->trans($value, array(), 'SonataAdminBundle');
+                $choices[$key] = $this->translator->trans($value, [], 'SonataAdminBundle');
             }
         } else {
             $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
@@ -111,7 +111,7 @@ class DateTimeType extends AbstractType
             ->add('type', method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
                 ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
                 : 'choice', $choiceOptions)
-            ->add('value', $options['field_type'], array_merge(array('required' => false), $options['field_options']))
+            ->add('value', $options['field_type'], array_merge(['required' => false], $options['field_options']))
         ;
     }
 
@@ -130,9 +130,9 @@ class DateTimeType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'field_type' => 'datetime',
-            'field_options' => array('date_format' => 'yyyy-MM-dd'),
-        ));
+            'field_options' => ['date_format' => 'yyyy-MM-dd'],
+        ]);
     }
 }

@@ -11,9 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Route;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Route\RoutesCacheWarmUp;
 
-class RoutesCacheWarmUpTest extends \PHPUnit_Framework_TestCase
+class RoutesCacheWarmUpTest extends TestCase
 {
     /**
      * @var RoutesCacheWarmUp

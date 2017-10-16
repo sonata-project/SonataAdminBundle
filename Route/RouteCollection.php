@@ -21,7 +21,7 @@ class RouteCollection
     /**
      * @var Route[]
      */
-    protected $elements = array();
+    protected $elements = [];
 
     /**
      * @var string
@@ -72,7 +72,7 @@ class RouteCollection
      *
      * @return RouteCollection
      */
-    public function add($name, $pattern = null, array $defaults = array(), array $requirements = array(), array $options = array(), $host = '', array $schemes = array(), array $methods = array(), $condition = '')
+    public function add($name, $pattern = null, array $defaults = [], array $requirements = [], array $options = [], $host = '', array $schemes = [], array $methods = [], $condition = '')
     {
         $pattern = $this->baseRoutePattern.'/'.($pattern ?: $name);
         $code = $this->getCode($name);
@@ -188,10 +188,10 @@ class RouteCollection
     public function clearExcept($routeList)
     {
         if (!is_array($routeList)) {
-            $routeList = array($routeList);
+            $routeList = [$routeList];
         }
 
-        $routeCodeList = array();
+        $routeCodeList = [];
         foreach ($routeList as $name) {
             $routeCodeList[] = $this->getCode($name);
         }
@@ -213,7 +213,7 @@ class RouteCollection
      */
     public function clear()
     {
-        $this->elements = array();
+        $this->elements = [];
 
         return $this;
     }

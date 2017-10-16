@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Tests\Admin\Extension;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\Extension\LockExtension;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -19,7 +20,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Request;
 
-class LockExtensionTest extends \PHPUnit_Framework_TestCase
+class LockExtensionTest extends TestCase
 {
     /**
      * @var LockExtension
@@ -67,9 +68,9 @@ class LockExtensionTest extends \PHPUnit_Framework_TestCase
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
         $this->configureAdmin(null, null, $this->modelManager->reveal());
-        $event = new FormEvent($form->reveal(), array());
+        $event = new FormEvent($form->reveal(), []);
 
-        $this->modelManager->getLockVersion(array())->willReturn(1);
+        $this->modelManager->getLockVersion([])->willReturn(1);
 
         $form->add(
             '_lock_version',
@@ -77,7 +78,7 @@ class LockExtensionTest extends \PHPUnit_Framework_TestCase
             method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
                 ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
                 : 'hidden',
-            array('mapped' => false, 'data' => 1)
+            ['mapped' => false, 'data' => 1]
         )->shouldBeCalled();
 
         $this->lockExtension->configureFormFields($formMapper);
@@ -90,7 +91,7 @@ class LockExtensionTest extends \PHPUnit_Framework_TestCase
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
         $this->configureAdmin(null, null, $modelManager->reveal());
-        $event = new FormEvent($form->reveal(), array());
+        $event = new FormEvent($form->reveal(), []);
 
         $form->add()->shouldNotBeCalled();
 
@@ -114,7 +115,7 @@ class LockExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
-        $event = new FormEvent($form->reveal(), array());
+        $event = new FormEvent($form->reveal(), []);
 
         $form->getParent()->willReturn('parent');
         $form->add()->shouldNotBeCalled();
@@ -128,9 +129,9 @@ class LockExtensionTest extends \PHPUnit_Framework_TestCase
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
         $this->configureAdmin(null, null, $this->modelManager->reveal());
-        $event = new FormEvent($form->reveal(), array());
+        $event = new FormEvent($form->reveal(), []);
 
-        $this->modelManager->getLockVersion(array())->willReturn(null);
+        $this->modelManager->getLockVersion([])->willReturn(null);
         $form->add()->shouldNotBeCalled();
 
         $this->lockExtension->configureFormFields($formMapper);
@@ -159,7 +160,7 @@ class LockExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->modelManager->lock()->shouldNotBeCalled();
 
-        $this->request->request->set($uniqid, array('something'));
+        $this->request->request->set($uniqid, ['something']);
         $this->lockExtension->preUpdate($this->admin->reveal(), $this->object);
     }
 
@@ -169,7 +170,7 @@ class LockExtensionTest extends \PHPUnit_Framework_TestCase
         $uniqid = 'admin123';
         $this->configureAdmin($uniqid, $this->request, $modelManager->reveal());
 
-        $this->request->request->set($uniqid, array('_lock_version' => 1));
+        $this->request->request->set($uniqid, ['_lock_version' => 1]);
         $this->lockExtension->preUpdate($this->admin->reveal(), $this->object);
     }
 
@@ -180,7 +181,7 @@ class LockExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->modelManager->lock($this->object, 1)->shouldBeCalled();
 
-        $this->request->request->set($uniqid, array('_lock_version' => 1));
+        $this->request->request->set($uniqid, ['_lock_version' => 1]);
         $this->lockExtension->preUpdate($this->admin->reveal(), $this->object);
     }
 

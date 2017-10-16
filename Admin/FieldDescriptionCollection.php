@@ -19,7 +19,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
     /**
      * @var FieldDescriptionInterface[]
      */
-    protected $elements = array();
+    protected $elements = [];
 
     /**
      * @param FieldDescriptionInterface $fieldDescription

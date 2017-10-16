@@ -13,13 +13,13 @@ file that was distributed with this source code.
 
 {% block block %}
     {% set show_empty_boxes = sonata_admin.adminPool.container.getParameter('sonata.admin.configuration.global_search.empty_boxes') %}
-    {% set visibility_class = '' %}
-    {% if pager and not pager.getResults()|length %}
-        {% set visibility_class = 'sonata-search-result-' ~ show_empty_boxes %}
+    {% set visibility_class = 'sonata-search-result-' ~ show_empty_boxes %}
+    {% if pager and pager.getResults()|length %}
+        {% set visibility_class = 'sonata-search-result-show' %}
     {% endif %}
 
     <div class="col-lg-4 col-md-6 search-box-item {{ visibility_class }}">
-        <div class="box box-solid box-primary{{ visibility_class }}">
+        <div class="box box-solid box-primary {{ visibility_class }}">
             <div class="box-header with-border {{ visibility_class }}">
                 {% set icon = settings.icon|default('') %}
                 {{ icon|raw }}

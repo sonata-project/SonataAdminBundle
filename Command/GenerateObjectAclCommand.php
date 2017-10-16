@@ -47,14 +47,14 @@ class GenerateObjectAclCommand extends QuestionableCommand
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Welcome to the AdminBundle object ACL generator');
-        $output->writeln(array(
+        $output->writeln([
                 '',
                 'This command helps you to generate ACL entities for the objects handled by the AdminBundle.',
                 '',
                 'If the step option is used, you will be asked if you want to generate the object ACL entities for each Admin.',
                 'You must use the shortcut notation like <comment>AcmeDemoBundle:User</comment> if you want to set an object owner.',
                 '',
-        ));
+        ]);
 
         if ($input->getOption('user_entity')) {
             try {

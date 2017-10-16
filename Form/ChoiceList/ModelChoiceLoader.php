@@ -64,7 +64,7 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
      * @param array                          $choices
      * @param PropertyAccessorInterface|null $propertyAccessor
      */
-    public function __construct(ModelManagerInterface $modelManager, $class, $property = null, $query = null, $choices = array(), PropertyAccessorInterface $propertyAccessor = null)
+    public function __construct(ModelManagerInterface $modelManager, $class, $property = null, $query = null, $choices = [], PropertyAccessorInterface $propertyAccessor = null)
     {
         $this->modelManager = $modelManager;
         $this->class = $class;
@@ -96,7 +96,7 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
                 $entities = $this->modelManager->findBy($this->class);
             }
 
-            $choices = array();
+            $choices = [];
             foreach ($entities as $key => $entity) {
                 if ($this->propertyPath) {
                     // If the property option was given, use it
@@ -113,13 +113,13 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
                 $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($entity));
 
                 if (!array_key_exists($valueObject, $choices)) {
-                    $choices[$valueObject] = array();
+                    $choices[$valueObject] = [];
                 }
 
                 $choices[$valueObject][] = $id;
             }
 
-            $finalChoices = array();
+            $finalChoices = [];
             foreach ($choices as $valueObject => $idx) {
                 if (count($idx) > 1) { // avoid issue with identical values ...
                     foreach ($idx as $id) {

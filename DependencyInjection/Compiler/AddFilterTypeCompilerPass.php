@@ -26,7 +26,7 @@ class AddFilterTypeCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $definition = $container->getDefinition('sonata.admin.builder.filter.factory');
-        $types = array();
+        $types = [];
 
         foreach ($container->findTaggedServiceIds('sonata.admin.filter.type') as $id => $attributes) {
             $serviceDefinition = $container->getDefinition($id);

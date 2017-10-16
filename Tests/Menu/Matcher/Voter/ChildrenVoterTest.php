@@ -24,11 +24,11 @@ class ChildrenVoterTest extends AbstractVoterTest
      */
     public function provideData()
     {
-        return array(
-            'with no current' => array(array(false, false), null, new Matcher(), null),
-            'with current' => array(array(true, false), null, new Matcher(), true),
-            'with single child' => array(array(true), null, new Matcher(), true),
-        );
+        return [
+            'with no current' => [[false, false], null, new Matcher(), null],
+            'with current' => [[true, false], null, new Matcher(), true],
+            'with single child' => [[true], null, new Matcher(), true],
+        ];
     }
 
     /**
@@ -44,7 +44,7 @@ class ChildrenVoterTest extends AbstractVoterTest
      */
     protected function createItem($data)
     {
-        $childItems = array();
+        $childItems = [];
         foreach ($data as $childData) {
             $childItem = $this->getMockForAbstractClass('Knp\Menu\ItemInterface');
             $childItem->expects($this->any())

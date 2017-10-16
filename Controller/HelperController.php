@@ -177,7 +177,7 @@ class HelperController
         $code = $request->get('code');
         $objectId = $request->get('objectId');
         $uniqid = $request->get('uniqid');
-        $linkParameters = $request->get('linkParameters', array());
+        $linkParameters = $request->get('linkParameters', []);
 
         $admin = $this->pool->getInstance($code);
 
@@ -202,17 +202,17 @@ class HelperController
         }
 
         if ('json' == $request->get('_format')) {
-            return new JsonResponse(array('result' => array(
+            return new JsonResponse(['result' => [
                 'id' => $admin->id($object),
                 'label' => $admin->toString($object),
-            )));
+            ]]);
         } elseif ('html' == $request->get('_format')) {
-            return new Response($this->twig->render($admin->getTemplate('short_object_description'), array(
+            return new Response($this->twig->render($admin->getTemplate('short_object_description'), [
                 'admin' => $admin,
                 'description' => $admin->toString($object),
                 'object' => $object,
                 'link_parameters' => $linkParameters,
-            )));
+            ]));
         }
 
         throw new \RuntimeException('Invalid format');
@@ -325,7 +325,7 @@ class HelperController
         $violations = $this->validator->validate($object);
 
         if (count($violations)) {
-            $messages = array();
+            $messages = [];
 
             foreach ($violations as $violation) {
                 $messages[] = $violation->getMessage();
@@ -411,7 +411,7 @@ class HelperController
         $targetAdmin->checkAccess($targetAdminAccessAction);
 
         if (mb_strlen($searchText, 'UTF-8') < $minimumInputLength) {
-            return new JsonResponse(array('status' => 'KO', 'message' => 'Too short search string.'), 403);
+            return new JsonResponse(['status' => 'KO', 'message' => 'Too short search string.'], 403);
         }
 
         $targetAdmin->setPersistFilters(false);
@@ -460,7 +460,7 @@ class HelperController
 
         $pager = $datagrid->getPager();
 
-        $items = array();
+        $items = [];
         $results = $pager->getResults();
 
         foreach ($results as $entity) {
@@ -475,17 +475,17 @@ class HelperController
                 $label = $resultMetadata->getTitle();
             }
 
-            $items[] = array(
+            $items[] = [
                 'id' => $admin->id($entity),
                 'label' => $label,
-            );
+            ];
         }
 
-        return new JsonResponse(array(
+        return new JsonResponse([
             'status' => 'OK',
             'more' => !$pager->isLastPage(),
             'items' => $items,
-        ));
+        ]);
     }
 
     /**

@@ -39,7 +39,7 @@ class NoopSecurityHandler implements SecurityHandlerInterface
      */
     public function buildSecurityInformation(AdminInterface $admin)
     {
-        return array();
+        return [];
     }
 
     /**

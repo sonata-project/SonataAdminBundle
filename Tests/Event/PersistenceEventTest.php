@@ -11,11 +11,11 @@
 
 namespace Sonata\AdminBundle\Tests\Event;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Event\PersistenceEvent;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class PersistenceEventTest extends PHPUnit_Framework_TestCase
+class PersistenceEventTest extends TestCase
 {
     /**
      * @var PersistenceEvent

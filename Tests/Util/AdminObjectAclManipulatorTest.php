@@ -11,12 +11,13 @@
 
 namespace Sonata\AdminBundle\Tests\Util;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 
 /**
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
-class AdminObjectAclManipulatorTest extends \PHPUnit_Framework_TestCase
+class AdminObjectAclManipulatorTest extends TestCase
 {
     const MASK_BUILDER_CLASS = '\Symfony\Component\Security\Acl\Permission\MaskBuilder';
 

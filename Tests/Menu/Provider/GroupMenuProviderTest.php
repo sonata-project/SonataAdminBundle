@@ -14,13 +14,13 @@ namespace Sonata\AdminBundle\Tests\Menu\Provider;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\MenuFactory;
 use Knp\Menu\Provider\MenuProviderInterface;
+use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Menu\Provider\GroupMenuProvider;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
+class GroupMenuProviderTest extends TestCase
 {
     /**
      * @var MockObject|Pool
@@ -45,7 +45,7 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
         $this->pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')->disableOriginalConstructor()->getMock();
         $this->checker = $this
             ->getMockBuilder('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface')
-            ->setMethods(array('isGranted'))
+            ->setMethods(['isGranted'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -78,10 +78,10 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
 
         $menu = $provider->get(
             'providerFoo',
-            array(
+            [
                 'name' => 'foo',
                 'group' => $adminGroups,
-            )
+            ]
         );
 
         $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
@@ -94,6 +94,14 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('route_label', $children);
         $this->assertInstanceOf('Knp\Menu\MenuItem', $menu['foo_admin_label']);
         $this->assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
+
+        $extras = $menu['foo_admin_label']->getExtras();
+        $this->assertArrayHasKey('label_catalogue', $extras);
+        $this->assertSame($extras['label_catalogue'], 'SonataAdminBundle');
+
+        $extras = $menu['route_label']->getExtras();
+        $this->assertArrayHasKey('label_catalogue', $extras);
+        $this->assertSame($extras['label_catalogue'], 'SonataAdminBundle');
     }
 
     /**
@@ -125,10 +133,10 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
 
         $menu = $this->provider->get(
             'providerFoo',
-            array(
+            [
                 'name' => 'foo',
                 'group' => $adminGroups,
-            )
+            ]
         );
 
         $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
@@ -141,6 +149,10 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
         $this->assertArrayNotHasKey('route_label', $children);
         $this->assertInstanceOf('Knp\Menu\MenuItem', $menu['foo_admin_label']);
         $this->assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
+
+        $extras = $menu['foo_admin_label']->getExtras();
+        $this->assertArrayHasKey('label_catalogue', $extras);
+        $this->assertSame($extras['label_catalogue'], 'SonataAdminBundle');
     }
 
     /**
@@ -161,10 +173,10 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
 
         $menu = $this->provider->get(
             'providerFoo',
-            array(
+            [
                 'name' => 'foo',
                 'group' => $adminGroups,
-            )
+            ]
         );
 
         $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
@@ -177,6 +189,14 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('route_label', $children);
         $this->assertInstanceOf('Knp\Menu\MenuItem', $menu['foo_admin_label']);
         $this->assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
+
+        $extras = $menu['foo_admin_label']->getExtras();
+        $this->assertArrayHasKey('label_catalogue', $extras);
+        $this->assertSame($extras['label_catalogue'], 'SonataAdminBundle');
+
+        $extras = $menu['route_label']->getExtras();
+        $this->assertArrayHasKey('label_catalogue', $extras);
+        $this->assertSame($extras['label_catalogue'], 'SonataAdminBundle');
     }
 
     /**
@@ -197,10 +217,10 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
 
         $menu = $this->provider->get(
             'providerFoo',
-            array(
+            [
                 'name' => 'foo',
                 'group' => $adminGroups,
-            )
+            ]
         );
 
         $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
@@ -227,10 +247,10 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
 
         $menu = $this->provider->get(
             'providerFoo',
-            array(
+            [
                 'name' => 'foo',
                 'group' => $adminGroups,
-            )
+            ]
         );
 
         $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
@@ -253,10 +273,10 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
 
         $menu = $this->provider->get(
             'providerFoo',
-            array(
+            [
                 'name' => 'foo',
                 'group' => $adminGroupsOnTopOption,
-            )
+            ]
         );
 
         $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
@@ -283,10 +303,10 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
 
         $menu = $this->provider->get(
             'providerFoo',
-            array(
+            [
                 'name' => 'foo',
                 'group' => $adminGroups,
-            )
+            ]
         );
 
         $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
@@ -299,32 +319,32 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
      */
     public function getAdminGroups()
     {
-        return array(
-            array(
-                'bar' => array(
+        return [
+            [
+                'bar' => [
                     'label' => 'foo',
                     'icon' => '<i class="fa fa-edit"></i>',
                     'label_catalogue' => 'SonataAdminBundle',
-                    'items' => array(
-                        array(
+                    'items' => [
+                        [
                             'admin' => 'sonata_admin_foo_service',
                             'label' => 'fooLabel',
                             'route_absolute' => true,
-                        ),
-                        array(
+                        ],
+                        [
                             'admin' => '',
                             'label' => 'route_label',
                             'route' => 'FooRoute',
-                            'route_params' => array('foo' => 'bar'),
+                            'route_params' => ['foo' => 'bar'],
                             'route_absolute' => true,
-                            'roles' => array(),
-                        ),
-                    ),
-                    'item_adds' => array(),
-                    'roles' => array('foo'),
-                ),
-            ),
-        );
+                            'roles' => [],
+                        ],
+                    ],
+                    'item_adds' => [],
+                    'roles' => ['foo'],
+                ],
+            ],
+        ];
     }
 
     /**
@@ -332,26 +352,26 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
      */
     public function getAdminGroupsWithOnTopOption()
     {
-        return array(
-            array(
-                'foo' => array(
+        return [
+            [
+                'foo' => [
                     'label' => 'foo_on_top',
                     'icon' => '<i class="fa fa-edit"></i>',
                     'label_catalogue' => 'SonataAdminBundle',
                     'on_top' => true,
-                    'items' => array(
-                        array(
+                    'items' => [
+                        [
                             'admin' => 'sonata_admin_foo_service',
                             'label' => 'fooLabel',
                             'route_absolute' => true,
-                            'route_params' => array(),
-                        ),
-                    ),
-                    'item_adds' => array(),
-                    'roles' => array(),
-                ),
-            ),
-        );
+                            'route_params' => [],
+                        ],
+                    ],
+                    'item_adds' => [],
+                    'roles' => [],
+                ],
+            ],
+        ];
     }
 
     /**
@@ -379,7 +399,11 @@ class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
 
         $admin->expects($this->any())
             ->method('generateMenuUrl')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
+
+        $admin->expects($this->any())
+            ->method('getTranslationDomain')
+            ->will($this->returnValue('SonataAdminBundle'));
 
         return $admin;
     }

@@ -11,9 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
 
-class ModelsToArrayTransformerTest extends \PHPUnit_Framework_TestCase
+class ModelsToArrayTransformerTest extends TestCase
 {
     private $modelManager;
 

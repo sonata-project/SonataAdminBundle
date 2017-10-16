@@ -45,11 +45,11 @@ class ModelReferenceType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'compound' => false,
             'model_manager' => null,
             'class' => null,
-        ));
+        ]);
     }
 
     /**

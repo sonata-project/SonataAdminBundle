@@ -12,15 +12,15 @@
 namespace Sonata\AdminBundle\Tests\Filter;
 
 use Exporter\Source\ArraySourceIterator;
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Export\Exporter;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
 /**
  * NEXT_MAJOR: remove this class.
  *
  * @group legacy
  */
-class ExporterTest extends PHPUnit_Framework_TestCase
+class ExporterTest extends TestCase
 {
     /**
      * @expectedException \RuntimeException
@@ -38,9 +38,9 @@ class ExporterTest extends PHPUnit_Framework_TestCase
      */
     public function testGetResponse($format, $filename, $contentType)
     {
-        $source = new ArraySourceIterator(array(
-            array('foo' => 'bar'),
-        ));
+        $source = new ArraySourceIterator([
+            ['foo' => 'bar'],
+        ]);
 
         $exporter = new Exporter();
         $response = $exporter->getResponse($format, $filename, $source);
@@ -53,11 +53,11 @@ class ExporterTest extends PHPUnit_Framework_TestCase
 
     public function getGetResponseTests()
     {
-        return array(
-            array('json', 'foo.json', 'application/json'),
-            array('xml', 'foo.xml', 'text/xml'),
-            array('xls', 'foo.xls', 'application/vnd.ms-excel'),
-            array('csv', 'foo.csv', 'text/csv'),
-        );
+        return [
+            ['json', 'foo.json', 'application/json'],
+            ['xml', 'foo.xml', 'text/xml'],
+            ['xls', 'foo.xls', 'application/vnd.ms-excel'],
+            ['csv', 'foo.csv', 'text/csv'],
+        ];
     }
 }
