@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Controller;
 
 use Exporter\Exporter;
 use Exporter\Writer\JsonWriter;
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\Pool;
@@ -22,7 +23,6 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Route\Handler\RouteIdHandlerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -46,7 +46,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
  *
  * @group legacy
  */
-class CRUDControllerTest extends PHPUnit_Framework_TestCase
+class CRUDControllerTest extends TestCase
 {
     /**
      * @var CRUDController

@@ -11,9 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Translator;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 
-class NativeLabelTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
+class NativeLabelTranslatorStrategyTest extends TestCase
 {
     /**
      * @dataProvider getLabelTests

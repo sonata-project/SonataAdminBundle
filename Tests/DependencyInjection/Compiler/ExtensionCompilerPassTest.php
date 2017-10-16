@@ -11,13 +11,13 @@
 
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class ExtensionCompilerPassTest extends PHPUnit_Framework_TestCase
+class ExtensionCompilerPassTest extends TestCase
 {
     /** @var SonataAdminExtension $extension */
     private $extension;

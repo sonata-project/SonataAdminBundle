@@ -12,10 +12,10 @@
 namespace Sonata\AdminBundle\Tests\Bridge\Exporter;
 
 use Exporter\Exporter;
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class AdminExporterTest extends PHPUnit_Framework_TestCase
+class AdminExporterTest extends TestCase
 {
     public function provideExportFormats()
     {

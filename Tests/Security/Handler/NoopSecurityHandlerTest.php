@@ -11,10 +11,11 @@
 
 namespace Sonata\AdminBundle\Tests\Security\Handler;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\NoopSecurityHandler;
 
-class NoopSecurityHandlerTest extends \PHPUnit_Framework_TestCase
+class NoopSecurityHandlerTest extends TestCase
 {
     /**
      * @var NoopSecurityHandler

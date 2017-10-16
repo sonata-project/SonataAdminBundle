@@ -12,9 +12,10 @@
 namespace Sonata\AdminBundle\Tests\Menu;
 
 use Knp\Menu\MenuFactory;
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Menu\MenuBuilder;
 
-class MenuBuilderTest extends \PHPUnit_Framework_TestCase
+class MenuBuilderTest extends TestCase
 {
     private $pool;
     private $provider;

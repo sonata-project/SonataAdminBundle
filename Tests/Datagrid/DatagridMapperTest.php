@@ -11,14 +11,14 @@
 
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class DatagridMapperTest extends PHPUnit_Framework_TestCase
+class DatagridMapperTest extends TestCase
 {
     /**
      * @var DatagridMapper

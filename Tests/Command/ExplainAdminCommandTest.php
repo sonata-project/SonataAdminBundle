@@ -11,10 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\ExplainAdminCommand;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Validator\Constraints\Email;
@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ExplainAdminCommandTest extends PHPUnit_Framework_TestCase
+class ExplainAdminCommandTest extends TestCase
 {
     /**
      * @var Application

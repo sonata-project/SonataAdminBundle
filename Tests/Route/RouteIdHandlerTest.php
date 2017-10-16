@@ -11,9 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Route;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Route\Handler\RouteIdHandler;
 
-class RouteIdHandlerTest extends \PHPUnit_Framework_TestCase
+class RouteIdHandlerTest extends TestCase
 {
     public function testGetIdFromRequest()
     {

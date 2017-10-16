@@ -11,16 +11,16 @@
 
 namespace Sonata\AdminBundle\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\ListAdminCommand;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ListAdminCommandTest extends PHPUnit_Framework_TestCase
+class ListAdminCommandTest extends TestCase
 {
     public function testExecute()
     {

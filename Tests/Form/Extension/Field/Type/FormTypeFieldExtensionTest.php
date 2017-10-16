@@ -11,14 +11,14 @@
 
 namespace Sonata\AdminBundle\Tests\Form\Extension\Field\Type;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormConfigBuilder;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FormTypeFieldExtensionTest extends PHPUnit_Framework_TestCase
+class FormTypeFieldExtensionTest extends TestCase
 {
     public function testExtendedType()
     {
@@ -77,14 +77,14 @@ class FormTypeFieldExtensionTest extends PHPUnit_Framework_TestCase
 
     //    public function testBuildForm()
     //    {
-    //        $admin = $this->getMock('Sonata\AdminBundle\Admin\AdminInterface');
+    //        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
     //        $admin->expects($this->once())->method('getCode')->will($this->returnValue('admin_code'));
     //
-    //        $fieldDescription = $this->getMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+    //        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
     //        $fieldDescription->expects($this->once())->method('getAdmin')->will($this->returnValue($admin));
     //        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('name'));
     //
-    //        $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilderInterface');
+    //        $formBuilder = $this->createMock('Symfony\Component\Form\FormBuilderInterface');
     //
     //        $extension = new FormTypeFieldExtension();
     //        $extension->buildForm($formBuilder, array());

@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Tests\Admin\Extension;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\Extension\LockExtension;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -19,7 +20,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Request;
 
-class LockExtensionTest extends \PHPUnit_Framework_TestCase
+class LockExtensionTest extends TestCase
 {
     /**
      * @var LockExtension

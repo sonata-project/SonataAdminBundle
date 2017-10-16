@@ -11,10 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class PoolTest extends PHPUnit_Framework_TestCase
+class PoolTest extends TestCase
 {
     /**
      * @var Pool

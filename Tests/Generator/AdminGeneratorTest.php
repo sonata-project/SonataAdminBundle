@@ -11,16 +11,16 @@
 
 namespace Sonata\AdminBundle\Tests\Generator;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Generator\AdminGenerator;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
  * @author Marek Stipek <mario.dweller@seznam.cz>
  */
-class AdminGeneratorTest extends PHPUnit_Framework_TestCase
+class AdminGeneratorTest extends TestCase
 {
     /** @var AdminGenerator */
     private $adminGenerator;

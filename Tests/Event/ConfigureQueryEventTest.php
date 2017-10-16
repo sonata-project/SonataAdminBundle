@@ -11,12 +11,12 @@
 
 namespace Sonata\AdminBundle\Tests\Event;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Event\ConfigureQueryEvent;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class ConfigureQueryEventTest extends PHPUnit_Framework_TestCase
+class ConfigureQueryEventTest extends TestCase
 {
     /**
      * @var ConfigureQueryEvent

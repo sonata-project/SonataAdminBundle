@@ -11,12 +11,12 @@
 
 namespace Sonata\AdminBundle\Tests\Form\Extension;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Sonata\CoreBundle\Form\Extension\DependencyInjectionExtension;
 use Symfony\Component\Form\Forms;
 
-class ChoiceTypeExtensionTest extends PHPUnit_Framework_TestCase
+class ChoiceTypeExtensionTest extends TestCase
 {
     protected function setup()
     {

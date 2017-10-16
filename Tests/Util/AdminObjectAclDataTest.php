@@ -11,12 +11,13 @@
 
 namespace Sonata\AdminBundle\Tests\Util;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 
 /**
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
-class AdminObjectAclDataTest extends \PHPUnit_Framework_TestCase
+class AdminObjectAclDataTest extends TestCase
 {
     public function testGetAdmin()
     {

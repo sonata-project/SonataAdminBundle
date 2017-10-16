@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Tests\Util;
 
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Sonata\AdminBundle\Tests\Fixtures\Util\DummyObjectAclManipulator;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
@@ -18,7 +19,7 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 /**
  * @author Grégoire Paris <postmaster@greg0ire.fr>
  */
-class ObjectAclManipulatorTest extends \PHPUnit_Framework_TestCase
+class ObjectAclManipulatorTest extends TestCase
 {
     protected function setUp()
     {

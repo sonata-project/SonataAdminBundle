@@ -11,12 +11,12 @@
 
 namespace Sonata\AdminBundle\Tests\Show;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 
 /**
@@ -24,7 +24,7 @@ use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ShowMapperTest extends PHPUnit_Framework_TestCase
+class ShowMapperTest extends TestCase
 {
     /**
      * @var ShowMapper

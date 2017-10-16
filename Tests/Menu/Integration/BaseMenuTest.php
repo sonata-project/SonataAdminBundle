@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Menu\Integration;
 
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Renderer\TwigRenderer;
+use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Tests\Extension\Fixtures\StubFilesystemLoader;
 use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslator;
@@ -20,7 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslat
 /**
  * Base class for tests checking rendering of twig templates.
  */
-abstract class BaseMenuTest extends \PHPUnit_Framework_TestCase
+abstract class BaseMenuTest extends TestCase
 {
     /**
      * {@inheritdoc}

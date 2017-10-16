@@ -11,15 +11,15 @@
 
 namespace Sonata\AdminBundle\Tests\Generator;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Generator\ControllerGenerator;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
  * @author Marek Stipek <mario.dweller@seznam.cz>
  */
-class ControllerGeneratorTest extends PHPUnit_Framework_TestCase
+class ControllerGeneratorTest extends TestCase
 {
     /** @var ControllerGenerator */
     private $controllerGenerator;
