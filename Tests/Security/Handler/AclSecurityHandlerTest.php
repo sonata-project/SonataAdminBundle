@@ -11,10 +11,11 @@
 
 namespace Sonata\AdminBundle\Tests\Security\Handler;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
-class AclSecurityHandlerTest extends \PHPUnit_Framework_TestCase
+class AclSecurityHandlerTest extends TestCase
 {
     public function getTokenStorageMock()
     {

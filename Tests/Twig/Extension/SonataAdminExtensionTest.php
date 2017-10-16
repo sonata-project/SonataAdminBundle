@@ -11,13 +11,13 @@
 
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
@@ -36,7 +36,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class SonataAdminExtensionTest extends PHPUnit_Framework_TestCase
+class SonataAdminExtensionTest extends TestCase
 {
     /**
      * @var SonataAdminExtension

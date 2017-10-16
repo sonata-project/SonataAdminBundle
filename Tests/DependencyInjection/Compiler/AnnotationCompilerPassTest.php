@@ -12,10 +12,10 @@
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use JMS\DiExtraBundle\Metadata\ClassMetadata;
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Annotation\Admin;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class AnnotationCompilerPassTest extends PHPUnit_Framework_TestCase
+class AnnotationCompilerPassTest extends TestCase
 {
     public function testInvalidAdminAnnotation()
     {

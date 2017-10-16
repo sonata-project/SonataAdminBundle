@@ -11,10 +11,11 @@
 
 namespace Sonata\AdminBundle\Tests\Route;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Route\PathInfoBuilder;
 use Sonata\AdminBundle\Route\RouteCollection;
 
-class PathInfoBuilderTest extends \PHPUnit_Framework_TestCase
+class PathInfoBuilderTest extends TestCase
 {
     public function testBuild()
     {

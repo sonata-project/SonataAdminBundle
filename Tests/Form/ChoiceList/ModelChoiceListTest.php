@@ -11,11 +11,11 @@
 
 namespace Sonata\AdminBundle\Tests\Form\ChoiceList;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class ModelChoiceListTest extends PHPUnit_Framework_TestCase
+class ModelChoiceListTest extends TestCase
 {
     private $modelManager = null;
 

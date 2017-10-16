@@ -11,9 +11,9 @@
 
 namespace Sonata\AdminBundle\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Command\GenerateAdminCommand;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\DemoAdminBundle;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class GenerateAdminCommandTest extends PHPUnit_Framework_TestCase
+class GenerateAdminCommandTest extends TestCase
 {
     /**
      * @var Application

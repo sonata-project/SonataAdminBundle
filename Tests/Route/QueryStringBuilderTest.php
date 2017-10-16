@@ -11,10 +11,11 @@
 
 namespace Sonata\AdminBundle\Tests\Route;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Route\QueryStringBuilder;
 use Sonata\AdminBundle\Route\RouteCollection;
 
-class QueryStringBuilderTest extends \PHPUnit_Framework_TestCase
+class QueryStringBuilderTest extends TestCase
 {
     /**
      * @dataProvider getBuildTests
@@ -48,7 +49,7 @@ class QueryStringBuilderTest extends \PHPUnit_Framework_TestCase
             [['list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'history_compare_revisions', 'acl'], true, true, null],
             [['list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'acl'], false, true, null],
             [['list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'history_compare_revisions'], true, false, null],
-            [['list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'history_compare_revisions', 'acl'], true, true, $this->getMock('Sonata\AdminBundle\Admin\AdminInterface')],
+            [['list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'history_compare_revisions', 'acl'], true, true, $this->createMock('Sonata\AdminBundle\Admin\AdminInterface')],
         ];
     }
 

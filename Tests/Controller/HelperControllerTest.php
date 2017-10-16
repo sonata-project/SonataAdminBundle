@@ -11,12 +11,12 @@
 
 namespace Sonata\AdminBundle\Tests\Controller;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\HelperController;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,7 +64,7 @@ class AdminControllerHelper_Bar
     }
 }
 
-class HelperControllerTest extends PHPUnit_Framework_TestCase
+class HelperControllerTest extends TestCase
 {
     /**
      * @var AdminInterface

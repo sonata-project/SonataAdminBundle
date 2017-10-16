@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Tests\Mapper;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Mapper\BaseMapper;
 
@@ -19,7 +20,7 @@ use Sonata\AdminBundle\Mapper\BaseMapper;
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class BaseMapperTest extends \PHPUnit_Framework_TestCase
+class BaseMapperTest extends TestCase
 {
     /**
      * @var BaseMapper

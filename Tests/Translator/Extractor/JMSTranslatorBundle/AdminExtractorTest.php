@@ -12,9 +12,9 @@
 namespace Sonata\AdminBundle\Tests\Translator\Extractor\JMSTranslatorBundle;
 
 use JMS\TranslationBundle\Model\Message;
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor;
 
 /**
@@ -22,7 +22,7 @@ use Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor;
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class AdminExtractorTest extends PHPUnit_Framework_TestCase
+class AdminExtractorTest extends TestCase
 {
     /**
      * @var AdminExtractor

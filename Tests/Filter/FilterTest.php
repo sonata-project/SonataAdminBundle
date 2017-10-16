@@ -11,9 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Filter;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
 
-class FilterTest extends \PHPUnit_Framework_TestCase
+class FilterTest extends TestCase
 {
     public function testFilter()
     {

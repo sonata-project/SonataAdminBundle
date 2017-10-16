@@ -11,13 +11,13 @@
 
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\Pager;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class PagerTest extends PHPUnit_Framework_TestCase
+class PagerTest extends TestCase
 {
     /**
      * @var Pager

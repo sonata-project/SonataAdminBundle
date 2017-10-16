@@ -11,15 +11,15 @@
 
 namespace Sonata\AdminBundle\Tests\Model;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Model\AuditManager;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
 /**
  * Test for AuditManager.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class AuditManagerTest extends PHPUnit_Framework_TestCase
+class AuditManagerTest extends TestCase
 {
     public function testGetReader()
     {

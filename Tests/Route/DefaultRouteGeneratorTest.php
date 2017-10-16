@@ -11,13 +11,13 @@
 
 namespace Sonata\AdminBundle\Tests\Route;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Route\DefaultRouteGenerator;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RoutesCache;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Routing\Route;
 
-class DefaultRouteGeneratorTest extends PHPUnit_Framework_TestCase
+class DefaultRouteGeneratorTest extends TestCase
 {
     protected $cacheTempFolder;
 

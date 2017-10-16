@@ -11,10 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Route;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class RouteCollectionTest extends PHPUnit_Framework_TestCase
+class RouteCollectionTest extends TestCase
 {
     public function testGetter()
     {

@@ -11,12 +11,13 @@
 
 namespace Sonata\AdminBundle\Tests\Search;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
-class SearchHandlerTest extends \PHPUnit_Framework_TestCase
+class SearchHandlerTest extends TestCase
 {
     /**
      * @param AdminInterface $admin

@@ -11,12 +11,13 @@
 
 namespace Sonata\AdminBundle\Tests\Generator;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Manipulator\ServicesManipulator;
 
 /**
  * @author Marek Stipek <mario.dweller@seznam.cz>
  */
-class ServicesManipulatorTest extends \PHPUnit_Framework_TestCase
+class ServicesManipulatorTest extends TestCase
 {
     /** @var ServicesManipulator */
     private $servicesManipulator;

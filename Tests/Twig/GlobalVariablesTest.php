@@ -11,13 +11,13 @@
 
 namespace Sonata\AdminBundle\Tests\Twig;
 
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Twig\GlobalVariables;
 
 /**
  * @author Ahmet Akbana <ahmetakbana@gmail.com>
  */
-class GlobalVariablesTest extends PHPUnit_Framework_TestCase
+class GlobalVariablesTest extends TestCase
 {
     private $code;
     private $action;

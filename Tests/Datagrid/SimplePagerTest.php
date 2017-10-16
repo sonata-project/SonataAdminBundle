@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\SimplePager;
 
 /**
@@ -20,7 +21,7 @@ use Sonata\AdminBundle\Datagrid\SimplePager;
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Sjoerd Peters <sjoerd.peters@gmail.com>
  */
-class SimplePagerTest extends \PHPUnit_Framework_TestCase
+class SimplePagerTest extends TestCase
 {
     public function setUp()
     {
