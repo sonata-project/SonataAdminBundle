@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Tests\Util;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormBuilder;
@@ -19,7 +20,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 /**
  * @author Mike Meier <mike.meier@ibrows.ch>
  */
-class FormBuilderIteratorTest extends \PHPUnit_Framework_TestCase
+class FormBuilderIteratorTest extends TestCase
 {
     /**
      * @var EventDispatcherInterface

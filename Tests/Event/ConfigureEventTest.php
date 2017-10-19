@@ -11,12 +11,12 @@
 
 namespace Sonata\AdminBundle\Tests\Event;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Event\ConfigureEvent;
 use Sonata\AdminBundle\Mapper\BaseMapper;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class ConfigureEventTest extends PHPUnit_Framework_TestCase
+class ConfigureEventTest extends TestCase
 {
     /**
      * @var ConfigureEvent

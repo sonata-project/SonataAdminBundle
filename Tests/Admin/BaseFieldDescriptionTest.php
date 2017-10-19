@@ -11,13 +11,13 @@
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooBoolean;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooCall;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class BaseFieldDescriptionTest extends PHPUnit_Framework_TestCase
+class BaseFieldDescriptionTest extends TestCase
 {
     public function testSetName()
     {

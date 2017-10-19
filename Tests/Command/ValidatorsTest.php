@@ -11,12 +11,13 @@
 
 namespace Sonata\AdminBundle\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Command\Validators;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ValidatorsTest extends \PHPUnit_Framework_TestCase
+class ValidatorsTest extends TestCase
 {
     /**
      * @dataProvider getValidateUsernameTests

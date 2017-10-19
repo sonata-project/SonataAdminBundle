@@ -13,9 +13,9 @@ namespace Sonata\AdminBundle\Tests\Menu\Matcher\Voter;
 
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-abstract class AbstractVoterTest extends PHPUnit_Framework_TestCase
+abstract class AbstractVoterTest extends TestCase
 {
     /**
      * @return array

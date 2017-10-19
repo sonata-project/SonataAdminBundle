@@ -11,14 +11,14 @@
 
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ArrayToModelTransformerTest extends PHPUnit_Framework_TestCase
+class ArrayToModelTransformerTest extends TestCase
 {
     private $modelManager = null;
 

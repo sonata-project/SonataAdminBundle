@@ -11,9 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Admin\Security\Acl\Permission;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 
-class MaskBuilderTest extends \PHPUnit_Framework_TestCase
+class MaskBuilderTest extends TestCase
 {
     public function testGetPattern()
     {

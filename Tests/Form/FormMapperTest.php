@@ -11,12 +11,12 @@
 
 namespace Sonata\AdminBundle\Tests\Form;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Form\FormBuilder;
 
-class FormMapperTest extends PHPUnit_Framework_TestCase
+class FormMapperTest extends TestCase
 {
     /**
      * @var \Sonata\AdminBundle\Builder\FormContractorInterface

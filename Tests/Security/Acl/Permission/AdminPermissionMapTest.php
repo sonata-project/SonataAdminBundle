@@ -11,10 +11,11 @@
 
 namespace Sonata\AdminBundle\Tests\Security\Permission;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 
-class AdminPermissionMapTest extends \PHPUnit_Framework_TestCase
+class AdminPermissionMapTest extends TestCase
 {
     protected function setUp()
     {

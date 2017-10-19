@@ -14,13 +14,13 @@ namespace Sonata\AdminBundle\Tests\Menu\Provider;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\MenuFactory;
 use Knp\Menu\Provider\MenuProviderInterface;
+use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Menu\Provider\GroupMenuProvider;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class GroupMenuProviderTest extends PHPUnit_Framework_TestCase
+class GroupMenuProviderTest extends TestCase
 {
     /**
      * @var MockObject|Pool

@@ -11,9 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Translator;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 
-class NoopLabelTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
+class NoopLabelTranslatorStrategyTest extends TestCase
 {
     public function testLabel()
     {

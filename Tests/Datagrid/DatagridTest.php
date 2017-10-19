@@ -11,17 +11,17 @@
 
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Form\FormBuilder;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class DatagridTest extends PHPUnit_Framework_TestCase
+class DatagridTest extends TestCase
 {
     /**
      * @var Datagrid

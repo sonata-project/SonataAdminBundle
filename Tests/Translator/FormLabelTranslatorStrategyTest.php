@@ -11,9 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Translator;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy;
 
-class FormLabelTranslatorStrategyTest extends \PHPUnit_Framework_TestCase
+class FormLabelTranslatorStrategyTest extends TestCase
 {
     public function testLabel()
     {

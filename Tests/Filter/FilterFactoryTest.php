@@ -11,10 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Filter;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Filter\FilterFactory;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class FilterFactoryTest extends PHPUnit_Framework_TestCase
+class FilterFactoryTest extends TestCase
 {
     public function testEmptyType()
     {

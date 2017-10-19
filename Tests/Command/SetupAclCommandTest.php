@@ -11,9 +11,9 @@
 
 namespace Sonata\AdminBundle\Tests\Command;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\SetupAclCommand;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Sonata\AdminBundle\Util\AdminAclManipulatorInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -21,7 +21,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class SetupAclCommandTest extends PHPUnit_Framework_TestCase
+class SetupAclCommandTest extends TestCase
 {
     public function testExecute()
     {

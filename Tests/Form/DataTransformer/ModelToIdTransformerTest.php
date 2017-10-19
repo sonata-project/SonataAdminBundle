@@ -11,10 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class ModelToIdTransformerTest extends PHPUnit_Framework_TestCase
+class ModelToIdTransformerTest extends TestCase
 {
     private $modelManager = null;
 

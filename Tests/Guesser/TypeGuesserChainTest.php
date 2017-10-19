@@ -11,8 +11,8 @@
 
 namespace Sonata\AdminBundle\Tests\Guesser;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Guesser\TypeGuesserChain;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\Form\Guess\Guess;
 use Symfony\Component\Form\Guess\TypeGuess;
 
@@ -21,7 +21,7 @@ use Symfony\Component\Form\Guess\TypeGuess;
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class TypeGuesserChainTest extends PHPUnit_Framework_TestCase
+class TypeGuesserChainTest extends TestCase
 {
     public function testConstructorWithException()
     {

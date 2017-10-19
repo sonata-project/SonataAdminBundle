@@ -12,12 +12,12 @@
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class ModelToIdPropertyTransformerTest extends PHPUnit_Framework_TestCase
+class ModelToIdPropertyTransformerTest extends TestCase
 {
     private $modelManager = null;
 

@@ -11,8 +11,8 @@
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
 /**
  * This test class contains unit and integration tests. Maybe it could be
@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
  *
  * @author Grégoire Paris <postmaster@greg0ire.fr>
  */
-class BreadcrumbsBuilderTest extends PHPUnit_Framework_TestCase
+class BreadcrumbsBuilderTest extends TestCase
 {
     public function testChildGetBreadCrumbs()
     {

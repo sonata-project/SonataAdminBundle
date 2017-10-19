@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Tests\Mapper;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 
@@ -19,7 +20,7 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
+class BaseGroupedMapperTest extends TestCase
 {
     /**
      * @var BaseGroupedMapper
@@ -35,7 +36,7 @@ class BaseGroupedMapperTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $labelStrategy = $this->getMock('Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface');
+        $labelStrategy = $this->createMock('Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface');
         $labelStrategy->expects($this->any())
             ->method('getLabel')
             ->will($this->returnCallback(function ($label) {

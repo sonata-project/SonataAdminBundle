@@ -37,6 +37,7 @@ file that was distributed with this source code.
     </div>
 
     <script>
+        {% autoescape 'js' %}
         jQuery(function ($) {
             // Select2 v3 does not used same input as v4.
             // NEXT_MAJOR: Remove this BC layer while upgrading to v4.
@@ -63,7 +64,7 @@ file that was distributed with this source code.
                 containerCssClass: '{{ container_css_class ~ ' form-control' }}',
                 dropdownCssClass: '{{ dropdown_css_class }}',
                 ajax: {
-                    url:  '{{ url ?: path(route.name, route.parameters|default([]))|e('js') }}',
+                    url:  '{{ url ?: path(route.name, route.parameters|default([])) }}',
                     dataType: 'json',
                     quietMillis: {{ quiet_millis }},
                     cache: {{ cache ? 'true' : 'false' }},
@@ -109,7 +110,7 @@ file that was distributed with this source code.
                                 // other parameters
                                 {% if req_params is not empty %},
                                     {%- for key, value in req_params -%}
-                                        '{{- key|e('js') -}}': '{{- value|e('js') -}}'
+                                        '{{- key -}}': '{{- value -}}'
                                         {%- if not loop.last -%}, {% endif -%}
                                     {%- endfor -%}
                                 {% endif %}
@@ -220,7 +221,7 @@ file that was distributed with this source code.
                 data = {%- if multiple -%}[ {%- endif -%}
                 {%- for idx, val  in value if idx~'' != '_labels' -%}
                     {%- if not loop.first -%}, {% endif -%}
-                    {id: '{{ val|e('js') }}', label:'{{ value['_labels'][idx]|e('js') }}'}
+                    {id: '{{ val }}', label:'{{ value['_labels'][idx] }}'}
                 {%- endfor -%}
                 {%- if multiple -%} ] {%- endif -%};
             {% endif -%}
@@ -238,5 +239,6 @@ file that was distributed with this source code.
                 return true;
             });
         });
+        {% endautoescape %}
     </script>
 {% endspaceless %}

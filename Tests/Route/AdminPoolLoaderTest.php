@@ -11,13 +11,14 @@
 
 namespace Sonata\AdminBundle\Tests\Route;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Route\AdminPoolLoader;
 use Sonata\AdminBundle\Route\RouteCollection;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class AdminPoolLoaderTest extends \PHPUnit_Framework_TestCase
+class AdminPoolLoaderTest extends TestCase
 {
     public function testSupports()
     {

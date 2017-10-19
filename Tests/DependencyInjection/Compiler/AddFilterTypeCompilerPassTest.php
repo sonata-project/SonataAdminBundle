@@ -11,10 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class AddFilterTypeCompilerPassTest extends PHPUnit_Framework_TestCase
+class AddFilterTypeCompilerPassTest extends TestCase
 {
     private $filterFactory;
 

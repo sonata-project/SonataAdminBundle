@@ -11,10 +11,10 @@
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 
-class FieldDescriptionCollectionTest extends PHPUnit_Framework_TestCase
+class FieldDescriptionCollectionTest extends TestCase
 {
     public function testMethods()
     {

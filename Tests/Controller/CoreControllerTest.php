@@ -11,13 +11,13 @@
 
 namespace Sonata\AdminBundle\Tests\Controller;
 
+use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\CoreController;
-use Sonata\AdminBundle\Tests\Helpers\PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class CoreControllerTest extends PHPUnit_Framework_TestCase
+class CoreControllerTest extends TestCase
 {
     public function testdashboardActionStandardRequest()
     {
