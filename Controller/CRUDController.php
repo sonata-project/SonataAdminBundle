@@ -164,9 +164,7 @@ class CRUDController extends Controller
     public function deleteAction($id)
     {
         $request = $this->getRequest();
-
-        $id = $this->getObjectIdFromRouteIdHandler();
-
+        $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
         if (!$object) {
@@ -240,11 +238,11 @@ class CRUDController extends Controller
      */
     public function editAction($id = null)
     {
+        $request = $this->getRequest();
         // the key used to lookup the template
         $templateKey = 'edit';
 
-        $request = $this->getRequest();
-        $id = $this->getObjectIdFromRouteIdHandler();
+        $id = $request->get($this->admin->getIdParameter());
         $existingObject = $this->admin->getObject($id);
 
         if (!$existingObject) {
@@ -602,7 +600,7 @@ class CRUDController extends Controller
     public function showAction($id = null)
     {
         $request = $this->getRequest();
-        $id = $this->getObjectIdFromRouteIdHandler();
+        $id = $request->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
@@ -639,7 +637,7 @@ class CRUDController extends Controller
     public function historyAction($id = null)
     {
         $request = $this->getRequest();
-        $id = $this->getObjectIdFromRouteIdHandler();
+        $id = $request->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
@@ -686,7 +684,7 @@ class CRUDController extends Controller
     public function historyViewRevisionAction($id = null, $revision = null)
     {
         $request = $this->getRequest();
-        $id = $this->getObjectIdFromRouteIdHandler();
+        $id = $request->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
@@ -750,7 +748,7 @@ class CRUDController extends Controller
 
         $this->admin->checkAccess('historyCompareRevisions');
 
-        $id = $this->getObjectIdFromRouteIdHandler();
+        $id = $request->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
@@ -883,7 +881,7 @@ class CRUDController extends Controller
             throw $this->createNotFoundException('ACL are not enabled for this admin');
         }
 
-        $id = $this->getObjectIdFromRouteIdHandler();
+        $id = $request->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
@@ -1401,15 +1399,6 @@ class CRUDController extends Controller
         $domain = $domain ?: $this->admin->getTranslationDomain();
 
         return $this->get('translator')->trans($id, $parameters, $domain, $locale);
-    }
-
-    /**
-     * @return int|string
-     */
-    protected function getObjectIdFromRouteIdHandler()
-    {
-        return $this->get('sonata.admin.route_id_handler')
-            ->getIdFromRequest($this->getRequest(), $this->admin);
     }
 
     /**
