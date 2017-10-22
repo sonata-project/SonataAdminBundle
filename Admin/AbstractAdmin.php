@@ -229,7 +229,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * NEXT_MAJOR: remove this attribute.
      *
-     * @deprecated This attribute is deprecated since 3.x and will be removed in 4.0
+     * @deprecated This attribute is deprecated since 3.24 and will be removed in 4.0
      *
      * @var string
      */
@@ -2442,14 +2442,14 @@ EOT;
     /**
      * NEXT_MAJOR: Remove this function.
      *
-     * @deprecated This method is deprecated since 3.x and will be removed in 4.0
+     * @deprecated This method is deprecated since 3.24 and will be removed in 4.0
      *
      * @param string $baseCodeRoute
      */
     public function setBaseCodeRoute($baseCodeRoute)
     {
         @trigger_error(
-            'The '.__METHOD__.' is deprecated since 3.x and will be removed in 4.0.',
+            'The '.__METHOD__.' is deprecated since 3.24 and will be removed in 4.0.',
             E_USER_DEPRECATED
         );
 
