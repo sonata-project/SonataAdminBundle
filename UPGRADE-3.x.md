@@ -1,6 +1,9 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.23 to 3.24
+=========================
+
 ## Deprecated AbstractAdmin::setBaseCodeRoute() and AbstractAdmin::baseCodeRoute property
 
 The `AbstractAdmin::baseCodeRoute` property is no longer supported.

@@ -47,6 +47,31 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.24.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.23.0...3.24.0) - 2017-10-23
+### Added
+- Add support for unlimited nested child admins.
+- `Sonata\AdminBundle\Admin\AdminInterface` was split into smaller interfaces.
+
+### Deprecated
+- `AdminInterface::$baseCodeRoute` and `AdminInterface::setBaseCodeRoute(...)`.
+
+### Fixed
+- Fixed missing space when form class is defined in label_attr
+- Fix duplicate DB queries on empty results.
+- Fixed sticky navbar when top navbar height changes
+- Fix missing flash message translations
+- naming conflict with `UrlGeneratorInterface`
+- Print of `sonata_help` for form subfields
+- Error class for `sonata_type_immutable_array` form group
+- Fixed the BaseFieldDescription class to also support 'has' prefixed getter methods for boolean properties on entities (besides the 'is' prefixed getters)
+- Always apply "global_search.empty_boxes" setting to never searched admins
+- Fixed a typo in CSS classes in `block_search_result.html.twig`
+- Fixed autocomplete for cases when admin code uses service id and service id is equal to FQCN ('AppBundle\Admin\CompanyAdmin')
+- Bad result when `Pool::getAdminByAdminCode()` was called with an invalid child path.
+
+### Removed
+- Support for old versions of PHP and Symfony.
+
 ## [3.23.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.22.0...3.23.0) - 2017-09-01
 ### Added
 - Reference %sonata.admin.configuration.templates% when possible

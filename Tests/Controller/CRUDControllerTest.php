@@ -20,7 +20,6 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
-use Sonata\AdminBundle\Route\Handler\RouteIdHandlerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
@@ -92,11 +91,6 @@ class CRUDControllerTest extends TestCase
      * @var AdminObjectAclManipulator
      */
     private $adminObjectAclManipulator;
-
-    /**
-     * @var RouteIdHandlerInterface
-     */
-    private $adminRouteIdHandler;
 
     /**
      * @var string
@@ -284,13 +278,6 @@ class CRUDControllerTest extends TestCase
                 }));
         }
 
-        $this->adminRouteIdHandler = $this->getMockBuilder(
-            'Sonata\AdminBundle\Route\Handler\RouteIdHandlerInterface'
-        )
-            ->getMock();
-
-        $adminRouteIdHandler = $this->adminRouteIdHandler;
-
         // php 5.3 BC
         $csrfProvider = $this->csrfProvider;
 
@@ -318,7 +305,6 @@ class CRUDControllerTest extends TestCase
                 $exporter,
                 $auditManager,
                 $adminObjectAclManipulator,
-                $adminRouteIdHandler,
                 $requestStack,
                 $csrfProvider,
                 $logger,
@@ -346,8 +332,6 @@ class CRUDControllerTest extends TestCase
                         return $auditManager;
                     case 'sonata.admin.object.manipulator.acl.admin':
                         return $adminObjectAclManipulator;
-                    case 'sonata.admin.route_id_handler':
-                        return $adminRouteIdHandler;
                     case 'form.csrf_provider':
                     case 'security.csrf.token_manager':
                         return $csrfProvider;
@@ -2579,18 +2563,12 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryAction()
     {
-        $requestId = 123;
-        $this->request->query->set('id', $requestId);
+        $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('history'))
             ->will($this->returnValue(true));
-
-        $this->adminRouteIdHandler->expects($this->any())
-            ->method('getIdFromRequest')
-            ->with($this->equalTo($this->request), $this->equalTo($this->admin))
-            ->will($this->returnValue($requestId));
 
         $object = new \stdClass();
 
@@ -2616,7 +2594,7 @@ class CRUDControllerTest extends TestCase
 
         $reader->expects($this->once())
             ->method('findRevisions')
-            ->with($this->equalTo('Foo'), $this->equalTo($requestId))
+            ->with($this->equalTo('Foo'), $this->equalTo(123))
             ->will($this->returnValue([]));
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->historyAction(null, $this->request));
@@ -2949,13 +2927,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the object with id: 123');
 
-        $requestId = 123;
-        $this->request->query->set('id', $requestId);
-
-        $this->adminRouteIdHandler->expects($this->any())
-            ->method('getIdFromRequest')
-            ->with($this->equalTo($this->request), $this->equalTo($this->admin))
-            ->will($this->returnValue($requestId));
+        $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
             ->method('getObject')
@@ -2997,18 +2969,12 @@ class CRUDControllerTest extends TestCase
     {
         $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the targeted object `123` from the revision `456` with classname : `Foo`');
 
-        $requestId = 123;
-        $this->request->query->set('id', $requestId);
+        $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('historyViewRevision'))
             ->will($this->returnValue(true));
-
-        $this->adminRouteIdHandler->expects($this->any())
-            ->method('getIdFromRequest')
-            ->with($this->equalTo($this->request), $this->equalTo($this->admin))
-            ->will($this->returnValue($requestId));
 
         $object = new \stdClass();
 
@@ -3034,26 +3000,20 @@ class CRUDControllerTest extends TestCase
 
         $reader->expects($this->once())
             ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo($requestId), $this->equalTo(456))
+            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(456))
             ->will($this->returnValue(null));
 
-        $this->controller->historyViewRevisionAction($requestId, 456, $this->request);
+        $this->controller->historyViewRevisionAction(123, 456, $this->request);
     }
 
     public function testHistoryViewRevisionAction()
     {
-        $requestId = 123;
-        $this->request->query->set('id', $requestId);
+        $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('historyViewRevision'))
             ->will($this->returnValue(true));
-
-        $this->adminRouteIdHandler->expects($this->any())
-            ->method('getIdFromRequest')
-            ->with($this->equalTo($this->request), $this->equalTo($this->admin))
-            ->will($this->returnValue($requestId));
 
         $object = new \stdClass();
 
@@ -3082,7 +3042,7 @@ class CRUDControllerTest extends TestCase
 
         $reader->expects($this->once())
             ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo($requestId), $this->equalTo(456))
+            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(456))
             ->will($this->returnValue($objectRevision));
 
         $this->admin->expects($this->once())
@@ -3095,7 +3055,7 @@ class CRUDControllerTest extends TestCase
             ->method('getShow')
             ->will($this->returnValue($fieldDescriptionCollection));
 
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->historyViewRevisionAction($requestId, 456, $this->request));
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->historyViewRevisionAction(123, 456, $this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
@@ -3125,18 +3085,12 @@ class CRUDControllerTest extends TestCase
     {
         $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the object with id: 123');
 
-        $requestId = 123;
-        $this->request->query->set('id', $requestId);
+        $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('historyCompareRevisions'))
             ->will($this->returnValue(true));
-
-        $this->adminRouteIdHandler->expects($this->any())
-            ->method('getIdFromRequest')
-            ->with($this->equalTo($this->request), $this->equalTo($this->admin))
-            ->will($this->returnValue($requestId));
 
         $this->admin->expects($this->once())
             ->method('getObject')
@@ -3178,18 +3132,12 @@ class CRUDControllerTest extends TestCase
     {
         $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the targeted object `123` from the revision `456` with classname : `Foo`');
 
-        $requestId = 123;
-        $this->request->query->set('id', $requestId);
+        $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('historyCompareRevisions'))
             ->will($this->returnValue(true));
-
-        $this->adminRouteIdHandler->expects($this->any())
-            ->method('getIdFromRequest')
-            ->with($this->equalTo($this->request), $this->equalTo($this->admin))
-            ->will($this->returnValue($requestId));
 
         $object = new \stdClass();
 
@@ -3216,28 +3164,22 @@ class CRUDControllerTest extends TestCase
         // once because it will not be found and therefore the second call won't be executed
         $reader->expects($this->once())
             ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo($requestId), $this->equalTo(456))
+            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(456))
             ->will($this->returnValue(null));
 
-        $this->controller->historyCompareRevisionsAction($requestId, 456, 789, $this->request);
+        $this->controller->historyCompareRevisionsAction(123, 456, 789, $this->request);
     }
 
     public function testHistoryCompareRevisionsActionNotFoundCompareRevision()
     {
         $this->expectException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'unable to find the targeted object `123` from the revision `789` with classname : `Foo`');
 
-        $requestId = 123;
-        $this->request->query->set('id', $requestId);
+        $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('historyCompareRevisions'))
             ->will($this->returnValue(true));
-
-        $this->adminRouteIdHandler->expects($this->any())
-            ->method('getIdFromRequest')
-            ->with($this->equalTo($this->request), $this->equalTo($this->admin))
-            ->will($this->returnValue($requestId));
 
         $object = new \stdClass();
 
@@ -3267,31 +3209,25 @@ class CRUDControllerTest extends TestCase
         // first call should return, so the second call will throw an exception
         $reader->expects($this->at(0))
             ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo($requestId), $this->equalTo(456))
+            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(456))
             ->will($this->returnValue($objectRevision));
 
         $reader->expects($this->at(1))
             ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo($requestId), $this->equalTo(789))
+            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(789))
             ->will($this->returnValue(null));
 
-        $this->controller->historyCompareRevisionsAction($requestId, 456, 789, $this->request);
+        $this->controller->historyCompareRevisionsAction(123, 456, 789, $this->request);
     }
 
     public function testHistoryCompareRevisionsActionAction()
     {
-        $requestId = 123;
-        $this->request->query->set('id', $requestId);
+        $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('historyCompareRevisions'))
             ->will($this->returnValue(true));
-
-        $this->adminRouteIdHandler->expects($this->any())
-            ->method('getIdFromRequest')
-            ->with($this->equalTo($this->request), $this->equalTo($this->admin))
-            ->will($this->returnValue($requestId));
 
         $object = new \stdClass();
 
@@ -3323,12 +3259,12 @@ class CRUDControllerTest extends TestCase
 
         $reader->expects($this->at(0))
             ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo($requestId), $this->equalTo(456))
+            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(456))
             ->will($this->returnValue($objectRevision));
 
         $reader->expects($this->at(1))
             ->method('find')
-            ->with($this->equalTo('Foo'), $this->equalTo($requestId), $this->equalTo(789))
+            ->with($this->equalTo('Foo'), $this->equalTo(123), $this->equalTo(789))
             ->will($this->returnValue($compareObjectRevision));
 
         $this->admin->expects($this->once())
@@ -3341,10 +3277,7 @@ class CRUDControllerTest extends TestCase
             ->method('getShow')
             ->will($this->returnValue($fieldDescriptionCollection));
 
-        $this->assertInstanceOf(
-            'Symfony\Component\HttpFoundation\Response',
-            $this->controller->historyCompareRevisionsAction($requestId, 456, 789, $this->request)
-        );
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $this->controller->historyCompareRevisionsAction(123, 456, 789, $this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
