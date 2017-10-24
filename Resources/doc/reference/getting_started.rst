@@ -235,6 +235,31 @@ use the correct file extension):
 Configuration
 -------------
 
+Import routing conficuration resource in the main ``routing.yml``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # app/config/routing.yml
+        
+        app:
+            resource: '@AppBundle/Controller/'
+            type: annotation
+        # ...
+        
+        # add the following lines in the end
+        admin:
+            resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+            prefix: /admin
+
+        _sonata_admin:
+            resource: .
+            type: sonata_admin
+            prefix: /admin
+
+
 At this point you have basic administration actions for your model. If you visit ``http://yoursite.local/admin/dashboard`` again, you should now see a panel with
 your mapped model. You can start creating, listing, editing and deleting instances.
 
