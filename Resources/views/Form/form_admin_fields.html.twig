@@ -170,7 +170,11 @@ file that was distributed with this source code.
             {{- widget|raw -}}
             {%- if label is not same as(false) -%}
                 <span class="control-label__text">
-                    {{- label|trans({}, translation_domain) -}}
+                    {% if translation_domain is same as(false) %}
+                        {{- label -}}
+                    {% else %}
+                        {{- label|trans({}, translation_domain) -}}
+                    {%- endif -%}
                 </span>
             {%- endif -%}
         </label>
@@ -183,7 +187,11 @@ file that was distributed with this source code.
     <ul {{ block('widget_container_attributes') }}>
     {% for child in form %}
         <li>
-            {{ form_widget(child, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
+            {{ form_widget(child, {
+                'horizontal': false,
+                'horizontal_input_wrapper_class': '',
+                'translation_domain': choice_translation_domain
+            }) }} {# 'horizontal' values are needed to avoid MopaBootstrapBundle messing with the DOM #}
         </li>
     {% endfor %}
     </ul>
