@@ -14,12 +14,14 @@
 
 ```
 $ composer show --latest 'sonata-project/*'
+# Put the result here.
 ```
 
 #### Symfony packages
 
 ```
 $ composer show --latest 'symfony/*'
+# Put the result here.
 ```
 
 #### PHP version
