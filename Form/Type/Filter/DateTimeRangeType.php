@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -91,10 +92,7 @@ class DateTimeRangeType extends AbstractType
         $choiceOptions['choices'] = $choices;
 
         $builder
-            // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
-            ->add('type', method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
-                : 'choice', $choiceOptions)
+            ->add('type', ChoiceType::class, $choiceOptions)
             ->add('value', $options['field_type'], $options['field_options'])
         ;
     }

@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -119,10 +120,7 @@ class AdminType extends AbstractType
                 return $options['btn_delete'] !== false;
             },
             'delete_options' => [
-                // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
-                'type' => method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                    ? 'Symfony\Component\Form\Extension\Core\Type\CheckboxType'
-                    : 'checkbox',
+                'type' => CheckboxType::class,
                 'type_options' => [
                     'required' => false,
                     'mapped' => false,

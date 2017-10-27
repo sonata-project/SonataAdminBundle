@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Form\Extension\Field\Type;
 
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -62,12 +63,6 @@ class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        /*
-         * NEXT_MAJOR: Remove when dropping Symfony <2.8 support. It should
-         * simply be return 'Symfony\Component\Form\Extension\Core\Type\FormType';
-         */
-        return method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-            ? 'Symfony\Component\Form\Extension\Core\Type\FormType'
-            : 'form';
+        return FormType::class;
     }
 }

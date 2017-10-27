@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Form\Type;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -51,17 +52,7 @@ class ModelAutocompleteType extends AbstractType
         $builder->setAttribute('target_admin_access_action', $options['target_admin_access_action']);
 
         if ($options['multiple']) {
-            $resizeListener = new ResizeFormListener(
-                // NEXT_MAJOR: Remove ternary and keep 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
-                // (when requirement of Symfony is >= 2.8)
-                method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                    ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
-                    : 'hidden',
-                [],
-                true,
-                true,
-                true
-            );
+            $resizeListener = new ResizeFormListener(HiddenType::class, [], true, true, true);
 
             $builder->addEventSubscriber($resizeListener);
         }
