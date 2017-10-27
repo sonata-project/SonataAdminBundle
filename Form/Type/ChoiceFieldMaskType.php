@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -61,12 +62,7 @@ class ChoiceFieldMaskType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        // NEXT_MAJOR: Remove conditional parent call when bumping requirements to SF 2.7+
-        if (method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
-            parent::configureOptions($resolver);
-        } else {
-            parent::setDefaultOptions($resolver);
-        }
+        parent::configureOptions($resolver);
 
         $resolver->setDefaults([
             'map' => [],
@@ -78,10 +74,7 @@ class ChoiceFieldMaskType extends AbstractType
      */
     public function getParent()
     {
-        // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
-        return method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-            ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
-            : 'choice';
+        return ChoiceType::class;
     }
 
     /**

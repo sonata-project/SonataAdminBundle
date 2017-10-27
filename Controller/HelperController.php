@@ -23,7 +23,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -46,11 +45,13 @@ class HelperController
     protected $pool;
 
     /**
-     * @var ValidatorInterface|ValidatorInterface
+     * @var ValidatorInterface
      */
     protected $validator;
 
     /**
+     * NEXT_MAJOR: Add ValidatorInterface type-hint.
+     *
      * @param \Twig_Environment  $twig
      * @param Pool               $pool
      * @param AdminHelper        $helper
@@ -58,11 +59,9 @@ class HelperController
      */
     public function __construct(\Twig_Environment $twig, Pool $pool, AdminHelper $helper, $validator)
     {
-        if (!($validator instanceof ValidatorInterface) && !($validator instanceof LegacyValidatorInterface)) {
+        if (!($validator instanceof ValidatorInterface)) {
             throw new \InvalidArgumentException(
-                'Argument 4 is an instance of '.get_class($validator).', expecting an instance of'
-                .' \Symfony\Component\Validator\Validator\ValidatorInterface or'
-                .' \Symfony\Component\Validator\ValidatorInterface'
+                'Argument 4 is an instance of '.get_class($validator).', expecting an instance of \Symfony\Component\Validator\Validator\ValidatorInterface'
             );
         }
 

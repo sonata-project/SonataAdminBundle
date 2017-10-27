@@ -21,10 +21,6 @@ class ModelReferenceTypeTest extends TypeTestCase
 
     protected function setUp()
     {
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $this->markTestSkipped('Testing ancient versions would be more complicated.');
-        }
-
         $this->modelManager = $this->prophesize('Sonata\AdminBundle\Model\ModelManagerInterface');
 
         parent::setUp();

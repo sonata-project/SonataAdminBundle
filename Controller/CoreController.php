@@ -169,11 +169,6 @@ class CoreController extends Controller
      */
     private function getCurrentRequest()
     {
-        // NEXT_MAJOR: simplify this when dropping sf < 2.4
-        if ($this->container->has('request_stack')) {
-            return $this->container->get('request_stack')->getCurrentRequest();
-        }
-
-        return $this->container->get('request');
+        return $this->container->get('request_stack')->getCurrentRequest();
     }
 }

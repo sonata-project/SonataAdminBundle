@@ -30,7 +30,7 @@ class SonataAdminExtension extends \Twig_Extension
     protected $pool;
 
     /**
-     * @var LoggerInterface
+     * @var LoggerInterface|null
      */
     protected $logger;
 

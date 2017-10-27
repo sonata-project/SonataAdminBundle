@@ -65,20 +65,9 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         }
 
         // NEXT_MAJOR : remove this block
-        if (method_exists('Symfony\Component\DependencyInjection\Definition', 'setDeprecated')) {
-            $container->getDefinition('sonata.admin.exporter')->setDeprecated(
-                'The service "%service_id%" is deprecated in favor of the "sonata.exporter.exporter" service'
-            );
-        }
-
-        // TODO: Go back on xml configuration when bumping requirements to SF 2.6+
-        $sidebarMenu = $container->getDefinition('sonata.admin.sidebar_menu');
-        if (method_exists($sidebarMenu, 'setFactory')) {
-            $sidebarMenu->setFactory([new Reference('sonata.admin.menu_builder'), 'createSidebarMenu']);
-        } else {
-            $sidebarMenu->setFactoryService('sonata.admin.menu_builder');
-            $sidebarMenu->setFactoryMethod('createSidebarMenu');
-        }
+        $container->getDefinition('sonata.admin.exporter')->setDeprecated(
+            'The service "%service_id%" is deprecated in favor of the "sonata.exporter.exporter" service'
+        );
 
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
@@ -176,32 +165,6 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
         $loader->load('security.xml');
 
-        // Set the SecurityContext for Symfony <2.6
-        // NEXT_MAJOR: Go back to simple xml configuration when bumping requirements to SF 2.6+
-        if (interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')) {
-            $tokenStorageReference = new Reference('security.token_storage');
-            $authorizationCheckerReference = new Reference('security.authorization_checker');
-        } else {
-            $tokenStorageReference = new Reference('security.context');
-            $authorizationCheckerReference = new Reference('security.context');
-        }
-
-        $container
-            ->getDefinition('sonata.admin.security.handler.role')
-            ->replaceArgument(0, $authorizationCheckerReference)
-        ;
-
-        $container
-            ->getDefinition('sonata.admin.security.handler.acl')
-            ->replaceArgument(0, $tokenStorageReference)
-            ->replaceArgument(1, $authorizationCheckerReference)
-        ;
-
-        $container
-            ->getDefinition('sonata.admin.menu.group_provider')
-            ->replaceArgument(2, $authorizationCheckerReference)
-        ;
-
         $container->setParameter('sonata.admin.extension.map', $config['extensions']);
 
         /*
@@ -246,10 +209,6 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $container->setParameter('sonata.admin.configuration.show.mosaic.button', $config['show_mosaic_button']);
 
         $container->setParameter('sonata.admin.configuration.translate_group_label', $config['translate_group_label']);
-
-        if (\PHP_VERSION_ID < 70000) {
-            $this->configureClassesToCompile();
-        }
 
         $this->replacePropertyAccessor($container);
     }
@@ -314,90 +273,6 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
                 'annotation_patterns' => $annotationPatterns,
             ]
         );
-    }
-
-    public function configureClassesToCompile()
-    {
-        $this->addClassesToCompile([
-            'Sonata\\AdminBundle\\Admin\\AbstractAdmin',
-            'Sonata\\AdminBundle\\Admin\\AbstractAdminExtension',
-            'Sonata\\AdminBundle\\Admin\\AdminExtensionInterface',
-            'Sonata\\AdminBundle\\Admin\\AdminHelper',
-            'Sonata\\AdminBundle\\Admin\\AdminInterface',
-            'Sonata\\AdminBundle\\Admin\\BaseFieldDescription',
-            'Sonata\\AdminBundle\\Admin\\FieldDescriptionCollection',
-            'Sonata\\AdminBundle\\Admin\\FieldDescriptionInterface',
-            'Sonata\\AdminBundle\\Admin\\Pool',
-            'Sonata\\AdminBundle\\Block\\AdminListBlockService',
-            'Sonata\\AdminBundle\\Builder\\DatagridBuilderInterface',
-            'Sonata\\AdminBundle\\Builder\\FormContractorInterface',
-            'Sonata\\AdminBundle\\Builder\\ListBuilderInterface',
-            'Sonata\\AdminBundle\\Builder\\RouteBuilderInterface',
-            'Sonata\\AdminBundle\\Builder\\ShowBuilderInterface',
-            'Sonata\\AdminBundle\\Datagrid\\Datagrid',
-            'Sonata\\AdminBundle\\Datagrid\\DatagridInterface',
-            'Sonata\\AdminBundle\\Datagrid\\DatagridMapper',
-            'Sonata\\AdminBundle\\Datagrid\\ListMapper',
-            'Sonata\\AdminBundle\\Datagrid\\Pager',
-            'Sonata\\AdminBundle\\Datagrid\\PagerInterface',
-            'Sonata\\AdminBundle\\Datagrid\\ProxyQueryInterface',
-            'Sonata\\AdminBundle\\Exception\\ModelManagerException',
-            'Sonata\\AdminBundle\\Exception\\NoValueException',
-            'Sonata\\AdminBundle\\Filter\\Filter',
-            'Sonata\\AdminBundle\\Filter\\FilterFactory',
-            'Sonata\\AdminBundle\\Filter\\FilterFactoryInterface',
-            'Sonata\\AdminBundle\\Filter\\FilterInterface',
-            'Sonata\\AdminBundle\\Form\\DataTransformer\\ArrayToModelTransformer',
-            'Sonata\\AdminBundle\\Form\\DataTransformer\\ModelsToArrayTransformer',
-            'Sonata\\AdminBundle\\Form\\DataTransformer\\ModelToIdTransformer',
-            'Sonata\\AdminBundle\\Form\\EventListener\\MergeCollectionListener',
-            'Sonata\\AdminBundle\\Form\\Extension\\Field\\Type\\FormTypeFieldExtension',
-            'Sonata\\AdminBundle\\Form\\FormMapper',
-            'Sonata\\AdminBundle\\Form\\Type\\AdminType',
-            'Sonata\\AdminBundle\\Form\\Type\\Filter\\ChoiceType',
-            'Sonata\\AdminBundle\\Form\\Type\\Filter\\DateRangeType',
-            'Sonata\\AdminBundle\\Form\\Type\\Filter\\DateTimeRangeType',
-            'Sonata\\AdminBundle\\Form\\Type\\Filter\\DateTimeType',
-            'Sonata\\AdminBundle\\Form\\Type\\Filter\\DateType',
-            'Sonata\\AdminBundle\\Form\\Type\\Filter\\DefaultType',
-            'Sonata\\AdminBundle\\Form\\Type\\Filter\\NumberType',
-            'Sonata\\AdminBundle\\Form\\Type\\ModelReferenceType',
-            'Sonata\\AdminBundle\\Form\\Type\\ModelType',
-            'Sonata\\AdminBundle\\Form\\Type\\ModelListType',
-            'Sonata\\AdminBundle\\Guesser\\TypeGuesserChain',
-            'Sonata\\AdminBundle\\Guesser\\TypeGuesserInterface',
-            'Sonata\\AdminBundle\\Model\\AuditManager',
-            'Sonata\\AdminBundle\\Model\\AuditManagerInterface',
-            'Sonata\\AdminBundle\\Model\\AuditReaderInterface',
-            'Sonata\\AdminBundle\\Model\\ModelManagerInterface',
-            'Sonata\\AdminBundle\\Route\\AdminPoolLoader',
-            'Sonata\\AdminBundle\\Route\\DefaultRouteGenerator',
-            'Sonata\\AdminBundle\\Route\\PathInfoBuilder',
-            'Sonata\\AdminBundle\\Route\\QueryStringBuilder',
-            'Sonata\\AdminBundle\\Route\\RouteCollection',
-            'Sonata\\AdminBundle\\Route\\RouteGeneratorInterface',
-            'Sonata\\AdminBundle\\Security\\Acl\\Permission\\AdminPermissionMap',
-            'Sonata\\AdminBundle\\Security\\Acl\\Permission\\MaskBuilder',
-            'Sonata\\AdminBundle\\Security\\Handler\\AclSecurityHandler',
-            'Sonata\\AdminBundle\\Security\\Handler\\AclSecurityHandlerInterface',
-            'Sonata\\AdminBundle\\Security\\Handler\\NoopSecurityHandler',
-            'Sonata\\AdminBundle\\Security\\Handler\\RoleSecurityHandler',
-            'Sonata\\AdminBundle\\Security\\Handler\\SecurityHandlerInterface',
-            'Sonata\\AdminBundle\\Show\\ShowMapper',
-            'Sonata\\AdminBundle\\Translator\\BCLabelTranslatorStrategy',
-            'Sonata\\AdminBundle\\Translator\\FormLabelTranslatorStrategy',
-            'Sonata\\AdminBundle\\Translator\\LabelTranslatorStrategyInterface',
-            'Sonata\\AdminBundle\\Translator\\NativeLabelTranslatorStrategy',
-            'Sonata\\AdminBundle\\Translator\\NoopLabelTranslatorStrategy',
-            'Sonata\\AdminBundle\\Translator\\UnderscoreLabelTranslatorStrategy',
-            'Sonata\\AdminBundle\\Twig\\Extension\\SonataAdminExtension',
-            'Sonata\\AdminBundle\\Util\\AdminAclManipulator',
-            'Sonata\\AdminBundle\\Util\\AdminAclManipulatorInterface',
-            'Sonata\\AdminBundle\\Util\\FormBuilderIterator',
-            'Sonata\\AdminBundle\\Util\\FormViewIterator',
-            'Sonata\\AdminBundle\\Util\\ObjectAclManipulator',
-            'Sonata\\AdminBundle\\Util\\ObjectAclManipulatorInterface',
-        ]);
     }
 
     /**

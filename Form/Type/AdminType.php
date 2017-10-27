@@ -11,11 +11,11 @@
 
 namespace Sonata\AdminBundle\Form\Type;
 
-use Doctrine\Common\Collections\Collection;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -57,23 +57,7 @@ class AdminType extends AbstractType
             try {
                 $parentSubject = $admin->getParentFieldDescription()->getAdmin()->getSubject();
                 if ($parentSubject !== null && $parentSubject !== false) {
-                    // for PropertyAccessor < 2.5
-                    // NEXT_MAJOR: remove this code for old PropertyAccessor after dropping support for Symfony 2.3
-                    if (!method_exists($p, 'isReadable')) {
-                        $subjectCollection = $p->getValue(
-                            $parentSubject,
-                            $this->getFieldDescription($options)->getFieldName()
-                        );
-                        if ($subjectCollection instanceof Collection) {
-                            $subject = $subjectCollection->get(trim($options['property_path'], '[]'));
-                        }
-                    } else {
-                        // for PropertyAccessor >= 2.5
-                        $subject = $p->getValue(
-                            $parentSubject,
-                            $options['property_path']
-                        );
-                    }
+                    $subject = $p->getValue($parentSubject, $options['property_path']);
                     $builder->setData($subject);
                 }
             } catch (NoSuchIndexException $e) {
@@ -119,10 +103,7 @@ class AdminType extends AbstractType
                 return $options['btn_delete'] !== false;
             },
             'delete_options' => [
-                // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
-                'type' => method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                    ? 'Symfony\Component\Form\Extension\Core\Type\CheckboxType'
-                    : 'checkbox',
+                'type' => CheckboxType::class,
                 'type_options' => [
                     'required' => false,
                     'mapped' => false,

@@ -1255,10 +1255,8 @@ class CRUDController extends Controller
         $request = $this->getRequest();
         $token = $request->request->get('_sonata_csrf_token', false);
 
-        if ($this->container->has('security.csrf.token_manager')) { // SF3.0
+        if ($this->container->has('security.csrf.token_manager')) {
             $valid = $this->container->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($intention, $token));
-        } elseif ($this->container->has('form.csrf_provider')) { // < SF3.0
-            $valid = $this->container->get('form.csrf_provider')->isCsrfTokenValid($intention, $token);
         } else {
             return;
         }
@@ -1291,11 +1289,6 @@ class CRUDController extends Controller
     {
         if ($this->container->has('security.csrf.token_manager')) {
             return $this->container->get('security.csrf.token_manager')->getToken($intention)->getValue();
-        }
-
-        // TODO: Remove it when bumping requirements to SF 2.4+
-        if ($this->container->has('form.csrf_provider')) {
-            return $this->container->get('form.csrf_provider')->generateCsrfToken($intention);
         }
 
         return false;

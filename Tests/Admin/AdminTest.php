@@ -2171,6 +2171,7 @@ class AdminTest extends TestCase
             ->will($this->returnCallback(function ($label, $context = '', $type = '') {
                 return $context.'.'.$type.'_'.$label;
             }));
+
         $admin->expects($this->any())
             ->method('trans')
             ->will($this->returnCallback(function ($label) {

@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\Extension\LockExtension;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -72,14 +73,8 @@ class LockExtensionTest extends TestCase
 
         $this->modelManager->getLockVersion([])->willReturn(1);
 
-        $form->add(
-            '_lock_version',
-            // NEXT_MAJOR: remove the check and add the FQCN
-            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
-                : 'hidden',
-            ['mapped' => false, 'data' => 1]
-        )->shouldBeCalled();
+        $form->add('_lock_version', HiddenType::class, ['mapped' => false, 'data' => 1])
+            ->shouldBeCalled();
 
         $this->lockExtension->configureFormFields($formMapper);
         $this->eventDispatcher->dispatch(FormEvents::PRE_SET_DATA, $event);

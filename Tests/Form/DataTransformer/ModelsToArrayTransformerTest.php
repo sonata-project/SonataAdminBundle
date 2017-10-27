@@ -38,10 +38,7 @@ class ModelsToArrayTransformerTest extends TestCase
      */
     public function testLegacyConstructor()
     {
-        $choiceListClass = interface_exists('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface')
-            ? 'Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader'
-            : 'Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList'
-        ;
+        $choiceListClass = 'Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader';
 
         $choiceList = $this->prophesize($choiceListClass)->reveal();
 

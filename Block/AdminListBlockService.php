@@ -74,17 +74,7 @@ class AdminListBlockService extends AbstractBlockService
      */
     public function configureSettings(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'groups' => false,
-        ]);
-
-        // Symfony < 2.6 BC
-        if (method_exists($resolver, 'setNormalizer')) {
-            $resolver->setAllowedTypes('groups', ['bool', 'array']);
-        } else {
-            $resolver->setAllowedTypes([
-                'groups' => ['bool', 'array'],
-            ]);
-        }
+        $resolver->setDefaults(['groups' => false]);
+        $resolver->setAllowedTypes('groups', ['bool', 'array']);
     }
 }

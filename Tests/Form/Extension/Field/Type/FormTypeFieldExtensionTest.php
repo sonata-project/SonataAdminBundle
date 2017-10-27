@@ -25,9 +25,7 @@ class FormTypeFieldExtensionTest extends TestCase
         $extension = new FormTypeFieldExtension([], []);
 
         $this->assertSame(
-            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ?
-            'Symfony\Component\Form\Extension\Core\Type\FormType' :
-            'form',
+            'Symfony\Component\Form\Extension\Core\Type\FormType',
             $extension->getExtendedType()
         );
     }
@@ -37,11 +35,7 @@ class FormTypeFieldExtensionTest extends TestCase
         $extension = new FormTypeFieldExtension([], []);
 
         $resolver = new OptionsResolver();
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $extension->setDefaultOptions($resolver);
-        } else {
-            $extension->configureOptions($resolver);
-        }
+        $extension->configureOptions($resolver);
 
         $options = $resolver->resolve();
 

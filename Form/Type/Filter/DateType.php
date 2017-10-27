@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Optionsresolver\OptionsResolverInterface;
@@ -89,28 +90,17 @@ class DateType extends AbstractType
             'required' => false,
         ];
 
-        // NEXT_MAJOR: Remove (when requirement of Symfony is >= 2.7)
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
-            $choices = array_flip($choices);
-            foreach ($choices as $key => $value) {
-                $choices[$key] = $this->translator->trans($value, [], 'SonataAdminBundle');
-            }
-        } else {
-            $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
+        $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
 
-            // NEXT_MAJOR: Remove (when requirement of Symfony is >= 3.0)
-            if (method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
-                $choiceOptions['choices_as_values'] = true;
-            }
+        // NEXT_MAJOR: Remove (when requirement of Symfony is >= 3.0)
+        if (method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+            $choiceOptions['choices_as_values'] = true;
         }
 
         $choiceOptions['choices'] = $choices;
 
         $builder
-            // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
-            ->add('type', method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
-                : 'choice', $choiceOptions)
+            ->add('type', ChoiceType::class, $choiceOptions)
             ->add('value', $options['field_type'], array_merge(['required' => false], $options['field_options']))
         ;
     }

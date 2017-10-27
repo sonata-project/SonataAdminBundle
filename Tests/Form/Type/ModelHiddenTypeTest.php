@@ -23,11 +23,7 @@ class ModelHiddenTypeTest extends TypeTestCase
         $modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
         $optionResolver = new OptionsResolver();
 
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $type->setDefaultOptions($optionResolver);
-        } else {
-            $type->configureOptions($optionResolver);
-        }
+        $type->configureOptions($optionResolver);
 
         $options = $optionResolver->resolve(['model_manager' => $modelManager, 'class' => '\Foo']);
 
@@ -45,9 +41,6 @@ class ModelHiddenTypeTest extends TypeTestCase
     public function testGetParent()
     {
         $type = new ModelHiddenType();
-        // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
-        $this->assertSame(method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-            ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
-            : 'hidden', $type->getParent());
+        $this->assertSame('Symfony\Component\Form\Extension\Core\Type\HiddenType', $type->getParent());
     }
 }

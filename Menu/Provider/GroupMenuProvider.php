@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Menu\Provider;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Menu provider based on group options.
@@ -33,20 +34,14 @@ class GroupMenuProvider implements MenuProviderInterface
     private $pool;
 
     /**
-     * NEXT_MAJOR: Use AuthorizationCheckerInterface when bumping requirements to >=Symfony 2.6.
-     *
-     * @var \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface|\Symfony\Component\Security\Core\SecurityContextInterface
+     * @var AuthorizationCheckerInterface
      */
     private $checker;
 
     /**
-     * NEXT_MAJOR: Remove default value null of $checker.
-     * NEXT_MAJOR: Allow only injection of AuthorizationCheckerInterface when bumping requirements to >=Symfony 2.6.
-     *
-     * @param FactoryInterface $menuFactory
-     * @param Pool             $pool
-     * @param \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface|
-     *        \Symfony\Component\Security\Core\SecurityContextInterface|null  $checker
+     * @param FactoryInterface              $menuFactory
+     * @param Pool                          $pool
+     * @param AuthorizationCheckerInterface $checker
      */
     public function __construct(FactoryInterface $menuFactory, Pool $pool, $checker = null)
     {
@@ -63,9 +58,7 @@ class GroupMenuProvider implements MenuProviderInterface
                 Pass Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as 3rd argument.',
                 E_USER_DEPRECATED
             );
-        } elseif (!$checker instanceof \Symfony\Component\Security\Core\SecurityContextInterface
-            && !$checker instanceof \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface
-        ) {
+        } elseif (!$checker instanceof AuthorizationCheckerInterface) {
             throw new \InvalidArgumentException(
                 'Argument 3 must be an instance of either \Symfony\Component\Security\Core\SecurityContextInterface or
                 \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'

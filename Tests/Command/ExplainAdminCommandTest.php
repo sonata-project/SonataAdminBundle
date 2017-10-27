@@ -187,27 +187,14 @@ class ExplainAdminCommandTest extends TestCase
 
     public function testExecute()
     {
-        // NEXT_MAJOR: Remove check, when bumping requirements to SF 2.5+
-        if (interface_exists('Symfony\Component\Validator\Mapping\MetadataInterface')) { //sf2.5+
-            $metadata = $this->createMock('Symfony\Component\Validator\Mapping\MetadataInterface');
-        } else {
-            $metadata = $this->createMock('Symfony\Component\Validator\MetadataInterface');
-        }
+        $metadata = $this->createMock('Symfony\Component\Validator\Mapping\MetadataInterface');
 
         $this->validatorFactory->expects($this->once())
             ->method('getMetadataFor')
             ->with($this->equalTo('Acme\Entity\Foo'))
             ->will($this->returnValue($metadata));
 
-        // NEXT_MAJOR: Remove check, when bumping requirements to SF 2.5+
-        if (class_exists('Symfony\Component\Validator\Mapping\GenericMetadata')) {
-            $class = 'GenericMetadata';
-        } else {
-            // Symfony <2.5 compatibility
-            $class = 'ElementMetadata';
-        }
-
-        $propertyMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\\'.$class);
+        $propertyMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\GenericMetadata');
         $propertyMetadata->constraints = [
             new NotNull(),
             new Length(['min' => 2, 'max' => 50, 'groups' => ['create', 'edit']]),
@@ -215,7 +202,7 @@ class ExplainAdminCommandTest extends TestCase
 
         $metadata->properties = ['firstName' => $propertyMetadata];
 
-        $getterMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\\'.$class);
+        $getterMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\GenericMetadata');
         $getterMetadata->constraints = [
             new NotNull(),
             new Email(['groups' => ['registration', 'edit']]),

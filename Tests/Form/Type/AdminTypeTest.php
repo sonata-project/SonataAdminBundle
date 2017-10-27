@@ -44,11 +44,6 @@ class AdminTypeTest extends TypeTestCase
 
     public function testSubmitValidData()
     {
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $this->markTestSkipped('Testing ancient versions would be more complicated.');
-
-            return;
-        }
         $parentAdmin = $this->prophesize('Sonata\AdminBundle\Admin\AdminInterface');
         $parentField = $this->prophesize('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
@@ -90,10 +85,6 @@ class AdminTypeTest extends TypeTestCase
 
     public function testDotFields()
     {
-        if (!method_exists('Symfony\Component\PropertyAccess\PropertyAccessor', 'isReadable')) {
-            return $this->markTestSkipped('Testing ancient versions would be more complicated.');
-        }
-
         $parentSubject = new \stdClass();
         $parentSubject->foo = 1;
 
