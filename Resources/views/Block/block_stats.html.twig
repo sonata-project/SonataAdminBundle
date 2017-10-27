@@ -11,13 +11,20 @@ file that was distributed with this source code.
 
 {% extends sonata_block.templates.block_base %}
 
+{% set translation_domain = settings.translation_domain ?? admin.translationDomain %}
+
 {% block block %}
     <!-- small box -->
     <div class="small-box {{ settings.color }}">
         <div class="inner">
             <h3>{{ pager.count() }}</h3>
-
-            <p>{{ settings.text|trans({}, admin.translationDomain) }}</p>
+            <p>
+                {% if translation_domain %}
+                    {{ settings.text|trans({}, translation_domain) }}
+                {% else %}
+                    {{ settings.text }}
+                {% endif %}
+            </p>
         </div>
         <div class="icon">
             <i class="fa {{ settings.icon }}"></i>
