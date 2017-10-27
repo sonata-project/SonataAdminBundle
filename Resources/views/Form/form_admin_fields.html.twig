@@ -213,19 +213,23 @@ file that was distributed with this source code.
         <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %} >
             {% if empty_value is defined and empty_value is not none %}
                 <option value=""{% if required and value is empty %} selected="selected"{% endif %}>
-                    {% if not sonata_admin.admin %}
-                        {{- empty_value|trans({}, translation_domain) -}}
-                    {% else %}
-                        {{- empty_value|trans({}, sonata_admin.field_description.translationDomain) -}}
-                    {% endif%}
+                    {% if empty_value != '' %}
+                        {% if not sonata_admin.admin %}
+                            {{- empty_value|trans({}, translation_domain) -}}
+                        {% else %}
+                            {{- empty_value|trans({}, sonata_admin.field_description.translationDomain) -}}
+                        {% endif %}
+                    {% endif %}
                 </option>
             {% elseif placeholder is defined and placeholder is not none %}
                 <option value=""{% if required and value is empty %} selected="selected"{% endif %}>
-                    {% if not sonata_admin.admin %}
-                        {{- placeholder|trans({}, translation_domain) -}}
-                    {% else %}
-                        {{- placeholder|trans({}, sonata_admin.field_description.translationDomain) -}}
-                    {% endif%}
+                    {% if placeholder != '' %}
+                        {% if not sonata_admin.admin %}
+                            {{- placeholder|trans({}, translation_domain) -}}
+                        {% else %}
+                            {{- placeholder|trans({}, sonata_admin.field_description.translationDomain) -}}
+                        {% endif %}
+                    {% endif %}
                 </option>
             {% endif %}
             {% if preferred_choices|length > 0 %}
