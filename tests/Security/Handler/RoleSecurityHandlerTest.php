@@ -16,7 +16,6 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\RoleSecurityHandler;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Test for RoleSecurityHandler.
@@ -31,19 +30,13 @@ class RoleSecurityHandlerTest extends TestCase
     private $admin;
 
     /**
-     * @var AuthorizationCheckerInterface|SecurityContextInterface
+     * @var AuthorizationCheckerInterface
      */
     private $authorizationChecker;
 
     public function setUp()
     {
-        // Set the SecurityContext for Symfony <2.6
-        if (interface_exists('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface')) {
-            $this->authorizationChecker = $this->getMockForAbstractClass('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
-        } else {
-            $this->authorizationChecker = $this->getMockForAbstractClass('Symfony\Component\Security\Core\SecurityContextInterface');
-        }
-
+        $this->authorizationChecker = $this->getMockForAbstractClass('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
         $this->admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
     }
 

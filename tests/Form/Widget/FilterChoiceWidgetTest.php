@@ -75,29 +75,13 @@ class FilterChoiceWidgetTest extends BaseWidgetTest
 
     protected function getChoiceClass()
     {
-        return
-            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ?
-            'Symfony\Component\Form\Extension\Core\Type\ChoiceType' :
-            'choice';
+        return 'Symfony\Component\Form\Extension\Core\Type\ChoiceType';
     }
 
-    /**
-     * For SF < 2.6, we use 'empty_data' to provide default empty value.
-     * For SF >= 2.6, we must use 'placeholder' to achieve the same.
-     */
     protected function getDefaultOption()
     {
-        if (method_exists(
-            'Symfony\Component\Form\Tests\AbstractLayoutTest',
-            'testSingleChoiceNonRequiredWithPlaceholder'
-        )) {
-            return [
-                'placeholder' => 'Choose an option',
-            ];
-        }
-
         return [
-                'empty_value' => 'Choose an option',
-            ];
+            'placeholder' => 'Choose an option',
+        ];
     }
 }

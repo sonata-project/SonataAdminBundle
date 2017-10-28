@@ -21,10 +21,6 @@ class ModelChoiceLoaderTest extends TestCase
 
     public function setUp()
     {
-        if (false === interface_exists('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface')) {
-            $this->markTestSkipped('Test only available for > SF2.7');
-        }
-
         $this->modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
     }
 

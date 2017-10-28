@@ -23,7 +23,6 @@ use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -31,12 +30,12 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 class AclSecurityHandler implements AclSecurityHandlerInterface
 {
     /**
-     * @var TokenStorageInterface|SecurityContextInterface
+     * @var TokenStorageInterface
      */
     protected $tokenStorage;
 
     /**
-     * @var AuthorizationCheckerInterface|SecurityContextInterface
+     * @var AuthorizationCheckerInterface
      */
     protected $authorizationChecker;
 
@@ -66,21 +65,21 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     protected $maskBuilderClass;
 
     /**
-     * NEXT_MAJOR: Go back to signature class check when bumping requirements to SF 2.6+.
-     *
-     * @param TokenStorageInterface|SecurityContextInterface $tokenStorage
-     * @param TokenStorageInterface|SecurityContextInterface $authorizationChecker
-     * @param MutableAclProviderInterface                    $aclProvider
-     * @param string                                         $maskBuilderClass
-     * @param array                                          $superAdminRoles
+     * @param TokenStorageInterface         $tokenStorage
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param MutableAclProviderInterface   $aclProvider
+     * @param string                        $maskBuilderClass
+     * @param array                         $superAdminRoles
      */
     public function __construct($tokenStorage, $authorizationChecker, MutableAclProviderInterface $aclProvider, $maskBuilderClass, array $superAdminRoles)
     {
-        if (!$tokenStorage instanceof TokenStorageInterface && !$tokenStorage instanceof SecurityContextInterface) {
-            throw new \InvalidArgumentException('Argument 1 should be an instance of Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface or Symfony\Component\Security\Core\SecurityContextInterface');
+        // NEXT_MAJOR: Move TokenStorageInterface check to method signature
+        if (!$tokenStorage instanceof TokenStorageInterface) {
+            throw new \InvalidArgumentException('Argument 1 should be an instance of Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
         }
-        if (!$authorizationChecker instanceof AuthorizationCheckerInterface && !$authorizationChecker instanceof SecurityContextInterface) {
-            throw new \InvalidArgumentException('Argument 2 should be an instance of Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface or Symfony\Component\Security\Core\SecurityContextInterface');
+        // NEXT_MAJOR: Move AuthorizationCheckerInterface check to method signature
+        if (!$authorizationChecker instanceof AuthorizationCheckerInterface) {
+            throw new \InvalidArgumentException('Argument 2 should be an instance of Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
         }
 
         $this->tokenStorage = $tokenStorage;

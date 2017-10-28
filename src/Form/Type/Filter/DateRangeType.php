@@ -74,19 +74,11 @@ class DateRangeType extends AbstractType
             'required' => false,
         ];
 
-        // NEXT_MAJOR: Remove (when requirement of Symfony is >= 2.7)
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
-            $choices = array_flip($choices);
-            foreach ($choices as $key => $value) {
-                $choices[$key] = $this->translator->trans($value, [], 'SonataAdminBundle');
-            }
-        } else {
-            $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
+        $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
 
-            // NEXT_MAJOR: Remove (when requirement of Symfony is >= 3.0)
-            if (method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
-                $choiceOptions['choices_as_values'] = true;
-            }
+        // NEXT_MAJOR: Remove (when requirement of Symfony is >= 3.0)
+        if (method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+            $choiceOptions['choices_as_values'] = true;
         }
 
         $choiceOptions['choices'] = $choices;

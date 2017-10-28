@@ -26,11 +26,7 @@ class AdminTypeTest extends TypeTestCase
 
         $optionResolver = new OptionsResolver();
 
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $type->setDefaultOptions($optionResolver);
-        } else {
-            $type->configureOptions($optionResolver);
-        }
+        $type->configureOptions($optionResolver);
 
         $options = $optionResolver->resolve();
 
@@ -44,11 +40,6 @@ class AdminTypeTest extends TypeTestCase
 
     public function testSubmitValidData()
     {
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $this->markTestSkipped('Testing ancient versions would be more complicated.');
-
-            return;
-        }
         $parentAdmin = $this->prophesize('Sonata\AdminBundle\Admin\AdminInterface');
         $parentField = $this->prophesize('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
         $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());

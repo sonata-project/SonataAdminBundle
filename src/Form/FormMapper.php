@@ -80,8 +80,7 @@ class FormMapper extends BaseGroupedMapper
         // change `collection` to `sonata_type_native_collection` form type to
         // avoid BC break problems
         if ('collection' === $type || 'Symfony\Component\Form\Extension\Core\Type\CollectionType' === $type) {
-            // the field name is used to preserve Symfony <2.8 compatibility, the FQCN should be used instead
-            $type = 'sonata_type_native_collection';
+            $type = 'Sonata\AdminBundle\Form\Type\CollectionType';
         }
 
         $label = $fieldName;

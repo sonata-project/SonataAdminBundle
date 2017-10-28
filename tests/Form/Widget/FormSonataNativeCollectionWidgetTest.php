@@ -12,7 +12,6 @@
 namespace Sonata\AdminBundle\Tests\Form\Widget;
 
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
-use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\Tests\Fixtures\TestExtension;
 
 class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
@@ -56,9 +55,6 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
         $extensions = parent::getExtensions();
         $guesser = $this->getMockForAbstractClass('Symfony\Component\Form\FormTypeGuesserInterface');
         $extension = new TestExtension($guesser);
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $extension->addType(new CollectionType());
-        }
 
         $extension->addTypeExtension(new FormTypeFieldExtension([], [
             'form_type' => 'vertical',
@@ -70,9 +66,6 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
 
     protected function getChoiceClass()
     {
-        return
-            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ?
-            'Sonata\AdminBundle\Form\Type\CollectionType' :
-            'sonata_type_native_collection';
+        return 'Sonata\AdminBundle\Form\Type\CollectionType';
     }
 }
