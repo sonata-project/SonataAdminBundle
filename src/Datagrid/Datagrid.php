@@ -124,10 +124,7 @@ class Datagrid implements DatagridInterface
             $this->formBuilder->add($filter->getFormName(), $type, $options);
         }
 
-        // NEXT_MAJOR: Remove BC trick when bumping Symfony requirement to 2.8+
-        $hiddenType = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-            ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
-            : 'hidden';
+        $hiddenType = 'Symfony\Component\Form\Extension\Core\Type\HiddenType';
 
         $this->formBuilder->add('_sort_by', $hiddenType);
         $this->formBuilder->get('_sort_by')->addViewTransformer(new CallbackTransformer(

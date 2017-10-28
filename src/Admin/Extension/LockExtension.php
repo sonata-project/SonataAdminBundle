@@ -59,10 +59,7 @@ class LockExtension extends AbstractAdminExtension
 
             $form->add(
                 $fieldName,
-                // NEXT_MAJOR: remove the check and add the FQCN
-                method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                    ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
-                    : 'hidden',
+                'Symfony\Component\Form\Extension\Core\Type\HiddenType',
                 [
                     'mapped' => false,
                     'data' => $lockVersion,

@@ -74,10 +74,7 @@ class LockExtensionTest extends TestCase
 
         $form->add(
             '_lock_version',
-            // NEXT_MAJOR: remove the check and add the FQCN
-            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
-                : 'hidden',
+            'Symfony\Component\Form\Extension\Core\Type\HiddenType',
             ['mapped' => false, 'data' => 1]
         )->shouldBeCalled();
 

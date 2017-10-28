@@ -71,15 +71,6 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             );
         }
 
-        // TODO: Go back on xml configuration when bumping requirements to SF 2.6+
-        $sidebarMenu = $container->getDefinition('sonata.admin.sidebar_menu');
-        if (method_exists($sidebarMenu, 'setFactory')) {
-            $sidebarMenu->setFactory([new Reference('sonata.admin.menu_builder'), 'createSidebarMenu']);
-        } else {
-            $sidebarMenu->setFactoryService('sonata.admin.menu_builder');
-            $sidebarMenu->setFactoryMethod('createSidebarMenu');
-        }
-
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
@@ -179,32 +170,6 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $container->setParameter('sonata.admin.configuration.security.object_permissions', $config['security']['object_permissions']);
 
         $loader->load('security.xml');
-
-        // Set the SecurityContext for Symfony <2.6
-        // NEXT_MAJOR: Go back to simple xml configuration when bumping requirements to SF 2.6+
-        if (interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')) {
-            $tokenStorageReference = new Reference('security.token_storage');
-            $authorizationCheckerReference = new Reference('security.authorization_checker');
-        } else {
-            $tokenStorageReference = new Reference('security.context');
-            $authorizationCheckerReference = new Reference('security.context');
-        }
-
-        $container
-            ->getDefinition('sonata.admin.security.handler.role')
-            ->replaceArgument(0, $authorizationCheckerReference)
-        ;
-
-        $container
-            ->getDefinition('sonata.admin.security.handler.acl')
-            ->replaceArgument(0, $tokenStorageReference)
-            ->replaceArgument(1, $authorizationCheckerReference)
-        ;
-
-        $container
-            ->getDefinition('sonata.admin.menu.group_provider')
-            ->replaceArgument(2, $authorizationCheckerReference)
-        ;
 
         $container->setParameter('sonata.admin.extension.map', $config['extensions']);
 

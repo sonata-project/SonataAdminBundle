@@ -105,17 +105,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * NEXT_MAJOR: Remove this test when bumping requirements to >=Symfony 2.6.
-     *
-     * @group legacy
-     */
-    public function testGroupMenuProviderThrowsExceptionWithInvalidArgument()
-    {
-        $this->expectException('InvalidArgumentException');
-        new GroupMenuProvider($this->factory, $this->pool, 'foo');
-    }
-
-    /**
      * @param array $adminGroups
      *
      * @dataProvider getAdminGroups

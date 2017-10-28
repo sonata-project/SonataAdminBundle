@@ -34,11 +34,7 @@ class ModelAutocompleteTypeTest extends TypeTestCase
         $modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
         $optionResolver = new OptionsResolver();
 
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $this->type->setDefaultOptions($optionResolver);
-        } else {
-            $this->type->configureOptions($optionResolver);
-        }
+        $this->type->configureOptions($optionResolver);
 
         $options = $optionResolver->resolve(['model_manager' => $modelManager, 'class' => 'Foo', 'property' => 'bar']);
 

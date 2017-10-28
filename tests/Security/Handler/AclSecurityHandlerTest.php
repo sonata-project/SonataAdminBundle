@@ -19,25 +19,12 @@ class AclSecurityHandlerTest extends TestCase
 {
     public function getTokenStorageMock()
     {
-        // Set the SecurityContext for Symfony <2.6
-        // TODO: Remove conditional return when bumping requirements to SF 2.6+
-        if (interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')) {
-            return $this->getMockForAbstractClass('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
-            $this->authorizationChecker = $this->getMockForAbstractClass('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
-        }
-
-        return $this->getMockForAbstractClass('Symfony\Component\Security\Core\SecurityContextInterface');
+        return $this->getMockForAbstractClass('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
     }
 
     public function getAuthorizationCheckerMock()
     {
-        // Set the SecurityContext for Symfony <2.6
-        // TODO: Remove conditional return when bumping requirements to SF 2.6+
-        if (interface_exists('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface')) {
-            return $this->getMockForAbstractClass('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
-        }
-
-        return $this->getMockForAbstractClass('Symfony\Component\Security\Core\SecurityContextInterface');
+        return $this->getMockForAbstractClass('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
     }
 
     public function testAcl()

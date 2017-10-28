@@ -40,12 +40,7 @@ class ChoiceTypeExtension extends AbstractTypeExtension
     {
         $optionalOptions = ['sortable'];
 
-        if (method_exists($resolver, 'setDefined')) {
-            $resolver->setDefined($optionalOptions);
-        } else {
-            // To keep Symfony <2.6 support
-            $resolver->setOptional($optionalOptions);
-        }
+        $resolver->setDefined($optionalOptions);
     }
 
     /**

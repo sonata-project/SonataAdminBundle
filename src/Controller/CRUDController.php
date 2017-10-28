@@ -1012,11 +1012,7 @@ class CRUDController implements ContainerAwareInterface
      */
     public function getRequest()
     {
-        if ($this->container->has('request_stack')) {
-            return $this->container->get('request_stack')->getCurrentRequest();
-        }
-
-        return $this->container->get('request');
+        return $this->container->get('request_stack')->getCurrentRequest();
     }
 
     /**
@@ -1332,10 +1328,8 @@ class CRUDController implements ContainerAwareInterface
         $request = $this->getRequest();
         $token = $request->request->get('_sonata_csrf_token', false);
 
-        if ($this->container->has('security.csrf.token_manager')) { // SF3.0
+        if ($this->container->has('security.csrf.token_manager')) {
             $valid = $this->container->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($intention, $token));
-        } elseif ($this->container->has('form.csrf_provider')) { // < SF3.0
-            $valid = $this->container->get('form.csrf_provider')->isCsrfTokenValid($intention, $token);
         } else {
             return;
         }
@@ -1368,11 +1362,6 @@ class CRUDController implements ContainerAwareInterface
     {
         if ($this->container->has('security.csrf.token_manager')) {
             return $this->container->get('security.csrf.token_manager')->getToken($intention)->getValue();
-        }
-
-        // TODO: Remove it when bumping requirements to SF 2.4+
-        if ($this->container->has('form.csrf_provider')) {
-            return $this->container->get('form.csrf_provider')->generateCsrfToken($intention);
         }
 
         return false;

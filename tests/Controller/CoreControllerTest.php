@@ -31,11 +31,8 @@ class CoreControllerTest extends TestCase
         $templating = $this->createMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
         $request = new Request();
 
-        $requestStack = null;
-        if (class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
-            $requestStack = new RequestStack();
-            $requestStack->push($request);
-        }
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
 
         $breadcrumbsBuilder = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface');
 
@@ -43,7 +40,6 @@ class CoreControllerTest extends TestCase
             'sonata.admin.breadcrumbs_builder' => $breadcrumbsBuilder,
             'sonata.admin.pool' => $pool,
             'templating' => $templating,
-            'request' => $request,
             'request_stack' => $requestStack,
         ];
 
@@ -95,16 +91,12 @@ class CoreControllerTest extends TestCase
         $request = new Request();
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
-        $requestStack = null;
-        if (class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
-            $requestStack = new RequestStack();
-            $requestStack->push($request);
-        }
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
 
         $values = [
             'sonata.admin.pool' => $pool,
             'templating' => $templating,
-            'request' => $request,
             'request_stack' => $requestStack,
         ];
 

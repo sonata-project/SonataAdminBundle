@@ -14,7 +14,6 @@ namespace Sonata\AdminBundle\Security\Handler;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -22,7 +21,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 class RoleSecurityHandler implements SecurityHandlerInterface
 {
     /**
-     * @var AuthorizationCheckerInterface|SecurityContextInterface
+     * @var AuthorizationCheckerInterface
      */
     protected $authorizationChecker;
 
@@ -32,15 +31,14 @@ class RoleSecurityHandler implements SecurityHandlerInterface
     protected $superAdminRoles;
 
     /**
-     * NEXT_MAJOR: Go back to signature class check when bumping requirements to SF 2.6+.
-     *
-     * @param AuthorizationCheckerInterface|SecurityContextInterface $authorizationChecker
-     * @param array                                                  $superAdminRoles
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param array                         $superAdminRoles
      */
     public function __construct($authorizationChecker, array $superAdminRoles)
     {
-        if (!$authorizationChecker instanceof AuthorizationCheckerInterface && !$authorizationChecker instanceof SecurityContextInterface) {
-            throw new \InvalidArgumentException('Argument 1 should be an instance of Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface or Symfony\Component\Security\Core\SecurityContextInterface');
+        // NEXT_MAJOR: Move AuthorizationCheckerInterface check to method signature
+        if (!$authorizationChecker instanceof AuthorizationCheckerInterface) {
+            throw new \InvalidArgumentException('Argument 1 should be an instance of Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
         }
 
         $this->authorizationChecker = $authorizationChecker;

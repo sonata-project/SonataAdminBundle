@@ -353,7 +353,7 @@ class ExtensionCompilerPassTest extends TestCase
             ->setClass('Symfony\Component\Form\FormFactoryInterface');
         $container
             ->register('validator')
-            ->setClass('Symfony\Component\Validator\ValidatorInterface');
+            ->setClass('Symfony\Component\Validator\Validator\ValidatorInterface');
         $container
             ->register('knp_menu.factory')
             ->setClass('Knp\Menu\FactoryInterface');
