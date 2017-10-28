@@ -40,6 +40,7 @@ class AdminStatsBlockServiceTest extends AbstractBlockServiceTestCase
         $this->assertSettings([
             'icon' => 'fa-line-chart',
             'text' => 'Statistics',
+            'translation_domain' => null,
             'color' => 'bg-aqua',
             'code' => false,
             'filters' => [],
