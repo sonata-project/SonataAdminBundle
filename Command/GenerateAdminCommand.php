@@ -21,6 +21,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -129,7 +131,9 @@ class GenerateAdminCommand extends QuestionableCommand
 
         if ($servicesFile = $input->getOption('services')) {
             $adminClass = $adminGenerator->getClass();
-            $file = sprintf('%s/Resources/config/%s', $bundle->getPath(), $servicesFile);
+            $configDir = $this->determineConfigDir($bundle->getName());
+
+            $file = sprintf('%s/%s', $configDir, $servicesFile);
             $servicesManipulator = new ServicesManipulator($file);
             $controllerName = $controllerClassBasename
                 ? sprintf('%s:%s', $bundle->getName(), substr($controllerClassBasename, 0, -10))
@@ -206,12 +210,21 @@ class GenerateAdminCommand extends QuestionableCommand
         }
 
         if ($this->askConfirmation($input, $output, 'Do you want to update the services YAML configuration file', 'yes', '?')) {
-            $path = $this->getBundle($bundleName)->getPath().'/Resources/config/';
+            $path = $this->determineConfigDir($bundleName);
+
+            $configFiles = $this->findServicesConfigFiles($path);
+            $configFiles = iterator_to_array($configFiles, false);
+
+            $targetConfigFilename = 'services.yml';
+            if (count($configFiles)) {
+                $targetConfigFilename = array_shift($configFiles)->getFilename();
+            }
+
             $servicesFile = $this->askAndValidate(
                 $input,
                 $output,
                 'The services YAML configuration file',
-                is_file($path.'admin.yml') ? 'admin.yml' : 'services.yml',
+                $targetConfigFilename,
                 'Sonata\AdminBundle\Command\Validators::validateServicesFile'
             );
             $id = $this->askAndValidate(
@@ -230,6 +243,42 @@ class GenerateAdminCommand extends QuestionableCommand
         $input->setArgument('model', $modelClass);
         $input->setOption('admin', $adminClassBasename);
         $input->setOption('bundle', $bundleName);
+    }
+
+    /**
+     * Returns the absolute path to the services config-dir
+     *
+     * @param string $bundleName
+     *
+     * @return string
+     */
+    private function determineConfigDir($bundleName)
+    {
+        $applicationConfigDir = $this->getKernel()->getRootDir() . '/config';
+        $bundleConfigDir = $this->getBundle($bundleName)->getPath() . '/Resources/config/';
+
+        if (!is_dir($applicationConfigDir)) {
+            return $bundleConfigDir;
+        }
+
+        $configFiles = $this->findServicesConfigFiles($applicationConfigDir);
+        if (count($configFiles) !== 0) {
+            return $applicationConfigDir;
+        }
+
+        return $bundleConfigDir;
+    }
+
+    /**
+     * @param string $configDir
+     *
+     * @return SplFileInfo[]
+     */
+    private function findServicesConfigFiles($configDir)
+    {
+        $finder = new Finder();
+
+        return $finder->in($configDir)->files()->name('/^[services|admin]+\.[yml|xml]+$/');
     }
 
     /**
