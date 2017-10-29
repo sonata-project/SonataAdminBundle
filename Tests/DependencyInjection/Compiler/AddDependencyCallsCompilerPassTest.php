@@ -180,7 +180,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $newsRouteBuilderMethodCall = current(array_filter(
             $container->getDefinition('sonata_news_admin')->getMethodCalls(),
             function ($element) {
-                return $element[0] == 'setRouteBuilder';
+                return 'setRouteBuilder' == $element[0];
             }
         ));
         $this->assertSame(
@@ -191,7 +191,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $articleRouteBuilderMethodCall = current(array_filter(
             $container->getDefinition('sonata_article_admin')->getMethodCalls(),
             function ($element) {
-                return $element[0] == 'setRouteBuilder';
+                return 'setRouteBuilder' == $element[0];
             }
         ));
         $this->assertSame(
@@ -320,7 +320,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         foreach ($callsReportOneAdmin as $call) {
             list($name, $parameters) = $call;
 
-            if ($name == 'showMosaicButton') {
+            if ('showMosaicButton' == $name) {
                 $this->assertSame(false, $parameters[0]);
             }
         }
@@ -330,7 +330,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         foreach ($callsReportTwoAdmin as $call) {
             list($name, $parameters) = $call;
 
-            if ($name == 'showMosaicButton') {
+            if ('showMosaicButton' == $name) {
                 $this->assertSame(true, $parameters[0]);
             }
         }

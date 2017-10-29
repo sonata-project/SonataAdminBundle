@@ -208,7 +208,7 @@ class LockExtensionTest extends TestCase
     {
         $this->admin->getUniqid()->willReturn($uniqid);
         $this->admin->getRequest()->willReturn($request);
-        $this->admin->hasRequest()->willReturn($request !== null);
+        $this->admin->hasRequest()->willReturn(null !== $request);
         $this->admin->getModelManager()->willReturn($modelManager);
     }
 }

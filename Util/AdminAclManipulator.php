@@ -88,7 +88,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
                 }
 
                 if (count($roleAdminPermissions) > 0) {
-                    if ($aceIndex === false) {
+                    if (false === $aceIndex) {
                         $acl->insertClassAce(new RoleSecurityIdentity($role), $builder->get());
                         $action = 'add';
                     } else {
@@ -101,7 +101,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
                     }
 
                     $builder->reset();
-                } elseif ($aceIndex !== false) {
+                } elseif (false !== $aceIndex) {
                     $acl->deleteClassAce($aceIndex);
 
                     if (!is_null($output)) {

@@ -1265,7 +1265,7 @@ class AdminTest extends TestCase
         $securityHandler->expects($this->any())
             ->method('isGranted')
             ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin, $entity) {
-                if ($admin == $adminIn && $attributes == 'FOO') {
+                if ($admin == $adminIn && 'FOO' == $attributes) {
                     if (($object == $admin) || ($object == $entity)) {
                         return true;
                     }
@@ -1904,7 +1904,7 @@ class AdminTest extends TestCase
         $securityHandler->expects($this->any())
             ->method('isGranted')
             ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
-                if ($admin == $adminIn && $attributes == 'DELETE') {
+                if ($admin == $adminIn && 'DELETE' == $attributes) {
                     return true;
                 }
 
@@ -1964,7 +1964,7 @@ class AdminTest extends TestCase
         $securityHandler->expects($this->any())
             ->method('isGranted')
             ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
-                if ($admin == $adminIn && ($attributes == 'CREATE' || $attributes == 'LIST')) {
+                if ($admin == $adminIn && ('CREATE' == $attributes || 'LIST' == $attributes)) {
                     return true;
                 }
 
@@ -2174,7 +2174,7 @@ class AdminTest extends TestCase
         $admin->expects($this->any())
             ->method('trans')
             ->will($this->returnCallback(function ($label) {
-                if ($label == 'export.label_field') {
+                if ('export.label_field' == $label) {
                     return 'Feld';
                 }
 

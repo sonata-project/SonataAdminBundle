@@ -197,7 +197,7 @@ class AdminObjectAclManipulator
             $maskBuilder = new $this->maskBuilderClass();
 
             foreach ($data->getUserPermissions() as $permission) {
-                if (isset($matrix[$permission]) && $matrix[$permission] === true) {
+                if (isset($matrix[$permission]) && true === $matrix[$permission]) {
                     $maskBuilder->add($permission);
                 }
             }
@@ -272,7 +272,7 @@ class AdminObjectAclManipulator
                 if (
                     self::ACL_ROLES_FORM_NAME === $formBuilder->getName()
                     && isset($securityInformation[$aclValue])
-                    && array_search($permission, $securityInformation[$aclValue]) !== false
+                    && false !== array_search($permission, $securityInformation[$aclValue])
                 ) {
                     $attr['disabled'] = 'disabled';
                 }

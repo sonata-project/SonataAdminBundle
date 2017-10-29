@@ -28,7 +28,7 @@ class SearchHandlerTest extends TestCase
     {
         $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($admin) {
-            if ($id == 'fake') {
+            if ('fake' == $id) {
                 throw new ServiceNotFoundException('Fake service does not exist');
             }
 

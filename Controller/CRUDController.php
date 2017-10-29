@@ -91,7 +91,7 @@ class CRUDController extends Controller
         $this->admin->checkAccess('list');
 
         $preResponse = $this->preList($request);
-        if ($preResponse !== null) {
+        if (null !== $preResponse) {
             return $preResponse;
         }
 
@@ -174,11 +174,11 @@ class CRUDController extends Controller
         $this->admin->checkAccess('delete', $object);
 
         $preResponse = $this->preDelete($request, $object);
-        if ($preResponse !== null) {
+        if (null !== $preResponse) {
             return $preResponse;
         }
 
-        if ($this->getRestMethod() == 'DELETE') {
+        if ('DELETE' == $this->getRestMethod()) {
             // check the csrf token
             $this->validateCsrfToken('sonata.delete');
 
@@ -252,7 +252,7 @@ class CRUDController extends Controller
         $this->admin->checkAccess('edit', $existingObject);
 
         $preResponse = $this->preEdit($request, $existingObject);
-        if ($preResponse !== null) {
+        if (null !== $preResponse) {
             return $preResponse;
         }
 
@@ -401,7 +401,7 @@ class CRUDController extends Controller
         if (method_exists($this, $isRelevantAction)) {
             $nonRelevantMessage = call_user_func([$this, $isRelevantAction], $idx, $allElements, $request);
         } else {
-            $nonRelevantMessage = count($idx) != 0 || $allElements; // at least one item is selected
+            $nonRelevantMessage = 0 != count($idx) || $allElements; // at least one item is selected
         }
 
         if (!$nonRelevantMessage) { // default non relevant message (if false of null)
@@ -429,7 +429,7 @@ class CRUDController extends Controller
             $batchActions[$action]['ask_confirmation'] :
             true;
 
-        if ($askConfirmation && $confirmation != 'ok') {
+        if ($askConfirmation && 'ok' != $confirmation) {
             $actionLabel = $batchActions[$action]['label'];
             $batchTranslationDomain = isset($batchActions[$action]['translation_domain']) ?
                 $batchActions[$action]['translation_domain'] :
@@ -504,7 +504,7 @@ class CRUDController extends Controller
         $newObject = $this->admin->getNewInstance();
 
         $preResponse = $this->preCreate($request, $newObject);
-        if ($preResponse !== null) {
+        if (null !== $preResponse) {
             return $preResponse;
         }
 
@@ -611,7 +611,7 @@ class CRUDController extends Controller
         $this->admin->checkAccess('show', $object);
 
         $preResponse = $this->preShow($request, $object);
-        if ($preResponse !== null) {
+        if (null !== $preResponse) {
             return $preResponse;
         }
 
@@ -907,7 +907,7 @@ class CRUDController extends Controller
         $aclUsersForm = $adminObjectAclManipulator->createAclUsersForm($adminObjectAclData);
         $aclRolesForm = $adminObjectAclManipulator->createAclRolesForm($adminObjectAclData);
 
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             if ($request->request->has(AdminObjectAclManipulator::ACL_USERS_FORM_NAME)) {
                 $form = $aclUsersForm;
                 $updateMethod = 'updateAclUsers';
@@ -1114,7 +1114,7 @@ class CRUDController extends Controller
             $url = $this->admin->generateUrl('create', $params);
         }
 
-        if ($this->getRestMethod() === 'DELETE') {
+        if ('DELETE' === $this->getRestMethod()) {
             $url = $this->admin->generateUrl('list');
         }
 
@@ -1144,7 +1144,7 @@ class CRUDController extends Controller
     {
         $request = $this->getRequest();
 
-        return $request->get('btn_preview') !== null;
+        return null !== $request->get('btn_preview');
     }
 
     /**
@@ -1156,7 +1156,7 @@ class CRUDController extends Controller
     {
         $request = $this->getRequest();
 
-        return $request->get('btn_preview_approve') !== null;
+        return null !== $request->get('btn_preview_approve');
     }
 
     /**
@@ -1184,7 +1184,7 @@ class CRUDController extends Controller
     {
         $request = $this->getRequest();
 
-        return $request->get('btn_preview_decline') !== null;
+        return null !== $request->get('btn_preview_decline');
     }
 
     /**
@@ -1197,7 +1197,7 @@ class CRUDController extends Controller
         $aclUsers = [];
 
         $userManagerServiceName = $this->container->getParameter('sonata.admin.security.acl_user_manager');
-        if ($userManagerServiceName !== null && $this->has($userManagerServiceName)) {
+        if (null !== $userManagerServiceName && $this->has($userManagerServiceName)) {
             $userManager = $this->get($userManagerServiceName);
 
             if (method_exists($userManager, 'findUsers')) {

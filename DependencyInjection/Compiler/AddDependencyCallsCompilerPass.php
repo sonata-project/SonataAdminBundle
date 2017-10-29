@@ -278,7 +278,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'security_handler' => 'sonata.admin.security.handler',
             'menu_factory' => 'knp_menu.factory',
             'route_builder' => 'sonata.admin.route.path_info'.
-                (($manager_type == 'doctrine_phpcr') ? '_slashes' : ''),
+                (('doctrine_phpcr' == $manager_type) ? '_slashes' : ''),
             'label_translator_strategy' => 'sonata.admin.label.strategy.native',
         ];
 
@@ -358,24 +358,24 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $methods = [];
         $pos = 0;
         foreach ($definition->getMethodCalls() as $method) {
-            if ($method[0] == 'setTemplates') {
+            if ('setTemplates' == $method[0]) {
                 $definedTemplates = array_merge($definedTemplates, $method[1][0]);
 
                 continue;
             }
 
-            if ($method[0] == 'setTemplate') {
+            if ('setTemplate' == $method[0]) {
                 $definedTemplates[$method[1][0]] = $method[1][1];
 
                 continue;
             }
 
             // set template for simple pager if it is not already overwritten
-            if ($method[0] === 'setPagerType'
+            if ('setPagerType' === $method[0]
                 && $method[1][0] === Pager::TYPE_SIMPLE
                 && (
                     !isset($definedTemplates['pager_results'])
-                    || $definedTemplates['pager_results'] === 'SonataAdminBundle:Pager:results.html.twig'
+                    || 'SonataAdminBundle:Pager:results.html.twig' === $definedTemplates['pager_results']
                 )
             ) {
                 $definedTemplates['pager_results'] = 'SonataAdminBundle:Pager:simple_pager_results.html.twig';
@@ -411,7 +411,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         foreach ($defaultArguments as $index => $value) {
             $declaredInParent = $parentDefinition && array_key_exists($index, $parentArguments);
 
-            if (strlen($declaredInParent ? $parentArguments[$index] : $arguments[$index]) == 0) {
+            if (0 == strlen($declaredInParent ? $parentArguments[$index] : $arguments[$index])) {
                 $arguments[$declaredInParent ? sprintf('index_%s', $index) : $index] = $value;
             }
         }

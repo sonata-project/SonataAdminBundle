@@ -115,7 +115,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
      */
     protected function getUserEntityClass(InputInterface $input, OutputInterface $output)
     {
-        if ($this->userEntityClass === '') {
+        if ('' === $this->userEntityClass) {
             if ($input->getOption('user_entity')) {
                 list($userBundle, $userEntity) = Validators::validateEntityName($input->getOption('user_entity'));
                 $this->userEntityClass = $this->getContainer()->get('doctrine')->getEntityNamespace($userBundle).'\\'.$userEntity;

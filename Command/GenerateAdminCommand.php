@@ -245,7 +245,7 @@ class GenerateAdminCommand extends QuestionableCommand
         /* @var $application Application */
 
         foreach ($application->getKernel()->getBundles() as $bundle) {
-            if (strpos($class, $bundle->getNamespace().'\\') === 0) {
+            if (0 === strpos($class, $bundle->getNamespace().'\\')) {
                 return $bundle->getName();
             }
         }
@@ -304,8 +304,8 @@ class GenerateAdminCommand extends QuestionableCommand
      */
     private function getAdminServiceId($bundleName, $adminClassBasename)
     {
-        $prefix = substr($bundleName, -6) == 'Bundle' ? substr($bundleName, 0, -6) : $bundleName;
-        $suffix = substr($adminClassBasename, -5) == 'Admin' ? substr($adminClassBasename, 0, -5) : $adminClassBasename;
+        $prefix = 'Bundle' == substr($bundleName, -6) ? substr($bundleName, 0, -6) : $bundleName;
+        $suffix = 'Admin' == substr($adminClassBasename, -5) ? substr($adminClassBasename, 0, -5) : $adminClassBasename;
         $suffix = str_replace('\\', '.', $suffix);
 
         return Container::underscore(sprintf(
@@ -326,11 +326,11 @@ class GenerateAdminCommand extends QuestionableCommand
             return [];
         }
 
-        if ($this->managerTypes === null) {
+        if (null === $this->managerTypes) {
             $this->managerTypes = [];
 
             foreach ($container->getServiceIds() as $id) {
-                if (strpos($id, 'sonata.admin.manager.') === 0) {
+                if (0 === strpos($id, 'sonata.admin.manager.')) {
                     $managerType = substr($id, 21);
                     $this->managerTypes[$managerType] = $managerType;
                 }

@@ -239,7 +239,7 @@ class HelperController
             return new JsonResponse('Expected an XmlHttpRequest request header', 405);
         }
 
-        if ($request->getMethod() != 'POST') {
+        if ('POST' != $request->getMethod()) {
             return new JsonResponse('Expected a POST Request', 405);
         }
 
@@ -254,7 +254,7 @@ class HelperController
             return new JsonResponse('Invalid permissions', 403);
         }
 
-        if ($context == 'list') {
+        if ('list' == $context) {
             $fieldDescription = $admin->getListFieldDescription($field);
         } else {
             return new JsonResponse('Invalid context', 400);
@@ -280,17 +280,17 @@ class HelperController
         }
 
         // Handle date type has setter expect a DateTime object
-        if ('' !== $value && $fieldDescription->getType() == 'date') {
+        if ('' !== $value && 'date' == $fieldDescription->getType()) {
             $value = new \DateTime($value);
         }
 
         // Handle boolean type transforming the value into a boolean
-        if ('' !== $value && $fieldDescription->getType() == 'boolean') {
+        if ('' !== $value && 'boolean' == $fieldDescription->getType()) {
             $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
         }
 
         // Handle entity choice association type, transforming the value into entity
-        if ('' !== $value && $fieldDescription->getType() == 'choice' && $fieldDescription->getOption('class')) {
+        if ('' !== $value && 'choice' == $fieldDescription->getType() && $fieldDescription->getOption('class')) {
             // Get existing associations for current object
             $associations = $admin->getModelManager()
                 ->getEntityManager($admin->getClass())->getClassMetadata($admin->getClass())
@@ -361,7 +361,7 @@ class HelperController
         $admin->setRequest($request);
         $context = $request->get('_context', '');
 
-        if ($context === 'filter') {
+        if ('filter' === $context) {
             $admin->checkAccess('list');
         } elseif (!$admin->hasAccess('create') && !$admin->hasAccess('edit')) {
             throw new AccessDeniedException();
@@ -370,7 +370,7 @@ class HelperController
         // subject will be empty to avoid unnecessary database requests and keep autocomplete function fast
         $admin->setSubject($admin->getNewInstance());
 
-        if ($context === 'filter') {
+        if ('filter' === $context) {
             // filter
             $fieldDescription = $this->retrieveFilterFieldDescription($admin, $request->get('field'));
             $filterAutocomplete = $admin->getDatagrid()->getFilter($fieldDescription->getName());
@@ -417,7 +417,7 @@ class HelperController
         $targetAdmin->setPersistFilters(false);
         $datagrid = $targetAdmin->getDatagrid();
 
-        if ($callback !== null) {
+        if (null !== $callback) {
             if (!is_callable($callback)) {
                 throw new \RuntimeException('Callback does not contain callable function.');
             }
@@ -464,7 +464,7 @@ class HelperController
         $results = $pager->getResults();
 
         foreach ($results as $entity) {
-            if ($toStringCallback !== null) {
+            if (null !== $toStringCallback) {
                 if (!is_callable($toStringCallback)) {
                     throw new \RuntimeException('Option "to_string_callback" does not contain callable function.');
                 }

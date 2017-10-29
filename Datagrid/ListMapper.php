@@ -75,7 +75,7 @@ class ListMapper extends BaseMapper
     public function add($name, $type = null, array $fieldDescriptionOptions = [])
     {
         // Change deprecated inline action "view" to "show"
-        if ($name == '_action' && $type == 'actions') {
+        if ('_action' == $name && 'actions' == $type) {
             if (isset($fieldDescriptionOptions['actions']['view'])) {
                 @trigger_error(
                     'Inline action "view" is deprecated since version 2.2.4 and will be removed in 4.0. '
@@ -117,7 +117,7 @@ class ListMapper extends BaseMapper
             );
         }
 
-        if ($fieldDescription->getLabel() === null) {
+        if (null === $fieldDescription->getLabel()) {
             $fieldDescription->setOption(
                 'label',
                 $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'list', 'label')

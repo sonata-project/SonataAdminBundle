@@ -203,9 +203,9 @@ class SonataAdminExtensionTest extends TestCase
         $container->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($id) use ($admin, $adminBar) {
-                if ($id == 'sonata_admin_foo_service') {
+                if ('sonata_admin_foo_service' == $id) {
                     return $admin;
-                } elseif ($id == 'sonata_admin_bar_service') {
+                } elseif ('sonata_admin_bar_service' == $id) {
                     return $adminBar;
                 }
 
@@ -2076,7 +2076,7 @@ EOT
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
             ->will($this->returnCallback(function ($value, $default = null) {
-                if ($value == 'associated_property') {
+                if ('associated_property' == $value) {
                     return $default;
                 }
             }));
@@ -2093,7 +2093,7 @@ EOT
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
             ->will($this->returnCallback(function ($value, $default = null) {
-                if ($value == 'associated_tostring') {
+                if ('associated_tostring' == $value) {
                     return '__toString';
                 }
             }));
@@ -2113,11 +2113,11 @@ EOT
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
             ->will($this->returnCallback(function ($value, $default = null) {
-                if ($value == 'associated_property') {
+                if ('associated_property' == $value) {
                     return $default;
                 }
 
-                if ($value == 'associated_tostring') {
+                if ('associated_tostring' == $value) {
                     return 'customToString';
                 }
             }));
@@ -2141,7 +2141,7 @@ EOT
             ->method('getOption')
 
             ->will($this->returnCallback(function ($value, $default = null) {
-                if ($value == 'associated_tostring') {
+                if ('associated_tostring' == $value) {
                     return 'nonExistedMethod';
                 }
             }));
@@ -2158,7 +2158,7 @@ EOT
             ->method('getOption')
 
             ->will($this->returnCallback(function ($value, $default = null) {
-                if ($value == 'associated_property') {
+                if ('associated_property' == $value) {
                     return 'foo';
                 }
             }));
@@ -2175,7 +2175,7 @@ EOT
             ->method('getOption')
 
             ->will($this->returnCallback(function ($value, $default = null) {
-                if ($value == 'associated_property') {
+                if ('associated_property' == $value) {
                     return function ($element) {
                         return 'closure '.$element->foo;
                     };

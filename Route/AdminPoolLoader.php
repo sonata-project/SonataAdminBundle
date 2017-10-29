@@ -56,7 +56,7 @@ class AdminPoolLoader extends Loader
      */
     public function supports($resource, $type = null)
     {
-        return $type === self::ROUTE_TYPE_NAME;
+        return self::ROUTE_TYPE_NAME === $type;
     }
 
     /**

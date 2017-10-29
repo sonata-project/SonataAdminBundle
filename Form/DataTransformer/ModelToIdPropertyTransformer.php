@@ -87,7 +87,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
         }
 
         foreach ($value as $key => $id) {
-            if ($key === '_labels') {
+            if ('_labels' === $key) {
                 continue;
             }
 
@@ -134,7 +134,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
         foreach ($collection as $entity) {
             $id = current($this->modelManager->getIdentifierValues($entity));
 
-            if ($this->toStringCallback !== null) {
+            if (null !== $this->toStringCallback) {
                 if (!is_callable($this->toStringCallback)) {
                     throw new \RuntimeException('Callback in "to_string_callback" option doesn`t contain callable function.');
                 }

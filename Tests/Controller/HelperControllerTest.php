@@ -210,7 +210,7 @@ class HelperControllerTest extends TestCase
         $admin->expects($this->once())->method('getObject')->will($this->returnValue(new AdminControllerHelper_Foo()));
         $admin->expects($this->once())->method('toString')->will($this->returnValue('bar'));
         $admin->expects($this->once())->method('generateObjectUrl')->will($this->returnCallback(function ($type, $object, $parameters = []) {
-            if ($type != 'edit') {
+            if ('edit' != $type) {
                 return 'invalid name';
             }
 
@@ -551,7 +551,7 @@ class HelperControllerTest extends TestCase
         $this->admin->expects($this->exactly(2))
             ->method('hasAccess')
             ->will($this->returnCallback(function ($operation) {
-                if ($operation == 'create' || $operation == 'edit') {
+                if ('create' == $operation || 'edit' == $operation) {
                     return false;
                 }
 

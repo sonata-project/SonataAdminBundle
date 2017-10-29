@@ -44,11 +44,11 @@ class BaseAdminModelManagerTest extends TestCase
     {
         $modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
         $modelManager->expects($this->once())->method('find')->will($this->returnCallback(function ($class, $id) {
-            if ($class != 'class') {
+            if ('class' != $class) {
                 throw new \RuntimeException('Invalid class argument');
             }
 
-            if ($id != 10) {
+            if (10 != $id) {
                 throw new \RuntimeException('Invalid id argument');
             }
         }));
@@ -62,7 +62,7 @@ class BaseAdminModelManagerTest extends TestCase
     {
         $modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
         $modelManager->expects($this->once())->method('createQuery')->will($this->returnCallback(function ($class) {
-            if ($class != 'class') {
+            if ('class' != $class) {
                 throw new \RuntimeException('Invalid class argument');
             }
         }));

@@ -252,14 +252,14 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
             }
 
             if ($hasRole) {
-                if ($aceIndex === false) {
+                if (false === $aceIndex) {
                     $acl->insertClassAce(new RoleSecurityIdentity($role), $builder->get());
                 } else {
                     $acl->updateClassAce($aceIndex, $builder->get());
                 }
 
                 $builder->reset();
-            } elseif ($aceIndex !== false) {
+            } elseif (false !== $aceIndex) {
                 $acl->deleteClassAce($aceIndex);
             }
         }
