@@ -26,6 +26,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
@@ -36,6 +37,7 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\CoreBundle\Model\Metadata;
 use Sonata\CoreBundle\Validator\Constraints\InlineConstraint;
 use Sonata\CoreBundle\Validator\ErrorElement;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -844,24 +846,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         // ok, try to limit to add parent filter
         if ($this->isChild() && $this->getParentAssociationMapping() && !$mapper->has($this->getParentAssociationMapping())) {
-            // NEXT_MAJOR: Keep FQCN when bumping Symfony requirement to 2.8+.
-            $modelHiddenType = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                ? 'Sonata\AdminBundle\Form\Type\ModelHiddenType'
-                : 'sonata_type_model_hidden';
-
-            // NEXT_MAJOR: Keep FQCN when bumping Symfony requirement to 2.8+.
-            $hiddenType = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
-                : 'hidden';
-
             $mapper->add($this->getParentAssociationMapping(), null, [
                 'show_filter' => false,
                 'label' => false,
-                'field_type' => $modelHiddenType,
+                'field_type' => ModelHiddenType::class,
                 'field_options' => [
                     'model_manager' => $this->getModelManager(),
                 ],
-                'operator_type' => $hiddenType,
+                'operator_type' => HiddenType::class,
             ], null, null, [
                 'admin_code' => $this->getParent()->getCode(),
             ]);

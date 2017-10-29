@@ -12,6 +12,8 @@
 namespace Sonata\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -33,24 +35,12 @@ class AclMatrixType extends AbstractType
         $aclValueType = $options['acl_value'] instanceof UserInterface ? 'user' : 'role';
         $aclValueData = $options['acl_value'] instanceof UserInterface ? $options['acl_value']->getUsername() : $options['acl_value'];
 
-        $builder->add(
-            $aclValueType,
-            // NEXT_MAJOR: remove when dropping Symfony <2.8 support
-            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
-                : 'hidden',
-            ['data' => $aclValueData]
-        );
+        $builder->add($aclValueType, HiddenType::class, [
+            'data' => $aclValueData,
+        ]);
 
         foreach ($options['permissions'] as $permission => $attributes) {
-            $builder->add(
-                $permission,
-                // NEXT_MAJOR: remove when dropping Symfony <2.8 support
-                method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                    ? 'Symfony\Component\Form\Extension\Core\Type\CheckboxType'
-                    : 'checkbox',
-                $attributes
-            );
+            $builder->add($permission, CheckboxType::class, $attributes);
         }
     }
 
