@@ -126,7 +126,7 @@ abstract class BaseGroupedMapper extends BaseMapper
             }
 
             // if no tab is selected, we go the the main one named '_' ..
-            if ($this->currentTab !== 'default') {
+            if ('default' !== $this->currentTab) {
                 $code = $this->currentTab.'.'.$name; // groups with the same name can be on different tabs, so we prefix them in order to make unique group name
             }
 
@@ -164,11 +164,11 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function ifTrue($bool)
     {
-        if ($this->apply !== null) {
+        if (null !== $this->apply) {
             throw new \RuntimeException('Cannot nest ifTrue or ifFalse call');
         }
 
-        $this->apply = ($bool === true);
+        $this->apply = (true === $bool);
 
         return $this;
     }
@@ -184,11 +184,11 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function ifFalse($bool)
     {
-        if ($this->apply !== null) {
+        if (null !== $this->apply) {
             throw new \RuntimeException('Cannot nest ifTrue or ifFalse call');
         }
 
-        $this->apply = ($bool === false);
+        $this->apply = (false === $bool);
 
         return $this;
     }
@@ -225,9 +225,9 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function end()
     {
-        if ($this->currentGroup !== null) {
+        if (null !== $this->currentGroup) {
             $this->currentGroup = null;
-        } elseif ($this->currentTab !== null) {
+        } elseif (null !== $this->currentTab) {
             $this->currentTab = null;
         } else {
             throw new \RuntimeException('No open tabs or groups, you cannot use end()');

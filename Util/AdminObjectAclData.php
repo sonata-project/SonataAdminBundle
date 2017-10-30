@@ -277,7 +277,7 @@ class AdminObjectAclData
         if (!$this->isOwner()) {
             foreach (self::$ownerPermissions as $permission) {
                 $key = array_search($permission, $permissions);
-                if ($key !== false) {
+                if (false !== $key) {
                     unset($permissions[$key]);
                 }
             }

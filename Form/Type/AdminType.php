@@ -52,12 +52,12 @@ class AdminType extends AbstractType
 
         // hack to make sure the subject is correctly set
         // https://github.com/sonata-project/SonataAdminBundle/pull/2076
-        if ($builder->getData() === null) {
+        if (null === $builder->getData()) {
             $p = new PropertyAccessor(false, true);
 
             try {
                 $parentSubject = $admin->getParentFieldDescription()->getAdmin()->getSubject();
-                if ($parentSubject !== null && $parentSubject !== false) {
+                if (null !== $parentSubject && false !== $parentSubject) {
                     // for PropertyAccessor < 2.5
                     // NEXT_MAJOR: remove this code for old PropertyAccessor after dropping support for Symfony 2.3
                     if (!method_exists($p, 'isReadable')) {
@@ -117,7 +117,7 @@ class AdminType extends AbstractType
     {
         $resolver->setDefaults([
             'delete' => function (Options $options) {
-                return $options['btn_delete'] !== false;
+                return false !== $options['btn_delete'];
             },
             'delete_options' => [
                 'type' => CheckboxType::class,

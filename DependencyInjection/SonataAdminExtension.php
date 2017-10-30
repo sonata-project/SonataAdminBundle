@@ -144,7 +144,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
         switch ($config['security']['handler']) {
             case 'sonata.admin.security.handler.role':
-                if (count($config['security']['information']) === 0) {
+                if (0 === count($config['security']['information'])) {
                     $config['security']['information'] = [
                         'EDIT' => ['EDIT'],
                         'LIST' => ['LIST'],
@@ -158,7 +158,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
                 break;
             case 'sonata.admin.security.handler.acl':
-                if (count($config['security']['information']) === 0) {
+                if (0 === count($config['security']['information'])) {
                     $config['security']['information'] = [
                         'GUEST' => ['VIEW', 'LIST'],
                         'STAFF' => ['EDIT', 'LIST', 'CREATE'],
@@ -282,7 +282,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         foreach ($diExtraConfigs as $diExtraConfig) {
             if (isset($diExtraConfig['annotation_patterns'])) {
                 // don't add our own pattern if user has already done so
-                if (array_search($sonataAdminPattern, $diExtraConfig['annotation_patterns']) !== false) {
+                if (false !== array_search($sonataAdminPattern, $diExtraConfig['annotation_patterns'])) {
                     return;
                 }
                 $annotationPatternsConfigured = true;

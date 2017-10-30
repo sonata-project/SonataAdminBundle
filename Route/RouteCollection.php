@@ -103,7 +103,7 @@ class RouteCollection
      */
     public function getCode($name)
     {
-        if (strrpos($name, '.') !== false) {
+        if (false !== strrpos($name, '.')) {
             return $name;
         }
 
@@ -227,13 +227,13 @@ class RouteCollection
      */
     public function actionify($action)
     {
-        if (($pos = strrpos($action, '.')) !== false) {
+        if (false !== ($pos = strrpos($action, '.'))) {
             $action = substr($action, $pos + 1);
         }
 
         // if this is a service rather than just a controller name, the suffix
         // Action is not automatically appended to the method name
-        if (strpos($this->baseControllerName, ':') === false) {
+        if (false === strpos($this->baseControllerName, ':')) {
             $action .= 'Action';
         }
 

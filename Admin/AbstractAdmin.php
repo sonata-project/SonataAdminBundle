@@ -780,7 +780,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
             // if persisting filters, save filters to session, or pull them out of session if no new filters set
             if ($this->persistFilters) {
-                if ($filters == [] && $this->request->query->get('filters') != 'reset') {
+                if ($filters == [] && 'reset' != $this->request->query->get('filters')) {
                     $filters = $this->request->getSession()->get($this->getCode().'.filter.parameters', []);
                 } else {
                     $this->request->getSession()->set($this->getCode().'.filter.parameters', $filters);
@@ -1311,7 +1311,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         $adminCode = $fieldDescription->getOption('admin_code');
 
-        if ($adminCode !== null) {
+        if (null !== $adminCode) {
             $admin = $pool->getAdminByAdminCode($adminCode);
         } else {
             $admin = $pool->getAdminByClass($fieldDescription->getTargetEntity());
@@ -1692,7 +1692,7 @@ EOT;
      */
     public function getSubject()
     {
-        if ($this->subject === null && $this->request && !$this->hasParentFieldDescription()) {
+        if (null === $this->subject && $this->request && !$this->hasParentFieldDescription()) {
             $id = $this->request->get($this->getIdParameter());
             $this->subject = $this->getModelManager()->find($this->class, $id);
         }
@@ -1705,7 +1705,7 @@ EOT;
      */
     public function hasSubject()
     {
-        return $this->subject != null;
+        return null != $this->subject;
     }
 
     /**
@@ -2132,7 +2132,7 @@ EOT;
             ' Use the sonata.admin.breadcrumbs_builder service instead.',
             E_USER_DEPRECATED
         );
-        if ($this->breadcrumbsBuilder === null) {
+        if (null === $this->breadcrumbsBuilder) {
             $this->breadcrumbsBuilder = new BreadcrumbsBuilder(
                 $this->getConfigurationPool()->getContainer()->getParameter('sonata.admin.configuration.breadcrumbs')
             );
@@ -2324,7 +2324,7 @@ EOT;
      */
     public function hasRequest()
     {
-        return $this->request !== null;
+        return null !== $this->request;
     }
 
     /**

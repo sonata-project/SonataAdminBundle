@@ -54,7 +54,7 @@ class CoreControllerTest extends TestCase
         $container->expects($this->any())
             ->method('has')
             ->will($this->returnCallback(function ($id) {
-                if ($id == 'templating') {
+                if ('templating' == $id) {
                     return true;
                 }
 
@@ -62,12 +62,12 @@ class CoreControllerTest extends TestCase
             }));
 
         $container->expects($this->any())->method('getParameter')->will($this->returnCallback(function ($name) {
-            if ($name == 'sonata.admin.configuration.dashboard_blocks') {
+            if ('sonata.admin.configuration.dashboard_blocks' == $name) {
                 return [];
             }
         }));
         $container->expects($this->any())->method('has')->will($this->returnCallback(function ($id) {
-            if ($id == 'templating') {
+            if ('templating' == $id) {
                 return true;
             }
 
@@ -115,7 +115,7 @@ class CoreControllerTest extends TestCase
         $container->expects($this->any())
             ->method('has')
             ->will($this->returnCallback(function ($id) {
-                if ($id == 'templating') {
+                if ('templating' == $id) {
                     return true;
                 }
 
@@ -123,12 +123,12 @@ class CoreControllerTest extends TestCase
             }));
 
         $container->expects($this->any())->method('getParameter')->will($this->returnCallback(function ($name) {
-            if ($name == 'sonata.admin.configuration.dashboard_blocks') {
+            if ('sonata.admin.configuration.dashboard_blocks' == $name) {
                 return [];
             }
         }));
         $container->expects($this->any())->method('has')->will($this->returnCallback(function ($id) {
-            if ($id == 'templating') {
+            if ('templating' == $id) {
                 return true;
             }
 

@@ -69,14 +69,14 @@ abstract class QuestionableCommand extends ContainerAwareCommand
         if ($questionHelper instanceof DialogHelper) {
             $question = $questionHelper->getQuestion($questionText, $default, $separator);
 
-            return $questionHelper->askConfirmation($output, $question, ($default === 'no' ? false : true));
+            return $questionHelper->askConfirmation($output, $question, ('no' === $default ? false : true));
         }
 
         $question = new ConfirmationQuestion($questionHelper->getQuestion(
             $questionText,
             $default,
             $separator
-        ), ($default === 'no' ? false : true));
+        ), ('no' === $default ? false : true));
 
         return $questionHelper->ask($input, $output, $question);
     }

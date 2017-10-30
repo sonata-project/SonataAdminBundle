@@ -60,7 +60,7 @@ class ServicesManipulator
             $code = rtrim(file_get_contents($this->file));
             $data = (array) Yaml::parse($code);
 
-            if ($code !== '') {
+            if ('' !== $code) {
                 $code .= "\n";
             }
 
@@ -73,11 +73,11 @@ class ServicesManipulator
                     ));
                 }
 
-                if ($data['services'] !== null) {
+                if (null !== $data['services']) {
                     $code .= "\n";
                 }
             } else {
-                $code .= $code === '' ? '' : "\n"."services:\n";
+                $code .= '' === $code ? '' : "\n"."services:\n";
             }
         }
 
@@ -92,7 +92,7 @@ class ServicesManipulator
         );
         @mkdir(dirname($this->file), 0777, true);
 
-        if (@file_put_contents($this->file, $code) === false) {
+        if (false === @file_put_contents($this->file, $code)) {
             throw new \RuntimeException(sprintf(
                 'Unable to append service "%s" to the file "%s". You will have to do it manually.',
                 $serviceId,

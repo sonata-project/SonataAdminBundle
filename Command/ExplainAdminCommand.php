@@ -121,7 +121,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
         $output->writeln('<comment>Validation Framework</comment> - http://symfony.com/doc/3.0/book/validation.html');
         $output->writeln('<info>Properties constraints</info>');
 
-        if (count($metadata->properties) == 0) {
+        if (0 == count($metadata->properties)) {
             $output->writeln('    <error>no property constraints defined !!</error>');
         } else {
             foreach ($metadata->properties as $name => $property) {
@@ -140,7 +140,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
         $output->writeln('');
         $output->writeln('<info>Getters constraints</info>');
 
-        if (count($metadata->getters) == 0) {
+        if (0 == count($metadata->getters)) {
             $output->writeln('    <error>no getter constraints defined !!</error>');
         } else {
             foreach ($metadata->getters as $name => $property) {
