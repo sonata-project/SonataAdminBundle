@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Form\ChoiceList;
 
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\Exception\RuntimeException;
@@ -64,7 +65,7 @@ class ModelChoiceList extends SimpleChoiceList
      *
      * This property should only be accessed through queryBuilder.
      *
-     * @var \Doctrine\ORM\QueryBuilder
+     * @var QueryBuilder
      */
     private $query;
 
@@ -99,8 +100,8 @@ class ModelChoiceList extends SimpleChoiceList
     /**
      * @param ModelManagerInterface $modelManager
      * @param string                $class
-     * @param null                  $property
-     * @param null                  $query
+     * @param string|null           $property
+     * @param QueryBuilder|null     $query
      * @param array                 $choices
      */
     public function __construct(ModelManagerInterface $modelManager, $class, $property = null, $query = null, $choices = [], PropertyAccessorInterface $propertyAccessor = null)

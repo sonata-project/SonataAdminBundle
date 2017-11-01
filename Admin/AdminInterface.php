@@ -220,10 +220,10 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * NEXT_MAJOR: remove this method
      *
-     * @param string $id
-     * @param array  $parameters
-     * @param null   $domain
-     * @param null   $locale
+     * @param string      $id
+     * @param array       $parameters
+     * @param string|null $domain
+     * @param string|null $locale
      *
      * @return string the translated string
      *

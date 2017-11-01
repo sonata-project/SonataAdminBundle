@@ -28,7 +28,7 @@ interface FilterInterface
      * @param ProxyQueryInterface $queryBuilder
      * @param string              $alias
      * @param string              $field
-     * @param string              $value
+     * @param mixed[]             $value
      */
     public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value);
 
@@ -70,8 +70,8 @@ interface FilterInterface
     public function getDefaultOptions();
 
     /**
-     * @param string $name
-     * @param null   $default
+     * @param string     $name
+     * @param mixed|null $default
      *
      * @return mixed
      */
@@ -117,8 +117,8 @@ interface FilterInterface
     /**
      * Get field option.
      *
-     * @param string $name
-     * @param null   $default
+     * @param string     $name
+     * @param mixed|null $default
      *
      * @return mixed
      */

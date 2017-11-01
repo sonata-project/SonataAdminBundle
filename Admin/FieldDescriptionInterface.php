@@ -47,8 +47,8 @@ interface FieldDescriptionInterface
     /**
      * Return the value represented by the provided name.
      *
-     * @param string $name
-     * @param null   $default
+     * @param string     $name
+     * @param mixed|null $default
      *
      * @return array|null the value represented by the provided name
      */
