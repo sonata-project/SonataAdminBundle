@@ -59,8 +59,8 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
     /**
      * @param ModelManagerInterface          $modelManager
      * @param string                         $class
-     * @param null                           $property
-     * @param null                           $query
+     * @param string|null                    $property
+     * @param mixed|null                     $query
      * @param array                          $choices
      * @param PropertyAccessorInterface|null $propertyAccessor
      */

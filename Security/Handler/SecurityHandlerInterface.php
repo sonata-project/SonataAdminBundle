@@ -21,7 +21,7 @@ interface SecurityHandlerInterface
     /**
      * @param AdminInterface $admin
      * @param string|array   $attributes
-     * @param null           $object
+     * @param mixed|null     $object
      *
      * @return bool
      */
