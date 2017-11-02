@@ -1705,7 +1705,7 @@ EOT;
      */
     public function hasSubject()
     {
-        return null != $this->subject;
+        return (bool) $this->getSubject();
     }
 
     /**

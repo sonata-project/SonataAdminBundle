@@ -11,12 +11,21 @@
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
+use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
+use Knp\Menu\MenuFactory;
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
+use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\DummySubject;
+use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -32,64 +41,71 @@ class BreadcrumbsBuilderTest extends TestCase
      */
     public function testGetBreadcrumbs()
     {
-        $class = 'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\DummySubject';
-        $baseControllerName = 'SonataNewsBundle:PostAdmin';
+        $postAdminSubjectId = 42;
+        $commentAdminSubjectId = 100500;
 
-        $admin = new PostAdmin('sonata.post.admin.post', $class, $baseControllerName);
-        $commentAdmin = new CommentAdmin(
-            'sonata.post.admin.comment',
-            'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment',
-            'SonataNewsBundle:CommentAdmin'
-        );
-        $subCommentAdmin = new CommentAdmin(
-            'sonata.post.admin.comment',
-            'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment',
-            'SonataNewsBundle:CommentAdmin'
-        );
-        $admin->addChild($commentAdmin);
-        $admin->setRequest(new Request(['id' => 42]));
-        $commentAdmin->setRequest(new Request());
+        $menuFactory = $this->getMockForAbstractClass(FactoryInterface::class);
+        $menu = $this->getMockForAbstractClass(ItemInterface::class);
+        $translatorStrategy = $this->getMockForAbstractClass(LabelTranslatorStrategyInterface::class);
+        $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
+        $routeGenerator = $this->getMockForAbstractClass(RouteGeneratorInterface::class);
+        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $pool = $this->getMockBuilder(Pool::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $menu->expects($this->any())
+            ->method('addChild')
+            ->willReturnCallback(function () use ($menu) {
+                return $menu;
+            });
+
+        $postAdmin = new PostAdmin('sonata.post.admin.post', DummySubject::class, 'SonataNewsBundle:PostAdmin');
+        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'SonataNewsBundle:CommentAdmin');
+        $subCommentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'SonataNewsBundle:CommentAdmin');
+
+        $postAdmin->addChild($commentAdmin);
+        $postAdmin->setRequest(new Request(['id' => $postAdminSubjectId]));
+        $postAdmin->setModelManager($modelManager);
+
+        $commentAdmin->setRequest(new Request(['childId' => $commentAdminSubjectId]));
+        $commentAdmin->setModelManager($modelManager);
+
         $commentAdmin->initialize();
-        $admin->initialize();
+        $postAdmin->initialize();
+
         $commentAdmin->setCurrentChild($subCommentAdmin);
 
-        $menuFactory = $this->getMockForAbstractClass('Knp\Menu\FactoryInterface');
-        $menu = $this->getMockForAbstractClass('Knp\Menu\ItemInterface');
-        $translatorStrategy = $this->getMockForAbstractClass(
-            'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
-        );
-        $routeGenerator = $this->getMockForAbstractClass(
-            'Sonata\AdminBundle\Route\RouteGeneratorInterface'
-        );
-        $modelManager = $this->getMockForAbstractClass(
-            'Sonata\AdminBundle\Model\ModelManagerInterface'
-        );
-
-        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())
             ->method('getParameter')
             ->with('sonata.admin.configuration.breadcrumbs')
             ->will($this->returnValue([]));
-        $pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
-            ->disableOriginalConstructor()
-            ->getMock();
+
         $pool->expects($this->any())
             ->method('getContainer')
             ->will($this->returnValue($container));
 
-        $admin->setConfigurationPool($pool);
-        $admin->setMenuFactory($menuFactory);
-        $admin->setLabelTranslatorStrategy($translatorStrategy);
-        $admin->setRouteGenerator($routeGenerator);
-        $admin->setModelManager($modelManager);
+        $postAdmin->setConfigurationPool($pool);
+        $postAdmin->setMenuFactory($menuFactory);
+        $postAdmin->setLabelTranslatorStrategy($translatorStrategy);
+        $postAdmin->setRouteGenerator($routeGenerator);
 
         $commentAdmin->setLabelTranslatorStrategy($translatorStrategy);
         $commentAdmin->setRouteGenerator($routeGenerator);
 
-        $modelManager->expects($this->exactly(1))
+        $modelManager->expects($this->any())
             ->method('find')
-            ->with('Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\DummySubject', 42)
-            ->will($this->returnValue(new DummySubject()));
+            ->willReturnCallback(function ($class, $id) use ($postAdminSubjectId, $commentAdminSubjectId) {
+                if (DummySubject::class === $class && $postAdminSubjectId === $id) {
+                    return new DummySubject();
+                }
+
+                if (Comment::class === $class && $commentAdminSubjectId === $id) {
+                    return new Comment();
+                }
+
+                throw new \Exception('Unexpected class and id combination');
+            });
 
         $menuFactory->expects($this->exactly(5))
             ->method('createItem')
@@ -109,16 +125,18 @@ class BreadcrumbsBuilderTest extends TestCase
             ->with('sonata_admin_dashboard')
             ->will($this->returnValue('http://somehost.com'));
 
-        $translatorStrategy->expects($this->exactly(13))
+        $translatorStrategy->expects($this->exactly(10))
             ->method('getLabel')
             ->withConsecutive(
                 ['DummySubject_list'],
                 ['Comment_list'],
-                ['Comment_repost'],
-
                 ['DummySubject_list'],
                 ['Comment_list'],
-                ['Comment_flag'],
+                ['DummySubject_list'],
+
+                ['Comment_list'],
+                ['DummySubject_list'],
+                ['Comment_list'],
 
                 ['DummySubject_list'],
                 ['Comment_list'],
@@ -157,36 +175,36 @@ class BreadcrumbsBuilderTest extends TestCase
                 ['someOtherLabel'],
                 ['dummy subject representation'],
                 ['someInterestingLabel'],
+                ['this is a comment'],
+
+                ['link_breadcrumb_dashboard'],
                 ['someFancyLabel'],
-
-                ['link_breadcrumb_dashboard'],
-                ['someTipTopLabel'],
                 ['dummy subject representation'],
-                ['someFunkyLabel'],
-                ['someAwesomeLabel'],
-
+                ['someTipTopLabel'],
+                ['this is a comment'],
                 ['link_breadcrumb_dashboard'],
+
+                ['someFunkyLabel'],
+                ['dummy subject representation'],
+                ['someAwesomeLabel'],
+                ['this is a comment'],
+                ['link_breadcrumb_dashboard'],
+
                 ['someMildlyInterestingLabel'],
                 ['dummy subject representation'],
                 ['someWTFLabel'],
+                ['link_breadcrumb_dashboard'],
+
                 ['someBadLabel'],
-
-                ['link_breadcrumb_dashboard'],
+                ['dummy subject representation'],
                 ['someLongLabel'],
-                ['dummy subject representation'],
-                ['someEndlessLabel'],
-
-                ['link_breadcrumb_dashboard'],
-                ['someOriginalLabel'],
-                ['dummy subject representation'],
-                ['someOkayishLabel'],
                 ['this is a comment']
             )
             ->will($this->returnValue($menu));
 
-        $admin->getBreadcrumbs('repost');
-        $admin->setSubject(new DummySubject());
-        $admin->getBreadcrumbs('flag');
+        $postAdmin->getBreadcrumbs('repost');
+        $postAdmin->setSubject(new DummySubject());
+        $postAdmin->getBreadcrumbs('flag');
 
         $commentAdmin->setConfigurationPool($pool);
         $commentAdmin->getBreadcrumbs('edit');
@@ -201,33 +219,36 @@ class BreadcrumbsBuilderTest extends TestCase
      */
     public function testGetBreadcrumbsWithNoCurrentAdmin()
     {
-        $class = 'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\DummySubject';
-        $baseControllerName = 'SonataNewsBundle:PostAdmin';
+        $postAdminSubjectId = 42;
+        $commentAdminSubjectId = 100500;
 
-        $admin = new PostAdmin('sonata.post.admin.post', $class, $baseControllerName);
-        $commentAdmin = new CommentAdmin(
-            'sonata.post.admin.comment',
-            'Application\Sonata\NewsBundle\Entity\Comment',
-            'SonataNewsBundle:CommentAdmin'
-        );
-        $admin->addChild($commentAdmin);
-        $admin->setRequest(new Request(['id' => 42]));
-        $commentAdmin->setRequest(new Request());
+        $menuFactory = $this->getMockForAbstractClass(FactoryInterface::class);
+        $menu = $this->getMockForAbstractClass(ItemInterface::class);
+        $translatorStrategy = $this->getMockForAbstractClass(LabelTranslatorStrategyInterface::class);
+        $routeGenerator = $this->getMockForAbstractClass(RouteGeneratorInterface::class);
+        $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
+        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $pool = $this->getMockBuilder(Pool::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $postAdmin = new PostAdmin('sonata.post.admin.post', DummySubject::class, 'SonataNewsBundle:PostAdmin');
+        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'SonataNewsBundle:CommentAdmin');
+
+        $postAdmin->addChild($commentAdmin);
+        $postAdmin->setRequest(new Request(['id' => $postAdminSubjectId]));
+
+        $commentAdmin->setRequest(new Request(['childId' => $commentAdminSubjectId]));
+
+        $commentAdmin->setModelManager($modelManager);
+        $postAdmin->setModelManager($modelManager);
+
         $commentAdmin->initialize();
-        $admin->initialize();
+        $postAdmin->initialize();
 
-        $menuFactory = $this->getMockForAbstractClass('Knp\Menu\FactoryInterface');
-        $menu = $this->getMockForAbstractClass('Knp\Menu\ItemInterface');
-        $translatorStrategy = $this->getMockForAbstractClass(
-            'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
-        );
-        $routeGenerator = $this->getMockForAbstractClass(
-            'Sonata\AdminBundle\Route\RouteGeneratorInterface'
-        );
-
-        $admin->setMenuFactory($menuFactory);
-        $admin->setLabelTranslatorStrategy($translatorStrategy);
-        $admin->setRouteGenerator($routeGenerator);
+        $postAdmin->setMenuFactory($menuFactory);
+        $postAdmin->setLabelTranslatorStrategy($translatorStrategy);
+        $postAdmin->setRouteGenerator($routeGenerator);
 
         $menuFactory->expects($this->any())
             ->method('createItem')
@@ -262,59 +283,56 @@ class BreadcrumbsBuilderTest extends TestCase
             )
             ->will($this->returnValue($menu));
 
-        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())
             ->method('getParameter')
             ->with('sonata.admin.configuration.breadcrumbs')
             ->will($this->returnValue([]));
-        $pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
-            ->disableOriginalConstructor()
-            ->getMock();
+
         $pool->expects($this->any())
             ->method('getContainer')
             ->will($this->returnValue($container));
 
-        $admin->setConfigurationPool($pool);
+        $postAdmin->setConfigurationPool($pool);
 
-        $admin->getBreadcrumbs('repost');
-        $admin->setSubject(new DummySubject());
-        $flagBreadcrumb = $admin->getBreadcrumbs('flag');
-        $this->assertSame($flagBreadcrumb, $admin->getBreadcrumbs('flag'));
+        $postAdmin->getBreadcrumbs('repost');
+        $postAdmin->setSubject(new DummySubject());
+        $flagBreadcrumb = $postAdmin->getBreadcrumbs('flag');
+        $this->assertSame($flagBreadcrumb, $postAdmin->getBreadcrumbs('flag'));
     }
 
     public function testUnitChildGetBreadCrumbs()
     {
-        $menu = $this->prophesize('Knp\Menu\ItemInterface');
+        $menu = $this->prophesize(ItemInterface::class);
         $menu->getParent()->willReturn(null);
 
-        $dashboardMenu = $this->prophesize('Knp\Menu\ItemInterface');
+        $dashboardMenu = $this->prophesize(ItemInterface::class);
         $dashboardMenu->getParent()->willReturn($menu);
 
-        $adminListMenu = $this->prophesize('Knp\Menu\ItemInterface');
+        $adminListMenu = $this->prophesize(ItemInterface::class);
         $adminListMenu->getParent()->willReturn($dashboardMenu);
 
-        $adminSubjectMenu = $this->prophesize('Knp\Menu\ItemInterface');
+        $adminSubjectMenu = $this->prophesize(ItemInterface::class);
         $adminSubjectMenu->getParent()->willReturn($adminListMenu);
 
-        $childMenu = $this->prophesize('Knp\Menu\ItemInterface');
+        $childMenu = $this->prophesize(ItemInterface::class);
         $childMenu->getParent()->willReturn($adminSubjectMenu);
 
-        $leafMenu = $this->prophesize('Knp\Menu\ItemInterface');
+        $leafMenu = $this->prophesize(ItemInterface::class);
         $leafMenu->getParent()->willReturn($childMenu);
 
         $action = 'my_action';
         $breadcrumbsBuilder = new BreadcrumbsBuilder(['child_admin_route' => 'show']);
-        $admin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
+        $admin = $this->prophesize(AbstractAdmin::class);
         $admin->isChild()->willReturn(false);
 
-        $menuFactory = $this->prophesize('Knp\Menu\MenuFactory');
+        $menuFactory = $this->prophesize(MenuFactory::class);
         $menuFactory->createItem('root')->willReturn($menu);
         $admin->getMenuFactory()->willReturn($menuFactory);
         $labelTranslatorStrategy = $this->prophesize(
-            'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
+            LabelTranslatorStrategyInterface::class
         );
 
-        $routeGenerator = $this->prophesize('Sonata\AdminBundle\Route\RouteGeneratorInterface');
+        $routeGenerator = $this->prophesize(RouteGeneratorInterface::class);
         $routeGenerator->generate('sonata_admin_dashboard')->willReturn('/dashboard');
 
         $admin->getRouteGenerator()->willReturn($routeGenerator->reveal());
@@ -336,7 +354,7 @@ class BreadcrumbsBuilderTest extends TestCase
             'breadcrumb',
             'link'
         )->willReturn('My child class');
-        $childAdmin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
+        $childAdmin = $this->prophesize(AbstractAdmin::class);
         $childAdmin->isChild()->willReturn(true);
         $childAdmin->getParent()->willReturn($admin->reveal());
         $childAdmin->getTranslationDomain()->willReturn('ChildBundle');
@@ -361,7 +379,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $admin->hasAccess('list')->willReturn(true);
         $admin->generateUrl('list')->willReturn('/myadmin/list');
         $admin->getCurrentChildAdmin()->willReturn($childAdmin->reveal());
-        $request = $this->prophesize('Symfony\Component\HttpFoundation\Request');
+        $request = $this->prophesize(Request::class);
         $request->get('slug')->willReturn('my-object');
 
         $admin->getIdParameter()->willReturn('slug');
@@ -427,16 +445,14 @@ class BreadcrumbsBuilderTest extends TestCase
     {
         $breadcrumbsBuilder = new BreadcrumbsBuilder();
 
-        $menu = $this->prophesize('Knp\Menu\ItemInterface');
-        $menuFactory = $this->prophesize('Knp\Menu\MenuFactory');
+        $menu = $this->prophesize(ItemInterface::class);
+        $menuFactory = $this->prophesize(MenuFactory::class);
         $menuFactory->createItem('root')->willReturn($menu);
-        $admin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
+        $admin = $this->prophesize(AbstractAdmin::class);
         $admin->getMenuFactory()->willReturn($menuFactory);
-        $labelTranslatorStrategy = $this->prophesize(
-            'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
-        );
+        $labelTranslatorStrategy = $this->prophesize(LabelTranslatorStrategyInterface::class);
 
-        $routeGenerator = $this->prophesize('Sonata\AdminBundle\Route\RouteGeneratorInterface');
+        $routeGenerator = $this->prophesize(RouteGeneratorInterface::class);
         $routeGenerator->generate('sonata_admin_dashboard')->willReturn('/dashboard');
         $admin->getRouteGenerator()->willReturn($routeGenerator->reveal());
         $menu->addChild('link_breadcrumb_dashboard', [
@@ -474,7 +490,7 @@ class BreadcrumbsBuilderTest extends TestCase
                 ],
             ])->willReturn($menu);
         }
-        $childAdmin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
+        $childAdmin = $this->prophesize(AbstractAdmin::class);
         $childAdmin->getTranslationDomain()->willReturn('ChildBundle');
         $childAdmin->getLabelTranslatorStrategy()->willReturn($labelTranslatorStrategy->reveal());
         $childAdmin->getClassnameLabel()->willReturn('my_child_class_name');
@@ -492,7 +508,7 @@ class BreadcrumbsBuilderTest extends TestCase
             $admin->isChild()->willReturn(true);
             $menu->setUri(false)->shouldBeCalled();
         }
-        $request = $this->prophesize('Symfony\Component\HttpFoundation\Request');
+        $request = $this->prophesize(Request::class);
         $request->get('slug')->willReturn('my-object');
 
         $admin->getIdParameter()->willReturn('slug');
