@@ -468,7 +468,16 @@ class CRUDController extends Controller
         if (count($idx) > 0) {
             $this->admin->getModelManager()->addIdentifiersToQuery($this->admin->getClass(), $query, $idx);
         } elseif (!$allElements) {
-            $query = null;
+            $this->addFlash(
+                'sonata_flash_info',
+                $this->trans('flash_batch_no_elements_processed', [], 'SonataAdminBundle')
+            );
+
+            return new RedirectResponse(
+                $this->admin->generateUrl('list', [
+                    'filter' => $this->admin->getFilterParameters(),
+                ])
+            );
         }
 
         return call_user_func([$this, $finalAction], $query, $request);
