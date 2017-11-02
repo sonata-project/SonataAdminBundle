@@ -285,7 +285,7 @@ class Datagrid implements DatagridInterface
     {
         foreach ($this->filters as $name => $filter) {
             $showFilter = $filter->getOption('show_filter', null);
-            if (($filter->isActive() && $showFilter === null) || ($showFilter === true)) {
+            if (($filter->isActive() && null === $showFilter) || (true === $showFilter)) {
                 return true;
             }
         }

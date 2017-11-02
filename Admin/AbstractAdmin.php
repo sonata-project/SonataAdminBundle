@@ -26,6 +26,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
@@ -36,6 +37,7 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\CoreBundle\Model\Metadata;
 use Sonata\CoreBundle\Validator\Constraints\InlineConstraint;
 use Sonata\CoreBundle\Validator\ErrorElement;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -741,7 +743,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
             // if persisting filters, save filters to session, or pull them out of session if no new filters set
             if ($this->persistFilters) {
-                if ($filters == [] && $this->request->query->get('filters') != 'reset') {
+                if ($filters == [] && 'reset' != $this->request->query->get('filters')) {
                     $filters = $this->request->getSession()->get($this->getCode().'.filter.parameters', []);
                 } else {
                     $this->request->getSession()->set($this->getCode().'.filter.parameters', $filters);
@@ -1199,7 +1201,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         $adminCode = $fieldDescription->getOption('admin_code');
 
-        if ($adminCode !== null) {
+        if (null !== $adminCode) {
             $admin = $pool->getAdminByAdminCode($adminCode);
         } else {
             $admin = $pool->getAdminByClass($fieldDescription->getTargetEntity());
@@ -1572,7 +1574,7 @@ EOT;
      */
     public function getSubject()
     {
-        if ($this->subject === null && $this->request && !$this->hasParentFieldDescription()) {
+        if (null === $this->subject && $this->request && !$this->hasParentFieldDescription()) {
             $id = $this->request->get($this->getIdParameter());
             $this->subject = $this->getModelManager()->find($this->class, $id);
         }
@@ -1585,7 +1587,7 @@ EOT;
      */
     public function hasSubject()
     {
-        return $this->subject != null;
+        return null != $this->subject;
     }
 
     /**
@@ -2121,7 +2123,7 @@ EOT;
      */
     public function hasRequest()
     {
-        return $this->request !== null;
+        return null !== $this->request;
     }
 
     /**
@@ -3245,11 +3247,11 @@ EOT;
             $mapper->add($this->getParentAssociationMapping(), null, [
                 'show_filter' => false,
                 'label' => false,
-                'field_type' => 'sonata_type_model_hidden',
+                'field_type' => ModelHiddenType::class,
                 'field_options' => [
                     'model_manager' => $this->getModelManager(),
                 ],
-                'operator_type' => 'hidden',
+                'operator_type' => HiddenType::class,
             ], null, null, [
                 'admin_code' => $this->getParent()->getCode(),
             ]);

@@ -73,7 +73,7 @@ class SetupAclCommandTest extends TestCase
         $container->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($id) use ($container) {
-                if ($id == 'sonata.admin.pool') {
+                if ('sonata.admin.pool' == $id) {
                     $pool = new Pool($container, '', '');
                     $pool->setAdminServiceIds(['acme.admin.foo']);
 

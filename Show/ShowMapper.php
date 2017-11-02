@@ -48,7 +48,7 @@ class ShowMapper extends BaseGroupedMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = [])
     {
-        if ($this->apply !== null && !$this->apply) {
+        if (null !== $this->apply && !$this->apply) {
             return $this;
         }
 
@@ -127,7 +127,7 @@ class ShowMapper extends BaseGroupedMapper
         $groups = $this->getGroups();
 
         // When the default tab is used, the tabname is not prepended to the index in the group array
-        if ($tab !== 'default') {
+        if ('default' !== $tab) {
             $group = $tab.'.'.$group;
         }
 
@@ -144,7 +144,7 @@ class ShowMapper extends BaseGroupedMapper
         if (false !== $key) {
             unset($tabs[$tab]['groups'][$key]);
         }
-        if ($deleteEmptyTab && count($tabs[$tab]['groups']) == 0) {
+        if ($deleteEmptyTab && 0 == count($tabs[$tab]['groups'])) {
             unset($tabs[$tab]);
         }
 

@@ -37,7 +37,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
             ->expects($this->any())
             ->method('find')
             ->will($this->returnCallback(function ($class, $id) use ($entity) {
-                if ($class === 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo' && $id === 123) {
+                if ('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo' === $class && 123 === $id) {
                     return $entity;
                 }
 
@@ -64,19 +64,19 @@ class ModelToIdPropertyTransformerTest extends TestCase
             ->expects($this->any())
             ->method('find')
             ->will($this->returnCallback(function ($className, $value) use ($entity1, $entity2, $entity3) {
-                if ($className != 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo') {
+                if ('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo' != $className) {
                     return;
                 }
 
-                if ($value == 123) {
+                if (123 == $value) {
                     return $entity1;
                 }
 
-                if ($value == 456) {
+                if (456 == $value) {
                     return $entity2;
                 }
 
-                if ($value == 789) {
+                if (789 == $value) {
                     return $entity3;
                 }
 

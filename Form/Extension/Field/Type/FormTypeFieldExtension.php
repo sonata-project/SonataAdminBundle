@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Form\Extension\Field\Type;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -135,7 +136,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $blockPrefixes[] = sprintf('%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType);
             $blockPrefixes[] = sprintf('%s_%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType, $blockSuffix);
 
-            if (isset($sonataAdmin['block_name']) && $sonataAdmin['block_name'] !== false) {
+            if (isset($sonataAdmin['block_name']) && false !== $sonataAdmin['block_name']) {
                 $blockPrefixes[] = $sonataAdmin['block_name'];
             }
 
@@ -164,10 +165,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return
-            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ?
-            'Symfony\Component\Form\Extension\Core\Type\FormType' :
-            'form';
+        return FormType::class;
     }
 
     /**

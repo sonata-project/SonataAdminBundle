@@ -38,6 +38,10 @@ Full Configuration Options
         sonata_admin:
             security:
                 handler:              sonata.admin.security.handler.noop
+
+                role_admin: ROLE_ADMIN
+                role_super_admin: ROLE_SUPER_ADMIN
+
                 information:
 
                     # Prototype

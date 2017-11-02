@@ -14,7 +14,7 @@
             <argument/>
             <!-- security.authorization_checker or security.context for Symfony <2.6 -->
             <argument type="collection">
-                <argument>ROLE_SUPER_ADMIN</argument>
+                <argument>%sonata.admin.configuration.security.role_super_admin%</argument>
             </argument>
         </service>
         <service id="sonata.admin.security.handler.acl" class="%sonata.admin.security.handler.acl.class%" public="false">
@@ -25,7 +25,7 @@
             <argument type="service" id="security.acl.provider" on-invalid="null"/>
             <argument>%sonata.admin.security.mask.builder.class%</argument>
             <argument type="collection">
-                <argument>ROLE_SUPER_ADMIN</argument>
+                <argument>%sonata.admin.configuration.security.role_super_admin%</argument>
             </argument>
             <call method="setAdminPermissions">
                 <argument>%sonata.admin.configuration.security.admin_permissions%</argument>

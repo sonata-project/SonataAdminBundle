@@ -261,11 +261,11 @@ class DatagridMapperTest extends TestCase
     {
         $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BaseFieldDescription');
 
-        if ($name !== null) {
+        if (null !== $name) {
             $fieldDescription->setName($name);
         }
 
-        if ($label !== null) {
+        if (null !== $label) {
             $fieldDescription->setOption('label', $label);
         }
 

@@ -350,27 +350,27 @@ class CRUDControllerTest extends TestCase
         $this->container->expects($this->any())
             ->method('has')
             ->will($this->returnCallback(function ($id) use ($tthis) {
-                if ($id == 'form.csrf_provider' && Kernel::MAJOR_VERSION == 2 && $tthis->getCsrfProvider() !== null) {
+                if ('form.csrf_provider' == $id && Kernel::MAJOR_VERSION == 2 && null !== $tthis->getCsrfProvider()) {
                     return true;
                 }
 
-                if ($id == 'security.csrf.token_manager' && Kernel::MAJOR_VERSION >= 3 && $tthis->getCsrfProvider() !== null) {
+                if ('security.csrf.token_manager' == $id && Kernel::MAJOR_VERSION >= 3 && null !== $tthis->getCsrfProvider()) {
                     return true;
                 }
 
-                if ($id == 'logger') {
+                if ('logger' == $id) {
                     return true;
                 }
 
-                if ($id == 'session') {
+                if ('session' == $id) {
                     return true;
                 }
 
-                if ($id == 'templating') {
+                if ('templating' == $id) {
                     return true;
                 }
 
-                if ($id == 'translator') {
+                if ('translator' == $id) {
                     return true;
                 }
 
@@ -2004,15 +2004,15 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->exactly(2))
             ->method('checkAccess')
             ->will($this->returnCallback(function ($name, $objectIn = null) use ($object) {
-                if ($name == 'edit') {
+                if ('edit' == $name) {
                     return true;
                 }
 
-                if ($name != 'create') {
+                if ('create' != $name) {
                     return false;
                 }
 
-                if ($objectIn === null) {
+                if (null === $objectIn) {
                     return true;
                 }
 
@@ -2086,10 +2086,10 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->any())
             ->method('checkAccess')
             ->will($this->returnCallback(function ($name, $object = null) {
-                if ($name != 'create') {
+                if ('create' != $name) {
                     throw new AccessDeniedException();
                 }
-                if ($object === null) {
+                if (null === $object) {
                     return true;
                 }
 
@@ -2272,11 +2272,11 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->exactly(2))
             ->method('checkAccess')
             ->will($this->returnCallback(function ($name, $objectIn = null) use ($object) {
-                if ($name != 'create') {
+                if ('create' != $name) {
                     return false;
                 }
 
-                if ($objectIn === null) {
+                if (null === $objectIn) {
                     return true;
                 }
 

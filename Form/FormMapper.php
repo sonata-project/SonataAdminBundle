@@ -59,7 +59,7 @@ class FormMapper extends BaseGroupedMapper
      */
     public function add($name, $type = null, array $options = [], array $fieldDescriptionOptions = [])
     {
-        if ($this->apply !== null && !$this->apply) {
+        if (null !== $this->apply && !$this->apply) {
             return $this;
         }
 
@@ -79,7 +79,7 @@ class FormMapper extends BaseGroupedMapper
 
         // change `collection` to `sonata_type_native_collection` form type to
         // avoid BC break problems
-        if ($type === 'collection' || $type === 'Symfony\Component\Form\Extension\Core\Type\CollectionType') {
+        if ('collection' === $type || 'Symfony\Component\Form\Extension\Core\Type\CollectionType' === $type) {
             // the field name is used to preserve Symfony <2.8 compatibility, the FQCN should be used instead
             $type = 'sonata_type_native_collection';
         }
@@ -203,7 +203,7 @@ class FormMapper extends BaseGroupedMapper
         $groups = $this->getGroups();
 
         // When the default tab is used, the tabname is not prepended to the index in the group array
-        if ($tab !== 'default') {
+        if ('default' !== $tab) {
             $group = $tab.'.'.$group;
         }
 
@@ -220,7 +220,7 @@ class FormMapper extends BaseGroupedMapper
         if (false !== $key) {
             unset($tabs[$tab]['groups'][$key]);
         }
-        if ($deleteEmptyTab && count($tabs[$tab]['groups']) == 0) {
+        if ($deleteEmptyTab && 0 == count($tabs[$tab]['groups'])) {
             unset($tabs[$tab]);
         }
 

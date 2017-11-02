@@ -273,7 +273,7 @@ class AdminHelper
     {
         $element = array_shift($elements);
         $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
-        if (count($elements) == 0) {
+        if (0 == count($elements)) {
             return $associationAdmin->getClass();
         }
 

@@ -65,6 +65,9 @@ Using roles:
             security:
                 handler: sonata.admin.security.handler.role
 
+                role_admin: ROLE_ADMIN
+                role_super_admin: ROLE_SUPER_ADMIN
+
 Using ACL:
 
 .. configuration-block::
@@ -76,6 +79,9 @@ Using ACL:
         sonata_admin:
             security:
                 handler: sonata.admin.security.handler.acl
+
+                role_admin: ROLE_ADMIN
+                role_super_admin: ROLE_SUPER_ADMIN
 
                 # acl security information
                 information:
@@ -105,7 +111,7 @@ Configuration
 First, activate the role security handler as described above.
 
 Each time a user tries to do an action in the admin, Sonata checks if he is
-either a super admin (``ROLE_SUPER_ADMIN``) **or** has the permission.
+either a super admin (``ROLE_SUPER_ADMIN`` or the role specified in the configuration) **or** has the permission.
 
 The permissions are:
 
@@ -392,6 +398,7 @@ In ``app/config/security.yml``:
                 - { path: ^/admin/, role: ROLE_ADMIN }
                 - { path: ^/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
+            # Sonata "special" roles (ROLE_SONATA_ADMIN and ROLE_SUPER_ADMIN) are configurable
             role_hierarchy:
                 ROLE_ADMIN:       [ROLE_USER, ROLE_SONATA_ADMIN]
                 ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
@@ -516,8 +523,9 @@ or a permission (``admin.isGranted``):
   counted votes granted access;
 - **RoleVoter:** votes for all attributes stating with ``ROLE_`` and grants
   access if the user has this role;
-- **RoleHierarchyVoter:** when the role ``ROLE_SONATA_ADMIN`` is voted for,
-  it also votes "granted" if the user has the role ``ROLE_SUPER_ADMIN``;
+- **RoleHierarchyVoter:** when the role ``ROLE_SONATA_ADMIN`` (or the role
+  specified in the configuration) is voted for, it also votes "granted" if
+  the user has the role ``ROLE_SUPER_ADMIN``;
 - **AclVoter:** grants access for the permissions of the ``Admin`` class if
   the user has the permission, the user has a permission that is included in
   the bitmasks of the permission requested to vote for or the user owns the

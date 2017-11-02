@@ -107,10 +107,7 @@ class DateType extends AbstractType
         $choiceOptions['choices'] = $choices;
 
         $builder
-            // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
-            ->add('type', method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
-                : 'choice', $choiceOptions)
+            ->add('type', ChoiceType::class, $choiceOptions)
             ->add('value', $options['field_type'], array_merge(['required' => false], $options['field_options']))
         ;
     }

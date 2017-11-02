@@ -155,7 +155,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $request->attributes->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($key) {
-                if ($key == 'childId') {
+                if ('childId' == $key) {
                     return '987654';
                 }
 
@@ -188,7 +188,7 @@ class DefaultRouteGeneratorTest extends TestCase
 
         $generator = new DefaultRouteGenerator($router, $cache);
 
-        $this->assertSame($expected, $generator->generateUrl($type == 'child' ? $admin : $parentAdmin, $name, $parameters));
+        $this->assertSame($expected, $generator->generateUrl('child' == $type ? $admin : $parentAdmin, $name, $parameters));
     }
 
     public function getGenerateUrlChildTests()
@@ -312,7 +312,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $request->attributes->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($key) {
-                if ($key == 'childId') {
+                if ('childId' == $key) {
                     return '987654';
                 }
 

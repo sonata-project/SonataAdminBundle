@@ -37,7 +37,7 @@ class PagerTest extends TestCase
         $this->assertSame(10, $this->pager->getMaxPerPage());
         $this->assertSame(1, $this->pager->getPage());
 
-        if ($page !== null) {
+        if (null !== $page) {
             $this->pager->setPage($page);
         }
 

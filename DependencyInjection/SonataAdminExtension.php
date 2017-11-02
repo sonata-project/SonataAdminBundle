@@ -85,6 +85,8 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
 
         $config['options']['javascripts'] = $config['assets']['javascripts'];
         $config['options']['stylesheets'] = $config['assets']['stylesheets'];
+        $config['options']['role_admin'] = $config['security']['role_admin'];
+        $config['options']['role_super_admin'] = $config['security']['role_super_admin'];
 
         $pool = $container->getDefinition('sonata.admin.pool');
         $pool->replaceArgument(1, $config['title']);
@@ -144,7 +146,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
 
         switch ($config['security']['handler']) {
             case 'sonata.admin.security.handler.role':
-                if (count($config['security']['information']) === 0) {
+                if (0 === count($config['security']['information'])) {
                     $config['security']['information'] = [
                         'EDIT' => ['EDIT'],
                         'LIST' => ['LIST'],
@@ -158,7 +160,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
 
                 break;
             case 'sonata.admin.security.handler.acl':
-                if (count($config['security']['information']) === 0) {
+                if (0 === count($config['security']['information'])) {
                     $config['security']['information'] = [
                         'GUEST' => ['VIEW', 'LIST'],
                         'STAFF' => ['EDIT', 'LIST', 'CREATE'],
@@ -170,6 +172,8 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
                 break;
         }
 
+        $container->setParameter('sonata.admin.configuration.security.role_admin', $config['security']['role_admin']);
+        $container->setParameter('sonata.admin.configuration.security.role_super_admin', $config['security']['role_super_admin']);
         $container->setParameter('sonata.admin.configuration.security.information', $config['security']['information']);
         $container->setParameter('sonata.admin.configuration.security.admin_permissions', $config['security']['admin_permissions']);
         $container->setParameter('sonata.admin.configuration.security.object_permissions', $config['security']['object_permissions']);
@@ -282,7 +286,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
         foreach ($diExtraConfigs as $diExtraConfig) {
             if (isset($diExtraConfig['annotation_patterns'])) {
                 // don't add our own pattern if user has already done so
-                if (array_search($sonataAdminPattern, $diExtraConfig['annotation_patterns']) !== false) {
+                if (false !== array_search($sonataAdminPattern, $diExtraConfig['annotation_patterns'])) {
                     return;
                 }
                 $annotationPatternsConfigured = true;

@@ -63,7 +63,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
 
         $args = func_get_args();
 
-        if (func_num_args() == 3) {
+        if (3 == func_num_args()) {
             $this->legacyConstructor($args);
         } else {
             $this->modelManager = $args[0];

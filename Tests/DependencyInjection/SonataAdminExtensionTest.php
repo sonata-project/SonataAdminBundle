@@ -40,6 +40,15 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         );
     }
 
+    public function testHasSecurityRoleParameters()
+    {
+        $this->container->setParameter('kernel.bundles', []);
+        $this->load();
+
+        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.security.role_admin');
+        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.security.role_super_admin');
+    }
+
     protected function getContainerExtensions()
     {
         return [new SonataAdminExtension()];
