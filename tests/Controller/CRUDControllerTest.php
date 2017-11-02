@@ -3647,7 +3647,7 @@ class CRUDControllerTest extends TestCase
         $result = $controller->batchAction($this->request);
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $result);
-        $this->assertSame('batchActionBar executed', $result->getContent());
+        $this->assertRegExp('/Redirecting to list/', $result->getContent());
     }
 
     /**
