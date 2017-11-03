@@ -278,14 +278,13 @@ class HelperControllerTest extends TestCase
             $this->createMock('Symfony\Component\Translation\TranslatorInterface')
         );
 
-        $loader = $this->createMock('\Twig_LoaderInterface');
-
         // NEXT_MAJOR: Remove this check when dropping support for twig < 2
         if (method_exists('\Twig_LoaderInterface', 'getSourceContext')) {
-            $loader->method('getSourceContext')->will($this->returnValue(new \Twig_Source('<foo />', 'foo')));
+            $loader = $this->createMock('\Twig_LoaderInterface');
         } else {
-            $loader->method('getSource')->will($this->returnValue('<foo />'));
+            $loader = $this->createMock(['\Twig_LoaderInterface', 'Twig_SourceContextLoaderInterface']);
         }
+        $loader->method('getSourceContext')->will($this->returnValue(new \Twig_Source('<foo />', 'foo')));
 
         $twig = new \Twig_Environment($loader);
         $twig->addExtension($adminExtension);
