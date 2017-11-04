@@ -90,10 +90,6 @@ class SonataAdminExtensionTest extends TestCase
 
     public function setUp()
     {
-        // NEXT_MAJOR: remove this block when dropping symfony < 2.7 support
-        if (!class_exists('Symfony\Bridge\Twig\Extension\AssetExtension')) {
-            $this->markTestSkipped();
-        }
         date_default_timezone_set('Europe/London');
 
         $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
