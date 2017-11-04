@@ -55,7 +55,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $parentDefinition = null;
 
                 // NEXT_MAJOR: Remove check for DefinitionDecorator instance when dropping Symfony <3.3 support
-                if ($definition instanceof ChildDefinition || $definition instanceof DefinitionDecorator) {
+                if ($definition instanceof ChildDefinition ||
+                    (!class_exists(ChildDefinition::class) && $definition instanceof DefinitionDecorator)) {
                     $parentDefinition = $container->getDefinition($definition->getParent());
                 }
 
