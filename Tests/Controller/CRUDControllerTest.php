@@ -192,7 +192,7 @@ class CRUDControllerTest extends TestCase
                             return $twigRenderer;
                         }
 
-                        throw new \Twig_Error_Runtime('This runtime exists when Symony >= 3.2.');
+                        throw new \Twig_Error_Runtime('This runtime exists when Symfony >= 3.2.');
                 }
             }));
 
