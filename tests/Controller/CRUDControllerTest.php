@@ -3386,7 +3386,7 @@ class CRUDControllerTest extends TestCase
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
         $this->assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
-        $this->assertSame('list?', $result->getTargetUrl());
+        $this->assertSame('list', $result->getTargetUrl());
     }
 
     /**
@@ -3444,7 +3444,7 @@ class CRUDControllerTest extends TestCase
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
         $this->assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
-        $this->assertSame('list?', $result->getTargetUrl());
+        $this->assertSame('list', $result->getTargetUrl());
     }
 
     /**
@@ -3534,7 +3534,7 @@ class CRUDControllerTest extends TestCase
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
         $this->assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sonata_flash_info'));
-        $this->assertSame('list?', $result->getTargetUrl());
+        $this->assertSame('list', $result->getTargetUrl());
     }
 
     /**
@@ -3570,7 +3570,7 @@ class CRUDControllerTest extends TestCase
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
         $this->assertSame(['flash_foo_error'], $this->session->getFlashBag()->get('sonata_flash_info'));
-        $this->assertSame('list?', $result->getTargetUrl());
+        $this->assertSame('list', $result->getTargetUrl());
     }
 
     /**
@@ -3603,7 +3603,7 @@ class CRUDControllerTest extends TestCase
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
         $this->assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sonata_flash_info'));
-        $this->assertSame('list?', $result->getTargetUrl());
+        $this->assertSame('list', $result->getTargetUrl());
     }
 
     /**
@@ -3710,7 +3710,7 @@ class CRUDControllerTest extends TestCase
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
         $this->assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
-        $this->assertSame('list?', $result->getTargetUrl());
+        $this->assertSame('list', $result->getTargetUrl());
         $this->assertSame('bar', $this->request->request->get('foo'));
     }
 

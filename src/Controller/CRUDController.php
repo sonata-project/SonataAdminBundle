@@ -202,10 +202,7 @@ class CRUDController implements ContainerAwareInterface
             );
         }
 
-        return new RedirectResponse($this->admin->generateUrl(
-            'list',
-            ['filter' => $this->admin->getFilterParameters()]
-        ));
+        return $this->redirectToList();
     }
 
     /**
@@ -474,12 +471,7 @@ class CRUDController implements ContainerAwareInterface
                 $this->trans($nonRelevantMessage, [], 'SonataAdminBundle')
             );
 
-            return new RedirectResponse(
-                $this->admin->generateUrl(
-                    'list',
-                    ['filter' => $this->admin->getFilterParameters()]
-                )
-            );
+            return $this->redirectToList();
         }
 
         $askConfirmation = isset($batchActions[$action]['ask_confirmation']) ?
@@ -527,11 +519,7 @@ class CRUDController implements ContainerAwareInterface
                 $this->trans('flash_batch_no_elements_processed', [], 'SonataAdminBundle')
             );
 
-            return new RedirectResponse(
-                $this->admin->generateUrl('list', [
-                    'filter' => $this->admin->getFilterParameters(),
-                ])
-            );
+            return $this->redirectToList();
         }
 
         return call_user_func([$this, $finalAction], $query, $request);
@@ -1177,10 +1165,10 @@ class CRUDController implements ContainerAwareInterface
         $url = false;
 
         if (null !== $request->get('btn_update_and_list')) {
-            $url = $this->admin->generateUrl('list');
+            return $this->redirectToList();
         }
         if (null !== $request->get('btn_create_and_list')) {
-            $url = $this->admin->generateUrl('list');
+            return $this->redirectToList();
         }
 
         if (null !== $request->get('btn_create_and_create')) {
@@ -1192,7 +1180,7 @@ class CRUDController implements ContainerAwareInterface
         }
 
         if ('DELETE' === $this->getRestMethod()) {
-            $url = $this->admin->generateUrl('list');
+            return $this->redirectToList();
         }
 
         if (!$url) {
@@ -1206,10 +1194,26 @@ class CRUDController implements ContainerAwareInterface
         }
 
         if (!$url) {
-            $url = $this->admin->generateUrl('list');
+            return $this->redirectToList();
         }
 
         return new RedirectResponse($url);
+    }
+
+    /**
+     * Redirects the user to the list view.
+     *
+     * @return RedirectResponse
+     */
+    final protected function redirectToList()
+    {
+        $parameters = [];
+
+        if ($filter = $this->admin->getFilterParameters()) {
+            $parameters['filter'] = $filter;
+        }
+
+        return $this->redirect($this->admin->generateUrl('list', $parameters));
     }
 
     /**
