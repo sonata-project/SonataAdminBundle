@@ -26,6 +26,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Translation\DependencyInjection\TranslationDumperPass;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Translator;
@@ -117,7 +118,11 @@ class SonataAdminExtensionTest extends TestCase
         ];
 
         // translation extension
-        $translator = new Translator('en', new MessageSelector());
+        $translator = new Translator(
+            'en',
+            // NEXT_MAJOR: simplify this when dropping symfony < 3.4
+            class_exists(TranslationDumperPass::class) ? null : new MessageSelector()
+        );
         $translator->addLoader('xlf', new XliffFileLoader());
         $translator->addResource(
             'xlf',
