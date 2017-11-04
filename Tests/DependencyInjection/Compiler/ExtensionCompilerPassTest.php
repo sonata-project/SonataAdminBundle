@@ -367,16 +367,19 @@ class ExtensionCompilerPassTest extends TestCase
         // Add admin definition's
         $container
             ->register('sonata_post_admin')
+            ->setPublic(true)
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
             ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\Post', 'SonataAdminBundle:CRUD'])
             ->addTag('sonata.admin');
         $container
             ->register('sonata_news_admin')
+            ->setPublic(true)
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
             ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\News', 'SonataAdminBundle:CRUD'])
             ->addTag('sonata.admin');
         $container
             ->register('sonata_article_admin')
+            ->setPublic(true)
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
             ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\Article', 'SonataAdminBundle:CRUD'])
             ->addTag('sonata.admin');
@@ -389,22 +392,28 @@ class ExtensionCompilerPassTest extends TestCase
 
         $container
             ->register('sonata_extension_publish')
+            ->setPublic(true)
             ->setClass($extensionClass);
         $container
             ->register('sonata_extension_history')
+            ->setPublic(true)
             ->setClass($extensionClass);
         $container
             ->register('sonata_extension_order')
+            ->setPublic(true)
             ->setClass($extensionClass);
         $container
             ->register('sonata_extension_timestamp')
+            ->setPublic(true)
             ->setClass($extensionClass);
         $container
             ->register('sonata_extension_security')
+            ->setPublic(true)
             ->setClass($extensionClass)
             ->addTag('sonata.admin.extension', ['global' => true]);
         $container
             ->register('sonata_extension_filter')
+            ->setPublic(true)
             ->setClass($extensionClass)
             ->addTag('sonata.admin.extension', ['target' => 'sonata_news_admin'])
             ->addTag('sonata.admin.extension', ['target' => 'sonata_article_admin']);
