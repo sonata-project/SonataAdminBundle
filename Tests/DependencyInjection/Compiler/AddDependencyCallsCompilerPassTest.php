@@ -16,7 +16,9 @@ use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPa
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
+use Sonata\DoctrinePHPCRAdminBundle\Route\PathInfoBuilderSlashes;
 
 /**
  * @author Tiago Garcia
@@ -195,11 +197,20 @@ class AddDependencyCallsCompilerPassTest extends TestCase
                 return 'setRouteBuilder' == $element[0];
             }
         ));
-        $this->assertSame(
-            'sonata.admin.route.path_info_slashes',
-            (string) $articleRouteBuilderMethodCall[1][0],
-            'The article admin uses the odm, and should therefore use the path_info_slashes router.'
-        );
+        $definitionOrReference = $articleRouteBuilderMethodCall[1][0];
+        if ($definitionOrReference instanceof Definition) {
+            $this->assertSame(
+                PathInfoBuilderSlashes::class,
+                $articleRouteBuilderMethodCall[1][0]->getClass(),
+                'The article admin uses the odm, and should therefore use the path_info_slashes router.'
+            );
+        } else {
+            $this->assertSame(
+                'sonata.admin.route.path_info_slashes',
+                (string) $articleRouteBuilderMethodCall[1][0],
+                'The article admin uses the odm, and should therefore use the path_info_slashes router.'
+            );
+        }
     }
 
     public function testProcessSortAdmins()
