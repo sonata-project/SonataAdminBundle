@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 
@@ -479,13 +480,19 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\Post', ''])
             ->setAbstract(true);
 
-        $adminDefinition = new DefinitionDecorator('sonata_abstract_post_admin');
+        // NEXT_MAJOR: Simplify this when dropping sf < 3.3
+        $adminDefinition = class_exists(ChildDefinition::class) ?
+            new ChildDefinition('sonata_abstract_post_admin') :
+            new DefinitionDecorator('sonata_abstract_post_admin');
         $adminDefinition
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAbstractServiceAdmin')
             ->setArguments([0 => 'extra_argument_1'])
             ->addTag('sonata.admin', ['group' => 'sonata_post_one_group', 'manager_type' => 'orm']);
 
-        $adminTwoDefinition = new DefinitionDecorator('sonata_abstract_post_admin');
+        // NEXT_MAJOR: Simplify this when dropping sf < 3.3
+        $adminTwoDefinition = class_exists(ChildDefinition::class) ?
+            new ChildDefinition('sonata_abstract_post_admin') :
+            new DefinitionDecorator('sonata_abstract_post_admin');
         $adminTwoDefinition
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAbstractServiceAdmin')
             ->setArguments([0 => 'extra_argument_2', 'index_0' => 'should_not_override'])
