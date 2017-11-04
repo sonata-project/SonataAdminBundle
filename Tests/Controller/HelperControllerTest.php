@@ -339,9 +339,10 @@ class HelperControllerTest extends TestCase
             ->will($this->returnValue(new Response()));
 
         $twig = new \Twig_Environment($this->createMock('\Twig_LoaderInterface'));
-        $twig->addExtension(new FormExtension($mockRenderer));
 
+        // Remove the condition when dropping sf < 3.2
         if (method_exists('Symfony\Bridge\Twig\AppVariable', 'getToken')) {
+            $twig->addExtension(new FormExtension());
             $runtimeLoader = $this
                 ->getMockBuilder('Twig_RuntimeLoaderInterface')
                 ->getMock();
@@ -352,6 +353,8 @@ class HelperControllerTest extends TestCase
                 ->will($this->returnValue($mockRenderer));
 
             $twig->addRuntimeLoader($runtimeLoader);
+        } else {
+            $twig->addExtension(new FormExtension($mockRenderer));
         }
 
         $request = new Request([
@@ -453,8 +456,10 @@ class HelperControllerTest extends TestCase
             ->will($this->returnValue(new Response()));
 
         $twig = new \Twig_Environment($this->createMock('\Twig_LoaderInterface'));
-        $twig->addExtension(new FormExtension($mockRenderer));
+
+        // Remove the condition when dropping sf < 3.2
         if (method_exists('Symfony\Bridge\Twig\AppVariable', 'getToken')) {
+            $twig->addExtension(new FormExtension());
             $runtimeLoader = $this
                 ->getMockBuilder('Twig_RuntimeLoaderInterface')
                 ->getMock();
@@ -465,6 +470,8 @@ class HelperControllerTest extends TestCase
                 ->will($this->returnValue($mockRenderer));
 
             $twig->addRuntimeLoader($runtimeLoader);
+        } else {
+            $twig->addExtension(new FormExtension($mockRenderer));
         }
 
         $pool = new Pool($container, 'title', 'logo');

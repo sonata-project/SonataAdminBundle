@@ -172,7 +172,12 @@ class CRUDControllerTest extends TestCase
 
         $twigRenderer = $this->createMock('Symfony\Bridge\Twig\Form\TwigRendererInterface');
 
-        $formExtension = new FormExtension($twigRenderer);
+        if (method_exists('Symfony\Bridge\Twig\AppVariable', 'getToken')) {
+            $formExtension = new FormExtension();
+        } else {
+            // Remove this else clause when dropping sf < 3.2
+            $formExtension = new FormExtension($twigRenderer);
+        }
 
         $twig->expects($this->any())
             ->method('getExtension')
