@@ -540,7 +540,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * @param AdminInterface $admin
      */
-    public function setParent(AdminInterface $admin);
+    public function setParent(self $admin);
 
     /**
      * Returns true if the Admin class has an Parent Admin defined.
