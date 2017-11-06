@@ -115,7 +115,7 @@ class RouteCollection
      *
      * @return RouteCollection
      */
-    public function addCollection(RouteCollection $collection)
+    public function addCollection(self $collection)
     {
         foreach ($collection->getElements() as $code => $route) {
             $this->elements[$code] = $route;
