@@ -14,11 +14,11 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
+use Sonata\DoctrinePHPCRAdminBundle\Route\PathInfoBuilderSlashes;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
-use Sonata\DoctrinePHPCRAdminBundle\Route\PathInfoBuilderSlashes;
 
 /**
  * @author Tiago Garcia
