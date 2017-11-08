@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Controller\HelperController;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension;
+use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -349,7 +350,7 @@ class HelperControllerTest extends TestCase
 
             $runtimeLoader->expects($this->once())
                 ->method('load')
-                ->with($this->equalTo('Symfony\Bridge\Twig\Form\TwigRenderer'))
+                ->with($this->equalTo(FormRenderer::class))
                 ->will($this->returnValue($mockRenderer));
 
             $twig->addRuntimeLoader($runtimeLoader);
@@ -466,7 +467,7 @@ class HelperControllerTest extends TestCase
 
             $runtimeLoader->expects($this->once())
                 ->method('load')
-                ->with($this->equalTo('Symfony\Bridge\Twig\Form\TwigRenderer'))
+                ->with($this->equalTo(FormRenderer::class))
                 ->will($this->returnValue($mockRenderer));
 
             $twig->addRuntimeLoader($runtimeLoader);

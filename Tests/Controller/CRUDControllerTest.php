@@ -26,6 +26,7 @@ use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
+use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -183,7 +184,7 @@ class CRUDControllerTest extends TestCase
             ->method('getExtension')
             ->will($this->returnCallback(function ($name) use ($formExtension) {
                 switch ($name) {
-                    case 'Symfony\Bridge\Twig\Extension\FormExtension':
+                    case FormExtension::class:
                         return $formExtension;
                 }
             }));
@@ -192,12 +193,8 @@ class CRUDControllerTest extends TestCase
             ->method('getRuntime')
             ->will($this->returnCallback(function ($name) use ($twigRenderer) {
                 switch ($name) {
-                    case 'Symfony\Bridge\Twig\Form\TwigRenderer':
-                        if (method_exists('Symfony\Bridge\Twig\AppVariable', 'getToken')) {
-                            return $twigRenderer;
-                        }
-
-                        throw new \Twig_Error_Runtime('This runtime exists when Symfony >= 3.2.');
+                    case FormRenderer::class:
+                        return $twigRenderer;
                 }
             }));
 
