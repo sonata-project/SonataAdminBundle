@@ -92,6 +92,10 @@ class ModelAutocompleteType extends AbstractType
         $view->vars['template'] = $options['template'];
 
         $view->vars['context'] = $options['context'];
+
+        // add button
+        $view->vars['btn_add'] = $options['btn_add'];
+        $view->vars['btn_catalogue'] = $options['btn_catalogue'];
     }
 
     /**
@@ -131,6 +135,10 @@ class ModelAutocompleteType extends AbstractType
             'cache' => false,
 
             'to_string_callback' => null,
+
+            // add button
+            'btn_add' => 'link_add',
+            'btn_catalogue' => 'SonataAdminBundle',
 
             // ajax parameters
             'url' => '',

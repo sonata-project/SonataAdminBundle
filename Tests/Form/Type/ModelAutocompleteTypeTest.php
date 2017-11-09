@@ -74,6 +74,9 @@ class ModelAutocompleteTypeTest extends TypeTestCase
         $this->assertSame('SonataAdminBundle:Form/Type:sonata_type_model_autocomplete.html.twig', $options['template']);
 
         $this->assertSame('', $options['context']);
+
+        $this->assertSame('link_add', $options['btn_add']);
+        $this->assertSame('SonataAdminBundle', $options['btn_catalogue']);
     }
 
     public function testGetBlockPrefix()
