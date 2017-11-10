@@ -45,10 +45,10 @@ file that was distributed with this source code.
                       }}"
                 onclick="return start_field_dialog_form_add_{{ id }}(this);"
                 class="btn btn-success btn-sm sonata-ba-action"
-                title="{{ btn_add|trans({}, btn_catalogue) }}"
+                title="{{ 'link_add'|trans({}, btn_catalogue) }}"
                 >
                 <i class="fa fa-plus-circle"></i>
-                {{ btn_add|trans({}, btn_catalogue) }}
+                {{ 'link_add'|trans({}, btn_catalogue) }}
             </a>
         {% endif %}
         {% include 'SonataAdminBundle:CRUD/Association:edit_modal.html.twig' %}
