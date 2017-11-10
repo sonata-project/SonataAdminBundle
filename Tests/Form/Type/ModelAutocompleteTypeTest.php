@@ -75,7 +75,8 @@ class ModelAutocompleteTypeTest extends TypeTestCase
 
         $this->assertSame('', $options['context']);
 
-        $this->assertSame('link_add', $options['btn_add']);
+        // NEXT_MAJOR: Set this value to true
+        $this->assertSame(false, $options['btn_add']);
         $this->assertSame('SonataAdminBundle', $options['btn_catalogue']);
     }
 
