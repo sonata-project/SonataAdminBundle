@@ -90,7 +90,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     protected function getTemplatePaths()
     {
         return array_merge(parent::getTemplatePaths(), [
-            __DIR__.'/../../../Resources/views/Form',
+            __DIR__.'/../../../src/Resources/views/Form',
         ]);
     }
 }

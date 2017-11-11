@@ -35,7 +35,7 @@ class ControllerGeneratorTest extends TestCase
      */
     protected function setUp()
     {
-        $this->controllerGenerator = new ControllerGenerator(__DIR__.'/../../Resources/skeleton');
+        $this->controllerGenerator = new ControllerGenerator(__DIR__.'/../../src/Resources/skeleton');
         $this->bundleMock = $this->createBundleMock();
         $this->bundlePath = $this->bundleMock->getPath();
     }
