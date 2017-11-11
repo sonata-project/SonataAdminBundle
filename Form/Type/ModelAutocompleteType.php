@@ -134,7 +134,7 @@ class ModelAutocompleteType extends AbstractType
             'to_string_callback' => null,
 
             // add button
-            // NEXT_MAJOR: Set this value to true to display button by default
+            // NEXT_MAJOR: Set this value to 'link_add' to display button by default
             'btn_add' => false,
             'btn_catalogue' => 'SonataAdminBundle',
 
