@@ -20,8 +20,8 @@ if (file_exists($file = __DIR__.'/autoload.php')) {
 
 // try to get Symfony's PHPunit Bridge
 $files = array_filter([
-    __DIR__.'/../../vendor/symfony/symfony/src/Symfony/Bridge/PhpUnit/bootstrap.php',
-    __DIR__.'/../../vendor/symfony/phpunit-bridge/bootstrap.php',
+    __DIR__.'/../vendor/symfony/symfony/src/Symfony/Bridge/PhpUnit/bootstrap.php',
+    __DIR__.'/../vendor/symfony/phpunit-bridge/bootstrap.php',
 ], 'file_exists');
 if ($files) {
     require_once current($files);
