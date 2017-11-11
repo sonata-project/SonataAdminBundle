@@ -65,10 +65,10 @@
         "sonata-project/intl-bundle": "Add localized date and number into the list"
     },
     "autoload": {
-        "psr-4": { "Sonata\\AdminBundle\\": "" },
-        "exclude-from-classmap": [
-            "Tests/"
-        ]
+        "psr-4": { "Sonata\\AdminBundle\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Sonata\\AdminBundle\\Tests\\": "tests/" }
     },
     "config": {
         "sort-packages": true
