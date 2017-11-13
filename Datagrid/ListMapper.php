@@ -124,6 +124,34 @@ class ListMapper extends BaseMapper
             );
         }
 
+        // NEXT_MAJOR: Remove first "if" statement (when requirement of Symfony is >= 2.8)
+        if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) { // symfony >= 2.8
+            $choices = $fieldDescription->getOption('choices');
+            if (($type == 'choice' || $type == 'Symfony\Component\Form\Extension\Core\Type\ChoiceType') && $choices) {
+                // NEXT_MAJOR: Remove, leave only code from "else" (when requirement of Symfony is >= 3.0)
+                if (method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) { // 2.8 <= symfony < 3.0
+                    $choicesAsValues = $fieldDescription->getOption('choices_as_values') ?: false;
+                    if (true !== $choicesAsValues) {
+                        @trigger_error(sprintf('The value "false" for the "choices_as_values" option for field `%s` in `%s` is deprecated since symfony version 2.8 and will not be supported anymore in symfony 3.0. Set this option to "true" and flip the contents of the "choices" option instead.', $fieldDescription->getName(), get_class($this->admin)), E_USER_DEPRECATED);
+                    }
+                    if ($choicesAsValues) {
+                        $choices = array_flip($choices);
+                    }
+                } else {
+                    $choicesAsValues = $fieldDescription->getOption('choices_as_values') ?: false;
+                    // NEXT_MAJOR: Remove "if" statement (when requirement of Symfony is >= 3.1)
+                    if (method_exists('Symfony\Bundle\FrameworkBundle\Controller\Controller', 'json')) { // symfony >= 3.1
+                        if (true !== $choicesAsValues) {
+                            throw new \RuntimeException(sprintf('The "choices_as_values" option for field `%s` in `%s` should not be used. Remove it and flip the contents of the "choices" option instead.', $fieldDescription->getName(), get_class($this->admin)));
+                        }
+                    }
+                    $choices = array_flip($choices);
+                }
+
+                $fieldDescription->setOption('choices', $choices);
+            }
+        }
+
         // add the field with the FormBuilder
         $this->builder->addField($this->list, $type, $fieldDescription, $this->admin);
 
