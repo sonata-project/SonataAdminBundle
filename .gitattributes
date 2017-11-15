@@ -1,4 +1,4 @@
 .* export-ignore
 *.md export-ignore
 Tests/* export-ignore
-docs/* export-ignore
+Resources/doc/* export-ignore
