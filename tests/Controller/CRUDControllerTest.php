@@ -24,6 +24,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Symfony\Bridge\Twig\Extension\FormExtension;
+use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
 use Symfony\Component\Form\FormRenderer;
@@ -171,30 +172,23 @@ class CRUDControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $twigRenderer = $this->createMock('Symfony\Bridge\Twig\Form\TwigRendererInterface');
-
-        if (method_exists('Symfony\Bridge\Twig\AppVariable', 'getToken')) {
-            $formExtension = new FormExtension();
-        } else {
-            // Remove this else clause when dropping sf < 3.2
-            $formExtension = new FormExtension($twigRenderer);
-        }
-
         $twig->expects($this->any())
             ->method('getExtension')
-            ->will($this->returnCallback(function ($name) use ($formExtension) {
+            ->will($this->returnCallback(function ($name) {
                 switch ($name) {
                     case FormExtension::class:
-                        return $formExtension;
+                        return new FormExtension($this->createMock(TwigRenderer::class));
                 }
             }));
 
         $twig->expects($this->any())
             ->method('getRuntime')
-            ->will($this->returnCallback(function ($name) use ($twigRenderer) {
+            ->will($this->returnCallback(function ($name) {
                 switch ($name) {
+                    case TwigRenderer::class:
+                        return $this->createMock(TwigRenderer::class);
                     case FormRenderer::class:
-                        return $twigRenderer;
+                        return $this->createMock(FormRenderer::class);
                 }
             }));
 
