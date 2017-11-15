@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Bridge\Twig\AppVariable;
+use Symfony\Bridge\Twig\Command\DebugCommand;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Component\Form\FormRenderer;
@@ -546,7 +547,7 @@ class HelperController
     }
 
     /**
-     * @return TwigRenderer
+     * @return FormRenderer|TwigRenderer
      */
     private function getFormRenderer()
     {
@@ -556,6 +557,14 @@ class HelperController
             $extension->initRuntime($this->twig);
 
             return $extension->renderer;
+        }
+
+        // BC for Symfony < 3.4 where runtime should be TwigRenderer
+        if (!method_exists(DebugCommand::class, 'getLoaderPaths')) {
+            $runtime = $this->twig->getRuntime(TwigRenderer::class);
+            $runtime->setEnvironment($this->twig);
+
+            return $runtime;
         }
 
         $runtime = $this->twig->getRuntime(FormRenderer::class);
