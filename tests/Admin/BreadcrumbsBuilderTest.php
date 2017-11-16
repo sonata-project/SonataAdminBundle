@@ -11,7 +11,6 @@
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
-use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuFactory;
 use PHPUnit\Framework\TestCase;
