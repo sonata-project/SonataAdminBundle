@@ -15,7 +15,10 @@ use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
+use Symfony\Bridge\Twig\AppVariable;
+use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
+use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -547,17 +550,17 @@ class HelperController
      */
     private function getFormRenderer()
     {
-        try {
-            $runtime = $this->twig->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer');
-            $runtime->setEnvironment($this->twig);
-
-            return $runtime;
-        } catch (\Twig_Error_Runtime $e) {
-            // BC for Symfony < 3.2 where this runtime not exists
-            $extension = $this->twig->getExtension('Symfony\Bridge\Twig\Extension\FormExtension');
+        // BC for Symfony < 3.2 where this runtime does not exists
+        if (!method_exists(AppVariable::class, 'getToken')) {
+            $extension = $this->twig->getExtension(FormExtension::class);
             $extension->initRuntime($this->twig);
 
             return $extension->renderer;
         }
+
+        $runtime = $this->twig->getRuntime(FormRenderer::class);
+        $runtime->setEnvironment($this->twig);
+
+        return $runtime;
     }
 }

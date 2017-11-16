@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Tests\Mapper;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\AbstractDummyGroupedMapper;
 
 /**
  * Test for BaseGroupedMapper.
@@ -56,7 +57,10 @@ class BaseGroupedMapperTest extends TestCase
 
         $builder = $this->getMockForAbstractClass('Sonata\AdminBundle\Builder\BuilderInterface');
 
-        $this->baseGroupedMapper = $this->getMockForAbstractClass('Sonata\AdminBundle\Mapper\BaseGroupedMapper', [$builder, $admin]);
+        $this->baseGroupedMapper = $this->getMockForAbstractClass(
+            AbstractDummyGroupedMapper::class,
+            [$builder, $admin]
+        );
 
         // php 5.3 BC
         $object = $this;

@@ -312,6 +312,11 @@ template
   defaults to ``SonataAdminBundle:Form/Type:sonata_type_model_autocomplete.html.twig``.
   Use this option if you want to override the default template of this form type.
 
+btn_add and btn_catalogue:
+  The labels on the ``add`` button can be customized with these parameters.
+  Setting any of them to ``false`` will hide the corresponding button. You can also specify
+  a custom translation catalogue for these labels, which defaults to ``SonataAdminBundle``.
+
 .. code-block:: php
 
     <?php

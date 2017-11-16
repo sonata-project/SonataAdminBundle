@@ -63,35 +63,36 @@ class ModelAutocompleteType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['admin_code'] = $options['admin_code'];
-
-        $view->vars['placeholder'] = $options['placeholder'];
-        $view->vars['multiple'] = $options['multiple'];
-        $view->vars['minimum_input_length'] = $options['minimum_input_length'];
-        $view->vars['items_per_page'] = $options['items_per_page'];
-        $view->vars['width'] = $options['width'];
-
-        // ajax parameters
-        $view->vars['url'] = $options['url'];
-        $view->vars['route'] = $options['route'];
-        $view->vars['req_params'] = $options['req_params'];
-        $view->vars['req_param_name_search'] = $options['req_param_name_search'];
-        $view->vars['req_param_name_page_number'] = $options['req_param_name_page_number'];
-        $view->vars['req_param_name_items_per_page'] = $options['req_param_name_items_per_page'];
-        $view->vars['quiet_millis'] = $options['quiet_millis'];
-        $view->vars['cache'] = $options['cache'];
-
-        // CSS classes
-        $view->vars['container_css_class'] = $options['container_css_class'];
-        $view->vars['dropdown_css_class'] = $options['dropdown_css_class'];
-        $view->vars['dropdown_item_css_class'] = $options['dropdown_item_css_class'];
-
-        $view->vars['dropdown_auto_width'] = $options['dropdown_auto_width'];
-
-        // template
-        $view->vars['template'] = $options['template'];
-
-        $view->vars['context'] = $options['context'];
+        foreach ([
+            'admin_code',
+            'placeholder',
+            'multiple',
+            'minimum_input_length',
+            'items_per_page',
+            'width',
+            // ajax parameters
+            'url',
+            'route',
+            'req_params',
+            'req_param_name_search',
+            'req_param_name_page_number',
+            'req_param_name_items_per_page',
+            'quiet_millis',
+            'cache',
+            // CSS classes
+            'container_css_class',
+            'dropdown_css_class',
+            'dropdown_item_css_class',
+            'dropdown_auto_width',
+            // template
+            'template',
+            'context',
+            // add button
+            'btn_add',
+            'btn_catalogue',
+        ] as $passthroughOption) {
+            $view->vars[$passthroughOption] = $options[$passthroughOption];
+        }
     }
 
     /**
@@ -131,6 +132,11 @@ class ModelAutocompleteType extends AbstractType
             'cache' => false,
 
             'to_string_callback' => null,
+
+            // add button
+            // NEXT_MAJOR: Set this value to 'link_add' to display button by default
+            'btn_add' => false,
+            'btn_catalogue' => 'SonataAdminBundle',
 
             // ajax parameters
             'url' => '',

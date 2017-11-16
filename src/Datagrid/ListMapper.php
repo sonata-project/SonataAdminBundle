@@ -41,11 +41,11 @@ class ListMapper extends BaseMapper
     }
 
     /**
-     * @param string $name
-     * @param null   $type
-     * @param array  $fieldDescriptionOptions
+     * @param string      $name
+     * @param string|null $type
+     * @param array       $fieldDescriptionOptions
      *
-     * @return ListMapper
+     * @return $this
      */
     public function addIdentifier($name, $type = null, array $fieldDescriptionOptions = [])
     {
@@ -66,11 +66,11 @@ class ListMapper extends BaseMapper
     /**
      * @throws \RuntimeException
      *
-     * @param mixed $name
-     * @param mixed $type
-     * @param array $fieldDescriptionOptions
+     * @param string      $name
+     * @param string|null $type
+     * @param array       $fieldDescriptionOptions
      *
-     * @return ListMapper
+     * @return $this
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = [])
     {

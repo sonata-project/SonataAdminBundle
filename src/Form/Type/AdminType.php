@@ -69,11 +69,16 @@ class AdminType extends AbstractType
                             $subject = $subjectCollection->get(trim($options['property_path'], '[]'));
                         }
                     } else {
+                        // this check is to work around duplication issue in property path
+                        // https://github.com/sonata-project/SonataAdminBundle/issues/4425
+                        if ($this->getFieldDescription($options)->getFieldName() === $options['property_path']) {
+                            $path = $options['property_path'];
+                        } else {
+                            $path = $this->getFieldDescription($options)->getFieldName().$options['property_path'];
+                        }
+
                         // for PropertyAccessor >= 2.5
-                        $subject = $p->getValue(
-                            $parentSubject,
-                            $options['property_path']
-                        );
+                        $subject = $p->getValue($parentSubject, $path);
                     }
                     $builder->setData($subject);
                 }

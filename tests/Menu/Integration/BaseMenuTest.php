@@ -32,7 +32,7 @@ abstract class BaseMenuTest extends TestCase
         $twigPaths = array_filter([
             __DIR__.'/../../../../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views',
             __DIR__.'/../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views',
-            __DIR__.'/../../../Resources/views',
+            __DIR__.'/../../../src/Resources/views',
         ], 'is_dir');
 
         $loader = new StubFilesystemLoader($twigPaths);

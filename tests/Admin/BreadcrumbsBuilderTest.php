@@ -11,7 +11,11 @@
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
+use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
+use Knp\Menu\MenuFactory;
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
 
 /**
@@ -24,37 +28,37 @@ class BreadcrumbsBuilderTest extends TestCase
 {
     public function testChildGetBreadCrumbs()
     {
-        $menu = $this->prophesize('Knp\Menu\ItemInterface');
+        $menu = $this->prophesize(ItemInterface::class);
         $menu->getParent()->willReturn(null);
 
-        $dashboardMenu = $this->prophesize('Knp\Menu\ItemInterface');
+        $dashboardMenu = $this->prophesize(ItemInterface::class);
         $dashboardMenu->getParent()->willReturn($menu);
 
-        $adminListMenu = $this->prophesize('Knp\Menu\ItemInterface');
+        $adminListMenu = $this->prophesize(ItemInterface::class);
         $adminListMenu->getParent()->willReturn($dashboardMenu);
 
-        $adminSubjectMenu = $this->prophesize('Knp\Menu\ItemInterface');
+        $adminSubjectMenu = $this->prophesize(ItemInterface::class);
         $adminSubjectMenu->getParent()->willReturn($adminListMenu);
 
-        $childMenu = $this->prophesize('Knp\Menu\ItemInterface');
+        $childMenu = $this->prophesize(ItemInterface::class);
         $childMenu->getParent()->willReturn($adminSubjectMenu);
 
-        $leafMenu = $this->prophesize('Knp\Menu\ItemInterface');
+        $leafMenu = $this->prophesize(ItemInterface::class);
         $leafMenu->getParent()->willReturn($childMenu);
 
         $action = 'my_action';
         $breadcrumbsBuilder = new BreadcrumbsBuilder(['child_admin_route' => 'show']);
-        $admin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
+        $admin = $this->prophesize(AbstractAdmin::class);
         $admin->isChild()->willReturn(false);
 
-        $menuFactory = $this->prophesize('Knp\Menu\MenuFactory');
+        $menuFactory = $this->prophesize(MenuFactory::class);
         $menuFactory->createItem('root')->willReturn($menu);
         $admin->getMenuFactory()->willReturn($menuFactory);
         $labelTranslatorStrategy = $this->prophesize(
-            'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
+            LabelTranslatorStrategyInterface::class
         );
 
-        $routeGenerator = $this->prophesize('Sonata\AdminBundle\Route\RouteGeneratorInterface');
+        $routeGenerator = $this->prophesize(RouteGeneratorInterface::class);
         $routeGenerator->generate('sonata_admin_dashboard')->willReturn('/dashboard');
 
         $admin->getRouteGenerator()->willReturn($routeGenerator->reveal());
@@ -76,7 +80,7 @@ class BreadcrumbsBuilderTest extends TestCase
             'breadcrumb',
             'link'
         )->willReturn('My child class');
-        $childAdmin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
+        $childAdmin = $this->prophesize(AbstractAdmin::class);
         $childAdmin->isChild()->willReturn(true);
         $childAdmin->getParent()->willReturn($admin->reveal());
         $childAdmin->getTranslationDomain()->willReturn('ChildBundle');
@@ -101,7 +105,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $admin->hasAccess('list')->willReturn(true);
         $admin->generateUrl('list')->willReturn('/myadmin/list');
         $admin->getCurrentChildAdmin()->willReturn($childAdmin->reveal());
-        $request = $this->prophesize('Symfony\Component\HttpFoundation\Request');
+        $request = $this->prophesize(Request::class);
         $request->get('slug')->willReturn('my-object');
 
         $admin->getIdParameter()->willReturn('slug');
@@ -167,16 +171,14 @@ class BreadcrumbsBuilderTest extends TestCase
     {
         $breadcrumbsBuilder = new BreadcrumbsBuilder();
 
-        $menu = $this->prophesize('Knp\Menu\ItemInterface');
-        $menuFactory = $this->prophesize('Knp\Menu\MenuFactory');
+        $menu = $this->prophesize(ItemInterface::class);
+        $menuFactory = $this->prophesize(MenuFactory::class);
         $menuFactory->createItem('root')->willReturn($menu);
-        $admin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
+        $admin = $this->prophesize(AbstractAdmin::class);
         $admin->getMenuFactory()->willReturn($menuFactory);
-        $labelTranslatorStrategy = $this->prophesize(
-            'Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface'
-        );
+        $labelTranslatorStrategy = $this->prophesize(LabelTranslatorStrategyInterface::class);
 
-        $routeGenerator = $this->prophesize('Sonata\AdminBundle\Route\RouteGeneratorInterface');
+        $routeGenerator = $this->prophesize(RouteGeneratorInterface::class);
         $routeGenerator->generate('sonata_admin_dashboard')->willReturn('/dashboard');
         $admin->getRouteGenerator()->willReturn($routeGenerator->reveal());
         $menu->addChild('link_breadcrumb_dashboard', [
@@ -214,7 +216,7 @@ class BreadcrumbsBuilderTest extends TestCase
                 ],
             ])->willReturn($menu);
         }
-        $childAdmin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
+        $childAdmin = $this->prophesize(AbstractAdmin::class);
         $childAdmin->getTranslationDomain()->willReturn('ChildBundle');
         $childAdmin->getLabelTranslatorStrategy()->willReturn($labelTranslatorStrategy->reveal());
         $childAdmin->getClassnameLabel()->willReturn('my_child_class_name');
@@ -232,7 +234,7 @@ class BreadcrumbsBuilderTest extends TestCase
             $admin->isChild()->willReturn(true);
             $menu->setUri(false)->shouldBeCalled();
         }
-        $request = $this->prophesize('Symfony\Component\HttpFoundation\Request');
+        $request = $this->prophesize(Request::class);
         $request->get('slug')->willReturn('my-object');
 
         $admin->getIdParameter()->willReturn('slug');

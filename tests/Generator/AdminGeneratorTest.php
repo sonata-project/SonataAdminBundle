@@ -38,7 +38,7 @@ class AdminGeneratorTest extends TestCase
     {
         $this->adminGenerator = new AdminGenerator(
             $this->createModelManagerMock(),
-            __DIR__.'/../../Resources/skeleton'
+            __DIR__.'/../../src/Resources/skeleton'
         );
         $this->bundleMock = $this->createBundleMock();
         $this->bundlePath = $this->bundleMock->getPath();

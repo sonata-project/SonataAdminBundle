@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\DefaultRouteGenerator;
 use Sonata\AdminBundle\Route\RoutesCache;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
@@ -61,10 +62,12 @@ class AdminTest extends TestCase
 
     public function testGetClass()
     {
-        $class = 'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post';
+        $class = Post::class;
         $baseControllerName = 'SonataNewsBundle:PostAdmin';
 
         $admin = new PostAdmin('sonata.post.admin.post', $class, $baseControllerName);
+
+        $admin->setModelManager($this->getMockForAbstractClass(ModelManagerInterface::class));
 
         $admin->setSubject(new \Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\BlogPost());
         $this->assertSame(
@@ -685,7 +688,7 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin(
             'sonata.post.admin.post',
-            'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post',
+            Post::class,
             'SonataNewsBundle:PostAdmin'
         );
         $this->assertFalse($admin->hasSubClass('test'));
@@ -694,7 +697,7 @@ class AdminTest extends TestCase
         $this->assertNull($admin->getActiveSubClass());
         $this->assertNull($admin->getActiveSubclassCode());
         $this->assertSame(
-            'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post',
+            Post::class,
             $admin->getClass()
         );
 
@@ -744,6 +747,8 @@ class AdminTest extends TestCase
     public function testNonExistantSubclass()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin->setModelManager($this->getMockForAbstractClass(ModelManagerInterface::class));
+
         $admin->setRequest(new \Symfony\Component\HttpFoundation\Request(['subclass' => 'inject']));
 
         $admin->setSubClasses(['extended1' => 'NewsBundle\Entity\PostExtended1', 'extended2' => 'NewsBundle\Entity\PostExtended2']);

@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Model;
 
+use Exporter\Source\SourceIteratorInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -244,10 +245,10 @@ interface ModelManagerInterface
     /**
      * @param DatagridInterface $datagrid
      * @param array             $fields
-     * @param null              $firstResult
-     * @param null              $maxResult
+     * @param int|null          $firstResult
+     * @param int|null          $maxResult
      *
-     * @return \Exporter\Source\SourceIteratorInterface
+     * @return SourceIteratorInterface
      */
     public function getDataSourceIterator(DatagridInterface $datagrid, array $fields, $firstResult = null, $maxResult = null);
 

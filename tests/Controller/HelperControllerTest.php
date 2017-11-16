@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Controller\HelperController;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension;
+use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -278,14 +279,13 @@ class HelperControllerTest extends TestCase
             $this->createMock('Symfony\Component\Translation\TranslatorInterface')
         );
 
-        $loader = $this->createMock('\Twig_LoaderInterface');
-
         // NEXT_MAJOR: Remove this check when dropping support for twig < 2
         if (method_exists('\Twig_LoaderInterface', 'getSourceContext')) {
-            $loader->method('getSourceContext')->will($this->returnValue(new \Twig_Source('<foo />', 'foo')));
+            $loader = $this->createMock('\Twig_LoaderInterface');
         } else {
-            $loader->method('getSource')->will($this->returnValue('<foo />'));
+            $loader = $this->createMock(['\Twig_LoaderInterface', 'Twig_SourceContextLoaderInterface']);
         }
+        $loader->method('getSourceContext')->will($this->returnValue(new \Twig_Source('<foo />', 'foo')));
 
         $twig = new \Twig_Environment($loader);
         $twig->addExtension($adminExtension);
@@ -340,19 +340,22 @@ class HelperControllerTest extends TestCase
             ->will($this->returnValue(new Response()));
 
         $twig = new \Twig_Environment($this->createMock('\Twig_LoaderInterface'));
-        $twig->addExtension(new FormExtension($mockRenderer));
 
+        // Remove the condition when dropping sf < 3.2
         if (method_exists('Symfony\Bridge\Twig\AppVariable', 'getToken')) {
+            $twig->addExtension(new FormExtension());
             $runtimeLoader = $this
                 ->getMockBuilder('Twig_RuntimeLoaderInterface')
                 ->getMock();
 
             $runtimeLoader->expects($this->once())
                 ->method('load')
-                ->with($this->equalTo('Symfony\Bridge\Twig\Form\TwigRenderer'))
+                ->with($this->equalTo(FormRenderer::class))
                 ->will($this->returnValue($mockRenderer));
 
             $twig->addRuntimeLoader($runtimeLoader);
+        } else {
+            $twig->addExtension(new FormExtension($mockRenderer));
         }
 
         $request = new Request([
@@ -454,18 +457,22 @@ class HelperControllerTest extends TestCase
             ->will($this->returnValue(new Response()));
 
         $twig = new \Twig_Environment($this->createMock('\Twig_LoaderInterface'));
-        $twig->addExtension(new FormExtension($mockRenderer));
+
+        // Remove the condition when dropping sf < 3.2
         if (method_exists('Symfony\Bridge\Twig\AppVariable', 'getToken')) {
+            $twig->addExtension(new FormExtension());
             $runtimeLoader = $this
                 ->getMockBuilder('Twig_RuntimeLoaderInterface')
                 ->getMock();
 
             $runtimeLoader->expects($this->once())
                 ->method('load')
-                ->with($this->equalTo('Symfony\Bridge\Twig\Form\TwigRenderer'))
+                ->with($this->equalTo(FormRenderer::class))
                 ->will($this->returnValue($mockRenderer));
 
             $twig->addRuntimeLoader($runtimeLoader);
+        } else {
+            $twig->addExtension(new FormExtension($mockRenderer));
         }
 
         $pool = new Pool($container, 'title', 'logo');

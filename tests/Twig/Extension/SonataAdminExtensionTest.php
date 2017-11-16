@@ -26,6 +26,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Translation\DependencyInjection\TranslationDumperPass;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Translator;
@@ -90,10 +91,6 @@ class SonataAdminExtensionTest extends TestCase
 
     public function setUp()
     {
-        // NEXT_MAJOR: remove this block when dropping symfony < 2.7 support
-        if (!class_exists('Symfony\Bridge\Twig\Extension\AssetExtension')) {
-            $this->markTestSkipped();
-        }
         date_default_timezone_set('Europe/London');
 
         $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
@@ -121,11 +118,15 @@ class SonataAdminExtensionTest extends TestCase
         ];
 
         // translation extension
-        $translator = new Translator('en', new MessageSelector());
+        $translator = new Translator(
+            'en',
+            // NEXT_MAJOR: simplify this when dropping symfony < 3.4
+            class_exists(TranslationDumperPass::class) ? null : new MessageSelector()
+        );
         $translator->addLoader('xlf', new XliffFileLoader());
         $translator->addResource(
             'xlf',
-            __DIR__.'/../../../Resources/translations/SonataAdminBundle.en.xliff',
+            __DIR__.'/../../../src/Resources/translations/SonataAdminBundle.en.xliff',
             'en',
             'SonataAdminBundle'
         );
@@ -136,7 +137,7 @@ class SonataAdminExtensionTest extends TestCase
         $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
 
         $loader = new StubFilesystemLoader([
-            __DIR__.'/../../../Resources/views/CRUD',
+            __DIR__.'/../../../src/Resources/views/CRUD',
         ]);
 
         $this->environment = new \Twig_Environment($loader, [
@@ -149,7 +150,7 @@ class SonataAdminExtensionTest extends TestCase
         $this->environment->addExtension(new TranslationExtension($translator));
 
         // routing extension
-        $xmlFileLoader = new XmlFileLoader(new FileLocator([__DIR__.'/../../../Resources/config/routing']));
+        $xmlFileLoader = new XmlFileLoader(new FileLocator([__DIR__.'/../../../src/Resources/config/routing']));
         $routeCollection = $xmlFileLoader->load('sonata_admin.xml');
 
         $xmlFileLoader = new XmlFileLoader(new FileLocator([__DIR__.'/../../Fixtures/Resources/config/routing']));

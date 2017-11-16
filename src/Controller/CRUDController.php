@@ -20,8 +20,11 @@ use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
+use Symfony\Bridge\Twig\AppVariable;
+use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -1377,16 +1380,12 @@ class CRUDController extends Controller
     {
         $twig = $this->get('twig');
 
-        try {
-            $twig
-                ->getRuntime('Symfony\Bridge\Twig\Form\TwigRenderer')
-                ->setTheme($formView, $theme);
-        } catch (\Twig_Error_Runtime $e) {
-            // BC for Symfony < 3.2 where this runtime not exists
-            $twig
-                ->getExtension('Symfony\Bridge\Twig\Extension\FormExtension')
-                ->renderer
-                ->setTheme($formView, $theme);
+        // BC for Symfony < 3.2 where this runtime does not exists
+        if (!method_exists(AppVariable::class, 'getToken')) {
+            $twig->getExtension(FormExtension::class)->renderer->setTheme($formView, $theme);
+
+            return;
         }
+        $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
     }
 }

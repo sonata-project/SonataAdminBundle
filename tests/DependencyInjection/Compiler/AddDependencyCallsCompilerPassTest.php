@@ -14,7 +14,10 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
+use Sonata\DoctrinePHPCRAdminBundle\Route\PathInfoBuilderSlashes;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 
 /**
@@ -194,11 +197,20 @@ class AddDependencyCallsCompilerPassTest extends TestCase
                 return 'setRouteBuilder' == $element[0];
             }
         ));
-        $this->assertSame(
-            'sonata.admin.route.path_info_slashes',
-            (string) $articleRouteBuilderMethodCall[1][0],
-            'The article admin uses the odm, and should therefore use the path_info_slashes router.'
-        );
+        $definitionOrReference = $articleRouteBuilderMethodCall[1][0];
+        if ($definitionOrReference instanceof Definition) {
+            $this->assertSame(
+                PathInfoBuilderSlashes::class,
+                $articleRouteBuilderMethodCall[1][0]->getClass(),
+                'The article admin uses the odm, and should therefore use the path_info_slashes router.'
+            );
+        } else {
+            $this->assertSame(
+                'sonata.admin.route.path_info_slashes',
+                (string) $articleRouteBuilderMethodCall[1][0],
+                'The article admin uses the odm, and should therefore use the path_info_slashes router.'
+            );
+        }
     }
 
     public function testProcessSortAdmins()
@@ -479,14 +491,22 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\Post', ''])
             ->setAbstract(true);
 
-        $adminDefinition = new DefinitionDecorator('sonata_abstract_post_admin');
+        // NEXT_MAJOR: Simplify this when dropping sf < 3.3
+        $adminDefinition = class_exists(ChildDefinition::class) ?
+            new ChildDefinition('sonata_abstract_post_admin') :
+            new DefinitionDecorator('sonata_abstract_post_admin');
         $adminDefinition
+            ->setPublic(true)
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAbstractServiceAdmin')
             ->setArguments([0 => 'extra_argument_1'])
             ->addTag('sonata.admin', ['group' => 'sonata_post_one_group', 'manager_type' => 'orm']);
 
-        $adminTwoDefinition = new DefinitionDecorator('sonata_abstract_post_admin');
+        // NEXT_MAJOR: Simplify this when dropping sf < 3.3
+        $adminTwoDefinition = class_exists(ChildDefinition::class) ?
+            new ChildDefinition('sonata_abstract_post_admin') :
+            new DefinitionDecorator('sonata_abstract_post_admin');
         $adminTwoDefinition
+            ->setPublic(true)
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAbstractServiceAdmin')
             ->setArguments([0 => 'extra_argument_2', 'index_0' => 'should_not_override'])
             ->addTag('sonata.admin', ['group' => 'sonata_post_two_group', 'manager_type' => 'orm']);
@@ -678,21 +698,25 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         // Add admin definition's
         $container
             ->register('sonata_news_admin')
+            ->setPublic(true)
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
             ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\News', 'SonataAdminBundle:CRUD'])
             ->addTag('sonata.admin', ['group' => 'sonata_group_two', 'label' => '5 Entry', 'manager_type' => 'orm']);
         $container
             ->register('sonata_post_admin')
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
+            ->setPublic(true)
             ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\Post', 'SonataAdminBundle:CRUD'])
             ->addTag('sonata.admin', ['group' => 'sonata_group_one', 'manager_type' => 'orm']);
         $container
             ->register('sonata_article_admin')
+            ->setPublic(true)
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
             ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\Article', 'SonataAdminBundle:CRUD'])
             ->addTag('sonata.admin', ['group' => 'sonata_group_one', 'label' => '1 Entry', 'manager_type' => 'doctrine_phpcr']);
         $container
             ->register('sonata_report_admin')
+            ->setPublic(true)
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
             ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\Report', 'SonataAdminBundle:CRUD'])
             ->addTag('sonata.admin', ['group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true]);

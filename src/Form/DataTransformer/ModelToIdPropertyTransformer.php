@@ -52,7 +52,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
      * @param string                $className
      * @param string                $property
      * @param bool                  $multiple
-     * @param null                  $toStringCallback
+     * @param callable|null         $toStringCallback
      */
     public function __construct(ModelManagerInterface $modelManager, $className, $property, $multiple = false, $toStringCallback = null)
     {

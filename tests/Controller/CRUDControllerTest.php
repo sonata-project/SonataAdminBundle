@@ -26,6 +26,7 @@ use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
+use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -134,10 +135,6 @@ class CRUDControllerTest extends TestCase
         $this->parameters = [];
         $this->template = '';
 
-        // php 5.3 BC
-        $params = &$this->parameters;
-        $template = &$this->template;
-
         $templating = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine')
             ->setConstructorArgs([$this->container, []])
             ->getMock();
@@ -146,17 +143,14 @@ class CRUDControllerTest extends TestCase
             $view,
             array $parameters = [],
             Response $response = null
-        ) use (
-            &$params,
-            &$template
         ) {
-            $template = $view;
+            $this->template = $view;
 
             if (null === $response) {
                 $response = new Response();
             }
 
-            $params = $parameters;
+            $this->parameters = $parameters;
 
             return $response;
         });
@@ -172,26 +166,24 @@ class CRUDControllerTest extends TestCase
 
         $this->session = new Session(new MockArraySessionStorage());
 
-        // php 5.3 BC
-        $pool = $this->pool;
-        $request = $this->request;
-        $admin = $this->admin;
-        $session = $this->session;
-        $translator = $this->translator;
-
         $twig = $this->getMockBuilder('Twig_Environment')
             ->disableOriginalConstructor()
             ->getMock();
 
         $twigRenderer = $this->createMock('Symfony\Bridge\Twig\Form\TwigRendererInterface');
 
-        $formExtension = new FormExtension($twigRenderer);
+        if (method_exists('Symfony\Bridge\Twig\AppVariable', 'getToken')) {
+            $formExtension = new FormExtension();
+        } else {
+            // Remove this else clause when dropping sf < 3.2
+            $formExtension = new FormExtension($twigRenderer);
+        }
 
         $twig->expects($this->any())
             ->method('getExtension')
             ->will($this->returnCallback(function ($name) use ($formExtension) {
                 switch ($name) {
-                    case 'Symfony\Bridge\Twig\Extension\FormExtension':
+                    case FormExtension::class:
                         return $formExtension;
                 }
             }));
@@ -200,12 +192,8 @@ class CRUDControllerTest extends TestCase
             ->method('getRuntime')
             ->will($this->returnCallback(function ($name) use ($twigRenderer) {
                 switch ($name) {
-                    case 'Symfony\Bridge\Twig\Form\TwigRenderer':
-                        if (method_exists('Symfony\Bridge\Twig\AppVariable', 'getToken')) {
-                            return $twigRenderer;
-                        }
-
-                        throw new \Twig_Error_Runtime('This runtime exists when Symony >= 3.2.');
+                    case FormRenderer::class:
+                        return $twigRenderer;
                 }
             }));
 
@@ -227,11 +215,6 @@ class CRUDControllerTest extends TestCase
         $this->adminObjectAclManipulator = $this->getMockBuilder('Sonata\AdminBundle\Util\AdminObjectAclManipulator')
             ->disableOriginalConstructor()
             ->getMock();
-
-        // php 5.3 BC
-        $request = $this->request;
-        $auditManager = $this->auditManager;
-        $adminObjectAclManipulator = $this->adminObjectAclManipulator;
 
         // Prefer Symfony 2.x interfaces
         if (interface_exists('Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface')) {
@@ -278,83 +261,65 @@ class CRUDControllerTest extends TestCase
                 }));
         }
 
-        // php 5.3 BC
-        $csrfProvider = $this->csrfProvider;
-
         $this->logger = $this->createMock('Psr\Log\LoggerInterface');
-        $logger = $this->logger; // php 5.3 BC
 
         $requestStack = null;
         if (class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
             $requestStack = new RequestStack();
-            $requestStack->push($request);
+            $requestStack->push($this->request);
         }
 
         $this->kernel = $this->createMock('Symfony\Component\HttpKernel\KernelInterface');
-        $kernel = $this->kernel; // php 5.3 BC
 
         $this->container->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($id) use (
-                $pool,
-                $admin,
-                $request,
                 $templating,
                 $twig,
-                $session,
                 $exporter,
-                $auditManager,
-                $adminObjectAclManipulator,
-                $requestStack,
-                $csrfProvider,
-                $logger,
-                $kernel,
-                $translator
+                $requestStack
             ) {
                 switch ($id) {
                     case 'sonata.admin.pool':
-                        return $pool;
+                        return $this->pool;
                     case 'request':
-                        return $request;
+                        return $this->request;
                     case 'request_stack':
                         return $requestStack;
                     case 'foo.admin':
-                        return $admin;
+                        return $this->admin;
                     case 'templating':
                         return $templating;
                     case 'twig':
                         return $twig;
                     case 'session':
-                        return $session;
+                        return $this->session;
                     case 'sonata.admin.exporter':
                         return $exporter;
                     case 'sonata.admin.audit.manager':
-                        return $auditManager;
+                        return $this->auditManager;
                     case 'sonata.admin.object.manipulator.acl.admin':
-                        return $adminObjectAclManipulator;
+                        return $this->adminObjectAclManipulator;
                     case 'form.csrf_provider':
                     case 'security.csrf.token_manager':
-                        return $csrfProvider;
+                        return $this->csrfProvider;
                     case 'logger':
-                        return $logger;
+                        return $this->logger;
                     case 'kernel':
-                        return $kernel;
+                        return $this->kernel;
                     case 'translator':
-                        return $translator;
+                        return $this->translator;
                 }
             }));
 
-        // php 5.3
-        $tthis = $this;
-
         $this->container->expects($this->any())
             ->method('has')
-            ->will($this->returnCallback(function ($id) use ($tthis) {
-                if ('form.csrf_provider' == $id && Kernel::MAJOR_VERSION == 2 && null !== $tthis->getCsrfProvider()) {
+            ->will($this->returnCallback(function ($id) {
+                if ('form.csrf_provider' == $id && Kernel::MAJOR_VERSION == 2 && null !== $this->getCsrfProvider()) {
                     return true;
                 }
 
-                if ('security.csrf.token_manager' == $id && Kernel::MAJOR_VERSION >= 3 && null !== $tthis->getCsrfProvider()) {
+                if ('security.csrf.token_manager' == $id && Kernel::MAJOR_VERSION >= 3 && null !== $this->getCsrfProvider()) {
                     return true;
                 }
 
