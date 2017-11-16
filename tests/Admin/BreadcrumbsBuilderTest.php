@@ -16,6 +16,9 @@ use Knp\Menu\MenuFactory;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
+use Sonata\AdminBundle\Route\RouteGeneratorInterface;
+use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * This test class contains unit and integration tests. Maybe it could be
