@@ -19,6 +19,8 @@ use Sonata\AdminBundle\Controller\HelperController;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension;
+use Symfony\Bridge\Twig\Form\TwigRenderer;
+use Symfony\Component\Form\Command\DebugCommand;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -348,10 +350,18 @@ class HelperControllerTest extends TestCase
                 ->getMockBuilder('Twig_RuntimeLoaderInterface')
                 ->getMock();
 
-            $runtimeLoader->expects($this->once())
-                ->method('load')
-                ->with($this->equalTo(FormRenderer::class))
-                ->will($this->returnValue($mockRenderer));
+            // Remove the condition when dropping sf < 3.4
+            if (!class_exists(DebugCommand::class)) {
+                $runtimeLoader->expects($this->once())
+                    ->method('load')
+                    ->with($this->equalTo(TwigRenderer::class))
+                    ->will($this->returnValue($mockRenderer));
+            } else {
+                $runtimeLoader->expects($this->once())
+                    ->method('load')
+                    ->with($this->equalTo(FormRenderer::class))
+                    ->will($this->returnValue($mockRenderer));
+            }
 
             $twig->addRuntimeLoader($runtimeLoader);
         } else {
@@ -465,10 +475,18 @@ class HelperControllerTest extends TestCase
                 ->getMockBuilder('Twig_RuntimeLoaderInterface')
                 ->getMock();
 
-            $runtimeLoader->expects($this->once())
-                ->method('load')
-                ->with($this->equalTo(FormRenderer::class))
-                ->will($this->returnValue($mockRenderer));
+            // Remove the condition when dropping sf < 3.4
+            if (!class_exists(DebugCommand::class)) {
+                $runtimeLoader->expects($this->once())
+                    ->method('load')
+                    ->with($this->equalTo(TwigRenderer::class))
+                    ->will($this->returnValue($mockRenderer));
+            } else {
+                $runtimeLoader->expects($this->once())
+                    ->method('load')
+                    ->with($this->equalTo(FormRenderer::class))
+                    ->will($this->returnValue($mockRenderer));
+            }
 
             $twig->addRuntimeLoader($runtimeLoader);
         } else {
