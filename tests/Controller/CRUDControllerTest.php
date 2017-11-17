@@ -587,7 +587,7 @@ class CRUDControllerTest extends TestCase
         $this->parameters = [];
         $this->assertInstanceOf(
             'Symfony\Component\HttpFoundation\Response',
-            $this->controller->renderWithExtraParams('FooAdminBundle::foo.html.twig', [], null, $this->request)
+            $this->controller->renderWithExtraParams('FooAdminBundle::foo.html.twig', [], null)
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
@@ -600,7 +600,7 @@ class CRUDControllerTest extends TestCase
         $this->parameters = [];
         $response = $response = new Response();
         $response->headers->set('X-foo', 'bar');
-        $responseResult = $this->controller->renderWithExtraParams('FooAdminBundle::foo.html.twig', [], $response, $this->request);
+        $responseResult = $this->controller->renderWithExtraParams('FooAdminBundle::foo.html.twig', [], $response);
 
         $this->assertSame($response, $responseResult);
         $this->assertSame('bar', $responseResult->headers->get('X-foo'));
@@ -615,8 +615,11 @@ class CRUDControllerTest extends TestCase
         $this->parameters = [];
         $this->assertInstanceOf(
             'Symfony\Component\HttpFoundation\Response',
-            $this->controller->renderWithExtraParams('FooAdminBundle::foo.html.twig',
-            ['foo' => 'bar'], null, $this->request)
+            $this->controller->renderWithExtraParams(
+                'FooAdminBundle::foo.html.twig',
+                ['foo' => 'bar'],
+                null
+            )
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
@@ -634,8 +637,7 @@ class CRUDControllerTest extends TestCase
             $this->controller->renderWithExtraParams(
                 'FooAdminBundle::foo.html.twig',
                 ['foo' => 'bar'],
-                null,
-                $this->request
+                null
             )
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
