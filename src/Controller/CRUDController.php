@@ -501,8 +501,7 @@ class CRUDController extends Controller
                     'admin' => $this->admin,
                     'action' => 'create',
                 ],
-                null,
-                $request
+                null
             );
         }
 
