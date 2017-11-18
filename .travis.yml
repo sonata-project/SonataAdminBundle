@@ -58,6 +58,10 @@ matrix:
       env: SONATA_BLOCK='dev-master as 3'
     - php: '7.1'
       env: SYMFONY_DEPRECATIONS_HELPER=0
+    - php: '7.1'
+      env: SYMFONY_VERSION=^3.0
+    - php: '7.1'
+      env: DEPENDENCIES=beta
   allow_failures:
     - php: nightly
     - env: SYMFONY_DEPRECATIONS_HELPER=0
@@ -66,6 +70,7 @@ matrix:
     - env: SONATA_BLOCK='dev-master as 3'
 
 before_install:
+  - if [ "$DEPENDENCIES" = "beta" ]; then composer config minimum-stability beta; fi;
   - git remote add upstream ${UPSTREAM_URL} && git fetch --all
   - if [[ -x .travis/check_relevant_${TARGET}.sh && "$TRAVIS_PULL_REQUEST" != "false" ]]; then export RELEVANT=$(.travis/check_relevant_${TARGET}.sh); fi;
   - if [[ ! -z ${RELEVANT} ]];then exit 0; fi;
