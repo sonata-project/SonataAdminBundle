@@ -119,6 +119,55 @@ The available options are:
     (``sonata-admin-setup-list-modal`` by default and
     ``sonata-admin-append-form-element`` when using ``edit:inline``).
 
+``Sonata\AdminBundle\Form\Type\ModelListType``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This type allows you to choose an existing entity,
+add a new one or edit the one that is already selected.
+
+For example, we have an entity class called ``Page`` which has a field called
+``image1`` which maps a relationship to another entity class called ``Image``.
+All we need to do now is add a reference for this field in our ``PageAdmin`` class:
+
+.. code-block:: php
+
+    <?php
+    // src/AppBundle/Admin/PageAdmin.php
+
+    use Sonata\AdminBundle\Form\Type\ModelListType;
+    use Sonata\AdminBundle\Form\FormMapper;
+
+    class PageAdmin extends AbstractAdmin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            $formMapper
+                ->add('image1', ModelListType::class)
+            ;
+        }
+    }
+
+The available options are:
+
+``model_manager``
+  defaults to ``null``, but is actually calculated from the linked admin class.
+  You usually should not need to set this manually.
+
+``class``
+  The entity class managed by this field. Defaults to ``null``, but is actually
+  calculated from the linked admin class. You usually should not need to set
+  this manually.
+
+``btn_add``, ``btn_edit``, ``btn_list``, ``btn_delete`` and ``btn_catalogue``:
+  The labels on the ``add``, ``edit``, ``list`` and ``delete`` buttons can be customized
+  with these parameters. Setting any of them to ``false`` will hide the
+  corresponding button. You can also specify a custom translation catalogue
+  for these labels, which defaults to ``SonataAdminBundle``.
+
+.. note::
+
+    For more info, see the storage-engine-specific form field definitions: `ORM`_, `PHPCR`_, `MongoDB`_
+
 ``Sonata\AdminBundle\Form\Type\ModelHiddenType``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The value of hidden field is identifier of related entity.
@@ -806,3 +855,6 @@ General
 .. _`Symfony choice Field Type docs`: http://symfony.com/doc/current/reference/forms/types/choice.html
 .. _`Symfony PropertyPath`: http://api.symfony.com/2.0/Symfony/Component/Form/Util/PropertyPath.html
 .. _`Getting started documentation`: https://sonata-project.org/bundles/admin/master/doc/reference/getting_started.html#importing-it-in-the-main-config-yml
+.. _`ORM`: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/form_field_definition.html
+.. _`PHPCR`: https://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/reference/form_field_definition.html
+.. _`MongoDB`: https://sonata-project.org/bundles/mongo-admin/master/doc/reference/form_field_definition.html
