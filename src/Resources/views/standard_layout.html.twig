@@ -259,7 +259,11 @@ file that was distributed with this source code.
 
                         {% block sonata_page_content_header %}
                             {% block sonata_page_content_nav %}
-                                {% if _tab_menu is not empty or _actions is not empty or _list_filters_actions is not empty %}
+                                {% if _navbar_title is not empty
+                                  or _tab_menu is not empty
+                                  or _actions is not empty
+                                  or _list_filters_actions is not empty
+                                 %}
                                     <nav class="navbar navbar-default" role="navigation">
                                         <div class="container-fluid">
                                             {% block tab_menu_navbar_header %}
