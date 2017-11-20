@@ -17,12 +17,12 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^5.6 || ^7.0",
         "doctrine/common": "^2.2",
         "doctrine/inflector": "^1.0",
         "knplabs/knp-menu-bundle": "^2.1.1",
         "sonata-project/block-bundle": "^3.2",
-        "sonata-project/core-bundle": "^3.4",
+        "sonata-project/core-bundle": "^3.6",
         "sonata-project/exporter": "^1.7",
         "symfony/class-loader": "^2.8 || ^3.2",
         "symfony/config": "^2.8 || ^3.2",
@@ -54,7 +54,9 @@
     },
     "conflict": {
         "jms/di-extra-bundle": "<1.7.0",
-        "sonata-project/exporter": "1.6.0"
+        "sonata-project/exporter": "1.6.0",
+        "sonata-project/media-bundle": "<3.7.0",
+        "sonata-project/user-bundle": "<3.3.0"
     },
     "suggest": {
         "jms/di-extra-bundle": "Annotations for Admin definition",
@@ -63,10 +65,10 @@
         "sonata-project/intl-bundle": "Add localized date and number into the list"
     },
     "autoload": {
-        "psr-4": { "Sonata\\AdminBundle\\": "" },
-        "exclude-from-classmap": [
-            "Tests/"
-        ]
+        "psr-4": { "Sonata\\AdminBundle\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Sonata\\AdminBundle\\Tests\\": "tests/" }
     },
     "config": {
         "sort-packages": true

@@ -1,0 +1,48 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+{% block title %}{{ 'title_search_results'|trans({'%query%': query}, 'SonataAdminBundle') }}{% endblock %}
+{% block breadcrumb %}{% endblock %}
+{% block content %}
+    <h2 class="page-header">{{ 'title_search_results'|trans({'%query%': query}, 'SonataAdminBundle') }}</h2>
+
+    {% if query is defined and query is not same as(false) %}
+        {% set count = 0 %}
+        <div class="row" data-masonry='{ "itemSelector": ".search-box-item" }'>
+        {% for group in groups %}
+            {% set display = (group.roles is empty or is_granted(sonata_admin.adminPool.getOption('role_super_admin')) ) %}
+            {% for role in group.roles if not display %}
+                {% set display = is_granted(role) %}
+            {% endfor %}
+
+            {% if display %}
+                {% for admin in group.items %}
+                    {% set count = count + 1 %}
+                    {% if admin.hasRoute('create') and admin.hasAccess('create') or admin.hasRoute('list') and admin.hasAccess('list') %}
+                        {{ sonata_block_render({
+                            'type': 'sonata.admin.block.search_result'
+                        }, {
+                            'query': query,
+                            'admin_code': admin.code,
+                            'page': 0,
+                            'per_page': 10,
+                            'icon': group.icon
+                        }) }}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        </div>
+    {% endif %}
+
+{% endblock %}

@@ -74,13 +74,13 @@ php-cs-fixer fix --verbose
 
 #### The documentation
 
-The documentation is mostly written with the `rst` format, and can be found in the `Resources/doc` directory.
+The documentation is mostly written with the `rst` format, and can be found in the `docs` directory.
 You can test the doc rendering with the `make docs` command, but to do this, you will need [Sphinx][sphinx_install].
 Just like php dependencies can be managed with Composer, python dependencies can be managed with [pip][pip_install].
 To get sphinx, simply run the following command.
 
 ```bash
-pip install --requirement Resources/doc/requirements.txt --user
+pip install --requirement docs/requirements.txt --user
 ```
 
 Some python binaries should be downloaded to `~/.local/bin` for Linux or `~/Library/Python/2.7/bin` for Mac OS,
@@ -90,7 +90,7 @@ so that it contains this path and then, from the root of the project, run `make 
 If `make docs` is successful, you should be able to see your modifications:
 
 ```bash
-$YOUR_FAVORITE_BROWSER Resources/doc/_build/html/index.html
+$YOUR_FAVORITE_BROWSER docs/_build/html/index.html
 ```
 
 If your PR contains a new feature, you must add documentation for it.
@@ -113,9 +113,9 @@ Some rules have to be respected about the test:
   * `@codeCoverageIgnore`
   * `@codeCoverageIgnoreStart`
   * `@codeCoverageIgnoreEnd`
-* All test methods should be prefixed by `test`. Example: `public function testItReturnsNull()`.
-* All test method names must be in camel case format.
+* All test methods must be prefixed by `test`. Example: `public function testItReturnsNull()`.
 * As opposed, the `@test` annotation is prohibited.
+* All test method names must be in camel case format.
 * Most of the time, the test class should have the same name as the targeted class, suffixed by `Test`.
 * The `@expectedException*` annotations are prohibited. Use `PHPUnit_Framework_TestCase::setExpectedException()`.
 
@@ -232,8 +232,62 @@ interface BarInterface
 }
 ```
 
-In some cases, you will have the possibility to warn the user that things will change,
-and recommend a new way of doing things. You can do so by triggering the dedicated kind of error, like this:
+##### Deprecation
+
+In some cases, you might have some code parts that might become superseded by others, but could still be used by the end user.
+If the concerned code is not tagged as `internal`, it must be deprecated on the stable branch, then removed.
+
+If an alternate usage solution is possible, you **MUST** provide it in the deprecation message.
+
+The deprecated minor version **MUST NOT** be provided. Use `x` instead. It will be updated when releasing.
+
+Any deprecation **MUST** be documented in the corresponding `UPGRADE-[0-9].x.md`.
+The documentation **MUST** be filled inside the top **unreleased** section with a sub title.
+
+The `NEXT_MAJOR` tag should not be used for deprecation.
+The `@deprecated` and `E_USER_DEPRECATED` key will be searched for before releasing the next major version.
+
+You have three ways to deprecate things.
+
+For class definitions, methods (or first level functions) and properties, use the `@deprecated` tag: 
+
+```php
+/**
+ * @deprecated since 42.x, to be removed in 43.0. Use Shiny\New\ClassOfTheMonth instead.
+ */
+final class IAmOldAndUseless
+{
+}
+
+final class StillUsedClass
+{
+    /**
+     * @deprecated since 42.x, to be removed in 43.0.
+     */
+    public $butNotThisProperty;
+
+    /**
+     * @deprecated since 42.x, to be removed in 43.0.
+     */
+    public function iAmBatman()
+    {
+        echo "But this is not Gotham here.";
+    }
+}
+```
+
+If the deprecated thing is a service, you **MUST** specify it on the service definition:
+
+```xml
+<service id="sonata.block.old" class="Sonata\Block\Old">
+    <argument type="service" id="security.token_storage" />
+    <deprecated>The "%service_id%" service is deprecated since 42.x and will be removed in 43.0.</deprecated>
+ </service>
+ ```
+
+More info: http://symfony.com/blog/new-in-symfony-2-8-deprecated-service-definitions
+
+For everything else, not managed by the `@deprecated` tag, you **MUST** trigger a deprecation message.
 
 ```php
 <?php
@@ -248,26 +302,14 @@ if (/* some condition showing the user is using the legacy way */) {
 }
 ```
 
-Additionally, and when applicable, you must use the `@deprecated` tag on classes or methods you wish to deprecate,
-along with a message directed at the end user (as opposed to other contributors).
+Note that the `trigger_error` usage is not necessary if the `@deprecated` tag is used.
 
-
-```php
-/**
- * NEXT_MAJOR: remove this method
- *
- * @deprecated since 3.x, to be removed in 4.0. Use Foo::bar instead.
- */
-public function baz()
-{
-}
-```
-
-In that case, unit tests might show your deprecation notice. You must mark such tests with the `@group legacy` annotation,
-and if need be, isolate them in a new test method that can simply be removed in the non-BC PR.
+In the case of a deprecation, unit tests might show your deprecation notice.
+You **MUST** mark such tests with the `@group legacy` annotation and if need be,
+isolate them in a new test method that can simply be removed in the non-BC PR.
 
 Be aware that pull requests with BC breaks could be rejected
-or postponed to next major release if BC is not possible.
+or postponed to next major release **only** if BC is not possible.
 
 If you are not sure what should be done, don't hesitate to open an issue about your PR project.
 
@@ -279,9 +321,13 @@ If you want to change some dependencies, here are the rules:
 - Don't change the highest supported version to a lower one.
 - Lower version dropping is accepted as a Backward Compatible change according to [semver][semver_dependencies_update],
 but some extra rules must be respected here:
-  - PHP versions that are under the [green zone][php_supported_versions] (actively maintained) **MUST NO** be dropped, even on master.
+  - PHP versions that are under the [orange zone][php_supported_versions] (Security Support) **MUST NOT** be dropped on the stable branch.
+  - PHP versions that are under the [green zone][php_supported_versions] (Active Support) **MUST NOT** be dropped on the master branch.
   - If it's a Symfony package, at least the last LTS version **MUST** be supported, even on master.
   - Generally, don't drop dependency version it it doesn't have a big impact on the code.
+  - Backward Compatible code related to the dropped version **MUST** be dropped on the same PR.
+    This will allow to see if this version drop **is really worth it** or not.
+    Please note that we can refuse a version drop at any moment if the gain does not seem sufficient.
 
 ##### Legacy branches
 

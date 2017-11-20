@@ -23,6 +23,7 @@ enabled:
 finder:
   exclude:
     - 'Tests/Fixtures'
+    - 'tests/Fixtures'
     # ecommerce special case:
     - 'Resources/skeleton'
     # ignore vendor assets
