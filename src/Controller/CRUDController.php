@@ -62,9 +62,9 @@ class CRUDController extends Controller
     }
 
     /**
-     * Adds mandatory parameters before calling render().
+     * {@inheritdoc}
      */
-    public function renderWithExtraParams($view, array $parameters = [], Response $response = null)
+    public function render($view, array $parameters = [], Response $response = null)
     {
         if (!$this->isXmlHttpRequest()) {
             $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
@@ -79,7 +79,7 @@ class CRUDController extends Controller
 
         $parameters['admin_pool'] = $this->get('sonata.admin.pool');
 
-        return $this->render($view, $parameters, $response);
+        return parent::render($view, $parameters, $response);
     }
 
     /**
@@ -110,7 +110,7 @@ class CRUDController extends Controller
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('list'), [
+        return $this->render($this->admin->getTemplate('list'), [
             'action' => 'list',
             'form' => $formView,
             'datagrid' => $datagrid,
@@ -224,7 +224,7 @@ class CRUDController extends Controller
             return $this->redirectTo($object);
         }
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('delete'), [
+        return $this->render($this->admin->getTemplate('delete'), [
             'object' => $object,
             'action' => 'delete',
             'csrf_token' => $this->getCsrfToken('sonata.delete'),
@@ -339,7 +339,7 @@ class CRUDController extends Controller
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFormTheme());
 
-        return $this->renderWithExtraParams($this->admin->getTemplate($templateKey), [
+        return $this->render($this->admin->getTemplate($templateKey), [
             'action' => 'edit',
             'form' => $formView,
             'object' => $existingObject,
@@ -443,7 +443,7 @@ class CRUDController extends Controller
             $formView = $datagrid->getForm()->createView();
             $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-            return $this->renderWithExtraParams($this->admin->getTemplate('batch_confirmation'), [
+            return $this->render($this->admin->getTemplate('batch_confirmation'), [
                 'action' => 'list',
                 'action_label' => $actionLabel,
                 'batch_translation_domain' => $batchTranslationDomain,
@@ -503,7 +503,7 @@ class CRUDController extends Controller
         $class = new \ReflectionClass($this->admin->hasActiveSubClass() ? $this->admin->getActiveSubClass() : $this->admin->getClass());
 
         if ($class->isAbstract()) {
-            return $this->renderWithExtraParams(
+            return $this->render(
                 'SonataAdminBundle:CRUD:select_subclass.html.twig',
                 [
                     'base_template' => $this->getBaseTemplate(),
@@ -592,7 +592,7 @@ class CRUDController extends Controller
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFormTheme());
 
-        return $this->renderWithExtraParams($this->admin->getTemplate($templateKey), [
+        return $this->render($this->admin->getTemplate($templateKey), [
             'action' => 'create',
             'form' => $formView,
             'object' => $newObject,
@@ -630,7 +630,7 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('show'), [
+        return $this->render($this->admin->getTemplate('show'), [
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
@@ -675,7 +675,7 @@ class CRUDController extends Controller
 
         $revisions = $reader->findRevisions($this->admin->getClass(), $id);
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('history'), [
+        return $this->render($this->admin->getTemplate('history'), [
             'action' => 'history',
             'object' => $object,
             'revisions' => $revisions,
@@ -736,7 +736,7 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('show'), [
+        return $this->render($this->admin->getTemplate('show'), [
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
@@ -810,7 +810,7 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($base_object);
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('show_compare'), [
+        return $this->render($this->admin->getTemplate('show_compare'), [
             'action' => 'show',
             'object' => $base_object,
             'object_compare' => $compare_object,
@@ -944,7 +944,7 @@ class CRUDController extends Controller
             }
         }
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('acl'), [
+        return $this->render($this->admin->getTemplate('acl'), [
             'action' => 'acl',
             'permissions' => $adminObjectAclData->getUserPermissions(),
             'object' => $object,
