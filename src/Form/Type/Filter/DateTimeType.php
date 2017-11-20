@@ -12,7 +12,7 @@
 namespace Sonata\AdminBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -108,7 +108,7 @@ class DateTimeType extends AbstractType
         $choiceOptions['choices'] = $choices;
 
         $builder
-            ->add('type', ChoiceType::class, $choiceOptions)
+            ->add('type', FormChoiceType::class, $choiceOptions)
             ->add('value', $options['field_type'], array_merge(['required' => false], $options['field_options']))
         ;
     }
