@@ -49,7 +49,7 @@
         "sensio/generator-bundle": "^3.1",
         "sllh/php-cs-fixer-styleci-bridge": "^2.0",
         "sonata-project/intl-bundle": "^2.2.4",
-        "symfony/phpunit-bridge": "^3.3",
+        "symfony/phpunit-bridge": "^3.3.12",
         "symfony/yaml": "^2.8 || ^3.2"
     },
     "conflict": {
