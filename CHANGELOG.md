@@ -47,6 +47,33 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.25.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.25.0...3.25.1) - 2017-11-20
+### Fixed
+- Wrong configuration for `DateTimeType` and `DateType` filters
+
+## [3.25.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.24.0...3.25.0) - 2017-11-19
+### Added
+- Ability to configure sonata main admin and super admin roles under the `security` configuration key
+- Added `translation_domain` key to `AdminStatsBlockService` to change or disable translation
+- Add support for `add` button in `sonata_type_model_autocomplete`
+
+### Changed
+- Changed internal folder structure to `src`, `tests` and `docs`
+- a condition to check if the navbar is to be displayed
+
+### Fixed
+- subject assignment in embedded admins
+- fixed choice_translation_domain for expanded choices in admin
+- make false translation_domain working for the label if no translation is needed
+- Removed overridden method `CRUDController::addFlash` which is final in SF 3.4.
+- Don't translate empty placeholder on form render
+- Register commands as services to prevent deprecation notices on Symfony 3.4
+- `AbstractAdmin::hasSubject` is now populating `AbstractAdmin::$subject` property
+- Deprecation about `Symfony\Component\DependencyInjection\DefinitionDecorator`
+- getRuntime now receives a non deprecated runtime
+- Fix for getRuntime on Symfony older than 3.4
+- displaying a title when there are no specific actions
+
 ## [3.24.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.23.0...3.24.0) - 2017-10-23
 ### Added
 - Add support for unlimited nested child admins.
