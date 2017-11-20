@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity;
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class LegacyModelsToArrayTransformerTest extends TestCase
+class ModelsToArrayTransformerLegacyTest extends TestCase
 {
     private $choiceList;
     private $modelManager;
