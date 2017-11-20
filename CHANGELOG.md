@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.25.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.25.0...3.25.1) - 2017-11-20
+### Fixed
+- Wrong configuration for `DateTimeType` and `DateType` filters
+
 ## [3.25.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.24.0...3.25.0) - 2017-11-19
 ### Added
 - Ability to configure sonata main admin and super admin roles under the `security` configuration key
