@@ -3713,6 +3713,32 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('bar', $this->request->request->get('foo'));
     }
 
+    public function testItThrowsWhenCallingAnUndefinedMethod()
+    {
+        $this->setExpectedException(
+            \LogicException::class,
+            'Call to undefined method Sonata\AdminBundle\Controller\CRUDController::doesNotExist'
+        );
+        $this->controller->doesNotExist();
+    }
+
+    public function testItThrowsOnMissingRenderParameter()
+    {
+        $this->setExpectedException(
+            \LogicException::class,
+            'Sonata\AdminBundle\Controller\CRUDController::render requires at least one argument'
+        );
+        $this->controller->render();
+    }
+
+    /**
+     * @expectedDeprecation Calling "Sonata\AdminBundle\Controller\CRUDController::render" is deprecated since 3.x and will no longer work as expected in 4.0. Call "Sonata\AdminBundle\Controller\CRUDController::renderWithExtraParams" instead.
+     */
+    public function testRenderIsDeprecated()
+    {
+        $this->controller->render('toto.html.twig');
+    }
+
     public function getCsrfProvider()
     {
         return $this->csrfProvider;

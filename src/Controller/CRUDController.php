@@ -61,6 +61,29 @@ class CRUDController extends Controller
         $this->configure();
     }
 
+    public function __call($method, $arguments)
+    {
+        if ('render' === $method) {
+            if (count($arguments) < 1) {
+                throw new \LogicException(sprintf(
+                    '%s::%s requires at least one argument',
+                    __CLASS__,
+                    $method
+                ));
+            }
+            @trigger_error(sprintf(
+                'Calling "%s::render" is deprecated since 3.x and will no longer work as expected in 4.0.'.
+                ' Call "%s::renderWithExtraParams" instead.',
+                __CLASS__,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+            $arguments += [null, [], null];
+            return $this->renderWithExtraParams($arguments[0], $arguments[1], $arguments[2]);
+        }
+
+        throw new \LogicException(sprintf('Call to undefined method %s::%s', __CLASS__, $method));
+    }
+
     /**
      * Adds mandatory parameters before calling render().
      */
@@ -456,7 +479,7 @@ class CRUDController extends Controller
 
         // execute the action, batchActionXxxxx
         $finalAction = sprintf('batchAction%s', $camelizedAction);
-        if (!is_callable([$this, $finalAction])) {
+        if (!method_exists($this, $finalAction)) {
             throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', get_class($this), $finalAction));
         }
 
