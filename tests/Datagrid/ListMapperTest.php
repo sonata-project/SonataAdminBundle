@@ -121,7 +121,7 @@ class ListMapperTest extends TestCase
 
         $this->assertInstanceOf('Sonata\AdminBundle\Admin\FieldDescriptionInterface', $fieldDescription);
         $this->assertSame('fooName', $fieldDescription->getName());
-        $this->assertSame('fooName', $fieldDescription->getOption('label'));
+        $this->assertSame('Foo Name', $fieldDescription->getOption('label'));
         $this->assertSame('Foo Bar', $fieldLabelBar->getOption('label'));
         $this->assertFalse($fieldLabelFalse->getOption('label'));
     }
