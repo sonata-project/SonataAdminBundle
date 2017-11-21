@@ -1694,7 +1694,10 @@ EOT;
     {
         if (null === $this->subject && $this->request && !$this->hasParentFieldDescription()) {
             $id = $this->request->get($this->getIdParameter());
-            $this->subject = $this->getModelManager()->find($this->class, $id);
+
+            if (null !== $id) {
+                $this->subject = $this->getModelManager()->find($this->class, $id);
+            }
         }
 
         return $this->subject;
