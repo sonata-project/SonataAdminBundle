@@ -2,6 +2,21 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.26.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.25.1...3.26.0) - 2017-11-22
+### Added
+- Add html tag attributes support for sonata_type_model_autocomplete form type
+- Added edit button that opens in dialog instead of add if there is object already in sonata type model list
+
+### Fixed
+- check if the field is used to sort the list
+- Add a check for existing var associationadmin which is null for filter
+- Fixed `AbstractAdmin::getSubject()` behavior when `id` parameter is not specified
+- Add alias on `ChoiceType` uses to avoid collisions on Form filter classes
+- BC-break in `CRUDController::render()`
+
+### Removed
+- Old usage of read_only var
+
 ## [3.25.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.25.0...3.25.1) - 2017-11-20
 ### Fixed
 - Wrong configuration for `DateTimeType` and `DateType` filters
