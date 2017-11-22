@@ -127,7 +127,7 @@ EXPORT       (for the native Sonata export links)
 **ALL**      **grants LIST, VIEW, CREATE, EDIT, DELETE and EXPORT**
 ==========   ======================================================
 
-Each permission is relative to an admin: if you try to get a list in FooAdmin (declared as ``app.admin.foo``
+Each permission is relative to an admin: if you try to get a list in ``FooAdmin`` (declared as ``app.admin.foo``
 service), Sonata will check if the user has the ``ROLE_APP_ADMIN_FOO_EDIT`` or ``ROLE_APP_ADMIN_FOO_ALL`` roles.
 
 The role name will be based on the name of your admin service. For instance, ``acme.blog.post.admin`` will become ``ROLE_ACME_BLOG_POST_ADMIN_{ACTION}``.
