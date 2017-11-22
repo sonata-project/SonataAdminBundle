@@ -3724,20 +3724,9 @@ class CRUDControllerTest extends TestCase
 
     public function testItThrowsOnMissingRenderParameter()
     {
-        try {
-            $this->controller->render();
-        } catch (\Exception $exception) {
-            $this->assertInstanceOf(\LogicException::class, $exception);
-            $this->assertEquals(
-                'Sonata\AdminBundle\Controller\CRUDController::render requires at least one argument',
-                $exception->getMessage()
-            );
-        } catch (\ArgumentCountError $error) {
-            $this->assertStringStartsWith(
-                'Too few arguments to function Sonata\AdminBundle\Controller\CRUDController::render(), 0 passed',
-                $error->getMessage()
-            );
-        }
+        $this->expectException(\LogicException::class);
+        $this->expectException(\ArgumentCountError::class);
+        $this->controller->render();
     }
 
     /**
