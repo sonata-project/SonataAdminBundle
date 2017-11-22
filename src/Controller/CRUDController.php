@@ -40,7 +40,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
 // BC for Symfony < 3.3 where this trait does not exist
-// NEXT_MAJOR: Remove the polyfill and inherit from Controller again
+// NEXT_MAJOR: Remove the polyfill and inherit from \Symfony\Bundle\FrameworkBundle\Controller\Controller again
 require_once __DIR__.'/PolyfillControllerTrait.php';
 
 /**
