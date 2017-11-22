@@ -3722,16 +3722,6 @@ class CRUDControllerTest extends TestCase
         $this->controller->doesNotExist();
     }
 
-    public function testItThrowsOnMissingRenderParameter()
-    {
-        if (class_exists(\ArgumentCountError::class)) {
-            $this->expectException(\ArgumentCountError::class);
-        } else {
-            $this->expectException(\LogicException::class);
-        }
-        $this->controller->render();
-    }
-
     /**
      * @expectedDeprecation
      */
