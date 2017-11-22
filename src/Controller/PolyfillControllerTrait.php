@@ -1,37 +1,44 @@
 <?php
 
+/*
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Symfony\Bundle\FrameworkBundle\Controller;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Doctrine\Bundle\DoctrineBundle\Registry;
-
 
 /**
- * Polyfills the FrameworkBundle's original ControllerTrait
+ * Polyfills the FrameworkBundle's original ControllerTrait.
  *
  * The methods in this trait are a copy of the Controller class
  * in the FrameworkBundle of Symfony 3.2.
  *
  * NEXT_MAJOR: Remove this file.
  *
- * @author Christian Kraus <christian@kraus.work>
+ * @author Christian Kraus <hanzi@hanzi.cc>
  */
 trait PolyfillControllerTrait
 {
-
     /**
      * Generates a URL from the given parameters.
      *
@@ -48,7 +55,6 @@ trait PolyfillControllerTrait
         return $this->container->get('router')->generate($route, $parameters, $referenceType);
     }
 
-
     /**
      * Forwards the request to another controller.
      *
@@ -60,14 +66,13 @@ trait PolyfillControllerTrait
      */
     protected function forward($controller, array $path = [], array $query = [])
     {
-        $request             = $this->container->get('request_stack')->getCurrentRequest();
-        $path['_forwarded']  = $request->attributes;
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        $path['_forwarded'] = $request->attributes;
         $path['_controller'] = $controller;
-        $subRequest          = $request->duplicate($query, null, $path);
+        $subRequest = $request->duplicate($query, null, $path);
 
         return $this->container->get('http_kernel')->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
     }
-
 
     /**
      * Returns a RedirectResponse to the given URL.
@@ -82,7 +87,6 @@ trait PolyfillControllerTrait
         return new RedirectResponse($url, $status);
     }
 
-
     /**
      * Returns a RedirectResponse to the given route with the given parameters.
      *
@@ -96,7 +100,6 @@ trait PolyfillControllerTrait
     {
         return $this->redirect($this->generateUrl($route, $parameters), $status);
     }
-
 
     /**
      * Returns a JsonResponse that uses the serializer component if enabled, or json_encode.
@@ -128,7 +131,6 @@ trait PolyfillControllerTrait
         return new JsonResponse($data, $status, $headers);
     }
 
-
     /**
      * Returns a BinaryFileResponse object with original or customized file name and disposition header.
      *
@@ -143,12 +145,11 @@ trait PolyfillControllerTrait
         $response = new BinaryFileResponse($file);
         $response->setContentDisposition(
             $disposition,
-            $fileName === null ? $response->getFile()->getFilename() : $fileName
+            null === $fileName ? $response->getFile()->getFilename() : $fileName
         );
 
         return $response;
     }
-
 
     /**
      * Adds a flash message to the current session for type.
@@ -166,7 +167,6 @@ trait PolyfillControllerTrait
 
         $this->container->get('session')->getFlashBag()->add($type, $message);
     }
-
 
     /**
      * Checks if the attributes are granted against the current authentication token and optionally supplied object.
@@ -186,7 +186,6 @@ trait PolyfillControllerTrait
 
         return $this->container->get('security.authorization_checker')->isGranted($attributes, $object);
     }
-
 
     /**
      * Throws an exception unless the attributes are granted against the current authentication token and optionally
@@ -208,7 +207,6 @@ trait PolyfillControllerTrait
             throw $exception;
         }
     }
-
 
     /**
      * Returns a rendered view.
@@ -232,7 +230,6 @@ trait PolyfillControllerTrait
 
         return $this->container->get('twig')->render($view, $parameters);
     }
-
 
     /**
      * Renders a view.
@@ -264,7 +261,6 @@ trait PolyfillControllerTrait
         return $response;
     }
 
-
     /**
      * Streams a view.
      *
@@ -279,13 +275,13 @@ trait PolyfillControllerTrait
         if ($this->container->has('templating')) {
             $templating = $this->container->get('templating');
 
-            $callback = function() use ($templating, $view, $parameters) {
+            $callback = function () use ($templating, $view, $parameters) {
                 $templating->stream($view, $parameters);
             };
         } elseif ($this->container->has('twig')) {
             $twig = $this->container->get('twig');
 
-            $callback = function() use ($twig, $view, $parameters) {
+            $callback = function () use ($twig, $view, $parameters) {
                 $twig->display($view, $parameters);
             };
         } else {
@@ -302,7 +298,6 @@ trait PolyfillControllerTrait
 
         return $response;
     }
-
 
     /**
      * Returns a NotFoundHttpException.
@@ -321,7 +316,6 @@ trait PolyfillControllerTrait
         return new NotFoundHttpException($message, $previous);
     }
 
-
     /**
      * Returns an AccessDeniedException.
      *
@@ -339,7 +333,6 @@ trait PolyfillControllerTrait
         return new AccessDeniedException($message, $previous);
     }
 
-
     /**
      * Creates and returns a Form instance from the type of the form.
      *
@@ -354,7 +347,6 @@ trait PolyfillControllerTrait
         return $this->container->get('form.factory')->create($type, $data, $options);
     }
 
-
     /**
      * Creates and returns a form builder instance.
      *
@@ -367,7 +359,6 @@ trait PolyfillControllerTrait
     {
         return $this->container->get('form.factory')->createBuilder(FormType::class, $data, $options);
     }
-
 
     /**
      * Shortcut to return the Doctrine Registry service.
@@ -384,7 +375,6 @@ trait PolyfillControllerTrait
 
         return $this->container->get('doctrine');
     }
-
 
     /**
      * Get a user from the Security Token Storage.
@@ -413,7 +403,6 @@ trait PolyfillControllerTrait
         return $user;
     }
 
-
     /**
      * Returns true if the service id is defined.
      *
@@ -425,7 +414,6 @@ trait PolyfillControllerTrait
     {
         return $this->container->has($id);
     }
-
 
     /**
      * Gets a container service by its id.
@@ -439,7 +427,6 @@ trait PolyfillControllerTrait
         return $this->container->get($id);
     }
 
-
     /**
      * Gets a container configuration parameter by its name.
      *
@@ -451,7 +438,6 @@ trait PolyfillControllerTrait
     {
         return $this->container->getParameter($name);
     }
-
 
     /**
      * Checks the validity of a CSRF token.
@@ -470,7 +456,6 @@ trait PolyfillControllerTrait
         return $this->container->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($id, $token));
     }
 }
-
 
 if (!trait_exists('\Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait')) {
     class_alias(PolyfillControllerTrait::class, '\Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait');

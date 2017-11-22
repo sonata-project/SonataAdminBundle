@@ -48,7 +48,6 @@ require_once __DIR__.'/PolyfillControllerTrait.php';
  */
 class CRUDController implements ContainerAwareInterface
 {
-
     // NEXT_MAJOR: Don't use these traits anymore (inherit from Controller instead)
     use ControllerTrait, ContainerAwareTrait {
         ControllerTrait::render as originalRender;
@@ -60,6 +59,16 @@ class CRUDController implements ContainerAwareInterface
      * @var AdminInterface
      */
     protected $admin;
+
+    // BC for Symfony 3.3 where ControllerTrait exists but does not contain get() and has() methods.
+    public function __call($method, $arguments)
+    {
+        if (in_array($method, ['get', 'has'])) {
+            return call_user_func_array([$this->container, $method], $arguments);
+        }
+
+        throw new \LogicException('Call to undefined method '.__CLASS__.'::'.$method);
+    }
 
     /**
      * Sets the Container associated with this Controller.
@@ -73,30 +82,9 @@ class CRUDController implements ContainerAwareInterface
         $this->configure();
     }
 
-    // BC for Symfony 3.3 where ControllerTrait exists but does not contain get() and has() methods.
-    public function __call($method, $arguments)
-    {
-        if (in_array($method, ['get', 'has'])) {
-            return call_user_func_array([$this->container, $method], $arguments);
-        }
-
-        throw new \LogicException('Call to undefined method '.__CLASS__.'::'.$method);
-    }
-
-    /**
-     * Gets a container configuration parameter by its name.
-     *
-     * @param string $name The parameter name
-     *
-     * @return mixed
-     */
-    protected function getParameter($name)
-    {
-        return $this->container->getParameter($name);
-    }
-
     /**
      * NEXT_MAJOR: Remove this method.
+     *
      * @see renderWithExtraParams()
      *
      * @param string   $view       The view name
@@ -1028,6 +1016,18 @@ class CRUDController implements ContainerAwareInterface
         }
 
         return $this->container->get('request');
+    }
+
+    /**
+     * Gets a container configuration parameter by its name.
+     *
+     * @param string $name The parameter name
+     *
+     * @return mixed
+     */
+    protected function getParameter($name)
+    {
+        return $this->container->getParameter($name);
     }
 
     /**
