@@ -25,8 +25,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 trait PolyfillControllerTrait
 {
-    protected $container;
-
     public function __call($methodName, $arguments)
     {
         $this->proxyToController($methodName, $arguments);

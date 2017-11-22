@@ -3724,8 +3724,11 @@ class CRUDControllerTest extends TestCase
 
     public function testItThrowsOnMissingRenderParameter()
     {
-        $this->expectException(\LogicException::class);
-        $this->expectException(\ArgumentCountError::class);
+        if (class_exists(\ArgumentCountError::class)) {
+            $this->expectException(\ArgumentCountError::class);
+        } else {
+            $this->expectException(\LogicException::class);
+        }
         $this->controller->render();
     }
 
