@@ -134,7 +134,7 @@ The role name will be based on the name of your admin service. For instance, ``a
 
 .. note::
 
-    If your admin service is named like ``my.blog.admin.foo_bar`` (note the underscore ``_``) it will become: ``ROLE_MY_BLOG_ADMIN_FOO_BAR_{ACTION}``
+    If your admin service is named like ``my.blog.admin.foo_bar`` (note the underscore ``_``) it will become: ``ROLE_MY_BLOG_ADMIN_FOO_BAR_{PERMISSION}``
 
 So our ``security.yml`` file may look something like this:
 
