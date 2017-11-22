@@ -586,7 +586,7 @@ class CRUDControllerTest extends TestCase
         $this->parameters = [];
         $this->assertInstanceOf(
             'Symfony\Component\HttpFoundation\Response',
-            $this->controller->renderWithExtraParams('FooAdminBundle::foo.html.twig', [], null)
+            $this->controller->render('FooAdminBundle::foo.html.twig', [], null)
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
@@ -599,7 +599,7 @@ class CRUDControllerTest extends TestCase
         $this->parameters = [];
         $response = $response = new Response();
         $response->headers->set('X-foo', 'bar');
-        $responseResult = $this->controller->renderWithExtraParams('FooAdminBundle::foo.html.twig', [], $response);
+        $responseResult = $this->controller->render('FooAdminBundle::foo.html.twig', [], $response);
 
         $this->assertSame($response, $responseResult);
         $this->assertSame('bar', $responseResult->headers->get('X-foo'));
@@ -614,7 +614,7 @@ class CRUDControllerTest extends TestCase
         $this->parameters = [];
         $this->assertInstanceOf(
             'Symfony\Component\HttpFoundation\Response',
-            $this->controller->renderWithExtraParams(
+            $this->controller->render(
                 'FooAdminBundle::foo.html.twig',
                 ['foo' => 'bar'],
                 null
@@ -633,7 +633,7 @@ class CRUDControllerTest extends TestCase
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
         $this->assertInstanceOf(
             'Symfony\Component\HttpFoundation\Response',
-            $this->controller->renderWithExtraParams(
+            $this->controller->render(
                 'FooAdminBundle::foo.html.twig',
                 ['foo' => 'bar'],
                 null
@@ -3605,7 +3605,7 @@ class CRUDControllerTest extends TestCase
         $result = $controller->batchAction($this->request);
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $result);
-        $this->assertSame('batchActionBar executed', $result->getContent());
+        $this->assertRegExp('/Redirecting to list/', $result->getContent());
     }
 
     public function testBatchActionWithRequesData()

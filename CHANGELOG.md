@@ -47,6 +47,21 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.26.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.25.1...3.26.0) - 2017-11-22
+### Added
+- Add html tag attributes support for sonata_type_model_autocomplete form type
+- Added edit button that opens in dialog instead of add if there is object already in sonata type model list
+
+### Fixed
+- check if the field is used to sort the list
+- Add a check for existing var associationadmin which is null for filter
+- Fixed `AbstractAdmin::getSubject()` behavior when `id` parameter is not specified
+- Add alias on `ChoiceType` uses to avoid collisions on Form filter classes
+- BC-break in `CRUDController::render()`
+
+### Removed
+- Old usage of read_only var
+
 ## [3.25.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.25.0...3.25.1) - 2017-11-20
 ### Fixed
 - Wrong configuration for `DateTimeType` and `DateType` filters
@@ -129,7 +144,7 @@ specified in a field description cannot be found was removed.
 - Fixed AbstractAdmin::getSubject on admins with parentFieldDescription
 - Fixed deprecation when using hidden form type in model autocomplete
 - Fixed the extra option being retrieved. The translation catalogue to be used is inside the label_catalogue option, not translation_domain.
-- setting the column title 
+- setting the column title
 - Html tags do not appear in the meta title
 
 ## [3.21.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.20.1...3.21.0) - 2017-08-14
@@ -207,7 +222,7 @@ specified in a field description cannot be found was removed.
 - Changed GroupMenuProvider::get to setDisplay(false) on menuItem if on_top used and no items could be displayed
 
 ### Fixed
-- Fixed the bug that caused an error "The helper "dialog" is not defined." on Symfony3 with new `\Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper` when you run command "sonata:admin:generate-object-acl". 
+- Fixed the bug that caused an error "The helper "dialog" is not defined." on Symfony3 with new `\Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper` when you run command "sonata:admin:generate-object-acl".
 - Fixed issue on getExtendedType of MopaCompatibilityTypeFieldExtension and ChoiceTypeExtension because the method requires to return the fully-qualified class name (FQCN) since symfony version 2.8
 - `ModelType` have choices as values by default now on SF 2.7+.
 - Users without the `LIST` role can access the autocomplete items by configuring the `target_admin_access_action` option

@@ -11,7 +11,8 @@ file that was distributed with this source code.
 {% spaceless %}
 
     <input type="text" id="{{ id }}_autocomplete_input" value=""
-        {%- if read_only is defined and read_only %} readonly="readonly"{% endif -%}
+        {%- for attribute,value in attr %} {{attribute}}="{{value}}" {% endfor -%}
+        {%- if read_only is defined and read_only %} readonly="readonly"{% endif -%}    {# NEXT_MAJOR: remove #}
         {%- if disabled %} disabled="disabled"{% endif -%}
         {%- if required %} required="required"{% endif %}
     />
@@ -36,24 +37,26 @@ file that was distributed with this source code.
         {% endif -%}
     </div>
 
-    <div id="field_actions_{{ id }}" class="field-actions">
-        {% set display_btn_add = sonata_admin.edit != 'admin' and sonata_admin.field_description.associationadmin.hasRoute('create') 
-                                 and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
-        {% if display_btn_add %}
-            <a  href="{{ sonata_admin.field_description.associationadmin.generateUrl('create',
-                         sonata_admin.field_description.getOption('link_parameters', {})) 
-                      }}"
-                onclick="return start_field_dialog_form_add_{{ id }}(this);"
-                class="btn btn-success btn-sm sonata-ba-action"
-                title="{{ btn_add|trans({}, btn_catalogue) }}"
-                >
-                <i class="fa fa-plus-circle"></i>
-                {{ btn_add|trans({}, btn_catalogue) }}
-            </a>
-        {% endif %}
-        {% include 'SonataAdminBundle:CRUD/Association:edit_modal.html.twig' %}
-        {% include 'SonataAdminBundle:CRUD/Association:edit_many_script.html.twig' %}
-    </div>
+    {% if sonata_admin.field_description.associationadmin is defined %}
+        <div id="field_actions_{{ id }}" class="field-actions">
+            {% set display_btn_add = sonata_admin.edit != 'admin' and sonata_admin.field_description.associationadmin.hasRoute('create') 
+                                     and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
+            {% if display_btn_add %}
+                <a  href="{{ sonata_admin.field_description.associationadmin.generateUrl('create',
+                             sonata_admin.field_description.getOption('link_parameters', {})) 
+                          }}"
+                    onclick="return start_field_dialog_form_add_{{ id }}(this);"
+                    class="btn btn-success btn-sm sonata-ba-action"
+                    title="{{ btn_add|trans({}, btn_catalogue) }}"
+                    >
+                    <i class="fa fa-plus-circle"></i>
+                    {{ btn_add|trans({}, btn_catalogue) }}
+                </a>
+            {% endif %}
+            {% include 'SonataAdminBundle:CRUD/Association:edit_modal.html.twig' %}
+            {% include 'SonataAdminBundle:CRUD/Association:edit_many_script.html.twig' %}
+        </div>
+    {% endif %}
 
     <script>
         {% autoescape 'js' %}
@@ -71,7 +74,8 @@ file that was distributed with this source code.
                 placeholder: '{{ placeholder ?: allowClearPlaceholder }}', // allowClear needs placeholder to work properly
                 allowClear: {{ required ? 'false' : 'true' }},
                 enable: {{ disabled ? 'false' : 'true' }},
-                readonly: {{ read_only is defined and read_only or attr.readonly is defined and attr.readonly ? 'true' : 'false' }},
+                readonly: {{ read_only is defined and read_only or attr.readonly is defined and attr.readonly ? 'true' : 'false' }}, {# NEXT_MAJOR: remove #}
+                {# readonly: {{ attr.readonly is defined and attr.readonly ? 'true' : 'false' }}, #}    {# NEXT_MAJOR: uncomment #}
                 minimumInputLength: {{ minimum_input_length }},
                 multiple: {{ multiple ? 'true' : 'false' }},
                 width: function() {
