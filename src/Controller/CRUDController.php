@@ -24,7 +24,9 @@ use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Command\DebugCommand;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -37,11 +39,21 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
+// BC for Symfony < 3.3 where this trait does not exist
+// NEXT_MAJOR: Remove the polyfill and inherit from Controller again
+require_once __DIR__.'/PolyfillControllerTrait.php';
+
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class CRUDController extends Controller
+class CRUDController implements ContainerAwareInterface
 {
+
+    // NEXT_MAJOR: Don't use these traits anymore (inherit from Controller instead)
+    use ControllerTrait, ContainerAwareTrait {
+        ControllerTrait::render as originalRender;
+    }
+
     /**
      * The related Admin class.
      *
@@ -61,10 +73,60 @@ class CRUDController extends Controller
         $this->configure();
     }
 
+    // BC for Symfony 3.3 where ControllerTrait exists but does not contain get() and has() methods.
+    public function __call($method, $arguments)
+    {
+        if (in_array($method, ['get', 'has'])) {
+            return call_user_func_array([$this->container, $method], $arguments);
+        }
+
+        throw new \LogicException('Call to undefined method '.__CLASS__.'::'.$method);
+    }
+
     /**
-     * {@inheritdoc}
+     * Gets a container configuration parameter by its name.
+     *
+     * @param string $name The parameter name
+     *
+     * @return mixed
+     */
+    protected function getParameter($name)
+    {
+        return $this->container->getParameter($name);
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     * @see renderWithExtraParams()
+     *
+     * @param string   $view       The view name
+     * @param array    $parameters An array of parameters to pass to the view
+     * @param Response $response   A response instance
+     *
+     * @return Response A Response instance
+     *
+     * @deprecated
      */
     public function render($view, array $parameters = [], Response $response = null)
+    {
+        @trigger_error('Method '.__CLASS__.'::render has been renamed to '.__CLASS__.'::renderWithExtraParams.'
+            .' If you need to render a template WITHOUT the additional parameters, call the templating component'
+            .' directly, such as: $this->container->get(\'twig\')->render(...);', E_USER_DEPRECATED
+        );
+
+        return $this->renderWithExtraParams($view, $parameters, $response);
+    }
+
+    /**
+     * Renders a view while passing mandatory parameters on to the template.
+     *
+     * @param string   $view       The view name
+     * @param array    $parameters An array of parameters to pass to the view
+     * @param Response $response   A response instance
+     *
+     * @return Response A Response instance
+     */
+    public function renderWithExtraParams($view, array $parameters = [], Response $response = null)
     {
         if (!$this->isXmlHttpRequest()) {
             $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
@@ -79,7 +141,8 @@ class CRUDController extends Controller
 
         $parameters['admin_pool'] = $this->get('sonata.admin.pool');
 
-        return parent::render($view, $parameters, $response);
+        //NEXT_MAJOR: Remove method alias and use $this->render() directly.
+        return $this->originalRender($view, $parameters, $response);
     }
 
     /**
@@ -110,7 +173,7 @@ class CRUDController extends Controller
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-        return $this->render($this->admin->getTemplate('list'), [
+        return $this->renderWithExtraParams($this->admin->getTemplate('list'), [
             'action' => 'list',
             'form' => $formView,
             'datagrid' => $datagrid,
@@ -224,7 +287,7 @@ class CRUDController extends Controller
             return $this->redirectTo($object);
         }
 
-        return $this->render($this->admin->getTemplate('delete'), [
+        return $this->renderWithExtraParams($this->admin->getTemplate('delete'), [
             'object' => $object,
             'action' => 'delete',
             'csrf_token' => $this->getCsrfToken('sonata.delete'),
@@ -339,7 +402,7 @@ class CRUDController extends Controller
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFormTheme());
 
-        return $this->render($this->admin->getTemplate($templateKey), [
+        return $this->renderWithExtraParams($this->admin->getTemplate($templateKey), [
             'action' => 'edit',
             'form' => $formView,
             'object' => $existingObject,
@@ -443,7 +506,7 @@ class CRUDController extends Controller
             $formView = $datagrid->getForm()->createView();
             $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-            return $this->render($this->admin->getTemplate('batch_confirmation'), [
+            return $this->renderWithExtraParams($this->admin->getTemplate('batch_confirmation'), [
                 'action' => 'list',
                 'action_label' => $actionLabel,
                 'batch_translation_domain' => $batchTranslationDomain,
@@ -456,7 +519,7 @@ class CRUDController extends Controller
 
         // execute the action, batchActionXxxxx
         $finalAction = sprintf('batchAction%s', $camelizedAction);
-        if (!is_callable([$this, $finalAction])) {
+        if (!method_exists($this, $finalAction)) {
             throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', get_class($this), $finalAction));
         }
 
@@ -503,7 +566,7 @@ class CRUDController extends Controller
         $class = new \ReflectionClass($this->admin->hasActiveSubClass() ? $this->admin->getActiveSubClass() : $this->admin->getClass());
 
         if ($class->isAbstract()) {
-            return $this->render(
+            return $this->renderWithExtraParams(
                 'SonataAdminBundle:CRUD:select_subclass.html.twig',
                 [
                     'base_template' => $this->getBaseTemplate(),
@@ -592,7 +655,7 @@ class CRUDController extends Controller
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFormTheme());
 
-        return $this->render($this->admin->getTemplate($templateKey), [
+        return $this->renderWithExtraParams($this->admin->getTemplate($templateKey), [
             'action' => 'create',
             'form' => $formView,
             'object' => $newObject,
@@ -630,7 +693,7 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
 
-        return $this->render($this->admin->getTemplate('show'), [
+        return $this->renderWithExtraParams($this->admin->getTemplate('show'), [
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
@@ -675,7 +738,7 @@ class CRUDController extends Controller
 
         $revisions = $reader->findRevisions($this->admin->getClass(), $id);
 
-        return $this->render($this->admin->getTemplate('history'), [
+        return $this->renderWithExtraParams($this->admin->getTemplate('history'), [
             'action' => 'history',
             'object' => $object,
             'revisions' => $revisions,
@@ -736,7 +799,7 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
 
-        return $this->render($this->admin->getTemplate('show'), [
+        return $this->renderWithExtraParams($this->admin->getTemplate('show'), [
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
@@ -810,7 +873,7 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($base_object);
 
-        return $this->render($this->admin->getTemplate('show_compare'), [
+        return $this->renderWithExtraParams($this->admin->getTemplate('show_compare'), [
             'action' => 'show',
             'object' => $base_object,
             'object_compare' => $compare_object,
@@ -944,7 +1007,7 @@ class CRUDController extends Controller
             }
         }
 
-        return $this->render($this->admin->getTemplate('acl'), [
+        return $this->renderWithExtraParams($this->admin->getTemplate('acl'), [
             'action' => 'acl',
             'permissions' => $adminObjectAclData->getUserPermissions(),
             'object' => $object,
