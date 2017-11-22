@@ -3713,6 +3713,39 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('bar', $this->request->request->get('foo'));
     }
 
+    public function testItThrowsWhenCallingAnUndefinedMethod()
+    {
+        $this->setExpectedException(
+            \LogicException::class,
+            'Call to undefined method Sonata\AdminBundle\Controller\CRUDController::doesNotExist'
+        );
+        $this->controller->doesNotExist();
+    }
+    public function testItThrowsOnMissingRenderParameter()
+    {
+        try {
+            $this->controller->render();
+        } catch (\Exception $exception) {
+            $this->assertInstanceOf(\LogicException::class, $exception);
+            $this->assertEquals(
+                'Sonata\AdminBundle\Controller\CRUDController::render requires at least one argument',
+                $exception->getMessage()
+            );
+        } catch (\ArgumentCountError $error) {
+            $this->assertStringStartsWith(
+                'Too few arguments to function Sonata\AdminBundle\Controller\CRUDController::render(), 0 passed',
+                $error->getMessage()
+            );
+        }
+    }
+    /**
+     * @expectedDeprecation
+     */
+    public function testRenderIsDeprecated()
+    {
+        $this->controller->render('toto.html.twig');
+    }
+
     public function getCsrfProvider()
     {
         return $this->csrfProvider;
