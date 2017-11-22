@@ -67,6 +67,10 @@ class CRUDController implements ContainerAwareInterface
             return call_user_func_array([$this->container, $method], $arguments);
         }
 
+        if (method_exists($this, 'proxyToControllerClass')) {
+            return $this->proxyToControllerClass($method, $arguments);
+        }
+
         throw new \LogicException('Call to undefined method '.__CLASS__.'::'.$method);
     }
 

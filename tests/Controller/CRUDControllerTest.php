@@ -432,7 +432,13 @@ class CRUDControllerTest extends TestCase
             'addFlash',
         ];
         foreach ($testedMethods as $testedMethod) {
-            $method = new \ReflectionMethod('Sonata\\AdminBundle\\Controller\\CRUDController', $testedMethod);
+            // NEXT_MAJOR: Remove this check and only use CRUDController
+            if (method_exists('Sonata\\AdminBundle\\Controller\\CRUDController', $testedMethod)) {
+                $method = new \ReflectionMethod('Sonata\\AdminBundle\\Controller\\CRUDController', $testedMethod);
+            } else {
+                $method = new \ReflectionMethod('Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller', $testedMethod);
+            }
+
             $method->setAccessible(true);
             $this->protectedTestedMethods[$testedMethod] = $method;
         }
@@ -950,12 +956,6 @@ class CRUDControllerTest extends TestCase
             ['create', 'create', ['btn_create_and_create' => true], false],
             ['create?subclass=foo', 'create', ['btn_create_and_create' => true, 'subclass' => 'foo'], true],
         ];
-    }
-
-    public function testAddFlash()
-    {
-        $this->protectedTestedMethods['addFlash']->invoke($this->controller, 'foo', 'bar');
-        $this->assertSame(['bar'], $this->session->getFlashBag()->get('foo'));
     }
 
     public function testDeleteActionNotFoundException()
