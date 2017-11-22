@@ -3721,6 +3721,7 @@ class CRUDControllerTest extends TestCase
         );
         $this->controller->doesNotExist();
     }
+
     public function testItThrowsOnMissingRenderParameter()
     {
         try {
@@ -3738,6 +3739,7 @@ class CRUDControllerTest extends TestCase
             );
         }
     }
+
     /**
      * @expectedDeprecation
      */
