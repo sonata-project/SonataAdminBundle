@@ -130,7 +130,17 @@ EXPORT       (for the native Sonata export links)
 Each permission is relative to an admin: if you try to get a list in ``FooAdmin`` (declared as ``app.admin.foo``
 service), Sonata will check if the user has the ``ROLE_APP_ADMIN_FOO_EDIT`` or ``ROLE_APP_ADMIN_FOO_ALL`` roles.
 
-The role name will be based on the name of your admin service. For instance, ``acme.blog.post.admin`` will become ``ROLE_ACME_BLOG_POST_ADMIN_{ACTION}``.
+.. note::
+
+    Declaring the same admin as `AppBundle\Admin\FooAdmin` results in
+    ``ROLE_APPBUNDLE\ADMIN\FOOADMIN_EDIT`` and ``ROLE_APPBUNDLE\ADMIN\FOOADMIN_ALL``!
+
+The role name will be based on the name of your admin service.
+========================   ======================================================
+app.admin.foo              ROLE_APP_ADMIN_FOO_{PERMISSION}
+my.blog.admin.foo_bar      ROLE_MY_BLOG_ADMIN_FOO_BAR_{PERMISSION}
+AppBundle\Admin\FooAdmin   ROLE_APPBUNDLE\ADMIN\FOOADMIN_{PERMISSION}
+========================   ======================================================
 
 .. note::
 
