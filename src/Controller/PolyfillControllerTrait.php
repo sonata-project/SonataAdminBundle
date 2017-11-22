@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -41,18 +42,27 @@ trait PolyfillControllerTrait
      */
     protected function proxyToControllerClass($methodName, $arguments)
     {
-        $reflectionClass = new \ReflectionClass(Controller::class);
-
-        if (!$reflectionClass->hasMethod($methodName)) {
+        if (!method_exists(Controller::class, $methodName)) {
             throw new \LogicException('Call to undefined method '.__CLASS__.'::'.$methodName);
         }
 
-        $controller = $reflectionClass->newInstance();
-        $controller->setContainer($this->container);
-        $method = $reflectionClass->getMethod($methodName);
-        $method->setAccessible(true);
+        $controller = new PolyfillProxyContainer($this->container);
 
-        return $method->invokeArgs($controller, $arguments);
+        return $controller->proxyCall($methodName, $arguments);
+    }
+}
+
+class PolyfillProxyContainer extends Controller
+{
+    public function __construct(ContainerInterface $container)
+    {
+        $this->setContainer($container);
+    }
+
+
+    public function proxyCall($method, $arguments)
+    {
+        return call_user_func_array([$this, $method], $arguments);
     }
 }
 
