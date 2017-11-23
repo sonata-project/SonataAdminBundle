@@ -567,9 +567,6 @@ class HelperController
             return $runtime;
         }
 
-        $runtime = $this->twig->getRuntime(FormRenderer::class);
-        $runtime->setEnvironment($this->twig);
-
-        return $runtime;
+        return $this->twig->getRuntime(FormRenderer::class);
     }
 }
