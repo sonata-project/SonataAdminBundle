@@ -1,6 +1,10 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated CRUDController::render()
+
+Call `CRUDController::renderWithExtraParams()` instead.
+
 UPGRADE FROM 3.23 to 3.24
 =========================
 

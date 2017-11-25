@@ -431,7 +431,13 @@ class CRUDControllerTest extends TestCase
             'addFlash',
         ];
         foreach ($testedMethods as $testedMethod) {
-            $method = new \ReflectionMethod('Sonata\\AdminBundle\\Controller\\CRUDController', $testedMethod);
+            // NEXT_MAJOR: Remove this check and only use CRUDController
+            if (method_exists('Sonata\\AdminBundle\\Controller\\CRUDController', $testedMethod)) {
+                $method = new \ReflectionMethod('Sonata\\AdminBundle\\Controller\\CRUDController', $testedMethod);
+            } else {
+                $method = new \ReflectionMethod('Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller', $testedMethod);
+            }
+
             $method->setAccessible(true);
             $this->protectedTestedMethods[$testedMethod] = $method;
         }
@@ -586,7 +592,7 @@ class CRUDControllerTest extends TestCase
         $this->parameters = [];
         $this->assertInstanceOf(
             'Symfony\Component\HttpFoundation\Response',
-            $this->controller->render('FooAdminBundle::foo.html.twig', [], null)
+            $this->controller->renderWithExtraParams('FooAdminBundle::foo.html.twig', [], null)
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
@@ -599,7 +605,7 @@ class CRUDControllerTest extends TestCase
         $this->parameters = [];
         $response = $response = new Response();
         $response->headers->set('X-foo', 'bar');
-        $responseResult = $this->controller->render('FooAdminBundle::foo.html.twig', [], $response);
+        $responseResult = $this->controller->renderWithExtraParams('FooAdminBundle::foo.html.twig', [], $response);
 
         $this->assertSame($response, $responseResult);
         $this->assertSame('bar', $responseResult->headers->get('X-foo'));
@@ -614,7 +620,7 @@ class CRUDControllerTest extends TestCase
         $this->parameters = [];
         $this->assertInstanceOf(
             'Symfony\Component\HttpFoundation\Response',
-            $this->controller->render(
+            $this->controller->renderWithExtraParams(
                 'FooAdminBundle::foo.html.twig',
                 ['foo' => 'bar'],
                 null
@@ -633,7 +639,7 @@ class CRUDControllerTest extends TestCase
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
         $this->assertInstanceOf(
             'Symfony\Component\HttpFoundation\Response',
-            $this->controller->render(
+            $this->controller->renderWithExtraParams(
                 'FooAdminBundle::foo.html.twig',
                 ['foo' => 'bar'],
                 null
@@ -949,12 +955,6 @@ class CRUDControllerTest extends TestCase
             ['create', 'create', ['btn_create_and_create' => true], false],
             ['create?subclass=foo', 'create', ['btn_create_and_create' => true, 'subclass' => 'foo'], true],
         ];
-    }
-
-    public function testAddFlash()
-    {
-        $this->protectedTestedMethods['addFlash']->invoke($this->controller, 'foo', 'bar');
-        $this->assertSame(['bar'], $this->session->getFlashBag()->get('foo'));
     }
 
     public function testDeleteActionNotFoundException()
@@ -3660,6 +3660,23 @@ class CRUDControllerTest extends TestCase
         $this->assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
         $this->assertSame('list?', $result->getTargetUrl());
         $this->assertSame('bar', $this->request->request->get('foo'));
+    }
+
+    public function testItThrowsWhenCallingAnUndefinedMethod()
+    {
+        $this->setExpectedException(
+            \LogicException::class,
+            'Call to undefined method Sonata\AdminBundle\Controller\CRUDController::doesNotExist'
+        );
+        $this->controller->doesNotExist();
+    }
+
+    /**
+     * @expectedDeprecation Method Sonata\AdminBundle\Controller\CRUDController::render has been renamed to Sonata\AdminBundle\Controller\CRUDController::renderWithExtraParams
+     */
+    public function testRenderIsDeprecated()
+    {
+        $this->controller->render('toto.html.twig');
     }
 
     public function getCsrfProvider()

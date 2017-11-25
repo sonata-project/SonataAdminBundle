@@ -115,26 +115,36 @@ either a super admin (``ROLE_SUPER_ADMIN`` or the role specified in the configur
 
 The permissions are:
 
-==========   ==================================================
+==========   ======================================================
 Permission   Description
-==========   ==================================================
+==========   ======================================================
 LIST         view the list of objects
 VIEW         view the detail of one object
 CREATE       create a new object
 EDIT         update an existing object
 DELETE       delete an existing object
 EXPORT       (for the native Sonata export links)
-ALL          grants LIST, VIEW, CREATE, EDIT, DELETE and EXPORT
-==========   ==================================================
+**ALL**      **grants LIST, VIEW, CREATE, EDIT, DELETE and EXPORT**
+==========   ======================================================
 
-Each permission is relative to an admin: if you try to get a list in FooAdmin (declared as ``app.admin.foo``
+Each permission is relative to an admin: if you try to get a list in ``FooAdmin`` (declared as ``app.admin.foo``
 service), Sonata will check if the user has the ``ROLE_APP_ADMIN_FOO_EDIT`` or ``ROLE_APP_ADMIN_FOO_ALL`` roles.
-
-The role name will be based on the name of your admin service. For instance, ``acme.blog.post.admin`` will become ``ROLE_ACME_BLOG_POST_ADMIN_{ACTION}``.
 
 .. note::
 
-    If your admin service is named like ``my.blog.admin.foo_bar`` (note the underscore ``_``) it will become: ``ROLE_MY_BLOG_ADMIN_FOO_BAR_{ACTION}``
+    Declaring the same admin as `AppBundle\Admin\FooAdmin` results in
+    ``ROLE_APPBUNDLE\ADMIN\FOOADMIN_EDIT`` and ``ROLE_APPBUNDLE\ADMIN\FOOADMIN_ALL``!
+
+The role name will be based on the name of your admin service.
+========================   ======================================================
+app.admin.foo              ROLE_APP_ADMIN_FOO_{PERMISSION}
+my.blog.admin.foo_bar      ROLE_MY_BLOG_ADMIN_FOO_BAR_{PERMISSION}
+AppBundle\Admin\FooAdmin   ROLE_APPBUNDLE\ADMIN\FOOADMIN_{PERMISSION}
+========================   ======================================================
+
+.. note::
+
+    If your admin service is named like ``my.blog.admin.foo_bar`` (note the underscore ``_``) it will become: ``ROLE_MY_BLOG_ADMIN_FOO_BAR_{PERMISSION}``
 
 So our ``security.yml`` file may look something like this:
 
