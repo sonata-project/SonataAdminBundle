@@ -99,15 +99,10 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return Response A Response instance
      *
-     * @deprecated
+     * @deprecated since version 3.27, to be removed in 4.0. Use Sonata\AdminBundle\Controller\CRUDController instead.
      */
     public function render($view, array $parameters = [], Response $response = null)
     {
-        @trigger_error(
-            'Method '.__CLASS__.'::render has been renamed to '.__CLASS__.'::renderWithExtraParams.',
-            E_USER_DEPRECATED
-        );
-
         return $this->renderWithExtraParams($view, $parameters, $response);
     }
 
