@@ -20,7 +20,7 @@
         </parameter>
     </parameters>
     <services>
-        <service id="sonata.admin.twig.extension" class="Sonata\AdminBundle\Twig\Extension\SonataAdminExtension">
+        <service id="sonata.admin.twig.extension" class="Sonata\AdminBundle\Twig\Extension\SonataAdminExtension" public="true">
             <tag name="twig.extension"/>
             <argument type="service" id="sonata.admin.pool"/>
             <argument type="service" id="logger" on-invalid="ignore"/>
