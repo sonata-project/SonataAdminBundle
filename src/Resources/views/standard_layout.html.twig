@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-{% set _preview = block('preview') is defined ? block('preview')|trim : null %}
+{%- set _preview = block('preview') is defined ? block('preview')|trim : null %}
 {% set _form = block('form') is defined ? block('form')|trim : null %}
 {% set _show = block('show') is defined ? block('show')|trim : null %}
 {% set _list_table = block('list_table') is defined ? block('list_table')|trim : null %}
@@ -20,7 +20,7 @@ file that was distributed with this source code.
 {% set _breadcrumb = block('breadcrumb') is defined ? block('breadcrumb')|trim : null %}
 {% set _actions = block('actions') is defined ? block('actions')|trim : null %}
 {% set _navbar_title = block('navbar_title') is defined ? block('navbar_title')|trim : null %}
-{% set _list_filters_actions = block('list_filters_actions') is defined ? block('list_filters_actions')|trim : null %}
+{% set _list_filters_actions = block('list_filters_actions') is defined ? block('list_filters_actions')|trim : null -%}
 
 <!DOCTYPE html>
 <html {% block html_attributes %}class="no-js"{% endblock %}>
