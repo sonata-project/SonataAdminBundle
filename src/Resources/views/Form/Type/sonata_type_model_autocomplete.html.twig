@@ -147,14 +147,18 @@ file that was distributed with this source code.
             // Select2 v3/v4 special options.
             // NEXT_MAJOR: Remove this BC layer while upgrading to v4.
             var templateResult = function (item) {
-                return {% block sonata_type_model_autocomplete_dropdown_item_format %}'<div class="{{ dropdown_item_css_class }}">'+item.label+'<\/div>'{% endblock %};// format of one dropdown item
+                return {% block sonata_type_model_autocomplete_dropdown_item_format -%}
+                    jQuery('<div class="{{ dropdown_item_css_class }}">').text(item.label).prop('outerHTML')
+                {%- endblock %}; // format of one dropdown item
             };
             var templateSelection = function (item) {
                 // Select2 v4 BC select pre-selection.
                 if (typeof item.label === 'undefined') {
                     item.label = item.text;
                 }
-                return {% block sonata_type_model_autocomplete_selection_format %}item.label{% endblock %};// format selected item '<b>'+item.label+'</b>';
+                return {% block sonata_type_model_autocomplete_selection_format -%}
+                    jQuery('<div>').text(item.label).prop('innerHTML')
+                {%- endblock %}; // format selected item '<b>'+item.label+'</b>';
             };
 
             if (window.Select2) {

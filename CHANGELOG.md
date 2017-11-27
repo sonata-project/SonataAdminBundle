@@ -47,6 +47,18 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.27.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.26.0...3.27.0) - 2017-11-26
+### Added
+- Added some Japanese messages
+- Added `CRUDController::renderWithExtraParams` as a replacement for the `render` method
+
+### Deprecated
+- Deprecated `CRUDController::render`
+
+### Fixed
+- Problem with FormRenderer not having environment causing that inline collection was unusable on SF 3.4
+- Deprecation warning for overriding `Controller::render` which is supposed to be final
+
 ## [3.26.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.25.1...3.26.0) - 2017-11-22
 ### Added
 - Add html tag attributes support for sonata_type_model_autocomplete form type
