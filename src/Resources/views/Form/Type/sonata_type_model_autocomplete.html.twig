@@ -156,7 +156,9 @@ file that was distributed with this source code.
                 if (typeof item.label === 'undefined') {
                     item.label = item.text;
                 }
-                return {% block sonata_type_model_autocomplete_selection_format %}item.label{% endblock %};// format selected item '<b>'+item.label+'</b>';
+                return {% block sonata_type_model_autocomplete_selection_format -%}
+                    jQuery('<div>').text(item.label).prop('innerHTML')
+                {%- endblock %}; // format selected item '<b>'+item.label+'</b>';
             };
 
             if (window.Select2) {
