@@ -259,6 +259,92 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertFalse(array_key_exists('%sonata.admin.parameter.groupname%', $adminGroups));
     }
 
+    public function testFixTemplatesConfiguration()
+    {
+        $container = $this->getContainer();
+
+        if (class_exists(DefinitionDecorator::class)) {
+            $vehiculeAdmin = new DefinitionDecorator('sonata_abstract_movable_object_admin');
+            $carAdmin = new DefinitionDecorator('sonata_abstract_vehicule_admin');
+        } else {
+            $vehiculeAdmin = new ChildDefinition('sonata_abstract_movable_object_admin');
+            $carAdmin = new ChildDefinition('sonata_abstract_vehicule_admin');
+        }
+
+        $carAdmin
+            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\Car', 'SonataAdminBundle:CRUD'])
+            ->addTag('sonata.admin', ['group' => 'sonata_report_two_group', 'manager_type' => 'orm', 'show_mosaic_button' => true]);
+        $vehiculeAdmin
+            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
+            ->setAbstract(true)
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\AbstractVehicule', 'SonataAdminBundle:CRUD'])
+            ->addTag('sonata.admin', ['group' => 'sonata_group_one', 'manager_type' => 'orm']);
+
+        $container->setDefinition('sonata_abstract_vehicule_admin', $vehiculeAdmin);
+        $container->setDefinition('sonata_car_admin', $carAdmin);
+
+        $container
+            ->register('sonata_abstract_movable_object_admin')
+            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
+            ->setAbstract(true)
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\AbstractMovableObject', 'SonataAdminBundle:CRUD'])
+            ->addTag('sonata.admin', ['group' => 'sonata_group_one', 'manager_type' => 'orm']);
+
+        $abstractMovableObjectDefinition = $container->getDefinition('sonata_abstract_movable_object_admin');
+        $abstractVehiculeDefinition = $container->getDefinition('sonata_abstract_vehicule_admin');
+        $carDefinition = $container->getDefinition('sonata_car_admin');
+
+        $abstractMovableObjectDefinition->addMethodCall('setTemplate', ['template_on_movable', 'template']);
+        $abstractVehiculeDefinition->addMethodCall('setTemplate', ['template_on_parent', 'template']);
+        $abstractVehiculeDefinition->addMethodCall('setTemplate', ['template_overriden', 'parent_value']);
+        $carDefinition->addMethodCall('setTemplate', ['template_on_child', 'template']);
+        $carDefinition->addMethodCall('setTemplate', ['template_overriden', 'child_value']);
+        $abstractMovableObjectDefinition->addMethodCall('setTemplates', [[
+            'template_on_movable_two' => 'template',
+        ]]);
+        $abstractVehiculeDefinition->addMethodCall('setTemplates', [[
+            'template_on_parent_two' => 'template',
+            'template_overriden_two' => 'parent_value',
+        ]]);
+        $carDefinition->addMethodCall('setTemplates', [[
+            'template_on_child_two' => 'template',
+            'template_overriden_two' => 'child_value',
+        ]]);
+
+        $this->extension->load([$this->getConfig()], $container);
+
+        $compilerPass = new AddDependencyCallsCompilerPass();
+        $compilerPass->process($container);
+
+        foreach ($carDefinition->getMethodCalls() as $call) {
+            list($name, $parameters) = $call;
+
+            switch ($name) {
+                case 'setTemplates':
+                    $templates = $parameters[0];
+                    $this->assertArrayHasKey('template_on_movable', $templates);
+                    $this->assertArrayHasKey('template_on_parent', $templates);
+                    $this->assertArrayHasKey('template_overriden', $templates);
+                    $this->assertArrayHasKey('template_on_child', $templates);
+                    $this->assertArrayHasKey('template_on_movable_two', $templates);
+                    $this->assertArrayHasKey('template_on_parent_two', $templates);
+                    $this->assertArrayHasKey('template_overriden_two', $templates);
+                    $this->assertArrayHasKey('template_on_child_two', $templates);
+                    $this->assertSame($templates['template_on_movable'], 'template');
+                    $this->assertSame($templates['template_on_parent'], 'template');
+                    $this->assertSame($templates['template_overriden'], 'child_value');
+                    $this->assertSame($templates['template_on_child'], 'template');
+                    $this->assertSame($templates['template_on_movable_two'], 'template');
+                    $this->assertSame($templates['template_on_parent_two'], 'template');
+                    $this->assertSame($templates['template_overriden_two'], 'child_value');
+                    $this->assertSame($templates['template_on_child_two'], 'template');
+
+                    break;
+            }
+        }
+    }
+
     public function testApplyTemplatesConfiguration()
     {
         $container = $this->getContainer();

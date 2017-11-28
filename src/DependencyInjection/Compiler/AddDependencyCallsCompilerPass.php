@@ -358,6 +358,30 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $methods = [];
         $pos = 0;
+
+        $parentDefinition = $definition;
+
+        // NEXT_MAJOR: Remove check for DefinitionDecorator instance when dropping Symfony <3.3 support
+        while ($parentDefinition instanceof ChildDefinition
+            || $parentDefinition instanceof DefinitionDecorator
+        ) {
+            $parentDefinition = $container->getDefinition($parentDefinition->getParent());
+
+            foreach ($parentDefinition->getMethodCalls() as $method) {
+                if ('setTemplates' == $method[0]) {
+                    $definedTemplates = array_merge($definedTemplates, $method[1][0]);
+
+                    continue;
+                }
+
+                if ('setTemplate' == $method[0]) {
+                    $definedTemplates[$method[1][0]] = $method[1][1];
+
+                    continue;
+                }
+            }
+        }
+
         foreach ($definition->getMethodCalls() as $method) {
             if ('setTemplates' == $method[0]) {
                 $definedTemplates = array_merge($definedTemplates, $method[1][0]);
