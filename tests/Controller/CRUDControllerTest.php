@@ -3648,6 +3648,7 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('idx', []);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
+        $this->expectTranslate('flash_batch_no_elements_processed', [], 'SonataAdminBundle');
         $result = $controller->batchAction($this->request);
 
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $result);
