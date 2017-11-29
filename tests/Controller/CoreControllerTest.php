@@ -26,6 +26,7 @@ class CoreControllerTest extends TestCase
         $pool = new Pool($container, 'title', 'logo.png');
         $pool->setTemplates([
             'ajax' => 'ajax.html',
+            'dashboard' => 'dashboard.html',
         ]);
 
         $templating = $this->createMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
@@ -89,6 +90,7 @@ class CoreControllerTest extends TestCase
         $pool = new Pool($container, 'title', 'logo.png');
         $pool->setTemplates([
             'ajax' => 'ajax.html',
+            'dashboard' => 'dashboard.html',
         ]);
 
         $templating = $this->createMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
