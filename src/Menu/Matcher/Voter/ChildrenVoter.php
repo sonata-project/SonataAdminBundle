@@ -15,10 +15,17 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 
+@trigger_error(sprintf(
+    '"%s" is deprecated since 3.x, will be removed in 4.0.',
+    ChildrenVoter::class
+));
+
 /**
  * Children menu voter based on children items.
  *
  * @author Samusev Andrey <andrey.simfi@ya.ru>
+ *
+ * @deprecated since 3.x, will be removed in 4.0.
  */
 class ChildrenVoter implements VoterInterface
 {
