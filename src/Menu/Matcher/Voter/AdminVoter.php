@@ -15,6 +15,7 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Admin menu voter based on extra `admin`.
@@ -33,13 +34,18 @@ class AdminVoter implements VoterInterface
      */
     private $request = null;
 
+    /**
+     * AdminVoter constructor.
+     *
+     * @param RequestStack $requestStack
+     */
     public function __construct($requestStack = null)
     {
         $this->requestStack = $requestStack;
     }
 
     /**
-     * @deprecated since version 3.29. Pass a RequestStack to the constructor instead.
+     * @deprecated since version 3.x. Pass a RequestStack to the constructor instead.
      *
      * @param Request $request
      *
@@ -47,7 +53,7 @@ class AdminVoter implements VoterInterface
      */
     public function setRequest($request)
     {
-        @trigger_error(sprintf('The %s() method is deprecated since version 3.29. Pass a RequestStack in the constructor instead.', __METHOD__), E_USER_DEPRECATED);
+        @trigger_error(sprintf('The %s() method is deprecated since version 3.x. Pass a RequestStack in the constructor instead.', __METHOD__), E_USER_DEPRECATED);
 
         $this->request = $request;
 
