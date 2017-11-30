@@ -16,7 +16,7 @@ use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 
 @trigger_error(sprintf(
-    '"%s" is deprecated since 3.x, will be removed in 4.0.',
+    '"%s" is deprecated since 3.28, will be removed in 4.0.',
     ChildrenVoter::class
 ));
 
@@ -25,7 +25,7 @@ use Knp\Menu\Matcher\Voter\VoterInterface;
  *
  * @author Samusev Andrey <andrey.simfi@ya.ru>
  *
- * @deprecated since 3.x, will be removed in 4.0.
+ * @deprecated since 3.28, will be removed in 4.0.
  */
 class ChildrenVoter implements VoterInterface
 {
