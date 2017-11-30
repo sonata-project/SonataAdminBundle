@@ -39,7 +39,7 @@ class AdminVoter implements VoterInterface
      *
      * @param RequestStack $requestStack
      */
-    public function __construct($requestStack = null)
+    public function __construct(RequestStack $requestStack = null)
     {
         $this->requestStack = $requestStack;
     }
