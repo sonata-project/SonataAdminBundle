@@ -47,7 +47,11 @@ matrix:
     - php: '7.1'
       env: SYMFONY=3.3.*
     - php: '7.1'
-      env: SYMFONY='dev-master as 3.3.x-dev'
+      env: SYMFONY=3.4.*
+    - php: '7.1'
+      env: SYMFONY=4.0.*
+    - php: '7.1'
+      env: SYMFONY='dev-master as 4.0.x-dev'
     - php: '7.1'
       env: SONATA_CORE=3.*
     - php: '7.1'
@@ -61,7 +65,7 @@ matrix:
   allow_failures:
     - php: nightly
     - env: SYMFONY_DEPRECATIONS_HELPER=0
-    - env: SYMFONY='dev-master as 3.3.x-dev'
+    - env: SYMFONY='dev-master as 4.0.x-dev'
     - env: SONATA_CORE='dev-master as 3.x-dev'
     - env: SONATA_BLOCK='dev-master as 3.x-dev'
 
