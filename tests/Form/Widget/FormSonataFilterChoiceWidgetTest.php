@@ -12,7 +12,11 @@
 namespace Sonata\AdminBundle\Tests\Form\Widget;
 
 use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType as SymfonyChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\RangeType;
+use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\Tests\Fixtures\TestExtension;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 {
@@ -52,8 +56,8 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 
     protected function getParentClass()
     {
-        if (class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType')) {
-            return 'Sonata\AdminBundle\Form\Type\Filter\ChoiceType';
+        if (class_exists(RangeType::class)) {
+            return ChoiceType::class;
         }
 
         return 'sonata_type_filter_choice';
@@ -61,8 +65,8 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 
     protected function getChoiceClass()
     {
-        if (class_exists('Symfony\Component\Form\Extension\Core\Type\RangeType')) {
-            return 'Symfony\Component\Form\Extension\Core\Type\ChoiceType';
+        if (class_exists(RangeType::class)) {
+            return SymfonyChoiceType::class;
         }
 
         return 'choice';
@@ -70,7 +74,7 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 
     protected function getExtensions()
     {
-        $mock = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')->getMock();
+        $mock = $this->getMockBuilder(TranslatorInterface::class)->getMock();
 
         $mock->method('trans')
             ->will($this->returnCallback(function ($arg) {
@@ -79,7 +83,7 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
         );
 
         $extensions = parent::getExtensions();
-        $guesser = $this->getMockForAbstractClass('Symfony\Component\Form\FormTypeGuesserInterface');
+        $guesser = $this->getMockForAbstractClass(FormTypeGuesserInterface::class);
         $extension = new TestExtension($guesser);
         $type = new ChoiceType($mock);
         $extension->addType($type);

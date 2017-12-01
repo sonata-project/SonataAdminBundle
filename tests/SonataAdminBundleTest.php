@@ -19,6 +19,7 @@ use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
 use Sonata\AdminBundle\SonataAdminBundle;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Test for SonataAdminBundle.
@@ -29,7 +30,7 @@ class SonataAdminBundleTest extends TestCase
 {
     public function testBuild()
     {
-        $containerBuilder = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
+        $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)
             ->setMethods(['addCompilerPass'])
             ->getMock();
 

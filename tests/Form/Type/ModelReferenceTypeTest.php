@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
 use Sonata\AdminBundle\Form\Type\ModelReferenceType;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 
@@ -21,7 +22,7 @@ class ModelReferenceTypeTest extends TypeTestCase
 
     protected function setUp()
     {
-        $this->modelManager = $this->prophesize('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $this->modelManager = $this->prophesize(ModelManagerInterface::class);
 
         parent::setUp();
     }
@@ -31,7 +32,7 @@ class ModelReferenceTypeTest extends TypeTestCase
         $formData = 42;
 
         $form = $this->factory->create(
-            'Sonata\AdminBundle\Form\Type\ModelReferenceType',
+            ModelReferenceType::class,
             null,
             [
                 'model_manager' => $this->modelManager->reveal(),

@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Form\Type\Filter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -93,7 +94,7 @@ class DateType extends AbstractType
         $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
 
         // NEXT_MAJOR: Remove (when requirement of Symfony is >= 3.0)
-        if (method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+        if (method_exists(FormTypeInterface::class, 'setDefaultOptions')) {
             $choiceOptions['choices_as_values'] = true;
         }
 

@@ -12,7 +12,9 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PoolTest extends TestCase
 {
@@ -55,16 +57,16 @@ class PoolTest extends TestCase
 
     public function testGetDashboardGroups()
     {
-        $admin_group1 = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin_group1 = $this->createMock(AdminInterface::class);
         $admin_group1->expects($this->once())->method('showIn')->will($this->returnValue(true));
 
-        $admin_group2 = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin_group2 = $this->createMock(AdminInterface::class);
         $admin_group2->expects($this->once())->method('showIn')->will($this->returnValue(false));
 
-        $admin_group3 = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin_group3 = $this->createMock(AdminInterface::class);
         $admin_group3->expects($this->once())->method('showIn')->will($this->returnValue(false));
 
-        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->createMock(ContainerInterface::class);
 
         $container->expects($this->any())->method('get')->will($this->onConsecutiveCalls(
             $admin_group1, $admin_group2, $admin_group3
@@ -194,7 +196,7 @@ class PoolTest extends TestCase
 
     public function testGetAdminByAdminCodeForChildClass()
     {
-        $adminMock = $this->getMockBuilder('Sonata\AdminBundle\Admin\AdminInterface')
+        $adminMock = $this->getMockBuilder(AdminInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $adminMock->expects($this->any())
@@ -205,7 +207,7 @@ class PoolTest extends TestCase
             ->with($this->equalTo('sonata.news.admin.comment'))
             ->will($this->returnValue('commentAdminClass'));
 
-        $containerMock = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->expects($this->any())
             ->method('get')
             ->will($this->returnValue($adminMock));
@@ -218,14 +220,14 @@ class PoolTest extends TestCase
 
     public function testGetAdminByAdminCodeForChildInvalidClass()
     {
-        $adminMock = $this->getMockBuilder('Sonata\AdminBundle\Admin\AdminInterface')
+        $adminMock = $this->getMockBuilder(AdminInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $adminMock->expects($this->any())
             ->method('hasChild')
             ->will($this->returnValue(false));
 
-        $containerMock = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->expects($this->any())
             ->method('get')
             ->will($this->returnValue($adminMock));
@@ -256,7 +258,7 @@ class PoolTest extends TestCase
 
     public function testGetContainer()
     {
-        $this->assertInstanceOf('Symfony\Component\DependencyInjection\ContainerInterface', $this->pool->getContainer());
+        $this->assertInstanceOf(ContainerInterface::class, $this->pool->getContainer());
     }
 
     public function testTemplates()
@@ -296,7 +298,7 @@ class PoolTest extends TestCase
      */
     private function getContainer()
     {
-        $containerMock = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($serviceId) {

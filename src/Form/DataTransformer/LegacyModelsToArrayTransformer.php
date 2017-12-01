@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
+use Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -35,7 +36,7 @@ class LegacyModelsToArrayTransformer implements DataTransformerInterface
      */
     public function __construct(ModelChoiceList $choiceList)
     {
-        if (interface_exists('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface')) {
+        if (interface_exists(ChoiceLoaderInterface::class)) {
             @trigger_error(
                 'The '.__CLASS__.' class is deprecated since 3.11, to be removed in 4.0. '.
                 'Use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer instead.',
@@ -84,7 +85,7 @@ class LegacyModelsToArrayTransformer implements DataTransformerInterface
         );
 
         if (!$collection instanceof \ArrayAccess) {
-            throw new UnexpectedTypeException($collection, '\ArrayAccess');
+            throw new UnexpectedTypeException($collection, \ArrayAccess::class);
         }
 
         if ('' === $keys || null === $keys) {

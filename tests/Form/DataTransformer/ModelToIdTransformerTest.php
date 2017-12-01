@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 class ModelToIdTransformerTest extends TestCase
 {
@@ -20,7 +21,7 @@ class ModelToIdTransformerTest extends TestCase
 
     public function setUp()
     {
-        $this->modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
     }
 
     public function testReverseTransformWhenPassing0AsId()

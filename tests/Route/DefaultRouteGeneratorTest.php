@@ -12,10 +12,14 @@
 namespace Sonata\AdminBundle\Tests\Route;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Route\DefaultRouteGenerator;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RoutesCache;
-use Symfony\Component\Routing\Route;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 
 class DefaultRouteGeneratorTest extends TestCase
 {
@@ -30,7 +34,7 @@ class DefaultRouteGeneratorTest extends TestCase
 
     public function testGenerate()
     {
-        $router = $this->getMockForAbstractClass('\Symfony\Component\Routing\RouterInterface');
+        $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->once())->method('generate')->will($this->returnValue('/foo/bar'));
 
         $cache = new RoutesCache($this->cacheTempFolder, true);
@@ -52,7 +56,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $collection->add('foo');
         $collection->addCollection($childCollection);
 
-        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->any())->method('isChild')->will($this->returnValue(false));
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Foo'));
         $admin->expects($this->once())->method('hasParentFieldDescription')->will($this->returnValue(false));
@@ -63,7 +67,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
         $admin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
 
-        $router = $this->getMockForAbstractClass('Symfony\Component\Routing\RouterInterface');
+        $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->once())
             ->method('generate')
             ->will($this->returnCallback(function ($name, array $parameters = []) {
@@ -99,9 +103,9 @@ class DefaultRouteGeneratorTest extends TestCase
 
     public function testGenerateUrlWithException()
     {
-        $this->expectException('RuntimeException', 'unable to find the route `base.Code.Route.foo`');
+        $this->expectException(\RuntimeException::class, 'unable to find the route `base.Code.Route.foo`');
 
-        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->any())->method('isChild')->will($this->returnValue(false));
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Route'));
         $admin->expects($this->once())->method('hasParentFieldDescription')->will($this->returnValue(false));
@@ -110,7 +114,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->expects($this->exactly(2))->method('getRoutes')->will($this->returnValue(new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'BundleName:ControllerName')));
         $admin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
 
-        $router = $this->getMockForAbstractClass('Symfony\Component\Routing\RouterInterface');
+        $router = $this->getMockForAbstractClass(RouterInterface::class);
 
         $cache = new RoutesCache($this->cacheTempFolder, true);
 
@@ -130,7 +134,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $collection->add('foo');
         $collection->addCollection($childCollection);
 
-        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->any())->method('isChild')->will($this->returnValue(true));
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Child'));
         $admin->expects($this->any())->method('getBaseCodeRoute')->will($this->returnValue('base.Code.Parent|base.Code.Child'));
@@ -143,7 +147,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($childCollection));
         $admin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
 
-        $parentAdmin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $parentAdmin = $this->getMockForAbstractClass(AdminInterface::class);
         $parentAdmin->expects($this->any())->method('getIdParameter')->will($this->returnValue('childId'));
         $parentAdmin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
         $parentAdmin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Parent'));
@@ -152,8 +156,8 @@ class DefaultRouteGeneratorTest extends TestCase
         // no request attached in this test, so this will not be used
         $parentAdmin->expects($this->never())->method('getPersistentParameters')->will($this->returnValue(['from' => 'parent']));
 
-        $request = $this->createMock('Symfony\Component\HttpFoundation\Request');
-        $request->attributes = $this->createMock('Symfony\Component\HttpFoundation\ParameterBag');
+        $request = $this->createMock(Request::class);
+        $request->attributes = $this->createMock(ParameterBag::class);
         $request->attributes->expects($this->any())->method('has')->will($this->returnValue(true));
         $request->attributes->expects($this->any())
             ->method('get')
@@ -168,7 +172,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->expects($this->any())->method('getRequest')->will($this->returnValue($request));
         $admin->expects($this->any())->method('getParent')->will($this->returnValue($parentAdmin));
 
-        $router = $this->getMockForAbstractClass('\Symfony\Component\Routing\RouterInterface');
+        $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->once())
             ->method('generate')
             ->will($this->returnCallback(function ($name, array $parameters = []) {
@@ -215,7 +219,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $collection->add('foo');
         $collection->addCollection($childCollection);
 
-        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->any())->method('isChild')->will($this->returnValue(false));
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Parent'));
         // embeded admin (not nested ...)
@@ -227,7 +231,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
         $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
 
-        $router = $this->getMockForAbstractClass('Symfony\Component\Routing\RouterInterface');
+        $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->once())
             ->method('generate')
             ->will($this->returnCallback(function ($name, array $parameters = []) {
@@ -246,10 +250,10 @@ class DefaultRouteGeneratorTest extends TestCase
                 return;
             }));
 
-        $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->once())->method('getOption')->will($this->returnValue([]));
 
-        $parentAdmin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $parentAdmin = $this->getMockForAbstractClass(AdminInterface::class);
         $parentAdmin->expects($this->any())->method('getUniqid')->will($this->returnValue('parent_foo_uniqueid'));
         $parentAdmin->expects($this->any())->method('getCode')->will($this->returnValue('parent_foo_code'));
         $parentAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
@@ -288,7 +292,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $standaloneCollection = new RouteCollection('base.Code.Child', 'admin_acme_child_standalone', '/', 'BundleName:ControllerName');
         $standaloneCollection->add('bar');
 
-        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->any())->method('isChild')->will($this->returnValue(true));
         $admin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Child'));
         $admin->expects($this->any())->method('getBaseCodeRoute')->will($this->returnValue('base.Code.Parent|base.Code.Child'));
@@ -300,7 +304,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($childCollection));
         $admin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
 
-        $parentAdmin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $parentAdmin = $this->getMockForAbstractClass(AdminInterface::class);
         $parentAdmin->expects($this->any())->method('getIdParameter')->will($this->returnValue('childId'));
         $parentAdmin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
         $parentAdmin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Parent'));
@@ -309,8 +313,8 @@ class DefaultRouteGeneratorTest extends TestCase
         // no request attached in this test, so this will not be used
         $parentAdmin->expects($this->never())->method('getPersistentParameters')->will($this->returnValue(['from' => 'parent']));
 
-        $request = $this->createMock('Symfony\Component\HttpFoundation\Request');
-        $request->attributes = $this->createMock('Symfony\Component\HttpFoundation\ParameterBag');
+        $request = $this->createMock(Request::class);
+        $request->attributes = $this->createMock(ParameterBag::class);
         $request->attributes->expects($this->any())->method('has')->will($this->returnValue(true));
         $request->attributes->expects($this->any())
             ->method('get')
@@ -325,7 +329,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->expects($this->any())->method('getRequest')->will($this->returnValue($request));
         $admin->expects($this->any())->method('getParent')->will($this->returnValue($parentAdmin));
 
-        $standaloneAdmin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $standaloneAdmin = $this->getMockForAbstractClass(AdminInterface::class);
         $standaloneAdmin->expects($this->any())->method('isChild')->will($this->returnValue(false));
         $standaloneAdmin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Child'));
         $standaloneAdmin->expects($this->once())->method('hasParentFieldDescription')->will($this->returnValue(false));
@@ -335,7 +339,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $standaloneAdmin->expects($this->any())->method('getRoutes')->will($this->returnValue($standaloneCollection));
         $standaloneAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
 
-        $router = $this->getMockForAbstractClass('\Symfony\Component\Routing\RouterInterface');
+        $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->exactly(2))
             ->method('generate')
             ->will($this->returnCallback(function ($name, array $parameters = []) {

@@ -12,9 +12,16 @@
 namespace Sonata\AdminBundle\Tests\Event;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Event\AdminEventExtension;
 use Sonata\AdminBundle\Event\ConfigureEvent;
 use Sonata\AdminBundle\Event\PersistenceEvent;
+use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AdminEventExtensionTest extends TestCase
 {
@@ -23,7 +30,7 @@ class AdminEventExtensionTest extends TestCase
      */
     public function getExtension($args)
     {
-        $eventDispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $stub = $eventDispatcher->expects($this->once())->method('dispatch');
         call_user_func_array([$stub, 'with'], $args);
 
@@ -33,7 +40,7 @@ class AdminEventExtensionTest extends TestCase
     public function getMapper($class)
     {
         $mapper = $this->getMockBuilder($class)->disableOriginalConstructor()->getMock();
-        $mapper->expects($this->once())->method('getAdmin')->will($this->returnValue($this->createMock('Sonata\AdminBundle\Admin\AdminInterface')));
+        $mapper->expects($this->once())->method('getAdmin')->will($this->returnValue($this->createMock(AdminInterface::class)));
 
         return $mapper;
     }
@@ -85,7 +92,7 @@ class AdminEventExtensionTest extends TestCase
                 $this->equalTo('sonata.admin.event.configure.form'),
                 $this->callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_FORM)),
             ])
-            ->configureFormFields($this->getMapper('Sonata\AdminBundle\Form\FormMapper'));
+            ->configureFormFields($this->getMapper(FormMapper::class));
     }
 
     public function testConfigureListFields()
@@ -95,7 +102,7 @@ class AdminEventExtensionTest extends TestCase
                 $this->equalTo('sonata.admin.event.configure.list'),
                 $this->callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_LIST)),
             ])
-            ->configureListFields($this->getMapper('Sonata\AdminBundle\Datagrid\ListMapper'));
+            ->configureListFields($this->getMapper(ListMapper::class));
     }
 
     public function testConfigureDatagridFields()
@@ -105,7 +112,7 @@ class AdminEventExtensionTest extends TestCase
                 $this->equalTo('sonata.admin.event.configure.datagrid'),
                 $this->callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_DATAGRID)),
             ])
-            ->configureDatagridFilters($this->getMapper('Sonata\AdminBundle\Datagrid\DatagridMapper'));
+            ->configureDatagridFilters($this->getMapper(DatagridMapper::class));
     }
 
     public function testConfigureShowFields()
@@ -115,7 +122,7 @@ class AdminEventExtensionTest extends TestCase
                 $this->equalTo('sonata.admin.event.configure.show'),
                 $this->callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_SHOW)),
             ])
-            ->configureShowFields($this->getMapper('Sonata\AdminBundle\Show\ShowMapper'));
+            ->configureShowFields($this->getMapper(ShowMapper::class));
     }
 
     public function testPreUpdate()
@@ -123,14 +130,14 @@ class AdminEventExtensionTest extends TestCase
         $this->getExtension([
             $this->equalTo('sonata.admin.event.persistence.pre_update'),
             $this->callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_PRE_UPDATE)),
-        ])->preUpdate($this->createMock('Sonata\AdminBundle\Admin\AdminInterface'), new \stdClass());
+        ])->preUpdate($this->createMock(AdminInterface::class), new \stdClass());
     }
 
     public function testConfigureQuery()
     {
         $this->getExtension([
             $this->equalTo('sonata.admin.event.configure.query'),
-        ])->configureQuery($this->createMock('Sonata\AdminBundle\Admin\AdminInterface'), $this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface'));
+        ])->configureQuery($this->createMock(AdminInterface::class), $this->createMock(ProxyQueryInterface::class));
     }
 
     public function testPostUpdate()
@@ -138,7 +145,7 @@ class AdminEventExtensionTest extends TestCase
         $this->getExtension([
             $this->equalTo('sonata.admin.event.persistence.post_update'),
             $this->callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_UPDATE)),
-        ])->postUpdate($this->createMock('Sonata\AdminBundle\Admin\AdminInterface'), new \stdClass());
+        ])->postUpdate($this->createMock(AdminInterface::class), new \stdClass());
     }
 
     public function testPrePersist()
@@ -146,7 +153,7 @@ class AdminEventExtensionTest extends TestCase
         $this->getExtension([
             $this->equalTo('sonata.admin.event.persistence.pre_persist'),
             $this->callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_PRE_PERSIST)),
-        ])->prePersist($this->createMock('Sonata\AdminBundle\Admin\AdminInterface'), new \stdClass());
+        ])->prePersist($this->createMock(AdminInterface::class), new \stdClass());
     }
 
     public function testPostPersist()
@@ -154,7 +161,7 @@ class AdminEventExtensionTest extends TestCase
         $this->getExtension([
             $this->equalTo('sonata.admin.event.persistence.post_persist'),
             $this->callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_PERSIST)),
-        ])->postPersist($this->createMock('Sonata\AdminBundle\Admin\AdminInterface'), new \stdClass());
+        ])->postPersist($this->createMock(AdminInterface::class), new \stdClass());
     }
 
     public function testPreRemove()
@@ -162,7 +169,7 @@ class AdminEventExtensionTest extends TestCase
         $this->getExtension([
             $this->equalTo('sonata.admin.event.persistence.pre_remove'),
             $this->callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_PRE_REMOVE)),
-        ])->preRemove($this->createMock('Sonata\AdminBundle\Admin\AdminInterface'), new \stdClass());
+        ])->preRemove($this->createMock(AdminInterface::class), new \stdClass());
     }
 
     public function testPostRemove()
@@ -170,6 +177,6 @@ class AdminEventExtensionTest extends TestCase
         $this->getExtension([
             $this->equalTo('sonata.admin.event.persistence.post_remove'),
             $this->callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_REMOVE)),
-        ])->postRemove($this->createMock('Sonata\AdminBundle\Admin\AdminInterface'), new \stdClass());
+        ])->postRemove($this->createMock(AdminInterface::class), new \stdClass());
     }
 }

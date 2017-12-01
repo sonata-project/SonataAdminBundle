@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Util;
 
+use Sonata\AdminBundle\Form\Type\AclMatrixType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -286,7 +287,7 @@ class AdminObjectAclManipulator
 
             $formBuilder->add(
                 $key,
-                'Sonata\AdminBundle\Form\Type\AclMatrixType',
+                AclMatrixType::class,
                 ['permissions' => $permissions, 'acl_value' => $aclValue]
             );
         }

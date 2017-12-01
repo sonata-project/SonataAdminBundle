@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Tests\Menu\Matcher\Voter;
 
+use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Matcher;
 use Sonata\AdminBundle\Menu\Matcher\Voter\ChildrenVoter;
 
@@ -47,14 +48,14 @@ class ChildrenVoterTest extends AbstractVoterTest
     {
         $childItems = [];
         foreach ($data as $childData) {
-            $childItem = $this->getMockForAbstractClass('Knp\Menu\ItemInterface');
+            $childItem = $this->getMockForAbstractClass(ItemInterface::class);
             $childItem->expects($this->any())
                 ->method('isCurrent')
                 ->willReturn($childData);
             $childItems[] = $childItem;
         }
 
-        $item = $this->getMockForAbstractClass('Knp\Menu\ItemInterface');
+        $item = $this->getMockForAbstractClass(ItemInterface::class);
         $item->expects($this->any())
             ->method('getChildren')
             ->will($this->returnValue($childItems));

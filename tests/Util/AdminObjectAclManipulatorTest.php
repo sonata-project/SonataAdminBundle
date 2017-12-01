@@ -13,13 +13,15 @@ namespace Sonata\AdminBundle\Tests\Util;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 
 /**
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
 class AdminObjectAclManipulatorTest extends TestCase
 {
-    const MASK_BUILDER_CLASS = '\Symfony\Component\Security\Acl\Permission\MaskBuilder';
+    const MASK_BUILDER_CLASS = MaskBuilder::class;
 
     public function testGetMaskBuilder()
     {
@@ -29,6 +31,6 @@ class AdminObjectAclManipulatorTest extends TestCase
 
     protected function createAdminObjectAclManipulator()
     {
-        return new AdminObjectAclManipulator($this->getMockForAbstractClass('Symfony\Component\Form\FormFactoryInterface'), self::MASK_BUILDER_CLASS);
+        return new AdminObjectAclManipulator($this->getMockForAbstractClass(FormFactoryInterface::class), self::MASK_BUILDER_CLASS);
     }
 }

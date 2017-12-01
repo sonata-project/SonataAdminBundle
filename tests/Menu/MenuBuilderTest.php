@@ -11,9 +11,15 @@
 
 namespace Sonata\AdminBundle\Tests\Menu;
 
+use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuFactory;
+use Knp\Menu\MenuItem;
+use Knp\Menu\Provider\MenuProviderInterface;
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Event\ConfigureMenuEvent;
 use Sonata\AdminBundle\Menu\MenuBuilder;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MenuBuilderTest extends TestCase
 {
@@ -28,10 +34,10 @@ class MenuBuilderTest extends TestCase
 
     protected function setUp()
     {
-        $this->pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')->disableOriginalConstructor()->getMock();
-        $this->provider = $this->getMockForAbstractClass('Knp\Menu\Provider\MenuProviderInterface');
+        $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
+        $this->provider = $this->getMockForAbstractClass(MenuProviderInterface::class);
         $this->factory = new MenuFactory();
-        $this->eventDispatcher = $this->getMockForAbstractClass('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
 
         $this->builder = new MenuBuilder($this->pool, $this->factory, $this->provider, $this->eventDispatcher);
     }
@@ -55,11 +61,11 @@ class MenuBuilderTest extends TestCase
         $this->preparePool($adminGroups);
         $menu = $this->builder->createSidebarMenu();
 
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
+        $this->assertInstanceOf(ItemInterface::class, $menu);
         $this->assertArrayHasKey('bar', $menu->getChildren());
 
         foreach ($menu->getChildren() as $key => $child) {
-            $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
+            $this->assertInstanceOf(MenuItem::class, $child);
             $this->assertSame('bar', $child->getName());
             $this->assertSame('bar', $child->getLabel());
 
@@ -67,7 +73,7 @@ class MenuBuilderTest extends TestCase
             $children = $child->getChildren();
             $this->assertCount(1, $children);
             $this->assertArrayHasKey('foo', $children);
-            $this->assertInstanceOf('Knp\Menu\MenuItem', $child['foo']);
+            $this->assertInstanceOf(MenuItem::class, $child['foo']);
             $this->assertSame('foo', $child['foo']->getLabel());
         }
     }
@@ -92,11 +98,11 @@ class MenuBuilderTest extends TestCase
         $this->preparePool($adminGroups);
         $menu = $this->builder->createSidebarMenu();
 
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
+        $this->assertInstanceOf(ItemInterface::class, $menu);
         $this->assertArrayHasKey('bar', $menu->getChildren());
 
         foreach ($menu->getChildren() as $key => $child) {
-            $this->assertInstanceOf('Knp\Menu\MenuItem', $child);
+            $this->assertInstanceOf(MenuItem::class, $child);
             $this->assertSame('bar', $child->getName());
             $this->assertSame('bar', $child->getLabel());
 
@@ -104,7 +110,7 @@ class MenuBuilderTest extends TestCase
             $children = $child->getChildren();
             $this->assertCount(1, $children);
             $this->assertArrayHasKey('foo', $children);
-            $this->assertInstanceOf('Knp\Menu\MenuItem', $child['foo']);
+            $this->assertInstanceOf(MenuItem::class, $child['foo']);
             $this->assertSame('foo', $child['foo']->getLabel());
         }
     }
@@ -129,7 +135,7 @@ class MenuBuilderTest extends TestCase
             ->method('dispatch')
             ->with(
                 $this->equalTo('sonata.admin.event.configure.menu.sidebar'),
-                $this->isInstanceOf('Sonata\AdminBundle\Event\ConfigureMenuEvent')
+                $this->isInstanceOf(ConfigureMenuEvent::class)
             );
 
         $this->builder->createSidebarMenu();

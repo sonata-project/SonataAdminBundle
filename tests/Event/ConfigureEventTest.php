@@ -35,8 +35,8 @@ class ConfigureEventTest extends TestCase
 
     protected function setUp()
     {
-        $this->admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
-        $this->mapper = $this->getMockBuilder('Sonata\AdminBundle\Mapper\BaseMapper')
+        $this->admin = $this->createMock(AdminInterface::class);
+        $this->mapper = $this->getMockBuilder(BaseMapper::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -52,7 +52,7 @@ class ConfigureEventTest extends TestCase
     {
         $result = $this->event->getAdmin();
 
-        $this->assertInstanceOf('Sonata\AdminBundle\Admin\AdminInterface', $result);
+        $this->assertInstanceOf(AdminInterface::class, $result);
         $this->assertSame($this->admin, $result);
     }
 
@@ -60,7 +60,7 @@ class ConfigureEventTest extends TestCase
     {
         $result = $this->event->getMapper();
 
-        $this->assertInstanceOf('Sonata\AdminBundle\Mapper\BaseMapper', $result);
+        $this->assertInstanceOf(BaseMapper::class, $result);
         $this->assertSame($this->mapper, $result);
     }
 }

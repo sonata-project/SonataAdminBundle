@@ -13,8 +13,14 @@ namespace Sonata\AdminBundle\Tests\Admin;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminHelper;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 
 class AdminHelperTest extends TestCase
@@ -26,7 +32,7 @@ class AdminHelperTest extends TestCase
 
     public function setUp()
     {
-        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->createMock(ContainerInterface::class);
 
         $pool = new Pool($container, 'title', 'logo.png');
         $this->helper = new AdminHelper($pool);
@@ -34,8 +40,8 @@ class AdminHelperTest extends TestCase
 
     public function testGetChildFormBuilder()
     {
-        $formFactory = $this->createMock('Symfony\Component\Form\FormFactoryInterface');
-        $eventDispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $formFactory = $this->createMock(FormFactoryInterface::class);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $formBuilder = new FormBuilder('test', 'stdClass', $eventDispatcher, $formFactory);
 
@@ -43,7 +49,7 @@ class AdminHelperTest extends TestCase
         $formBuilder->add($childFormBuilder);
 
         $this->assertNull($this->helper->getChildFormBuilder($formBuilder, 'foo'));
-        $this->isInstanceOf('Symfony\Component\Form\FormBuilder', $this->helper->getChildFormBuilder($formBuilder, 'test_elementId'));
+        $this->isInstanceOf(FormBuilder::class, $this->helper->getChildFormBuilder($formBuilder, 'test_elementId'));
     }
 
     public function testGetChildFormView()
@@ -54,15 +60,15 @@ class AdminHelperTest extends TestCase
         $child->vars['id'] = 'test_elementId';
 
         $this->assertNull($this->helper->getChildFormView($formView, 'foo'));
-        $this->isInstanceOf('Symfony\Component\Form\FormView', $this->helper->getChildFormView($formView, 'test_elementId'));
+        $this->isInstanceOf(FormView::class, $this->helper->getChildFormView($formView, 'test_elementId'));
     }
 
     public function testAddNewInstance()
     {
-        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
 
-        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(['fieldName' => 'fooBar']));
 
@@ -76,10 +82,10 @@ class AdminHelperTest extends TestCase
 
     public function testAddNewInstancePlural()
     {
-        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
 
-        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(['fieldName' => 'fooBars']));
 
@@ -93,10 +99,10 @@ class AdminHelperTest extends TestCase
 
     public function testAddNewInstanceInflector()
     {
-        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
 
-        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->once())->method('getAssociationAdmin')->will($this->returnValue($admin));
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->will($this->returnValue(['fieldName' => 'entries']));
 
@@ -142,14 +148,14 @@ class AdminHelperTest extends TestCase
         $object->expects($this->atLeastOnce())->method('getPathToObject')->will($this->returnValue([$subObject]));
         $subObject->expects($this->atLeastOnce())->method('getMore')->will($this->returnValue('Value'));
 
-        $this->expectException('Exception', 'Could not get element id from '.$path.' Failing part: calls');
+        $this->expectException(\Exception::class, 'Could not get element id from '.$path.' Failing part: calls');
 
         $this->helper->getElementAccessPath($path, $object);
     }
 
     public function testAppendFormFieldElementNested()
     {
-        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->createMock(AdminInterface::class);
         $object = $this->getMockBuilder('stdClass')
             ->setMethods(['getSubObject'])
             ->getMock();
@@ -165,9 +171,9 @@ class AdminHelperTest extends TestCase
         $sub3Object = $this->getMockBuilder('stdClass')
             ->setMethods(['getFinalData'])
             ->getMock();
-        $dataMapper = $this->createMock('Symfony\Component\Form\DataMapperInterface');
-        $formFactory = $this->createMock('Symfony\Component\Form\FormFactoryInterface');
-        $eventDispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $dataMapper = $this->createMock(DataMapperInterface::class);
+        $formFactory = $this->createMock(FormFactoryInterface::class);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $formBuilder = new FormBuilder('test', get_class($simpleObject), $eventDispatcher, $formFactory);
         $childFormBuilder = new FormBuilder('subObject', get_class($subObject), $eventDispatcher, $formFactory);
 
@@ -183,7 +189,7 @@ class AdminHelperTest extends TestCase
         $admin->expects($this->once())->method('getFormBuilder')->will($this->returnValue($formBuilder));
         $admin->expects($this->once())->method('getSubject')->will($this->returnValue($object));
 
-        $this->expectException('Exception', 'unknown collection class');
+        $this->expectException(\Exception::class, 'unknown collection class');
 
         $this->helper->appendFormFieldElement($admin, $simpleObject, 'uniquePartOfId_sub_object_0_and_more_0_final_data');
     }

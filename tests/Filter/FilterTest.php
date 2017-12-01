@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Filter;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class FilterTest extends TestCase
 {
@@ -20,7 +21,7 @@ class FilterTest extends TestCase
     {
         $filter = new FooFilter();
 
-        $this->assertSame('Symfony\Component\Form\Extension\Core\Type\TextType', $filter->getFieldType());
+        $this->assertSame(TextType::class, $filter->getFieldType());
         $this->assertSame(['required' => false], $filter->getFieldOptions());
         $this->assertNull($filter->getLabel());
 

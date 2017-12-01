@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity;
 
 /**
@@ -24,12 +25,12 @@ class ArrayToModelTransformerTest extends TestCase
 
     public function setUp()
     {
-        $this->modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
     }
 
     public function testReverseTransformEntity()
     {
-        $transformer = new ArrayToModelTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity');
+        $transformer = new ArrayToModelTransformer($this->modelManager, FooEntity::class);
 
         $entity = new FooEntity();
         $this->assertSame($entity, $transformer->reverseTransform($entity));
@@ -40,19 +41,19 @@ class ArrayToModelTransformerTest extends TestCase
      */
     public function testReverseTransform($value)
     {
-        $transformer = new ArrayToModelTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity');
+        $transformer = new ArrayToModelTransformer($this->modelManager, FooEntity::class);
 
         $this->modelManager->expects($this->any())
             ->method('modelReverseTransform')
             ->will($this->returnValue(new FooEntity()));
 
-        $this->assertInstanceOf('Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity', $transformer->reverseTransform($value));
+        $this->assertInstanceOf(FooEntity::class, $transformer->reverseTransform($value));
     }
 
     public function getReverseTransformTests()
     {
         return [
-            ['Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity'],
+            [FooEntity::class],
             [[]],
             [['foo' => 'bar']],
             ['foo'],
@@ -67,7 +68,7 @@ class ArrayToModelTransformerTest extends TestCase
      */
     public function testTransform($expected, $value)
     {
-        $transformer = new ArrayToModelTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity');
+        $transformer = new ArrayToModelTransformer($this->modelManager, FooEntity::class);
 
         $this->assertSame($expected, $transformer->transform($value));
     }
