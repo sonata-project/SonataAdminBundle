@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Tests\Menu\Matcher\Voter;
 
 use Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdminVoterTest extends AbstractVoterTest
@@ -40,6 +41,27 @@ class AdminVoterTest extends AbstractVoterTest
      * {@inheritdoc}
      */
     protected function createVoter($dataVoter, $route)
+    {
+        $request = new Request();
+        $request->request->set('_sonata_admin', $dataVoter);
+        $request->request->set('_route', $route);
+
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
+
+        $voter = new AdminVoter($requestStack);
+
+        return $voter;
+    }
+
+    /**
+     * @param mixed $dataVoter
+     * @param mixed $route
+     *
+     * @return VoterInterface
+     * @group legacy
+     */
+    protected function createVoterLegacy($dataVoter, $route)
     {
         $voter = new AdminVoter();
         $request = new Request();
