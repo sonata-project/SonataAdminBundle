@@ -18,11 +18,16 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Symfony\Component\Translation\TranslatorInterface;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Extension\AbstractExtension;
+use Twig\Template;
+use Twig\TwigFilter;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class SonataAdminExtension extends \Twig_Extension
+class SonataAdminExtension extends AbstractExtension
 {
     /**
      * @var Pool
@@ -69,7 +74,7 @@ class SonataAdminExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'render_list_element',
                 [$this, 'renderListElement'],
                 [
@@ -77,7 +82,7 @@ class SonataAdminExtension extends \Twig_Extension
                     'needs_environment' => true,
                 ]
             ),
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'render_view_element',
                 [$this, 'renderViewElement'],
                 [
@@ -85,7 +90,7 @@ class SonataAdminExtension extends \Twig_Extension
                     'needs_environment' => true,
                 ]
             ),
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'render_view_element_compare',
                 [$this, 'renderViewElementCompare'],
                 [
@@ -93,19 +98,19 @@ class SonataAdminExtension extends \Twig_Extension
                     'needs_environment' => true,
                 ]
             ),
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'render_relation_element',
                 [$this, 'renderRelationElement']
             ),
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'sonata_urlsafeid',
                 [$this, 'getUrlsafeIdentifier']
             ),
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'sonata_xeditable_type',
                 [$this, 'getXEditableType']
             ),
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'sonata_xeditable_choices',
                 [$this, 'getXEditableChoices']
             ),
@@ -130,7 +135,7 @@ class SonataAdminExtension extends \Twig_Extension
      * @return string
      */
     public function renderListElement(
-        \Twig_Environment $environment,
+        Environment $environment,
         $object,
         FieldDescriptionInterface $fieldDescription,
         $params = []
@@ -158,9 +163,9 @@ class SonataAdminExtension extends \Twig_Extension
      */
     public function output(
         FieldDescriptionInterface $fieldDescription,
-        \Twig_Template $template,
+        Template $template,
         array $parameters,
-        \Twig_Environment $environment
+        Environment $environment
     ) {
         $content = $template->render($parameters);
 
@@ -232,7 +237,7 @@ EOT;
      * @return string
      */
     public function renderViewElement(
-        \Twig_Environment $environment,
+        Environment $environment,
         FieldDescriptionInterface $fieldDescription,
         $object
     ) {
@@ -266,7 +271,7 @@ EOT;
      * @return string
      */
     public function renderViewElementCompare(
-        \Twig_Environment $environment,
+        Environment $environment,
         FieldDescriptionInterface $fieldDescription,
         $baseObject,
         $compareObject
@@ -453,13 +458,13 @@ EOT;
     protected function getTemplate(
         FieldDescriptionInterface $fieldDescription,
         $defaultTemplate,
-        \Twig_Environment $environment
+        Environment $environment
     ) {
         $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
 
         try {
             $template = $environment->loadTemplate($templateName);
-        } catch (\Twig_Error_Loader $e) {
+        } catch (LoaderError $e) {
             @trigger_error(
                 'Relying on default template loading on field template loading exception '.
                 'is deprecated since 3.1 and will be removed in 4.0. '.
