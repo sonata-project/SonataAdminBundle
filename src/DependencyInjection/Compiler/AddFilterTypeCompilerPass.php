@@ -31,6 +31,7 @@ class AddFilterTypeCompilerPass implements CompilerPassInterface
             $serviceDefinition = $container->getDefinition($id);
 
             $serviceDefinition->setShared(false);
+            $serviceDefinition->setPublic(true); // Temporary fix until we can support service locators
 
             $types[$serviceDefinition->getClass()] = $id;
 
