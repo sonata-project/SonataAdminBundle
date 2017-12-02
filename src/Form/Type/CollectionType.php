@@ -26,10 +26,7 @@ class CollectionType extends AbstractType
      */
     public function getParent()
     {
-        return
-            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ?
-            'Symfony\Component\Form\Extension\Core\Type\CollectionType' :
-            'collection';
+        return 'Symfony\Component\Form\Extension\Core\Type\CollectionType';
     }
 
     /**

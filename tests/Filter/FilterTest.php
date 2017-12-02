@@ -20,9 +20,7 @@ class FilterTest extends TestCase
     {
         $filter = new FooFilter();
 
-        $this->assertSame(method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-            ? 'Symfony\Component\Form\Extension\Core\Type\TextType'
-            : 'text', $filter->getFieldType());
+        $this->assertSame('Symfony\Component\Form\Extension\Core\Type\TextType', $filter->getFieldType());
         $this->assertSame(['required' => false], $filter->getFieldOptions());
         $this->assertNull($filter->getLabel());
 

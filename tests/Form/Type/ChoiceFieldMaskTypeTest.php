@@ -23,11 +23,7 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
 
         $optionResolver = new OptionsResolver();
 
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $type->setDefaultOptions($optionResolver);
-        } else {
-            $type->configureOptions($optionResolver);
-        }
+        $type->configureOptions($optionResolver);
 
         $options = $optionResolver->resolve(
             [
@@ -40,18 +36,15 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
         $this->assertSame(['foo' => ['field1', 'field2'], 'bar' => ['field3']], $options['map']);
     }
 
-    public function testGetName()
+    public function testGetBlockPrefix()
     {
         $type = new ChoiceFieldMaskType();
-        $this->assertSame('sonata_type_choice_field_mask', $type->getName());
+        $this->assertSame('sonata_type_choice_field_mask', $type->getBlockPrefix());
     }
 
     public function testGetParent()
     {
         $type = new ChoiceFieldMaskType();
-        // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
-        $this->assertSame(method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-            ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
-            : 'choice', $type->getParent());
+        $this->assertSame('Symfony\Component\Form\Extension\Core\Type\ChoiceType', $type->getParent());
     }
 }

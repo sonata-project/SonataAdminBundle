@@ -47,7 +47,6 @@ use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -335,7 +334,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $securityHandler = null;
 
     /**
-     * @var ValidatorInterface|LegacyValidatorInterface
+     * @var ValidatorInterface
      */
     protected $validator = null;
 
@@ -2400,11 +2399,10 @@ EOT;
      */
     public function setValidator($validator)
     {
-        // TODO: Remove it when bumping requirements to SF 2.5+
-        if (!$validator instanceof ValidatorInterface && !$validator instanceof LegacyValidatorInterface) {
+        // NEXT_MAJOR: Move ValidatorInterface check to method signature
+        if (!$validator instanceof ValidatorInterface) {
             throw new \InvalidArgumentException(
                 'Argument 1 must be an instance of Symfony\Component\Validator\Validator\ValidatorInterface'
-                .' or Symfony\Component\Validator\ValidatorInterface'
             );
         }
 
@@ -3134,12 +3132,7 @@ EOT;
         $admin = $this;
 
         // add the custom inline validation option
-        // TODO: Remove conditional method when bumping requirements to SF 2.5+
-        if (method_exists($this->validator, 'getMetadataFor')) {
-            $metadata = $this->validator->getMetadataFor($this->getClass());
-        } else {
-            $metadata = $this->validator->getMetadataFactory()->getMetadataFor($this->getClass());
-        }
+        $metadata = $this->validator->getMetadataFor($this->getClass());
 
         $metadata->addConstraint(new InlineConstraint([
             'service' => $this,

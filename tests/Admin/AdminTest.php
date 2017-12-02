@@ -853,13 +853,7 @@ class AdminTest extends TestCase
 
         $this->assertNull($admin->getValidator());
 
-        $validatorClass = '\Symfony\Component\Validator\ValidatorInterface';
-
-        if (interface_exists('Symfony\Component\Validator\Validator\ValidatorInterface')) {
-            $validatorClass = 'Symfony\Component\Validator\Validator\ValidatorInterface';
-        }
-
-        $validator = $this->getMockForAbstractClass($validatorClass);
+        $validator = $this->getMockForAbstractClass('Symfony\Component\Validator\Validator\ValidatorInterface');
 
         $admin->setValidator($validator);
         $this->assertSame($validator, $admin->getValidator());

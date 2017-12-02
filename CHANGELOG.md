@@ -47,6 +47,27 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.28.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.27.0...3.28.0) - 2017-11-30
+### Added
+- Added `CRUDController::redirectToList` method for all list redirections
+- added Russian translations
+
+### Changed
+- Handle empty id list in `CRUDController::batchAction`
+- All services without a declared visibility are now public
+
+### Fixed
+- It is now allowed to install Symfony 4
+- Updated `src/Resources/views/standard_layout.html.twig` template in order to remove whitespace rendering before HTML DOCTYPE declaration.
+- interference with other bundles
+
+### Deprecated
+- using the `ChildrenVoter` class
+- using the `sonata.admin.menu.matcher.voter.children` service
+
+### Security
+- Fixed XSS vulnerability in autocomplete form type
+
 ## [3.27.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.26.0...3.27.0) - 2017-11-26
 ### Added
 - Added some Japanese messages

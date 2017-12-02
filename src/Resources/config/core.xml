@@ -11,20 +11,20 @@
                 <argument>%sonata.admin.configuration.templates%</argument>
             </call>
         </service>
-        <service id="sonata.admin.route_loader" class="Sonata\AdminBundle\Route\AdminPoolLoader">
+        <service id="sonata.admin.route_loader" class="Sonata\AdminBundle\Route\AdminPoolLoader" public="true">
             <argument type="service" id="sonata.admin.pool"/>
             <argument/>
             <argument type="service" id="service_container"/>
             <tag name="routing.loader"/>
         </service>
-        <service id="sonata.admin.helper" class="Sonata\AdminBundle\Admin\AdminHelper">
+        <service id="sonata.admin.helper" class="Sonata\AdminBundle\Admin\AdminHelper" public="true">
             <argument type="service" id="sonata.admin.pool"/>
         </service>
-        <service id="sonata.admin.builder.filter.factory" class="Sonata\AdminBundle\Filter\FilterFactory">
+        <service id="sonata.admin.builder.filter.factory" class="Sonata\AdminBundle\Filter\FilterFactory" public="true">
             <argument type="service" id="service_container"/>
             <argument/>
         </service>
-        <service id="sonata.admin.breadcrumbs_builder" class="Sonata\AdminBundle\Admin\BreadcrumbsBuilder">
+        <service id="sonata.admin.breadcrumbs_builder" class="Sonata\AdminBundle\Admin\BreadcrumbsBuilder" public="true">
             <argument>%sonata.admin.configuration.breadcrumbs%</argument>
         </service>
         <!-- Services used to format the label, default is sonata.admin.label.strategy.noop -->
@@ -34,7 +34,7 @@
         <service id="sonata.admin.label.strategy.underscore" class="Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy" public="false"/>
         <service id="sonata.admin.label.strategy.form_component" class="Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy" public="false"/>
         <!-- Translation extractor -->
-        <service id="sonata.admin.translator.extractor.jms_translator_bundle" class="Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor">
+        <service id="sonata.admin.translator.extractor.jms_translator_bundle" class="Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor" public="true">
             <tag name="jms_translation.extractor" alias="sonata_admin"/>
             <argument type="service" id="sonata.admin.pool"/>
             <argument type="service" id="logger" on-invalid="ignore"/>
@@ -43,32 +43,32 @@
             </call>
         </service>
         <!-- controller as services -->
-        <service id="sonata.admin.controller.admin" class="Sonata\AdminBundle\Controller\HelperController">
+        <service id="sonata.admin.controller.admin" class="Sonata\AdminBundle\Controller\HelperController" public="true">
             <argument type="service" id="twig"/>
             <argument type="service" id="sonata.admin.pool"/>
             <argument type="service" id="sonata.admin.helper"/>
             <argument type="service" id="validator"/>
         </service>
         <!-- audit manager -->
-        <service id="sonata.admin.audit.manager" class="Sonata\AdminBundle\Model\AuditManager">
+        <service id="sonata.admin.audit.manager" class="Sonata\AdminBundle\Model\AuditManager" public="true">
             <argument type="service" id="service_container"/>
         </service>
         <!-- NEXT_MAJOR : remove this service -->
-        <service id="sonata.admin.exporter" class="Sonata\AdminBundle\Export\Exporter"/>
-        <service id="sonata.admin.search.handler" class="Sonata\AdminBundle\Search\SearchHandler">
+        <service id="sonata.admin.exporter" class="Sonata\AdminBundle\Export\Exporter" public="true"/>
+        <service id="sonata.admin.search.handler" class="Sonata\AdminBundle\Search\SearchHandler" public="true">
             <argument type="service" id="sonata.admin.pool"/>
         </service>
         <!-- event -->
-        <service id="sonata.admin.event.extension" class="Sonata\AdminBundle\Event\AdminEventExtension">
+        <service id="sonata.admin.event.extension" class="Sonata\AdminBundle\Event\AdminEventExtension" public="true">
             <argument type="service" id="event_dispatcher"/>
             <tag name="sonata.admin.extension" global="true"/>
         </service>
         <!-- lock -->
-        <service id="sonata.admin.lock.extension" class="Sonata\AdminBundle\Admin\Extension\LockExtension">
+        <service id="sonata.admin.lock.extension" class="Sonata\AdminBundle\Admin\Extension\LockExtension" public="true">
             <tag name="sonata.admin.extension" global="true"/>
         </service>
         <!-- twig -->
-        <service id="sonata.admin.twig.global" class="Sonata\AdminBundle\Twig\GlobalVariables">
+        <service id="sonata.admin.twig.global" class="Sonata\AdminBundle\Twig\GlobalVariables" public="true">
             <argument type="service" id="sonata.admin.pool"/>
         </service>
     </services>

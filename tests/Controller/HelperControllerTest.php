@@ -92,13 +92,7 @@ class HelperControllerTest extends TestCase
 
         $twig = new \Twig_Environment($this->createMock('\Twig_LoaderInterface'));
         $helper = new AdminHelper($pool);
-
-        // NEXT_MAJOR: Remove this when dropping support for SF < 2.8
-        if (interface_exists('Symfony\Component\Validator\ValidatorInterface')) {
-            $validator = $this->createMock('Symfony\Component\Validator\ValidatorInterface');
-        } else {
-            $validator = $this->createMock('Symfony\Component\Validator\Validator\ValidatorInterface');
-        }
+        $validator = $this->createMock('Symfony\Component\Validator\Validator\ValidatorInterface');
         $this->controller = new HelperController($twig, $pool, $helper, $validator);
 
         // php 5.3 BC
@@ -116,9 +110,8 @@ class HelperControllerTest extends TestCase
 
     /**
      * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @dataProvider getValidatorInterfaces
      */
-    public function testgetShortObjectDescriptionActionInvalidAdmin($validatorInterface)
+    public function testgetShortObjectDescriptionActionInvalidAdmin()
     {
         $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $twig = new \Twig_Environment($this->createMock('\Twig_LoaderInterface'));
@@ -130,7 +123,7 @@ class HelperControllerTest extends TestCase
         $pool = new Pool($container, 'title', 'logo');
         $pool->setAdminServiceIds(['sonata.post.admin']);
         $helper = new AdminHelper($pool);
-        $validator = $this->createMock($validatorInterface);
+        $validator = $this->createMock('Symfony\Component\Validator\Validator\ValidatorInterface');
         $controller = new HelperController($twig, $pool, $helper, $validator);
 
         $controller->getShortObjectDescriptionAction($request);
@@ -139,10 +132,8 @@ class HelperControllerTest extends TestCase
     /**
      * @expectedException \RuntimeException
      * @exceptionMessage Invalid format
-     *
-     * @dataProvider getValidatorInterfaces
      */
-    public function testgetShortObjectDescriptionActionObjectDoesNotExist($validatorInterface)
+    public function testgetShortObjectDescriptionActionObjectDoesNotExist()
     {
         $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('setUniqid');
@@ -163,16 +154,13 @@ class HelperControllerTest extends TestCase
 
         $helper = new AdminHelper($pool);
 
-        $validator = $this->createMock($validatorInterface);
+        $validator = $this->createMock('Symfony\Component\Validator\Validator\ValidatorInterface');
         $controller = new HelperController($twig, $pool, $helper, $validator);
 
         $controller->getShortObjectDescriptionAction($request);
     }
 
-    /**
-     * @dataProvider getValidatorInterfaces
-     */
-    public function testgetShortObjectDescriptionActionEmptyObjectId($validatorInterface)
+    public function testgetShortObjectDescriptionActionEmptyObjectId()
     {
         $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
         $admin->expects($this->once())->method('setUniqid');
@@ -194,16 +182,13 @@ class HelperControllerTest extends TestCase
 
         $helper = new AdminHelper($pool);
 
-        $validator = $this->createMock($validatorInterface);
+        $validator = $this->createMock('Symfony\Component\Validator\Validator\ValidatorInterface');
         $controller = new HelperController($twig, $pool, $helper, $validator);
 
         $controller->getShortObjectDescriptionAction($request);
     }
 
-    /**
-     * @dataProvider getValidatorInterfaces
-     */
-    public function testgetShortObjectDescriptionActionObject($validatorInterface)
+    public function testgetShortObjectDescriptionActionObject()
     {
         $mockTemplate = 'AdminHelperTest:mock-short-object-description.html.twig';
 
@@ -243,7 +228,7 @@ class HelperControllerTest extends TestCase
 
         $helper = new AdminHelper($pool);
 
-        $validator = $this->createMock($validatorInterface);
+        $validator = $this->createMock('Symfony\Component\Validator\Validator\ValidatorInterface');
 
         $controller = new HelperController($twig, $pool, $helper, $validator);
 
@@ -253,10 +238,7 @@ class HelperControllerTest extends TestCase
         $this->assertSame($expected, $response->getContent());
     }
 
-    /**
-     * @dataProvider getValidatorInterfaces
-     */
-    public function testsetObjectFieldValueAction($validatorInterface)
+    public function testsetObjectFieldValueAction()
     {
         $object = new AdminControllerHelper_Foo();
 
@@ -301,7 +283,7 @@ class HelperControllerTest extends TestCase
 
         $helper = new AdminHelper($pool);
 
-        $validator = $this->createMock($validatorInterface);
+        $validator = $this->createMock('Symfony\Component\Validator\Validator\ValidatorInterface');
 
         $controller = new HelperController($twig, $pool, $helper, $validator);
 
@@ -310,10 +292,7 @@ class HelperControllerTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    /**
-     * @dataProvider getValidatorInterfaces
-     */
-    public function testappendFormFieldElementAction($validatorInterface)
+    public function testappendFormFieldElementAction()
     {
         $object = new AdminControllerHelper_Foo();
 
@@ -379,7 +358,7 @@ class HelperControllerTest extends TestCase
         $pool = new Pool($container, 'title', 'logo');
         $pool->setAdminServiceIds(['sonata.post.admin']);
 
-        $validator = $this->createMock($validatorInterface);
+        $validator = $this->createMock('Symfony\Component\Validator\Validator\ValidatorInterface');
 
         $mockView = $this->getMockBuilder('Symfony\Component\Form\FormView')
             ->disableOriginalConstructor()
@@ -408,10 +387,7 @@ class HelperControllerTest extends TestCase
         $this->isInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
     }
 
-    /**
-     * @dataProvider getValidatorInterfaces
-     */
-    public function testRetrieveFormFieldElementAction($validatorInterface)
+    public function testRetrieveFormFieldElementAction()
     {
         $object = new AdminControllerHelper_Foo();
 
@@ -496,7 +472,7 @@ class HelperControllerTest extends TestCase
         $pool = new Pool($container, 'title', 'logo');
         $pool->setAdminServiceIds(['sonata.post.admin']);
 
-        $validator = $this->createMock($validatorInterface);
+        $validator = $this->createMock('Symfony\Component\Validator\Validator\ValidatorInterface');
 
         $helper = $this->getMockBuilder('Sonata\AdminBundle\Admin\AdminHelper')
             ->setMethods(['getChildFormView'])
@@ -510,10 +486,7 @@ class HelperControllerTest extends TestCase
         $this->isInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
     }
 
-    /**
-     * @dataProvider getValidatorInterfaces
-     */
-    public function testSetObjectFieldValueActionWithViolations($validatorInterface)
+    public function testSetObjectFieldValueActionWithViolations()
     {
         $bar = new AdminControllerHelper_Bar();
 
@@ -550,7 +523,7 @@ class HelperControllerTest extends TestCase
             new ConstraintViolation('error2', null, [], null, 'enabled', null),
         ]);
 
-        $validator = $this->createMock($validatorInterface);
+        $validator = $this->createMock('Symfony\Component\Validator\Validator\ValidatorInterface');
 
         $validator
             ->expects($this->once())
@@ -915,26 +888,5 @@ class HelperControllerTest extends TestCase
         $this->isInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
-    }
-
-    /**
-     * Symfony Validator has 2 API version (2.4 and 2.5)
-     * This data provider ensure tests pass on each one.
-     */
-    public function getValidatorInterfaces()
-    {
-        $data = [];
-
-        // For Symfony <= 2.8
-        if (interface_exists('Symfony\Component\Validator\ValidatorInterface')) {
-            $data['2.4'] = ['Symfony\Component\Validator\ValidatorInterface'];
-        }
-
-        // For Symfony >= 2.5
-        if (interface_exists('Symfony\Component\Validator\Validator\ValidatorInterface')) {
-            $data['2.5'] = ['Symfony\Component\Validator\Validator\ValidatorInterface'];
-        }
-
-        return $data;
     }
 }

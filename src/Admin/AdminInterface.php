@@ -26,7 +26,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -314,12 +313,12 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function id($entity);
 
     /**
-     * @param ValidatorInterface|LegacyValidatorInterface $validator
+     * @param ValidatorInterface $validator
      */
     public function setValidator($validator);
 
     /**
-     * @return ValidatorInterface|LegacyValidatorInterface
+     * @return ValidatorInterface
      */
     public function getValidator();
 

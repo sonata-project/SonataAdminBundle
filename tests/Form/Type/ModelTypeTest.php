@@ -33,11 +33,7 @@ class ModelTypeTest extends TypeTestCase
 
         $optionResolver = new OptionsResolver();
 
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $this->type->setDefaultOptions($optionResolver);
-        } else {
-            $this->type->configureOptions($optionResolver);
-        }
+        $this->type->configureOptions($optionResolver);
 
         $options = $optionResolver->resolve(['model_manager' => $modelManager, 'choices' => []]);
 
@@ -55,11 +51,7 @@ class ModelTypeTest extends TypeTestCase
         $this->assertSame('link_list', $options['btn_list']);
         $this->assertSame('link_delete', $options['btn_delete']);
         $this->assertSame('SonataAdminBundle', $options['btn_catalogue']);
-        if (interface_exists('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface')) { // SF2.7+
-            $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader', $options['choice_loader']);
-        } else {
-            $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList', $options['choice_list']);
-        }
+        $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader', $options['choice_loader']);
     }
 
     /**
@@ -70,11 +62,7 @@ class ModelTypeTest extends TypeTestCase
         $modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
         $optionResolver = new OptionsResolver();
 
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $this->type->setDefaultOptions($optionResolver);
-        } else {
-            $this->type->configureOptions($optionResolver);
-        }
+        $this->type->configureOptions($optionResolver);
 
         $options = $optionResolver->resolve(['model_manager' => $modelManager, 'choices' => [], 'multiple' => $multiple, 'expanded' => $expanded]);
 
@@ -92,12 +80,7 @@ class ModelTypeTest extends TypeTestCase
         $this->assertSame('link_list', $options['btn_list']);
         $this->assertSame('link_delete', $options['btn_delete']);
         $this->assertSame('SonataAdminBundle', $options['btn_catalogue']);
-
-        if (interface_exists('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface')) { // SF2.7+
-            $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader', $options['choice_loader']);
-        } else {
-            $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList', $options['choice_list']);
-        }
+        $this->assertInstanceOf('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader', $options['choice_loader']);
     }
 
     public function getCompoundOptionTests()

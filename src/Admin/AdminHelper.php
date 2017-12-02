@@ -18,9 +18,6 @@ use Sonata\AdminBundle\Util\FormBuilderIterator;
 use Sonata\AdminBundle\Util\FormViewIterator;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
-use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -246,7 +243,7 @@ class AdminHelper
             $currentPath .= empty($currentPath) ? $part : '_'.$part;
             $separator = empty($totalPath) ? '' : '.';
 
-            if ($this->pathExists($propertyAccessor, $entity, $totalPath.$separator.$currentPath)) {
+            if ($propertyAccessor->isReadable($entity, $totalPath.$separator.$currentPath)) {
                 $totalPath .= $separator.$currentPath;
                 $currentPath = '';
             }
@@ -278,34 +275,5 @@ class AdminHelper
         }
 
         return $this->getEntityClassName($associationAdmin, $elements);
-    }
-
-    /**
-     * Check if given path exists in $entity.
-     *
-     * @param PropertyAccessorInterface $propertyAccessor
-     * @param mixed                     $entity
-     * @param string                    $path
-     *
-     * @return bool
-     *
-     * @throws \RuntimeException
-     */
-    private function pathExists(PropertyAccessorInterface $propertyAccessor, $entity, $path)
-    {
-        // Symfony <= 2.3 did not have isReadable method for PropertyAccessor
-        if (method_exists($propertyAccessor, 'isReadable')) {
-            return $propertyAccessor->isReadable($entity, $path);
-        }
-
-        try {
-            $propertyAccessor->getValue($entity, $path);
-
-            return true;
-        } catch (NoSuchPropertyException $e) {
-            return false;
-        } catch (UnexpectedTypeException $e) {
-            return false;
-        }
     }
 }

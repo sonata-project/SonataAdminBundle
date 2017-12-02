@@ -11,7 +11,6 @@
 
 namespace Sonata\AdminBundle\Command;
 
-use Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper;
 use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,17 +33,6 @@ abstract class QuestionableCommand extends ContainerAwareCommand
     {
         $questionHelper = $this->getQuestionHelper();
 
-        // NEXT_MAJOR: Remove this BC code for SensioGeneratorBundle 2.3/2.4 after dropping support for Symfony 2.3
-        if ($questionHelper instanceof DialogHelper) {
-            return $questionHelper->askAndValidate(
-                $output,
-                $questionHelper->getQuestion($questionText, $default),
-                $validator,
-                false,
-                $default
-            );
-        }
-
         $question = new Question($questionHelper->getQuestion($questionText, $default), $default);
 
         $question->setValidator($validator);
@@ -65,13 +53,6 @@ abstract class QuestionableCommand extends ContainerAwareCommand
     {
         $questionHelper = $this->getQuestionHelper();
 
-        // NEXT_MAJOR: Remove this BC code for SensioGeneratorBundle 2.3/2.4 after dropping support for Symfony 2.3
-        if ($questionHelper instanceof DialogHelper) {
-            $question = $questionHelper->getQuestion($questionText, $default, $separator);
-
-            return $questionHelper->askConfirmation($output, $question, ('no' === $default ? false : true));
-        }
-
         $question = new ConfirmationQuestion($questionHelper->getQuestion(
             $questionText,
             $default,
@@ -82,25 +63,15 @@ abstract class QuestionableCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return QuestionHelper|DialogHelper
+     * @return QuestionHelper
      */
     final protected function getQuestionHelper()
     {
-        // NEXT_MAJOR: Remove this BC code for SensioGeneratorBundle 2.3/2.4 after dropping support for Symfony 2.3
-        if (class_exists('Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper')) {
-            $questionHelper = $this->getHelper('dialog');
+        $questionHelper = $this->getHelper('question');
 
-            if (!$questionHelper instanceof DialogHelper) {
-                $questionHelper = new DialogHelper();
-                $this->getHelperSet()->set($questionHelper);
-            }
-        } else {
-            $questionHelper = $this->getHelper('question');
-
-            if (!$questionHelper instanceof QuestionHelper) {
-                $questionHelper = new QuestionHelper();
-                $this->getHelperSet()->set($questionHelper);
-            }
+        if (!$questionHelper instanceof QuestionHelper) {
+            $questionHelper = new QuestionHelper();
+            $this->getHelperSet()->set($questionHelper);
         }
 
         return $questionHelper;
