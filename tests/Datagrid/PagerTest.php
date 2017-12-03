@@ -296,6 +296,10 @@ class PagerTest extends TestCase
 
     public function testValid()
     {
+        $this->pager->expects($this->any())
+            ->method('getResults')
+            ->will($this->returnValue([]));
+
         $this->assertFalse($this->pager->valid());
     }
 

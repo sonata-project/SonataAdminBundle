@@ -285,6 +285,13 @@ class HelperControllerTest extends TestCase
 
         $validator = $this->createMock('Symfony\Component\Validator\Validator\ValidatorInterface');
 
+        $validator
+            ->expects($this->once())
+            ->method('validate')
+            ->with($object)
+            ->will($this->returnValue(new ConstraintViolationList([])))
+        ;
+
         $controller = new HelperController($twig, $pool, $helper, $validator);
 
         $response = $controller->setObjectFieldValueAction($request);
