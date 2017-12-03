@@ -36,13 +36,11 @@ class LegacyModelsToArrayTransformer implements DataTransformerInterface
      */
     public function __construct(ModelChoiceList $choiceList)
     {
-        if (interface_exists(ChoiceLoaderInterface::class)) {
-            @trigger_error(
-                'The '.__CLASS__.' class is deprecated since 3.11, to be removed in 4.0. '.
-                'Use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer instead.',
-                E_USER_DEPRECATED
-            );
-        }
+        @trigger_error(
+            'The '.__CLASS__.' class is deprecated since 3.11, to be removed in 4.0. '.
+            'Use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer instead.',
+            E_USER_DEPRECATED
+        );
         $this->choiceList = $choiceList;
     }
 

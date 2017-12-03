@@ -37,10 +37,7 @@ class LockExtension extends AbstractAdminExtension
         $admin = $form->getAdmin();
         $formBuilder = $form->getFormBuilder();
 
-        // PHP 5.3 BC
-        $fieldName = $this->fieldName;
-
-        $formBuilder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($admin, $fieldName) {
+        $formBuilder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($admin) {
             $data = $event->getData();
             $form = $event->getForm();
 
@@ -58,14 +55,10 @@ class LockExtension extends AbstractAdminExtension
                 return;
             }
 
-            $form->add(
-                $fieldName,
-                HiddenType::class,
-                [
-                    'mapped' => false,
-                    'data' => $lockVersion,
-                ]
-            );
+            $form->add($this->fieldName, HiddenType::class, [
+                'mapped' => false,
+                'data' => $lockVersion,
+            ]);
         });
     }
 

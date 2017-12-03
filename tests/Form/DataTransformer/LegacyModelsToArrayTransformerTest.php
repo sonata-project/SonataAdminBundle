@@ -17,7 +17,7 @@ use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 use Sonata\AdminBundle\Form\DataTransformer\LegacyModelsToArrayTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity;
-use Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface;
+use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
@@ -34,8 +34,8 @@ class LegacyModelsToArrayTransformerTest extends TestCase
      */
     public function setUp()
     {
-        if (interface_exists(ChoiceLoaderInterface::class)) { // SF2.7+
-            $this->markTestSkipped('Test only available for < SF2.7');
+        if (!class_exists(SimpleChoiceList::class)) {
+            $this->markTestSkipped('Test only available for < SF2.8');
         }
 
         $this->choiceList = $this->getMockBuilder(ModelChoiceList::class)
@@ -44,13 +44,10 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
 
-        // php 5.3 BC
-        $modelManager = $this->modelManager;
-
         $this->choiceList->expects($this->any())
             ->method('getModelManager')
-            ->will($this->returnCallback(function () use ($modelManager) {
-                return $modelManager;
+            ->will($this->returnCallback(function () {
+                return $this->modelManager;
             }));
     }
 

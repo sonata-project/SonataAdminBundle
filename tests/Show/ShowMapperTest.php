@@ -76,43 +76,34 @@ class ShowMapperTest extends TestCase
         $this->groups = [];
         $this->listShowFields = [];
 
-        // php 5.3 BC
-        $groups = &$this->groups;
-        $listShowFields = &$this->listShowFields;
-
         $this->admin->expects($this->any())
             ->method('getShowGroups')
-            ->will($this->returnCallback(function () use (&$groups) {
-                return $groups;
+            ->will($this->returnCallback(function () {
+                return $this->groups;
             }));
 
         $this->admin->expects($this->any())
             ->method('setShowGroups')
-            ->will($this->returnCallback(function ($showGroups) use (&$groups) {
-                $groups = $showGroups;
+            ->will($this->returnCallback(function ($showGroups) {
+                $this->groups = $showGroups;
             }));
 
         $this->admin->expects($this->any())
             ->method('reorderShowGroup')
-            ->will($this->returnCallback(function ($group, $keys) use (&$groups) {
-                $showGroups = $groups;
-                $showGroups[$group]['fields'] = array_merge(array_flip($keys), $showGroups[$group]['fields']);
-                $groups = $showGroups;
+            ->will($this->returnCallback(function ($group, $keys) {
+                $this->groups[$group]['fields'] = array_merge(array_flip($keys), $this->groups[$group]['fields']);
             }));
 
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
 
-        // php 5.3 BC
-        $fieldDescription = $this->getFieldDescriptionMock();
-
         $modelManager->expects($this->any())
             ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnCallback(function ($class, $name, array $options = []) use ($fieldDescription) {
-                $fieldDescriptionClone = clone $fieldDescription;
-                $fieldDescriptionClone->setName($name);
-                $fieldDescriptionClone->setOptions($options);
+            ->will($this->returnCallback(function ($class, $name, array $options = []) {
+                $fieldDescription = $this->getFieldDescriptionMock();
+                $fieldDescription->setName($name);
+                $fieldDescription->setOptions($options);
 
-                return $fieldDescriptionClone;
+                return $fieldDescription;
             }));
 
         $this->admin->expects($this->any())
@@ -127,11 +118,11 @@ class ShowMapperTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('hasShowFieldDescription')
-            ->will($this->returnCallback(function ($name) use (&$listShowFields) {
-                if (isset($listShowFields[$name])) {
+            ->will($this->returnCallback(function ($name) {
+                if (isset($this->listShowFields[$name])) {
                     return true;
                 }
-                $listShowFields[$name] = true;
+                $this->listShowFields[$name] = true;
 
                 return false;
             }));

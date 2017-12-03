@@ -111,15 +111,12 @@ class HelperControllerTest extends TestCase
         $validator = $this->createMock(ValidatorInterface::class);
         $this->controller = new HelperController($twig, $pool, $helper, $validator);
 
-        // php 5.3 BC
-        $admin = $this->admin;
-
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($id) use ($admin) {
+            ->will($this->returnCallback(function ($id) {
                 switch ($id) {
                     case 'foo.admin':
-                        return $admin;
+                        return $this->admin;
                 }
             }));
     }

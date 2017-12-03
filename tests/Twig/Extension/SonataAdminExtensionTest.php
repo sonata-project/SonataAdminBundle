@@ -199,17 +199,13 @@ class SonataAdminExtensionTest extends TestCase
             ->with($this->equalTo($this->object))
             ->will($this->returnValue(12345));
 
-        // for php5.3 BC
-        $admin = $this->admin;
-        $adminBar = $this->adminBar;
-
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($id) use ($admin, $adminBar) {
+            ->will($this->returnCallback(function ($id) {
                 if ('sonata_admin_foo_service' == $id) {
-                    return $admin;
+                    return $this->admin;
                 } elseif ('sonata_admin_bar_service' == $id) {
-                    return $adminBar;
+                    return $this->adminBar;
                 }
 
                 return;
@@ -2295,9 +2291,7 @@ EOT
     }
 
     /**
-     * This method generates url part for Twig layout. Allows to keep BC for PHP 5.3.
-     *
-     * Remove this method for next major release only if PHP 5.3 support will be dropped.
+     * This method generates url part for Twig layout.
      *
      * @param array $url
      *
@@ -2305,12 +2299,7 @@ EOT
      */
     private function buildTwigLikeUrl($url)
     {
-        if (defined('PHP_QUERY_RFC3986')) {
-            // add htmlspecialchars because twig add it auto
-            return htmlspecialchars(http_build_query($url, '', '&', PHP_QUERY_RFC3986));
-        }
-
-        return htmlspecialchars(http_build_query($url, '', '&'));
+        return htmlspecialchars(http_build_query($url, '', '&', PHP_QUERY_RFC3986));
     }
 
     private function removeExtraWhitespace($string)
