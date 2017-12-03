@@ -130,32 +130,23 @@ class ExplainAdminCommandTest extends TestCase
             ->method('isChild')
             ->will($this->returnValue(true));
 
-        // php 5.3 BC
-        $adminParent = $this->createMock(AdminInterface::class);
-        $adminParent->expects($this->any())
-            ->method('getCode')
-            ->will($this->returnValue('foo_child'));
-
         $this->admin->expects($this->any())
             ->method('getParent')
-            ->will($this->returnCallback(function () use ($adminParent) {
+            ->will($this->returnCallback(function () {
+                $adminParent = $this->createMock(AdminInterface::class);
+
+                $adminParent->expects($this->any())
+                    ->method('getCode')
+                    ->will($this->returnValue('foo_child'));
+
                 return $adminParent;
             }));
 
         $this->validatorFactory = $this->createMock(MetadataFactoryInterface::class);
 
-        $validator = $this->createMock(ValidatorInterface::class);
-        $validator->expects($this->any())->method('getMetadataFor')->will(
-            $this->returnValue($this->validatorFactory)
-        );
-
-        // php 5.3 BC
-        $admin = $this->admin;
-        $validatorFactory = $this->validatorFactory;
-
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($id) use ($container, $admin, $validator, $validatorFactory) {
+            ->will($this->returnCallback(function ($id) use ($container) {
                 switch ($id) {
                     case 'sonata.admin.pool':
                         $pool = new Pool($container, '', '');
@@ -164,13 +155,10 @@ class ExplainAdminCommandTest extends TestCase
                         return $pool;
 
                     case 'validator.validator_factory':
-                        return $validatorFactory;
-
-                    case 'validator':
-                        return $validator;
+                        return $this->validatorFactory;
 
                     case 'acme.admin.foo':
-                        return $admin;
+                        return $this->admin;
                 }
 
                 return;
@@ -248,11 +236,7 @@ class ExplainAdminCommandTest extends TestCase
 
     public function testExecuteEmptyValidator()
     {
-        if (interface_exists(MetadataInterface::class)) { //sf2.5+
-            $metadata = $this->createMock(MetadataInterface::class);
-        } else {
-            $metadata = $this->createMock(MetadataInterface::class);
-        }
+        $metadata = $this->createMock(MetadataInterface::class);
 
         $this->validatorFactory->expects($this->once())
             ->method('getMetadataFor')

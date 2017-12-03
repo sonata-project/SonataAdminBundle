@@ -67,44 +67,40 @@ class DatagridTest extends TestCase
 
         $this->formTypes = [];
 
-        // php 5.3 BC
-        $formTypes = &$this->formTypes;
-
         $this->formBuilder = $this->getMockBuilder(FormBuilder::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->formBuilder->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($name) use (&$formTypes) {
-                if (isset($formTypes[$name])) {
-                    return $formTypes[$name];
+            ->will($this->returnCallback(function ($name) {
+                if (isset($this->formTypes[$name])) {
+                    return $this->formTypes[$name];
                 }
 
                 return;
             }));
 
-        // php 5.3 BC
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $formFactory = $this->createMock(FormFactoryInterface::class);
-
         $this->formBuilder->expects($this->any())
             ->method('add')
-            ->will($this->returnCallback(function ($name, $type, $options) use (&$formTypes, $eventDispatcher, $formFactory) {
-                $formTypes[$name] = new FormBuilder($name, TestEntity::class, $eventDispatcher, $formFactory, $options);
+            ->will($this->returnCallback(function ($name, $type, $options) {
+                $this->formTypes[$name] = new FormBuilder(
+                    $name,
+                    TestEntity::class,
+                    $this->createMock(EventDispatcherInterface::class),
+                    $this->createMock(FormFactoryInterface::class),
+                    $options
+                );
 
                 return;
             }));
 
-        // php 5.3 BC
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $this->formBuilder->expects($this->any())
             ->method('getForm')
-            ->will($this->returnCallback(function () use ($form) {
-                return $form;
+            ->will($this->returnCallback(function () {
+                return $this->getMockBuilder(Form::class)
+                    ->disableOriginalConstructor()
+                    ->getMock();
             }));
 
         $values = [];

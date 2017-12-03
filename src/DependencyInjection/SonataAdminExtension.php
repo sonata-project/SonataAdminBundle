@@ -150,12 +150,9 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             $loader->load('exporter.xml');
         }
 
-        // NEXT_MAJOR : remove this block
-        if (method_exists(Definition::class, 'setDeprecated')) {
-            $container->getDefinition('sonata.admin.exporter')->setDeprecated(
-                'The service "%service_id%" is deprecated in favor of the "sonata.exporter.exporter" service'
-            );
-        }
+        $container->getDefinition('sonata.admin.exporter')->setDeprecated(
+            'The service "%service_id%" is deprecated in favor of the "sonata.exporter.exporter" service'
+        );
 
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);

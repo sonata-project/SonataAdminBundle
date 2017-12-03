@@ -66,33 +66,31 @@ class BaseGroupedMapperTest extends TestCase
             [$builder, $admin]
         );
 
-        // php 5.3 BC
-        $object = $this;
         $this->tabs = [];
         $this->groups = [];
 
         $this->baseGroupedMapper->expects($this->any())
             ->method('getTabs')
-            ->will($this->returnCallback(function () use ($object) {
-                return $object->getTabs();
+            ->will($this->returnCallback(function () {
+                return $this->getTabs();
             }));
 
         $this->baseGroupedMapper->expects($this->any())
             ->method('setTabs')
-            ->will($this->returnCallback(function (array $tabs) use ($object) {
-                $object->setTabs($tabs);
+            ->will($this->returnCallback(function (array $tabs) {
+                $this->setTabs($tabs);
             }));
 
         $this->baseGroupedMapper->expects($this->any())
             ->method('getGroups')
-            ->will($this->returnCallback(function () use ($object) {
-                return $object->getTestGroups();
+            ->will($this->returnCallback(function () {
+                return $this->getTestGroups();
             }));
 
         $this->baseGroupedMapper->expects($this->any())
             ->method('setGroups')
-            ->will($this->returnCallback(function (array $groups) use ($object) {
-                $object->setTestGroups($groups);
+            ->will($this->returnCallback(function (array $groups) {
+                $this->setTestGroups($groups);
             }));
     }
 

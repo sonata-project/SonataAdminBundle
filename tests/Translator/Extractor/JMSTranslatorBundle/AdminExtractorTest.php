@@ -63,19 +63,15 @@ class AdminExtractorTest extends TestCase
         $this->fooAdmin = $this->getMockForAbstractClass(AdminInterface::class);
         $this->barAdmin = $this->getMockForAbstractClass(AdminInterface::class);
 
-        // php 5.3 BC
-        $fooAdmin = $this->fooAdmin;
-        $barAdmin = $this->barAdmin;
-
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($id) use ($fooAdmin, $barAdmin) {
+            ->will($this->returnCallback(function ($id) {
                 switch ($id) {
                     case 'foo_admin':
-                        return $fooAdmin;
+                        return $this->fooAdmin;
                     case 'bar_admin':
-                        return $barAdmin;
+                        return $this->barAdmin;
                 }
 
                 return;
@@ -115,15 +111,11 @@ class AdminExtractorTest extends TestCase
 
     public function testExtract()
     {
-        // php 5.3 BC
-        $translator = $this->adminExtractor;
-
-        $tester = $this;
         $this->fooAdmin->expects($this->any())
             ->method('getShow')
-            ->will($this->returnCallback(function () use ($translator, $tester) {
-                $tester->assertEquals('foo', $translator->trans('foo', [], 'foo_admin_domain'));
-                $tester->assertEquals('foo', $translator->transChoice('foo', 1, [], 'foo_admin_domain'));
+            ->will($this->returnCallback(function () {
+                $this->assertEquals('foo', $this->adminExtractor->trans('foo', [], 'foo_admin_domain'));
+                $this->assertEquals('foo', $this->adminExtractor->transChoice('foo', 1, [], 'foo_admin_domain'));
 
                 return;
             }));

@@ -229,7 +229,8 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     protected function getClass(FormBuilderInterface $formBuilder)
     {
         foreach ($this->getTypes($formBuilder) as $type) {
-            if (!method_exists($type, 'getName')) { // SF3.0+
+            // NEXT_MAJOR: Remove the else part when dropping support for SF 2.8
+            if (!method_exists($type, 'getName')) {
                 $name = get_class($type);
             } else {
                 $name = $type->getName();

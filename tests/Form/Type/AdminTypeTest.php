@@ -24,7 +24,6 @@ use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Form\Tests\Fixtures\TestExtension;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class AdminTypeTest extends TypeTestCase
 {
@@ -86,10 +85,6 @@ class AdminTypeTest extends TypeTestCase
 
     public function testDotFields()
     {
-        if (!method_exists(PropertyAccessor::class, 'isReadable')) {
-            return $this->markTestSkipped('Testing ancient versions would be more complicated.');
-        }
-
         $parentSubject = new \stdClass();
         $parentSubject->foo = 1;
 

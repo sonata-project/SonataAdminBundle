@@ -23,8 +23,8 @@ class ModelChoiceListTest extends TestCase
 
     public function setUp()
     {
-        if (false === interface_exists(SimpleChoiceList::class)) {
-            $this->markTestSkipped('Test only available for < SF3.0');
+        if (!class_exists(SimpleChoiceList::class)) {
+            $this->markTestSkipped('Test only available for <= SF2.8');
         }
 
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);

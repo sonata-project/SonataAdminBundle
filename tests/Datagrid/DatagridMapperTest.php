@@ -56,36 +56,31 @@ class DatagridMapperTest extends TestCase
 
         $admin = $this->createMock(AdminInterface::class);
 
-        // php 5.3 BC
-        $filter = $this->getMockForAbstractClass(Filter::class);
-
-        $filter->expects($this->any())
-            ->method('getDefaultOptions')
-            ->will($this->returnValue(['foo_default_option' => 'bar_default']));
-
         $datagridBuilder->expects($this->any())
             ->method('addFilter')
-            ->will($this->returnCallback(function ($datagrid, $type, $fieldDescription, $admin) use ($filter) {
+            ->will($this->returnCallback(function ($datagrid, $type, $fieldDescription, $admin) {
                 $fieldDescription->setType($type);
 
-                $filterClone = clone $filter;
-                $filterClone->initialize($fieldDescription->getName(), $fieldDescription->getOptions());
-                $datagrid->addFilter($filterClone);
+                $filter = $this->getMockForAbstractClass(Filter::class);
+
+                $filter->expects($this->any())
+                    ->method('getDefaultOptions')
+                    ->will($this->returnValue(['foo_default_option' => 'bar_default']));
+
+                $filter->initialize($fieldDescription->getName(), $fieldDescription->getOptions());
+                $datagrid->addFilter($filter);
             }));
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
-        // php 5.3 BC
-        $fieldDescription = $this->getFieldDescriptionMock();
-
         $modelManager->expects($this->any())
             ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnCallback(function ($class, $name, array $options = []) use ($fieldDescription) {
-                $fieldDescriptionClone = clone $fieldDescription;
-                $fieldDescriptionClone->setName($name);
-                $fieldDescriptionClone->setOptions($options);
+            ->will($this->returnCallback(function ($class, $name, array $options = []) {
+                $fieldDescription = $this->getFieldDescriptionMock();
+                $fieldDescription->setName($name);
+                $fieldDescription->setOptions($options);
 
-                return $fieldDescriptionClone;
+                return $fieldDescription;
             }));
 
         $admin->expects($this->any())
