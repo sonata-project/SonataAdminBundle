@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
+use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -73,7 +73,7 @@ class ListMapperTest extends TestCase
             ->method('getModelManager')
             ->will($this->returnValue($modelManager));
 
-        $labelTranslatorStrategy = new NoopLabelTranslatorStrategy();
+        $labelTranslatorStrategy = new NativeLabelTranslatorStrategy();
 
         $this->admin->expects($this->any())
             ->method('getLabelTranslatorStrategy')
@@ -125,7 +125,7 @@ class ListMapperTest extends TestCase
 
         $this->assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
         $this->assertSame('fooName', $fieldDescription->getName());
-        $this->assertSame('fooName', $fieldDescription->getOption('label'));
+        $this->assertSame('Foo Name', $fieldDescription->getOption('label'));
         $this->assertSame('Foo Bar', $fieldLabelBar->getOption('label'));
         $this->assertFalse($fieldLabelFalse->getOption('label'));
     }
