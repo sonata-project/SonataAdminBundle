@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Twig;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Twig\GlobalVariables;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @author Ahmet Akbana <ahmetakbana@gmail.com>
@@ -36,7 +37,7 @@ class GlobalVariablesTest extends TestCase
     {
         $this->admin->expects($this->once())
             ->method('generateUrl')
-            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', ['foo'], false)
+            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', ['foo'], UrlGeneratorInterface::ABSOLUTE_PATH)
             ->willReturn(true);
 
         $this->pool->expects($this->once())
@@ -53,7 +54,7 @@ class GlobalVariablesTest extends TestCase
     {
         $this->admin->expects($this->once())
             ->method('generateObjectUrl')
-            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', 'foo', ['bar'], false)
+            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', 'foo', ['bar'], UrlGeneratorInterface::ABSOLUTE_PATH)
             ->willReturn(true);
 
         $this->pool->expects($this->once())
@@ -74,7 +75,7 @@ class GlobalVariablesTest extends TestCase
     {
         $this->admin->expects($this->once())
             ->method('generateUrl')
-            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', ['foo'], false)
+            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', ['foo'], UrlGeneratorInterface::ABSOLUTE_PATH)
             ->willReturn(true);
 
         $this->pool->expects($this->once())
