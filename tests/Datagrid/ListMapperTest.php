@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 
 /**
@@ -53,10 +54,7 @@ class ListMapperTest extends TestCase
                 $list->add($fieldDescription);
             }));
 
-        $modelManager = $this->createMock(
-          
-          
-          ::class);
+        $modelManager = $this->createMock(ModelManagerInterface::class);
 
         // php 5.3 BC
         $fieldDescription = $this->getFieldDescriptionMock();
