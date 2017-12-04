@@ -13,7 +13,9 @@ namespace Sonata\AdminBundle\Tests\Form\ChoiceList;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
+use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 
 class ModelChoiceListTest extends TestCase
 {
@@ -21,11 +23,11 @@ class ModelChoiceListTest extends TestCase
 
     public function setUp()
     {
-        if (false === interface_exists('Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList')) {
+        if (false === interface_exists(SimpleChoiceList::class)) {
             $this->markTestSkipped('Test only available for < SF3.0');
         }
 
-        $this->modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
 
         $this->modelManager->expects($this->any())
             ->method('getIdentifierFieldNames')
@@ -48,7 +50,7 @@ class ModelChoiceListTest extends TestCase
 
         $modelChoice = new ModelChoiceList(
             $this->modelManager,
-            'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo',
+            \Sonata\AdminBundle\Tests\Fixtures\Entity\Foo::class,
             'bar'
         );
 
@@ -66,7 +68,7 @@ class ModelChoiceListTest extends TestCase
 
         $modelChoice = new ModelChoiceList(
             $this->modelManager,
-            'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo',
+            \Sonata\AdminBundle\Tests\Fixtures\Entity\Foo::class,
             null,
             'SELECT foo, baz from foo'
         );
@@ -80,7 +82,7 @@ class ModelChoiceListTest extends TestCase
         $result = [1, 2];
         $modelChoice = new ModelChoiceList(
             $this->modelManager,
-            'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo',
+            \Sonata\AdminBundle\Tests\Fixtures\Entity\Foo::class,
             null,
             null,
             $result

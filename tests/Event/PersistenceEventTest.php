@@ -34,7 +34,7 @@ class PersistenceEventTest extends TestCase
 
     protected function setUp()
     {
-        $this->admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->admin = $this->getMockForAbstractClass(AdminInterface::class);
         $this->object = new \stdClass();
 
         $this->event = new PersistenceEvent($this->admin, $this->object, 'Foo');
@@ -49,7 +49,7 @@ class PersistenceEventTest extends TestCase
     {
         $result = $this->event->getAdmin();
 
-        $this->assertInstanceOf('Sonata\AdminBundle\Admin\AdminInterface', $result);
+        $this->assertInstanceOf(AdminInterface::class, $result);
         $this->assertSame($this->admin, $result);
     }
 

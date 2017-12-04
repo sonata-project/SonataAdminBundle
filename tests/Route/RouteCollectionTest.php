@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Route;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Symfony\Component\Routing\Route;
 
 class RouteCollectionTest extends TestCase
 {
@@ -63,7 +64,7 @@ class RouteCollectionTest extends TestCase
         $routeCollection->add('create');
         $route = $routeCollection->get('create');
 
-        $this->assertInstanceOf('Symfony\Component\Routing\Route', $route);
+        $this->assertInstanceOf(Route::class, $route);
 
         $routeCollection->add('view');
         $routeCollection->add('edit');
@@ -89,7 +90,7 @@ class RouteCollectionTest extends TestCase
 
     public function testGetWithException()
     {
-        $this->expectException('\InvalidArgumentException', 'Element "foo" does not exist.');
+        $this->expectException(\InvalidArgumentException::class, 'Element "foo" does not exist.');
 
         $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerName');
         $routeCollection->get('foo');

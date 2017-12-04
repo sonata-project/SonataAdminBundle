@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
 use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -45,6 +46,6 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
     public function testGetParent()
     {
         $type = new ChoiceFieldMaskType();
-        $this->assertSame('Symfony\Component\Form\Extension\Core\Type\ChoiceType', $type->getParent());
+        $this->assertSame(ChoiceType::class, $type->getParent());
     }
 }

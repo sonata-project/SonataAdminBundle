@@ -12,9 +12,13 @@
 namespace Sonata\AdminBundle\Tests\Mapper;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Builder\BuilderInterface;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\AbstractDummyGroupedMapper;
+use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Test for BaseGroupedMapper.
@@ -33,11 +37,11 @@ class BaseGroupedMapperTest extends TestCase
 
     public function setUp()
     {
-        $admin = $this->getMockBuilder('Sonata\AdminBundle\Admin\AbstractAdmin')
+        $admin = $this->getMockBuilder(AbstractAdmin::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $labelStrategy = $this->createMock('Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface');
+        $labelStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $labelStrategy->expects($this->any())
             ->method('getLabel')
             ->will($this->returnCallback(function ($label) {
@@ -48,14 +52,14 @@ class BaseGroupedMapperTest extends TestCase
             ->method('getLabelTranslatorStrategy')
             ->will($this->returnValue($labelStrategy));
 
-        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $configurationPool = new Pool($container, 'myTitle', 'myLogoTitle');
 
         $admin->expects($this->any())
             ->method('getConfigurationPool')
             ->will($this->returnValue($configurationPool));
 
-        $builder = $this->getMockForAbstractClass('Sonata\AdminBundle\Builder\BuilderInterface');
+        $builder = $this->getMockForAbstractClass(BuilderInterface::class);
 
         $this->baseGroupedMapper = $this->getMockForAbstractClass(
             AbstractDummyGroupedMapper::class,

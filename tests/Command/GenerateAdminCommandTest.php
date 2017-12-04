@@ -12,7 +12,9 @@
 namespace Sonata\AdminBundle\Tests\Command;
 
 use PHPUnit\Framework\TestCase;
+use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
 use Sonata\AdminBundle\Command\GenerateAdminCommand;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\DemoAdminBundle;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,6 +23,7 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -60,7 +63,7 @@ class GenerateAdminCommandTest extends TestCase
         $bundle = new DemoAdminBundle();
         $bundle->setPath($this->tempDirectory);
 
-        $kernel = $this->createMock('Symfony\Component\HttpKernel\KernelInterface');
+        $kernel = $this->createMock(KernelInterface::class);
         $kernel->expects($this->any())
             ->method('getBundles')
             ->will($this->returnValue([$bundle]));
@@ -123,13 +126,13 @@ class GenerateAdminCommandTest extends TestCase
     public function testExecute()
     {
         $this->command->setContainer($this->container);
-        $this->container->set('sonata.admin.manager.foo', $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
+        $this->container->set('sonata.admin.manager.foo', $this->createMock(ModelManagerInterface::class));
 
         $command = $this->application->find('sonata:admin:generate');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             'command' => $command->getName(),
-            'model' => 'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo',
+            'model' => \Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo::class,
             '--bundle' => 'AcmeDemoBundle',
             '--admin' => 'FooAdmin',
             '--controller' => 'FooAdminController',
@@ -171,7 +174,7 @@ class GenerateAdminCommandTest extends TestCase
 
     public function testExecuteWithExceptionNoModelManagers()
     {
-        $this->expectException('RuntimeException', 'There are no model managers registered.');
+        $this->expectException(\RuntimeException::class, 'There are no model managers registered.');
 
         $this->command->setContainer($this->container);
 
@@ -179,7 +182,7 @@ class GenerateAdminCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             'command' => $command->getName(),
-            'model' => 'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo',
+            'model' => \Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo::class,
             '--bundle' => 'AcmeDemoBundle',
             '--admin' => 'FooAdmin',
             '--controller' => 'FooAdminController',
@@ -194,12 +197,12 @@ class GenerateAdminCommandTest extends TestCase
     public function testExecuteInteractive($modelEntity)
     {
         $this->command->setContainer($this->container);
-        $this->container->set('sonata.admin.manager.foo', $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
-        $this->container->set('sonata.admin.manager.bar', $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
+        $this->container->set('sonata.admin.manager.foo', $this->createMock(ModelManagerInterface::class));
+        $this->container->set('sonata.admin.manager.bar', $this->createMock(ModelManagerInterface::class));
 
         $command = $this->application->find('sonata:admin:generate');
 
-        $questionHelper = $this->getMockBuilder('Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper')
+        $questionHelper = $this->getMockBuilder(QuestionHelper::class)
             ->setMethods(['ask'])
             ->getMock();
 
@@ -285,8 +288,8 @@ class GenerateAdminCommandTest extends TestCase
     public function getExecuteInteractiveTests()
     {
         return [
-            ['Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo'],
-            ['Sonata\AdminBundle\Tests\Fixtures\Entity\Foo'],
+            [\Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo::class],
+            [\Sonata\AdminBundle\Tests\Fixtures\Entity\Foo::class],
         ];
     }
 
@@ -296,8 +299,8 @@ class GenerateAdminCommandTest extends TestCase
     public function testValidateManagerType($expected, $managerType)
     {
         $this->command->setContainer($this->container);
-        $this->container->set('sonata.admin.manager.foo', $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
-        $this->container->set('sonata.admin.manager.bar', $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
+        $this->container->set('sonata.admin.manager.foo', $this->createMock(ModelManagerInterface::class));
+        $this->container->set('sonata.admin.manager.bar', $this->createMock(ModelManagerInterface::class));
 
         $this->assertSame($expected, $this->command->validateManagerType($managerType));
     }
@@ -313,35 +316,35 @@ class GenerateAdminCommandTest extends TestCase
     public function testValidateManagerTypeWithException1()
     {
         $this->command->setContainer($this->container);
-        $this->setExpectedException('InvalidArgumentException', 'Invalid manager type "foo". Available manager types are "".');
+        $this->setExpectedException(\InvalidArgumentException::class, 'Invalid manager type "foo". Available manager types are "".');
         $this->command->validateManagerType('foo');
     }
 
     public function testValidateManagerTypeWithException2()
     {
         $this->command->setContainer($this->container);
-        $this->container->set('sonata.admin.manager.foo', $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
-        $this->container->set('sonata.admin.manager.bar', $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
+        $this->container->set('sonata.admin.manager.foo', $this->createMock(ModelManagerInterface::class));
+        $this->container->set('sonata.admin.manager.bar', $this->createMock(ModelManagerInterface::class));
 
-        $this->expectException('InvalidArgumentException', 'Invalid manager type "baz". Available manager types are "foo", "bar".');
+        $this->expectException(\InvalidArgumentException::class, 'Invalid manager type "baz". Available manager types are "foo", "bar".');
         $this->command->validateManagerType('baz');
     }
 
     public function testValidateManagerTypeWithException3()
     {
-        $this->expectException('InvalidArgumentException', 'Invalid manager type "baz". Available manager types are "".');
+        $this->expectException(\InvalidArgumentException::class, 'Invalid manager type "baz". Available manager types are "".');
         $this->command->validateManagerType('baz');
     }
 
     public function testAnswerUpdateServicesWithNo()
     {
-        $this->container->set('sonata.admin.manager.foo', $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface'));
+        $this->container->set('sonata.admin.manager.foo', $this->createMock(ModelManagerInterface::class));
 
-        $modelEntity = 'Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo';
+        $modelEntity = \Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo::class;
 
         $command = $this->application->find('sonata:admin:generate');
 
-        $questionHelper = $this->getMockBuilder('Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper')
+        $questionHelper = $this->getMockBuilder(QuestionHelper::class)
             ->setMethods(['ask'])
             ->getMock();
 

@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Tests\Menu\Integration;
 
 use Knp\Menu\ItemInterface;
+use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Renderer\TwigRenderer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
@@ -52,7 +53,7 @@ abstract class BaseMenuTest extends TestCase
         $this->renderer = new TwigRenderer(
             $this->environment,
             $this->getTemplate(),
-            $this->getMockForAbstractClass('Knp\Menu\Matcher\MatcherInterface')
+            $this->getMockForAbstractClass(MatcherInterface::class)
         );
 
         return $this->renderer->render($item, $options);

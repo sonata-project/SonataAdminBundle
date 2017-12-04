@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Tests\Generator;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Generator\AdminGenerator;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\ModelAdmin;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
@@ -57,11 +58,11 @@ class AdminGeneratorTest extends TestCase
     {
         $this->adminGenerator->generate($this->bundleMock, 'ModelAdmin', 'Model');
         $file = $this->adminGenerator->getFile();
-        $this->assertSame('Sonata\AdminBundle\Tests\Fixtures\Admin\ModelAdmin', $this->adminGenerator->getClass());
+        $this->assertSame(ModelAdmin::class, $this->adminGenerator->getClass());
         $this->assertSame('ModelAdmin.php', basename($file));
         $this->assertFileEquals(__DIR__.'/../Fixtures/Admin/ModelAdmin.php', $file);
 
-        $this->expectException('\RuntimeException', 'already exists');
+        $this->expectException(\RuntimeException::class, 'already exists');
 
         $this->adminGenerator->generate($this->bundleMock, 'ModelAdmin', 'Model');
     }
@@ -71,7 +72,7 @@ class AdminGeneratorTest extends TestCase
      */
     private function createModelManagerMock()
     {
-        $modelManagerMock = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManagerMock = $this->getMockForAbstractClass(ModelManagerInterface::class);
         $modelManagerMock
             ->expects($this->any())
             ->method('getExportFields')
@@ -87,7 +88,7 @@ class AdminGeneratorTest extends TestCase
      */
     private function createBundleMock()
     {
-        $bundleMock = $this->getMockForAbstractClass('Symfony\Component\HttpKernel\Bundle\BundleInterface');
+        $bundleMock = $this->getMockForAbstractClass(BundleInterface::class);
         $bundleMock
             ->expects($this->any())
             ->method('getNamespace')

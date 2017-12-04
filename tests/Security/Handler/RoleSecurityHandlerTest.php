@@ -36,8 +36,8 @@ class RoleSecurityHandlerTest extends TestCase
 
     public function setUp()
     {
-        $this->authorizationChecker = $this->getMockForAbstractClass('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
-        $this->admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->authorizationChecker = $this->getMockForAbstractClass(AuthorizationCheckerInterface::class);
+        $this->admin = $this->getMockForAbstractClass(AdminInterface::class);
     }
 
     /**
@@ -180,7 +180,7 @@ class RoleSecurityHandlerTest extends TestCase
 
     public function testIsGrantedWithException()
     {
-        $this->expectException('RuntimeException', 'Something is wrong');
+        $this->expectException(\RuntimeException::class, 'Something is wrong');
 
         $this->admin->expects($this->any())
             ->method('getCode')
@@ -227,6 +227,6 @@ class RoleSecurityHandlerTest extends TestCase
      */
     private function getSonataAdminObject()
     {
-        return $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        return $this->getMockForAbstractClass(AdminInterface::class);
     }
 }

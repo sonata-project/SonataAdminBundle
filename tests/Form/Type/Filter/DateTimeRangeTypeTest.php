@@ -14,12 +14,13 @@ namespace Sonata\AdminBundle\Tests\Form\Type;
 use Sonata\AdminBundle\Form\Type\Filter\DateTimeRangeType;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class DateTimeRangeTypeTest extends TypeTestCase
 {
     public function testGetDefaultOptions()
     {
-        $stub = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
+        $stub = $this->getMockForAbstractClass(TranslatorInterface::class);
 
         $type = new DateTimeRangeType($stub);
 

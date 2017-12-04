@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Datagrid\SimplePager;
 
 /**
@@ -26,7 +27,7 @@ class SimplePagerTest extends TestCase
     public function setUp()
     {
         $this->pager = new SimplePager(10, 2);
-        $this->proxyQuery = $this->getMockBuilder('Sonata\AdminBundle\Datagrid\ProxyQueryInterface')
+        $this->proxyQuery = $this->getMockBuilder(ProxyQueryInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -116,7 +117,7 @@ class SimplePagerTest extends TestCase
 
     public function testInitNoQuery()
     {
-        $this->setExpectedException('RuntimeException');
+        $this->setExpectedException(\RuntimeException::class);
         $this->pager->init();
     }
 }

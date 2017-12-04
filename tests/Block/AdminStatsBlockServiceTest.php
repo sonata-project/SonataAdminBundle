@@ -29,7 +29,7 @@ class AdminStatsBlockServiceTest extends AbstractBlockServiceTestCase
     {
         parent::setUp();
 
-        $this->pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')->disableOriginalConstructor()->getMock();
+        $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
     }
 
     public function testDefaultSettings()

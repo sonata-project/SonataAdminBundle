@@ -24,9 +24,7 @@ class AdminPermissionMapTest extends TestCase
 
     public function testGetMaskReturnsAnArrayOfMasks()
     {
-        $reflection = new \ReflectionClass(
-            'Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap'
-        );
+        $reflection = new \ReflectionClass(AdminPermissionMap::class);
         foreach ($reflection->getConstants() as $permission) {
             $masks = $this->permissionMap->getMasks(
                 $permission,
@@ -52,9 +50,7 @@ class AdminPermissionMapTest extends TestCase
     public function permissionProvider()
     {
         $dataSet = [];
-        $reflection = new \ReflectionClass(
-            'Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap'
-        );
+        $reflection = new \ReflectionClass(AdminPermissionMap::class);
 
         foreach ($reflection->getConstants() as $permission) {
             $dataSet[$permission] = [true, $permission];

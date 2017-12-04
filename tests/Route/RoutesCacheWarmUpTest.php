@@ -12,6 +12,8 @@
 namespace Sonata\AdminBundle\Tests\Route;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Route\RoutesCache;
 use Sonata\AdminBundle\Route\RoutesCacheWarmUp;
 
 class RoutesCacheWarmUpTest extends TestCase
@@ -23,8 +25,8 @@ class RoutesCacheWarmUpTest extends TestCase
 
     public function setUp()
     {
-        $routesCache = $this->getMockBuilder('Sonata\AdminBundle\Route\RoutesCache')->disableOriginalConstructor()->getMock();
-        $pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')->disableOriginalConstructor()->getMock();
+        $routesCache = $this->getMockBuilder(RoutesCache::class)->disableOriginalConstructor()->getMock();
+        $pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
 
         $this->routesCacheWarmUp = new RoutesCacheWarmUp($routesCache, $pool);
     }

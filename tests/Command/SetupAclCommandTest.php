@@ -12,11 +12,13 @@
 namespace Sonata\AdminBundle\Tests\Command;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\SetupAclCommand;
 use Sonata\AdminBundle\Util\AdminAclManipulatorInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -28,9 +30,9 @@ class SetupAclCommandTest extends TestCase
         $application = new Application();
         $command = new SetupAclCommand();
 
-        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
-        $aclManipulator = $this->createMock('Sonata\AdminBundle\Util\AdminAclManipulatorInterface');
+        $container = $this->createMock(ContainerInterface::class);
+        $admin = $this->createMock(AdminInterface::class);
+        $aclManipulator = $this->createMock(AdminAclManipulatorInterface::class);
 
         $container->expects($this->any())
             ->method('get')
@@ -68,7 +70,7 @@ class SetupAclCommandTest extends TestCase
         $application = new Application();
         $command = new SetupAclCommand();
 
-        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->createMock(ContainerInterface::class);
 
         $container->expects($this->any())
             ->method('get')
@@ -99,8 +101,8 @@ class SetupAclCommandTest extends TestCase
         $application = new Application();
         $command = new SetupAclCommand();
 
-        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $container = $this->createMock(ContainerInterface::class);
+        $admin = $this->createMock(AdminInterface::class);
 
         $container->expects($this->any())
             ->method('get')

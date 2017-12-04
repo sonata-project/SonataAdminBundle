@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 
@@ -124,7 +125,7 @@ class Datagrid implements DatagridInterface
             $this->formBuilder->add($filter->getFormName(), $type, $options);
         }
 
-        $hiddenType = 'Symfony\Component\Form\Extension\Core\Type\HiddenType';
+        $hiddenType = HiddenType::class;
 
         $this->formBuilder->add('_sort_by', $hiddenType);
         $this->formBuilder->get('_sort_by')->addViewTransformer(new CallbackTransformer(
@@ -152,7 +153,7 @@ class Datagrid implements DatagridInterface
 
         if (isset($this->values['_sort_by'])) {
             if (!$this->values['_sort_by'] instanceof FieldDescriptionInterface) {
-                throw new UnexpectedTypeException($this->values['_sort_by'], 'FieldDescriptionInterface');
+                throw new UnexpectedTypeException($this->values['_sort_by'], FieldDescriptionInterface::class);
             }
 
             if ($this->values['_sort_by']->isSortable()) {

@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Mapper;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Builder\BuilderInterface;
 use Sonata\AdminBundle\Mapper\BaseMapper;
 
 /**
@@ -34,10 +35,10 @@ class BaseMapperTest extends TestCase
 
     public function setUp()
     {
-        $this->admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
-        $builder = $this->getMockForAbstractClass('Sonata\AdminBundle\Builder\BuilderInterface');
+        $this->admin = $this->getMockForAbstractClass(AdminInterface::class);
+        $builder = $this->getMockForAbstractClass(BuilderInterface::class);
 
-        $this->baseMapper = $this->getMockForAbstractClass('Sonata\AdminBundle\Mapper\BaseMapper', [$builder, $this->admin]);
+        $this->baseMapper = $this->getMockForAbstractClass(BaseMapper::class, [$builder, $this->admin]);
     }
 
     public function testGetAdmin()

@@ -13,7 +13,9 @@ namespace Sonata\AdminBundle\Form;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
+use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType as SymfonyCollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -79,8 +81,8 @@ class FormMapper extends BaseGroupedMapper
 
         // change `collection` to `sonata_type_native_collection` form type to
         // avoid BC break problems
-        if ('collection' === $type || 'Symfony\Component\Form\Extension\Core\Type\CollectionType' === $type) {
-            $type = 'Sonata\AdminBundle\Form\Type\CollectionType';
+        if ('collection' === $type || SymfonyCollectionType::class === $type) {
+            $type = CollectionType::class;
         }
 
         $label = $fieldName;

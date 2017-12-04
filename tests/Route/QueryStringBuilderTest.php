@@ -12,6 +12,8 @@
 namespace Sonata\AdminBundle\Tests\Route;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Route\QueryStringBuilder;
 use Sonata\AdminBundle\Route\RouteCollection;
 
@@ -22,10 +24,10 @@ class QueryStringBuilderTest extends TestCase
      */
     public function testBuild(array $expectedRoutes, $hasReader, $aclEnabled, $getParent)
     {
-        $audit = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\AuditManagerInterface');
+        $audit = $this->getMockForAbstractClass(AuditManagerInterface::class);
         $audit->expects($this->once())->method('hasReader')->will($this->returnValue($hasReader));
 
-        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->once())->method('getParent')->will($this->returnValue($getParent));
         $admin->expects($this->any())->method('getChildren')->will($this->returnValue([]));
         $admin->expects($this->once())->method('isAclEnabled')->will($this->returnValue($aclEnabled));
@@ -49,13 +51,13 @@ class QueryStringBuilderTest extends TestCase
             [['list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'history_compare_revisions', 'acl'], true, true, null],
             [['list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'acl'], false, true, null],
             [['list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'history_compare_revisions'], true, false, null],
-            [['list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'history_compare_revisions', 'acl'], true, true, $this->createMock('Sonata\AdminBundle\Admin\AdminInterface')],
+            [['list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'history_compare_revisions', 'acl'], true, true, $this->createMock(AdminInterface::class)],
         ];
     }
 
     public function testBuildWithChildren()
     {
-        $audit = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\AuditManagerInterface');
+        $audit = $this->getMockForAbstractClass(AuditManagerInterface::class);
         $audit->expects($this->once())->method('hasReader')->will($this->returnValue(true));
 
         $childRouteCollection1 = new RouteCollection('child1.Code.Route', 'child1RouteName', 'child1RoutePattern', 'child1ControllerName');
@@ -65,13 +67,13 @@ class QueryStringBuilderTest extends TestCase
         $childRouteCollection2 = new RouteCollection('child2.Code.Route', 'child2RouteName', 'child2RoutePattern', 'child2ControllerName');
         $childRouteCollection2->add('baz');
 
-        $child1 = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $child1 = $this->getMockForAbstractClass(AdminInterface::class);
         $child1->expects($this->once())->method('getRoutes')->will($this->returnValue($childRouteCollection1));
 
-        $child2 = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $child2 = $this->getMockForAbstractClass(AdminInterface::class);
         $child2->expects($this->once())->method('getRoutes')->will($this->returnValue($childRouteCollection2));
 
-        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->once())->method('getParent')->will($this->returnValue(null));
         $admin->expects($this->once())->method('getChildren')->will($this->returnValue([$child1, $child2]));
         $admin->expects($this->once())->method('isAclEnabled')->will($this->returnValue(true));

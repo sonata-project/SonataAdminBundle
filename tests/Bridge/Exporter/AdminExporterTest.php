@@ -12,7 +12,9 @@
 namespace Sonata\AdminBundle\Tests\Bridge\Exporter;
 
 use Exporter\Exporter;
+use Exporter\Writer\TypedWriterInterface;
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 
 class AdminExporterTest extends TestCase
@@ -32,7 +34,7 @@ class AdminExporterTest extends TestCase
     {
         $writers = [];
         foreach ($globalFormats as $exportFormat) {
-            $writer = $this->createMock('Exporter\Writer\TypedWriterInterface');
+            $writer = $this->createMock(TypedWriterInterface::class);
             $writer->expects($this->once())
                 ->method('getFormat')
                 ->will($this->returnValue($exportFormat));
@@ -40,7 +42,7 @@ class AdminExporterTest extends TestCase
         }
 
         $exporter = new Exporter($writers);
-        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())
             ->method('getExportFormats')
             ->will($this->returnValue($adminFormats));
@@ -50,7 +52,7 @@ class AdminExporterTest extends TestCase
 
     public function testGetExportFilename()
     {
-        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())
             ->method('getClass')
             ->will($this->returnValue('MyProject\AppBundle\Model\MyClass'));
