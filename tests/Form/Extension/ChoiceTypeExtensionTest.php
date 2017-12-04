@@ -14,79 +14,60 @@ namespace Sonata\AdminBundle\Tests\Form\Extension;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension;
 use Sonata\CoreBundle\Form\Extension\DependencyInjectionExtension;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Forms;
 
 class ChoiceTypeExtensionTest extends TestCase
 {
     protected function setup()
     {
-        if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
-            $container->expects($this->any())->method('has')->will($this->returnValue(true));
-            $container->expects($this->any())->method('get')
-                ->with($this->equalTo('sonata.admin.form.choice_extension'))
-                ->will($this->returnValue(new ChoiceTypeExtension()));
+        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $container->expects($this->any())->method('has')->will($this->returnValue(true));
+        $container->expects($this->any())->method('get')
+            ->with($this->equalTo('sonata.admin.form.choice_extension'))
+            ->will($this->returnValue(new ChoiceTypeExtension()));
 
-            $typeServiceIds = [];
-            $typeExtensionServiceIds = [];
-            $guesserServiceIds = [];
-            $mappingTypes = [
-                'choice' => 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
-            ];
-            $extensionTypes = [
-                'choice' => [
-                    'sonata.admin.form.choice_extension',
-                ],
-            ];
+        $typeServiceIds = [];
+        $typeExtensionServiceIds = [];
+        $guesserServiceIds = [];
+        $mappingTypes = [
+            'choice' => ChoiceType::class,
+        ];
+        $extensionTypes = [
+            'choice' => [
+                'sonata.admin.form.choice_extension',
+            ],
+        ];
 
-            $dependency = new DependencyInjectionExtension(
-                $container,
-                $typeServiceIds,
-                $typeExtensionServiceIds,
-                $guesserServiceIds,
-                $mappingTypes,
-                $extensionTypes
-            );
+        $dependency = new DependencyInjectionExtension(
+            $container,
+            $typeServiceIds,
+            $typeExtensionServiceIds,
+            $guesserServiceIds,
+            $mappingTypes,
+            $extensionTypes
+        );
 
-            $this->factory = Forms::createFormFactoryBuilder()
-                ->addExtension($dependency)
-                ->getFormFactory();
-        } else {
-            $this->factory = Forms::createFormFactoryBuilder()
-                  ->addTypeExtension(new ChoiceTypeExtension())
-                  ->getFormFactory();
-        }
+        $this->factory = Forms::createFormFactoryBuilder()
+            ->addExtension($dependency)
+            ->getFormFactory();
     }
 
     public function testExtendedType()
     {
         $extension = new ChoiceTypeExtension();
 
-        /*
-         * NEXT_MAJOR: Remove when dropping Symfony <2.8 support. It should
-         * simply be:
-         *
-         * $this->assertSame(
-         *     'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
-         *     $extension->getExtendedType()
-         * );
-         */
-        if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $this->assertSame(
-                'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
-                $extension->getExtendedType()
-            );
-        } else {
-            $this->assertSame('choice', $extension->getExtendedType());
-        }
+        $this->assertSame(
+            ChoiceType::class,
+            $extension->getExtendedType()
+        );
     }
 
     public function testDefaultOptionsWithSortable()
     {
-        $name = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice';
-
         $view = $this->factory
-            ->create($name, null, [
+            ->create(ChoiceType::class, null, [
                 'sortable' => true,
             ])
             ->createView();
@@ -97,10 +78,8 @@ class ChoiceTypeExtensionTest extends TestCase
 
     public function testDefaultOptionsWithoutSortable()
     {
-        $name = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice';
-
         $view = $this->factory
-            ->create($name, null, [])
+            ->create(ChoiceType::class, null, [])
             ->createView();
 
         $this->assertTrue(isset($view->vars['sortable']));

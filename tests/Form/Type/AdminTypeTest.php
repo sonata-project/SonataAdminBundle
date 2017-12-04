@@ -12,11 +12,19 @@
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
 use Prophecy\Argument\Token\AnyValueToken;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
 use Sonata\AdminBundle\Form\Type\AdminType;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
+use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Form\Tests\Fixtures\TestExtension;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class AdminTypeTest extends TypeTestCase
 {
@@ -26,11 +34,7 @@ class AdminTypeTest extends TypeTestCase
 
         $optionResolver = new OptionsResolver();
 
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $type->setDefaultOptions($optionResolver);
-        } else {
-            $type->configureOptions($optionResolver);
-        }
+        $type->configureOptions($optionResolver);
 
         $options = $optionResolver->resolve();
 
@@ -44,31 +48,23 @@ class AdminTypeTest extends TypeTestCase
 
     public function testSubmitValidData()
     {
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $this->markTestSkipped('Testing ancient versions would be more complicated.');
-
-            return;
-        }
-        $parentAdmin = $this->prophesize('Sonata\AdminBundle\Admin\AdminInterface');
-        $parentField = $this->prophesize('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $parentAdmin = $this->prophesize(AdminInterface::class);
+        $parentField = $this->prophesize(FieldDescriptionInterface::class);
         $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
 
-        $modelManager = $this->prophesize('Sonata\AdminBundle\Model\ModelManagerInterface');
-        $modelManager->modelReverseTransform(
-            'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo',
-            []
-        )->shouldBeCalled();
+        $modelManager = $this->prophesize(ModelManagerInterface::class);
+        $modelManager->modelReverseTransform(Foo::class, [])->shouldBeCalled();
 
-        $admin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
+        $admin = $this->prophesize(AbstractAdmin::class);
         $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(false);
         $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
         $admin->hasAccess('delete')->shouldBeCalled()->willReturn(false);
         $admin->setSubject(null)->shouldBeCalled();
         $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
         $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);
-        $admin->getClass()->shouldBeCalled()->willReturn('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo');
+        $admin->getClass()->shouldBeCalled()->willReturn(Foo::class);
 
-        $field = $this->prophesize('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $field = $this->prophesize(FieldDescriptionInterface::class);
         $field->getAssociationAdmin()->shouldBeCalled()->willReturn($admin->reveal());
         $field->getAdmin()->shouldBeCalled();
         $field->getName()->shouldBeCalled();
@@ -78,7 +74,7 @@ class AdminTypeTest extends TypeTestCase
         $formData = [];
 
         $form = $this->factory->create(
-            'Sonata\AdminBundle\Form\Type\AdminType',
+            AdminType::class,
             null,
             [
                 'sonata_field_description' => $field->reveal(),
@@ -90,29 +86,29 @@ class AdminTypeTest extends TypeTestCase
 
     public function testDotFields()
     {
-        if (!method_exists('Symfony\Component\PropertyAccess\PropertyAccessor', 'isReadable')) {
+        if (!method_exists(PropertyAccessor::class, 'isReadable')) {
             return $this->markTestSkipped('Testing ancient versions would be more complicated.');
         }
 
         $parentSubject = new \stdClass();
         $parentSubject->foo = 1;
 
-        $parentAdmin = $this->prophesize('Sonata\AdminBundle\Admin\AdminInterface');
+        $parentAdmin = $this->prophesize(AdminInterface::class);
         $parentAdmin->getSubject()->shouldBeCalled()->willReturn($parentSubject);
-        $parentField = $this->prophesize('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $parentField = $this->prophesize(FieldDescriptionInterface::class);
         $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
 
-        $modelManager = $this->prophesize('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->prophesize(ModelManagerInterface::class);
 
-        $admin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
+        $admin = $this->prophesize(AbstractAdmin::class);
         $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(false);
         $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
         $admin->setSubject(1)->shouldBeCalled();
         $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
         $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);
-        $admin->getClass()->shouldBeCalled()->willReturn('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo');
+        $admin->getClass()->shouldBeCalled()->willReturn(Foo::class);
 
-        $field = $this->prophesize('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $field = $this->prophesize(FieldDescriptionInterface::class);
         $field->getAssociationAdmin()->shouldBeCalled()->willReturn($admin->reveal());
         $field->getFieldName()->shouldBeCalled()->willReturn('foo');
 
@@ -125,7 +121,7 @@ class AdminTypeTest extends TypeTestCase
                 'delete' => false, // not needed
                 'property_path' => 'foo', // actual test case
             ]);
-        } catch (\Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException $exception) {
+        } catch (NoSuchPropertyException $exception) {
             $this->fail($exception->getMessage());
         }
     }
@@ -133,7 +129,7 @@ class AdminTypeTest extends TypeTestCase
     protected function getExtensions()
     {
         $extensions = parent::getExtensions();
-        $guesser = $this->prophesize('Symfony\Component\Form\FormTypeGuesserInterface')->reveal();
+        $guesser = $this->prophesize(FormTypeGuesserInterface::class)->reveal();
         $extension = new TestExtension($guesser);
 
         $extension->addTypeExtension(new FormTypeFieldExtension([], []));

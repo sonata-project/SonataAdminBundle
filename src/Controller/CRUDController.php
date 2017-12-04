@@ -24,7 +24,9 @@ use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Command\DebugCommand;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -37,17 +39,42 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
+// BC for Symfony < 3.3 where this trait does not exist
+// NEXT_MAJOR: Remove the polyfill and inherit from \Symfony\Bundle\FrameworkBundle\Controller\Controller again
+if (!trait_exists(ControllerTrait::class)) {
+    require_once __DIR__.'/PolyfillControllerTrait.php';
+}
+
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class CRUDController extends Controller
+class CRUDController implements ContainerAwareInterface
 {
+    // NEXT_MAJOR: Don't use these traits anymore (inherit from Controller instead)
+    use ControllerTrait, ContainerAwareTrait {
+        ControllerTrait::render as originalRender;
+    }
+
     /**
      * The related Admin class.
      *
      * @var AdminInterface
      */
     protected $admin;
+
+    // BC for Symfony 3.3 where ControllerTrait exists but does not contain get() and has() methods.
+    public function __call($method, $arguments)
+    {
+        if (in_array($method, ['get', 'has'])) {
+            return call_user_func_array([$this->container, $method], $arguments);
+        }
+
+        if (method_exists($this, 'proxyToControllerClass')) {
+            return $this->proxyToControllerClass($method, $arguments);
+        }
+
+        throw new \LogicException('Call to undefined method '.__CLASS__.'::'.$method);
+    }
 
     /**
      * Sets the Container associated with this Controller.
@@ -62,7 +89,31 @@ class CRUDController extends Controller
     }
 
     /**
-     * Adds mandatory parameters before calling render().
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @see renderWithExtraParams()
+     *
+     * @param string   $view       The view name
+     * @param array    $parameters An array of parameters to pass to the view
+     * @param Response $response   A response instance
+     *
+     * @return Response A Response instance
+     *
+     * @deprecated since version 3.27, to be removed in 4.0. Use Sonata\AdminBundle\Controller\CRUDController instead.
+     */
+    public function render($view, array $parameters = [], Response $response = null)
+    {
+        return $this->renderWithExtraParams($view, $parameters, $response);
+    }
+
+    /**
+     * Renders a view while passing mandatory parameters on to the template.
+     *
+     * @param string   $view       The view name
+     * @param array    $parameters An array of parameters to pass to the view
+     * @param Response $response   A response instance
+     *
+     * @return Response A Response instance
      */
     public function renderWithExtraParams($view, array $parameters = [], Response $response = null)
     {
@@ -79,7 +130,8 @@ class CRUDController extends Controller
 
         $parameters['admin_pool'] = $this->get('sonata.admin.pool');
 
-        return $this->render($view, $parameters, $response);
+        //NEXT_MAJOR: Remove method alias and use $this->render() directly.
+        return $this->originalRender($view, $parameters, $response);
     }
 
     /**
@@ -150,10 +202,7 @@ class CRUDController extends Controller
             );
         }
 
-        return new RedirectResponse($this->admin->generateUrl(
-            'list',
-            ['filter' => $this->admin->getFilterParameters()]
-        ));
+        return $this->redirectToList();
     }
 
     /**
@@ -422,12 +471,7 @@ class CRUDController extends Controller
                 $this->trans($nonRelevantMessage, [], 'SonataAdminBundle')
             );
 
-            return new RedirectResponse(
-                $this->admin->generateUrl(
-                    'list',
-                    ['filter' => $this->admin->getFilterParameters()]
-                )
-            );
+            return $this->redirectToList();
         }
 
         $askConfirmation = isset($batchActions[$action]['ask_confirmation']) ?
@@ -456,7 +500,7 @@ class CRUDController extends Controller
 
         // execute the action, batchActionXxxxx
         $finalAction = sprintf('batchAction%s', $camelizedAction);
-        if (!is_callable([$this, $finalAction])) {
+        if (!method_exists($this, $finalAction)) {
             throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', get_class($this), $finalAction));
         }
 
@@ -475,11 +519,7 @@ class CRUDController extends Controller
                 $this->trans('flash_batch_no_elements_processed', [], 'SonataAdminBundle')
             );
 
-            return new RedirectResponse(
-                $this->admin->generateUrl('list', [
-                    'filter' => $this->admin->getFilterParameters(),
-                ])
-            );
+            return $this->redirectToList();
         }
 
         return call_user_func([$this, $finalAction], $query, $request);
@@ -960,11 +1000,19 @@ class CRUDController extends Controller
      */
     public function getRequest()
     {
-        if ($this->container->has('request_stack')) {
-            return $this->container->get('request_stack')->getCurrentRequest();
-        }
+        return $this->container->get('request_stack')->getCurrentRequest();
+    }
 
-        return $this->container->get('request');
+    /**
+     * Gets a container configuration parameter by its name.
+     *
+     * @param string $name The parameter name
+     *
+     * @return mixed
+     */
+    protected function getParameter($name)
+    {
+        return $this->container->getParameter($name);
     }
 
     /**
@@ -1113,10 +1161,10 @@ class CRUDController extends Controller
         $url = false;
 
         if (null !== $request->get('btn_update_and_list')) {
-            $url = $this->admin->generateUrl('list');
+            return $this->redirectToList();
         }
         if (null !== $request->get('btn_create_and_list')) {
-            $url = $this->admin->generateUrl('list');
+            return $this->redirectToList();
         }
 
         if (null !== $request->get('btn_create_and_create')) {
@@ -1128,7 +1176,7 @@ class CRUDController extends Controller
         }
 
         if ('DELETE' === $this->getRestMethod()) {
-            $url = $this->admin->generateUrl('list');
+            return $this->redirectToList();
         }
 
         if (!$url) {
@@ -1142,10 +1190,26 @@ class CRUDController extends Controller
         }
 
         if (!$url) {
-            $url = $this->admin->generateUrl('list');
+            return $this->redirectToList();
         }
 
         return new RedirectResponse($url);
+    }
+
+    /**
+     * Redirects the user to the list view.
+     *
+     * @return RedirectResponse
+     */
+    final protected function redirectToList()
+    {
+        $parameters = [];
+
+        if ($filter = $this->admin->getFilterParameters()) {
+            $parameters['filter'] = $filter;
+        }
+
+        return $this->redirect($this->admin->generateUrl('list', $parameters));
     }
 
     /**
@@ -1268,10 +1332,8 @@ class CRUDController extends Controller
         $request = $this->getRequest();
         $token = $request->request->get('_sonata_csrf_token', false);
 
-        if ($this->container->has('security.csrf.token_manager')) { // SF3.0
+        if ($this->container->has('security.csrf.token_manager')) {
             $valid = $this->container->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($intention, $token));
-        } elseif ($this->container->has('form.csrf_provider')) { // < SF3.0
-            $valid = $this->container->get('form.csrf_provider')->isCsrfTokenValid($intention, $token);
         } else {
             return;
         }
@@ -1304,11 +1366,6 @@ class CRUDController extends Controller
     {
         if ($this->container->has('security.csrf.token_manager')) {
             return $this->container->get('security.csrf.token_manager')->getToken($intention)->getValue();
-        }
-
-        // TODO: Remove it when bumping requirements to SF 2.4+
-        if ($this->container->has('form.csrf_provider')) {
-            return $this->container->get('form.csrf_provider')->generateCsrfToken($intention);
         }
 
         return false;

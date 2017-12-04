@@ -11,7 +11,6 @@
 
 namespace Sonata\AdminBundle\Form\Type;
 
-use Doctrine\Common\Collections\Collection;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
@@ -58,28 +57,15 @@ class AdminType extends AbstractType
             try {
                 $parentSubject = $admin->getParentFieldDescription()->getAdmin()->getSubject();
                 if (null !== $parentSubject && false !== $parentSubject) {
-                    // for PropertyAccessor < 2.5
-                    // NEXT_MAJOR: remove this code for old PropertyAccessor after dropping support for Symfony 2.3
-                    if (!method_exists($p, 'isReadable')) {
-                        $subjectCollection = $p->getValue(
-                            $parentSubject,
-                            $this->getFieldDescription($options)->getFieldName()
-                        );
-                        if ($subjectCollection instanceof Collection) {
-                            $subject = $subjectCollection->get(trim($options['property_path'], '[]'));
-                        }
+                    // this check is to work around duplication issue in property path
+                    // https://github.com/sonata-project/SonataAdminBundle/issues/4425
+                    if ($this->getFieldDescription($options)->getFieldName() === $options['property_path']) {
+                        $path = $options['property_path'];
                     } else {
-                        // this check is to work around duplication issue in property path
-                        // https://github.com/sonata-project/SonataAdminBundle/issues/4425
-                        if ($this->getFieldDescription($options)->getFieldName() === $options['property_path']) {
-                            $path = $options['property_path'];
-                        } else {
-                            $path = $this->getFieldDescription($options)->getFieldName().$options['property_path'];
-                        }
-
-                        // for PropertyAccessor >= 2.5
-                        $subject = $p->getValue($parentSubject, $path);
+                        $path = $this->getFieldDescription($options)->getFieldName().$options['property_path'];
                     }
+
+                    $subject = $p->getValue($parentSubject, $path);
                     $builder->setData($subject);
                 }
             } catch (NoSuchIndexException $e) {

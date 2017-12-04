@@ -62,12 +62,7 @@ class ChoiceFieldMaskType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        // NEXT_MAJOR: Remove conditional parent call when bumping requirements to SF 2.7+
-        if (method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
-            parent::configureOptions($resolver);
-        } else {
-            parent::setDefaultOptions($resolver);
-        }
+        parent::configureOptions($resolver);
 
         $resolver->setDefaults([
             'map' => [],

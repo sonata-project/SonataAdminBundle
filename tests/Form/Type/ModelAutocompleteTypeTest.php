@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -31,20 +32,16 @@ class ModelAutocompleteTypeTest extends TypeTestCase
 
     public function testGetDefaultOptions()
     {
-        $modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
         $optionResolver = new OptionsResolver();
 
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $this->type->setDefaultOptions($optionResolver);
-        } else {
-            $this->type->configureOptions($optionResolver);
-        }
+        $this->type->configureOptions($optionResolver);
 
         $options = $optionResolver->resolve(['model_manager' => $modelManager, 'class' => 'Foo', 'property' => 'bar']);
 
         $this->assertSame([], $options['attr']);
         $this->assertFalse($options['compound']);
-        $this->assertInstanceOf('Sonata\AdminBundle\Model\ModelManagerInterface', $options['model_manager']);
+        $this->assertInstanceOf(ModelManagerInterface::class, $options['model_manager']);
         $this->assertSame($modelManager, $options['model_manager']);
         $this->assertSame('Foo', $options['class']);
         $this->assertSame('bar', $options['property']);

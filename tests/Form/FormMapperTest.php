@@ -12,24 +12,33 @@
 namespace Sonata\AdminBundle\Tests\Form;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\BaseFieldDescription;
+use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
+use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\ResolvedFormTypeInterface;
 
 class FormMapperTest extends TestCase
 {
     /**
-     * @var \Sonata\AdminBundle\Builder\FormContractorInterface
+     * @var FormContractorInterface
      */
     protected $contractor;
 
     /**
-     * @var \Sonata\AdminBundle\Admin\AdminInterface
+     * @var AdminInterface
      */
     protected $admin;
 
     /**
-     * @var \Sonata\AdminBundle\Model\ModelManagerInterface
+     * @var ModelManagerInterface
      */
     protected $modelManager;
 
@@ -40,16 +49,16 @@ class FormMapperTest extends TestCase
 
     public function setUp()
     {
-        $this->contractor = $this->getMockForAbstractClass('Sonata\AdminBundle\Builder\FormContractorInterface');
+        $this->contractor = $this->getMockForAbstractClass(FormContractorInterface::class);
 
-        $formFactory = $this->getMockForAbstractClass('Symfony\Component\Form\FormFactoryInterface');
-        $eventDispatcher = $this->getMockForAbstractClass('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $formFactory = $this->getMockForAbstractClass(FormFactoryInterface::class);
+        $eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
 
         $formBuilder = new FormBuilder('test', 'stdClass', $eventDispatcher, $formFactory);
 
         $this->admin = new CleanAdmin('code', 'class', 'controller');
 
-        $this->modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
 
         // php 5.3 BC
         $fieldDescription = $this->getFieldDescriptionMock();
@@ -66,7 +75,7 @@ class FormMapperTest extends TestCase
 
         $this->admin->setModelManager($this->modelManager);
 
-        $labelTranslatorStrategy = $this->getMockForAbstractClass('Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface');
+        $labelTranslatorStrategy = $this->getMockForAbstractClass(LabelTranslatorStrategyInterface::class);
         $this->admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
 
         $this->formMapper = new FormMapper(
@@ -337,7 +346,7 @@ class FormMapperTest extends TestCase
     public function testAddAcceptFormBuilder()
     {
         $formBuilder = $this
-            ->getMockBuilder('Symfony\Component\Form\FormBuilder')
+            ->getMockBuilder(FormBuilder::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -346,11 +355,11 @@ class FormMapperTest extends TestCase
             ->will($this->returnValue('foo'));
 
         $formType = $this
-            ->getMockBuilder('Symfony\Component\Form\ResolvedFormTypeInterface')
+            ->getMockBuilder(ResolvedFormTypeInterface::class)
             ->getMock();
 
         $innerType = $this
-            ->getMockBuilder('Symfony\Component\Form\Extension\Core\Type\FormType')
+            ->getMockBuilder(FormType::class)
             ->getMock();
 
         $formType->expects($this->once())
@@ -368,7 +377,7 @@ class FormMapperTest extends TestCase
     public function testAddFormBuilderWithType()
     {
         $formBuilder = $this
-            ->getMockBuilder('Symfony\Component\Form\FormBuilder')
+            ->getMockBuilder(FormBuilder::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -379,7 +388,7 @@ class FormMapperTest extends TestCase
         $formBuilder->expects($this->never())
             ->method('getType');
 
-        $this->formMapper->add($formBuilder, 'Symfony\Component\Form\Extension\Core\Type\FormType');
+        $this->formMapper->add($formBuilder, FormType::class);
         $this->assertSame($this->formMapper->get('foo'), $formBuilder);
     }
 
@@ -451,7 +460,7 @@ class FormMapperTest extends TestCase
 
     private function getFieldDescriptionMock($name = null, $label = null, $translationDomain = null)
     {
-        $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BaseFieldDescription');
+        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);
 
         if (null !== $name) {
             $fieldDescription->setName($name);

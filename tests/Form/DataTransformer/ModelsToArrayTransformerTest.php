@@ -12,7 +12,10 @@
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 
 class ModelsToArrayTransformerTest extends TestCase
 {
@@ -20,17 +23,17 @@ class ModelsToArrayTransformerTest extends TestCase
 
     protected function setUp()
     {
-        $this->modelManager = $this->prophesize('Sonata\AdminBundle\Model\ModelManagerInterface')->reveal();
+        $this->modelManager = $this->prophesize(ModelManagerInterface::class)->reveal();
     }
 
     public function testConstructor()
     {
         $transformer = new ModelsToArrayTransformer(
             $this->modelManager,
-            'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo'
+            Foo::class
         );
 
-        $this->assertInstanceOf('Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer', $transformer);
+        $this->assertInstanceOf(ModelsToArrayTransformer::class, $transformer);
     }
 
     /**
@@ -38,19 +41,16 @@ class ModelsToArrayTransformerTest extends TestCase
      */
     public function testLegacyConstructor()
     {
-        $choiceListClass = interface_exists('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface')
-            ? 'Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader'
-            : 'Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList'
-        ;
+        $choiceListClass = ModelChoiceLoader::class;
 
         $choiceList = $this->prophesize($choiceListClass)->reveal();
 
         $transformer = new ModelsToArrayTransformer(
             $choiceList,
             $this->modelManager,
-            'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo'
+            Foo::class
         );
 
-        $this->assertInstanceOf('Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer', $transformer);
+        $this->assertInstanceOf(ModelsToArrayTransformer::class, $transformer);
     }
 }

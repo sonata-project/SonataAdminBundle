@@ -37,24 +37,26 @@ file that was distributed with this source code.
         {% endif -%}
     </div>
 
-    <div id="field_actions_{{ id }}" class="field-actions">
-        {% set display_btn_add = sonata_admin.edit != 'admin' and sonata_admin.field_description.associationadmin.hasRoute('create') 
-                                 and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
-        {% if display_btn_add %}
-            <a  href="{{ sonata_admin.field_description.associationadmin.generateUrl('create',
-                         sonata_admin.field_description.getOption('link_parameters', {})) 
-                      }}"
-                onclick="return start_field_dialog_form_add_{{ id }}(this);"
-                class="btn btn-success btn-sm sonata-ba-action"
-                title="{{ btn_add|trans({}, btn_catalogue) }}"
-                >
-                <i class="fa fa-plus-circle"></i>
-                {{ btn_add|trans({}, btn_catalogue) }}
-            </a>
-        {% endif %}
-        {% include 'SonataAdminBundle:CRUD/Association:edit_modal.html.twig' %}
-        {% include 'SonataAdminBundle:CRUD/Association:edit_many_script.html.twig' %}
-    </div>
+    {% if sonata_admin.field_description.associationadmin is defined %}
+        <div id="field_actions_{{ id }}" class="field-actions">
+            {% set display_btn_add = sonata_admin.edit != 'admin' and sonata_admin.field_description.associationadmin.hasRoute('create') 
+                                     and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
+            {% if display_btn_add %}
+                <a  href="{{ sonata_admin.field_description.associationadmin.generateUrl('create',
+                             sonata_admin.field_description.getOption('link_parameters', {})) 
+                          }}"
+                    onclick="return start_field_dialog_form_add_{{ id }}(this);"
+                    class="btn btn-success btn-sm sonata-ba-action"
+                    title="{{ btn_add|trans({}, btn_catalogue) }}"
+                    >
+                    <i class="fa fa-plus-circle"></i>
+                    {{ btn_add|trans({}, btn_catalogue) }}
+                </a>
+            {% endif %}
+            {% include 'SonataAdminBundle:CRUD/Association:edit_modal.html.twig' %}
+            {% include 'SonataAdminBundle:CRUD/Association:edit_many_script.html.twig' %}
+        </div>
+    {% endif %}
 
     <script>
         {% autoescape 'js' %}
@@ -145,14 +147,18 @@ file that was distributed with this source code.
             // Select2 v3/v4 special options.
             // NEXT_MAJOR: Remove this BC layer while upgrading to v4.
             var templateResult = function (item) {
-                return {% block sonata_type_model_autocomplete_dropdown_item_format %}'<div class="{{ dropdown_item_css_class }}">'+item.label+'<\/div>'{% endblock %};// format of one dropdown item
+                return {% block sonata_type_model_autocomplete_dropdown_item_format -%}
+                    jQuery('<div class="{{ dropdown_item_css_class }}">').text(item.label).prop('outerHTML')
+                {%- endblock %}; // format of one dropdown item
             };
             var templateSelection = function (item) {
                 // Select2 v4 BC select pre-selection.
                 if (typeof item.label === 'undefined') {
                     item.label = item.text;
                 }
-                return {% block sonata_type_model_autocomplete_selection_format %}item.label{% endblock %};// format selected item '<b>'+item.label+'</b>';
+                return {% block sonata_type_model_autocomplete_selection_format -%}
+                    jQuery('<div>').text(item.label).prop('innerHTML')
+                {%- endblock %}; // format selected item '<b>'+item.label+'</b>';
             };
 
             if (window.Select2) {

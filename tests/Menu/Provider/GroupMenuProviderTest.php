@@ -12,13 +12,17 @@
 namespace Sonata\AdminBundle\Tests\Menu\Provider;
 
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuFactory;
+use Knp\Menu\MenuItem;
 use Knp\Menu\Provider\MenuProviderInterface;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Menu\Provider\GroupMenuProvider;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class GroupMenuProviderTest extends TestCase
 {
@@ -42,9 +46,9 @@ class GroupMenuProviderTest extends TestCase
 
     protected function setUp()
     {
-        $this->pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')->disableOriginalConstructor()->getMock();
+        $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
         $this->checker = $this
-            ->getMockBuilder('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface')
+            ->getMockBuilder(AuthorizationCheckerInterface::class)
             ->setMethods(['isGranted'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -84,7 +88,7 @@ class GroupMenuProviderTest extends TestCase
             ]
         );
 
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
+        $this->assertInstanceOf(ItemInterface::class, $menu);
         $this->assertSame('foo', $menu->getName());
 
         $children = $menu->getChildren();
@@ -92,7 +96,7 @@ class GroupMenuProviderTest extends TestCase
         $this->assertCount(2, $children);
         $this->assertArrayHasKey('foo_admin_label', $children);
         $this->assertArrayHasKey('route_label', $children);
-        $this->assertInstanceOf('Knp\Menu\MenuItem', $menu['foo_admin_label']);
+        $this->assertInstanceOf(MenuItem::class, $menu['foo_admin_label']);
         $this->assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
 
         $extras = $menu['foo_admin_label']->getExtras();
@@ -102,17 +106,6 @@ class GroupMenuProviderTest extends TestCase
         $extras = $menu['route_label']->getExtras();
         $this->assertArrayHasKey('label_catalogue', $extras);
         $this->assertSame($extras['label_catalogue'], 'SonataAdminBundle');
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test when bumping requirements to >=Symfony 2.6.
-     *
-     * @group legacy
-     */
-    public function testGroupMenuProviderThrowsExceptionWithInvalidArgument()
-    {
-        $this->expectException('InvalidArgumentException');
-        new GroupMenuProvider($this->factory, $this->pool, 'foo');
     }
 
     /**
@@ -139,7 +132,7 @@ class GroupMenuProviderTest extends TestCase
             ]
         );
 
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
+        $this->assertInstanceOf(ItemInterface::class, $menu);
         $this->assertSame('foo', $menu->getName());
 
         $children = $menu->getChildren();
@@ -147,7 +140,7 @@ class GroupMenuProviderTest extends TestCase
         $this->assertCount(1, $children);
         $this->assertArrayHasKey('foo_admin_label', $children);
         $this->assertArrayNotHasKey('route_label', $children);
-        $this->assertInstanceOf('Knp\Menu\MenuItem', $menu['foo_admin_label']);
+        $this->assertInstanceOf(MenuItem::class, $menu['foo_admin_label']);
         $this->assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
 
         $extras = $menu['foo_admin_label']->getExtras();
@@ -179,7 +172,7 @@ class GroupMenuProviderTest extends TestCase
             ]
         );
 
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
+        $this->assertInstanceOf(ItemInterface::class, $menu);
         $this->assertSame('foo', $menu->getName());
 
         $children = $menu->getChildren();
@@ -187,7 +180,7 @@ class GroupMenuProviderTest extends TestCase
         $this->assertCount(2, $children);
         $this->assertArrayHasKey('foo_admin_label', $children);
         $this->assertArrayHasKey('route_label', $children);
-        $this->assertInstanceOf('Knp\Menu\MenuItem', $menu['foo_admin_label']);
+        $this->assertInstanceOf(MenuItem::class, $menu['foo_admin_label']);
         $this->assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
 
         $extras = $menu['foo_admin_label']->getExtras();
@@ -223,7 +216,7 @@ class GroupMenuProviderTest extends TestCase
             ]
         );
 
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
+        $this->assertInstanceOf(ItemInterface::class, $menu);
         $this->assertArrayNotHasKey('foo_admin_label', $menu->getChildren());
         $this->assertArrayHasKey('route_label', $menu->getChildren());
         $this->assertCount(1, $menu->getChildren());
@@ -253,7 +246,7 @@ class GroupMenuProviderTest extends TestCase
             ]
         );
 
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
+        $this->assertInstanceOf(ItemInterface::class, $menu);
         $this->assertArrayNotHasKey('foo_admin_label', $menu->getChildren());
         $this->assertArrayHasKey('route_label', $menu->getChildren());
         $this->assertCount(1, $menu->getChildren());
@@ -279,7 +272,7 @@ class GroupMenuProviderTest extends TestCase
             ]
         );
 
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
+        $this->assertInstanceOf(ItemInterface::class, $menu);
         $this->assertCount(0, $menu->getChildren());
     }
 
@@ -309,7 +302,7 @@ class GroupMenuProviderTest extends TestCase
             ]
         );
 
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $menu);
+        $this->assertInstanceOf(ItemInterface::class, $menu);
         $this->assertSame('keep-open', $menu->getAttribute('class'));
         $this->assertTrue($menu->getExtra('keep_open'));
     }
@@ -382,7 +375,7 @@ class GroupMenuProviderTest extends TestCase
      */
     private function getAdminMock($hasRoute = true, $isGranted = true)
     {
-        $admin = $this->createMock('Sonata\AdminBundle\Admin\AbstractAdmin');
+        $admin = $this->createMock(AbstractAdmin::class);
         $admin->expects($this->once())
             ->method('hasRoute')
             ->with($this->equalTo('list'))

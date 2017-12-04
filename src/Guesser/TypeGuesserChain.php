@@ -35,7 +35,7 @@ class TypeGuesserChain implements TypeGuesserInterface
     {
         foreach ($guessers as $guesser) {
             if (!$guesser instanceof TypeGuesserInterface) {
-                throw new UnexpectedTypeException($guesser, 'Sonata\AdminBundle\Guesser\TypeGuesserInterface');
+                throw new UnexpectedTypeException($guesser, TypeGuesserInterface::class);
             }
 
             if ($guesser instanceof self) {

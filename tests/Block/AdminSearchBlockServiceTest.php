@@ -35,8 +35,8 @@ class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
     {
         parent::setUp();
 
-        $this->pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')->disableOriginalConstructor()->getMock();
-        $this->searchHandler = $this->getMockBuilder('Sonata\AdminBundle\Search\SearchHandler')->disableOriginalConstructor()->getMock();
+        $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
+        $this->searchHandler = $this->getMockBuilder(SearchHandler::class)->disableOriginalConstructor()->getMock();
     }
 
     public function testDefaultSettings()

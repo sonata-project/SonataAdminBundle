@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
+use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Command\DebugCommand;
 use Symfony\Bridge\Twig\Extension\FormExtension;
@@ -27,7 +28,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -50,7 +50,7 @@ class HelperController
     protected $pool;
 
     /**
-     * @var ValidatorInterface|ValidatorInterface
+     * @var ValidatorInterface
      */
     protected $validator;
 
@@ -62,11 +62,11 @@ class HelperController
      */
     public function __construct(\Twig_Environment $twig, Pool $pool, AdminHelper $helper, $validator)
     {
-        if (!($validator instanceof ValidatorInterface) && !($validator instanceof LegacyValidatorInterface)) {
+        // NEXT_MAJOR: Move ValidatorInterface check to method signature
+        if (!($validator instanceof ValidatorInterface)) {
             throw new \InvalidArgumentException(
                 'Argument 4 is an instance of '.get_class($validator).', expecting an instance of'
-                .' \Symfony\Component\Validator\Validator\ValidatorInterface or'
-                .' \Symfony\Component\Validator\ValidatorInterface'
+                .' \Symfony\Component\Validator\Validator\ValidatorInterface'
             );
         }
 
@@ -342,7 +342,7 @@ class HelperController
 
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
-        $extension = $this->twig->getExtension('Sonata\AdminBundle\Twig\Extension\SonataAdminExtension');
+        $extension = $this->twig->getExtension(SonataAdminExtension::class);
 
         $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription);
 
@@ -567,9 +567,6 @@ class HelperController
             return $runtime;
         }
 
-        $runtime = $this->twig->getRuntime(FormRenderer::class);
-        $runtime->setEnvironment($this->twig);
-
-        return $runtime;
+        return $this->twig->getRuntime(FormRenderer::class);
     }
 }

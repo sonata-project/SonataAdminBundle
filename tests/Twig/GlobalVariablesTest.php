@@ -12,7 +12,11 @@
 namespace Sonata\AdminBundle\Tests\Twig;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Twig\GlobalVariables;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @author Ahmet Akbana <ahmetakbana@gmail.com>
@@ -28,15 +32,15 @@ class GlobalVariablesTest extends TestCase
     {
         $this->code = 'sonata.page.admin.page|sonata.page.admin.snapshot';
         $this->action = 'list';
-        $this->admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
-        $this->pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')->disableOriginalConstructor()->getMock();
+        $this->admin = $this->getMockForAbstractClass(AdminInterface::class);
+        $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
     }
 
     public function testUrl()
     {
         $this->admin->expects($this->once())
             ->method('generateUrl')
-            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', ['foo'], false)
+            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', ['foo'], UrlGeneratorInterface::ABSOLUTE_PATH)
             ->willReturn(true);
 
         $this->pool->expects($this->once())
@@ -53,7 +57,7 @@ class GlobalVariablesTest extends TestCase
     {
         $this->admin->expects($this->once())
             ->method('generateObjectUrl')
-            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', 'foo', ['bar'], false)
+            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', 'foo', ['bar'], UrlGeneratorInterface::ABSOLUTE_PATH)
             ->willReturn(true);
 
         $this->pool->expects($this->once())
@@ -74,7 +78,7 @@ class GlobalVariablesTest extends TestCase
     {
         $this->admin->expects($this->once())
             ->method('generateUrl')
-            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', ['foo'], false)
+            ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', ['foo'], UrlGeneratorInterface::ABSOLUTE_PATH)
             ->willReturn(true);
 
         $this->pool->expects($this->once())
@@ -82,7 +86,7 @@ class GlobalVariablesTest extends TestCase
             ->with('sonata.page.admin.page')
             ->willReturn($this->admin);
 
-        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $container->expects($this->once())
             ->method('get')
             ->with('sonata.admin.pool')
@@ -99,7 +103,7 @@ class GlobalVariablesTest extends TestCase
     public function testInvalidArgumentException()
     {
         $this->expectException(
-            'InvalidArgumentException',
+            \InvalidArgumentException::class,
             '$adminPool should be an instance of Sonata\AdminBundle\Admin\Pool'
         );
 

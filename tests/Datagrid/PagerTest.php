@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\Pager;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -26,7 +27,7 @@ class PagerTest extends TestCase
 
     protected function setUp()
     {
-        $this->pager = $this->getMockForAbstractClass('Sonata\AdminBundle\Datagrid\Pager');
+        $this->pager = $this->getMockForAbstractClass(Pager::class);
     }
 
     /**
@@ -138,7 +139,7 @@ class PagerTest extends TestCase
 
     public function testGetQuery()
     {
-        $query = $this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $query = $this->createMock(ProxyQueryInterface::class);
 
         $this->pager->setQuery($query);
         $this->assertSame($query, $this->pager->getQuery());
@@ -296,6 +297,10 @@ class PagerTest extends TestCase
 
     public function testValid()
     {
+        $this->pager->expects($this->any())
+            ->method('getResults')
+            ->will($this->returnValue([]));
+
         $this->assertFalse($this->pager->valid());
     }
 
@@ -360,7 +365,7 @@ class PagerTest extends TestCase
 
         $this->callMethod($this->pager, 'setNbResults', [3]);
 
-        $query = $this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $query = $this->createMock(ProxyQueryInterface::class);
 
         $query->expects($this->any())
             ->method('setFirstResult')
@@ -488,7 +493,7 @@ class PagerTest extends TestCase
 
         $this->callMethod($this->pager, 'setNbResults', [3]);
 
-        $query = $this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $query = $this->createMock(ProxyQueryInterface::class);
 
         $query->expects($this->any())
             ->method('setFirstResult')
@@ -546,7 +551,7 @@ class PagerTest extends TestCase
 
         $this->callMethod($this->pager, 'setNbResults', [3]);
 
-        $query = $this->createMock('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $query = $this->createMock(ProxyQueryInterface::class);
 
         $query->expects($this->any())
             ->method('setFirstResult')

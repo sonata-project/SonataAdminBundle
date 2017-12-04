@@ -1,6 +1,21 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.27 to 3.28
+=========================
+
+## Deprecated ChildrenVoter and service
+
+The feature provided by this class was replaced with something much more simple, and you should not rely on it anymore,
+as well as on the `sonata.admin.menu.matcher.voter.children` service.
+
+UPGRADE FROM 3.26 to 3.27
+=========================
+
+## Deprecated CRUDController::render()
+
+Call `CRUDController::renderWithExtraParams()` instead.
+
 UPGRADE FROM 3.23 to 3.24
 =========================
 

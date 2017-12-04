@@ -11,11 +11,25 @@
 
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
+use Knp\Menu\FactoryInterface;
+use Knp\Menu\Matcher\MatcherInterface;
+use Knp\Menu\Provider\MenuProviderInterface;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminExtensionInterface;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
+use Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Bundle\FrameworkBundle\Translation\TranslatorInterface;
+use Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ExtensionCompilerPassTest extends TestCase
 {
@@ -69,7 +83,7 @@ class ExtensionCompilerPassTest extends TestCase
         $extensionMap = $container->getParameter($this->root.'.extension.map');
 
         $method = new \ReflectionMethod(
-            'Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass', 'flattenExtensionConfiguration'
+            ExtensionCompilerPass::class, 'flattenExtensionConfiguration'
         );
 
         $method->setAccessible(true);
@@ -100,7 +114,7 @@ class ExtensionCompilerPassTest extends TestCase
         $extensionMap = $container->getParameter($this->root.'.extension.map');
 
         $method = new \ReflectionMethod(
-            'Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass', 'flattenExtensionConfiguration'
+            ExtensionCompilerPass::class, 'flattenExtensionConfiguration'
         );
 
         $method->setAccessible(true);
@@ -129,38 +143,38 @@ class ExtensionCompilerPassTest extends TestCase
         $this->assertArrayHasKey('implements', $extensionMap);
         $this->assertCount(1, $extensionMap['implements']);
 
-        $this->assertArrayHasKey('Sonata\AdminBundle\Tests\DependencyInjection\Publishable', $extensionMap['implements']);
-        $this->assertCount(2, $extensionMap['implements']['Sonata\AdminBundle\Tests\DependencyInjection\Publishable']);
-        $this->assertArrayHasKey('sonata_extension_publish', $extensionMap['implements']['Sonata\AdminBundle\Tests\DependencyInjection\Publishable']);
-        $this->assertArrayHasKey('sonata_extension_order', $extensionMap['implements']['Sonata\AdminBundle\Tests\DependencyInjection\Publishable']);
+        $this->assertArrayHasKey(Publishable::class, $extensionMap['implements']);
+        $this->assertCount(2, $extensionMap['implements'][Publishable::class]);
+        $this->assertArrayHasKey('sonata_extension_publish', $extensionMap['implements'][Publishable::class]);
+        $this->assertArrayHasKey('sonata_extension_order', $extensionMap['implements'][Publishable::class]);
 
         // Extends
         $this->assertArrayHasKey('extends', $extensionMap);
         $this->assertCount(1, $extensionMap['extends']);
 
-        $this->assertArrayHasKey('Sonata\AdminBundle\Tests\DependencyInjection\Post', $extensionMap['extends']);
-        $this->assertCount(1, $extensionMap['extends']['Sonata\AdminBundle\Tests\DependencyInjection\Post']);
-        $this->assertArrayHasKey('sonata_extension_order', $extensionMap['extends']['Sonata\AdminBundle\Tests\DependencyInjection\Post']);
+        $this->assertArrayHasKey(Post::class, $extensionMap['extends']);
+        $this->assertCount(1, $extensionMap['extends'][Post::class]);
+        $this->assertArrayHasKey('sonata_extension_order', $extensionMap['extends'][Post::class]);
 
         // Instanceof
         $this->assertArrayHasKey('instanceof', $extensionMap);
         $this->assertCount(1, $extensionMap['instanceof']);
 
-        $this->assertArrayHasKey('Sonata\AdminBundle\Tests\DependencyInjection\Post', $extensionMap['instanceof']);
-        $this->assertCount(1, $extensionMap['instanceof']['Sonata\AdminBundle\Tests\DependencyInjection\Post']);
-        $this->assertArrayHasKey('sonata_extension_history', $extensionMap['instanceof']['Sonata\AdminBundle\Tests\DependencyInjection\Post']);
+        $this->assertArrayHasKey(Post::class, $extensionMap['instanceof']);
+        $this->assertCount(1, $extensionMap['instanceof'][Post::class]);
+        $this->assertArrayHasKey('sonata_extension_history', $extensionMap['instanceof'][Post::class]);
 
         // Uses
         $this->assertArrayHasKey('uses', $extensionMap);
 
         if ($this->hasTraits) {
             $this->assertCount(1, $extensionMap['uses']);
-            $this->assertArrayHasKey('Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait', $extensionMap['uses']);
-            $this->assertCount(1, $extensionMap['uses']['Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait']);
-            $this->assertArrayHasKey('sonata_extension_post', $extensionMap['uses']['Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait']);
+            $this->assertArrayHasKey(TimestampableTrait::class, $extensionMap['uses']);
+            $this->assertCount(1, $extensionMap['uses'][TimestampableTrait::class]);
+            $this->assertArrayHasKey('sonata_extension_post', $extensionMap['uses'][TimestampableTrait::class]);
         } else {
             $this->assertCount(0, $extensionMap['uses']);
-            $this->assertArrayNotHasKey('Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait', $extensionMap['uses']);
+            $this->assertArrayNotHasKey(TimestampableTrait::class, $extensionMap['uses']);
         }
     }
 
@@ -174,7 +188,7 @@ class ExtensionCompilerPassTest extends TestCase
             'extensions' => [
                 'sonata_extension_unknown' => [
                     'excludes' => ['sonata_article_admin'],
-                    'instanceof' => ['Sonata\AdminBundle\Tests\DependencyInjection\Post'],
+                    'instanceof' => [Post::class],
                 ],
             ],
         ];
@@ -196,7 +210,7 @@ class ExtensionCompilerPassTest extends TestCase
             'extensions' => [
                 'sonata_extension_publish' => [
                     'admins' => ['sonata_unknown_admin'],
-                    'implements' => ['Sonata\AdminBundle\Tests\DependencyInjection\Publishable'],
+                    'implements' => [Publishable::class],
                 ],
             ],
         ];
@@ -268,13 +282,13 @@ class ExtensionCompilerPassTest extends TestCase
     public function testProcessThrowsExceptionIfTraitsAreNotAvailable()
     {
         if (!$this->hasTraits) {
-            $this->expectException('\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException', 'PHP >= 5.4.0 is required to use traits.');
+            $this->expectException(InvalidConfigurationException::class, 'PHP >= 5.4.0 is required to use traits.');
         }
 
         $config = [
             'extensions' => [
                 'sonata_extension_post' => [
-                    'uses' => ['Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait'],
+                    'uses' => [TimestampableTrait::class],
                 ],
             ],
         ];
@@ -296,24 +310,24 @@ class ExtensionCompilerPassTest extends TestCase
             'extensions' => [
                 'sonata_extension_publish' => [
                     'admins' => ['sonata_post_admin'],
-                    'implements' => ['Sonata\AdminBundle\Tests\DependencyInjection\Publishable'],
+                    'implements' => [Publishable::class],
                 ],
                 'sonata_extension_history' => [
                     'excludes' => ['sonata_article_admin'],
-                    'instanceof' => ['Sonata\AdminBundle\Tests\DependencyInjection\Post'],
+                    'instanceof' => [Post::class],
                     'priority' => 255,
                 ],
                 'sonata_extension_order' => [
                     'excludes' => ['sonata_post_admin'],
-                    'extends' => ['Sonata\AdminBundle\Tests\DependencyInjection\Post'],
-                    'implements' => ['Sonata\AdminBundle\Tests\DependencyInjection\Publishable'],
+                    'extends' => [Post::class],
+                    'implements' => [Publishable::class],
                     'priority' => -128,
                 ],
             ],
         ];
 
         if ($this->hasTraits) {
-            $config['extensions']['sonata_extension_post']['uses'] = ['Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait'];
+            $config['extensions']['sonata_extension_post']['uses'] = [TimestampableTrait::class];
         }
 
         return $config;
@@ -332,63 +346,63 @@ class ExtensionCompilerPassTest extends TestCase
         // Add dependencies for SonataAdminBundle (these services will never get called so dummy classes will do)
         $container
             ->register('twig')
-            ->setClass('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
+            ->setClass(EngineInterface::class);
         $container
             ->register('templating')
-            ->setClass('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
+            ->setClass(EngineInterface::class);
         $container
             ->register('translator')
-            ->setClass('Symfony\Bundle\FrameworkBundle\Translation\TranslatorInterface');
+            ->setClass(TranslatorInterface::class);
         $container
             ->register('validator.validator_factory')
-            ->setClass('Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory');
+            ->setClass(ConstraintValidatorFactory::class);
         $container
             ->register('router')
-            ->setClass('Symfony\Component\Routing\RouterInterface');
+            ->setClass(RouterInterface::class);
         $container
             ->register('property_accessor')
-            ->setClass('Symfony\Component\PropertyAccess\PropertyAccessor');
+            ->setClass(PropertyAccessor::class);
         $container
             ->register('form.factory')
-            ->setClass('Symfony\Component\Form\FormFactoryInterface');
+            ->setClass(FormFactoryInterface::class);
         $container
             ->register('validator')
-            ->setClass('Symfony\Component\Validator\ValidatorInterface');
+            ->setClass(ValidatorInterface::class);
         $container
             ->register('knp_menu.factory')
-            ->setClass('Knp\Menu\FactoryInterface');
+            ->setClass(FactoryInterface::class);
         $container
             ->register('knp_menu.matcher')
-            ->setClass('Knp\Menu\Matcher\MatcherInterface');
+            ->setClass(MatcherInterface::class);
         $container
             ->register('knp_menu.menu_provider')
-            ->setClass('Knp\Menu\Provider\MenuProviderInterface');
+            ->setClass(MenuProviderInterface::class);
 
         // Add admin definition's
         $container
             ->register('sonata_post_admin')
             ->setPublic(true)
-            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
-            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\Post', 'SonataAdminBundle:CRUD'])
+            ->setClass(MockAdmin::class)
+            ->setArguments(['', Post::class, 'SonataAdminBundle:CRUD'])
             ->addTag('sonata.admin');
         $container
             ->register('sonata_news_admin')
             ->setPublic(true)
-            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
-            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\News', 'SonataAdminBundle:CRUD'])
+            ->setClass(MockAdmin::class)
+            ->setArguments(['', News::class, 'SonataAdminBundle:CRUD'])
             ->addTag('sonata.admin');
         $container
             ->register('sonata_article_admin')
             ->setPublic(true)
-            ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
-            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\Article', 'SonataAdminBundle:CRUD'])
+            ->setClass(MockAdmin::class)
+            ->setArguments(['', Article::class, 'SonataAdminBundle:CRUD'])
             ->addTag('sonata.admin');
         $container
             ->register('event_dispatcher')
-            ->setClass('Symfony\Component\EventDispatcher\EventDispatcher');
+            ->setClass(EventDispatcher::class);
 
         // Add admin extension definition's
-        $extensionClass = get_class($this->createMock('Sonata\AdminBundle\Admin\AdminExtensionInterface'));
+        $extensionClass = get_class($this->createMock(AdminExtensionInterface::class));
 
         $container
             ->register('sonata_extension_publish')

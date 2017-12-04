@@ -11,6 +11,9 @@
 
 namespace Sonata\AdminBundle\Tests\Form\Widget;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormTypeInterface;
+
 class FormChoiceWidgetTest extends BaseWidgetTest
 {
     protected $type = 'form';
@@ -23,7 +26,7 @@ class FormChoiceWidgetTest extends BaseWidgetTest
     public function testLabelRendering()
     {
         $choices = ['some', 'choices'];
-        if (!method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
+        if (!method_exists(FormTypeInterface::class, 'setDefaultOptions')) {
             $choices = array_flip($choices);
         }
 
@@ -99,29 +102,13 @@ class FormChoiceWidgetTest extends BaseWidgetTest
 
     protected function getChoiceClass()
     {
-        return
-            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ?
-            'Symfony\Component\Form\Extension\Core\Type\ChoiceType' :
-            'choice';
+        return ChoiceType::class;
     }
 
-    /**
-     * For SF < 2.6, we use 'empty_data' to provide default empty value.
-     * For SF >= 2.6, we must use 'placeholder' to achieve the same.
-     */
     protected function getDefaultOption()
     {
-        if (method_exists(
-            'Symfony\Component\Form\Tests\AbstractLayoutTest',
-            'testSingleChoiceNonRequiredWithPlaceholder'
-        )) {
-            return [
-                'placeholder' => 'Choose an option',
-            ];
-        }
-
         return [
-                'empty_value' => 'Choose an option',
-            ];
+            'placeholder' => 'Choose an option',
+        ];
     }
 }

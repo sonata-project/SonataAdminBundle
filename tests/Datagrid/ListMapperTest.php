@@ -12,9 +12,12 @@
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 
@@ -40,9 +43,9 @@ class ListMapperTest extends TestCase
 
     public function setUp()
     {
-        $listBuilder = $this->createMock('Sonata\AdminBundle\Builder\ListBuilderInterface');
+        $listBuilder = $this->createMock(ListBuilderInterface::class);
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
-        $this->admin = $this->createMock('Sonata\AdminBundle\Admin\AbstractAdmin');
+        $this->admin = $this->createMock(AbstractAdmin::class);
 
         $listBuilder->expects($this->any())
             ->method('addField')
@@ -50,7 +53,10 @@ class ListMapperTest extends TestCase
                 $list->add($fieldDescription);
             }));
 
-        $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->createMock(
+          
+          
+          ::class);
 
         // php 5.3 BC
         $fieldDescription = $this->getFieldDescriptionMock();
@@ -119,7 +125,7 @@ class ListMapperTest extends TestCase
         $fieldLabelBar = $this->listMapper->get('fooNameLabelBar');
         $fieldLabelFalse = $this->listMapper->get('fooNameLabelFalse');
 
-        $this->assertInstanceOf('Sonata\AdminBundle\Admin\FieldDescriptionInterface', $fieldDescription);
+        $this->assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
         $this->assertSame('fooName', $fieldDescription->getName());
         $this->assertSame('Foo Name', $fieldDescription->getOption('label'));
         $this->assertSame('Foo Bar', $fieldLabelBar->getOption('label'));
@@ -138,7 +144,7 @@ class ListMapperTest extends TestCase
 
         $fieldDescription = $this->listMapper->get('_action');
 
-        $this->assertInstanceOf('Sonata\AdminBundle\Admin\FieldDescriptionInterface', $fieldDescription);
+        $this->assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
         $this->assertSame('_action', $fieldDescription->getName());
         $this->assertCount(1, $fieldDescription->getOption('actions'));
         $this->assertSame(['show' => []], $fieldDescription->getOption('actions'));
@@ -153,7 +159,7 @@ class ListMapperTest extends TestCase
 
         $fieldDescription = $this->listMapper->get('_action');
 
-        $this->assertInstanceOf('Sonata\AdminBundle\Admin\FieldDescriptionInterface', $fieldDescription);
+        $this->assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
         $this->assertSame('_action', $fieldDescription->getName());
         $this->assertCount(1, $fieldDescription->getOption('actions'));
         $this->assertSame(['show' => []], $fieldDescription->getOption('actions'));
@@ -186,7 +192,7 @@ class ListMapperTest extends TestCase
                 return false;
             }));
 
-        $this->expectException('RuntimeException', 'Duplicate field name "fooName" in list mapper. Names should be unique.');
+        $this->expectException(\RuntimeException::class, 'Duplicate field name "fooName" in list mapper. Names should be unique.');
 
         $this->listMapper->add('fooName');
         $this->listMapper->add('fooName');
@@ -194,7 +200,7 @@ class ListMapperTest extends TestCase
 
     public function testAddWrongTypeException()
     {
-        $this->expectException('RuntimeException', 'Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.');
+        $this->expectException(\RuntimeException::class, 'Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.');
 
         $this->listMapper->add(12345);
     }
@@ -253,7 +259,7 @@ class ListMapperTest extends TestCase
 
     private function getFieldDescriptionMock($name = null, $label = null)
     {
-        $fieldDescription = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BaseFieldDescription');
+        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);
 
         if (null !== $name) {
             $fieldDescription->setName($name);

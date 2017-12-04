@@ -14,22 +14,19 @@ namespace Sonata\AdminBundle\Tests\Form\Type;
 use Sonata\AdminBundle\Form\Type\Filter\DateTimeRangeType;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class DateTimeRangeTypeTest extends TypeTestCase
 {
     public function testGetDefaultOptions()
     {
-        $stub = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
+        $stub = $this->getMockForAbstractClass(TranslatorInterface::class);
 
         $type = new DateTimeRangeType($stub);
 
         $optionResolver = new OptionsResolver();
 
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $type->setDefaultOptions($optionResolver);
-        } else {
-            $type->configureOptions($optionResolver);
-        }
+        $type->configureOptions($optionResolver);
 
         $options = $optionResolver->resolve();
 

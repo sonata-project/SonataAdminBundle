@@ -12,12 +12,19 @@
 namespace Sonata\AdminBundle\Tests\Admin\Extension;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Extension\LockExtension;
+use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Model\LockInterface;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class LockExtensionTest extends TestCase
@@ -54,8 +61,8 @@ class LockExtensionTest extends TestCase
 
     protected function setUp()
     {
-        $this->modelManager = $this->prophesize('Sonata\AdminBundle\Model\LockInterface');
-        $this->admin = $this->prophesize('Sonata\AdminBundle\Admin\AbstractAdmin');
+        $this->modelManager = $this->prophesize(LockInterface::class);
+        $this->admin = $this->prophesize(AbstractAdmin::class);
 
         $this->eventDispatcher = new EventDispatcher();
         $this->request = new Request();
@@ -74,10 +81,7 @@ class LockExtensionTest extends TestCase
 
         $form->add(
             '_lock_version',
-            // NEXT_MAJOR: remove the check and add the FQCN
-            method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-                ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
-                : 'hidden',
+            HiddenType::class,
             ['mapped' => false, 'data' => 1]
         )->shouldBeCalled();
 
@@ -87,7 +91,7 @@ class LockExtensionTest extends TestCase
 
     public function testConfigureFormFieldsWhenModelManagerIsNotImplementingLockerInterface()
     {
-        $modelManager = $this->prophesize('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->prophesize(ModelManagerInterface::class);
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
         $this->configureAdmin(null, null, $modelManager->reveal());
@@ -166,7 +170,7 @@ class LockExtensionTest extends TestCase
 
     public function testPreUpdateIfModelManagerIsNotImplementingLockerInterface()
     {
-        $modelManager = $this->prophesize('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->prophesize(ModelManagerInterface::class);
         $uniqid = 'admin123';
         $this->configureAdmin($uniqid, $this->request, $modelManager->reveal());
 
@@ -187,7 +191,7 @@ class LockExtensionTest extends TestCase
 
     private function configureForm()
     {
-        $form = $this->prophesize('Symfony\Component\Form\FormInterface');
+        $form = $this->prophesize(FormInterface::class);
 
         $form->getData()->willReturn($this->object);
         $form->getParent()->willReturn(null);
@@ -197,8 +201,8 @@ class LockExtensionTest extends TestCase
 
     private function configureFormMapper()
     {
-        $contractor = $this->prophesize('Sonata\AdminBundle\Builder\FormContractorInterface');
-        $formFactory = $this->prophesize('Symfony\Component\Form\FormFactoryInterface');
+        $contractor = $this->prophesize(FormContractorInterface::class);
+        $formFactory = $this->prophesize(FormFactoryInterface::class);
         $formBuilder = new FormBuilder('form', null, $this->eventDispatcher, $formFactory->reveal());
 
         return new FormMapper($contractor->reveal(), $formBuilder, $this->admin->reveal());

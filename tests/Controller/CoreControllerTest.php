@@ -12,16 +12,20 @@
 namespace Sonata\AdminBundle\Tests\Controller;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\CoreController;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 
 class CoreControllerTest extends TestCase
 {
     public function testdashboardActionStandardRequest()
     {
-        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->createMock(ContainerInterface::class);
 
         $pool = new Pool($container, 'title', 'logo.png');
         $pool->setTemplates([
@@ -29,22 +33,18 @@ class CoreControllerTest extends TestCase
             'dashboard' => 'dashboard.html',
         ]);
 
-        $templating = $this->createMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
+        $templating = $this->createMock(EngineInterface::class);
         $request = new Request();
 
-        $requestStack = null;
-        if (class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
-            $requestStack = new RequestStack();
-            $requestStack->push($request);
-        }
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
 
-        $breadcrumbsBuilder = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface');
+        $breadcrumbsBuilder = $this->getMockForAbstractClass(BreadcrumbsBuilderInterface::class);
 
         $values = [
             'sonata.admin.breadcrumbs_builder' => $breadcrumbsBuilder,
             'sonata.admin.pool' => $pool,
             'templating' => $templating,
-            'request' => $request,
             'request_stack' => $requestStack,
         ];
 
@@ -80,12 +80,12 @@ class CoreControllerTest extends TestCase
 
         $response = $controller->dashboardAction($request);
 
-        $this->isInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
+        $this->isInstanceOf(Response::class, $response);
     }
 
     public function testdashboardActionAjaxLayout()
     {
-        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->createMock(ContainerInterface::class);
 
         $pool = new Pool($container, 'title', 'logo.png');
         $pool->setTemplates([
@@ -93,20 +93,16 @@ class CoreControllerTest extends TestCase
             'dashboard' => 'dashboard.html',
         ]);
 
-        $templating = $this->createMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
+        $templating = $this->createMock(EngineInterface::class);
         $request = new Request();
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
-        $requestStack = null;
-        if (class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
-            $requestStack = new RequestStack();
-            $requestStack->push($request);
-        }
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
 
         $values = [
             'sonata.admin.pool' => $pool,
             'templating' => $templating,
-            'request' => $request,
             'request_stack' => $requestStack,
         ];
 
@@ -142,6 +138,6 @@ class CoreControllerTest extends TestCase
 
         $response = $controller->dashboardAction($request);
 
-        $this->isInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
+        $this->isInstanceOf(Response::class, $response);
     }
 }

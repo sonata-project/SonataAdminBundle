@@ -2,6 +2,54 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.28.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.27.0...3.28.0) - 2017-11-30
+### Added
+- Added `CRUDController::redirectToList` method for all list redirections
+- added Russian translations
+
+### Changed
+- Handle empty id list in `CRUDController::batchAction`
+- All services without a declared visibility are now public
+
+### Fixed
+- It is now allowed to install Symfony 4
+- Updated `src/Resources/views/standard_layout.html.twig` template in order to remove whitespace rendering before HTML DOCTYPE declaration.
+- interference with other bundles
+
+### Deprecated
+- using the `ChildrenVoter` class
+- using the `sonata.admin.menu.matcher.voter.children` service
+
+### Security
+- Fixed XSS vulnerability in autocomplete form type
+
+## [3.27.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.26.0...3.27.0) - 2017-11-26
+### Added
+- Added some Japanese messages
+- Added `CRUDController::renderWithExtraParams` as a replacement for the `render` method
+
+### Deprecated
+- Deprecated `CRUDController::render`
+
+### Fixed
+- Problem with FormRenderer not having environment causing that inline collection was unusable on SF 3.4
+- Deprecation warning for overriding `Controller::render` which is supposed to be final
+
+## [3.26.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.25.1...3.26.0) - 2017-11-22
+### Added
+- Add html tag attributes support for sonata_type_model_autocomplete form type
+- Added edit button that opens in dialog instead of add if there is object already in sonata type model list
+
+### Fixed
+- check if the field is used to sort the list
+- Add a check for existing var associationadmin which is null for filter
+- Fixed `AbstractAdmin::getSubject()` behavior when `id` parameter is not specified
+- Add alias on `ChoiceType` uses to avoid collisions on Form filter classes
+- BC-break in `CRUDController::render()`
+
+### Removed
+- Old usage of read_only var
+
 ## [3.25.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.25.0...3.25.1) - 2017-11-20
 ### Fixed
 - Wrong configuration for `DateTimeType` and `DateType` filters

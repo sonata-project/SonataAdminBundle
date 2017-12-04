@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Command;
 
+use Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle;
 use Sonata\AdminBundle\Generator\AdminGenerator;
 use Sonata\AdminBundle\Generator\ControllerGenerator;
 use Sonata\AdminBundle\Manipulator\ServicesManipulator;
@@ -58,7 +59,7 @@ class GenerateAdminCommand extends QuestionableCommand
      */
     public function isEnabled()
     {
-        return class_exists('Sensio\\Bundle\\GeneratorBundle\\SensioGeneratorBundle');
+        return class_exists(SensioGeneratorBundle::class);
     }
 
     /**

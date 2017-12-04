@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Tests\Menu\Integration;
 use Knp\Menu\MenuFactory;
 use Knp\Menu\MenuItem;
 use Prophecy\Argument;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class TabMenuTest extends BaseMenuTest
 {
@@ -30,9 +31,7 @@ class TabMenuTest extends BaseMenuTest
 
     public function testLabelTranslationNominalCase()
     {
-        $translatorProphecy = $this->prophesize(
-            'Symfony\Component\Translation\TranslatorInterface'
-        );
+        $translatorProphecy = $this->prophesize(TranslatorInterface::class);
         $translatorProphecy
             ->trans(
                 'some-label',
@@ -52,9 +51,7 @@ class TabMenuTest extends BaseMenuTest
     public function testLabelTranslationWithParameters()
     {
         $params = ['my' => 'param'];
-        $translatorProphecy = $this->prophesize(
-            'Symfony\Component\Translation\TranslatorInterface'
-        );
+        $translatorProphecy = $this->prophesize(TranslatorInterface::class);
         $translatorProphecy
             ->trans(
                 'some-label',
@@ -75,9 +72,7 @@ class TabMenuTest extends BaseMenuTest
 
     public function testLabelTranslationDomainOverride()
     {
-        $translatorProphecy = $this->prophesize(
-            'Symfony\Component\Translation\TranslatorInterface'
-        );
+        $translatorProphecy = $this->prophesize(TranslatorInterface::class);
         $translatorProphecy
             ->trans('some-label', [], 'my_local_domain', null)
             ->willReturn('my-translation');

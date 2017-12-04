@@ -12,7 +12,12 @@
 namespace Sonata\AdminBundle\Tests\Util;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Security\Acl\Domain\Acl;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 
 /**
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
@@ -22,30 +27,30 @@ class AdminObjectAclDataTest extends TestCase
     public function testGetAdmin()
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->isInstanceOf('Sonata\AdminBundle\Admin\AdminInterface', $adminObjectAclData->getAdmin());
+        $this->isInstanceOf(AdminInterface::class, $adminObjectAclData->getAdmin());
     }
 
     public function testGetObject()
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->isInstanceOf('stdClass', $adminObjectAclData->getObject());
+        $this->isInstanceOf(\stdClass::class, $adminObjectAclData->getObject());
     }
 
     public function testGetAclUsers()
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->assertInstanceOf('ArrayIterator', $adminObjectAclData->getAclUsers());
+        $this->assertInstanceOf(\ArrayIterator::class, $adminObjectAclData->getAclUsers());
     }
 
     public function testGetAclRoles()
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->assertInstanceOf('ArrayIterator', $adminObjectAclData->getAclRoles());
+        $this->assertInstanceOf(\ArrayIterator::class, $adminObjectAclData->getAclRoles());
     }
 
     public function testSetAcl()
     {
-        $acl = $this->getMockBuilder('Symfony\Component\Security\Acl\Domain\Acl')
+        $acl = $this->getMockBuilder(Acl::class)
             ->disableOriginalConstructor()
             ->getMock();
         $adminObjectAclData = $this->createAdminObjectAclData();
@@ -61,7 +66,7 @@ class AdminObjectAclDataTest extends TestCase
      */
     public function testGetAcl($adminObjectAclData)
     {
-        $this->isInstanceOf('Symfony\Component\Security\Acl\Domain\Acl', $adminObjectAclData->getAcl());
+        $this->isInstanceOf(Acl::class, $adminObjectAclData->getAcl());
     }
 
     public function testGetMasks()
@@ -80,7 +85,7 @@ class AdminObjectAclDataTest extends TestCase
      */
     public function testSetForm()
     {
-        $form = $this->getMockBuilder('\Symfony\Component\Form\Form')
+        $form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
             ->getMock();
         $adminObjectAclData = $this->createAdminObjectAclData();
@@ -98,12 +103,12 @@ class AdminObjectAclDataTest extends TestCase
      */
     public function testGetForm($adminObjectAclData)
     {
-        $this->isInstanceOf('Symfony\Component\Form\Form', $adminObjectAclData->getAclUsersForm());
+        $this->isInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
     }
 
     public function testSetAclUsersForm()
     {
-        $form = $this->getMockBuilder('\Symfony\Component\Form\Form')
+        $form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
             ->getMock();
         $adminObjectAclData = $this->createAdminObjectAclData();
@@ -119,12 +124,12 @@ class AdminObjectAclDataTest extends TestCase
      */
     public function testGetAclUsersForm($adminObjectAclData)
     {
-        $this->isInstanceOf('Symfony\Component\Form\Form', $adminObjectAclData->getAclUsersForm());
+        $this->isInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
     }
 
     public function testSetAclRolesForm()
     {
-        $form = $this->getMockBuilder('\Symfony\Component\Form\Form')
+        $form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
             ->getMock();
         $adminObjectAclData = $this->createAdminObjectAclData();
@@ -140,7 +145,7 @@ class AdminObjectAclDataTest extends TestCase
      */
     public function testGetAclRolesForm($adminObjectAclData)
     {
-        $this->isInstanceOf('Symfony\Component\Form\Form', $adminObjectAclData->getAclRolesForm());
+        $this->isInstanceOf(Form::class, $adminObjectAclData->getAclRolesForm());
     }
 
     public function testGetPermissions()
@@ -189,7 +194,7 @@ class AdminObjectAclDataTest extends TestCase
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
 
-        $this->isInstanceOf('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface', $adminObjectAclData->getSecurityHandler());
+        $this->isInstanceOf(AclSecurityHandlerInterface::class, $adminObjectAclData->getSecurityHandler());
     }
 
     public function testGetSecurityInformation()
@@ -211,12 +216,12 @@ class AdminObjectAclDataTest extends TestCase
 
     protected function createAdminObjectAclData($isOwner = true)
     {
-        return new AdminObjectAclData($this->createAdmin($isOwner), new \stdClass(), self::createAclUsers(), '\Symfony\Component\Security\Acl\Permission\MaskBuilder', self::createAclRoles());
+        return new AdminObjectAclData($this->createAdmin($isOwner), new \stdClass(), self::createAclUsers(), MaskBuilder::class, self::createAclRoles());
     }
 
     protected function createAdmin($isOwner = true)
     {
-        $securityHandler = $this->getMockForAbstractClass('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface');
+        $securityHandler = $this->getMockForAbstractClass(AclSecurityHandlerInterface::class);
 
         $securityHandler->expects($this->any())
             ->method('getObjectPermissions')
@@ -225,11 +230,11 @@ class AdminObjectAclDataTest extends TestCase
 
         $securityHandler->expects($this->any())
             ->method('buildSecurityInformation')
-            ->with($this->isInstanceOf('Sonata\AdminBundle\Admin\AdminInterface'))
+            ->with($this->isInstanceOf(AdminInterface::class))
             ->will($this->returnValue([]))
         ;
 
-        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass(AdminInterface::class);
 
         $admin->expects($this->any())
             ->method('isGranted')

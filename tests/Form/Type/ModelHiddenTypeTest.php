@@ -12,6 +12,8 @@
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,34 +22,27 @@ class ModelHiddenTypeTest extends TypeTestCase
     public function testGetDefaultOptions()
     {
         $type = new ModelHiddenType();
-        $modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
         $optionResolver = new OptionsResolver();
 
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $type->setDefaultOptions($optionResolver);
-        } else {
-            $type->configureOptions($optionResolver);
-        }
+        $type->configureOptions($optionResolver);
 
         $options = $optionResolver->resolve(['model_manager' => $modelManager, 'class' => '\Foo']);
 
-        $this->assertInstanceOf('Sonata\AdminBundle\Model\ModelManagerInterface', $options['model_manager']);
+        $this->assertInstanceOf(ModelManagerInterface::class, $options['model_manager']);
         $this->assertSame($modelManager, $options['model_manager']);
         $this->assertSame('\Foo', $options['class']);
     }
 
-    public function testGetName()
+    public function testGetBlockPrefix()
     {
         $type = new ModelHiddenType();
-        $this->assertSame('sonata_type_model_hidden', $type->getName());
+        $this->assertSame('sonata_type_model_hidden', $type->getBlockPrefix());
     }
 
     public function testGetParent()
     {
         $type = new ModelHiddenType();
-        // NEXT_MAJOR: Remove ternary (when requirement of Symfony is >= 2.8)
-        $this->assertSame(method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-            ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType'
-            : 'hidden', $type->getParent());
+        $this->assertSame(HiddenType::class, $type->getParent());
     }
 }

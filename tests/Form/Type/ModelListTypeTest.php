@@ -11,6 +11,8 @@
 
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
+use Sonata\AdminBundle\Form\Type\ModelListType;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class ModelListTypeTest extends TypeTestCase
@@ -19,11 +21,7 @@ class ModelListTypeTest extends TypeTestCase
 
     protected function setUp()
     {
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $this->markTestSkipped('Testing ancient versions would be more complicated.');
-        }
-
-        $this->modelManager = $this->prophesize('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $this->modelManager = $this->prophesize(ModelManagerInterface::class);
 
         parent::setUp();
     }
@@ -33,7 +31,7 @@ class ModelListTypeTest extends TypeTestCase
         $formData = 42;
 
         $form = $this->factory->create(
-            'Sonata\AdminBundle\Form\Type\ModelListType',
+            ModelListType::class,
             null,
             [
                 'model_manager' => $this->modelManager->reveal(),

@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Tests\Form\Type;
 use Sonata\AdminBundle\Form\Type\AclMatrixType;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Baptiste Meyer <baptiste@les-tilleuls.coop>
@@ -23,7 +24,7 @@ class AclMatrixTypeTest extends TypeTestCase
     public function testGetDefaultOptions()
     {
         $type = new AclMatrixType();
-        $user = $this->getMockForAbstractClass('Symfony\Component\Security\Core\User\UserInterface');
+        $user = $this->getMockForAbstractClass(UserInterface::class);
 
         $permissions = [
             'OWNER' => [
@@ -36,18 +37,14 @@ class AclMatrixTypeTest extends TypeTestCase
 
         $optionResolver = new OptionsResolver();
 
-        if (!method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
-            $type->setDefaultOptions($optionResolver);
-        } else {
-            $type->configureOptions($optionResolver);
-        }
+        $type->configureOptions($optionResolver);
 
         $options = $optionResolver->resolve([
             'acl_value' => $user,
             'permissions' => $permissions,
         ]);
 
-        $this->assertInstanceOf('Symfony\Component\Security\Core\User\UserInterface', $options['acl_value']);
+        $this->assertInstanceOf(UserInterface::class, $options['acl_value']);
         $this->assertSame($user, $options['acl_value']);
         $this->assertSame($permissions, $options['permissions']);
     }

@@ -13,7 +13,9 @@ namespace Sonata\AdminBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -77,20 +79,12 @@ class ChoiceType extends AbstractType
         $operatorChoices = [];
 
         // NEXT_MAJOR: Remove first check (when requirement of Symfony is >= 2.8)
-        if ('hidden' !== $options['operator_type'] && 'Symfony\Component\Form\Extension\Core\Type\HiddenType' !== $options['operator_type']) {
-            // NEXT_MAJOR: Remove (when requirement of Symfony is >= 2.7)
-            if (!method_exists('Symfony\Component\Form\AbstractType', 'configureOptions')) {
-                $choices = array_flip($choices);
-                foreach ($choices as $key => $value) {
-                    $choices[$key] = $this->translator->trans($value, [], 'SonataAdminBundle');
-                }
-            } else {
-                $operatorChoices['choice_translation_domain'] = 'SonataAdminBundle';
+        if ('hidden' !== $options['operator_type'] && HiddenType::class !== $options['operator_type']) {
+            $operatorChoices['choice_translation_domain'] = 'SonataAdminBundle';
 
-                // NEXT_MAJOR: Remove (when requirement of Symfony is >= 3.0)
-                if (method_exists('Symfony\Component\Form\FormTypeInterface', 'setDefaultOptions')) {
-                    $operatorChoices['choices_as_values'] = true;
-                }
+            // NEXT_MAJOR: Remove (when requirement of Symfony is >= 3.0)
+            if (method_exists(FormTypeInterface::class, 'setDefaultOptions')) {
+                $operatorChoices['choices_as_values'] = true;
             }
 
             $operatorChoices['choices'] = $choices;
