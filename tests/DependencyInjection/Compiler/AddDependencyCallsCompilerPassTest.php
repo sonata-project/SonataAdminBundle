@@ -264,24 +264,24 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $container = $this->getContainer();
 
         if (class_exists(DefinitionDecorator::class)) {
-            $vehiculeAdmin = new DefinitionDecorator('sonata_abstract_movable_object_admin');
-            $carAdmin = new DefinitionDecorator('sonata_abstract_vehicule_admin');
+            $vehicleAdmin = new DefinitionDecorator('sonata_abstract_movable_object_admin');
+            $carAdmin = new DefinitionDecorator('sonata_abstract_vehicle_admin');
         } else {
-            $vehiculeAdmin = new ChildDefinition('sonata_abstract_movable_object_admin');
-            $carAdmin = new ChildDefinition('sonata_abstract_vehicule_admin');
+            $vehicleAdmin = new ChildDefinition('sonata_abstract_movable_object_admin');
+            $carAdmin = new ChildDefinition('sonata_abstract_vehicle_admin');
         }
 
         $carAdmin
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
             ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\Car', 'SonataAdminBundle:CRUD'])
             ->addTag('sonata.admin', ['group' => 'sonata_report_two_group', 'manager_type' => 'orm', 'show_mosaic_button' => true]);
-        $vehiculeAdmin
+        $vehicleAdmin
             ->setClass('Sonata\AdminBundle\Tests\DependencyInjection\MockAdmin')
             ->setAbstract(true)
-            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\AbstractVehicule', 'SonataAdminBundle:CRUD'])
+            ->setArguments(['', 'Sonata\AdminBundle\Tests\DependencyInjection\AbstractVehicle', 'SonataAdminBundle:CRUD'])
             ->addTag('sonata.admin', ['group' => 'sonata_group_one', 'manager_type' => 'orm']);
 
-        $container->setDefinition('sonata_abstract_vehicule_admin', $vehiculeAdmin);
+        $container->setDefinition('sonata_abstract_vehicle_admin', $vehicleAdmin);
         $container->setDefinition('sonata_car_admin', $carAdmin);
 
         $container
@@ -292,18 +292,18 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             ->addTag('sonata.admin', ['group' => 'sonata_group_one', 'manager_type' => 'orm']);
 
         $abstractMovableObjectDefinition = $container->getDefinition('sonata_abstract_movable_object_admin');
-        $abstractVehiculeDefinition = $container->getDefinition('sonata_abstract_vehicule_admin');
+        $abstractVehicleDefinition = $container->getDefinition('sonata_abstract_vehicle_admin');
         $carDefinition = $container->getDefinition('sonata_car_admin');
 
         $abstractMovableObjectDefinition->addMethodCall('setTemplate', ['template_on_movable', 'template']);
-        $abstractVehiculeDefinition->addMethodCall('setTemplate', ['template_on_parent', 'template']);
-        $abstractVehiculeDefinition->addMethodCall('setTemplate', ['template_overriden', 'parent_value']);
+        $abstractVehicleDefinition->addMethodCall('setTemplate', ['template_on_parent', 'template']);
+        $abstractVehicleDefinition->addMethodCall('setTemplate', ['template_overriden', 'parent_value']);
         $carDefinition->addMethodCall('setTemplate', ['template_on_child', 'template']);
         $carDefinition->addMethodCall('setTemplate', ['template_overriden', 'child_value']);
         $abstractMovableObjectDefinition->addMethodCall('setTemplates', [[
             'template_on_movable_two' => 'template',
         ]]);
-        $abstractVehiculeDefinition->addMethodCall('setTemplates', [[
+        $abstractVehicleDefinition->addMethodCall('setTemplates', [[
             'template_on_parent_two' => 'template',
             'template_overriden_two' => 'parent_value',
         ]]);
