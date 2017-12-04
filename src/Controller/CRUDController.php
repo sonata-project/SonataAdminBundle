@@ -1197,11 +1197,12 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
+     * @final Since 4.0
      * Redirects the user to the list view.
      *
      * @return RedirectResponse
      */
-    final protected function redirectToList()
+    protected function redirectToList()
     {
         $parameters = [];
 
