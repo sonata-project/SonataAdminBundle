@@ -983,30 +983,26 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function getClass()
     {
-        // see https://github.com/sonata-project/SonataCoreBundle/commit/247eeb0a7ca7211142e101754769d70bc402a5b4
-        if ($this->hasSubject() && is_object($this->getSubject())) {
-            return ClassUtils::getClass($this->getSubject());
-        }
-
-        if (!$this->hasActiveSubClass()) {
-            if (count($this->getSubClasses()) > 0) {
-                $subject = $this->getSubject();
-
-                if ($subject && is_object($subject)) {
-                    return ClassUtils::getClass($subject);
-                }
+        if ($this->hasActiveSubClass()) {
+            if ($this->getParentFieldDescription()) {
+                throw new \RuntimeException('Feature not implemented: an embedded admin cannot have subclass');
             }
 
-            return $this->class;
+            $subClass = $this->getRequest()->query->get('subclass');
+
+            if (!$this->hasSubClass($subClass)) {
+                throw new \RuntimeException(sprintf('Subclass "%" is not defined.', $subClass));
+            }
+
+            return $this->getSubClass($subClass);
         }
 
-        if ($this->getParentFieldDescription() && $this->hasActiveSubClass()) {
-            throw new \RuntimeException('Feature not implemented: an embedded admin cannot have subclass');
+        // see https://github.com/sonata-project/SonataCoreBundle/commit/247eeb0a7ca7211142e101754769d70bc402a5b4
+        if ($this->subject && is_object($this->subject)) {
+            return ClassUtils::getClass($this->subject);
         }
 
-        $subClass = $this->getRequest()->query->get('subclass');
-
-        return $this->getSubClass($subClass);
+        return $this->class;
     }
 
     /**
@@ -1064,7 +1060,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             return;
         }
 
-        return $this->getClass();
+        return $this->getSubClass($this->getActiveSubclassCode());
     }
 
     /**
@@ -1371,7 +1367,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 E_USER_DEPRECATED
             );
         }
-        $query = $this->getModelManager()->createQuery($this->class);
+        $query = $this->getModelManager()->createQuery($this->getClass());
 
         foreach ($this->extensions as $extension) {
             $extension->configureQuery($this, $query, $context);
@@ -1670,7 +1666,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function setSubject($subject)
     {
-        if (is_object($subject) && !is_a($subject, $this->class, true)) {
+        if (is_object($subject) && !is_a($subject, $this->getClass(), true)) {
             $message = <<<'EOT'
 You are trying to set entity an instance of "%s",
 which is not the one registered with this admin class ("%s").
@@ -1678,7 +1674,7 @@ This is deprecated since 3.5 and will no longer be supported in 4.0.
 EOT;
 
             @trigger_error(
-                sprintf($message, get_class($subject), $this->class),
+                sprintf($message, get_class($subject), $this->getClass()),
                 E_USER_DEPRECATED
             ); // NEXT_MAJOR : throw an exception instead
         }
@@ -1695,7 +1691,7 @@ EOT;
             $id = $this->request->get($this->getIdParameter());
 
             if (null !== $id) {
-                $this->subject = $this->getModelManager()->find($this->class, $id);
+                $this->subject = $this->getObject($id);
             }
         }
 
