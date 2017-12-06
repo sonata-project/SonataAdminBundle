@@ -4,7 +4,12 @@ set -ev
 mkdir --parents "${HOME}/bin"
 
 # PHPUnit install
-wget "https://phar.phpunit.de/phpunit-5.7.phar" --output-document="${HOME}/bin/phpunit"
+if [ ${TRAVIS_PHP_VERSION} '<' '7.0' ]; then
+    PHPUNIT_PHAR=phpunit-5.phar
+else
+    PHPUNIT_PHAR=phpunit-6.phar
+fi
+wget "https://phar.phpunit.de/${PHPUNIT_PHAR}" --output-document="${HOME}/bin/phpunit"
 chmod u+x "${HOME}/bin/phpunit"
 
 # Coveralls client install
