@@ -121,11 +121,10 @@ class HelperControllerTest extends TestCase
             }));
     }
 
-    /**
-     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
     public function testgetShortObjectDescriptionActionInvalidAdmin()
     {
+        $this->expectException(\Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class);
+
         $container = $this->createMock(ContainerInterface::class);
         $twig = new \Twig_Environment($this->createMock(\Twig_LoaderInterface::class));
         $request = new Request([
@@ -143,11 +142,12 @@ class HelperControllerTest extends TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
      * @exceptionMessage Invalid format
      */
     public function testgetShortObjectDescriptionActionObjectDoesNotExist()
     {
+        $this->expectException(\RuntimeException::class);
+
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())->method('setUniqid');
         $admin->expects($this->once())->method('getObject')->will($this->returnValue(false));
@@ -561,19 +561,18 @@ class HelperControllerTest extends TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @exceptionMessage Invalid format
      */
     public function testRetrieveAutocompleteItemsActionNotGranted()
     {
+        $this->expectException(\Symfony\Component\Security\Core\Exception\AccessDeniedException::class);
+
         $this->admin->expects($this->exactly(2))
             ->method('hasAccess')
             ->will($this->returnCallback(function ($operation) {
                 if ('create' == $operation || 'edit' == $operation) {
                     return false;
                 }
-
-                return;
             }));
 
         $request = new Request([
@@ -584,11 +583,12 @@ class HelperControllerTest extends TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @exceptionMessage Autocomplete list can`t be retrieved because the form element is disabled or read_only.
      */
     public function testRetrieveAutocompleteItemsActionDisabledFormelememt()
     {
+        $this->expectException(\Symfony\Component\Security\Core\Exception\AccessDeniedException::class);
+
         $this->admin->expects($this->once())
             ->method('hasAccess')
             ->with('create')

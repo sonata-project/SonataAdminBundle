@@ -100,11 +100,10 @@ class FilterTest extends TestCase
         $this->assertSame('foo', $filter->getLabel());
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testExceptionOnNonDefinedFieldName()
     {
+        $this->expectException(\RuntimeException::class);
+
         $filter = new FooFilter();
 
         $filter->getFieldName();
@@ -138,7 +137,7 @@ class FilterTest extends TestCase
     public function testGetTranslationDomain()
     {
         $filter = new FooFilter();
-        $this->assertSame(null, $filter->getTranslationDomain());
+        $this->assertNull($filter->getTranslationDomain());
         $filter->setOption('translation_domain', 'baz');
         $this->assertSame('baz', $filter->getTranslationDomain());
     }

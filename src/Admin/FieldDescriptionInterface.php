@@ -217,10 +217,11 @@ interface FieldDescriptionInterface
     /**
      * merge option values related to the provided option name.
      *
-     * @throws \RuntimeException
      *
      * @param string $name
      * @param array  $options
+     *
+     * @throws \RuntimeException
      */
     public function mergeOption($name, array $options = []);
 

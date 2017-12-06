@@ -82,8 +82,6 @@ class DefaultRouteGeneratorTest extends TestCase
                     case 'admin_acme_child_bar':
                         return '/foo/bar'.$params;
                 }
-
-                return;
             }));
 
         $cache = new RoutesCache($this->cacheTempFolder, true);
@@ -165,8 +163,6 @@ class DefaultRouteGeneratorTest extends TestCase
                 if ('childId' == $key) {
                     return '987654';
                 }
-
-                return;
             }));
 
         $admin->expects($this->any())->method('getRequest')->will($this->returnValue($request));
@@ -187,8 +183,6 @@ class DefaultRouteGeneratorTest extends TestCase
                     case 'admin_acme_child_bar':
                         return '/foo/bar'.$params;
                 }
-
-                return;
             }));
 
         $cache = new RoutesCache($this->cacheTempFolder, true);
@@ -246,8 +240,6 @@ class DefaultRouteGeneratorTest extends TestCase
                     case 'admin_acme_child_bar':
                         return '/foo/bar'.$params;
                 }
-
-                return;
             }));
 
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
@@ -322,8 +314,6 @@ class DefaultRouteGeneratorTest extends TestCase
                 if ('childId' == $key) {
                     return '987654';
                 }
-
-                return;
             }));
 
         $admin->expects($this->any())->method('getRequest')->will($this->returnValue($request));
@@ -354,8 +344,6 @@ class DefaultRouteGeneratorTest extends TestCase
                     case 'admin_acme_child_standalone_bar':
                         return '/bar'.$params;
                 }
-
-                return;
             }));
 
         $cache = new RoutesCache($this->cacheTempFolder, true);

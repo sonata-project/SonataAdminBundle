@@ -50,7 +50,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
 
         $objectIdentity = ObjectIdentity::fromDomainObject($admin);
         $newAcl = false;
-        if (is_null($acl = $securityHandler->getObjectAcl($objectIdentity))) {
+        if (null === ($acl = $securityHandler->getObjectAcl($objectIdentity))) {
             $acl = $securityHandler->createAcl($objectIdentity);
             $newAcl = true;
         }
@@ -96,7 +96,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
                         $action = 'update';
                     }
 
-                    if (!is_null($output)) {
+                    if (null !== $output) {
                         $output->writeln(sprintf('   - %s role: %s, permissions: %s', $action, $role, json_encode($roleAdminPermissions)));
                     }
 
@@ -104,7 +104,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
                 } elseif (false !== $aceIndex) {
                     $acl->deleteClassAce($aceIndex);
 
-                    if (!is_null($output)) {
+                    if (null !== $output) {
                         $output->writeln(sprintf('   - remove role: %s', $role));
                     }
                 }

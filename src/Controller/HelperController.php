@@ -77,9 +77,9 @@ class HelperController
     }
 
     /**
-     * @throws NotFoundHttpException
-     *
      * @param Request $request
+     *
+     * @throws NotFoundHttpException
      *
      * @return Response
      */
@@ -121,9 +121,9 @@ class HelperController
     }
 
     /**
-     * @throws NotFoundHttpException
-     *
      * @param Request $request
+     *
+     * @throws NotFoundHttpException
      *
      * @return Response
      */
@@ -170,9 +170,9 @@ class HelperController
     }
 
     /**
-     * @throws NotFoundHttpException|\RuntimeException
-     *
      * @param Request $request
+     *
+     * @throws NotFoundHttpException|\RuntimeException
      *
      * @return Response
      */
@@ -354,10 +354,10 @@ class HelperController
      *
      * @param Request $request
      *
-     * @return JsonResponse
-     *
      * @throws \RuntimeException
      * @throws AccessDeniedException
+     *
+     * @return JsonResponse
      */
     public function retrieveAutocompleteItemsAction(Request $request)
     {
@@ -498,9 +498,9 @@ class HelperController
      * @param AdminInterface $admin
      * @param string         $field
      *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
-     *
      * @throws \RuntimeException
+     *
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
     private function retrieveFormFieldDescription(AdminInterface $admin, $field)
     {
@@ -525,9 +525,9 @@ class HelperController
      * @param AdminInterface $admin
      * @param string         $field
      *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
-     *
      * @throws \RuntimeException
+     *
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
     private function retrieveFilterFieldDescription(AdminInterface $admin, $field)
     {

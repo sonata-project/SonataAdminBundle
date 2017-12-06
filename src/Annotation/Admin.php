@@ -121,7 +121,7 @@ class Admin implements MetadataProcessorInterface
         ];
 
         $tag = array_filter($tag, function ($v) {
-            return !is_null($v);
+            return null !== $v;
         });
 
         if (!empty($this->id)) {

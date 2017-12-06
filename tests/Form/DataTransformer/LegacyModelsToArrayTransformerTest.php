@@ -17,9 +17,9 @@ use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 use Sonata\AdminBundle\Form\DataTransformer\LegacyModelsToArrayTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity;
-use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -167,8 +167,6 @@ class LegacyModelsToArrayTransformerTest extends TestCase
                     case 'baz':
                         return $entity3;
                 }
-
-                return;
             }));
 
         $collection = $transformer->reverseTransform(['foo', 'bar']);

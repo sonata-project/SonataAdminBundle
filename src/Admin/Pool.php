@@ -151,9 +151,9 @@ class Pool
      *
      * @param string $group
      *
-     * @return array
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return array
      */
     public function getAdminsByGroup($group)
     {
@@ -251,9 +251,9 @@ class Pool
      *
      * @param string $id
      *
-     * @return AdminInterface
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return AdminInterface
      */
     public function getInstance($id)
     {

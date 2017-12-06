@@ -30,7 +30,6 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 use Symfony\Component\Validator\Mapping\GenericMetadata;
 use Symfony\Component\Validator\Mapping\MetadataInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -160,8 +159,6 @@ class ExplainAdminCommandTest extends TestCase
                     case 'acme.admin.foo':
                         return $this->admin;
                 }
-
-                return;
             }));
 
         $container->expects($this->any())->method('has')->will($this->returnValue(true));

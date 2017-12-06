@@ -93,11 +93,10 @@ class PoolTest extends TestCase
         $this->assertSame($admin_group1, $groups['adminGroup1']['items']['itemKey']);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testGetAdminsByGroupWhenGroupNotSet()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->pool->setAdminGroups([
                 'adminGroup1' => [],
             ]);
@@ -143,22 +142,20 @@ class PoolTest extends TestCase
         $this->assertNull($this->pool->getAdminByClass('notexists'));
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testGetAdminForClassWithInvalidFormat()
     {
+        $this->expectException(\RuntimeException::class);
+
         $this->pool->setAdminClasses(['someclass' => 'sonata.user.admin.group1']);
         $this->assertTrue($this->pool->hasAdminByClass('someclass'));
 
         $this->pool->getAdminByClass('someclass');
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testGetAdminForClassWithTooManyRegisteredAdmin()
     {
+        $this->expectException(\RuntimeException::class);
+
         $this->pool->setAdminClasses([
             'someclass' => ['sonata.user.admin.group1', 'sonata.user.admin.group2'],
         ]);
@@ -178,12 +175,11 @@ class PoolTest extends TestCase
         $this->assertSame('sonata_user_admin_group1_AdminClass', $this->pool->getAdminByClass('someclass'));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Admin service "sonata.news.admin.post" not found in admin pool.
-     */
     public function testGetInstanceWithUndefinedServiceId()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Admin service "sonata.news.admin.post" not found in admin pool.');
+
         $this->pool->getInstance('sonata.news.admin.post');
     }
 
@@ -235,7 +231,7 @@ class PoolTest extends TestCase
         $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
         $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
 
-        $this->assertSame(false, $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid'));
+        $this->assertFalse($this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid'));
     }
 
     public function testGetAdminClasses()
@@ -285,7 +281,7 @@ class PoolTest extends TestCase
     {
         $this->assertSame('bar', $this->pool->getOption('foo'));
 
-        $this->assertSame(null, $this->pool->getOption('non_existent_option'));
+        $this->assertNull($this->pool->getOption('non_existent_option'));
     }
 
     public function testOptionDefault()

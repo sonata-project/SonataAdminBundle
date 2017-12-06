@@ -24,11 +24,10 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ExporterTest extends TestCase
 {
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testFilter()
     {
+        $this->expectException(\RuntimeException::class);
+
         $source = $this->createMock(SourceIteratorInterface::class);
 
         $exporter = new Exporter();

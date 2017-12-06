@@ -137,9 +137,9 @@ class CRUDController implements ContainerAwareInterface
     /**
      * List action.
      *
-     * @return Response
-     *
      * @throws AccessDeniedException If access is not granted
+     *
+     * @return Response
      */
     public function listAction()
     {
@@ -178,9 +178,9 @@ class CRUDController implements ContainerAwareInterface
      *
      * @param ProxyQueryInterface $query
      *
-     * @return RedirectResponse
-     *
      * @throws AccessDeniedException If access is not granted
+     *
+     * @return RedirectResponse
      */
     public function batchActionDelete(ProxyQueryInterface $query)
     {
@@ -210,10 +210,10 @@ class CRUDController implements ContainerAwareInterface
      *
      * @param int|string|null $id
      *
-     * @return Response|RedirectResponse
-     *
      * @throws NotFoundHttpException If the object does not exist
      * @throws AccessDeniedException If access is not granted
+     *
+     * @return Response|RedirectResponse
      */
     public function deleteAction($id)
     {
@@ -285,10 +285,10 @@ class CRUDController implements ContainerAwareInterface
      *
      * @param int|string|null $id
      *
-     * @return Response|RedirectResponse
-     *
      * @throws NotFoundHttpException If the object does not exist
      * @throws AccessDeniedException If access is not granted
+     *
+     * @return Response|RedirectResponse
      */
     public function editAction($id = null)
     {
@@ -399,10 +399,10 @@ class CRUDController implements ContainerAwareInterface
     /**
      * Batch action.
      *
-     * @return Response|RedirectResponse
-     *
      * @throws NotFoundHttpException If the HTTP method is not POST
      * @throws \RuntimeException     If the batch action is not defined
+     *
+     * @return Response|RedirectResponse
      */
     public function batchAction()
     {
@@ -528,9 +528,9 @@ class CRUDController implements ContainerAwareInterface
     /**
      * Create action.
      *
-     * @return Response
-     *
      * @throws AccessDeniedException If access is not granted
+     *
+     * @return Response
      */
     public function createAction()
     {
@@ -645,10 +645,10 @@ class CRUDController implements ContainerAwareInterface
      *
      * @param int|string|null $id
      *
-     * @return Response
-     *
      * @throws NotFoundHttpException If the object does not exist
      * @throws AccessDeniedException If access is not granted
+     *
+     * @return Response
      */
     public function showAction($id = null)
     {
@@ -682,10 +682,10 @@ class CRUDController implements ContainerAwareInterface
      *
      * @param int|string|null $id
      *
-     * @return Response
-     *
      * @throws AccessDeniedException If access is not granted
      * @throws NotFoundHttpException If the object does not exist or the audit reader is not available
+     *
+     * @return Response
      */
     public function historyAction($id = null)
     {
@@ -729,10 +729,10 @@ class CRUDController implements ContainerAwareInterface
      * @param int|string|null $id
      * @param string|null     $revision
      *
-     * @return Response
-     *
      * @throws AccessDeniedException If access is not granted
      * @throws NotFoundHttpException If the object or revision does not exist or the audit reader is not available
+     *
+     * @return Response
      */
     public function historyViewRevisionAction($id = null, $revision = null)
     {
@@ -790,10 +790,10 @@ class CRUDController implements ContainerAwareInterface
      * @param int|string|null $base_revision
      * @param int|string|null $compare_revision
      *
-     * @return Response
-     *
      * @throws AccessDeniedException If access is not granted
      * @throws NotFoundHttpException If the object or revision does not exist or the audit reader is not available
+     *
+     * @return Response
      */
     public function historyCompareRevisionsAction($id = null, $base_revision = null, $compare_revision = null)
     {
@@ -863,10 +863,10 @@ class CRUDController implements ContainerAwareInterface
      *
      * @param Request $request
      *
-     * @return Response
-     *
      * @throws AccessDeniedException If access is not granted
      * @throws \RuntimeException     If the export format is invalid
+     *
+     * @return Response
      */
     public function exportAction(Request $request)
     {
@@ -921,10 +921,10 @@ class CRUDController implements ContainerAwareInterface
      *
      * @param int|string|null $id
      *
-     * @return Response|RedirectResponse
-     *
      * @throws AccessDeniedException If access is not granted
      * @throws NotFoundHttpException If the object does not exist or the ACL is not enabled
+     *
+     * @return Response|RedirectResponse
      */
     public function aclAction($id = null)
     {

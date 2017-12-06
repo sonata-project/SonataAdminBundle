@@ -40,9 +40,9 @@ class SearchHandler
      * @param int            $page
      * @param int            $offset
      *
-     * @return PagerInterface|false
-     *
      * @throws \RuntimeException
+     *
+     * @return PagerInterface|false
      */
     public function search(AdminInterface $admin, $term, $page = 0, $offset = 20)
     {

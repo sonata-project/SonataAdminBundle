@@ -73,8 +73,6 @@ class AdminExtractorTest extends TestCase
                     case 'bar_admin':
                         return $this->barAdmin;
                 }
-
-                return;
             }));
 
         $logger = $this->getMockForAbstractClass(LoggerInterface::class);
@@ -116,8 +114,6 @@ class AdminExtractorTest extends TestCase
             ->will($this->returnCallback(function () {
                 $this->assertEquals('foo', $this->adminExtractor->trans('foo', [], 'foo_admin_domain'));
                 $this->assertEquals('foo', $this->adminExtractor->transChoice('foo', 1, [], 'foo_admin_domain'));
-
-                return;
             }));
         $this->fooAdmin->expects($this->any())
             ->method('getLabel')

@@ -316,7 +316,8 @@ class GenerateAdminCommandTest extends TestCase
     public function testValidateManagerTypeWithException1()
     {
         $this->command->setContainer($this->container);
-        $this->setExpectedException(\InvalidArgumentException::class, 'Invalid manager type "foo". Available manager types are "".');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid manager type "foo". Available manager types are "".');
         $this->command->validateManagerType('foo');
     }
 
@@ -383,6 +384,6 @@ class GenerateAdminCommandTest extends TestCase
             'model' => $modelEntity,
         ]);
 
-        $this->assertFalse(file_exists($this->tempDirectory.'/Resources/config/services.yml'));
+        $this->assertFileNotExists($this->tempDirectory.'/Resources/config/services.yml');
     }
 }

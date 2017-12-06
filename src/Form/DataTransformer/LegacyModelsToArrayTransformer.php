@@ -12,7 +12,6 @@
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
-use Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;

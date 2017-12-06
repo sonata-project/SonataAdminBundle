@@ -75,9 +75,9 @@ class GroupMenuProvider implements MenuProviderInterface
      * @param string $name
      * @param array  $options
      *
-     * @return \Knp\Menu\ItemInterface
-     *
      * @throws \InvalidArgumentException if the menu does not exists
+     *
+     * @return \Knp\Menu\ItemInterface
      */
     public function get($name, array $options = [])
     {

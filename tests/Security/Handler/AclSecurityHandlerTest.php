@@ -103,11 +103,10 @@ class AclSecurityHandlerTest extends TestCase
         $this->assertFalse($handler->isGranted($admin, 'raise exception', $admin));
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testWithNonAuthenticationCredentialsNotFoundException()
     {
+        $this->expectException(\RuntimeException::class);
+
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
 
         $authorizationChecker = $this->getAuthorizationCheckerMock();
