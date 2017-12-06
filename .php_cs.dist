@@ -33,7 +33,6 @@ $rules = [
     'ordered_class_elements' => true,
     'ordered_imports' => true,
     'phpdoc_order' => true,
-    'ternary_to_null_coalescing' => true,
     // To be tested before insertion:
 //    'strict_comparison' => true,
 //    'strict_param' => true,
@@ -49,12 +48,14 @@ if (\PHP_VERSION_ID >= 50600) {
 }
 if (\PHP_VERSION_ID >= 70000) {
     $rules = array_merge($rules, [
+        '@PHP70Migration' => true,
         '@PHP70Migration:risky' => true,
         '@PHPUnit60Migration:risky' => true,
     ]);
 }
 if (\PHP_VERSION_ID >= 70100) {
     $rules = array_merge($rules, [
+        '@PHP71Migration' => true,
         '@PHP71Migration:risky' => true,
         'compact_nullable_typehint' => true,
     ]);

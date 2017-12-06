@@ -19,6 +19,11 @@ php:
 sudo: false
 dist: trusty
 
+addons:
+  apt:
+    packages:
+      - libxml2-utils
+
 cache:
   pip: true
   directories:
@@ -50,9 +55,7 @@ matrix:
     - php: '7.2'
       env: SYMFONY=3.4.*
     - php: '7.2'
-      env: SYMFONY=4.0.*
-    - php: '7.2'
-      env: SYMFONY='dev-master as 4.0.x-dev'
+      env: SYMFONY='dev-master as 3.4.x-dev'
     - php: '7.2'
       env: SONATA_CORE=3.*
     - php: '7.2'
@@ -66,7 +69,7 @@ matrix:
   allow_failures:
     - php: nightly
     - env: SYMFONY_DEPRECATIONS_HELPER=0
-    - env: SYMFONY='dev-master as 4.0.x-dev'
+    - env: SYMFONY='dev-master as 3.4.x-dev'
     - env: SONATA_CORE='dev-master as 3.x-dev'
     - env: SONATA_BLOCK='dev-master as 3.x-dev'
 

@@ -11,8 +11,8 @@ lint:
 	composer validate
 	find . -name '*.yml' -not -path './vendor/*' -not -path './Resources/public/vendor/*' | xargs yaml-lint
 	find . \( -name '*.xml' -or -name '*.xliff' \) \
-		-not -path './vendor/*' -not -path './Resources/public/vendor/*' -type f \
-		-exec xmllint --encode UTF-8 --output '{}' --format '{}' \;
+		-not -path './vendor/*' -not -path './Resources/public/vendor/*' \
+		| xargs -I'{}' xmllint --encode UTF-8 --output '{}' --format '{}'
 	php-cs-fixer fix --verbose
 	git diff --exit-code
 
