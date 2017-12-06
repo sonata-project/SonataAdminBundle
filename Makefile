@@ -19,9 +19,14 @@ lint-yaml:
 .PHONY: lint-yaml
 
 lint-xml:
-	XMLLINT_INDENT='    ' find . \( -name '*.xml' -or -name '*.xliff' \) \
-		-not -path './vendor/*' -not -path './Resources/public/vendor/*' \
-		| xargs -I'{}' xmllint --encode UTF-8 --output '{}' --format '{}'
+	find src \( -name '*.xml' -or -name '*.xliff' \) \
+		-not -path './src/Resources/public/vendor/*' \
+		| while read xmlFile; \
+	do \
+		XMLLINT_INDENT='    ' xmllint --encode UTF-8 --format "$$xmlFile"|diff - "$$xmlFile"; \
+		if [ $$? -ne 0 ] ;then exit 1; fi; \
+	done
+
 .PHONY: lint-xml
 
 lint-php:
