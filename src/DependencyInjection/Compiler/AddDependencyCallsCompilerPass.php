@@ -56,7 +56,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 // Temporary fix until we can support service locators
                 $definition->setPublic(true);
 
-                // NEXT_MAJOR: Remove check for DefinitionDecorator instance when dropping Symfony <3.3 support
+                // NEXT_MAJOR: Remove check for DefinitionDecorator instance when dropping Symfony <3.3 support.
                 if ($definition instanceof ChildDefinition ||
                     (!class_exists(ChildDefinition::class) && $definition instanceof DefinitionDecorator)) {
                     $parentDefinition = $container->getDefinition($definition->getParent());
