@@ -14,12 +14,13 @@ lint-composer:
 .PHONY: lint-composer
 
 lint-yaml:
-	find . -name '*.yml' -not -path './vendor/*' -not -path './Resources/public/vendor/*' | xargs yaml-lint
+	find . -name '*.yml' -not -path './vendor/*' -not -path './src/Resources/public/vendor/*' | xargs yaml-lint
 
 .PHONY: lint-yaml
 
 lint-xml:
-	find src \( -name '*.xml' -or -name '*.xliff' \) \
+	find . \( -name '*.xml' -or -name '*.xliff' \) \
+		-not -path './vendor/*' \
 		-not -path './src/Resources/public/vendor/*' \
 		| while read xmlFile; \
 	do \
@@ -41,7 +42,8 @@ cs-fix-php:
 .PHONY: cs-fix-php
 
 cs-fix-xml:
-	find src \( -name '*.xml' -or -name '*.xliff' \) \
+	find . \( -name '*.xml' -or -name '*.xliff' \) \
+		-not -path './vendor/*' \
 		-not -path './src/Resources/public/vendor/*' \
 		| while read xmlFile; \
 	do \
