@@ -565,9 +565,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function getExportFormats()
     {
-        return [
+        return array(
             'json', 'xml', 'csv', 'xls',
-        ];
+        );
     }
 
     /**
