@@ -33,9 +33,21 @@ lint-php:
 	php-cs-fixer fix --ansi --verbose --diff --dry-run
 .PHONY: lint-php
 
-cs-fix:
-	php-cs-fixer fix --verbose
+cs-fix: cs-fix-php cs-fix-xml
 .PHONY: cs-fix
+
+cs-fix-php:
+	php-cs-fixer fix --verbose
+.PHONY: cs-fix-php
+
+cs-fix-xml:
+	find src \( -name '*.xml' -or -name '*.xliff' \) \
+		-not -path './src/Resources/public/vendor/*' \
+		| while read xmlFile; \
+	do \
+		XMLLINT_INDENT='    ' xmllint --encode UTF-8 --format "$$xmlFile" --output "$$xmlFile"; \
+	done
+.PHONY: cs-fix-xml
 
 test:
 	phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
