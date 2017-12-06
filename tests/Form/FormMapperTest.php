@@ -280,62 +280,56 @@ class FormMapperTest extends TestCase
         $this->assertTrue($this->formMapper->has('baz'));
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage Cannot nest ifTrue or ifFalse call
-     */
     public function testIfTrueNested()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
         $this->formMapper->ifTrue(true);
         $this->formMapper->ifTrue(true);
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage Cannot nest ifTrue or ifFalse call
-     */
     public function testIfFalseNested()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
         $this->formMapper->ifFalse(false);
         $this->formMapper->ifFalse(false);
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage Cannot nest ifTrue or ifFalse call
-     */
     public function testIfCombinationNested()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
         $this->formMapper->ifTrue(true);
         $this->formMapper->ifFalse(false);
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage Cannot nest ifTrue or ifFalse call
-     */
     public function testIfFalseCombinationNested2()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
         $this->formMapper->ifFalse(false);
         $this->formMapper->ifTrue(true);
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage Cannot nest ifTrue or ifFalse call
-     */
     public function testIfFalseCombinationNested3()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
         $this->formMapper->ifFalse(true);
         $this->formMapper->ifTrue(false);
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage Cannot nest ifTrue or ifFalse call
-     */
     public function testIfFalseCombinationNested4()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
         $this->formMapper->ifTrue(false);
         $this->formMapper->ifFalse(true);
     }

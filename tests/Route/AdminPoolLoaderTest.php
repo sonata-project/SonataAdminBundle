@@ -75,8 +75,6 @@ class AdminPoolLoaderTest extends TestCase
                     case 'bar_admin':
                         return $admin2;
                 }
-
-                return;
             }));
 
         $collection = $adminPoolLoader->load('foo', 'sonata_admin');

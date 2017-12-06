@@ -319,10 +319,10 @@ EOT;
     }
 
     /**
-     * @throws \RuntimeException
-     *
      * @param mixed                     $element
      * @param FieldDescriptionInterface $fieldDescription
+     *
+     * @throws \RuntimeException
      *
      * @return mixed
      */
@@ -378,7 +378,7 @@ EOT;
      */
     public function getUrlsafeIdentifier($model, AdminInterface $admin = null)
     {
-        if (is_null($admin)) {
+        if (null === $admin) {
             $admin = $this->pool->getAdminByClass(ClassUtils::getClass($model));
         }
 

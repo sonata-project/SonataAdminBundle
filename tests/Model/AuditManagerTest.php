@@ -40,8 +40,6 @@ class AuditManagerTest extends TestCase
                     case 'bar_reader':
                         return $barReader;
                 }
-
-                return;
             }));
 
         $auditManager = new AuditManager($container);

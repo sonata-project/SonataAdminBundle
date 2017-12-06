@@ -38,10 +38,10 @@ class AdminHelper
     }
 
     /**
-     * @throws \RuntimeException
-     *
      * @param FormBuilderInterface $formBuilder
      * @param string               $elementId
+     *
+     * @throws \RuntimeException
      *
      * @return FormBuilderInterface|null
      */
@@ -52,8 +52,6 @@ class AdminHelper
                 return $formBuilder;
             }
         }
-
-        return;
     }
 
     /**
@@ -69,8 +67,6 @@ class AdminHelper
                 return $formView;
             }
         }
-
-        return;
     }
 
     /**
@@ -93,15 +89,15 @@ class AdminHelper
      *   For now the append form element action used to add a new row works
      *   only for direct FieldDescription (not nested one).
      *
-     * @throws \RuntimeException
      *
      * @param AdminInterface $admin
      * @param object         $subject
      * @param string         $elementId
      *
-     * @return array
-     *
+     * @throws \RuntimeException
      * @throws \Exception
+     *
+     * @return array
      */
     public function appendFormFieldElement(AdminInterface $admin, $subject, $elementId)
     {
@@ -251,9 +247,9 @@ class AdminHelper
      *                          (uniqueIdentifier_model_sub_model or uniqueIdentifier_model_1_sub_model etc.)
      * @param mixed  $entity
      *
-     * @return string
-     *
      * @throws \Exception
+     *
+     * @return string
      */
     public function getElementAccessPath($elementId, $entity)
     {

@@ -98,8 +98,8 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertArrayHasKey('roles', $dashboardGroupsSettings['sonata_group_one']);
         $this->assertSame('Group One Label', $dashboardGroupsSettings['sonata_group_one']['label']);
         $this->assertSame('SonataAdminBundle', $dashboardGroupsSettings['sonata_group_one']['label_catalogue']);
-        $this->assertSame(false, $dashboardGroupsSettings['sonata_group_one']['on_top']);
-        $this->assertSame(true, $dashboardGroupsSettings['sonata_group_three']['on_top']);
+        $this->assertFalse($dashboardGroupsSettings['sonata_group_one']['on_top']);
+        $this->assertTrue($dashboardGroupsSettings['sonata_group_three']['on_top']);
         $this->assertFalse($dashboardGroupsSettings['sonata_group_one']['keep_open']);
         $this->assertArrayHasKey('admin', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
         $this->assertArrayHasKey('route', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
@@ -171,8 +171,8 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertArrayHasKey('roles', $adminGroups['sonata_group_one']);
         $this->assertSame('Group One Label', $adminGroups['sonata_group_one']['label']);
         $this->assertSame('SonataAdminBundle', $adminGroups['sonata_group_one']['label_catalogue']);
-        $this->assertSame(false, $adminGroups['sonata_group_one']['on_top']);
-        $this->assertSame(true, $adminGroups['sonata_group_three']['on_top']);
+        $this->assertFalse($adminGroups['sonata_group_one']['on_top']);
+        $this->assertTrue($adminGroups['sonata_group_three']['on_top']);
         $this->assertFalse($adminGroups['sonata_group_one']['keep_open']);
         $this->assertContains('sonata_post_admin', $adminGroups['sonata_group_one']['items'][0]['admin']);
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['items']);
@@ -269,7 +269,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $adminGroups = $container->get('sonata.admin.pool')->getAdminGroups();
 
         $this->assertArrayHasKey('resolved_group_name', $adminGroups);
-        $this->assertFalse(array_key_exists('%sonata.admin.parameter.groupname%', $adminGroups));
+        $this->assertArrayNotHasKey('%sonata.admin.parameter.groupname%', $adminGroups);
     }
 
     public function testApplyTemplatesConfiguration()
@@ -346,7 +346,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             list($name, $parameters) = $call;
 
             if ('showMosaicButton' == $name) {
-                $this->assertSame(false, $parameters[0]);
+                $this->assertFalse($parameters[0]);
             }
         }
 
@@ -356,7 +356,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             list($name, $parameters) = $call;
 
             if ('showMosaicButton' == $name) {
-                $this->assertSame(true, $parameters[0]);
+                $this->assertTrue($parameters[0]);
             }
         }
     }

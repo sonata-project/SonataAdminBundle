@@ -65,9 +65,9 @@ class GenerateAdminCommand extends QuestionableCommand
     /**
      * @param string $managerType
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      */
     public function validateManagerType($managerType)
     {
@@ -236,9 +236,9 @@ class GenerateAdminCommand extends QuestionableCommand
     /**
      * @param string $class
      *
-     * @return string|null
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string|null
      */
     private function getBundleNameFromClass($class)
     {
@@ -250,8 +250,6 @@ class GenerateAdminCommand extends QuestionableCommand
                 return $bundle->getName();
             }
         }
-
-        return;
     }
 
     /**
@@ -274,9 +272,9 @@ class GenerateAdminCommand extends QuestionableCommand
     }
 
     /**
-     * @return string
-     *
      * @throws \RuntimeException
+     *
+     * @return string
      */
     private function getDefaultManagerType()
     {

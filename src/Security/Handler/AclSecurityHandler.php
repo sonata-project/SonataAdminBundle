@@ -168,7 +168,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         // retrieving the ACL for the object identity
         $objectIdentity = ObjectIdentity::fromDomainObject($object);
         $acl = $this->getObjectAcl($objectIdentity);
-        if (is_null($acl)) {
+        if (null === $acl) {
             $acl = $this->createAcl($objectIdentity);
         }
 

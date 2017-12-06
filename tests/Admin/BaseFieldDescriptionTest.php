@@ -159,11 +159,10 @@ class BaseFieldDescriptionTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \Sonata\AdminBundle\Exception\NoValueException
-     */
     public function testGetValueNoValueException()
     {
+        $this->expectException(\Sonata\AdminBundle\Exception\NoValueException::class);
+
         $description = new FieldDescription();
         $mock = $this->getMockBuilder('stdClass')
             ->setMethods(['getFoo'])
@@ -183,11 +182,10 @@ class BaseFieldDescriptionTest extends TestCase
         $description->getFieldValue($mock, 'fake');
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testExceptionOnNonArrayOption()
     {
+        $this->expectException(\RuntimeException::class);
+
         $description = new FieldDescription();
         $description->setOption('bar', 'hello');
         $description->mergeOption('bar', ['exception']);
@@ -235,8 +233,8 @@ class BaseFieldDescriptionTest extends TestCase
         $foo->setBaz(false);
 
         $description = new FieldDescription();
-        $this->assertSame(true, $description->getFieldValue($foo, 'bar'));
-        $this->assertSame(false, $description->getFieldValue($foo, 'baz'));
+        $this->assertTrue($description->getFieldValue($foo, 'bar'));
+        $this->assertFalse($description->getFieldValue($foo, 'baz'));
 
         $this->expectException(NoValueException::class);
         $description->getFieldValue($foo, 'inexistantMethod');

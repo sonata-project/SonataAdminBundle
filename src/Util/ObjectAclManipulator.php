@@ -55,7 +55,7 @@ abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
                 ++$countAdded;
             }
 
-            if (!is_null($securityIdentity)) {
+            if (null !== $securityIdentity) {
                 // add object owner
                 $securityHandler->addObjectOwner($acl, $securityIdentity);
             }

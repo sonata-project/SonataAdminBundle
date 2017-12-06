@@ -61,9 +61,9 @@ class CoreController extends Controller
      *
      * @param Request $request
      *
-     * @return JsonResponse|Response
-     *
      * @throws \RuntimeException
+     *
+     * @return JsonResponse|Response
      */
     public function searchAction(Request $request)
     {

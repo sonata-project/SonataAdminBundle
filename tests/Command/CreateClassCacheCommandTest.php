@@ -67,8 +67,6 @@ class CreateClassCacheCommandTest extends TestCase
                     if ('kernel' == $id) {
                         return $kernel;
                     }
-
-                    return;
                 }));
 
         $command->setContainer($container);

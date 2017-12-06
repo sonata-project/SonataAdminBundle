@@ -57,8 +57,6 @@ class ListAdminCommandTest extends TestCase
                     case 'acme.admin.bar':
                         return $admin2;
                 }
-
-                return;
             }));
 
         $command->setContainer($container);

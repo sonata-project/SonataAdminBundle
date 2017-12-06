@@ -115,12 +115,11 @@ class AdminTest extends TestCase
         $this->assertSame('bar', $admin->getClass());
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Feature not implemented: an embedded admin cannot have subclass
-     */
     public function testGetClassException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Feature not implemented: an embedded admin cannot have subclass');
+
         $class = 'Application\Sonata\NewsBundle\Entity\Post';
         $baseControllerName = 'SonataNewsBundle:PostAdmin';
 
@@ -138,8 +137,10 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\Post',
             'SonataNewsBundle:PostAdmin'
         );
-        $this->setExpectedException(
-            \InvalidArgumentException::class,
+        $this->expectException(
+            \InvalidArgumentException::class
+        );
+        $this->expectExceptionMessage(
             'Action "made-up" could not be found'
         );
         $admin->checkAccess('made-up');
@@ -161,8 +162,10 @@ class AdminTest extends TestCase
         );
         $admin->addExtension($customExtension->reveal());
         $admin->setSecurityHandler($securityHandler->reveal());
-        $this->setExpectedException(
-            AccessDeniedException::class,
+        $this->expectException(
+            AccessDeniedException::class
+        );
+        $this->expectExceptionMessage(
             'Access Denied to the action custom_action and role EXTRA_CUSTOM_ROLE'
         );
         $admin->checkAccess('custom_action');
@@ -420,11 +423,10 @@ class AdminTest extends TestCase
         $this->assertSame('/sonata/news/post/{id}/comment-custom', $commentAdmin->getBaseRoutePattern());
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testGetBaseRoutePatternWithUnreconizedClassname()
     {
+        $this->expectException(\RuntimeException::class);
+
         $admin = new PostAdmin('sonata.post.admin.post', 'News\Thing\Post', 'SonataNewsBundle:PostAdmin');
         $admin->getBaseRoutePattern();
     }
@@ -592,11 +594,10 @@ class AdminTest extends TestCase
         $this->assertFalse($commentVoteAdmin->isCurrentRoute('edit', 'sonata.post.admin.post'));
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testGetBaseRouteNameWithUnreconizedClassname()
     {
+        $this->expectException(\RuntimeException::class);
+
         $admin = new PostAdmin('sonata.post.admin.post', 'News\Thing\Post', 'SonataNewsBundle:PostAdmin');
         $admin->getBaseRouteName();
     }
@@ -735,11 +736,10 @@ class AdminTest extends TestCase
         $this->assertNull($admin->getActiveSubclassCode());
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testNonExistantSubclass()
     {
+        $this->expectException(\RuntimeException::class);
+
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
         $admin->setModelManager($this->getMockForAbstractClass(ModelManagerInterface::class));
 
@@ -1029,7 +1029,8 @@ class AdminTest extends TestCase
 
     public function testGetRequestWithException()
     {
-        $this->setExpectedException(\RuntimeException::class, 'The Request object has not been set');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The Request object has not been set');
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
         $admin->getRequest();
@@ -1064,7 +1065,7 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
-        $this->assertSame(false, $admin->getShowGroups());
+        $this->assertFalse($admin->getShowGroups());
 
         $groups = ['foo', 'bar', 'baz'];
 
@@ -1076,7 +1077,7 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
-        $this->assertSame(false, $admin->getFormGroups());
+        $this->assertFalse($admin->getFormGroups());
 
         $groups = ['foo', 'bar', 'baz'];
 
@@ -1459,11 +1460,10 @@ class AdminTest extends TestCase
         $this->assertEmpty($admin->getPersistentParameters());
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testGetPersistentParametersWithInvalidExtension()
     {
+        $this->expectException(\RuntimeException::class);
+
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
         $extension = $this->createMock(AdminExtensionInterface::class);

@@ -49,22 +49,20 @@ class FieldDescriptionCollectionTest extends TestCase
         $this->assertCount(0, $collection);
     }
 
-    /**
-     * @expectedException        \InvalidArgumentException
-     * @expectedExceptionMessage Element "foo" does not exist.
-     */
     public function testNonExistentField()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Element "foo" does not exist.');
+
         $collection = new FieldDescriptionCollection();
         $collection->get('foo');
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage Cannot set value, use add
-     */
     public function testArrayAccessSetField()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot set value, use add');
+
         $collection = new FieldDescriptionCollection();
 
         $collection['foo'] = null;

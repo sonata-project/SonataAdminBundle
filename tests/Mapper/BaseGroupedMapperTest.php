@@ -131,32 +131,29 @@ class BaseGroupedMapperTest extends TestCase
         $this->assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->tab('fooTab')->with('fooGroup1')->end()->with('fooGroup2')->end()->with('fooGroup3')->end()->end()->tab('barTab')->with('barGroup1')->end()->with('barGroup2')->end()->with('barGroup3')->end()->end());
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage You should close previous group "fooGroup1" with end() before adding new tab "fooGroup2".
-     */
     public function testGroupNotClosedException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You should close previous group "fooGroup1" with end() before adding new tab "fooGroup2".');
+
         $this->baseGroupedMapper->with('fooGroup1');
         $this->baseGroupedMapper->with('fooGroup2');
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields.
-     */
     public function testGroupInTabException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields.');
+
         $this->baseGroupedMapper->with('fooGroup');
         $this->baseGroupedMapper->tab('fooTab');
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage You should close previous tab "fooTab" with end() before adding new tab "barTab".
-     */
     public function testTabInTabException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You should close previous tab "fooTab" with end() before adding new tab "barTab".');
+
         $this->baseGroupedMapper->tab('fooTab');
         $this->baseGroupedMapper->tab('barTab');
     }
@@ -172,12 +169,11 @@ class BaseGroupedMapperTest extends TestCase
         $this->assertFalse($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns false when all tabs are closed');
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage No open tabs or groups, you cannot use end()
-     */
     public function testEndException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('No open tabs or groups, you cannot use end()');
+
         $this->baseGroupedMapper->end();
     }
 

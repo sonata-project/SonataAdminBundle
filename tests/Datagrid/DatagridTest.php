@@ -77,8 +77,6 @@ class DatagridTest extends TestCase
                 if (isset($this->formTypes[$name])) {
                     return $this->formTypes[$name];
                 }
-
-                return;
             }));
 
         $this->formBuilder->expects($this->any())
@@ -91,8 +89,6 @@ class DatagridTest extends TestCase
                     $this->createMock(FormFactoryInterface::class),
                     $options
                 );
-
-                return;
             }));
 
         $this->formBuilder->expects($this->any())
@@ -311,7 +307,7 @@ class DatagridTest extends TestCase
 
     public function testGetResults()
     {
-        $this->assertSame(null, $this->datagrid->getResults());
+        $this->assertNull($this->datagrid->getResults());
 
         $this->pager->expects($this->once())
             ->method('getResults')
@@ -377,12 +373,11 @@ class DatagridTest extends TestCase
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_per_page'));
     }
 
-    /**
-     * @expectedException        \Symfony\Component\Form\Exception\UnexpectedTypeException
-     * @expectedExceptionMessage Expected argument of type "Sonata\AdminBundle\Admin\FieldDescriptionInterface", "array" given
-     */
     public function testBuildPagerWithException()
     {
+        $this->expectException(\Symfony\Component\Form\Exception\UnexpectedTypeException::class);
+        $this->expectExceptionMessage('Expected argument of type "Sonata\\AdminBundle\\Admin\\FieldDescriptionInterface", "array" given');
+
         $filter = $this->createMock(FilterInterface::class);
         $filter->expects($this->once())
             ->method('getName')

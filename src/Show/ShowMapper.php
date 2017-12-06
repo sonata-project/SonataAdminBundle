@@ -38,11 +38,11 @@ class ShowMapper extends BaseGroupedMapper
     }
 
     /**
-     * @throws \RuntimeException
-     *
      * @param mixed $name
      * @param mixed $type
      * @param array $fieldDescriptionOptions
+     *
+     * @throws \RuntimeException
      *
      * @return $this
      */

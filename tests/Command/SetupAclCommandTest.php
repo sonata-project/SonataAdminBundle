@@ -50,8 +50,6 @@ class SetupAclCommandTest extends TestCase
                     case 'acme.admin.foo':
                         return $admin;
                 }
-
-                return;
             }));
 
         $command->setContainer($container);
@@ -120,8 +118,6 @@ class SetupAclCommandTest extends TestCase
                     case 'acme.admin.foo':
                         return $admin;
                 }
-
-                return;
             }));
 
         $command->setContainer($container);

@@ -207,8 +207,6 @@ class SonataAdminExtensionTest extends TestCase
                 } elseif ('sonata_admin_bar_service' == $id) {
                     return $this->adminBar;
                 }
-
-                return;
             }));
 
         // initialize field description
@@ -1321,12 +1319,13 @@ EOT
     }
 
     /**
-     * @expectedException        \Twig_Error_Loader
-     * @expectedExceptionMessage Unable to find template "base_list_nonexistent_field.html.twig"
      * @group                    legacy
      */
     public function testRenderListElementErrorLoadingTemplate()
     {
+        $this->expectException(\Twig_Error_Loader::class);
+        $this->expectExceptionMessage('Unable to find template "base_list_nonexistent_field.html.twig"');
+
         $this->admin->expects($this->once())
             ->method('getTemplate')
             ->with($this->equalTo('base_list_field'))
@@ -1991,7 +1990,7 @@ EOT
             ->method('getAssociationAdmin')
             ->will($this->returnValue(null));
 
-        $this->assertSame(null, $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
+        $this->assertNull($this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
     }
 
     public function testGetValueFromFieldDescriptionWithNoValueExceptionNewAdminInstance()

@@ -1038,7 +1038,7 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame('delete', $this->parameters['action']);
         $this->assertSame($object, $this->parameters['object']);
-        $this->assertSame(false, $this->parameters['csrf_token']);
+        $this->assertFalse($this->parameters['csrf_token']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());
         $this->assertSame('SonataAdminBundle:CRUD:delete.html.twig', $this->template);
@@ -3697,8 +3697,10 @@ class CRUDControllerTest extends TestCase
 
     public function testItThrowsWhenCallingAnUndefinedMethod()
     {
-        $this->setExpectedException(
-            \LogicException::class,
+        $this->expectException(
+            \LogicException::class
+        );
+        $this->expectExceptionMessage(
             'Call to undefined method Sonata\AdminBundle\Controller\CRUDController::doesNotExist'
         );
         $this->controller->doesNotExist();

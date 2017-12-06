@@ -64,7 +64,7 @@ class ExtensionCompilerPassTest extends TestCase
         $this->extension->load([], $container = $this->getContainer());
 
         $this->assertTrue($container->hasParameter($this->root.'.extension.map'));
-        $this->assertTrue(is_array($extensionMap = $container->getParameter($this->root.'.extension.map')));
+        $this->assertInternalType('array', $extensionMap = $container->getParameter($this->root.'.extension.map'));
 
         $this->assertArrayHasKey('admins', $extensionMap);
         $this->assertArrayHasKey('excludes', $extensionMap);
@@ -180,10 +180,11 @@ class ExtensionCompilerPassTest extends TestCase
 
     /**
      * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::process
-     * @expectedException \InvalidArgumentException
      */
     public function testProcessWithInvalidExtensionId()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $config = [
             'extensions' => [
                 'sonata_extension_unknown' => [

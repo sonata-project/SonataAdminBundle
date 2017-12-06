@@ -146,9 +146,9 @@ class AdminType extends AbstractType
     /**
      * @param array $options
      *
-     * @return FieldDescriptionInterface
-     *
      * @throws \RuntimeException
+     *
+     * @return FieldDescriptionInterface
      */
     protected function getFieldDescription(array $options)
     {

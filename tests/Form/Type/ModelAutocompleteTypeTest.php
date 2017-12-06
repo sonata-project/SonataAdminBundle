@@ -51,7 +51,7 @@ class ModelAutocompleteTypeTest extends TypeTestCase
         $this->assertSame(3, $options['minimum_input_length']);
         $this->assertSame(10, $options['items_per_page']);
         $this->assertSame(100, $options['quiet_millis']);
-        $this->assertSame(false, $options['cache']);
+        $this->assertFalse($options['cache']);
         $this->assertSame('', $options['width']);
         $this->assertFalse($options['dropdown_auto_width']);
 
@@ -73,7 +73,7 @@ class ModelAutocompleteTypeTest extends TypeTestCase
         $this->assertSame('', $options['context']);
 
         // NEXT_MAJOR: Set this value to 'link_add'
-        $this->assertSame(false, $options['btn_add']);
+        $this->assertFalse($options['btn_add']);
         $this->assertSame('SonataAdminBundle', $options['btn_catalogue']);
     }
 

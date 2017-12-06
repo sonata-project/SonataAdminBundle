@@ -40,7 +40,7 @@ class ValidatorsTest extends TestCase
      */
     public function testValidateUsernameWithException($value)
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         Validators::validateUsername($value);
     }
@@ -74,7 +74,7 @@ class ValidatorsTest extends TestCase
      */
     public function testValidateEntityNameWithException($value)
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         Validators::validateEntityName($value);
     }
@@ -113,7 +113,7 @@ class ValidatorsTest extends TestCase
      */
     public function testValidateClassWithException($value)
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         Validators::validateClass($value);
     }
@@ -149,7 +149,7 @@ class ValidatorsTest extends TestCase
      */
     public function testValidateAdminClassBasenameWithException($value)
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         Validators::validateAdminClassBasename($value);
     }
@@ -185,7 +185,7 @@ class ValidatorsTest extends TestCase
      */
     public function testValidateControllerClassBasenameWithException($value)
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         Validators::validateControllerClassBasename($value);
     }
@@ -259,7 +259,7 @@ class ValidatorsTest extends TestCase
      */
     public function testValidateServiceIdWithException($value)
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         Validators::validateServiceId($value);
     }
