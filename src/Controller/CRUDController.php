@@ -130,7 +130,7 @@ class CRUDController implements ContainerAwareInterface
 
         $parameters['admin_pool'] = $this->get('sonata.admin.pool');
 
-        //NEXT_MAJOR: Remove method alias and use $this->render() directly.
+        //NEXT_MAJOR: Remove method alias and use $this->render() directly
         return $this->originalRender($view, $parameters, $response);
     }
 
