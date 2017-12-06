@@ -19,7 +19,7 @@ lint-yaml:
 .PHONY: lint-yaml
 
 lint-xml:
-	find . \( -name '*.xml' -or -name '*.xliff' \) \
+	XMLLINT_INDENT='    ' find . \( -name '*.xml' -or -name '*.xliff' \) \
 		-not -path './vendor/*' -not -path './Resources/public/vendor/*' \
 		| xargs -I'{}' xmllint --encode UTF-8 --output '{}' --format '{}'
 .PHONY: lint-xml
