@@ -44,7 +44,9 @@
                                         <div class="box-body  container-fluid">
                                             <div class="sonata-ba-collapsed-fields">
                                                 {% if form_tab.description != false %}
-                                                    <p>{{ form_tab.description|raw }}</p>
+                                                    <p>
+                                                        {{ form_tab.description|trans({}, form_tab.translation_domain ?: admin.translationDomain) }}
+                                                    </p>
                                                 {% endif %}
 
                                                 {{ form_helper.render_groups(admin, form, form_tab['groups'], has_tab) }}
