@@ -2309,4 +2309,13 @@ EOT
             $string
         ));
     }
+
+    /**
+     * @expectedDeprecation The "old.html.twig" template is deprecated. Use "@SonataAdminBundle/CRUD/Association/new.html.twig" instead.
+     * @group legacy
+     */
+    public function testDeprecateTemplate()
+    {
+        $this->twigExtension->deprecateTemplate('old.html.twig', 'new.html.twig');
+    }
 }
