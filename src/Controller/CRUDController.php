@@ -103,6 +103,11 @@ class CRUDController implements ContainerAwareInterface
      */
     public function render($view, array $parameters = [], Response $response = null)
     {
+        @trigger_error(
+            'Method '.__CLASS__.'::render has been renamed to '.__CLASS__.'::renderWithExtraParams.',
+            E_USER_DEPRECATED
+        );
+
         return $this->renderWithExtraParams($view, $parameters, $response);
     }
 
