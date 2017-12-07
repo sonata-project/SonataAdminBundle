@@ -14,13 +14,15 @@ namespace Sonata\AdminBundle\Tests\Form\Extension;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension;
 use Sonata\CoreBundle\Form\Extension\DependencyInjectionExtension;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Forms;
 
 class ChoiceTypeExtensionTest extends TestCase
 {
     protected function setup()
     {
-        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $container->expects($this->any())->method('has')->will($this->returnValue(true));
         $container->expects($this->any())->method('get')
             ->with($this->equalTo('sonata.admin.form.choice_extension'))
@@ -30,7 +32,7 @@ class ChoiceTypeExtensionTest extends TestCase
         $typeExtensionServiceIds = [];
         $guesserServiceIds = [];
         $mappingTypes = [
-            'choice' => 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
+            'choice' => ChoiceType::class,
         ];
         $extensionTypes = [
             'choice' => [
@@ -57,7 +59,7 @@ class ChoiceTypeExtensionTest extends TestCase
         $extension = new ChoiceTypeExtension();
 
         $this->assertSame(
-            'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
+            ChoiceType::class,
             $extension->getExtendedType()
         );
     }
@@ -65,7 +67,7 @@ class ChoiceTypeExtensionTest extends TestCase
     public function testDefaultOptionsWithSortable()
     {
         $view = $this->factory
-            ->create('Symfony\Component\Form\Extension\Core\Type\ChoiceType', null, [
+            ->create(ChoiceType::class, null, [
                 'sortable' => true,
             ])
             ->createView();
@@ -77,7 +79,7 @@ class ChoiceTypeExtensionTest extends TestCase
     public function testDefaultOptionsWithoutSortable()
     {
         $view = $this->factory
-            ->create('Symfony\Component\Form\Extension\Core\Type\ChoiceType', null, [])
+            ->create(ChoiceType::class, null, [])
             ->createView();
 
         $this->assertTrue(isset($view->vars['sortable']));

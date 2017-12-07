@@ -87,12 +87,11 @@ class ServicesManipulatorTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage The service "service_id" is already defined
-     */
     public function testAddResourceShouldThrowException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The service "service_id" is already defined');
+
         $this->servicesManipulator->addResource(
             'service_id',
             'class',

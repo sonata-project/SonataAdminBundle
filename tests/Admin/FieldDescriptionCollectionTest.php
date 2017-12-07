@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Admin;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
 class FieldDescriptionCollectionTest extends TestCase
 {
@@ -20,11 +21,11 @@ class FieldDescriptionCollectionTest extends TestCase
     {
         $collection = new FieldDescriptionCollection();
 
-        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('title'));
         $collection->add($fieldDescription);
 
-        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('position'));
         $collection->add($fieldDescription);
 
@@ -36,8 +37,8 @@ class FieldDescriptionCollectionTest extends TestCase
         $this->assertCount(2, $collection->getElements());
         $this->assertCount(2, $collection);
 
-        $this->isInstanceOf('Sonata\AdminBundle\Admin\FieldDescriptionInterface', $collection['title']);
-        $this->isInstanceOf('Sonata\AdminBundle\Admin\FieldDescriptionInterface', $collection->get('title'));
+        $this->isInstanceOf(FieldDescriptionInterface::class, $collection['title']);
+        $this->isInstanceOf(FieldDescriptionInterface::class, $collection->get('title'));
 
         $collection->remove('title');
         $this->assertFalse($collection->has('title'));
@@ -48,22 +49,20 @@ class FieldDescriptionCollectionTest extends TestCase
         $this->assertCount(0, $collection);
     }
 
-    /**
-     * @expectedException        \InvalidArgumentException
-     * @expectedExceptionMessage Element "foo" does not exist.
-     */
     public function testNonExistentField()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Element "foo" does not exist.');
+
         $collection = new FieldDescriptionCollection();
         $collection->get('foo');
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage Cannot set value, use add
-     */
     public function testArrayAccessSetField()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot set value, use add');
+
         $collection = new FieldDescriptionCollection();
 
         $collection['foo'] = null;
@@ -73,11 +72,11 @@ class FieldDescriptionCollectionTest extends TestCase
     {
         $collection = new FieldDescriptionCollection();
 
-        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('title'));
         $collection->add($fieldDescription);
 
-        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('position'));
         $collection->add($fieldDescription);
 
@@ -92,15 +91,15 @@ class FieldDescriptionCollectionTest extends TestCase
     {
         $collection = new FieldDescriptionCollection();
 
-        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('title'));
         $collection->add($fieldDescription);
 
-        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('position'));
         $collection->add($fieldDescription);
 
-        $fieldDescription = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('batch'));
         $collection->add($fieldDescription);
 

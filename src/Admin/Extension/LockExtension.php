@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Model\LockInterface;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -36,10 +37,7 @@ class LockExtension extends AbstractAdminExtension
         $admin = $form->getAdmin();
         $formBuilder = $form->getFormBuilder();
 
-        // PHP 5.3 BC
-        $fieldName = $this->fieldName;
-
-        $formBuilder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($admin, $fieldName) {
+        $formBuilder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($admin) {
             $data = $event->getData();
             $form = $event->getForm();
 
@@ -57,14 +55,10 @@ class LockExtension extends AbstractAdminExtension
                 return;
             }
 
-            $form->add(
-                $fieldName,
-                'Symfony\Component\Form\Extension\Core\Type\HiddenType',
-                [
-                    'mapped' => false,
-                    'data' => $lockVersion,
-                ]
-            );
+            $form->add($this->fieldName, HiddenType::class, [
+                'mapped' => false,
+                'data' => $lockVersion,
+            ]);
         });
     }
 

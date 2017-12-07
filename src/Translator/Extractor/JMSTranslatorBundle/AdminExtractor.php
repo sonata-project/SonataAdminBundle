@@ -87,7 +87,7 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
     /**
      * NEXT_MAJOR : use a constructor argument instead.
      */
-    final public function setBreadcrumbsBuilder(BreadcrumbsBuilderInterface $breadcrumbsBuilder)
+    public function setBreadcrumbsBuilder(BreadcrumbsBuilderInterface $breadcrumbsBuilder)
     {
         $this->breadcrumbsBuilder = $breadcrumbsBuilder;
     }
@@ -95,9 +95,9 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
     /**
      * Extract messages to MessageCatalogue.
      *
-     * @return MessageCatalogue
-     *
      * @throws \Exception|\RuntimeException
+     *
+     * @return MessageCatalogue
      */
     public function extract()
     {

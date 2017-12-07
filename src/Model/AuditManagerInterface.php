@@ -38,9 +38,9 @@ interface AuditManagerInterface
      *
      * @param string $class
      *
-     * @return AuditReaderInterface
-     *
      * @throws \RuntimeException
+     *
+     * @return AuditReaderInterface
      */
     public function getReader($class);
 }

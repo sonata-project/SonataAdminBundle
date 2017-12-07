@@ -13,8 +13,13 @@ namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 use Sonata\AdminBundle\Form\DataTransformer\LegacyModelsToArrayTransformer;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity;
+use Symfony\Component\Form\Exception\TransformationFailedException;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -29,23 +34,20 @@ class LegacyModelsToArrayTransformerTest extends TestCase
      */
     public function setUp()
     {
-        if (interface_exists('Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface')) { // SF2.7+
-            $this->markTestSkipped('Test only available for < SF2.7');
+        if (!class_exists(SimpleChoiceList::class)) {
+            $this->markTestSkipped('Test only available for < SF2.8');
         }
 
-        $this->choiceList = $this->getMockBuilder('Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList')
+        $this->choiceList = $this->getMockBuilder(ModelChoiceList::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
-
-        // php 5.3 BC
-        $modelManager = $this->modelManager;
+        $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
 
         $this->choiceList->expects($this->any())
             ->method('getModelManager')
-            ->will($this->returnCallback(function () use ($modelManager) {
-                return $modelManager;
+            ->will($this->returnCallback(function () {
+                return $this->modelManager;
             }));
     }
 
@@ -94,7 +96,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
     public function testReverseTransformWithException1()
     {
-        $this->expectException('Symfony\Component\Form\Exception\UnexpectedTypeException', 'Expected argument of type "\ArrayAccess", "NULL" given');
+        $this->expectException(UnexpectedTypeException::class, 'Expected argument of type "\ArrayAccess", "NULL" given');
 
         $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
@@ -107,7 +109,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
     public function testReverseTransformWithException2()
     {
-        $this->expectException('Symfony\Component\Form\Exception\UnexpectedTypeException', 'Expected argument of type "array", "integer" given');
+        $this->expectException(UnexpectedTypeException::class, 'Expected argument of type "array", "integer" given');
 
         $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
@@ -129,7 +131,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
             ->method('getModelCollectionInstance')
             ->will($this->returnValue(new ArrayCollection()));
 
-        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $transformer->reverseTransform($keys));
+        $this->assertInstanceOf(ArrayCollection::class, $transformer->reverseTransform($keys));
     }
 
     public function getReverseTransformEmptyTests()
@@ -165,19 +167,17 @@ class LegacyModelsToArrayTransformerTest extends TestCase
                     case 'baz':
                         return $entity3;
                 }
-
-                return;
             }));
 
         $collection = $transformer->reverseTransform(['foo', 'bar']);
-        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $collection);
+        $this->assertInstanceOf(ArrayCollection::class, $collection);
         $this->assertSame([$entity1, $entity2], $collection->getValues());
         $this->assertCount(2, $collection);
     }
 
     public function testReverseTransformWithNonexistentEntityKey()
     {
-        $this->expectException('Symfony\Component\Form\Exception\TransformationFailedException', 'The entities with keys "nonexistent" could not be found');
+        $this->expectException(TransformationFailedException::class, 'The entities with keys "nonexistent" could not be found');
 
         $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 

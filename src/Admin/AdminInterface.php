@@ -185,9 +185,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getForm();
 
     /**
-     * @return Request
-     *
      * @throws \RuntimeException if no request is set
+     *
+     * @return Request
      */
     public function getRequest();
 

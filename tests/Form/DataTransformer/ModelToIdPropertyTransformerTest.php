@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess;
 
@@ -23,12 +24,12 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
     public function setUp()
     {
-        $this->modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
     }
 
     public function testReverseTransform()
     {
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', false);
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
 
         $entity = new Foo();
         $entity->setBar('example');
@@ -37,11 +38,9 @@ class ModelToIdPropertyTransformerTest extends TestCase
             ->expects($this->any())
             ->method('find')
             ->will($this->returnCallback(function ($class, $id) use ($entity) {
-                if ('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo' === $class && 123 === $id) {
+                if (Foo::class === $class && 123 === $id) {
                     return $entity;
                 }
-
-                return;
             }));
 
         $this->assertNull($transformer->reverseTransform(null));
@@ -58,13 +57,13 @@ class ModelToIdPropertyTransformerTest extends TestCase
      */
     public function testReverseTransformMultiple($expected, $params, $entity1, $entity2, $entity3)
     {
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', true);
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
         $this->modelManager
             ->expects($this->any())
             ->method('find')
             ->will($this->returnCallback(function ($className, $value) use ($entity1, $entity2, $entity3) {
-                if ('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo' != $className) {
+                if (Foo::class != $className) {
                     return;
                 }
 
@@ -79,19 +78,17 @@ class ModelToIdPropertyTransformerTest extends TestCase
                 if (789 == $value) {
                     return $entity3;
                 }
-
-                return;
             }));
 
         $collection = new ArrayCollection();
         $this->modelManager
             ->expects($this->any())
             ->method('getModelCollectionInstance')
-            ->with($this->equalTo('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo'))
+            ->with($this->equalTo(Foo::class))
             ->will($this->returnValue($collection));
 
         $result = $transformer->reverseTransform($params);
-        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $result);
+        $this->assertInstanceOf(ArrayCollection::class, $result);
         $this->assertSame($expected, $result->getValues());
     }
 
@@ -122,21 +119,22 @@ class ModelToIdPropertyTransformerTest extends TestCase
      */
     public function testReverseTransformMultipleInvalidTypeTests($expected, $params, $type)
     {
-        $this->setExpectedException(
-          'UnexpectedValueException', sprintf('Value should be array, %s given.', $type)
+        $this->expectException(
+            \UnexpectedValueException::class);
+        $this->expectExceptionMessage(sprintf('Value should be array, %s given.', $type)
         );
 
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', true);
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
         $collection = new ArrayCollection();
         $this->modelManager
             ->expects($this->any())
             ->method('getModelCollectionInstance')
-            ->with($this->equalTo('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo'))
+            ->with($this->equalTo(Foo::class))
             ->will($this->returnValue($collection));
 
         $result = $transformer->reverseTransform($params);
-        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $result);
+        $this->assertInstanceOf(ArrayCollection::class, $result);
         $this->assertSame($expected, $result->getValues());
     }
 
@@ -160,7 +158,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
             ->method('getIdentifierValues')
             ->will($this->returnValue([123]));
 
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', false);
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
 
         $this->assertSame([], $transformer->transform(null));
         $this->assertSame([], $transformer->transform(false));
@@ -180,7 +178,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
             ->method('getIdentifierValues')
             ->will($this->returnValue([123]));
 
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess', 'bar', false);
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, FooArrayAccess::class, 'bar', false);
 
         $this->assertSame([123, '_labels' => ['example']], $transformer->transform($entity));
     }
@@ -195,19 +193,18 @@ class ModelToIdPropertyTransformerTest extends TestCase
             ->method('getIdentifierValues')
             ->will($this->returnValue([123]));
 
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', false, function ($entity) {
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, function ($entity) {
             return $entity->getBaz();
         });
 
         $this->assertSame([123, '_labels' => ['bazz']], $transformer->transform($entity));
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage Callback in "to_string_callback" option doesn`t contain callable function.
-     */
     public function testTransformToStringCallbackException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Callback in "to_string_callback" option doesn`t contain callable function.');
+
         $entity = new Foo();
         $entity->setBar('example');
         $entity->setBaz('bazz');
@@ -216,7 +213,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
             ->method('getIdentifierValues')
             ->will($this->returnValue([123]));
 
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', false, '987654');
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, '987654');
 
         $transformer->transform($entity);
     }
@@ -255,7 +252,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
                 return [999];
             }));
 
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', true);
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
         $this->assertSame([], $transformer->transform(null));
         $this->assertSame([], $transformer->transform(false));
@@ -271,35 +268,32 @@ class ModelToIdPropertyTransformerTest extends TestCase
         ], $transformer->transform($collection));
     }
 
-    /**
-     * @expectedException        \InvalidArgumentException
-     * @expectedExceptionMessage A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.
-     */
     public function testTransformCollectionException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
+
         $entity = new Foo();
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', true);
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
         $transformer->transform($entity);
     }
 
-    /**
-     * @expectedException        \InvalidArgumentException
-     * @expectedExceptionMessage A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.
-     */
     public function testTransformArrayAccessException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
+
         $entity = new FooArrayAccess();
         $entity->setBar('example');
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess', 'bar', true);
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, FooArrayAccess::class, 'bar', true);
         $transformer->transform($entity);
     }
 
-    /**
-     * @expectedException        \InvalidArgumentException
-     * @expectedExceptionMessage A single selection must be passed a single value not a collection. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.
-     */
     public function testTransformEntityException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('A single selection must be passed a single value not a collection. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
+
         $entity1 = new Foo();
         $entity1->setBar('foo');
 
@@ -314,7 +308,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $collection[] = $entity2;
         $collection[] = $entity3;
 
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, 'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo', 'bar', false);
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
 
         $transformer->transform($collection);
     }

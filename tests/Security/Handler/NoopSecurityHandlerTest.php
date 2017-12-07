@@ -58,6 +58,6 @@ class NoopSecurityHandlerTest extends TestCase
      */
     private function getSonataAdminObject()
     {
-        return $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        return $this->getMockForAbstractClass(AdminInterface::class);
     }
 }

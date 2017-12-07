@@ -370,7 +370,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     public function setPage($page)
     {
-        $this->page = intval($page);
+        $this->page = (int) $page;
 
         if ($this->page <= 0) {
             // set first page, which depends on a maximum set

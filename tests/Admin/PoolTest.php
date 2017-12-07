@@ -12,7 +12,9 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PoolTest extends TestCase
 {
@@ -55,16 +57,16 @@ class PoolTest extends TestCase
 
     public function testGetDashboardGroups()
     {
-        $admin_group1 = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin_group1 = $this->createMock(AdminInterface::class);
         $admin_group1->expects($this->once())->method('showIn')->will($this->returnValue(true));
 
-        $admin_group2 = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin_group2 = $this->createMock(AdminInterface::class);
         $admin_group2->expects($this->once())->method('showIn')->will($this->returnValue(false));
 
-        $admin_group3 = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin_group3 = $this->createMock(AdminInterface::class);
         $admin_group3->expects($this->once())->method('showIn')->will($this->returnValue(false));
 
-        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->createMock(ContainerInterface::class);
 
         $container->expects($this->any())->method('get')->will($this->onConsecutiveCalls(
             $admin_group1, $admin_group2, $admin_group3
@@ -91,11 +93,10 @@ class PoolTest extends TestCase
         $this->assertSame($admin_group1, $groups['adminGroup1']['items']['itemKey']);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testGetAdminsByGroupWhenGroupNotSet()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->pool->setAdminGroups([
                 'adminGroup1' => [],
             ]);
@@ -141,22 +142,20 @@ class PoolTest extends TestCase
         $this->assertNull($this->pool->getAdminByClass('notexists'));
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testGetAdminForClassWithInvalidFormat()
     {
+        $this->expectException(\RuntimeException::class);
+
         $this->pool->setAdminClasses(['someclass' => 'sonata.user.admin.group1']);
         $this->assertTrue($this->pool->hasAdminByClass('someclass'));
 
         $this->pool->getAdminByClass('someclass');
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testGetAdminForClassWithTooManyRegisteredAdmin()
     {
+        $this->expectException(\RuntimeException::class);
+
         $this->pool->setAdminClasses([
             'someclass' => ['sonata.user.admin.group1', 'sonata.user.admin.group2'],
         ]);
@@ -176,12 +175,11 @@ class PoolTest extends TestCase
         $this->assertSame('sonata_user_admin_group1_AdminClass', $this->pool->getAdminByClass('someclass'));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Admin service "sonata.news.admin.post" not found in admin pool.
-     */
     public function testGetInstanceWithUndefinedServiceId()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Admin service "sonata.news.admin.post" not found in admin pool.');
+
         $this->pool->getInstance('sonata.news.admin.post');
     }
 
@@ -194,7 +192,7 @@ class PoolTest extends TestCase
 
     public function testGetAdminByAdminCodeForChildClass()
     {
-        $adminMock = $this->getMockBuilder('Sonata\AdminBundle\Admin\AdminInterface')
+        $adminMock = $this->getMockBuilder(AdminInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $adminMock->expects($this->any())
@@ -205,7 +203,7 @@ class PoolTest extends TestCase
             ->with($this->equalTo('sonata.news.admin.comment'))
             ->will($this->returnValue('commentAdminClass'));
 
-        $containerMock = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->expects($this->any())
             ->method('get')
             ->will($this->returnValue($adminMock));
@@ -218,14 +216,14 @@ class PoolTest extends TestCase
 
     public function testGetAdminByAdminCodeForChildInvalidClass()
     {
-        $adminMock = $this->getMockBuilder('Sonata\AdminBundle\Admin\AdminInterface')
+        $adminMock = $this->getMockBuilder(AdminInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $adminMock->expects($this->any())
             ->method('hasChild')
             ->will($this->returnValue(false));
 
-        $containerMock = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->expects($this->any())
             ->method('get')
             ->will($this->returnValue($adminMock));
@@ -233,7 +231,7 @@ class PoolTest extends TestCase
         $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
         $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
 
-        $this->assertSame(false, $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid'));
+        $this->assertFalse($this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid'));
     }
 
     public function testGetAdminClasses()
@@ -256,7 +254,7 @@ class PoolTest extends TestCase
 
     public function testGetContainer()
     {
-        $this->assertInstanceOf('Symfony\Component\DependencyInjection\ContainerInterface', $this->pool->getContainer());
+        $this->assertInstanceOf(ContainerInterface::class, $this->pool->getContainer());
     }
 
     public function testTemplates()
@@ -283,7 +281,7 @@ class PoolTest extends TestCase
     {
         $this->assertSame('bar', $this->pool->getOption('foo'));
 
-        $this->assertSame(null, $this->pool->getOption('non_existent_option'));
+        $this->assertNull($this->pool->getOption('non_existent_option'));
     }
 
     public function testOptionDefault()
@@ -296,7 +294,7 @@ class PoolTest extends TestCase
      */
     private function getContainer()
     {
-        $containerMock = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($serviceId) {

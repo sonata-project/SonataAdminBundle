@@ -12,6 +12,8 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooBoolean;
@@ -80,21 +82,21 @@ class BaseFieldDescriptionTest extends TestCase
     {
         $description = new FieldDescription();
 
-        $admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $description->setAdmin($admin);
-        $this->isInstanceOf('Sonata\AdminBundle\Admin\AdminInterface', $description->getAdmin());
+        $this->isInstanceOf(AdminInterface::class, $description->getAdmin());
 
-        $associationAdmin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $associationAdmin = $this->getMockForAbstractClass(AdminInterface::class);
         $associationAdmin->expects($this->once())->method('setParentFieldDescription');
 
         $this->assertFalse($description->hasAssociationAdmin());
         $description->setAssociationAdmin($associationAdmin);
         $this->assertTrue($description->hasAssociationAdmin());
-        $this->isInstanceOf('Sonata\AdminBundle\Admin\AdminInterface', $description->getAssociationAdmin());
+        $this->isInstanceOf(AdminInterface::class, $description->getAssociationAdmin());
 
-        $parent = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $parent = $this->getMockForAbstractClass(AdminInterface::class);
         $description->setParent($parent);
-        $this->isInstanceOf('Sonata\AdminBundle\Admin\AdminInterface', $description->getParent());
+        $this->isInstanceOf(AdminInterface::class, $description->getParent());
     }
 
     public function testGetValue()
@@ -156,11 +158,10 @@ class BaseFieldDescriptionTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \Sonata\AdminBundle\Exception\NoValueException
-     */
     public function testGetValueNoValueException()
     {
+        $this->expectException(\Sonata\AdminBundle\Exception\NoValueException::class);
+
         $description = new FieldDescription();
         $mock = $this->getMockBuilder('stdClass')
             ->setMethods(['getFoo'])
@@ -180,11 +181,10 @@ class BaseFieldDescriptionTest extends TestCase
         $description->getFieldValue($mock, 'fake');
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testExceptionOnNonArrayOption()
     {
+        $this->expectException(\RuntimeException::class);
+
         $description = new FieldDescription();
         $description->setOption('bar', 'hello');
         $description->mergeOption('bar', ['exception']);
@@ -194,7 +194,7 @@ class BaseFieldDescriptionTest extends TestCase
     {
         $description = new FieldDescription();
 
-        $admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin = $this->createMock(AdminInterface::class);
         $description->setAdmin($admin);
 
         $admin->expects($this->once())
@@ -222,10 +222,10 @@ class BaseFieldDescriptionTest extends TestCase
         $foo->setBaz(false);
 
         $description = new FieldDescription();
-        $this->assertSame(true, $description->getFieldValue($foo, 'bar'));
-        $this->assertSame(false, $description->getFieldValue($foo, 'baz'));
+        $this->assertTrue($description->getFieldValue($foo, 'bar'));
+        $this->assertFalse($description->getFieldValue($foo, 'baz'));
 
-        $this->expectException('Sonata\AdminBundle\Exception\NoValueException');
+        $this->expectException(NoValueException::class);
         $description->getFieldValue($foo, 'inexistantMethod');
     }
 
@@ -240,7 +240,7 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertSame('Baz', $description->getFieldValue($foo, 'inexistantMethod'));
 
         $description->setOption('code', 'inexistantMethod');
-        $this->expectException('Sonata\AdminBundle\Exception\NoValueException');
+        $this->expectException(NoValueException::class);
         $description->getFieldValue($foo, 'inexistantMethod');
     }
 

@@ -11,6 +11,8 @@
 
 namespace Sonata\AdminBundle\Filter;
 
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
@@ -93,7 +95,7 @@ abstract class Filter implements FilterInterface
      */
     public function getFieldType()
     {
-        return $this->getOption('field_type', 'Symfony\Component\Form\Extension\Core\Type\TextType');
+        return $this->getOption('field_type', TextType::class);
     }
 
     /**

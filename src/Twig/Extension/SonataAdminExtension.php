@@ -18,11 +18,15 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Symfony\Component\Translation\TranslatorInterface;
+use Twig\Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\Template;
+use Twig\TwigFilter;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-final class SonataAdminExtension extends \Twig_Extension
+final class SonataAdminExtension extends AbstractExtension
 {
     /**
      * @var TranslatorInterface|null
@@ -68,7 +72,7 @@ final class SonataAdminExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'render_list_element',
                 [$this, 'renderListElement'],
                 [
@@ -76,7 +80,7 @@ final class SonataAdminExtension extends \Twig_Extension
                     'needs_environment' => true,
                 ]
             ),
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'render_view_element',
                 [$this, 'renderViewElement'],
                 [
@@ -84,7 +88,7 @@ final class SonataAdminExtension extends \Twig_Extension
                     'needs_environment' => true,
                 ]
             ),
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'render_view_element_compare',
                 [$this, 'renderViewElementCompare'],
                 [
@@ -92,19 +96,19 @@ final class SonataAdminExtension extends \Twig_Extension
                     'needs_environment' => true,
                 ]
             ),
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'render_relation_element',
                 [$this, 'renderRelationElement']
             ),
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'sonata_urlsafeid',
                 [$this, 'getUrlsafeIdentifier']
             ),
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'sonata_xeditable_type',
                 [$this, 'getXEditableType']
             ),
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'sonata_xeditable_choices',
                 [$this, 'getXEditableChoices']
             ),
@@ -129,7 +133,7 @@ final class SonataAdminExtension extends \Twig_Extension
      * @return string
      */
     public function renderListElement(
-        \Twig_Environment $environment,
+        Environment $environment,
         $object,
         FieldDescriptionInterface $fieldDescription,
         $params = []
@@ -157,7 +161,7 @@ final class SonataAdminExtension extends \Twig_Extension
      * @return string
      */
     public function renderViewElement(
-        \Twig_Environment $environment,
+        Environment $environment,
         FieldDescriptionInterface $fieldDescription,
         $object
     ) {
@@ -191,7 +195,7 @@ final class SonataAdminExtension extends \Twig_Extension
      * @return string
      */
     public function renderViewElementCompare(
-        \Twig_Environment $environment,
+        Environment $environment,
         FieldDescriptionInterface $fieldDescription,
         $baseObject,
         $compareObject
@@ -239,10 +243,10 @@ final class SonataAdminExtension extends \Twig_Extension
     }
 
     /**
-     * @throws \RuntimeException
-     *
      * @param mixed                     $element
      * @param FieldDescriptionInterface $fieldDescription
+     *
+     * @throws \RuntimeException
      *
      * @return mixed
      */
@@ -298,7 +302,7 @@ final class SonataAdminExtension extends \Twig_Extension
      */
     public function getUrlsafeIdentifier($model, AdminInterface $admin = null)
     {
-        if (is_null($admin)) {
+        if (null === $admin) {
             $admin = $this->pool->getAdminByClass(ClassUtils::getClass($model));
         }
 
@@ -452,7 +456,7 @@ EOT;
     private function getTemplate(
         FieldDescriptionInterface $fieldDescription,
         $defaultTemplate,
-        \Twig_Environment $environment
+        Environment $environment
     ) {
         $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
 

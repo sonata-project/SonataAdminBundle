@@ -12,9 +12,13 @@
 namespace Sonata\AdminBundle\Tests\Mapper;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Builder\BuilderInterface;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\AbstractDummyGroupedMapper;
+use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Test for BaseGroupedMapper.
@@ -33,11 +37,11 @@ class BaseGroupedMapperTest extends TestCase
 
     public function setUp()
     {
-        $admin = $this->getMockBuilder('Sonata\AdminBundle\Admin\AbstractAdmin')
+        $admin = $this->getMockBuilder(AbstractAdmin::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $labelStrategy = $this->createMock('Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface');
+        $labelStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $labelStrategy->expects($this->any())
             ->method('getLabel')
             ->will($this->returnCallback(function ($label) {
@@ -48,47 +52,45 @@ class BaseGroupedMapperTest extends TestCase
             ->method('getLabelTranslatorStrategy')
             ->will($this->returnValue($labelStrategy));
 
-        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $configurationPool = new Pool($container, 'myTitle', 'myLogoTitle');
 
         $admin->expects($this->any())
             ->method('getConfigurationPool')
             ->will($this->returnValue($configurationPool));
 
-        $builder = $this->getMockForAbstractClass('Sonata\AdminBundle\Builder\BuilderInterface');
+        $builder = $this->getMockForAbstractClass(BuilderInterface::class);
 
         $this->baseGroupedMapper = $this->getMockForAbstractClass(
             AbstractDummyGroupedMapper::class,
             [$builder, $admin]
         );
 
-        // php 5.3 BC
-        $object = $this;
         $this->tabs = [];
         $this->groups = [];
 
         $this->baseGroupedMapper->expects($this->any())
             ->method('getTabs')
-            ->will($this->returnCallback(function () use ($object) {
-                return $object->getTabs();
+            ->will($this->returnCallback(function () {
+                return $this->getTabs();
             }));
 
         $this->baseGroupedMapper->expects($this->any())
             ->method('setTabs')
-            ->will($this->returnCallback(function (array $tabs) use ($object) {
-                $object->setTabs($tabs);
+            ->will($this->returnCallback(function (array $tabs) {
+                $this->setTabs($tabs);
             }));
 
         $this->baseGroupedMapper->expects($this->any())
             ->method('getGroups')
-            ->will($this->returnCallback(function () use ($object) {
-                return $object->getTestGroups();
+            ->will($this->returnCallback(function () {
+                return $this->getTestGroups();
             }));
 
         $this->baseGroupedMapper->expects($this->any())
             ->method('setGroups')
-            ->will($this->returnCallback(function (array $groups) use ($object) {
-                $object->setTestGroups($groups);
+            ->will($this->returnCallback(function (array $groups) {
+                $this->setTestGroups($groups);
             }));
     }
 
@@ -129,32 +131,29 @@ class BaseGroupedMapperTest extends TestCase
         $this->assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->tab('fooTab')->with('fooGroup1')->end()->with('fooGroup2')->end()->with('fooGroup3')->end()->end()->tab('barTab')->with('barGroup1')->end()->with('barGroup2')->end()->with('barGroup3')->end()->end());
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage You should close previous group "fooGroup1" with end() before adding new tab "fooGroup2".
-     */
     public function testGroupNotClosedException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You should close previous group "fooGroup1" with end() before adding new tab "fooGroup2".');
+
         $this->baseGroupedMapper->with('fooGroup1');
         $this->baseGroupedMapper->with('fooGroup2');
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields.
-     */
     public function testGroupInTabException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields.');
+
         $this->baseGroupedMapper->with('fooGroup');
         $this->baseGroupedMapper->tab('fooTab');
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage You should close previous tab "fooTab" with end() before adding new tab "barTab".
-     */
     public function testTabInTabException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You should close previous tab "fooTab" with end() before adding new tab "barTab".');
+
         $this->baseGroupedMapper->tab('fooTab');
         $this->baseGroupedMapper->tab('barTab');
     }
@@ -170,12 +169,11 @@ class BaseGroupedMapperTest extends TestCase
         $this->assertFalse($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns false when all tabs are closed');
     }
 
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage No open tabs or groups, you cannot use end()
-     */
     public function testEndException()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('No open tabs or groups, you cannot use end()');
+
         $this->baseGroupedMapper->end();
     }
 

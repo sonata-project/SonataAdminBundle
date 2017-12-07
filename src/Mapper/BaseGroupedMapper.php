@@ -41,9 +41,9 @@ abstract class BaseGroupedMapper extends BaseMapper
      * @param string $name
      * @param array  $options
      *
-     * @return $this
-     *
      * @throws \RuntimeException
+     *
+     * @return $this
      */
     public function with($name, array $options = [])
     {
@@ -158,9 +158,9 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @param bool $bool
      *
-     * @return $this
-     *
      * @throws \RuntimeException
+     *
+     * @return $this
      */
     public function ifTrue($bool)
     {
@@ -178,9 +178,9 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @param bool $bool
      *
-     * @return $this
-     *
      * @throws \RuntimeException
+     *
+     * @return $this
      */
     public function ifFalse($bool)
     {
@@ -219,9 +219,9 @@ abstract class BaseGroupedMapper extends BaseMapper
     /**
      * Close the current group or tab.
      *
-     * @return $this
-     *
      * @throws \RuntimeException
+     *
+     * @return $this
      */
     public function end()
     {

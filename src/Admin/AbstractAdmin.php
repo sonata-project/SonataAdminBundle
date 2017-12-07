@@ -1989,8 +1989,6 @@ EOT;
                 return $children;
             }
         }
-
-        return;
     }
 
     /**
@@ -2828,8 +2826,6 @@ EOT;
                 return $this->generateObjectUrl($action, $object);
             }
         }
-
-        return;
     }
 
     /**

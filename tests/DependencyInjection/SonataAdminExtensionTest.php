@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
+use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 
 class SonataAdminExtensionTest extends AbstractExtensionTestCase
@@ -36,7 +37,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->load();
         $this->assertContainerBuilderHasService(
             'sonata.admin.admin_exporter',
-            'Sonata\AdminBundle\Bridge\Exporter\AdminExporter'
+            AdminExporter::class
         );
     }
 

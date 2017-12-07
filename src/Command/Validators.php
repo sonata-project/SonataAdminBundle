@@ -21,13 +21,13 @@ class Validators
      *
      * @param string $username
      *
-     * @return mixed
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return mixed
      */
     public static function validateUsername($username)
     {
-        if (is_null($username)) {
+        if (null === $username) {
             throw new \InvalidArgumentException('The username must be set');
         }
 
@@ -39,9 +39,9 @@ class Validators
      *
      * @param string $shortcut
      *
-     * @return array
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return array
      */
     public static function validateEntityName($shortcut)
     {
@@ -63,9 +63,9 @@ class Validators
      *
      * @param string $class
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      */
     public static function validateClass($class)
     {
@@ -83,9 +83,9 @@ class Validators
      *
      * @param string $adminClassBasename
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      */
     public static function validateAdminClassBasename($adminClassBasename)
     {
@@ -107,9 +107,9 @@ class Validators
      *
      * @param string $controllerClassBasename
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      */
     public static function validateControllerClassBasename($controllerClassBasename)
     {
@@ -147,9 +147,9 @@ class Validators
      *
      * @param string $serviceId
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      */
     public static function validateServiceId($serviceId)
     {

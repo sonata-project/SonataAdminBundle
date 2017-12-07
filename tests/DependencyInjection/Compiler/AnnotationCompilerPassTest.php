@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection;
 use JMS\DiExtraBundle\Metadata\ClassMetadata;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Annotation\Admin;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 
 class AnnotationCompilerPassTest extends TestCase
 {
@@ -24,14 +25,14 @@ class AnnotationCompilerPassTest extends TestCase
          */
 
         $this->expectException(
-            'LogicException',
+            \LogicException::class,
             'Unable to generate admin group and label for class Sonata\AdminBundle\Tests\Fixtures\Foo.'
         );
 
         $annotation = new Admin();
-        $annotation->class = 'Sonata\AdminBundle\Tests\Fixtures\Foo';
+        $annotation->class = \Sonata\AdminBundle\Tests\Fixtures\Foo::class;
 
-        $meta = new ClassMetadata('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo');
+        $meta = new ClassMetadata(\Sonata\AdminBundle\Tests\Fixtures\Entity\Foo::class);
 
         $annotation->processMetadata($meta);
     }
@@ -45,10 +46,10 @@ class AnnotationCompilerPassTest extends TestCase
          * )
          */
         $annotation = new Admin();
-        $annotation->class = 'Sonata\Admin\Entity\Tests\Fixtures\Foo';
+        $annotation->class = \Sonata\Admin\Entity\Tests\Fixtures\Foo::class;
         $annotation->showInDashboard = false;
 
-        $meta = new ClassMetadata('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo');
+        $meta = new ClassMetadata(\Sonata\AdminBundle\Tests\Fixtures\Entity\Foo::class);
 
         $annotation->processMetadata($meta);
 
@@ -71,9 +72,9 @@ class AnnotationCompilerPassTest extends TestCase
          * @Admin(class="Sonata\AdminBundle\Entity\Foo")
          */
         $annotation = new Admin();
-        $annotation->class = 'Sonata\AdminBundle\Entity\Foo';
+        $annotation->class = \Sonata\AdminBundle\Entity\Foo::class;
 
-        $meta = new ClassMetadata('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo');
+        $meta = new ClassMetadata(\Sonata\AdminBundle\Tests\Fixtures\Entity\Foo::class);
 
         $annotation->processMetadata($meta);
 
@@ -96,10 +97,10 @@ class AnnotationCompilerPassTest extends TestCase
          * @Admin(class="Sonata\AdminBundle\Entity\Foo", id="my.id")
          */
         $annotation = new Admin();
-        $annotation->class = 'Sonata\AdminBundle\Entity\Foo';
+        $annotation->class = \Sonata\AdminBundle\Entity\Foo::class;
         $annotation->id = 'my.id';
 
-        $meta = new ClassMetadata('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo');
+        $meta = new ClassMetadata(\Sonata\AdminBundle\Tests\Fixtures\Entity\Foo::class);
 
         $annotation->processMetadata($meta);
 
@@ -120,7 +121,7 @@ class AnnotationCompilerPassTest extends TestCase
          * )
          */
         $annotation = new Admin();
-        $annotation->class = 'Sonata\AdminBundle\Entity\Foo';
+        $annotation->class = \Sonata\AdminBundle\Entity\Foo::class;
         $annotation->managerType = 'doctrine_mongodb';
         $annotation->group = 'myGroup';
         $annotation->label = 'myLabel';
@@ -129,7 +130,7 @@ class AnnotationCompilerPassTest extends TestCase
         $annotation->keepOpen = true;
         $annotation->onTop = true;
 
-        $meta = new ClassMetadata('Sonata\AdminBundle\Tests\Fixtures\Entity\Foo');
+        $meta = new ClassMetadata(\Sonata\AdminBundle\Tests\Fixtures\Entity\Foo::class);
 
         $annotation->processMetadata($meta);
 

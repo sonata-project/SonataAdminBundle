@@ -12,14 +12,24 @@
 namespace Sonata\AdminBundle\Tests\Command;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
+use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Command\ExplainAdminCommand;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
+use Symfony\Component\Validator\Mapping\GenericMetadata;
+use Symfony\Component\Validator\Mapping\MetadataInterface;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -37,7 +47,7 @@ class ExplainAdminCommandTest extends TestCase
     private $admin;
 
     /**
-     * @var Symfony\Component\Validator\MetadataFactoryInterface
+     * @var MetadataFactoryInterface
      */
     private $validatorFactory;
 
@@ -46,9 +56,9 @@ class ExplainAdminCommandTest extends TestCase
         $this->application = new Application();
         $command = new ExplainAdminCommand();
 
-        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->createMock(ContainerInterface::class);
 
-        $this->admin = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->admin = $this->createMock(AdminInterface::class);
 
         $this->admin->expects($this->any())
             ->method('getCode')
@@ -70,7 +80,7 @@ class ExplainAdminCommandTest extends TestCase
             ->method('getRoutes')
             ->will($this->returnValue($routeCollection));
 
-        $fieldDescription1 = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription1 = $this->createMock(FieldDescriptionInterface::class);
 
         $fieldDescription1->expects($this->any())
             ->method('getType')
@@ -80,7 +90,7 @@ class ExplainAdminCommandTest extends TestCase
             ->method('getTemplate')
             ->will($this->returnValue('SonataAdminBundle:CRUD:foo_text.html.twig'));
 
-        $fieldDescription2 = $this->createMock('Sonata\AdminBundle\Admin\FieldDescriptionInterface');
+        $fieldDescription2 = $this->createMock(FieldDescriptionInterface::class);
 
         $fieldDescription2->expects($this->any())
             ->method('getType')
@@ -119,32 +129,23 @@ class ExplainAdminCommandTest extends TestCase
             ->method('isChild')
             ->will($this->returnValue(true));
 
-        // php 5.3 BC
-        $adminParent = $this->createMock('Sonata\AdminBundle\Admin\AdminInterface');
-        $adminParent->expects($this->any())
-            ->method('getCode')
-            ->will($this->returnValue('foo_child'));
-
         $this->admin->expects($this->any())
             ->method('getParent')
-            ->will($this->returnCallback(function () use ($adminParent) {
+            ->will($this->returnCallback(function () {
+                $adminParent = $this->createMock(AdminInterface::class);
+
+                $adminParent->expects($this->any())
+                    ->method('getCode')
+                    ->will($this->returnValue('foo_child'));
+
                 return $adminParent;
             }));
 
-        $this->validatorFactory = $this->createMock('Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface');
-
-        $validator = $this->createMock('Symfony\Component\Validator\Validator\ValidatorInterface');
-        $validator->expects($this->any())->method('getMetadataFor')->will(
-            $this->returnValue($this->validatorFactory)
-        );
-
-        // php 5.3 BC
-        $admin = $this->admin;
-        $validatorFactory = $this->validatorFactory;
+        $this->validatorFactory = $this->createMock(MetadataFactoryInterface::class);
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($id) use ($container, $admin, $validator, $validatorFactory) {
+            ->will($this->returnCallback(function ($id) use ($container) {
                 switch ($id) {
                     case 'sonata.admin.pool':
                         $pool = new Pool($container, '', '');
@@ -153,16 +154,11 @@ class ExplainAdminCommandTest extends TestCase
                         return $pool;
 
                     case 'validator.validator_factory':
-                        return $validatorFactory;
-
-                    case 'validator':
-                        return $validator;
+                        return $this->validatorFactory;
 
                     case 'acme.admin.foo':
-                        return $admin;
+                        return $this->admin;
                 }
-
-                return;
             }));
 
         $container->expects($this->any())->method('has')->will($this->returnValue(true));
@@ -174,14 +170,14 @@ class ExplainAdminCommandTest extends TestCase
 
     public function testExecute()
     {
-        $metadata = $this->createMock('Symfony\Component\Validator\Mapping\MetadataInterface');
+        $metadata = $this->createMock(MetadataInterface::class);
 
         $this->validatorFactory->expects($this->once())
             ->method('getMetadataFor')
             ->with($this->equalTo('Acme\Entity\Foo'))
             ->will($this->returnValue($metadata));
 
-        $propertyMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\GenericMetadata');
+        $propertyMetadata = $this->getMockForAbstractClass(GenericMetadata::class);
         $propertyMetadata->constraints = [
             new NotNull(),
             new Length(['min' => 2, 'max' => 50, 'groups' => ['create', 'edit']]),
@@ -189,7 +185,7 @@ class ExplainAdminCommandTest extends TestCase
 
         $metadata->properties = ['firstName' => $propertyMetadata];
 
-        $getterMetadata = $this->getMockForAbstractClass('Symfony\Component\Validator\Mapping\GenericMetadata');
+        $getterMetadata = $this->getMockForAbstractClass(GenericMetadata::class);
         $getterMetadata->constraints = [
             new NotNull(),
             new Email(['groups' => ['registration', 'edit']]),
@@ -197,25 +193,25 @@ class ExplainAdminCommandTest extends TestCase
 
         $metadata->getters = ['email' => $getterMetadata];
 
-        $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->createMock(ModelManagerInterface::class);
 
         $this->admin->expects($this->any())
             ->method('getModelManager')
             ->will($this->returnValue($modelManager));
 
-        $formBuilder = $this->createMock('Symfony\Component\Form\FormBuilderInterface');
+        $formBuilder = $this->createMock(FormBuilderInterface::class);
 
         $this->admin->expects($this->any())
              ->method('getFormBuilder')
              ->will($this->returnValue($formBuilder));
 
-        $datagridBuilder = $this->createMock('\Sonata\AdminBundle\Builder\DatagridBuilderInterface');
+        $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
 
         $this->admin->expects($this->any())
             ->method('getDatagridBuilder')
             ->will($this->returnValue($datagridBuilder));
 
-        $listBuilder = $this->createMock('Sonata\AdminBundle\Builder\ListBuilderInterface');
+        $listBuilder = $this->createMock(ListBuilderInterface::class);
 
         $this->admin->expects($this->any())
             ->method('getListBuilder')
@@ -237,11 +233,7 @@ class ExplainAdminCommandTest extends TestCase
 
     public function testExecuteEmptyValidator()
     {
-        if (interface_exists('Symfony\Component\Validator\Mapping\MetadataInterface')) { //sf2.5+
-            $metadata = $this->createMock('Symfony\Component\Validator\Mapping\MetadataInterface');
-        } else {
-            $metadata = $this->createMock('Symfony\Component\Validator\MetadataInterface');
-        }
+        $metadata = $this->createMock(MetadataInterface::class);
 
         $this->validatorFactory->expects($this->once())
             ->method('getMetadataFor')
@@ -251,25 +243,25 @@ class ExplainAdminCommandTest extends TestCase
         $metadata->properties = [];
         $metadata->getters = [];
 
-        $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager = $this->createMock(ModelManagerInterface::class);
 
         $this->admin->expects($this->any())
             ->method('getModelManager')
             ->will($this->returnValue($modelManager));
 
-        $formBuilder = $this->createMock('Symfony\Component\Form\FormBuilderInterface');
+        $formBuilder = $this->createMock(FormBuilderInterface::class);
 
         $this->admin->expects($this->any())
              ->method('getFormBuilder')
              ->will($this->returnValue($formBuilder));
 
-        $datagridBuilder = $this->createMock('\Sonata\AdminBundle\Builder\DatagridBuilderInterface');
+        $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
 
         $this->admin->expects($this->any())
             ->method('getDatagridBuilder')
             ->will($this->returnValue($datagridBuilder));
 
-        $listBuilder = $this->createMock('Sonata\AdminBundle\Builder\ListBuilderInterface');
+        $listBuilder = $this->createMock(ListBuilderInterface::class);
 
         $this->admin->expects($this->any())
             ->method('getListBuilder')

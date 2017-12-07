@@ -12,8 +12,13 @@
 namespace Sonata\AdminBundle\Tests\Route;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Route\AdminPoolLoader;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\Route as SymfonyRoute;
+use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -22,8 +27,8 @@ class AdminPoolLoaderTest extends TestCase
 {
     public function testSupports()
     {
-        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
-        $pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
+        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $pool = $this->getMockBuilder(Pool::class)
             ->setMethods([])
             ->setConstructorArgs([$container, 'title', 'logoTitle'])
             ->getMock();
@@ -36,8 +41,8 @@ class AdminPoolLoaderTest extends TestCase
 
     public function testLoad()
     {
-        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
-        $pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
+        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $pool = $this->getMockBuilder(Pool::class)
             ->setMethods([])
             ->setConstructorArgs([$container, 'title', 'logoTitle'])
             ->getMock();
@@ -51,12 +56,12 @@ class AdminPoolLoaderTest extends TestCase
         $routeCollection2->add('bar');
         $routeCollection2->add('baz');
 
-        $admin1 = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin1 = $this->getMockForAbstractClass(AdminInterface::class);
         $admin1->expects($this->once())
             ->method('getRoutes')
             ->will($this->returnValue($routeCollection1));
 
-        $admin2 = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $admin2 = $this->getMockForAbstractClass(AdminInterface::class);
         $admin2->expects($this->once())
             ->method('getRoutes')
             ->will($this->returnValue($routeCollection2));
@@ -70,15 +75,13 @@ class AdminPoolLoaderTest extends TestCase
                     case 'bar_admin':
                         return $admin2;
                 }
-
-                return;
             }));
 
         $collection = $adminPoolLoader->load('foo', 'sonata_admin');
 
-        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $collection);
-        $this->assertInstanceOf('Symfony\Component\Routing\Route', $collection->get('baseRouteNameFoo_foo'));
-        $this->assertInstanceOf('Symfony\Component\Routing\Route', $collection->get('baseRouteNameBar_bar'));
-        $this->assertInstanceOf('Symfony\Component\Routing\Route', $collection->get('baseRouteNameBar_bar'));
+        $this->assertInstanceOf(SymfonyRouteCollection::class, $collection);
+        $this->assertInstanceOf(SymfonyRoute::class, $collection->get('baseRouteNameFoo_foo'));
+        $this->assertInstanceOf(SymfonyRoute::class, $collection->get('baseRouteNameBar_bar'));
+        $this->assertInstanceOf(SymfonyRoute::class, $collection->get('baseRouteNameBar_bar'));
     }
 }

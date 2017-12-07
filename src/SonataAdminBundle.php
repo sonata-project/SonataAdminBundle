@@ -11,10 +11,26 @@
 
 namespace Sonata\AdminBundle;
 
+use Mopa\Bundle\BootstrapBundle\Form\Type\TabType;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
+use Sonata\AdminBundle\Form\Type\AdminType;
+use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
+use Sonata\AdminBundle\Form\Type\CollectionType;
+use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
+use Sonata\AdminBundle\Form\Type\Filter\DateRangeType;
+use Sonata\AdminBundle\Form\Type\Filter\DateTimeRangeType;
+use Sonata\AdminBundle\Form\Type\Filter\DateTimeType;
+use Sonata\AdminBundle\Form\Type\Filter\DateType;
+use Sonata\AdminBundle\Form\Type\Filter\DefaultType;
+use Sonata\AdminBundle\Form\Type\Filter\NumberType;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Form\Type\ModelHiddenType;
+use Sonata\AdminBundle\Form\Type\ModelListType;
+use Sonata\AdminBundle\Form\Type\ModelReferenceType;
+use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\CoreBundle\Form\FormHelper;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -48,22 +64,22 @@ class SonataAdminBundle extends Bundle
     public function registerFormMapping()
     {
         FormHelper::registerFormTypeMapping([
-            'sonata_type_admin' => 'Sonata\AdminBundle\Form\Type\AdminType',
-            'sonata_type_model' => 'Sonata\AdminBundle\Form\Type\ModelType',
-            'sonata_type_model_list' => 'Sonata\AdminBundle\Form\Type\ModelListType',
-            'sonata_type_model_reference' => 'Sonata\AdminBundle\Form\Type\ModelReferenceType',
-            'sonata_type_model_hidden' => 'Sonata\AdminBundle\Form\Type\ModelHiddenType',
-            'sonata_type_model_autocomplete' => 'Sonata\AdminBundle\Form\Type\ModelAutocompleteType',
-            'sonata_type_native_collection' => 'Sonata\AdminBundle\Form\Type\CollectionType',
-            'sonata_type_choice_field_mask' => 'Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType',
-            'sonata_type_filter_number' => 'Sonata\AdminBundle\Form\Type\Filter\NumberType',
-            'sonata_type_filter_choice' => 'Sonata\AdminBundle\Form\Type\Filter\ChoiceType',
-            'sonata_type_filter_default' => 'Sonata\AdminBundle\Form\Type\Filter\DefaultType',
-            'sonata_type_filter_date' => 'Sonata\AdminBundle\Form\Type\Filter\DateType',
-            'sonata_type_filter_date_range' => 'Sonata\AdminBundle\Form\Type\Filter\DateRangeType',
-            'sonata_type_filter_datetime' => 'Sonata\AdminBundle\Form\Type\Filter\DateTimeType',
-            'sonata_type_filter_datetime_range' => 'Sonata\AdminBundle\Form\Type\Filter\DateTimeRangeType',
-            'tab' => 'Mopa\Bundle\BootstrapBundle\Form\Type\TabType',
+            'sonata_type_admin' => AdminType::class,
+            'sonata_type_model' => ModelType::class,
+            'sonata_type_model_list' => ModelListType::class,
+            'sonata_type_model_reference' => ModelReferenceType::class,
+            'sonata_type_model_hidden' => ModelHiddenType::class,
+            'sonata_type_model_autocomplete' => ModelAutocompleteType::class,
+            'sonata_type_native_collection' => CollectionType::class,
+            'sonata_type_choice_field_mask' => ChoiceFieldMaskType::class,
+            'sonata_type_filter_number' => NumberType::class,
+            'sonata_type_filter_choice' => ChoiceType::class,
+            'sonata_type_filter_default' => DefaultType::class,
+            'sonata_type_filter_date' => DateType::class,
+            'sonata_type_filter_date_range' => DateRangeType::class,
+            'sonata_type_filter_datetime' => DateTimeType::class,
+            'sonata_type_filter_datetime_range' => DateTimeRangeType::class,
+            'tab' => TabType::class,
         ]);
 
         FormHelper::registerFormExtensionMapping('form', [

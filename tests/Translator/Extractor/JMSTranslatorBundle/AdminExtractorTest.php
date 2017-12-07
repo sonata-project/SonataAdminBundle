@@ -12,10 +12,15 @@
 namespace Sonata\AdminBundle\Tests\Translator\Extractor\JMSTranslatorBundle;
 
 use JMS\TranslationBundle\Model\Message;
+use JMS\TranslationBundle\Model\MessageCatalogue;
+use JMS\TranslationBundle\Translation\ExtractorInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Test for AdminExtractor.
@@ -51,34 +56,28 @@ class AdminExtractorTest extends TestCase
 
     public function setUp()
     {
-        if (!interface_exists('JMS\TranslationBundle\Translation\ExtractorInterface')) {
+        if (!interface_exists(ExtractorInterface::class)) {
             $this->markTestSkipped('JMS Translator Bundle does not exist');
         }
 
-        $this->fooAdmin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
-        $this->barAdmin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
+        $this->fooAdmin = $this->getMockForAbstractClass(AdminInterface::class);
+        $this->barAdmin = $this->getMockForAbstractClass(AdminInterface::class);
 
-        // php 5.3 BC
-        $fooAdmin = $this->fooAdmin;
-        $barAdmin = $this->barAdmin;
-
-        $container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($id) use ($fooAdmin, $barAdmin) {
+            ->will($this->returnCallback(function ($id) {
                 switch ($id) {
                     case 'foo_admin':
-                        return $fooAdmin;
+                        return $this->fooAdmin;
                     case 'bar_admin':
-                        return $barAdmin;
+                        return $this->barAdmin;
                 }
-
-                return;
             }));
 
-        $logger = $this->getMockForAbstractClass('Psr\Log\LoggerInterface');
+        $logger = $this->getMockForAbstractClass(LoggerInterface::class);
 
-        $this->pool = $this->getMockBuilder('Sonata\AdminBundle\Admin\Pool')
+        $this->pool = $this->getMockBuilder(Pool::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->pool->expects($this->any())
@@ -96,7 +95,7 @@ class AdminExtractorTest extends TestCase
         $this->adminExtractor = new AdminExtractor($this->pool, $logger);
         $this->adminExtractor->setLogger($logger);
 
-        $this->breadcrumbsBuilder = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface');
+        $this->breadcrumbsBuilder = $this->getMockForAbstractClass(BreadcrumbsBuilderInterface::class);
         $this->adminExtractor->setBreadcrumbsBuilder($this->breadcrumbsBuilder);
     }
 
@@ -104,23 +103,17 @@ class AdminExtractorTest extends TestCase
     {
         $catalogue = $this->adminExtractor->extract();
 
-        $this->assertInstanceOf('JMS\TranslationBundle\Model\MessageCatalogue', $catalogue);
+        $this->assertInstanceOf(MessageCatalogue::class, $catalogue);
         $this->assertFalse($catalogue->has(new Message('foo', 'foo_admin_domain')));
     }
 
     public function testExtract()
     {
-        // php 5.3 BC
-        $translator = $this->adminExtractor;
-
-        $tester = $this;
         $this->fooAdmin->expects($this->any())
             ->method('getShow')
-            ->will($this->returnCallback(function () use ($translator, $tester) {
-                $tester->assertEquals('foo', $translator->trans('foo', [], 'foo_admin_domain'));
-                $tester->assertEquals('foo', $translator->transChoice('foo', 1, [], 'foo_admin_domain'));
-
-                return;
+            ->will($this->returnCallback(function () {
+                $this->assertEquals('foo', $this->adminExtractor->trans('foo', [], 'foo_admin_domain'));
+                $this->assertEquals('foo', $this->adminExtractor->transChoice('foo', 1, [], 'foo_admin_domain'));
             }));
         $this->fooAdmin->expects($this->any())
             ->method('getLabel')
@@ -136,7 +129,7 @@ class AdminExtractorTest extends TestCase
         $this->assertTrue($catalogue->has(new Message('foo', 'foo_admin_domain')));
         $this->assertFalse($catalogue->has(new Message('nonexistent', 'foo_admin_domain')));
 
-        $this->assertInstanceOf('JMS\TranslationBundle\Model\Message', $catalogue->get('foo', 'foo_admin_domain'));
+        $this->assertInstanceOf(Message::class, $catalogue->get('foo', 'foo_admin_domain'));
 
         $message = $catalogue->get('foo', 'foo_admin_domain');
         $this->assertSame('foo', $message->getId());
@@ -148,7 +141,7 @@ class AdminExtractorTest extends TestCase
 
     public function testExtractWithException()
     {
-        $this->expectException('RuntimeException', 'Foo throws exception');
+        $this->expectException(\RuntimeException::class, 'Foo throws exception');
 
         $this->fooAdmin->expects($this->any())
             ->method('getShow')

@@ -64,11 +64,11 @@ class ListMapper extends BaseMapper
     }
 
     /**
-     * @throws \RuntimeException
-     *
      * @param string      $name
      * @param string|null $type
      * @param array       $fieldDescriptionOptions
+     *
+     * @throws \RuntimeException
      *
      * @return $this
      */

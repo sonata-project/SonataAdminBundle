@@ -40,14 +40,14 @@ class DatagridMapper extends BaseMapper
     }
 
     /**
-     * @throws \RuntimeException
-     *
      * @param string $name
      * @param string $type
      * @param array  $filterOptions
      * @param string $fieldType
      * @param array  $fieldOptions
      * @param array  $fieldDescriptionOptions
+     *
+     * @throws \RuntimeException
      *
      * @return DatagridMapper
      */

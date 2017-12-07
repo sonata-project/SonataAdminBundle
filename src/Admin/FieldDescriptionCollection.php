@@ -48,9 +48,9 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
     }
 
     /**
-     * @throws \InvalidArgumentException
-     *
      * @param string $name
+     *
+     * @throws \InvalidArgumentException
      *
      * @return FieldDescriptionInterface
      */

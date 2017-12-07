@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Form\ChoiceList;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 
 class ModelChoiceLoaderTest extends TestCase
@@ -21,7 +22,7 @@ class ModelChoiceLoaderTest extends TestCase
 
     public function setUp()
     {
-        $this->modelManager = $this->getMockForAbstractClass('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
     }
 
     public function testLoadFromEntityWithSamePropertyValues()
@@ -46,7 +47,7 @@ class ModelChoiceLoaderTest extends TestCase
 
         $modelChoiceLoader = new ModelChoiceLoader(
             $this->modelManager,
-            'Sonata\AdminBundle\Tests\Fixtures\Entity\Foo',
+            \Sonata\AdminBundle\Tests\Fixtures\Entity\Foo::class,
             'baz'
         );
 

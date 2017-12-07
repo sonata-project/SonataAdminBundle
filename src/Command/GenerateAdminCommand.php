@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Command;
 
+use Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle;
 use Sonata\AdminBundle\Generator\AdminGenerator;
 use Sonata\AdminBundle\Generator\ControllerGenerator;
 use Sonata\AdminBundle\Manipulator\ServicesManipulator;
@@ -58,15 +59,15 @@ class GenerateAdminCommand extends QuestionableCommand
      */
     public function isEnabled()
     {
-        return class_exists('Sensio\\Bundle\\GeneratorBundle\\SensioGeneratorBundle');
+        return class_exists(SensioGeneratorBundle::class);
     }
 
     /**
      * @param string $managerType
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      */
     public function validateManagerType($managerType)
     {
@@ -235,9 +236,9 @@ class GenerateAdminCommand extends QuestionableCommand
     /**
      * @param string $class
      *
-     * @return string|null
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string|null
      */
     private function getBundleNameFromClass($class)
     {
@@ -249,8 +250,6 @@ class GenerateAdminCommand extends QuestionableCommand
                 return $bundle->getName();
             }
         }
-
-        return;
     }
 
     /**
@@ -273,9 +272,9 @@ class GenerateAdminCommand extends QuestionableCommand
     }
 
     /**
-     * @return string
-     *
      * @throws \RuntimeException
+     *
+     * @return string
      */
     private function getDefaultManagerType()
     {

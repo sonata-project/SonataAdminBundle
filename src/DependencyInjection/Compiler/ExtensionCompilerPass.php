@@ -95,7 +95,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
      *
      * @return array
      */
-    protected function getExtensionsForAdmin($id, Definition $admin, ContainerBuilder $container, array $extensionMap)
+    private function getExtensionsForAdmin($id, Definition $admin, ContainerBuilder $container, array $extensionMap)
     {
         $extensions = [];
         $classReflection = $subjectReflection = null;
@@ -159,7 +159,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
      *
      * @return string
      */
-    protected function getManagedClass(Definition $admin, ContainerBuilder $container)
+    private function getManagedClass(Definition $admin, ContainerBuilder $container)
     {
         return $container->getParameterBag()->resolveValue($admin->getArgument(1));
     }
@@ -178,7 +178,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
      *     'uses'       => array('<trait>'     => array('<extension_id>' => array('priority' => <int>))),
      * )
      */
-    protected function flattenExtensionConfiguration(array $config)
+    private function flattenExtensionConfiguration(array $config)
     {
         $extensionMap = [
             'excludes' => [],
@@ -211,7 +211,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
      *
      * @return bool
      */
-    protected function hasTrait(\ReflectionClass $class, $traitName)
+    private function hasTrait(\ReflectionClass $class, $traitName)
     {
         if (in_array($traitName, $class->getTraitNames())) {
             return true;

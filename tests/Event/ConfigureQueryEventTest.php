@@ -35,8 +35,8 @@ class ConfigureQueryEventTest extends TestCase
 
     protected function setUp()
     {
-        $this->admin = $this->getMockForAbstractClass('Sonata\AdminBundle\Admin\AdminInterface');
-        $this->proxyQuery = $this->getMockForAbstractClass('Sonata\AdminBundle\Datagrid\ProxyQueryInterface');
+        $this->admin = $this->getMockForAbstractClass(AdminInterface::class);
+        $this->proxyQuery = $this->getMockForAbstractClass(ProxyQueryInterface::class);
 
         $this->event = new ConfigureQueryEvent($this->admin, $this->proxyQuery, 'Foo');
     }
@@ -50,7 +50,7 @@ class ConfigureQueryEventTest extends TestCase
     {
         $result = $this->event->getAdmin();
 
-        $this->assertInstanceOf('Sonata\AdminBundle\Admin\AdminInterface', $result);
+        $this->assertInstanceOf(AdminInterface::class, $result);
         $this->assertSame($this->admin, $result);
     }
 
@@ -58,7 +58,7 @@ class ConfigureQueryEventTest extends TestCase
     {
         $result = $this->event->getProxyQuery();
 
-        $this->assertInstanceOf('Sonata\AdminBundle\Datagrid\ProxyQueryInterface', $result);
+        $this->assertInstanceOf(ProxyQueryInterface::class, $result);
         $this->assertSame($this->proxyQuery, $result);
     }
 }

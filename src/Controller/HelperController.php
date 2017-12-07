@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
+use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Command\DebugCommand;
 use Symfony\Bridge\Twig\Extension\FormExtension;
@@ -76,9 +77,9 @@ class HelperController
     }
 
     /**
-     * @throws NotFoundHttpException
-     *
      * @param Request $request
+     *
+     * @throws NotFoundHttpException
      *
      * @return Response
      */
@@ -120,9 +121,9 @@ class HelperController
     }
 
     /**
-     * @throws NotFoundHttpException
-     *
      * @param Request $request
+     *
+     * @throws NotFoundHttpException
      *
      * @return Response
      */
@@ -169,9 +170,9 @@ class HelperController
     }
 
     /**
-     * @throws NotFoundHttpException|\RuntimeException
-     *
      * @param Request $request
+     *
+     * @throws NotFoundHttpException|\RuntimeException
      *
      * @return Response
      */
@@ -341,7 +342,7 @@ class HelperController
 
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
-        $extension = $this->twig->getExtension('Sonata\AdminBundle\Twig\Extension\SonataAdminExtension');
+        $extension = $this->twig->getExtension(SonataAdminExtension::class);
 
         $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription);
 
@@ -353,10 +354,10 @@ class HelperController
      *
      * @param Request $request
      *
-     * @return JsonResponse
-     *
      * @throws \RuntimeException
      * @throws AccessDeniedException
+     *
+     * @return JsonResponse
      */
     public function retrieveAutocompleteItemsAction(Request $request)
     {
@@ -497,9 +498,9 @@ class HelperController
      * @param AdminInterface $admin
      * @param string         $field
      *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
-     *
      * @throws \RuntimeException
+     *
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
     private function retrieveFormFieldDescription(AdminInterface $admin, $field)
     {
@@ -524,9 +525,9 @@ class HelperController
      * @param AdminInterface $admin
      * @param string         $field
      *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
-     *
      * @throws \RuntimeException
+     *
+     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
     private function retrieveFilterFieldDescription(AdminInterface $admin, $field)
     {

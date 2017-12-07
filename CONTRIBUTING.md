@@ -72,6 +72,23 @@ and run this command before committing your modifications:
 php-cs-fixer fix --verbose
 ```
 
+Please note that we try to keep phpdoc to a minimum, so if an `@param` phpdoc
+comment brings nothing more than the type hint and variable name already do,
+it should be removed. Descriptions are optional if you want to document a type.
+
+```php
+/**
+ * @param Bar|Baz $foo
+ * @param int     $limit a crucial, highly interesting comment
+ */
+protected function bar($foo, string $name, int $limit)
+{
+    // ...
+}
+```
+
+Please also note that multiline signatures are allowed when the line is longer than 120 characters.
+
 #### The documentation
 
 The documentation is mostly written with the `rst` format, and can be found in the `docs` directory.

@@ -186,6 +186,46 @@ This code manages the many-to-[one|many] association field popup
         });
     };
 
+    // handle the edit link
+    var field_dialog_form_edit_{{ id }} = function(event) {
+        initialize_popup_{{ id }}();
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        var a = jQuery(this);
+
+        field_dialog_content_{{ id }}.html('');
+
+        Admin.log('[{{ id }}|field_dialog_form_edit] edit link action');
+
+        // retrieve the form element from the related admin generator
+        jQuery.ajax({
+            url: a.attr('href'),
+            dataType: 'html',
+            success: function(html) {
+
+                Admin.log('[{{ id }}|field_dialog_form_edit] ajax success', field_dialog_{{ id }});
+
+                // populate the popup container
+                field_dialog_content_{{ id }}.html(html);
+                field_dialog_title_{{ id }}.html("{{ associationadmin.label|trans({}, associationadmin.translationdomain) }}");
+
+                Admin.shared_setup(field_dialog_{{ id }});
+
+                // capture the submit event to make an ajax call, ie : POST data to the
+                // related create admin
+                jQuery('a', field_dialog_{{ id }}).on('click', field_dialog_form_action_{{ id }});
+                jQuery('form', field_dialog_{{ id }}).on('submit', field_dialog_form_action_{{ id }});
+
+                // open the dialog in modal mode
+                field_dialog_{{ id }}.modal();
+
+                Admin.setup_list_modal(field_dialog_{{ id }});
+            }
+        });
+    };
+
     // handle the post data
     var field_dialog_form_action_{{ id }} = function(event) {
 
@@ -320,7 +360,7 @@ This code manages the many-to-[one|many] association field popup
     }
 
     {#
-        This code is used to defined the "add" popup
+        This code is used to define the "add" popup
     #}
     // this function initializes the popup
     // this can be only done this way as popup can be cascaded
@@ -334,6 +374,27 @@ This code manages the many-to-[one|many] association field popup
         // add the jQuery event to the a element
         jQuery(link)
             .click(field_dialog_form_add_{{ id }})
+            .trigger('click')
+        ;
+
+        return false;
+    }
+
+    {#
+        This code is used to define the "edit" popup
+    #}
+    // this function initializes the popup
+    // this can only be done this way as popup can be cascaded
+    function start_field_dialog_form_edit_{{ id }}(link) {
+
+        // remove the html event
+        link.onclick = null;
+
+        initialize_popup_{{ id }}();
+
+        // add the jQuery event to the a element
+        jQuery(link)
+            .click(field_dialog_form_edit_{{ id }})
             .trigger('click')
         ;
 
@@ -412,6 +473,14 @@ This code manages the many-to-[one|many] association field popup
                     jQuery('#field_widget_{{ id }}').html(html);
                 }
             });
+
+            {% if btn_edit %}
+                var edit_button_url = '{{
+                    associationadmin.generateUrl('edit', {'id' : 'OBJECT_ID'})
+                }}'.replace('OBJECT_ID', jQuery(this).val());
+
+                jQuery('#field_actions_{{ id }} a.btn-warning').attr('href', edit_button_url);
+            {% endif %}
         });
 
     {% endif %}

@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Admin;
 
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
 
 /**
  * Contains url generation logic related to an admin.
@@ -45,33 +46,33 @@ interface UrlGeneratorInterface
      * @param string $name
      * @param mixed  $object
      * @param array  $parameters
-     * @param bool   $absolute
+     * @param int    $absolute
      *
      * @return string return a complete url
      */
-    public function generateObjectUrl($name, $object, array $parameters = [], $absolute = false);
+    public function generateObjectUrl($name, $object, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH);
 
     /**
      * Generates a url for the given parameters.
      *
      * @param string $name
      * @param array  $parameters
-     * @param bool   $absolute
+     * @param int    $absolute
      *
      * @return string return a complete url
      */
-    public function generateUrl($name, array $parameters = [], $absolute = false);
+    public function generateUrl($name, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH);
 
     /**
      * Generates a url for the given parameters.
      *
      * @param string $name
      * @param array  $parameters
-     * @param bool   $absolute
+     * @param int    $absolute
      *
      * @return array return url parts: 'route', 'routeParameters', 'routeAbsolute'
      */
-    public function generateMenuUrl($name, array $parameters = [], $absolute = false);
+    public function generateMenuUrl($name, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH);
 
     /**
      * @param mixed $entity
