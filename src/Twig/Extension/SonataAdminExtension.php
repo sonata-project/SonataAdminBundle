@@ -23,6 +23,7 @@ use Twig\Error\LoaderError;
 use Twig\Extension\AbstractExtension;
 use Twig\Template;
 use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -113,6 +114,15 @@ class SonataAdminExtension extends AbstractExtension
             new TwigFilter(
                 'sonata_xeditable_choices',
                 [$this, 'getXEditableChoices']
+            ),
+        ];
+    }
+
+    public function getFunctions()
+    {
+        return [
+            new TwigFunction('deprecate_template',
+                [$this, 'deprecateTemplate']
             ),
         ];
     }
@@ -485,5 +495,15 @@ EOT;
         }
 
         return $template;
+    }
+
+    public function deprecateTemplate($oldTemplateName, $newTemplateName)
+    {
+        @trigger_error(sprintf(
+            'The "%s" template is deprecated.'
+            .' Use "@SonataAdminBundle/CRUD/Association/%s" instead.',
+            $oldTemplateName,
+            $newTemplateName
+        ), E_USER_DEPRECATED);
     }
 }
