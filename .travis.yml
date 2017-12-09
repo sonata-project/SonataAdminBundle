@@ -42,7 +42,7 @@ matrix:
   include:
     - php: '7.2'
       env: TARGET=docs
-    - php: '5.6'
+    - php: '7.2'
       env: TARGET=lint
     - php: '5.6'
       env: COMPOSER_FLAGS="--prefer-lowest"
