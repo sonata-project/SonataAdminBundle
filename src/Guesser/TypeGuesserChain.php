@@ -28,9 +28,6 @@ class TypeGuesserChain implements TypeGuesserInterface
      */
     protected $guessers = [];
 
-    /**
-     * @param array $guessers
-     */
     public function __construct(array $guessers)
     {
         foreach ($guessers as $guesser) {
@@ -46,9 +43,6 @@ class TypeGuesserChain implements TypeGuesserInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function guessType($class, $property, ModelManagerInterface $modelManager)
     {
         return $this->guess(function ($guesser) use ($class, $property, $modelManager) {

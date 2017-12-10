@@ -21,9 +21,6 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class ExtensionCompilerPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         $universalExtensions = [];
@@ -88,10 +85,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param string           $id
-     * @param Definition       $admin
-     * @param ContainerBuilder $container
-     * @param array            $extensionMap
+     * @param string $id
      *
      * @return array
      */
@@ -154,9 +148,6 @@ class ExtensionCompilerPass implements CompilerPassInterface
     /**
      * Resolves the class argument of the admin to an actual class (in case of %parameter%).
      *
-     * @param Definition       $admin
-     * @param ContainerBuilder $container
-     *
      * @return string
      */
     protected function getManagedClass(Definition $admin, ContainerBuilder $container)
@@ -165,8 +156,6 @@ class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param array $config
-     *
      * @return array An array with the following structure.
      *
      * array(
@@ -206,9 +195,6 @@ class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param \ReflectionClass $class
-     * @param                  $traitName
-     *
      * @return bool
      */
     protected function hasTrait(\ReflectionClass $class, $traitName)
@@ -227,10 +213,8 @@ class ExtensionCompilerPass implements CompilerPassInterface
     /**
      * Add extension configuration to the targets array.
      *
-     * @param array  $targets
      * @param string $target
      * @param string $extension
-     * @param array  $attributes
      */
     private function addExtension(array &$targets, $target, $extension, array $attributes)
     {

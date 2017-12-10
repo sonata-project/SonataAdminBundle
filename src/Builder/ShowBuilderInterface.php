@@ -20,20 +20,17 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
  */
 interface ShowBuilderInterface extends BuilderInterface
 {
-    /**
-     * @abstract
-     *
-     * @param array $options
-     */
     public function getBaseList(array $options = []);
 
     /**
      * @abstract
      *
-     * @param FieldDescriptionCollection $list
-     * @param string|null                $type
-     * @param FieldDescriptionInterface  $fieldDescription
-     * @param AdminInterface             $admin
+     * @param string|null $type
      */
-    public function addField(FieldDescriptionCollection $list, $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
+    public function addField(
+        FieldDescriptionCollection $list,
+        $type,
+        FieldDescriptionInterface $fieldDescription,
+        AdminInterface $admin
+    );
 }

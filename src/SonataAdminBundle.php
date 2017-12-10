@@ -37,9 +37,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SonataAdminBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new AddDependencyCallsCompilerPass());
@@ -50,9 +47,6 @@ class SonataAdminBundle extends Bundle
         $this->registerFormMapping();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function boot()
     {
         $this->registerFormMapping();

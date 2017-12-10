@@ -23,65 +23,41 @@ class FormViewIterator implements \RecursiveIterator
      */
     protected $iterator;
 
-    /**
-     * @param FormView $formView
-     */
     public function __construct(FormView $formView)
     {
         $this->iterator = $formView->getIterator();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getChildren()
     {
         return new self($this->current());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasChildren()
     {
         return count($this->current()->children) > 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function current()
     {
         return $this->iterator->current();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function next()
     {
         $this->iterator->next();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function key()
     {
         return $this->current()->vars['id'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function valid()
     {
         return $this->iterator->valid();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rewind()
     {
         $this->iterator->rewind();

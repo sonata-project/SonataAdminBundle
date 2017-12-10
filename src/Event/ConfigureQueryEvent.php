@@ -43,9 +43,7 @@ class ConfigureQueryEvent extends Event
     protected $context;
 
     /**
-     * @param AdminInterface      $admin
-     * @param ProxyQueryInterface $proxyQuery
-     * @param string              $context
+     * @param string $context
      */
     public function __construct(AdminInterface $admin, ProxyQueryInterface $proxyQuery, $context)
     {

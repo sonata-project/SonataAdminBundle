@@ -21,16 +21,19 @@ use Symfony\Component\Console\Question\Question;
 abstract class QuestionableCommand extends ContainerAwareCommand
 {
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param string          $questionText
-     * @param mixed           $default
-     * @param callable        $validator
+     * @param string   $questionText
+     * @param mixed    $default
+     * @param callable $validator
      *
      * @return mixed
      */
-    final protected function askAndValidate(InputInterface $input, OutputInterface $output, $questionText, $default, $validator)
-    {
+    final protected function askAndValidate(
+        InputInterface $input,
+        OutputInterface $output,
+        $questionText,
+        $default,
+        $validator
+    ) {
         $questionHelper = $this->getQuestionHelper();
 
         $question = new Question($questionHelper->getQuestion($questionText, $default), $default);
@@ -41,16 +44,19 @@ abstract class QuestionableCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param string          $questionText
-     * @param string          $default
-     * @param string          $separator
+     * @param string $questionText
+     * @param string $default
+     * @param string $separator
      *
      * @return string
      */
-    final protected function askConfirmation(InputInterface $input, OutputInterface $output, $questionText, $default, $separator)
-    {
+    final protected function askConfirmation(
+        InputInterface $input,
+        OutputInterface $output,
+        $questionText,
+        $default,
+        $separator
+    ) {
         $questionHelper = $this->getQuestionHelper();
 
         $question = new ConfirmationQuestion($questionHelper->getQuestion(

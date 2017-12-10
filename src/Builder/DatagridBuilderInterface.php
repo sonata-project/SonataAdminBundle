@@ -23,12 +23,14 @@ interface DatagridBuilderInterface extends BuilderInterface
     /**
      * @abstract
      *
-     * @param DatagridInterface         $datagrid
-     * @param string                    $type
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param AdminInterface            $admin
+     * @param string $type
      */
-    public function addFilter(DatagridInterface $datagrid, $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
+    public function addFilter(
+        DatagridInterface $datagrid,
+        $type,
+        FieldDescriptionInterface $fieldDescription,
+        AdminInterface $admin
+    );
 
     /**
      * @param AdminInterface $admin

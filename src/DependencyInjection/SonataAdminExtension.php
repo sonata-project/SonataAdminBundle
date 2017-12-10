@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
+use JMS\DiExtraBundle\DependencyInjection\Configuration;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminExtensionInterface;
@@ -109,10 +110,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class SonataAdminExtension extends Extension implements PrependExtensionInterface
 {
-    /**
-     * @param array            $configs   An array of configuration settings
-     * @param ContainerBuilder $container A ContainerBuilder instance
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $bundles = $container->getParameter('kernel.bundles');
@@ -309,8 +306,6 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
      * Allow an extension to prepend the extension configurations.
      *
      * NEXT_MAJOR: remove all code that deals with JMSDiExtraBundle
-     *
-     * @param ContainerBuilder $container
      */
     public function prepend(ContainerBuilder $container)
     {
@@ -351,7 +346,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             $annotationPatterns = [$sonataAdminPattern];
         } else {
             // get annotation_patterns default from DiExtraBundle configuration
-            $diExtraConfigDefinition = new \JMS\DiExtraBundle\DependencyInjection\Configuration();
+            $diExtraConfigDefinition = new Configuration();
             // FIXME: this will break if DiExtraBundle adds any mandatory configuration
             $diExtraConfig = $this->processConfiguration($diExtraConfigDefinition, []);
 
@@ -451,9 +446,6 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNamespace()
     {
         return 'https://sonata-project.org/schema/dic/admin';

@@ -33,9 +33,6 @@ class ChoiceTypeExtension extends AbstractTypeExtension
         $this->configureOptions($resolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $optionalOptions = ['sortable'];
@@ -43,17 +40,11 @@ class ChoiceTypeExtension extends AbstractTypeExtension
         $resolver->setDefined($optionalOptions);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['sortable'] = array_key_exists('sortable', $options) && $options['sortable'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExtendedType()
     {
         return ChoiceType::class;

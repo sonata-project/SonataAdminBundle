@@ -25,51 +25,30 @@ use Sonata\CoreBundle\Validator\ErrorElement;
  */
 abstract class AbstractAdminExtension implements AdminExtensionInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configureFormFields(FormMapper $formMapper)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureListFields(ListMapper $listMapper)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureShowFields(ShowMapper $showMapper)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureRoutes(AdminInterface $admin, RouteCollection $collection)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
         // Use configureSideMenu not to mess with previous overrides
@@ -77,111 +56,66 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
         $this->configureSideMenu($admin, $menu, $action, $childAdmin);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate(AdminInterface $admin, ErrorElement $errorElement, $object)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list')
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function alterNewInstance(AdminInterface $admin, $object)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function alterObject(AdminInterface $admin, $object)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPersistentParameters(AdminInterface $admin)
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAccessMapping(AdminInterface $admin)
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureBatchActions(AdminInterface $admin, array $actions)
     {
         return $actions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureExportFields(AdminInterface $admin, array $fields)
     {
         return $fields;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preUpdate(AdminInterface $admin, $object)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function postUpdate(AdminInterface $admin, $object)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prePersist(AdminInterface $admin, $object)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function postPersist(AdminInterface $admin, $object)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preRemove(AdminInterface $admin, $object)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function postRemove(AdminInterface $admin, $object)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureActionButtons(AdminInterface $admin, $list, $action, $object)
     {
         return $list;
@@ -189,9 +123,6 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
 
     /**
      * Returns a list of default filters.
-     *
-     * @param AdminInterface $admin
-     * @param array          $filterValues
      */
     public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues)
     {

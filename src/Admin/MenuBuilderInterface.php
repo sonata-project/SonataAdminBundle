@@ -23,8 +23,7 @@ interface MenuBuilderInterface
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @param string         $action
-     * @param AdminInterface $childAdmin
+     * @param string $action
      *
      * @return ItemInterface|bool
      *
@@ -35,8 +34,7 @@ interface MenuBuilderInterface
     /**
      * Build the tab menu related to the current action.
      *
-     * @param string         $action
-     * @param AdminInterface $childAdmin
+     * @param string $action
      *
      * @return ItemInterface|bool
      */

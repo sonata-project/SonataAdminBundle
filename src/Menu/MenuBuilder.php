@@ -46,14 +46,12 @@ class MenuBuilder
      */
     private $eventDispatcher;
 
-    /**
-     * @param Pool                     $pool
-     * @param FactoryInterface         $factory
-     * @param MenuProviderInterface    $provider
-     * @param EventDispatcherInterface $eventDispatcher
-     */
-    public function __construct(Pool $pool, FactoryInterface $factory, MenuProviderInterface $provider, EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        Pool $pool,
+        FactoryInterface $factory,
+        MenuProviderInterface $provider,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->pool = $pool;
         $this->factory = $factory;
         $this->provider = $provider;

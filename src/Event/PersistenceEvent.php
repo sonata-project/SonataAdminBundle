@@ -51,9 +51,8 @@ class PersistenceEvent extends Event
     protected $type;
 
     /**
-     * @param AdminInterface $admin
-     * @param object         $object
-     * @param string         $type
+     * @param object $object
+     * @param string $type
      */
     public function __construct(AdminInterface $admin, $object, $type)
     {

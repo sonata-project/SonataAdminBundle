@@ -30,8 +30,7 @@ class ModelToIdTransformer implements DataTransformerInterface
     protected $className;
 
     /**
-     * @param ModelManagerInterface $modelManager
-     * @param string                $className
+     * @param string $className
      */
     public function __construct(ModelManagerInterface $modelManager, $className)
     {
@@ -39,9 +38,6 @@ class ModelToIdTransformer implements DataTransformerInterface
         $this->className = $className;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reverseTransform($newId)
     {
         if (empty($newId) && !in_array($newId, ['0', 0], true)) {
@@ -51,9 +47,6 @@ class ModelToIdTransformer implements DataTransformerInterface
         return $this->modelManager->find($this->className, $newId);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform($entity)
     {
         if (empty($entity)) {

@@ -56,9 +56,6 @@ class HelperController
     protected $validator;
 
     /**
-     * @param \Twig_Environment  $twig
-     * @param Pool               $pool
-     * @param AdminHelper        $helper
      * @param ValidatorInterface $validator
      */
     public function __construct(Environment $twig, Pool $pool, AdminHelper $helper, $validator)
@@ -78,8 +75,6 @@ class HelperController
     }
 
     /**
-     * @param Request $request
-     *
      * @throws NotFoundHttpException
      *
      * @return Response
@@ -122,8 +117,6 @@ class HelperController
     }
 
     /**
-     * @param Request $request
-     *
      * @throws NotFoundHttpException
      *
      * @return Response
@@ -171,8 +164,6 @@ class HelperController
     }
 
     /**
-     * @param Request $request
-     *
      * @throws NotFoundHttpException|\RuntimeException
      *
      * @return Response
@@ -224,8 +215,6 @@ class HelperController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     public function setObjectFieldValueAction(Request $request)
@@ -352,8 +341,6 @@ class HelperController
 
     /**
      * Retrieve list of items for autocomplete form field.
-     *
-     * @param Request $request
      *
      * @throws \RuntimeException
      * @throws AccessDeniedException
@@ -496,8 +483,7 @@ class HelperController
     /**
      * Retrieve the form field description given by field name.
      *
-     * @param AdminInterface $admin
-     * @param string         $field
+     * @param string $field
      *
      * @throws \RuntimeException
      *
@@ -523,8 +509,7 @@ class HelperController
     /**
      * Retrieve the filter field description given by field name.
      *
-     * @param AdminInterface $admin
-     * @param string         $field
+     * @param string $field
      *
      * @throws \RuntimeException
      *

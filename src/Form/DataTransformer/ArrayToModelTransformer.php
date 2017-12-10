@@ -30,8 +30,7 @@ class ArrayToModelTransformer implements DataTransformerInterface
     protected $className;
 
     /**
-     * @param ModelManagerInterface $modelManager
-     * @param string                $className
+     * @param string $className
      */
     public function __construct(ModelManagerInterface $modelManager, $className)
     {
@@ -39,9 +38,6 @@ class ArrayToModelTransformer implements DataTransformerInterface
         $this->className = $className;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reverseTransform($array)
     {
         // when the object is created the form return an array
@@ -59,9 +55,6 @@ class ArrayToModelTransformer implements DataTransformerInterface
         return $this->modelManager->modelReverseTransform($this->className, $array);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform($value)
     {
         return $value;

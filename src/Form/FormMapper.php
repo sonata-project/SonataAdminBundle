@@ -30,20 +30,15 @@ class FormMapper extends BaseGroupedMapper
      */
     protected $formBuilder;
 
-    /**
-     * @param FormContractorInterface $formContractor
-     * @param FormBuilderInterface    $formBuilder
-     * @param AdminInterface          $admin
-     */
-    public function __construct(FormContractorInterface $formContractor, FormBuilderInterface $formBuilder, AdminInterface $admin)
-    {
+    public function __construct(
+        FormContractorInterface $formContractor,
+        FormBuilderInterface $formBuilder,
+        AdminInterface $admin
+    ) {
         parent::__construct($formContractor, $admin);
         $this->formBuilder = $formBuilder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reorder(array $keys)
     {
         $this->admin->reorderFormGroup($this->getCurrentGroupName(), $keys);
@@ -54,8 +49,6 @@ class FormMapper extends BaseGroupedMapper
     /**
      * @param string $name
      * @param string $type
-     * @param array  $options
-     * @param array  $fieldDescriptionOptions
      *
      * @return $this
      */
@@ -149,9 +142,6 @@ class FormMapper extends BaseGroupedMapper
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get($name)
     {
         $name = $this->sanitizeFieldName($name);
@@ -159,9 +149,6 @@ class FormMapper extends BaseGroupedMapper
         return $this->formBuilder->get($name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has($key)
     {
         $key = $this->sanitizeFieldName($key);
@@ -169,17 +156,11 @@ class FormMapper extends BaseGroupedMapper
         return $this->formBuilder->has($key);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function keys()
     {
         return array_keys($this->formBuilder->all());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function remove($key)
     {
         $key = $this->sanitizeFieldName($key);
@@ -242,7 +223,6 @@ class FormMapper extends BaseGroupedMapper
     /**
      * @param string $name
      * @param mixed  $type
-     * @param array  $options
      *
      * @return FormBuilderInterface
      */
@@ -252,8 +232,6 @@ class FormMapper extends BaseGroupedMapper
     }
 
     /**
-     * @param array $helps
-     *
      * @return FormMapper
      */
     public function setHelps(array $helps = [])
@@ -266,9 +244,6 @@ class FormMapper extends BaseGroupedMapper
     }
 
     /**
-     * @param $name
-     * @param $help
-     *
      * @return FormMapper
      */
     public function addHelp($name, $help)
@@ -295,41 +270,26 @@ class FormMapper extends BaseGroupedMapper
         return str_replace(['__', '.'], ['____', '__'], $fieldName);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getGroups()
     {
         return $this->admin->getFormGroups();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setGroups(array $groups)
     {
         $this->admin->setFormGroups($groups);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getTabs()
     {
         return $this->admin->getFormTabs();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setTabs(array $tabs)
     {
         $this->admin->setFormTabs($tabs);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getName()
     {
         return 'form';

@@ -11,8 +11,11 @@
 
 namespace Sonata\AdminBundle\Admin;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Inflector\Inflector;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ODM\MongoDB\PersistentCollection;
+use Doctrine\ORM\PersistentCollection as DoctrinePersistentCollection;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
 use Sonata\AdminBundle\Util\FormViewIterator;
@@ -29,17 +32,13 @@ class AdminHelper
      */
     protected $pool;
 
-    /**
-     * @param Pool $pool
-     */
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
     }
 
     /**
-     * @param FormBuilderInterface $formBuilder
-     * @param string               $elementId
+     * @param string $elementId
      *
      * @throws \RuntimeException
      *
@@ -55,8 +54,7 @@ class AdminHelper
     }
 
     /**
-     * @param FormView $formView
-     * @param string   $elementId
+     * @param string $elementId
      *
      * @return null|FormView
      */
@@ -90,9 +88,8 @@ class AdminHelper
      *   only for direct FieldDescription (not nested one).
      *
      *
-     * @param AdminInterface $admin
-     * @param object         $subject
-     * @param string         $elementId
+     * @param object $subject
+     * @param string $elementId
      *
      * @throws \RuntimeException
      * @throws \Exception
@@ -121,10 +118,10 @@ class AdminHelper
 
             $collection = $propertyAccessor->getValue($entity, $path);
 
-            if ($collection instanceof \Doctrine\ORM\PersistentCollection || $collection instanceof \Doctrine\ODM\MongoDB\PersistentCollection) {
+            if ($collection instanceof DoctrinePersistentCollection || $collection instanceof PersistentCollection) {
                 //since doctrine 2.4
                 $entityClassName = $collection->getTypeClass()->getName();
-            } elseif ($collection instanceof \Doctrine\Common\Collections\Collection) {
+            } elseif ($collection instanceof Collection) {
                 $entityClassName = $this->getEntityClassName($admin, explode('.', preg_replace('#\[\d*?\]#', '', $path)));
             } else {
                 throw new \Exception('unknown collection class');
@@ -184,8 +181,7 @@ class AdminHelper
     /**
      * Add a new instance to the related FieldDescriptionInterface value.
      *
-     * @param object                    $object
-     * @param FieldDescriptionInterface $fieldDescription
+     * @param object $object
      *
      * @throws \RuntimeException
      */
@@ -284,8 +280,7 @@ class AdminHelper
     /**
      * Recursively find the class name of the admin responsible for the element at the end of an association chain.
      *
-     * @param AdminInterface $admin
-     * @param array          $elements
+     * @param array $elements
      *
      * @return string
      */

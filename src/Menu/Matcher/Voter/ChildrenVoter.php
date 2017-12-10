@@ -44,9 +44,6 @@ class ChildrenVoter implements VoterInterface
         $this->matcher = $matcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function matchItem(ItemInterface $item)
     {
         if (!$item->getExtra('sonata_admin', false)) {

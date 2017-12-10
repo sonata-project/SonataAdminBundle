@@ -19,9 +19,8 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 interface SecurityHandlerInterface
 {
     /**
-     * @param AdminInterface $admin
-     * @param string|array   $attributes
-     * @param mixed|null     $object
+     * @param string|array $attributes
+     * @param mixed|null   $object
      *
      * @return bool
      */
@@ -30,30 +29,23 @@ interface SecurityHandlerInterface
     /**
      * Get a sprintf template to get the role.
      *
-     * @param AdminInterface $admin
-     *
      * @return string
      */
     public function getBaseRole(AdminInterface $admin);
 
-    /**
-     * @param AdminInterface $admin
-     */
     public function buildSecurityInformation(AdminInterface $admin);
 
     /**
      * Create object security, fe. make the current user owner of the object.
      *
-     * @param AdminInterface $admin
-     * @param mixed          $object
+     * @param mixed $object
      */
     public function createObjectSecurity(AdminInterface $admin, $object);
 
     /**
      * Remove object security.
      *
-     * @param AdminInterface $admin
-     * @param mixed          $object
+     * @param mixed $object
      */
     public function deleteObjectSecurity(AdminInterface $admin, $object);
 }
