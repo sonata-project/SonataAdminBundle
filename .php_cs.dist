@@ -33,36 +33,18 @@ $rules = [
     'ordered_class_elements' => true,
     'ordered_imports' => true,
     'phpdoc_order' => true,
+    '@PHP56Migration' => true,
+    '@PHP56Migration:risky' => true,
+    '@PHPUnit57Migration:risky' => true,
     // To be tested before insertion:
 //    'strict_comparison' => true,
 //    'strict_param' => true,
 //    'php_unit_strict' => true,
 ];
 
-if (\PHP_VERSION_ID >= 50600) {
-    $rules = array_merge($rules, [
-        '@PHP56Migration' => true,
-        '@PHP56Migration:risky' => true,
-        '@PHPUnit57Migration:risky' => true,
-    ]);
-}
-if (\PHP_VERSION_ID >= 70000) {
-    $rules = array_merge($rules, [
-        '@PHP70Migration' => true,
-        '@PHP70Migration:risky' => true,
-        '@PHPUnit60Migration:risky' => true,
-    ]);
-}
-if (\PHP_VERSION_ID >= 70100) {
-    $rules = array_merge($rules, [
-        '@PHP71Migration' => true,
-        '@PHP71Migration:risky' => true,
-        'compact_nullable_typehint' => true,
-    ]);
-}
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(preg_match('/dev-kit\/project$/', __DIR__, $matches) ? __DIR__.'/..' : __DIR__)
+    ->in(__DIR__)
     ->exclude('Tests/Fixtures')
     ->exclude('tests/Fixtures')
     ->exclude('Resources/skeleton')
