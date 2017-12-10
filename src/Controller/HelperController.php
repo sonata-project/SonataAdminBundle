@@ -28,6 +28,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Twig\Environment;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -60,7 +61,7 @@ class HelperController
      * @param AdminHelper        $helper
      * @param ValidatorInterface $validator
      */
-    public function __construct(\Twig_Environment $twig, Pool $pool, AdminHelper $helper, $validator)
+    public function __construct(Environment $twig, Pool $pool, AdminHelper $helper, $validator)
     {
         // NEXT_MAJOR: Move ValidatorInterface check to method signature
         if (!($validator instanceof ValidatorInterface)) {
