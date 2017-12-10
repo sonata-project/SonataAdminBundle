@@ -29,8 +29,6 @@ class AdminVoter implements VoterInterface
     private $request = null;
 
     /**
-     * @param Request $request
-     *
      * @return $this
      */
     public function setRequest($request)
@@ -40,9 +38,6 @@ class AdminVoter implements VoterInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function matchItem(ItemInterface $item)
     {
         $admin = $item->getExtra('admin');

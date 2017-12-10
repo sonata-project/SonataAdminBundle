@@ -27,9 +27,6 @@ class GenerateObjectAclCommand extends QuestionableCommand
      */
     protected $userEntityClass = '';
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure()
     {
         $this
@@ -41,9 +38,6 @@ class GenerateObjectAclCommand extends QuestionableCommand
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Welcome to the AdminBundle object ACL generator');
@@ -108,9 +102,6 @@ class GenerateObjectAclCommand extends QuestionableCommand
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
      * @return string
      */
     protected function getUserEntityClass(InputInterface $input, OutputInterface $output)

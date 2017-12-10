@@ -306,8 +306,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Returns the number of results.
-     *
      * @return int
      */
     public function getNbResults()
@@ -316,8 +314,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Returns the first page number.
-     *
      * @return int
      */
     public function getFirstPage()
@@ -326,8 +322,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Returns the last page number.
-     *
      * @return int
      */
     public function getLastPage()
@@ -336,8 +330,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Returns the current page.
-     *
      * @return int
      */
     public function getPage()
@@ -346,8 +338,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Returns the next page.
-     *
      * @return int
      */
     public function getNextPage()
@@ -356,8 +346,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Returns the previous page.
-     *
      * @return int
      */
     public function getPreviousPage()
@@ -365,9 +353,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return max($this->getPage() - 1, $this->getFirstPage());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPage($page)
     {
         $this->page = (int) $page;
@@ -378,17 +363,11 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getMaxPerPage()
     {
         return $this->maxPerPage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setMaxPerPage($max)
     {
         if ($max > 0) {
@@ -409,17 +388,11 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getMaxPageLinks()
     {
         return $this->maxPageLinks;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setMaxPageLinks($maxPageLinks)
     {
         $this->maxPageLinks = $maxPageLinks;
@@ -491,9 +464,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         $this->parameters[$name] = $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function current()
     {
         if (!$this->isIteratorInitialized()) {
@@ -503,9 +473,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return current($this->results);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function key()
     {
         if (!$this->isIteratorInitialized()) {
@@ -515,9 +482,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return key($this->results);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function next()
     {
         if (!$this->isIteratorInitialized()) {
@@ -529,9 +493,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return next($this->results);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rewind()
     {
         if (!$this->isIteratorInitialized()) {
@@ -543,9 +504,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return reset($this->results);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function valid()
     {
         if (!$this->isIteratorInitialized()) {
@@ -555,17 +513,11 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return $this->resultsCounter > 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function count()
     {
         return $this->getNbResults();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function serialize()
     {
         $vars = get_object_vars($this);
@@ -574,9 +526,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return serialize($vars);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unserialize($serialized)
     {
         $array = unserialize($serialized);
@@ -595,8 +544,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * @param array $countColumn
-     *
      * @return array
      */
     public function setCountColumn(array $countColumn)
@@ -604,9 +551,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return $this->countColumn = $countColumn;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setQuery($query)
     {
         $this->query = $query;
@@ -621,8 +565,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Sets the number of results.
-     *
      * @param int $nb
      */
     protected function setNbResults($nb)
@@ -631,8 +573,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     }
 
     /**
-     * Sets the last page number.
-     *
      * @param int $page
      */
     protected function setLastPage($page)

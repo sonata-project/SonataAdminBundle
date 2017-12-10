@@ -119,9 +119,6 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         unset($this->$name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform($collection)
     {
         if (null === $collection) {
@@ -138,9 +135,6 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         return $array;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reverseTransform($keys)
     {
         if (!is_array($keys)) {

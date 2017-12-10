@@ -60,20 +60,24 @@ class RouteCollection
     /**
      * Add route.
      *
-     * @param string $name         Name
-     * @param string $pattern      Pattern (will be automatically combined with @see $this->baseRoutePattern and $name
-     * @param array  $defaults     Defaults
-     * @param array  $requirements Requirements
-     * @param array  $options      Options
-     * @param string $host         Host
-     * @param array  $schemes      Schemes
-     * @param array  $methods      Methods
-     * @param string $condition    Condition
+     * @param string $name
+     * @param string $pattern   Pattern (will be automatically combined with @see $this->baseRoutePattern and $name
+     * @param string $host
+     * @param string $condition
      *
      * @return RouteCollection
      */
-    public function add($name, $pattern = null, array $defaults = [], array $requirements = [], array $options = [], $host = '', array $schemes = [], array $methods = [], $condition = '')
-    {
+    public function add(
+        $name,
+        $pattern = null,
+        array $defaults = [],
+        array $requirements = [],
+        array $options = [],
+        $host = '',
+        array $schemes = [],
+        array $methods = [],
+        $condition = ''
+    ) {
         $pattern = $this->baseRoutePattern.'/'.($pattern ?: $name);
         $code = $this->getCode($name);
         $routeName = $this->baseRouteName.'_'.$name;
@@ -111,8 +115,6 @@ class RouteCollection
     }
 
     /**
-     * @param RouteCollection $collection
-     *
      * @return RouteCollection
      */
     public function addCollection(self $collection)
@@ -273,8 +275,6 @@ class RouteCollection
     }
 
     /**
-     * @param $element
-     *
      * @return Route
      */
     private function resolve($element)

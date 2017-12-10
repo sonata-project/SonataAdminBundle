@@ -31,10 +31,6 @@ abstract class BaseMapper
      */
     protected $builder;
 
-    /**
-     * @param BuilderInterface $builder
-     * @param AdminInterface   $admin
-     */
     public function __construct(BuilderInterface $builder, AdminInterface $admin)
     {
         $this->builder = $builder;

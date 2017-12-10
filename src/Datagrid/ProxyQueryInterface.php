@@ -27,7 +27,6 @@ interface ProxyQueryInterface
     public function __call($name, $args);
 
     /**
-     * @param array    $params
      * @param int|null $hydrationMode
      *
      * @return mixed

@@ -29,8 +29,7 @@ class FilterFactory implements FilterFactoryInterface
     protected $types;
 
     /**
-     * @param ContainerInterface $container
-     * @param string[]           $types
+     * @param string[] $types
      */
     public function __construct(ContainerInterface $container, array $types = [])
     {
@@ -38,9 +37,6 @@ class FilterFactory implements FilterFactoryInterface
         $this->types = $types;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create($name, $type, array $options = [])
     {
         if (!$type) {

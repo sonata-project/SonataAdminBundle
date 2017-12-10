@@ -29,27 +29,17 @@ class RoutesCacheWarmUp implements CacheWarmerInterface
      */
     protected $pool;
 
-    /**
-     * @param RoutesCache $cache
-     * @param Pool        $pool
-     */
     public function __construct(RoutesCache $cache, Pool $pool)
     {
         $this->cache = $cache;
         $this->pool = $pool;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isOptional()
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function warmUp($cacheDir)
     {
         foreach ($this->pool->getAdminServiceIds() as $id) {

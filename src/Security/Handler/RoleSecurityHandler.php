@@ -32,7 +32,6 @@ class RoleSecurityHandler implements SecurityHandlerInterface
 
     /**
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param array                         $superAdminRoles
      */
     public function __construct($authorizationChecker, array $superAdminRoles)
     {
@@ -45,9 +44,6 @@ class RoleSecurityHandler implements SecurityHandlerInterface
         $this->superAdminRoles = $superAdminRoles;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isGranted(AdminInterface $admin, $attributes, $object = null)
     {
         if (!is_array($attributes)) {
@@ -69,32 +65,20 @@ class RoleSecurityHandler implements SecurityHandlerInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBaseRole(AdminInterface $admin)
     {
         return 'ROLE_'.str_replace('.', '_', strtoupper($admin->getCode())).'_%s';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildSecurityInformation(AdminInterface $admin)
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createObjectSecurity(AdminInterface $admin, $object)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function deleteObjectSecurity(AdminInterface $admin, $object)
     {
     }

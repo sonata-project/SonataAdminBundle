@@ -54,9 +54,6 @@ class SimplePager extends Pager
         $this->setThreshold($threshold);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNbResults()
     {
         $n = ceil(($this->getLastPage() - 1) * $this->getMaxPerPage());
@@ -67,9 +64,6 @@ class SimplePager extends Pager
         return $n;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResults($hydrationMode = null)
     {
         if ($this->results) {
@@ -93,9 +87,6 @@ class SimplePager extends Pager
         return $this->results;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function haveToPaginate()
     {
         return $this->haveToPaginate || $this->getPage() > 1;
@@ -150,9 +141,6 @@ class SimplePager extends Pager
         return $this->threshold;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function resetIterator()
     {
         parent::resetIterator();

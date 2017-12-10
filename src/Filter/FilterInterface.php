@@ -25,10 +25,9 @@ interface FilterInterface
     /**
      * Apply the filter to the QueryBuilder instance.
      *
-     * @param ProxyQueryInterface $queryBuilder
-     * @param string              $alias
-     * @param string              $field
-     * @param mixed[]             $value
+     * @param string  $alias
+     * @param string  $field
+     * @param mixed[] $value
      */
     public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value);
 
@@ -85,7 +84,6 @@ interface FilterInterface
 
     /**
      * @param string $name
-     * @param array  $options
      */
     public function initialize($name, array $options = []);
 

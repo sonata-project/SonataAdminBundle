@@ -51,9 +51,7 @@ class ConfigureEvent extends Event
     protected $type;
 
     /**
-     * @param AdminInterface $admin
-     * @param BaseMapper     $mapper
-     * @param string         $type
+     * @param string $type
      */
     public function __construct(AdminInterface $admin, BaseMapper $mapper, $type)
     {

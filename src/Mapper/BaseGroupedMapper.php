@@ -39,7 +39,6 @@ abstract class BaseGroupedMapper extends BaseMapper
      * Add new group or tab (if parameter "tab=true" is available in options).
      *
      * @param string $name
-     * @param array  $options
      *
      * @throws \RuntimeException
      *
@@ -207,7 +206,6 @@ abstract class BaseGroupedMapper extends BaseMapper
      * Add new tab.
      *
      * @param string $name
-     * @param array  $options
      *
      * @return $this
      */
@@ -256,14 +254,8 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     abstract protected function getTabs();
 
-    /**
-     * @param array $groups
-     */
     abstract protected function setGroups(array $groups);
 
-    /**
-     * @param array $tabs
-     */
     abstract protected function setTabs(array $tabs);
 
     /**
