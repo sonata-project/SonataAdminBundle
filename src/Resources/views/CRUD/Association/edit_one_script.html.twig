@@ -47,7 +47,16 @@ This code manages the one-to-many association field popup
                     return;
                 }
 
-                jQuery('#field_container_{{ id }}').replaceWith(html); // replace the html
+                var $newForm = jQuery(html);
+                var $oldForm = jQuery('#field_container_{{ id }}');
+
+                // Maintain state of file inputs
+                $oldForm.find('input[type="file"]').each(function(){
+                    var id = '#'+$(this).attr('id');
+                    $newForm.find(id).replaceWith($(this));
+                });
+
+                $oldForm.replaceWith($newForm); // replace the html
 
                 Admin.shared_setup(jQuery('#field_container_{{ id }}'));
 
