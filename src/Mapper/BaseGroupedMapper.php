@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -121,7 +123,7 @@ abstract class BaseGroupedMapper extends BaseMapper
                 $this->with('default', [
                     'tab' => true,
                     'auto_created' => true,
-                    'translation_domain' => isset($options['translation_domain']) ? $options['translation_domain'] : null,
+                    'translation_domain' => $options['translation_domain'] ?? null,
                 ]); // add new tab automatically
             }
 

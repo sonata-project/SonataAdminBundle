@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -28,7 +30,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class BreadcrumbsBuilderTest extends TestCase
 {
-    public function testChildGetBreadCrumbs()
+    public function testChildGetBreadCrumbs(): void
     {
         $menu = $this->prophesize(ItemInterface::class);
         $menu->getParent()->willReturn(null);
@@ -169,7 +171,7 @@ class BreadcrumbsBuilderTest extends TestCase
     /**
      * @dataProvider actionProvider
      */
-    public function testBuildBreadcrumbs($action)
+    public function testBuildBreadcrumbs($action): void
     {
         $breadcrumbsBuilder = new BreadcrumbsBuilder();
 

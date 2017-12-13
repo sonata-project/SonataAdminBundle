@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -18,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ChoiceFieldMaskTypeTest extends TypeTestCase
 {
-    public function testGetDefaultOptions()
+    public function testGetDefaultOptions(): void
     {
         $type = new ChoiceFieldMaskType();
 
@@ -37,13 +39,13 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
         $this->assertSame(['foo' => ['field1', 'field2'], 'bar' => ['field3']], $options['map']);
     }
 
-    public function testGetBlockPrefix()
+    public function testGetBlockPrefix(): void
     {
         $type = new ChoiceFieldMaskType();
         $this->assertSame('sonata_type_choice_field_mask', $type->getBlockPrefix());
     }
 
-    public function testGetParent()
+    public function testGetParent(): void
     {
         $type = new ChoiceFieldMaskType();
         $this->assertSame(ChoiceType::class, $type->getParent());

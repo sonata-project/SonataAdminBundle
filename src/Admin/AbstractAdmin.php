@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -53,10 +55,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, AdminTreeInterface
 {
-    const CONTEXT_MENU = 'menu';
-    const CONTEXT_DASHBOARD = 'dashboard';
+    public const CONTEXT_MENU = 'menu';
+    public const CONTEXT_DASHBOARD = 'dashboard';
 
-    const CLASS_REGEX =
+    public const CLASS_REGEX =
         '@
         (?:([A-Za-z0-9]*)\\\)?        # vendor name / app name
         (Bundle\\\)?                  # optional bundle directory
@@ -66,7 +68,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             Doctrine\\\Orm|Doctrine\\\Phpcr|Doctrine\\\MongoDB|Doctrine\\\CouchDB
         )\\\(.*)@x';
 
-    const MOSAIC_ICON_CLASS = 'fa fa-th-large fa-fw';
+    public const MOSAIC_ICON_CLASS = 'fa fa-th-large fa-fw';
 
     /**
      * The list FieldDescription constructed from the configureListField method.
@@ -588,14 +590,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function validate(ErrorElement $errorElement, $object)
+    public function validate(ErrorElement $errorElement, $object): void
     {
     }
 
     /**
      * define custom variable.
      */
-    public function initialize()
+    public function initialize(): void
     {
         if (!$this->classnameLabel) {
             $this->classnameLabel = substr($this->getClass(), strrpos($this->getClass(), '\\') + 1);
@@ -657,7 +659,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function delete($object)
+    public function delete($object): void
     {
         $this->preRemove($object);
         foreach ($this->extensions as $extension) {
@@ -676,56 +678,56 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function preValidate($object)
+    public function preValidate($object): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function preUpdate($object)
+    public function preUpdate($object): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function postUpdate($object)
+    public function postUpdate($object): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function prePersist($object)
+    public function prePersist($object): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function postPersist($object)
+    public function postPersist($object): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function preRemove($object)
+    public function preRemove($object): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function postRemove($object)
+    public function postRemove($object): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function preBatchAction($actionName, ProxyQueryInterface $query, array &$idx, $allElements)
+    public function preBatchAction($actionName, ProxyQueryInterface $query, array &$idx, $allElements): void
     {
     }
 
@@ -910,7 +912,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function addSubClass($subClass)
+    public function addSubClass($subClass): void
     {
         if (!in_array($subClass, $this->subClasses)) {
             $this->subClasses[] = $subClass;
@@ -920,7 +922,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function setSubClasses(array $subClasses)
+    public function setSubClasses(array $subClasses): void
     {
         $this->subClasses = $subClasses;
     }
@@ -1107,7 +1109,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function setTemplates(array $templates)
+    public function setTemplates(array $templates): void
     {
         $this->templates = $templates;
     }
@@ -1115,7 +1117,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function setTemplate($name, $template)
+    public function setTemplate($name, $template): void
     {
         $this->templates[$name] = $template;
     }
@@ -1174,7 +1176,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @param FormBuilderInterface $formBuilder
      */
-    public function defineFormBuilder(FormBuilderInterface $formBuilder)
+    public function defineFormBuilder(FormBuilderInterface $formBuilder): void
     {
         $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
 
@@ -1190,7 +1192,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function attachAdminClass(FieldDescriptionInterface $fieldDescription)
+    public function attachAdminClass(FieldDescriptionInterface $fieldDescription): void
     {
         $pool = $this->getConfigurationPool();
 
@@ -1279,7 +1281,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function buildTabMenu($action, AdminInterface $childAdmin = null)
+    public function buildTabMenu($action, AdminInterface $childAdmin = null): void
     {
         if ($this->loaded['tab_menu']) {
             return;
@@ -1351,7 +1353,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function setBaseControllerName($baseControllerName)
+    public function setBaseControllerName($baseControllerName): void
     {
         $this->baseControllerName = $baseControllerName;
     }
@@ -1367,7 +1369,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * @param string $label
      */
-    public function setLabel($label)
+    public function setLabel($label): void
     {
         $this->label = $label;
     }
@@ -1383,7 +1385,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * @param bool $persist
      */
-    public function setPersistFilters($persist)
+    public function setPersistFilters($persist): void
     {
         $this->persistFilters = $persist;
     }
@@ -1391,7 +1393,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * @param int $maxPerPage
      */
-    public function setMaxPerPage($maxPerPage)
+    public function setMaxPerPage($maxPerPage): void
     {
         $this->maxPerPage = $maxPerPage;
     }
@@ -1407,7 +1409,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * @param int $maxPageLinks
      */
-    public function setMaxPageLinks($maxPageLinks)
+    public function setMaxPageLinks($maxPageLinks): void
     {
         $this->maxPageLinks = $maxPageLinks;
     }
@@ -1431,7 +1433,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function setFormGroups(array $formGroups)
+    public function setFormGroups(array $formGroups): void
     {
         $this->formGroups = $formGroups;
     }
@@ -1439,7 +1441,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function removeFieldFromFormGroup($key)
+    public function removeFieldFromFormGroup($key): void
     {
         foreach ($this->formGroups as $name => $formGroup) {
             unset($this->formGroups[$name]['fields'][$key]);
@@ -1454,7 +1456,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @param array $group
      * @param array $keys
      */
-    public function reorderFormGroup($group, array $keys)
+    public function reorderFormGroup($group, array $keys): void
     {
         $formGroups = $this->getFormGroups();
         $formGroups[$group]['fields'] = array_merge(array_flip($keys), $formGroups[$group]['fields']);
@@ -1472,7 +1474,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function setFormTabs(array $formTabs)
+    public function setFormTabs(array $formTabs): void
     {
         $this->formTabs = $formTabs;
     }
@@ -1488,7 +1490,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function setShowTabs(array $showTabs)
+    public function setShowTabs(array $showTabs): void
     {
         $this->showTabs = $showTabs;
     }
@@ -1504,7 +1506,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function setShowGroups(array $showGroups)
+    public function setShowGroups(array $showGroups): void
     {
         $this->showGroups = $showGroups;
     }
@@ -1512,7 +1514,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function reorderShowGroup($group, array $keys)
+    public function reorderShowGroup($group, array $keys): void
     {
         $showGroups = $this->getShowGroups();
         $showGroups[$group]['fields'] = array_merge(array_flip($keys), $showGroups[$group]['fields']);
@@ -1522,7 +1524,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription)
+    public function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription): void
     {
         $this->parentFieldDescription = $parentFieldDescription;
     }
@@ -1546,7 +1548,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function setSubject($subject)
+    public function setSubject($subject): void
     {
         if (is_object($subject) && !is_a($subject, $this->getClass(), true)) {
             $message = <<<'EOT'
@@ -1621,7 +1623,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function addFormFieldDescription($name, FieldDescriptionInterface $fieldDescription)
+    public function addFormFieldDescription($name, FieldDescriptionInterface $fieldDescription): void
     {
         $this->formFieldDescriptions[$name] = $fieldDescription;
     }
@@ -1631,7 +1633,7 @@ EOT;
      *
      * @param string $name
      */
-    public function removeFormFieldDescription($name)
+    public function removeFormFieldDescription($name): void
     {
         unset($this->formFieldDescriptions[$name]);
     }
@@ -1673,7 +1675,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription)
+    public function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription): void
     {
         $this->showFieldDescriptions[$name] = $fieldDescription;
     }
@@ -1681,7 +1683,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function removeShowFieldDescription($name)
+    public function removeShowFieldDescription($name): void
     {
         unset($this->showFieldDescriptions[$name]);
     }
@@ -1717,7 +1719,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription)
+    public function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription): void
     {
         $this->listFieldDescriptions[$name] = $fieldDescription;
     }
@@ -1725,7 +1727,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function removeListFieldDescription($name)
+    public function removeListFieldDescription($name): void
     {
         unset($this->listFieldDescriptions[$name]);
     }
@@ -1749,7 +1751,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription)
+    public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription): void
     {
         $this->filterFieldDescriptions[$name] = $fieldDescription;
     }
@@ -1757,7 +1759,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function removeFilterFieldDescription($name)
+    public function removeFilterFieldDescription($name): void
     {
         unset($this->filterFieldDescriptions[$name]);
     }
@@ -1775,7 +1777,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function addChild(AdminInterface $child)
+    public function addChild(AdminInterface $child): void
     {
         for ($parentAdmin = $this; null !== $parentAdmin; $parentAdmin = $parentAdmin->getParent()) {
             if ($parentAdmin->getCode() !== $child->getCode()) {
@@ -1820,7 +1822,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function setParent(AdminInterface $parent)
+    public function setParent(AdminInterface $parent): void
     {
         $this->parent = $parent;
     }
@@ -1902,7 +1904,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function setUniqid($uniqid)
+    public function setUniqid($uniqid): void
     {
         $this->uniqid = $uniqid;
     }
@@ -1954,13 +1956,13 @@ EOT;
     {
         $parameters = $this->getPersistentParameters();
 
-        return isset($parameters[$name]) ? $parameters[$name] : null;
+        return $parameters[$name] ?? null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setCurrentChild($currentChild)
+    public function setCurrentChild($currentChild): void
     {
         $this->currentChild = $currentChild;
     }
@@ -2032,7 +2034,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function setTranslationDomain($translationDomain)
+    public function setTranslationDomain($translationDomain): void
     {
         $this->translationDomain = $translationDomain;
     }
@@ -2052,7 +2054,7 @@ EOT;
      *
      * @deprecated since 3.9, to be removed with 4.0
      */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $args = func_get_args();
         if (isset($args[1]) && $args[1]) {
@@ -2093,7 +2095,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function setRequest(Request $request)
+    public function setRequest(Request $request): void
     {
         $this->request = $request;
 
@@ -2125,7 +2127,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function setFormContractor(FormContractorInterface $formBuilder)
+    public function setFormContractor(FormContractorInterface $formBuilder): void
     {
         $this->formContractor = $formBuilder;
     }
@@ -2141,7 +2143,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder)
+    public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder): void
     {
         $this->datagridBuilder = $datagridBuilder;
     }
@@ -2157,7 +2159,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function setListBuilder(ListBuilderInterface $listBuilder)
+    public function setListBuilder(ListBuilderInterface $listBuilder): void
     {
         $this->listBuilder = $listBuilder;
     }
@@ -2173,7 +2175,7 @@ EOT;
     /**
      * @param ShowBuilderInterface $showBuilder
      */
-    public function setShowBuilder(ShowBuilderInterface $showBuilder)
+    public function setShowBuilder(ShowBuilderInterface $showBuilder): void
     {
         $this->showBuilder = $showBuilder;
     }
@@ -2189,7 +2191,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function setConfigurationPool(Pool $configurationPool)
+    public function setConfigurationPool(Pool $configurationPool): void
     {
         $this->configurationPool = $configurationPool;
     }
@@ -2205,7 +2207,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function setRouteGenerator(RouteGeneratorInterface $routeGenerator)
+    public function setRouteGenerator(RouteGeneratorInterface $routeGenerator): void
     {
         $this->routeGenerator = $routeGenerator;
     }
@@ -2249,7 +2251,7 @@ EOT;
     /**
      * @param ModelManagerInterface $modelManager
      */
-    public function setModelManager(ModelManagerInterface $modelManager)
+    public function setModelManager(ModelManagerInterface $modelManager): void
     {
         $this->modelManager = $modelManager;
     }
@@ -2265,7 +2267,7 @@ EOT;
     /**
      * @param string $type
      */
-    public function setManagerType($type)
+    public function setManagerType($type): void
     {
         $this->managerType = $type;
     }
@@ -2283,7 +2285,7 @@ EOT;
      *
      * @param array $information
      */
-    public function setSecurityInformation(array $information)
+    public function setSecurityInformation(array $information): void
     {
         $this->securityInformation = $information;
     }
@@ -2329,7 +2331,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function createObjectSecurity($object)
+    public function createObjectSecurity($object): void
     {
         $this->getSecurityHandler()->createObjectSecurity($this, $object);
     }
@@ -2337,7 +2339,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function setSecurityHandler(SecurityHandlerInterface $securityHandler)
+    public function setSecurityHandler(SecurityHandlerInterface $securityHandler): void
     {
         $this->securityHandler = $securityHandler;
     }
@@ -2391,7 +2393,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function setValidator($validator)
+    public function setValidator($validator): void
     {
         // NEXT_MAJOR: Move ValidatorInterface check to method signature
         if (!$validator instanceof ValidatorInterface) {
@@ -2424,7 +2426,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function setFormTheme(array $formTheme)
+    public function setFormTheme(array $formTheme): void
     {
         $this->formTheme = $formTheme;
     }
@@ -2440,7 +2442,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function setFilterTheme(array $filterTheme)
+    public function setFilterTheme(array $filterTheme): void
     {
         $this->filterTheme = $filterTheme;
     }
@@ -2456,7 +2458,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function addExtension(AdminExtensionInterface $extension)
+    public function addExtension(AdminExtensionInterface $extension): void
     {
         $this->extensions[] = $extension;
     }
@@ -2472,7 +2474,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function setMenuFactory(MenuFactoryInterface $menuFactory)
+    public function setMenuFactory(MenuFactoryInterface $menuFactory): void
     {
         $this->menuFactory = $menuFactory;
     }
@@ -2488,7 +2490,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function setRouteBuilder(RouteBuilderInterface $routeBuilder)
+    public function setRouteBuilder(RouteBuilderInterface $routeBuilder): void
     {
         $this->routeBuilder = $routeBuilder;
     }
@@ -2520,7 +2522,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy)
+    public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy): void
     {
         $this->labelTranslatorStrategy = $labelTranslatorStrategy;
     }
@@ -2546,7 +2548,7 @@ EOT;
      *
      * @param array $options
      */
-    public function setPerPageOptions(array $options)
+    public function setPerPageOptions(array $options): void
     {
         $this->perPageOptions = $options;
     }
@@ -2566,7 +2568,7 @@ EOT;
      *
      * @param string $pagerType
      */
-    public function setPagerType($pagerType)
+    public function setPagerType($pagerType): void
     {
         $this->pagerType = $pagerType;
     }
@@ -2620,7 +2622,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function setListMode($mode)
+    public function setListMode($mode): void
     {
         if (!$this->hasRequest()) {
             throw new \RuntimeException(sprintf('No request attached to the current admin: %s', $this->getCode()));
@@ -2652,7 +2654,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function checkAccess($action, $object = null)
+    public function checkAccess($action, $object = null): void
     {
         $access = $this->getAccess();
 
@@ -2803,7 +2805,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    final public function showMosaicButton($isShown)
+    final public function showMosaicButton($isShown): void
     {
         if ($isShown) {
             $this->listModes['mosaic'] = ['class' => self::MOSAIC_ICON_CLASS];
@@ -2859,7 +2861,7 @@ EOT;
     /**
      * Hook to run after initilization.
      */
-    protected function configure()
+    protected function configure(): void
     {
     }
 
@@ -2900,35 +2902,35 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
     }
 
     /**
      * @param ListMapper $list
      */
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
     }
 
     /**
      * @param DatagridMapper $filter
      */
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
     }
 
     /**
      * @param ShowMapper $show
      */
-    protected function configureShowFields(ShowMapper $show)
+    protected function configureShowFields(ShowMapper $show): void
     {
     }
 
     /**
      * @param RouteCollection $collection
      */
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollection $collection): void
     {
     }
 
@@ -2992,7 +2994,7 @@ EOT;
     /**
      * build the view FieldDescription array.
      */
-    protected function buildShow()
+    protected function buildShow(): void
     {
         if ($this->show) {
             return;
@@ -3011,7 +3013,7 @@ EOT;
     /**
      * build the list FieldDescription array.
      */
-    protected function buildList()
+    protected function buildList(): void
     {
         if ($this->list) {
             return;
@@ -3067,7 +3069,7 @@ EOT;
     /**
      * Build the form FieldDescription collection.
      */
-    protected function buildForm()
+    protected function buildForm(): void
     {
         if ($this->form) {
             return;
@@ -3119,7 +3121,7 @@ EOT;
     /**
      * Attach the inline validator to the model metadata, this must be done once per admin.
      */
-    protected function attachInlineValidator()
+    protected function attachInlineValidator(): void
     {
         $admin = $this;
 
@@ -3128,7 +3130,7 @@ EOT;
 
         $metadata->addConstraint(new InlineConstraint([
             'service' => $this,
-            'method' => function (ErrorElement $errorElement, $object) use ($admin) {
+            'method' => function (ErrorElement $errorElement, $object) use ($admin): void {
                 /* @var \Sonata\AdminBundle\Admin\AdminInterface $admin */
 
                 // This avoid the main validation to be cascaded to children
@@ -3150,7 +3152,7 @@ EOT;
     /**
      * Predefine per page options.
      */
-    protected function predefinePerPageOptions()
+    protected function predefinePerPageOptions(): void
     {
         array_unshift($this->perPageOptions, $this->maxPerPage);
         $this->perPageOptions = array_unique($this->perPageOptions);
@@ -3190,14 +3192,14 @@ EOT;
      *
      * @param array $filterValues
      */
-    protected function configureDefaultFilterValues(array &$filterValues)
+    protected function configureDefaultFilterValues(array &$filterValues): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    private function buildDatagrid()
+    private function buildDatagrid(): void
     {
         if ($this->datagrid) {
             return;
@@ -3253,7 +3255,7 @@ EOT;
     /**
      * Build all the related urls to the current admin.
      */
-    private function buildRoutes()
+    private function buildRoutes(): void
     {
         if ($this->loaded['routes']) {
             return;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -24,15 +26,15 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class NumberType extends AbstractType
 {
-    const TYPE_GREATER_EQUAL = 1;
+    public const TYPE_GREATER_EQUAL = 1;
 
-    const TYPE_GREATER_THAN = 2;
+    public const TYPE_GREATER_THAN = 2;
 
-    const TYPE_EQUAL = 3;
+    public const TYPE_EQUAL = 3;
 
-    const TYPE_LESS_EQUAL = 4;
+    public const TYPE_LESS_EQUAL = 4;
 
-    const TYPE_LESS_THAN = 5;
+    public const TYPE_LESS_THAN = 5;
 
     /**
      * NEXT_MAJOR: remove this property.
@@ -73,7 +75,7 @@ class NumberType extends AbstractType
      * @param FormBuilderInterface $builder
      * @param array                $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $choices = [
             'label_type_equal' => self::TYPE_EQUAL,
@@ -106,7 +108,7 @@ class NumberType extends AbstractType
      *
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolverInterface $resolver): void
     {
         $this->configureOptions($resolver);
     }
@@ -114,7 +116,7 @@ class NumberType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'field_type' => 'number',

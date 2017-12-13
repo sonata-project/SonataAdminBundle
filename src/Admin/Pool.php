@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -275,7 +277,7 @@ class Pool
     /**
      * @param array $adminGroups
      */
-    public function setAdminGroups(array $adminGroups)
+    public function setAdminGroups(array $adminGroups): void
     {
         $this->adminGroups = $adminGroups;
     }
@@ -291,7 +293,7 @@ class Pool
     /**
      * @param array $adminServiceIds
      */
-    public function setAdminServiceIds(array $adminServiceIds)
+    public function setAdminServiceIds(array $adminServiceIds): void
     {
         $this->adminServiceIds = $adminServiceIds;
     }
@@ -307,7 +309,7 @@ class Pool
     /**
      * @param array $adminClasses
      */
-    public function setAdminClasses(array $adminClasses)
+    public function setAdminClasses(array $adminClasses): void
     {
         $this->adminClasses = $adminClasses;
     }
@@ -323,7 +325,7 @@ class Pool
     /**
      * @param array $templates
      */
-    public function setTemplates(array $templates)
+    public function setTemplates(array $templates): void
     {
         $this->templates = $templates;
     }

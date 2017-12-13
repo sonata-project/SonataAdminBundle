@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -157,7 +159,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
     /**
      * @param AdminInterface $admin
      */
-    private function loadCache(AdminInterface $admin)
+    private function loadCache(AdminInterface $admin): void
     {
         if ($admin->isChild()) {
             $this->loadCache($admin->getParent());

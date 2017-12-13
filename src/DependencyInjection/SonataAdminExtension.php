@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -113,7 +115,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
      * @param array            $configs   An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $bundles = $container->getParameter('kernel.bundles');
 
@@ -312,7 +314,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
      *
      * @param ContainerBuilder $container
      */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         $bundles = $container->getParameter('kernel.bundles');
 
@@ -367,7 +369,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
         );
     }
 
-    public function configureClassesToCompile()
+    public function configureClassesToCompile(): void
     {
         $this->addClassesToCompile([
             AbstractAdmin::class,
@@ -459,7 +461,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
         return 'https://sonata-project.org/schema/dic/admin';
     }
 
-    private function replacePropertyAccessor(ContainerBuilder $container)
+    private function replacePropertyAccessor(ContainerBuilder $container): void
     {
         if (!$container->has('form.property_accessor')) {
             return;

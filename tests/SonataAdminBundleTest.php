@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -28,7 +30,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class SonataAdminBundleTest extends TestCase
 {
-    public function testBuild()
+    public function testBuild(): void
     {
         $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)
             ->setMethods(['addCompilerPass'])
@@ -36,7 +38,7 @@ class SonataAdminBundleTest extends TestCase
 
         $containerBuilder->expects($this->exactly(4))
             ->method('addCompilerPass')
-            ->will($this->returnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION) {
+            ->will($this->returnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION): void {
                 if ($pass instanceof AddDependencyCallsCompilerPass) {
                     return;
                 }

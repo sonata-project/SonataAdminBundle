@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -21,12 +23,12 @@ class ModelsToArrayTransformerTest extends TestCase
 {
     private $modelManager;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->modelManager = $this->prophesize(ModelManagerInterface::class)->reveal();
     }
 
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $transformer = new ModelsToArrayTransformer(
             $this->modelManager,
@@ -39,7 +41,7 @@ class ModelsToArrayTransformerTest extends TestCase
     /**
      * @group legacy
      */
-    public function testLegacyConstructor()
+    public function testLegacyConstructor(): void
     {
         $choiceListClass = ModelChoiceLoader::class;
 

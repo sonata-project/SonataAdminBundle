@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -56,7 +58,7 @@ class AdminStatsBlockService extends AbstractBlockService
         }
 
         foreach ($filters as $name => $data) {
-            $datagrid->setValue($name, isset($data['type']) ? $data['type'] : null, $data['value']);
+            $datagrid->setValue($name, $data['type'] ?? null, $data['value']);
         }
 
         $datagrid->buildPager();
@@ -82,7 +84,7 @@ class AdminStatsBlockService extends AbstractBlockService
     /**
      * {@inheritdoc}
      */
-    public function configureSettings(OptionsResolver $resolver)
+    public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'icon' => 'fa-line-chart',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -17,21 +19,21 @@ use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 
 class SonataAdminExtensionTest extends AbstractExtensionTestCase
 {
-    public function testHasServiceDefinitionForLockExtension()
+    public function testHasServiceDefinitionForLockExtension(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load(['options' => ['lock_protection' => true]]);
         $this->assertContainerBuilderHasService('sonata.admin.lock.extension');
     }
 
-    public function testNotHasServiceDefinitionForLockExtension()
+    public function testNotHasServiceDefinitionForLockExtension(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load(['options' => ['lock_protection' => false]]);
         $this->assertContainerBuilderNotHasService('sonata.admin.lock.extension');
     }
 
-    public function testLoadsExporterServiceDefinitionWhenExporterBundleIsRegistered()
+    public function testLoadsExporterServiceDefinitionWhenExporterBundleIsRegistered(): void
     {
         $this->container->setParameter('kernel.bundles', ['SonataExporterBundle' => 'whatever']);
         $this->load();
@@ -41,7 +43,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    public function testHasSecurityRoleParameters()
+    public function testHasSecurityRoleParameters(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -24,14 +26,14 @@ class AddFilterTypeCompilerPassTest extends TestCase
 
     private $barFilter;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->filterFactory = $this->createMock(Definition::class);
         $this->fooFilter = $this->createMock(Definition::class);
         $this->barFilter = $this->createMock(Definition::class);
     }
 
-    public function testProcess()
+    public function testProcess(): void
     {
         $containerBuilderMock = $this->createMock(ContainerBuilder::class);
 

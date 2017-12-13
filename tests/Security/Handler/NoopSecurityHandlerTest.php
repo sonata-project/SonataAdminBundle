@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -22,33 +24,33 @@ class NoopSecurityHandlerTest extends TestCase
      */
     private $handler = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->handler = new NoopSecurityHandler();
     }
 
-    public function testIsGranted()
+    public function testIsGranted(): void
     {
         $this->assertTrue($this->handler->isGranted($this->getSonataAdminObject(), ['TOTO']));
         $this->assertTrue($this->handler->isGranted($this->getSonataAdminObject(), 'TOTO'));
     }
 
-    public function testBuildSecurityInformation()
+    public function testBuildSecurityInformation(): void
     {
         $this->assertSame([], $this->handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
-    public function testCreateObjectSecurity()
+    public function testCreateObjectSecurity(): void
     {
         $this->assertNull($this->handler->createObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
     }
 
-    public function testDeleteObjectSecurity()
+    public function testDeleteObjectSecurity(): void
     {
         $this->assertNull($this->handler->deleteObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
     }
 
-    public function testGetBaseRole()
+    public function testGetBaseRole(): void
     {
         $this->assertSame('', $this->handler->getBaseRole($this->getSonataAdminObject()));
     }

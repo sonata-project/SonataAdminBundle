@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -39,7 +41,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
     /**
      * {@inheritdoc}
      */
-    public function configureAcls(OutputInterface $output, AdminInterface $admin)
+    public function configureAcls(OutputInterface $output, AdminInterface $admin): void
     {
         $securityHandler = $admin->getSecurityHandler();
         if (!$securityHandler instanceof AclSecurityHandlerInterface) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -59,7 +61,7 @@ class DatagridTest extends TestCase
      */
     private $formTypes;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->query = $this->createMock(ProxyQueryInterface::class);
         $this->columns = new FieldDescriptionCollection();
@@ -81,7 +83,7 @@ class DatagridTest extends TestCase
 
         $this->formBuilder->expects($this->any())
             ->method('add')
-            ->will($this->returnCallback(function ($name, $type, $options) {
+            ->will($this->returnCallback(function ($name, $type, $options): void {
                 $this->formTypes[$name] = new FormBuilder(
                     $name,
                     TestEntity::class,
@@ -104,12 +106,12 @@ class DatagridTest extends TestCase
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, $values);
     }
 
-    public function testGetPager()
+    public function testGetPager(): void
     {
         $this->assertSame($this->pager, $this->datagrid->getPager());
     }
 
-    public function testFilter()
+    public function testFilter(): void
     {
         $this->assertFalse($this->datagrid->hasFilter('foo'));
         $this->assertNull($this->datagrid->getFilter('foo'));
@@ -130,7 +132,7 @@ class DatagridTest extends TestCase
         $this->assertFalse($this->datagrid->hasFilter('foo'));
     }
 
-    public function testGetFilters()
+    public function testGetFilters(): void
     {
         $this->assertSame([], $this->datagrid->getFilters());
 
@@ -160,7 +162,7 @@ class DatagridTest extends TestCase
         $this->assertSame(['foo' => $filter1, 'baz' => $filter3], $this->datagrid->getFilters());
     }
 
-    public function testReorderFilters()
+    public function testReorderFilters(): void
     {
         $this->assertSame([], $this->datagrid->getFilters());
 
@@ -192,7 +194,7 @@ class DatagridTest extends TestCase
         $this->assertSame(['bar', 'baz', 'foo'], array_keys($this->datagrid->getFilters()));
     }
 
-    public function testGetValues()
+    public function testGetValues(): void
     {
         $this->assertSame([], $this->datagrid->getValues());
 
@@ -201,17 +203,17 @@ class DatagridTest extends TestCase
         $this->assertSame(['foo' => ['type' => 'bar', 'value' => 'baz']], $this->datagrid->getValues());
     }
 
-    public function testGetColumns()
+    public function testGetColumns(): void
     {
         $this->assertSame($this->columns, $this->datagrid->getColumns());
     }
 
-    public function testGetQuery()
+    public function testGetQuery(): void
     {
         $this->assertSame($this->query, $this->datagrid->getQuery());
     }
 
-    public function testHasActiveFilters()
+    public function testHasActiveFilters(): void
     {
         $this->assertFalse($this->datagrid->hasActiveFilters());
 
@@ -240,12 +242,12 @@ class DatagridTest extends TestCase
         $this->assertTrue($this->datagrid->hasActiveFilters());
     }
 
-    public function testHasDisplayableFilters()
+    public function testHasDisplayableFilters(): void
     {
         $this->assertFalse($this->datagrid->hasDisplayableFilters());
     }
 
-    public function testHasDisplayableFiltersNotActive()
+    public function testHasDisplayableFiltersNotActive(): void
     {
         $filter = $this->createMock(FilterInterface::class);
         $filter->expects($this->once())
@@ -263,7 +265,7 @@ class DatagridTest extends TestCase
         $this->assertFalse($this->datagrid->hasDisplayableFilters());
     }
 
-    public function testHasDisplayableFiltersActive()
+    public function testHasDisplayableFiltersActive(): void
     {
         $filter = $this->createMock(FilterInterface::class);
         $filter->expects($this->once())
@@ -281,7 +283,7 @@ class DatagridTest extends TestCase
         $this->assertTrue($this->datagrid->hasDisplayableFilters());
     }
 
-    public function testHasDisplayableFiltersAlwaysShow()
+    public function testHasDisplayableFiltersAlwaysShow(): void
     {
         $filter = $this->createMock(FilterInterface::class);
         $filter->expects($this->once())
@@ -300,12 +302,12 @@ class DatagridTest extends TestCase
         $this->assertTrue($this->datagrid->hasDisplayableFilters());
     }
 
-    public function testGetForm()
+    public function testGetForm(): void
     {
         $this->assertInstanceOf(Form::class, $this->datagrid->getForm());
     }
 
-    public function testGetResults()
+    public function testGetResults(): void
     {
         $this->assertNull($this->datagrid->getResults());
 
@@ -316,7 +318,7 @@ class DatagridTest extends TestCase
         $this->assertSame(['foo', 'bar'], $this->datagrid->getResults());
     }
 
-    public function testEmptyResults()
+    public function testEmptyResults(): void
     {
         $this->pager->expects($this->once())
             ->method('getResults')
@@ -326,7 +328,7 @@ class DatagridTest extends TestCase
         $this->assertSame([], $this->datagrid->getResults());
     }
 
-    public function testBuildPager()
+    public function testBuildPager(): void
     {
         $filter1 = $this->createMock(FilterInterface::class);
         $filter1->expects($this->once())
@@ -373,7 +375,7 @@ class DatagridTest extends TestCase
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_per_page'));
     }
 
-    public function testBuildPagerWithException()
+    public function testBuildPagerWithException(): void
     {
         $this->expectException(\Symfony\Component\Form\Exception\UnexpectedTypeException::class);
         $this->expectExceptionMessage('Expected argument of type "Sonata\\AdminBundle\\Admin\\FieldDescriptionInterface", "array" given');
@@ -396,7 +398,7 @@ class DatagridTest extends TestCase
         $this->datagrid->buildPager();
     }
 
-    public function testBuildPagerWithSortBy()
+    public function testBuildPagerWithSortBy(): void
     {
         $sortBy = $this->createMock(FieldDescriptionInterface::class);
         $sortBy->expects($this->once())
@@ -445,7 +447,7 @@ class DatagridTest extends TestCase
     /**
      * @dataProvider getBuildPagerWithPageTests
      */
-    public function testBuildPagerWithPage($page, $perPage)
+    public function testBuildPagerWithPage($page, $perPage): void
     {
         $sortBy = $this->createMock(FieldDescriptionInterface::class);
         $sortBy->expects($this->once())
@@ -510,7 +512,7 @@ class DatagridTest extends TestCase
     /**
      * @dataProvider getBuildPagerWithPage2Tests
      */
-    public function testBuildPagerWithPage2($page, $perPage)
+    public function testBuildPagerWithPage2($page, $perPage): void
     {
         $this->pager->expects($this->once())
             ->method('setMaxPerPage')

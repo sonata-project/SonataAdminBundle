@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -127,7 +129,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * {@inheritdoc}
      */
-    public function setFieldName($fieldName)
+    public function setFieldName($fieldName): void
     {
         $this->fieldName = $fieldName;
     }
@@ -143,7 +145,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * {@inheritdoc}
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
 
@@ -171,7 +173,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * {@inheritdoc}
      */
-    public function setOption($name, $value)
+    public function setOption($name, $value): void
     {
         $this->options[$name] = $value;
     }
@@ -179,7 +181,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * {@inheritdoc}
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): void
     {
         // set the type if provided
         if (isset($options['type'])) {
@@ -222,7 +224,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * {@inheritdoc}
      */
-    public function setTemplate($template)
+    public function setTemplate($template): void
     {
         $this->template = $template;
     }
@@ -238,7 +240,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * {@inheritdoc}
      */
-    public function setType($type)
+    public function setType($type): void
     {
         $this->type = $type;
     }
@@ -254,7 +256,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * {@inheritdoc}
      */
-    public function setParent(AdminInterface $parent)
+    public function setParent(AdminInterface $parent): void
     {
         $this->parent = $parent;
     }
@@ -294,7 +296,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * {@inheritdoc}
      */
-    public function setAssociationAdmin(AdminInterface $associationAdmin)
+    public function setAssociationAdmin(AdminInterface $associationAdmin): void
     {
         $this->associationAdmin = $associationAdmin;
         $this->associationAdmin->setParentFieldDescription($this);
@@ -362,7 +364,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * {@inheritdoc}
      */
-    public function setAdmin(AdminInterface $admin)
+    public function setAdmin(AdminInterface $admin): void
     {
         $this->admin = $admin;
     }
@@ -378,7 +380,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * {@inheritdoc}
      */
-    public function mergeOption($name, array $options = [])
+    public function mergeOption($name, array $options = []): void
     {
         if (!isset($this->options[$name])) {
             $this->options[$name] = [];
@@ -394,7 +396,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * {@inheritdoc}
      */
-    public function mergeOptions(array $options = [])
+    public function mergeOptions(array $options = []): void
     {
         $this->setOptions(array_merge_recursive($this->options, $options));
     }
@@ -402,7 +404,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * {@inheritdoc}
      */
-    public function setMappingType($mappingType)
+    public function setMappingType($mappingType): void
     {
         $this->mappingType = $mappingType;
     }
@@ -420,7 +422,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      *
      * @param string $help
      */
-    public function setHelp($help)
+    public function setHelp($help): void
     {
         $this->help = $help;
     }

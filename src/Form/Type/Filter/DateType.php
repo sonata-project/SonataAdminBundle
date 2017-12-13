@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -24,19 +26,19 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class DateType extends AbstractType
 {
-    const TYPE_GREATER_EQUAL = 1;
+    public const TYPE_GREATER_EQUAL = 1;
 
-    const TYPE_GREATER_THAN = 2;
+    public const TYPE_GREATER_THAN = 2;
 
-    const TYPE_EQUAL = 3;
+    public const TYPE_EQUAL = 3;
 
-    const TYPE_LESS_EQUAL = 4;
+    public const TYPE_LESS_EQUAL = 4;
 
-    const TYPE_LESS_THAN = 5;
+    public const TYPE_LESS_THAN = 5;
 
-    const TYPE_NULL = 6;
+    public const TYPE_NULL = 6;
 
-    const TYPE_NOT_NULL = 7;
+    public const TYPE_NOT_NULL = 7;
 
     /**
      * NEXT_MAJOR: remove this property.
@@ -76,7 +78,7 @@ class DateType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $choices = [
             'label_date_type_equal' => self::TYPE_EQUAL,
@@ -111,7 +113,7 @@ class DateType extends AbstractType
      *
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolverInterface $resolver): void
     {
         $this->configureOptions($resolver);
     }
@@ -119,7 +121,7 @@ class DateType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'field_type' => 'date',
