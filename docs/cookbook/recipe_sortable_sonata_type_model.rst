@@ -40,7 +40,7 @@ So we start by updating ``UserBundle/Resources/config/doctrine/User.orm.xml`` an
 
 .. code-block:: xml
 
-	<one-to-many field="userHasExpectations" target-entity="UserBundle\Entity\UserHasExpectations" mapped-by="user" orphan-removal="true">
+    <one-to-many field="userHasExpectations" target-entity="UserBundle\Entity\UserHasExpectations" mapped-by="user" orphan-removal="true">
         <cascade>
             <cascade-persist />
         </cascade>
@@ -322,7 +322,7 @@ So we are going to start by creating this ``UserBundle\Admin\UserHasExpectations
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('expectation', 'sonata_type_model', array('required' => false))
+                ->add('expectation', 'sonata_type_model', ['required' => false])
                 ->add('position', 'hidden')
             ;
         }
@@ -363,14 +363,14 @@ Now update the ``UserBundle\Admin\UserAdmin.php`` by adding the ``sonata_type_mo
         // ...
 
         $formMapper
-            ->add('userHasExpectations', 'sonata_type_model', array(
+            ->add('userHasExpectations', 'sonata_type_model', [
                 'label'        => 'User\'s expectations',
                 'query'        => $this->modelManager->createQuery('UserBundle\Entity\Expectation'),
                 'required'     => false,
                 'multiple'     => true,
                 'by_reference' => false,
                 'sortable'     => true,
-            ))
+            ])
         ;
 
         $formMapper->get('userHasExpectations')->addModelTransformer(new ExpectationDataTransformer($this->getSubject(), $this->modelManager));

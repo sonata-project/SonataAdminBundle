@@ -101,10 +101,10 @@ as choice.
     {
         $formMapper
             // ...
-            ->add('category', 'entity', array(
+            ->add('category', 'entity', [
                 'class' => 'AppBundle\Entity\Category',
                 'property' => 'name',
-            ))
+            ])
         ;
     }
 .. note::
@@ -135,10 +135,10 @@ dialog with the admin of the referenced model in it:
     {
         $formMapper
             // ...
-            ->add('category', 'sonata_type_model', array(
+            ->add('category', 'sonata_type_model', [
                 'class' => 'AppBundle\Entity\Category',
                 'property' => 'name',
-            ))
+            ])
         ;
     }
 
@@ -168,10 +168,10 @@ category field to a Meta data group. To do this, use the ``with()`` method:
             ->end()
 
             ->with('Meta data')
-                ->add('category', 'sonata_type_model', array(
+                ->add('category', 'sonata_type_model', [
                     'class' => 'AppBundle\Entity\Category',
                     'property' => 'name',
-                ))
+                ])
             ->end()
         ;
     }
@@ -188,10 +188,10 @@ order to tweak the styling:
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Content', array('class' => 'col-md-9'))
+            ->with('Content', ['class' => 'col-md-9'])
                 // ...
             ->end()
-            ->with('Meta data', array('class' => 'col-md-3')
+            ->with('Meta data', ['class' => 'col-md-3'])
                 // ...
             ->end()
         ;

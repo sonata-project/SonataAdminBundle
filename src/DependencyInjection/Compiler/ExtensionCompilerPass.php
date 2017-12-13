@@ -169,14 +169,14 @@ class ExtensionCompilerPass implements CompilerPassInterface
      *
      * @return array An array with the following structure.
      *
-     * array(
-     *     'excludes'   => array('<admin_id>'  => array('<extension_id>' => array('priority' => <int>))),
-     *     'admins'     => array('<admin_id>'  => array('<extension_id>' => array('priority' => <int>))),
-     *     'implements' => array('<interface>' => array('<extension_id>' => array('priority' => <int>))),
-     *     'extends'    => array('<class>'     => array('<extension_id>' => array('priority' => <int>))),
-     *     'instanceof' => array('<class>'     => array('<extension_id>' => array('priority' => <int>))),
-     *     'uses'       => array('<trait>'     => array('<extension_id>' => array('priority' => <int>))),
-     * )
+     * [
+     *     'excludes'   => ['<admin_id>'  => ['<extension_id>' => ['priority' => <int>]]],
+     *     'admins'     => ['<admin_id>'  => ['<extension_id>' => ['priority' => <int>]]],
+     *     'implements' => ['<interface>' => ['<extension_id>' => ['priority' => <int>]]],
+     *     'extends'    => ['<class>'     => ['<extension_id>' => ['priority' => <int>]]],
+     *     'instanceof' => ['<class>'     => ['<extension_id>' => ['priority' => <int>]]],
+     *     'uses'       => ['<trait>'     => ['<extension_id>' => ['priority' => <int>]]],
+     * ]
      */
     protected function flattenExtensionConfiguration(array $config)
     {

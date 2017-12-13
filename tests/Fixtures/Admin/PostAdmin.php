@@ -34,15 +34,14 @@ class PostAdmin extends AbstractAdmin
      */
     protected function configureBatchActions($actions)
     {
-        $actions['foo'] = array(
+        $actions['foo'] = [
             'label' => 'action_foo',
-        );
-        $actions['bar'] = array(
-        );
-        $actions['baz'] = array(
+        ];
+        $actions['bar'] = [];
+        $actions['baz'] = [
             'label' => 'action_baz',
             'translation_domain' => 'AcmeAdminBundle',
-        );
+        ];
 
         return $actions;
     }

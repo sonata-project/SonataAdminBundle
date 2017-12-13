@@ -54,7 +54,7 @@ we are manipulating form fields we do this from within ``ImageAdmin::configureFo
             $image = $this->getSubject();
 
             // use $fileFieldOptions so we can add other options to the field
-            $fileFieldOptions = array('required' => false);
+            $fileFieldOptions = ['required' => false];
             if ($image && ($webPath = $image->getWebPath())) {
                 // get the container so the full path to the image can be set
                 $container = $this->getConfigurationPool()->getContainer();
@@ -115,7 +115,7 @@ Admin class is embedded and use a different method:
             }
 
             // use $fileFieldOptions so we can add other options to the field
-            $fileFieldOptions = array('required' => false);
+            $fileFieldOptions = ['required' => false];
             if ($image && ($webPath = $image->getWebPath())) {
                 // add a 'help' option containing the preview's img tag
                 $fileFieldOptions['help'] = '<img src="'.$webPath.'" class="admin-preview" />';
