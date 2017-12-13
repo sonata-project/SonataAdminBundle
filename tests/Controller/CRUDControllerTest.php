@@ -2444,6 +2444,10 @@ class CRUDControllerTest extends TestCase
             ->method('getExportFormats')
             ->will($this->returnValue(['json']));
 
+        $this->admin->expects($this->once())
+            ->method('getClass')
+            ->will($this->returnValue(\stdClass::class));
+
         $dataSourceIterator = $this->createMock(SourceIteratorInterface::class);
 
         $this->admin->expects($this->once())
