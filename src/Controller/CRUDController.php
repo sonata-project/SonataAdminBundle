@@ -420,7 +420,7 @@ class CRUDController implements ContainerAwareInterface
 
         $confirmation = $request->get('confirmation', false);
 
-        if ($data = json_decode($request->get('data'), true)) {
+        if ($data = json_decode($request->get('data', ''), true)) {
             $action = $data['action'];
             $idx = $data['idx'];
             $allElements = $data['all_elements'];
