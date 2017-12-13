@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -113,7 +115,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function buildPager()
+    public function buildPager(): void
     {
         if ($this->bound) {
             return;
@@ -192,7 +194,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function addFilter(FilterInterface $filter)
+    public function addFilter(FilterInterface $filter): void
     {
         $this->filters[$filter->getName()] = $filter;
     }
@@ -208,7 +210,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function removeFilter($name)
+    public function removeFilter($name): void
     {
         unset($this->filters[$name]);
     }
@@ -232,7 +234,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function reorderFilters(array $keys)
+    public function reorderFilters(array $keys): void
     {
         $this->filters = array_merge(array_flip($keys), $this->filters);
     }
@@ -248,7 +250,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritdoc}
      */
-    public function setValue($name, $operator, $value)
+    public function setValue($name, $operator, $value): void
     {
         $this->values[$name] = [
             'type' => $operator,

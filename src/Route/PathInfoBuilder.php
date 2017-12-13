@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -37,7 +39,7 @@ class PathInfoBuilder implements RouteBuilderInterface
      * @param AdminInterface  $admin
      * @param RouteCollection $collection
      */
-    public function build(AdminInterface $admin, RouteCollection $collection)
+    public function build(AdminInterface $admin, RouteCollection $collection): void
     {
         $collection->add('list');
         $collection->add('create');

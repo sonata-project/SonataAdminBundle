@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -28,49 +30,49 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function configureFormFields(FormMapper $formMapper)
+    public function configureFormFields(FormMapper $formMapper): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureListFields(ListMapper $listMapper)
+    public function configureListFields(ListMapper $listMapper): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureDatagridFilters(DatagridMapper $datagridMapper)
+    public function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureShowFields(ShowMapper $showMapper)
+    public function configureShowFields(ShowMapper $showMapper): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureRoutes(AdminInterface $admin, RouteCollection $collection)
+    public function configureRoutes(AdminInterface $admin, RouteCollection $collection): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null): void
     {
         // Use configureSideMenu not to mess with previous overrides
         // TODO remove once deprecation period is over
@@ -80,28 +82,28 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function validate(AdminInterface $admin, ErrorElement $errorElement, $object)
+    public function validate(AdminInterface $admin, ErrorElement $errorElement, $object): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list')
+    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list'): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function alterNewInstance(AdminInterface $admin, $object)
+    public function alterNewInstance(AdminInterface $admin, $object): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function alterObject(AdminInterface $admin, $object)
+    public function alterObject(AdminInterface $admin, $object): void
     {
     }
 
@@ -140,42 +142,42 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function preUpdate(AdminInterface $admin, $object)
+    public function preUpdate(AdminInterface $admin, $object): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function postUpdate(AdminInterface $admin, $object)
+    public function postUpdate(AdminInterface $admin, $object): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function prePersist(AdminInterface $admin, $object)
+    public function prePersist(AdminInterface $admin, $object): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function postPersist(AdminInterface $admin, $object)
+    public function postPersist(AdminInterface $admin, $object): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function preRemove(AdminInterface $admin, $object)
+    public function preRemove(AdminInterface $admin, $object): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function postRemove(AdminInterface $admin, $object)
+    public function postRemove(AdminInterface $admin, $object): void
     {
     }
 
@@ -193,7 +195,7 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
      * @param AdminInterface $admin
      * @param array          $filterValues
      */
-    public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues)
+    public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void
     {
     }
 }

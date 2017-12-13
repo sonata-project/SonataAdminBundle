@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -312,7 +314,7 @@ final class SonataAdminExtension extends AbstractExtension
     /**
      * @param string[] $xEditableTypeMapping
      */
-    public function setXEditableTypeMapping($xEditableTypeMapping)
+    public function setXEditableTypeMapping($xEditableTypeMapping): void
     {
         $this->xEditableTypeMapping = $xEditableTypeMapping;
     }

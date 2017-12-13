@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -21,9 +23,9 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilder;
  */
 class AdminObjectAclManipulatorTest extends TestCase
 {
-    const MASK_BUILDER_CLASS = MaskBuilder::class;
+    public const MASK_BUILDER_CLASS = MaskBuilder::class;
 
-    public function testGetMaskBuilder()
+    public function testGetMaskBuilder(): void
     {
         $adminObjectAclManipulator = $this->createAdminObjectAclManipulator();
         $this->assertSame(self::MASK_BUILDER_CLASS, $adminObjectAclManipulator->getMaskBuilderClass());

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -52,11 +54,11 @@ class AdminControllerHelper_Foo
         return 'foo';
     }
 
-    public function setEnabled($value)
+    public function setEnabled($value): void
     {
     }
 
-    public function setBar(AdminControllerHelper_Bar $bar)
+    public function setBar(AdminControllerHelper_Bar $bar): void
     {
         $this->bar = $bar;
     }
@@ -74,11 +76,11 @@ class AdminControllerHelper_Bar
         return 'bar';
     }
 
-    public function setEnabled($value)
+    public function setEnabled($value): void
     {
     }
 
-    public function getEnabled()
+    public function getEnabled(): void
     {
     }
 }
@@ -98,7 +100,7 @@ class HelperControllerTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $container = $this->createMock(ContainerInterface::class);
         $pool = new Pool($container, 'title', 'logo.png');
@@ -121,7 +123,7 @@ class HelperControllerTest extends TestCase
             }));
     }
 
-    public function testgetShortObjectDescriptionActionInvalidAdmin()
+    public function testgetShortObjectDescriptionActionInvalidAdmin(): void
     {
         $this->expectException(\Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class);
 
@@ -144,7 +146,7 @@ class HelperControllerTest extends TestCase
     /**
      * @exceptionMessage Invalid format
      */
-    public function testgetShortObjectDescriptionActionObjectDoesNotExist()
+    public function testgetShortObjectDescriptionActionObjectDoesNotExist(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -173,7 +175,7 @@ class HelperControllerTest extends TestCase
         $controller->getShortObjectDescriptionAction($request);
     }
 
-    public function testgetShortObjectDescriptionActionEmptyObjectId()
+    public function testgetShortObjectDescriptionActionEmptyObjectId(): void
     {
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())->method('setUniqid');
@@ -201,7 +203,7 @@ class HelperControllerTest extends TestCase
         $controller->getShortObjectDescriptionAction($request);
     }
 
-    public function testgetShortObjectDescriptionActionObject()
+    public function testgetShortObjectDescriptionActionObject(): void
     {
         $mockTemplate = 'AdminHelperTest:mock-short-object-description.html.twig';
 
@@ -251,7 +253,7 @@ class HelperControllerTest extends TestCase
         $this->assertSame($expected, $response->getContent());
     }
 
-    public function testsetObjectFieldValueAction()
+    public function testsetObjectFieldValueAction(): void
     {
         $object = new AdminControllerHelper_Foo();
 
@@ -312,7 +314,7 @@ class HelperControllerTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function testappendFormFieldElementAction()
+    public function testappendFormFieldElementAction(): void
     {
         $object = new AdminControllerHelper_Foo();
 
@@ -407,7 +409,7 @@ class HelperControllerTest extends TestCase
         $this->isInstanceOf(Response::class, $response);
     }
 
-    public function testRetrieveFormFieldElementAction()
+    public function testRetrieveFormFieldElementAction(): void
     {
         $object = new AdminControllerHelper_Foo();
 
@@ -506,7 +508,7 @@ class HelperControllerTest extends TestCase
         $this->isInstanceOf(Response::class, $response);
     }
 
-    public function testSetObjectFieldValueActionWithViolations()
+    public function testSetObjectFieldValueActionWithViolations(): void
     {
         $bar = new AdminControllerHelper_Bar();
 
@@ -563,7 +565,7 @@ class HelperControllerTest extends TestCase
     /**
      * @exceptionMessage Invalid format
      */
-    public function testRetrieveAutocompleteItemsActionNotGranted()
+    public function testRetrieveAutocompleteItemsActionNotGranted(): void
     {
         $this->expectException(\Symfony\Component\Security\Core\Exception\AccessDeniedException::class);
 
@@ -585,7 +587,7 @@ class HelperControllerTest extends TestCase
     /**
      * @exceptionMessage Autocomplete list can`t be retrieved because the form element is disabled or read_only.
      */
-    public function testRetrieveAutocompleteItemsActionDisabledFormelememt()
+    public function testRetrieveAutocompleteItemsActionDisabledFormelememt(): void
     {
         $this->expectException(\Symfony\Component\Security\Core\Exception\AccessDeniedException::class);
 
@@ -651,7 +653,7 @@ class HelperControllerTest extends TestCase
         $this->controller->retrieveAutocompleteItemsAction($request);
     }
 
-    public function testRetrieveAutocompleteItemsTooShortSearchString()
+    public function testRetrieveAutocompleteItemsTooShortSearchString(): void
     {
         $this->admin->expects($this->once())
             ->method('hasAccess')
@@ -749,7 +751,7 @@ class HelperControllerTest extends TestCase
         $this->assertSame('{"status":"KO","message":"Too short search string."}', $response->getContent());
     }
 
-    public function testRetrieveAutocompleteItems()
+    public function testRetrieveAutocompleteItems(): void
     {
         $entity = new Foo();
         $this->admin->expects($this->once())

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -50,7 +52,7 @@ class RoutesCacheWarmUp implements CacheWarmerInterface
     /**
      * {@inheritdoc}
      */
-    public function warmUp($cacheDir)
+    public function warmUp($cacheDir): void
     {
         foreach ($this->pool->getAdminServiceIds() as $id) {
             $this->cache->load($this->pool->getInstance($id));

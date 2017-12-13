@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -79,7 +81,7 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
     /**
      * @param LoggerInterface $logger
      */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
     }
@@ -87,7 +89,7 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
     /**
      * NEXT_MAJOR : use a constructor argument instead.
      */
-    public function setBreadcrumbsBuilder(BreadcrumbsBuilderInterface $breadcrumbsBuilder)
+    public function setBreadcrumbsBuilder(BreadcrumbsBuilderInterface $breadcrumbsBuilder): void
     {
         $this->breadcrumbsBuilder = $breadcrumbsBuilder;
     }
@@ -217,7 +219,7 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale)
+    public function setLocale($locale): void
     {
         $this->translator->setLocale($locale);
     }
@@ -241,28 +243,28 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
     /**
      * {@inheritdoc}
      */
-    public function buildSecurityInformation(AdminInterface $admin)
+    public function buildSecurityInformation(AdminInterface $admin): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createObjectSecurity(AdminInterface $admin, $object)
+    public function createObjectSecurity(AdminInterface $admin, $object): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteObjectSecurity(AdminInterface $admin, $object)
+    public function deleteObjectSecurity(AdminInterface $admin, $object): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBaseRole(AdminInterface $admin)
+    public function getBaseRole(AdminInterface $admin): void
     {
     }
 
@@ -292,7 +294,7 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
      * @param string $id
      * @param string $domain
      */
-    private function addMessage($id, $domain)
+    private function addMessage($id, $domain): void
     {
         $message = new Message($id, $domain);
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -91,7 +93,7 @@ class SonataAdminExtensionTest extends TestCase
      */
     private $translator;
 
-    public function setUp()
+    public function setUp(): void
     {
         date_default_timezone_set('Europe/London');
 
@@ -228,7 +230,7 @@ class SonataAdminExtensionTest extends TestCase
     /**
      * @dataProvider getRenderListElementTests
      */
-    public function testRenderListElement($expected, $type, $value, array $options)
+    public function testRenderListElement($expected, $type, $value, array $options): void
     {
         $this->admin->expects($this->any())
             ->method('getPersistentParameters')
@@ -258,7 +260,7 @@ class SonataAdminExtensionTest extends TestCase
         $this->fieldDescription->expects($this->any())
             ->method('getOption')
             ->will($this->returnCallback(function ($name, $default = null) use ($options) {
-                return isset($options[$name]) ? $options[$name] : $default;
+                return $options[$name] ?? $default;
             }));
 
         $this->fieldDescription->expects($this->any())
@@ -1216,7 +1218,7 @@ EOT
     /**
      * @dataProvider getRenderViewElementTests
      */
-    public function testRenderViewElement($expected, $type, $value, array $options)
+    public function testRenderViewElement($expected, $type, $value, array $options): void
     {
         $this->admin->expects($this->any())
             ->method('getTemplate')
@@ -1825,7 +1827,7 @@ EOT
         ];
     }
 
-    public function testGetValueFromFieldDescription()
+    public function testGetValueFromFieldDescription(): void
     {
         $object = new \stdClass();
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
@@ -1844,7 +1846,7 @@ EOT
         );
     }
 
-    public function testGetValueFromFieldDescriptionWithRemoveLoopException()
+    public function testGetValueFromFieldDescriptionWithRemoveLoopException(): void
     {
         $object = $this->createMock(\ArrayAccess::class);
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
@@ -1862,14 +1864,14 @@ EOT
         );
     }
 
-    public function testGetValueFromFieldDescriptionWithNoValueException()
+    public function testGetValueFromFieldDescriptionWithNoValueException(): void
     {
         $object = new \stdClass();
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
 
         $fieldDescription->expects($this->any())
             ->method('getValue')
-            ->will($this->returnCallback(function () {
+            ->will($this->returnCallback(function (): void {
                 throw new NoValueException();
             }));
 
@@ -1886,14 +1888,14 @@ EOT
         );
     }
 
-    public function testGetValueFromFieldDescriptionWithNoValueExceptionNewAdminInstance()
+    public function testGetValueFromFieldDescriptionWithNoValueExceptionNewAdminInstance(): void
     {
         $object = new \stdClass();
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
 
         $fieldDescription->expects($this->any())
             ->method('getValue')
-            ->will($this->returnCallback(function () {
+            ->will($this->returnCallback(function (): void {
                 throw new NoValueException();
             }));
 
@@ -1915,7 +1917,7 @@ EOT
         );
     }
 
-    public function testOutput()
+    public function testOutput(): void
     {
         $this->fieldDescription->expects($this->any())
             ->method('getTemplate')
@@ -1973,12 +1975,12 @@ EOT
         );
     }
 
-    public function testRenderRelationElementNoObject()
+    public function testRenderRelationElementNoObject(): void
     {
         $this->assertSame('foo', $this->twigExtension->renderRelationElement('foo', $this->fieldDescription));
     }
 
-    public function testRenderRelationElementToString()
+    public function testRenderRelationElementToString(): void
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
@@ -1995,7 +1997,7 @@ EOT
     /**
      * @group legacy
      */
-    public function testDeprecatedRelationElementToString()
+    public function testDeprecatedRelationElementToString(): void
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
@@ -2015,7 +2017,7 @@ EOT
     /**
      * @group legacy
      */
-    public function testRenderRelationElementCustomToString()
+    public function testRenderRelationElementCustomToString(): void
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
@@ -2042,7 +2044,7 @@ EOT
     /**
      * @group legacy
      */
-    public function testRenderRelationElementMethodNotExist()
+    public function testRenderRelationElementMethodNotExist(): void
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
@@ -2059,7 +2061,7 @@ EOT
         $this->twigExtension->renderRelationElement($element, $this->fieldDescription);
     }
 
-    public function testRenderRelationElementWithPropertyPath()
+    public function testRenderRelationElementWithPropertyPath(): void
     {
         $this->fieldDescription->expects($this->exactly(1))
             ->method('getOption')
@@ -2076,7 +2078,7 @@ EOT
         $this->assertSame('bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
-    public function testRenderRelationElementWithClosure()
+    public function testRenderRelationElementWithClosure(): void
     {
         $this->fieldDescription->expects($this->exactly(1))
             ->method('getOption')
@@ -2098,7 +2100,7 @@ EOT
         );
     }
 
-    public function testGetUrlsafeIdentifier()
+    public function testGetUrlsafeIdentifier(): void
     {
         $entity = new \stdClass();
 
@@ -2114,7 +2116,7 @@ EOT
         $this->assertSame(1234567, $this->twigExtension->getUrlsafeIdentifier($entity));
     }
 
-    public function testGetUrlsafeIdentifier_GivenAdmin_Foo()
+    public function testGetUrlsafeIdentifier_GivenAdmin_Foo(): void
     {
         $entity = new \stdClass();
 
@@ -2139,7 +2141,7 @@ EOT
         $this->assertSame(1234567, $this->twigExtension->getUrlsafeIdentifier($entity, $this->admin));
     }
 
-    public function testGetUrlsafeIdentifier_GivenAdmin_Bar()
+    public function testGetUrlsafeIdentifier_GivenAdmin_Bar(): void
     {
         $entity = new \stdClass();
 
@@ -2175,7 +2177,7 @@ EOT
     /**
      * @dataProvider xEditablechoicesProvider
      */
-    public function testGetXEditableChoicesIsIdempotent(array $input)
+    public function testGetXEditableChoicesIsIdempotent(array $input): void
     {
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->exactly(2))

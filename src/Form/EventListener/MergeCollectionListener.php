@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -47,7 +49,7 @@ class MergeCollectionListener implements EventSubscriberInterface
     /**
      * @param FormEvent $event
      */
-    public function onBind(FormEvent $event)
+    public function onBind(FormEvent $event): void
     {
         $collection = $event->getForm()->getData();
         $data = $event->getData();

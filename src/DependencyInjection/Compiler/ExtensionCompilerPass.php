@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -24,7 +26,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $universalExtensions = [];
         $targets = [];
@@ -232,13 +234,13 @@ final class ExtensionCompilerPass implements CompilerPassInterface
      * @param string $extension
      * @param array  $attributes
      */
-    private function addExtension(array &$targets, $target, $extension, array $attributes)
+    private function addExtension(array &$targets, $target, $extension, array $attributes): void
     {
         if (!isset($targets[$target])) {
             $targets[$target] = new \SplPriorityQueue();
         }
 
-        $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
+        $priority = $attributes['priority'] ?? 0;
         $targets[$target]->insert(new Reference($extension), $priority);
     }
 }

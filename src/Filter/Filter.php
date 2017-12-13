@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -41,7 +43,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function initialize($name, array $options = [])
+    public function initialize($name, array $options = []): void
     {
         $this->name = $name;
         $this->setOptions($options);
@@ -85,7 +87,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function setOption($name, $value)
+    public function setOption($name, $value): void
     {
         $this->options[$name] = $value;
     }
@@ -121,7 +123,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function setFieldOption($name, $value)
+    public function setFieldOption($name, $value): void
     {
         $this->options['field_options'][$name] = $value;
     }
@@ -137,7 +139,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label)
+    public function setLabel($label): void
     {
         $this->setOption('label', $label);
     }
@@ -197,7 +199,7 @@ abstract class Filter implements FilterInterface
      *
      * @param array $options
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): void
     {
         $this->options = array_merge(
             ['show_filter' => null, 'advanced_filter' => true],
@@ -221,7 +223,7 @@ abstract class Filter implements FilterInterface
      *
      * @param mixed $value
      */
-    public function setValue($value)
+    public function setValue($value): void
     {
         $this->value = $value;
     }
@@ -251,7 +253,7 @@ abstract class Filter implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function setCondition($condition)
+    public function setCondition($condition): void
     {
         $this->condition = $condition;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -81,7 +83,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @param ContainerInterface $container A ContainerInterface instance
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
 
@@ -125,12 +127,10 @@ class CRUDController implements ContainerAwareInterface
         if (!$this->isXmlHttpRequest()) {
             $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
         }
-        $parameters['admin'] = isset($parameters['admin']) ?
-            $parameters['admin'] :
+        $parameters['admin'] = $parameters['admin'] ??
             $this->admin;
 
-        $parameters['base_template'] = isset($parameters['base_template']) ?
-            $parameters['base_template'] :
+        $parameters['base_template'] = $parameters['base_template'] ??
             $this->getBaseTemplate();
 
         $parameters['admin_pool'] = $this->get('sonata.admin.pool');
@@ -467,14 +467,12 @@ class CRUDController implements ContainerAwareInterface
             return $this->redirectToList();
         }
 
-        $askConfirmation = isset($batchActions[$action]['ask_confirmation']) ?
-            $batchActions[$action]['ask_confirmation'] :
+        $askConfirmation = $batchActions[$action]['ask_confirmation'] ??
             true;
 
         if ($askConfirmation && 'ok' != $confirmation) {
             $actionLabel = $batchActions[$action]['label'];
-            $batchTranslationDomain = isset($batchActions[$action]['translation_domain']) ?
-                $batchActions[$action]['translation_domain'] :
+            $batchTranslationDomain = $batchActions[$action]['translation_domain'] ??
                 $this->admin->getTranslationDomain();
 
             $formView = $datagrid->getForm()->createView();
@@ -1053,7 +1051,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @throws \RuntimeException
      */
-    protected function configure()
+    protected function configure(): void
     {
         $request = $this->getRequest();
 
@@ -1124,7 +1122,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @throws \Exception
      */
-    protected function handleModelManagerException(\Exception $e)
+    protected function handleModelManagerException(\Exception $e): void
     {
         if ($this->get('kernel')->isDebug()) {
             throw $e;
@@ -1317,7 +1315,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @throws HttpException
      */
-    protected function validateCsrfToken($intention)
+    protected function validateCsrfToken($intention): void
     {
         $request = $this->getRequest();
         $token = $request->request->get('_sonata_csrf_token', false);
@@ -1448,7 +1446,7 @@ class CRUDController implements ContainerAwareInterface
      * @param FormView $formView
      * @param string   $theme
      */
-    private function setFormTheme(FormView $formView, $theme)
+    private function setFormTheme(FormView $formView, $theme): void
     {
         $twig = $this->get('twig');
 

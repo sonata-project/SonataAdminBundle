@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -26,14 +28,14 @@ use Symfony\Component\Form\Guess\TypeGuess;
  */
 class TypeGuesserChainTest extends TestCase
 {
-    public function testConstructorWithException()
+    public function testConstructorWithException(): void
     {
         $this->expectException(UnexpectedTypeException::class);
 
         $typeGuesserChain = new TypeGuesserChain([new \stdClass()]);
     }
 
-    public function testGuessType()
+    public function testGuessType(): void
     {
         $typeGuess1 = new TypeGuess('foo1', [], Guess::MEDIUM_CONFIDENCE);
         $guesser1 = $this->getMockForAbstractClass(TypeGuesserInterface::class);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -22,7 +24,7 @@ class QueryStringBuilderTest extends TestCase
     /**
      * @dataProvider getBuildTests
      */
-    public function testBuild(array $expectedRoutes, $hasReader, $aclEnabled, $getParent)
+    public function testBuild(array $expectedRoutes, $hasReader, $aclEnabled, $getParent): void
     {
         $audit = $this->getMockForAbstractClass(AuditManagerInterface::class);
         $audit->expects($this->once())->method('hasReader')->will($this->returnValue($hasReader));
@@ -55,7 +57,7 @@ class QueryStringBuilderTest extends TestCase
         ];
     }
 
-    public function testBuildWithChildren()
+    public function testBuildWithChildren(): void
     {
         $audit = $this->getMockForAbstractClass(AuditManagerInterface::class);
         $audit->expects($this->once())->method('hasReader')->will($this->returnValue(true));

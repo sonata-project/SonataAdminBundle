@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -24,7 +26,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
     /**
      * @param FieldDescriptionInterface $fieldDescription
      */
-    public function add(FieldDescriptionInterface $fieldDescription)
+    public function add(FieldDescriptionInterface $fieldDescription): void
     {
         $this->elements[$fieldDescription->getName()] = $fieldDescription;
     }
@@ -66,7 +68,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
     /**
      * @param string $name
      */
-    public function remove($name)
+    public function remove($name): void
     {
         if ($this->has($name)) {
             unset($this->elements[$name]);
@@ -92,7 +94,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
     /**
      * {@inheritdoc}
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new \RuntimeException('Cannot set value, use add');
     }
@@ -100,7 +102,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->remove($offset);
     }
@@ -116,7 +118,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
     /**
      * @param array $keys
      */
-    public function reorder(array $keys)
+    public function reorder(array $keys): void
     {
         if ($this->has('batch')) {
             array_unshift($keys, 'batch');

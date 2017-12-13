@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -25,7 +27,7 @@ use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
  */
 class AdminPoolLoaderTest extends TestCase
 {
-    public function testSupports()
+    public function testSupports(): void
     {
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $pool = $this->getMockBuilder(Pool::class)
@@ -39,7 +41,7 @@ class AdminPoolLoaderTest extends TestCase
         $this->assertFalse($adminPoolLoader->supports('foo', 'bar'));
     }
 
-    public function testLoad()
+    public function testLoad(): void
     {
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $pool = $this->getMockBuilder(Pool::class)
