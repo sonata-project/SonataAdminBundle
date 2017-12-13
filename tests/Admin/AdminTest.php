@@ -710,14 +710,21 @@ class AdminTest extends TestCase
         $admin->setSubject(new BlogPost());
         $this->assertSame(BlogPost::class, $admin->getClass());
 
-        $admin->setSubClasses(['extended1' => 'NewsBundle\Entity\PostExtended1', 'extended2' => 'NewsBundle\Entity\PostExtended2']);
+        $admin->setSubClasses([
+            'extended1' => 'NewsBundle\Entity\PostExtended1',
+            'extended2' => 'NewsBundle\Entity\PostExtended2',
+        ]);
         $this->assertFalse($admin->hasSubClass('test'));
         $this->assertTrue($admin->hasSubClass('extended1'));
         $this->assertFalse($admin->hasActiveSubClass());
         $this->assertCount(2, $admin->getSubClasses());
         $this->assertNull($admin->getActiveSubClass());
         $this->assertNull($admin->getActiveSubclassCode());
-        $this->assertSame(BlogPost::class, $admin->getClass());
+        $this->assertSame(
+            BlogPost::class,
+            $admin->getClass(),
+            'When there is no subclass in the query the class parameter should be returned'
+        );
 
         $request = new Request(['subclass' => 'extended1']);
         $admin->setRequest($request);
@@ -725,9 +732,17 @@ class AdminTest extends TestCase
         $this->assertTrue($admin->hasSubClass('extended1'));
         $this->assertTrue($admin->hasActiveSubClass());
         $this->assertCount(2, $admin->getSubClasses());
-        $this->assertSame(BlogPost::class, $admin->getActiveSubClass());
+        $this->assertSame(
+            'NewsBundle\Entity\PostExtended1',
+            $admin->getActiveSubClass(),
+            'It should return the curently active sub class.'
+        );
         $this->assertSame('extended1', $admin->getActiveSubclassCode());
-        $this->assertSame(BlogPost::class, $admin->getClass());
+        $this->assertSame(
+            'NewsBundle\Entity\PostExtended1',
+            $admin->getClass(),
+            'getClass() should return the name of the sub class when passed through a request query parameter.'
+        );
 
         $request->query->set('subclass', 'inject');
         $this->assertNull($admin->getActiveSubclassCode());
