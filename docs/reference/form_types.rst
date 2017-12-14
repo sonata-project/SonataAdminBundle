@@ -35,7 +35,7 @@ All we need to do now is add a reference for this field in our ``PageAdmin`` cla
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
-            $imageFieldOptions = array(); // see available options below
+            $imageFieldOptions = []; // see available options below
 
             $formMapper
                 ->add('image1', ModelType::class, $imageFieldOptions)
@@ -80,7 +80,7 @@ The available options are:
   defaults to ``null`` - see the `Symfony choice Field Type docs`_ for more info
 
 ``preferred_choices``
-  defaults to array() - see the `Symfony choice Field Type docs`_ for more info
+  defaults to [] - see the `Symfony choice Field Type docs`_ for more info
 
 ``choice_list``
   **(deprecated in favor of choice_loader since Symfony 2.7)**
@@ -236,9 +236,9 @@ datagrid filter for the property ``title``.
             // the dropdown autocomplete list will show only Category
             // entities that contain specified text in "title" attribute
             $formMapper
-                ->add('category', ModelAutocompleteType::class, array(
+                ->add('category', ModelAutocompleteType::class, [
                     'property' => 'title'
-                ))
+                ])
             ;
         }
     }
@@ -287,7 +287,7 @@ The available options are:
 .. code-block:: php
 
     $formMapper
-        ->add('category', ModelAutocompleteType::class, array(
+        ->add('category', ModelAutocompleteType::class, [
             'property' => 'title',
             'callback' => function ($admin, $property, $value) {
                 $datagrid = $admin->getDatagrid();
@@ -298,7 +298,7 @@ The available options are:
                 ;
                 $datagrid->setValue($property, null, $value);
             },
-        ))
+        ])
     ;
 
 ``to_string_callback``
@@ -307,12 +307,12 @@ The available options are:
 .. code-block:: php
 
     $formMapper
-        ->add('category', ModelAutocompleteType::class, array(
+        ->add('category', ModelAutocompleteType::class, [
             'property' => 'title',
             'to_string_callback' => function($entity, $property) {
                 return $entity->getTitle();
             },
-        ))
+        ])
     ;
 
 ``multiple``
@@ -390,10 +390,10 @@ The available options are:
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('category', ModelAutocompleteType::class, array(
+                ->add('category', ModelAutocompleteType::class, [
                     'property' => 'title',
                     'template' => 'AppBundle:Form/Type:sonata_type_model_autocomplete.html.twig',
-                ))
+                ])
             ;
         }
     }
@@ -434,10 +434,10 @@ The available options are:
             // the dropdown autocomplete list will show only Category
             // entities that contain specified text in "title" attribute
             $formMapper
-                ->add('category', ModelAutocompleteType::class, array(
+                ->add('category', ModelAutocompleteType::class, [
                     'property' => 'title',
                     'target_admin_access_action' => 'autocomplete'
-                ))
+                ])
             ;
         }
     }
@@ -452,9 +452,9 @@ The available options are:
 
     class CategoryAdmin extends AbstractAdmin
     {
-        protected $accessMapping = array(
+        protected $accessMapping = [
             'autocomplete' => 'AUTOCOMPLETE',
-        );
+        ];
 
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
@@ -486,18 +486,18 @@ According the choice made only associated fields are displayed. The others field
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('linkType', ChoiceFieldMaskType::class, array(
-                    'choices' => array(
+                ->add('linkType', ChoiceFieldMaskType::class, [
+                    'choices' => [
                         'uri' => 'uri',
                         'route' => 'route',
-                    ),
-                    'map' => array(
-                        'route' => array('route', 'parameters'),
-                        'uri' => array('uri'),
-                    ),
+                    ],
+                    'map' => [
+                        'route' => ['route', 'parameters'],
+                        'uri' => ['uri'],
+                    ],
                     'placeholder' => 'Choose an option',
                     'required' => false
-                ))
+                ])
                 ->add('route', TextType::class)
                 ->add('uri', TextType::class)
                 ->add('parameters')
@@ -614,25 +614,25 @@ to the underlying forms.
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('sales', 'sonata_type_collection', array(
-                    'type_options' => array(
+                ->add('sales', 'sonata_type_collection', [
+                    'type_options' => [
                         // Prevents the "Delete" option from being displayed
                         'delete' => false,
-                        'delete_options' => array(
+                        'delete_options' => [
                             // You may otherwise choose to put the field but hide it
                             'type'         => 'hidden',
                             // In that case, you need to fill in the options as well
-                            'type_options' => array(
+                            'type_options' => [
                                 'mapped'   => false,
                                 'required' => false,
-                            )
-                        )
-                    )
-                ), array(
+                            ]
+                        ]
+                    ]
+                ], [
                     'edit' => 'inline',
                     'inline' => 'table',
                     'sortable' => 'position',
-                ))
+                ])
 
                 // ...
             ;
@@ -712,9 +712,9 @@ example above:
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('image1', AdminType::class, array(), array(
+                ->add('image1', AdminType::class, [], [
                     'admin_code' => 'sonata.admin.imageSpecial'
-                ))
+                ])
 
                 // ...
             ;
@@ -809,9 +809,9 @@ General
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('status', null, array(
+                ->add('status', null, [
                     'label' => false
-                ))
+                ])
 
                 // ...
             ;
@@ -839,10 +839,10 @@ General
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('multiChoices', ChoiceType::class, array(
+                ->add('multiChoices', ChoiceType::class, [
                     'multiple' => true,
                     'sortable' => true,
-                ))
+                ])
 
                 // ...
             ;

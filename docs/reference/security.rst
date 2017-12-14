@@ -753,10 +753,10 @@ return an iterable collection of roles.
     protected function getAclRoles()
     {
         // Display only ROLE_BAPTISTE and ROLE_HELENE
-        $roles = array(
+        $roles = [
             'ROLE_BAPTISTE',
             'ROLE_HELENE'
-        );
+        ];
 
         return new \ArrayIterator($roles);
     }

@@ -39,7 +39,7 @@ To specify options, do as follow:
 
     <?php
     // src/AppBundle/Admin/PersonAdmin.php
-    
+
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Show\ShowMapper;
 
@@ -49,11 +49,11 @@ To specify options, do as follow:
         {
             $showMapper
                 ->tab('General') // the tab call is optional
-                    ->with('Addresses', array(
+                    ->with('Addresses', [
                         'class'       => 'col-md-8',
                         'box_class'   => 'box box-solid box-danger',
                         'description' => 'Lorem ipsum',
-                    ))
+                    ])
                         ->add('title')
                         // ...
                     ->end()
@@ -69,7 +69,7 @@ Here is an example of how to achieve this :
 
     <?php
     // src/AppBundle/Admin/PersonAdmin.php
-    
+
     use Sonata\AdminBundle\Show\ShowMapper;
 
     class PersonAdmin extends ParentAdmin
@@ -139,8 +139,8 @@ The following is a working example of a ShowAction
     To customize the displayed label of a show field you can use the ``label`` option:
 
     .. code-block:: php
-    
-        $showMapper->add('name', null, array('label' => 'UserName'));
+
+        $showMapper->add('name', null, ['label' => 'UserName']);
 
     Setting this option to ``false`` will make the label empty.
 

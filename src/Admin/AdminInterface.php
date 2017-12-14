@@ -191,7 +191,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * - one permission that has the same name as the role for the role handler
      * This should be used by experimented users.
      *
-     * @return array [role] => array([permission], [permission])
+     * @return array 'role' => ['permission', 'permission']
      */
     public function getSecurityInformation();
 

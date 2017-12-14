@@ -194,12 +194,12 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('title', 'text', array(
+                ->add('title', 'text', [
                     'label' => 'Post Title'
-                ))
-                ->add('author', 'entity', array(
+                ])
+                ->add('author', 'entity', [
                     'class' => 'AppBundle\Entity\User'
-                ))
+                ])
 
                 // if no type is specified, SonataAdminBundle tries to guess it
                 ->add('body')

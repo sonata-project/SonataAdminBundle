@@ -159,7 +159,7 @@ field has 5 arguments:
 
         // filter
         $type = null,
-        array $filterOptions = array(),
+        array $filterOptions = [],
 
         // field
         $fieldType = null,
@@ -185,10 +185,10 @@ the search field to use the ``name`` property of the Category:
         {
             $datagridMapper
                 ->add('title')
-                ->add('category', null, array(), 'entity', array(
+                ->add('category', null, [], 'entity', [
                     'class'    => 'AppBundle\Entity\Category',
                     'choice_label' => 'name', // In Symfony2: 'property' => 'name'
-                ))
+                ])
             ;
         }
     }

@@ -422,7 +422,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * Roles and permissions per role.
      *
-     * @var array [role] => array([permission], [permission])
+     * @var array 'role' => ['permission', 'permission']
      */
     protected $securityInformation = [];
 

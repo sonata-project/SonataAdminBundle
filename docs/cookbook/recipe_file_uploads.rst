@@ -175,9 +175,9 @@ Both of these are straightforward when you know what to do:
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('file', 'file', array(
+                ->add('file', 'file', [
                     'required' => false
-                ))
+                ])
 
                 // ...
             ;
@@ -237,15 +237,15 @@ looks like this:
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('linkedImage1', 'sonata_type_admin', array(
+                ->add('linkedImage1', 'sonata_type_admin', [
                     'delete' => false
-                ))
-                ->add('linkedImage2', 'sonata_type_admin', array(
+                ])
+                ->add('linkedImage2', 'sonata_type_admin', [
                     'delete' => false
-                ))
-                ->add('linkedImage3', 'sonata_type_admin', array(
+                ])
+                ->add('linkedImage3', 'sonata_type_admin', [
                     'delete' => false
-                ))
+                ])
 
                 // ...
             ;
