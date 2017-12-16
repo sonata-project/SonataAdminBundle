@@ -29,99 +29,96 @@ class AdminEventExtension extends AbstractAdminExtension
 {
     protected $eventDispatcher;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureFormFields(FormMapper $form): void
     {
-        $this->eventDispatcher->dispatch('sonata.admin.event.configure.form', new ConfigureEvent($form->getAdmin(), $form, ConfigureEvent::TYPE_FORM));
+        $this->eventDispatcher->dispatch(
+            'sonata.admin.event.configure.form',
+            new ConfigureEvent($form->getAdmin(), $form, ConfigureEvent::TYPE_FORM)
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureListFields(ListMapper $list): void
     {
-        $this->eventDispatcher->dispatch('sonata.admin.event.configure.list', new ConfigureEvent($list->getAdmin(), $list, ConfigureEvent::TYPE_LIST));
+        $this->eventDispatcher->dispatch(
+            'sonata.admin.event.configure.list',
+            new ConfigureEvent($list->getAdmin(), $list, ConfigureEvent::TYPE_LIST)
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $this->eventDispatcher->dispatch('sonata.admin.event.configure.datagrid', new ConfigureEvent($filter->getAdmin(), $filter, ConfigureEvent::TYPE_DATAGRID));
+        $this->eventDispatcher->dispatch(
+            'sonata.admin.event.configure.datagrid',
+            new ConfigureEvent($filter->getAdmin(), $filter, ConfigureEvent::TYPE_DATAGRID)
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureShowFields(ShowMapper $show): void
     {
-        $this->eventDispatcher->dispatch('sonata.admin.event.configure.show', new ConfigureEvent($show->getAdmin(), $show, ConfigureEvent::TYPE_SHOW));
+        $this->eventDispatcher->dispatch(
+            'sonata.admin.event.configure.show',
+            new ConfigureEvent($show->getAdmin(), $show, ConfigureEvent::TYPE_SHOW)
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list'): void
     {
-        $this->eventDispatcher->dispatch('sonata.admin.event.configure.query', new ConfigureQueryEvent($admin, $query, $context));
+        $this->eventDispatcher->dispatch(
+            'sonata.admin.event.configure.query',
+            new ConfigureQueryEvent($admin, $query, $context)
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preUpdate(AdminInterface $admin, $object): void
     {
-        $this->eventDispatcher->dispatch('sonata.admin.event.persistence.pre_update', new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_PRE_UPDATE));
+        $this->eventDispatcher->dispatch(
+            'sonata.admin.event.persistence.pre_update',
+            new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_PRE_UPDATE)
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function postUpdate(AdminInterface $admin, $object): void
     {
-        $this->eventDispatcher->dispatch('sonata.admin.event.persistence.post_update', new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_POST_UPDATE));
+        $this->eventDispatcher->dispatch(
+            'sonata.admin.event.persistence.post_update',
+            new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_POST_UPDATE)
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prePersist(AdminInterface $admin, $object): void
     {
-        $this->eventDispatcher->dispatch('sonata.admin.event.persistence.pre_persist', new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_PRE_PERSIST));
+        $this->eventDispatcher->dispatch(
+            'sonata.admin.event.persistence.pre_persist',
+            new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_PRE_PERSIST)
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function postPersist(AdminInterface $admin, $object): void
     {
-        $this->eventDispatcher->dispatch('sonata.admin.event.persistence.post_persist', new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_POST_PERSIST));
+        $this->eventDispatcher->dispatch(
+            'sonata.admin.event.persistence.post_persist',
+            new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_POST_PERSIST)
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preRemove(AdminInterface $admin, $object): void
     {
-        $this->eventDispatcher->dispatch('sonata.admin.event.persistence.pre_remove', new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_PRE_REMOVE));
+        $this->eventDispatcher->dispatch(
+            'sonata.admin.event.persistence.pre_remove',
+            new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_PRE_REMOVE)
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function postRemove(AdminInterface $admin, $object): void
     {
-        $this->eventDispatcher->dispatch('sonata.admin.event.persistence.post_remove', new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_POST_REMOVE));
+        $this->eventDispatcher->dispatch(
+            'sonata.admin.event.persistence.post_remove',
+            new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_POST_REMOVE)
+        );
     }
 }

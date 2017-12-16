@@ -28,13 +28,11 @@ class ShowMapper extends BaseGroupedMapper
 {
     protected $list;
 
-    /**
-     * @param ShowBuilderInterface       $showBuilder
-     * @param FieldDescriptionCollection $list
-     * @param AdminInterface             $admin
-     */
-    public function __construct(ShowBuilderInterface $showBuilder, FieldDescriptionCollection $list, AdminInterface $admin)
-    {
+    public function __construct(
+        ShowBuilderInterface $showBuilder,
+        FieldDescriptionCollection $list,
+        AdminInterface $admin
+    ) {
         parent::__construct($showBuilder, $admin);
         $this->list = $list;
     }
@@ -42,7 +40,6 @@ class ShowMapper extends BaseGroupedMapper
     /**
      * @param mixed $name
      * @param mixed $type
-     * @param array $fieldDescriptionOptions
      *
      * @throws \RuntimeException
      *
@@ -87,25 +84,16 @@ class ShowMapper extends BaseGroupedMapper
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get($name)
     {
         return $this->list->get($name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has($key)
     {
         return $this->list->has($key);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function remove($key)
     {
         $this->admin->removeShowFieldDescription($key);
@@ -156,17 +144,11 @@ class ShowMapper extends BaseGroupedMapper
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function keys()
     {
         return array_keys($this->list->getElements());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reorder(array $keys)
     {
         $this->admin->reorderShowGroup($this->getCurrentGroupName(), $keys);
@@ -174,41 +156,26 @@ class ShowMapper extends BaseGroupedMapper
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getGroups()
     {
         return $this->admin->getShowGroups();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setGroups(array $groups): void
     {
         $this->admin->setShowGroups($groups);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getTabs()
     {
         return $this->admin->getShowTabs();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setTabs(array $tabs): void
     {
         $this->admin->setShowTabs($tabs);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getName()
     {
         return 'show';

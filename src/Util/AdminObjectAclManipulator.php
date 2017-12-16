@@ -44,8 +44,7 @@ class AdminObjectAclManipulator
     protected $maskBuilderClass;
 
     /**
-     * @param FormFactoryInterface $formFactory
-     * @param string               $maskBuilderClass
+     * @param string $maskBuilderClass
      */
     public function __construct(FormFactoryInterface $formFactory, $maskBuilderClass)
     {
@@ -68,8 +67,6 @@ class AdminObjectAclManipulator
      *
      * NEXT_MAJOR: remove this method.
      *
-     * @param AdminObjectAclData $data
-     *
      * @return Form
      *
      * @deprecated Deprecated since version 3.0. Use createAclUsersForm() instead
@@ -88,8 +85,6 @@ class AdminObjectAclManipulator
     /**
      * Gets the ACL users form.
      *
-     * @param AdminObjectAclData $data
-     *
      * @return Form
      */
     public function createAclUsersForm(AdminObjectAclData $data)
@@ -105,8 +100,6 @@ class AdminObjectAclManipulator
     /**
      * Gets the ACL roles form.
      *
-     * @param AdminObjectAclData $data
-     *
      * @return Form
      */
     public function createAclRolesForm(AdminObjectAclData $data)
@@ -121,8 +114,6 @@ class AdminObjectAclManipulator
 
     /**
      * Updates ACL users.
-     *
-     * @param AdminObjectAclData $data
      */
     public function updateAclUsers(AdminObjectAclData $data): void
     {
@@ -134,8 +125,6 @@ class AdminObjectAclManipulator
 
     /**
      * Updates ACL roles.
-     *
-     * @param AdminObjectAclData $data
      */
     public function updateAclRoles(AdminObjectAclData $data): void
     {
@@ -149,8 +138,6 @@ class AdminObjectAclManipulator
      * Updates ACl.
      *
      * NEXT_MAJOR: remove this method.
-     *
-     * @param AdminObjectAclData $data
      *
      * @deprecated Deprecated since version 3.0. Use updateAclUsers() instead
      */
@@ -167,10 +154,6 @@ class AdminObjectAclManipulator
 
     /**
      * Builds ACL.
-     *
-     * @param AdminObjectAclData $data
-     * @param Form               $form
-     * @param \Traversable       $aclValues
      */
     protected function buildAcl(AdminObjectAclData $data, Form $form, \Traversable $aclValues): void
     {
@@ -238,10 +221,6 @@ class AdminObjectAclManipulator
 
     /**
      * Builds the form.
-     *
-     * @param AdminObjectAclData   $data
-     * @param FormBuilderInterface $formBuilder
-     * @param \Traversable         $aclValues
      *
      * @return Form
      */

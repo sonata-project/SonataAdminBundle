@@ -126,25 +126,16 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     protected $help;
 
-    /**
-     * {@inheritdoc}
-     */
     public function setFieldName($fieldName): void
     {
         $this->fieldName = $fieldName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldName()
     {
         return $this->fieldName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setName($name): void
     {
         $this->name = $name;
@@ -154,33 +145,21 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOption($name, $default = null)
     {
         return isset($this->options[$name]) ? $this->options[$name] : $default;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setOption($name, $value): void
     {
         $this->options[$name] = $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setOptions(array $options): void
     {
         // set the type if provided
@@ -213,114 +192,72 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->options = $options;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOptions()
     {
         return $this->options;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setTemplate($template): void
     {
         $this->template = $template;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTemplate()
     {
         return $this->template;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setType($type): void
     {
         $this->type = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setParent(AdminInterface $parent): void
     {
         $this->parent = $parent;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
         return $this->parent;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAssociationMapping()
     {
         return $this->associationMapping;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldMapping()
     {
         return $this->fieldMapping;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParentAssociationMappings()
     {
         return $this->parentAssociationMappings;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setAssociationAdmin(AdminInterface $associationAdmin): void
     {
         $this->associationAdmin = $associationAdmin;
         $this->associationAdmin->setParentFieldDescription($this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAssociationAdmin()
     {
         return $this->associationAdmin;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasAssociationAdmin()
     {
         return null !== $this->associationAdmin;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldValue($object, $fieldName)
     {
         if ($this->isVirtual()) {
@@ -361,25 +298,16 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         throw new NoValueException(sprintf('Unable to retrieve the value of `%s`', $this->getName()));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setAdmin(AdminInterface $admin): void
     {
         $this->admin = $admin;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAdmin()
     {
         return $this->admin;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mergeOption($name, array $options = []): void
     {
         if (!isset($this->options[$name])) {
@@ -393,25 +321,16 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->options[$name] = array_merge($this->options[$name], $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mergeOptions(array $options = []): void
     {
         $this->setOptions(array_merge_recursive($this->options, $options));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setMappingType($mappingType): void
     {
         $this->mappingType = $mappingType;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getMappingType()
     {
         return $this->mappingType;
@@ -427,49 +346,31 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->help = $help;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getHelp()
     {
         return $this->help;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLabel()
     {
         return $this->getOption('label');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isSortable()
     {
         return false !== $this->getOption('sortable', false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSortFieldMapping()
     {
         return $this->getOption('sort_field_mapping');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSortParentAssociationMapping()
     {
         return $this->getOption('sort_parent_association_mappings');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTranslationDomain()
     {
         return $this->getOption('translation_domain') ?: $this->getAdmin()->getTranslationDomain();

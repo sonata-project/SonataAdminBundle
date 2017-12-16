@@ -38,19 +38,12 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      */
     protected $options;
 
-    /**
-     * @param array $defaultClasses
-     * @param array $options
-     */
     public function __construct(array $defaultClasses, array $options)
     {
         $this->defaultClasses = $defaultClasses;
         $this->options = $options;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $sonataAdmin = [
@@ -84,9 +77,6 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         $builder->setAttribute('sonata_admin', $sonataAdmin);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $sonataAdmin = $form->getConfig()->getAttribute('sonata_admin');
@@ -162,9 +152,6 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         $view->vars['sonata_admin'] = $sonataAdmin;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExtendedType()
     {
         return FormType::class;
@@ -180,9 +167,6 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         $this->configureOptions($resolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -199,8 +183,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
      * return the value related to FieldDescription, if the associated object does no
      * exists => a temporary one is created.
      *
-     * @param object                    $object
-     * @param FieldDescriptionInterface $fieldDescription
+     * @param object $object
      *
      * @return mixed
      */
@@ -224,8 +207,6 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param FormBuilderInterface $formBuilder
-     *
      * @return string
      */
     protected function getClass(FormBuilderInterface $formBuilder)
@@ -247,8 +228,6 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param FormBuilderInterface $formBuilder
-     *
      * @return array
      */
     protected function getTypes(FormBuilderInterface $formBuilder)

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
+use JMS\DiExtraBundle\DependencyInjection\Configuration;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminExtensionInterface;
@@ -111,10 +112,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 final class SonataAdminExtension extends Extension implements PrependExtensionInterface
 {
-    /**
-     * @param array            $configs   An array of configuration settings
-     * @param ContainerBuilder $container A ContainerBuilder instance
-     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $bundles = $container->getParameter('kernel.bundles');
@@ -158,8 +155,8 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
-        $config['options']['javascripts'] = $config['assets']['javascripts'];
-        $config['options']['stylesheets'] = $config['assets']['stylesheets'];
+        $config['options']['javascripts'] = $this->buildJavascripts($config);
+        $config['options']['stylesheets'] = $this->buildStylesheets($config);
         $config['options']['role_admin'] = $config['security']['role_admin'];
         $config['options']['role_super_admin'] = $config['security']['role_super_admin'];
 
@@ -311,8 +308,6 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
      * Allow an extension to prepend the extension configurations.
      *
      * NEXT_MAJOR: remove all code that deals with JMSDiExtraBundle
-     *
-     * @param ContainerBuilder $container
      */
     public function prepend(ContainerBuilder $container): void
     {
@@ -353,7 +348,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
             $annotationPatterns = [$sonataAdminPattern];
         } else {
             // get annotation_patterns default from DiExtraBundle configuration
-            $diExtraConfigDefinition = new \JMS\DiExtraBundle\DependencyInjection\Configuration();
+            $diExtraConfigDefinition = new Configuration();
             // FIXME: this will break if DiExtraBundle adds any mandatory configuration
             $diExtraConfig = $this->processConfiguration($diExtraConfigDefinition, []);
 
@@ -453,12 +448,41 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNamespace()
     {
         return 'https://sonata-project.org/schema/dic/admin';
+    }
+
+    private function buildStylesheets($config)
+    {
+        return $this->mergeArray(
+            $config['assets']['stylesheets'],
+            $config['assets']['extra_stylesheets'],
+            $config['assets']['remove_stylesheets']
+        );
+    }
+
+    private function buildJavascripts($config)
+    {
+        return $this->mergeArray(
+            $config['assets']['javascripts'],
+            $config['assets']['extra_javascripts'],
+            $config['assets']['remove_javascripts']
+        );
+    }
+
+    private function mergeArray($array, $addArray, $removeArray = [])
+    {
+        foreach ($addArray as $toAdd) {
+            array_push($array, $toAdd);
+        }
+        foreach ($removeArray as $toRemove) {
+            if (in_array($toRemove, $array)) {
+                array_splice($array, array_search($toRemove, $array), 1);
+            }
+        }
+
+        return $array;
     }
 
     private function replacePropertyAccessor(ContainerBuilder $container): void

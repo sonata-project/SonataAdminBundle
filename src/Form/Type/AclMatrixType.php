@@ -29,9 +29,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class AclMatrixType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $aclValueType = $options['acl_value'] instanceof UserInterface ? 'user' : 'role';
@@ -56,9 +53,6 @@ class AclMatrixType extends AbstractType
         $this->configureOptions($resolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['permissions', 'acl_value']);
@@ -76,9 +70,6 @@ class AclMatrixType extends AbstractType
         return $this->getBlockPrefix();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'sonata_type_acl_matrix';

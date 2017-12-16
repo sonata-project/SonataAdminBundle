@@ -380,13 +380,13 @@ other two on the dashboard, you can do so by overriding the
         {
             $actions = parent::getDashboardActions();
 
-            $actions['import'] = array(
+            $actions['import'] = [
                 'label'              => 'Import',
                 'url'                => $this->generateUrl('import'),
                 'icon'               => 'import',
                 'translation_domain' => 'SonataAdminBundle', // optional
                 'template'           => 'SonataAdminBundle:CRUD:dashboard__action.html.twig', // optional
-            );
+            ];
 
             return $actions;
         }

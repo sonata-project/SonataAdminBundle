@@ -22,18 +22,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ListAdminCommand extends ContainerAwareCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configure(): void
     {
         $this->setName('sonata:admin:list');
         $this->setDescription('List all admin services available');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute(InputInterface $input, OutputInterface $output): void
     {
         $pool = $this->getContainer()->get('sonata.admin.pool');

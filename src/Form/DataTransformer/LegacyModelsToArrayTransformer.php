@@ -32,9 +32,6 @@ class LegacyModelsToArrayTransformer implements DataTransformerInterface
      */
     protected $choiceList;
 
-    /**
-     * @param ModelChoiceList $choiceList
-     */
     public function __construct(ModelChoiceList $choiceList)
     {
         @trigger_error(
@@ -45,9 +42,6 @@ class LegacyModelsToArrayTransformer implements DataTransformerInterface
         $this->choiceList = $choiceList;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform($collection)
     {
         if (null === $collection) {
@@ -74,9 +68,6 @@ class LegacyModelsToArrayTransformer implements DataTransformerInterface
         return $array;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reverseTransform($keys)
     {
         $collection = $this->choiceList->getModelManager()->getModelCollectionInstance(

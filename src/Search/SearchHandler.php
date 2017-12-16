@@ -28,19 +28,15 @@ class SearchHandler
      */
     protected $pool;
 
-    /**
-     * @param Pool $pool
-     */
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
     }
 
     /**
-     * @param AdminInterface $admin
-     * @param string         $term
-     * @param int            $page
-     * @param int            $offset
+     * @param string $term
+     * @param int    $page
+     * @param int    $offset
      *
      * @throws \RuntimeException
      *

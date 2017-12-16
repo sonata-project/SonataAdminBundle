@@ -37,9 +37,6 @@ interface UrlGeneratorInterface
      */
     public function getRouterIdParameter();
 
-    /**
-     * @param RouteGeneratorInterface $routeGenerator
-     */
     public function setRouteGenerator(RouteGeneratorInterface $routeGenerator);
 
     /**
@@ -47,18 +44,21 @@ interface UrlGeneratorInterface
      *
      * @param string $name
      * @param mixed  $object
-     * @param array  $parameters
      * @param int    $absolute
      *
      * @return string return a complete url
      */
-    public function generateObjectUrl($name, $object, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH);
+    public function generateObjectUrl(
+        $name,
+        $object,
+        array $parameters = [],
+        $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH
+    );
 
     /**
      * Generates a url for the given parameters.
      *
      * @param string $name
-     * @param array  $parameters
      * @param int    $absolute
      *
      * @return string return a complete url
@@ -69,7 +69,6 @@ interface UrlGeneratorInterface
      * Generates a url for the given parameters.
      *
      * @param string $name
-     * @param array  $parameters
      * @param int    $absolute
      *
      * @return array return url parts: 'route', 'routeParameters', 'routeAbsolute'

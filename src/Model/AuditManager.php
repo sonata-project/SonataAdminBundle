@@ -35,25 +35,16 @@ class AuditManager implements AuditManagerInterface
      */
     protected $container;
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setReader($serviceId, array $classes): void
     {
         $this->readers[$serviceId] = $classes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasReader($class)
     {
         foreach ($this->readers as $classes) {
@@ -65,9 +56,6 @@ class AuditManager implements AuditManagerInterface
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getReader($class)
     {
         foreach ($this->readers as $readerId => $classes) {

@@ -23,9 +23,6 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
      */
     protected $elements = [];
 
-    /**
-     * @param FieldDescriptionInterface $fieldDescription
-     */
     public function add(FieldDescriptionInterface $fieldDescription): void
     {
         $this->elements[$fieldDescription->getName()] = $fieldDescription;
@@ -75,49 +72,31 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function offsetExists($offset)
     {
         return $this->has($offset);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function offsetGet($offset)
     {
         return $this->get($offset);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function offsetSet($offset, $value): void
     {
         throw new \RuntimeException('Cannot set value, use add');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function offsetUnset($offset): void
     {
         $this->remove($offset);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function count()
     {
         return count($this->elements);
     }
 
-    /**
-     * @param array $keys
-     */
     public function reorder(array $keys): void
     {
         if ($this->has('batch')) {

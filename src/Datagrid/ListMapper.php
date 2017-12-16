@@ -31,13 +31,11 @@ class ListMapper extends BaseMapper
      */
     protected $list;
 
-    /**
-     * @param ListBuilderInterface       $listBuilder
-     * @param FieldDescriptionCollection $list
-     * @param AdminInterface             $admin
-     */
-    public function __construct(ListBuilderInterface $listBuilder, FieldDescriptionCollection $list, AdminInterface $admin)
-    {
+    public function __construct(
+        ListBuilderInterface $listBuilder,
+        FieldDescriptionCollection $list,
+        AdminInterface $admin
+    ) {
         parent::__construct($listBuilder, $admin);
         $this->list = $list;
     }
@@ -45,7 +43,6 @@ class ListMapper extends BaseMapper
     /**
      * @param string      $name
      * @param string|null $type
-     * @param array       $fieldDescriptionOptions
      *
      * @return $this
      */
@@ -68,7 +65,6 @@ class ListMapper extends BaseMapper
     /**
      * @param string      $name
      * @param string|null $type
-     * @param array       $fieldDescriptionOptions
      *
      * @throws \RuntimeException
      *
@@ -117,25 +113,16 @@ class ListMapper extends BaseMapper
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get($name)
     {
         return $this->list->get($name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has($key)
     {
         return $this->list->has($key);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function remove($key)
     {
         $this->admin->removeListFieldDescription($key);
@@ -144,17 +131,11 @@ class ListMapper extends BaseMapper
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function keys()
     {
         return array_keys($this->list->getElements());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reorder(array $keys)
     {
         $this->list->reorder($keys);

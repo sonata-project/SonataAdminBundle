@@ -30,9 +30,6 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container): void
     {
         // check if translator service exist
@@ -214,9 +211,6 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
     /**
      * This method read the attribute keys and configure admin class to use the related dependency.
-     *
-     * @param Definition $definition
-     * @param array      $attributes
      */
     public function applyConfigurationFromAttribute(Definition $definition, array $attributes): void
     {
@@ -249,9 +243,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
     /**
      * Apply the default values required by the AdminInterface to the Admin service definition.
      *
-     * @param ContainerBuilder $container
-     * @param string           $serviceId
-     * @param array            $attributes
+     * @param string $serviceId
      *
      * @return Definition
      */
@@ -347,11 +339,6 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         return $definition;
     }
 
-    /**
-     * @param ContainerBuilder $container
-     * @param Definition       $definition
-     * @param array            $overwrittenTemplates
-     */
     public function fixTemplates(ContainerBuilder $container, Definition $definition, array $overwrittenTemplates = []): void
     {
         $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
@@ -399,13 +386,12 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
     /**
      * Replace the empty arguments required by the Admin service definition.
-     *
-     * @param array           $defaultArguments
-     * @param Definition      $definition
-     * @param Definition|null $parentDefinition
      */
-    private function replaceDefaultArguments(array $defaultArguments, Definition $definition, Definition $parentDefinition = null): void
-    {
+    private function replaceDefaultArguments(
+        array $defaultArguments,
+        Definition $definition,
+        Definition $parentDefinition = null
+    ): void {
         $arguments = $definition->getArguments();
         $parentArguments = $parentDefinition ? $parentDefinition->getArguments() : [];
 

@@ -31,9 +31,6 @@ class LockExtension extends AbstractAdminExtension
      */
     protected $fieldName = '_lock_version';
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureFormFields(FormMapper $form): void
     {
         $admin = $form->getAdmin();
@@ -64,9 +61,6 @@ class LockExtension extends AbstractAdminExtension
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preUpdate(AdminInterface $admin, $object): void
     {
         if (!$admin->hasRequest() || !$data = $admin->getRequest()->get($admin->getUniqid())) {

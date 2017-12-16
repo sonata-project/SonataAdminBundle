@@ -23,18 +23,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class SetupAclCommand extends ContainerAwareCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configure(): void
     {
         $this->setName('sonata:admin:setup-acl');
         $this->setDescription('Install ACL for Admin Classes');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute(InputInterface $input, OutputInterface $output): void
     {
         $output->writeln('Starting ACL AdminBundle configuration');

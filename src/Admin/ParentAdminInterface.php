@@ -24,8 +24,6 @@ interface ParentAdminInterface
 {
     /**
      * add an Admin child to the current one.
-     *
-     * @param AdminInterface $child
      */
     public function addChild(AdminInterface $child);
 

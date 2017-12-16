@@ -244,11 +244,15 @@ The link will still appear unless you manually check it using the `hasAccess` me
     protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
         // Link will always appear even if it is protected by ACL
-        $menu->addChild($this->trans('Show'), array('uri' => $admin->generateUrl('show', array('id' => $id))));
+        $menu->addChild($this->trans('Show'), [
+            'uri' => $admin->generateUrl('show', ['id' => $id])
+        ]);
 
         // Link will only appear if access to ACL protected URL is granted
         if ($this->hasAccess('edit')) {
-            $menu->addChild($this->trans('Edit'), array('uri' => $admin->generateUrl('edit', array('id' => $id))));
+            $menu->addChild($this->trans('Edit'), [
+                'uri' => $admin->generateUrl('edit', ['id' => $id])
+            ]);
         }
     }
 
@@ -267,10 +271,14 @@ the `'dropdown' => true` attribute:
     {
         // other tab menu stuff ...
 
-        $menu->addChild('comments', array('attributes' => array('dropdown' => true)));
+        $menu->addChild('comments', ['attributes' => ['dropdown' => true]]);
 
-        $menu['comments']->addChild('list', array('uri' => $admin->generateUrl('listComment', array('id' => $id))));
-        $menu['comments']->addChild('create', array('uri' => $admin->generateUrl('addComment', array('id' => $id))));
+        $menu['comments']->addChild('list', [
+            'uri' => $admin->generateUrl('listComment', ['id' => $id])
+        ]);
+        $menu['comments']->addChild('create', [
+            'uri' => $admin->generateUrl('addComment', ['id' => $id])
+        ]);
     }
 
 If you want to use the Tab Menu in a different way, you can replace the Menu Template:
@@ -295,10 +303,10 @@ of data associated with the item, respectively.
 .. code-block:: php
 
     <?php
-    $menuItem->setExtras(array(
-        'translation_parameters' => array('myparam' => 'myvalue'),
+    $menuItem->setExtras([
+        'translation_parameters' => ['myparam' => 'myvalue'],
         'translation_domain' => 'My domain',
-    ));
+    ]);
 
 You can also set the translation domain on the menu root, and children will
 inherit it :
@@ -326,7 +334,7 @@ You can add or override filter parameters to the Tab Menu:
     {
         protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
         {
-            if (!$childAdmin && !in_array($action, array('edit', 'show', 'list'))) {
+            if (!$childAdmin && !in_array($action, ['edit', 'show', 'list'])) {
                 return;
             }
 
@@ -335,15 +343,15 @@ You can add or override filter parameters to the Tab Menu:
                 $filterParameters = $this->getFilterParameters();
 
                 // Add or override filter parameters
-                $filterParameters['status'] = array(
+                $filterParameters['status'] = [
                     'type'  => EqualType::TYPE_IS_EQUAL, // => 1
                     'value' => Delivery::STATUS_OPEN,
-                );
+                ];
 
                 // Add filters to uri of tab
-                $menu->addChild('List open deliveries', array('uri' => $this->generateUrl('list', array(
-                    'filter' => $filterParameters,
-                ))));
+                $menu->addChild('List open deliveries', [
+                    'uri' => $this->generateUrl('list', ['filter' => $filterParameters])
+                ]);
 
                 return;
             }
@@ -363,10 +371,10 @@ You can add custom items to the actions menu for a specific action by overriding
 
     public function configureActionButtons(AdminInterface $admin, $list, $action, $object)
     {
-        if (in_array($action, array('show', 'edit', 'acl')) && $object) {
-            $buttonList['custom'] = array(
+        if (in_array($action, ['show', 'edit', 'acl']) && $object) {
+            $buttonList['custom'] = [
                 'template' => 'AppBundle:Button:custom_button.html.twig',
-            );
+            ];
         }
 
         // Remove history action
@@ -407,10 +415,10 @@ You can customize the access system inside the CRUDController by adding some ent
 
     class CustomAdmin extends AbstractAdmin
     {
-        protected $accessMapping = array(
+        protected $accessMapping = [
             'myCustomFoo' => 'EDIT',
-            'myCustomBar' => array('EDIT', 'LIST'),
-        );
+            'myCustomBar' => ['EDIT', 'LIST'],
+        ];
     }
 
     <?php

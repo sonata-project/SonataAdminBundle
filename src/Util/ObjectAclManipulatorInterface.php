@@ -28,11 +28,11 @@ interface ObjectAclManipulatorInterface
      *
      * @abstract
      *
-     * @param OutputInterface      $output
-     * @param AdminInterface       $admin
-     * @param UserSecurityIdentity $securityIdentity
-     *
      * @throws ModelManagerException
      */
-    public function batchConfigureAcls(OutputInterface $output, AdminInterface $admin, UserSecurityIdentity $securityIdentity = null);
+    public function batchConfigureAcls(
+        OutputInterface $output,
+        AdminInterface $admin,
+        UserSecurityIdentity $securityIdentity = null
+    );
 }

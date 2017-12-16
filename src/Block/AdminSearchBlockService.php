@@ -39,10 +39,7 @@ class AdminSearchBlockService extends AbstractBlockService
     protected $searchHandler;
 
     /**
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param Pool            $pool
-     * @param SearchHandler   $searchHandler
+     * @param string $name
      */
     public function __construct($name, EngineInterface $templating, Pool $pool, SearchHandler $searchHandler)
     {
@@ -52,9 +49,6 @@ class AdminSearchBlockService extends AbstractBlockService
         $this->searchHandler = $searchHandler;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         try {
@@ -85,17 +79,11 @@ class AdminSearchBlockService extends AbstractBlockService
         ], $response);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'Admin Search Result';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

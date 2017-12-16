@@ -61,8 +61,6 @@ class CoreController extends Controller
      * The search action first render an empty page, if the query is set, then the template generates
      * some ajax request to retrieve results for each admin. The Ajax query returns a JSON response.
      *
-     * @param Request $request
-     *
      * @throws \RuntimeException
      *
      * @return JsonResponse|Response

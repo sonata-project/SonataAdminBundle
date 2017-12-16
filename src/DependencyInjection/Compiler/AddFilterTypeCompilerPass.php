@@ -21,9 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 final class AddFilterTypeCompilerPass implements CompilerPassInterface
 {
-    /**
-     * @param ContainerBuilder $container
-     */
     public function process(ContainerBuilder $container): void
     {
         $definition = $container->getDefinition('sonata.admin.builder.filter.factory');

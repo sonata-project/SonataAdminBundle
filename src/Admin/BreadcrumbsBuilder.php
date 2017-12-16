@@ -39,9 +39,6 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         $this->config = $resolver->resolve($config);
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -49,9 +46,6 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBreadcrumbs(AdminInterface $admin, $action)
     {
         $breadcrumbs = [];

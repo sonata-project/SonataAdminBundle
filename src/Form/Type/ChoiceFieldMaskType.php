@@ -25,9 +25,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ChoiceFieldMaskType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $sanitizedMap = [];
@@ -59,9 +56,6 @@ class ChoiceFieldMaskType extends AbstractType
         $this->configureOptions($resolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -71,9 +65,6 @@ class ChoiceFieldMaskType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
         return ChoiceType::class;
@@ -89,9 +80,6 @@ class ChoiceFieldMaskType extends AbstractType
         return $this->getBlockPrefix();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'sonata_type_choice_field_mask';

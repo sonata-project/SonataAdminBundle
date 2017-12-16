@@ -38,9 +38,6 @@ class GenerateAdminCommand extends QuestionableCommand
      */
     private $managerTypes;
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(): void
     {
         $this
@@ -56,9 +53,6 @@ class GenerateAdminCommand extends QuestionableCommand
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEnabled()
     {
         return class_exists(SensioGeneratorBundle::class);
@@ -86,9 +80,6 @@ class GenerateAdminCommand extends QuestionableCommand
         return $managerType;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $modelClass = Validators::validateClass($input->getArgument('model'));
@@ -156,9 +147,6 @@ class GenerateAdminCommand extends QuestionableCommand
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
         $questionHelper = $this->getQuestionHelper();
@@ -265,8 +253,7 @@ class GenerateAdminCommand extends QuestionableCommand
     }
 
     /**
-     * @param OutputInterface $output
-     * @param string          $message
+     * @param string $message
      */
     private function writeError(OutputInterface $output, $message): void
     {

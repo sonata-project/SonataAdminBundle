@@ -40,26 +40,17 @@ abstract class Filter implements FilterInterface
      */
     protected $condition;
 
-    /**
-     * {@inheritdoc}
-     */
     public function initialize($name, array $options = []): void
     {
         $this->name = $name;
         $this->setOptions($options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFormName()
     {
         /*
@@ -72,9 +63,6 @@ abstract class Filter implements FilterInterface
         return str_replace('.', '__', $this->name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOption($name, $default = null)
     {
         if (array_key_exists($name, $this->options)) {
@@ -84,33 +72,21 @@ abstract class Filter implements FilterInterface
         return $default;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setOption($name, $value): void
     {
         $this->options[$name] = $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldType()
     {
         return $this->getOption('field_type', TextType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldOptions()
     {
         return $this->getOption('field_options', ['required' => false]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldOption($name, $default = null)
     {
         if (isset($this->options['field_options'][$name]) && is_array($this->options['field_options'])) {
@@ -120,33 +96,21 @@ abstract class Filter implements FilterInterface
         return $default;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setFieldOption($name, $value): void
     {
         $this->options['field_options'][$name] = $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLabel()
     {
         return $this->getOption('label');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLabel($label): void
     {
         $this->setOption('label', $label);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldName()
     {
         $fieldName = $this->getOption('field_name');
@@ -158,17 +122,11 @@ abstract class Filter implements FilterInterface
         return $fieldName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParentAssociationMappings()
     {
         return $this->getOption('parent_association_mappings', []);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldMapping()
     {
         $fieldMapping = $this->getOption('field_mapping');
@@ -180,9 +138,6 @@ abstract class Filter implements FilterInterface
         return $fieldMapping;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAssociationMapping()
     {
         $associationMapping = $this->getOption('association_mapping');
@@ -196,8 +151,6 @@ abstract class Filter implements FilterInterface
 
     /**
      * Set options.
-     *
-     * @param array $options
      */
     public function setOptions(array $options): void
     {
@@ -238,9 +191,6 @@ abstract class Filter implements FilterInterface
         return $this->value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isActive()
     {
         $values = $this->getValue();
@@ -250,25 +200,16 @@ abstract class Filter implements FilterInterface
             && '' !== $values['value'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCondition($condition): void
     {
         $this->condition = $condition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCondition()
     {
         return $this->condition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTranslationDomain()
     {
         return $this->getOption('translation_domain');

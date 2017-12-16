@@ -32,9 +32,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  */
 class AdminType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $admin = clone $this->getAdmin($options);
@@ -82,9 +79,6 @@ class AdminType extends AbstractType
         $builder->addModelTransformer(new ArrayToModelTransformer($admin->getModelManager(), $admin->getClass()));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['btn_add'] = $options['btn_add'];
@@ -103,9 +97,6 @@ class AdminType extends AbstractType
         $this->configureOptions($resolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -137,17 +128,12 @@ class AdminType extends AbstractType
         return $this->getBlockPrefix();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'sonata_type_admin';
     }
 
     /**
-     * @param array $options
-     *
      * @throws \RuntimeException
      *
      * @return FieldDescriptionInterface
@@ -162,8 +148,6 @@ class AdminType extends AbstractType
     }
 
     /**
-     * @param array $options
-     *
      * @return AdminInterface
      */
     protected function getAdmin(array $options)

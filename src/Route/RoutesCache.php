@@ -43,8 +43,6 @@ class RoutesCache
     }
 
     /**
-     * @param AdminInterface $admin
-     *
      * @throws \RuntimeException
      *
      * @return mixed

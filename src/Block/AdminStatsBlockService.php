@@ -31,9 +31,7 @@ class AdminStatsBlockService extends AbstractBlockService
     protected $pool;
 
     /**
-     * @param string          $name
-     * @param EngineInterface $templating
-     * @param Pool            $pool
+     * @param string $name
      */
     public function __construct($name, EngineInterface $templating, Pool $pool)
     {
@@ -42,9 +40,6 @@ class AdminStatsBlockService extends AbstractBlockService
         $this->pool = $pool;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         $admin = $this->pool->getAdminByAdminCode($blockContext->getSetting('code'));
@@ -73,17 +68,11 @@ class AdminStatsBlockService extends AbstractBlockService
         ], $response);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'Admin Stats';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

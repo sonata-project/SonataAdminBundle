@@ -49,11 +49,6 @@ final class SonataAdminExtension extends AbstractExtension
      */
     private $xEditableTypeMapping = [];
 
-    /**
-     * @param Pool                $pool
-     * @param LoggerInterface     $logger
-     * @param TranslatorInterface $translator
-     */
     public function __construct(Pool $pool, LoggerInterface $logger = null, TranslatorInterface $translator = null)
     {
         // NEXT_MAJOR: make the translator parameter required
@@ -68,9 +63,6 @@ final class SonataAdminExtension extends AbstractExtension
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFilters()
     {
         return [
@@ -117,9 +109,6 @@ final class SonataAdminExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'sonata_admin';
@@ -128,9 +117,8 @@ final class SonataAdminExtension extends AbstractExtension
     /**
      * render a list element from the FieldDescription.
      *
-     * @param mixed                     $object
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param array                     $params
+     * @param mixed $object
+     * @param array $params
      *
      * @return string
      */
@@ -157,8 +145,7 @@ final class SonataAdminExtension extends AbstractExtension
     /**
      * render a view element.
      *
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param mixed                     $object
+     * @param mixed $object
      *
      * @return string
      */
@@ -190,9 +177,8 @@ final class SonataAdminExtension extends AbstractExtension
     /**
      * render a compared view element.
      *
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param mixed                     $baseObject
-     * @param mixed                     $compareObject
+     * @param mixed $baseObject
+     * @param mixed $compareObject
      *
      * @return string
      */
@@ -245,8 +231,7 @@ final class SonataAdminExtension extends AbstractExtension
     }
 
     /**
-     * @param mixed                     $element
-     * @param FieldDescriptionInterface $fieldDescription
+     * @param mixed $element
      *
      * @throws \RuntimeException
      *
@@ -297,8 +282,7 @@ final class SonataAdminExtension extends AbstractExtension
     /**
      * Get the identifiers as a string that is safe to use in a url.
      *
-     * @param object         $model
-     * @param AdminInterface $admin
+     * @param object $model
      *
      * @return string string representation of the id that is safe to use in a url
      */
@@ -320,8 +304,6 @@ final class SonataAdminExtension extends AbstractExtension
     }
 
     /**
-     * @param $type
-     *
      * @return string|bool
      */
     public function getXEditableType($type)
@@ -335,8 +317,6 @@ final class SonataAdminExtension extends AbstractExtension
      *     ['Status1' => 'Alias1', 'Status2' => 'Alias2']
      * The method will return:
      *     [['value' => 'Status1', 'text' => 'Alias1'], ['value' => 'Status2', 'text' => 'Alias2']].
-     *
-     * @param FieldDescriptionInterface $fieldDescription
      *
      * @return array
      */
@@ -450,8 +430,7 @@ EOT;
     /**
      * Get template.
      *
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param string                    $defaultTemplate
+     * @param string $defaultTemplate
      *
      * @return \Twig_TemplateInterface
      */

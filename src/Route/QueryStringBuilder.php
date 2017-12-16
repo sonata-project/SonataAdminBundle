@@ -27,18 +27,11 @@ class QueryStringBuilder implements RouteBuilderInterface
      */
     protected $manager;
 
-    /**
-     * @param AuditManagerInterface $manager
-     */
     public function __construct(AuditManagerInterface $manager)
     {
         $this->manager = $manager;
     }
 
-    /**
-     * @param AdminInterface  $admin
-     * @param RouteCollection $collection
-     */
     public function build(AdminInterface $admin, RouteCollection $collection): void
     {
         $collection->add('list');

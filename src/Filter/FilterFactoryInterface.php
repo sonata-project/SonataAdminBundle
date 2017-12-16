@@ -21,7 +21,6 @@ interface FilterFactoryInterface
     /**
      * @param string $name
      * @param string $type
-     * @param array  $options
      *
      * @return mixed
      */

@@ -63,43 +63,43 @@ Here is an example:
             ->add('isVariation', 'boolean')
 
             // if null, the type will be guessed
-            ->add('enabled', null, array(
+            ->add('enabled', null, [
                 'editable' => true
-            ))
+            ])
 
             // editable association field
-            ->add('status', 'choice', array(
+            ->add('status', 'choice', [
                 'editable' => true,
                 'class' => 'Vendor\ExampleBundle\Entity\ExampleStatus',
-                'choices' => array(
+                'choices' => [
                     1 => 'Active',
                     2 => 'Inactive',
                     3 => 'Draft',
-                ),
-            ))
+                ],
+            ])
 
             // we can add options to the field depending on the type
-            ->add('price', 'currency', array(
+            ->add('price', 'currency', [
                 'currency' => $this->currencyDetector->getCurrency()->getLabel()
-            ))
+            ])
 
             // Here we specify which property is used to render the label of each entity in the list
-            ->add('productCategories', null, array(
-                'associated_property' => 'name')
-            )
+            ->add('productCategories', null, [
+                'associated_property' => 'name'
+            ])
 
             // you may also use dotted-notation to access
             // specific properties of a relation to the entity
             ->add('image.name')
 
             // You may also specify the actions you want to be displayed in the list
-            ->add('_action', null, array(
-                'actions' => array(
-                    'show' => array(),
-                    'edit' => array(),
-                    'delete' => array(),
-                )
-            ))
+            ->add('_action', null, [
+                'actions' => [
+                    'show' => [],
+                    'edit' => [],
+                    'delete' => [],
+                ]
+            ])
 
         ;
     }
@@ -241,7 +241,7 @@ the ``datagridValues`` array property. All three keys ``_page``, ``_sort_order``
     {
         // ...
 
-        protected $datagridValues = array(
+        protected $datagridValues = [
 
             // display the first page (default = 1)
             '_page' => 1,
@@ -251,7 +251,7 @@ the ``datagridValues`` array property. All three keys ``_page``, ``_sort_order``
 
             // name of the ordered field (default = the model's id field, if any)
             '_sort_by' => 'updatedAt',
-        );
+        ];
 
         // ...
     }
@@ -303,9 +303,9 @@ To make the filter always visible (even when it is inactive), set the parameter
     {
         $datagridMapper
             ->add('phone')
-            ->add('email', null, array(
+            ->add('email', null, [
                 'show_filter' => true
-            ))
+            ])
 
             // ...
         ;
@@ -319,12 +319,12 @@ Though this ``operator_type`` is automatically detected it can be changed or eve
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('foo', null, array(
+            ->add('foo', null, [
                 'operator_type' => 'sonata_type_boolean'
-            ))
-            ->add('bar', null, array(
+            ])
+            ->add('bar', null, [
                 'operator_type' => 'hidden'
-            ))
+            ])
 
             // ...
         ;
@@ -338,10 +338,10 @@ If you don't need the advanced filters, or all your ``operator_type`` are hidden
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('bar', null, array(
+            ->add('bar', null, [
                 'operator_type' => 'hidden',
                 'advanced_filter' => false
-            ))
+            ])
 
             // ...
         ;
@@ -357,10 +357,10 @@ A filter has a ``value`` and an optional ``type``. If no ``type`` is given the d
 
     public function configureDefaultFilterValues(array &$filterValues)
     {
-        $filterValues['foo'] = array(
+        $filterValues['foo'] = [
             'type'  => ChoiceFilter::TYPE_CONTAINS,
             'value' => 'bar',
-        );
+        ];
     }
 
 Available types are represented through classes which can be found here:
@@ -394,12 +394,12 @@ This is an example using these constants for an ``boolean`` type:
 
     class UserAdmin extends SonataUserAdmin
     {
-        protected $datagridValues = array(
-            'enabled' => array(
+        protected $datagridValues = [
+            'enabled' => [
                 'type'  => EqualType::TYPE_IS_EQUAL, // => 1
                 'value' => BooleanType::TYPE_YES     // => 1
-            )
-        );
+            ]
+        ];
     }
 
 Please note that setting a ``false`` value on a the ``boolean`` type will not work since the type expects an integer of  ``2`` as ``value`` as defined in the class constants:
@@ -428,12 +428,12 @@ Default filters can also be added to the datagrid values by overriding the ``get
     {
         public function getFilterParameters()
         {
-            $this->datagridValues = array_merge(array(
-                    'enabled' => array (
-                        'type'  => EqualType::TYPE_IS_EQUAL,
-                        'value' => BooleanType::TYPE_YES
-                    )
-                ), $this->datagridValues);
+            $this->datagridValues = array_merge([
+                'enabled' => [
+                    'type'  => EqualType::TYPE_IS_EQUAL,
+                    'value' => BooleanType::TYPE_YES
+                ]
+            ], $this->datagridValues);
 
             return parent::getFilterParameters();
         }
@@ -451,12 +451,12 @@ This approach is useful when you need to create dynamic filters.
             if (!$this->securityContext->isGranted('ROLE_ADMIN')) {
                 $user = $this->securityContext->getToken()->getUser();
 
-                $this->datagridValues = array_merge(array(
-                        'author' => array (
-                            'type'  => EqualType::TYPE_IS_EQUAL,
-                            'value' => $user->getId()
-                        )
-                    ), $this->datagridValues);
+                $this->datagridValues = array_merge([
+                    'author' => [
+                        'type'  => EqualType::TYPE_IS_EQUAL,
+                        'value' => $user->getId()
+                    ]
+                ], $this->datagridValues);
             }
 
             return parent::getFilterParameters();
@@ -480,10 +480,10 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the ``doc
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
             $datagridMapper
-                ->add('full_text', CallbackFilter::class, array(
-                    'callback' => array($this, 'getFullTextFilter'),
+                ->add('full_text', CallbackFilter::class, [
+                    'callback' => [$this, 'getFullTextFilter'],
                     'field_type' => 'text'
-                ))
+                ])
 
                 // ...
             ;
@@ -557,24 +557,24 @@ You can :
     public function configureListFields(ListMapper $list)
     {
         $list
-            ->add('id', null, array(
+            ->add('id', null, [
                 'header_style' => 'width: 5%; text-align: center',
                 'row_align' => 'center'
-            ))
-            ->add('name', 'text', array(
+            ])
+            ->add('name', 'text', [
                 'header_style' => 'width: 35%'
-            )
-            ->add('description', 'text', array(
+            ])
+            ->add('description', 'text', [
                 'header_style' => 'width: 35%',
                 'collapse' => true
-            )
-            ->add('upvotes', null, array(
+            ])
+            ->add('upvotes', null, [
                 'label_icon' => 'fa fa-thumbs-o-up'
-            )
-            ->add('actions', null, array(
+            ])
+            ->add('actions', null, [
                 'header_class' => 'customActions',
                 'row_align' => 'right'
-            )
+            ])
 
             // ...
         ;
@@ -585,14 +585,14 @@ If you want to customise the `collapse` option, you can also give an array to ov
 .. code-block:: php
 
             // ...
-            ->add('description', 'text', array(
+            ->add('description', 'text', [
                 'header_style' => 'width: 35%',
-                'collapse' => array(
+                'collapse' => [
                     'height' => 40, // height in px
                     'read_more' => 'I want to see the full description', // content of the "read more" link
                     'read_less' => 'This text is too long, reduce the size' // content of the "read less" link
-                )
-            )
+                ]
+            ])
             // ...
 
 If you want to show only the `label_icon`:
@@ -600,10 +600,10 @@ If you want to show only the `label_icon`:
 .. code-block:: php
 
             // ...
-            ->add('upvotes', null, array(
+            ->add('upvotes', null, [
                 'label' => false,
                 'label_icon' => 'fa fa-thumbs-o-up'
-            )
+            ])
             // ...
 
 .. _`issues on GitHub`: https://github.com/sonata-project/SonataAdminBundle/issues/1519

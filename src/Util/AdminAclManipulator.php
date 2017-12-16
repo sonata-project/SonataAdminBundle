@@ -38,9 +38,6 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
         $this->maskBuilderClass = $maskBuilderClass;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureAcls(OutputInterface $output, AdminInterface $admin): void
     {
         $securityHandler = $admin->getSecurityHandler();
@@ -69,11 +66,12 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addAdminClassAces(OutputInterface $output, AclInterface $acl, AclSecurityHandlerInterface $securityHandler, array $roleInformation = [])
-    {
+    public function addAdminClassAces(
+        OutputInterface $output,
+        AclInterface $acl,
+        AclSecurityHandlerInterface $securityHandler,
+        array $roleInformation = []
+    ) {
         if (count($securityHandler->getAdminPermissions()) > 0) {
             $builder = new $this->maskBuilderClass();
 

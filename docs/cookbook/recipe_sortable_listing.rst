@@ -75,14 +75,13 @@ and use the default twig template provided in the ``pixSortableBehaviorBundle``
 .. code-block:: php
 
     $listMapper
-        ->add('_action', null, array(
-                'actions' => array(
-                    'move' => array(
-                        'template' => 'PixSortableBehaviorBundle:Default:_sort.html.twig'
-                    ),
-                )
-            )
-        );
+        ->add('_action', null, [
+            'actions' => [
+                'move' => [
+                    'template' => 'PixSortableBehaviorBundle:Default:_sort.html.twig'
+                ],
+            ]
+        ]);
 
 
 In order to add new routes for these actions we are also adding the following method
@@ -133,11 +132,11 @@ Now we need to define the sort by field to be ``$position``:
 
     class ClientAdmin extends AbstractAdmin
     {
-        protected $datagridValues = array(
+        protected $datagridValues = [
             '_page' => 1,
             '_sort_order' => 'ASC',
             '_sort_by' => 'position',
-        );
+        ];
 
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -152,13 +151,13 @@ Now we need to define the sort by field to be ``$position``:
             $listMapper
                 ->addIdentifier('name')
                 ->add('enabled')
-                ->add('_action', null, array(
-                    'actions' => array(
-                        'move' => array(
+                ->add('_action', null, [
+                    'actions' => [
+                        'move' => [
                             'template' => 'AppBundle:Admin:_sort.html.twig'
-                        ),
-                    ),
-                ))
+                        ],
+                    ],
+                ])
             ;
         }
     }

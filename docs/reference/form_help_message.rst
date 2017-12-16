@@ -20,12 +20,12 @@ Example
         {
             $formMapper
                 ->with('General')
-                    ->add('title', null, array(
+                    ->add('title', null, [
                         'help' => 'Set the title of a web page'
-                    ))
-                    ->add('keywords', null, array(
+                    ])
+                    ->add('keywords', null, [
                         'help' => 'Set the keywords of a web page'
-                    ))
+                    ])
                 ->end()
             ;
         }
@@ -49,10 +49,10 @@ All at once
                 ->with('General')
                     ->add('title')
                     ->add('keywords')
-                    ->setHelps(array(
+                    ->setHelps([
                         'title' => 'Set the title of a web page',
                         'keywords' => 'Set the keywords of a web page',
-                    ))
+                    ])
                 ->end()
             ;
         }
@@ -150,13 +150,14 @@ Help messages in a sub-field
         {
             $formMapper
                 ->add('enabled')
-                ->add('settings', 'sonata_type_immutable_array', array(
-                    'keys' => array(
-                        array('content', 'textarea', array(
+                ->add('settings', 'sonata_type_immutable_array', [
+                    'keys' => [
+                        ['content', 'textarea', [
                             'sonata_help' => 'Set the content'
-                        )),
-                        array('public', 'checkbox', array()),
-                ))
+                        ]],
+                        ['public', 'checkbox', []],
+                    ]
+                ])
             ;
         }
     }
@@ -186,15 +187,15 @@ Example
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->with('General', array(
+                ->with('General', [
                     'description' => 'This section contains general settings for the web page'
-                ))
-                    ->add('title', null, array(
+                ])
+                    ->add('title', null, [
                         'help' => 'Set the title of a web page'
-                    ))
-                    ->add('keywords', null, array(
+                    ])
+                    ->add('keywords', null, [
                         'help' => 'Set the keywords of a web page'
-                    ))
+                    ])
                 ->end()
             ;
         }

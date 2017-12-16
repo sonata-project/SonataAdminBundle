@@ -23,8 +23,6 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 interface ListBuilderInterface extends BuilderInterface
 {
     /**
-     * @param array $options
-     *
      * @return FieldDescriptionCollection
      */
     public function getBaseList(array $options = []);
@@ -32,19 +30,19 @@ interface ListBuilderInterface extends BuilderInterface
     /**
      * Modify a field description to display it in the list view.
      *
-     * @param null|mixed                $type
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param AdminInterface            $admin
+     * @param null|mixed $type
      */
     public function buildField($type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
 
     /**
      * Modify a field description and add it to the displayed columns.
      *
-     * @param FieldDescriptionCollection $list
-     * @param null|mixed                 $type
-     * @param FieldDescriptionInterface  $fieldDescription
-     * @param AdminInterface             $admin
+     * @param null|mixed $type
      */
-    public function addField(FieldDescriptionCollection $list, $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
+    public function addField(
+        FieldDescriptionCollection $list,
+        $type,
+        FieldDescriptionInterface $fieldDescription,
+        AdminInterface $admin
+    );
 }

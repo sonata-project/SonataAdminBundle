@@ -181,7 +181,7 @@ in the ``add`` method to set additional settings like this:
     {
         protected function configureRoutes(RouteCollection $collection)
         {
-            $collection->add('custom_action', $this->getRouterIdParameter().'/custom-action', array(), array(), array(), '', array('https'), array('GET', 'POST'));
+            $collection->add('custom_action', $this->getRouterIdParameter().'/custom-action', [], [], [], '', ['https'], ['GET', 'POST']);
         }
     }
 
@@ -299,7 +299,7 @@ the ``clearExcept()`` method. This method accepts an array of routes you want to
         protected function configureRoutes(RouteCollection $collection)
         {
             // Only `list` and `edit` route will be active
-            $collection->clearExcept(array('list', 'edit'));
+            $collection->clearExcept(['list', 'edit']);
             // You can also pass a single string argument
             $collection->clearExcept('list');
         }
@@ -369,13 +369,13 @@ method. This method will be used when a link is being generated.
         public function getPersistentParameters()
         {
             if (!$this->getRequest()) {
-                return array();
+                return [];
             }
 
-            return array(
+            return [
                 'provider' => $this->getRequest()->get('provider'),
                 'context'  => $this->getRequest()->get('context', 'default'),
-            );
+            ];
         }
     }
 
@@ -398,10 +398,10 @@ list action's links to point to a different action, set the ``route`` option in 
         public function configureListFields(ListMapper $listMapper)
         {
             $listMapper
-                ->addIdentifier('name', null, array(
-                    'route' => array(
+                ->addIdentifier('name', null, [
+                    'route' => [
                         'name' => 'show'
-                    )
-                ));
+                    ]
+                ]);
         }
     }

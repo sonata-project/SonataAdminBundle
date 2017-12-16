@@ -23,9 +23,6 @@ use Knp\Menu\Matcher\Voter\VoterInterface;
  */
 class ActiveVoter implements VoterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function matchItem(ItemInterface $item)
     {
         if (!$item->getExtra('sonata_admin', false)) {

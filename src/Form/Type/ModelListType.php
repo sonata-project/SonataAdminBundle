@@ -44,9 +44,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ModelListType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -54,9 +51,6 @@ class ModelListType extends AbstractType
             ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         if (isset($view->vars['sonata_admin'])) {
@@ -80,9 +74,6 @@ class ModelListType extends AbstractType
         $this->configureOptions($resolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -96,9 +87,6 @@ class ModelListType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
         return TextType::class;
@@ -114,9 +102,6 @@ class ModelListType extends AbstractType
         return $this->getBlockPrefix();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'sonata_type_model_list';

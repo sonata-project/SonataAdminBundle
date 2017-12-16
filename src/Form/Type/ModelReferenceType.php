@@ -25,9 +25,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ModelReferenceType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
@@ -43,9 +40,6 @@ class ModelReferenceType extends AbstractType
         $this->configureOptions($resolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -55,9 +49,6 @@ class ModelReferenceType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
         return TextType::class;
@@ -73,9 +64,6 @@ class ModelReferenceType extends AbstractType
         return $this->getBlockPrefix();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'sonata_type_model_reference';

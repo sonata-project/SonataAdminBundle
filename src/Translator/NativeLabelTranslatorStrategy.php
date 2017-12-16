@@ -18,9 +18,6 @@ namespace Sonata\AdminBundle\Translator;
  */
 class NativeLabelTranslatorStrategy implements LabelTranslatorStrategyInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getLabel($label, $context = '', $type = '')
     {
         $label = str_replace(['_', '.'], ' ', $label);

@@ -6,6 +6,6 @@ class FooCall
 {
     public function __call($method, $arguments)
     {
-        return array($method, $arguments);
+        return [$method, $arguments];
     }
 }

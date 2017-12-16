@@ -26,17 +26,16 @@ abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
     /**
      * Configure the object ACL for the passed object identities.
      *
-     * @param OutputInterface      $output
-     * @param AdminInterface       $admin
-     * @param \Traversable         $oids             a collection of ObjectIdentityInterface implementations
-     * @param UserSecurityIdentity $securityIdentity
-     *
      * @throws \Exception
      *
      * @return array [countAdded, countUpdated]
      */
-    public function configureAcls(OutputInterface $output, AdminInterface $admin, \Traversable $oids, UserSecurityIdentity $securityIdentity = null)
-    {
+    public function configureAcls(
+        OutputInterface $output,
+        AdminInterface $admin,
+        \Traversable $oids,
+        UserSecurityIdentity $securityIdentity = null
+    ) {
         $countAdded = 0;
         $countUpdated = 0;
         $securityHandler = $admin->getSecurityHandler();

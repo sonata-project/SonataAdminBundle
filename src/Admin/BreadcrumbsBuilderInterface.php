@@ -25,9 +25,8 @@ interface BreadcrumbsBuilderInterface
     /**
      * Get breadcrumbs for $action.
      *
-     * @param AdminInterface $admin
-     * @param string         $action the name of the action we want to get a
-     *                               breadcrumbs for
+     * @param string $action the name of the action we want to get a
+     *                       breadcrumbs for
      *
      * @return mixed array|Traversable the breadcrumbs
      */

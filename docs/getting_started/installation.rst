@@ -57,7 +57,7 @@ line in the `app/AppKernel.php` file of your project:
     {
         public function registerBundles()
         {
-            $bundles = array(
+            $bundles = [
                 // ...
 
                 // The admin requires some twig functions defined in the security
@@ -72,7 +72,7 @@ line in the `app/AppKernel.php` file of your project:
 
                 // And finally, the storage and SonataAdminBundle
                 new Sonata\AdminBundle\SonataAdminBundle(),
-            );
+            ];
 
             // ...
         }

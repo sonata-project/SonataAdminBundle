@@ -41,11 +41,6 @@ class AdminPoolLoader extends Loader
      */
     protected $container;
 
-    /**
-     * @param Pool               $pool
-     * @param array              $adminServiceIds
-     * @param ContainerInterface $container
-     */
     public function __construct(Pool $pool, array $adminServiceIds, ContainerInterface $container)
     {
         $this->pool = $pool;
@@ -53,17 +48,11 @@ class AdminPoolLoader extends Loader
         $this->container = $container;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($resource, $type = null)
     {
         return self::ROUTE_TYPE_NAME === $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load($resource, $type = null)
     {
         $collection = new SymfonyRouteCollection();

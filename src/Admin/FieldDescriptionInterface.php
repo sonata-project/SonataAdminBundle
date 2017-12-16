@@ -70,8 +70,6 @@ interface FieldDescriptionInterface
      *   - template.
      *
      * Then the value are copied across to the related property value
-     *
-     * @param array $options
      */
     public function setOptions(array $options);
 
@@ -113,8 +111,6 @@ interface FieldDescriptionInterface
 
     /**
      * set the parent Admin (only used in nested admin).
-     *
-     * @param AdminInterface $parent
      */
     public function setParent(AdminInterface $parent);
 
@@ -162,8 +158,6 @@ interface FieldDescriptionInterface
 
     /**
      * set the parent association mappings information.
-     *
-     * @param array $parentAssociationMappings
      */
     public function setParentAssociationMappings(array $parentAssociationMappings);
 
@@ -206,8 +200,6 @@ interface FieldDescriptionInterface
 
     /**
      * set the admin class linked to this FieldDescription.
-     *
-     * @param AdminInterface $admin
      */
     public function setAdmin(AdminInterface $admin);
 
@@ -221,7 +213,6 @@ interface FieldDescriptionInterface
      *
      *
      * @param string $name
-     * @param array  $options
      *
      * @throws \RuntimeException
      */
@@ -229,8 +220,6 @@ interface FieldDescriptionInterface
 
     /**
      * merge options values.
-     *
-     * @param array $options
      */
     public function mergeOptions(array $options = []);
 

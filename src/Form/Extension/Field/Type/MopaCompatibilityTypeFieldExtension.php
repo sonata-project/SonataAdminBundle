@@ -38,9 +38,6 @@ class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension
         $this->configureOptions($resolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -50,9 +47,6 @@ class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['horizontal_label_class'] = $options['horizontal_label_class'];
@@ -60,9 +54,6 @@ class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension
         $view->vars['horizontal_input_wrapper_class'] = $options['horizontal_input_wrapper_class'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExtendedType()
     {
         return FormType::class;

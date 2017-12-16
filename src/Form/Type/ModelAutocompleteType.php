@@ -32,9 +32,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ModelAutocompleteType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addViewTransformer(new ModelToIdPropertyTransformer($options['model_manager'], $options['class'], $options['property'], $options['multiple'], $options['to_string_callback']), true);
@@ -60,9 +57,6 @@ class ModelAutocompleteType extends AbstractType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         foreach ([
@@ -107,9 +101,6 @@ class ModelAutocompleteType extends AbstractType
         $this->configureOptions($resolver);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $compound = function (Options $options) {
@@ -164,9 +155,6 @@ class ModelAutocompleteType extends AbstractType
         $resolver->setRequired(['property']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'sonata_type_model_autocomplete';

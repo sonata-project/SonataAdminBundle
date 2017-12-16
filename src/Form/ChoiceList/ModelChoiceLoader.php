@@ -59,15 +59,19 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
     private $choiceList;
 
     /**
-     * @param ModelManagerInterface          $modelManager
-     * @param string                         $class
-     * @param string|null                    $property
-     * @param mixed|null                     $query
-     * @param array                          $choices
-     * @param PropertyAccessorInterface|null $propertyAccessor
+     * @param string      $class
+     * @param string|null $property
+     * @param mixed|null  $query
+     * @param array       $choices
      */
-    public function __construct(ModelManagerInterface $modelManager, $class, $property = null, $query = null, $choices = [], PropertyAccessorInterface $propertyAccessor = null)
-    {
+    public function __construct(
+        ModelManagerInterface $modelManager,
+        $class,
+        $property = null,
+        $query = null,
+        $choices = [],
+        PropertyAccessorInterface $propertyAccessor = null
+    ) {
         $this->modelManager = $modelManager;
         $this->class = $class;
         $this->property = $property;
@@ -84,9 +88,6 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function loadChoiceList($value = null)
     {
         if (!$this->choiceList) {
@@ -138,17 +139,11 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
         return $this->choiceList;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function loadChoicesForValues(array $values, $value = null)
     {
         return $this->loadChoiceList($value)->getChoicesForValues($values);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function loadValuesForChoices(array $choices, $value = null)
     {
         return $this->loadChoiceList($value)->getValuesForChoices($choices);

@@ -83,7 +83,7 @@ class FormTypeFieldExtensionTest extends TestCase
     //        $formBuilder = $this->createMock('Symfony\Component\Form\FormBuilderInterface');
     //
     //        $extension = new FormTypeFieldExtension();
-    //        $extension->buildForm($formBuilder, array());
+    //        $extension->buildForm($formBuilder, []);
     //    }
 
     public function testbuildViewWithWithSonataAdmin(): void

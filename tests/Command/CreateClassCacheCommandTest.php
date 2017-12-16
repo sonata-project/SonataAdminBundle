@@ -44,7 +44,7 @@ class CreateClassCacheCommandTest extends TestCase
 
         if (mkdir($tempFile)) {
             $this->tempDirectory = $tempFile;
-            file_put_contents($this->tempDirectory.'/classes.map', '<?php return array(\'Sonata\\AdminBundle\\Tests\\Fixtures\\Controller\\FooAdminController\', \'Sonata\\AdminBundle\\Tests\\Fixtures\\Controller\\BarAdminController\',);');
+            file_put_contents($this->tempDirectory.'/classes.map', '<?php return [\'Sonata\\AdminBundle\\Tests\\Fixtures\\Controller\\FooAdminController\', \'Sonata\\AdminBundle\\Tests\\Fixtures\\Controller\\BarAdminController\',];');
         } else {
             $this->markTestSkipped(sprintf('Temp directory "%s" creation error.', $tempFile));
         }

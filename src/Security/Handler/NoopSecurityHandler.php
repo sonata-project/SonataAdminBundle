@@ -20,40 +20,25 @@ use Sonata\AdminBundle\Admin\AdminInterface;
  */
 class NoopSecurityHandler implements SecurityHandlerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isGranted(AdminInterface $admin, $attributes, $object = null)
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBaseRole(AdminInterface $admin)
     {
         return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildSecurityInformation(AdminInterface $admin)
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createObjectSecurity(AdminInterface $admin, $object): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function deleteObjectSecurity(AdminInterface $admin, $object): void
     {
     }

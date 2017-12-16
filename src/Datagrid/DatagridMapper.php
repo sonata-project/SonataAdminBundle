@@ -30,13 +30,11 @@ class DatagridMapper extends BaseMapper
      */
     protected $datagrid;
 
-    /**
-     * @param DatagridBuilderInterface $datagridBuilder
-     * @param DatagridInterface        $datagrid
-     * @param AdminInterface           $admin
-     */
-    public function __construct(DatagridBuilderInterface $datagridBuilder, DatagridInterface $datagrid, AdminInterface $admin)
-    {
+    public function __construct(
+        DatagridBuilderInterface $datagridBuilder,
+        DatagridInterface $datagrid,
+        AdminInterface $admin
+    ) {
         parent::__construct($datagridBuilder, $admin);
         $this->datagrid = $datagrid;
     }
@@ -44,17 +42,21 @@ class DatagridMapper extends BaseMapper
     /**
      * @param string $name
      * @param string $type
-     * @param array  $filterOptions
      * @param string $fieldType
      * @param array  $fieldOptions
-     * @param array  $fieldDescriptionOptions
      *
      * @throws \RuntimeException
      *
      * @return DatagridMapper
      */
-    public function add($name, $type = null, array $filterOptions = [], $fieldType = null, $fieldOptions = null, array $fieldDescriptionOptions = [])
-    {
+    public function add(
+        $name,
+        $type = null,
+        array $filterOptions = [],
+        $fieldType = null,
+        $fieldOptions = null,
+        array $fieldDescriptionOptions = []
+    ) {
         if (is_array($fieldOptions)) {
             $filterOptions['field_options'] = $fieldOptions;
         }
@@ -93,33 +95,21 @@ class DatagridMapper extends BaseMapper
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get($name)
     {
         return $this->datagrid->getFilter($name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has($key)
     {
         return $this->datagrid->hasFilter($key);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function keys()
     {
         return array_keys($this->datagrid->getFilters());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function remove($key)
     {
         $this->admin->removeFilterFieldDescription($key);
@@ -128,9 +118,6 @@ class DatagridMapper extends BaseMapper
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reorder(array $keys)
     {
         $this->datagrid->reorderFilters($keys);
