@@ -11,7 +11,7 @@
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
-use JMS\DiExtraBundle\DependencyInjection\Configuration;
+use JMS\DiExtraBundle\DependencyInjection\Configuration as JMSDiExtraBundleDependencyInjectionConfiguration;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminExtensionInterface;
@@ -346,7 +346,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             $annotationPatterns = [$sonataAdminPattern];
         } else {
             // get annotation_patterns default from DiExtraBundle configuration
-            $diExtraConfigDefinition = new Configuration();
+            $diExtraConfigDefinition = new JMSDiExtraBundleDependencyInjectionConfiguration();
             // FIXME: this will break if DiExtraBundle adds any mandatory configuration
             $diExtraConfig = $this->processConfiguration($diExtraConfigDefinition, []);
 

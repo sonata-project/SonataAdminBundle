@@ -17,6 +17,18 @@ use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 
 class SonataAdminExtensionTest extends AbstractExtensionTestCase
 {
+    /**
+     * @group legacy
+     */
+    public function testContainerCompileWithJMSDiExtraBundle()
+    {
+        $this->container->setParameter('kernel.bundles', [
+            'JMSDiExtraBundle' => true,
+        ]);
+
+        $this->container->compile();
+    }
+
     public function testHasServiceDefinitionForLockExtension()
     {
         $this->container->setParameter('kernel.bundles', []);
