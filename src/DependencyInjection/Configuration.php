@@ -403,6 +403,7 @@ class Configuration implements ConfigurationInterface
 
                                 'bundles/sonataadmin/Admin.js',
                                 'bundles/sonataadmin/treeview.js',
+                                'bundles/sonataadmin/sidebar.js',
                             ])
                             ->prototype('scalar')->end()
                         ->end()
