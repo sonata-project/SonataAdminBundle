@@ -217,6 +217,7 @@ Full Configuration Options
                     - bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js
                     - bundles/sonataadmin/Admin.js
                     - bundles/sonataadmin/treeview.js
+                    - bundles/sonataadmin/sidebar.js
 
                 # javascript paths to add to the page in addition to the list above
                 extra_javascripts: []

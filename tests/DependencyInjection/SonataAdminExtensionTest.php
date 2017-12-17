@@ -147,6 +147,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
             'bundles/sonataadmin/vendor/masonry/dist/masonry.pkgd.min.js',
             'bundles/sonataadmin/Admin.js',
             'bundles/sonataadmin/treeview.js',
+            'bundles/sonataadmin/sidebar.js',
             'foo/bar.js',
             'bar/quux.js',
         ]);
@@ -184,6 +185,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
             'bundles/sonataadmin/vendor/masonry/dist/masonry.pkgd.min.js',
             'bundles/sonataadmin/Admin.js',
             'bundles/sonataadmin/treeview.js',
+            'bundles/sonataadmin/sidebar.js',
         ]);
     }
 
@@ -249,6 +251,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
             'bundles/sonataadmin/vendor/masonry/dist/masonry.pkgd.min.js',
             'bundles/sonataadmin/Admin.js',
             'bundles/sonataadmin/treeview.js',
+            'bundles/sonataadmin/sidebar.js',
             'foo/bar.js',
             'bar/quux.js',
         ]);
