@@ -358,7 +358,7 @@ The available options are:
   defaults to "". CSS class of dropdown item.
 
 ``safe_label``
-  defaults to ``false``. Set to ``true`` to enable the label to be displayed as Raw HTML,
+  defaults to ``false``. Set to ``true`` to enable the label to be displayed as raw HTML,
   which may cause an XSS vulnerability.
 
 ``req_param_name_search``
