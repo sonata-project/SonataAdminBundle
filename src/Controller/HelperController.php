@@ -285,9 +285,13 @@ class HelperController
 
         // Handle entity choice association type, transforming the value into entity
         if ('' !== $value && 'choice' == $fieldDescription->getType() && $fieldDescription->getOption('class')) {
+            $manager = $admin->getConfigurationPool()
+                ->getContainer()
+                ->get($fieldDescription->getAdmin()->getManagerType())
+                ->getManager();
+
             // Get existing associations for current object
-            $associations = $admin->getModelManager()
-                ->getEntityManager($admin->getClass())->getClassMetadata($admin->getClass())
+            $associations = $manager->getClassMetadata($admin->getClass())
                 ->getAssociationNames();
 
             if (!in_array($field, $associations)) {
@@ -300,8 +304,7 @@ class HelperController
                     404);
             }
 
-            $value = $admin->getConfigurationPool()->getContainer()->get('doctrine')->getManager()
-                ->getRepository($fieldDescription->getOption('class'))
+            $value = $manager->getRepository($fieldDescription->getOption('class'))
                 ->find($value);
 
             if (!$value) {
