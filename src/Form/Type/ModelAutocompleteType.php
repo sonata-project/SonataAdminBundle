@@ -84,6 +84,8 @@ class ModelAutocompleteType extends AbstractType
             // add button
             'btn_add',
             'btn_catalogue',
+            // allow HTML
+            'safe_label',
         ] as $passthroughOption) {
             $view->vars[$passthroughOption] = $options[$passthroughOption];
         }
@@ -146,6 +148,9 @@ class ModelAutocompleteType extends AbstractType
             'dropdown_item_css_class' => '',
 
             'dropdown_auto_width' => false,
+
+            // allow HTML
+            'safe_label' => false,
 
             'template' => 'SonataAdminBundle:Form/Type:sonata_type_model_autocomplete.html.twig',
         ]);
