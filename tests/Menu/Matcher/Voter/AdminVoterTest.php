@@ -12,8 +12,8 @@
 namespace Sonata\AdminBundle\Tests\Menu\Matcher\Voter;
 
 use Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class AdminVoterTest extends AbstractVoterTest
 {
