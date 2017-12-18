@@ -148,10 +148,10 @@ file that was distributed with this source code.
             // NEXT_MAJOR: Remove this BC layer while upgrading to v4.
             var templateResult = function (item) {
                 return {% block sonata_type_model_autocomplete_dropdown_item_format -%}
-                    {% if safe_label is defined and not safe_label %}
-                        jQuery('<div class="{{ dropdown_item_css_class }}">').text(item.label).prop('outerHTML')
-                    {% else %}
+                    {% if safe_label is defined and safe_label %}
                         item.label
+                    {% else %}
+                        jQuery('<div class="{{ dropdown_item_css_class }}">').text(item.label).prop('outerHTML')
                     {% endif %}
                 {%- endblock %}; // format of one dropdown item
             };
@@ -161,10 +161,10 @@ file that was distributed with this source code.
                     item.label = item.text;
                 }
                 return {% block sonata_type_model_autocomplete_selection_format -%}
-                    {% if safe_label is defined and not safe_label %}
-                        jQuery('<div>').text(item.label).prop('innerHTML')
+                    {% if safe_label is defined and safe_label %}
+                        item.label
                     {% else %}
-                        item.label 
+                        jQuery('<div>').text(item.label).prop('innerHTML')
                     {% endif %}
                 {%- endblock %}; // format selected item '<b>'+item.label+'</b>';
             };
