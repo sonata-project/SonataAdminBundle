@@ -359,7 +359,7 @@ The available options are:
 
 ``safe_label``
   defaults to ``false``. Set to ``true`` to enable the label to be displayed as Raw HTML,
-  which may cause XSS vulnerability.
+  which may cause an XSS vulnerability.
 
 ``req_param_name_search``
   defaults to "q". Ajax request parameter name which contains the searched text.
