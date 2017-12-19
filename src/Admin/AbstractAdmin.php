@@ -959,8 +959,16 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->subClasses;
     }
 
+    /**
+     * NEXT_MAJOR: remove this method.
+     */
     public function addSubClass($subClass)
     {
+        @trigger_error(sprintf(
+            'Method "%s" is deprecated since 3.x and will be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         if (!in_array($subClass, $this->subClasses)) {
             $this->subClasses[] = $subClass;
         }
