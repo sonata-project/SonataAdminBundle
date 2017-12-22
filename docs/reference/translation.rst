@@ -82,9 +82,9 @@ Setting the translation domain on an individual field:
 
     $formMapper
         ->with('form.my_group')
-            ->add('publishable', 'checkbox', array(), array(
+            ->add('publishable', 'checkbox', [], [
                 'translation_domain' => 'MyTranslationDomain',
-            ))
+            ])
         ->end()
     ;
 
@@ -94,11 +94,11 @@ over-rides that setting for one of the fields:
 .. code-block:: php
 
     $formMapper
-        ->with('form.my_group', array('translation_domain' => 'MyDomain'))
-            ->add('publishable', 'checkbox', array(), array(
+        ->with('form.my_group', ['translation_domain' => 'MyDomain'])
+            ->add('publishable', 'checkbox', [], [
                 'translation_domain' => 'AnotherDomain',
-            ))
-            ->add('start_date', 'date', array(), array())
+            ])
+            ->add('start_date', 'date', [], [])
         ->end()
     ;
 
@@ -118,10 +118,10 @@ label can be defined as the third argument of the ``add`` method:
         public function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('isValid', null, array(
+                ->add('isValid', null, [
                     'required' => false,
                     'label' => 'label.is_valid',
-                ))
+                ])
             ;
         }
     }

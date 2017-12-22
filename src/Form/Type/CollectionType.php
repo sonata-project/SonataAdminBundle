@@ -22,9 +22,6 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType as SymfonyCollecti
  */
 class CollectionType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
         return SymfonyCollectionType::class;
@@ -40,9 +37,6 @@ class CollectionType extends AbstractType
         return $this->getBlockPrefix();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'sonata_type_native_collection';

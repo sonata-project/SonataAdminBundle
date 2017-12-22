@@ -8,13 +8,13 @@ class FilteredAdmin extends AbstractAdmin
 {
     protected function configureDefaultFilterValues(array &$filterValues)
     {
-        $filterValues['foo'] = array(
+        $filterValues['foo'] = [
             'type' => '1',
             'value' => 'bar',
-        );
-        $filterValues['baz'] = array(
+        ];
+        $filterValues['baz'] = [
             'type' => '2',
             'value' => 'test',
-        );
+        ];
     }
 }

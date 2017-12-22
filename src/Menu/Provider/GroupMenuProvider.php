@@ -41,8 +41,6 @@ class GroupMenuProvider implements MenuProviderInterface
     /**
      * NEXT_MAJOR: Remove default value null of $checker.
      *
-     * @param FactoryInterface                   $menuFactory
-     * @param Pool                               $pool
      * @param AuthorizationCheckerInterface|null $checker
      */
     public function __construct(FactoryInterface $menuFactory, Pool $pool, $checker = null)
@@ -73,7 +71,6 @@ class GroupMenuProvider implements MenuProviderInterface
      * Retrieves the menu based on the group options.
      *
      * @param string $name
-     * @param array  $options
      *
      * @throws \InvalidArgumentException if the menu does not exists
      *
@@ -166,7 +163,6 @@ class GroupMenuProvider implements MenuProviderInterface
      * Checks whether a menu exists in this provider.
      *
      * @param string $name
-     * @param array  $options
      *
      * @return bool
      */

@@ -173,7 +173,7 @@ Full Configuration Options
             assets:
                 stylesheets:
 
-                    # Defaults:
+                    # The default stylesheet list:
                     - bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css
                     - bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css
                     - bundles/sonatacore/vendor/ionicons/css/ionicons.min.css
@@ -189,9 +189,16 @@ Full Configuration Options
                     - bundles/sonataadmin/css/layout.css
                     - bundles/sonataadmin/css/tree.css
                     - bundles/sonataadmin/css/colors.css
+
+                # stylesheet paths to add to the page in addition to the list above
+                extra_stylesheets: []
+
+                # stylesheet paths to remove from the page
+                remove_stylesheets: []
+
                 javascripts:
 
-                    # Defaults:
+                    # The default javascript list:
                     - bundles/sonatacore/vendor/jquery/dist/jquery.min.js
                     - bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js
                     - bundles/sonatacore/vendor/moment/min/moment.min.js
@@ -210,6 +217,14 @@ Full Configuration Options
                     - bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js
                     - bundles/sonataadmin/Admin.js
                     - bundles/sonataadmin/treeview.js
+                    - bundles/sonataadmin/sidebar.js
+
+                # javascript paths to add to the page in addition to the list above
+                extra_javascripts: []
+
+                # javascript paths to remove from the page
+                remove_javascripts: []
+
             extensions:
 
                 # Prototype

@@ -52,10 +52,10 @@ This is currently limited to scalar types (text, integer, url...) and choice typ
         $listMapper
 
             // store date in UTC but display is in the user timezone
-            ->add('date', null, array(
+            ->add('date', null, [
                 'format' => 'Y-m-d H:i',
                 'timezone' => 'America/New_York'
-            ))
+            ])
         ;
     }
 
@@ -71,14 +71,14 @@ Choice
     {
         // For the value `prog`, the displayed text is `In progress`. The `AppBundle` catalogue will be used to translate `In progress` message.
         $listMapper
-            ->add('status', 'choice', array(
-                'choices' => array(
+            ->add('status', 'choice', [
+                'choices' => [
                     'prep' => 'Prepared',
                     'prog' => 'In progress',
                     'done' => 'Done'
-                ),
+                ],
                 'catalogue' => 'AppBundle'
-            ))
+            ])
         ;
     }
 
@@ -88,17 +88,17 @@ The ``choice`` field type also supports multiple values that can be separated by
 
     public function configureListFields(ListMapper $listMapper)
     {
-        // For the value `array('r', 'b')`, the displayed text ist `red | blue`.
+        // For the value `['r', 'b']`, the displayed text ist `red | blue`.
         $listMapper
-            ->add('colors', 'choice',  array(
+            ->add('colors', 'choice', [
                 'multiple' => true,
                 'delimiter' => ' | ',
-                'choices' => array(
+                'choices' => [
                     'r' => 'red',
                     'g' => 'green',
                     'b' => 'blue'
-                )
-            ))
+                ]
+            ])
         ;
     }
 
@@ -118,9 +118,9 @@ Parameter                               Description
 ======================================  ==================================================================
 **hide_protocol**                       remove protocol part from the link text
 **url**                                 URL address (e.g. ``http://example.com``)
-**attributes**                          array of html tag attributes (e.g. ``array('target' => '_blank')``)
+**attributes**                          array of html tag attributes (e.g. ``['target' => '_blank']``)
 **route.name**                          route name (e.g. ``acme_blog_homepage``)
-**route.parameters**                    array of route parameters (e.g. ``array('type' => 'example', 'display' => 'full')``)
+**route.parameters**                    array of route parameters (e.g. ``['type' => 'example', 'display' => 'full']``)
 **route.absolute**                      boolean value, create absolute or relative url address based on ``route.name`` and  ``route.parameters`` (default ``false``)
 **route.identifier_parameter_name**     parameter added to ``route.parameters``, its value is an object identifier (e.g. 'id') to create dynamic links based on rendered objects.
 ======================================  ==================================================================
@@ -136,41 +136,41 @@ Parameter                               Description
 
             // Output for value `http://example.com`:
             // `<a href="http://example.com" target="_blank">example.com</a>`
-            ->add('targetUrl', 'url', array(
-                'attributes' => array('target' => '_blank')
-            ))
+            ->add('targetUrl', 'url', [
+                'attributes' => ['target' => '_blank']
+            ])
 
             // Output for value `http://example.com`:
             // `<a href="http://example.com">example.com</a>`
-            ->add('targetUrl', 'url', array(
+            ->add('targetUrl', 'url', [
                 'hide_protocol' => true
-            ))
+            ])
 
             // Output for value `Homepage of example.com` :
             // `<a href="http://example.com">Homepage of example.com</a>`
-            ->add('title', 'url', array(
+            ->add('title', 'url', [
                 'url' => 'http://example.com'
-            ))
+            ])
 
             // Output for value `Acme Blog Homepage`:
             // `<a href="http://blog.example.com">Acme Blog Homepage</a>`
-            ->add('title', 'url', array(
-                'route' => array(
+            ->add('title', 'url', [
+                'route' => [
                     'name' => 'acme_blog_homepage',
                     'absolute' => true
-                )
-            ))
+                ]
+            ])
 
             // Output for value `Sonata is great!` (related object has identifier `123`):
             // `<a href="http://blog.example.com/xml/123">Sonata is great!</a>`
-            ->add('title', 'url', array(
-                'route' => array(
+            ->add('title', 'url', [
+                'route' => [
                     'name' => 'acme_blog_article',
                     'absolute' => true,
-                    'parameters' => array('format' => 'xml'),
+                    'parameters' => ['format' => 'xml'],
                     'identifier_parameter_name' => 'id'
-                )
-            ))
+                ]
+            ])
         ;
     }
 
@@ -207,48 +207,48 @@ Parameter                   Description
 
             // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
             // `Creating a Template for the Fi...`
-            ->add('content', 'html', array(
+            ->add('content', 'html', [
                 'strip' => true
-            ))
+            ])
 
             // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
             // `Creating a Template for...`
-            ->add('content', 'html', array(
+            ->add('content', 'html', [
                 'truncate' => true
-            ))
+            ])
 
             // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
             // `Creating a...`
-            ->add('content', 'html', array(
-                'truncate' => array(
+            ->add('content', 'html', [
+                'truncate' => [
                     'length' => 10
-                )
-            ))
+                ]
+            ])
 
             // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
             // `Creating a Template for the Field...`
-            ->add('content', 'html', array(
-                'truncate' => array(
+            ->add('content', 'html', [
+                'truncate' => [
                     'preserve' => true
-                )
-            ))
+                ]
+            ])
 
             // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
             // `Creating a Template for the Fi, etc.`
-            ->add('content', 'html', array(
-                'truncate' => array(
+            ->add('content', 'html', [
+                'truncate' => [
                     'separator' => ', etc.'
-                )
-            ))
+                ]
+            ])
 
             // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
             // `Creating a Template for***`
-            ->add('content', 'html', array(
-                'truncate' => array(
+            ->add('content', 'html', [
+                'truncate' => [
                     'length' => 20,
                     'preserve' => true,
                     'separator' => '***'
-                )
-            ))
+                ]
+            ])
         ;
     }

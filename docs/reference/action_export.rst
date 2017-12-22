@@ -36,7 +36,7 @@ behavior for a specific admin, you can override the ``getExportFields()`` method
 
     public function getExportFields()
     {
-        return array('givenName', 'familyName', 'contact.phone');
+        return ['givenName', 'familyName', 'contact.phone'];
     }
 
 .. note::
@@ -68,7 +68,7 @@ method in your admin class.
 
     public function getExportFormats()
     {
-        return array('pdf', 'html');
+        return ['pdf', 'html'];
     }
 
 Customizing the query used to fetch the results

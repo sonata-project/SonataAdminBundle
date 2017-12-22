@@ -49,11 +49,6 @@ class SonataAdminExtension extends AbstractExtension
      */
     private $xEditableTypeMapping = [];
 
-    /**
-     * @param Pool                $pool
-     * @param LoggerInterface     $logger
-     * @param TranslatorInterface $translator
-     */
     public function __construct(Pool $pool, LoggerInterface $logger = null, TranslatorInterface $translator = null)
     {
         // NEXT_MAJOR: make the translator parameter required
@@ -68,9 +63,6 @@ class SonataAdminExtension extends AbstractExtension
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFilters()
     {
         return [
@@ -117,9 +109,6 @@ class SonataAdminExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return 'sonata_admin';
@@ -128,9 +117,8 @@ class SonataAdminExtension extends AbstractExtension
     /**
      * render a list element from the FieldDescription.
      *
-     * @param mixed                     $object
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param array                     $params
+     * @param mixed $object
+     * @param array $params
      *
      * @return string
      */
@@ -155,10 +143,6 @@ class SonataAdminExtension extends AbstractExtension
     }
 
     /**
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param \Twig_Template            $template
-     * @param array                     $parameters
-     *
      * @return string
      */
     public function output(
@@ -198,9 +182,7 @@ EOT;
      * return the value related to FieldDescription, if the associated object does no
      * exists => a temporary one is created.
      *
-     * @param object                    $object
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param array                     $params
+     * @param object $object
      *
      * @throws \RuntimeException
      *
@@ -231,8 +213,7 @@ EOT;
     /**
      * render a view element.
      *
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param mixed                     $object
+     * @param mixed $object
      *
      * @return string
      */
@@ -264,9 +245,8 @@ EOT;
     /**
      * render a compared view element.
      *
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param mixed                     $baseObject
-     * @param mixed                     $compareObject
+     * @param mixed $baseObject
+     * @param mixed $compareObject
      *
      * @return string
      */
@@ -319,8 +299,7 @@ EOT;
     }
 
     /**
-     * @param mixed                     $element
-     * @param FieldDescriptionInterface $fieldDescription
+     * @param mixed $element
      *
      * @throws \RuntimeException
      *
@@ -371,8 +350,7 @@ EOT;
     /**
      * Get the identifiers as a string that is safe to use in a url.
      *
-     * @param object         $model
-     * @param AdminInterface $admin
+     * @param object $model
      *
      * @return string string representation of the id that is safe to use in a url
      */
@@ -394,8 +372,6 @@ EOT;
     }
 
     /**
-     * @param $type
-     *
      * @return string|bool
      */
     public function getXEditableType($type)
@@ -409,8 +385,6 @@ EOT;
      *     ['Status1' => 'Alias1', 'Status2' => 'Alias2']
      * The method will return:
      *     [['value' => 'Status1', 'text' => 'Alias1'], ['value' => 'Status2', 'text' => 'Alias2']].
-     *
-     * @param FieldDescriptionInterface $fieldDescription
      *
      * @return array
      */
@@ -450,8 +424,7 @@ EOT;
     /**
      * Get template.
      *
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param string                    $defaultTemplate
+     * @param string $defaultTemplate
      *
      * @return \Twig_TemplateInterface
      */

@@ -39,7 +39,6 @@ abstract class BaseGroupedMapper extends BaseMapper
      * Add new group or tab (if parameter "tab=true" is available in options).
      *
      * @param string $name
-     * @param array  $options
      *
      * @throws \RuntimeException
      *
@@ -55,12 +54,12 @@ abstract class BaseGroupedMapper extends BaseMapper
          *            ->add('username')
          *            ->add('password')
          *        ->end()
-         *        ->with('tab1', array('tab' => true))
+         *        ->with('tab1', ['tab' => true])
          *            ->with('group1')
          *                ->add('username')
          *                ->add('password')
          *            ->end()
-         *            ->with('group2', array('collapsed' => true))
+         *            ->with('group2', ['collapsed' => true])
          *                ->add('enabled')
          *                ->add('createdAt')
          *            ->end()
@@ -207,7 +206,6 @@ abstract class BaseGroupedMapper extends BaseMapper
      * Add new tab.
      *
      * @param string $name
-     * @param array  $options
      *
      * @return $this
      */
@@ -256,14 +254,8 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     abstract protected function getTabs();
 
-    /**
-     * @param array $groups
-     */
     abstract protected function setGroups(array $groups);
 
-    /**
-     * @param array $tabs
-     */
     abstract protected function setTabs(array $tabs);
 
     /**

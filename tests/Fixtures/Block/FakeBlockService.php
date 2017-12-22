@@ -24,10 +24,10 @@ class FakeBlockService extends AdminListBlockService
         parent::configureSettings($resolver);
 
         $resolver
-            ->setDefaults(array(
+            ->setDefaults([
                 'foo' => 'bar',
                 'groups' => true,
-            ))
+            ])
         ;
     }
 }

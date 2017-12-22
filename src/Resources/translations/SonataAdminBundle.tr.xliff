@@ -1,126 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-    <file source-language="en" datatype="plaintext" original="">
+    <file source-language="en" target-language="tr" datatype="plaintext" original="SonataAdminBundle.en.xliff">
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
-                <target>Amministrazione</target>
+                <target>Yönetim</target>
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
-                <target>Elimina</target>
+                <target>Sil</target>
             </trans-unit>
             <trans-unit id="btn_batch">
                 <source>btn_batch</source>
-                <target>Vai</target>
+                <target>Tamam</target>
             </trans-unit>
             <trans-unit id="btn_create">
                 <source>btn_create</source>
-                <target>Crea</target>
+                <target>Ekle</target>
             </trans-unit>
             <trans-unit id="btn_create_and_edit_again">
                 <source>btn_create_and_edit_again</source>
-                <target>Crea</target>
+                <target>Ekle ve düzenle</target>
             </trans-unit>
             <trans-unit id="btn_create_and_create_a_new_one">
                 <source>btn_create_and_create_a_new_one</source>
-                <target>Crea e aggiungi</target>
+                <target>Ekle ve yenisine geç</target>
             </trans-unit>
             <trans-unit id="btn_create_and_return_to_list">
                 <source>btn_create_and_return_to_list</source>
-                <target>Crea e torna alla lista</target>
+                <target>Ekle ve listeye dön</target>
             </trans-unit>
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
-                <target>Filtra</target>
+                <target>Filtrele</target>
             </trans-unit>
             <trans-unit id="btn_advanced_filters">
                 <source>btn_advanced_filters</source>
-                <target>Filtri avanzati</target>
+                <target>Gelişmiş filtreleme</target>
             </trans-unit>
             <trans-unit id="btn_update">
                 <source>btn_update</source>
-                <target>Aggiorna</target>
+                <target>Kaydet</target>
             </trans-unit>
             <trans-unit id="btn_update_and_edit_again">
                 <source>btn_update_and_edit_again</source>
-                <target>Aggiorna e modifica</target>
+                <target>Kaydet ve tekrar düzenle</target>
             </trans-unit>
             <trans-unit id="btn_update_and_return_to_list">
                 <source>btn_update_and_return_to_list</source>
-                <target>Aggiorna e torna alla lista</target>
+                <target>Kaydet ve listeye dön</target>
             </trans-unit>
             <trans-unit id="link_delete">
                 <source>link_delete</source>
-                <target>Elimina</target>
+                <target>Sil</target>
             </trans-unit>
             <trans-unit id="link_action_create">
                 <source>link_action_create</source>
-                <target>Aggiungi nuovo</target>
+                <target>Yeni ekle</target>
             </trans-unit>
             <trans-unit id="link_action_list">
                 <source>link_action_list</source>
-                <target>Torna alla lista</target>
+                <target>Listeye dön</target>
             </trans-unit>
             <trans-unit id="link_action_show">
                 <source>link_action_show</source>
-                <target>Mostra</target>
+                <target>Görüntüle</target>
             </trans-unit>
             <trans-unit id="link_action_edit">
                 <source>link_action_edit</source>
-                <target>Modifica</target>
+                <target>Düzenle</target>
             </trans-unit>
             <trans-unit id="link_add">
                 <source>link_add</source>
-                <target>Aggiungi nuovo</target>
-            </trans-unit>
-            <trans-unit id="link_edit">
-                <source>link_edit</source>
-                <target>Modifica</target>
+                <target>Yeni ekle</target>
             </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
-                <target>Lista</target>
+                <target>Liste</target>
             </trans-unit>
             <trans-unit id="link_reset_filter">
                 <source>link_reset_filter</source>
-                <target>Azzera</target>
+                <target>Sıfırla</target>
             </trans-unit>
             <trans-unit id="title_create">
                 <source>title_create</source>
-                <target>Crea</target>
+                <target>Oluştur</target>
             </trans-unit>
             <trans-unit id="title_show">
                 <source>title_show</source>
-                <target>Mostra "%name%"</target>
+                <target>%name%</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
-                <target>Dashboard</target>
+                <target>Panel</target>
             </trans-unit>
             <trans-unit id="title_edit">
                 <source>title_edit</source>
-                <target>Modifica "%name%"</target>
+                <target>Düzenle "%name%"</target>
             </trans-unit>
             <trans-unit id="title_list">
                 <source>title_list</source>
-                <target>Lista</target>
+                <target>Listele</target>
             </trans-unit>
             <trans-unit id="link_next_pager">
                 <source>link_next_pager</source>
-                <target>Pagina successiva</target>
+                <target>Sonraki</target>
             </trans-unit>
             <trans-unit id="link_previous_pager">
                 <source>link_previous_pager</source>
-                <target>Pagina precedente</target>
+                <target>Önceki</target>
             </trans-unit>
             <trans-unit id="link_first_pager">
                 <source>link_first_pager</source>
-                <target>Prima pagina</target>
+                <target>İlk</target>
             </trans-unit>
             <trans-unit id="link_last_pager">
                 <source>link_last_pager</source>
-                <target>Ultima pagina</target>
+                <target>Son</target>
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
@@ -128,75 +124,71 @@
             </trans-unit>
             <trans-unit id="link_expand">
                 <source>link_expand</source>
-                <target>Espandi/Riduci</target>
+                <target>genişlet/daralt</target>
             </trans-unit>
             <trans-unit id="no_result">
                 <source>no_result</source>
-                <target>Nessun risultato</target>
+                <target>Kayıt yok</target>
             </trans-unit>
             <trans-unit id="confirm_msg">
                 <source>confirm_msg</source>
-                <target>Sei sicuro?</target>
+                <target>Onaylıyor musunuz?</target>
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
-                <target>Modifica</target>
+                <target>Düzenle</target>
             </trans-unit>
             <trans-unit id="action_show">
                 <source>action_show</source>
-                <target>Mostra</target>
+                <target>Görüntüle</target>
             </trans-unit>
             <trans-unit id="all_elements">
                 <source>all_elements</source>
-                <target>Tutti gli elementi</target>
+                <target>Tümü</target>
             </trans-unit>
             <trans-unit id="flash_batch_empty">
                 <source>flash_batch_empty</source>
-                <target>Azione interrotta. Nessun elemento selezionato.</target>
+                <target>İşlem iptal edildi. Seçili kayıt yok.</target>
             </trans-unit>
             <trans-unit id="flash_create_success">
                 <source>flash_create_success</source>
-                <target>Elemento creato con successo.</target>
+                <target>"%name%" eklendi.</target>
             </trans-unit>
             <trans-unit id="flash_create_error">
                 <source>flash_create_error</source>
-                <target>Si è verificato un errore durante la creazione dell'elemento.</target>
+                <target>"%name%" oluşturulurken hata oluştu.</target>
             </trans-unit>
             <trans-unit id="flash_edit_success">
                 <source>flash_edit_success</source>
-                <target>Elemento aggiornato con successo.</target>
+                <target>"%name%" güncellendi.</target>
             </trans-unit>
             <trans-unit id="flash_edit_error">
                 <source>flash_edit_error</source>
-                <target>Si è verificato un errore durante la modifica dell'elemento.</target>
+                <target>"%name%" güncellenirken hata oluştu.</target>
             </trans-unit>
             <trans-unit id="flash_lock_error">
                 <source>flash_lock_error</source>
-                <target>Un altro utente ha modificato l'oggetto "%name%". Per favore %link_start%clicca qui%link_end% per ricaricare la pagina e applicare di nuovo le modifiche.</target>
+                <target>Başka bir kullanıcı bu kaydı değiştirdi: "%name%". %link_start%Sayfayı yenileyip%link_end% tekrar düzenleyin.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
-                <target>Gli elementi selezionati sono stati eliminati con successo.</target>
-            </trans-unit>
-            <trans-unit id="flash_batch_no_elements_processed">
-                <source>flash_batch_no_elements_processed</source>
-                <target>Nessun elemento processato.</target>
+                <target>Seçili kayıtlar silindi.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
-                <target>Si è verificato un errore durante l'eliminazione degli elementi.</target>
+                <target>Kayıtlar silinirken hata oluştu.</target>
             </trans-unit>
             <trans-unit id="flash_delete_error">
                 <source>flash_delete_error</source>
-                <target>Si è verificato un errore durante l'eliminazione dell'elemento.</target>
+                <target>"%name%" kayıt silinirken hata oluştu.</target>
             </trans-unit>
             <trans-unit id="flash_delete_success">
                 <source>flash_delete_success</source>
-                <target>Elemento eliminato con successo.</target>
+                <target>"%name%" kayıt silindi.</target>
             </trans-unit>
             <trans-unit id="form_not_available">
                 <source>form_not_available</source>
-                <target>Form non disponibile</target>
+                <target>Form mevcut değil.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>link_breadcrumb_dashboard</source>
@@ -204,55 +196,55 @@
             </trans-unit>
             <trans-unit id="title_delete">
                 <source>title_delete</source>
-                <target>Conferma eliminazione</target>
+                <target>Silme işlemini onayla</target>
             </trans-unit>
             <trans-unit id="message_delete_confirmation">
                 <source>message_delete_confirmation</source>
-                <target>Sei sicuro di voler eliminare l'elemento selezionato?</target>
+                <target>Kayıt silinecek: "%object%"</target>
             </trans-unit>
             <trans-unit id="btn_delete">
                 <source>btn_delete</source>
-                <target>Sì, elimina</target>
+                <target>Sil</target>
             </trans-unit>
             <trans-unit id="title_batch_confirmation">
                 <source>title_batch_confirmation</source>
-                <target>Conferma l'azione multipla</target>
+                <target>Toplu işlem "%action%"</target>
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Sei sicuro di voler eseguire l'azione sull'elemento selezionato?|Sei sicuro di voler eseguire l'azione su %count% elementi selezionati?</target>
+                <target>Bu işlemi onaylıyor musunuz?|Bu işlemi %count% kayıt için onaylıyor musunuz?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
-                <target>Sei sicuro di voler eseguire l'azione su tutti gli elementi?</target>
+                <target>İşlemi onaylayıp tüm kayıtlar için uygulamak istiyor musunuz?</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
-                <target>Sì, esegui</target>
+                <target>Uygula</target>
             </trans-unit>
             <trans-unit id="label_type_yes">
                 <source>label_type_yes</source>
-                <target>sì</target>
+                <target>evet</target>
             </trans-unit>
             <trans-unit id="label_type_no">
                 <source>label_type_no</source>
-                <target>no</target>
+                <target>hayır</target>
             </trans-unit>
             <trans-unit id="label_type_contains">
                 <source>label_type_contains</source>
-                <target>contiene</target>
+                <target>içeren</target>
             </trans-unit>
             <trans-unit id="label_type_not_contains">
                 <source>label_type_not_contains</source>
-                <target>non contiene</target>
+                <target>içermeyen</target>
             </trans-unit>
             <trans-unit id="label_type_equals">
                 <source>label_type_equals</source>
-                <target>è uguale a</target>
+                <target>eşit</target>
             </trans-unit>
             <trans-unit id="label_type_not_equals">
                 <source>label_type_not_equals</source>
-                <target>non è uguale a</target>
+                <target>eşit değil</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
                 <source>label_type_equal</source>
@@ -296,75 +288,75 @@
             </trans-unit>
             <trans-unit id="label_date_type_null">
                 <source>label_date_type_null</source>
-                <target>è vuoto</target>
+                <target>boş</target>
             </trans-unit>
             <trans-unit id="label_date_type_not_null">
                 <source>label_date_type_not_null</source>
-                <target>non è vuoto</target>
+                <target>boş değil</target>
             </trans-unit>
-            <trans-unit id="label_date_type_range">
-                <source>label_date_type_range</source>
-                <target>periodo</target>
+            <trans-unit id="label_date_type_between">
+                <source>label_date_type_between</source>
+                <target>aralığında</target>
             </trans-unit>
             <trans-unit id="label_date_not_between">
                 <source>label_date_type_not_between</source>
-                <target>al di fuori del periodo</target>
+                <target>aralığında olmayan</target>
             </trans-unit>
             <trans-unit id="label_filters">
                 <source>label_filters</source>
-                <target>Filtra</target>
+                <target>Filtreler</target>
             </trans-unit>
             <trans-unit id="delete_or">
                 <source>delete_or</source>
-                <target>oppure</target>
+                <target>veya</target>
             </trans-unit>
             <trans-unit id="link_action_history">
                 <source>link_action_history</source>
-                <target>Revisioni</target>
+                <target>Geçmiş</target>
             </trans-unit>
             <trans-unit id="td_action">
                 <source>td_action</source>
-                <target>Azione</target>
+                <target>İşlem</target>
             </trans-unit>
             <trans-unit id="td_compare">
                 <source>td_compare</source>
-                <target>Confronta</target>
+                <target>Karşılaştır</target>
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
-                <target>Revisioni</target>
+                <target>Değişiklik geçmişi</target>
             </trans-unit>
             <trans-unit id="td_timestamp">
                 <source>td_timestamp</source>
-                <target>Data</target>
+                <target>Tarih</target>
             </trans-unit>
             <trans-unit id="td_username">
                 <source>td_username</source>
-                <target>Utente</target>
+                <target>Yazar</target>
             </trans-unit>
             <trans-unit id="td_role">
                 <source>td_role</source>
-                <target>Ruolo</target>
+                <target>Rol</target>
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
-                <target>Visualizza revisione</target>
+                <target>Değişiklikleri gör</target>
             </trans-unit>
             <trans-unit id="label_compare_revision">
                 <source>label_compare_revision</source>
-                <target>Confronta revisione</target>
+                <target>Değişiklikleri karşılaştır</target>
             </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
-                <target>almeno</target>
+                <target>en az</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
-                <target>1 risultato|%count% risultati</target>
+                <target>1 sonuç|%count% sonuç</target>
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Esporta in formato</target>
+                <target>Verileri indir</target>
             </trans-unit>
             <trans-unit id="export_format_json">
                 <source>export_format_json</source>
@@ -384,107 +376,107 @@
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
-                <target>Caricamento informazioni…</target>
+                <target>Veri yükleniyor…</target>
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
-                <target>Anteprima</target>
+                <target>Önizleme</target>
             </trans-unit>
             <trans-unit id="btn_preview_approve">
                 <source>btn_preview_approve</source>
-                <target>Approva</target>
+                <target>Onayla</target>
             </trans-unit>
             <trans-unit id="btn_preview_decline">
                 <source>btn_preview_decline</source>
-                <target>Rifiuta</target>
+                <target>İptal</target>
             </trans-unit>
             <trans-unit id="label_per_page">
                 <source>label_per_page</source>
-                <target>Risultati per pagina</target>
+                <target>Sayfa başına</target>
             </trans-unit>
             <trans-unit id="list_select">
                 <source>list_select</source>
-                <target>Seleziona</target>
+                <target>Seçim</target>
             </trans-unit>
             <trans-unit id="confirm_exit">
                 <source>confirm_exit</source>
-                <target>Le modifiche non salvate verranno perse.</target>
+                <target>Sayfada kaydedilmemiş değişiklikler mevcut.</target>
             </trans-unit>
             <trans-unit id="link_edit_acl">
                 <source>link_edit_acl</source>
-                <target>Modifica ACL</target>
+                <target>Yetki düzenle</target>
             </trans-unit>
             <trans-unit id="btn_update_acl">
                 <source>btn_update_acl</source>
-                <target>Aggiorna ACL</target>
+                <target>Yetkiyi güncelle</target>
             </trans-unit>
             <trans-unit id="flash_acl_update_success">
                 <source>flash_acl_edit_success</source>
-                <target>ACL aggiornata con successo.</target>
+                <target>Yetki güncellendi.</target>
             </trans-unit>
             <trans-unit id="link_action_acl">
                 <source>link_action_acl</source>
-                <target>ACL</target>
+                <target>Yetki</target>
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
                 <source>short_object_description_placeholder</source>
-                <target>Nessuna selezione</target>
+                <target>Seçilmedi</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>
-                <target>Risultati della ricerca: %query%</target>
+                <target>%query% için arama sonuçları</target>
             </trans-unit>
             <trans-unit id="search_placeholder">
                 <source>search_placeholder</source>
-                <target>Cerca</target>
+                <target>Ara</target>
             </trans-unit>
             <trans-unit id="no_results_found">
                 <source>no_results_found</source>
-                <target>nessun risultato</target>
+                <target>sonuç bulunamadı</target>
             </trans-unit>
             <trans-unit id="add_new_entry">
                 <source>add_new_entry</source>
-                <target>aggiungi</target>
+                <target>yeni kayıt ekle</target>
             </trans-unit>
             <trans-unit id="link_actions">
                 <source>link_actions</source>
-                <target>Azioni</target>
+                <target>İşlemler</target>
             </trans-unit>
             <trans-unit id="noscript_warning">
                 <source>noscript_warning</source>
-                <target>Javascript è disattivato nel tuo browser. Alcune funzioni non funzioneranno correttamente.</target>
+                <target>Tarayıcınızda Javascript devre dışı. Bazı özellikler doğru çalışmayabilir.</target>
             </trans-unit>
             <trans-unit id="message_form_group_empty">
                 <source>message_form_group_empty</source>
-                <target>Nessun campo disponibile.</target>
+                <target>Formda hiç alan yok.</target>
             </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
-                <target>Filtri</target>
+                <target>Filterler</target>
             </trans-unit>
             <trans-unit id="stats_view_more">
                 <source>stats_view_more</source>
-                <target>Mostra dettagli</target>
+                <target>Devamını göster</target>
             </trans-unit>
             <trans-unit id="title_select_subclass">
                 <source>title_select_subclass</source>
-                <target>Seleziona il tipo</target>
+                <target>Nesne türünü seç</target>
             </trans-unit>
             <trans-unit id="no_subclass_available">
                 <source>no_subclass_available</source>
-                <target>Nessun tipo disponibile</target>
+                <target>Mevcut bir tür yok</target>
             </trans-unit>
             <trans-unit id="label_unknown_user">
                 <source>label_unknown_user</source>
-                <target>sconosciuto</target>
+                <target>bilinmeyen</target>
             </trans-unit>
             <trans-unit id="read_more">
                 <source>read_more</source>
-                <target>read_more</target>
+                <target>Devamını oku</target>
             </trans-unit>
             <trans-unit id="read_less">
                 <source>read_less</source>
-                <target>read_less</target>
+                <target>Kapat</target>
             </trans-unit>
         </body>
     </file>

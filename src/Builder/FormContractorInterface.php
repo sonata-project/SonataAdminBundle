@@ -24,8 +24,6 @@ interface FormContractorInterface extends BuilderInterface
 {
     /**
      * @abstract
-     *
-     * @param FormFactoryInterface $formFactory
      */
     public function __construct(FormFactoryInterface $formFactory);
 
@@ -33,7 +31,6 @@ interface FormContractorInterface extends BuilderInterface
      * @abstract
      *
      * @param string $name
-     * @param array  $options
      *
      * @return FormBuilder
      */
@@ -44,8 +41,7 @@ interface FormContractorInterface extends BuilderInterface
      *
      * @abstract
      *
-     * @param string                    $type
-     * @param FieldDescriptionInterface $fieldDescription
+     * @param string $type
      *
      * @return array
      */

@@ -2,6 +2,26 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.29.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.28.0...3.29.0) - 2017-12-16
+### Added
+- Added edit button functionality
+- Added possibility to add and remove javascripts/stylesheets without adding all defaults again
+
+### Changed
+- added missing Dutch translations
+- Services tagged with `sonata.admin` and `sonata.admin.filter.type` are now public
+- Improvements on `AbstractAdmin::getClass()` method
+
+### Fixed
+- Fixed calling route generator with boolean value
+- Replace FQCN strings with `::class` constants
+- Add trans filter to form_group and form_tab description
+- added Turkish translations
+- don't display fields that are missing in child classes
+- Patched collection form handling script to maintain File input state when new items are added to collections
+- exporter-related error during cache:clear command.
+- added missing italian translations
+
 ## [3.28.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.27.0...3.28.0) - 2017-11-30
 ### Added
 - Added `CRUDController::redirectToList` method for all list redirections

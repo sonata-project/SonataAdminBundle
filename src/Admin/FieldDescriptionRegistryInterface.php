@@ -46,8 +46,7 @@ interface FieldDescriptionRegistryInterface
     /**
      * Adds a FieldDescription.
      *
-     * @param string                    $name
-     * @param FieldDescriptionInterface $fieldDescription
+     * @param string $name
      */
     public function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription);
 
@@ -61,8 +60,7 @@ interface FieldDescriptionRegistryInterface
     /**
      * Adds a list FieldDescription.
      *
-     * @param string                    $name
-     * @param FieldDescriptionInterface $fieldDescription
+     * @param string $name
      */
     public function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription);
 
@@ -92,8 +90,7 @@ interface FieldDescriptionRegistryInterface
     /**
      * Adds a filter FieldDescription.
      *
-     * @param string                    $name
-     * @param FieldDescriptionInterface $fieldDescription
+     * @param string $name
      */
     public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription);
 

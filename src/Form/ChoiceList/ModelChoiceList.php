@@ -98,14 +98,19 @@ class ModelChoiceList extends SimpleChoiceList
     private $propertyAccessor;
 
     /**
-     * @param ModelManagerInterface $modelManager
-     * @param string                $class
-     * @param string|null           $property
-     * @param QueryBuilder|null     $query
-     * @param array                 $choices
+     * @param string            $class
+     * @param string|null       $property
+     * @param QueryBuilder|null $query
+     * @param array             $choices
      */
-    public function __construct(ModelManagerInterface $modelManager, $class, $property = null, $query = null, $choices = [], PropertyAccessorInterface $propertyAccessor = null)
-    {
+    public function __construct(
+        ModelManagerInterface $modelManager,
+        $class,
+        $property = null,
+        $query = null,
+        $choices = [],
+        PropertyAccessorInterface $propertyAccessor = null
+    ) {
         $this->modelManager = $modelManager;
         $this->class = $class;
         $this->query = $query;
@@ -228,8 +233,6 @@ class ModelChoiceList extends SimpleChoiceList
      * If the option "property" was passed, the property path in that option
      * is used as option values. Otherwise this method tries to convert
      * objects to strings using __toString().
-     *
-     * @param $choices
      *
      * @return array An array of choices
      */

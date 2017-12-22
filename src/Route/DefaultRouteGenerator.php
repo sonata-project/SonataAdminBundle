@@ -40,39 +40,34 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
      */
     private $loaded = [];
 
-    /**
-     * @param RouterInterface $router
-     * @param RoutesCache     $cache
-     */
     public function __construct(RouterInterface $router, RoutesCache $cache)
     {
         $this->router = $router;
         $this->cache = $cache;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function generate($name, array $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->router->generate($name, $parameters, $absolute);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function generateUrl(AdminInterface $admin, $name, array $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
-    {
+    public function generateUrl(
+        AdminInterface $admin,
+        $name,
+        array $parameters = [],
+        $absolute = UrlGeneratorInterface::ABSOLUTE_PATH
+    ) {
         $arrayRoute = $this->generateMenuUrl($admin, $name, $parameters, $absolute);
 
         return $this->router->generate($arrayRoute['route'], $arrayRoute['routeParameters'], $arrayRoute['routeAbsolute']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function generateMenuUrl(AdminInterface $admin, $name, array $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
-    {
+    public function generateMenuUrl(
+        AdminInterface $admin,
+        $name,
+        array $parameters = [],
+        $absolute = UrlGeneratorInterface::ABSOLUTE_PATH
+    ) {
         // if the admin is a child we automatically append the parent's id
         if ($admin->isChild() && $admin->hasRequest()) {
             // twig template does not accept variable hash key ... so cannot use admin.idparameter ...
@@ -121,17 +116,13 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasAdminRoute(AdminInterface $admin, $name)
     {
         return array_key_exists($this->getCode($admin, $name), $this->caches);
     }
 
     /**
-     * @param AdminInterface $admin
-     * @param string         $name
+     * @param string $name
      *
      * @return string
      */
@@ -162,9 +153,6 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         return $codePrefix.'.'.$name;
     }
 
-    /**
-     * @param AdminInterface $admin
-     */
     private function loadCache(AdminInterface $admin)
     {
         if ($admin->isChild()) {

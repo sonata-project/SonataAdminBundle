@@ -60,10 +60,6 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
      */
     private $breadcrumbsBuilder;
 
-    /**
-     * @param Pool            $adminPool
-     * @param LoggerInterface $logger
-     */
     public function __construct(Pool $adminPool, LoggerInterface $logger = null)
     {
         $this->logger = $logger;
@@ -76,9 +72,6 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         $this->domain = false;
     }
 
-    /**
-     * @param LoggerInterface $logger
-     */
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
@@ -190,9 +183,6 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         return $catalogue;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function trans($id, array $parameters = [], $domain = null, $locale = null)
     {
         $this->addMessage($id, $domain);
@@ -200,9 +190,6 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         return $id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
     {
         $this->addMessage($id, $domain);
@@ -210,61 +197,37 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         return $id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLocale($locale)
     {
         $this->translator->setLocale($locale);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLocale()
     {
         return $this->translator->getLocale();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isGranted(AdminInterface $admin, $attributes, $object = null)
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildSecurityInformation(AdminInterface $admin)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createObjectSecurity(AdminInterface $admin, $object)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function deleteObjectSecurity(AdminInterface $admin, $object)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBaseRole(AdminInterface $admin)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLabel($label, $context = '', $type = '')
     {
         $label = $this->labelStrategy->getLabel($label, $context, $type);

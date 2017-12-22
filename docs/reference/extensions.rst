@@ -16,12 +16,12 @@ alter newly created objects and other admin features.
         public function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('status', 'choice', array(
-                    'choices' => array(
+                ->add('status', 'choice', [
+                    'choices' => [
                         'draft' => 'Draft',
                         'published' => 'Published',
-                    ),
-                ))
+                    ],
+                ])
             ;
         }
     }

@@ -24,7 +24,7 @@ The default template values can be configured in the configuration section
                 # other configuration options
                 search:              SonataAdminBundle:Core:search.html.twig
                 search_result_block: SonataAdminBundle:Block:block_search_result.html.twig
-                
+
 You also need to configure the block in the sonata block config
 
 .. configuration-block::
@@ -72,7 +72,7 @@ permissions exists. If no route is found, the item will be displayed as a text.
     {
         // ...
 
-        protected $searchResultActions = array('edit', 'show');
+        protected $searchResultActions = ['edit', 'show'];
 
         // ...
     }

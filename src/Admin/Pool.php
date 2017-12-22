@@ -71,13 +71,17 @@ class Pool
     protected $propertyAccessor;
 
     /**
-     * @param ContainerInterface $container
-     * @param string             $title
-     * @param string             $logoTitle
-     * @param array              $options
+     * @param string $title
+     * @param string $logoTitle
+     * @param array  $options
      */
-    public function __construct(ContainerInterface $container, $title, $logoTitle, $options = [], PropertyAccessorInterface $propertyAccessor = null)
-    {
+    public function __construct(
+        ContainerInterface $container,
+        $title,
+        $logoTitle,
+        $options = [],
+        PropertyAccessorInterface $propertyAccessor = null
+    ) {
         $this->container = $container;
         $this->title = $title;
         $this->titleLogo = $logoTitle;
@@ -272,9 +276,6 @@ class Pool
         return $this->container;
     }
 
-    /**
-     * @param array $adminGroups
-     */
     public function setAdminGroups(array $adminGroups)
     {
         $this->adminGroups = $adminGroups;
@@ -288,9 +289,6 @@ class Pool
         return $this->adminGroups;
     }
 
-    /**
-     * @param array $adminServiceIds
-     */
     public function setAdminServiceIds(array $adminServiceIds)
     {
         $this->adminServiceIds = $adminServiceIds;
@@ -304,9 +302,6 @@ class Pool
         return $this->adminServiceIds;
     }
 
-    /**
-     * @param array $adminClasses
-     */
     public function setAdminClasses(array $adminClasses)
     {
         $this->adminClasses = $adminClasses;
@@ -320,9 +315,6 @@ class Pool
         return $this->adminClasses;
     }
 
-    /**
-     * @param array $templates
-     */
     public function setTemplates(array $templates)
     {
         $this->templates = $templates;

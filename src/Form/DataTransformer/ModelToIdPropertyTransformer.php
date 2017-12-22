@@ -48,14 +48,18 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
     protected $toStringCallback;
 
     /**
-     * @param ModelManagerInterface $modelManager
-     * @param string                $className
-     * @param string                $property
-     * @param bool                  $multiple
-     * @param callable|null         $toStringCallback
+     * @param string        $className
+     * @param string        $property
+     * @param bool          $multiple
+     * @param callable|null $toStringCallback
      */
-    public function __construct(ModelManagerInterface $modelManager, $className, $property, $multiple = false, $toStringCallback = null)
-    {
+    public function __construct(
+        ModelManagerInterface $modelManager,
+        $className,
+        $property,
+        $multiple = false,
+        $toStringCallback = null
+    ) {
         $this->modelManager = $modelManager;
         $this->className = $className;
         $this->property = $property;
@@ -63,9 +67,6 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
         $this->toStringCallback = $toStringCallback;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reverseTransform($value)
     {
         $collection = $this->modelManager->getModelCollectionInstance($this->className);
@@ -97,9 +98,6 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
         return $collection;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform($entityOrCollection)
     {
         $result = [];

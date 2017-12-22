@@ -117,7 +117,7 @@ to implement a ``clone`` action.
             return new RedirectResponse($this->admin->generateUrl('list'));
 
             // if you have a filtered list and want to keep your filters after the redirect
-            // return new RedirectResponse($this->admin->generateUrl('list', array('filter' => $this->admin->getFilterParameters())));
+            // return new RedirectResponse($this->admin->generateUrl('list', ['filter' => $this->admin->getFilterParameters()]));
         }
     }
 
@@ -128,7 +128,7 @@ If you want to add the current filter parameters to the redirect url you can add
 
 .. code-block:: php
 
-    return new RedirectResponse($this->admin->generateUrl('list', array('filter' => $this->admin->getFilterParameters())));
+    return new RedirectResponse($this->admin->generateUrl('list', ['filter' => $this->admin->getFilterParameters()]));
 
 Using template in new controller
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -190,16 +190,16 @@ Next we have to add the action in ``configureListFields`` specifying the templat
 
              // other fields...
 
-            ->add('_action', null, array(
-                'actions' => array(
+            ->add('_action', null, [
+                'actions' => [
 
                     // ...
 
-                    'clone' => array(
+                    'clone' => [
                         'template' => 'AppBundle:CRUD:list__action_clone.html.twig'
-                    )
-                )
-            ))
+                    ]
+                ]
+            ])
         ;
     }
 
@@ -244,16 +244,16 @@ The full ``CarAdmin.php`` example looks like this:
                 ->add('engine')
                 ->add('rescueEngine')
                 ->add('createdAt')
-                ->add('_action', null, array(
-                    'actions' => array(
-                        'show' => array(),
-                        'edit' => array(),
-                        'delete' => array(),
-                        'clone' => array(
+                ->add('_action', null, [
+                    'actions' => [
+                        'show' => [],
+                        'edit' => [],
+                        'delete' => [],
+                        'clone' => [
                             'template' => 'AppBundle:CRUD:list__action_clone.html.twig'
-                        )
-                    )
-                ));
+                        ]
+                    ]
+                ]);
         }
 
         protected function configureShowFields(ShowMapper $showMapper)

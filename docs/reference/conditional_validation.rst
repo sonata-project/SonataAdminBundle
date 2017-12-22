@@ -18,7 +18,7 @@ the ``Admin`` class itself contains an empty ``validate`` method. This is automa
         {
             $errorElement
                 ->with('name')
-                    ->assertLength(array('max' => 32))
+                    ->assertLength(['max' => 32])
                 ->end()
             ;
         }
@@ -41,6 +41,6 @@ to an empty array:
 
 .. code-block:: php
 
-    protected $formOptions = array(
-        'validation_groups' => array()
-    );
+    protected $formOptions = [
+        'validation_groups' => []
+    ];

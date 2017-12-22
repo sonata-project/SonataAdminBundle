@@ -74,14 +74,16 @@ class AdminObjectAclData
     protected $maskBuilderClass;
 
     /**
-     * @param AdminInterface    $admin
-     * @param mixed             $object
-     * @param \Traversable      $aclUsers
-     * @param string            $maskBuilderClass
-     * @param \Traversable|null $aclRoles
+     * @param mixed  $object
+     * @param string $maskBuilderClass
      */
-    public function __construct(AdminInterface $admin, $object, \Traversable $aclUsers, $maskBuilderClass, \Traversable $aclRoles = null)
-    {
+    public function __construct(
+        AdminInterface $admin,
+        $object,
+        \Traversable $aclUsers,
+        $maskBuilderClass,
+        \Traversable $aclRoles = null
+    ) {
         $this->admin = $admin;
         $this->object = $object;
         $this->aclUsers = $aclUsers;
@@ -134,8 +136,6 @@ class AdminObjectAclData
     /**
      * Sets ACL.
      *
-     * @param Acl $acl
-     *
      * @return AdminObjectAclData
      */
     public function setAcl(Acl $acl)
@@ -169,8 +169,6 @@ class AdminObjectAclData
      * Sets form.
      *
      * NEXT_MAJOR: remove this method.
-     *
-     * @param Form $form
      *
      * @return AdminObjectAclData
      *
@@ -210,8 +208,6 @@ class AdminObjectAclData
     /**
      * Sets ACL users form.
      *
-     * @param Form $form
-     *
      * @return AdminObjectAclData
      */
     public function setAclUsersForm(Form $form)
@@ -233,8 +229,6 @@ class AdminObjectAclData
 
     /**
      * Sets ACL roles form.
-     *
-     * @param Form $form
      *
      * @return AdminObjectAclData
      */

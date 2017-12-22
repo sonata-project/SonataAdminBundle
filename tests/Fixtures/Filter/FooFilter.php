@@ -17,9 +17,9 @@ class FooFilter extends Filter
 
     public function getDefaultOptions()
     {
-        return array(
+        return [
             'foo' => 'bar',
-        );
+        ];
     }
 
     public function getRenderSettings()

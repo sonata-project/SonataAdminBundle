@@ -26,17 +26,11 @@ class MergeCollectionListener implements EventSubscriberInterface
      */
     protected $modelManager;
 
-    /**
-     * @param ModelManagerInterface $modelManager
-     */
     public function __construct(ModelManagerInterface $modelManager)
     {
         $this->modelManager = $modelManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -44,9 +38,6 @@ class MergeCollectionListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param FormEvent $event
-     */
     public function onBind(FormEvent $event)
     {
         $collection = $event->getForm()->getData();

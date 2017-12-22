@@ -779,6 +779,20 @@ class AdminTest extends TestCase
         $this->assertTrue($admin->hasActiveSubClass());
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Method "Sonata\AdminBundle\Admin\AbstractAdmin::addSubClass" is deprecated since 3.x and will be removed in 4.0.
+     */
+    public function testAddSubClassIsDeprecated()
+    {
+        $admin = new PostAdmin(
+            'sonata.post.admin.post',
+            Post::class,
+            'SonataNewsBundle:PostAdmin'
+        );
+        $admin->addSubClass('whatever');
+    }
+
     public function testGetPerPageOptions()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');

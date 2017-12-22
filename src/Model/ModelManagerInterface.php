@@ -24,11 +24,8 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 interface ModelManagerInterface
 {
     /**
-     * Returns a new FieldDescription.
-     *
      * @param string $class
      * @param string $name
-     * @param array  $options
      *
      * @return FieldDescriptionInterface
      */
@@ -57,7 +54,6 @@ interface ModelManagerInterface
 
     /**
      * @param string $class
-     * @param array  $criteria
      *
      * @return array all objects matching the criteria
      */
@@ -65,7 +61,6 @@ interface ModelManagerInterface
 
     /**
      * @param string $class
-     * @param array  $criteria
      *
      * @return object an object matching the criteria or null if none match
      */
@@ -80,8 +75,7 @@ interface ModelManagerInterface
     public function find($class, $id);
 
     /**
-     * @param string              $class
-     * @param ProxyQueryInterface $queryProxy
+     * @param string $class
      *
      * @throws ModelManagerException
      */
@@ -211,9 +205,6 @@ interface ModelManagerInterface
     /**
      * Returns the parameters used in the columns header.
      *
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param DatagridInterface         $datagrid
-     *
      * @return array
      */
     public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid);
@@ -227,7 +218,6 @@ interface ModelManagerInterface
 
     /**
      * @param string $class
-     * @param array  $array
      */
     public function modelReverseTransform($class, array $array = []);
 
@@ -243,14 +233,17 @@ interface ModelManagerInterface
     public function executeQuery($query);
 
     /**
-     * @param DatagridInterface $datagrid
-     * @param array             $fields
-     * @param int|null          $firstResult
-     * @param int|null          $maxResult
+     * @param int|null $firstResult
+     * @param int|null $maxResult
      *
      * @return SourceIteratorInterface
      */
-    public function getDataSourceIterator(DatagridInterface $datagrid, array $fields, $firstResult = null, $maxResult = null);
+    public function getDataSourceIterator(
+        DatagridInterface $datagrid,
+        array $fields,
+        $firstResult = null,
+        $maxResult = null
+    );
 
     /**
      * @param string $class
@@ -260,17 +253,15 @@ interface ModelManagerInterface
     public function getExportFields($class);
 
     /**
-     * @param DatagridInterface $datagrid
-     * @param int               $page
+     * @param int $page
      *
      * @return mixed
      */
     public function getPaginationParameters(DatagridInterface $datagrid, $page);
 
     /**
-     * @param string              $class
-     * @param ProxyQueryInterface $query
-     * @param array               $idx
+     * @param string $class
+     * @param array  $idx
      */
     public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
 }
