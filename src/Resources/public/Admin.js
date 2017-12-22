@@ -661,9 +661,7 @@ var Admin = {
         });
     },
     handle_top_navbar_height: function() {
-        if (jQuery('body.fixed').length === 1) {
-            jQuery('.content-wrapper').css('padding-top', jQuery('.navbar-static-top').outerHeight());
-        }
+        jQuery('body.fixed .content-wrapper').css('padding-top', jQuery('.navbar-static-top').outerHeight());
     }
 };
 
