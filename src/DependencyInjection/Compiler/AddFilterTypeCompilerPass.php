@@ -27,7 +27,6 @@ class AddFilterTypeCompilerPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds('sonata.admin.filter.type') as $id => $attributes) {
             $serviceDefinition = $container->getDefinition($id);
 
-            $serviceDefinition->setShared(false);
             $serviceDefinition->setPublic(true); // Temporary fix until we can support service locators
 
             $types[$serviceDefinition->getClass()] = $id;

@@ -250,8 +250,6 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $definition = $container->getDefinition($serviceId);
         $settings = $container->getParameter('sonata.admin.configuration.admin_services');
 
-        $definition->setShared(false);
-
         $manager_type = $attributes['manager_type'];
 
         $overwriteAdminConfiguration = isset($settings[$serviceId]) ? $settings[$serviceId] : [];
