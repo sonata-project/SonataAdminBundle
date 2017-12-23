@@ -149,7 +149,7 @@ file that was distributed with this source code.
             var templateResult = function (item) {
                 return {% block sonata_type_model_autocomplete_dropdown_item_format -%}
                     {% if safe_label|default(false) %}
-                        item.label
+                        '<div class="{{ dropdown_item_css_class }}">'+item.label+'<\/div>'
                     {% else %}
                         jQuery('<div class="{{ dropdown_item_css_class }}">').text(item.label).prop('outerHTML')
                     {% endif %}
