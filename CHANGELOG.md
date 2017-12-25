@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.30.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.29.0...3.30.0) - 2017-12-25
+### Changed
+- Menu on the left side stays hidden while changing pages.
+
+### Deprecated
+- `AbstractAdmin::addSubClass()`
+
+### Fixed
+- Checking for fixed class on body before adjusting the position of the content div
+- Fixed container compile error, if JMSDiExtraBundle is enabled.
+- Fixed twig dependency for sonata.admin.controller.admin service
+
 ## [3.29.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.28.0...3.29.0) - 2017-12-16
 ### Added
 - Added edit button functionality

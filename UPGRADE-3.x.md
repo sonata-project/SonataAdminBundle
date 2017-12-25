@@ -1,6 +1,9 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.29 to 3.30
+=========================
+
 ## Deprecated AbstractAdmin::addSubClass
 
 This method was inconsistent with the structure of `AbstractAdmin::$subClasses`,
