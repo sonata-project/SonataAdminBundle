@@ -206,6 +206,13 @@ var Admin = {
 
     add_filters: function(subject) {
         Admin.log('[core|add_filters] configure filters on', subject);
+
+        function updateCounter() {
+            var count = jQuery('a.sonata-toggle-filter .fa-check-square-o', subject).length;
+
+            jQuery('.sonata-filter-count', subject).text(count);
+        }
+
         jQuery('a.sonata-toggle-filter', subject).on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -249,6 +256,8 @@ var Admin = {
             } else {
                 jQuery(filters_container).slideUp();
             }
+
+            updateCounter();
         });
 
         jQuery('.sonata-filter-form', subject).on('submit', function () {
@@ -263,6 +272,8 @@ var Admin = {
         jQuery('[data-toggle="advanced-filter"]', subject).click(function() {
             jQuery('.advanced-filter').toggle();
         });
+
+        updateCounter();
     },
 
     /**
