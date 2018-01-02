@@ -236,6 +236,7 @@ var Admin = {
 
             if (jQuery(target).is(":visible")) {
                 filterToggler
+                    .filter(':not(.fa-minus-circle)')
                     .removeClass('fa-check-square-o')
                     .addClass('fa-square-o')
                 ;
@@ -244,6 +245,7 @@ var Admin = {
 
             } else {
                 filterToggler
+                    .filter(':not(.fa-minus-circle)')
                     .removeClass('fa-square-o')
                     .addClass('fa-check-square-o')
                 ;
