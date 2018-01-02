@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.30.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.30.0...3.30.1) - 2018-01-02
+### Added
+- Make explicit dependency with `symfony/asset`
+
+### Changed
+- Admin and filter services are shared
+
 ## [3.30.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.29.0...3.30.0) - 2017-12-25
 ### Changed
 - Menu on the left side stays hidden while changing pages.
