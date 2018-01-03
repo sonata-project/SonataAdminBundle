@@ -23,6 +23,7 @@ use Twig\Error\LoaderError;
 use Twig\Extension\AbstractExtension;
 use Twig\Template;
 use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -106,6 +107,14 @@ class SonataAdminExtension extends AbstractExtension
                 'sonata_xeditable_choices',
                 [$this, 'getXEditableChoices']
             ),
+        ];
+    }
+
+    public function getFunctions()
+    {
+        return [
+            new TwigFunction('canonicalize_locale_for_moment', [$this, 'getCanonicalizedLocaleForMoment'], ['needs_context' => true]),
+            new TwigFunction('canonicalize_locale_for_select2', [$this, 'getCanonicalizedLocaleForSelect2'], ['needs_context' => true]),
         ];
     }
 
@@ -419,6 +428,68 @@ EOT;
         }
 
         return $xEditableChoices;
+    }
+
+    /**
+     * Returns a canonicalized locale for "moment" NPM library,
+     * or `null` if the locale's language is "en", which doesn't require localization.
+     *
+     * @return null|string
+     */
+    final public function getCanonicalizedLocaleForMoment(array $context)
+    {
+        $locale = strtolower(str_replace('_', '-', $context['app']->getRequest()->getLocale()));
+
+        // "en" language doesn't require localization.
+        if (('en' === $lang = substr($locale, 0, 2)) && !in_array($locale, ['en-au', 'en-ca', 'en-gb', 'en-ie', 'en-nz'], true)) {
+            return null;
+        }
+
+        if ('es' === $lang && !in_array($locale, ['es', 'es-do'], true)) {
+            // `moment: ^2.8` only ships "es" and "es-do" locales for "es" language
+            $locale = 'es';
+        } elseif ('nl' === $lang && !in_array($locale, ['nl', 'nl-be'], true)) {
+            // `moment: ^2.8` only ships "nl" and "nl-be" locales for "nl" language
+            $locale = 'nl';
+        }
+
+        // @todo: there are more locales which are not supported by moment and they need to be translated/normalized/canonicalized here
+
+        return $locale;
+    }
+
+    /**
+     * Returns a canonicalized locale for "select2" NPM library,
+     * or `null` if the locale's language is "en", which doesn't require localization.
+     *
+     * @return null|string
+     */
+    final public function getCanonicalizedLocaleForSelect2(array $context)
+    {
+        $locale = str_replace('_', '-', $context['app']->getRequest()->getLocale());
+
+        // "en" language doesn't require localization.
+        if ('en' === $lang = substr($locale, 0, 2)) {
+            return null;
+        }
+
+        switch ($locale) {
+            case 'pt':
+                $locale = 'pt-PT';
+                break;
+            case 'ug':
+                $locale = 'ug-CN';
+                break;
+            case 'zh':
+                $locale = 'zh-CN';
+                break;
+            default:
+                if (!in_array($locale, ['pt-BR', 'pt-PT', 'ug-CN', 'zh-CN', 'zh-TW'], true)) {
+                    $locale = $lang;
+                }
+        }
+
+        return $locale;
     }
 
     /**
