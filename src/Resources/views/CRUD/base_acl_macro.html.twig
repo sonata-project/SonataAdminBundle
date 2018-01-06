@@ -17,7 +17,7 @@ file that was distributed with this source code.
             {% if not admin_pool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
             >
 
-        {{ include('SonataAdminBundle:Helper:render_form_dismissable_errors.html.twig') }}
+        {{ include('@SonataAdmin/Helper/render_form_dismissable_errors.html.twig') }}
 
         <div class="box box-success">
             <div class="body table-responsive no-padding">
