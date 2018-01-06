@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-{% extends 'SonataAdminBundle:Pager:base_results.html.twig' %}
+{% extends '@SonataAdmin/Pager/base_results.html.twig' %}
 
 {% block num_results %}
     {% if admin.datagrid.pager.lastPage != admin.datagrid.pager.page %}

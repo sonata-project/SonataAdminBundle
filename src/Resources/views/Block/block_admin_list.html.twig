@@ -35,7 +35,7 @@ file that was distributed with this source code.
                                                 <td>
                                                     <div class="btn-group">
                                                         {% for action in admin.dashboardActions %}
-                                                            {% include action.template|default('SonataAdminBundle:CRUD:dashboard__action.html.twig') with {'action': action} %}
+                                                            {% include action.template|default('@SonataAdmin/CRUD/dashboard__action.html.twig') with {'action': action} %}
                                                         {% endfor %}
                                                     </div>
                                                 </td>

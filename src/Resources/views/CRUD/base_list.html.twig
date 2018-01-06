@@ -12,7 +12,7 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {%- block actions -%}
-    {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
+    {% include '@SonataAdmin/CRUD/action_buttons.html.twig' %}
 {%- endblock -%}
 
 {% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': sonata_admin.adminPool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
@@ -110,7 +110,7 @@ file that was distributed with this source code.
                                 <span class="progress-description">
                                     {% if not app.request.xmlHttpRequest %}
                                     <ul class="list-unstyled">
-                                        {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
+                                        {% include '@SonataAdmin/Button/create_button.html.twig' %}
                                     </ul>
                                     {% endif %}
                                 </span>
