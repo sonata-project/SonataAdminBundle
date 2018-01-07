@@ -29,8 +29,8 @@ SonataAdmin Options that may affect the create or edit view:
             form_type:         standard # can also be 'horizontal'
 
         templates:
-            edit:              SonataAdminBundle:CRUD:edit.html.twig
-            tab_menu_template: SonataAdminBundle:Core:tab_menu_template.html.twig
+            edit:              '@SonataAdmin/CRUD/edit.html.twig'
+            tab_menu_template: '@SonataAdmin/Core/tab_menu_template.html.twig'
 
 
 For more information about optional libraries:

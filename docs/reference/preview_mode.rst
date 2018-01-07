@@ -42,7 +42,7 @@ Preview can be used to render how the object would look like in your front-end e
 However by default it uses a template similar to the one of the show action and works with
 the fields configured to be shown in the show view.
 
-Overriding the preview template ``SonataAdminBundle:CRUD:preview.html.twig`` can be done either
+Overriding the preview template ``@SonataAdmin/CRUD/preview.html.twig`` can be done either
 globally through the template configuration for the key 'preview':
 
 .. configuration-block::
@@ -90,9 +90,9 @@ a different object you can just set your own variables prior to calling parent()
 
     {% extends 'AppBundle::layout.html.twig' %}
 
-    {% use 'SonataAdminBundle:CRUD:base_edit_form.html.twig' with form as parentForm %}
+    {% use '@SonataAdmin/CRUD/base_edit_form.html.twig' with form as parentForm %}
 
-    {% import 'SonataAdminBundle:CRUD:base_edit_form_macro.html.twig' as form_helper %}
+    {% import '@SonataAdmin/CRUD/base_edit_form_macro.html.twig' as form_helper %}
 
     {# a block in 'AppBundle::layout.html.twig' expecting article #}
     {% block templateContent %}

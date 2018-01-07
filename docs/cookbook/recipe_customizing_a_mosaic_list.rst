@@ -30,7 +30,7 @@ The ``list_outer_rows_mosaic.html.twig`` is the name of one mosaic's tile. You s
 
 .. code-block:: jinja
 
-    {% extends 'SonataAdminBundle:CRUD:list_outer_rows_mosaic.html.twig' %}
+    {% extends '@SonataAdmin/CRUD/list_outer_rows_mosaic.html.twig' %}
 
     {% block sonata_mosaic_background %}{{ meta.image }}{% endblock %}
 

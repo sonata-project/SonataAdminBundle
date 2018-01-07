@@ -20,16 +20,16 @@ SonataAdmin Options that may affect the list view:
 
     sonata_admin:
         templates:
-            list:                       SonataAdminBundle:CRUD:list.html.twig
-            action:                     SonataAdminBundle:CRUD:action.html.twig
-            select:                     SonataAdminBundle:CRUD:list__select.html.twig
-            list_block:                 SonataAdminBundle:Block:block_admin_list.html.twig
-            short_object_description:   SonataAdminBundle:Helper:short-object-description.html.twig
-            batch:                      SonataAdminBundle:CRUD:list__batch.html.twig
-            inner_list_row:             SonataAdminBundle:CRUD:list_inner_row.html.twig
-            base_list_field:            SonataAdminBundle:CRUD:base_list_field.html.twig
-            pager_links:                SonataAdminBundle:Pager:links.html.twig
-            pager_results:              SonataAdminBundle:Pager:results.html.twig
+            list:                       '@SonataAdmin/CRUD/list.html.twig'
+            action:                     '@SonataAdmin/CRUD/action.html.twig'
+            select:                     '@SonataAdmin/CRUD/list__select.html.twig'
+            list_block:                 '@SonataAdmin/Block/block_admin_list.html.twig'
+            short_object_description:   '@SonataAdmin/Helper/short-object-description.html.twig'
+            batch:                      '@SonataAdmin/CRUD/list__batch.html.twig'
+            inner_list_row:             '@SonataAdmin/CRUD/list_inner_row.html.twig'
+            base_list_field:            '@SonataAdmin/CRUD/base_list_field.html.twig'
+            pager_links:                '@SonataAdmin/Pager/links.html.twig'
+            pager_results:              '@SonataAdmin/Pager/results.html.twig'
 
 
 .. note::

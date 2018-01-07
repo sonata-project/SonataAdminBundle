@@ -14,19 +14,19 @@ Routes
   - fooBar_edit               /foo-bar/edit
 
 Datagrid Columns
-  - fooTextField               text            SonataAdminBundle:CRUD:foo_text.html.twig
-  - barDateTimeField           datetime        SonataAdminBundle:CRUD:bar_datetime.html.twig
+  - fooTextField               text            @SonataAdmin/CRUD/foo_text.html.twig
+  - barDateTimeField           datetime        @SonataAdmin/CRUD/bar_datetime.html.twig
 
 Datagrid Filters
-  - fooTextField               text            SonataAdminBundle:CRUD:foo_text.html.twig
-  - barDateTimeField           datetime        SonataAdminBundle:CRUD:bar_datetime.html.twig
+  - fooTextField               text            @SonataAdmin/CRUD/foo_text.html.twig
+  - barDateTimeField           datetime        @SonataAdmin/CRUD/bar_datetime.html.twig
 
 Form theme(s)
   - FooBundle::bar.html.twig
 
 Form Fields
-  - fooTextField               text            SonataAdminBundle:CRUD:foo_text.html.twig
-  - barDateTimeField           datetime        SonataAdminBundle:CRUD:bar_datetime.html.twig
+  - fooTextField               text            @SonataAdmin/CRUD/foo_text.html.twig
+  - barDateTimeField           datetime        @SonataAdmin/CRUD/bar_datetime.html.twig
 
 Validation Framework - http://symfony.com/doc/3.0/book/validation.html
 Properties constraints

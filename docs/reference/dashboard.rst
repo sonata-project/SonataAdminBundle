@@ -7,8 +7,8 @@ as defined by your ``Admin`` services. This is useful to help you start using
 advantage of the Dashboard.
 
 The Dashboard is, by default, available at ``/admin/dashboard``, which is handled by
-the ``SonataAdminBundle:Core:dashboard`` controller action. The default view file for
-this action is ``SonataAdminBundle:Core:dashboard.html.twig``, but you can change
+the ``@SonataAdmin/Core/dashboard`` controller action. The default view file for
+this action is ``@SonataAdmin/Core/dashboard.html.twig``, but you can change
 this in your ``config.yml``:
 
 .. configuration-block::
@@ -19,7 +19,7 @@ this in your ``config.yml``:
 
         sonata_admin:
             templates:
-                dashboard: SonataAdminBundle:Core:dashboard.html.twig
+                dashboard: '@SonataAdmin/Core/dashboard.html.twig'
 
 .. note::
 
@@ -41,7 +41,7 @@ The ``Admin`` list is a ``Block`` that fetches information from the ``Admin`` se
 ``Pool`` and prints it in the nicely formatted list you have on your default Dashboard.
 The ``Admin`` list is defined by the ``sonata.admin.block.admin_list`` service, which is
 implemented by the ``Block\AdminListBlockService`` class. It is then rendered using the
-``SonataAdminBundle:Block:block_admin_list.html.twig`` template file.
+``@SonataAdmin/Block/block_admin_list.html.twig`` template file.
 
 Feel free to take a look at these files. You'll find the code rather short and easy to
 understand, and it will be a great help when implementing your own blocks.
@@ -385,7 +385,7 @@ other two on the dashboard, you can do so by overriding the
                 'url'                => $this->generateUrl('import'),
                 'icon'               => 'import',
                 'translation_domain' => 'SonataAdminBundle', // optional
-                'template'           => 'SonataAdminBundle:CRUD:dashboard__action.html.twig', // optional
+                'template'           => '@SonataAdmin/CRUD/dashboard__action.html.twig', // optional
             ];
 
             return $actions;

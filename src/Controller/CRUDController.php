@@ -539,7 +539,7 @@ class CRUDController implements ContainerAwareInterface
 
         if ($class->isAbstract()) {
             return $this->renderWithExtraParams(
-                'SonataAdminBundle:CRUD:select_subclass.html.twig',
+                '@SonataAdmin/CRUD/select_subclass.html.twig',
                 [
                     'base_template' => $this->getBaseTemplate(),
                     'admin' => $this->admin,
