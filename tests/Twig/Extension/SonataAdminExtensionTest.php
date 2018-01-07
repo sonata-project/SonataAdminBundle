@@ -143,6 +143,7 @@ class SonataAdminExtensionTest extends TestCase
         $loader = new StubFilesystemLoader([
             __DIR__.'/../../../src/Resources/views/CRUD',
         ]);
+        $loader->addPath(__DIR__.'/../../../src/Resources/views/', 'SonataAdmin');
 
         $this->environment = new \Twig_Environment($loader, [
             'strict_variables' => true,
@@ -243,7 +244,7 @@ class SonataAdminExtensionTest extends TestCase
         $this->admin->expects($this->any())
             ->method('getTemplate')
             ->with($this->equalTo('base_list_field'))
-            ->will($this->returnValue('SonataAdminBundle:CRUD:base_list_field.html.twig'));
+            ->will($this->returnValue('@SonataAdmin/CRUD/base_list_field.html.twig'));
 
         $this->fieldDescription->expects($this->any())
             ->method('getValue')
@@ -268,31 +269,34 @@ class SonataAdminExtensionTest extends TestCase
             ->will($this->returnCallback(function () use ($type) {
                 switch ($type) {
                     case 'string':
-                        return 'SonataAdminBundle:CRUD:list_string.html.twig';
+                        return '@SonataAdmin/CRUD/list_string.html.twig';
                     case 'boolean':
-                        return 'SonataAdminBundle:CRUD:list_boolean.html.twig';
+                        return '@SonataAdmin/CRUD/list_boolean.html.twig';
                     case 'datetime':
-                        return 'SonataAdminBundle:CRUD:list_datetime.html.twig';
+                        return '@SonataAdmin/CRUD/list_datetime.html.twig';
                     case 'date':
-                        return 'SonataAdminBundle:CRUD:list_date.html.twig';
+                        return '@SonataAdmin/CRUD/list_date.html.twig';
                     case 'time':
-                        return 'SonataAdminBundle:CRUD:list_time.html.twig';
+                        return '@SonataAdmin/CRUD/list_time.html.twig';
                     case 'currency':
-                        return 'SonataAdminBundle:CRUD:list_currency.html.twig';
+                        return '@SonataAdmin/CRUD/list_currency.html.twig';
                     case 'percent':
-                        return 'SonataAdminBundle:CRUD:list_percent.html.twig';
+                        return '@SonataAdmin/CRUD/list_percent.html.twig';
                     case 'email':
-                        return 'SonataAdminBundle:CRUD:list_email.html.twig';
+                        return '@SonataAdmin/CRUD/list_email.html.twig';
                     case 'choice':
-                        return 'SonataAdminBundle:CRUD:list_choice.html.twig';
+                        return '@SonataAdmin/CRUD/list_choice.html.twig';
                     case 'array':
-                        return 'SonataAdminBundle:CRUD:list_array.html.twig';
+                        return '@SonataAdmin/CRUD/list_array.html.twig';
                     case 'trans':
-                        return 'SonataAdminBundle:CRUD:list_trans.html.twig';
+                        return '@SonataAdmin/CRUD/list_trans.html.twig';
                     case 'url':
-                        return 'SonataAdminBundle:CRUD:list_url.html.twig';
+                        return '@SonataAdmin/CRUD/list_url.html.twig';
                     case 'html':
-                        return 'SonataAdminBundle:CRUD:list_html.html.twig';
+                        return '@SonataAdmin/CRUD/list_html.html.twig';
+                    case 'nonexistent':
+                        // template doesn't exist
+                        return '@SonataAdmin/CRUD/list_nonexistent_template.html.twig';
                     default:
                         return false;
                 }
@@ -1222,7 +1226,7 @@ EOT
     {
         $this->admin->expects($this->any())
             ->method('getTemplate')
-            ->will($this->returnValue('SonataAdminBundle:CRUD:base_show_field.html.twig'));
+            ->will($this->returnValue('@SonataAdmin/CRUD/base_show_field.html.twig'));
 
         $this->fieldDescription->expects($this->any())
             ->method('getValue')
@@ -1247,29 +1251,29 @@ EOT
             ->will($this->returnCallback(function () use ($type) {
                 switch ($type) {
                     case 'boolean':
-                        return 'SonataAdminBundle:CRUD:show_boolean.html.twig';
+                        return '@SonataAdmin/CRUD/show_boolean.html.twig';
                     case 'datetime':
-                        return 'SonataAdminBundle:CRUD:show_datetime.html.twig';
+                        return '@SonataAdmin/CRUD/show_datetime.html.twig';
                     case 'date':
-                        return 'SonataAdminBundle:CRUD:show_date.html.twig';
+                        return '@SonataAdmin/CRUD/show_date.html.twig';
                     case 'time':
-                        return 'SonataAdminBundle:CRUD:show_time.html.twig';
+                        return '@SonataAdmin/CRUD/show_time.html.twig';
                     case 'currency':
-                        return 'SonataAdminBundle:CRUD:show_currency.html.twig';
+                        return '@SonataAdmin/CRUD/show_currency.html.twig';
                     case 'percent':
-                        return 'SonataAdminBundle:CRUD:show_percent.html.twig';
+                        return '@SonataAdmin/CRUD/show_percent.html.twig';
                     case 'email':
-                        return 'SonataAdminBundle:CRUD:show_email.html.twig';
+                        return '@SonataAdmin/CRUD/show_email.html.twig';
                     case 'choice':
-                        return 'SonataAdminBundle:CRUD:show_choice.html.twig';
+                        return '@SonataAdmin/CRUD/show_choice.html.twig';
                     case 'array':
-                        return 'SonataAdminBundle:CRUD:show_array.html.twig';
+                        return '@SonataAdmin/CRUD/show_array.html.twig';
                     case 'trans':
-                        return 'SonataAdminBundle:CRUD:show_trans.html.twig';
+                        return '@SonataAdmin/CRUD/show_trans.html.twig';
                     case 'url':
-                        return 'SonataAdminBundle:CRUD:show_url.html.twig';
+                        return '@SonataAdmin/CRUD/show_url.html.twig';
                     case 'html':
-                        return 'SonataAdminBundle:CRUD:show_html.html.twig';
+                        return '@SonataAdmin/CRUD/show_html.html.twig';
                     default:
                         return false;
                 }
@@ -1921,7 +1925,7 @@ EOT
     {
         $this->fieldDescription->expects($this->any())
             ->method('getTemplate')
-            ->will($this->returnValue('SonataAdminBundle:CRUD:base_list_field.html.twig'));
+            ->will($this->returnValue('@SonataAdmin/CRUD/base_list_field.html.twig'));
 
         $this->fieldDescription->expects($this->any())
             ->method('getFieldName')
@@ -1936,7 +1940,7 @@ EOT
             'object' => $this->object,
         ];
 
-        $template = $this->environment->loadTemplate('SonataAdminBundle:CRUD:base_list_field.html.twig');
+        $template = $this->environment->loadTemplate('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $reflection = $this->getMethodAsPublic('output');
 
@@ -1956,8 +1960,8 @@ EOT
             $this->removeExtraWhitespace(<<<'EOT'
 <!-- START
     fieldName: fd_name
-    template: SonataAdminBundle:CRUD:base_list_field.html.twig
-    compiled template: SonataAdminBundle:CRUD:base_list_field.html.twig
+    template: @SonataAdmin/CRUD/base_list_field.html.twig
+    compiled template: @SonataAdmin/CRUD/base_list_field.html.twig
 -->
     <td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>
 <!-- END - fieldName: fd_name -->

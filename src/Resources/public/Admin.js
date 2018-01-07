@@ -206,6 +206,13 @@ var Admin = {
 
     add_filters: function(subject) {
         Admin.log('[core|add_filters] configure filters on', subject);
+
+        function updateCounter() {
+            var count = jQuery('a.sonata-toggle-filter .fa-check-square-o', subject).length;
+
+            jQuery('.sonata-filter-count', subject).text(count);
+        }
+
         jQuery('a.sonata-toggle-filter', subject).on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -229,6 +236,7 @@ var Admin = {
 
             if (jQuery(target).is(":visible")) {
                 filterToggler
+                    .filter(':not(.fa-minus-circle)')
                     .removeClass('fa-check-square-o')
                     .addClass('fa-square-o')
                 ;
@@ -237,6 +245,7 @@ var Admin = {
 
             } else {
                 filterToggler
+                    .filter(':not(.fa-minus-circle)')
                     .removeClass('fa-square-o')
                     .addClass('fa-check-square-o')
                 ;
@@ -249,6 +258,8 @@ var Admin = {
             } else {
                 jQuery(filters_container).slideUp();
             }
+
+            updateCounter();
         });
 
         jQuery('.sonata-filter-form', subject).on('submit', function () {
@@ -263,6 +274,8 @@ var Admin = {
         jQuery('[data-toggle="advanced-filter"]', subject).click(function() {
             jQuery('.advanced-filter').toggle();
         });
+
+        updateCounter();
     },
 
     /**
@@ -661,7 +674,7 @@ var Admin = {
         });
     },
     handle_top_navbar_height: function() {
-        jQuery('.content-wrapper').css('padding-top', jQuery('.navbar-static-top').outerHeight());
+        jQuery('body.fixed .content-wrapper').css('padding-top', jQuery('.navbar-static-top').outerHeight());
     }
 };
 

@@ -29,6 +29,7 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -380,6 +381,9 @@ class ExtensionCompilerPassTest extends TestCase
         $container
             ->register('knp_menu.menu_provider')
             ->setClass(MenuProviderInterface::class);
+        $container
+            ->register('request_stack')
+            ->setClass(RequestStack::class);
 
         // Add admin definition's
         $container

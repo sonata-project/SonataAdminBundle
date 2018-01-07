@@ -17,6 +17,7 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Admin menu voter based on extra `admin`.
@@ -26,15 +27,36 @@ use Symfony\Component\HttpFoundation\Request;
 class AdminVoter implements VoterInterface
 {
     /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
      * @var Request
      */
     private $request = null;
 
+    public function __construct(RequestStack $requestStack = null)
+    {
+        $this->requestStack = $requestStack;
+    }
+
     /**
+     * @deprecated since version 3.x. Pass a RequestStack to the constructor instead.
+     *
      * @return $this
      */
     public function setRequest($request)
     {
+        @trigger_error(
+            sprintf(
+                'The %s() method is deprecated since version 3.x.
+                Pass a Symfony\Component\HttpFoundation\RequestStack
+                in the constructor instead.',
+            __METHOD__),
+            E_USER_DEPRECATED
+        );
+
         $this->request = $request;
 
         return $this;
@@ -44,11 +66,16 @@ class AdminVoter implements VoterInterface
     {
         $admin = $item->getExtra('admin');
 
+        $request = $this->request;
+        if (null !== $this->requestStack) {
+            $request = $this->requestStack->getMasterRequest();
+        }
+
         if ($admin instanceof AdminInterface
             && $admin->hasRoute('list') && $admin->hasAccess('list')
-            && $this->request
+            && $request
         ) {
-            $requestCode = $this->request->get('_sonata_admin');
+            $requestCode = $request->get('_sonata_admin');
 
             if ($admin->getCode() === $requestCode) {
                 return true;
@@ -62,7 +89,7 @@ class AdminVoter implements VoterInterface
         }
 
         $route = $item->getExtra('route');
-        if ($route && $this->request && $route == $this->request->get('_route')) {
+        if ($route && $request && $route == $request->get('_route')) {
             return true;
         }
 

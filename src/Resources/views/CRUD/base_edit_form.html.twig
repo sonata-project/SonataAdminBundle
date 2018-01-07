@@ -1,5 +1,5 @@
 {% block form %}
-    {% import "SonataAdminBundle:CRUD:base_edit_form_macro.html.twig" as form_helper %}
+    {% import "@SonataAdmin/CRUD/base_edit_form_macro.html.twig" as form_helper %}
     {{ sonata_block_render_event('sonata.admin.edit.form.top', { 'admin': admin, 'object': object }) }}
 
     {# NEXT_MAJOR: remove default filter #}
@@ -21,7 +21,7 @@
               {% block sonata_form_attributes %}{% endblock %}
               >
 
-            {{ include('SonataAdminBundle:Helper:render_form_dismissable_errors.html.twig') }}
+            {{ include('@SonataAdmin/Helper/render_form_dismissable_errors.html.twig') }}
 
             {% block sonata_pre_fieldsets %}
                 <div class="row">

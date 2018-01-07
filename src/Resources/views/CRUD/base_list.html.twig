@@ -12,7 +12,7 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {%- block actions -%}
-    {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
+    {% include '@SonataAdmin/CRUD/action_buttons.html.twig' %}
 {%- endblock -%}
 
 {% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': sonata_admin.adminPool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
@@ -110,7 +110,7 @@ file that was distributed with this source code.
                                 <span class="progress-description">
                                     {% if not app.request.xmlHttpRequest %}
                                     <ul class="list-unstyled">
-                                        {% include 'SonataAdminBundle:Button:create_button.html.twig' %}
+                                        {% include '@SonataAdmin/Button/create_button.html.twig' %}
                                     </ul>
                                     {% endif %}
                                 </span>
@@ -235,7 +235,9 @@ file that was distributed with this source code.
             <li class="dropdown sonata-actions">
                 <a href="#" class="dropdown-toggle sonata-ba-action" data-toggle="dropdown">
                     <i class="fa fa-filter" aria-hidden="true"></i>
-                    {{ 'link_filters'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b>
+                    {{ 'link_filters'|trans({}, 'SonataAdminBundle') }}
+                    <span class="badge sonata-filter-count"></span>
+                    <b class="caret"></b>
                 </a>
 
                 <ul class="dropdown-menu" role="menu">
