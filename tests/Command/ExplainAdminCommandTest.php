@@ -88,7 +88,7 @@ class ExplainAdminCommandTest extends TestCase
 
         $fieldDescription1->expects($this->any())
             ->method('getTemplate')
-            ->will($this->returnValue('SonataAdminBundle:CRUD:foo_text.html.twig'));
+            ->will($this->returnValue('@SonataAdmin/CRUD/foo_text.html.twig'));
 
         $fieldDescription2 = $this->createMock(FieldDescriptionInterface::class);
 
@@ -98,7 +98,7 @@ class ExplainAdminCommandTest extends TestCase
 
         $fieldDescription2->expects($this->any())
             ->method('getTemplate')
-            ->will($this->returnValue('SonataAdminBundle:CRUD:bar_datetime.html.twig'));
+            ->will($this->returnValue('@SonataAdmin/CRUD/bar_datetime.html.twig'));
 
         $this->admin->expects($this->any())
             ->method('getListFieldDescriptions')

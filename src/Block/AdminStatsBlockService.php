@@ -81,7 +81,7 @@ class AdminStatsBlockService extends AbstractBlockService
             'code' => false,
             'filters' => [],
             'limit' => 1000,
-            'template' => 'SonataAdminBundle:Block:block_stats.html.twig',
+            'template' => '@SonataAdmin/Block/block_stats.html.twig',
         ]);
     }
 }

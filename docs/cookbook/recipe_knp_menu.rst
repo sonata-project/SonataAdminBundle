@@ -80,7 +80,7 @@ group roles will be checked.
                               label:        Article
                         roles: [ ROLE_ADMIN, ROLE_SONATA_ADMIN]
 
-You can also override the template of knp_menu used by sonata. The default one is `SonataAdminBundle:Menu:sonata_menu.html.twig`:
+You can also override the template of knp_menu used by sonata. The default one is `@SonataAdmin/Menu/sonata_menu.html.twig`:
 
 .. configuration-block::
 

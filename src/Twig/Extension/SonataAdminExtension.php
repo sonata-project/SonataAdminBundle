@@ -224,7 +224,7 @@ EOT;
     ) {
         $template = $this->getTemplate(
             $fieldDescription,
-            'SonataAdminBundle:CRUD:base_show_field.html.twig',
+            '@SonataAdmin/CRUD/base_show_field.html.twig',
             $environment
         );
 
@@ -258,7 +258,7 @@ EOT;
     ) {
         $template = $this->getTemplate(
             $fieldDescription,
-            'SonataAdminBundle:CRUD:base_show_field.html.twig',
+            '@SonataAdmin/CRUD/base_show_field.html.twig',
             $environment
         );
 

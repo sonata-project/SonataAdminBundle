@@ -138,7 +138,7 @@ and use `sonata_admin_content` block.
 
 .. code-block:: html+jinja
 
-    {% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+    {% extends '@SonataAdmin/standard_layout.html.twig' %}
 
     {% block sonata_admin_content %}
         Your content here

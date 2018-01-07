@@ -45,4 +45,4 @@ To use `SimplePager` in your admin just define ``pager_type`` inside the service
 
 .. note::
 
-    The ``pager_results`` template is automatically changed to ``SonataAdminBundle:Pager:simple_pager_results.html.twig`` if it's not already overloaded.
+    The ``pager_results`` template is automatically changed to ``@SonataAdmin/Pager/simple_pager_results.html.twig`` if it's not already overloaded.
