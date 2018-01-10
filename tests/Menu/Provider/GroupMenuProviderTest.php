@@ -19,6 +19,7 @@ use Knp\Menu\Provider\MenuProviderInterface;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Menu\Provider\GroupMenuProvider;
@@ -73,7 +74,22 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGroupMenuProviderWithoutChecker(array $adminGroups)
     {
+        $container = $this->createMock(ContainerInterface::class);
+
+        $container->expects($this->once())
+            ->method('get')
+            ->with($this->equalTo('security.authorization_checker'))
+            ->will($this->returnValue($this->checker));
+
+        $this->pool->expects($this->once())
+            ->method('getContainer')
+            ->will($this->returnValue($container));
+
         $provider = new GroupMenuProvider($this->factory, $this->pool);
+
+        $this->checker->expects($this->any())
+            ->method('isGranted')
+            ->willReturn(true);
 
         $this->pool->expects($this->once())
             ->method('getInstance')
@@ -115,11 +131,6 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetMenuProviderWithCheckerGrantedGroupRoles(array $adminGroups)
     {
-        $this->pool->expects($this->once())
-            ->method('getInstance')
-            ->with($this->equalTo('sonata_admin_foo_service'))
-            ->will($this->returnValue($this->getAdminMock()));
-
         $this->checker->expects($this->any())
             ->method('isGranted')
             ->willReturn(false);
@@ -132,20 +143,7 @@ class GroupMenuProviderTest extends TestCase
             ]
         );
 
-        $this->assertInstanceOf(ItemInterface::class, $menu);
-        $this->assertSame('foo', $menu->getName());
-
-        $children = $menu->getChildren();
-
-        $this->assertCount(1, $children);
-        $this->assertArrayHasKey('foo_admin_label', $children);
-        $this->assertArrayNotHasKey('route_label', $children);
-        $this->assertInstanceOf(MenuItem::class, $menu['foo_admin_label']);
-        $this->assertSame('foo_admin_label', $menu['foo_admin_label']->getLabel());
-
-        $extras = $menu['foo_admin_label']->getExtras();
-        $this->assertArrayHasKey('label_catalogue', $extras);
-        $this->assertSame($extras['label_catalogue'], 'SonataAdminBundle');
+        $this->assertNull($menu);
     }
 
     /**
@@ -262,7 +260,7 @@ class GroupMenuProviderTest extends TestCase
         $this->pool->expects($this->once())
             ->method('getInstance')
             ->with($this->equalTo('sonata_admin_foo_service'))
-            ->will($this->returnValue($this->getAdminMock(true, false)));
+            ->will($this->returnValue($this->getAdminMock()));
 
         $menu = $this->provider->get(
             'providerFoo',

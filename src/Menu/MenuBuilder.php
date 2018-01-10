@@ -84,8 +84,10 @@ class MenuBuilder
                 ]
             );
 
-            $subMenu = $menu->addChild($subMenu);
-            $subMenu->setExtras(array_merge($subMenu->getExtras(), $extras));
+            if ($subMenu) {
+                $subMenu = $menu->addChild($subMenu);
+                $subMenu->setExtras(array_merge($subMenu->getExtras(), $extras));
+            }
         }
 
         $event = new ConfigureMenuEvent($this->factory, $menu);
