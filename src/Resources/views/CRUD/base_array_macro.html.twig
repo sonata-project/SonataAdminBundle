@@ -9,9 +9,10 @@ file that was distributed with this source code.
 
 #}
 {% macro render_array(value, inline) %}
+    {% from _self import render_array %}
     {% for key, val in value %}
         {% if val is iterable %}
-            [{{ key }} => {{ _self.render_array(val, inline) }}]
+            [{{ key }} => {{ render_array(val, inline) }}]
         {%  else %}
             [{{ key }} => {{ val }}]
         {%  endif %}

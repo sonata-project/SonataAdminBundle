@@ -142,7 +142,7 @@ of objects to manipulate. We can override this behavior by changing our list tem
 .. code-block:: html+jinja
 
     {# src/AppBundle/Resources/views/CRUD/list__batch.html.twig #}
-    {# see SonataAdminBundle:CRUD:list__batch.html.twig for the current default template #}
+    {# see @SonataAdmin/CRUD/list__batch.html.twig for the current default template #}
 
     {% extends admin.getTemplate('base_list_field') %}
 

@@ -334,33 +334,33 @@ class CRUDControllerTest extends TestCase
             ->will($this->returnCallback(function ($name) {
                 switch ($name) {
                     case 'ajax':
-                        return 'SonataAdminBundle::ajax_layout.html.twig';
+                        return '@SonataAdmin/ajax_layout.html.twig';
                     case 'layout':
-                        return 'SonataAdminBundle::standard_layout.html.twig';
+                        return '@SonataAdmin/standard_layout.html.twig';
                     case 'show':
-                        return 'SonataAdminBundle:CRUD:show.html.twig';
+                        return '@SonataAdmin/CRUD/show.html.twig';
                     case 'show_compare':
-                        return 'SonataAdminBundle:CRUD:show_compare.html.twig';
+                        return '@SonataAdmin/CRUD/show_compare.html.twig';
                     case 'edit':
-                        return 'SonataAdminBundle:CRUD:edit.html.twig';
+                        return '@SonataAdmin/CRUD/edit.html.twig';
                     case 'dashboard':
-                        return 'SonataAdminBundle:Core:dashboard.html.twig';
+                        return '@SonataAdmin/Core/dashboard.html.twig';
                     case 'search':
-                        return 'SonataAdminBundle:Core:search.html.twig';
+                        return '@SonataAdmin/Core/search.html.twig';
                     case 'list':
-                        return 'SonataAdminBundle:CRUD:list.html.twig';
+                        return '@SonataAdmin/CRUD/list.html.twig';
                     case 'preview':
-                        return 'SonataAdminBundle:CRUD:preview.html.twig';
+                        return '@SonataAdmin/CRUD/preview.html.twig';
                     case 'history':
-                        return 'SonataAdminBundle:CRUD:history.html.twig';
+                        return '@SonataAdmin/CRUD/history.html.twig';
                     case 'acl':
-                        return 'SonataAdminBundle:CRUD:acl.html.twig';
+                        return '@SonataAdmin/CRUD/acl.html.twig';
                     case 'delete':
-                        return 'SonataAdminBundle:CRUD:delete.html.twig';
+                        return '@SonataAdmin/CRUD/delete.html.twig';
                     case 'batch':
-                        return 'SonataAdminBundle:CRUD:list__batch.html.twig';
+                        return '@SonataAdmin/CRUD/list__batch.html.twig';
                     case 'batch_confirmation':
-                        return 'SonataAdminBundle:CRUD:batch_confirmation.html.twig';
+                        return '@SonataAdmin/CRUD/batch_confirmation.html.twig';
                 }
             }));
 
@@ -548,25 +548,25 @@ class CRUDControllerTest extends TestCase
     public function testGetBaseTemplate(): void
     {
         $this->assertSame(
-            'SonataAdminBundle::standard_layout.html.twig',
+            '@SonataAdmin/standard_layout.html.twig',
             $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller, $this->request)
         );
 
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
         $this->assertSame(
-            'SonataAdminBundle::ajax_layout.html.twig',
+            '@SonataAdmin/ajax_layout.html.twig',
             $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller, $this->request)
         );
 
         $this->request->headers->remove('X-Requested-With');
         $this->assertSame(
-            'SonataAdminBundle::standard_layout.html.twig',
+            '@SonataAdmin/standard_layout.html.twig',
             $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller, $this->request)
         );
 
         $this->request->attributes->set('_xml_http_request', true);
         $this->assertSame(
-            'SonataAdminBundle::ajax_layout.html.twig',
+            '@SonataAdmin/ajax_layout.html.twig',
             $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller, $this->request)
         );
     }
@@ -579,7 +579,7 @@ class CRUDControllerTest extends TestCase
             $this->controller->renderWithExtraParams('FooAdminBundle::foo.html.twig', [], null)
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
         $this->assertSame('FooAdminBundle::foo.html.twig', $this->template);
     }
@@ -594,7 +594,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame($response, $responseResult);
         $this->assertSame('bar', $responseResult->headers->get('X-foo'));
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
         $this->assertSame('FooAdminBundle::foo.html.twig', $this->template);
     }
@@ -611,7 +611,7 @@ class CRUDControllerTest extends TestCase
             )
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
         $this->assertSame('bar', $this->parameters['foo']);
         $this->assertSame('FooAdminBundle::foo.html.twig', $this->template);
@@ -630,7 +630,7 @@ class CRUDControllerTest extends TestCase
             )
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::ajax_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
         $this->assertSame('bar', $this->parameters['foo']);
         $this->assertSame('FooAdminBundle::foo.html.twig', $this->template);
@@ -702,7 +702,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->listAction($this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('list', $this->parameters['action']);
@@ -710,7 +710,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(DatagridInterface::class, $this->parameters['datagrid']);
         $this->assertSame('csrf-token-123_sonata.batch', $this->parameters['csrf_token']);
         $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:list.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/list.html.twig', $this->template);
     }
 
     public function testBatchActionDeleteAccessDenied(): void
@@ -866,7 +866,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->showAction(null, $this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('show', $this->parameters['action']);
@@ -874,7 +874,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame($object, $this->parameters['object']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:show.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/show.html.twig', $this->template);
     }
 
     /**
@@ -1006,7 +1006,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->deleteAction(1, $this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('delete', $this->parameters['action']);
@@ -1014,7 +1014,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('csrf-token-123_sonata.delete', $this->parameters['csrf_token']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:delete.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/delete.html.twig', $this->template);
     }
 
     public function testDeleteActionNoCsrfToken(): void
@@ -1035,7 +1035,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->deleteAction(1, $this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('delete', $this->parameters['action']);
@@ -1043,7 +1043,7 @@ class CRUDControllerTest extends TestCase
         $this->assertFalse($this->parameters['csrf_token']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:delete.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/delete.html.twig', $this->template);
     }
 
     public function testDeleteActionAjaxSuccess1(): void
@@ -1282,7 +1282,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->deleteAction(1, $this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('delete', $this->parameters['action']);
@@ -1290,7 +1290,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('csrf-token-123_sonata.delete', $this->parameters['csrf_token']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:delete.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/delete.html.twig', $this->template);
     }
 
     /**
@@ -1432,14 +1432,14 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->editAction(null, $this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('edit', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
         $this->assertSame($object, $this->parameters['object']);
         $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
     /**
@@ -1557,7 +1557,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->editAction(null, $this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('edit', $this->parameters['action']);
@@ -1565,7 +1565,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame($object, $this->parameters['object']);
 
         $this->assertSame(['sonata_flash_error' => ['flash_edit_error']], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
     public function testEditActionAjaxSuccess(): void
@@ -1665,7 +1665,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->editAction(null, $this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::ajax_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('edit', $this->parameters['action']);
@@ -1673,7 +1673,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame($object, $this->parameters['object']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
     /**
@@ -1734,7 +1734,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->editAction(null, $this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('edit', $this->parameters['action']);
@@ -1742,7 +1742,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame($object, $this->parameters['object']);
 
         $this->assertSame(['sonata_flash_error' => ['flash_edit_error']], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
     public function testEditActionWithPreview(): void
@@ -1790,7 +1790,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->editAction(null, $this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('edit', $this->parameters['action']);
@@ -1798,7 +1798,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame($object, $this->parameters['object']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:preview.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/preview.html.twig', $this->template);
     }
 
     public function testEditActionWithLockException(): void
@@ -1936,7 +1936,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->createAction($this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('create', $this->parameters['action']);
@@ -1944,7 +1944,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame($object, $this->parameters['object']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
     /**
@@ -2136,7 +2136,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->createAction($this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('create', $this->parameters['action']);
@@ -2144,7 +2144,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame($object, $this->parameters['object']);
 
         $this->assertSame(['sonata_flash_error' => ['flash_create_error']], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
     /**
@@ -2207,7 +2207,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->createAction($this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('create', $this->parameters['action']);
@@ -2215,7 +2215,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame($object, $this->parameters['object']);
 
         $this->assertSame(['sonata_flash_error' => ['flash_create_error']], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
     public function testCreateActionAjaxSuccess(): void
@@ -2328,7 +2328,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->createAction($this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::ajax_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('create', $this->parameters['action']);
@@ -2336,7 +2336,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame($object, $this->parameters['object']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:edit.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
     public function testCreateActionWithPreview(): void
@@ -2388,7 +2388,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->createAction($this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('create', $this->parameters['action']);
@@ -2396,7 +2396,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame($object, $this->parameters['object']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:preview.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/preview.html.twig', $this->template);
     }
 
     public function testExportActionAccessDenied(): void
@@ -2557,7 +2557,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->historyAction(null, $this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('history', $this->parameters['action']);
@@ -2565,7 +2565,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame($object, $this->parameters['object']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:history.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/history.html.twig', $this->template);
     }
 
     public function testAclActionAclNotEnabled(): void
@@ -2679,7 +2679,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->aclAction(null, $this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('acl', $this->parameters['action']);
@@ -2691,7 +2691,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(FormView::class, $this->parameters['aclRolesForm']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:acl.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/acl.html.twig', $this->template);
     }
 
     public function testAclActionInvalidUpdate(): void
@@ -2768,7 +2768,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->aclAction(null, $this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('acl', $this->parameters['action']);
@@ -2780,7 +2780,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(FormView::class, $this->parameters['aclRolesForm']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:acl.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/acl.html.twig', $this->template);
     }
 
     public function testAclActionSuccessfulUpdate(): void
@@ -3015,7 +3015,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->historyViewRevisionAction(123, 456, $this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('show', $this->parameters['action']);
@@ -3023,7 +3023,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame($fieldDescriptionCollection, $this->parameters['elements']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:show.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/show.html.twig', $this->template);
     }
 
     public function testHistoryCompareRevisionsActionAccessDenied(): void
@@ -3237,7 +3237,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->historyCompareRevisionsAction(123, 456, 789, $this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('show', $this->parameters['action']);
@@ -3246,7 +3246,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame($fieldDescriptionCollection, $this->parameters['elements']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:show_compare.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/show_compare.html.twig', $this->template);
     }
 
     public function testBatchActionWrongMethod(): void
@@ -3449,7 +3449,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $this->controller->batchAction($this->request));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('SonataAdminBundle::standard_layout.html.twig', $this->parameters['base_template']);
+        $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
 
         $this->assertSame('list', $this->parameters['action']);
@@ -3460,7 +3460,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('Foo Bar', $this->parameters['action_label']);
 
         $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('SonataAdminBundle:CRUD:batch_confirmation.html.twig', $this->template);
+        $this->assertSame('@SonataAdmin/CRUD/batch_confirmation.html.twig', $this->template);
     }
 
     public function testBatchActionNonRelevantAction(): void

@@ -156,7 +156,7 @@ final class SonataAdminExtension extends AbstractExtension
     ) {
         $template = $this->getTemplate(
             $fieldDescription,
-            'SonataAdminBundle:CRUD:base_show_field.html.twig',
+            '@SonataAdmin/CRUD/base_show_field.html.twig',
             $environment
         );
 
@@ -190,7 +190,7 @@ final class SonataAdminExtension extends AbstractExtension
     ) {
         $template = $this->getTemplate(
             $fieldDescription,
-            'SonataAdminBundle:CRUD:base_show_field.html.twig',
+            '@SonataAdmin/CRUD/base_show_field.html.twig',
             $environment
         );
 

@@ -275,8 +275,8 @@ are located in the ``Resources/views`` directory of the bundle.
 
 There are two base templates, one of these is ultimately used in every action:
 
-* ``SonataAdminBundle::standard_layout.html.twig``
-* ``SonataAdminBundle::ajax_layout.html.twig``
+* ``@SonataAdmin/standard_layout.html.twig``
+* ``@SonataAdmin/ajax_layout.html.twig``
 
 Like the names say, one if for standard calls, the other one for AJAX.
 

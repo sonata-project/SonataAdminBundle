@@ -21,9 +21,9 @@ The configuration takes place in the DIC by calling the ``setTemplates`` method.
 Two template keys need to be set:
 
 - ``inner_list_row``: The template for the row, which you will customize. Often
-  you will want this to extend ``SonataAdminBundle:CRUD:base_list_flat_inner_row.html.twig``
+  you will want this to extend ``@SonataAdmin/CRUD/base_list_flat_inner_row.html.twig``
 - ``base_list_field``: The base template for the cell, the default of
-  ``SonataAdminBundle:CRUD:base_list_flat_field.html.twig`` is suitable for most
+  ``@SonataAdmin/CRUD/base_list_flat_field.html.twig`` is suitable for most
   cases but it can be customized if required.
 
 .. configuration-block::
@@ -44,7 +44,7 @@ Two template keys need to be set:
                         AppBundle:Admin:inner_row_comment.html.twig
                     </argument>
                     <argument key="base_list_field">
-                        SonataAdminBundle:CRUD:base_list_flat_field.html.twig
+                        @SonataAdmin/CRUD/base_list_flat_field.html.twig
                     </argument>
                 </argument>
             </call>
@@ -61,7 +61,7 @@ Once the templates are defined, create the template to render the row:
 
     {# Extend the default template, which provides batch and action cells #}
     {#     as well as the valid colspan computation #}
-    {% extends 'SonataAdminBundle:CRUD:base_list_flat_inner_row.html.twig' %}
+    {% extends '@SonataAdmin/CRUD/base_list_flat_inner_row.html.twig' %}
 
     {% block row %}
 

@@ -363,10 +363,10 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 && $method[1][0] === Pager::TYPE_SIMPLE
                 && (
                     !isset($definedTemplates['pager_results'])
-                    || 'SonataAdminBundle:Pager:results.html.twig' === $definedTemplates['pager_results']
+                    || '@SonataAdmin/Pager/results.html.twig' === $definedTemplates['pager_results']
                 )
             ) {
-                $definedTemplates['pager_results'] = 'SonataAdminBundle:Pager:simple_pager_results.html.twig';
+                $definedTemplates['pager_results'] = '@SonataAdmin/Pager/simple_pager_results.html.twig';
             }
 
             $methods[$pos] = $method;
