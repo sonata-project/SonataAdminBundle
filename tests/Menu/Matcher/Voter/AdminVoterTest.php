@@ -15,6 +15,7 @@ use Knp\Menu\ItemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class AdminVoterTest extends AbstractVoterTest
 {
@@ -43,13 +44,13 @@ class AdminVoterTest extends AbstractVoterTest
      */
     protected function createVoter($dataVoter, $route)
     {
-        $voter = new AdminVoter();
         $request = new Request();
+        $stack = new RequestStack();
         $request->request->set('_sonata_admin', $dataVoter);
         $request->request->set('_route', $route);
-        $voter->setRequest($request);
+        $stack->push($request);
 
-        return $voter;
+        return new AdminVoter($stack);
     }
 
     /**

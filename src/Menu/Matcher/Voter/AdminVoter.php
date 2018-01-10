@@ -15,6 +15,7 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Admin menu voter based on extra `admin`.
@@ -27,6 +28,11 @@ class AdminVoter implements VoterInterface
      * @var Request
      */
     private $request = null;
+
+    public function __construct(RequestStack $requestStack)
+    {
+        $this->request = $requestStack->getMasterRequest();
+    }
 
     /**
      * @return $this
