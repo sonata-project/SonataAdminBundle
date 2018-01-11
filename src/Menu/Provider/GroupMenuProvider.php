@@ -81,10 +81,7 @@ class GroupMenuProvider implements MenuProviderInterface
     public function get($name, array $options = [])
     {
         $group = $options['group'];
-
-        if (!empty($group['roles']) && !$this->checker->isGranted($group['roles'])) {
-            return null;
-        }
+        $menuItem = null;
 
         if (empty($group['on_top'])) {
             $menuItem = $this->menuFactory->createItem($options['name'], [
@@ -124,17 +121,10 @@ class GroupMenuProvider implements MenuProviderInterface
                 return null;
             }
 
-            $options = $admin->generateMenuUrl('list', [], $item['route_absolute']);
-            $options['extras'] = [
-                'label_catalogue' => $admin->getTranslationDomain(),
-                'admin' => $admin,
-            ];
-
-            return $this->menuFactory->createItem($admin->getLabel(), $options);
-        }
-
-        if (!empty($item['roles']) && !$this->checker->isGranted($item['roles'])) {
-            return null;
+            return $this->menuFactory->createItem(
+                $admin->getLabel(),
+                $admin->generateMenuUrl('list', [], $item['route_absolute'])
+            )->setExtra('label_catalogue', $admin->getTranslationDomain());
         }
 
         return $this->menuFactory->createItem($item['label'], [
@@ -143,6 +133,7 @@ class GroupMenuProvider implements MenuProviderInterface
             'routeAbsolute' => $item['route_absolute'],
             'extras' => [
                 'label_catalogue' => $group['label_catalogue'],
+                'roles' => $item['roles'],
             ],
         ]);
     }
