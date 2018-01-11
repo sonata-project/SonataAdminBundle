@@ -360,7 +360,10 @@ class HelperController
         }
 
         // subject will be empty to avoid unnecessary database requests and keep autocomplete function fast
-        $admin->setSubject($admin->getNewInstance());
+        $adminModelClass = new \ReflectionClass($admin->getClass());
+        if (!$adminModelClass->isAbstract()) {
+            $admin->setSubject($admin->getNewInstance());
+        }
 
         if ('filter' === $context) {
             // filter
