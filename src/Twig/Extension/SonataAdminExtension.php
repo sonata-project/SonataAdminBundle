@@ -404,7 +404,7 @@ EOT;
                     if ($catalogue) {
                         if (null !== $this->translator) {
                             $text = $this->translator->trans($text, [], $catalogue);
-                            // NEXT_MAJOR: Remove this check
+                        // NEXT_MAJOR: Remove this check
                         } elseif (method_exists($fieldDescription->getAdmin(), 'trans')) {
                             $text = $fieldDescription->getAdmin()->trans($text, [], $catalogue);
                         }
