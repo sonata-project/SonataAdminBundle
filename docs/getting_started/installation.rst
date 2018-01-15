@@ -97,17 +97,6 @@ line in the `app/AppKernel.php` file of your project:
 
         $ bower install ./vendor/sonata-project/admin-bundle/bower.json
 
-.. note::
-
-    You must enable translator service in `config.yml`.
-
-    .. code-block:: yaml
-
-        framework:
-            translator: { fallbacks: ["%locale%"] }
-
-    For more information: http://symfony.com/doc/current/translation.html#configuration
-
 Step 3: Configure the Installed Bundles
 ---------------------------------------
 
@@ -133,21 +122,7 @@ admin block:
     what a block is. The SonataBlockBundle is a useful tool, but it's not vital
     that you understand it in order to use the admin bundle.
 
-Step 4: Import Routing Configuration
-------------------------------------
-
-The bundles are now registered and configured correctly. Before you can use it,
-the Symfony router needs to know the routes provided by the SonataAdminBundle.
-You can do this by importing them in the routing configuration:
-
-.. code-block:: yaml
-
-    # app/config/routing.yml
-    admin_area:
-        resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
-        prefix: /admin
-
-Step 5: Enable the "translator" service
+Step 4: Enable the "translator" service
 ---------------------------------------
 
 The translator service is required by SonataAdmin to display all labels properly.
@@ -156,13 +131,16 @@ The translator service is required by SonataAdmin to display all labels properly
 
     # app/config/config.yml
     framework:
-        translator: { fallbacks: [en] }
+            translator: { fallbacks: ["%locale%"] }
 
-Step 6: Define routes
+    For more information: http://symfony.com/doc/current/translation.html#configuration
+
+Step 5: Define routes
 ---------------------
 
-To be able to access SonataAdminBundle's pages, you need to add its routes
-to your application's routing file:
+The bundles are now registered and configured correctly. To be able to access SonataAdminBundle's pages,
+the Symfony router needs to know the routes provided by the SonataAdminBundle.
+You can do this by adding its routes to your application's routing file:
 
 .. configuration-block::
 
@@ -195,7 +173,7 @@ to your application's routing file:
 At this point you can already access the (empty) admin dashboard by visiting the URL:
 ``http://yoursite.local/admin/dashboard``.
 
-Step 7: Preparing your Environment
+Step 6: Preparing your Environment
 ----------------------------------
 
 As with all bundles you install, it's a good practice to clear the cache and
