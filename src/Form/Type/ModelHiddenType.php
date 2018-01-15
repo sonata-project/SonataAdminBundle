@@ -49,7 +49,7 @@ class ModelHiddenType extends AbstractType
             'class' => null,
             'attr' => [
                 'hidden' => true,
-            ]
+            ],
         ]);
     }
 
