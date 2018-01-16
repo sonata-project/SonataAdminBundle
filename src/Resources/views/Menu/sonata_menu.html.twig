@@ -2,21 +2,19 @@
 
 {% block root %}
     {%- set listAttributes = item.childrenAttributes|merge({'class': 'sidebar-menu'}) %}
-    {%- set request        = item.extra('request') ?: app.request %}
+    {%- set request = item.extra('request') ?: app.request %}
     {{ block('list') -}}
 {% endblock %}
 
 {% block item %}
-    {%- if item.displayed %}
-        {#- check role of the group #}
-        {%- set display = (item.extra('roles') is empty or is_granted(sonata_admin.adminPool.getOption('role_super_admin')) ) %}
-        {%- for role in item.extra('roles') if not display %}
-            {%- set display = is_granted(role) %}
-        {%- endfor %}
-    {%- endif %}
+    {%- set display = item.displayed and (
+        item.extra('roles') is empty or
+        is_granted(item.extra('roles')) or
+        is_granted(sonata_admin.adminPool.getOption('role_super_admin'))
+    ) %}
 
-    {%- if item.displayed and display|default %}
-        {% set options = options|merge({branch_class: 'treeview', currentClass: "active", ancestorClass: "active"}) %}
+    {%- if display %}
+        {% set options = options|merge({branch_class: 'treeview', currentClass: 'active', ancestorClass: 'active'}) %}
         {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' active')|trim) %}
         {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' treeview-menu')|trim) %}
         {{ parent() }}

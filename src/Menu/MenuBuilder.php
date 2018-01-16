@@ -68,24 +68,21 @@ class MenuBuilder
         $menu = $this->factory->createItem('root');
 
         foreach ($this->pool->getAdminGroups() as $name => $group) {
-            $extras = [
-                'icon' => $group['icon'],
-                'label_catalogue' => $group['label_catalogue'],
-                'roles' => $group['roles'],
-                'sonata_admin' => true,
-            ];
-
             $menuProvider = isset($group['provider']) ? $group['provider'] : 'sonata_group_menu';
-            $subMenu = $this->provider->get(
-                $menuProvider,
-                [
-                    'name' => $name,
-                    'group' => $group,
-                ]
-            );
+            $subMenu = $this->provider->get($menuProvider, [
+                'name' => $name,
+                'group' => $group,
+            ]);
 
-            $subMenu = $menu->addChild($subMenu);
-            $subMenu->setExtras(array_merge($subMenu->getExtras(), $extras));
+            if ($subMenu) {
+                $subMenu = $menu->addChild($subMenu);
+                $subMenu->setExtras(array_merge($subMenu->getExtras(), [
+                    'icon' => $group['icon'],
+                    'label_catalogue' => $group['label_catalogue'],
+                    'roles' => $group['roles'],
+                    'sonata_admin' => true,
+                ]));
+            }
         }
 
         $event = new ConfigureMenuEvent($this->factory, $menu);
