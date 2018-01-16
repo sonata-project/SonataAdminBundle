@@ -109,7 +109,7 @@ admin block:
 
     # app/config/config.yml
     sonata_block:
-        default_contexts: [cms]
+        default_contexts: [] # this line can be removed for sonata-project/block-bundle >= 3.10.0
         blocks:
             # enable the SonataAdminBundle block
             sonata.admin.block.admin_list:
