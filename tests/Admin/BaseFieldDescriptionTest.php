@@ -157,6 +157,18 @@ class BaseFieldDescriptionTest extends TestCase
             $mock3->expects($this->once())->method($method)->will($this->returnValue(42));
             $this->assertSame(42, $description3->getFieldValue($mock3, '_fake'));
         }
+
+        $mock4 = $this->getMockBuilder('MockedTestObject')
+            ->setMethods(['myMethod'])
+            ->getMock();
+        $mock4->expects($this->once())
+            ->method('myMethod')
+            ->will($this->returnValue('myMethodValue'));
+
+        $description4 = new FieldDescription();
+        $description4->setOption('code', 'myMethod');
+
+        $this->assertEquals($description4->getFieldValue($mock4, null), 'myMethodValue');
     }
 
     public function testGetValueNoValueException()

@@ -262,8 +262,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             return;
         }
 
-        $camelizedFieldName = Inflector::classify($fieldName);
-
         $getters = [];
         $parameters = [];
 
@@ -275,9 +273,14 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if ($this->getOption('parameters')) {
             $parameters = $this->getOption('parameters');
         }
-        $getters[] = 'get'.$camelizedFieldName;
-        $getters[] = 'is'.$camelizedFieldName;
-        $getters[] = 'has'.$camelizedFieldName;
+
+        if (is_string($fieldName) && '' !== $fieldName) {
+            $camelizedFieldName = Inflector::classify($fieldName);
+
+            $getters[] = 'get'.$camelizedFieldName;
+            $getters[] = 'is'.$camelizedFieldName;
+            $getters[] = 'has'.$camelizedFieldName;
+        }
 
         foreach ($getters as $getter) {
             if (method_exists($object, $getter)) {
