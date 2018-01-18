@@ -41,7 +41,7 @@ Two template keys need to be set:
             <call method="setTemplates">
                 <argument type="collection">
                     <argument key="inner_list_row">
-                        AppBundle:Admin:inner_row_comment.html.twig
+                        @App/Admin/inner_row_comment.html.twig
                     </argument>
                     <argument key="base_list_field">
                         @SonataAdmin/CRUD/base_list_flat_field.html.twig
@@ -57,7 +57,7 @@ Once the templates are defined, create the template to render the row:
 
 .. code-block:: jinja
 
-    {# AppBundle:Admin:inner_row_comment.html.twig #}
+    {# @App/Admin/inner_row_comment.html.twig #}
 
     {# Extend the default template, which provides batch and action cells #}
     {#     as well as the valid colspan computation #}

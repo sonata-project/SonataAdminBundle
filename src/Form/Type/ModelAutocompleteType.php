@@ -152,7 +152,7 @@ class ModelAutocompleteType extends AbstractType
             // allow HTML
             'safe_label' => false,
 
-            'template' => 'SonataAdminBundle:Form/Type:sonata_type_model_autocomplete.html.twig',
+            'template' => '@SonataAdmin/Form/Type/sonata_type_model_autocomplete.html.twig',
         ]);
 
         $resolver->setRequired(['property']);

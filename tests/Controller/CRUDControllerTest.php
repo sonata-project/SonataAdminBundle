@@ -574,12 +574,12 @@ class CRUDControllerTest extends TestCase
         $this->parameters = [];
         $this->assertInstanceOf(
             Response::class,
-            $this->controller->renderWithExtraParams('FooAdminBundle::foo.html.twig', [], null)
+            $this->controller->renderWithExtraParams('@FooAdmin/foo.html.twig', [], null)
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
-        $this->assertSame('FooAdminBundle::foo.html.twig', $this->template);
+        $this->assertSame('@FooAdmin/foo.html.twig', $this->template);
     }
 
     public function testRenderWithResponse()
@@ -587,14 +587,14 @@ class CRUDControllerTest extends TestCase
         $this->parameters = [];
         $response = $response = new Response();
         $response->headers->set('X-foo', 'bar');
-        $responseResult = $this->controller->renderWithExtraParams('FooAdminBundle::foo.html.twig', [], $response);
+        $responseResult = $this->controller->renderWithExtraParams('@FooAdmin/foo.html.twig', [], $response);
 
         $this->assertSame($response, $responseResult);
         $this->assertSame('bar', $responseResult->headers->get('X-foo'));
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
-        $this->assertSame('FooAdminBundle::foo.html.twig', $this->template);
+        $this->assertSame('@FooAdmin/foo.html.twig', $this->template);
     }
 
     public function testRenderCustomParams()
@@ -603,7 +603,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(
             Response::class,
             $this->controller->renderWithExtraParams(
-                'FooAdminBundle::foo.html.twig',
+                '@FooAdmin/foo.html.twig',
                 ['foo' => 'bar'],
                 null
             )
@@ -612,7 +612,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
         $this->assertSame('bar', $this->parameters['foo']);
-        $this->assertSame('FooAdminBundle::foo.html.twig', $this->template);
+        $this->assertSame('@FooAdmin/foo.html.twig', $this->template);
     }
 
     public function testRenderAjax()
@@ -622,7 +622,7 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(
             Response::class,
             $this->controller->renderWithExtraParams(
-                'FooAdminBundle::foo.html.twig',
+                '@FooAdmin/foo.html.twig',
                 ['foo' => 'bar'],
                 null
             )
@@ -631,7 +631,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
         $this->assertSame('bar', $this->parameters['foo']);
-        $this->assertSame('FooAdminBundle::foo.html.twig', $this->template);
+        $this->assertSame('@FooAdmin/foo.html.twig', $this->template);
     }
 
     public function testListActionAccessDenied()

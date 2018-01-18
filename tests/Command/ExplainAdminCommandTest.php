@@ -116,7 +116,7 @@ class ExplainAdminCommandTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('getFormTheme')
-            ->will($this->returnValue(['FooBundle::bar.html.twig']));
+            ->will($this->returnValue(['@Foo/bar.html.twig']));
 
         $this->admin->expects($this->any())
             ->method('getFormFieldDescriptions')

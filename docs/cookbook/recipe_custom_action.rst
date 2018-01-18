@@ -196,7 +196,7 @@ Next we have to add the action in ``configureListFields`` specifying the templat
                     // ...
 
                     'clone' => [
-                        'template' => 'AppBundle:CRUD:list__action_clone.html.twig'
+                        'template' => '@App/CRUD/list__action_clone.html.twig'
                     ]
                 ]
             ])
@@ -250,7 +250,7 @@ The full ``CarAdmin.php`` example looks like this:
                         'edit' => [],
                         'delete' => [],
                         'clone' => [
-                            'template' => 'AppBundle:CRUD:list__action_clone.html.twig'
+                            'template' => '@App/CRUD/list__action_clone.html.twig'
                         ]
                     ]
                 ]);
