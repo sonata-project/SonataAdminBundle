@@ -22,7 +22,7 @@ Datagrid Filters
   - barDateTimeField           datetime        @SonataAdmin/CRUD/bar_datetime.html.twig
 
 Form theme(s)
-  - FooBundle::bar.html.twig
+  - @Foo/bar.html.twig
 
 Form Fields
   - fooTextField               text            @SonataAdmin/CRUD/foo_text.html.twig

@@ -157,7 +157,7 @@ The first thing you need to do is define it in app/config/config/yml:
             title:      Acme
             title_logo: img/logo_small.png
             templates:
-                show:       AppBundle:Admin:Display_Client.html.twig
+                show:       "@App/Admin/Display_Client.html.twig
 
 Once you have defined this, Sonata Admin looks for it in the following location:
 

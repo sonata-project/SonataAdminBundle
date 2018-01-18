@@ -90,7 +90,7 @@ You can also override the template of knp_menu used by sonata. The default one i
 
         sonata_admin:
             templates:
-                knp_menu_template:           ApplicationAdminBundle:Menu:custom_knp_menu.html.twig
+                knp_menu_template:           "@ApplicationAdmin/Menu/custom_knp_menu.html.twig"
 
 And voilà, now you have a menu group which contains a link to a sonata admin via its id, to your blog and to a specific article.
 

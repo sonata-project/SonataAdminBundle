@@ -372,7 +372,7 @@ The available options are:
   items per page.
 
 ``template``
-  defaults to ``SonataAdminBundle:Form/Type:sonata_type_model_autocomplete.html.twig``.
+  defaults to ``@SonataAdmin/Form/Type/sonata_type_model_autocomplete.html.twig``.
   Use this option if you want to override the default template of this form type.
 
 ``btn_add`` and ``btn_catalogue``:
@@ -396,7 +396,7 @@ The available options are:
             $formMapper
                 ->add('category', ModelAutocompleteType::class, [
                     'property' => 'title',
-                    'template' => 'AppBundle:Form/Type:sonata_type_model_autocomplete.html.twig',
+                    'template' => '@App/Form/Type/sonata_type_model_autocomplete.html.twig',
                 ])
             ;
         }
@@ -406,7 +406,7 @@ The available options are:
 
     {# src/AppBundle/Resources/views/Form/Type/sonata_type_model_autocomplete.html.twig #}
 
-    {% extends 'SonataAdminBundle:Form/Type:sonata_type_model_autocomplete.html.twig' %}
+    {% extends '@SonataAdmin/Form/Type/sonata_type_model_autocomplete.html.twig' %}
 
     {# change the default selection format #}
     {% block sonata_type_model_autocomplete_selection_format %}'<b>'+item.label+'</b>'{% endblock %}
