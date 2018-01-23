@@ -1,6 +1,13 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.30 to 3.31
+=========================
+
+## Deprecated AdminVoter::setRequest
+
+The `AdminVoter::setRequest` is deprecated and should not be used anymore.
+
 UPGRADE FROM 3.29 to 3.30
 =========================
 
