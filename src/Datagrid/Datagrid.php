@@ -137,7 +137,9 @@ class Datagrid implements DatagridInterface
 
         foreach ($this->getFilters() as $name => $filter) {
             $this->values[$name] = isset($this->values[$name]) ? $this->values[$name] : null;
-            $filter->apply($this->query, $data[$filter->getFormName()]);
+            if ($filter->isActive()) {
+                $filter->apply($this->query, $data[$filter->getFormName()]);
+            }
         }
 
         if (isset($this->values['_sort_by'])) {
