@@ -781,7 +781,7 @@ class AdminTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Method "Sonata\AdminBundle\Admin\AbstractAdmin::addSubClass" is deprecated since 3.x and will be removed in 4.0.
+     * @expectedDeprecation Method "Sonata\AdminBundle\Admin\AbstractAdmin::addSubClass" is deprecated since 3.30 and will be removed in 4.0.
      */
     public function testAddSubClassIsDeprecated()
     {
