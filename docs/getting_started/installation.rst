@@ -72,6 +72,9 @@ line in the `app/AppKernel.php` file of your project:
 
                 // And finally, the storage and SonataAdminBundle
                 new Sonata\AdminBundle\SonataAdminBundle(),
+                
+                // For SonataDoctrineORMAdmin add
+                new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
             ];
 
             // ...
