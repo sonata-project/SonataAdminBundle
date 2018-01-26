@@ -46,7 +46,26 @@ Step 2: Enable the Bundle
 -------------------------
 
 Then, enable the bundle and the bundles it relies on by adding the following
-line in the `app/AppKernel.php` file of your project:
+line in `bundles.php` file of your project:
+
+.. code-block:: php
+
+    <?php
+
+    // config/bundles.php
+
+    return [
+        //...
+        Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
+        Sonata\CoreBundle\SonataCoreBundle::class => ['all' => true],
+        Sonata\BlockBundle\SonataBlockBundle::class => ['all' => true],
+        Knp\Bundle\MenuBundle\KnpMenuBundle::class => ['all' => true],
+        Sonata\AdminBundle\SonataAdminBundle::class => ['all' => true],
+    ];
+
+.. note::
+    If you are not using Symfony Flex, you should enable bundles in your
+    ``AppKernel.php``.
 
 .. code-block:: php
 
@@ -82,8 +101,7 @@ line in the `app/AppKernel.php` file of your project:
 
 .. note::
 
-    If a bundle is already registered somewhere in your ``AppKernel.php``, you
-    should not register it again.
+    If a bundle is already registered, you should not register it again.
 
 .. note::
 
@@ -107,14 +125,17 @@ admin block:
 
 .. code-block:: yaml
 
-    # app/config/config.yml
+    # config/packages/sonata.yaml
     sonata_block:
         default_contexts: [] # this line can be removed for sonata-project/block-bundle >= 3.10.0
         blocks:
             # enable the SonataAdminBundle block
             sonata.admin.block.admin_list:
                 contexts: [admin]
+
             # ...
+.. note::
+    If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.
 
 .. note::
 
@@ -129,11 +150,14 @@ The translator service is required by SonataAdmin to display all labels properly
 
 .. code-block:: yaml
 
-    # app/config/config.yml
+    # config/packages/framework.yaml
     framework:
             translator: { fallbacks: ["%locale%"] }
 
     For more information: http://symfony.com/doc/current/translation.html#configuration
+
+.. note::
+    If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.
 
 Step 5: Define routes
 ---------------------
@@ -146,7 +170,7 @@ You can do this by adding its routes to your application's routing file:
 
     .. code-block:: yaml
 
-        # app/config/routing.yml
+        # config/routes.yaml
 
         admin:
             resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
@@ -156,6 +180,9 @@ You can do this by adding its routes to your application's routing file:
             resource: .
             type: sonata_admin
             prefix: /admin
+
+.. note::
+    If you are not using Symfony Flex, routes should be added to ``app/config/routing.yml``.
 
 .. note::
 
