@@ -47,6 +47,23 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.31.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.30.1...3.31.0) - 2018-01-23
+### Added
+- Added new `safe_label` option to allow HTML pass-through on autocomplete form type
+- Added filter counter to admin lists
+
+### Changed
+- template paths to adapt to the convention
+- Replace twig paths with new naming conventions
+
+### Fixed
+- `request` attribute deprecation on `knp_menu.voter`
+- Added path to cookies when hiding sidebar to avoid creating multiple cookies
+- Nested arrays will show properly on show/list fields
+- path to dashboard
+- ModelHiddenType - default hidden attribute is now set to true
+- Fix bug when we pass null as fieldName to BaseFieldDescriptor::getFieldValue
+
 ## [3.30.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.30.0...3.30.1) - 2018-01-02
 ### Added
 - Make explicit dependency with `symfony/asset`

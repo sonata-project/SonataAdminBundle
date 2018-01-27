@@ -120,7 +120,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
             // integrate the SonataUserBundle / FOSUserBundle if the bundle exists
             array_unshift($configs, [
                 'templates' => [
-                    'user_block' => 'SonataUserBundle:Admin/Core:user_block.html.twig',
+                    'user_block' => '@SonataUser/Admin/Core/user_block.html.twig',
                 ],
             ]);
         }

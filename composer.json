@@ -2,7 +2,12 @@
     "name": "sonata-project/admin-bundle",
     "type": "symfony-bundle",
     "description": "The missing Symfony Admin Generator",
-    "keywords": ["Admin Generator", "admin", "sonata", "bootstrap"],
+    "keywords": [
+        "Admin Generator",
+        "admin",
+        "sonata",
+        "bootstrap"
+    ],
     "homepage": "https://sonata-project.org/bundles/admin",
     "license": "MIT",
     "authors": [
@@ -21,7 +26,7 @@
         "doctrine/common": "^2.2",
         "doctrine/inflector": "^1.0",
         "knplabs/knp-menu-bundle": "^2.1.1",
-        "sonata-project/block-bundle": "^3.2 || ^4.0@dev",
+        "sonata-project/block-bundle": "^3.11 || ^4.0@dev",
         "sonata-project/core-bundle": "^3.6",
         "sonata-project/exporter": "^1.7.1",
         "symfony/asset": "^2.8 || ^3.2 || ^4.0",
@@ -44,6 +49,12 @@
         "twig/extensions": "^1.0",
         "twig/twig": "^1.34 || ^2.0"
     },
+    "conflict": {
+        "jms/di-extra-bundle": "<1.7.0",
+        "sonata-project/exporter": "1.6.0",
+        "sonata-project/media-bundle": "<3.7.0",
+        "sonata-project/user-bundle": "<3.3.0"
+    },
     "require-dev": {
         "jms/di-extra-bundle": "^1.7",
         "jms/translation-bundle": "^1.2",
@@ -53,23 +64,11 @@
         "symfony/phpunit-bridge": "^3.4 || ^4.0",
         "symfony/yaml": "^2.8 || ^3.2 || ^4.0"
     },
-    "conflict": {
-        "jms/di-extra-bundle": "<1.7.0",
-        "sonata-project/exporter": "1.6.0",
-        "sonata-project/media-bundle": "<3.7.0",
-        "sonata-project/user-bundle": "<3.3.0"
-    },
     "suggest": {
         "jms/di-extra-bundle": "Annotations for Admin definition",
         "jms/translation-bundle": "Extract message keys from Admins",
         "sensio/generator-bundle": "Add sonata:admin:generate command",
         "sonata-project/intl-bundle": "Add localized date and number into the list"
-    },
-    "autoload": {
-        "psr-4": { "Sonata\\AdminBundle\\": "src/" }
-    },
-    "autoload-dev": {
-        "psr-4": { "Sonata\\AdminBundle\\Tests\\": "tests/" }
     },
     "config": {
         "sort-packages": true
@@ -77,6 +76,16 @@
     "extra": {
         "branch-alias": {
             "dev-master": "4.x-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Sonata\\AdminBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sonata\\AdminBundle\\Tests\\": "tests/"
         }
     }
 }

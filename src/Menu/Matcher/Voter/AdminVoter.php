@@ -42,7 +42,7 @@ class AdminVoter implements VoterInterface
     }
 
     /**
-     * @deprecated since version 3.x. Pass a RequestStack to the constructor instead.
+     * @deprecated since version 3.31. Pass a RequestStack to the constructor instead.
      *
      * @return $this
      */
@@ -50,7 +50,7 @@ class AdminVoter implements VoterInterface
     {
         @trigger_error(
             sprintf(
-                'The %s() method is deprecated since version 3.x.
+                'The %s() method is deprecated since version 3.31.
                 Pass a Symfony\Component\HttpFoundation\RequestStack
                 in the constructor instead.',
             __METHOD__),

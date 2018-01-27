@@ -55,14 +55,14 @@ class ConfigurationTest extends TestCase
                 'my_admin_id' => [
                     'templates' => [
                         'form' => ['form.twig.html', 'form_extra.twig.html'],
-                        'view' => ['user_block' => 'SonataAdminBundle:mycustomtemplate.html.twig'],
+                        'view' => ['user_block' => '@SonataAdmin/mycustomtemplate.html.twig'],
                         'filter' => [],
                     ],
                 ],
             ],
         ]]);
 
-        $this->assertSame('SonataAdminBundle:mycustomtemplate.html.twig', $config['admin_services']['my_admin_id']['templates']['view']['user_block']);
+        $this->assertSame('@SonataAdmin/mycustomtemplate.html.twig', $config['admin_services']['my_admin_id']['templates']['view']['user_block']);
     }
 
     public function testAdminServicesDefault(): void

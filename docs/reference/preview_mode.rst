@@ -53,7 +53,7 @@ globally through the template configuration for the key 'preview':
 
         sonata_admin:
             templates:
-                preview:  AppBundle:CRUD:preview.html.twig
+                preview:  "@App/CRUD/preview.html.twig"
 
 Or per admin entity by overriding the ``getTemplate($name)`` and returning the appropriate template when the key
 matches 'preview':
@@ -69,7 +69,7 @@ matches 'preview':
     {
         switch ($name) {
             case 'preview':
-                return 'AppBundle:CRUD:preview.html.twig';
+                return '@App/CRUD/preview.html.twig';
                 break;
             default:
                 return parent::getTemplate($name);
@@ -86,15 +86,15 @@ a different object you can just set your own variables prior to calling parent()
 
 .. code-block:: jinja
 
-    {# 'AppBundle:CRUD:preview.html.twig #}
+    {# '@App/CRUD/preview.html.twig #}
 
-    {% extends 'AppBundle::layout.html.twig' %}
+    {% extends '@App/layout.html.twig' %}
 
     {% use '@SonataAdmin/CRUD/base_edit_form.html.twig' with form as parentForm %}
 
     {% import '@SonataAdmin/CRUD/base_edit_form_macro.html.twig' as form_helper %}
 
-    {# a block in 'AppBundle::layout.html.twig' expecting article #}
+    {# a block in '@App/layout.html.twig' expecting article #}
     {% block templateContent %}
         {% set article = object %}
 

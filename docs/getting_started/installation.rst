@@ -46,7 +46,26 @@ Step 2: Enable the Bundle
 -------------------------
 
 Then, enable the bundle and the bundles it relies on by adding the following
-line in the `app/AppKernel.php` file of your project:
+line in `bundles.php` file of your project:
+
+.. code-block:: php
+
+    <?php
+
+    // config/bundles.php
+
+    return [
+        //...
+        Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
+        Sonata\CoreBundle\SonataCoreBundle::class => ['all' => true],
+        Sonata\BlockBundle\SonataBlockBundle::class => ['all' => true],
+        Knp\Bundle\MenuBundle\KnpMenuBundle::class => ['all' => true],
+        Sonata\AdminBundle\SonataAdminBundle::class => ['all' => true],
+    ];
+
+.. note::
+    If you are not using Symfony Flex, you should enable bundles in your
+    ``AppKernel.php``.
 
 .. code-block:: php
 
@@ -82,8 +101,7 @@ line in the `app/AppKernel.php` file of your project:
 
 .. note::
 
-    If a bundle is already registered somewhere in your ``AppKernel.php``, you
-    should not register it again.
+    If a bundle is already registered, you should not register it again.
 
 .. note::
 
@@ -97,7 +115,6 @@ line in the `app/AppKernel.php` file of your project:
 
         $ bower install ./vendor/sonata-project/admin-bundle/bower.json
 
-
 Step 3: Configure the Installed Bundles
 ---------------------------------------
 
@@ -108,14 +125,17 @@ admin block:
 
 .. code-block:: yaml
 
-    # app/config/config.yml
+    # config/packages/sonata.yaml
     sonata_block:
-        default_contexts: [cms]
+        default_contexts: [] # this line can be removed for sonata-project/block-bundle >= 3.10.0
         blocks:
             # enable the SonataAdminBundle block
             sonata.admin.block.admin_list:
                 contexts: [admin]
+
             # ...
+.. note::
+    If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.
 
 .. note::
 
@@ -123,44 +143,34 @@ admin block:
     what a block is. The SonataBlockBundle is a useful tool, but it's not vital
     that you understand it in order to use the admin bundle.
 
-Step 4: Import Routing Configuration
-------------------------------------
-
-The bundles are now registered and configured correctly. Before you can use it,
-the Symfony router needs to know the routes provided by the SonataAdminBundle.
-You can do this by importing them in the routing configuration:
-
-.. code-block:: yaml
-
-    # app/config/routing.yml
-    admin_area:
-        resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
-        prefix: /admin
-
-Step 5: Enable the "translator" service
+Step 4: Enable the "translator" service
 ---------------------------------------
 
 The translator service is required by SonataAdmin to display all labels properly.
 
 .. code-block:: yaml
 
-    # app/config/config.yml
+    # config/packages/framework.yaml
     framework:
-        translator: { fallbacks: [en] }
-        
-For more information: http://symfony.com/doc/current/translation.html#configuration
+        translator: { fallbacks: ["%locale%"] }
 
-Step 6: Define routes
+    For more information: http://symfony.com/doc/current/translation.html#configuration
+
+.. note::
+    If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.
+
+Step 5: Define routes
 ---------------------
 
-To be able to access SonataAdminBundle's pages, you need to add its routes
-to your application's routing file:
+The bundles are now registered and configured correctly. To be able to access SonataAdminBundle's pages,
+the Symfony router needs to know the routes provided by the SonataAdminBundle.
+You can do this by adding its routes to your application's routing file:
 
 .. configuration-block::
 
     .. code-block:: yaml
 
-        # app/config/routing.yml
+        # config/routes.yaml
 
         admin:
             resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
@@ -170,6 +180,9 @@ to your application's routing file:
             resource: .
             type: sonata_admin
             prefix: /admin
+
+.. note::
+    If you are not using Symfony Flex, routes should be added to ``app/config/routing.yml``.
 
 .. note::
 
@@ -187,7 +200,7 @@ to your application's routing file:
 At this point you can already access the (empty) admin dashboard by visiting the URL:
 ``http://yoursite.local/admin/dashboard``.
 
-Step 7: Preparing your Environment
+Step 6: Preparing your Environment
 ----------------------------------
 
 As with all bundles you install, it's a good practice to clear the cache and

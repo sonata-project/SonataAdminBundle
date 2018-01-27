@@ -20,12 +20,14 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Route\RoutesCache;
+use Sonata\BlockBundle\DependencyInjection\SonataBlockExtension;
 use Sonata\DoctrinePHPCRAdminBundle\Route\PathInfoBuilderSlashes;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Bundle\FrameworkBundle\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory;
 use Symfony\Bundle\FrameworkBundle\Validator\Validator;
+use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -33,6 +35,7 @@ use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -755,6 +758,17 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             ->register('translator.default')
             ->setClass(Translator::class);
         $container->setAlias('translator', 'translator.default');
+
+        // Add definitions for sonata.templating service
+        $container
+            ->register('kernel')
+            ->setClass(KernelInterface::class);
+        $container
+            ->register('file_locator')
+            ->setClass(FileLocatorInterface::class);
+
+        $blockExtension = new SonataBlockExtension();
+        $blockExtension->load([], $container);
 
         return $container;
     }

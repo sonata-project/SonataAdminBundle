@@ -780,7 +780,7 @@ class AdminTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Method "Sonata\AdminBundle\Admin\AbstractAdmin::addSubClass" is deprecated since 3.x and will be removed in 4.0.
+     * @expectedDeprecation Method "Sonata\AdminBundle\Admin\AbstractAdmin::addSubClass" is deprecated since 3.30 and will be removed in 4.0.
      */
     public function testAddSubClassIsDeprecated(): void
     {
@@ -1144,9 +1144,9 @@ class AdminTest extends TestCase
         $this->assertSame([], $admin->getTemplates());
 
         $templates = [
-            'list' => 'FooAdminBundle:CRUD:list.html.twig',
-            'show' => 'FooAdminBundle:CRUD:show.html.twig',
-            'edit' => 'FooAdminBundle:CRUD:edit.html.twig',
+            'list' => '@FooAdmin/CRUD/list.html.twig',
+            'show' => '@FooAdmin/CRUD/show.html.twig',
+            'edit' => '@FooAdmin/CRUD/edit.html.twig',
         ];
 
         $admin->setTemplates($templates);
@@ -1159,11 +1159,11 @@ class AdminTest extends TestCase
 
         $this->assertNull($admin->getTemplate('edit'));
 
-        $admin->setTemplate('edit', 'FooAdminBundle:CRUD:edit.html.twig');
-        $admin->setTemplate('show', 'FooAdminBundle:CRUD:show.html.twig');
+        $admin->setTemplate('edit', '@FooAdmin/CRUD/edit.html.twig');
+        $admin->setTemplate('show', '@FooAdmin/CRUD/show.html.twig');
 
-        $this->assertSame('FooAdminBundle:CRUD:edit.html.twig', $admin->getTemplate('edit'));
-        $this->assertSame('FooAdminBundle:CRUD:show.html.twig', $admin->getTemplate('show'));
+        $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $admin->getTemplate('edit'));
+        $this->assertSame('@FooAdmin/CRUD/show.html.twig', $admin->getTemplate('show'));
     }
 
     public function testGetTemplate2(): void
@@ -1173,15 +1173,15 @@ class AdminTest extends TestCase
         $this->assertNull($admin->getTemplate('edit'));
 
         $templates = [
-            'list' => 'FooAdminBundle:CRUD:list.html.twig',
-            'show' => 'FooAdminBundle:CRUD:show.html.twig',
-            'edit' => 'FooAdminBundle:CRUD:edit.html.twig',
+            'list' => '@FooAdmin/CRUD/list.html.twig',
+            'show' => '@FooAdmin/CRUD/show.html.twig',
+            'edit' => '@FooAdmin/CRUD/edit.html.twig',
         ];
 
         $admin->setTemplates($templates);
 
-        $this->assertSame('FooAdminBundle:CRUD:edit.html.twig', $admin->getTemplate('edit'));
-        $this->assertSame('FooAdminBundle:CRUD:show.html.twig', $admin->getTemplate('show'));
+        $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $admin->getTemplate('edit'));
+        $this->assertSame('@FooAdmin/CRUD/show.html.twig', $admin->getTemplate('show'));
     }
 
     public function testGetIdParameter(): void

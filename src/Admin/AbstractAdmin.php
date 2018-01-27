@@ -867,7 +867,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function addSubClass($subClass): void
     {
         @trigger_error(sprintf(
-            'Method "%s" is deprecated since 3.x and will be removed in 4.0.',
+            'Method "%s" is deprecated since 3.30 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 

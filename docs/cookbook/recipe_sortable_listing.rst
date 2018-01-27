@@ -78,7 +78,7 @@ and use the default twig template provided in the ``pixSortableBehaviorBundle``
         ->add('_action', null, [
             'actions' => [
                 'move' => [
-                    'template' => 'PixSortableBehaviorBundle:Default:_sort.html.twig'
+                    'template' => '@PixSortableBehavior/Default/_sort.html.twig'
                 ],
             ]
         ]);
@@ -154,7 +154,7 @@ Now we need to define the sort by field to be ``$position``:
                 ->add('_action', null, [
                     'actions' => [
                         'move' => [
-                            'template' => 'AppBundle:Admin:_sort.html.twig'
+                            'template' => '@App/Admin/_sort.html.twig'
                         ],
                     ],
                 ])

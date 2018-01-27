@@ -36,7 +36,7 @@ You also need to configure the block in the sonata block config
         sonata_block:
             blocks:
                 sonata.admin.block.search_result:
-                contexts: [admin]
+                    contexts: [admin]
 
 You can also configure the block template per admin while defining the admin:
 
@@ -51,7 +51,7 @@ You can also configure the block template per admin while defining the admin:
               <argument />
               <call method="setTemplate">
                   <argument>search_result_block</argument>
-                  <argument>SonataPostBundle:Block:block_search_result.html.twig</argument>
+                  <argument>@SonataPost/Block/block_search_result.html.twig</argument>
               </call>
           </service>
 

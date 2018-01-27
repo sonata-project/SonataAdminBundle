@@ -291,7 +291,7 @@ If you want to use the Tab Menu in a different way, you can replace the Menu Tem
 
         sonata_admin:
             templates:
-                tab_menu_template:  AppBundle:Admin:own_tab_menu_template.html.twig
+                tab_menu_template:  "@App/Admin/own_tab_menu_template.html.twig"
 
 Translations
 ^^^^^^^^^^^^
@@ -373,7 +373,7 @@ You can add custom items to the actions menu for a specific action by overriding
     {
         if (in_array($action, ['show', 'edit', 'acl']) && $object) {
             $buttonList['custom'] = [
-                'template' => 'AppBundle:Button:custom_button.html.twig',
+                'template' => '@App/Button/custom_button.html.twig',
             ];
         }
 

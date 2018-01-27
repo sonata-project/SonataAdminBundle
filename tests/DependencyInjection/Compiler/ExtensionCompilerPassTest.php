@@ -22,14 +22,17 @@ use Sonata\AdminBundle\Admin\AdminExtensionInterface;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait;
+use Sonata\BlockBundle\DependencyInjection\SonataBlockExtension;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Bundle\FrameworkBundle\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -438,6 +441,17 @@ class ExtensionCompilerPassTest extends TestCase
             ->setClass($extensionClass)
             ->addTag('sonata.admin.extension', ['target' => 'sonata_news_admin'])
             ->addTag('sonata.admin.extension', ['target' => 'sonata_article_admin']);
+
+        // Add definitions for sonata.templating service
+        $container
+            ->register('kernel')
+            ->setClass(KernelInterface::class);
+        $container
+            ->register('file_locator')
+            ->setClass(FileLocatorInterface::class);
+
+        $blockExtension = new SonataBlockExtension();
+        $blockExtension->load([], $container);
 
         return $container;
     }

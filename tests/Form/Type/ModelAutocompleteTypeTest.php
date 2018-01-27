@@ -70,7 +70,7 @@ class ModelAutocompleteTypeTest extends TypeTestCase
         $this->assertSame('', $options['dropdown_css_class']);
         $this->assertSame('', $options['dropdown_item_css_class']);
 
-        $this->assertSame('SonataAdminBundle:Form/Type:sonata_type_model_autocomplete.html.twig', $options['template']);
+        $this->assertSame('@SonataAdmin/Form/Type/sonata_type_model_autocomplete.html.twig', $options['template']);
 
         $this->assertSame('', $options['context']);
 

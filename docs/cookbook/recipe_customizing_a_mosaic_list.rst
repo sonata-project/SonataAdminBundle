@@ -21,7 +21,7 @@ First, configure the ``outer_list_rows_mosaic`` template key:
             <argument>%sonata.media.admin.media.controller%</argument>
             <call method="setTemplates">
                 <argument type="collection">
-                    <argument key="outer_list_rows_mosaic">SonataMediaBundle:MediaAdmin:list_outer_rows_mosaic.html.twig</argument>
+                    <argument key="outer_list_rows_mosaic">@SonataMedia/MediaAdmin/list_outer_rows_mosaic.html.twig</argument>
                 </argument>
             </call>
 
