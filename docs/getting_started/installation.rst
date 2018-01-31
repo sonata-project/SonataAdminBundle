@@ -143,16 +143,17 @@ admin block:
     what a block is. The SonataBlockBundle is a useful tool, but it's not vital
     that you understand it in order to use the admin bundle.
 
-Step 4: Enable the "translator" service
+Step 4: Enable the "translator" and "templating" services
 ---------------------------------------
 
-The translator service is required by SonataAdmin to display all labels properly.
+The translator and templating services are required by SonataAdmin to display all labels properly.
 
 .. code-block:: yaml
 
     # config/packages/framework.yaml
     framework:
         translator: { fallbacks: ["%locale%"] }
+        templating: { engines: ['twig'] }
 
     For more information: http://symfony.com/doc/current/translation.html#configuration
 
