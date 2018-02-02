@@ -105,10 +105,6 @@ of them, you may override the ``configureRoutes`` method::
         protected function configureRoutes(RouteCollection $collection)
         {
             if ($this->isChild()) {
-
-                // This is the route configuration as a child
-                $collection->clearExcept(['show', 'edit']);
-
                 return;
             }
 

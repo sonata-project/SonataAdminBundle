@@ -282,6 +282,11 @@ class AdminObjectAclData
         return $permissions;
     }
 
+    public function getOwnerPermissions()
+    {
+        return self::$ownerPermissions;
+    }
+
     /**
      * Tests if the current user has the OWNER right.
      *
