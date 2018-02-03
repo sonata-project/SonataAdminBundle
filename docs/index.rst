@@ -93,3 +93,4 @@ The demo website can be found at http://demo.sonata-project.org.
    cookbook/recipe_sortable_sonata_type_model
    cookbook/recipe_delete_field_group
    cookbook/recipe_data_mapper
+   cookbook/recipe_custom_view
