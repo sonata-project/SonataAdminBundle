@@ -37,7 +37,6 @@ to download the SonataDoctrineORMAdminBundle, execute the following command:
     $ composer require sonata-project/doctrine-orm-admin-bundle
 
 .. tip::
-
     Don't know which to choose? Most new users prefer SonataDoctrineORMAdmin,
     to interact with traditional relational databases (MySQL, PostgreSQL, etc).
 
@@ -99,11 +98,9 @@ line in `bundles.php` file of your project:
     }
 
 .. note::
-
     If a bundle is already registered, you should not register it again.
 
 .. note::
-
     Since version 2.3, the bundle comes with jQuery and other front-end
     libraries. To update the versions (which isn't required), you can use
     `Bower`_. To make sure you get the dependencies that match the version of
@@ -111,7 +108,6 @@ line in `bundles.php` file of your project:
     dependency file, like this:
 
     .. code-block:: bash
-
         $ bower install ./vendor/sonata-project/admin-bundle/bower.json
 
 Step 3: Configure the Installed Bundles
@@ -122,22 +118,23 @@ configuration. The admin interface is using SonataBlockBundle to put everything
 in blocks. You just have to tell the block bundle about the existence of the
 admin block:
 
-.. code-block:: yaml
+.. configuration-block::
 
-    # config/packages/sonata.yaml
-    sonata_block:
-        default_contexts: [] # this line can be removed for sonata-project/block-bundle >= 3.10.0
-        blocks:
-            # enable the SonataAdminBundle block
-            sonata.admin.block.admin_list:
-                contexts: [admin]
+    .. code-block:: yaml
 
-            # ...
+        # config/packages/sonata.yaml
+        sonata_block:
+            default_contexts: [] # this line can be removed for sonata-project/block-bundle >= 3.10.0
+            blocks:
+                # enable the SonataAdminBundle block
+                sonata.admin.block.admin_list:
+                    contexts: [admin]
+
+                # ...
 .. note::
     If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.
 
 .. note::
-
     Don't worry too much if, at this point, you don't yet understand fully
     what a block is. The SonataBlockBundle is a useful tool, but it's not vital
     that you understand it in order to use the admin bundle.
@@ -146,14 +143,16 @@ Step 4: Enable the "translator" service
 ---------------------------------------
 
 The translator service is required by SonataAdmin to display all labels properly.
+For more information: http://symfony.com/doc/current/translation.html#configuration
 
-.. code-block:: yaml
+.. configuration-block::
 
-    # config/packages/framework.yaml
-    framework:
-            translator: { fallbacks: ["%locale%"] }
+    .. code-block:: yaml
 
-    For more information: http://symfony.com/doc/current/translation.html#configuration
+        # config/packages/framework.yaml
+        framework:
+                translator: { fallbacks: ["%locale%"] }
+
 
 .. note::
     If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.
@@ -184,13 +183,11 @@ You can do this by adding its routes to your application's routing file:
     If you are not using Symfony Flex, routes should be added to ``app/config/routing.yml``.
 
 .. note::
-
     If you're using XML or PHP to specify your application's configuration,
     the above routing configuration must be placed in routing.xml or
     routing.php according to your format (i.e. XML or PHP).
 
 .. note::
-
     For those curious about the ``resource: .`` setting: it is unusual syntax but used
     because Symfony requires a resource to be defined (which points to a real file).
     Once this validation passes Sonata's ``AdminPoolLoader`` is in charge of processing
@@ -217,11 +214,13 @@ You've finished the installation process, congratulations. If you fire up the
 server, you can now visit the admin page on http://localhost:8000/admin
 
 .. note::
-
     This tutorial assumes you are using the build-in server using the
     ``php bin/console server:start`` (or ``server:run``) command.
 
-.. image:: ../images/getting_started_empty_dashboard.png
+.. figure:: ../images/getting_started_empty_dashboard.png
+   :align: center
+   :alt: Sonata Dashboard
+   :width: 700px
 
 As you can see, the admin panel is very empty. This is because no bundle has
 provided admin functionality for the admin bundle yet. Fortunately, you'll
