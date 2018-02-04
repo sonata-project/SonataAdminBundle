@@ -27,7 +27,6 @@ storage bundles. The official storage bundles are:
 
 * `SonataDoctrineORMAdminBundle`_ (integrates the Doctrine ORM);
 * `SonataDoctrineMongoDBAdminBundle`_ (integrates the Doctrine MongoDB ODM);
-* `SonataPropelAdminBundle`_ (integrates Propel);
 * `SonataDoctrinePhpcrAdminBundle`_ (integrates the Doctrine PHPCR ODM).
 
 You can download them in the same way as the SonataAdminBundle. For instance,
@@ -231,6 +230,5 @@ learn how to do this in the :doc:`next chapter <creating_an_admin>`.
 .. _`installation chapter`: https://getcomposer.org/doc/00-intro.md
 .. _SonataDoctrineORMAdminBundle: http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/index.html
 .. _SonataDoctrineMongoDBAdminBundle: http://sonata-project.org/bundles/mongo-admin/master/doc/index.html
-.. _SonataPropelAdminBundle: http://sonata-project.org/bundles/propel-admin/master/doc/index.html
 .. _SonataDoctrinePhpcrAdminBundle: http://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html
 .. _Bower: http://bower.io/
