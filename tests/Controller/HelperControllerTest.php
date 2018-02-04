@@ -11,6 +11,9 @@
 
 namespace Sonata\AdminBundle\Tests\Controller;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -38,6 +41,7 @@ use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -306,6 +310,67 @@ class HelperControllerTest extends TestCase
         ;
 
         $controller = new HelperController($twig, $pool, $helper, $validator);
+
+        $response = $controller->setObjectFieldValueAction($request);
+
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    public function testsetObjectFieldValueActionOnARelationField()
+    {
+        $object = new AdminControllerHelper_Foo();
+        $associationObject = new AdminControllerHelper_Bar();
+        $request = new Request([
+            'code' => 'sonata.post.admin',
+            'objectId' => 42,
+            'field' => 'bar',
+            'value' => 1,
+            'context' => 'list',
+        ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+
+        $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
+        $admin = $this->prophesize(AbstractAdmin::class);
+        $container = $this->prophesize(ContainerInterface::class);
+        $validator = $this->prophesize(ValidatorInterface::class);
+        $managerRegistry = $this->prophesize(ManagerRegistry::class);
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $classMetadata = $this->prophesize(ClassMetadata::class);
+        $adminExtension = $this->prophesize(SonataAdminExtension::class);
+        $twig = $this->prophesize(\Twig_Environment::class);
+        $pool = $this->prophesize(Pool::class);
+        $propertyAccessor = $this->prophesize(PropertyAccessor::class);
+
+        $admin->getObject(42)->willReturn($object);
+        $admin->hasAccess('edit', $object)->willReturn(true);
+        $admin->getListFieldDescription('bar')->willReturn($fieldDescription->reveal());
+        $admin->setRequest($request)->shouldBeCalled();
+        $admin->getManagerType()->willReturn('doctrine_orm');
+        $admin->getClass()->willReturn(get_class($object));
+        $admin->update($object)->shouldBeCalled();
+        $admin->getTemplate('base_list_field')->willReturn('admin_template');
+        $fieldDescription->getType()->willReturn('choice');
+        $fieldDescription->getOption('editable')->willReturn(true);
+        $fieldDescription->getOption('class')->willReturn(AdminControllerHelper_Bar::class);
+        $fieldDescription->getAdmin()->willReturn($admin->reveal());
+        $fieldDescription->getTemplate()->willReturn('field_template');
+        $container->get('sonata.post.admin')->willReturn($admin->reveal());
+        $container->get('doctrine_orm')->willReturn($managerRegistry->reveal());
+        $validator->validate($object)->willReturn(new ConstraintViolationList([]));
+        $managerRegistry->getManager()->willReturn($objectManager->reveal());
+        $objectManager->getClassMetadata(get_class($object))->willReturn($classMetadata->reveal());
+        $objectManager->find(get_class($associationObject), 1)->willReturn($associationObject);
+        $classMetadata->hasAssociation('bar')->willReturn(true);
+        $twig->getExtension(SonataAdminExtension::class)->willReturn($adminExtension->reveal());
+        $pool->getInstance('sonata.post.admin')->willReturn($admin->reveal());
+        $pool->getContainer()->willReturn($container->reveal());
+        $pool->getPropertyAccessor()->willReturn($propertyAccessor->reveal());
+
+        $controller = new HelperController(
+            $twig->reveal(),
+            $pool->reveal(),
+            new AdminHelper($pool->reveal()),
+            $validator->reveal()
+        );
 
         $response = $controller->setObjectFieldValueAction($request);
 
