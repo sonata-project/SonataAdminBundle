@@ -100,16 +100,6 @@ line in `bundles.php` file of your project:
 .. note::
     If a bundle is already registered, you should not register it again.
 
-.. note::
-    Since version 2.3, the bundle comes with jQuery and other front-end
-    libraries. To update the versions (which isn't required), you can use
-    `Bower`_. To make sure you get the dependencies that match the version of
-    SonataAdminBundle you are using, you can make bower use the local bower
-    dependency file, like this:
-
-    .. code-block:: bash
-        $ bower install ./vendor/sonata-project/admin-bundle/bower.json
-
 Step 3: Configure the Installed Bundles
 ---------------------------------------
 
@@ -124,7 +114,6 @@ admin block:
 
         # config/packages/sonata.yaml
         sonata_block:
-            default_contexts: [] # this line can be removed for sonata-project/block-bundle >= 3.10.0
             blocks:
                 # enable the SonataAdminBundle block
                 sonata.admin.block.admin_list:
@@ -230,4 +219,3 @@ learn how to do this in the :doc:`next chapter <creating_an_admin>`.
 .. _SonataDoctrineORMAdminBundle: http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/index.html
 .. _SonataDoctrineMongoDBAdminBundle: http://sonata-project.org/bundles/mongo-admin/master/doc/index.html
 .. _SonataDoctrinePhpcrAdminBundle: http://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html
-.. _Bower: http://bower.io/
