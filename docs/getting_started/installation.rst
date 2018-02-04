@@ -4,8 +4,8 @@ Installation
 SonataAdminBundle is just a bundle and as such, you can install it at any
 moment during a project's lifecycle.
 
-1. Download the Bundle
-----------------------
+Step 1: Download the Bundle and a Storage Bundle
+------------------------------------------------
 
 Open a command console, enter your project directory and execute the
 following command to download the latest stable version of this bundle:
@@ -17,9 +17,6 @@ following command to download the latest stable version of this bundle:
 This command requires you to have Composer installed globally, as explained in
 the `installation chapter`_ of the Composer documentation.
 
-1.1. Download a Storage Bundle
-------------------------------
-
 You've now downloaded the SonataAdminBundle. While this bundle contains all
 functionality, it needs storage bundles to be able to communicate with a
 database. Before using the SonataAdminBundle, you have to download one of these
@@ -29,12 +26,8 @@ storage bundles. The official storage bundles are:
 * `SonataDoctrineMongoDBAdminBundle`_ (integrates the Doctrine MongoDB ODM);
 * `SonataDoctrinePhpcrAdminBundle`_ (integrates the Doctrine PHPCR ODM).
 
-You can download them in the same way as the SonataAdminBundle. For instance,
-to download the SonataDoctrineORMAdminBundle, execute the following command:
-
-.. code-block:: bash
-
-    $ composer require sonata-project/doctrine-orm-admin-bundle
+You can download them in the same way as the SonataAdminBundle. Please, choose one
+and follow its installation instructions before proceeding.
 
 .. tip::
     Don't know which to choose? Most new users prefer SonataDoctrineORMAdmin,
@@ -87,7 +80,7 @@ line in `bundles.php` file of your project:
                 new Sonata\BlockBundle\SonataBlockBundle(),
                 new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
-                // And finally, the storage and SonataAdminBundle
+                // And finally
                 new Sonata\AdminBundle\SonataAdminBundle(),
             ];
 
