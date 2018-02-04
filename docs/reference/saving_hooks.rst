@@ -31,7 +31,7 @@ Example used with the FOS/UserBundle
 ------------------------------------
 
 The ``FOSUserBundle`` provides authentication features for your Symfony Project,
-and is compatible with Doctrine ORM, Doctrine ODM and Propel. See
+and is compatible with Doctrine ORM, Doctrine ODM. See
 `FOSUserBundle on GitHub`_ for more information.
 
 The user management system requires to perform specific calls when the user

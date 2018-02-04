@@ -4,8 +4,8 @@ Installation
 SonataAdminBundle is just a bundle and as such, you can install it at any
 moment during a project's lifecycle.
 
-1. Download the Bundle
-----------------------
+Step 1: Download the Bundle and a Storage Bundle
+------------------------------------------------
 
 Open a command console, enter your project directory and execute the
 following command to download the latest stable version of this bundle:
@@ -17,9 +17,6 @@ following command to download the latest stable version of this bundle:
 This command requires you to have Composer installed globally, as explained in
 the `installation chapter`_ of the Composer documentation.
 
-1.1. Download a Storage Bundle
-------------------------------
-
 You've now downloaded the SonataAdminBundle. While this bundle contains all
 functionality, it needs storage bundles to be able to communicate with a
 database. Before using the SonataAdminBundle, you have to download one of these
@@ -27,18 +24,12 @@ storage bundles. The official storage bundles are:
 
 * `SonataDoctrineORMAdminBundle`_ (integrates the Doctrine ORM);
 * `SonataDoctrineMongoDBAdminBundle`_ (integrates the Doctrine MongoDB ODM);
-* `SonataPropelAdminBundle`_ (integrates Propel);
 * `SonataDoctrinePhpcrAdminBundle`_ (integrates the Doctrine PHPCR ODM).
 
-You can download them in the same way as the SonataAdminBundle. For instance,
-to download the SonataDoctrineORMAdminBundle, execute the following command:
-
-.. code-block:: bash
-
-    $ composer require sonata-project/doctrine-orm-admin-bundle
+You can download them in the same way as the SonataAdminBundle. Please, choose one
+and follow its installation instructions before proceeding.
 
 .. tip::
-
     Don't know which to choose? Most new users prefer SonataDoctrineORMAdmin,
     to interact with traditional relational databases (MySQL, PostgreSQL, etc).
 
@@ -89,7 +80,7 @@ line in `bundles.php` file of your project:
                 new Sonata\BlockBundle\SonataBlockBundle(),
                 new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
-                // And finally, the storage and SonataAdminBundle
+                // And finally
                 new Sonata\AdminBundle\SonataAdminBundle(),
             ];
 
@@ -100,20 +91,7 @@ line in `bundles.php` file of your project:
     }
 
 .. note::
-
     If a bundle is already registered, you should not register it again.
-
-.. note::
-
-    Since version 2.3, the bundle comes with jQuery and other front-end
-    libraries. To update the versions (which isn't required), you can use
-    `Bower`_. To make sure you get the dependencies that match the version of
-    SonataAdminBundle you are using, you can make bower use the local bower
-    dependency file, like this:
-
-    .. code-block:: bash
-
-        $ bower install ./vendor/sonata-project/admin-bundle/bower.json
 
 Step 3: Configure the Installed Bundles
 ---------------------------------------
@@ -123,22 +101,22 @@ configuration. The admin interface is using SonataBlockBundle to put everything
 in blocks. You just have to tell the block bundle about the existence of the
 admin block:
 
-.. code-block:: yaml
+.. configuration-block::
 
-    # config/packages/sonata.yaml
-    sonata_block:
-        default_contexts: [] # this line can be removed for sonata-project/block-bundle >= 3.10.0
-        blocks:
-            # enable the SonataAdminBundle block
-            sonata.admin.block.admin_list:
-                contexts: [admin]
+    .. code-block:: yaml
 
-            # ...
+        # config/packages/sonata.yaml
+        sonata_block:
+            blocks:
+                # enable the SonataAdminBundle block
+                sonata.admin.block.admin_list:
+                    contexts: [admin]
+
+                # ...
 .. note::
     If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.
 
 .. note::
-
     Don't worry too much if, at this point, you don't yet understand fully
     what a block is. The SonataBlockBundle is a useful tool, but it's not vital
     that you understand it in order to use the admin bundle.
@@ -147,14 +125,16 @@ Step 4: Enable the "translator" service
 ---------------------------------------
 
 The translator service is required by SonataAdmin to display all labels properly.
+For more information: http://symfony.com/doc/current/translation.html#configuration
 
-.. code-block:: yaml
+.. configuration-block::
 
-    # config/packages/framework.yaml
-    framework:
-            translator: { fallbacks: ["%locale%"] }
+    .. code-block:: yaml
 
-    For more information: http://symfony.com/doc/current/translation.html#configuration
+        # config/packages/framework.yaml
+        framework:
+                translator: { fallbacks: ["%locale%"] }
+
 
 .. note::
     If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.
@@ -185,13 +165,11 @@ You can do this by adding its routes to your application's routing file:
     If you are not using Symfony Flex, routes should be added to ``app/config/routing.yml``.
 
 .. note::
-
     If you're using XML or PHP to specify your application's configuration,
     the above routing configuration must be placed in routing.xml or
     routing.php according to your format (i.e. XML or PHP).
 
 .. note::
-
     For those curious about the ``resource: .`` setting: it is unusual syntax but used
     because Symfony requires a resource to be defined (which points to a real file).
     Once this validation passes Sonata's ``AdminPoolLoader`` is in charge of processing
@@ -218,11 +196,13 @@ You've finished the installation process, congratulations. If you fire up the
 server, you can now visit the admin page on http://localhost:8000/admin
 
 .. note::
-
     This tutorial assumes you are using the build-in server using the
     ``php bin/console server:start`` (or ``server:run``) command.
 
-.. image:: ../images/getting_started_empty_dashboard.png
+.. figure:: ../images/getting_started_empty_dashboard.png
+   :align: center
+   :alt: Sonata Dashboard
+   :width: 700px
 
 As you can see, the admin panel is very empty. This is because no bundle has
 provided admin functionality for the admin bundle yet. Fortunately, you'll
@@ -231,6 +211,4 @@ learn how to do this in the :doc:`next chapter <creating_an_admin>`.
 .. _`installation chapter`: https://getcomposer.org/doc/00-intro.md
 .. _SonataDoctrineORMAdminBundle: http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/index.html
 .. _SonataDoctrineMongoDBAdminBundle: http://sonata-project.org/bundles/mongo-admin/master/doc/index.html
-.. _SonataPropelAdminBundle: http://sonata-project.org/bundles/propel-admin/master/doc/index.html
 .. _SonataDoctrinePhpcrAdminBundle: http://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html
-.. _Bower: http://bower.io/
