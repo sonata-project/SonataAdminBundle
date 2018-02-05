@@ -95,7 +95,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return Response A Response instance
      *
-     * @deprecated since version 3.27, to be removed in 4.0. Use Sonata\AdminBundle\Controller\CRUDController instead.
+     * @deprecated since version 3.27, to be removed in 4.0. Use Sonata\AdminBundle\Controller\CRUDController::renderWithExtraParams() instead.
      */
     public function render($view, array $parameters = [], Response $response = null)
     {
