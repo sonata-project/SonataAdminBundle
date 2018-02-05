@@ -57,13 +57,17 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\CoreBundle\Model\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Mapping\MemberMetadata;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AdminTest extends TestCase
@@ -1563,6 +1567,67 @@ class AdminTest extends TestCase
         $this->assertInternalType('array', $tag->getPosts());
         $this->assertCount(2, $tag->getPosts());
         $this->assertContains($post, $tag->getPosts());
+    }
+
+    public function testFormAddPostSubmitEventForPreValidation()
+    {
+        $modelAdmin = new ModelAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'SonataFooBundle:ModelAdmin');
+        $object = new \stdClass();
+
+        $labelTranslatorStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
+        $modelAdmin->setLabelTranslatorStrategy($labelTranslatorStrategy);
+
+        $validator = $this->createMock(ValidatorInterface::class);
+        $validator->expects($this->any())
+                ->method('getMetadataFor')
+                ->will($this->returnValue($this->createMock(MemberMetadata::class)));
+        $modelAdmin->setValidator($validator);
+
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager->expects($this->any())
+            ->method('getNewFieldDescriptionInstance')
+            ->will($this->returnValue(new FieldDescription()));
+        $modelAdmin->setModelManager($modelManager);
+
+        // a Admin class to test that preValidate is called
+        $testAdminPreValidate = $this->createMock(AbstractAdmin::class, ['preValidate']);
+        $testAdminPreValidate->expects($this->once())
+                ->method('preValidate')
+                ->with($this->identicalTo($object));
+
+        $event = $this->createMock(FormEvent::class);
+        $event->expects($this->any())
+                ->method('getData')
+                ->will($this->returnValue($object));
+
+        $formBuild = $this->createMock(FormBuilder::class, ['addEventListener']);
+        $formBuild->expects($this->once())
+                ->method('addEventListener')
+                ->with($this->identicalTo(FormEvents::POST_SUBMIT),
+                        $this->callback(function ($callback) use ($testAdminPreValidate, $event) {
+                            if (is_callable($callback)) {
+                                $closure = $callback->bindTo($testAdminPreValidate);
+                                $closure($event);
+
+                                return true;
+                            }
+
+                            return false;
+                        }),
+                        $this->greaterThan(0)
+                    );
+
+        $formContractor = $this->createMock(FormContractorInterface::class, ['getDefaultOptions', 'getFormBuilder']);
+        $formContractor->expects($this->any())
+                ->method('getDefaultOptions')
+                ->will($this->returnValue([]));
+        $formContractor->expects($this->any())
+                ->method('getFormBuilder')
+                ->will($this->returnValue($formBuild));
+
+        $modelAdmin->setFormContractor($formContractor);
+        $modelAdmin->defineFormBuilder($formBuild);
+        $modelAdmin->getForm();
     }
 
     public function testRemoveFieldFromFormGroup()
