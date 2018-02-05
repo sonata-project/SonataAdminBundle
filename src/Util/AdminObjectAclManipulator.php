@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Util;
 
 use Sonata\AdminBundle\Form\Type\AclMatrixType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -88,7 +89,7 @@ class AdminObjectAclManipulator
     public function createAclUsersForm(AdminObjectAclData $data)
     {
         $aclValues = $data->getAclUsers();
-        $formBuilder = $this->formFactory->createNamedBuilder(self::ACL_USERS_FORM_NAME, 'form');
+        $formBuilder = $this->formFactory->createNamedBuilder(self::ACL_USERS_FORM_NAME, FormType::class);
         $form = $this->buildForm($data, $formBuilder, $aclValues);
         $data->setAclUsersForm($form);
 
@@ -103,7 +104,7 @@ class AdminObjectAclManipulator
     public function createAclRolesForm(AdminObjectAclData $data)
     {
         $aclValues = $data->getAclRoles();
-        $formBuilder = $this->formFactory->createNamedBuilder(self::ACL_ROLES_FORM_NAME, 'form');
+        $formBuilder = $this->formFactory->createNamedBuilder(self::ACL_ROLES_FORM_NAME, FormType::class);
         $form = $this->buildForm($data, $formBuilder, $aclValues);
         $data->setAclRolesForm($form);
 
