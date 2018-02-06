@@ -486,6 +486,10 @@
                 <source>read_less</source>
                 <target>Close</target>
             </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Toggle Navigation</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
