@@ -130,7 +130,13 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
         }
 
         foreach ($collection as $entity) {
-            $id = current($this->modelManager->getIdentifierValues($entity));
+            $ids = $this->modelManager->getIdentifierValues($entity);
+            if (count($ids) > 1) {
+                $id = implode('~', $ids);
+            }
+            else {
+                $id = current($ids);
+            }
 
             if (null !== $this->toStringCallback) {
                 if (!is_callable($this->toStringCallback)) {
