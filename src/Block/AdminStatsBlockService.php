@@ -16,9 +16,9 @@ namespace Sonata\AdminBundle\Block;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -30,12 +30,9 @@ class AdminStatsBlockService extends AbstractBlockService
      */
     protected $pool;
 
-    /**
-     * @param string $name
-     */
-    public function __construct($name, EngineInterface $templating, Pool $pool)
+    public function __construct(string $name, Environment $twig, Pool $pool)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($name, $twig);
 
         $this->pool = $pool;
     }

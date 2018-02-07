@@ -40,7 +40,6 @@ use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormRenderer;
@@ -164,11 +163,7 @@ class CRUDControllerTest extends TestCase
 
         $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
 
-        $templating = $this->getMockBuilder(DelegatingEngine::class)
-            ->setConstructorArgs([$this->container, []])
-            ->getMock();
-
-        $templatingRenderReturnCallback = $this->returnCallback(function (
+        $twigRenderReturnCallback = $this->returnCallback(function (
             $view,
             array $parameters = [],
             Response $response = null
@@ -183,15 +178,6 @@ class CRUDControllerTest extends TestCase
 
             return $response;
         });
-
-        // SF < 3.3.10 BC
-        $templating->expects($this->any())
-            ->method('renderResponse')
-            ->will($templatingRenderReturnCallback);
-
-        $templating->expects($this->any())
-            ->method('render')
-            ->will($templatingRenderReturnCallback);
 
         $this->session = new Session(new MockArraySessionStorage());
 
@@ -218,6 +204,10 @@ class CRUDControllerTest extends TestCase
                         return $this->createMock(FormRenderer::class);
                 }
             }));
+
+        $twig->expects($this->any())
+            ->method('render')
+            ->will($twigRenderReturnCallback);
 
         // NEXT_MAJOR : require sonata/exporter ^1.7 and remove conditional
         if (class_exists(Exporter::class)) {
@@ -267,7 +257,6 @@ class CRUDControllerTest extends TestCase
         $this->container->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($id) use (
-                $templating,
                 $twig,
                 $exporter,
                 $requestStack
@@ -281,8 +270,6 @@ class CRUDControllerTest extends TestCase
                         return $this->admin;
                     case 'foo.admin.template_registry':
                         return $this->templateRegistry->reveal();
-                    case 'templating':
-                        return $templating;
                     case 'twig':
                         return $twig;
                     case 'session':
@@ -319,11 +306,11 @@ class CRUDControllerTest extends TestCase
                     return true;
                 }
 
-                if ('templating' == $id) {
+                if ('translator' == $id) {
                     return true;
                 }
 
-                if ('translator' == $id) {
+                if ('twig' == $id) {
                     return true;
                 }
 

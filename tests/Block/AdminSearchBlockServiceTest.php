@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminSearchBlockService;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\BlockBundle\Test\AbstractBlockServiceTestCase;
-use Sonata\BlockBundle\Test\FakeTemplating;
+use Twig\Environment;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -45,7 +45,7 @@ class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
 
     public function testDefaultSettings(): void
     {
-        $blockService = new AdminSearchBlockService('foo', $this->templating, $this->pool, $this->searchHandler);
+        $blockService = new AdminSearchBlockService('foo', $this->twig, $this->pool, $this->searchHandler);
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([
@@ -60,9 +60,9 @@ class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
     public function testGlobalSearchReturnsEmptyWhenFiltersAreDisabled(): void
     {
         $admin = $this->getMockBuilder(AbstractAdmin::class)->disableOriginalConstructor()->getMock();
-        $templating = $this->getMockBuilder(FakeTemplating::class)->disableOriginalConstructor()->getMock();
+        $twig = $this->getMockBuilder(Environment::class)->disableOriginalConstructor()->getMock();
 
-        $blockService = new AdminSearchBlockService('foo', $templating, $this->pool, $this->searchHandler);
+        $blockService = new AdminSearchBlockService('foo', $twig, $this->pool, $this->searchHandler);
         $blockContext = $this->getBlockContext($blockService);
 
         $this->searchHandler->expects(self::once())->method('search')->willReturn(false);
@@ -71,7 +71,7 @@ class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
 
         // Make sure the template is never generated (empty response is required,
         // but the FakeTemplate always returns an empty response)
-        $templating->expects(self::never())->method('renderResponse');
+        $twig->expects(self::never())->method('render');
 
         $response = $blockService->execute($blockContext);
 

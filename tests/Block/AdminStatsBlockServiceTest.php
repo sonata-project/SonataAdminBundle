@@ -36,7 +36,7 @@ class AdminStatsBlockServiceTest extends AbstractBlockServiceTestCase
 
     public function testDefaultSettings(): void
     {
-        $blockService = new AdminStatsBlockService('foo', $this->templating, $this->pool);
+        $blockService = new AdminStatsBlockService('foo', $this->twig, $this->pool);
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([
