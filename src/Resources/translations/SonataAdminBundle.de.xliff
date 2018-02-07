@@ -482,6 +482,10 @@
                 <source>read_less</source>
                 <target>weniger anzeigen</target>
             </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Navigation ein-/ausblenden</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
