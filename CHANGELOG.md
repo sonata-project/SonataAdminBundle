@@ -2,6 +2,22 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.31.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.31.0...3.31.1) - 2018-02-08
+### Added
+- Missing `getOwnerPermissions` to `AdminObjectAclData`
+
+### Changed
+- Switch all templates references to Twig namespaced syntax
+- Switch from templating service to sonata.templating
+
+### Fixed
+- Not found issues for some locales which are not present in frontend dependencies like `moment` or `select2`
+- Only do `$filter->apply` if the filter is "active" on the datagrid list
+- Only do `$filter->apply` if the filter has a value that is not empty string
+- Error if the field in filter list is named `children`
+- Use FQCN form types for ACL form creation
+- Fixed missing translation for `Toggle navigation`
+
 ## [3.31.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.30.1...3.31.0) - 2018-01-23
 ### Added
 - Added new `safe_label` option to allow HTML pass-through on autocomplete form type
