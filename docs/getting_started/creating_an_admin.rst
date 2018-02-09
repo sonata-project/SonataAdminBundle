@@ -9,7 +9,7 @@ Step 0: Create a Model
 ----------------------
 
 For the rest of the tutorial, you'll need some sort of model. In this tutorial,
-two very simple ``Post`` and ``Tag`` entities will be used. Generate them by
+two very simple ``BlogPost`` and ``Category`` entities will be used. Generate them by
 using these commands:
 
 .. code-block:: bash
