@@ -15,10 +15,9 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
+use Prophecy\Argument;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminHelper;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\HelperController;
@@ -29,11 +28,10 @@ use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Bridge\Twig\AppVariable;
+use Symfony\Bridge\Twig\Command\DebugCommand;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
-use Symfony\Bridge\Twig\Form\TwigRendererInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\Command\DebugCommand;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormConfigInterface;
@@ -41,11 +39,13 @@ use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Twig\Environment;
 
 class AdminControllerHelper_Foo
 {
@@ -90,103 +90,62 @@ class AdminControllerHelper_Bar
 class HelperControllerTest extends TestCase
 {
     /**
-     * @var AdminInterface
-     */
-    private $admin;
-
-    /**
-     * @var HelperController
-     */
-    private $controller;
-
-    /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $container = $this->createMock(ContainerInterface::class);
-        $pool = new Pool($container, 'title', 'logo.png');
-        $pool->setAdminServiceIds(['foo.admin']);
+        $this->pool = $this->prophesize(Pool::class);
+        $this->twig = $this->prophesize(Environment::class);
+        $this->helper = $this->prophesize(AdminHelper::class);
+        $this->validator = $this->prophesize(ValidatorInterface::class);
+        $this->admin = $this->prophesize(AbstractAdmin::class);
 
-        $this->admin = $this->createMock(AbstractAdmin::class);
+        $this->pool->getInstance(Argument::any())->willReturn($this->admin->reveal());
+        $this->admin->setRequest(Argument::type(Request::class))->shouldBeCalled();
 
-        $twig = new \Twig_Environment($this->createMock(\Twig_LoaderInterface::class));
-        $helper = new AdminHelper($pool);
-        $validator = $this->createMock(ValidatorInterface::class);
-        $this->controller = new HelperController($twig, $pool, $helper, $validator);
-
-        $container->expects($this->any())
-            ->method('get')
-            ->will($this->returnCallback(function ($id) {
-                switch ($id) {
-                    case 'foo.admin':
-                        return $this->admin;
-                }
-            }));
+        $this->controller = new HelperController(
+            $this->twig->reveal(),
+            $this->pool->reveal(),
+            $this->helper->reveal(),
+            $this->validator->reveal()
+        );
     }
 
-    public function testgetShortObjectDescriptionActionInvalidAdmin()
+    public function testGetShortObjectDescriptionActionInvalidAdmin()
     {
-        $this->expectException(\Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class);
+        $this->expectException(NotFoundHttpException::class);
 
-        $container = $this->createMock(ContainerInterface::class);
-        $twig = new \Twig_Environment($this->createMock(\Twig_LoaderInterface::class));
         $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
             'uniqid' => 'asdasd123',
         ]);
-        $pool = new Pool($container, 'title', 'logo');
-        $pool->setAdminServiceIds(['sonata.post.admin']);
-        $helper = new AdminHelper($pool);
-        $validator = $this->createMock(ValidatorInterface::class);
-        $controller = new HelperController($twig, $pool, $helper, $validator);
 
-        $controller->getShortObjectDescriptionAction($request);
+        $this->pool->getInstance('sonata.post.admin')->willReturn(null);
+        $this->admin->setRequest(Argument::type(Request::class))->shouldNotBeCalled();
+
+        $this->controller->getShortObjectDescriptionAction($request);
     }
 
-    /**
-     * @exceptionMessage Invalid format
-     */
-    public function testgetShortObjectDescriptionActionObjectDoesNotExist()
+    public function testGetShortObjectDescriptionActionObjectDoesNotExist()
     {
         $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Invalid format');
 
-        $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())->method('setUniqid');
-        $admin->expects($this->once())->method('getObject')->will($this->returnValue(false));
-
-        $container = $this->createMock(ContainerInterface::class);
-        $container->expects($this->any())->method('get')->will($this->returnValue($admin));
-
-        $twig = new \Twig_Environment($this->createMock(\Twig_LoaderInterface::class));
         $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
             'uniqid' => 'asdasd123',
         ]);
 
-        $pool = new Pool($container, 'title', 'logo');
-        $pool->setAdminServiceIds(['sonata.post.admin']);
+        $this->admin->setUniqid('asdasd123')->shouldBeCalled();
+        $this->admin->getObject(42)->willReturn(false);
 
-        $helper = new AdminHelper($pool);
-
-        $validator = $this->createMock(ValidatorInterface::class);
-        $controller = new HelperController($twig, $pool, $helper, $validator);
-
-        $controller->getShortObjectDescriptionAction($request);
+        $this->controller->getShortObjectDescriptionAction($request);
     }
 
-    public function testgetShortObjectDescriptionActionEmptyObjectId()
+    public function testGetShortObjectDescriptionActionEmptyObjectId()
     {
-        $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())->method('setUniqid');
-        $admin->expects($this->once())->method('getObject')->with($this->identicalTo(null))->will($this->returnValue(false));
-
-        $container = $this->createMock(ContainerInterface::class);
-        $container->expects($this->any())->method('get')->will($this->returnValue($admin));
-
-        $twig = new \Twig_Environment($this->createMock(\Twig_LoaderInterface::class));
         $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => '',
@@ -194,102 +153,43 @@ class HelperControllerTest extends TestCase
             '_format' => 'html',
         ]);
 
-        $pool = new Pool($container, 'title', 'logo');
-        $pool->setAdminServiceIds(['sonata.post.admin']);
+        $this->admin->setUniqid('asdasd123')->shouldBeCalled();
+        $this->admin->getObject(null)->willReturn(false);
 
-        $helper = new AdminHelper($pool);
+        $response = $this->controller->getShortObjectDescriptionAction($request);
 
-        $validator = $this->createMock(ValidatorInterface::class);
-        $controller = new HelperController($twig, $pool, $helper, $validator);
-
-        $controller->getShortObjectDescriptionAction($request);
+        $this->assertInstanceOf(Response::class, $response);
     }
 
-    public function testgetShortObjectDescriptionActionObject()
+    public function testGetShortObjectDescriptionActionObject()
     {
-        $mockTemplate = 'AdminHelperTest:mock-short-object-description.html.twig';
-
-        $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())->method('setUniqid');
-        $admin->expects($this->once())->method('getTemplate')->will($this->returnValue($mockTemplate));
-        $admin->expects($this->once())->method('getObject')->will($this->returnValue(new AdminControllerHelper_Foo()));
-        $admin->expects($this->once())->method('toString')->will($this->returnValue('bar'));
-        $admin->expects($this->once())->method('generateObjectUrl')->will($this->returnCallback(function ($type, $object, $parameters = []) {
-            if ('edit' != $type) {
-                return 'invalid name';
-            }
-
-            return '/ok/url';
-        }));
-
-        $container = $this->createMock(ContainerInterface::class);
-        $container->expects($this->any())->method('get')->will($this->returnValue($admin));
-
-        $twig = $this->getMockBuilder(\Twig_Environment::class)->disableOriginalConstructor()->getMock();
-
-        $twig->expects($this->once())->method('render')
-            ->with($mockTemplate)
-            ->will($this->returnCallback(function ($templateName, $templateParams) {
-                return sprintf('<a href="%s" target="new">%s</a>', $templateParams['admin']->generateObjectUrl('edit', $templateParams['object']), $templateParams['description']);
-            }));
-
         $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
             'uniqid' => 'asdasd123',
             '_format' => 'html',
         ]);
-
-        $pool = new Pool($container, 'title', 'logo');
-        $pool->setAdminServiceIds(['sonata.post.admin']);
-
-        $helper = new AdminHelper($pool);
-
-        $validator = $this->createMock(ValidatorInterface::class);
-
-        $controller = new HelperController($twig, $pool, $helper, $validator);
-
-        $response = $controller->getShortObjectDescriptionAction($request);
-
-        $expected = '<a href="/ok/url" target="new">bar</a>';
-        $this->assertSame($expected, $response->getContent());
-    }
-
-    public function testsetObjectFieldValueAction()
-    {
         $object = new AdminControllerHelper_Foo();
 
-        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getOption')->will($this->returnValue(true));
+        $this->admin->setUniqid('asdasd123')->shouldBeCalled();
+        $this->admin->getObject(42)->willReturn($object);
+        $this->admin->getTemplate('short_object_description')->willReturn('template');
+        $this->admin->toString($object)->willReturn('bar');
+        $this->twig->render('template', [
+            'admin' => $this->admin->reveal(),
+            'description' => 'bar',
+            'object' => $object,
+            'link_parameters' => [],
+        ])->willReturn('renderedTemplate');
 
-        $admin = $this->createMock(AbstractAdmin::class);
-        $admin->expects($this->once())->method('getObject')->will($this->returnValue($object));
-        $admin->expects($this->once())->method('hasAccess')->will($this->returnValue(true));
-        $admin->expects($this->once())->method('getListFieldDescription')->will($this->returnValue($fieldDescription));
-        $fieldDescription->expects($this->exactly(2))->method('getAdmin')->will($this->returnValue($admin));
+        $response = $this->controller->getShortObjectDescriptionAction($request);
 
-        $container = $this->createMock(ContainerInterface::class);
-        $container->expects($this->any())->method('get')->will($this->returnValue($admin));
+        $this->assertSame('renderedTemplate', $response->getContent());
+    }
 
-        $pool = new Pool($container, 'title', 'logo');
-        $pool->setAdminServiceIds(['sonata.post.admin']);
-
-        $adminExtension = new SonataAdminExtension(
-            $pool,
-            $this->createMock(LoggerInterface::class),
-            $this->createMock(TranslatorInterface::class)
-        );
-
-        // NEXT_MAJOR: Remove this check when dropping support for twig < 2
-        if (method_exists(\Twig_LoaderInterface::class, 'getSourceContext')) {
-            $loader = $this->createMock(\Twig_LoaderInterface::class);
-        } else {
-            $loader = $this->createMock([\Twig_LoaderInterface::class, \Twig_SourceContextLoaderInterface::class]);
-        }
-        $loader->method('getSourceContext')->will($this->returnValue(new \Twig_Source('<foo />', 'foo')));
-
-        $twig = new \Twig_Environment($loader);
-        $twig->addExtension($adminExtension);
+    public function testSetObjectFieldValueAction()
+    {
+        $object = new AdminControllerHelper_Foo();
         $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
@@ -298,25 +198,27 @@ class HelperControllerTest extends TestCase
             'context' => 'list',
         ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        $helper = new AdminHelper($pool);
+        $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
+        $adminExtension = $this->prophesize(SonataAdminExtension::class);
+        $propertyAccessor = new PropertyAccessor();
 
-        $validator = $this->createMock(ValidatorInterface::class);
+        $this->admin->getObject(42)->willReturn($object);
+        $this->admin->hasAccess('edit', $object)->willReturn(true);
+        $this->admin->getListFieldDescription('enabled')->willReturn($fieldDescription->reveal());
+        $this->admin->update($object)->shouldBeCalled();
+        $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
+        $this->twig->getExtension(SonataAdminExtension::class)->willReturn($adminExtension->reveal());
+        $fieldDescription->getOption('editable')->willReturn(true);
+        $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
+        $fieldDescription->getType()->willReturn('boolean');
+        $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
 
-        $validator
-            ->expects($this->once())
-            ->method('validate')
-            ->with($object)
-            ->will($this->returnValue(new ConstraintViolationList([])))
-        ;
-
-        $controller = new HelperController($twig, $pool, $helper, $validator);
-
-        $response = $controller->setObjectFieldValueAction($request);
+        $response = $this->controller->setObjectFieldValueAction($request);
 
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function testsetObjectFieldValueActionOnARelationField()
+    public function testSetObjectFieldValueActionOnARelationField()
     {
         $object = new AdminControllerHelper_Foo();
         $associationObject = new AdminControllerHelper_Bar();
@@ -328,110 +230,44 @@ class HelperControllerTest extends TestCase
             'context' => 'list',
         ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
-        $admin = $this->prophesize(AbstractAdmin::class);
         $container = $this->prophesize(ContainerInterface::class);
-        $validator = $this->prophesize(ValidatorInterface::class);
+        $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
         $managerRegistry = $this->prophesize(ManagerRegistry::class);
         $objectManager = $this->prophesize(ObjectManager::class);
         $classMetadata = $this->prophesize(ClassMetadata::class);
         $adminExtension = $this->prophesize(SonataAdminExtension::class);
-        $twig = $this->prophesize(\Twig_Environment::class);
-        $pool = $this->prophesize(Pool::class);
-        $propertyAccessor = $this->prophesize(PropertyAccessor::class);
+        $propertyAccessor = new PropertyAccessor();
 
-        $admin->getObject(42)->willReturn($object);
-        $admin->hasAccess('edit', $object)->willReturn(true);
-        $admin->getListFieldDescription('bar')->willReturn($fieldDescription->reveal());
-        $admin->setRequest($request)->shouldBeCalled();
-        $admin->getManagerType()->willReturn('doctrine_orm');
-        $admin->getClass()->willReturn(get_class($object));
-        $admin->update($object)->shouldBeCalled();
-        $admin->getTemplate('base_list_field')->willReturn('admin_template');
+        $this->admin->getObject(42)->willReturn($object);
+        $this->admin->hasAccess('edit', $object)->willReturn(true);
+        $this->admin->getListFieldDescription('bar')->willReturn($fieldDescription->reveal());
+        $this->admin->getManagerType()->willReturn('doctrine_orm');
+        $this->admin->getClass()->willReturn(get_class($object));
+        $this->admin->update($object)->shouldBeCalled();
+        $this->admin->getTemplate('base_list_field')->willReturn('admin_template');
+        $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
+        $this->twig->getExtension(SonataAdminExtension::class)->willReturn($adminExtension->reveal());
+        $this->pool->getContainer()->willReturn($container->reveal());
+        $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
         $fieldDescription->getType()->willReturn('choice');
         $fieldDescription->getOption('editable')->willReturn(true);
         $fieldDescription->getOption('class')->willReturn(AdminControllerHelper_Bar::class);
-        $fieldDescription->getAdmin()->willReturn($admin->reveal());
+        $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
         $fieldDescription->getTemplate()->willReturn('field_template');
-        $container->get('sonata.post.admin')->willReturn($admin->reveal());
         $container->get('doctrine_orm')->willReturn($managerRegistry->reveal());
-        $validator->validate($object)->willReturn(new ConstraintViolationList([]));
         $managerRegistry->getManager()->willReturn($objectManager->reveal());
         $objectManager->getClassMetadata(get_class($object))->willReturn($classMetadata->reveal());
         $objectManager->find(get_class($associationObject), 1)->willReturn($associationObject);
         $classMetadata->hasAssociation('bar')->willReturn(true);
-        $twig->getExtension(SonataAdminExtension::class)->willReturn($adminExtension->reveal());
-        $pool->getInstance('sonata.post.admin')->willReturn($admin->reveal());
-        $pool->getContainer()->willReturn($container->reveal());
-        $pool->getPropertyAccessor()->willReturn($propertyAccessor->reveal());
 
-        $controller = new HelperController(
-            $twig->reveal(),
-            $pool->reveal(),
-            new AdminHelper($pool->reveal()),
-            $validator->reveal()
-        );
-
-        $response = $controller->setObjectFieldValueAction($request);
+        $response = $this->controller->setObjectFieldValueAction($request);
 
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function testappendFormFieldElementAction()
+    public function testAppendFormFieldElementAction()
     {
         $object = new AdminControllerHelper_Foo();
-
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-        $modelManager->expects($this->once())->method('find')->will($this->returnValue($object));
-
-        $mockTheme = $this->getMockBuilder(FormView::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())->method('getModelManager')->will($this->returnValue($modelManager));
-        $admin->expects($this->once())->method('setRequest');
-        $admin->expects($this->once())->method('setSubject');
-        $admin->expects($this->once())->method('getFormTheme')->will($this->returnValue($mockTheme));
-
-        $container = $this->createMock(ContainerInterface::class);
-        $container->expects($this->any())->method('get')->will($this->returnValue($admin));
-
-        $mockRenderer = $this->getMockBuilder(TwigRendererInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $mockRenderer->expects($this->once())
-            ->method('searchAndRenderBlock')
-            ->will($this->returnValue(new Response()));
-
-        $twig = new \Twig_Environment($this->createMock(\Twig_LoaderInterface::class));
-
-        // Remove the condition when dropping sf < 3.2
-        if (method_exists(AppVariable::class, 'getToken')) {
-            $twig->addExtension(new FormExtension());
-            $runtimeLoader = $this
-                ->getMockBuilder(\Twig_RuntimeLoaderInterface::class)
-                ->getMock();
-
-            // Remove the condition when dropping sf < 3.4
-            if (!class_exists(DebugCommand::class)) {
-                $runtimeLoader->expects($this->once())
-                    ->method('load')
-                    ->with($this->equalTo(TwigRenderer::class))
-                    ->will($this->returnValue($mockRenderer));
-            } else {
-                $runtimeLoader->expects($this->once())
-                    ->method('load')
-                    ->with($this->equalTo(FormRenderer::class))
-                    ->will($this->returnValue($mockRenderer));
-            }
-
-            $twig->addRuntimeLoader($runtimeLoader);
-        } else {
-            $twig->addExtension(new FormExtension($mockRenderer));
-        }
-
         $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
@@ -440,42 +276,36 @@ class HelperControllerTest extends TestCase
             'context' => 'list',
         ], [], [], [], [], ['REQUEST_METHOD' => 'POST']);
 
-        $pool = new Pool($container, 'title', 'logo');
-        $pool->setAdminServiceIds(['sonata.post.admin']);
+        $modelManager = $this->prophesize(ModelManagerInterface::class);
+        $formView = new FormView();
+        $form = $this->prophesize(Form::class);
 
-        $validator = $this->createMock(ValidatorInterface::class);
+        $renderer = $this->configureFormRenderer();
 
-        $mockView = $this->getMockBuilder(FormView::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->admin->getModelManager()->willReturn($modelManager->reveal());
+        $this->admin->getClass()->willReturn(get_class($object));
+        $this->admin->setSubject($object)->shouldBeCalled();
+        $this->admin->getFormTheme()->willReturn($formView);
+        $this->helper->appendFormFieldElement($this->admin->reveal(), $object, null)->willReturn([
+            $this->prophesize(FieldDescriptionInterface::class),
+            $form->reveal(),
+        ]);
+        $this->helper->getChildFormView($formView, null)
+            ->willReturn($formView);
+        $modelManager->find(get_class($object), 42)->willReturn($object);
+        $form->createView()->willReturn($formView);
+        $renderer->setTheme($formView, $formView)->shouldBeCalled();
+        $renderer->searchAndRenderBlock($formView, 'widget')->willReturn('block');
 
-        $mockForm = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mockForm->expects($this->once())
-            ->method('createView')
-            ->will($this->returnValue($mockView));
-
-        $helper = $this->getMockBuilder(AdminHelper::class)
-            ->setMethods(['appendFormFieldElement', 'getChildFormView'])
-            ->setConstructorArgs([$pool])
-            ->getMock();
-        $helper->expects($this->once())->method('appendFormFieldElement')->will($this->returnValue([
-            $this->createMock(FieldDescriptionInterface::class),
-            $mockForm,
-        ]));
-        $helper->expects($this->once())->method('getChildFormView')->will($this->returnValue($mockView));
-
-        $controller = new HelperController($twig, $pool, $helper, $validator);
-        $response = $controller->appendFormFieldElementAction($request);
+        $response = $this->controller->appendFormFieldElementAction($request);
 
         $this->isInstanceOf(Response::class, $response);
+        $this->assertSame($response->getContent(), 'block');
     }
 
     public function testRetrieveFormFieldElementAction()
     {
         $object = new AdminControllerHelper_Foo();
-
         $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
@@ -484,112 +314,39 @@ class HelperControllerTest extends TestCase
             'context' => 'list',
         ], [], [], [], [], ['REQUEST_METHOD' => 'POST']);
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-        $modelManager->expects($this->once())->method('find')->will($this->returnValue($object));
+        $modelManager = $this->prophesize(ModelManagerInterface::class);
+        $formView = new FormView();
+        $form = $this->prophesize(Form::class);
+        $formBuilder = $this->prophesize(FormBuilder::class);
 
-        $mockView = $this->getMockBuilder(FormView::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $renderer = $this->configureFormRenderer();
 
-        $mockForm = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->admin->getModelManager()->willReturn($modelManager->reveal());
+        $this->admin->getClass()->willReturn(get_class($object));
+        $this->admin->setSubject($object)->shouldBeCalled();
+        $this->admin->getFormTheme()->willReturn($formView);
+        $this->admin->getFormBuilder()->willReturn($formBuilder->reveal());
+        $this->helper->getChildFormView($formView, null)
+            ->willReturn($formView);
+        $modelManager->find(get_class($object), 42)->willReturn($object);
+        $form->setData($object)->shouldBeCalled();
+        $form->handleRequest($request)->shouldBeCalled();
+        $form->createView()->willReturn($formView);
+        $formBuilder->getForm()->willReturn($form->reveal());
+        $renderer->setTheme($formView, $formView)->shouldBeCalled();
+        $renderer->searchAndRenderBlock($formView, 'widget')->willReturn('block');
 
-        $mockForm->expects($this->once())
-            ->method('setData')
-            ->with($object);
-
-        $mockForm->expects($this->once())
-            ->method('handleRequest')
-            ->with($request);
-
-        $mockForm->expects($this->once())
-            ->method('createView')
-            ->will($this->returnValue($mockView));
-
-        $formBuilder = $this->getMockBuilder(FormBuilder::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $formBuilder->expects($this->once())->method('getForm')->will($this->returnValue($mockForm));
-
-        $admin = $this->createMock(AdminInterface::class);
-        $admin->expects($this->once())->method('getModelManager')->will($this->returnValue($modelManager));
-        $admin->expects($this->once())->method('getFormBuilder')->will($this->returnValue($formBuilder));
-
-        $container = $this->createMock(ContainerInterface::class);
-        $container->expects($this->any())->method('get')->will($this->returnValue($admin));
-
-        $mockRenderer = $this->getMockBuilder(TwigRendererInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $mockRenderer->expects($this->once())
-            ->method('searchAndRenderBlock')
-            ->will($this->returnValue(new Response()));
-
-        $twig = new \Twig_Environment($this->createMock(\Twig_LoaderInterface::class));
-
-        // Remove the condition when dropping sf < 3.2
-        if (method_exists(AppVariable::class, 'getToken')) {
-            $twig->addExtension(new FormExtension());
-            $runtimeLoader = $this
-                ->getMockBuilder(\Twig_RuntimeLoaderInterface::class)
-                ->getMock();
-
-            // Remove the condition when dropping sf < 3.4
-            if (!class_exists(DebugCommand::class)) {
-                $runtimeLoader->expects($this->once())
-                    ->method('load')
-                    ->with($this->equalTo(TwigRenderer::class))
-                    ->will($this->returnValue($mockRenderer));
-            } else {
-                $runtimeLoader->expects($this->once())
-                    ->method('load')
-                    ->with($this->equalTo(FormRenderer::class))
-                    ->will($this->returnValue($mockRenderer));
-            }
-
-            $twig->addRuntimeLoader($runtimeLoader);
-        } else {
-            $twig->addExtension(new FormExtension($mockRenderer));
-        }
-
-        $pool = new Pool($container, 'title', 'logo');
-        $pool->setAdminServiceIds(['sonata.post.admin']);
-
-        $validator = $this->createMock(ValidatorInterface::class);
-
-        $helper = $this->getMockBuilder(AdminHelper::class)
-            ->setMethods(['getChildFormView'])
-            ->setConstructorArgs([$pool])
-            ->getMock();
-        $helper->expects($this->once())->method('getChildFormView')->will($this->returnValue($mockView));
-
-        $controller = new HelperController($twig, $pool, $helper, $validator);
-        $response = $controller->retrieveFormFieldElementAction($request);
+        $response = $this->controller->retrieveFormFieldElementAction($request);
 
         $this->isInstanceOf(Response::class, $response);
+        $this->assertSame($response->getContent(), 'block');
     }
 
     public function testSetObjectFieldValueActionWithViolations()
     {
         $bar = new AdminControllerHelper_Bar();
-
         $object = new AdminControllerHelper_Foo();
         $object->setBar($bar);
-
-        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getOption')->will($this->returnValue(true));
-
-        $admin = $this->createMock(AbstractAdmin::class);
-        $admin->expects($this->once())->method('getObject')->will($this->returnValue($object));
-        $admin->expects($this->once())->method('hasAccess')->will($this->returnValue(true));
-        $admin->expects($this->once())->method('getListFieldDescription')->will($this->returnValue($fieldDescription));
-
-        $container = $this->createMock(ContainerInterface::class);
-        $container->expects($this->any())->method('get')->will($this->returnValue($admin));
-
-        $twig = new \Twig_Environment($this->createMock(\Twig_LoaderInterface::class));
         $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
@@ -598,217 +355,93 @@ class HelperControllerTest extends TestCase
             'context' => 'list',
         ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        $pool = new Pool($container, 'title', 'logo');
-        $pool->setAdminServiceIds(['sonata.post.admin']);
+        $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
+        $propertyAccessor = new PropertyAccessor();
 
-        $helper = new AdminHelper($pool);
-
-        $violations = new ConstraintViolationList([
+        $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
+        $this->admin->getObject(42)->willReturn($object);
+        $this->admin->hasAccess('edit', $object)->willReturn(true);
+        $this->admin->getListFieldDescription('bar.enabled')->willReturn($fieldDescription->reveal());
+        $this->validator->validate($bar)->willReturn(new ConstraintViolationList([
             new ConstraintViolation('error1', null, [], null, 'enabled', null),
             new ConstraintViolation('error2', null, [], null, 'enabled', null),
-        ]);
+        ]));
+        $fieldDescription->getOption('editable')->willReturn(true);
+        $fieldDescription->getType()->willReturn('boolean');
 
-        $validator = $this->createMock(ValidatorInterface::class);
-
-        $validator
-            ->expects($this->once())
-            ->method('validate')
-            ->with($bar)
-            ->will($this->returnValue($violations))
-        ;
-
-        $controller = new HelperController($twig, $pool, $helper, $validator);
-
-        $response = $controller->setObjectFieldValueAction($request);
+        $response = $this->controller->setObjectFieldValueAction($request);
 
         $this->assertEquals(400, $response->getStatusCode());
         $this->assertSame(json_encode("error1\nerror2"), $response->getContent());
     }
 
-    /**
-     * @exceptionMessage Invalid format
-     */
     public function testRetrieveAutocompleteItemsActionNotGranted()
     {
-        $this->expectException(\Symfony\Component\Security\Core\Exception\AccessDeniedException::class);
-
-        $this->admin->expects($this->exactly(2))
-            ->method('hasAccess')
-            ->will($this->returnCallback(function ($operation) {
-                if ('create' == $operation || 'edit' == $operation) {
-                    return false;
-                }
-            }));
+        $this->expectException(AccessDeniedException::class);
 
         $request = new Request([
             'admin_code' => 'foo.admin',
         ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+
+        $this->admin->hasAccess('create')->willReturn(false);
+        $this->admin->hasAccess('edit')->willReturn(false);
 
         $this->controller->retrieveAutocompleteItemsAction($request);
     }
 
-    /**
-     * @exceptionMessage Autocomplete list can`t be retrieved because the form element is disabled or read_only.
-     */
     public function testRetrieveAutocompleteItemsActionDisabledFormelememt()
     {
-        $this->expectException(\Symfony\Component\Security\Core\Exception\AccessDeniedException::class);
+        $this->expectException(AccessDeniedException::class);
+        $this->expectExceptionMessage('Autocomplete list can`t be retrieved because the form element is disabled or read_only.');
 
-        $this->admin->expects($this->once())
-            ->method('hasAccess')
-            ->with('create')
-            ->will($this->returnValue(true));
-
-        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-
-        $fieldDescription->expects($this->once())
-            ->method('getTargetEntity')
-            ->will($this->returnValue(Foo::class));
-
-        $fieldDescription->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('barField'));
-
-        $this->admin->expects($this->once())
-            ->method('getFormFieldDescriptions')
-            ->will($this->returnValue(null));
-
-        $this->admin->expects($this->once())
-            ->method('getFormFieldDescription')
-            ->with('barField')
-            ->will($this->returnValue($fieldDescription));
-
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->admin->expects($this->once())
-            ->method('getForm')
-            ->will($this->returnValue($form));
-
-        $formType = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $form->expects($this->once())
-            ->method('get')
-            ->with('barField')
-            ->will($this->returnValue($formType));
-
-        $formConfig = $this->getMockBuilder(FormConfigInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $formType->expects($this->once())
-            ->method('getConfig')
-            ->will($this->returnValue($formConfig));
-
-        $formConfig->expects($this->once())
-            ->method('getAttribute')
-            ->with('disabled')
-            ->will($this->returnValue(true));
-
+        $object = new AdminControllerHelper_Foo();
         $request = new Request([
             'admin_code' => 'foo.admin',
             'field' => 'barField',
         ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+
+        $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
+
+        $this->configureFormConfig('barField', true);
+
+        $this->admin->getNewInstance()->willReturn($object);
+        $this->admin->setSubject($object)->shouldBeCalled();
+        $this->admin->hasAccess('create')->willReturn(true);
+        $this->admin->getFormFieldDescriptions()->willReturn(null);
+        $this->admin->getFormFieldDescription('barField')->willReturn($fieldDescription->reveal());
+
+        $fieldDescription->getTargetEntity()->willReturn(Foo::class);
+        $fieldDescription->getName()->willReturn('barField');
 
         $this->controller->retrieveAutocompleteItemsAction($request);
     }
 
     public function testRetrieveAutocompleteItemsTooShortSearchString()
     {
-        $this->admin->expects($this->once())
-            ->method('hasAccess')
-            ->with('create')
-            ->will($this->returnValue(true));
-
-        $targetAdmin = $this->createMock(AbstractAdmin::class);
-        $targetAdmin->expects($this->once())
-            ->method('checkAccess')
-            ->with('list')
-            ->will($this->returnValue(null));
-
-        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-
-        $fieldDescription->expects($this->once())
-            ->method('getTargetEntity')
-            ->will($this->returnValue(Foo::class));
-
-        $fieldDescription->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('barField'));
-
-        $fieldDescription->expects($this->once())
-            ->method('getAssociationAdmin')
-            ->will($this->returnValue($targetAdmin));
-
-        $this->admin->expects($this->once())
-            ->method('getFormFieldDescriptions')
-            ->will($this->returnValue(null));
-
-        $this->admin->expects($this->once())
-            ->method('getFormFieldDescription')
-            ->with('barField')
-            ->will($this->returnValue($fieldDescription));
-
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->admin->expects($this->once())
-            ->method('getForm')
-            ->will($this->returnValue($form));
-
-        $formType = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $form->expects($this->once())
-            ->method('get')
-            ->with('barField')
-            ->will($this->returnValue($formType));
-
-        $formConfig = $this->getMockBuilder(FormConfigInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $formType->expects($this->once())
-            ->method('getConfig')
-            ->will($this->returnValue($formConfig));
-
-        $formConfig->expects($this->any())
-            ->method('getAttribute')
-            ->will($this->returnCallback(function ($name, $default = null) {
-                switch ($name) {
-                    case 'property':
-                        return 'foo';
-                    case 'callback':
-                        return;
-                    case 'minimum_input_length':
-                        return 3;
-                    case 'items_per_page':
-                        return 10;
-                    case 'req_param_name_page_number':
-                        return '_page';
-                    case 'to_string_callback':
-                        return;
-                    case 'disabled':
-                        return false;
-                    case 'target_admin_access_action':
-                        return 'list';
-                    default:
-                        throw new \RuntimeException(sprintf('Unkown parameter "%s" called.', $name));
-                }
-            }));
-
+        $object = new AdminControllerHelper_Foo();
         $request = new Request([
             'admin_code' => 'foo.admin',
             'field' => 'barField',
             'q' => 'so',
         ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
+        $targetAdmin = $this->prophesize(AbstractAdmin::class);
+        $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
+
+        $this->configureFormConfig('barField');
+
+        $this->admin->getNewInstance()->willReturn($object);
+        $this->admin->setSubject($object)->shouldBeCalled();
+        $this->admin->hasAccess('create')->willReturn(true);
+        $this->admin->getFormFieldDescription('barField')->willReturn($fieldDescription->reveal());
+        $this->admin->getFormFieldDescriptions()->willReturn(null);
+        $targetAdmin->checkAccess('list')->willReturn(null);
+        $fieldDescription->getTargetEntity()->willReturn(Foo::class);
+        $fieldDescription->getName()->willReturn('barField');
+        $fieldDescription->getAssociationAdmin()->willReturn($targetAdmin->reveal());
+
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
+
         $this->isInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"KO","message":"Too short search string."}', $response->getContent());
@@ -817,161 +450,96 @@ class HelperControllerTest extends TestCase
     public function testRetrieveAutocompleteItems()
     {
         $entity = new Foo();
-        $this->admin->expects($this->once())
-            ->method('hasAccess')
-            ->with('create')
-            ->will($this->returnValue(true));
-
-        $this->admin->expects($this->once())
-            ->method('id')
-            ->with($entity)
-            ->will($this->returnValue(123));
-
-        $targetAdmin = $this->createMock(AbstractAdmin::class);
-        $targetAdmin->expects($this->once())
-            ->method('checkAccess')
-            ->with('list')
-            ->will($this->returnValue(null));
-
-        $targetAdmin->expects($this->once())
-            ->method('setPersistFilters')
-            ->with(false)
-            ->will($this->returnValue(null));
-
-        $datagrid = $this->createMock(DatagridInterface::class);
-        $targetAdmin->expects($this->once())
-            ->method('getDatagrid')
-            ->with()
-            ->will($this->returnValue($datagrid));
-
-        $metadata = $this->createMock(Metadata::class);
-        $metadata->expects($this->once())
-            ->method('getTitle')
-            ->with()
-            ->will($this->returnValue('FOO'));
-
-        $targetAdmin->expects($this->once())
-            ->method('getObjectMetadata')
-            ->with($entity)
-            ->will($this->returnValue($metadata));
-
-        $datagrid->expects($this->once())
-            ->method('hasFilter')
-            ->with('foo')
-            ->will($this->returnValue(true));
-
-        $datagrid->expects($this->exactly(3))
-            ->method('setValue')
-            ->withConsecutive(
-                [$this->equalTo('foo'), $this->equalTo(null), $this->equalTo('sonata')],
-                [$this->equalTo('_per_page'), $this->equalTo(null), $this->equalTo(10)],
-                [$this->equalTo('_page'), $this->equalTo(null), $this->equalTo(1)]
-               )
-            ->will($this->returnValue(null));
-
-        $datagrid->expects($this->once())
-            ->method('buildPager')
-            ->with()
-            ->will($this->returnValue(null));
-
-        $pager = $this->createMock(Pager::class);
-        $datagrid->expects($this->once())
-            ->method('getPager')
-            ->with()
-            ->will($this->returnValue($pager));
-
-        $pager->expects($this->once())
-            ->method('getResults')
-            ->with()
-            ->will($this->returnValue([$entity]));
-
-        $pager->expects($this->once())
-            ->method('isLastPage')
-            ->with()
-            ->will($this->returnValue(true));
-
-        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-
-        $fieldDescription->expects($this->once())
-            ->method('getTargetEntity')
-            ->will($this->returnValue(Foo::class));
-
-        $fieldDescription->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('barField'));
-
-        $fieldDescription->expects($this->once())
-            ->method('getAssociationAdmin')
-            ->will($this->returnValue($targetAdmin));
-
-        $this->admin->expects($this->once())
-            ->method('getFormFieldDescriptions')
-            ->will($this->returnValue(null));
-
-        $this->admin->expects($this->once())
-            ->method('getFormFieldDescription')
-            ->with('barField')
-            ->will($this->returnValue($fieldDescription));
-
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->admin->expects($this->once())
-            ->method('getForm')
-            ->will($this->returnValue($form));
-
-        $formType = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $form->expects($this->once())
-            ->method('get')
-            ->with('barField')
-            ->will($this->returnValue($formType));
-
-        $formConfig = $this->getMockBuilder(FormConfigInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $formType->expects($this->once())
-            ->method('getConfig')
-            ->will($this->returnValue($formConfig));
-
-        $formConfig->expects($this->any())
-            ->method('getAttribute')
-            ->will($this->returnCallback(function ($name, $default = null) {
-                switch ($name) {
-                    case 'property':
-                        return 'foo';
-                    case 'callback':
-                        return;
-                    case 'minimum_input_length':
-                        return 3;
-                    case 'items_per_page':
-                        return 10;
-                    case 'req_param_name_page_number':
-                        return '_page';
-                    case 'to_string_callback':
-                        return;
-                    case 'disabled':
-                        return false;
-                    case 'target_admin_access_action':
-                        return 'list';
-                    default:
-                        throw new \RuntimeException(sprintf('Unkown parameter "%s" called.', $name));
-                }
-            }));
-
         $request = new Request([
             'admin_code' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
         ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
+        $targetAdmin = $this->prophesize(AbstractAdmin::class);
+        $datagrid = $this->prophesize(DatagridInterface::class);
+        $metadata = $this->prophesize(Metadata::class);
+        $pager = $this->prophesize(Pager::class);
+        $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
+
+        $this->configureFormConfig('barField');
+
+        $this->admin->getNewInstance()->willReturn($entity);
+        $this->admin->setSubject($entity)->shouldBeCalled();
+        $this->admin->hasAccess('create')->willReturn(true);
+        $this->admin->getFormFieldDescription('barField')->willReturn($fieldDescription->reveal());
+        $this->admin->getFormFieldDescriptions()->willReturn(null);
+        $this->admin->id($entity)->willReturn(123);
+        $targetAdmin->checkAccess('list')->willReturn(null);
+        $targetAdmin->setPersistFilters(false)->willReturn(null);
+        $targetAdmin->getDatagrid()->willReturn($datagrid->reveal());
+        $targetAdmin->getObjectMetadata($entity)->willReturn($metadata->reveal());
+        $metadata->getTitle()->willReturn('FOO');
+        $datagrid->hasFilter('foo')->willReturn(true);
+        $datagrid->setValue('foo', null, 'sonata')->shouldBeCalled();
+        $datagrid->setValue('_per_page', null, 10)->shouldBeCalled();
+        $datagrid->setValue('_page', null, 1)->shouldBeCalled();
+        $datagrid->buildPager()->willReturn(null);
+        $datagrid->getPager()->willReturn($pager->reveal());
+        $pager->getResults()->willReturn([$entity]);
+        $pager->isLastPage()->willReturn(true);
+        $fieldDescription->getTargetEntity()->willReturn(Foo::class);
+        $fieldDescription->getName()->willReturn('barField');
+        $fieldDescription->getAssociationAdmin()->willReturn($targetAdmin->reveal());
+
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
+
         $this->isInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
+    }
+
+    private function configureFormConfig($field, $disabled = false)
+    {
+        $form = $this->prophesize(Form::class);
+        $formType = $this->prophesize(Form::class);
+        $formConfig = $this->prophesize(FormConfigInterface::class);
+
+        $this->admin->getForm()->willReturn($form->reveal());
+        $form->get($field)->willReturn($formType->reveal());
+        $formType->getConfig()->willReturn($formConfig->reveal());
+        $formConfig->getAttribute('disabled')->willReturn($disabled);
+        $formConfig->getAttribute('property')->willReturn('foo');
+        $formConfig->getAttribute('callback')->willReturn(null);
+        $formConfig->getAttribute('minimum_input_length')->willReturn(3);
+        $formConfig->getAttribute('items_per_page')->willReturn(10);
+        $formConfig->getAttribute('req_param_name_page_number')->willReturn('_page');
+        $formConfig->getAttribute('to_string_callback')->willReturn(null);
+        $formConfig->getAttribute('target_admin_access_action')->willReturn('list');
+    }
+
+    private function configureFormRenderer()
+    {
+        $runtime = $this->prophesize(FormRenderer::class);
+
+        // Remove the condition when dropping sf < 3.2
+        if (!method_exists(AppVariable::class, 'getToken')) {
+            $extension = $this->prophesize(FormExtension::class);
+
+            $this->twig->getExtension(FormExtension::class)->willReturn($extension->reveal());
+            $extension->initRuntime($this->twig->reveal())->shouldBeCalled();
+            $extension->renderer = $runtime->reveal();
+
+            return $runtime;
+        }
+
+        // Remove the condition when dropping sf < 3.4
+        if (!method_exists(DebugCommand::class, 'getLoaderPaths')) {
+            $twigRuntime = $this->prophesize(TwigRenderer::class);
+
+            $this->twig->getRuntime(TwigRenderer::class)->willReturn($twigRuntime->reveal());
+            $twigRuntime->setEnvironment($this->twig->reveal())->shouldBeCalled();
+
+            return $twigRuntime;
+        }
+
+        $this->twig->getRuntime(FormRenderer::class)->willReturn($runtime->reveal());
+
+        return $runtime;
     }
 }
