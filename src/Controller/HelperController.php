@@ -287,32 +287,27 @@ class HelperController
 
         // Handle entity choice association type, transforming the value into entity
         if ('' !== $value && 'choice' == $fieldDescription->getType() && $fieldDescription->getOption('class')) {
-            // Get existing associations for current object
-            $associations = $admin->getModelManager()
-                ->getEntityManager($admin->getClass())->getClassMetadata($admin->getClass())
-                ->getAssociationNames();
+            $manager = $this->pool->getContainer()->get($admin->getManagerType())->getManager();
+            $classMetadata = $manager->getClassMetadata($admin->getClass());
 
-            if (!in_array($field, $associations)) {
-                return new JsonResponse(
-                    sprintf(
-                        'Unknown association "%s", association does not exist in entity "%s", available associations are "%s".',
-                        $field,
-                        $this->admin->getClass(),
-                        implode(', ', $associations)),
-                    404);
+            if (!$classMetadata->hasAssociation($field)) {
+                return new JsonResponse(sprintf(
+                    'Unknown association "%s", association does not exist in entity "%s",'
+                    .' available associations are "%s".',
+                    $field,
+                    $admin->getClass(),
+                    implode(', ', $classMetadata->getAssociationNames())
+                ), 404);
             }
 
-            $value = $admin->getConfigurationPool()->getContainer()->get('doctrine')->getManager()
-                ->getRepository($fieldDescription->getOption('class'))
-                ->find($value);
+            $value = $manager->find($fieldDescription->getOption('class'), $value);
 
             if (!$value) {
-                return new JsonResponse(
-                    sprintf(
-                        'Edit failed, object with id "%s" not found in association "%s".',
-                        $originalValue,
-                        $field),
-                    404);
+                return new JsonResponse(sprintf(
+                    'Edit failed, object with id "%s" not found in association "%s".',
+                    $originalValue,
+                    $field
+                ), 404);
             }
         }
 

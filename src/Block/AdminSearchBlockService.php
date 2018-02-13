@@ -70,6 +70,12 @@ class AdminSearchBlockService extends AbstractBlockService
             $blockContext->getSetting('per_page')
         );
 
+        if (false === $pager) {
+            $response = $response ?: new Response();
+
+            return $response->setContent('')->setStatusCode(204);
+        }
+
         return $this->renderPrivateResponse($admin->getTemplate('search_result_block'), [
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
