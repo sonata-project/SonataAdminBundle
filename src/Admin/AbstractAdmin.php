@@ -378,11 +378,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $filterTheme = [];
 
     /**
-     * @var array
-     */
-    protected $templates = [];
-
-    /**
      * @var AdminExtensionInterface[]
      */
     protected $extensions = [];
@@ -432,6 +427,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @var array [action1 => requiredRole1, action2 => [requiredRole2, requiredRole3]]
      */
     protected $accessMapping = [];
+
+    /**
+     * @var TemplateRegistry
+     */
+    private $templateRegistry;
 
     /**
      * The class name managed by the admin class.
@@ -1021,32 +1021,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->routeGenerator->generateMenuUrl($this, $name, $parameters, $absolute);
     }
 
-    public function setTemplates(array $templates): void
+    public function setTemplateRegistry(TemplateRegistry $templateRegistry): void
     {
-        $this->templates = $templates;
+        $this->templateRegistry = $templateRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setTemplate($name, $template): void
+    public function getTemplateRegistry(): TemplateRegistry
     {
-        $this->templates[$name] = $template;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTemplates()
-    {
-        return $this->templates;
-    }
-
-    public function getTemplate($name)
-    {
-        if (isset($this->templates[$name])) {
-            return $this->templates[$name];
-        }
+        return $this->templateRegistry;
     }
 
     public function getNewInstance()
@@ -2271,7 +2253,7 @@ EOT;
             && $this->hasRoute('create')
         ) {
             $buttonList['create'] = [
-                'template' => $this->getTemplate('button_create'),
+                'template' => $this->getTemplateRegistry()->getTemplate('button_create'),
             ];
         }
 
@@ -2280,7 +2262,7 @@ EOT;
             && $this->hasRoute('edit')
         ) {
             $buttonList['edit'] = [
-                'template' => $this->getTemplate('button_edit'),
+                'template' => $this->getTemplateRegistry()->getTemplate('button_edit'),
             ];
         }
 
@@ -2289,7 +2271,7 @@ EOT;
             && $this->hasRoute('history')
         ) {
             $buttonList['history'] = [
-                'template' => $this->getTemplate('button_history'),
+                'template' => $this->getTemplateRegistry()->getTemplate('button_history'),
             ];
         }
 
@@ -2299,7 +2281,7 @@ EOT;
             && $this->hasRoute('acl')
         ) {
             $buttonList['acl'] = [
-                'template' => $this->getTemplate('button_acl'),
+                'template' => $this->getTemplateRegistry()->getTemplate('button_acl'),
             ];
         }
 
@@ -2309,7 +2291,7 @@ EOT;
             && $this->hasRoute('show')
         ) {
             $buttonList['show'] = [
-                'template' => $this->getTemplate('button_show'),
+                'template' => $this->getTemplateRegistry()->getTemplate('button_show'),
             ];
         }
 
@@ -2318,7 +2300,7 @@ EOT;
             && $this->hasRoute('list')
         ) {
             $buttonList['list'] = [
-                'template' => $this->getTemplate('button_list'),
+                'template' => $this->getTemplateRegistry()->getTemplate('button_list'),
             ];
         }
 
@@ -2342,7 +2324,7 @@ EOT;
             $actions['create'] = [
                 'label' => 'link_add',
                 'translation_domain' => 'SonataAdminBundle',
-                'template' => $this->getTemplate('action_create'),
+                'template' => $this->getTemplateRegistry()->getTemplate('action_create'),
                 'url' => $this->generateUrl('create'),
                 'icon' => 'plus-circle',
             ];
@@ -2564,7 +2546,7 @@ EOT;
             );
 
             $fieldDescription->setAdmin($this);
-            $fieldDescription->setTemplate($this->getTemplate('batch'));
+            $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('batch'));
 
             $mapper->add($fieldDescription, 'batch');
         }
@@ -2588,7 +2570,7 @@ EOT;
             );
 
             $fieldDescription->setAdmin($this);
-            $fieldDescription->setTemplate($this->getTemplate('select'));
+            $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('select'));
 
             $mapper->add($fieldDescription, 'select');
         }

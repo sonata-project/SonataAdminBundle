@@ -21,6 +21,7 @@ use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Admin\TemplateRegistry;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -82,6 +83,11 @@ class CRUDControllerTest extends TestCase
      * @var AdminInterface
      */
     private $admin;
+
+    /**
+     * @var TemplateRegistry
+     */
+    private $templateRegistry;
 
     /**
      * @var Pool
@@ -149,6 +155,9 @@ class CRUDControllerTest extends TestCase
         $this->pool = new Pool($this->container, 'title', 'logo.png');
         $this->pool->setAdminServiceIds(['foo.admin']);
         $this->request->attributes->set('_sonata_admin', 'foo.admin');
+        $this->templateRegistry = $this->getMockBuilder(TemplateRegistry::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->admin = $this->getMockBuilder(AdminInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -330,6 +339,10 @@ class CRUDControllerTest extends TestCase
             }));
 
         $this->admin->expects($this->any())
+            ->method('getTemplateRegistry')
+            ->willReturn($this->templateRegistry);
+
+        $this->templateRegistry->expects($this->any())
             ->method('getTemplate')
             ->will($this->returnCallback(function ($name) {
                 switch ($name) {

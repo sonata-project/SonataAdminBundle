@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
 use Doctrine\Common\Inflector\Inflector;
+use Sonata\AdminBundle\Admin\TemplateRegistry;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -328,7 +329,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->addMethodCall('showMosaicButton', [$showMosaicButton]);
 
-        $this->fixTemplates($container, $definition, $overwriteAdminConfiguration['templates'] ?? ['view' => []]);
+        $this->fixTemplates($serviceId, $container, $definition, $overwriteAdminConfiguration['templates'] ?? ['view' => []]);
 
         if ($container->hasParameter('sonata.admin.configuration.security.information') && !$definition->hasMethodCall('setSecurityInformation')) {
             $definition->addMethodCall('setSecurityInformation', ['%sonata.admin.configuration.security.information%']);
@@ -339,7 +340,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         return $definition;
     }
 
-    public function fixTemplates(ContainerBuilder $container, Definition $definition, array $overwrittenTemplates = []): void
+    public function fixTemplates(string $serviceId, ContainerBuilder $container, Definition $definition, array $overwrittenTemplates = []): void
     {
         $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
 
@@ -377,11 +378,17 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definedTemplates = $overwrittenTemplates['view'] + $definedTemplates;
 
+        $templateRegistryId = $serviceId.'.template_registry';
+
+        $templateRegistryDefinition = $container->register($templateRegistryId, TemplateRegistry::class);
+
         if ($container->getParameter('sonata.admin.configuration.templates') !== $definedTemplates) {
-            $definition->addMethodCall('setTemplates', [$definedTemplates]);
+            $templateRegistryDefinition->addArgument($definedTemplates);
         } else {
-            $definition->addMethodCall('setTemplates', ['%sonata.admin.configuration.templates%']);
+            $templateRegistryDefinition->addArgument('%sonata.admin.configuration.templates%');
         }
+
+        $definition->addMethodCall('setTemplateRegistry', [new Reference($templateRegistryId)]);
     }
 
     /**

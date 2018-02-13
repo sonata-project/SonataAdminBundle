@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Admin\TemplateRegistry;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
@@ -94,6 +95,11 @@ class SonataAdminExtensionTest extends TestCase
      * @var TranslatorInterface
      */
     private $translator;
+
+    /**
+     * @var TemplateRegistry
+     */
+    private $templateRegistry;
 
     public function setUp(): void
     {
@@ -172,6 +178,9 @@ class SonataAdminExtensionTest extends TestCase
         // initialize object
         $this->object = new \stdClass();
 
+        // initialize template registry
+        $this->templateRegistry = $this->createMock(TemplateRegistry::class);
+
         // initialize admin
         $this->admin = $this->createMock(AbstractAdmin::class);
 
@@ -194,6 +203,10 @@ class SonataAdminExtensionTest extends TestCase
             ->will($this->returnCallback(function ($id, $parameters = [], $domain = null) use ($translator) {
                 return $translator->trans($id, $parameters, $domain);
             }));
+
+        $this->admin->expects($this->any())
+            ->method('getTemplateRegistry')
+            ->willReturn($this->templateRegistry);
 
         $this->adminBar = $this->createMock(AbstractAdmin::class);
         $this->adminBar->expects($this->any())
@@ -243,7 +256,7 @@ class SonataAdminExtensionTest extends TestCase
             ->method('hasAccess')
             ->will($this->returnValue(true));
 
-        $this->admin->expects($this->any())
+        $this->templateRegistry->expects($this->any())
             ->method('getTemplate')
             ->with($this->equalTo('base_list_field'))
             ->will($this->returnValue('@SonataAdmin/CRUD/base_list_field.html.twig'));
@@ -1226,7 +1239,7 @@ EOT
      */
     public function testRenderViewElement($expected, $type, $value, array $options): void
     {
-        $this->admin->expects($this->any())
+        $this->templateRegistry->expects($this->any())
             ->method('getTemplate')
             ->will($this->returnValue('@SonataAdmin/CRUD/base_show_field.html.twig'));
 

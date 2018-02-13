@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 {% import '@SonataAdmin/CRUD/base_array_macro.html.twig' as list %}
 
-{% extends admin.getTemplate('base_list_field') %}
+{% extends admin.getTemplateRegistry().getTemplate('base_list_field') %}
 
 {% block field %}
     {{ list.render_array(value, field_description.options.inline is not defined or field_description.options.inline) }}

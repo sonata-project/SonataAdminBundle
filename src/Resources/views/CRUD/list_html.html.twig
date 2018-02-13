@@ -1,4 +1,4 @@
-{% extends admin.getTemplate('base_list_field') %}
+{% extends admin.getTemplateRegistry().getTemplate('base_list_field') %}
 
 {% block field %}
     {%- if value is empty -%}

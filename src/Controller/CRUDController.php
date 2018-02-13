@@ -159,7 +159,7 @@ class CRUDController implements ContainerAwareInterface
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('list'), [
+        return $this->renderWithExtraParams($this->admin->getTemplateRegistry()->getTemplate('list'), [
             'action' => 'list',
             'form' => $formView,
             'datagrid' => $datagrid,
@@ -268,7 +268,7 @@ class CRUDController implements ContainerAwareInterface
             return $this->redirectTo($object);
         }
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('delete'), [
+        return $this->renderWithExtraParams($this->admin->getTemplateRegistry()->getTemplate('delete'), [
             'object' => $object,
             'action' => 'delete',
             'csrf_token' => $this->getCsrfToken('sonata.delete'),
@@ -380,7 +380,7 @@ class CRUDController implements ContainerAwareInterface
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFormTheme());
 
-        return $this->renderWithExtraParams($this->admin->getTemplate($templateKey), [
+        return $this->renderWithExtraParams($this->admin->getTemplateRegistry()->getTemplate($templateKey), [
             'action' => 'edit',
             'form' => $formView,
             'object' => $existingObject,
@@ -468,7 +468,7 @@ class CRUDController implements ContainerAwareInterface
             $formView = $datagrid->getForm()->createView();
             $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-            return $this->renderWithExtraParams($this->admin->getTemplate('batch_confirmation'), [
+            return $this->renderWithExtraParams($this->admin->getTemplateRegistry()->getTemplate('batch_confirmation'), [
                 'action' => 'list',
                 'action_label' => $actionLabel,
                 'batch_translation_domain' => $batchTranslationDomain,
@@ -610,7 +610,7 @@ class CRUDController implements ContainerAwareInterface
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFormTheme());
 
-        return $this->renderWithExtraParams($this->admin->getTemplate($templateKey), [
+        return $this->renderWithExtraParams($this->admin->getTemplateRegistry()->getTemplate($templateKey), [
             'action' => 'create',
             'form' => $formView,
             'object' => $newObject,
@@ -648,7 +648,7 @@ class CRUDController implements ContainerAwareInterface
 
         $this->admin->setSubject($object);
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('show'), [
+        return $this->renderWithExtraParams($this->admin->getTemplateRegistry()->getTemplate('show'), [
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
@@ -693,7 +693,7 @@ class CRUDController implements ContainerAwareInterface
 
         $revisions = $reader->findRevisions($this->admin->getClass(), $id);
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('history'), [
+        return $this->renderWithExtraParams($this->admin->getTemplateRegistry()->getTemplate('history'), [
             'action' => 'history',
             'object' => $object,
             'revisions' => $revisions,
@@ -754,7 +754,7 @@ class CRUDController implements ContainerAwareInterface
 
         $this->admin->setSubject($object);
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('show'), [
+        return $this->renderWithExtraParams($this->admin->getTemplateRegistry()->getTemplate('show'), [
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
@@ -828,7 +828,7 @@ class CRUDController implements ContainerAwareInterface
 
         $this->admin->setSubject($base_object);
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('show_compare'), [
+        return $this->renderWithExtraParams($this->admin->getTemplateRegistry()->getTemplate('show_compare'), [
             'action' => 'show',
             'object' => $base_object,
             'object_compare' => $compare_object,
@@ -960,7 +960,7 @@ class CRUDController implements ContainerAwareInterface
             }
         }
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('acl'), [
+        return $this->renderWithExtraParams($this->admin->getTemplateRegistry()->getTemplate('acl'), [
             'action' => 'acl',
             'permissions' => $adminObjectAclData->getUserPermissions(),
             'object' => $object,
@@ -1099,10 +1099,10 @@ class CRUDController implements ContainerAwareInterface
     protected function getBaseTemplate()
     {
         if ($this->isXmlHttpRequest()) {
-            return $this->admin->getTemplate('ajax');
+            return $this->admin->getTemplateRegistry()->getTemplate('ajax');
         }
 
-        return $this->admin->getTemplate('layout');
+        return $this->admin->getTemplateRegistry()->getTemplate('layout');
     }
 
     /**

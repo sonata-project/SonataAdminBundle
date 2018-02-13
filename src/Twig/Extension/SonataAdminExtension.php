@@ -139,7 +139,7 @@ final class SonataAdminExtension extends AbstractExtension
     ) {
         $template = $this->getTemplate(
             $fieldDescription,
-            $fieldDescription->getAdmin()->getTemplate('base_list_field'),
+            $fieldDescription->getAdmin()->getTemplateRegistry()->getTemplate('base_list_field'),
             $environment
         );
 

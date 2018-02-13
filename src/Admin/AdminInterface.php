@@ -32,7 +32,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
+interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface, AdminTemplateRegistryInterface
 {
     public function setMenuFactory(MenuFactoryInterface $menuFactory);
 
@@ -98,28 +98,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @return string
      */
     public function getBaseControllerName();
-
-    /**
-     * Sets a list of templates.
-     *
-     * @param array $templates
-     */
-    public function setTemplates(array $templates);
-
-    /**
-     * Sets a specific template.
-     *
-     * @param string $name
-     * @param string $template
-     */
-    public function setTemplate($name, $template);
-
-    /**
-     * Get all templates.
-     *
-     * @return array
-     */
-    public function getTemplates();
 
     /**
      * @return \Sonata\AdminBundle\Model\ModelManagerInterface
@@ -486,15 +464,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @return bool
      */
     public function isChild();
-
-    /**
-     * Returns template.
-     *
-     * @param string $name
-     *
-     * @return null|string
-     */
-    public function getTemplate($name);
 
     /**
      * Set the translation domain.

@@ -23,6 +23,7 @@ use Sonata\AdminBundle\Admin\AdminExtensionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Admin\TemplateRegistry;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
@@ -1137,53 +1138,6 @@ class AdminTest extends TestCase
         $this->assertSame('SonataNewsBundle:FooAdmin', $admin->getBaseControllerName());
     }
 
-    public function testGetTemplates(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
-
-        $this->assertSame([], $admin->getTemplates());
-
-        $templates = [
-            'list' => '@FooAdmin/CRUD/list.html.twig',
-            'show' => '@FooAdmin/CRUD/show.html.twig',
-            'edit' => '@FooAdmin/CRUD/edit.html.twig',
-        ];
-
-        $admin->setTemplates($templates);
-        $this->assertSame($templates, $admin->getTemplates());
-    }
-
-    public function testGetTemplate1(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
-
-        $this->assertNull($admin->getTemplate('edit'));
-
-        $admin->setTemplate('edit', '@FooAdmin/CRUD/edit.html.twig');
-        $admin->setTemplate('show', '@FooAdmin/CRUD/show.html.twig');
-
-        $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $admin->getTemplate('edit'));
-        $this->assertSame('@FooAdmin/CRUD/show.html.twig', $admin->getTemplate('show'));
-    }
-
-    public function testGetTemplate2(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
-
-        $this->assertNull($admin->getTemplate('edit'));
-
-        $templates = [
-            'list' => '@FooAdmin/CRUD/list.html.twig',
-            'show' => '@FooAdmin/CRUD/show.html.twig',
-            'edit' => '@FooAdmin/CRUD/edit.html.twig',
-        ];
-
-        $admin->setTemplates($templates);
-
-        $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $admin->getTemplate('edit'));
-        $this->assertSame('@FooAdmin/CRUD/show.html.twig', $admin->getTemplate('show'));
-    }
-
     public function testGetIdParameter(): void
     {
         $postAdmin = new PostAdmin(
@@ -1817,6 +1771,9 @@ class AdminTest extends TestCase
         ];
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin->setTemplateRegistry(new TemplateRegistry([
+            'button_create' => 'Foo.html.twig',
+        ]));
 
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
@@ -1833,8 +1790,6 @@ class AdminTest extends TestCase
             ->with($admin, 'create')
             ->will($this->returnValue(true));
         $admin->setRouteGenerator($routeGenerator);
-
-        $admin->setTemplate('button_create', 'Foo.html.twig');
 
         $this->assertSame($expected, $admin->getActionButtons('list', null));
     }
@@ -1962,6 +1917,10 @@ class AdminTest extends TestCase
         $admin = new PostAdmin('sonata.post.admin.post', $objFqn, 'SonataNewsBundle:PostAdmin');
         $admin->setRouteBuilder($pathInfo);
         $admin->setRouteGenerator($routeGenerator);
+        $admin->setTemplateRegistry(new TemplateRegistry([
+            'action_create' => '@Foo/view/action_create.html.twig',
+            'list' => '@Foo/view/action_create.html.twig',
+        ]));
         $admin->initialize();
 
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);

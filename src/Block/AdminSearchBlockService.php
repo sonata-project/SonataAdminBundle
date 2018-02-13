@@ -70,7 +70,7 @@ class AdminSearchBlockService extends AbstractBlockService
             $blockContext->getSetting('per_page')
         );
 
-        return $this->renderPrivateResponse($admin->getTemplate('search_result_block'), [
+        return $this->renderPrivateResponse($admin->getTemplateRegistry()->getTemplate('search_result_block'), [
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
             'admin_pool' => $this->pool,

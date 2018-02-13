@@ -20,6 +20,7 @@ use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Admin\TemplateRegistry;
 use Sonata\AdminBundle\Controller\HelperController;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\Pager;
@@ -207,9 +208,12 @@ class HelperControllerTest extends TestCase
     {
         $mockTemplate = 'AdminHelperTest:mock-short-object-description.html.twig';
 
+        $templateRegistry = $this->createMock(TemplateRegistry::class);
+        $templateRegistry->expects($this->once())->method('getTemplate')->will($this->returnValue($mockTemplate));
+
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())->method('setUniqid');
-        $admin->expects($this->once())->method('getTemplate')->will($this->returnValue($mockTemplate));
+        $admin->expects($this->once())->method('getTemplateRegistry')->willReturn($templateRegistry);
         $admin->expects($this->once())->method('getObject')->will($this->returnValue(new AdminControllerHelper_Foo()));
         $admin->expects($this->once())->method('toString')->will($this->returnValue('bar'));
         $admin->expects($this->once())->method('generateObjectUrl')->will($this->returnCallback(function ($type, $object, $parameters = []) {
