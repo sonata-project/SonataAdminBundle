@@ -125,7 +125,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $help;
 
     /**
-     * @var array cached object field getters
+     * @var array[] cached object field getters
      */
     private static $fieldGetters = [];
 
