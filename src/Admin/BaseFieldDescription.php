@@ -261,7 +261,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return null !== $this->associationAdmin;
     }
 
-    public static final function clearFieldGetters()
+    final public static function clearFieldGetters()
     {
         self::$fieldGetters = [];
     }
