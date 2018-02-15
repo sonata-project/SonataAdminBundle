@@ -124,6 +124,11 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     protected $help;
 
+    /**
+     * @var array cached object field getters
+     */
+    protected static $fieldGetters = [];
+
     public function setFieldName($fieldName)
     {
         $this->fieldName = $fieldName;
@@ -256,6 +261,11 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return null !== $this->associationAdmin;
     }
 
+    public static function clearFieldGetters()
+    {
+        self::$fieldGetters = [];
+    }
+
     public function getFieldValue($object, $fieldName)
     {
         if ($this->isVirtual()) {
@@ -274,7 +284,29 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             $parameters = $this->getOption('parameters');
         }
 
+        $getterKey = null;
         if (is_string($fieldName) && '' !== $fieldName) {
+            $getterKey = get_class($object).'-'.$fieldName
+                .(
+                    is_string($this->getOption('code'))
+                    && '' !== $this->getOption('code')
+                        ? '-'.$this->getOption('code')
+                        : ''
+                );
+            if (!empty(self::$fieldGetters[$getterKey])) {
+                if (self::$fieldGetters[$getterKey]['method'] === 'getter') {
+                    return call_user_func_array(
+                        [$object, self::$fieldGetters[$getterKey]['getter']], $parameters
+                    );
+                } elseif (self::$fieldGetters[$getterKey]['method'] === 'call') {
+                    return call_user_func_array(
+                        [$object, '__call'], [$fieldName, $parameters]
+                    );
+                } elseif (isset($object->{$fieldName})) {
+                    return $object->{$fieldName};
+                }
+            }
+
             $camelizedFieldName = Inflector::classify($fieldName);
 
             $getters[] = 'get'.$camelizedFieldName;
@@ -284,15 +316,29 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
         foreach ($getters as $getter) {
             if (method_exists($object, $getter)) {
+                if ($getterKey) {
+                    self::$fieldGetters[$getterKey] = [
+                        'method' => 'getter', 'getter' => $getter,
+                    ];
+                }
+
                 return call_user_func_array([$object, $getter], $parameters);
             }
         }
 
         if (method_exists($object, '__call')) {
+            if ($getterKey) {
+                self::$fieldGetters[$getterKey] = ['method' => 'call'];
+            }
+
             return call_user_func_array([$object, '__call'], [$fieldName, $parameters]);
         }
 
         if (isset($object->{$fieldName})) {
+            if ($getterKey) {
+                self::$fieldGetters[$getterKey] = ['method' => 'var'];
+            }
+
             return $object->{$fieldName};
         }
 
