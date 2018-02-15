@@ -15,7 +15,12 @@ file that was distributed with this source code.
     {% include '@SonataAdmin/CRUD/action_buttons.html.twig' %}
 {%- endblock -%}
 
-{% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': sonata_admin.adminPool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
+{%- block tab_menu -%}
+    {{ knp_menu_render(admin.sidemenu(action), {
+        'currentClass': 'active',
+        'template': get_admin_pool_template('tab_menu_template')
+    }, 'twig') }}
+{%- endblock -%}
 
 {% block title %}
     {#
@@ -91,7 +96,7 @@ file that was distributed with this source code.
 
                         {% block table_body %}
                             <tbody>
-                                {% include admin.getTemplate('outer_list_rows_' ~ admin.getListMode()) %}
+                                {% include get_admin_template('outer_list_rows_' ~ admin.getListMode()) %}
                             </tbody>
                         {% endblock %}
 
@@ -206,7 +211,7 @@ file that was distributed with this source code.
                                     {% endif %}
 
                                     {% block pager_results %}
-                                        {% include admin.getTemplate('pager_results') %}
+                                        {% include get_admin_template('pager_results') %}
                                     {% endblock %}
                                 </div>
                             {% endif %}
@@ -215,7 +220,7 @@ file that was distributed with this source code.
                         {% block pager_links %}
                             {% if admin.datagrid.pager.haveToPaginate() %}
                                 <hr/>
-                                {% include admin.getTemplate('pager_links') %}
+                                {% include get_admin_template('pager_links') %}
                             {% endif %}
                         {% endblock %}
                     </div>
@@ -257,7 +262,7 @@ file that was distributed with this source code.
 
 {% block list_filters %}
     {% if admin.datagrid.filters %}
-        {% form_theme form admin.getTemplate('filter') %}
+        {% form_theme form get_admin_template('filter') %}
 
         <div class="col-xs-12 col-md-12 sonata-filters-box" style="display: {{ admin.datagrid.hasDisplayableFilters ? 'block' : 'none' }}" id="filter-container-{{ admin.uniqid() }}">
             <div class="box box-primary" >

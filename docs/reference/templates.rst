@@ -187,12 +187,32 @@ specify the templates to use in the ``Admin`` service definition:
 
 .. note::
 
-    A ``setTemplates(array $templates)`` (notice the plural) function also exists, that allows
-    you to set multiple templates at once. Notice that, if used outside of the service definition
-    context, ``setTemplates(array $templates)`` will replace the whole template list for that
-    ``Admin`` class, meaning you have to explicitly pass the full template list in the
-    ``$templates`` argument.
+    A ``setTemplates(array $templates)`` (notice the plural) method also
+    exists, that allows you to set multiple templates at once. Notice that,
+    if used outside of the service definition context,
+    ``setTemplates(array $templates)`` will replace the whole template list
+    for that ``Admin`` class, meaning you have to explicitly pass the full
+    template list in the ``$templates`` argument.
 
-Changes made using the ``setTemplate()`` and ``setTemplates()`` functions override the customizations
-made in the configuration file, so you can specify a global custom template and then override that
-customization on a specific ``Admin`` class.
+Changes made using the ``setTemplate()`` and ``setTemplates()`` methods
+override the customizations made in the configuration file, so you can specify
+a global custom template and then override that customization on a specific
+``Admin`` class.
+
+Finding configured templates
+----------------------------
+Templates that are set using the ``setTemplate()`` or ``setTemplates()``
+methods can be accessed through the ``getTemplate($name)`` method of an
+Admin.
+
+Within Twig templates, you can use the ``get_admin_template($name)`` function
+to access the templates of the current Admin, or the
+``get_admin_pool_template($name)`` function to access global templates.
+
+.. code-block:: html+jinja
+
+    {% extends get_admin_template('base_list_field') %}
+
+    {% block field %}
+        {# ... #}
+    {% endblock %}

@@ -20,6 +20,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
+use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
@@ -27,6 +28,7 @@ use Symfony\Bridge\Twig\Tests\Extension\Fixtures\StubFilesystemLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 use Symfony\Component\Routing\RequestContext;
@@ -47,6 +49,11 @@ class SonataAdminExtensionTest extends TestCase
      * @var SonataAdminExtension
      */
     private $twigExtension;
+
+    /**
+     * @var TemplateRegistryExtension
+     */
+    private $templateRegistryExtension;
 
     /**
      * @var \Twig_Environment
@@ -140,6 +147,13 @@ class SonataAdminExtensionTest extends TestCase
         $this->twigExtension = new SonataAdminExtension($this->pool, $this->logger, $this->translator);
         $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
 
+        $request = $this->createMock(Request::class);
+        $request->expects($this->any())->method('get')->with('_sonata_admin')->willReturn('sonata_admin_foo_service');
+
+        $requestStack = $this->createMock(RequestStack::class);
+        $requestStack->expects($this->any())->method('getCurrentRequest')->willReturn($request);
+        $this->templateRegistryExtension = new TemplateRegistryExtension($this->pool, $requestStack);
+
         $loader = new StubFilesystemLoader([
             __DIR__.'/../../../src/Resources/views/CRUD',
         ]);
@@ -152,6 +166,7 @@ class SonataAdminExtensionTest extends TestCase
             'optimizations' => 0,
         ]);
         $this->environment->addExtension($this->twigExtension);
+        $this->environment->addExtension($this->templateRegistryExtension);
         $this->environment->addExtension(new TranslationExtension($translator));
 
         // routing extension
