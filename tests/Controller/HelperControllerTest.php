@@ -44,10 +44,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Twig\Environment;
+use Twig\Template;
 
 class AdminControllerHelper_Foo
 {
@@ -201,18 +203,27 @@ class HelperControllerTest extends TestCase
         ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
-        $adminExtension = $this->prophesize(SonataAdminExtension::class);
+        $pool = $this->prophesize(Pool::class);
+        $template = $this->prophesize(Template::class);
+        $translator = $this->prophesize(TranslatorInterface::class);
         $propertyAccessor = new PropertyAccessor();
 
         $this->admin->getObject(42)->willReturn($object);
         $this->admin->hasAccess('edit', $object)->willReturn(true);
         $this->admin->getListFieldDescription('enabled')->willReturn($fieldDescription->reveal());
         $this->admin->update($object)->shouldBeCalled();
+        $this->admin->getTemplate('base_list_field')->willReturn('admin_template');
         $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
-        $this->twig->getExtension(SonataAdminExtension::class)->willReturn($adminExtension->reveal());
+        $this->twig->getExtension(SonataAdminExtension::class)->willReturn(
+            new SonataAdminExtension($pool->reveal(), null, $translator->reveal())
+        );
+        $this->twig->loadTemplate('admin_template')->willReturn($template->reveal());
+        $this->twig->isDebug()->willReturn(false);
         $fieldDescription->getOption('editable')->willReturn(true);
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
         $fieldDescription->getType()->willReturn('boolean');
+        $fieldDescription->getTemplate()->willReturn(false);
+        $fieldDescription->getValue(Argument::cetera())->willReturn('some value');
         $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
 
         $response = $this->controller->setObjectFieldValueAction($request);
@@ -237,7 +248,9 @@ class HelperControllerTest extends TestCase
         $managerRegistry = $this->prophesize(ManagerRegistry::class);
         $objectManager = $this->prophesize(ObjectManager::class);
         $classMetadata = $this->prophesize(ClassMetadata::class);
-        $adminExtension = $this->prophesize(SonataAdminExtension::class);
+        $pool = $this->prophesize(Pool::class);
+        $template = $this->prophesize(Template::class);
+        $translator = $this->prophesize(TranslatorInterface::class);
         $propertyAccessor = new PropertyAccessor();
 
         $this->admin->getObject(42)->willReturn($object);
@@ -248,7 +261,11 @@ class HelperControllerTest extends TestCase
         $this->admin->update($object)->shouldBeCalled();
         $this->admin->getTemplate('base_list_field')->willReturn('admin_template');
         $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
-        $this->twig->getExtension(SonataAdminExtension::class)->willReturn($adminExtension->reveal());
+        $this->twig->getExtension(SonataAdminExtension::class)->willReturn(
+            new SonataAdminExtension($pool->reveal(), null, $translator->reveal())
+        );
+        $this->twig->loadTemplate('field_template')->willReturn($template->reveal());
+        $this->twig->isDebug()->willReturn(false);
         $this->pool->getContainer()->willReturn($container->reveal());
         $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
         $fieldDescription->getType()->willReturn('choice');
@@ -256,6 +273,7 @@ class HelperControllerTest extends TestCase
         $fieldDescription->getOption('class')->willReturn(AdminControllerHelper_Bar::class);
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
         $fieldDescription->getTemplate()->willReturn('field_template');
+        $fieldDescription->getValue(Argument::cetera())->willReturn('some value');
         $container->get('doctrine_orm')->willReturn($managerRegistry->reveal());
         $managerRegistry->getManager()->willReturn($objectManager->reveal());
         $objectManager->getClassMetadata(get_class($object))->willReturn($classMetadata->reveal());
