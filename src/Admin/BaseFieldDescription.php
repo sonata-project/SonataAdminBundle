@@ -127,7 +127,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * @var array cached object field getters
      */
-    protected static $fieldGetters = [];
+    private static $fieldGetters = [];
 
     public function setFieldName($fieldName)
     {
@@ -261,7 +261,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return null !== $this->associationAdmin;
     }
 
-    public static function clearFieldGetters()
+    public static final function clearFieldGetters()
     {
         self::$fieldGetters = [];
     }
