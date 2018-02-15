@@ -144,7 +144,7 @@ of objects to manipulate. We can override this behavior by changing our list tem
     {# src/AppBundle/Resources/views/CRUD/list__batch.html.twig #}
     {# see @SonataAdmin/CRUD/list__batch.html.twig for the current default template #}
 
-    {% extends admin.getTemplate('base_list_field') %}
+    {% extends get_admin_template('base_list_field') %}
 
     {% block field %}
         <input type="checkbox" name="idx[]" value="{{ admin.id(object) }}" />
