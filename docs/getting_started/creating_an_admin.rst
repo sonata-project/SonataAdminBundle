@@ -14,14 +14,14 @@ using these commands:
 
 .. code-block:: bash
 
-    $ php bin/console doctrine:generate:entity --entity="AppBundle:Category" --fields="name:string(255)" --no-interaction
-    $ php bin/console doctrine:generate:entity --entity="AppBundle:BlogPost" --fields="title:string(255) body:text draft:boolean" --no-interaction
+    $ php bin/console doctrine:generate:entity --entity="App:Category" --fields="name:string(255)" --no-interaction
+    $ php bin/console doctrine:generate:entity --entity="App:BlogPost" --fields="title:string(255) body:text draft:boolean" --no-interaction
 
 After this, you'll need to tweak the entities a bit:
 
 .. code-block:: php
 
-    // src/AppBundle/Entity/BlogPost.php
+    // src/Entity/BlogPost.php
 
     // ...
     class BlogPost
@@ -50,7 +50,7 @@ Set the default value to ``false``.
 
 .. code-block:: php
 
-    // src/AppBundle/Entity/BlogPost.php
+    // src/Entity/BlogPost.php
 
     // ...
     class BlogPost
@@ -70,7 +70,7 @@ Set the default value to ``false``.
 .. code-block:: php
 
 
-    // src/AppBundle/Entity/Category.php
+    // src/Entity/Category.php
 
     // ...
     use Doctrine\Common\Collections\ArrayCollection;
@@ -126,8 +126,8 @@ easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin`
 
 .. code-block:: php
 
-    // src/AppBundle/Admin/CategoryAdmin.php
-    namespace AppBundle\Admin;
+    // src/Admin/CategoryAdmin.php
+    namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Datagrid\ListMapper;
