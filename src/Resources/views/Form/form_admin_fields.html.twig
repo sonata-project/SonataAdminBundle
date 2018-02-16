@@ -481,14 +481,20 @@ file that was distributed with this source code.
     {{ block('choice_widget') }}
     {# Taking the form name excluding ending field glue character #}
     {% set main_form_name = id|slice(0, (id|length - name|length)-1) %}
+    {% if expanded %}
+        {% set js_selector = '#' ~ main_form_name ~ '_' ~ name ~ ' input' %}
+        {% set js_event = 'ifChecked' %}
+    {% else %}
+        {% set js_selector = '#' ~ main_form_name ~ '_' ~ name %}
+        {% set js_event = 'change' %}
+    {% endif %}
     <script>
         jQuery(document).ready(function() {
-            var allFields = {{ all_fields|json_encode|raw }};
-            var map = {{ map|json_encode|raw }};
+            var allFields = {{ all_fields|json_encode|raw }},
+                map = {{ map|json_encode|raw }},
+                showMaskChoiceEl = jQuery("{{ js_selector }}");
 
-            var showMaskChoiceEl = jQuery('#{{ main_form_name }}_{{ name }}');
-
-            showMaskChoiceEl.on('change', function () {
+            showMaskChoiceEl.on("{{ js_event }}", function () {
                 choice_field_mask_show(jQuery(this).val());
             });
 
@@ -515,7 +521,8 @@ file that was distributed with this source code.
                     });
                 }
             }
-            choice_field_mask_show(showMaskChoiceEl.val());
+
+            choice_field_mask_show('{{ value }}');
         });
 
     </script>
