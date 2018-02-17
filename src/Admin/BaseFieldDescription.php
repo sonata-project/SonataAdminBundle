@@ -329,7 +329,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             $parameters = $this->getOption('parameters');
         }
 
-        $getterKey = null;
         if (is_string($fieldName) && '' !== $fieldName) {
             if ($this->hasCachedFieldGetter($object, $fieldName)) {
                 return $this->callCachedGetter($object, $fieldName, $parameters);
