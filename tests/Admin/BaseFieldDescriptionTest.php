@@ -281,4 +281,69 @@ class BaseFieldDescriptionTest extends TestCase
         $description->setOption('parameters', $parameters);
         $this->assertSame(['inexistantMethod', $parameters], $description->getFieldValue($foo, 'inexistantMethod'));
     }
+
+    public function testGetFieldGetterKey()
+    {
+        $foo = new Foo();
+        $foo->setBar('Bar');
+
+        $description = new FieldDescription();
+
+        $this->assertNull(
+            $description->getFieldGetterKey($foo, ['bar'])
+        );
+
+        $this->assertSame(
+            Foo::class.'-bar',
+            $description->getFieldGetterKey($foo, 'bar')
+        );
+
+        $description->setOption('code', 'getBaz');
+        $this->assertSame(
+            Foo::class.'-bar-getBaz',
+            $description->getFieldGetterKey($foo, 'bar')
+        );
+    }
+
+    public function testHasCachedFieldGetter()
+    {
+        $foo = new Foo();
+        $foo->setBar('Bar');
+
+        $description = new FieldDescription();
+
+        $this->assertFalse($description->hasCachedFieldGetter($foo, 'bar'));
+
+        $description->getFieldValue($foo, 'bar');
+        $this->assertTrue($description->hasCachedFieldGetter($foo, 'bar'));
+    }
+
+    public function testClearFieldGetters()
+    {
+        $foo = new Foo();
+        $foo->setBar('Bar');
+
+        $description = new FieldDescription();
+        $description->getFieldValue($foo, 'bar');
+        FieldDescription::clearFieldGetters();
+
+        $this->assertFalse($description->hasCachedFieldGetter($foo, 'bar'));
+    }
+
+    public function testCallCachedGetter()
+    {
+        $foo = new Foo();
+        $foo->setBar('Bar');
+
+        $description = new FieldDescription();
+
+        $this->assertSame(
+            $description->getFieldValue($foo, 'bar'),
+            $description->callCachedGetter($foo, 'bar')
+        );
+
+        $this->expectException(NoValueException::class);
+        FieldDescription::clearFieldGetters();
+        $description->callCachedGetter($foo, 'bar');
+    }
 }
