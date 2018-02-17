@@ -266,51 +266,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         self::$fieldGetters = [];
     }
 
-    private function getFieldGetterKey($object, $fieldName)
-    {
-        return is_string($fieldName)
-            ? get_class($object).'-'.$fieldName
-                .(is_string($this->getOption('code'))
-                && '' !== $this->getOption('code')
-                    ? '-'.$this->getOption('code')
-                    : ''
-                )
-            : null;
-    }
-
-    private function hasCachedFieldGetter($object, $fieldName)
-    {
-        return isset(
-            self::$fieldGetters[$this->getFieldGetterKey($object, $fieldName)]
-        );
-    }
-
-    private function callCachedGetter($object, $fieldName, array $parameters = [])
-    {
-        $getterKey = $this->getFieldGetterKey($object, $fieldName);
-        if (isset(self::$fieldGetters[$getterKey])) {
-            if (self::$fieldGetters[$getterKey]['method'] === 'getter') {
-                return call_user_func_array(
-                    [$object, self::$fieldGetters[$getterKey]['getter']],
-                    $parameters
-                );
-            } elseif (self::$fieldGetters[$getterKey]['method'] === 'call') {
-                return call_user_func_array(
-                    [$object, '__call'],
-                    [$fieldName, $parameters]
-                );
-            } elseif (isset($object->{$fieldName})) {
-                return $object->{$fieldName};
-            }
-        }
-
-        throw new NoValueException(
-            sprintf(
-                'Unable to retrieve the cached getter of `%s`', $this->getName()
-            )
-        );
-    }
-
     public function getFieldValue($object, $fieldName)
     {
         if ($this->isVirtual()) {
@@ -477,6 +432,51 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public function isVirtual()
     {
         return false !== $this->getOption('virtual_field', false);
+    }
+
+    private function getFieldGetterKey($object, $fieldName)
+    {
+        return is_string($fieldName)
+            ? get_class($object).'-'.$fieldName
+                .(is_string($this->getOption('code'))
+                && '' !== $this->getOption('code')
+                    ? '-'.$this->getOption('code')
+                    : ''
+                )
+            : null;
+    }
+
+    private function hasCachedFieldGetter($object, $fieldName)
+    {
+        return isset(
+            self::$fieldGetters[$this->getFieldGetterKey($object, $fieldName)]
+        );
+    }
+
+    private function callCachedGetter($object, $fieldName, array $parameters = [])
+    {
+        $getterKey = $this->getFieldGetterKey($object, $fieldName);
+        if (isset(self::$fieldGetters[$getterKey])) {
+            if (self::$fieldGetters[$getterKey]['method'] === 'getter') {
+                return call_user_func_array(
+                    [$object, self::$fieldGetters[$getterKey]['getter']],
+                    $parameters
+                );
+            } elseif (self::$fieldGetters[$getterKey]['method'] === 'call') {
+                return call_user_func_array(
+                    [$object, '__call'],
+                    [$fieldName, $parameters]
+                );
+            } elseif (isset($object->{$fieldName})) {
+                return $object->{$fieldName};
+            }
+        }
+
+        throw new NoValueException(
+            sprintf(
+                'Unable to retrieve the cached getter of `%s`', $this->getName()
+            )
+        );
     }
 
     private function cacheFieldGetter($object, $fieldName, $method, $getter = null)
