@@ -266,7 +266,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         self::$fieldGetters = [];
     }
 
-    public function getFieldGetterKey($object, $fieldName)
+    private function getFieldGetterKey($object, $fieldName)
     {
         return is_string($fieldName)
             ? get_class($object).'-'.$fieldName
@@ -278,14 +278,14 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             : null;
     }
 
-    public function hasCachedFieldGetter($object, $fieldName)
+    private function hasCachedFieldGetter($object, $fieldName)
     {
         return isset(
             self::$fieldGetters[$this->getFieldGetterKey($object, $fieldName)]
         );
     }
 
-    public function callCachedGetter($object, $fieldName, array $parameters = [])
+    private function callCachedGetter($object, $fieldName, array $parameters = [])
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
         if (isset(self::$fieldGetters[$getterKey])) {
