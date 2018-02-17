@@ -456,27 +456,19 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     private function callCachedGetter($object, $fieldName, array $parameters = [])
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
-        if (isset(self::$fieldGetters[$getterKey])) {
-            if (self::$fieldGetters[$getterKey]['method'] === 'getter') {
-                return call_user_func_array(
-                    [$object, self::$fieldGetters[$getterKey]['getter']],
-                    $parameters
-                );
-            } elseif (self::$fieldGetters[$getterKey]['method'] === 'call') {
-                return call_user_func_array(
-                    [$object, '__call'],
-                    [$fieldName, $parameters]
-                );
-            } elseif (isset($object->{$fieldName})) {
-                return $object->{$fieldName};
-            }
+        if (self::$fieldGetters[$getterKey]['method'] === 'getter') {
+            return call_user_func_array(
+                [$object, self::$fieldGetters[$getterKey]['getter']],
+                $parameters
+            );
+        } elseif (self::$fieldGetters[$getterKey]['method'] === 'call') {
+            return call_user_func_array(
+                [$object, '__call'],
+                [$fieldName, $parameters]
+            );
         }
 
-        throw new NoValueException(
-            sprintf(
-                'Unable to retrieve the cached getter of `%s`', $this->getName()
-            )
-        );
+        return $object->{$fieldName};
     }
 
     private function cacheFieldGetter($object, $fieldName, $method, $getter = null)

@@ -244,6 +244,13 @@ class BaseFieldDescriptionTest extends TestCase
 
         $description = new FieldDescription();
         $this->assertSame('Bar', $description->getFieldValue($foo, 'bar'));
+        $foo->setBar('baR');
+        $this->assertSame('baR', $description->getFieldValue($foo, 'bar'));
+
+        $foo->qux = 'Qux';
+        $this->assertSame('Qux', $description->getFieldValue($foo, 'qux'));
+        $foo->qux = 'quX';
+        $this->assertSame('quX', $description->getFieldValue($foo, 'qux'));
 
         $foo = new FooBoolean();
         $foo->setBar(true);
@@ -279,6 +286,9 @@ class BaseFieldDescriptionTest extends TestCase
 
         $description = new FieldDescription();
         $description->setOption('parameters', $parameters);
+        $this->assertSame(['inexistantMethod', $parameters], $description->getFieldValue($foo, 'inexistantMethod'));
+
+        // repeating to cover retrieving cached getter
         $this->assertSame(['inexistantMethod', $parameters], $description->getFieldValue($foo, 'inexistantMethod'));
     }
 }
