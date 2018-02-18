@@ -28,17 +28,18 @@ class ChoiceFieldMaskType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $sanitizedMap = [];
+        $allFieldNames = [];
         foreach ($options['map'] as $value => $fieldNames) {
-            foreach ($fieldNames as $fieldName) {
-                $sanitizedMap[$value][] =
-                    str_replace(['__', '.'], ['____', '__'], $fieldName);
+            if (is_array($fieldNames) || $fieldNames instanceof \Traversable) {
+                foreach ($fieldNames as $fieldName) {
+                    $sanitizedFieldName = str_replace(['__', '.'], ['____', '__'], $fieldName);
+                    $sanitizedMap[$value][] = $sanitizedFieldName;
+                    $allFieldNames[] = $sanitizedFieldName;
+                }
             }
         }
 
-        $allFieldNames = call_user_func_array('array_merge', $sanitizedMap);
-        $allFieldNames = array_unique($allFieldNames);
-
-        $view->vars['all_fields'] = $allFieldNames;
+        $view->vars['all_fields'] = array_unique($allFieldNames);
         $view->vars['map'] = $sanitizedMap;
 
         $options['expanded'] = false;
@@ -63,6 +64,8 @@ class ChoiceFieldMaskType extends AbstractType
         $resolver->setDefaults([
             'map' => [],
         ]);
+
+        $resolver->setAllowedTypes('map', 'array');
     }
 
     public function getParent()
