@@ -13,7 +13,6 @@ namespace Sonata\AdminBundle\Form\ChoiceList;
 
 use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\CoreBundle\Model\Adapter\AdapterInterface;
 use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface;
 use Symfony\Component\Form\Exception\RuntimeException;
@@ -111,7 +110,7 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
                     }
                 }
 
-                $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($entity));
+                $id = $this->getNormalizedIdentifier($entity);
 
                 if (!array_key_exists($valueObject, $choices)) {
                     $choices[$valueObject] = [];
@@ -152,10 +151,10 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
      *
      * @return array
      */
-    private function getIdentifierValues($entity)
+    private function getNormalizedIdentifier($entity)
     {
         try {
-            return $this->modelManager->getIdentifierValues($entity);
+            return $this->modelManager->getNormalizedIdentifier($entity);
         } catch (\Exception $e) {
             throw new \InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($entity)), 0, $e);
         }
