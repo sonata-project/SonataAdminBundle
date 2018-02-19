@@ -11,6 +11,6 @@ file that was distributed with this source code.
 
 {% for object in admin.datagrid.results %}
     <tr>
-        {% include get_admin_template('inner_list_row') %}
+        {% include get_admin_template('inner_list_row', admin.code) %}
     </tr>
 {% endfor %}

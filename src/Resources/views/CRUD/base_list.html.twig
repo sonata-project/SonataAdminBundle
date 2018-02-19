@@ -96,7 +96,7 @@ file that was distributed with this source code.
 
                         {% block table_body %}
                             <tbody>
-                                {% include get_admin_template('outer_list_rows_' ~ admin.getListMode()) %}
+                                {% include get_admin_template('outer_list_rows_' ~ admin.getListMode(), admin.code) %}
                             </tbody>
                         {% endblock %}
 
@@ -211,7 +211,7 @@ file that was distributed with this source code.
                                     {% endif %}
 
                                     {% block pager_results %}
-                                        {% include get_admin_template('pager_results') %}
+                                        {% include get_admin_template('pager_results', admin.code) %}
                                     {% endblock %}
                                 </div>
                             {% endif %}
@@ -220,7 +220,7 @@ file that was distributed with this source code.
                         {% block pager_links %}
                             {% if admin.datagrid.pager.haveToPaginate() %}
                                 <hr/>
-                                {% include get_admin_template('pager_links') %}
+                                {% include get_admin_template('pager_links', admin.code) %}
                             {% endif %}
                         {% endblock %}
                     </div>
@@ -262,7 +262,7 @@ file that was distributed with this source code.
 
 {% block list_filters %}
     {% if admin.datagrid.filters %}
-        {% form_theme form get_admin_template('filter') %}
+        {% form_theme form get_admin_template('filter', admin.code) %}
 
         <div class="col-xs-12 col-md-12 sonata-filters-box" style="display: {{ admin.datagrid.hasDisplayableFilters ? 'block' : 'none' }}" id="filter-container-{{ admin.uniqid() }}">
             <div class="box box-primary" >

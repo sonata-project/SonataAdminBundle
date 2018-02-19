@@ -32,7 +32,6 @@
         <service id="sonata.templates.twig.extension" class="Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension" public="false">
             <tag name="twig.extension"/>
             <argument type="service" id="sonata.admin.pool"/>
-            <argument type="service" id="request_stack"/>
         </service>
     </services>
 </container>

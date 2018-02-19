@@ -205,13 +205,13 @@ Templates that are set using the ``setTemplate()`` or ``setTemplates()``
 methods can be accessed through the ``getTemplate($name)`` method of an
 Admin.
 
-Within Twig templates, you can use the ``get_admin_template($name)`` function
-to access the templates of the current Admin, or the
+Within Twig templates, you can use the ``get_admin_template($name, $adminCode)``
+function to access the templates of the current Admin, or the
 ``get_admin_pool_template($name)`` function to access global templates.
 
 .. code-block:: html+jinja
 
-    {% extends get_admin_template('base_list_field') %}
+    {% extends get_admin_template('base_list_field', admin.code) %}
 
     {% block field %}
         {# ... #}
