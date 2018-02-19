@@ -13,7 +13,6 @@ namespace Sonata\AdminBundle\Twig\Extension;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -24,33 +23,28 @@ final class TemplateRegistryExtension extends AbstractExtension
      */
     private $pool;
 
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    public function __construct(Pool $pool, RequestStack $requestStack)
+    public function __construct(Pool $pool)
     {
         $this->pool = $pool;
-        $this->requestStack = $requestStack;
     }
 
     public function getFunctions()
     {
         return [
-            new TwigFunction('get_admin_template', [$this, 'getTemplate']),
+            new TwigFunction('get_admin_template', [$this, 'getAdminTemplate']),
             new TwigFunction('get_admin_pool_template', [$this, 'getPoolTemplate']),
         ];
     }
 
     /**
      * @param string $name
+     * @param string $adminCode
      *
      * @return null|string
      */
-    public function getTemplate($name)
+    public function getAdminTemplate($name, $adminCode)
     {
-        return $this->getAdmin()->getTemplate($name);
+        return $this->getAdmin($adminCode)->getTemplate($name);
     }
 
     /**
@@ -64,12 +58,12 @@ final class TemplateRegistryExtension extends AbstractExtension
     }
 
     /**
+     * @param string $adminCode
+     *
      * @return AdminInterface|false|null
      */
-    private function getAdmin()
+    private function getAdmin($adminCode)
     {
-        return $this->pool->getAdminByAdminCode(
-            $this->requestStack->getCurrentRequest()->get('_sonata_admin')
-        );
+        return $this->pool->getAdminByAdminCode($adminCode);
     }
 }

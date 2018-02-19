@@ -15,8 +15,6 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class TemplateRegistryExtensionTest.
@@ -34,35 +32,18 @@ class TemplateRegistryExtensionTest extends TestCase
     private $pool;
 
     /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var Request
-     */
-    private $request;
-
-    /**
      * @var AdminInterface
      */
     private $admin;
 
     protected function setUp()
     {
-        $this->request = $this->prophesize(Request::class);
         $this->pool = $this->prophesize(Pool::class);
-        $this->requestStack = $this->prophesize(RequestStack::class);
         $this->admin = $this->prophesize(AdminInterface::class);
 
-        $this->requestStack->getCurrentRequest()->willReturn($this->request);
-        $this->request->get('_sonata_admin')->willReturn('admin.post');
         $this->pool->getAdminByAdminCode('admin.post')->willReturn($this->admin);
 
-        $this->extension = new TemplateRegistryExtension(
-            $this->pool->reveal(),
-            $this->requestStack->reveal()
-        );
+        $this->extension = new TemplateRegistryExtension($this->pool->reveal());
     }
 
     public function testGetTemplate()
@@ -71,7 +52,7 @@ class TemplateRegistryExtensionTest extends TestCase
 
         $this->assertEquals(
             '@SonataAdmin/CRUD/edit.html.twig',
-            $this->extension->getTemplate('edit')
+            $this->extension->getAdminTemplate('edit', 'admin.post')
         );
     }
 

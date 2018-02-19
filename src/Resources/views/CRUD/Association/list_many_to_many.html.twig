@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-{% extends get_admin_template('base_list_field') %}
+{% extends get_admin_template('base_list_field', admin.code) %}
 
 {% block field %}
     {% set route_name = field_description.options.route.name %}
