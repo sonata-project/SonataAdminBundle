@@ -261,11 +261,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return null !== $this->associationAdmin;
     }
 
-    final public static function clearFieldGetters()
-    {
-        self::$fieldGetters = [];
-    }
-
     public function getFieldValue($object, $fieldName)
     {
         if ($this->isVirtual()) {

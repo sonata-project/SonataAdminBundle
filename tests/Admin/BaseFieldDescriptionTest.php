@@ -22,11 +22,6 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\FooCall;
 
 class BaseFieldDescriptionTest extends TestCase
 {
-    protected function tearDown()
-    {
-        FieldDescription::clearFieldGetters();
-    }
-
     public function testSetName()
     {
         $description = new FieldDescription();
