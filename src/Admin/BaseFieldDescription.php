@@ -436,14 +436,15 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     private function getFieldGetterKey($object, $fieldName)
     {
-        return is_string($fieldName)
-            ? get_class($object).'-'.$fieldName
-                .(is_string($this->getOption('code'))
-                && '' !== $this->getOption('code')
-                    ? '-'.$this->getOption('code')
-                    : ''
-                )
-            : null;
+        if (!is_string($fieldName)) {
+            return null;
+        }
+        $components = [get_class($object), $fieldName];
+        $code = $this->getOption('code');
+        if (is_string($code) && $code !== '') {
+            $components[] = $code;
+        }
+        return implode('-', $components);
     }
 
     private function hasCachedFieldGetter($object, $fieldName)
