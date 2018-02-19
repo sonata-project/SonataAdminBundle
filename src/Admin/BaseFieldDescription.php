@@ -441,9 +441,10 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
         $components = [get_class($object), $fieldName];
         $code = $this->getOption('code');
-        if (is_string($code) && $code !== '') {
+        if (is_string($code) && '' !== $code) {
             $components[] = $code;
         }
+
         return implode('-', $components);
     }
 
