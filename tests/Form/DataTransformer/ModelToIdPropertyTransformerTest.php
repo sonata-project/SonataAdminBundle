@@ -183,6 +183,18 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->assertSame([123, '_labels' => ['example']], $transformer->transform($entity));
     }
 
+    public function testTransformWorksWithCompositeKeys()
+    {
+        $entity = new Foo();
+        $entity->setBar('example');
+        $this->modelManager->expects($this->once())
+            ->method('getIdentifierValues')
+            ->will($this->returnValue([123, 456]));
+
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
+        $this->assertSame(['123~456', '_labels' => ['example']], $transformer->transform($entity));
+    }
+
     public function testTransformToStringCallback()
     {
         $entity = new Foo();
