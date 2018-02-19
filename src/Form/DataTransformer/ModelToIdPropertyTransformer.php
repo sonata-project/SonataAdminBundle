@@ -134,8 +134,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
             $ids = $this->modelManager->getIdentifierValues($entity);
             if (count($ids) > 1) {
                 $id = implode(AdapterInterface::ID_SEPARATOR, $ids);
-            }
-            else {
+            } else {
                 $id = current($ids);
             }
 
