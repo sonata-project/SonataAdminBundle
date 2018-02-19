@@ -40,9 +40,9 @@ class ModelChoiceLoaderTest extends TestCase
             ->will($this->returnValue([$fooA, $fooB]));
 
         $this->modelManager->expects($this->any())
-            ->method('getIdentifierValues')
+            ->method('getNormalizedIdentifier')
             ->will($this->returnCallback(function (Foo $foo) {
-                return [$foo->getBar()];
+                return $foo->getBar();
             }));
 
         $modelChoiceLoader = new ModelChoiceLoader(

@@ -155,8 +155,8 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $entity->setBar('example');
 
         $this->modelManager->expects($this->once())
-            ->method('getIdentifierValues')
-            ->will($this->returnValue([123]));
+            ->method('getNormalizedIdentifier')
+            ->will($this->returnValue('123'));
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
 
@@ -166,7 +166,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->assertSame([], $transformer->transform(0));
         $this->assertSame([], $transformer->transform('0'));
 
-        $this->assertSame([123, '_labels' => ['example']], $transformer->transform($entity));
+        $this->assertSame(['123', '_labels' => ['example']], $transformer->transform($entity));
     }
 
     public function testTransformWorksWithArrayAccessEntity()
@@ -175,12 +175,12 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $entity->setBar('example');
 
         $this->modelManager->expects($this->once())
-            ->method('getIdentifierValues')
-            ->will($this->returnValue([123]));
+            ->method('getNormalizedIdentifier')
+            ->will($this->returnValue('123'));
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, FooArrayAccess::class, 'bar', false);
 
-        $this->assertSame([123, '_labels' => ['example']], $transformer->transform($entity));
+        $this->assertSame(['123', '_labels' => ['example']], $transformer->transform($entity));
     }
 
     public function testTransformWorksWithCompositeKeys()
@@ -188,8 +188,8 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $entity = new Foo();
         $entity->setBar('example');
         $this->modelManager->expects($this->once())
-            ->method('getIdentifierValues')
-            ->will($this->returnValue([123, 456]));
+            ->method('getNormalizedIdentifier')
+            ->will($this->returnValue('123~456'));
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
         $this->assertSame(['123~456', '_labels' => ['example']], $transformer->transform($entity));
@@ -202,14 +202,14 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $entity->setBaz('bazz');
 
         $this->modelManager->expects($this->once())
-            ->method('getIdentifierValues')
-            ->will($this->returnValue([123]));
+            ->method('getNormalizedIdentifier')
+            ->will($this->returnValue('123'));
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, function ($entity) {
             return $entity->getBaz();
         });
 
-        $this->assertSame([123, '_labels' => ['bazz']], $transformer->transform($entity));
+        $this->assertSame(['123', '_labels' => ['bazz']], $transformer->transform($entity));
     }
 
     public function testTransformToStringCallbackException()
@@ -222,8 +222,8 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $entity->setBaz('bazz');
 
         $this->modelManager->expects($this->once())
-            ->method('getIdentifierValues')
-            ->will($this->returnValue([123]));
+            ->method('getNormalizedIdentifier')
+            ->will($this->returnValue('123'));
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, '987654');
 
@@ -247,21 +247,21 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $collection[] = $entity3;
 
         $this->modelManager->expects($this->exactly(3))
-            ->method('getIdentifierValues')
+            ->method('getNormalizedIdentifier')
             ->will($this->returnCallback(function ($value) use ($entity1, $entity2, $entity3) {
                 if ($value == $entity1) {
-                    return [123];
+                    return '123';
                 }
 
                 if ($value == $entity2) {
-                    return [456];
+                    return '456';
                 }
 
                 if ($value == $entity3) {
-                    return [789];
+                    return '789';
                 }
 
-                return [999];
+                return '999';
             }));
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
@@ -273,10 +273,10 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->assertSame([], $transformer->transform('0'));
 
         $this->assertSame([
-            123,
+            '123',
             '_labels' => ['foo', 'bar', 'baz'],
-            456,
-            789,
+            '456',
+            '789',
         ], $transformer->transform($collection));
     }
 
