@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Form\DataTransformer;
 
 use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\CoreBundle\Model\Adapter\AdapterInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
@@ -132,7 +133,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
         foreach ($collection as $entity) {
             $ids = $this->modelManager->getIdentifierValues($entity);
             if (count($ids) > 1) {
-                $id = implode('~', $ids);
+                $id = implode(AdapterInterface::ID_SEPARATOR, $ids);
             }
             else {
                 $id = current($ids);
