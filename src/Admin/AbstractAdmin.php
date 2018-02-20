@@ -819,9 +819,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * Returns the name of the parent related field, so the field can be use to set the default
      * value (ie the parent object) or to filter the object.
      *
-     * @return null|string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return null|string
      */
     public function getParentAssociationMapping()
     {
@@ -1681,9 +1681,6 @@ EOT;
         return $this->filterFieldDescriptions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addChild(AdminInterface $child, $field = null)
     {
         for ($parentAdmin = $this; null !== $parentAdmin; $parentAdmin = $parentAdmin->getParent()) {

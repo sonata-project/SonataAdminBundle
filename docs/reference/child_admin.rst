@@ -5,11 +5,10 @@ Let us say you have a ``PlaylistAdmin`` and a ``VideoAdmin``. You can optionally
 to be a child of the ``PlaylistAdmin``. This will create new routes like, for example, ``/playlist/{id}/video/list``,
 where the videos will automatically be filtered by post.
 
-To do this, you first need to call the ``addChild`` method in your ``PlaylistAdmin`` service configuration:
-
-To do this, you first need to call the ``addChild`` method in your ``PlaylistAdmin`` service configuration with two arguments,
-the child admin name (in this case ``VideoAdmin`` service) and the Entity field that relates our child Entity with
-its parent :
+To do this, you first need to call the ``addChild`` method in your ``PlaylistAdmin``
+service configuration with two arguments, the child admin name (in this case
+``VideoAdmin`` service) and the Entity field that relates our child Entity with
+its parent:
 
 .. configuration-block::
 
@@ -24,28 +23,6 @@ its parent :
                 <argument>playlist</<argument>
             </call>
         </service>
-
-Then, you have to set the VideoAdmin ``parentAssociationMapping`` attribute to ``playlist`` :
-
-.. code-block:: php
-
-    <?php
-
-    namespace AppBundle\Admin;
-
-    // ...
-
-    class VideoAdmin extends AbstractAdmin
-    {
-        protected $parentAssociationMapping = 'playlist';
-
-        // OR
-
-        public function getParentAssociationMapping()
-        {
-            return 'playlist';
-        }
-    }
 
 To display the ``VideoAdmin`` extend the menu in your ``PlaylistAdmin`` class:
 
