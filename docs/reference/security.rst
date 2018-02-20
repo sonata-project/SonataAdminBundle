@@ -345,8 +345,8 @@ The following configuration for the SonataUserBundle defines:
               class: Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap
 
             # optionally use a custom MaskBuilder
-            #sonata.admin.security.mask.builder:
-            #  class: Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder
+        parameters:    
+            #sonata.admin.security.mask.builder.class: Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder
 
         # Symfony < 3
         parameters:
