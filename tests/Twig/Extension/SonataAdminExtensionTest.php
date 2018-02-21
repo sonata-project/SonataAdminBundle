@@ -22,6 +22,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
+use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
@@ -49,6 +50,11 @@ class SonataAdminExtensionTest extends TestCase
      * @var SonataAdminExtension
      */
     private $twigExtension;
+
+    /**
+     * @var TemplateRegistryExtension
+     */
+    private $templateRegistryExtension;
 
     /**
      * @var \Twig_Environment
@@ -142,6 +148,11 @@ class SonataAdminExtensionTest extends TestCase
         $this->twigExtension = new SonataAdminExtension($this->pool, $this->logger, $this->translator);
         $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
 
+        $request = $this->createMock(Request::class);
+        $request->expects($this->any())->method('get')->with('_sonata_admin')->willReturn('sonata_admin_foo_service');
+
+        $this->templateRegistryExtension = new TemplateRegistryExtension($this->pool);
+
         $loader = new StubFilesystemLoader([
             __DIR__.'/../../../src/Resources/views/CRUD',
         ]);
@@ -154,6 +165,7 @@ class SonataAdminExtensionTest extends TestCase
             'optimizations' => 0,
         ]);
         $this->environment->addExtension($this->twigExtension);
+        $this->environment->addExtension($this->templateRegistryExtension);
         $this->environment->addExtension(new TranslationExtension($translator));
 
         // routing extension
@@ -177,7 +189,7 @@ class SonataAdminExtensionTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('getCode')
-            ->will($this->returnValue('xyz'));
+            ->will($this->returnValue('sonata_admin_foo_service'));
 
         $this->admin->expects($this->any())
             ->method('id')
@@ -609,7 +621,7 @@ class SonataAdminExtensionTest extends TestCase
         data-value="1"
         data-title="Data"
         data-pk="12345"
-        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
+        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
         data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]"
     >
         <span class="label label-success">yes</span>
@@ -630,7 +642,7 @@ EOT
         data-value="0"
         data-title="Data"
         data-pk="12345"
-        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
+        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
         data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]"
     >
     <span class="label label-danger">no</span> </span>
@@ -650,7 +662,7 @@ EOT
         data-value="0"
         data-title="Data"
         data-pk="12345"
-        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
+        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
         data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]" >
         <span class="label label-danger">no</span> </span>
 </td>
@@ -818,7 +830,7 @@ EOT
         data-value="Status1"
         data-title="Data"
         data-pk="12345"
-        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
+        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
         data-source="[]"
     >
         Status1
@@ -839,7 +851,7 @@ EOT
         data-value="Status1"
         data-title="Data"
         data-pk="12345"
-        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
+        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
         data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
         Alias1 </span>
 </td>
@@ -865,7 +877,7 @@ EOT
         data-value=""
         data-title="Data"
         data-pk="12345"
-        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
+        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
         data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
 
     </span>
@@ -891,7 +903,7 @@ EOT
         data-type="select"
         data-value="NoValidKeyInChoices"
         data-title="Data" data-pk="12345"
-        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
+        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
         data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
         NoValidKeyInChoices
     </span>
@@ -918,7 +930,7 @@ EOT
         data-value="Foo"
         data-title="Data"
         data-pk="12345"
-        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=xyz"
+        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
         data-source="[{&quot;value&quot;:&quot;Foo&quot;,&quot;text&quot;:&quot;Delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
          Delete
     </span>

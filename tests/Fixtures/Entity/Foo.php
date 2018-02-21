@@ -8,6 +8,8 @@ class Foo
 
     private $baz;
 
+    public $qux;
+
     public function getBar()
     {
         return $this->bar;

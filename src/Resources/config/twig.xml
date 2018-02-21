@@ -29,5 +29,9 @@
                 <argument>%sonata.admin.twig.extension.x_editable_type_mapping%</argument>
             </call>
         </service>
+        <service id="sonata.templates.twig.extension" class="Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension" public="false">
+            <tag name="twig.extension"/>
+            <argument type="service" id="sonata.admin.pool"/>
+        </service>
     </services>
 </container>

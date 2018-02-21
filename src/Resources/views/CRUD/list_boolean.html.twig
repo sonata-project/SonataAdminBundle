@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-{% extends admin.getTemplate('base_list_field') %}
+{% extends get_admin_template('base_list_field', admin.code) %}
 
 {% set isEditable = field_description.options.editable is defined and field_description.options.editable and admin.hasAccess('edit', object) %}
 {% set xEditableType = field_description.type|sonata_xeditable_type %}

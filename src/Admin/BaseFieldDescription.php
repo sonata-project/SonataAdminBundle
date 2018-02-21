@@ -126,6 +126,11 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     protected $help;
 
+    /**
+     * @var array[] cached object field getters
+     */
+    private static $fieldGetters = [];
+
     public function setFieldName($fieldName): void
     {
         $this->fieldName = $fieldName;
@@ -277,6 +282,10 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
 
         if (is_string($fieldName) && '' !== $fieldName) {
+            if ($this->hasCachedFieldGetter($object, $fieldName)) {
+                return $this->callCachedGetter($object, $fieldName, $parameters);
+            }
+
             $camelizedFieldName = Inflector::classify($fieldName);
 
             $getters[] = 'get'.$camelizedFieldName;
@@ -286,15 +295,21 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
         foreach ($getters as $getter) {
             if (method_exists($object, $getter)) {
+                $this->cacheFieldGetter($object, $fieldName, 'getter', $getter);
+
                 return call_user_func_array([$object, $getter], $parameters);
             }
         }
 
         if (method_exists($object, '__call')) {
+            $this->cacheFieldGetter($object, $fieldName, 'call');
+
             return call_user_func_array([$object, '__call'], [$fieldName, $parameters]);
         }
 
         if (isset($object->{$fieldName})) {
+            $this->cacheFieldGetter($object, $fieldName, 'var');
+
             return $object->{$fieldName};
         }
 
@@ -359,7 +374,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->getOption('label');
     }
 
-    public function isSortable()
+    public function isSortable(): bool
     {
         return false !== $this->getOption('sortable', false);
     }
@@ -379,13 +394,60 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->getOption('translation_domain') ?: $this->getAdmin()->getTranslationDomain();
     }
 
-    /**
-     * Return true if field is virtual.
-     *
-     * @return bool
-     */
-    public function isVirtual()
+    public function isVirtual(): bool
     {
         return false !== $this->getOption('virtual_field', false);
+    }
+
+    private function getFieldGetterKey($object, $fieldName): ?string
+    {
+        if (!\is_string($fieldName)) {
+            return null;
+        }
+        $components = [\get_class($object), $fieldName];
+        $code = $this->getOption('code');
+        if (\is_string($code) && '' !== $code) {
+            $components[] = $code;
+        }
+
+        return implode('-', $components);
+    }
+
+    private function hasCachedFieldGetter($object, $fieldName): bool
+    {
+        return isset(
+            self::$fieldGetters[$this->getFieldGetterKey($object, $fieldName)]
+        );
+    }
+
+    private function callCachedGetter($object, $fieldName, array $parameters = [])
+    {
+        $getterKey = $this->getFieldGetterKey($object, $fieldName);
+        if (self::$fieldGetters[$getterKey]['method'] === 'getter') {
+            return \call_user_func_array(
+                [$object, self::$fieldGetters[$getterKey]['getter']],
+                $parameters
+            );
+        } elseif (self::$fieldGetters[$getterKey]['method'] === 'call') {
+            return \call_user_func_array(
+                [$object, '__call'],
+                [$fieldName, $parameters]
+            );
+        }
+
+        return $object->{$fieldName};
+    }
+
+    private function cacheFieldGetter($object, $fieldName, $method, $getter = null): void
+    {
+        $getterKey = $this->getFieldGetterKey($object, $fieldName);
+        if (null !== $getterKey) {
+            self::$fieldGetters[$getterKey] = [
+                'method' => $method,
+            ];
+            if (null !== $getter) {
+                self::$fieldGetters[$getterKey]['getter'] = $getter;
+            }
+        }
     }
 }
