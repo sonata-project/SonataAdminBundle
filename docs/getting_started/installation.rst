@@ -149,9 +149,9 @@ You can do this by adding its routes to your application's routing file:
 
     .. code-block:: yaml
 
-        # config/routes.yaml
+        # config/routes/sonata_admin.yaml
 
-        admin:
+        admin_area:
             resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
             prefix: /admin
 
