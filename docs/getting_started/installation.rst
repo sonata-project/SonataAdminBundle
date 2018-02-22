@@ -105,7 +105,7 @@ admin block:
 
     .. code-block:: yaml
 
-        # config/packages/sonata.yaml
+        # config/packages/sonata_admin.yaml
         sonata_block:
             blocks:
                 # enable the SonataAdminBundle block
