@@ -7,6 +7,11 @@ discover! In the coming chapters, you'll create an Admin class for the more
 complex ``BlogPost`` model. Meanwhile, you'll learn how to make things a bit
 more pretty.
 
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
+
 Bootstrapping the Admin Class
 -----------------------------
 
@@ -14,8 +19,8 @@ The basic class definition will look the same as the ``CategoryAdmin``:
 
 .. code-block:: php
 
-    // src/AppBundle/Admin/BlogPostAdmin.php
-    namespace AppBundle\Admin;
+    // src/Admin/BlogPostAdmin.php
+    namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -43,8 +48,8 @@ The same applies to the service definition:
     services:
         # ...
         admin.blog_post:
-            class: AppBundle\Admin\BlogPostAdmin
-            arguments: [~, AppBundle\Entity\BlogPost, ~]
+            class: App\Admin\BlogPostAdmin
+            arguments: [~, App\Entity\BlogPost, ~]
             tags:
                 - { name: sonata.admin, manager_type: orm, label: Blog post }
             public: true
@@ -66,19 +71,22 @@ The ``BlogPost`` model has 4 properties: ``id``, ``title``, ``body``,
 database. This means the form view just needs 3 fields: title, body and
 category.
 
-The title and body fields are simple "text" and "textarea" fields, you can add
-them straight away:
+The title and body fields are simple ``TextType`` and ``TextareaType`` fields,
+you can add them straight away:
 
 .. code-block:: php
 
-    // src/AppBundle/Admin/BlogPostAdmin.php
+    // src/Admin/BlogPostAdmin.php
+
+    use Symfony\Component\Form\Extension\Core\Type\TextType;
+    use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
     // ...
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('title', 'text')
-            ->add('body', 'textarea')
+            ->add('title', TextType::class)
+            ->add('body', TextareaType::class)
         ;
     }
 
@@ -88,32 +96,35 @@ Adding Fields that Reference Other Models
 -----------------------------------------
 
 You have a couple different choices on how to add fields that reference other
-models. The most basic choice is to use the `entity field type`_ provided by
-the DoctrineBundle. This will render a choice field with the available entities
-as choice.
+models. The most basic choice is to use the ``EntityType`` provided by
+the Doctrine Bridge. This will render a choice field with the available
+entities as choice.
 
 .. code-block:: php
 
-    // src/AppBundle/Admin/BlogPostAdmin.php
+    // src/Admin/BlogPostAdmin.php
+
+    use App\Entity\Category;
+    use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
     // ...
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             // ...
-            ->add('category', 'entity', [
-                'class' => 'AppBundle\Entity\Category',
-                'property' => 'name',
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
             ])
         ;
     }
-.. note::
-
-    The `property`_ option is not supported by Symfony >= 2.7. You should use `choice_label`_ instead.
 
 As each blog post will only have one category, it renders as a select list:
 
 .. image:: ../images/getting_started_entity_type.png
+   :align: center
+   :alt: Sonata EntityType
+   :width: 700px
 
 When an admin would like to create a new category, they need to go to the
 category admin page and create a new category.
@@ -122,27 +133,33 @@ Using the Sonata Model Type
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To make life easier for admins, you can use the
-:ref:`sonata_type_model field type <field-types-model>`. This field type will
+:ref:`ModelType field <field-types-model>`. This field type will
 also render as a choice field, but it includes a create button to open a
 dialog with the admin of the referenced model in it:
 
 .. code-block:: php
 
-    // src/AppBundle/Admin/BlogPostAdmin.php
+    // src/Admin/BlogPostAdmin.php
+
+    use App\Entity\Category;
+    use Sonata\AdminBundle\Form\Type\ModelType
 
     // ...
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             // ...
-            ->add('category', 'sonata_type_model', [
-                'class' => 'AppBundle\Entity\Category',
+            ->add('category', ModelType::class, [
+                'class' => Category::class,
                 'property' => 'name',
             ])
         ;
     }
 
 .. image:: ../images/getting_started_sonata_model_type.png
+   :align: center
+   :alt: Sonata ModelType
+   :width: 700px
 
 Using Groups
 ------------
@@ -156,20 +173,25 @@ category field to a Meta data group. To do this, use the ``with()`` method:
 
 .. code-block:: php
 
-    // src/AppBundle/Admin/BlogPostAdmin.php
+    // src/Admin/BlogPostAdmin.php
+
+    use App\Entity\Category;
+    use Sonata\AdminBundle\Form\Type\ModelType
+    use Symfony\Component\Form\Extension\Core\Type\TextType;
+    use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
     // ...
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->with('Content')
-                ->add('title', 'text')
-                ->add('body', 'textarea')
+                ->add('title', TextType::class)
+                ->add('body', TextareaType::class)
             ->end()
 
             ->with('Meta data')
-                ->add('category', 'sonata_type_model', [
-                    'class' => 'AppBundle\Entity\Category',
+                ->add('category', ModelType::class, [
+                    'class' => Category::class,
                     'property' => 'name',
                 ])
             ->end()
@@ -182,7 +204,7 @@ order to tweak the styling:
 
 .. code-block:: php
 
-    // src/AppBundle/Admin/BlogPostAdmin.php
+    // src/Admin/BlogPostAdmin.php
 
     // ...
     protected function configureFormFields(FormMapper $formMapper)
@@ -200,6 +222,9 @@ order to tweak the styling:
 This will now result in a much nicer edit page:
 
 .. image:: ../images/getting_started_post_edit_grid.png
+   :align: center
+   :alt: Sonata edit page
+   :width: 700px
 
 Using Tabs
 ~~~~~~~~~~
@@ -239,15 +264,14 @@ SonataAdminBundle. You can change it by defining a ``toString()`` method in the
 Admin class. This receives the object to transform to a string as the first parameter:
 
 .. note::
-
     No underscore prefix! ``toString()`` is correct!
 
 .. code-block:: php
 
-    // src/AppBundle/Admin/BlogPostAdmin.php
+    // src/Admin/BlogPostAdmin.php
 
     // ...
-    use AppBundle\Entity\BlogPost;
+    use App\Entity\BlogPost;
 
     class BlogPostAdmin extends AbstractAdmin
     {
