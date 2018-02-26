@@ -7,8 +7,8 @@
             <argument/>
             <argument type="collection"/>
             <argument type="service" id="property_accessor"/>
-            <call method="setTemplates">
-                <argument>%sonata.admin.configuration.templates%</argument>
+            <call method="setTemplateRegistry">
+                <argument type="service" id="sonata.admin.global_template_registry"/>
             </call>
         </service>
         <service id="sonata.admin.route_loader" class="Sonata\AdminBundle\Route\AdminPoolLoader" public="true">
@@ -76,6 +76,10 @@
         <!-- filter persister -->
         <service id="sonata.admin.filter_persister.session" class="Sonata\AdminBundle\Filter\Persister\SessionFilterPersister">
             <argument type="service" id="session"/>
+        </service>
+        <!-- templating -->
+        <service id="sonata.admin.global_template_registry" class="Sonata\AdminBundle\Templating\TemplateRegistry" public="true">
+            <argument>%sonata.admin.configuration.templates%</argument>
         </service>
     </services>
 </container>

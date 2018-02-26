@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
 use Doctrine\Common\Inflector\Inflector;
 use Sonata\AdminBundle\Datagrid\Pager;
+use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -333,7 +334,12 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->addMethodCall('showMosaicButton', [$showMosaicButton]);
 
-        $this->fixTemplates($container, $definition, isset($overwriteAdminConfiguration['templates']) ? $overwriteAdminConfiguration['templates'] : ['view' => []]);
+        $this->fixTemplates(
+            $serviceId,
+            $container,
+            $definition,
+            isset($overwriteAdminConfiguration['templates']) ? $overwriteAdminConfiguration['templates'] : ['view' => []]
+        );
 
         if ($container->hasParameter('sonata.admin.configuration.security.information') && !$definition->hasMethodCall('setSecurityInformation')) {
             $definition->addMethodCall('setSecurityInformation', ['%sonata.admin.configuration.security.information%']);
@@ -344,8 +350,15 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         return $definition;
     }
 
-    public function fixTemplates(ContainerBuilder $container, Definition $definition, array $overwrittenTemplates = [])
-    {
+    /**
+     * @param string $serviceId
+     */
+    public function fixTemplates(
+        $serviceId,
+        ContainerBuilder $container,
+        Definition $definition,
+        array $overwrittenTemplates = []
+    ) {
         $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
 
         $methods = [];
@@ -382,11 +395,19 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definedTemplates = $overwrittenTemplates['view'] + $definedTemplates;
 
+        $templateRegistryId = $serviceId.'.template_registry';
+        $templateRegistryDefinition = $container
+            ->register($templateRegistryId, TemplateRegistry::class)
+            ->addTag('sonata.admin.template_registry')
+            ->setPublic(true); // Temporary fix until we can support service locators
+
         if ($container->getParameter('sonata.admin.configuration.templates') !== $definedTemplates) {
-            $definition->addMethodCall('setTemplates', [$definedTemplates]);
+            $templateRegistryDefinition->addArgument($definedTemplates);
         } else {
-            $definition->addMethodCall('setTemplates', ['%sonata.admin.configuration.templates%']);
+            $templateRegistryDefinition->addArgument('%sonata.admin.configuration.templates%');
         }
+
+        $definition->addMethodCall('setTemplateRegistry', [new Reference($templateRegistryId)]);
     }
 
     /**

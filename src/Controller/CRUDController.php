@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Symfony\Bridge\Twig\AppVariable;
@@ -61,6 +62,13 @@ class CRUDController implements ContainerAwareInterface
      * @var AdminInterface
      */
     protected $admin;
+
+    /**
+     * The template registry of the related Admin class.
+     *
+     * @var TemplateRegistryInterface
+     */
+    private $templateRegistry;
 
     // BC for Symfony 3.3 where ControllerTrait exists but does not contain get() and has() methods.
     public function __call($method, $arguments)
@@ -159,7 +167,7 @@ class CRUDController implements ContainerAwareInterface
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('list'), [
+        return $this->renderWithExtraParams($this->templateRegistry->getTemplate('list'), [
             'action' => 'list',
             'form' => $formView,
             'datagrid' => $datagrid,
@@ -268,7 +276,7 @@ class CRUDController implements ContainerAwareInterface
             return $this->redirectTo($object);
         }
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('delete'), [
+        return $this->renderWithExtraParams($this->templateRegistry->getTemplate('delete'), [
             'object' => $object,
             'action' => 'delete',
             'csrf_token' => $this->getCsrfToken('sonata.delete'),
@@ -379,7 +387,7 @@ class CRUDController implements ContainerAwareInterface
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFormTheme());
 
-        return $this->renderWithExtraParams($this->admin->getTemplate($templateKey), [
+        return $this->renderWithExtraParams($this->templateRegistry->getTemplate($templateKey), [
             'action' => 'edit',
             'form' => $formView,
             'object' => $existingObject,
@@ -478,7 +486,7 @@ class CRUDController implements ContainerAwareInterface
             $formView = $datagrid->getForm()->createView();
             $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-            return $this->renderWithExtraParams($this->admin->getTemplate('batch_confirmation'), [
+            return $this->renderWithExtraParams($this->templateRegistry->getTemplate('batch_confirmation'), [
                 'action' => 'list',
                 'action_label' => $actionLabel,
                 'batch_translation_domain' => $batchTranslationDomain,
@@ -619,7 +627,7 @@ class CRUDController implements ContainerAwareInterface
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFormTheme());
 
-        return $this->renderWithExtraParams($this->admin->getTemplate($templateKey), [
+        return $this->renderWithExtraParams($this->templateRegistry->getTemplate($templateKey), [
             'action' => 'create',
             'form' => $formView,
             'object' => $newObject,
@@ -657,7 +665,7 @@ class CRUDController implements ContainerAwareInterface
 
         $this->admin->setSubject($object);
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('show'), [
+        return $this->renderWithExtraParams($this->templateRegistry->getTemplate('show'), [
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
@@ -702,7 +710,7 @@ class CRUDController implements ContainerAwareInterface
 
         $revisions = $reader->findRevisions($this->admin->getClass(), $id);
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('history'), [
+        return $this->renderWithExtraParams($this->templateRegistry->getTemplate('history'), [
             'action' => 'history',
             'object' => $object,
             'revisions' => $revisions,
@@ -763,7 +771,7 @@ class CRUDController implements ContainerAwareInterface
 
         $this->admin->setSubject($object);
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('show'), [
+        return $this->renderWithExtraParams($this->templateRegistry->getTemplate('show'), [
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
@@ -837,7 +845,7 @@ class CRUDController implements ContainerAwareInterface
 
         $this->admin->setSubject($base_object);
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('show_compare'), [
+        return $this->renderWithExtraParams($this->templateRegistry->getTemplate('show_compare'), [
             'action' => 'show',
             'object' => $base_object,
             'object_compare' => $compare_object,
@@ -969,7 +977,7 @@ class CRUDController implements ContainerAwareInterface
             }
         }
 
-        return $this->renderWithExtraParams($this->admin->getTemplate('acl'), [
+        return $this->renderWithExtraParams($this->templateRegistry->getTemplate('acl'), [
             'action' => 'acl',
             'permissions' => $adminObjectAclData->getUserPermissions(),
             'object' => $object,
@@ -1071,6 +1079,14 @@ class CRUDController implements ContainerAwareInterface
             ));
         }
 
+        $this->templateRegistry = $this->container->get($this->admin->getCode().'.template_registry');
+        if (!$this->templateRegistry instanceof TemplateRegistryInterface) {
+            throw new \RuntimeException(sprintf(
+                'Unable to find the template registry related to the current admin (%s)',
+                $this->admin->getCode()
+            ));
+        }
+
         $rootAdmin = $this->admin;
 
         while ($rootAdmin->isChild()) {
@@ -1108,10 +1124,10 @@ class CRUDController implements ContainerAwareInterface
     protected function getBaseTemplate()
     {
         if ($this->isXmlHttpRequest()) {
-            return $this->admin->getTemplate('ajax');
+            return $this->templateRegistry->getTemplate('ajax');
         }
 
-        return $this->admin->getTemplate('layout');
+        return $this->templateRegistry->getTemplate('layout');
     }
 
     /**

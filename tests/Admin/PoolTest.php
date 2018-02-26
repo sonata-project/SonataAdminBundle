@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Tests\Admin;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PoolTest extends TestCase
@@ -257,14 +258,43 @@ class PoolTest extends TestCase
         $this->assertInstanceOf(ContainerInterface::class, $this->pool->getContainer());
     }
 
-    public function testTemplates()
+    /**
+     * @group legacy
+     */
+    public function testTemplate()
     {
-        $this->assertInternalType('array', $this->pool->getTemplates());
+        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
+        $templateRegistry->getTemplate('ajax')
+            ->shouldBeCalledTimes(1)
+            ->willReturn('Foo.html.twig');
 
-        $this->pool->setTemplates(['ajax' => 'Foo.html.twig']);
+        $this->pool->setTemplateRegistry($templateRegistry->reveal());
 
-        $this->assertNull($this->pool->getTemplate('bar'));
         $this->assertSame('Foo.html.twig', $this->pool->getTemplate('ajax'));
+    }
+
+    /**
+     * @group legacy
+     */
+    public function testSetGetTemplates()
+    {
+        $templates = [
+            'ajax' => 'Foo.html.twig',
+            'layout' => 'Bar.html.twig',
+        ];
+
+        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
+        $templateRegistry->setTemplates($templates)
+            ->shouldBeCalledTimes(1);
+        $templateRegistry->getTemplates()
+            ->shouldBeCalledTimes(1)
+            ->willReturn($templates);
+
+        $this->pool->setTemplateRegistry($templateRegistry->reveal());
+
+        $this->pool->setTemplates($templates);
+
+        $this->assertSame($templates, $this->pool->getTemplates());
     }
 
     public function testGetTitleLogo()

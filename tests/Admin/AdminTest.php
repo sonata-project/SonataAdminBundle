@@ -38,6 +38,7 @@ use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Route\RoutesCache;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentVoteAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentWithCustomRouteAdmin;
@@ -1162,15 +1163,17 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
-        $this->assertSame([], $admin->getTemplates());
-
         $templates = [
             'list' => '@FooAdmin/CRUD/list.html.twig',
             'show' => '@FooAdmin/CRUD/show.html.twig',
             'edit' => '@FooAdmin/CRUD/edit.html.twig',
         ];
 
-        $admin->setTemplates($templates);
+        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
+        $templateRegistry->getTemplates()->shouldBeCalled()->willReturn($templates);
+
+        $admin->setTemplateRegistry($templateRegistry->reveal());
+
         $this->assertSame($templates, $admin->getTemplates());
     }
 
@@ -1178,28 +1181,11 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
-        $this->assertNull($admin->getTemplate('edit'));
+        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
+        $templateRegistry->getTemplate('edit')->shouldBeCalled()->willReturn('@FooAdmin/CRUD/edit.html.twig');
+        $templateRegistry->getTemplate('show')->shouldBeCalled()->willReturn('@FooAdmin/CRUD/show.html.twig');
 
-        $admin->setTemplate('edit', '@FooAdmin/CRUD/edit.html.twig');
-        $admin->setTemplate('show', '@FooAdmin/CRUD/show.html.twig');
-
-        $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $admin->getTemplate('edit'));
-        $this->assertSame('@FooAdmin/CRUD/show.html.twig', $admin->getTemplate('show'));
-    }
-
-    public function testGetTemplate2()
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
-
-        $this->assertNull($admin->getTemplate('edit'));
-
-        $templates = [
-            'list' => '@FooAdmin/CRUD/list.html.twig',
-            'show' => '@FooAdmin/CRUD/show.html.twig',
-            'edit' => '@FooAdmin/CRUD/edit.html.twig',
-        ];
-
-        $admin->setTemplates($templates);
+        $admin->setTemplateRegistry($templateRegistry->reveal());
 
         $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $admin->getTemplate('edit'));
         $this->assertSame('@FooAdmin/CRUD/show.html.twig', $admin->getTemplate('show'));
@@ -1902,6 +1888,11 @@ class AdminTest extends TestCase
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
+        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
+        $templateRegistry->getTemplate('button_create')->willReturn('Foo.html.twig');
+
+        $admin->setTemplateRegistry($templateRegistry->reveal());
+
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
             ->expects($this->once())
@@ -1917,8 +1908,6 @@ class AdminTest extends TestCase
             ->with($admin, 'create')
             ->will($this->returnValue(true));
         $admin->setRouteGenerator($routeGenerator);
-
-        $admin->setTemplate('button_create', 'Foo.html.twig');
 
         $this->assertSame($expected, $admin->getActionButtons('list', null));
     }
@@ -2047,6 +2036,11 @@ class AdminTest extends TestCase
         $admin->setRouteBuilder($pathInfo);
         $admin->setRouteGenerator($routeGenerator);
         $admin->initialize();
+
+        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
+        $templateRegistry->getTemplate('action_create')->willReturn('Foo.html.twig');
+
+        $admin->setTemplateRegistry($templateRegistry->reveal());
 
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler->expects($this->any())

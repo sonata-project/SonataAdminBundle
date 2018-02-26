@@ -30,6 +30,7 @@ use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
@@ -80,6 +81,11 @@ class CRUDControllerTest extends TestCase
      * @var AbstractAdmin
      */
     private $admin;
+
+    /**
+     * @var TemplateRegistryInterface
+     */
+    private $templateRegistry;
 
     /**
      * @var Pool
@@ -153,6 +159,8 @@ class CRUDControllerTest extends TestCase
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->parameters = [];
         $this->template = '';
+
+        $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
 
         $templating = $this->getMockBuilder(DelegatingEngine::class)
             ->setConstructorArgs([$this->container, []])
@@ -269,6 +277,8 @@ class CRUDControllerTest extends TestCase
                         return $requestStack;
                     case 'foo.admin':
                         return $this->admin;
+                    case 'foo.admin.template_registry':
+                        return $this->templateRegistry->reveal();
                     case 'templating':
                         return $templating;
                     case 'twig':
@@ -327,40 +337,20 @@ class CRUDControllerTest extends TestCase
                 }
             }));
 
-        $this->admin->expects($this->any())
-            ->method('getTemplate')
-            ->will($this->returnCallback(function ($name) {
-                switch ($name) {
-                    case 'ajax':
-                        return '@SonataAdmin/ajax_layout.html.twig';
-                    case 'layout':
-                        return '@SonataAdmin/standard_layout.html.twig';
-                    case 'show':
-                        return '@SonataAdmin/CRUD/show.html.twig';
-                    case 'show_compare':
-                        return '@SonataAdmin/CRUD/show_compare.html.twig';
-                    case 'edit':
-                        return '@SonataAdmin/CRUD/edit.html.twig';
-                    case 'dashboard':
-                        return '@SonataAdmin/Core/dashboard.html.twig';
-                    case 'search':
-                        return '@SonataAdmin/Core/search.html.twig';
-                    case 'list':
-                        return '@SonataAdmin/CRUD/list.html.twig';
-                    case 'preview':
-                        return '@SonataAdmin/CRUD/preview.html.twig';
-                    case 'history':
-                        return '@SonataAdmin/CRUD/history.html.twig';
-                    case 'acl':
-                        return '@SonataAdmin/CRUD/acl.html.twig';
-                    case 'delete':
-                        return '@SonataAdmin/CRUD/delete.html.twig';
-                    case 'batch':
-                        return '@SonataAdmin/CRUD/list__batch.html.twig';
-                    case 'batch_confirmation':
-                        return '@SonataAdmin/CRUD/batch_confirmation.html.twig';
-                }
-            }));
+        $this->templateRegistry->getTemplate('ajax')->willReturn('@SonataAdmin/ajax_layout.html.twig');
+        $this->templateRegistry->getTemplate('layout')->willReturn('@SonataAdmin/standard_layout.html.twig');
+        $this->templateRegistry->getTemplate('show')->willReturn('@SonataAdmin/CRUD/show.html.twig');
+        $this->templateRegistry->getTemplate('show_compare')->willReturn('@SonataAdmin/CRUD/show_compare.html.twig');
+        $this->templateRegistry->getTemplate('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
+        $this->templateRegistry->getTemplate('dashboard')->willReturn('@SonataAdmin/Core/dashboard.html.twig');
+        $this->templateRegistry->getTemplate('search')->willReturn('@SonataAdmin/Core/search.html.twig');
+        $this->templateRegistry->getTemplate('list')->willReturn('@SonataAdmin/CRUD/list.html.twig');
+        $this->templateRegistry->getTemplate('preview')->willReturn('@SonataAdmin/CRUD/preview.html.twig');
+        $this->templateRegistry->getTemplate('history')->willReturn('@SonataAdmin/CRUD/history.html.twig');
+        $this->templateRegistry->getTemplate('acl')->willReturn('@SonataAdmin/CRUD/acl.html.twig');
+        $this->templateRegistry->getTemplate('delete')->willReturn('@SonataAdmin/CRUD/delete.html.twig');
+        $this->templateRegistry->getTemplate('batch')->willReturn('@SonataAdmin/CRUD/list__batch.html.twig');
+        $this->templateRegistry->getTemplate('batch_confirmation')->willReturn('@SonataAdmin/CRUD/batch_confirmation.html.twig');
 
         $this->admin->expects($this->any())
             ->method('getIdParameter')
@@ -399,6 +389,10 @@ class CRUDControllerTest extends TestCase
                     }
                 )
             );
+
+        $this->admin->expects($this->any())
+            ->method('getCode')
+            ->willReturn('foo.admin');
 
         $this->controller = new CRUDController();
         $this->controller->setContainer($this->container);

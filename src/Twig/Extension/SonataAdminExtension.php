@@ -17,6 +17,10 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -51,8 +55,17 @@ class SonataAdminExtension extends AbstractExtension
      */
     private $xEditableTypeMapping = [];
 
-    public function __construct(Pool $pool, LoggerInterface $logger = null, TranslatorInterface $translator = null)
-    {
+    /**
+     * @var ContainerInterface
+     */
+    private $templateRegistries;
+
+    public function __construct(
+        Pool $pool,
+        LoggerInterface $logger = null,
+        TranslatorInterface $translator = null,
+        ContainerInterface $templateRegistries = null
+    ) {
         // NEXT_MAJOR: make the translator parameter required
         if (null === $translator) {
             @trigger_error(
@@ -63,6 +76,7 @@ class SonataAdminExtension extends AbstractExtension
         $this->pool = $pool;
         $this->logger = $logger;
         $this->translator = $translator;
+        $this->templateRegistries = $templateRegistries;
     }
 
     public function getFilters()
@@ -140,7 +154,7 @@ class SonataAdminExtension extends AbstractExtension
     ) {
         $template = $this->getTemplate(
             $fieldDescription,
-            $fieldDescription->getAdmin()->getTemplate('base_list_field'),
+            $this->getTemplateRegistry($fieldDescription->getAdmin()->getCode())->getTemplate('base_list_field'),
             $environment
         );
 
@@ -558,5 +572,25 @@ EOT;
         }
 
         return $content;
+    }
+
+    /**
+     * @param string $adminCode
+     *
+     * @throws ServiceCircularReferenceException
+     * @throws ServiceNotFoundException
+     *
+     * @return TemplateRegistryInterface
+     */
+    private function getTemplateRegistry($adminCode)
+    {
+        $serviceId = $adminCode.'.template_registry';
+        $templateRegistry = $this->templateRegistries->get($serviceId);
+
+        if ($templateRegistry instanceof TemplateRegistryInterface) {
+            return $templateRegistry;
+        }
+
+        throw new ServiceNotFoundException($serviceId);
     }
 }
