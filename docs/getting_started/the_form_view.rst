@@ -72,13 +72,15 @@ them straight away:
 .. code-block:: php
 
     // src/AppBundle/Admin/BlogPostAdmin.php
+    use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+    use Symfony\Component\Form\Extension\Core\Type\TextType;
 
     // ...
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('title', 'text')
-            ->add('body', 'textarea')
+            ->add('title', TextType::class)
+            ->add('body', TextareaType::class)
         ;
     }
 
@@ -157,14 +159,16 @@ category field to a Meta data group. To do this, use the ``with()`` method:
 .. code-block:: php
 
     // src/AppBundle/Admin/BlogPostAdmin.php
-
+	use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+    use Symfony\Component\Form\Extension\Core\Type\TextType;
+	
     // ...
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->with('Content')
-                ->add('title', 'text')
-                ->add('body', 'textarea')
+                ->add('title', TextType::class)
+                ->add('body', TextareaType::class)
             ->end()
 
             ->with('Meta data')
