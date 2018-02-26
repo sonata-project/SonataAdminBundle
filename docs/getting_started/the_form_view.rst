@@ -159,7 +159,7 @@ category field to a Meta data group. To do this, use the ``with()`` method:
 .. code-block:: php
 
     // src/AppBundle/Admin/BlogPostAdmin.php
-	use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+    use Symfony\Component\Form\Extension\Core\Type\TextareaType;
     use Symfony\Component\Form\Extension\Core\Type\TextType;
 	
     // ...
