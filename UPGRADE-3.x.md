@@ -1,6 +1,20 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated use of $templates in AbstractAdmin and Pool
+
+The `AbstractAdmin::$templates` attribute and the methods `getTemplate()` and
+`getTemplates()` are deprecated. Please use the new TemplateRegistry services
+instead. One per admin is generated and available through the admin code +
+`.template_registry` (for example, `app.admin.news` uses `app.admin.news.template_registry`).
+
+The `Pool::$templates` attribute and the methods `getTemplate()`, `getTemplates()`
+and `setTemplates()` are deprecated. Please use the TemplateRegistry service
+`sonata.admin.global_template_registry` instead.
+
+The Twig function `get_admin_pool_template()` is deprecated. Please use
+`get_global_template()` instead.
+
 ## Deprecated AbstractAdmin::$persistFilters
 
 The `AbstractAdmin::$persistFilters` is deprecated and should not be used anymore.

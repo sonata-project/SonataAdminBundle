@@ -18,9 +18,9 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
-use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
@@ -48,11 +48,6 @@ class SonataAdminExtensionTest extends TestCase
      * @var SonataAdminExtension
      */
     private $twigExtension;
-
-    /**
-     * @var TemplateRegistryExtension
-     */
-    private $templateRegistryExtension;
 
     /**
      * @var \Twig_Environment
@@ -99,6 +94,16 @@ class SonataAdminExtensionTest extends TestCase
      */
     private $translator;
 
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    /**
+     * @var TemplateRegistryInterface
+     */
+    private $templateRegistry;
+
     public function setUp()
     {
         date_default_timezone_set('Europe/London');
@@ -143,13 +148,15 @@ class SonataAdminExtensionTest extends TestCase
 
         $this->translator = $translator;
 
-        $this->twigExtension = new SonataAdminExtension($this->pool, $this->logger, $this->translator);
+        $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
+        $this->container = $this->prophesize(ContainerInterface::class);
+        $this->container->get('sonata_admin_foo_service.template_registry')->willReturn($this->templateRegistry->reveal());
+
+        $this->twigExtension = new SonataAdminExtension($this->pool, $this->logger, $this->translator, $this->container->reveal());
         $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
 
         $request = $this->createMock(Request::class);
         $request->expects($this->any())->method('get')->with('_sonata_admin')->willReturn('sonata_admin_foo_service');
-
-        $this->templateRegistryExtension = new TemplateRegistryExtension($this->pool);
 
         $loader = new StubFilesystemLoader([
             __DIR__.'/../../../src/Resources/views/CRUD',
@@ -163,8 +170,8 @@ class SonataAdminExtensionTest extends TestCase
             'optimizations' => 0,
         ]);
         $this->environment->addExtension($this->twigExtension);
-        $this->environment->addExtension($this->templateRegistryExtension);
         $this->environment->addExtension(new TranslationExtension($translator));
+        $this->environment->addExtension(new FakeTemplateRegistryExtension());
 
         // routing extension
         $xmlFileLoader = new XmlFileLoader(new FileLocator([__DIR__.'/../../../src/Resources/config/routing']));
@@ -253,10 +260,7 @@ class SonataAdminExtensionTest extends TestCase
             ->method('hasAccess')
             ->will($this->returnValue(true));
 
-        $this->admin->expects($this->any())
-            ->method('getTemplate')
-            ->with($this->equalTo('base_list_field'))
-            ->will($this->returnValue('@SonataAdmin/CRUD/base_list_field.html.twig'));
+        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription->expects($this->any())
             ->method('getValue')
@@ -334,10 +338,7 @@ class SonataAdminExtensionTest extends TestCase
             ->method('hasAccess')
             ->will($this->returnValue(true));
 
-        $this->admin->expects($this->any())
-            ->method('getTemplate')
-            ->with($this->equalTo('base_list_field'))
-            ->will($this->returnValue('@SonataAdmin/CRUD/base_list_field.html.twig'));
+        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription->expects($this->any())
             ->method('getValue')
@@ -1299,10 +1300,7 @@ EOT
      */
     public function testRenderListElementNonExistentTemplate()
     {
-        $this->admin->expects($this->once())
-            ->method('getTemplate')
-            ->with($this->equalTo('base_list_field'))
-            ->will($this->returnValue('@SonataAdmin/CRUD/base_list_field.html.twig'));
+        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription->expects($this->once())
             ->method('getValue')
@@ -1341,16 +1339,15 @@ EOT
         $this->expectException(\Twig_Error_Loader::class);
         $this->expectExceptionMessage('Unable to find template "@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig"');
 
-        $this->admin->expects($this->once())
-            ->method('getTemplate')
-            ->with($this->equalTo('base_list_field'))
-            ->will($this->returnValue('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig'));
+        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig');
 
         $this->fieldDescription->expects($this->once())
             ->method('getTemplate')
             ->will($this->returnValue('@SonataAdmin/CRUD/list_nonexistent_template.html.twig'));
 
         $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription);
+
+        $this->templateRegistry->getTemplate('base_list_field')->shouldHaveBeenCalled();
     }
 
     /**

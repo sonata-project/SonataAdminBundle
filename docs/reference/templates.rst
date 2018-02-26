@@ -153,12 +153,13 @@ You can specify your templates in the config.yml file, like so:
                 button_list:                    '@SonataAdmin/Button/list_button.html.twig'
                 button_show:                    '@SonataAdmin/Button/show_button.html.twig'
 
-Notice that this is a global change, meaning it will affect all model mappings automatically,
-both for ``Admin`` mappings defined by you and by other bundles.
+Notice that this is a global change, meaning it will affect all model mappings
+automatically, both for ``Admin`` mappings defined by you and by other bundles.
 
-If you wish, you can specify custom templates on a per ``Admin`` mapping basis. Internally,
-the ``CRUDController`` fetches this information from the ``Admin`` class instance, so you can
-specify the templates to use in the ``Admin`` service definition:
+If you wish, you can specify custom templates on a per ``Admin`` mapping
+basis. Internally, the ``CRUDController`` fetches this information from the
+``TemplateRegistry`` class instance that belongs with the ``Admin``, so you
+can specify the templates to use in the ``Admin`` service definition:
 
 .. configuration-block::
 
@@ -206,13 +207,21 @@ a global custom template and then override that customization on a specific
 
 Finding configured templates
 ----------------------------
-Templates that are set using the ``setTemplate()`` or ``setTemplates()``
-methods can be accessed through the ``getTemplate($name)`` method of an
-Admin.
+Each ``Admin`` has a ``TemplateRegistry`` service connected to it that holds
+the templates registered through the configuration above. Through the method
+``getTemplate($name)`` of that class, you can access the templates set for
+that ``Admin``. The ``TemplateRegistry`` is available through ``$this->getTemplateRegistry()``
+within the ``Admin``. Using the service container the template registries can
+be accessed outside an ``Admin``. Use the ``Admin`` code + ``.template_registry``
+as the service ID (i.e. "app.admin.post" uses the Template Registry
+"app.admin.post.template_registry").
+
+The ``TemplateRegistry`` service that holds the global templates can be accessed
+using the service ID "sonata.admin.global_template_registry".
 
 Within Twig templates, you can use the ``get_admin_template($name, $adminCode)``
-function to access the templates of the current Admin, or the
-``get_admin_pool_template($name)`` function to access global templates.
+function to access the templates of the current ``Admin``, or the
+``get_global_template($name)`` function to access global templates.
 
 .. code-block:: html+jinja
 

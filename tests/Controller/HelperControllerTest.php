@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Controller\HelperController;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Sonata\CoreBundle\Model\Metadata;
@@ -28,6 +29,7 @@ use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Command\DebugCommand;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormConfigInterface;
@@ -232,15 +234,19 @@ class HelperControllerTest extends TestCase
         $template = $this->prophesize(Template::class);
         $translator = $this->prophesize(TranslatorInterface::class);
         $propertyAccessor = new PropertyAccessor();
+        $templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
+        $container = $this->prophesize(ContainerInterface::class);
 
         $this->admin->getObject(42)->willReturn($object);
+        $this->admin->getCode()->willReturn('sonata.post.admin');
         $this->admin->hasAccess('edit', $object)->willReturn(true);
         $this->admin->getListFieldDescription('enabled')->willReturn($fieldDescription->reveal());
         $this->admin->update($object)->shouldBeCalled();
-        $this->admin->getTemplate('base_list_field')->willReturn('admin_template');
+        $templateRegistry->getTemplate('base_list_field')->willReturn('admin_template');
+        $container->get('sonata.post.admin.template_registry')->willReturn($templateRegistry->reveal());
         $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
         $this->twig->getExtension(SonataAdminExtension::class)->willReturn(
-            new SonataAdminExtension($pool->reveal(), null, $translator->reveal())
+            new SonataAdminExtension($pool->reveal(), null, $translator->reveal(), $container->reveal())
         );
         $this->twig->load('admin_template')->willReturn(new TemplateWrapper($this->twig->reveal(), $template->reveal()));
         $this->twig->isDebug()->willReturn(false);
@@ -273,17 +279,21 @@ class HelperControllerTest extends TestCase
         $template = $this->prophesize(Template::class);
         $translator = $this->prophesize(TranslatorInterface::class);
         $propertyAccessor = new PropertyAccessor();
+        $templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
+        $container = $this->prophesize(ContainerInterface::class);
 
         $this->admin->getObject(42)->willReturn($object);
+        $this->admin->getCode()->willReturn('sonata.post.admin');
         $this->admin->hasAccess('edit', $object)->willReturn(true);
         $this->admin->getListFieldDescription('bar')->willReturn($fieldDescription->reveal());
         $this->admin->getClass()->willReturn(get_class($object));
         $this->admin->update($object)->shouldBeCalled();
-        $this->admin->getTemplate('base_list_field')->willReturn('admin_template');
+        $container->get('sonata.post.admin.template_registry')->willReturn($templateRegistry->reveal());
+        $templateRegistry->getTemplate('base_list_field')->willReturn('admin_template');
         $this->admin->getModelManager()->willReturn($modelManager->reveal());
         $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
         $this->twig->getExtension(SonataAdminExtension::class)->willReturn(
-            new SonataAdminExtension($this->pool->reveal(), null, $translator->reveal())
+            new SonataAdminExtension($this->pool->reveal(), null, $translator->reveal(), $container->reveal())
         );
         $this->twig->load('field_template')->willReturn(new TemplateWrapper($this->twig->reveal(), $template->reveal()));
         $this->twig->isDebug()->willReturn(false);

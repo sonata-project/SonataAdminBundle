@@ -202,7 +202,7 @@ file that was distributed with this source code.
                                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                                     <i class="fa fa-plus-square fa-fw" aria-hidden="true"></i> <i class="fa fa-caret-down" aria-hidden="true"></i>
                                                 </a>
-                                                {% include get_admin_pool_template('add_block') %}
+                                                {% include get_global_template('add_block') %}
                                             </li>
                                         {% endblock %}
                                         {% block sonata_top_nav_menu_user_block %}
@@ -211,7 +211,7 @@ file that was distributed with this source code.
                                                     <i class="fa fa-user fa-fw" aria-hidden="true"></i> <i class="fa fa-caret-down" aria-hidden="true"></i>
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-user">
-                                                    {% include get_admin_pool_template('user_block') %}
+                                                    {% include get_global_template('user_block') %}
                                                 </ul>
                                             </li>
                                         {% endblock %}
@@ -244,7 +244,7 @@ file that was distributed with this source code.
 
                             {% block side_bar_before_nav %} {% endblock %}
                             {% block side_bar_nav %}
-                                {{ knp_menu_render('sonata_admin_sidebar', {template: get_admin_pool_template('knp_menu_template')}) }}
+                                {{ knp_menu_render('sonata_admin_sidebar', {template: get_global_template('knp_menu_template')}) }}
                             {% endblock side_bar_nav %}
                             {% block side_bar_after_nav %}
                                 <p class="text-center small" style="border-top: 1px solid #444444; padding-top: 10px">
