@@ -144,18 +144,22 @@ Help messages in a sub-field
     <?php
     // src/AppBundle/Admin/PostAdmin.php
 
+    use Sonata\CoreBundle\Form\Type\ImmutableArrayType;
+    use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+    use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+
     class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->add('enabled')
-                ->add('settings', 'sonata_type_immutable_array', [
+                ->add('settings', ImmutableArrayType::class, [
                     'keys' => [
-                        ['content', 'textarea', [
+                        ['content', TextareaType::class, [
                             'sonata_help' => 'Set the content'
                         ]],
-                        ['public', 'checkbox', []],
+                        ['public', CheckboxType::class, []],
                     ]
                 ])
             ;
