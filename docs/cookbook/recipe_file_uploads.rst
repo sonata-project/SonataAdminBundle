@@ -232,18 +232,20 @@ looks like this:
     <?php
     // src/AppBundle/Admin/PostAdmin.php
 
+    use Sonata\AdminBundle\Form\Type\AdminType;
+
     class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('linkedImage1', 'sonata_type_admin', [
+                ->add('linkedImage1', AdminType::class, [
                     'delete' => false
                 ])
-                ->add('linkedImage2', 'sonata_type_admin', [
+                ->add('linkedImage2', AdminType::class, [
                     'delete' => false
                 ])
-                ->add('linkedImage3', 'sonata_type_admin', [
+                ->add('linkedImage3', AdminType::class, [
                     'delete' => false
                 ])
 

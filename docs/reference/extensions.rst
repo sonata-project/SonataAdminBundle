@@ -10,13 +10,14 @@ alter newly created objects and other admin features.
 
     use Sonata\AdminBundle\Admin\AbstractAdminExtension;
     use Sonata\AdminBundle\Form\FormMapper;
+    use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
     class PublishStatusAdminExtension extends AbstractAdminExtension
     {
         public function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('status', 'choice', [
+                ->add('status', ChoiceType::class, [
                     'choices' => [
                         'draft' => 'Draft',
                         'published' => 'Published',
