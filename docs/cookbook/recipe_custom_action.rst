@@ -130,19 +130,17 @@ If you want to add the current filter parameters to the redirect url you can add
 
     return new RedirectResponse($this->admin->generateUrl('list', ['filter' => $this->admin->getFilterParameters()]));
 
-Using template in new controller
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. tip::
+    If you want to render something here you can create new template anywhere, extend sonata layout
+    and use `sonata_admin_content` block.
 
-If you want to render something here you can create new template anywhere, extend sonata layout
-and use `sonata_admin_content` block.
+    .. code-block:: html+jinja
 
-.. code-block:: html+jinja
+        {% extends '@SonataAdmin/standard_layout.html.twig' %}
 
-    {% extends '@SonataAdmin/standard_layout.html.twig' %}
-
-    {% block sonata_admin_content %}
-        Your content here
-    {% endblock %}
+        {% block sonata_admin_content %}
+            Your content here
+        {% endblock %}
 
 Create a template for the new action
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
