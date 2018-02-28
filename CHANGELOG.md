@@ -2,6 +2,23 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.32.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.31.1...3.32.0) - 2018-02-28
+### Changed
+- Allow capturing of any link click inside of modal
+- batch checkbox is hidden when using the mosaic view in modal
+- whole mosaic item is now wrapped in a tag instead of just title
+- Make search result page less heavy
+
+### Fixed
+- `ModelAutocompleteType` can now be used without a linked admin class
+- Compatibility with edit relation on list with PHPCR and MongoDB Sonata bundles
+- fix behaviour of `AbstractAdmin::preValidate` by relying on form event listener
+- Admins without global search filters will no longer be shown in the global search.
+- including wrong javascript code for associations modals
+- Fixed PHP warnings when `ChoiceFieldMaskType` option `map` is invalid or empty
+- Fixed javascript handling of `ChoiceFieldMaskType` when option `expanded` is `true`
+- Templates that rely on the `admin` variable in Twig can now use the `get_admin_template` function correctly.
+
 ## [3.31.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.31.0...3.31.1) - 2018-02-08
 ### Added
 - Missing `getOwnerPermissions` to `AdminObjectAclData`
