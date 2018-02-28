@@ -19,7 +19,7 @@ file that was distributed with this source code.
     {% endif %}
 
     <div class="col-lg-4 col-md-6 search-box-item {{ visibility_class }}">
-        <div class="box box-solid box-primary {{ visibility_class }}">
+        <div class="box box-solid {{ visibility_class }}">
             <div class="box-header with-border {{ visibility_class }}">
                 {% set icon = settings.icon|default('') %}
                 {{ icon|raw }}
@@ -29,7 +29,7 @@ file that was distributed with this source code.
 
                 <div class="box-tools pull-right">
                     {% if pager and pager.getNbResults() > 0 %}
-                        <span class="badge bg-light-blue">{{ pager.getNbResults() }}</span>
+                        <span class="badge">{{ pager.getNbResults() }}</span>
                     {% elseif admin.hasRoute('create') and admin.hasAccess('create') %}
                         <a href="{{ admin.generateUrl('create') }}" class="btn btn-box-tool">
                             <i class="fa fa-plus" aria-hidden="true"></i>
