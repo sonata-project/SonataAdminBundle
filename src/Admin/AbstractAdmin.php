@@ -42,6 +42,8 @@ use Sonata\CoreBundle\Validator\ErrorElement;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
@@ -2623,7 +2625,12 @@ EOT;
             }
         }
 
-        $this->form = $this->getFormBuilder()->getForm();
+        $formBuilder = $this->getFormBuilder();
+        $formBuilder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
+            $this->preValidate($event->getData());
+        }, 100);
+
+        $this->form = $formBuilder->getForm();
     }
 
     /**

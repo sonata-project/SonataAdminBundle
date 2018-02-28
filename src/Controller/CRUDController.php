@@ -314,7 +314,6 @@ class CRUDController implements ContainerAwareInterface
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $this->admin->preValidate($existingObject);
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved
@@ -550,7 +549,6 @@ class CRUDController implements ContainerAwareInterface
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $this->admin->preValidate($newObject);
             $isFormValid = $form->isValid();
 
             // persist if the form was valid and if in preview mode the preview was approved

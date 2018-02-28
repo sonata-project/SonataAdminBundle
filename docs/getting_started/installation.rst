@@ -29,7 +29,7 @@ storage bundles. The official storage bundles are:
 You can download them in the same way as the SonataAdminBundle. Please, choose one
 and follow its installation instructions before proceeding.
 
-.. tip::
+.. note::
     Don't know which to choose? Most new users prefer SonataDoctrineORMAdmin,
     to interact with traditional relational databases (MySQL, PostgreSQL, etc).
 

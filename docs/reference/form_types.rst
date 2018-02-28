@@ -619,7 +619,7 @@ to the underlying forms.
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('sales', 'sonata_type_collection', [
+                ->add('sales', CollectionType::class, [
                     'type_options' => [
                         // Prevents the "Delete" option from being displayed
                         'delete' => false,

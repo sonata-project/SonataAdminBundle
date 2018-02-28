@@ -12,6 +12,11 @@ That's not because there is no content, but because you didn't configure your
 Admin's list view. As Sonata doesn't know which fields to show, it just shows
 empty rows.
 
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
+
 Configuring the List Mapper
 ---------------------------
 
@@ -20,8 +25,8 @@ list page to the list view:
 
 .. code-block:: php
 
-    // src/AppBundle/Admin/BlogPostAdmin.php
-    namespace AppBundle\Admin;
+    // src/Admin/BlogPostAdmin.php
+    namespace App\Admin;
 
     // ...
     class BlogPostAdmin extends AbstractAdmin
@@ -41,6 +46,9 @@ Going to the list view of the blog post admin again, you'll see the available
 blog posts:
 
 .. image:: ../images/getting_started_basic_list_view.png
+   :align: center
+   :alt: Sonata list view
+   :width: 700px
 
 You can see that Sonata already guesses a correct field type and makes sure it
 shows it in a friendly way. The boolean draft field for instance is show as a
@@ -60,8 +68,8 @@ instead of ``ListMapper#add()``:
 
 .. code-block:: php
 
-    // src/AppBundle/Admin/BlogPostAdmin.php
-    namespace AppBundle\Admin;
+    // src/Admin/BlogPostAdmin.php
+    namespace App\Admin;
 
     // ...
     class BlogPostAdmin extends AbstractAdmin
@@ -96,8 +104,8 @@ category.
 
 .. code-block:: php
 
-    // src/AppBundle/Admin/BlogPostAdmin.php
-    namespace AppBundle\Admin;
+    // src/Admin/BlogPostAdmin.php
+    namespace App\Admin;
 
     // ...
     class BlogPostAdmin extends AbstractAdmin
@@ -129,8 +137,8 @@ would do something like:
 
 .. code-block:: php
 
-    // src/AppBundle/Admin/BlogPostAdmin.php
-    namespace AppBundle\Admin;
+    // src/Admin/BlogPostAdmin.php
+    namespace App\Admin;
 
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
@@ -173,10 +181,12 @@ the search field to use the ``name`` property of the Category:
 
 .. code-block:: php
 
-    // src/AppBundle/Admin/BlogPostAdmin.php
-    namespace AppBundle\Admin;
+    // src/Admin/BlogPostAdmin.php
+    namespace App\Admin;
 
+    use App\Entity\Category;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
+    use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
     // ...
     class BlogPostAdmin extends AbstractAdmin
@@ -185,9 +195,9 @@ the search field to use the ``name`` property of the Category:
         {
             $datagridMapper
                 ->add('title')
-                ->add('category', null, [], 'entity', [
-                    'class'    => 'AppBundle\Entity\Category',
-                    'choice_label' => 'name', // In Symfony2: 'property' => 'name'
+                ->add('category', null, [], EntityType::class, [
+                    'class'    => Category::class,
+                    'choice_label' => 'name',
                 ])
             ;
         }
@@ -197,6 +207,9 @@ With this code, a dropdown will be shown including all available categories.
 This will make it easy to filter by category.
 
 .. image:: ../images/getting_started_filter_category.png
+   :align: center
+   :alt: Sonata Category filter
+   :width: 700px
 
 Round Up
 --------

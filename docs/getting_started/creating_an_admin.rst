@@ -5,6 +5,11 @@ You've been able to get the admin interface working in :doc:`the previous
 chapter <installation>`. In this tutorial, you'll learn how to tell SonataAdmin
 how an admin can manage your models.
 
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
+
 Step 0: Create a Model
 ----------------------
 
@@ -14,14 +19,14 @@ using these commands:
 
 .. code-block:: bash
 
-    $ php bin/console doctrine:generate:entity --entity="AppBundle:Category" --fields="name:string(255)" --no-interaction
-    $ php bin/console doctrine:generate:entity --entity="AppBundle:BlogPost" --fields="title:string(255) body:text draft:boolean" --no-interaction
+    $ php bin/console doctrine:generate:entity --entity="App:Category" --fields="name:string(255)" --no-interaction
+    $ php bin/console doctrine:generate:entity --entity="App:BlogPost" --fields="title:string(255) body:text draft:boolean" --no-interaction
 
 After this, you'll need to tweak the entities a bit:
 
 .. code-block:: php
 
-    // src/AppBundle/Entity/BlogPost.php
+    // src/Entity/BlogPost.php
 
     // ...
     class BlogPost
@@ -50,7 +55,7 @@ Set the default value to ``false``.
 
 .. code-block:: php
 
-    // src/AppBundle/Entity/BlogPost.php
+    // src/Entity/BlogPost.php
 
     // ...
     class BlogPost
@@ -69,8 +74,7 @@ Set the default value to ``false``.
 
 .. code-block:: php
 
-
-    // src/AppBundle/Entity/Category.php
+    // src/Entity/Category.php
 
     // ...
     use Doctrine\Common\Collections\ArrayCollection;
@@ -105,7 +109,6 @@ After this, create the schema for these entities:
     $ php bin/console doctrine:schema:create
 
 .. note::
-
     This article assumes you have basic knowledge of the Doctrine2 ORM and
     you've set up a database correctly.
 
@@ -126,19 +129,20 @@ easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin`
 
 .. code-block:: php
 
-    // src/AppBundle/Admin/CategoryAdmin.php
-    namespace AppBundle\Admin;
+    // src/Admin/CategoryAdmin.php
+    namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Form\FormMapper;
+    use Symfony\Component\Form\Extension\Core\Type\TextType;
 
     class CategoryAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
-            $formMapper->add('name', 'text');
+            $formMapper->add('name', TextType::class);
         }
 
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -174,18 +178,20 @@ SonataAdminBundle to know that this Admin class exists. To tell the
 SonataAdminBundle of the existence of this Admin class, you have to create a
 service and tag it with the ``sonata.admin`` tag:
 
-.. code-block:: yaml
+.. configuration-block::
 
-    # app/config/services.yml
+    .. code-block:: yaml
 
-    services:
-        # ...
-        admin.category:
-            class: AppBundle\Admin\CategoryAdmin
-            arguments: [~, AppBundle\Entity\Category, ~]
-            tags:
-                - { name: sonata.admin, manager_type: orm, label: Category }
-            public: true
+        # config/services.yaml
+
+        services:
+            # ...
+            admin.category:
+                class: App\Admin\CategoryAdmin
+                arguments: [~, App\Entity\Category, ~]
+                tags:
+                    - { name: sonata.admin, manager_type: orm, label: Category }
+                public: true
 
 The constructor of the base Admin class has many arguments. SonataAdminBundle
 provides a compiler pass which takes care of configuring it correctly for you.
@@ -198,15 +204,17 @@ Step 4: Register SonataAdmin custom Routes
 SonataAdminBundle generates routes for the Admin classes on the fly. To load these
 routes, you have to make sure the routing loader of the SonataAdminBundle is executed:
 
-.. code-block:: yaml
+.. configuration-block::
 
-    # app/config/routing.yml
+    .. code-block:: yaml
 
-    # ...
-    _sonata_admin:
-        resource: .
-        type: sonata_admin
-        prefix: /admin
+        # config/routing.yaml
+
+        # ...
+        _sonata_admin:
+            resource: .
+            type: sonata_admin
+            prefix: /admin
 
 View the Category Admin Interface
 ---------------------------------
@@ -216,13 +224,15 @@ how this looks like in the admin interface. Well, let's find out by going to
 http://localhost:8000/admin
 
 .. image:: ../images/getting_started_category_dashboard.png
+   :align: center
+   :alt: Sonata Dashboard with Category
+   :width: 700px
 
 Feel free to play around and add some categories, like "Symfony" and "Sonata
 Project". In the next chapters, you'll create an admin for the ``BlogPost``
 entity and learn more about this class.
 
-.. tip::
-
+.. note::
     If you're not seeing the nice labels, but instead something like
     "link_add", you should make sure that you've `enabled the translator`_.
 
