@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -30,7 +32,7 @@ class QueryStringBuilder implements RouteBuilderInterface
         $this->manager = $manager;
     }
 
-    public function build(AdminInterface $admin, RouteCollection $collection)
+    public function build(AdminInterface $admin, RouteCollection $collection): void
     {
         $collection->add('list');
         $collection->add('create');

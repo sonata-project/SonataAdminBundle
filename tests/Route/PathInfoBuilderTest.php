@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -19,7 +21,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class PathInfoBuilderTest extends TestCase
 {
-    public function testBuild()
+    public function testBuild(): void
     {
         $audit = $this->getMockForAbstractClass(AuditManagerInterface::class);
         $audit->expects($this->once())->method('hasReader')->will($this->returnValue(true));

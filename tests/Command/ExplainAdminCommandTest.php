@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -51,7 +53,7 @@ class ExplainAdminCommandTest extends TestCase
      */
     private $validatorFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->application = new Application();
         $command = new ExplainAdminCommand();
@@ -168,7 +170,7 @@ class ExplainAdminCommandTest extends TestCase
         $this->application->add($command);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $metadata = $this->createMock(MetadataInterface::class);
 
@@ -231,7 +233,7 @@ class ExplainAdminCommandTest extends TestCase
         ), $commandTester->getDisplay());
     }
 
-    public function testExecuteEmptyValidator()
+    public function testExecuteEmptyValidator(): void
     {
         $metadata = $this->createMock(MetadataInterface::class);
 
@@ -285,7 +287,7 @@ class ExplainAdminCommandTest extends TestCase
         ), $commandTester->getDisplay());
     }
 
-    public function testExecuteNonAdminService()
+    public function testExecuteNonAdminService(): void
     {
         try {
             $command = $this->application->find('sonata:admin:explain');

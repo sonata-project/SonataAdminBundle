@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -23,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CoreControllerTest extends TestCase
 {
-    public function testdashboardActionStandardRequest()
+    public function testdashboardActionStandardRequest(): void
     {
         $container = $this->createMock(ContainerInterface::class);
 
@@ -83,7 +85,7 @@ class CoreControllerTest extends TestCase
         $this->isInstanceOf(Response::class, $response);
     }
 
-    public function testdashboardActionAjaxLayout()
+    public function testdashboardActionAjaxLayout(): void
     {
         $container = $this->createMock(ContainerInterface::class);
 

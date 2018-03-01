@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -20,17 +22,6 @@ use Knp\Menu\ItemInterface;
  */
 interface MenuBuilderInterface
 {
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @param string $action
-     *
-     * @return ItemInterface|bool
-     *
-     * @deprecated Use buildTabMenu instead
-     */
-    public function buildSideMenu($action, AdminInterface $childAdmin = null);
-
     /**
      * Build the tab menu related to the current action.
      *

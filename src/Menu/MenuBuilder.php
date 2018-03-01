@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -75,7 +77,7 @@ class MenuBuilder
                 'sonata_admin' => true,
             ];
 
-            $menuProvider = isset($group['provider']) ? $group['provider'] : 'sonata_group_menu';
+            $menuProvider = $group['provider'] ?? 'sonata_group_menu';
             $subMenu = $this->provider->get(
                 $menuProvider,
                 [

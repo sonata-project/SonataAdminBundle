@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -18,7 +20,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 
 class AnnotationCompilerPassTest extends TestCase
 {
-    public function testInvalidAdminAnnotation()
+    public function testInvalidAdminAnnotation(): void
     {
         /*
          * @Admin(class="Sonata\AdminBundle\Tests\Fixtures\Foo")
@@ -37,7 +39,7 @@ class AnnotationCompilerPassTest extends TestCase
         $annotation->processMetadata($meta);
     }
 
-    public function testEmbeddedAdmin()
+    public function testEmbeddedAdmin(): void
     {
         /*
          * @Admin(
@@ -66,7 +68,7 @@ class AnnotationCompilerPassTest extends TestCase
         );
     }
 
-    public function testMinimalAdmin()
+    public function testMinimalAdmin(): void
     {
         /*
          * @Admin(class="Sonata\AdminBundle\Entity\Foo")
@@ -91,7 +93,7 @@ class AnnotationCompilerPassTest extends TestCase
         );
     }
 
-    public function testIdForAdmin()
+    public function testIdForAdmin(): void
     {
         /*
          * @Admin(class="Sonata\AdminBundle\Entity\Foo", id="my.id")
@@ -107,7 +109,7 @@ class AnnotationCompilerPassTest extends TestCase
         $this->assertSame('my.id', $meta->id);
     }
 
-    public function testAdmin()
+    public function testAdmin(): void
     {
         /*
          * @Admin(

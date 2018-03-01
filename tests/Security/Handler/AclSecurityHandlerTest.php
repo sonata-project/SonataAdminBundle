@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -32,7 +34,7 @@ class AclSecurityHandlerTest extends TestCase
         return $this->getMockForAbstractClass(AuthorizationCheckerInterface::class);
     }
 
-    public function testAcl()
+    public function testAcl(): void
     {
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->any())
@@ -62,7 +64,7 @@ class AclSecurityHandlerTest extends TestCase
         $this->assertFalse($handler->isGranted($admin, 'TOTO'));
     }
 
-    public function testBuildInformation()
+    public function testBuildInformation(): void
     {
         $informations = [
             'EDIT' => ['EDIT'],
@@ -87,7 +89,7 @@ class AclSecurityHandlerTest extends TestCase
         $this->assertArrayHasKey('ROLE_TEST_EDIT', $results);
     }
 
-    public function testWithAuthenticationCredentialsNotFoundException()
+    public function testWithAuthenticationCredentialsNotFoundException(): void
     {
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
 
@@ -103,7 +105,7 @@ class AclSecurityHandlerTest extends TestCase
         $this->assertFalse($handler->isGranted($admin, 'raise exception', $admin));
     }
 
-    public function testWithNonAuthenticationCredentialsNotFoundException()
+    public function testWithNonAuthenticationCredentialsNotFoundException(): void
     {
         $this->expectException(\RuntimeException::class);
 

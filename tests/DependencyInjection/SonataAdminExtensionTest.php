@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -20,7 +22,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
     /**
      * @group legacy
      */
-    public function testContainerCompileWithJMSDiExtraBundle()
+    public function testContainerCompileWithJMSDiExtraBundle(): void
     {
         $this->container->setParameter('kernel.bundles', [
             'JMSDiExtraBundle' => true,
@@ -29,21 +31,21 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->container->compile();
     }
 
-    public function testHasServiceDefinitionForLockExtension()
+    public function testHasServiceDefinitionForLockExtension(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load(['options' => ['lock_protection' => true]]);
         $this->assertContainerBuilderHasService('sonata.admin.lock.extension');
     }
 
-    public function testNotHasServiceDefinitionForLockExtension()
+    public function testNotHasServiceDefinitionForLockExtension(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load(['options' => ['lock_protection' => false]]);
         $this->assertContainerBuilderNotHasService('sonata.admin.lock.extension');
     }
 
-    public function testLoadsExporterServiceDefinitionWhenExporterBundleIsRegistered()
+    public function testLoadsExporterServiceDefinitionWhenExporterBundleIsRegistered(): void
     {
         $this->container->setParameter('kernel.bundles', ['SonataExporterBundle' => 'whatever']);
         $this->load();
@@ -53,7 +55,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    public function testHasSecurityRoleParameters()
+    public function testHasSecurityRoleParameters(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load();
@@ -62,7 +64,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter('sonata.admin.configuration.security.role_super_admin');
     }
 
-    public function testExtraStylesheetsGetAdded()
+    public function testExtraStylesheetsGetAdded(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load([
@@ -95,7 +97,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         ]);
     }
 
-    public function testRemoveStylesheetsGetRemoved()
+    public function testRemoveStylesheetsGetRemoved(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load([
@@ -125,7 +127,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         ]);
     }
 
-    public function testExtraJavascriptsGetAdded()
+    public function testExtraJavascriptsGetAdded(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load([
@@ -165,7 +167,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         ]);
     }
 
-    public function testRemoveJavascriptsGetRemoved()
+    public function testRemoveJavascriptsGetRemoved(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load([
@@ -201,7 +203,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         ]);
     }
 
-    public function testAssetsCanBeAddedAndRemoved()
+    public function testAssetsCanBeAddedAndRemoved(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load([

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -38,7 +40,7 @@ class AuditManager implements AuditManagerInterface
         $this->container = $container;
     }
 
-    public function setReader($serviceId, array $classes)
+    public function setReader($serviceId, array $classes): void
     {
         $this->readers[$serviceId] = $classes;
     }

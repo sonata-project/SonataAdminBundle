@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -59,7 +61,7 @@ class LockExtensionTest extends TestCase
      */
     private $request;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->modelManager = $this->prophesize(LockInterface::class);
         $this->admin = $this->prophesize(AbstractAdmin::class);
@@ -70,7 +72,7 @@ class LockExtensionTest extends TestCase
         $this->lockExtension = new LockExtension();
     }
 
-    public function testConfigureFormFields()
+    public function testConfigureFormFields(): void
     {
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
@@ -89,7 +91,7 @@ class LockExtensionTest extends TestCase
         $this->eventDispatcher->dispatch(FormEvents::PRE_SET_DATA, $event);
     }
 
-    public function testConfigureFormFieldsWhenModelManagerIsNotImplementingLockerInterface()
+    public function testConfigureFormFieldsWhenModelManagerIsNotImplementingLockerInterface(): void
     {
         $modelManager = $this->prophesize(ModelManagerInterface::class);
         $formMapper = $this->configureFormMapper();
@@ -103,7 +105,7 @@ class LockExtensionTest extends TestCase
         $this->eventDispatcher->dispatch(FormEvents::PRE_SET_DATA, $event);
     }
 
-    public function testConfigureFormFieldsWhenFormEventHasNoData()
+    public function testConfigureFormFieldsWhenFormEventHasNoData(): void
     {
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
@@ -115,7 +117,7 @@ class LockExtensionTest extends TestCase
         $this->eventDispatcher->dispatch(FormEvents::PRE_SET_DATA, $event);
     }
 
-    public function testConfigureFormFieldsWhenFormHasParent()
+    public function testConfigureFormFieldsWhenFormHasParent(): void
     {
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
@@ -128,7 +130,7 @@ class LockExtensionTest extends TestCase
         $this->eventDispatcher->dispatch(FormEvents::PRE_SET_DATA, $event);
     }
 
-    public function testConfigureFormFieldsWhenModelManagerHasNoLockedVersion()
+    public function testConfigureFormFieldsWhenModelManagerHasNoLockedVersion(): void
     {
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
@@ -142,14 +144,14 @@ class LockExtensionTest extends TestCase
         $this->eventDispatcher->dispatch(FormEvents::PRE_SET_DATA, $event);
     }
 
-    public function testPreUpdateIfAdminHasNoRequest()
+    public function testPreUpdateIfAdminHasNoRequest(): void
     {
         $this->modelManager->lock()->shouldNotBeCalled();
 
         $this->lockExtension->preUpdate($this->admin->reveal(), $this->object);
     }
 
-    public function testPreUpdateIfObjectIsNotVersioned()
+    public function testPreUpdateIfObjectIsNotVersioned(): void
     {
         $this->configureAdmin();
         $this->modelManager->lock()->shouldNotBeCalled();
@@ -157,7 +159,7 @@ class LockExtensionTest extends TestCase
         $this->lockExtension->preUpdate($this->admin->reveal(), $this->object);
     }
 
-    public function testPreUpdateIfRequestDoesNotHaveLockVersion()
+    public function testPreUpdateIfRequestDoesNotHaveLockVersion(): void
     {
         $uniqid = 'admin123';
         $this->configureAdmin($uniqid, $this->request);
@@ -168,7 +170,7 @@ class LockExtensionTest extends TestCase
         $this->lockExtension->preUpdate($this->admin->reveal(), $this->object);
     }
 
-    public function testPreUpdateIfModelManagerIsNotImplementingLockerInterface()
+    public function testPreUpdateIfModelManagerIsNotImplementingLockerInterface(): void
     {
         $modelManager = $this->prophesize(ModelManagerInterface::class);
         $uniqid = 'admin123';
@@ -178,7 +180,7 @@ class LockExtensionTest extends TestCase
         $this->lockExtension->preUpdate($this->admin->reveal(), $this->object);
     }
 
-    public function testPreUpdateIfObjectIsVersioned()
+    public function testPreUpdateIfObjectIsVersioned(): void
     {
         $uniqid = 'admin123';
         $this->configureAdmin($uniqid, $this->request, $this->modelManager->reveal());
@@ -208,7 +210,7 @@ class LockExtensionTest extends TestCase
         return new FormMapper($contractor->reveal(), $formBuilder, $this->admin->reveal());
     }
 
-    private function configureAdmin($uniqid = null, $request = null, $modelManager = null)
+    private function configureAdmin($uniqid = null, $request = null, $modelManager = null): void
     {
         $this->admin->getUniqid()->willReturn($uniqid);
         $this->admin->getRequest()->willReturn($request);

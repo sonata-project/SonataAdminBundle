@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -18,9 +20,9 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class GlobalVariablesCompilerPass implements CompilerPassInterface
+final class GlobalVariablesCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $container->getDefinition('twig')
             ->addMethodCall('addGlobal', ['sonata_admin', new Reference('sonata.admin.twig.global')]);

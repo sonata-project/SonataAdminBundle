@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -40,7 +42,6 @@ interface AccessRegistryInterface
      * @param object $object
      *
      * @return bool
-     * TODO: uncomment this method for next major release
      */
-     // public function hasAccess($action, $object = null);
+    public function hasAccess($action, $object = null);
 }

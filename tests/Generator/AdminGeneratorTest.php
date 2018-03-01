@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -35,7 +37,7 @@ class AdminGeneratorTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->adminGenerator = new AdminGenerator(
             $this->createModelManagerMock(),
@@ -48,13 +50,13 @@ class AdminGeneratorTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove($this->bundlePath);
     }
 
-    public function testGenerate()
+    public function testGenerate(): void
     {
         $this->adminGenerator->generate($this->bundleMock, 'ModelAdmin', 'Model');
         $file = $this->adminGenerator->getFile();

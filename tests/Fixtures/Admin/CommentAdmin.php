@@ -12,12 +12,12 @@ class CommentAdmin extends AbstractAdmin
         $this->classnameLabel = $label;
     }
 
-    public function configureRoutes(RouteCollection $collection)
+    public function configureRoutes(RouteCollection $collection): void
     {
         $collection->remove('edit');
     }
 
-    public function setParentAssociationMapping($associationMapping)
+    public function setParentAssociationMapping($associationMapping): void
     {
         $this->parentAssociationMapping = $associationMapping;
     }

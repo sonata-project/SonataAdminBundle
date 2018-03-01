@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -135,15 +137,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
             return $name;
         }
 
-        // NEXT_MAJOR: Uncomment the following line.
-        // $codePrefix = $admin->getBaseCodeRoute();
-
-        // NEXT_MAJOR: Remove next 5 lines.
-        $codePrefix = $admin->getCode();
-
-        if ($admin->isChild()) {
-            $codePrefix = $admin->getBaseCodeRoute();
-        }
+        $codePrefix = $admin->getBaseCodeRoute();
 
         // someone provide a code, so it is a child
         if (strpos($name, '.')) {
@@ -153,7 +147,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         return $codePrefix.'.'.$name;
     }
 
-    private function loadCache(AdminInterface $admin)
+    private function loadCache(AdminInterface $admin): void
     {
         if ($admin->isChild()) {
             $this->loadCache($admin->getParent());

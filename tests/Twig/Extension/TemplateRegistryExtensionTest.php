@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -36,7 +38,7 @@ class TemplateRegistryExtensionTest extends TestCase
      */
     private $admin;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->pool = $this->prophesize(Pool::class);
         $this->admin = $this->prophesize(AdminInterface::class);
@@ -46,7 +48,7 @@ class TemplateRegistryExtensionTest extends TestCase
         $this->extension = new TemplateRegistryExtension($this->pool->reveal());
     }
 
-    public function testGetTemplate()
+    public function testGetTemplate(): void
     {
         $this->admin->getTemplate('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
 
@@ -56,7 +58,7 @@ class TemplateRegistryExtensionTest extends TestCase
         );
     }
 
-    public function testGetPoolTemplate()
+    public function testGetPoolTemplate(): void
     {
         $this->pool->getTemplate('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -22,12 +24,12 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 {
     protected $type = 'filter';
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
 
-    public function testDefaultValueRendering()
+    public function testDefaultValueRendering(): void
     {
         $choice = $this->factory->create(
             $this->getParentClass(),

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -159,7 +161,7 @@ class ShowMapper extends BaseGroupedMapper
         return $this->admin->getShowGroups();
     }
 
-    protected function setGroups(array $groups)
+    protected function setGroups(array $groups): void
     {
         $this->admin->setShowGroups($groups);
     }
@@ -169,7 +171,7 @@ class ShowMapper extends BaseGroupedMapper
         return $this->admin->getShowTabs();
     }
 
-    protected function setTabs(array $tabs)
+    protected function setTabs(array $tabs): void
     {
         $this->admin->setShowTabs($tabs);
     }

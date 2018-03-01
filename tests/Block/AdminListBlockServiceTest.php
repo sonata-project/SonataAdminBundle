@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -26,14 +28,14 @@ class AdminListBlockServiceTest extends AbstractBlockServiceTestCase
      */
     private $pool;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
     }
 
-    public function testDefaultSettings()
+    public function testDefaultSettings(): void
     {
         $blockService = new AdminListBlockService('foo', $this->templating, $this->pool);
         $blockContext = $this->getBlockContext($blockService);
@@ -43,7 +45,7 @@ class AdminListBlockServiceTest extends AbstractBlockServiceTestCase
         ], $blockContext);
     }
 
-    public function testOverriddenDefaultSettings()
+    public function testOverriddenDefaultSettings(): void
     {
         $blockService = new FakeBlockService('foo', $this->templating, $this->pool);
         $blockContext = $this->getBlockContext($blockService);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -31,7 +33,7 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilder;
  */
 class AdminObjectAclManipulatorTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->formFactory = $this->prophesize(FormFactoryInterface::class);
         $this->data = $this->prophesize(AdminObjectAclData::class);
@@ -42,7 +44,7 @@ class AdminObjectAclManipulatorTest extends TestCase
         );
     }
 
-    public function testGetMaskBuilder()
+    public function testGetMaskBuilder(): void
     {
         $this->assertSame(
             MaskBuilder::class,
@@ -50,7 +52,7 @@ class AdminObjectAclManipulatorTest extends TestCase
         );
     }
 
-    public function testUpdateAclRoles()
+    public function testUpdateAclRoles(): void
     {
         $form = $this->prophesize(Form::class);
         $acl = $this->prophesize(Acl::class);
@@ -79,7 +81,7 @@ class AdminObjectAclManipulatorTest extends TestCase
         $this->adminObjectAclManipulator->updateAclRoles($this->data->reveal());
     }
 
-    public function testCreateAclUsersForm()
+    public function testCreateAclUsersForm(): void
     {
         $form = $this->prophesize(Form::class);
         $formBuilder = $this->prophesize(FormBuilder::class);
@@ -111,7 +113,7 @@ class AdminObjectAclManipulatorTest extends TestCase
         $this->assertSame($form->reveal(), $resultForm);
     }
 
-    public function testCreateAclRolesForm()
+    public function testCreateAclRolesForm(): void
     {
         $form = $this->prophesize(Form::class);
         $formBuilder = $this->prophesize(FormBuilder::class);

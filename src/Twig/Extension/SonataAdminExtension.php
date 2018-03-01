@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -19,7 +21,6 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
-use Twig\Error\LoaderError;
 use Twig\Extension\AbstractExtension;
 use Twig\Template;
 use Twig\TwigFilter;
@@ -28,22 +29,21 @@ use Twig\TwigFunction;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class SonataAdminExtension extends AbstractExtension
+final class SonataAdminExtension extends AbstractExtension
 {
-    /**
-     * @var Pool
-     */
-    protected $pool;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
     /**
      * @var TranslatorInterface|null
      */
     protected $translator;
+    /**
+     * @var Pool
+     */
+    private $pool;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * @var string[]
@@ -149,74 +149,6 @@ class SonataAdminExtension extends AbstractExtension
             'value' => $this->getValueFromFieldDescription($object, $fieldDescription),
             'field_description' => $fieldDescription,
         ]), $environment);
-    }
-
-    /**
-     * @return string
-     */
-    public function output(
-        FieldDescriptionInterface $fieldDescription,
-        Template $template,
-        array $parameters,
-        Environment $environment
-    ) {
-        $content = $template->render($parameters);
-
-        if ($environment->isDebug()) {
-            $commentTemplate = <<<'EOT'
-
-<!-- START
-    fieldName: %s
-    template: %s
-    compiled template: %s
-    -->
-    %s
-<!-- END - fieldName: %s -->
-EOT;
-
-            return sprintf(
-                $commentTemplate,
-                $fieldDescription->getFieldName(),
-                $fieldDescription->getTemplate(),
-                $template->getTemplateName(),
-                $content,
-                $fieldDescription->getFieldName()
-            );
-        }
-
-        return $content;
-    }
-
-    /**
-     * return the value related to FieldDescription, if the associated object does no
-     * exists => a temporary one is created.
-     *
-     * @param object $object
-     *
-     * @throws \RuntimeException
-     *
-     * @return mixed
-     */
-    public function getValueFromFieldDescription(
-        $object,
-        FieldDescriptionInterface $fieldDescription,
-        array $params = []
-    ) {
-        if (isset($params['loop']) && $object instanceof \ArrayAccess) {
-            throw new \RuntimeException('remove the loop requirement');
-        }
-
-        $value = null;
-
-        try {
-            $value = $fieldDescription->getValue($object);
-        } catch (NoValueException $e) {
-            if ($fieldDescription->getAssociationAdmin()) {
-                $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
-            }
-        }
-
-        return $value;
     }
 
     /**
@@ -375,7 +307,7 @@ EOT;
     /**
      * @param string[] $xEditableTypeMapping
      */
-    public function setXEditableTypeMapping($xEditableTypeMapping)
+    public function setXEditableTypeMapping($xEditableTypeMapping): void
     {
         $this->xEditableTypeMapping = $xEditableTypeMapping;
     }
@@ -430,13 +362,13 @@ EOT;
         return $xEditableChoices;
     }
 
-    /**
+    /*
      * Returns a canonicalized locale for "moment" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
      *
      * @return null|string
      */
-    final public function getCanonicalizedLocaleForMoment(array $context)
+    public function getCanonicalizedLocaleForMoment(array $context)
     {
         $locale = strtolower(str_replace('_', '-', $context['app']->getRequest()->getLocale()));
 
@@ -464,7 +396,7 @@ EOT;
      *
      * @return null|string
      */
-    final public function getCanonicalizedLocaleForSelect2(array $context)
+    public function getCanonicalizedLocaleForSelect2(array $context)
     {
         $locale = str_replace('_', '-', $context['app']->getRequest()->getLocale());
 
@@ -493,41 +425,93 @@ EOT;
     }
 
     /**
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param \Twig_Template            $template
+     * @param array                     $parameters
+     *
+     * @return string
+     */
+    private function output(
+        FieldDescriptionInterface $fieldDescription,
+        \Twig_Template $template,
+        array $parameters,
+        \Twig_Environment $environment
+    ) {
+        $content = $template->render($parameters);
+
+        if ($environment->isDebug()) {
+            $commentTemplate = <<<'EOT'
+
+<!-- START
+    fieldName: %s
+    template: %s
+    compiled template: %s
+    -->
+    %s
+<!-- END - fieldName: %s -->
+EOT;
+
+            return sprintf(
+                $commentTemplate,
+                $fieldDescription->getFieldName(),
+                $fieldDescription->getTemplate(),
+                $template->getTemplateName(),
+                $content,
+                $fieldDescription->getFieldName()
+            );
+        }
+
+        return $content;
+    }
+
+    /**
+     * return the value related to FieldDescription, if the associated object does no
+     * exists => a temporary one is created.
+     *
+     * @param object                    $object
+     * @param FieldDescriptionInterface $fieldDescription
+     * @param array                     $params
+     *
+     * @throws \RuntimeException
+     *
+     * @return mixed
+     */
+    private function getValueFromFieldDescription(
+        $object,
+        FieldDescriptionInterface $fieldDescription,
+        array $params = []
+    ) {
+        if (isset($params['loop']) && $object instanceof \ArrayAccess) {
+            throw new \RuntimeException('remove the loop requirement');
+        }
+
+        $value = null;
+
+        try {
+            $value = $fieldDescription->getValue($object);
+        } catch (NoValueException $e) {
+            if ($fieldDescription->getAssociationAdmin()) {
+                $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
+            }
+        }
+
+        return $value;
+    }
+
+    /**
      * Get template.
      *
      * @param string $defaultTemplate
      *
      * @return \Twig_TemplateInterface
      */
-    protected function getTemplate(
+    private function getTemplate(
         FieldDescriptionInterface $fieldDescription,
         $defaultTemplate,
         Environment $environment
     ) {
         $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
 
-        try {
-            $template = $environment->loadTemplate($templateName);
-        } catch (LoaderError $e) {
-            @trigger_error(
-                'Relying on default template loading on field template loading exception '.
-                'is deprecated since 3.1 and will be removed in 4.0. '.
-                'A \Twig_Error_Loader exception will be thrown instead',
-                E_USER_DEPRECATED
-            );
-            $template = $environment->loadTemplate($defaultTemplate);
-
-            if (null !== $this->logger) {
-                $this->logger->warning(sprintf(
-                    'An error occured trying to load the template "%s" for the field "%s", '.
-                    'the default template "%s" was used instead.',
-                    $templateName,
-                    $fieldDescription->getFieldName(),
-                    $defaultTemplate
-                ), ['exception' => $e]);
-            }
-        }
-
-        return $template;
+        return $environment->loadTemplate($templateName);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -24,7 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class ListAdminCommandTest extends TestCase
 {
-    public function testExecute()
+    public function testExecute(): void
     {
         $application = new Application();
         $command = new ListAdminCommand();
