@@ -44,10 +44,6 @@ matrix:
     - php: '7.1'
       env: COMPOSER_FLAGS="--prefer-lowest"
     - php: '7.2'
-      env: SYMFONY=2.8.*
-    - php: '7.2'
-      env: SYMFONY=3.3.*
-    - php: '7.2'
       env: SYMFONY=3.4.*
     - php: '7.2'
       env: SYMFONY='dev-master as 3.4.x-dev'
