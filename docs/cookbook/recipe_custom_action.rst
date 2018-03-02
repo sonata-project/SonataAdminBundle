@@ -270,3 +270,70 @@ The full ``CarAdmin.php`` example looks like this:
     parameter, is not involved at all, and then you will get an error "There is no
     _sonata_admin defined for the controller
     AppBundle\Controller\XxxxCRUDController and the current route ' '."
+
+Custom Action without Entity
+----------------------------
+
+Creating an action that is not connected to an Entity is also possible.
+Let's imagine we have an import action. We register our route::
+
+    // ...
+    use Sonata\AdminBundle\Route\RouteCollection;
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->add('import');
+    }
+
+We add the controller action::
+
+    use Sonata\AdminBundle\Controller\CRUDController as Controller;
+    use Symfony\Component\HttpFoundation\Request;
+
+    class CRUDController extends Controller
+    {
+        public function importAction(Request $request)
+        {
+            //do your import logic
+        }
+
+Now, instead of adding the action to the form mapper, we can add it next to
+the add button. In your admin class, overwrite the ``configureActionButtons``
+method::
+
+    public function configureActionButtons($action, $object = null)
+    {
+        $list = parent::configureActionButtons($action, $object);
+
+        $list['import']['template'] = 'import_button.html.twig';
+
+        return $list;
+    }
+
+Create a template for that button:
+
+.. code-block:: html+jinja
+
+    <li>
+        <a class="sonata-action-element" href="{{ admin.generateUrl('import') }}">
+            <i class="fa fa-level-up"></i>{{ 'import_action'|trans({}, 'SonataAdminBundle') }}
+        </a>
+    </li>
+
+You can also add this action to your dashboard actions, you have to overwrite
+the ``getDashboardActions`` method in your admin class::
+
+
+    public function getDashboardActions()
+    {
+        $actions = parent::getDashboardActions();
+
+        $actions['import'] = [
+            'label' => 'action_import',
+            'translation_domain' => 'SonataAdminBundle',
+            'url' => $this->generateUrl('import'),
+            'icon' => 'level-up',
+        ];
+
+        return $actions;
+    }
