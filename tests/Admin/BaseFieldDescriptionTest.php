@@ -232,6 +232,22 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertSame('FOoBar', BaseFieldDescription::camelize('fOo bar'));
     }
 
+    public function testGetInaccessibleValue()
+    {
+        $quux = 'quuX';
+        $foo = new Foo();
+        $foo->setQuux($quux);
+        $ro = new \ReflectionObject($foo);
+        $rm = $ro->getMethod('getQuux');
+        $rm->setAccessible(true);
+        $this->assertSame($quux, $rm->invokeArgs($foo, []));
+
+        $description = new FieldDescription();
+
+        $this->expectException(NoValueException::class);
+        $description->getFieldValue($foo, 'quux');
+    }
+
     public function testGetFieldValue()
     {
         $foo = new Foo();
