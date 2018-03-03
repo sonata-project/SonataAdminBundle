@@ -55,7 +55,7 @@ Per Admin (using XML) :
         <!-- src/AppBundle/Resources/config/admin.xml -->
 
         <service id="app.admin.user" class="AppBundle\Admin\UserAdmin">
-            <tag name="sonata.admin" manager_type="orm" filters_persister="filter_persister_service_id" />
+            <tag name="sonata.admin" manager_type="orm" filter_persister="filter_persister_service_id" />
             <argument />
             <argument>AppBundle\Entity\User</argument>
             <argument />
@@ -77,7 +77,7 @@ Per Admin (using YAML) :
                     -
                         name: sonata.admin
                         manager_type: orm
-                        filters_persister: filter_persister_service_id
+                        filter_persister: filter_persister_service_id
                 arguments:
                     - null
                     - AppBundle\Entity\User

@@ -315,8 +315,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         }
         $filtersPersister = $container->getParameter('sonata.admin.configuration.filters.persister');
         // override default configuration with admin config if set
-        if (isset($attributes['filters_persister'])) {
-            $filtersPersister = $attributes['filters_persister'];
+        if (isset($attributes['filter_persister'])) {
+            $filtersPersister = $attributes['filter_persister'];
         }
         // configure filters persistence, if configured to
         if ($persistFilters) {
