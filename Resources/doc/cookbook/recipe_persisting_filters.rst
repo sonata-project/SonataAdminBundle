@@ -133,6 +133,6 @@ Using YAML :
 
 .. note::
 
-    Both ``persist_filters`` and ``filter_persister`` can be used globally and per-admin.
-    Which provide you the most flexible way to configure this feature.
+    Both ``persist_filters`` and ``filter_persister`` can be used globally and per-admin,
+    which provide you the most flexible way to configure this feature.
 
