@@ -290,6 +290,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
         // set filter persistence
         $container->setParameter('sonata.admin.configuration.filters.persist', $config['persist_filters']);
+        $container->setParameter('sonata.admin.configuration.filters.persister', $config['filter_persister']);
 
         $container->setParameter('sonata.admin.configuration.show.mosaic.button', $config['show_mosaic_button']);
 
