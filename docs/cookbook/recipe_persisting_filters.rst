@@ -1,7 +1,8 @@
 Persisting Filters
 ==================
 
-Persisting filters allow your application to save the filters the authenticated user has submitted.
+Persisting filters allow your application to save the filters the authenticated
+user has submitted.
 Then the saved filters will be reused if the page is displayed again.
 
 
@@ -24,13 +25,17 @@ You can enable it in your ``sonata_admin`` configuration :
 Choose the persistence strategy
 -------------------------------
 
-When you enable the filters persistence by setting ``persist_filters`` to ``true``.
-SonataAdmin will use the default filter persister : ``Sonata\AdminBundle\Filter\Persister\SessionFilterPersister``
+When you enable the filters persistence by setting ``persist_filters``
+to ``true``.
+SonataAdmin will use the default filter persister :
+``Sonata\AdminBundle\Filter\Persister\SessionFilterPersister``
 (which is, by now, the only one provided).
 
-You can implement your own filter persister by creating a new class that implements the
-``Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface`` interface and registering it as a service.
-Then the only thing to do is to tell SonataAdmin to use this service as filter persister.
+You can implement your own filter persister by creating a new class that
+implements the ``Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface``
+interface and registering it as a service.
+Then the only thing to do is to tell SonataAdmin to use this service as
+filter persister.
 
 
 Globally :
@@ -46,7 +51,7 @@ Globally :
             filter_persister: filter_persister_service_id
 
 
-Per Admin (using XML) :
+Per Admin :
 
 .. configuration-block::
 
@@ -60,11 +65,6 @@ Per Admin (using XML) :
             <argument>AppBundle\Entity\User</argument>
             <argument />
         </service>
-
-
-Per Admin (using YAML) :
-
-.. configuration-block::
 
     .. code-block:: yaml
 
@@ -87,13 +87,12 @@ Per Admin (using YAML) :
 Disable filters persistence for some Admin
 ------------------------------------------
 
-When you enable the filters persistence by setting ``persist_filters`` to ``true``.
+When you enable the filters persistence by setting ``persist_filters``
+to ``true``.
 All registered Admins will have the feature enabled.
 
 You can disable it per Admin if you want.
 
-
-Using XML :
 
 .. configuration-block::
 
@@ -107,11 +106,6 @@ Using XML :
             <argument>AppBundle\Entity\User</argument>
             <argument />
         </service>
-
-
-Using YAML :
-
-.. configuration-block::
 
     .. code-block:: yaml
 
@@ -133,6 +127,7 @@ Using YAML :
 
 .. note::
 
-    Both ``persist_filters`` and ``filter_persister`` can be used globally and per-admin,
-    which provide you the most flexible way to configure this feature.
+    Both ``persist_filters`` and ``filter_persister`` can be used globally
+    and per-admin, which provide you the most flexible way to configure
+    this feature.
 
