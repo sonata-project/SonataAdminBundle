@@ -208,7 +208,7 @@ routes, you have to make sure the routing loader of the SonataAdminBundle is exe
 
     .. code-block:: yaml
 
-        # config/routing.yaml
+        # config/routes/sonata_admin.yaml
 
         # ...
         _sonata_admin:
