@@ -34,8 +34,8 @@ interface FilterPersisterInterface
      * @param string $adminCode The admin code
      * @param array  $filters   The filters to persist. Structure :
      *                          {string filter field} => array(
-     *                            "type" => {int filter type},
-     *                            "value" => {mixed filter value},
+     *                          "type" => {int filter type},
+     *                          "value" => {mixed filter value},
      *                          ),
      *                          ...,
      *                          "_page" => {int page num},
