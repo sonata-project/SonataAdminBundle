@@ -39,7 +39,7 @@ final class SessionFilterPersister implements FilterPersisterInterface
      */
     public function get($admin)
     {
-        return $this->session->get($this->buildStorageKey($admin), array());
+        return $this->session->get($this->buildStorageKey($admin), []);
     }
 
     /**

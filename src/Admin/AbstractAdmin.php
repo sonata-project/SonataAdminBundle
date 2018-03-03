@@ -748,9 +748,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
             // if filter persistence is configured
             // NEXT_MAJOR: remove `$this->persistFilters !== false` from the condition
-            if ($this->persistFilters !== false && $this->filterPersister !== null) {
+            if (false !== $this->persistFilters && null !== $this->filterPersister) {
                 // if reset filters is asked, remove from storage
-                if ($this->request->query->get('filters') === 'reset') {
+                if ('reset' === $this->request->query->get('filters')) {
                     $this->filterPersister->reset($this->getCode());
                 }
 
