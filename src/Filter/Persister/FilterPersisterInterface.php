@@ -26,7 +26,7 @@ interface FilterPersisterInterface
      *
      * @return array The persisted filters
      */
-    public function get(string $adminCode): array;
+    public function get($adminCode);
 
     /**
      * Set persisted filters for given admin.
@@ -43,12 +43,12 @@ interface FilterPersisterInterface
      *                          "_sort_order" => {string sort order (ASC|DESC)},
      *                          "_per_page" => {int count rows per page}
      */
-    public function set(string $adminCode, array $filters): void;
+    public function set($adminCode, array $filters);
 
     /**
      * Reset persisted filters for given admin.
      *
      * @param string $adminCode The admin code
      */
-    public function reset(string $adminCode): void;
+    public function reset($adminCode);
 }

@@ -37,7 +37,7 @@ final class SessionFilterPersister implements FilterPersisterInterface
     /**
      * {@inheritdoc}
      */
-    public function get(string $adminCode): array
+    public function get($adminCode)
     {
         return $this->session->get($this->buildStorageKey($adminCode), []);
     }
@@ -45,7 +45,7 @@ final class SessionFilterPersister implements FilterPersisterInterface
     /**
      * {@inheritdoc}
      */
-    public function set(string $adminCode, array $filters): void
+    public function set($adminCode, array $filters)
     {
         $this->session->set($this->buildStorageKey($adminCode), $filters);
     }
@@ -53,7 +53,7 @@ final class SessionFilterPersister implements FilterPersisterInterface
     /**
      * {@inheritdoc}
      */
-    public function reset(string $adminCode): void
+    public function reset($adminCode)
     {
         $this->session->remove($this->buildStorageKey($adminCode));
     }
@@ -65,7 +65,7 @@ final class SessionFilterPersister implements FilterPersisterInterface
      *
      * @return string The storage key
      */
-    private function buildStorageKey(string $adminCode): string
+    private function buildStorageKey($adminCode)
     {
         return $adminCode.'.filter.parameters';
     }
