@@ -37,36 +37,36 @@ final class SessionFilterPersister implements FilterPersisterInterface
     /**
      * {@inheritdoc}
      */
-    public function get(string $admin): array
+    public function get(string $adminCode): array
     {
-        return $this->session->get($this->buildStorageKey($admin), []);
+        return $this->session->get($this->buildStorageKey($adminCode), []);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function set(string $admin, array $filters): void
+    public function set(string $adminCode, array $filters): void
     {
-        $this->session->set($this->buildStorageKey($admin), $filters);
+        $this->session->set($this->buildStorageKey($adminCode), $filters);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function reset(string $admin): void
+    public function reset(string $adminCode): void
     {
-        $this->session->remove($this->buildStorageKey($admin));
+        $this->session->remove($this->buildStorageKey($adminCode));
     }
 
     /**
      * Build the session key, under which the filter should be stored for given admin code.
      *
-     * @param string $admin The admin code
+     * @param string $adminCode The admin code
      *
      * @return string The storage key
      */
-    private function buildStorageKey(string $admin): string
+    private function buildStorageKey(string $adminCode): string
     {
-        return $admin.'.filter.parameters';
+        return $adminCode.'.filter.parameters';
     }
 }
