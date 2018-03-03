@@ -9,6 +9,17 @@ UPGRADE FROM 3.32 to 3.33
 The `SonataAdminExtension::output()` method is deprecated and should not be
 used anymore.
 
+UPGRADE FROM 3.32 to 3.33
+=========================
+
+## Deprecated AbstractAdmin::$persistFilters
+
+The `AbstractAdmin::$persistFilters` is deprecated and should not be used anymore.
+The problem was that it was not easy to change the way filters are persisted.
+Instead of a simple boolean var (whether to persist or not filters) you can now inject a service,
+that will be responsible for doing the job (see `FilterPersisterInterface`).
+An implementation was added, which falls back to the previous behavior : `SessionFilterPersister`.
+
 UPGRADE FROM 3.30 to 3.31
 =========================
 
