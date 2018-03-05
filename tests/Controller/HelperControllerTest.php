@@ -11,9 +11,6 @@
 
 namespace Sonata\AdminBundle\Tests\Controller;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -31,7 +28,6 @@ use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Command\DebugCommand;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormConfigInterface;
@@ -272,12 +268,8 @@ class HelperControllerTest extends TestCase
             'context' => 'list',
         ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        $container = $this->prophesize(ContainerInterface::class);
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
-        $managerRegistry = $this->prophesize(ManagerRegistry::class);
-        $objectManager = $this->prophesize(ObjectManager::class);
-        $classMetadata = $this->prophesize(ClassMetadata::class);
-        $pool = $this->prophesize(Pool::class);
+        $modelManager = $this->prophesize(ModelManagerInterface::class);
         $template = $this->prophesize(Template::class);
         $translator = $this->prophesize(TranslatorInterface::class);
         $propertyAccessor = new PropertyAccessor();
@@ -285,29 +277,25 @@ class HelperControllerTest extends TestCase
         $this->admin->getObject(42)->willReturn($object);
         $this->admin->hasAccess('edit', $object)->willReturn(true);
         $this->admin->getListFieldDescription('bar')->willReturn($fieldDescription->reveal());
-        $this->admin->getManagerType()->willReturn('doctrine_orm');
         $this->admin->getClass()->willReturn(get_class($object));
         $this->admin->update($object)->shouldBeCalled();
         $this->admin->getTemplate('base_list_field')->willReturn('admin_template');
+        $this->admin->getModelManager()->willReturn($modelManager->reveal());
         $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
         $this->twig->getExtension(SonataAdminExtension::class)->willReturn(
-            new SonataAdminExtension($pool->reveal(), null, $translator->reveal())
+            new SonataAdminExtension($this->pool->reveal(), null, $translator->reveal())
         );
         $this->twig->load('field_template')->willReturn(new TemplateWrapper($this->twig->reveal(), $template->reveal()));
         $this->twig->isDebug()->willReturn(false);
-        $this->pool->getContainer()->willReturn($container->reveal());
         $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
         $fieldDescription->getType()->willReturn('choice');
         $fieldDescription->getOption('editable')->willReturn(true);
         $fieldDescription->getOption('class')->willReturn(AdminControllerHelper_Bar::class);
+        $fieldDescription->getTargetEntity()->willReturn(AdminControllerHelper_Bar::class);
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
         $fieldDescription->getTemplate()->willReturn('field_template');
         $fieldDescription->getValue(Argument::cetera())->willReturn('some value');
-        $container->get('doctrine_orm')->willReturn($managerRegistry->reveal());
-        $managerRegistry->getManager()->willReturn($objectManager->reveal());
-        $objectManager->getClassMetadata(get_class($object))->willReturn($classMetadata->reveal());
-        $objectManager->find(get_class($associationObject), 1)->willReturn($associationObject);
-        $classMetadata->hasAssociation('bar')->willReturn(true);
+        $modelManager->find(get_class($associationObject), 1)->willReturn($associationObject);
 
         $response = $this->controller->setObjectFieldValueAction($request);
 
