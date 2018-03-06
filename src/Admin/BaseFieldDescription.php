@@ -292,7 +292,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
 
         foreach ($getters as $getter) {
-            if (method_exists($object, $getter)) {
+            if (method_exists($object, $getter) && is_callable([$object, $getter])) {
                 $this->cacheFieldGetter($object, $fieldName, 'getter', $getter);
 
                 return call_user_func_array([$object, $getter], $parameters);
