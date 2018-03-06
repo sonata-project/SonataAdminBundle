@@ -263,7 +263,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getFieldValue($object, $fieldName)
     {
-        if ($this->isVirtual()) {
+        if ($this->isVirtual() || null === $object) {
             return;
         }
 

@@ -302,4 +302,11 @@ class BaseFieldDescriptionTest extends TestCase
         // repeating to cover retrieving cached getter
         $this->assertSame(['inexistantMethod', $parameters], $description->getFieldValue($foo, 'inexistantMethod'));
     }
+
+    public function testGetFieldValueWithNullObject()
+    {
+        $foo = null;
+        $description = new FieldDescription();
+        $this->assertNull($description->getFieldValue($foo, 'bar'));
+    }
 }
