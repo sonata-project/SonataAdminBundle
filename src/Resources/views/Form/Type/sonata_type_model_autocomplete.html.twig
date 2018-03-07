@@ -37,7 +37,7 @@ file that was distributed with this source code.
         {% endif -%}
     </div>
 
-    {% if sonata_admin.field_description.hasAssociationAdmin %}
+    {% if sonata_admin.field_description and sonata_admin.field_description.hasAssociationAdmin %}
         <div id="field_actions_{{ id }}" class="field-actions">
             {% set display_btn_add = sonata_admin.edit != 'admin' and sonata_admin.field_description.associationadmin.hasRoute('create') 
                                      and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}

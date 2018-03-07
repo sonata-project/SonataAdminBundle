@@ -273,8 +273,8 @@ interface FieldDescriptionInterface
     public function getSortParentAssociationMapping();
 
     /**
-     * @param object $object
-     * @param string $fieldName
+     * @param object|null $object
+     * @param string      $fieldName
      *
      * @return mixed
      */

@@ -223,6 +223,22 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertSame('ExtensionDomain', $description->getTranslationDomain());
     }
 
+    public function testGetInaccessibleValue(): void
+    {
+        $quux = 'quuX';
+        $foo = new Foo();
+        $foo->setQuux($quux);
+        $ro = new \ReflectionObject($foo);
+        $rm = $ro->getMethod('getQuux');
+        $rm->setAccessible(true);
+        $this->assertSame($quux, $rm->invokeArgs($foo, []));
+
+        $description = new FieldDescription();
+
+        $this->expectException(NoValueException::class);
+        $description->getFieldValue($foo, 'quux');
+    }
+
     public function testGetFieldValue(): void
     {
         $foo = new Foo();
@@ -276,5 +292,12 @@ class BaseFieldDescriptionTest extends TestCase
 
         // repeating to cover retrieving cached getter
         $this->assertSame(['inexistantMethod', $parameters], $description->getFieldValue($foo, 'inexistantMethod'));
+    }
+
+    public function testGetFieldValueWithNullObject(): void
+    {
+        $foo = null;
+        $description = new FieldDescription();
+        $this->assertNull($description->getFieldValue($foo, 'bar'));
     }
 }
