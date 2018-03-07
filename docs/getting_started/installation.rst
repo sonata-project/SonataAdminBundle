@@ -4,8 +4,8 @@ Installation
 SonataAdminBundle is just a bundle and as such, you can install it at any
 moment during a project's lifecycle.
 
-Step 1: Download the Bundle and a Storage Bundle
-------------------------------------------------
+Download the Bundle
+-------------------
 
 Open a command console, enter your project directory and execute the
 following command to download the latest stable version of this bundle:
@@ -16,6 +16,9 @@ following command to download the latest stable version of this bundle:
 
 This command requires you to have Composer installed globally, as explained in
 the `installation chapter`_ of the Composer documentation.
+
+Download a Storage Bundle
+-------------------------
 
 You've now downloaded the SonataAdminBundle. While this bundle contains all
 functionality, it needs storage bundles to be able to communicate with a
@@ -33,8 +36,8 @@ and follow its installation instructions before proceeding.
     Don't know which to choose? Most new users prefer SonataDoctrineORMAdmin,
     to interact with traditional relational databases (MySQL, PostgreSQL, etc).
 
-Step 2: Enable the Bundle
--------------------------
+Enable the Bundle
+-----------------
 
 Then, enable the bundle and the bundles it relies on by adding the following
 line in `bundles.php` file of your project:
@@ -93,8 +96,8 @@ line in `bundles.php` file of your project:
 .. note::
     If a bundle is already registered, you should not register it again.
 
-Step 3: Configure the Installed Bundles
----------------------------------------
+Configure the Installed Bundles
+-------------------------------
 
 Now all needed bundles are downloaded and registered, you have to add some
 configuration. The admin interface is using SonataBlockBundle to put everything
@@ -121,8 +124,8 @@ admin block:
     what a block is. The SonataBlockBundle is a useful tool, but it's not vital
     that you understand it in order to use the admin bundle.
 
-Step 4: Enable the "translator" service
----------------------------------------
+Enable the "translator" service
+-------------------------------
 
 The translator service is required by SonataAdmin to display all labels properly.
 For more information: http://symfony.com/doc/current/translation.html#configuration
@@ -138,8 +141,8 @@ For more information: http://symfony.com/doc/current/translation.html#configurat
 .. note::
     If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.
 
-Step 5: Define routes
----------------------
+Define routes
+-------------
 
 The bundles are now registered and configured correctly. To be able to access SonataAdminBundle's pages,
 the Symfony router needs to know the routes provided by the SonataAdminBundle.
@@ -177,8 +180,8 @@ You can do this by adding its routes to your application's routing file:
 At this point you can already access the (empty) admin dashboard by visiting the URL:
 ``http://yoursite.local/admin/dashboard``.
 
-Step 6: Preparing your Environment
-----------------------------------
+Preparing your Environment
+--------------------------
 
 As with all bundles you install, it's a good practice to clear the cache and
 install the assets:
