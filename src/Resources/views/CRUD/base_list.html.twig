@@ -115,7 +115,7 @@ file that was distributed with this source code.
                                 <span class="progress-description">
                                     {% if not app.request.xmlHttpRequest %}
                                     <ul class="list-unstyled">
-                                        {% include '@SonataAdmin/Button/create_button.html.twig' %}
+                                        {% include get_admin_template('button_create', admin.code) %}
                                     </ul>
                                     {% endif %}
                                 </span>
