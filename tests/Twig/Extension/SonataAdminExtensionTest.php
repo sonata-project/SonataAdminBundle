@@ -2030,6 +2030,9 @@ EOT
         $this->assertSame('foo', $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
     }
 
+    /**
+     * @group legacy
+     */
     public function testOutput()
     {
         $this->fieldDescription->expects($this->any())
@@ -2075,6 +2078,46 @@ EOT
             ),
             $this->removeExtraWhitespace(
                 $this->twigExtension->output($this->fieldDescription, $template, $parameters, $this->environment)
+            )
+        );
+    }
+
+    public function testRenderWithDebug()
+    {
+        $this->fieldDescription->expects($this->any())
+            ->method('getTemplate')
+            ->will($this->returnValue('@SonataAdmin/CRUD/base_list_field.html.twig'));
+
+        $this->fieldDescription->expects($this->any())
+            ->method('getFieldName')
+            ->will($this->returnValue('fd_name'));
+
+        $this->fieldDescription->expects($this->any())
+            ->method('getValue')
+            ->will($this->returnValue('foo'));
+
+        $parameters = [
+            'admin' => $this->admin,
+            'value' => 'foo',
+            'field_description' => $this->fieldDescription,
+            'object' => $this->object,
+        ];
+
+        $this->environment->enableDebug();
+
+        $this->assertSame(
+            $this->removeExtraWhitespace(<<<'EOT'
+<!-- START
+    fieldName: fd_name
+    template: @SonataAdmin/CRUD/base_list_field.html.twig
+    compiled template: @SonataAdmin/CRUD/base_list_field.html.twig
+-->
+    <td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>
+<!-- END - fieldName: fd_name -->
+EOT
+            ),
+            $this->removeExtraWhitespace(
+                $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription, $parameters)
             )
         );
     }
