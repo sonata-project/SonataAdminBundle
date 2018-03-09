@@ -3,6 +3,11 @@ Sortable behavior in admin listing
 
 This is a full working example of how to implement a sortable feature in your Sonata admin listing
 
+.. note::
+   This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
+
 Background
 ----------
 
@@ -84,14 +89,12 @@ and use the default twig template provided in the ``pixSortableBehaviorBundle``
         ]);
 
 
-In order to add new routes for these actions we are also adding the following method
-
-.. code-block:: php
+In order to add new routes for these actions we are also adding the following method::
 
     <?php
-    // src/AppBundle/Admin/ClientAdmin.php
+    // src/Admin/ClientAdmin.php
 
-    namespace AppBundle/Admin;
+    namespace App/Admin;
 
     use Sonata\AdminBundle\Route\RouteCollection;
     // ...
@@ -108,12 +111,12 @@ Now you can update your ``services.yml`` to use the handler provider by the ``pi
 
     services:
         app.admin.client:
-            class: AppBundle\Admin\ClientAdmin
+            class: App\Admin\ClientAdmin
             tags:
               - { name: sonata.admin, manager_type: orm, label: "Clients" }
             arguments:
               - ~
-              - AppBundle\Entity\Client
+              - App\Entity\Client
               - 'PixSortableBehaviorBundle:SortableAdmin' # define the new controller via the third argument
             public: true
 
@@ -122,9 +125,9 @@ Now we need to define the sort by field to be ``$position``:
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/ClientAdmin.php
+    // src/Admin/ClientAdmin.php
 
-    namespace AppBundle\Admin;
+    namespace App\Admin;
 
     use Sonata\AdminBundle\AbstractAdmin;
     use Sonata\AdminBundle\Datagrid\ListMapper;

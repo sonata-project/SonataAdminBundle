@@ -1,13 +1,16 @@
 Sortable Sonata Type Model in Admin
 ===================================
 
-This is a full working example on how to implement a sortable feature in your Sonata admin form between two entities.
+This is a full working example on how to implement a sortable
+feature in your Sonata admin form between two entities.
 
 Background
 ----------
 
-The sortable function is already available inside Sonata for the ``ChoiceType``. But the ``ModelType`` (or sonata_type_model) extends from choice, so this function is already available in our form type.
-We just need some configuration to make it work.
+The sortable function is already available inside Sonata for the ``ChoiceType``.
+But the ``ModelType`` (or sonata_type_model) extends from choice, so this
+function is already available in our form type. We just need some configuration
+to make it work.
 
 The goal here is to fully configure a working example to handle the following need :
 User got some expectations, but some are more relevant than the others.
@@ -29,8 +32,9 @@ The recipe
 Part 1 : Update the data model configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The first thing to do is to update the Doctrine ORM configuration and create the join entity between ``User`` and ``Expectation``.
-We are going to call this join entity ``UserHasExpectations``.
+The first thing to do is to update the Doctrine ORM configuration and
+create the join entity between ``User`` and ``Expectation``. We are
+going to call this join entity ``UserHasExpectations``.
 
 .. note::
 
@@ -91,9 +95,7 @@ We now need to create the join entity configuration, create the following file i
 Part 2 : Update the data model entities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Update the ``UserBundle\Entity\User.php`` entity with the following :
-
-.. code-block:: php
+Update the ``UserBundle\Entity\User.php`` entity with the following::
 
     // ...
 
@@ -154,9 +156,7 @@ Update the ``UserBundle\Entity\User.php`` entity with the following :
 
     // ...
 
-Update the ``UserBundle\Entity\Expectation.php`` entity with the following :
-
-.. code-block:: php
+Update the ``UserBundle\Entity\Expectation.php`` entity with the following::
 
     // ...
 
@@ -191,9 +191,7 @@ Update the ``UserBundle\Entity\Expectation.php`` entity with the following :
 
     // ...
 
-Create the ``UserBundle\Entity\UserHasExpectations.php`` entity with the following :
-
-.. code-block:: php
+Create the ``UserBundle\Entity\UserHasExpectations.php`` entity with the following::
 
     <?php
     namespace UserBundle\Entity;
@@ -383,7 +381,8 @@ There is two important things that we need to show here :
 Part 4 : Data Transformer
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The last (but not least) step is create the ``UserBundle\Form\DataTransformer\ExpectationDataTransformer.php`` to handle the conversion of ``Expectation`` to ``UserHasExpectations``.
+The last (but not least) step is create the ``UserBundle\Form\DataTransformer\ExpectationDataTransformer.php``
+to handle the conversion of ``Expectation`` to ``UserHasExpectations``.
 
 .. code-block:: php
 

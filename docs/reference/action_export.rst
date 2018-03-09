@@ -3,11 +3,16 @@ The Export action
 
 This document will cover the Export action and related configuration options.
 
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
+
 Basic configuration
 -------------------
 
-If you have registered the ``SonataExporterBundle`` bundle in the kernel of your application,
-you can benefit from a lot of flexibility:
+If you have registered the ``SonataExporterBundle`` bundle, you can benefit
+from a lot of flexibility:
 
 * You can configure default exporters globally.
 * You can add custom exporters, also globally.
@@ -19,8 +24,9 @@ Translation
 ~~~~~~~~~~~
 
 All field names are translated by default.
-An internal mechanism checks if a field matching the translator strategy label exists in the current translation file
-and will use the field name as a fallback.
+An internal mechanism checks if a field matching the translator strategy
+label exists in the current translation file and will use the field name
+as a fallback.
 
 Picking which fields to export
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -28,20 +34,18 @@ Picking which fields to export
 By default, all fields are exported. More accurately, it depends on the
 persistence backend you are using, but for instance, the doctrine ORM backend
 exports all fields (associations are not exported). If you want to change this
-behavior for a specific admin, you can override the ``getExportFields()`` method:
-
-.. code-block:: php
+behavior for a specific admin, you can override the ``getExportFields()`` method::
 
     <?php
 
     public function getExportFields()
     {
-        return ['givenName', 'familyName', 'contact.phone'];
+        return ['givenName', 'familyName', 'contact.phone', 'getAddress'];
     }
 
 .. note::
-
-    Note that you can use `contact.phone` to access the `phone` property of `Contact` entity
+    Note that you can use `contact.phone` to access the `phone` property
+    of `Contact` entity. Or use a getter if you have some virtual field.
 
 You can also tweak the list by creating an admin extension that implements the
 ``configureExportFields()`` method.
@@ -74,12 +78,10 @@ method in your admin class.
 Customizing the query used to fetch the results
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 If you want to customize the query used to fetch the results for a specific admin,
-you can override the ``getDataSourceIterator()`` method:
-
-.. code-block:: php
+you can override the ``getDataSourceIterator()`` method::
 
     <?php
-    // src/AppBundle/Admin/PersonAdmin.php
+    // src/Admin/PersonAdmin.php
 
     class PersonAdmin extends AbstractAdmin
     {

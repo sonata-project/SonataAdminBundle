@@ -45,6 +45,8 @@ solve the issue by using the ``preUpdate`` saving hook.
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use FOS\UserBundle\Model\UserManagerInterface;
+    use Sonata\AdminBundle\Form\Type\ModelType;
+    use Sonata\UserBundle\Form\Type\SecurityRolesType;
 
     class UserAdmin extends AbstractAdmin
     {
@@ -57,10 +59,10 @@ solve the issue by using the ``preUpdate`` saving hook.
                     ->add('plainPassword', 'text')
                 ->end()
                 ->with('Groups')
-                    ->add('groups', 'sonata_type_model', ['required' => false])
+                    ->add('groups', ModelType::class, ['required' => false])
                 ->end()
                 ->with('Management')
-                    ->add('roles', 'sonata_security_roles', ['multiple' => true])
+                    ->add('roles', SecurityRolesType::class, ['multiple' => true])
                     ->add('locked', null, ['required' => false])
                     ->add('expired', null, ['required' => false])
                     ->add('enabled', null, ['required' => false])

@@ -20,7 +20,7 @@ Usage example:
 
 .. code-block:: bash
 
-    $ php app/console cache:create-cache-class
+    $ bin/console cache:create-cache-class
 
 sonata:admin:generate
 ---------------------
@@ -40,7 +40,7 @@ The command require the SensioGeneratorBundle_ to work. If you don't already hav
 ===============   ===============================================================================================================================
 Options           Description
 ===============   ===============================================================================================================================
- **bundle**       the bundle name (the default value is determined by the given model class, e.g. "AppBundle" or "YourNSFooBundle")
+ **bundle**       the bundle name (the default value is determined by the given model class, e.g. "App" or "YourNSFooBundle")
  **admin**        the admin class basename (by default this adds "Admin" to the model class name, e.g. "BarAdmin")
  **controller**   the controller class basename (by default this adds "AdminController" to the model class name, e.g. "BarAdminController")
  **manager**      the model manager type (by default this is the first registered model manager type, e.g. "orm")
@@ -52,7 +52,7 @@ Usage example:
 
 .. code-block:: bash
 
-    $ php app/console sonata:admin:generate AppBundle/Entity/Foo
+    $ bin/console sonata:admin:generate App/Entity/Foo
 
 sonata:admin:list
 -----------------
@@ -66,7 +66,7 @@ Usage example:
 
 .. code-block:: bash
 
-    $ php app/console sonata:admin:list
+    $ bin/console sonata:admin:list
 
 
 .. figure:: ../images/console_admin_list.png
@@ -86,7 +86,7 @@ Usage example:
 
 .. code-block:: bash
 
-    $ php app/console sonata:admin:explain sonata.news.admin.post
+    $ bin/console sonata:admin:explain sonata.news.admin.post
 
 .. figure:: ../images/console_admin_explain.png
    :align: center
@@ -108,7 +108,7 @@ Usage example:
 
 .. code-block:: bash
 
-    $ php app/console sonata:admin:setup-acl
+    $ bin/console sonata:admin:setup-acl
 
 sonata:admin:generate-object-acl
 --------------------------------

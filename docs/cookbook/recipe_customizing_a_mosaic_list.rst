@@ -79,9 +79,8 @@ Block types:
  - ``sonata_mosaic_description``: this block will be always on screen and should represent the entity's name.
 
 
-The ``ObjectMetadata`` object is returned by the related admin class, for instance the MediaBundle defines the method as:
-
-.. code-block:: jinja
+The ``ObjectMetadata`` object is returned by the related admin class,
+for instance the MediaBundle defines the method as::
 
     <?php
 

@@ -1,9 +1,12 @@
 Overwrite Admin Configuration
 =============================
 
-Sometime you might want to overwrite some Admin settings from vendors. This recipe will explain how to achieve this operation. However, keep in mind this operation is quite dangerous and might break code.
+Sometimes you might want to overwrite some Admin settings from vendors.
+This recipe will explain how to achieve this operation. However, keep
+in mind this operation is quite dangerous and might break code.
 
-From the configuration file, you can add a new section named ``admin_services`` with the following templates:
+From the configuration file, you can add a new section named ``admin_services``
+with the following templates:
 
 .. code-block:: yaml
 

@@ -2,7 +2,6 @@ Creating and Editing objects
 ============================
 
 .. note::
-
     This document is a stub representing a new work in progress. If you're reading
     this you can help contribute, **no matter what your experience level with Sonata
     is**. Check out the `issues on Github`_ for more information about how to get involved.
@@ -10,6 +9,10 @@ Creating and Editing objects
 This document will cover the Create and Edit actions. It will cover configuration
 of the fields and forms available in these views and any other relevant settings.
 
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
 
 Basic configuration
 -------------------
@@ -54,7 +57,7 @@ For more detailed information about routes, see :doc:`routing`.
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/PersonAdmin.php
+    // src/Admin/PersonAdmin.php
 
     class PersonAdmin extends AbstractAdmin
     {
@@ -108,7 +111,7 @@ has 4 parameters:
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/PersonAdmin.php
+    // src/Admin/PersonAdmin.php
 
     class PersonAdmin extends AbstractAdmin
     {
@@ -149,12 +152,10 @@ options for the group itself.
 - ``translation_domain``: The translation domain for the form group title
   (the Admin translation domain is used by default).
 
-To specify options, do as follows:
-
-.. code-block:: php
+To specify options, do as follows::
 
     <?php
-    // src/AppBundle/Admin/PersonAdmin.php
+    // src/Admin/PersonAdmin.php
 
     class PersonAdmin extends AbstractAdmin
     {

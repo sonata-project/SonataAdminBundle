@@ -47,7 +47,6 @@ Here is an example:
 .. code-block:: php
 
     <?php
-
     // ...
 
     public function configureListFields(ListMapper $listMapper)
@@ -112,15 +111,19 @@ Options
     * ``(m)`` stands for mandatory
     * ``(o)`` stands for optional
 
-- ``type`` (m): defines the field type - mandatory for the field description itself but will try to detect the type automatically if not specified
+- ``type`` (m): defines the field type - mandatory for the field description
+  itself but will try to detect the type automatically if not specified
 - ``template`` (o): the template used to render the field
 - ``label`` (o): the name used for the column's title
-- ``link_parameters`` (o): add link parameter to the related Admin class when the ``Admin::generateUrl`` is called
+- ``link_parameters`` (o): add link parameter to the related Admin class
+  when the ``Admin::generateUrl`` is called
 - ``code`` (o): the method name to retrieve the related value (for example,
   if you have an `array` type field, you would like to show info prettier
   than `[0] => 'Value'`; useful when simple getter is not enough).
   Notice: works with string-like types (string, text, html)
-- ``associated_property`` (o): property path to retrieve the "string" representation of the collection element, or a closure with the element as argument and return a string.
+- ``associated_property`` (o): property path to retrieve the "string"
+  representation of the collection element, or a closure with the element
+  as argument and return a string.
 - ``identifier`` (o): if set to true a link appears on the value to edit the element
 
 Available types and associated options
@@ -192,10 +195,10 @@ Available types and associated options
 |           | hide_protocol  | Hide http:// or https:// (default: false)                             |
 +-----------+----------------+-----------------------------------------------------------------------+
 
-If you have the SonataDoctrineORMAdminBundle installed, you have access to more field types, see `SonataDoctrineORMAdminBundle Documentation <https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html>`_.
+If you have the SonataDoctrineORMAdminBundle installed, you have access
+to more field types, see `SonataDoctrineORMAdminBundle Documentation`_.
 
 .. note::
-
     It is better to prefer non negative notions when possible for boolean
     values so use the ``inverse`` option if you really cannot find a good enough
     antonym for the name you have.
@@ -233,7 +236,7 @@ the ``datagridValues`` array property. All three keys ``_page``, ``_sort_order``
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/PostAdmin.php
+    // src/Admin/PostAdmin.php
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
 
@@ -272,7 +275,7 @@ You can add filters to let user control which data will be displayed.
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/PostAdmin.php
+    // src/Admin/PostAdmin.php
 
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
@@ -290,7 +293,8 @@ You can add filters to let user control which data will be displayed.
         // ...
     }
 
-All filters are hidden by default for space-saving. User has to check which filter he wants to use.
+All filters are hidden by default for space-saving. User has to check which
+filter he wants to use.
 
 To make the filter always visible (even when it is inactive), set the parameter
 ``show_filter`` to ``true``.
@@ -330,8 +334,9 @@ Though this ``operator_type`` is automatically detected it can be changed or eve
         ;
     }
 
-If you don't need the advanced filters, or all your ``operator_type`` are hidden, you can disable them by setting
-``advanced_filter`` to ``false``. You need to disable all advanced filters to make the button disappear.
+If you don't need the advanced filters, or all your ``operator_type``
+are hidden, you can disable them by setting ``advanced_filter`` to ``false``.
+You need to disable all advanced filters to make the button disappear.
 
 .. code-block:: php
 
@@ -351,7 +356,8 @@ Default filters
 ^^^^^^^^^^^^^^^
 
 Default filters can be added to the datagrid values by using the ``configureDefaultFilterValues`` method.
-A filter has a ``value`` and an optional ``type``. If no ``type`` is given the default type ``is equal`` is used.
+A filter has a ``value`` and an optional ``type``. If no ``type`` is
+given the default type ``is equal`` is used.
 
 .. code-block:: php
 
@@ -363,12 +369,10 @@ A filter has a ``value`` and an optional ``type``. If no ``type`` is given the d
         ];
     }
 
-Available types are represented through classes which can be found here:
-https://github.com/sonata-project/SonataCoreBundle/tree/master/Form/Type
+Available types are represented through classes which can be found `here`_.
 
-Types like ``equal`` and ``boolean`` use constants to assign a choice of ``type`` to an ``integer`` for its ``value``:
-
-.. code-block:: php
+Types like ``equal`` and ``boolean`` use constants to assign a choice of
+``type`` to an ``integer`` for its ``value``::
 
     <?php
     // SonataCoreBundle/Form/Type/EqualType.php
@@ -384,9 +388,7 @@ Types like ``equal`` and ``boolean`` use constants to assign a choice of ``type`
 The integers are then passed in the URL of the list action e.g.:
 **/admin/user/user/list?filter[enabled][type]=1&filter[enabled][value]=1**
 
-This is an example using these constants for an ``boolean`` type:
-
-.. code-block:: php
+This is an example using these constants for an ``boolean`` type::
 
     use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
     use Sonata\CoreBundle\Form\Type\EqualType;
@@ -402,9 +404,9 @@ This is an example using these constants for an ``boolean`` type:
         ];
     }
 
-Please note that setting a ``false`` value on a the ``boolean`` type will not work since the type expects an integer of  ``2`` as ``value`` as defined in the class constants:
-
-.. code-block:: php
+Please note that setting a ``false`` value on a the ``boolean`` type
+will not work since the type expects an integer of  ``2`` as ``value``
+as defined in the class constants::
 
     <?php
     // SonataCoreBundle/Form/Type/BooleanType.php
@@ -417,7 +419,8 @@ Please note that setting a ``false`` value on a the ``boolean`` type will not wo
         const TYPE_NO = 2;
     }
 
-Default filters can also be added to the datagrid values by overriding the ``getFilterParameters`` method.
+Default filters can also be added to the datagrid values by overriding
+the ``getFilterParameters`` method.
 
 .. code-block:: php
 
@@ -463,14 +466,14 @@ This approach is useful when you need to create dynamic filters.
         }
     }
 
-Please note that this is not a secure approach to hide posts from others. It's just an example for setting filters on demand.
+Please note that this is not a secure approach to hide posts from others.
+It's just an example for setting filters on demand.
 
 Callback filter
 ^^^^^^^^^^^^^^^
 
-If you have the **SonataDoctrineORMAdminBundle** installed you can use the ``doctrine_orm_callback`` filter type e.g. for creating a full text filter:
-
-.. code-block:: php
+If you have the **SonataDoctrineORMAdminBundle** installed you can use the
+``doctrine_orm_callback`` filter type e.g. for creating a full text filter::
 
     use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -506,9 +509,8 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the ``doc
         }
     }
 
-You can also get the filter type which can be helpful to change the operator type of your condition(s):
-
-.. code-block:: php
+You can also get the filter type which can be helpful to change the operator
+type of your condition(s)::
 
     use Sonata\CoreBundle\Form\Type\EqualType;
 
@@ -541,8 +543,10 @@ You can also get the filter type which can be helpful to change the operator typ
 Visual configuration
 --------------------
 
-You have the possibility to configure your List View to customize the render without overriding to whole template.
-You can :
+You have the possibility to configure your List View to customize the
+render without overriding to whole template.
+
+You can:
 
 - `header_style`: Customize the style of header (width, color, background, align...)
 - `header_class`: Customize the class of the header
@@ -580,12 +584,13 @@ You can :
         ;
     }
 
-If you want to customise the `collapse` option, you can also give an array to override the default parameters.
+If you want to customise the `collapse` option, you can also give an array
+to override the default parameters.
 
 .. code-block:: php
 
             // ...
-            ->add('description', 'text', [
+            ->add('description', TextType::class, [
                 'header_style' => 'width: 35%',
                 'collapse' => [
                     'height' => 40, // height in px
@@ -595,9 +600,7 @@ If you want to customise the `collapse` option, you can also give an array to ov
             ])
             // ...
 
-If you want to show only the `label_icon`:
-
-.. code-block:: php
+If you want to show only the `label_icon`::
 
             // ...
             ->add('upvotes', null, [
@@ -606,7 +609,7 @@ If you want to show only the `label_icon`:
             ])
             // ...
 
-.. _`issues on GitHub`: https://github.com/sonata-project/SonataAdminBundle/issues/1519
+`issues on GitHub`_
 
 Mosaic view button
 ------------------
@@ -619,8 +622,8 @@ You have the possibility to show/hide mosaic view button.
         # for hide mosaic view button on all screen using `false`
         show_mosaic_button:   true
 
-You can show/hide mosaic view button using admin service configuration. You need to add option ``show_mosaic_button``
-in your admin services:
+You can show/hide mosaic view button using admin service configuration.
+You need to add option ``show_mosaic_button`` in your admin services:
 
 .. code-block:: yaml
 
@@ -640,6 +643,9 @@ Checkbox range selection
 ------------------------
 
 .. tip::
-
     You can check / uncheck a range of checkboxes by clicking a first one,
     then a second one with shift + click.
+
+.. _`issues on GitHub`: https://github.com/sonata-project/SonataAdminBundle/issues/1519
+.. _`SonataDoctrineORMAdminBundle Documentation`: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html
+.. _`here`: https://github.com/sonata-project/SonataCoreBundle/tree/master/Form/Type
