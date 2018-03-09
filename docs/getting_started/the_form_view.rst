@@ -254,7 +254,7 @@ You've now finished your nice form view for the ``BlogPost`` model. Now it's
 time to test it out by creating a post.
 
 After pressing the "Create" button, you probably see a green message like:
-*Item "AppBundle\Entity\BlogPost:00000000192ba93c000000001b786396" has been
+*Item "App\Entity\BlogPost:00000000192ba93c000000001b786396" has been
 successfully created.*
 
 While it's very friendly of the SonataAdminBundle to notify the admin of a

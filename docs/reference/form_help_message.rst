@@ -1,10 +1,18 @@
 Form Help Messages and Descriptions
 ===================================
 
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
+
 Help Messages
 -------------
 
-Help messages are short notes that are rendered together with form fields. They are generally used to show additional information so the user can complete the form element faster and more accurately. The text is not escaped, so HTML can be used.
+Help messages are short notes that are rendered together with form fields.
+They are generally used to show additional information so the user can complete
+the form element faster and more accurately. The text is not escaped,
+so HTML can be used.
 
 Example
 ^^^^^^^
@@ -12,7 +20,7 @@ Example
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/PostAdmin.php
+    // src/Admin/PostAdmin.php
 
     class PostAdmin extends AbstractAdmin
     {
@@ -34,12 +42,10 @@ Example
 Alternative Ways To Define Help Messages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-All at once
-
-.. code-block:: php
+All at once::
 
     <?php
-    // src/AppBundle/Admin/PostAdmin.php
+    // src/Admin/PostAdmin.php
 
     class PostAdmin extends AbstractAdmin
     {
@@ -58,12 +64,10 @@ All at once
         }
     }
 
-or step by step.
-
-.. code-block:: php
+or step by step::
 
     <?php
-    // src/AppBundle/Admin/PostAdmin.php
+    // src/Admin/PostAdmin.php
 
     class PostAdmin extends AbstractAdmin
     {
@@ -87,7 +91,7 @@ This Extension for example adds a note field to some entities which use a custom
 
     <?php
 
-    namespace AppBundle\Admin\Extension;
+    namespace App\Admin\Extension;
 
     use Sonata\AdminBundle\Admin\AbstractAdminExtension;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -142,7 +146,7 @@ Help messages in a sub-field
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/PostAdmin.php
+    // src/Admin/PostAdmin.php
 
     use Sonata\CoreBundle\Form\Type\ImmutableArrayType;
     use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -176,7 +180,9 @@ use help messages to display an image tag.
 Form Group Descriptions
 -----------------------
 
-A form group description is a block of text rendered below the group title. These can be used to describe a section of a form. The text is not escaped, so HTML can be used.
+A form group description is a block of text rendered below the group title.
+These can be used to describe a section of a form. The text is not escaped,
+so HTML can be used.
 
 Example
 ^^^^^^^
@@ -184,7 +190,7 @@ Example
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/PostAdmin.php
+    // src/Admin/PostAdmin.php
 
     class PostAdmin extends AbstractAdmin
     {

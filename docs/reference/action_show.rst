@@ -2,12 +2,16 @@ The Show action
 ===============
 
 .. note::
-
     This document is a stub representing a new work in progress. If you're reading
     this you can help contribute, **no matter what your experience level with Sonata
     is**. Check out the `issues on GitHub`_ for more information about how to get involved.
 
 This document will cover the Show action and related configuration options.
+
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
 
 Basic configuration
 -------------------
@@ -27,9 +31,12 @@ Group options
 When adding a group to your show page, you may specify some options for the group itself.
 
 - ``collapsed``: unused at the moment
-- ``class``: the class for your group in the admin; by default, the value is set to ``col-md-12``.
-- ``fields``: the fields in your group (you should NOT override this unless you know what you're doing).
-- ``box_class``: the class for your group box in the admin; by default, the value is set to ``box box-primary``.
+- ``class``: the class for your group in the admin; by default, the value
+  is set to ``col-md-12``.
+- ``fields``: the fields in your group (you should NOT override this unless
+  you know what you're doing).
+- ``box_class``: the class for your group box in the admin; by default,
+  the value is set to ``box box-primary``.
 - ``description``: to complete
 - ``translation_domain``: to complete
 
@@ -38,7 +45,7 @@ To specify options, do as follow:
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/PersonAdmin.php
+    // src/Admin/PersonAdmin.php
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Show\ShowMapper;
@@ -68,7 +75,7 @@ Here is an example of how to achieve this :
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/PersonAdmin.php
+    // src/Admin/PersonAdmin.php
 
     use Sonata\AdminBundle\Show\ShowMapper;
 
@@ -95,18 +102,13 @@ Here is an example of how to achieve this :
 Customising the query used to show the object from within your Admin class
 --------------------------------------------------------------------------
 
-Setting up a showAction is pretty much the same as a form, which we did in the initial setup.
-
-It is actually a bit easier, because we are only concerned with displaying information.
-
-Smile, the hard part is already done.
-
-The following is a working example of a ShowAction
-
-.. code-block:: php
+Setting up a showAction is pretty much the same as a form, which we did
+in the initial setup. It is actually a bit easier, because we are only
+concerned with displaying information. Smile, the hard part is already done.
+The following is a working example of a ShowAction::
 
     <?php
-    // src/AppBundle/Admin/PostAdmin.php
+    // src/Admin/PostAdmin.php
 
     use Sonata\AdminBundle\Show\ShowMapper;
 
@@ -136,9 +138,7 @@ The following is a working example of a ShowAction
     }
 
 .. tip::
-    To customize the displayed label of a show field you can use the ``label`` option:
-
-    .. code-block:: php
+    To customize the displayed label of a show field you can use the ``label`` option::
 
         $showMapper->add('name', null, ['label' => 'UserName']);
 
@@ -161,7 +161,7 @@ The first thing you need to do is define it in app/config/config/yml:
 
 Once you have defined this, Sonata Admin looks for it in the following location:
 
-``src/AppBundle/Resources/views/Admin/Display_Client.html.twig``
+``templates/Admin/Display_Client.html.twig``
 
 Now that you have told Sonata Admin where to find the template, it is time to put one in there.
 

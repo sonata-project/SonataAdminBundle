@@ -1,6 +1,11 @@
 Dashboard
 =========
 
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
+
 The Dashboard is the main landing page. By default it lists your mapped models,
 as defined by your ``Admin`` services. This is useful to help you start using
 ``SonataAdminBundle`` right away, but there is much more that you can do to take
@@ -9,13 +14,13 @@ advantage of the Dashboard.
 The Dashboard is, by default, available at ``/admin/dashboard``, which is handled by
 the ``SonataAdminBundle:Core:dashboard`` controller action. The default view file for
 this action is ``@SonataAdmin/Core/dashboard.html.twig``, but you can change
-this in your ``config.yml``:
+this in your admin configuration:
 
 .. configuration-block::
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/sonata_admin.yaml
 
         sonata_admin:
             templates:
@@ -65,12 +70,12 @@ services:
 
     .. code-block:: xml
 
-        <service id="app.admin.post" class="AppBundle\Admin\PostAdmin">
+        <service id="app.admin.post" class="App\Admin\PostAdmin">
               <tag name="sonata.admin" manager_type="orm"
                   group="Content"
                   label="Post" />
               <argument />
-              <argument>AppBundle\Entity\Post</argument>
+              <argument>App\Entity\Post</argument>
               <argument />
           </service>
 
@@ -78,7 +83,7 @@ services:
 
         services:
             app.admin.post:
-                class: AppBundle\Admin\PostAdmin
+                class: App\Admin\PostAdmin
                 tags:
                     - name: sonata.admin
                       manager_type: orm
@@ -86,7 +91,7 @@ services:
                       label: "Post"
                 arguments:
                     - ~
-                    - AppBundle\Entity\Post
+                    - App\Entity\Post
                     - ~
                 public: true
 
@@ -97,12 +102,12 @@ service belongs to the ``Content`` group.
 
     .. code-block:: xml
 
-        <service id="app.admin.post" class="AppBundle\Admin\PostAdmin">
+        <service id="app.admin.post" class="App\Admin\PostAdmin">
               <tag name="sonata.admin" manager_type="orm"
                   group="app.admin.group.content"
-                  label="app.admin.model.post" label_catalogue="AppBundle" />
+                  label="app.admin.model.post" label_catalogue="App" />
               <argument />
-              <argument>AppBundle\Entity\Post</argument>
+              <argument>App\Entity\Post</argument>
               <argument />
           </service>
 
@@ -110,19 +115,19 @@ service belongs to the ``Content`` group.
 
         services:
             app.admin.post:
-                class: AppBundle\Admin\PostAdmin
+                class: App\Admin\PostAdmin
                 tags:
                     - name: sonata.admin
                       manager_type: orm
                       group: "app.admin.group.content"
                       label: "app.admin.model.post"
-                      label_catalogue: "AppBundle"
+                      label_catalogue: "App"
                 arguments:
                     - ~
-                    - AppBundle\Entity\Post
+                    - App\Entity\Post
                     - ~
 
-In this example, the labels are translated by ``AppBundle``, using the given
+In this example, the labels are translated by ``App``, using the given
 ``label_catalogue``. So, you can use the above examples to support multiple languages
 in your project.
 
@@ -142,14 +147,14 @@ declarations.
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/sonata_admin.yaml
 
         sonata_admin:
             dashboard:
                 groups:
                     app.admin.group.content:
                         label: app.admin.group.content
-                        label_catalogue: AppBundle
+                        label_catalogue: App
                         items:
                             - app.admin.post
 
@@ -168,7 +173,7 @@ declarations.
     either leave out that key or use the ``~`` value for that option.
 
 This configuration specifies that the ``app.admin.group.content`` group uses the
-``app.admin.group.content`` label, which is translated using the ``AppBundle``
+``app.admin.group.content`` label, which is translated using the ``App``
 translation catalogue (the same label and translation configuration that we declared
 previously, in the service definition example).
 
@@ -208,7 +213,7 @@ a text block and RSS feed block on the right. The configuration for this scenari
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/sonata_admin.yaml
 
         sonata_admin:
             dashboard:
@@ -255,7 +260,7 @@ suit this scenario.
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/sonata_admin.yaml
 
         sonata_admin:
             dashboard:
@@ -347,7 +352,7 @@ On ``top`` and ``bottom`` positions, you can also specify an optional ``class`` 
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/sonata_admin.yaml
 
         sonata_admin:
             dashboard:
@@ -365,12 +370,10 @@ Configuring what actions are available for each item on the dashboard
 By default. A "list" and a "create" option are available for each item on the
 dashboard. If you created a custom action and want to display it along the
 other two on the dashboard, you can do so by overriding the
-``getDashboardActions()`` method of your admin class:
-
-.. code-block:: php
+``getDashboardActions()`` method of your admin class::
 
     <?php
-    // src/AppBundle/Admin/PostAdmin.php
+    // src/Admin/PostAdmin.php
 
     class PostAdmin extends AbstractAdmin
     {
@@ -393,12 +396,10 @@ other two on the dashboard, you can do so by overriding the
 
     }
 
-You can also hide an action from the dashboard by unsetting it:
-
-.. code-block:: php
+You can also hide an action from the dashboard by unsetting it::
 
     <?php
-    // src/AppBundle/Admin/PostAdmin.php
+    // src/Admin/PostAdmin.php
 
     class PostAdmin extends AbstractAdmin
     {

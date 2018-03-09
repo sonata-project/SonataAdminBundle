@@ -10,13 +10,13 @@ The select2 is enabled on all ``select`` form elements by default.
 Disable select2
 ---------------
 
-If you don't want to use select2 in your admin, you can disable it in ``config.yml``.
+If you don't want to use select2 in your admin, you can disable it in configuration.
 
 .. configuration-block::
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/sonata_admin.yaml
 
         sonata_admin:
             options:

@@ -4,6 +4,11 @@ Uploading and saving documents (including images) using DoctrineORM and SonataAd
 This is a full working example of a file upload management method using
 SonataAdmin with the DoctrineORM persistence layer.
 
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
+
 Pre-requisites
 --------------
 
@@ -42,11 +47,11 @@ upload timestamp.
 
     .. code-block:: yaml
 
-        # src/AppBundle/Resources/config/Doctrine/Image.orm.yml
+        # src/Resources/config/Doctrine/Image.orm.yml
 
         AppBundleBundle\Entity\Image:
             type: entity
-            repositoryClass: AppBundle\Entity\Repositories\ImageRepository
+            repositoryClass: App\Entity\Repositories\ImageRepository
             table: images
             id:
                 id:
@@ -67,12 +72,10 @@ upload timestamp.
                 prePersist:   [ lifecycleFileUpload ]
                 preUpdate:    [ lifecycleFileUpload ]
 
-We then have the following methods in our ``Image`` class to manage file uploads:
-
-.. code-block:: php
+We then have the following methods in our ``Image`` class to manage file uploads::
 
     <?php
-    // src/AppBundle/Bundle/Entity/Image.php
+    // src/Entity/Image.php
 
     const SERVER_PATH_TO_IMAGE_FOLDER = '/server/path/to/images';
 
@@ -163,19 +166,19 @@ We need to do two things in Sonata to enable file uploads:
 1. Add a file upload widget
 2. Ensure that the Image class' lifecycle events fire when we upload a file
 
-Both of these are straightforward when you know what to do:
-
-.. code-block:: php
+Both of these are straightforward when you know what to do::
 
     <?php
-    // src/AppBundle/Admin/ImageAdmin.php
+    // src/Admin/ImageAdmin.php
+
+    use Symfony\Component\Form\Extension\Core\Type\FileType;
 
     class ImageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
-                ->add('file', 'file', [
+                ->add('file', FileType::class, [
                     'required' => false
                 ])
 
@@ -225,12 +228,10 @@ Admin's lifecycle events to trigger the file management when needed.
 
 In this example we have a Page class which has three one-to-one Image relationships
 defined, linkedImage1 to linkedImage3. The PostAdmin class' form field configuration
-looks like this:
-
-.. code-block:: php
+looks like this::
 
     <?php
-    // src/AppBundle/Admin/PostAdmin.php
+    // src/Admin/PostAdmin.php
 
     use Sonata\AdminBundle\Form\Type\AdminType;
 
@@ -259,12 +260,10 @@ looks like this:
 This is easy enough - we have embedded three fields, which will then use our ``ImageAdmin``
 class to determine which fields to show.
 
-In our PostAdmin we then have the following code to manage the relationships' lifecycles:
-
-.. code-block:: php
+In our PostAdmin we then have the following code to manage the relationships' lifecycles::
 
     <?php
-    // src/AppBundle/Admin/PostAdmin.php
+    // src/Admin/PostAdmin.php
 
     class PostAdmin extends AbstractAdmin
     {
@@ -287,7 +286,7 @@ In our PostAdmin we then have the following code to manage the relationships' li
                 // detect embedded Admins that manage Images
                 if ($fieldDescription->getType() === 'sonata_type_admin' &&
                     ($associationMapping = $fieldDescription->getAssociationMapping()) &&
-                    $associationMapping['targetEntity'] === 'AppBundle\Entity\Image'
+                    $associationMapping['targetEntity'] === 'App\Entity\Image'
                 ) {
                     $getter = 'get'.$fieldName;
                     $setter = 'set'.$fieldName;

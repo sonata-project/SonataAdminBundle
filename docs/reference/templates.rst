@@ -1,6 +1,11 @@
 Templates
 =========
 
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
+
 ``SonataAdminBundle`` comes with a significant amount of ``twig`` files used to display the
 different parts of each ``Admin`` action's page. If you read the ``Templates`` part of the
 :doc:`architecture` section of this guide, you should know by now how these are organized in
@@ -108,7 +113,7 @@ You can specify your templates in the config.yml file, like so:
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/sonata_admin.yaml
 
         sonata_admin:
             templates:
@@ -159,10 +164,10 @@ specify the templates to use in the ``Admin`` service definition:
 
     .. code-block:: xml
 
-        <service id="app.admin.post" class="AppBundle\Admin\PostAdmin">
+        <service id="app.admin.post" class="App\Admin\PostAdmin">
             <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" />
             <argument />
-            <argument>AppBundle\Entity\Post</argument>
+            <argument>App\Entity\Post</argument>
             <argument />
             <call method="setTemplate">
                 <argument>edit</argument>
@@ -174,12 +179,12 @@ specify the templates to use in the ``Admin`` service definition:
 
         services:
             app.admin.post:
-                class: AppBundle\Admin\PostAdmin
+                class: App\Admin\PostAdmin
                 tags:
                     - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
                 arguments:
                     - ~
-                    - AppBundle\Entity\Post
+                    - App\Entity\Post
                     - ~
                 calls:
                     - [ setTemplate, [edit, "@App/PostAdmin/edit.html.twig"]]

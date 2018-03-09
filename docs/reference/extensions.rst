@@ -1,10 +1,17 @@
 Extensions
 ==========
 
-Admin extensions allow you to add or change features of one or more Admin instances. To create an extension your class
-must implement the interface ``Sonata\AdminBundle\Admin\AdminExtensionInterface`` and be registered as a service. The
-interface defines a number of functions which you can use to customize the edit form, list view, form validation,
-alter newly created objects and other admin features.
+Admin extensions allow you to add or change features of one or more Admin
+instances. To create an extension your class
+must implement the interface ``Sonata\AdminBundle\Admin\AdminExtensionInterface``
+and be registered as a service. The interface defines a number of functions which
+you can use to customize the edit form, list view, form validation, alter newly
+created objects and other admin features.
+
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
 
 .. code-block:: php
 
@@ -45,18 +52,18 @@ The higher the priority, the earlier it's executed.
 
         services:
             app.publish.extension:
-                class: AppBundle\Admin\Extension\PublishStatusAdminExtension
+                class: App\Admin\Extension\PublishStatusAdminExtension
                 tags:
                     - { name: sonata.admin.extension, target: app.admin.article }
                     - { name: sonata.admin.extension, target: app.admin.blog }
 
             app.order.extension:
-                class: AppBundle\Admin\Extension\OrderAdminExtension
+                class: App\Admin\Extension\OrderAdminExtension
                 tags:
                     - { name: sonata.admin.extension, global: true }
 
             app.important.extension:
-                class: AppBundle\Admin\Extension\ImportantAdminExtension
+                class: App\Admin\Extension\ImportantAdminExtension
                 tags:
                     - { name: sonata.admin.extension, priority: 5 }
 
@@ -66,7 +73,7 @@ The second option is to add it to your config.yml file.
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/sonata_admin.yaml
 
         sonata_admin:
             extensions:
@@ -109,7 +116,7 @@ priority:
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/sonata_admin.yaml
 
         sonata_admin:
             extensions:
@@ -117,13 +124,13 @@ priority:
                     admins:
                         - app.admin.article
                     implements:
-                        - AppBundle\Publish\PublishStatusInterface
+                        - App\Publish\PublishStatusInterface
                     excludes:
                         - app.admin.blog
                         - app.admin.news
                     extends:
-                        - AppBundle\Document\Blog
+                        - App\Document\Blog
                     instanceof:
-                        -  AppBundle\Document\Page
+                        -  App\Document\Page
                     uses:
-                        -  AppBundle\Trait\Timestampable
+                        -  App\Trait\Timestampable
