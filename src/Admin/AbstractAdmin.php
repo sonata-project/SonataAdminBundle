@@ -242,7 +242,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * The related parent association, ie if OrderElement has a parent property named order,
      * then the $parentAssociationMapping must be a string named `order`.
      *
-     * @var string
+     * @var string|mixed
      */
     protected $parentAssociationMapping = null;
 
@@ -821,11 +821,38 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * Returns the name of the parent related field, so the field can be use to set the default
      * value (ie the parent object) or to filter the object.
      *
-     * @return string the name of the parent related field
+     * @throws \InvalidArgumentException
+     *
+     * @return null|string
      */
     public function getParentAssociationMapping()
     {
+        if (is_array($this->parentAssociationMapping) && $this->getParent()) {
+            $parent = $this->getParent()->getCode();
+            if (array_key_exists($parent, $this->parentAssociationMapping)) {
+                return $this->parentAssociationMapping[$parent];
+            }
+            throw new \InvalidArgumentException(sprintf(
+                "There's no association between %s and %s.",
+                $this->getCode(),
+                $this->getParent()->getCode()
+            ));
+        }
+
         return $this->parentAssociationMapping;
+    }
+
+    /**
+     * @param string $code
+     * @param string $value
+     *
+     * @return $this
+     */
+    final public function addParentAssociationMapping($code, $value)
+    {
+        $this->parentAssociationMapping[$code] = $value;
+
+        return $this;
     }
 
     /**
@@ -1656,7 +1683,7 @@ EOT;
         return $this->filterFieldDescriptions;
     }
 
-    public function addChild(AdminInterface $child)
+    public function addChild(AdminInterface $child, $field = null)
     {
         for ($parentAdmin = $this; null !== $parentAdmin; $parentAdmin = $parentAdmin->getParent()) {
             if ($parentAdmin->getCode() !== $child->getCode()) {
@@ -1672,6 +1699,9 @@ EOT;
         $this->children[$child->getCode()] = $child;
 
         $child->setParent($this);
+        if ($field) {
+            $child->addParentAssociationMapping($this->getCode(), $field);
+        }
     }
 
     public function hasChild($code)

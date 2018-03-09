@@ -260,7 +260,7 @@ class AdminTest extends TestCase
         $this->assertFalse($postAdmin->hasChild('comment'));
 
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
-        $postAdmin->addChild($commentAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
         $this->assertTrue($postAdmin->hasChildren());
         $this->assertTrue($postAdmin->hasChild('sonata.post.admin.comment'));
 
@@ -543,7 +543,7 @@ class AdminTest extends TestCase
         $commentAdmin->setRouteGenerator($routeGenerator);
         $commentAdmin->initialize();
 
-        $postAdmin->addChild($commentAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
 
         $commentVoteAdmin = new CommentVoteAdmin(
             'sonata.post.admin.comment_vote',
