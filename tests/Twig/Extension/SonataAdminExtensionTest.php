@@ -1935,7 +1935,7 @@ EOT
         );
     }
 
-    public function testOutput(): void
+    public function testRenderWithDebug(): void
     {
         $this->fieldDescription->expects($this->any())
             ->method('getTemplate')
@@ -1945,7 +1945,9 @@ EOT
             ->method('getFieldName')
             ->will($this->returnValue('fd_name'));
 
-        $this->environment->disableDebug();
+        $this->fieldDescription->expects($this->any())
+            ->method('getValue')
+            ->will($this->returnValue('foo'));
 
         $parameters = [
             'admin' => $this->admin,
@@ -1954,22 +1956,8 @@ EOT
             'object' => $this->object,
         ];
 
-        $template = $this->environment->loadTemplate('@SonataAdmin/CRUD/base_list_field.html.twig');
-
-        $reflection = $this->getMethodAsPublic('output');
-
-        $this->assertSame(
-            '<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>',
-            $this->removeExtraWhitespace($reflection->invoke(
-                $this->twigExtension,
-                $this->fieldDescription,
-                $template,
-                $parameters,
-                $this->environment
-            ))
-        );
-
         $this->environment->enableDebug();
+
         $this->assertSame(
             $this->removeExtraWhitespace(<<<'EOT'
 <!-- START
@@ -1982,13 +1970,7 @@ EOT
 EOT
             ),
             $this->removeExtraWhitespace(
-                $reflection->invoke(
-                    $this->twigExtension,
-                    $this->fieldDescription,
-                    $template,
-                    $parameters,
-                    $this->environment
-                )
+                $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription, $parameters)
             )
         );
     }

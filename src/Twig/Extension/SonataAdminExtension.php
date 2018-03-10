@@ -23,6 +23,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\Template;
+use Twig\TemplateWrapper;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
@@ -143,7 +144,7 @@ final class SonataAdminExtension extends AbstractExtension
             $environment
         );
 
-        return $this->output($fieldDescription, $template, array_merge($params, [
+        return $this->render($fieldDescription, $template, array_merge($params, [
             'admin' => $fieldDescription->getAdmin(),
             'object' => $object,
             'value' => $this->getValueFromFieldDescription($object, $fieldDescription),
@@ -175,7 +176,7 @@ final class SonataAdminExtension extends AbstractExtension
             $value = null;
         }
 
-        return $this->output($fieldDescription, $template, [
+        return $this->render($fieldDescription, $template, [
             'field_description' => $fieldDescription,
             'object' => $object,
             'value' => $value,
@@ -230,7 +231,7 @@ final class SonataAdminExtension extends AbstractExtension
         // Compare the rendered output of both objects by using the (possibly) overridden field block
         $isDiff = $baseValueOutput !== $compareValueOutput;
 
-        return $this->output($fieldDescription, $template, [
+        return $this->render($fieldDescription, $template, [
             'field_description' => $fieldDescription,
             'value' => $baseValue,
             'value_compare' => $compareValue,
@@ -425,52 +426,10 @@ final class SonataAdminExtension extends AbstractExtension
     }
 
     /**
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param \Twig_Template            $template
-     * @param array                     $parameters
-     *
-     * @return string
-     */
-    private function output(
-        FieldDescriptionInterface $fieldDescription,
-        \Twig_Template $template,
-        array $parameters,
-        \Twig_Environment $environment
-    ) {
-        $content = $template->render($parameters);
-
-        if ($environment->isDebug()) {
-            $commentTemplate = <<<'EOT'
-
-<!-- START
-    fieldName: %s
-    template: %s
-    compiled template: %s
-    -->
-    %s
-<!-- END - fieldName: %s -->
-EOT;
-
-            return sprintf(
-                $commentTemplate,
-                $fieldDescription->getFieldName(),
-                $fieldDescription->getTemplate(),
-                $template->getTemplateName(),
-                $content,
-                $fieldDescription->getFieldName()
-            );
-        }
-
-        return $content;
-    }
-
-    /**
      * return the value related to FieldDescription, if the associated object does no
      * exists => a temporary one is created.
      *
-     * @param object                    $object
-     * @param FieldDescriptionInterface $fieldDescription
-     * @param array                     $params
+     * @param object $object
      *
      * @throws \RuntimeException
      *
@@ -503,7 +462,7 @@ EOT;
      *
      * @param string $defaultTemplate
      *
-     * @return \Twig_TemplateInterface
+     * @return TemplateWrapper
      */
     private function getTemplate(
         FieldDescriptionInterface $fieldDescription,
@@ -512,6 +471,64 @@ EOT;
     ) {
         $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
 
-        return $environment->loadTemplate($templateName);
+        try {
+            $template = $environment->load($templateName);
+        } catch (LoaderError $e) {
+            @trigger_error(
+                'Relying on default template loading on field template loading exception '.
+                'is deprecated since 3.1 and will be removed in 4.0. '.
+                'A \Twig_Error_Loader exception will be thrown instead',
+                E_USER_DEPRECATED
+            );
+            $template = $environment->load($defaultTemplate);
+
+            if (null !== $this->logger) {
+                $this->logger->warning(sprintf(
+                    'An error occured trying to load the template "%s" for the field "%s", '.
+                    'the default template "%s" was used instead.',
+                    $templateName,
+                    $fieldDescription->getFieldName(),
+                    $defaultTemplate
+                ), ['exception' => $e]);
+            }
+        }
+
+        return $template;
+    }
+
+    /**
+     * @return string
+     */
+    private function render(
+        FieldDescriptionInterface $fieldDescription,
+        TemplateWrapper $template,
+        array $parameters,
+        Environment $environment
+    ) {
+        $content = $template->render($parameters);
+
+        if ($environment->isDebug()) {
+            $commentTemplate = <<<'EOT'
+
+<!-- START
+    fieldName: %s
+    template: %s
+    compiled template: %s
+    -->
+    %s
+<!-- END - fieldName: %s -->
+EOT;
+
+            return sprintf(
+                $commentTemplate,
+                $fieldDescription->getFieldName(),
+                $fieldDescription->getTemplate(),
+                $template->getSourceContext()->getName(),
+                $content,
+                $fieldDescription->getFieldName()
+            );
+        }
+
+        return $content;
     }
 }

@@ -50,6 +50,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Twig\Environment;
 use Twig\Template;
+use Twig\TemplateWrapper;
 
 class AdminControllerHelper_Foo
 {
@@ -93,6 +94,36 @@ class AdminControllerHelper_Bar
 
 class HelperControllerTest extends TestCase
 {
+    /**
+     * @var Pool
+     */
+    private $pool;
+
+    /**
+     * @var Environment
+     */
+    private $twig;
+
+    /**
+     * @var AdminHelper
+     */
+    private $helper;
+
+    /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
+    /**
+     * @var AbstractAdmin
+     */
+    private $admin;
+
+    /**
+     * @var HelperController
+     */
+    private $controller;
+
     /**
      * {@inheritdoc}
      */
@@ -217,7 +248,7 @@ class HelperControllerTest extends TestCase
         $this->twig->getExtension(SonataAdminExtension::class)->willReturn(
             new SonataAdminExtension($pool->reveal(), null, $translator->reveal())
         );
-        $this->twig->loadTemplate('admin_template')->willReturn($template->reveal());
+        $this->twig->load('admin_template')->willReturn(new TemplateWrapper($this->twig->reveal(), $template->reveal()));
         $this->twig->isDebug()->willReturn(false);
         $fieldDescription->getOption('editable')->willReturn(true);
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
@@ -264,7 +295,7 @@ class HelperControllerTest extends TestCase
         $this->twig->getExtension(SonataAdminExtension::class)->willReturn(
             new SonataAdminExtension($pool->reveal(), null, $translator->reveal())
         );
-        $this->twig->loadTemplate('field_template')->willReturn($template->reveal());
+        $this->twig->load('field_template')->willReturn(new TemplateWrapper($this->twig->reveal(), $template->reveal()));
         $this->twig->isDebug()->willReturn(false);
         $this->pool->getContainer()->willReturn($container->reveal());
         $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
