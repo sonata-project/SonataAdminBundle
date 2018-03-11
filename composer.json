@@ -23,12 +23,12 @@
     ],
     "require": {
         "php": "^5.6 || ^7.0",
-        "doctrine/common": "^2.2",
-        "doctrine/inflector": "^1.0",
-        "knplabs/knp-menu-bundle": "^2.1.1",
+        "doctrine/common": "^2.7",
+        "doctrine/inflector": "^1.1",
+        "knplabs/knp-menu-bundle": "^2.2",
         "sonata-project/block-bundle": "^3.11",
-        "sonata-project/core-bundle": "^3.6",
-        "sonata-project/exporter": "^1.7.1",
+        "sonata-project/core-bundle": "^3.9",
+        "sonata-project/exporter": "^1.8",
         "symfony/asset": "^2.8 || ^3.2 || ^4.0",
         "symfony/class-loader": "^2.8 || ^3.2",
         "symfony/config": "^2.8 || ^3.2 || ^4.0",
@@ -52,7 +52,7 @@
         "symfony/twig-bridge": "^2.8 || ^3.2 || ^4.0",
         "symfony/twig-bundle": "^2.8 || ^3.2 || ^4.0",
         "symfony/validator": "^2.8 || ^3.2 || ^4.0",
-        "twig/extensions": "^1.0",
+        "twig/extensions": "^1.5",
         "twig/twig": "^1.34 || ^2.0"
     },
     "conflict": {
@@ -62,13 +62,13 @@
         "sonata-project/user-bundle": "<3.3.0"
     },
     "require-dev": {
-        "jms/di-extra-bundle": "^1.7",
-        "jms/translation-bundle": "^1.2",
+        "jms/di-extra-bundle": "^1.9",
+        "jms/translation-bundle": "^1.4",
         "matthiasnoback/symfony-dependency-injection-test": "^1.1",
         "sensio/generator-bundle": "^3.1",
-        "sonata-project/intl-bundle": "^2.2.4",
+        "sonata-project/intl-bundle": "^2.4",
         "symfony/filesystem": "^2.8 || ^3.2 || ^4.0",
-        "symfony/phpunit-bridge": "^3.4 || ^4.0",
+        "symfony/phpunit-bridge": "^4.0",
         "symfony/yaml": "^2.8 || ^3.2 || ^4.0"
     },
     "suggest": {
