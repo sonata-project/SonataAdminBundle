@@ -1,6 +1,9 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.32 to 3.33
+=========================
+
 ## Deprecated SonataAdminExtension::output()
 
 The `SonataAdminExtension::output()` method is deprecated and should not be

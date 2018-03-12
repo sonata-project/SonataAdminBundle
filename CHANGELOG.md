@@ -2,6 +2,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.33.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.32.0...3.33.0) - 2018-03-12
+### Changed
+- Replaced calls to Twig internal `Environment::loadTemplate()` method with `Environment::load()` in `SonataAdminExtension`.
+
+### Deprecated
+- Deprecated `SonataAdminExtension::output()`. Now using the private `render()` method. Please use the `render*()` methods instead.
+
+### Fixed
+- `FieldDescription` null check missing in `ModelAutocompleteFilter`
+- Fatal error in strict mode
+- Avoid calling protected/private methods when retrieving values from entities
+- `getFieldValue` from `BaseFieldDescription` can now handle getting a value from null objects.
+- `base_list` template includes the configurable `button_create` template rather than the default `create_button.html.twig`.
+
 ## [3.32.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.31.1...3.32.0) - 2018-02-28
 ### Changed
 - Allow capturing of any link click inside of modal
