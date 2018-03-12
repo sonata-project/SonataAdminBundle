@@ -3,6 +3,11 @@ Using DataMapper to work with domain entities without per field setters
 
 This is an example of using DataMapper with entities that avoid setters/getters for each field.
 
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
+
 Pre-requisites
 --------------
 
@@ -25,9 +30,9 @@ Example Entity
 
     <?php
 
-    // src/AppBundle/Entity/Example.php
+    // src/Entity/Example.php
 
-    namespace AppBundle\Entity;
+    namespace App\Entity;
 
     class Example
     {
@@ -58,12 +63,12 @@ To be able to set entity data without the possibility to use setters a ``DataMap
 
     <?php
 
-    // src/AppBundle/Form/DataMapper/ExampleDataMapper.php
+    // src/Form/DataMapper/ExampleDataMapper.php
 
-    namespace AppBundle\Form\DataMapper;
+    namespace App\Form\DataMapper;
 
     use Symfony\Component\Form\DataMapperInterface;
-    use AppBundle\Entity\Example;
+    use App\Entity\Example;
 
     class ExampleDataMapper implements DataMapperInterface
     {
@@ -114,13 +119,13 @@ Now we need to configure the form to use our ``ExampleDataMapper``.
 
     <?php
 
-    // src/AppBundle/Admin/ExampleAdmin.php
+    // src/Admin/ExampleAdmin.php
 
-    namespace AppBundle\Admin;
+    namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Form\FormMapper;
-    use AppBundle\Form\DataMapper\ExampleDataMapper;
+    use App\Form\DataMapper\ExampleDataMapper;
 
     class ExampleAdmin extends AbstractAdmin
     {

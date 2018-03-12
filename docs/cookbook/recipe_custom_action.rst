@@ -2,8 +2,13 @@ Creating a Custom Admin Action
 ==============================
 
 This is a full working example of creating a custom list action for SonataAdmin.
-The example is based on an existing ``CarAdmin`` class in an ``AppBundle``.
+The example is based on an existing ``CarAdmin`` class in a ``App`` namespace.
 It is assumed you already have an admin service up and running.
+
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
 
 The recipe
 ----------
@@ -25,9 +30,9 @@ First you need to create your own Controller extending the one from SonataAdmin
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Controller/CRUDController.php
+    // src/Controller/CRUDController.php
 
-    namespace AppBundle\Controller;
+    namespace App\Controller;
 
     use Sonata\AdminBundle\Controller\CRUDController as Controller;
 
@@ -46,30 +51,30 @@ Either by using XML:
 
 .. code-block:: xml
 
-        <!-- src/AppBundle/Resources/config/admin.xml -->
+        <!-- src/Resources/config/admin.xml -->
 
-        <service id="app.admin.car" class="AppBundle\Admin\CarAdmin">
+        <service id="app.admin.car" class="App\Admin\CarAdmin">
             <tag name="sonata.admin" manager_type="orm" group="Demo" label="Car" />
             <argument />
-            <argument>AppBundle\Entity\Car</argument>
-            <argument>AppBundle:CRUD</argument>
+            <argument>App\Entity\Car</argument>
+            <argument>App\Controller\CRUDController</argument>
         </service>
 
 or by adding it to your ``admin.yml``:
 
 .. code-block:: yaml
 
-    # src/AppBundle/Resources/config/admin.yml
+    # src/Resources/config/admin.yml
 
     services:
         app.admin.car:
-            class: AppBundle\Admin\CarAdmin
+            class: App\Admin\CarAdmin
             tags:
                 - { name: sonata.admin, manager_type: orm, group: Demo, label: Car }
             arguments:
                 - null
-                - AppBundle\Entity\Car
-                - AppBundle:CRUD
+                - App\Entity\Car
+                - App\Controller\CRUDController
             public: true
 
 For more information about service configuration please refer to Step 3 of :doc:`../getting_started/creating_an_admin`
@@ -83,9 +88,9 @@ to implement a ``clone`` action.
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Controller/CRUDController.php
+    // src/Controller/CRUDController.php
 
-    namespace AppBundle\Controller;
+    namespace App\Controller;
 
     use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
     use Sonata\AdminBundle\Controller\CRUDController as Controller;
@@ -151,7 +156,7 @@ Admin Controller.
 
 .. code-block:: html+jinja
 
-    {# src/AppBundle/Resources/views/CRUD/list__action_clone.html.twig #}
+    {# templates/CRUD/list__action_clone.html.twig #}
 
     <a class="btn btn-sm" href="{{ admin.generateObjectUrl('clone', object) }}">clone</a>
 
@@ -207,9 +212,9 @@ The full ``CarAdmin.php`` example looks like this:
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/CarAdmin.php
+    // src/Admin/CarAdmin.php
 
-    namespace AppBundle\Admin;
+    namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -264,12 +269,12 @@ The full ``CarAdmin.php`` example looks like this:
 
     If you want to render a custom controller action in a template by using the
     render function in twig you need to add ``_sonata_admin`` as an attribute. For
-    example; ``{{ render(controller('AppBundle:XxxxCRUD:comment', {'_sonata_admin':
+    example; ``{{ render(controller('App:XxxxCRUD:comment', {'_sonata_admin':
     'sonata.admin.xxxx' })) }}``. This has to be done because the moment the
     rendering should happen the routing, which usually sets the value of this
     parameter, is not involved at all, and then you will get an error "There is no
     _sonata_admin defined for the controller
-    AppBundle\Controller\XxxxCRUDController and the current route ' '."
+    App\Controller\XxxxCRUDController and the current route ' '."
 
 Custom Action without Entity
 ----------------------------

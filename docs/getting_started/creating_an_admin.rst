@@ -19,8 +19,8 @@ using these commands:
 
 .. code-block:: bash
 
-    $ php bin/console doctrine:generate:entity --entity="App:Category" --fields="name:string(255)" --no-interaction
-    $ php bin/console doctrine:generate:entity --entity="App:BlogPost" --fields="title:string(255) body:text draft:boolean" --no-interaction
+    $ bin/console doctrine:generate:entity --entity="App:Category" --fields="name:string(255)" --no-interaction
+    $ bin/console doctrine:generate:entity --entity="App:BlogPost" --fields="title:string(255) body:text draft:boolean" --no-interaction
 
 After this, you'll need to tweak the entities a bit:
 
@@ -106,7 +106,7 @@ After this, create the schema for these entities:
 
 .. code-block:: bash
 
-    $ php bin/console doctrine:schema:create
+    $ bin/console doctrine:schema:create
 
 .. note::
     This article assumes you have basic knowledge of the Doctrine2 ORM and

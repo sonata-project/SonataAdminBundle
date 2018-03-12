@@ -1,6 +1,11 @@
 Modifying form fields dynamically depending on edited object
 ============================================================
 
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
+
 It is a quite common situation when you need to modify your form's fields because
 of edited object's properties or structure. Let us assume you only want to display
 an admin form field for new objects and you do not want it to be shown for those
@@ -11,17 +16,18 @@ This is a way for you to accomplish this.
 In your ``Admin`` class' ``configureFormFields`` method you are able to get the
 current object by calling ``$this->getSubject()``. The value returned will be your
 linked model. And another method ``isCurrentRoute`` for check the current request's route.
-Then, you should be able to dynamically add needed fields to the form:
-
-.. code-block:: php
+Then, you should be able to dynamically add needed fields to the form::
 
     <?php
-    // src/AppBundle/Admin/PostAdmin
+    // src/Admin/PostAdmin
 
-    namespace AppBundle\Admin;
+    namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Form\FormMapper;
+    use Symfony\Component\Form\Extension\Core\Type\TextType;
+    use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+    use Symfony\Component\Form\Extension\Core\Type\FileType;
 
     class PostAdmin extends AbstractAdmin
     {
@@ -31,19 +37,19 @@ Then, you should be able to dynamically add needed fields to the form:
         {
             // Description field will always be added to the form:
             $formMapper
-                ->add('description', 'textarea')
+                ->add('description', TextareaType::class)
             ;
 
             $subject = $this->getSubject();
 
             if ($subject->isNew()) {
                 // The thumbnail field will only be added when the edited item is created
-                $formMapper->add('thumbnail', 'file');
+                $formMapper->add('thumbnail', FileType::class);
             }
 
             // Name field will be added only when create an item
             if ($this->isCurrentRoute('create')) {
-                $formMapper->add('name', 'text');
+                $formMapper->add('name', TextType::class);
             }
 
             // The foo field will added when current action is related acme.demo.admin.code Admin's edit form

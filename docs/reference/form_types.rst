@@ -1,6 +1,11 @@
 Form Types
 ==========
 
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
+
 Admin related form types
 ------------------------
 
@@ -25,7 +30,7 @@ All we need to do now is add a reference for this field in our ``PageAdmin`` cla
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/PageAdmin.php
+    // src/Admin/PageAdmin.php
 
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -132,7 +137,7 @@ All we need to do now is add a reference for this field in our ``PageAdmin`` cla
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/PageAdmin.php
+    // src/Admin/PageAdmin.php
 
     use Sonata\AdminBundle\Form\Type\ModelListType;
     use Sonata\AdminBundle\Form\FormMapper;
@@ -175,7 +180,7 @@ The value of hidden field is identifier of related entity.
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/PageAdmin.php
+    // src/Admin/PageAdmin.php
 
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -223,7 +228,7 @@ datagrid filter for the property ``title``.
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/ArticleAdmin.php
+    // src/Admin/ArticleAdmin.php
 
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -246,7 +251,7 @@ datagrid filter for the property ``title``.
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/CategoryAdmin.php
+    // src/Admin/CategoryAdmin.php
 
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -383,7 +388,7 @@ The available options are:
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/ArticleAdmin.php
+    // src/Admin/ArticleAdmin.php
 
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -404,7 +409,7 @@ The available options are:
 
 .. code-block:: jinja
 
-    {# src/AppBundle/Resources/views/Form/Type/sonata_type_model_autocomplete.html.twig #}
+    {# templates/Form/Type/sonata_type_model_autocomplete.html.twig #}
 
     {% extends '@SonataAdmin/Form/Type/sonata_type_model_autocomplete.html.twig' %}
 
@@ -425,7 +430,7 @@ The available options are:
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/ArticleAdmin.php
+    // src/Admin/ArticleAdmin.php
 
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -449,7 +454,7 @@ The available options are:
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/CategoryAdmin.php
+    // src/Admin/CategoryAdmin.php
 
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -479,7 +484,7 @@ According the choice made only associated fields are displayed. The others field
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/AppMenuAdmin.php
+    // src/Admin/AppMenuAdmin.php
 
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -539,19 +544,19 @@ that looks like this:
 
     .. code-block:: yaml
 
-        # src/AppBundle/Resources/config/admin.yml
+        # src/Resources/config/admin.yml
 
         services:
             app.admin.image:
-                class: AppBundle\Admin\ImageAdmin
+                class: App\Admin\ImageAdmin
                 tags:
                     - { name: sonata.admin, manager_type: orm, label: "Image" }
                 arguments:
                     - ~
-                    - AppBundle\Entity\Image
+                    - App\Entity\Image
                     - 'SonataAdminBundle:CRUD'
                 calls:
-                    - [ setTranslationDomain, [AppBundle]]
+                    - [ setTranslationDomain, [App]]
                 public: true
 
 .. note::
@@ -564,7 +569,7 @@ for the ``image1`` field to ``sonata_type_admin`` in our ``PageAdmin`` class:
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/PageAdmin.php
+    // src/Admin/PageAdmin.php
 
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -608,7 +613,7 @@ to the underlying forms.
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/ProductAdmin.php
+    // src/Admin/ProductAdmin.php
 
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -706,7 +711,7 @@ example above:
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/PageAdmin.php
+    // src/Admin/PageAdmin.php
 
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -741,7 +746,7 @@ Given you have a ``PostType`` like this:
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Form/PostType.php
+    // src/Form/PostType.php
 
     use Symfony\Component\Form\FormBuilderInterface;
     use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -768,11 +773,11 @@ you can reuse it like this:
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/Post.php
+    // src/Admin/Post.php
 
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
-    use AppBundle\Form\PostType;
+    use App\Form\PostType;
 
     class Post extend AbstractAdmin
     {
@@ -804,7 +809,7 @@ General
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/PageAdmin.php
+    // src/Admin/PageAdmin.php
 
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -833,7 +838,7 @@ General
 .. code-block:: php
 
     <?php
-    // src/AppBundle/Admin/PageAdmin.php
+    // src/Admin/PageAdmin.php
 
     use Sonata\AdminBundle\Form\FormMapper;
     use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

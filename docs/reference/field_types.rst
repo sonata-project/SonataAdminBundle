@@ -69,7 +69,7 @@ Choice
 
     public function configureListFields(ListMapper $listMapper)
     {
-        // For the value `prog`, the displayed text is `In progress`. The `AppBundle` catalogue will be used to translate `In progress` message.
+        // For the value `prog`, the displayed text is `In progress`. The `App` catalogue will be used to translate `In progress` message.
         $listMapper
             ->add('status', 'choice', [
                 'choices' => [
@@ -77,7 +77,7 @@ Choice
                     'prog' => 'In progress',
                     'done' => 'Done'
                 ],
-                'catalogue' => 'AppBundle'
+                'catalogue' => 'App'
             ])
         ;
     }

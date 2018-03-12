@@ -1,18 +1,21 @@
 Troubleshooting
 ===============
 
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
+
 The toString method
 -------------------
 
 Sometimes the bundle needs to display your model objects, in order to do it,
 objects are converted to string by using the `__toString`_ magic method.
 Take care to never return anything else than a string in this method.
-For example, if your method looks like that :
-
-.. code-block:: php
+For example, if your method looks like that::
 
     <?php
-    // src/AppBundle/Entity/Post.php
+    // src/Entity/Post.php
 
     class Post
     {
@@ -28,12 +31,10 @@ For example, if your method looks like that :
 
 You cannot be sure your object will *always* have a title when the bundle will want to convert it to a string.
 So in order to avoid any fatal error, you must return an empty string
-(or anything you prefer) for when the title is missing, like this :
-
-.. code-block:: php
+(or anything you prefer) for when the title is missing, like this::
 
     <?php
-    // src/AppBundle/Entity/Post.php
+    // src/Entity/Post.php
 
     class Post
     {

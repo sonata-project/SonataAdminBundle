@@ -2,16 +2,20 @@ KnpMenu
 =======
 
 The admin comes with `KnpMenu`_ integration.
-It integrates a menu with the KnpMenu library. This menu can be a SonataAdmin service, a menu created with a Knp menu provider or a route of a custom controller.
+It integrates a menu with the KnpMenu library. This menu can be a SonataAdmin
+service, a menu created with a Knp menu provider or a route of a custom controller.
+
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
 
 Add a custom controller entry in the menu
 -----------------------------------------
 
 To add a custom controller entry in the admin menu:
 
-Create your controller:
-
-.. code-block:: php
+Create your controller::
 
     class BlogController
     {
@@ -39,7 +43,7 @@ Add the controller route as an item of the menu:
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/sonata_admin.yaml
 
         sonata_admin:
             dashboard:
@@ -62,7 +66,7 @@ group roles will be checked.
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/sonata_admin.yaml
 
         sonata_admin:
             dashboard:
@@ -80,13 +84,14 @@ group roles will be checked.
                               label:        Article
                         roles: [ ROLE_ADMIN, ROLE_SONATA_ADMIN]
 
-You can also override the template of knp_menu used by sonata. The default one is `@SonataAdmin/Menu/sonata_menu.html.twig`:
+You can also override the template of knp_menu used by sonata. The default
+one is `@SonataAdmin/Menu/sonata_menu.html.twig`:
 
 .. configuration-block::
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/sonata_admin.yaml
 
         sonata_admin:
             templates:
@@ -97,7 +102,11 @@ And voilà, now you have a menu group which contains a link to a sonata admin vi
 Using a menu provider
 ---------------------
 
-As seen above, the main way to declare your menu is by declaring items in your sonata admin config file. In some case you may have to create a more complex menu depending on your business logic. This is possible by using a menu provider to populate a whole menu group. This is done with the ``provider`` config value.
+As seen above, the main way to declare your menu is by declaring items
+in your sonata admin config file. In some cases you may have to create a
+more complex menu depending on your business logic. This is possible by
+using a menu provider to populate a whole menu group. This is done with
+the ``provider`` config value.
 
 The following configuration uses a menu provider to populate the menu group ``my_group``:
 
@@ -105,7 +114,7 @@ The following configuration uses a menu provider to populate the menu group ``my
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/sonata_admin.yaml
 
         sonata_admin:
             dashboard:
@@ -114,9 +123,12 @@ The following configuration uses a menu provider to populate the menu group ``my
                         provider:        'MyBundle:MyMenuProvider:getMyMenu'
                         icon:            '<i class="fa fa-edit"></i>'
 
-With KnpMenuBundle you can create a custom menu by using a builder class or by declaring it as a service. Please see the `Knp documentation`_ for further information.
+With KnpMenuBundle you can create a custom menu by using a builder class
+or by declaring it as a service. Please see the `Knp documentation`_ for
+further information.
 
-In sonata, whatever the implementation you choose, you only have to provide the menu alias to the provider config key:
+In sonata, whatever the implementation you choose, you only have to provide
+the menu alias to the provider config key:
 
 * If you are using a builder class, your menu alias should be something like ``MyBundle:MyMenuProvider:getMyMenu``.
 * If you are using a service, your menu alias is the alias set in the ``knp_menu.menu`` tag. In the following example this is ``my_menu_alias``:
@@ -129,19 +141,19 @@ In sonata, whatever the implementation you choose, you only have to provide the 
             <tag name="knp_menu.menu" alias="my_menu_alias" />
         </service>
 
-Please note that when using the provider option, you can't set the menu label via the configuration. It is done in your custom menu.
+Please note that when using the provider option, you can't set the menu
+label via the configuration. It is done in your custom menu.
 
 Extending the menu
 ------------------
 
-You can modify the menu via events easily. You can register as many listeners as you want for the event with name ``sonata.admin.event.configure.menu.sidebar``:
-
-.. code-block:: php
+You can modify the menu via events easily. You can register as many
+listeners as you want for the event with name ``sonata.admin.event.configure.menu.sidebar``::
 
     <?php
-    // src/AppBundle/EventListener/MenuBuilderListener.php
+    // src/EventListener/MenuBuilderListener.php
 
-    namespace AppBundle\EventListener;
+    namespace App\EventListener;
 
     use Sonata\AdminBundle\Event\ConfigureMenuEvent;
 
@@ -164,11 +176,11 @@ You can modify the menu via events easily. You can register as many listeners as
 
     .. code-block:: yaml
 
-        # src/AppBundle/Resources/config/services.yml
+        # config/services.yaml
 
         services:
             app.menu_listener:
-                class: AppBundle\EventListener\MenuBuilderListener
+                class: App\EventListener\MenuBuilderListener
                 tags:
                     - { name: kernel.event_listener, event: sonata.admin.event.configure.menu.sidebar, method: addMenuItems }
 
@@ -191,7 +203,7 @@ your admin services or simply remove menu items from the ``sonata_admin`` dashbo
 
 .. code-block:: yaml
 
-    # app/config/config.yml
+    # config/packages/sonata_admin.yaml
 
     sonata_admin:
         dashboard:
@@ -214,7 +226,7 @@ open and ignore open/close effects:
 
 .. code-block:: yaml
 
-    # app/config/config.yml
+    # config/packages/sonata_admin.yaml
 
     sonata_admin:
         dashboard:
@@ -249,7 +261,7 @@ or in sonata_admin dashboard group configuration:
 
 .. code-block:: yaml
 
-    # app/config/config.yml
+    # config/packages/sonata_admin.yaml
 
     sonata_admin:
         dashboard:
@@ -272,7 +284,7 @@ Your can't use this option for two or more items in the same time, for example:
 
 .. code-block:: yaml
 
-    # app/config/config.yml
+    # config/packages/sonata_admin.yaml
 
     sonata_admin:
         dashboard:

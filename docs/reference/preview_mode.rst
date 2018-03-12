@@ -6,10 +6,15 @@ Preview Mode is an optional view of an object before it is persisted or updated.
 The preview step can be enabled for an admin entity by overriding the public property
 ``$supportsPreviewMode`` and setting it to true.
 
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
+
 .. code-block:: php
 
     <?php
-    // src/AppBundle/AdminPostAdmin.php
+    // src/AdminPostAdmin.php
 
     class PostAdmin extends AbstractAdmin
     {
@@ -49,19 +54,17 @@ globally through the template configuration for the key 'preview':
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/sonata_admin.yaml
 
         sonata_admin:
             templates:
                 preview:  "@App/CRUD/preview.html.twig"
 
-Or per admin entity by overriding the ``getTemplate($name)`` and returning the appropriate template when the key
-matches 'preview':
-
-.. code-block:: php
+Or per admin entity by overriding the ``getTemplate($name)`` and returning
+the appropriate template when the key matches 'preview'::
 
     <?php
-    // src/AppBundle/Admin/PostAdmin.php
+    // src/Admin/PostAdmin.php
 
     // ...
 

@@ -1,6 +1,11 @@
 Translation
 ===========
 
+.. note::
+    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
+    will require to slightly modify some namespaces and paths when creating
+    entities and admins.
+
 There are two main catalogue names in an Admin class:
 
 * ``SonataAdminBundle``: this catalogue is used to translate shared messages
@@ -76,29 +81,30 @@ Overriding the translation domain is of particular use when using
 :doc:`extensions`, where the extension and the translations would
 be defined in one bundle, but implemented in many different Admin instances.
 
-Setting the translation domain on an individual field:
+Setting the translation domain on an individual field::
 
-.. code-block:: php
+    use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
     $formMapper
         ->with('form.my_group')
-            ->add('publishable', 'checkbox', [], [
+            ->add('publishable', CheckboxType::class, [], [
                 'translation_domain' => 'MyTranslationDomain',
             ])
         ->end()
     ;
 
 The following example sets the default translation domain on a form group and
-over-rides that setting for one of the fields:
+over-rides that setting for one of the fields::
 
-.. code-block:: php
+    use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+    use Symfony\Component\Form\Extension\Core\Type\DateType;
 
     $formMapper
         ->with('form.my_group', ['translation_domain' => 'MyDomain'])
-            ->add('publishable', 'checkbox', [], [
+            ->add('publishable', CheckboxType::class, [], [
                 'translation_domain' => 'AnotherDomain',
             ])
-            ->add('start_date', 'date', [], [])
+            ->add('start_date', DateType::class, [], [])
         ->end()
     ;
 
@@ -109,9 +115,7 @@ Setting the label name
 ^^^^^^^^^^^^^^^^^^^^^^
 
 By default, the label is set to a sanitized version of the field name. A custom
-label can be defined as the third argument of the ``add`` method:
-
-.. code-block:: php
+label can be defined as the third argument of the ``add`` method::
 
     class PageAdmin extends AbstractAdmin
     {
@@ -161,7 +165,7 @@ the Container:
 
     .. code-block:: xml
 
-        <service id="app.admin.project" class="AppBundle\Admin\ProjectAdmin">
+        <service id="app.admin.project" class="App\Admin\ProjectAdmin">
             <tag
                 name="sonata.admin"
                 manager_type="orm"
@@ -170,7 +174,7 @@ the Container:
                 label_translator_strategy="sonata.admin.label.strategy.native"
              />
             <argument />
-            <argument>AppBundle\Entity\Project</argument>
+            <argument>App\Entity\Project</argument>
             <argument />
         </service>
 
