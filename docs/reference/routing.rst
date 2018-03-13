@@ -194,7 +194,7 @@ handler for it in your Controller. By default Admin classes use ``SonataAdminBun
 as their controller, but this can be changed by altering the third argument when defining
 your Admin service (in your admin.yml file).
 
-For example, lets change the Controller for our MediaAdmin class to App:MediaCRUD:
+For example, lets change the Controller for our MediaAdmin class to ``App\Controller\MediaCRUDController``:
 
 .. configuration-block::
 
