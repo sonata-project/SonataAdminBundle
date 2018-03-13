@@ -411,6 +411,15 @@ class SonataAdminExtension extends AbstractExtension
             }
         }
 
+        if (false === $fieldDescription->getOption('required', true)
+            && false === $fieldDescription->getOption('multiple', false)
+        ) {
+            $xEditableChoices = array_merge([[
+                'value' => '',
+                'text' => '',
+            ]], $xEditableChoices);
+        }
+
         return $xEditableChoices;
     }
 

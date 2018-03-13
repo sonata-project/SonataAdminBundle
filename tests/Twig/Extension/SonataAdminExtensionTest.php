@@ -2313,38 +2313,69 @@ EOT
     public function xEditableChoicesProvider()
     {
         return [
-            'needs processing' => [['Status1' => 'Alias1', 'Status2' => 'Alias2']],
-            'already processed' => [[
-                ['value' => 'Status1', 'text' => 'Alias1'],
-                ['value' => 'Status2', 'text' => 'Alias2'],
-            ]],
+            'needs processing' => [
+                ['choices' => ['Status1' => 'Alias1', 'Status2' => 'Alias2']],
+                [
+                    ['value' => 'Status1', 'text' => 'Alias1'],
+                    ['value' => 'Status2', 'text' => 'Alias2'],
+                ],
+            ],
+            'already processed' => [
+                ['choices' => [
+                    ['value' => 'Status1', 'text' => 'Alias1'],
+                    ['value' => 'Status2', 'text' => 'Alias2'],
+                ]],
+                [
+                    ['value' => 'Status1', 'text' => 'Alias1'],
+                    ['value' => 'Status2', 'text' => 'Alias2'],
+                ],
+            ],
+            'not required' => [
+                [
+                    'required' => false,
+                    'choices' => ['' => '', 'Status1' => 'Alias1', 'Status2' => 'Alias2'],
+                ],
+                [
+                    ['value' => '', 'text' => ''],
+                    ['value' => 'Status1', 'text' => 'Alias1'],
+                    ['value' => 'Status2', 'text' => 'Alias2'],
+                ],
+            ],
+            'not required multiple' => [
+                [
+                    'required' => false,
+                    'multiple' => true,
+                    'choices' => ['Status1' => 'Alias1', 'Status2' => 'Alias2'],
+                ],
+                [
+                    ['value' => 'Status1', 'text' => 'Alias1'],
+                    ['value' => 'Status2', 'text' => 'Alias2'],
+                ],
+            ],
         ];
     }
 
     /**
      * @dataProvider xEditablechoicesProvider
      */
-    public function testGetXEditableChoicesIsIdempotent(array $input)
+    public function testGetXEditableChoicesIsIdempotent(array $options, $expectedChoices)
     {
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->exactly(2))
+        $fieldDescription->expects($this->any())
             ->method('getOption')
             ->withConsecutive(
                 ['choices', []],
-                ['catalogue']
+                ['catalogue'],
+                ['required'],
+                ['multiple']
             )
             ->will($this->onConsecutiveCalls(
-                $input,
-                'MyCatalogue'
+                $options['choices'],
+                'MyCatalogue',
+                isset($options['multiple']) ? $options['multiple'] : null
             ));
 
-        $this->assertSame(
-            [
-                ['value' => 'Status1', 'text' => 'Alias1'],
-                ['value' => 'Status2', 'text' => 'Alias2'],
-            ],
-            $this->twigExtension->getXEditableChoices($fieldDescription)
-        );
+        $this->assertSame($expectedChoices, $this->twigExtension->getXEditableChoices($fieldDescription));
     }
 
     public function select2LocalesProvider()
