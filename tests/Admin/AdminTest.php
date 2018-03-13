@@ -1427,13 +1427,15 @@ class AdminTest extends TestCase
         $this->assertSame('fooTranslated', $admin->transChoice('foo', 2, ['name' => 'Andrej'], 'fooMessageDomain'));
     }
 
-    public function testSetPersistFilters()
+    public function testSetFilterPersister()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
-        $this->assertAttributeSame(false, 'persistFilters', $admin);
-        $admin->setPersistFilters(true);
-        $this->assertAttributeSame(true, 'persistFilters', $admin);
+        $filterPersister = $this->createMock('Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface');
+
+        $this->assertAttributeSame(null, 'filterPersister', $admin);
+        $admin->setFilterPersister($filterPersister);
+        $this->assertAttributeSame($filterPersister, 'filterPersister', $admin);
     }
 
     public function testGetRootCode()

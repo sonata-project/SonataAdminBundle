@@ -521,6 +521,7 @@ class HelperControllerTest extends TestCase
         $this->admin->id($entity)->willReturn(123);
         $targetAdmin->checkAccess('list')->willReturn(null);
         $targetAdmin->setPersistFilters(false)->willReturn(null);
+        $targetAdmin->setFilterPersister(null)->willReturn(null);
         $targetAdmin->getDatagrid()->willReturn($datagrid->reveal());
         $targetAdmin->getObjectMetadata($entity)->willReturn($metadata->reveal());
         $metadata->getTitle()->willReturn('FOO');

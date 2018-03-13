@@ -71,5 +71,9 @@
         <service id="sonata.admin.twig.global" class="Sonata\AdminBundle\Twig\GlobalVariables" public="true">
             <argument type="service" id="sonata.admin.pool"/>
         </service>
+        <!-- filter persister -->
+        <service id="sonata.admin.filter_persister.session" class="Sonata\AdminBundle\Filter\Persister\SessionFilterPersister">
+            <argument type="service" id="session"/>
+        </service>
     </services>
 </container>

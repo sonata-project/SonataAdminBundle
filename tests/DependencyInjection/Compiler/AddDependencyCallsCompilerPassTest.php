@@ -33,6 +33,7 @@ use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\RouterInterface;
@@ -662,6 +663,9 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $container
             ->register('request_stack')
             ->setClass(RequestStack::class);
+        $container
+            ->register('session')
+            ->setClass(Session::class);
         foreach ([
             'doctrine_phpcr' => 'PHPCR',
             'orm' => 'ORM', ] as $key => $bundleSubstring) {
