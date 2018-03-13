@@ -100,7 +100,7 @@ var Admin = {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_ICHECK) {
             Admin.log('[core|setup_icheck] configure iCheck on', subject);
 
-            jQuery("input[type='checkbox']:not('label.btn>input'), input[type='radio']:not('label.btn>input')", subject).iCheck({
+            jQuery("input[type='checkbox']:not('label.btn>input, [data-sonata-icheck='false']'), input[type='radio']:not('label.btn>input')", subject).iCheck({
                 checkboxClass: 'icheckbox_square-blue',
                 radioClass: 'iradio_square-blue'
             });
