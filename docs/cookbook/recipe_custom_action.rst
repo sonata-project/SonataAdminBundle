@@ -269,11 +269,11 @@ The full ``CarAdmin.php`` example looks like this:
 
     If you want to render a custom controller action in a template by using the
     render function in twig you need to add ``_sonata_admin`` as an attribute. For
-    example; ``{{ render(controller('App:XxxxCRUD:comment', {'_sonata_admin':
-    'sonata.admin.xxxx' })) }}``. This has to be done because the moment the
-    rendering should happen the routing, which usually sets the value of this
-    parameter, is not involved at all, and then you will get an error "There is no
-    _sonata_admin defined for the controller
+    example; ``{{ render(controller('App\\Controller\\XxxxCRUDController::comment',
+    {'_sonata_admin': 'sonata.admin.xxxx' })) }}``. This has to be done because the
+    moment the rendering should happen the routing, which usually sets the value of
+    this parameter, is not involved at all, and then you will get an error "There is
+    no _sonata_admin defined for the controller
     App\Controller\XxxxCRUDController and the current route ' '."
 
 Custom Action without Entity
