@@ -612,6 +612,7 @@ to the underlying forms.
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\CoreBundle\Form\Type\CollectionType;
+    use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
     class ProductAdmin extends AbstractAdmin
     {
@@ -624,7 +625,7 @@ to the underlying forms.
                         'delete' => false,
                         'delete_options' => [
                             // You may otherwise choose to put the field but hide it
-                            'type'         => 'hidden',
+                            'type'         => HiddenType::class,
                             // In that case, you need to fill in the options as well
                             'type_options' => [
                                 'mapped'   => false,
