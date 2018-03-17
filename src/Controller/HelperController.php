@@ -284,25 +284,15 @@ class HelperController
         }
 
         // Handle entity choice association type, transforming the value into entity
-        if ('' !== $value && 'choice' == $fieldDescription->getType() && $fieldDescription->getOption('class')) {
-            $manager = $this->pool->getContainer()->get($admin->getManagerType())->getManager();
-            $classMetadata = $manager->getClassMetadata($admin->getClass());
-
-            if (!$classMetadata->hasAssociation($field)) {
-                return new JsonResponse(sprintf(
-                    'Unknown association "%s", association does not exist in entity "%s",'
-                    .' available associations are "%s".',
-                    $field,
-                    $admin->getClass(),
-                    implode(', ', $classMetadata->getAssociationNames())
-                ), 404);
-            }
-
-            $value = $manager->find($fieldDescription->getOption('class'), $value);
+        if ('' !== $value
+            && 'choice' == $fieldDescription->getType()
+            && $fieldDescription->getOption('class') === $fieldDescription->getTargetEntity()
+        ) {
+            $value = $admin->getModelManager()->find($fieldDescription->getOption('class'), $value);
 
             if (!$value) {
                 return new JsonResponse(sprintf(
-                    'Edit failed, object with id "%s" not found in association "%s".',
+                    'Edit failed, object with id: %s not found in association: %s.',
                     $originalValue,
                     $field
                 ), 404);
