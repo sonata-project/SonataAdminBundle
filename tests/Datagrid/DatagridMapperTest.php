@@ -261,6 +261,130 @@ class DatagridMapperTest extends TestCase
         ], array_keys($this->datagrid->getFilters()));
     }
 
+    public function testIfTrueApply()
+    {
+        $this->datagridMapper
+            ->ifTrue(true)
+            ->add('foo', 'bar')
+            ->ifEnd()
+        ;
+
+        $this->assertTrue($this->datagridMapper->has('foo'));
+    }
+
+    public function testIfTrueNotApply()
+    {
+        $this->datagridMapper
+            ->ifTrue(false)
+            ->add('foo', 'bar')
+            ->ifEnd()
+        ;
+
+        $this->assertFalse($this->datagridMapper->has('foo'));
+    }
+
+    public function testIfTrueCombination()
+    {
+        $this->datagridMapper
+            ->ifTrue(false)
+            ->add('foo', 'bar')
+            ->ifEnd()
+            ->add('baz', 'foobaz')
+        ;
+
+        $this->assertFalse($this->datagridMapper->has('foo'));
+        $this->assertTrue($this->datagridMapper->has('baz'));
+    }
+
+    public function testIfFalseApply()
+    {
+        $this->datagridMapper
+            ->ifFalse(false)
+            ->add('foo', 'bar')
+            ->ifEnd()
+        ;
+
+        $this->assertTrue($this->datagridMapper->has('foo'));
+    }
+
+    public function testIfFalseNotApply()
+    {
+        $this->datagridMapper
+            ->ifFalse(true)
+            ->add('foo', 'bar')
+            ->ifEnd()
+        ;
+
+        $this->assertFalse($this->datagridMapper->has('foo'));
+    }
+
+    public function testIfFalseCombination()
+    {
+        $this->datagridMapper
+            ->ifFalse(true)
+            ->add('foo', 'bar')
+            ->ifEnd()
+            ->add('baz', 'foobaz')
+        ;
+
+        $this->assertFalse($this->datagridMapper->has('foo'));
+        $this->assertTrue($this->datagridMapper->has('baz'));
+    }
+
+    public function testIfTrueNested()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
+        $this->datagridMapper->ifTrue(true);
+        $this->datagridMapper->ifTrue(true);
+    }
+
+    public function testIfFalseNested()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
+        $this->datagridMapper->ifFalse(false);
+        $this->datagridMapper->ifFalse(false);
+    }
+
+    public function testIfCombinationNested()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
+        $this->datagridMapper->ifTrue(true);
+        $this->datagridMapper->ifFalse(false);
+    }
+
+    public function testIfFalseCombinationNested2()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
+        $this->datagridMapper->ifFalse(false);
+        $this->datagridMapper->ifTrue(true);
+    }
+
+    public function testIfFalseCombinationNested3()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
+        $this->datagridMapper->ifFalse(true);
+        $this->datagridMapper->ifTrue(false);
+    }
+
+    public function testIfFalseCombinationNested4()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
+        $this->datagridMapper->ifTrue(false);
+        $this->datagridMapper->ifFalse(true);
+    }
+
     private function getFieldDescriptionMock($name = null, $label = null)
     {
         $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);

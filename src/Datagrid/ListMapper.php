@@ -70,6 +70,10 @@ class ListMapper extends BaseMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = [])
     {
+        if (null !== $this->apply && !$this->apply) {
+            return $this;
+        }
+
         // Change deprecated inline action "view" to "show"
         if ('_action' == $name && 'actions' == $type) {
             if (isset($fieldDescriptionOptions['actions']['view'])) {

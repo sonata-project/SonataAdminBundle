@@ -252,6 +252,130 @@ class ListMapperTest extends TestCase
         ], true), print_r($this->fieldDescriptionCollection->getElements(), true));
     }
 
+    public function testIfTrueApply()
+    {
+        $this->listMapper
+            ->ifTrue(true)
+            ->add('foo', 'bar')
+            ->ifEnd()
+        ;
+
+        $this->assertTrue($this->listMapper->has('foo'));
+    }
+
+    public function testIfTrueNotApply()
+    {
+        $this->listMapper
+            ->ifTrue(false)
+            ->add('foo', 'bar')
+            ->ifEnd()
+        ;
+
+        $this->assertFalse($this->listMapper->has('foo'));
+    }
+
+    public function testIfTrueCombination()
+    {
+        $this->listMapper
+            ->ifTrue(false)
+            ->add('foo', 'bar')
+            ->ifEnd()
+            ->add('baz', 'foobaz')
+        ;
+
+        $this->assertFalse($this->listMapper->has('foo'));
+        $this->assertTrue($this->listMapper->has('baz'));
+    }
+
+    public function testIfFalseApply()
+    {
+        $this->listMapper
+            ->ifFalse(false)
+            ->add('foo', 'bar')
+            ->ifEnd()
+        ;
+
+        $this->assertTrue($this->listMapper->has('foo'));
+    }
+
+    public function testIfFalseNotApply()
+    {
+        $this->listMapper
+            ->ifFalse(true)
+            ->add('foo', 'bar')
+            ->ifEnd()
+        ;
+
+        $this->assertFalse($this->listMapper->has('foo'));
+    }
+
+    public function testIfFalseCombination()
+    {
+        $this->listMapper
+            ->ifFalse(true)
+            ->add('foo', 'bar')
+            ->ifEnd()
+            ->add('baz', 'foobaz')
+        ;
+
+        $this->assertFalse($this->listMapper->has('foo'));
+        $this->assertTrue($this->listMapper->has('baz'));
+    }
+
+    public function testIfTrueNested()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
+        $this->listMapper->ifTrue(true);
+        $this->listMapper->ifTrue(true);
+    }
+
+    public function testIfFalseNested()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
+        $this->listMapper->ifFalse(false);
+        $this->listMapper->ifFalse(false);
+    }
+
+    public function testIfCombinationNested()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
+        $this->listMapper->ifTrue(true);
+        $this->listMapper->ifFalse(false);
+    }
+
+    public function testIfFalseCombinationNested2()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
+        $this->listMapper->ifFalse(false);
+        $this->listMapper->ifTrue(true);
+    }
+
+    public function testIfFalseCombinationNested3()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
+        $this->listMapper->ifFalse(true);
+        $this->listMapper->ifTrue(false);
+    }
+
+    public function testIfFalseCombinationNested4()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+
+        $this->listMapper->ifTrue(false);
+        $this->listMapper->ifFalse(true);
+    }
+
     private function getFieldDescriptionMock($name = null, $label = null)
     {
         $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);

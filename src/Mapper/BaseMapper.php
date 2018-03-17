@@ -31,6 +31,11 @@ abstract class BaseMapper
      */
     protected $builder;
 
+    /**
+     * @var bool|null
+     */
+    protected $apply;
+
     public function __construct(BuilderInterface $builder, AdminInterface $admin)
     {
         $this->builder = $builder;
@@ -80,4 +85,54 @@ abstract class BaseMapper
      * @return $this
      */
     abstract public function reorder(array $keys);
+
+    /**
+     * Only nested add if the condition match true.
+     *
+     * @param bool $bool
+     *
+     * @throws \RuntimeException
+     *
+     * @return $this
+     */
+    public function ifTrue($bool)
+    {
+        if (null !== $this->apply) {
+            throw new \RuntimeException('Cannot nest ifTrue or ifFalse call');
+        }
+
+        $this->apply = (true === $bool);
+
+        return $this;
+    }
+
+    /**
+     * Only nested add if the condition match false.
+     *
+     * @param bool $bool
+     *
+     * @throws \RuntimeException
+     *
+     * @return $this
+     */
+    public function ifFalse($bool)
+    {
+        if (null !== $this->apply) {
+            throw new \RuntimeException('Cannot nest ifTrue or ifFalse call');
+        }
+
+        $this->apply = (false === $bool);
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function ifEnd()
+    {
+        $this->apply = null;
+
+        return $this;
+    }
 }

@@ -55,6 +55,10 @@ class DatagridMapper extends BaseMapper
         $fieldOptions = null,
         array $fieldDescriptionOptions = []
     ) {
+        if (null !== $this->apply && !$this->apply) {
+            return $this;
+        }
+
         if (is_array($fieldOptions)) {
             $filterOptions['field_options'] = $fieldOptions;
         }
