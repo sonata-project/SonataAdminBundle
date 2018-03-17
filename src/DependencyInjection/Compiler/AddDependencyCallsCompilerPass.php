@@ -385,7 +385,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         if ($container->getParameter('sonata.admin.configuration.templates') !== $definedTemplates) {
             $definition->addMethodCall('setTemplates', [$definedTemplates]);
         } else {
-            $definition->addMethodCall('setTemplates', ['%sonata.admin.configuration.templates%']);
+            $definition->addMethodCall('setTemplates', [$container->getParameter('sonata.admin.configuration.templates')]);
         }
     }
 
