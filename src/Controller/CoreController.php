@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Controller;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -54,7 +55,7 @@ class CoreController extends Controller
             $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
         }
 
-        return $this->render($this->getAdminPool()->getTemplate('dashboard'), $parameters);
+        return $this->render($this->getTemplateRegistry()->getTemplate('dashboard'), $parameters);
     }
 
     /**
@@ -102,7 +103,7 @@ class CoreController extends Controller
             return $response;
         }
 
-        return $this->render($this->container->get('sonata.admin.pool')->getTemplate('search'), [
+        return $this->render($this->getTemplateRegistry()->getTemplate('search'), [
             'base_template' => $this->getBaseTemplate(),
             'breadcrumbs_builder' => $this->get('sonata.admin.breadcrumbs_builder'),
             'admin_pool' => $this->container->get('sonata.admin.pool'),
@@ -156,10 +157,18 @@ class CoreController extends Controller
     protected function getBaseTemplate()
     {
         if ($this->getCurrentRequest()->isXmlHttpRequest()) {
-            return $this->getAdminPool()->getTemplate('ajax');
+            return $this->getTemplateRegistry()->getTemplate('ajax');
         }
 
-        return $this->getAdminPool()->getTemplate('layout');
+        return $this->getTemplateRegistry()->getTemplate('layout');
+    }
+
+    /**
+     * @return TemplateRegistryInterface
+     */
+    private function getTemplateRegistry()
+    {
+        return $this->container->get('sonata.admin.global_template_registry');
     }
 
     /**

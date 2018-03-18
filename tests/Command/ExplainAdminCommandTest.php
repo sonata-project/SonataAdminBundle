@@ -155,7 +155,7 @@ class ExplainAdminCommandTest extends TestCase
 
                         return $pool;
 
-                    case 'validator.validator_factory':
+                    case 'validator':
                         return $this->validatorFactory;
 
                     case 'acme.admin.foo':

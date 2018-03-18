@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Block;
 
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminListBlockService;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Block\FakeBlockService;
 use Sonata\BlockBundle\Test\AbstractBlockServiceTestCase;
 
@@ -28,16 +29,23 @@ class AdminListBlockServiceTest extends AbstractBlockServiceTestCase
      */
     private $pool;
 
+    /**
+     * @var TemplateRegistryInterface
+     */
+    private $templateRegistry;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
+
+        $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
     }
 
     public function testDefaultSettings(): void
     {
-        $blockService = new AdminListBlockService('foo', $this->templating, $this->pool);
+        $blockService = new AdminListBlockService('foo', $this->templating, $this->pool, $this->templateRegistry->reveal());
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([
@@ -47,7 +55,7 @@ class AdminListBlockServiceTest extends AbstractBlockServiceTestCase
 
     public function testOverriddenDefaultSettings(): void
     {
-        $blockService = new FakeBlockService('foo', $this->templating, $this->pool);
+        $blockService = new FakeBlockService('foo', $this->templating, $this->pool, $this->templateRegistry->reveal());
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([

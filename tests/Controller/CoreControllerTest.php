@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\CoreController;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,11 +30,13 @@ class CoreControllerTest extends TestCase
     {
         $container = $this->createMock(ContainerInterface::class);
 
+        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
+        $templateRegistry->getTemplate('ajax')->willReturn('ajax.html');
+        $templateRegistry->getTemplate('dashboard')->willReturn('dashboard.html');
+        $templateRegistry->getTemplate('layout')->willReturn('layout.html');
+
         $pool = new Pool($container, 'title', 'logo.png');
-        $pool->setTemplates([
-            'ajax' => 'ajax.html',
-            'dashboard' => 'dashboard.html',
-        ]);
+        $pool->setTemplateRegistry($templateRegistry->reveal());
 
         $templating = $this->createMock(EngineInterface::class);
         $request = new Request();
@@ -48,6 +51,7 @@ class CoreControllerTest extends TestCase
             'sonata.admin.pool' => $pool,
             'templating' => $templating,
             'request_stack' => $requestStack,
+            'sonata.admin.global_template_registry' => $templateRegistry->reveal(),
         ];
 
         $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($values) {
@@ -89,11 +93,13 @@ class CoreControllerTest extends TestCase
     {
         $container = $this->createMock(ContainerInterface::class);
 
+        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
+        $templateRegistry->getTemplate('ajax')->willReturn('ajax.html');
+        $templateRegistry->getTemplate('dashboard')->willReturn('dashboard.html');
+        $templateRegistry->getTemplate('layout')->willReturn('layout.html');
+
         $pool = new Pool($container, 'title', 'logo.png');
-        $pool->setTemplates([
-            'ajax' => 'ajax.html',
-            'dashboard' => 'dashboard.html',
-        ]);
+        $pool->setTemplateRegistry($templateRegistry->reveal());
 
         $templating = $this->createMock(EngineInterface::class);
         $request = new Request();
@@ -106,6 +112,7 @@ class CoreControllerTest extends TestCase
             'sonata.admin.pool' => $pool,
             'templating' => $templating,
             'request_stack' => $requestStack,
+            'sonata.admin.global_template_registry' => $templateRegistry->reveal(),
         ];
 
         $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($values) {

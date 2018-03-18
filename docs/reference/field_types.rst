@@ -65,6 +65,15 @@ related documentations.
 Choice
 ^^^^^^
 
+You can use the following parameters:
+
+======================================  ==================================================================
+Parameter                               Description
+======================================  ==================================================================
+**choices**                             Array of choices
+**required**                            Whether the field is required or not (default true) when the ``editable`` option is set to ``true``. If false, an empty placeholder will be added.
+======================================  ==================================================================
+
 .. code-block:: php
 
     public function configureListFields(ListMapper $listMapper)

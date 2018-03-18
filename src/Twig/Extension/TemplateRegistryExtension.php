@@ -13,28 +13,39 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class TemplateRegistryExtension extends AbstractExtension
 {
     /**
-     * @var Pool
+     * @var TemplateRegistryInterface
      */
-    private $pool;
+    private $globalTemplateRegistry;
 
-    public function __construct(Pool $pool)
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    public function __construct(TemplateRegistryInterface $globalTemplateRegistry, ContainerInterface $container)
     {
-        $this->pool = $pool;
+        $this->globalTemplateRegistry = $globalTemplateRegistry;
+        $this->container = $container;
     }
 
     public function getFunctions()
     {
         return [
             new TwigFunction('get_admin_template', [$this, 'getAdminTemplate']),
-            new TwigFunction('get_admin_pool_template', [$this, 'getPoolTemplate']),
+            new TwigFunction('get_global_template', [$this, 'getGlobalTemplate']),
+
+            // NEXT MAJOR: Remove this line
+            new TwigFunction('get_admin_pool_template', [$this, 'getPoolTemplate'], ['deprecated' => true]),
         ];
     }
 
@@ -42,11 +53,26 @@ final class TemplateRegistryExtension extends AbstractExtension
      * @param string $name
      * @param string $adminCode
      *
+     * @throws ServiceNotFoundException
+     * @throws ServiceCircularReferenceException
+     *
      * @return null|string
      */
     public function getAdminTemplate($name, $adminCode)
     {
-        return $this->getAdmin($adminCode)->getTemplate($name);
+        return $this->getTemplateRegistry($adminCode)->getTemplate($name);
+    }
+
+    /**
+     * @deprecated Sinds 3.x, to be removed in 4.0. Use getGlobalTemplate instead.
+     *
+     * @param $name
+     *
+     * @return null|string
+     */
+    public function getPoolTemplate($name)
+    {
+        return $this->getGlobalTemplate($name);
     }
 
     /**
@@ -54,18 +80,27 @@ final class TemplateRegistryExtension extends AbstractExtension
      *
      * @return null|string
      */
-    public function getPoolTemplate($name)
+    public function getGlobalTemplate($name)
     {
-        return $this->pool->getTemplate($name);
+        return $this->globalTemplateRegistry->getTemplate($name);
     }
 
     /**
      * @param string $adminCode
      *
-     * @return AdminInterface|false|null
+     * @throws ServiceNotFoundException
+     * @throws ServiceCircularReferenceException
+     *
+     * @return TemplateRegistryInterface
      */
-    private function getAdmin($adminCode)
+    private function getTemplateRegistry($adminCode)
     {
-        return $this->pool->getAdminByAdminCode($adminCode);
+        $serviceId = $adminCode.'.template_registry';
+        $templateRegistry = $this->container->get($serviceId);
+        if ($templateRegistry instanceof TemplateRegistryInterface) {
+            return $templateRegistry;
+        }
+
+        throw new ServiceNotFoundException($serviceId);
     }
 }

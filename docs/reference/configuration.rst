@@ -236,6 +236,7 @@ Full Configuration Options
                     instanceof:           []
                     uses:                 []
             persist_filters:      false
+            filter_persister:     sonata.admin.filter_persister.session
             show_mosaic_button:   true
             global_search:
                 show_empty_boxes: show

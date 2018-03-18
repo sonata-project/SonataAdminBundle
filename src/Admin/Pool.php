@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -43,7 +44,9 @@ class Pool
     protected $adminClasses = [];
 
     /**
-     * @var string[]
+     * @deprecated since 3.x, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     *
+     * @var array
      */
     protected $templates = [];
 
@@ -71,6 +74,11 @@ class Pool
      * @var PropertyAccessorInterface
      */
     protected $propertyAccessor;
+
+    /**
+     * @var MutableTemplateRegistryInterface
+     */
+    private $templateRegistry;
 
     /**
      * @param string $title
@@ -317,29 +325,42 @@ class Pool
         return $this->adminClasses;
     }
 
-    public function setTemplates(array $templates): void
+    final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
     {
-        $this->templates = $templates;
+        $this->templateRegistry = $templateRegistry;
     }
 
     /**
+     * @deprecated since 3.x, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     */
+    public function setTemplates(array $templates): void
+    {
+        // NEXT MAJOR: Remove this line
+        $this->templates = $templates;
+
+        $this->templateRegistry->setTemplates($templates);
+    }
+
+    /**
+     * @deprecated since 3.x, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     *
      * @return array
      */
     public function getTemplates()
     {
-        return $this->templates;
+        return $this->templateRegistry->getTemplates();
     }
 
     /**
+     * @deprecated since 3.x, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     *
      * @param string $name
      *
      * @return null|string
      */
     public function getTemplate($name)
     {
-        if (isset($this->templates[$name])) {
-            return $this->templates[$name];
-        }
+        return $this->templateRegistry->getTemplate($name);
     }
 
     /**

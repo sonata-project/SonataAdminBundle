@@ -32,6 +32,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\RouterInterface;
@@ -387,6 +388,9 @@ class ExtensionCompilerPassTest extends TestCase
         $container
             ->register('request_stack')
             ->setClass(RequestStack::class);
+        $container
+            ->register('session')
+            ->setClass(Session::class);
 
         // Add admin definition's
         $container

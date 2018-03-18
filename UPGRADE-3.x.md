@@ -1,6 +1,28 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated use of $templates in AbstractAdmin and Pool
+
+The `AbstractAdmin::$templates` attribute and the methods `getTemplate()` and
+`getTemplates()` are deprecated. Please use the new TemplateRegistry services
+instead. One per admin is generated and available through the admin code +
+`.template_registry` (for example, `app.admin.news` uses `app.admin.news.template_registry`).
+
+The `Pool::$templates` attribute and the methods `getTemplate()`, `getTemplates()`
+and `setTemplates()` are deprecated. Please use the TemplateRegistry service
+`sonata.admin.global_template_registry` instead.
+
+The Twig function `get_admin_pool_template()` is deprecated. Please use
+`get_global_template()` instead.
+
+## Deprecated AbstractAdmin::$persistFilters
+
+The `AbstractAdmin::$persistFilters` is deprecated and should not be used anymore.
+The problem was that it was not easy to change the way filters are persisted.
+Instead of a simple boolean var (whether to persist or not filters) you can now inject a service,
+that will be responsible for doing the job (see `FilterPersisterInterface`).
+An implementation was added, which falls back to the previous behavior : `SessionFilterPersister`.
+
 UPGRADE FROM 3.32 to 3.33
 =========================
 

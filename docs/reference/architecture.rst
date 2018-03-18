@@ -124,7 +124,7 @@ the Dependency Injection Container (DIC).
 This is particularly useful if you decide to extend the ``CRUDController`` to
 add new actions or change the behavior of existing ones. You can specify which controller
 to use when declaring the ``Admin`` service by passing it as the 3rd argument. For example
-to set the controller to ``App:PostAdmin``:
+to set the controller to ``App\Controller\PostAdminController``:
 
 .. configuration-block::
 
@@ -134,7 +134,7 @@ to set the controller to ``App:PostAdmin``:
             <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" />
             <argument />
             <argument>App\Entity\Post</argument>
-            <argument>App:PostAdmin</argument>
+            <argument>App\Controller\PostAdminController</argument>
             <call method="setTranslationDomain">
                 <argument>App</argument>
             </call>

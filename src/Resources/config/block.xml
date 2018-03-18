@@ -6,6 +6,7 @@
             <argument>sonata.admin.block.admin_list</argument>
             <argument type="service" id="sonata.templating"/>
             <argument type="service" id="sonata.admin.pool"/>
+            <argument type="service" id="sonata.admin.global_template_registry"/>
         </service>
         <service id="sonata.admin.block.search_result" class="Sonata\AdminBundle\Block\AdminSearchBlockService" public="true">
             <tag name="sonata.block"/>
