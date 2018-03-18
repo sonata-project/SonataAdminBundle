@@ -517,8 +517,8 @@ class HelperControllerTest extends TestCase
         $this->admin->getFormFieldDescription('barField')->willReturn($fieldDescription->reveal());
         $this->admin->getFormFieldDescriptions()->willReturn(null);
         $this->admin->id($entity)->willReturn(123);
-        $targetAdmin->checkAccess('list')->willReturn(null);
-        $targetAdmin->setFilterPersister(null)->willReturn(null);
+        $targetAdmin->checkAccess('list')->shouldBeCalled();
+        $targetAdmin->setFilterPersister(null)->shouldBeCalled();
         $targetAdmin->getDatagrid()->willReturn($datagrid->reveal());
         $targetAdmin->getObjectMetadata($entity)->willReturn($metadata->reveal());
         $metadata->getTitle()->willReturn('FOO');
