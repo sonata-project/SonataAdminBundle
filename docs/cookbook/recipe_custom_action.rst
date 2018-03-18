@@ -326,15 +326,34 @@ Create a template for that button:
     </li>
 
 You can also add this action to your dashboard actions, you have to overwrite
-the ``getDashboardActions`` method in your admin class::
+the ``getDashboardActions`` method in your admin class and there are two
+ways you can add action::
 
+    public function getDashboardActions()
+    {
+        $actions = parent::getDashboardActions();
+
+        $actions['import']['template'] = 'import_dashboard_button.html.twig';
+
+        return $actions;
+    }
+
+Create a template for that button:
+
+.. code-block:: html+jinja
+
+    <a class="btn btn-link btn-flat" href="{{ admin.generateUrl('import') }}">
+        <i class="fa fa-level-up"></i>{{ 'import_action'|trans({}, 'SonataAdminBundle') }}
+    </a>
+
+Or you can just pass values as array::
 
     public function getDashboardActions()
     {
         $actions = parent::getDashboardActions();
 
         $actions['import'] = [
-            'label' => 'action_import',
+            'label' => 'import_action',
             'translation_domain' => 'SonataAdminBundle',
             'url' => $this->generateUrl('import'),
             'icon' => 'level-up',
