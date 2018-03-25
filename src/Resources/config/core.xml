@@ -11,6 +11,7 @@
                 <argument type="service" id="sonata.admin.global_template_registry"/>
             </call>
         </service>
+        <service id="Sonata\AdminBundle\Admin\Pool" alias="sonata.admin.pool"/>
         <service id="sonata.admin.route_loader" class="Sonata\AdminBundle\Route\AdminPoolLoader" public="true">
             <argument type="service" id="sonata.admin.pool"/>
             <argument/>
