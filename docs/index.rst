@@ -95,3 +95,4 @@ The demo website can be found at http://demo.sonata-project.org.
    cookbook/recipe_data_mapper
    cookbook/recipe_custom_view
    cookbook/recipe_persisting_filters
+   cookbook/recipe_creating_an_admin_with_annotations
