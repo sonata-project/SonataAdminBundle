@@ -374,7 +374,7 @@ body.fixed .content-header .navbar.stuck {
     body.fixed .right-side {
         padding-top: 0;
     }
-    body.fixed .content-header .navbar.stuck {
+    body.fixed .content-header nav.navbar.stuck {
         top: 0;
         position: relative;
         margin: 0;
