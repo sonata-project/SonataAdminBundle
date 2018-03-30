@@ -37,6 +37,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
@@ -304,6 +306,22 @@ class CRUDController implements ContainerAwareInterface
 
         if (!$existingObject) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
+        }
+
+        if ($parentAdmin = $this->admin->getParent()) {
+            $parentId = $request->get($parentAdmin->getIdParameter());
+
+            $propertyAccessor = PropertyAccess::createPropertyAccessor();
+            $propertyPath = new PropertyPath($this->admin->getParentAssociationMapping());
+
+            $value = $propertyAccessor->getValue($existingObject, $propertyPath);
+
+            if ($parentAdmin->getObject($parentId) !== $value) {
+                @trigger_error("Editing a child that isn't connected to a given parent is deprecated since 3.x"
+                    ." and won't be allowed in 4.x.",
+                    E_USER_DEPRECATED
+                );
+            }
         }
 
         $this->admin->checkAccess('edit', $existingObject);
