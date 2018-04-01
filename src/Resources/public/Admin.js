@@ -33,6 +33,7 @@ var Admin = {
         Admin.setup_collection_counter(subject);
         Admin.setup_sticky_elements(subject);
         Admin.setup_readmore_elements(subject);
+        Admin.setup_form_submit(subject);
 
 //        Admin.setup_list_modal(subject);
     },
@@ -675,6 +676,13 @@ var Admin = {
     },
     handle_top_navbar_height: function() {
         jQuery('body.fixed .content-wrapper').css('padding-top', jQuery('.navbar-static-top').outerHeight());
+    },
+    setup_form_submit: function(subject) {
+        Admin.log('[core|setup_form_submit] setup form submit on', subject);
+
+        jQuery(subject).find('form').on('submit', function() {
+            jQuery(this).find('button').prop('disabled', true);
+        });
     }
 };
 
