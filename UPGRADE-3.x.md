@@ -23,6 +23,10 @@ Instead of a simple boolean var (whether to persist or not filters) you can now 
 that will be responsible for doing the job (see `FilterPersisterInterface`).
 An implementation was added, which falls back to the previous behavior : `SessionFilterPersister`.
 
+## Deprecated editing of a child admin that does not belong to a given parent
+
+This is not allowed anymore and will throw a 404 error.
+
 UPGRADE FROM 3.32 to 3.33
 =========================
 

@@ -314,11 +314,11 @@ class CRUDController implements ContainerAwareInterface
             $propertyAccessor = PropertyAccess::createPropertyAccessor();
             $propertyPath = new PropertyPath($this->admin->getParentAssociationMapping());
 
-            $value = $propertyAccessor->getValue($existingObject, $propertyPath);
+            $parent = $propertyAccessor->getValue($existingObject, $propertyPath);
 
-            if ($parentAdmin->getObject($parentId) !== $value) {
+            if ($parentAdmin->getObject($parentId) !== $parent) {
                 @trigger_error("Editing a child that isn't connected to a given parent is deprecated since 3.x"
-                    ." and won't be allowed in 4.x.",
+                    ." and won't be allowed in 4.0.",
                     E_USER_DEPRECATED
                 );
             }
