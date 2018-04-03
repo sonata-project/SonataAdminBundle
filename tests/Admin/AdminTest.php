@@ -801,7 +801,12 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
-        $this->assertSame([16, 32, 64, 128, 192], $admin->getPerPageOptions());
+        $perPageOptions = $admin->getPerPageOptions();
+
+        foreach ($perPageOptions as $perPage) {
+            $this->assertEquals(0, $perPage % 4);
+        }
+
         $admin->setPerPageOptions([500, 1000]);
         $this->assertSame([500, 1000], $admin->getPerPageOptions());
     }
@@ -1236,18 +1241,10 @@ class AdminTest extends TestCase
         $this->assertFalse($admin->determinedPerPageValue('foo'));
         $this->assertFalse($admin->determinedPerPageValue(123));
         $this->assertTrue($admin->determinedPerPageValue(16));
-        $this->assertTrue($admin->determinedPerPageValue(32));
-        $this->assertTrue($admin->determinedPerPageValue(64));
-        $this->assertTrue($admin->determinedPerPageValue(128));
-        $this->assertTrue($admin->determinedPerPageValue(192));
 
         $admin->setPerPageOptions([101, 102, 103]);
-        $this->assertFalse($admin->determinedPerPageValue(15));
-        $this->assertFalse($admin->determinedPerPageValue(25));
-        $this->assertFalse($admin->determinedPerPageValue(200));
+        $this->assertFalse($admin->determinedPerPageValue(16));
         $this->assertTrue($admin->determinedPerPageValue(101));
-        $this->assertTrue($admin->determinedPerPageValue(102));
-        $this->assertTrue($admin->determinedPerPageValue(103));
     }
 
     public function testIsGranted(): void

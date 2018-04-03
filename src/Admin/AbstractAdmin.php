@@ -173,7 +173,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @var array
      */
-    protected $perPageOptions = [16, 32, 64, 128, 192];
+    protected $perPageOptions = [16, 32, 64, 128, 256];
 
     /**
      * Pager type.
