@@ -681,7 +681,12 @@ var Admin = {
         Admin.log('[core|setup_form_submit] setup form submit on', subject);
 
         jQuery(subject).find('form').on('submit', function() {
-            jQuery(this).find('button').prop('disabled', true);
+            var form = jQuery(this);
+
+            // this allows to submit forms and know which button was clicked
+            setTimeout(function() {
+                form.find('button').prop('disabled', true);
+            }, 1);
         });
     }
 };
