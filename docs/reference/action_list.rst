@@ -594,8 +594,8 @@ to override the default parameters.
                 'header_style' => 'width: 35%',
                 'collapse' => [
                     'height' => 40, // height in px
-                    'read_more' => 'I want to see the full description', // content of the "read more" link
-                    'read_less' => 'This text is too long, reduce the size' // content of the "read less" link
+                    'more' => 'I want to see the full description', // content of the "read more" link
+                    'less' => 'This text is too long, reduce the size' // content of the "read less" link
                 ]
             ])
             // ...
