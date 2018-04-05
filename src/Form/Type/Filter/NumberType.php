@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType as FormNumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -106,7 +107,7 @@ class NumberType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'field_type' => 'number',
+            'field_type' => FormNumberType::class,
             'field_options' => [],
         ]);
     }

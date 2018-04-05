@@ -102,7 +102,7 @@ class ChoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'field_type' => 'choice',
+            'field_type' => FormChoiceType::class,
             'field_options' => [],
             'operator_type' => FormChoiceType::class,
             'operator_options' => [],
