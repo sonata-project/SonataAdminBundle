@@ -230,6 +230,23 @@ class CRUDController implements ContainerAwareInterface
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
+        if ($parentAdmin = $this->admin->getParent()) {
+            $parentId = $request->get($parentAdmin->getIdParameter());
+
+            $propertyAccessor = PropertyAccess::createPropertyAccessor();
+            $propertyPath = new PropertyPath($this->admin->getParentAssociationMapping());
+
+            $parent = $propertyAccessor->getValue($object, $propertyPath);
+
+            if ($parentAdmin->getObject($parentId) !== $parent) {
+                // NEXT_MAJOR: make this exception
+                @trigger_error("Deleting a child that isn't connected to a given parent is deprecated since 3.x"
+                    ." and won't be allowed in 4.0.",
+                    E_USER_DEPRECATED
+                );
+            }
+        }
+
         $this->admin->checkAccess('delete', $object);
 
         $preResponse = $this->preDelete($request, $object);
@@ -317,6 +334,7 @@ class CRUDController implements ContainerAwareInterface
             $parent = $propertyAccessor->getValue($existingObject, $propertyPath);
 
             if ($parentAdmin->getObject($parentId) !== $parent) {
+                // NEXT_MAJOR: make this exception
                 @trigger_error("Editing a child that isn't connected to a given parent is deprecated since 3.x"
                     ." and won't be allowed in 4.0.",
                     E_USER_DEPRECATED
@@ -672,6 +690,23 @@ class CRUDController implements ContainerAwareInterface
 
         if (!$object) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
+        }
+
+        if ($parentAdmin = $this->admin->getParent()) {
+            $parentId = $request->get($parentAdmin->getIdParameter());
+
+            $propertyAccessor = PropertyAccess::createPropertyAccessor();
+            $propertyPath = new PropertyPath($this->admin->getParentAssociationMapping());
+
+            $parent = $propertyAccessor->getValue($object, $propertyPath);
+
+            if ($parentAdmin->getObject($parentId) !== $parent) {
+                // NEXT_MAJOR: make this exception
+                @trigger_error("Viewing a child that isn't connected to a given parent is deprecated since 3.x"
+                    ." and won't be allowed in 4.0.",
+                    E_USER_DEPRECATED
+                );
+            }
         }
 
         $this->admin->checkAccess('show', $object);
