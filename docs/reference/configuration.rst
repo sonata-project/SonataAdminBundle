@@ -69,6 +69,7 @@ Full Configuration Options
                 acl_user_manager:     null
             title:                'Sonata Admin'
             title_logo:           bundles/sonataadmin/logo_title.png
+            search: true
             options:
                 html5_validate:       true
 
