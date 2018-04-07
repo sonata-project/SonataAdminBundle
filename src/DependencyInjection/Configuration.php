@@ -83,6 +83,7 @@ final class Configuration implements ConfigurationInterface
 
                 ->scalarNode('title')->defaultValue('Sonata Admin')->cannotBeEmpty()->end()
                 ->scalarNode('title_logo')->defaultValue('bundles/sonataadmin/logo_title.png')->cannotBeEmpty()->end()
+                ->booleanNode('search')->defaultTrue()->info('Enable/disable the search form in the sidebar')->end()
 
                 ->arrayNode('global_search')
                     ->addDefaultsIfNotSet()

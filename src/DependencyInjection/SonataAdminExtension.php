@@ -155,6 +155,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
         $config['options']['stylesheets'] = $this->buildStylesheets($config);
         $config['options']['role_admin'] = $config['security']['role_admin'];
         $config['options']['role_super_admin'] = $config['security']['role_super_admin'];
+        $config['options']['search'] = $config['search'];
 
         $pool = $container->getDefinition('sonata.admin.pool');
         $pool->replaceArgument(1, $config['title']);
