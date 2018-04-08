@@ -1764,12 +1764,18 @@ EOT;
 
         $child->setParent($this);
 
-        // TODO: remove $args and add $field parameter to this function on next Major
+        // NEXT_MAJOR: remove $args and add $field parameter to this function on next Major
 
         $args = \func_get_args();
 
         if (isset($args[1])) {
             $child->addParentAssociationMapping($this->getCode(), $args[1]);
+        } else {
+            @trigger_error(
+                'Calling "addChild" without second argument is deprecated since 3.x'
+                .' and will not be allowed in 4.0.',
+                E_USER_DEPRECATED
+            );
         }
     }
 

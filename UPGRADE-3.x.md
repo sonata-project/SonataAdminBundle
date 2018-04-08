@@ -48,6 +48,8 @@ An implementation was added, which falls back to the previous behavior : `Sessio
 
 This is not allowed anymore and will throw a 404 error in the future.
 
+Deprecated calling of `AbstractAdmin::addChild` without second argument.
+
 UPGRADE FROM 3.32 to 3.33
 =========================
 
