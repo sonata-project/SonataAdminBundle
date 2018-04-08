@@ -70,6 +70,8 @@ should pass field name:
 Overwriting of `$parentAssociationMapping` is discouraged.
 >>>>>>> 618cfc95... Admin can have multiple parents now
 
+Deprecated calling of `AbstractAdmin::addChild` without second argument.
+
 UPGRADE FROM 3.32 to 3.33
 =========================
 
