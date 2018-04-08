@@ -230,22 +230,7 @@ class CRUDController implements ContainerAwareInterface
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
-        if ($parentAdmin = $this->admin->getParent()) {
-            $parentId = $request->get($parentAdmin->getIdParameter());
-
-            $propertyAccessor = PropertyAccess::createPropertyAccessor();
-            $propertyPath = new PropertyPath($this->admin->getParentAssociationMapping());
-
-            $parent = $propertyAccessor->getValue($object, $propertyPath);
-
-            if ($parentAdmin->getObject($parentId) !== $parent) {
-                // NEXT_MAJOR: make this exception
-                @trigger_error("Deleting a child that isn't connected to a given parent is deprecated since 3.x"
-                    ." and won't be allowed in 4.0.",
-                    E_USER_DEPRECATED
-                );
-            }
-        }
+        $this->checkParentChildAssociation($request, $object);
 
         $this->admin->checkAccess('delete', $object);
 
@@ -325,22 +310,7 @@ class CRUDController implements ContainerAwareInterface
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
-        if ($parentAdmin = $this->admin->getParent()) {
-            $parentId = $request->get($parentAdmin->getIdParameter());
-
-            $propertyAccessor = PropertyAccess::createPropertyAccessor();
-            $propertyPath = new PropertyPath($this->admin->getParentAssociationMapping());
-
-            $parent = $propertyAccessor->getValue($existingObject, $propertyPath);
-
-            if ($parentAdmin->getObject($parentId) !== $parent) {
-                // NEXT_MAJOR: make this exception
-                @trigger_error("Editing a child that isn't connected to a given parent is deprecated since 3.x"
-                    ." and won't be allowed in 4.0.",
-                    E_USER_DEPRECATED
-                );
-            }
-        }
+        $this->checkParentChildAssociation($request, $existingObject);
 
         $this->admin->checkAccess('edit', $existingObject);
 
@@ -692,22 +662,7 @@ class CRUDController implements ContainerAwareInterface
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
-        if ($parentAdmin = $this->admin->getParent()) {
-            $parentId = $request->get($parentAdmin->getIdParameter());
-
-            $propertyAccessor = PropertyAccess::createPropertyAccessor();
-            $propertyPath = new PropertyPath($this->admin->getParentAssociationMapping());
-
-            $parent = $propertyAccessor->getValue($object, $propertyPath);
-
-            if ($parentAdmin->getObject($parentId) !== $parent) {
-                // NEXT_MAJOR: make this exception
-                @trigger_error("Viewing a child that isn't connected to a given parent is deprecated since 3.x"
-                    ." and won't be allowed in 4.0.",
-                    E_USER_DEPRECATED
-                );
-            }
-        }
+        $this->checkParentChildAssociation($request, $object);
 
         $this->admin->checkAccess('show', $object);
 
@@ -1495,6 +1450,26 @@ class CRUDController implements ContainerAwareInterface
         $domain = $domain ?: $this->admin->getTranslationDomain();
 
         return $this->get('translator')->trans($id, $parameters, $domain, $locale);
+    }
+
+    private function checkParentChildAssociation(Request $request, $object)
+    {
+        if (!($parentAdmin = $this->admin->getParent())) {
+            return;
+        }
+
+        $parentId = $request->get($parentAdmin->getIdParameter());
+
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $propertyPath = new PropertyPath($this->admin->getParentAssociationMapping());
+
+        if ($parentAdmin->getObject($parentId) !== $propertyAccessor->getValue($object, $propertyPath)) {
+            // NEXT_MAJOR: make this exception
+            @trigger_error("Accessing a child that isn't connected to a given parent is deprecated since 3.x"
+                ." and won't be allowed in 4.0.",
+                E_USER_DEPRECATED
+            );
+        }
     }
 
     /**
