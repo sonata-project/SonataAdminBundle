@@ -1458,6 +1458,11 @@ class CRUDController implements ContainerAwareInterface
             return;
         }
 
+        // NEXT_MAJOR: remove this check
+        if (!$this->admin->getParentAssociationMapping()) {
+            return;
+        }
+
         $parentId = $request->get($parentAdmin->getIdParameter());
 
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
