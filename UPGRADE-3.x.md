@@ -1,6 +1,9 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.33 to 3.34
+=========================
+
 ## Deprecated use of $templates in AbstractAdmin and Pool
 
 The `AbstractAdmin::$templates` attribute and the methods `getTemplate()` and

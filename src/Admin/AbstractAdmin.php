@@ -201,7 +201,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @var bool
      *
-     * @deprecated since 3.x, to be removed in 4.0.
+     * @deprecated since 3.34, to be removed in 4.0.
      */
     protected $persistFilters = false;
 
@@ -406,7 +406,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * @var array
      *
-     * @deprecated since 3.x, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      */
     protected $templates = [];
 
@@ -1178,7 +1178,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * @deprecated since 3.x, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      *
      * @return array
      */
@@ -1188,7 +1188,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * @deprecated since 3.x, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      *
      * @param string $name
      *
@@ -1412,12 +1412,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * NEXT_MAJOR: remove this method
      *
-     * @deprecated since 3.x, to be removed in 4.0.
+     * @deprecated since 3.34, to be removed in 4.0.
      */
     public function setPersistFilters($persist)
     {
         @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.',
+            'The '.__METHOD__.' method is deprecated since version 3.34 and will be removed in 4.0.',
             E_USER_DEPRECATED
         );
 

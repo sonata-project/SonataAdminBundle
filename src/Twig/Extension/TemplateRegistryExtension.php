@@ -62,7 +62,7 @@ final class TemplateRegistryExtension extends AbstractExtension
     }
 
     /**
-     * @deprecated Sinds 3.x, to be removed in 4.0. Use getGlobalTemplate instead.
+     * @deprecated Sinds 3.34, to be removed in 4.0. Use getGlobalTemplate instead.
      *
      * @param $name
      *
