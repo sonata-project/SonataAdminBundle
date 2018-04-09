@@ -31,6 +31,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
@@ -1007,6 +1008,62 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame([], $this->session->getFlashBag()->all());
         $this->assertSame('@SonataAdmin/CRUD/delete.html.twig', $this->template);
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Accessing a child that isn't connected to a given parent is deprecated since 3.x and won't be allowed in 4.0.
+     */
+    public function testDeleteActionChildDeprecation()
+    {
+        $object = new \stdClass();
+        $object->parent = 'test';
+
+        $object2 = new \stdClass();
+
+        $admin = $this->createMock(PostAdmin::class);
+
+        $admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object2));
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('getParent')
+            ->will($this->returnValue($admin));
+
+        $this->admin->expects($this->exactly(2))
+            ->method('getParentAssociationMapping')
+            ->will($this->returnValue('parent'));
+
+        $this->controller->deleteAction(1, $this->request);
+    }
+
+    public function testDeleteActionNoParentMappings()
+    {
+        $object = new \stdClass();
+
+        $admin = $this->createMock(PostAdmin::class);
+
+        $admin->expects($this->never())
+            ->method('getObject');
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('getParent')
+            ->will($this->returnValue($admin));
+
+        $this->admin->expects($this->once())
+            ->method('getParentAssociationMapping')
+            ->will($this->returnValue(false));
+
+        $this->controller->deleteAction(1, $this->request);
     }
 
     public function testDeleteActionNoCsrfToken()
