@@ -260,6 +260,12 @@ class SonataAdminExtensionTest extends TestCase
             ->method('hasAccess')
             ->will($this->returnValue(true));
 
+        // NEXT_MAJOR: Remove this line
+        $this->admin->expects($this->any())
+            ->method('getTemplate')
+            ->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+
         $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription->expects($this->any())
@@ -337,6 +343,12 @@ class SonataAdminExtensionTest extends TestCase
         $this->admin->expects($this->any())
             ->method('hasAccess')
             ->will($this->returnValue(true));
+
+        // NEXT_MAJOR: Remove this line
+        $this->admin->expects($this->any())
+            ->method('getTemplate')
+            ->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
@@ -1300,6 +1312,11 @@ EOT
      */
     public function testRenderListElementNonExistentTemplate()
     {
+        // NEXT_MAJOR: Remove this line
+        $this->admin->method('getTemplate')
+            ->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+
         $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription->expects($this->once())
@@ -1338,6 +1355,11 @@ EOT
     {
         $this->expectException(\Twig_Error_Loader::class);
         $this->expectExceptionMessage('Unable to find template "@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig"');
+
+        // NEXT_MAJOR: Remove this line
+        $this->admin->method('getTemplate')
+            ->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig');
 
         $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig');
 
