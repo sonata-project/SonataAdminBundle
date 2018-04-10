@@ -19,6 +19,8 @@ you should pass a field name:
 
 Overwriting `$parentAssociationMapping` is discouraged.
 
+Deprecated calling of `AbstractAdmin::addChild` without second argument.
+
 UPGRADE FROM 3.33 to 3.34
 =========================
 
@@ -44,33 +46,9 @@ Instead of a simple boolean var (whether to persist or not filters) you can now 
 that will be responsible for doing the job (see `FilterPersisterInterface`).
 An implementation was added, which falls back to the previous behavior : `SessionFilterPersister`.
 
-<<<<<<< HEAD
 ## Deprecated edit/show/delete of a child admin that does not belong to a given parent
 
 This is not allowed anymore and will throw a 404 error in the future.
-
-Deprecated calling of `AbstractAdmin::addChild` without second argument.
-=======
-## Multiple parents
-
-Admin classes can now have multiple parents, when registering service you
-should pass field name:
-
-```
-<service id="sonata.admin.playlist" class="App\Admin\PlaylistAdmin">
-    <!-- ... -->
-
-    <call method="addChild">
-        <argument type="service" id="sonata.admin.video" />
-        <argument>playlist</<argument>
-    </call>
-</service>
-```
-
-Overwriting of `$parentAssociationMapping` is discouraged.
->>>>>>> 618cfc95... Admin can have multiple parents now
-
-Deprecated calling of `AbstractAdmin::addChild` without second argument.
 
 UPGRADE FROM 3.32 to 3.33
 =========================
