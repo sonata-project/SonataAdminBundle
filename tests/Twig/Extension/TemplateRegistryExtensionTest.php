@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -38,12 +39,23 @@ class TemplateRegistryExtensionTest extends TestCase
      */
     private $container;
 
+    /**
+     * NEXT_MAJOR: Remove this attribute.
+     *
+     * @var AdminInterface
+     */
     private $admin;
 
     protected function setUp()
     {
         $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
         $this->container = $this->prophesize(ContainerInterface::class);
+
+        // NEXT_MAJOR: Remove this line
+        $this->admin = $this->prophesize(AdminInterface::class);
+
+        // NEXT_MAJOR: Remove this line
+        $this->admin->getTemplate('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
 
         $this->templateRegistry->getTemplate('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
 
@@ -68,7 +80,10 @@ class TemplateRegistryExtensionTest extends TestCase
 
     public function testGetAdminTemplate()
     {
-        $this->container->get('admin.post.template_registry')->willReturn($this->templateRegistry);
+        // NEXT_MAJOR: Remove this line
+        $this->container->get('admin.post')->willReturn($this->admin->reveal());
+
+        $this->container->get('admin.post.template_registry')->willReturn($this->templateRegistry->reveal());
 
         $this->assertEquals(
             '@SonataAdmin/CRUD/edit.html.twig',
@@ -78,10 +93,15 @@ class TemplateRegistryExtensionTest extends TestCase
 
     public function testGetAdminTemplateFailure()
     {
+        // NEXT_MAJOR: Remove this line
+        $this->container->get('admin.post')->willReturn(null);
         $this->container->get('admin.post.template_registry')->willReturn(null);
 
         $this->expectException(ServiceNotFoundException::class);
-        $this->expectExceptionMessage('You have requested a non-existent service "admin.post.template_registry"');
+
+        // NEXT_MAJOR: Remove this line and use the commented line below instead
+        $this->expectExceptionMessage('You have requested a non-existent service "admin.post"');
+        // $this->expectExceptionMessage('You have requested a non-existent service "admin.post.template_registry"');
 
         $this->assertEquals(
             '@SonataAdmin/CRUD/edit.html.twig',
