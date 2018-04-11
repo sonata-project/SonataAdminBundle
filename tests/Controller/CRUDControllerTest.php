@@ -1030,7 +1030,7 @@ class CRUDControllerTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Accessing a child that isn't connected to a given parent is deprecated since 3.x and won't be allowed in 4.0.
+     * @expectedDeprecation Accessing a child that isn't connected to a given parent is deprecated since 3.34 and won't be allowed in 4.0.
      */
     public function testDeleteActionChildDeprecation()
     {
