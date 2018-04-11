@@ -1419,6 +1419,7 @@ class AdminTest extends TestCase
         $this->assertAttributeSame(null, 'filterPersister', $admin);
         $admin->setFilterPersister($filterPersister);
         $this->assertAttributeSame($filterPersister, 'filterPersister', $admin);
+        $this->assertAttributeSame(true, 'persistFilters', $admin);
     }
 
     public function testGetRootCode()
