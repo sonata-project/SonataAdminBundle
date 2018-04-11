@@ -1514,7 +1514,7 @@ class CRUDController implements ContainerAwareInterface
 
         if ($parentAdmin->getObject($parentId) !== $propertyAccessor->getValue($object, $propertyPath)) {
             // NEXT_MAJOR: make this exception
-            @trigger_error("Accessing a child that isn't connected to a given parent is deprecated since 3.x"
+            @trigger_error("Accessing a child that isn't connected to a given parent is deprecated since 3.34"
                 ." and won't be allowed in 4.0.",
                 E_USER_DEPRECATED
             );

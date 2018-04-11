@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.34.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.34.1...3.34.2) - 2018-04-11
+### Deprecated
+- Editing child admin that does not belong to a given parent
+
+### Fixed
+- Regression for child form type rendering
+- Fixed a BC break where an overwritten `getTemplate()` method in an `Admin` was no longer called by Sonata.
+- Not working persist_filter option for legacy admin property.
+
 ## [3.34.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.34.0...3.34.1) - 2018-04-09
 ### Fixed
 - Fix regression on #5051: It is possible again to know which button triggered the submit of the form.
