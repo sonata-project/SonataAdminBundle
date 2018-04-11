@@ -3,8 +3,8 @@ UPGRADE 3.x
 
 ## Multiple parents
 
-Admin classes can now have multiple parents, when registering service you
-should pass field name:
+Admin classes can now have multiple parents, when registering the service
+you should pass a field name:
 
 ```
 <service id="sonata.admin.playlist" class="App\Admin\PlaylistAdmin">
@@ -17,7 +17,7 @@ should pass field name:
 </service>
 ```
 
-Overwriting of `$parentAssociationMapping` is discouraged.
+Overwriting `$parentAssociationMapping` is discouraged.
 
 UPGRADE FROM 3.33 to 3.34
 =========================
