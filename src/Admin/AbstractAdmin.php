@@ -245,10 +245,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $baseCodeRoute = '';
 
     /**
-     * The related parent association, ie if OrderElement has a parent property named order,
-     * then the $parentAssociationMapping must be a string named `order`.
+     * NEXT_MAJOR: should be default array and private.
      *
-     * @var string
+     * @var string|array
      */
     protected $parentAssociationMapping = null;
 
@@ -849,11 +848,38 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * Returns the name of the parent related field, so the field can be use to set the default
      * value (ie the parent object) or to filter the object.
      *
-     * @return string the name of the parent related field
+     * @throws \InvalidArgumentException
+     *
+     * @return null|string
      */
     public function getParentAssociationMapping()
     {
+        // NEXT_MAJOR: remove array check
+        if (\is_array($this->parentAssociationMapping) && $this->getParent()) {
+            $parent = $this->getParent()->getCode();
+
+            if (array_key_exists($parent, $this->parentAssociationMapping)) {
+                return $this->parentAssociationMapping[$parent];
+            }
+
+            throw new \InvalidArgumentException(sprintf(
+                "There's no association between %s and %s.",
+                $this->getCode(),
+                $this->getParent()->getCode()
+            ));
+        }
+
+        // NEXT_MAJOR: remove this line
         return $this->parentAssociationMapping;
+    }
+
+    /**
+     * @param string $code
+     * @param string $value
+     */
+    final public function addParentAssociationMapping($code, $value)
+    {
+        $this->parentAssociationMapping[$code] = $value;
     }
 
     /**
@@ -1737,6 +1763,20 @@ EOT;
         $this->children[$child->getCode()] = $child;
 
         $child->setParent($this);
+
+        // NEXT_MAJOR: remove $args and add $field parameter to this function on next Major
+
+        $args = \func_get_args();
+
+        if (isset($args[1])) {
+            $child->addParentAssociationMapping($this->getCode(), $args[1]);
+        } else {
+            @trigger_error(
+                'Calling "addChild" without second argument is deprecated since 3.x'
+                .' and will not be allowed in 4.0.',
+                E_USER_DEPRECATED
+            );
+        }
     }
 
     public function hasChild($code)

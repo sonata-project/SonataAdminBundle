@@ -261,13 +261,15 @@ class AdminTest extends TestCase
         $this->assertFalse($postAdmin->hasChild('comment'));
 
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
-        $postAdmin->addChild($commentAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
+
         $this->assertTrue($postAdmin->hasChildren());
         $this->assertTrue($postAdmin->hasChild('sonata.post.admin.comment'));
 
         $this->assertSame('sonata.post.admin.comment', $postAdmin->getChild('sonata.post.admin.comment')->getCode());
         $this->assertSame('sonata.post.admin.post|sonata.post.admin.comment', $postAdmin->getChild('sonata.post.admin.comment')->getBaseCodeRoute());
         $this->assertSame($postAdmin, $postAdmin->getChild('sonata.post.admin.comment')->getParent());
+        $this->assertSame('post', $commentAdmin->getParentAssociationMapping());
 
         $this->assertFalse($postAdmin->isChild());
         $this->assertTrue($commentAdmin->isChild());
@@ -513,6 +515,8 @@ class AdminTest extends TestCase
     }
 
     /**
+     * @group legacy
+     * @expectedDeprecation Calling "addChild" without second argument is deprecated since 3.x and will not be allowed in 4.0.
      * @dataProvider provideGetBaseRouteName
      */
     public function testGetBaseRouteNameWithChildAdmin($objFqn, $expected)
@@ -544,13 +548,14 @@ class AdminTest extends TestCase
         $commentAdmin->setRouteGenerator($routeGenerator);
         $commentAdmin->initialize();
 
-        $postAdmin->addChild($commentAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
 
         $commentVoteAdmin = new CommentVoteAdmin(
             'sonata.post.admin.comment_vote',
             'Application\Sonata\NewsBundle\Entity\CommentVote',
             'SonataNewsBundle:CommentVoteAdmin'
         );
+
         $container->set('sonata.post.admin.comment_vote', $commentVoteAdmin);
         $commentVoteAdmin->setConfigurationPool($pool);
         $commentVoteAdmin->setRouteBuilder($pathInfo);
@@ -574,6 +579,7 @@ class AdminTest extends TestCase
         $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.comment|sonata.post.admin.comment_vote.list'));
         $this->assertFalse($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.edit'));
         $this->assertFalse($commentAdmin->hasRoute('edit'));
+        $this->assertSame('post', $commentAdmin->getParentAssociationMapping());
 
         /*
          * Test the route name from request
@@ -2274,8 +2280,8 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\Comment',
             'SonataNewsBundle:CommentAdmin'
         );
-        $postAdmin->addChild($commentAdmin);
-        $commentAdmin->addChild($postAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
+        $commentAdmin->addChild($postAdmin, 'comment');
     }
 
     public function testCircularChildAdminTripleLevel()
@@ -2300,9 +2306,9 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\CommentVote',
             'SonataNewsBundle:CommentVoteAdmin'
         );
-        $postAdmin->addChild($commentAdmin);
-        $commentAdmin->addChild($commentVoteAdmin);
-        $commentVoteAdmin->addChild($postAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
+        $commentAdmin->addChild($commentVoteAdmin, 'comment');
+        $commentVoteAdmin->addChild($postAdmin, 'post');
     }
 
     public function testCircularChildAdminWithItself()
@@ -2342,13 +2348,13 @@ class AdminTest extends TestCase
         $this->assertSame($commentAdmin, $commentAdmin->getRootAncestor());
         $this->assertSame($commentVoteAdmin, $commentVoteAdmin->getRootAncestor());
 
-        $postAdmin->addChild($commentAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
 
         $this->assertSame($postAdmin, $postAdmin->getRootAncestor());
         $this->assertSame($postAdmin, $commentAdmin->getRootAncestor());
         $this->assertSame($commentVoteAdmin, $commentVoteAdmin->getRootAncestor());
 
-        $commentAdmin->addChild($commentVoteAdmin);
+        $commentAdmin->addChild($commentVoteAdmin, 'comment');
 
         $this->assertSame($postAdmin, $postAdmin->getRootAncestor());
         $this->assertSame($postAdmin, $commentAdmin->getRootAncestor());
@@ -2377,13 +2383,13 @@ class AdminTest extends TestCase
         $this->assertSame(0, $commentAdmin->getChildDepth());
         $this->assertSame(0, $commentVoteAdmin->getChildDepth());
 
-        $postAdmin->addChild($commentAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
 
         $this->assertSame(0, $postAdmin->getChildDepth());
         $this->assertSame(1, $commentAdmin->getChildDepth());
         $this->assertSame(0, $commentVoteAdmin->getChildDepth());
 
-        $commentAdmin->addChild($commentVoteAdmin);
+        $commentAdmin->addChild($commentVoteAdmin, 'comment');
 
         $this->assertSame(0, $postAdmin->getChildDepth());
         $this->assertSame(1, $commentAdmin->getChildDepth());
@@ -2408,8 +2414,8 @@ class AdminTest extends TestCase
             'SonataNewsBundle:CommentVoteAdmin'
         );
 
-        $postAdmin->addChild($commentAdmin);
-        $commentAdmin->addChild($commentVoteAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
+        $commentAdmin->addChild($commentVoteAdmin, 'comment');
 
         $this->assertNull($postAdmin->getCurrentLeafChildAdmin());
         $this->assertNull($commentAdmin->getCurrentLeafChildAdmin());

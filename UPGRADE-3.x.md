@@ -1,6 +1,26 @@
 UPGRADE 3.x
 ===========
 
+## Multiple parents
+
+Admin classes can now have multiple parents, when registering the service
+you should pass a field name:
+
+```
+<service id="sonata.admin.playlist" class="App\Admin\PlaylistAdmin">
+    <!-- ... -->
+
+    <call method="addChild">
+        <argument type="service" id="sonata.admin.video" />
+        <argument>playlist</<argument>
+    </call>
+</service>
+```
+
+Overwriting `$parentAssociationMapping` is discouraged.
+
+Deprecated calling of `AbstractAdmin::addChild` without second argument.
+
 UPGRADE FROM 3.33 to 3.34
 =========================
 
