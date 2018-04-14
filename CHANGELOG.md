@@ -47,6 +47,52 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.34.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.34.1...3.34.2) - 2018-04-11
+### Deprecated
+- Editing child admin that does not belong to a given parent
+
+### Fixed
+- Regression for child form type rendering
+- Fixed a BC break where an overwritten `getTemplate()` method in an `Admin` was no longer called by Sonata.
+- Not working persist_filter option for legacy admin property.
+
+## [3.34.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.34.0...3.34.1) - 2018-04-09
+### Fixed
+- Fix regression on #5051: It is possible again to know which button triggered the submit of the form.
+
+## [3.34.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.33.0...3.34.0) - 2018-04-09
+### Added
+- Added some `Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface` to externalise filter persistence to a dedicated class
+- Added some `Sonata\AdminBundle\Filter\Persister\SessionFilterPersister` to store filters to session (as done now)
+- Added `TemplateRegistry`, `TemplateRegistryInterface` and `MutableTemplateRegistryInterface` to handle all template registration related functionality from both `AbstractAdmin` and `Pool`.
+- Added `required` option to editable list `choice`
+- Added `search` option to enable/disable the search form in the sidebar
+
+### Changed
+- Changed `Sonata\AdminBundle\Admin\AbstractAdmin::getFilterParameters` to use the configured filter persister component
+- Reordered bootstrap.js javascript dependency fixes problems with jQuery UI dialogs
+- `side_bar_after_nav_content` block is now empty by default
+
+### Deprecated
+- Deprecated `AbstractAdmin` methods `getTemplate` and `getTemplates`.
+- Deprecated `AbstractAdmin` attribute `$templates`.
+- Deprecated `Pool` methods `getTemplate`, `setTemplates` and `getTemplates`.
+- Deprecated `Pool` attribute `$templates`.
+- Deprecated Twig function `get_pool_template`.
+
+### Fixed
+- if object is empty, don't try to create an edit route
+- Fix edit choice with a relation field on admin list
+- Added missing french translation for `Toggle Navigation`
+- Explain command compatible with sf4
+- Fixed deprecation notice when Pool is injected in service through autowiring
+- `ChoiceFieldMaskType` now works on inline table collections
+- Navbar positioning on mobile is no longer altered like in desktop
+- Increase consistency on default page sizes (replaced 192 by 256)
+- Disable form submit buttons when the form gets submitted
+- form types FQCN are now used in filter. Improves compatibility with SF3/4
+- Not working sidebar menu tree with AdminLTE v2.4
+
 ## [3.33.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.32.0...3.33.0) - 2018-03-12
 ### Changed
 - Replaced calls to Twig internal `Environment::loadTemplate()` method with `Environment::load()` in `SonataAdminExtension`.

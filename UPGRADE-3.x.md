@@ -1,6 +1,29 @@
 UPGRADE 3.x
 ===========
 
+## Multiple parents
+
+Admin classes can now have multiple parents, when registering the service
+you should pass a field name:
+
+```
+<service id="sonata.admin.playlist" class="App\Admin\PlaylistAdmin">
+    <!-- ... -->
+
+    <call method="addChild">
+        <argument type="service" id="sonata.admin.video" />
+        <argument>playlist</<argument>
+    </call>
+</service>
+```
+
+Overwriting `$parentAssociationMapping` is discouraged.
+
+Deprecated calling of `AbstractAdmin::addChild` without second argument.
+
+UPGRADE FROM 3.33 to 3.34
+=========================
+
 ## Deprecated use of $templates in AbstractAdmin and Pool
 
 The `AbstractAdmin::$templates` attribute and the methods `getTemplate()` and
@@ -22,6 +45,10 @@ The problem was that it was not easy to change the way filters are persisted.
 Instead of a simple boolean var (whether to persist or not filters) you can now inject a service,
 that will be responsible for doing the job (see `FilterPersisterInterface`).
 An implementation was added, which falls back to the previous behavior : `SessionFilterPersister`.
+
+## Deprecated edit/show/delete of a child admin that does not belong to a given parent
+
+This is not allowed anymore and will throw a 404 error in the future.
 
 UPGRADE FROM 3.32 to 3.33
 =========================

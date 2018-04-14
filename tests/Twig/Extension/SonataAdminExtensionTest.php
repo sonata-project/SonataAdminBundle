@@ -250,6 +250,8 @@ class SonataAdminExtensionTest extends TestCase
     }
 
     /**
+     * @group legacy
+     * @expectedDepreaction The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
      * @dataProvider getRenderListElementTests
      */
     public function testRenderListElement($expected, $type, $value, array $options): void
@@ -261,6 +263,12 @@ class SonataAdminExtensionTest extends TestCase
         $this->admin->expects($this->any())
             ->method('hasAccess')
             ->will($this->returnValue(true));
+
+        // NEXT_MAJOR: Remove this line
+        $this->admin->expects($this->any())
+            ->method('getTemplate')
+            ->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 

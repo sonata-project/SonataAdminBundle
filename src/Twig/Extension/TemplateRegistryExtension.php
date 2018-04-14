@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
@@ -60,11 +61,13 @@ final class TemplateRegistryExtension extends AbstractExtension
      */
     public function getAdminTemplate($name, $adminCode)
     {
-        return $this->getTemplateRegistry($adminCode)->getTemplate($name);
+        // NEXT_MAJOR: Remove this line and use commented line below it instead
+        return $this->getAdmin($adminCode)->getTemplate($name);
+        // return $this->getTemplateRegistry($adminCode)->getTemplate($name);
     }
 
     /**
-     * @deprecated Sinds 3.x, to be removed in 4.0. Use getGlobalTemplate instead.
+     * @deprecated Sinds 3.34, to be removed in 4.0. Use getGlobalTemplate instead.
      *
      * @param $name
      *
@@ -102,5 +105,25 @@ final class TemplateRegistryExtension extends AbstractExtension
         }
 
         throw new ServiceNotFoundException($serviceId);
+    }
+
+    /**
+     * @deprecated since 3.x, will be dropped in 4.0. Use TemplateRegistry services instead
+     *
+     * @param string $adminCode
+     *
+     * @throws ServiceNotFoundException
+     * @throws ServiceCircularReferenceException
+     *
+     * @return AdminInterface
+     */
+    private function getAdmin($adminCode)
+    {
+        $admin = $this->container->get($adminCode);
+        if ($admin instanceof AdminInterface) {
+            return $admin;
+        }
+
+        throw new ServiceNotFoundException($adminCode);
     }
 }

@@ -203,7 +203,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @var bool
      *
-     * @deprecated since 3.x, to be removed in 4.0.
+     * @deprecated since 3.34, to be removed in 4.0.
      */
     protected $persistFilters = false;
 
@@ -239,7 +239,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * The related parent association, ie if OrderElement has a parent property named order,
      * then the $parentAssociationMapping must be a string named `order`.
      *
+     * NEXT_MAJOR: remove this attribute.
+     *
+     * @deprecated This attribute is deprecated since 3.24 and will be removed in 4.0
+     *
      * @var string
+     */
+    protected $baseCodeRoute = '';
+
+    /**
+     * NEXT_MAJOR: should be default array and private.
+     *
+     * @var string|array
      */
     protected $parentAssociationMapping = null;
 
@@ -388,7 +399,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * @var array
      *
-     * @deprecated since 3.x, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      */
     protected $templates = [];
 
@@ -764,11 +775,38 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * Returns the name of the parent related field, so the field can be use to set the default
      * value (ie the parent object) or to filter the object.
      *
-     * @return string the name of the parent related field
+     * @throws \InvalidArgumentException
+     *
+     * @return null|string
      */
     public function getParentAssociationMapping()
     {
+        // NEXT_MAJOR: remove array check
+        if (\is_array($this->parentAssociationMapping) && $this->getParent()) {
+            $parent = $this->getParent()->getCode();
+
+            if (array_key_exists($parent, $this->parentAssociationMapping)) {
+                return $this->parentAssociationMapping[$parent];
+            }
+
+            throw new \InvalidArgumentException(sprintf(
+                "There's no association between %s and %s.",
+                $this->getCode(),
+                $this->getParent()->getCode()
+            ));
+        }
+
+        // NEXT_MAJOR: remove this line
         return $this->parentAssociationMapping;
+    }
+
+    /**
+     * @param string $code
+     * @param string $value
+     */
+    final public function addParentAssociationMapping($code, $value): void
+    {
+        $this->parentAssociationMapping[$code] = $value;
     }
 
     /**
@@ -1076,7 +1114,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * @deprecated since 3.x, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
+     *
+     * @return array
      */
     public function getTemplates(): array
     {
@@ -1084,7 +1124,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * @deprecated since 3.x, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      *
      * @param string $name
      *
@@ -1303,12 +1343,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * NEXT_MAJOR: remove this method
      *
-     * @deprecated since 3.x, to be removed in 4.0.
+     * @deprecated since 3.34, to be removed in 4.0.
      */
     public function setPersistFilters($persist): void
     {
         @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.',
+            'The '.__METHOD__.' method is deprecated since version 3.34 and will be removed in 4.0.',
             E_USER_DEPRECATED
         );
 
@@ -1321,6 +1361,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function setFilterPersister(FilterPersisterInterface $filterPersister = null): void
     {
         $this->filterPersister = $filterPersister;
+        // NEXT_MAJOR remove the deprecated property will be removed. Needed for persisted filter condition.
+        $this->persistFilters = true;
     }
 
     /**
@@ -1626,6 +1668,20 @@ EOT;
         $this->children[$child->getCode()] = $child;
 
         $child->setParent($this);
+
+        // NEXT_MAJOR: remove $args and add $field parameter to this function on next Major
+
+        $args = \func_get_args();
+
+        if (isset($args[1])) {
+            $child->addParentAssociationMapping($this->getCode(), $args[1]);
+        } else {
+            @trigger_error(
+                'Calling "addChild" without second argument is deprecated since 3.x'
+                .' and will not be allowed in 4.0.',
+                E_USER_DEPRECATED
+            );
+        }
     }
 
     public function hasChild($code)
@@ -2405,7 +2461,9 @@ EOT;
             $actions['create'] = [
                 'label' => 'link_add',
                 'translation_domain' => 'SonataAdminBundle',
-                'template' => $this->getTemplateRegistry()->getTemplate('action_create'),
+                // NEXT_MAJOR: Remove this line and use commented line below it instead
+                'template' => $this->getTemplate('action_create'),
+                // 'template' => $this->getTemplateRegistry()->getTemplate('action_create'),
                 'url' => $this->generateUrl('create'),
                 'icon' => 'plus-circle',
             ];
@@ -2632,7 +2690,9 @@ EOT;
             );
 
             $fieldDescription->setAdmin($this);
-            $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('batch'));
+            // NEXT_MAJOR: Remove this line and use commented line below it instead
+            $fieldDescription->setTemplate($this->getTemplate('batch'));
+            // $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('batch'));
 
             $mapper->add($fieldDescription, 'batch');
         }
@@ -2656,7 +2716,9 @@ EOT;
             );
 
             $fieldDescription->setAdmin($this);
-            $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('select'));
+            // NEXT_MAJOR: Remove this line and use commented line below it instead
+            $fieldDescription->setTemplate($this->getTemplate('select'));
+            // $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('select'));
 
             $mapper->add($fieldDescription, 'select');
         }
