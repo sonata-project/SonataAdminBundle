@@ -1677,7 +1677,7 @@ EOT;
             $child->addParentAssociationMapping($this->getCode(), $args[1]);
         } else {
             @trigger_error(
-                'Calling "addChild" without second argument is deprecated since 3.x'
+                'Calling "addChild" without second argument is deprecated since 3.35'
                 .' and will not be allowed in 4.0.',
                 E_USER_DEPRECATED
             );

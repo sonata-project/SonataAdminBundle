@@ -1,6 +1,9 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.34 to 3.35
+=========================
+
 ## Multiple parents
 
 Admin classes can now have multiple parents, when registering the service

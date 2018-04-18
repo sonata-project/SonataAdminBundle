@@ -515,7 +515,7 @@ class AdminTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Calling "addChild" without second argument is deprecated since 3.x and will not be allowed in 4.0.
+     * @expectedDeprecation Calling "addChild" without second argument is deprecated since 3.35 and will not be allowed in 4.0.
      * @dataProvider provideGetBaseRouteName
      */
     public function testGetBaseRouteNameWithChildAdmin($objFqn, $expected): void

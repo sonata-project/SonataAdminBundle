@@ -47,6 +47,13 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.35.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.34.2...3.35.0) - 2018-04-16
+### Added
+- Admin can now have multiple parents
+
+### Changed
+- `AbstractAdmin::addChild` now accepts 2nd parameter with parent name
+
 ## [3.34.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.34.1...3.34.2) - 2018-04-11
 ### Deprecated
 - Editing child admin that does not belong to a given parent

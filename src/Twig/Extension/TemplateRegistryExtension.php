@@ -108,7 +108,7 @@ final class TemplateRegistryExtension extends AbstractExtension
     }
 
     /**
-     * @deprecated since 3.x, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      *
      * @param string $adminCode
      *

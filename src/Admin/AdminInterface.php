@@ -490,7 +490,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns template.
      *
-     * @deprecated since 3.x. To be removed in 4.0. Use TemplateRegistry services instead
+     * @deprecated since 3.35. To be removed in 4.0. Use TemplateRegistry services instead
      *
      * @param string $name
      *
