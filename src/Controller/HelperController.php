@@ -288,6 +288,7 @@ class HelperController
         // Handle entity choice association type, transforming the value into entity
         if ('' !== $value
             && 'choice' == $fieldDescription->getType()
+            && null !== $fieldDescription->getOption('class')
             && $fieldDescription->getOption('class') === $fieldDescription->getTargetEntity()
         ) {
             $value = $admin->getModelManager()->find($fieldDescription->getOption('class'), $value);
