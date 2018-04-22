@@ -75,7 +75,7 @@ class GroupMenuProviderTest extends TestCase
     {
         $provider = new GroupMenuProvider($this->factory, $this->pool);
 
-        $this->pool->expects($this->once())
+        $this->pool->expects($this->any())
             ->method('getInstance')
             ->with($this->equalTo('sonata_admin_foo_service'))
             ->will($this->returnValue($this->getAdminMock()));
@@ -115,7 +115,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetMenuProviderWithCheckerGrantedGroupRoles(array $adminGroups)
     {
-        $this->pool->expects($this->once())
+        $this->pool->expects($this->any())
             ->method('getInstance')
             ->with($this->equalTo('sonata_admin_foo_service'))
             ->will($this->returnValue($this->getAdminMock()));
@@ -155,7 +155,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetMenuProviderWithAdmin(array $adminGroups)
     {
-        $this->pool->expects($this->once())
+        $this->pool->expects($this->any())
             ->method('getInstance')
             ->with($this->equalTo('sonata_admin_foo_service'))
             ->will($this->returnValue($this->getAdminMock()));
@@ -199,7 +199,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetKnpMenuWithListRoute(array $adminGroups)
     {
-        $this->pool->expects($this->once())
+        $this->pool->expects($this->any())
             ->method('getInstance')
             ->with($this->equalTo('sonata_admin_foo_service'))
             ->will($this->returnValue($this->getAdminMock(false)));
@@ -229,7 +229,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetKnpMenuWithGrantedList(array $adminGroups)
     {
-        $this->pool->expects($this->once())
+        $this->pool->expects($this->any())
             ->method('getInstance')
             ->with($this->equalTo('sonata_admin_foo_service'))
             ->will($this->returnValue($this->getAdminMock(true, false)));
@@ -259,7 +259,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetMenuProviderOnTopOptions(array $adminGroupsOnTopOption)
     {
-        $this->pool->expects($this->once())
+        $this->pool->expects($this->any())
             ->method('getInstance')
             ->with($this->equalTo('sonata_admin_foo_service'))
             ->will($this->returnValue($this->getAdminMock(true, false)));
@@ -283,7 +283,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetMenuProviderKeepOpenOption(array $adminGroups)
     {
-        $this->pool->expects($this->once())
+        $this->pool->expects($this->any())
             ->method('getInstance')
             ->with($this->equalTo('sonata_admin_foo_service'))
             ->will($this->returnValue($this->getAdminMock()));
