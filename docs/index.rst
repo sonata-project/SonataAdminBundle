@@ -77,6 +77,7 @@ The demo website can be found at http://demo.sonata-project.org.
    :numbered:
 
    cookbook/recipe_select2
+   cookbook/recipe_icheck
    cookbook/recipe_knp_menu
    cookbook/recipe_file_uploads
    cookbook/recipe_image_previews
