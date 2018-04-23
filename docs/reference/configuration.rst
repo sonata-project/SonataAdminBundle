@@ -200,25 +200,27 @@ Full Configuration Options
                 javascripts:
 
                     # The default javascript list:
-                    - bundles/sonatacore/vendor/jquery/dist/jquery.min.js
-                    - bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js
-                    - bundles/sonatacore/vendor/moment/min/moment.min.js
-                    - bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js
-                    - bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js
-                    - bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js
-                    - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js
-                    - bundles/sonataadmin/vendor/jquery-form/jquery.form.js
-                    - bundles/sonataadmin/jquery/jquery.confirmExit.js
-                    - bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js
-                    - bundles/sonatacore/vendor/select2/select2.min.js
-                    - bundles/sonataadmin/vendor/admin-lte/dist/js/app.min.js
-                    - bundles/sonataadmin/vendor/iCheck/icheck.min.js
-                    - bundles/sonataadmin/vendor/slimScroll/jquery.slimscroll.min.js
-                    - bundles/sonataadmin/vendor/waypoints/lib/jquery.waypoints.min.js
-                    - bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js
-                    - bundles/sonataadmin/Admin.js
-                    - bundles/sonataadmin/treeview.js
-                    - bundles/sonataadmin/sidebar.js
+                    - 'bundles/sonatacore/vendor/jquery/dist/jquery.min.js'
+                    - 'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js'
+                    - 'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js'
+                    - 'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js'
+                    - 'bundles/sonatacore/vendor/moment/min/moment.min.js'
+                    - 'bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js'
+                    - 'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'
+                    - 'bundles/sonataadmin/vendor/jquery-form/jquery.form.js'
+                    - 'bundles/sonataadmin/jquery/jquery.confirmExit.js'
+                    - 'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js'
+                    - 'bundles/sonatacore/vendor/select2/select2.min.js'
+                    - 'bundles/sonataadmin/vendor/admin-lte/dist/js/app.min.js'
+                    - 'bundles/sonataadmin/vendor/iCheck/icheck.min.js'
+                    - 'bundles/sonataadmin/vendor/slimScroll/jquery.slimscroll.min.js'
+                    - 'bundles/sonataadmin/vendor/waypoints/lib/jquery.waypoints.min.js'
+                    - 'bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js'
+                    - 'bundles/sonataadmin/vendor/readmore-js/readmore.min.js'
+                    - 'bundles/sonataadmin/vendor/masonry/dist/masonry.pkgd.min.js'
+                    - 'bundles/sonataadmin/Admin.js'
+                    - 'bundles/sonataadmin/treeview.js'
+                    - 'bundles/sonataadmin/sidebar.js'
 
                 # javascript paths to add to the page in addition to the list above
                 extra_javascripts: []
