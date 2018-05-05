@@ -28,7 +28,7 @@ use Symfony\Component\DependencyInjection\Container;
 /**
  * @author Gaurav Singh Faudjdar <faujdar@gmail.com>
  */
-class AdminMaker extends AbstractMaker
+final class AdminMaker extends AbstractMaker
 {
     /**
      * @var string
@@ -40,31 +40,26 @@ class AdminMaker extends AbstractMaker
      */
     private $availableModelManagers;
 
+    private $skeletonDirectory;
+    private $modelClass;
+    private $modelClassBasename;
+    private $adminClassBasename;
+    private $controllerClassBasename;
+    private $managerType;
+    private $modelManager;
+
     public function __construct($projectDirectory, array $modelManagers = [])
     {
         $this->projectDirectory = $projectDirectory;
         $this->availableModelManagers = $modelManagers;
+        $this->skeletonDirectory = __DIR__ . '/../Resources/skeleton';
     }
 
-    /**
-     * Return the command name for your maker (e.g. make:report).
-     *
-     * @return string
-     */
     public static function getCommandName(): string
     {
         return 'make:sonata:admin';
     }
 
-    /**
-     * Configure the command: set description, input arguments, options, etc.
-     *
-     * By default, all arguments will be asked interactively. If you want
-     * to avoid that, use the $inputConfig->setArgumentAsNonInteractive() method.
-     *
-     * @param Command            $command
-     * @param InputConfiguration $inputConfig
-     */
     public function configureCommand(Command $command, InputConfiguration $inputConfig)
     {
         $command
@@ -79,23 +74,20 @@ class AdminMaker extends AbstractMaker
         $inputConfig->setArgumentAsNonInteractive('model');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command)
     {
-        $io->section('Welcome to the Sonata admin maker');
+        $io->section('Welcome to the Sonata Admin');
         $modelClass = $io->ask(
             'The fully qualified model class',
             $input->getArgument('model'),
-            'Sonata\AdminBundle\Command\Validators::validateClass'
+            [Validators::class, 'validateClass']
         );
         $modelClassBasename = current(array_slice(explode('\\', $modelClass), -1));
 
         $adminClassBasename = $io->ask(
             'The admin class basename',
-            $input->getOption('admin') ?: $modelClassBasename.'Admin',
-            'Sonata\AdminBundle\Command\Validators::validateAdminClassBasename'
+            $input->getOption('admin') ?: $modelClassBasename . 'Admin',
+            [Validators::class, 'validateAdminClassBasename']
         );
         if (\count($this->availableModelManagers) > 1) {
             $managerTypes = array_keys($this->availableModelManagers);
@@ -106,22 +98,22 @@ class AdminMaker extends AbstractMaker
         if ($io->confirm('Do you want to generate a controller?', false)) {
             $controllerClassBasename = $io->ask(
                 'The controller class basename',
-                $input->getOption('controller') ?: $modelClassBasename.'AdminController',
-                'Sonata\AdminBundle\Command\Validators::validateControllerClassBasename'
+                $input->getOption('controller') ?: $modelClassBasename . 'AdminController',
+                [Validators::class, 'validateControllerClassBasename']
             );
             $input->setOption('controller', $controllerClassBasename);
         }
         if ($io->confirm('Do you want to update the services YAML configuration file?', true)) {
-            $path = $this->projectDirectory.'/config/';
+            $path = $this->projectDirectory . '/config/';
             $servicesFile = $io->ask(
                 'The services YAML configuration file',
-                is_file($path.'admin.yaml') ? 'admin.yaml' : 'services.yaml',
-                'Sonata\AdminBundle\Command\Validators::validateServicesFile'
+                is_file($path . 'admin.yaml') ? 'admin.yaml' : 'services.yaml',
+                [Validators::class, 'validateServicesFile']
             );
             $id = $io->ask(
                 'The admin service ID',
                 $this->getAdminServiceId($adminClassBasename),
-                'Sonata\AdminBundle\Command\Validators::validateServiceId'
+                [Validators::class, 'validateServiceId']
             );
             $input->setOption('services', $servicesFile);
             $input->setOption('id', $id);
@@ -135,7 +127,6 @@ class AdminMaker extends AbstractMaker
     /**
      * Configure any library dependencies that your maker requires.
      *
-     * @param DependencyBuilder $dependencies
      */
     public function configureDependencies(DependencyBuilder $dependencies)
     {
@@ -145,83 +136,46 @@ class AdminMaker extends AbstractMaker
     /**
      * Called after normal code generation: allows you to do anything.
      *
-     * @param InputInterface $input
-     * @param ConsoleStyle   $io
-     * @param Generator      $generator
      */
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
     {
-        $modelClass = Validators::validateClass($input->getArgument('model'));
-        $modelClassBasename = current(\array_slice(explode('\\', $modelClass), -1));
-        $adminClassBasename = $input->getOption('admin') ?: $modelClassBasename.'Admin';
-        $adminClassBasename = Validators::validateAdminClassBasename($adminClassBasename);
-        $managerType = $input->getOption('manager') ?: array_keys($this->availableModelManagers)[0];
-        $modelManager = $this->availableModelManagers[$managerType] ?: current($this->availableModelManagers);
-        $skeletonDirectory = __DIR__.'/../Resources/skeleton';
+        $this->configure($input);
 
-        $adminClassNameDetails = $generator->createClassNameDetails(
-            $modelClassBasename,
-            'Admin\\',
-            'Admin'
-        );
+        $adminClassFullName = $this->genAdmin($io, $generator);
+        $controllerClassFullName = $this->genController($input, $io, $generator);
+        $this->genService($input, $io, $adminClassFullName, $controllerClassFullName);
+    }
 
-        $fields = $modelManager->getExportFields($modelClass);
-        $fieldString = '';
-        foreach ($fields as $field) {
-            $fieldString = $fieldString."\t\t\t->add('".$field."')".PHP_EOL;
-        }
+    private function getAdminServiceId(string $adminClassBasename): string
+    {
+        $suffix = 'Admin' == substr($adminClassBasename, -5) ?
+            substr($adminClassBasename, 0, -5) : $adminClassBasename;
+        $suffix = str_replace('\\', '.', $suffix);
 
-        $fieldString .= "\t\t\t";
+        return Container::underscore(sprintf(
+            'admin.%s',
+            $suffix
+        ));
+    }
 
-        $generator->generateClass($adminClassNameDetails->getFullName(),
-            $skeletonDirectory.'/Admin.tpl.php',
-            ['fields' => $fieldString]);
-
-        $generator->writeChanges();
-
-        $io->writeln(sprintf(
-                '%sThe admin class "<info>%s</info>" has been generated under the file "<info>%s</info>".',
-                PHP_EOL,
-                $adminClassNameDetails->getShortName(),
-                $adminClassNameDetails->getFullName())
-        );
-
-        $controllerClassFullName = null;
-
-        if ($controllerClassBasename = $input->getOption('controller')) {
-            $controllerClassBasename = Validators::validateControllerClassBasename($controllerClassBasename);
-
-            $controllerClassNameDetails = $generator->createClassNameDetails(
-                $controllerClassBasename,
-                'Controller\\',
-                'Controller'
-            );
-
-            $controllerClassFullName = $controllerClassNameDetails->getFullName();
-
-            $generator->generateClass($controllerClassFullName,
-                $skeletonDirectory.'/AdminController.tpl.php',
-                []);
-
-            $generator->writeChanges();
-
-            $io->writeln(sprintf(
-                    '%sThe controller class "<info>%s</info>" has been generated under the file "<info>%s</info>".',
-                    PHP_EOL,
-                    $controllerClassNameDetails->getShortName(),
-                    $controllerClassNameDetails->getFullName())
-            );
-        }
-
+    private function genService(InputInterface $input, ConsoleStyle $io, $adminClassFullName, $controllerClassFullName)
+    {
         if ($servicesFile = $input->getOption('services')) {
-            $adminClass = $adminClassNameDetails->getFullName();
             $file = sprintf('%s/config/%s', $this->projectDirectory, $servicesFile);
             $servicesManipulator = new ServicesManipulator($file);
-            $controllerName = $controllerClassBasename ? $controllerClassFullName : '~';
+            $controllerName = $this->controllerClassBasename ? $controllerClassFullName : '~';
 
-            $id = $input->getOption('id') ?: $this->getAdminServiceId('App', $adminClassBasename);
+            $id = $input->getOption('id') ?:
+                $this->getAdminServiceId('App', $this->adminClassBasename);
 
-            $servicesManipulator->addResource($id, $modelClass, $adminClass, $controllerName, substr($managerType, strlen('sonata.admin.manager.')));
+            $servicesManipulator->addResource(
+                $id,
+                $this->modelClass,
+                $adminClassFullName,
+                $controllerName,
+                substr($this->managerType, strlen('sonata.admin.manager.'))
+            );
+
             $io->writeln(sprintf(
                 '%sThe service "<info>%s</info>" has been appended to the file <info>"%s</info>".',
                 PHP_EOL,
@@ -231,19 +185,86 @@ class AdminMaker extends AbstractMaker
         }
     }
 
-    /**
-     * @param string $adminClassBasename
-     *
-     * @return string
-     */
-    private function getAdminServiceId($adminClassBasename)
+    private function genController(InputInterface $input, ConsoleStyle $io, Generator $generator)
     {
-        $suffix = 'Admin' == substr($adminClassBasename, -5) ? substr($adminClassBasename, 0, -5) : $adminClassBasename;
-        $suffix = str_replace('\\', '.', $suffix);
+        $controllerClassFullName = null;
+        if ($this->controllerClassBasename) {
+            $controllerClassNameDetails = $generator->createClassNameDetails(
+                $this->controllerClassBasename,
+                'Controller\\',
+                'Controller'
+            );
 
-        return Container::underscore(sprintf(
-            'admin.%s',
-            $suffix
+            $controllerClassFullName = $controllerClassNameDetails->getFullName();
+
+            $generator->generateClass($controllerClassFullName,
+                $this->skeletonDirectory . '/AdminController.tpl.php',
+                []
+            );
+
+            $generator->writeChanges();
+
+            $io->writeln(sprintf(
+                '%sThe controller class "<info>%s</info>" has been generated under the file "<info>%s</info>".',
+                PHP_EOL,
+                $controllerClassNameDetails->getShortName(),
+                $controllerClassFullName
+            ));
+        }
+        return $controllerClassFullName;
+    }
+
+    private function genAdmin(ConsoleStyle $io, Generator $generator)
+    {
+        $adminClassNameDetails = $generator->createClassNameDetails(
+            $this->modelClassBasename,
+            'Admin\\',
+            'Admin'
+        );
+
+        $adminClassFullName = $adminClassNameDetails->getFullName();
+
+        $fields = $this->modelManager->getExportFields($this->modelClass);
+        $fieldString = '';
+        foreach ($fields as $field) {
+            $fieldString = $fieldString . "\t\t\t->add('" . $field . "')" . PHP_EOL;
+        }
+
+        $fieldString .= "\t\t\t";
+
+        $generator->generateClass($adminClassFullName,
+            $this->skeletonDirectory . '/Admin.tpl.php',
+            ['fields' => $fieldString]);
+
+        $generator->writeChanges();
+
+        $io->writeln(sprintf(
+            '%sThe admin class "<info>%s</info>" has been generated under the file "<info>%s</info>".',
+            PHP_EOL,
+            $adminClassNameDetails->getShortName(),
+            $adminClassFullName
         ));
+        return $adminClassFullName;
+    }
+
+    private function configure(InputInterface $input)
+    {
+        $this->modelClass = Validators::validateClass($input->getArgument('model'));
+        $this->modelClassBasename = (new \ReflectionClass($this->modelClass))->getShortName();
+        $this->adminClassBasename = Validators::validateAdminClassBasename(
+            $input->getOption('admin') ?: $this->modelClassBasename . 'Admin'
+        );
+
+        if ($this->controllerClassBasename = $input->getOption('controller')) {
+            $this->controllerClassBasename = Validators::validateControllerClassBasename($this->controllerClassBasename);
+        }
+
+        if (!\count($this->availableModelManagers)) {
+            throw new \RuntimeException('There are no model managers registered.');
+        }
+
+        $this->managerType = $input->getOption('manager') ?: array_keys($this->availableModelManagers)[0];
+        $this->modelManager = $this->availableModelManagers[$this->managerType] ?: current($this->availableModelManagers);
+
     }
 }

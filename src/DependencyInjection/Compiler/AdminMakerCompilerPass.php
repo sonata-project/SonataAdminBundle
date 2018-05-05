@@ -19,16 +19,18 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @author Gaurav Singh Faudjdar <faujdar@gmail.com>
  */
-class AdminMakerCompilerPass implements CompilerPassInterface
+final class AdminMakerCompilerPass implements CompilerPassInterface
 {
+    const MANAGERS = [
+        'sonata.admin.manager.orm',
+        'sonata.admin.manager.doctrine_mongodb',
+        'sonata.admin.manager.doctrine_phpcr',
+    ];
+
     public function process(ContainerBuilder $container)
     {
-        $managers = ['sonata.admin.manager.orm',
-            'sonata.admin.manager.doctrine_mongodb',
-            'sonata.admin.manager.doctrine_phpcr', ];
-
         $availableManagers = [];
-        foreach ($managers as $manager) {
+        foreach (self::MANAGERS as $manager) {
             if ($container->hasDefinition($manager)) {
                 $availableManagers[$manager] = $container->getDefinition($manager);
             }

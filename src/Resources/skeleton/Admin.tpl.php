@@ -2,7 +2,6 @@
 
 namespace <?= $namespace ?>;
 
-
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -41,5 +40,4 @@ class <?= $class_name ?> extends AbstractAdmin
         $showMapper
 <?= $fields ?>;
     }
-
 }
