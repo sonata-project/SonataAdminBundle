@@ -52,7 +52,7 @@ final class AdminMaker extends AbstractMaker
     {
         $this->projectDirectory = $projectDirectory;
         $this->availableModelManagers = $modelManagers;
-        $this->skeletonDirectory = __DIR__ . '/../Resources/skeleton';
+        $this->skeletonDirectory = __DIR__.'/../Resources/skeleton';
     }
 
     public static function getCommandName(): string
@@ -86,7 +86,7 @@ final class AdminMaker extends AbstractMaker
 
         $adminClassBasename = $io->ask(
             'The admin class basename',
-            $input->getOption('admin') ?: $modelClassBasename . 'Admin',
+            $input->getOption('admin') ?: $modelClassBasename.'Admin',
             [Validators::class, 'validateAdminClassBasename']
         );
         if (\count($this->availableModelManagers) > 1) {
@@ -98,16 +98,16 @@ final class AdminMaker extends AbstractMaker
         if ($io->confirm('Do you want to generate a controller?', false)) {
             $controllerClassBasename = $io->ask(
                 'The controller class basename',
-                $input->getOption('controller') ?: $modelClassBasename . 'AdminController',
+                $input->getOption('controller') ?: $modelClassBasename.'AdminController',
                 [Validators::class, 'validateControllerClassBasename']
             );
             $input->setOption('controller', $controllerClassBasename);
         }
         if ($io->confirm('Do you want to update the services YAML configuration file?', true)) {
-            $path = $this->projectDirectory . '/config/';
+            $path = $this->projectDirectory.'/config/';
             $servicesFile = $io->ask(
                 'The services YAML configuration file',
-                is_file($path . 'admin.yaml') ? 'admin.yaml' : 'services.yaml',
+                is_file($path.'admin.yaml') ? 'admin.yaml' : 'services.yaml',
                 [Validators::class, 'validateServicesFile']
             );
             $id = $io->ask(
@@ -126,7 +126,6 @@ final class AdminMaker extends AbstractMaker
 
     /**
      * Configure any library dependencies that your maker requires.
-     *
      */
     public function configureDependencies(DependencyBuilder $dependencies)
     {
@@ -135,7 +134,6 @@ final class AdminMaker extends AbstractMaker
 
     /**
      * Called after normal code generation: allows you to do anything.
-     *
      */
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
     {
@@ -198,7 +196,7 @@ final class AdminMaker extends AbstractMaker
             $controllerClassFullName = $controllerClassNameDetails->getFullName();
 
             $generator->generateClass($controllerClassFullName,
-                $this->skeletonDirectory . '/AdminController.tpl.php',
+                $this->skeletonDirectory.'/AdminController.tpl.php',
                 []
             );
 
@@ -211,6 +209,7 @@ final class AdminMaker extends AbstractMaker
                 $controllerClassFullName
             ));
         }
+
         return $controllerClassFullName;
     }
 
@@ -227,13 +226,13 @@ final class AdminMaker extends AbstractMaker
         $fields = $this->modelManager->getExportFields($this->modelClass);
         $fieldString = '';
         foreach ($fields as $field) {
-            $fieldString = $fieldString . "\t\t\t->add('" . $field . "')" . PHP_EOL;
+            $fieldString = $fieldString."\t\t\t->add('".$field."')".PHP_EOL;
         }
 
         $fieldString .= "\t\t\t";
 
         $generator->generateClass($adminClassFullName,
-            $this->skeletonDirectory . '/Admin.tpl.php',
+            $this->skeletonDirectory.'/Admin.tpl.php',
             ['fields' => $fieldString]);
 
         $generator->writeChanges();
@@ -244,6 +243,7 @@ final class AdminMaker extends AbstractMaker
             $adminClassNameDetails->getShortName(),
             $adminClassFullName
         ));
+
         return $adminClassFullName;
     }
 
@@ -252,7 +252,7 @@ final class AdminMaker extends AbstractMaker
         $this->modelClass = Validators::validateClass($input->getArgument('model'));
         $this->modelClassBasename = (new \ReflectionClass($this->modelClass))->getShortName();
         $this->adminClassBasename = Validators::validateAdminClassBasename(
-            $input->getOption('admin') ?: $this->modelClassBasename . 'Admin'
+            $input->getOption('admin') ?: $this->modelClassBasename.'Admin'
         );
 
         if ($this->controllerClassBasename = $input->getOption('controller')) {
@@ -265,6 +265,5 @@ final class AdminMaker extends AbstractMaker
 
         $this->managerType = $input->getOption('manager') ?: array_keys($this->availableModelManagers)[0];
         $this->modelManager = $this->availableModelManagers[$this->managerType] ?: current($this->availableModelManagers);
-
     }
 }
