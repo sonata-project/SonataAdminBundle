@@ -103,6 +103,7 @@ final class AdminMaker extends AbstractMaker
             );
             $input->setOption('controller', $controllerClassBasename);
         }
+        $input->setOption('services', false);
         if ($io->confirm('Do you want to update the services YAML configuration file?', true)) {
             $path = $this->projectDirectory.'/config/';
             $servicesFile = $io->ask(
@@ -117,8 +118,6 @@ final class AdminMaker extends AbstractMaker
             );
             $input->setOption('services', $servicesFile);
             $input->setOption('id', $id);
-        } else {
-            $input->setOption('services', false);
         }
         $input->setArgument('model', $modelClass);
         $input->setOption('admin', $adminClassBasename);
