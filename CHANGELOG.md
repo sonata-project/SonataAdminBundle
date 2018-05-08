@@ -47,6 +47,11 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.35.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.35.1...3.35.2) - 2018-05-05
+### Fixed
+- Fixed route generation with parameter for on_top menu items
+- Fixed custom group permission for menu items
+
 ## [3.35.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.35.0...3.35.1) - 2018-04-20
 ### Fixed
 - Edit on list is fixed for choices not related to an entity
