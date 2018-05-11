@@ -1947,6 +1947,10 @@ EOT
         );
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
+     */
     public function testRenderWithDebug(): void
     {
         $this->fieldDescription->expects($this->any())

@@ -960,7 +960,7 @@ class AdminTest extends TestCase
 
         $this->assertSame($postAdmin->getCode(), $postAdmin->getBaseCodeRoute());
 
-        $postAdmin->addChild($commentAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
 
         $this->assertSame(
             'sonata.post.admin.post|sonata.post.admin.comment',

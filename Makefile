@@ -14,7 +14,7 @@ lint-composer:
 .PHONY: lint-composer
 
 lint-yaml:
-	find . -name '*.yml' -not -path './vendor/*' -not -path './src/Resources/public/vendor/*' | xargs yaml-lint
+	yaml-lint --ignore-non-yaml-files --quiet --exclude vendor .
 
 .PHONY: lint-yaml
 

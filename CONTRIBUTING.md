@@ -8,6 +8,7 @@ This document is about issues and pull requests.
 
 * [Issues](#issues)
 * [Pull Requests](#pull-requests)
+* [Releases](#releases)
 * [Code Reviews](#code-reviews)
 
 ## Issues
@@ -514,6 +515,175 @@ So it's preferable to give priority to bugfixes over version-dropping PRs.
 Thank them for contributing. Encourage them if you feel this is going to be long.
 In short, try to make them want to contribute again. If they are stuck, try to provide them with
 code yourself, or ping someone who can help.
+
+## Releases
+
+### Limitations and requests
+
+Releases can be done by a limited number of persons.
+
+We try to make releases as much as possible, but don't hesitate to mention `@sonata-project/release-managers`
+on your PR/issue comment to ask for a new release if needed.
+
+Other contributors outside this team are not allowed to publish a release
+but are encouraged to report release requests on the dedicated private Slack channel.
+
+### Minor releases and patch releases
+
+Releasing software is the last step to getting your bugfixes or new features to your user base,
+and should be done regularly, so that users are not tempted to use development branches.
+To know what you are going to release on branch 42.x, given that the last release on this branch is 42.3.1,
+go to `https://github.com/sonata-project/SonataCoreBundle/compare/42.3.1...42.x`.
+You should see a list of commits, some of which should contain links to pull requests.
+
+#### Determining the next release number
+
+First of all, you MUST find the exact datetime of the last release.
+Go to the project releases section and display the last release page:
+
+![Release page](https://user-images.githubusercontent.com/1698357/39665568-d9dd74bc-5096-11e8-8c25-dff0d75ce717.png)
+
+Then, click on the commit hash to show it and open the browser dev toolbar from the commit date:
+
+![Commit page](https://user-images.githubusercontent.com/1698357/39665576-f9fa09ea-5096-11e8-8ddb-e5860a7b2122.png)
+
+Then you know the exact datetime of the released commit is `2018-04-20T09:47:48Z`. Copy it.
+
+It's important to NOT use the tag datetime because the tag may be written later after the commit.
+
+An alternative way to do this is to issue the following command in your shell:
+```shell
+git describe --abbrev=0 --tags| xargs git show --pretty=format:%aI --no-patch|tail -n 1
+```
+
+After that, go on the pull requests page of the repo and replace the default filter by this one:
+
+```
+base:3.x merged:>2018-04-20T09:47:48Z
+```
+
+ - `base`: The base branch where the PR are merged.
+ It MUST be the current stable branch, or the legacy branch where you want to make a release.
+ - `merged`: All the pull request merged **after** the given datetime.
+
+If any of those pull requests is labeled `minor`, then the next release should be a minor release (42.4.0).
+Otherwise, if there are any pull requests labeled `patch`,
+the next release should be a patch release (42.3.2).
+If there are neither minor nor patch pull requests, all the others should be labeled `docs` or `pedantic`,
+and you should not make a release.
+
+![Pull requests page](https://user-images.githubusercontent.com/1698357/39665578-031aa2e6-5097-11e8-9f68-9ea32eec2b79.png)
+
+In this case, it will be a patch release.
+
+:warning: All the pull requests MUST have only one `patch`, `minor`, `pedantic` or `docs` label.
+If you find a non-labelled PR or a `major` one, a mistake was made and MUST be fixed before the release.
+
+#### Adding the release to the UPGRADE file
+
+If there are any deprecations, then the release should be minor and the UPGRADE-42.x file should be changed,
+moving the instructions explaining how to bypass the deprecation messages,
+that should hopefully be there, to a new section named `UPGRADE FROM 42.3.1 to 42.4.0`.
+
+```patch
+ UPGRADE 42.x
+ ===========
+
++UPGRADE FROM 42.3.1 to 42.4.0
++=============================
++
+ ## Deprecated use of `getSchmeckles` in `Sonata\Defraculator\Vortex`
+```
+
+#### Upgrading code comments and deprecation messages
+
+All occurences of `42.x` in comments or deprecation messages should be updating
+by resolving `x` to its value at the time of the release.
+
+:warning: You can do it quickly with a "Search and Replace" feature, but be careful not to replace unwanted matches.
+
+#### Compiling the changelog
+
+Each non-pedantic (and therefore non-docs) PR should contain a `CHANGELOG` section,
+that you need to copy manually into the `CHANGELOG.md` file.
+The title is in the following format :
+`[42.3.2](https://github.com/sonata-project/SonataNewsBundle/compare/42.3.1...42.3.2) - YYYY-MM-DD`.
+
+:warning: Do not hesitate to review the changelog before the copy.
+The entries should be short, clear and must tell what have been fixed/improved for **the end user**, not how.
+
+#### Creating the release commit
+
+The changes above should be added to a signed commit with the following message : `42.3.2`. Nothing else.
+You MUST sign the tag with your GPG key, after which all you have to do is push it.
+If you don't have push access, you can still create a PR with the relevant changes
+and have them signed off by someone who has it.
+
+Commands summary (we assume `upstream` corresponds to the Sonata repository):
+
+```
+git commit -am 42.3.2
+git tag -s 42.3.2 -m 42.3.2
+git push upstream && git push upstream --tags
+```
+
+#### Fill the release note on GitHub
+
+Copy the changelog entries except the release number line and paste them on the release note form:
+
+![Release note form](https://user-images.githubusercontent.com/1698357/39665555-bcf18aa0-5096-11e8-9249-dd7ea1eb15d2.png)
+
+Submit the data, and you are done!
+
+### Major releases
+
+Major releases should be done on a regular basis,
+to avoid branches getting too far from their more stable counterparts:
+the biggest the gap, the harder the merges are.
+We use a 3 branch system, which means releasing 42.0.0 implies that:
+
+- the master branch is aliased to 43.x;
+- 42.x becomes the stable branch;
+- 41.x becomes the legacy branch;
+- 40.x is abandoned.
+
+#### Preparing the unstable branch
+
+- Every `NEXT_MAJOR` instruction should be followed **before** the release.
+- If possible, the latest version of every dependency should be supported
+(`composer outdated` shouldn't output anything).
+- If sensible, the old major versions of every dependency should be dropped.
+
+#### Pre-release cleanup
+
+Before releasing anything, it is best to reduce the gap between branches:
+
+- Merge the legacy branch into the stable branch.
+- Merge the stable branch into the unstable branch.
+
+#### Releasing last versions
+
+Before abandoning it, the legacy branch MUST receive a last patch version.
+Likewise, the stable branch MUST receive a last version if that version is minor,
+it SHOULD receive one is that version is a patch version.
+
+#### Creating the new stable branch and files
+
+If the current major is `42`, a new `43.x` branch should be created from master,
+then a commit should be done on master to bump the `branch-alias` and version numbers in the README.
+
+Also, the following files must be created/updated on the new stable branch:
+
+ - `UPGRADE-43.x.md`, containing only the main title
+ - `UPGRADE-43.0.md`, containing the upgrade notes fetched from the major PRs.
+ - `CHANGELOG.md`, containing the changelog of the major PRs.
+ - `composer.json`, the `branch-alias` MUST be changed to `43.x-dev`
+
+Push the new branch with a commit containing the modified files and "43.x-dev" as comment.
+
+#### Tagging the release
+
+Finally, a signed tag should be created on the newly-created stable branch and the release note MUST be filled.
 
 [sphinx_install]: http://www.sphinx-doc.org/en/stable/
 [pip_install]: https://pip.pypa.io/en/stable/installing/
