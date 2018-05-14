@@ -251,7 +251,7 @@ class SonataAdminExtensionTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDepreaction The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
+     * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
      * @dataProvider getRenderListElementTests
      */
     public function testRenderListElement($expected, $type, $value, array $options): void
