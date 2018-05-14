@@ -434,6 +434,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if (!is_string($fieldName)) {
             return null;
         }
+        if (!is_object($object)) {
+            return null;
+        }
         $components = [get_class($object), $fieldName];
         $code = $this->getOption('code');
         if (is_string($code) && '' !== $code) {
