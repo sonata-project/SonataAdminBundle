@@ -18,15 +18,23 @@ its parent:
 
 .. configuration-block::
 
+    .. code-block:: yaml
+
+        # app/config/services.yml
+        app.admin.playlist:
+            class: App\Admin\PlaylistAdmin
+            calls:
+                - [ addChild, ['@app.admin.video', 'video']]
+
     .. code-block:: xml
 
-        <!-- app/config/config.xml -->
-        <service id="sonata.admin.playlist" class="App\Admin\PlaylistAdmin">
+        <!-- app/config/services.xml -->
+        <service id="app.admin.playlist" class="App\Admin\PlaylistAdmin">
             <!-- ... -->
 
             <call method="addChild">
-                <argument type="service" id="sonata.admin.video" />
-                <argument>playlist</argument>
+                <argument type="service" id="app.admin.video" />
+                <argument>video</argument>
             </call>
         </service>
 
