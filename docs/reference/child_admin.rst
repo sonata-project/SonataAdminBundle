@@ -21,20 +21,19 @@ its parent:
     .. code-block:: yaml
 
         # app/config/services.yml
-        app.admin.playlist:
-            class: App\Admin\PlaylistAdmin
+        App\Admin\PlaylistAdmin:
             calls:
-                - [ addChild, ['@app.admin.video', 'video']]
+                - [ addChild, ['@App\Admin\VideoAdmin', 'playlist']]
 
     .. code-block:: xml
 
         <!-- app/config/services.xml -->
-        <service id="app.admin.playlist" class="App\Admin\PlaylistAdmin">
+        <service id="App\Admin\PlaylistAdmin">
             <!-- ... -->
 
             <call method="addChild">
-                <argument type="service" id="app.admin.video" />
-                <argument>video</argument>
+                <argument type="service" id="App\Admin\PlaylistAdmin" />
+                <argument>playlist</argument>
             </call>
         </service>
 
