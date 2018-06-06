@@ -42,8 +42,14 @@ file that was distributed with this source code.
         {% endif %}
 
         <div id="field_actions_{{ id }}" class="field-actions">
-            {% set display_btn_list = sonata_admin.edit == 'list' and sonata_admin.field_description.associationadmin.hasroute('list') and sonata_admin.field_description.associationadmin.isGranted('LIST') and btn_list %}
-            {% set display_btn_add = sonata_admin.edit != 'admin' and sonata_admin.field_description.associationadmin.hasroute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
+            {% set display_btn_list = sonata_admin.edit == 'list'
+                and sonata_admin.field_description.associationadmin.hasRoute('list')
+                and sonata_admin.field_description.associationadmin.hasAccess('list')
+                and btn_list %}
+            {% set display_btn_add = sonata_admin.edit != 'admin'
+                and sonata_admin.field_description.associationadmin.hasRoute('create')
+                and sonata_admin.field_description.associationadmin.hasAccess('create')
+                and btn_add %}
             {% if display_btn_list or display_btn_add %}
             <div class="btn-group">
                 {% if display_btn_list %}
@@ -70,7 +76,10 @@ file that was distributed with this source code.
             </div>
             {% endif %}
 
-            {% if sonata_admin.edit == 'list' and sonata_admin.field_description.associationadmin.hasRoute('delete') and sonata_admin.field_description.associationadmin.isGranted('DELETE') and btn_delete %}
+            {% if sonata_admin.edit == 'list'
+                and sonata_admin.field_description.associationadmin.hasRoute('delete')
+                and sonata_admin.field_description.associationadmin.hasAccess('delete')
+                and btn_delete %}
                 <a  href=""
                     onclick="return remove_selected_element_{{ id }}(this);"
                     class="btn btn-danger btn-sm sonata-ba-action"
