@@ -456,12 +456,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     private function callCachedGetter($object, $fieldName, array $parameters = [])
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
-        if (self::$fieldGetters[$getterKey]['method'] === 'getter') {
+        if ('getter' === self::$fieldGetters[$getterKey]['method']) {
             return call_user_func_array(
                 [$object, self::$fieldGetters[$getterKey]['getter']],
                 $parameters
             );
-        } elseif (self::$fieldGetters[$getterKey]['method'] === 'call') {
+        } elseif ('call' === self::$fieldGetters[$getterKey]['method']) {
             return call_user_func_array(
                 [$object, '__call'],
                 [$fieldName, $parameters]

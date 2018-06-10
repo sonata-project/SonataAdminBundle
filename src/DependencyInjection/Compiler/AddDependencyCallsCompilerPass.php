@@ -378,7 +378,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
             // set template for simple pager if it is not already overwritten
             if ('setPagerType' === $method[0]
-                && $method[1][0] === Pager::TYPE_SIMPLE
+                && Pager::TYPE_SIMPLE === $method[1][0]
                 && (
                     !isset($definedTemplates['pager_results'])
                     || '@SonataAdmin/Pager/results.html.twig' === $definedTemplates['pager_results']
