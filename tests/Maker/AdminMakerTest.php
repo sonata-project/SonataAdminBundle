@@ -30,7 +30,6 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class AdminMakerTest extends TestCase
 {
-
     private $projectDirectory;
     private $modelManagers = [];
 
@@ -54,29 +53,28 @@ class AdminMakerTest extends TestCase
     protected function tearDown()
     {
         @unlink($this->projectDirectory.'/config/'.$this->servicesFile);
-
     }
 
     public function testExecute()
     {
         $maker = new AdminMaker($this->projectDirectory, $this->modelManagers);
 
-        $in = array(
+        $in = [
             'model' => \Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo::class,
             '--admin' => 'FooAdmin',
             '--controller' => 'FooAdminController',
             '--services' => $this->servicesFile,
             '--id' => 'acme_demo_admin.admin.foo',
-        );
+        ];
 
-        $definition = new InputDefinition(array(
+        $definition = new InputDefinition([
             new InputArgument('model', InputArgument::REQUIRED),
             new InputOption('admin', 'a', InputOption::VALUE_REQUIRED),
             new InputOption('controller', 'c', InputOption::VALUE_REQUIRED),
             new InputOption('manager', 'm', InputOption::VALUE_REQUIRED),
             new InputOption('services', 'y', InputOption::VALUE_REQUIRED),
             new InputOption('id', 'i', InputOption::VALUE_REQUIRED),
-        ));
+        ]);
 
         $this->input = new ArrayInput($in, $definition);
 

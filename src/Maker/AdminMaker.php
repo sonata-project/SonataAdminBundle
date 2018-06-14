@@ -184,7 +184,6 @@ final class AdminMaker extends AbstractMaker
 
     private function genController(InputInterface $input, ConsoleStyle $io, Generator $generator)
     {
-
         $controllerClassFullName = null;
         if ($this->controllerClassBasename) {
             $controllerClassNameDetails = $generator->createClassNameDetails(

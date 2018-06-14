@@ -12,10 +12,10 @@
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Prophecy\Argument;
 
 /**
  * @author Gaurav Singh Faujdar <faujdar@gmail.com>
@@ -44,7 +44,6 @@ class AdminMakerCompilerPassTest extends TestCase
             ->willReturn(null);
         $containerBuilderMock->getParameter(Argument::containingString('kernel.project_dir'))
             ->willReturn(null);
-
 
         $compilerPass = new AdminMakerCompilerPass();
         $compilerPass->process($containerBuilderMock->reveal());
