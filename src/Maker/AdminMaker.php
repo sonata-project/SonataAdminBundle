@@ -26,7 +26,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
- * @author Gaurav Singh Faudjdar <faujdar@gmail.com>
+ * @author Gaurav Singh Faujdar <faujdar@gmail.com>
  */
 final class AdminMaker extends AbstractMaker
 {
@@ -68,7 +68,7 @@ final class AdminMaker extends AbstractMaker
             ->addOption('admin', 'a', InputOption::VALUE_OPTIONAL, 'The admin class basename')
             ->addOption('controller', 'c', InputOption::VALUE_OPTIONAL, 'The controller class basename')
             ->addOption('manager', 'm', InputOption::VALUE_OPTIONAL, 'The model manager type')
-            ->addOption('services', 'y', InputOption::VALUE_OPTIONAL, 'The services YAML file', 'services.yaml')
+            ->addOption('services', 's', InputOption::VALUE_OPTIONAL, 'The services YAML file', 'services.yaml')
             ->addOption('id', 'i', InputOption::VALUE_OPTIONAL, 'The admin service ID');
 
         $inputConfig->setArgumentAsNonInteractive('model');
@@ -184,6 +184,7 @@ final class AdminMaker extends AbstractMaker
 
     private function genController(InputInterface $input, ConsoleStyle $io, Generator $generator)
     {
+
         $controllerClassFullName = null;
         if ($this->controllerClassBasename) {
             $controllerClassNameDetails = $generator->createClassNameDetails(
