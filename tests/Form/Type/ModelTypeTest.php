@@ -49,8 +49,8 @@ class ModelTypeTest extends TypeTestCase
         $this->assertNull($options['class']);
         $this->assertNull($options['property']);
         $this->assertNull($options['query']);
-        $this->assertSame(0, count($options['choices']));
-        $this->assertSame(0, count($options['preferred_choices']));
+        $this->assertCount(0, $options['choices']);
+        $this->assertCount(0, $options['preferred_choices']);
         $this->assertSame('link_add', $options['btn_add']);
         $this->assertSame('link_list', $options['btn_list']);
         $this->assertSame('link_delete', $options['btn_delete']);
@@ -78,8 +78,8 @@ class ModelTypeTest extends TypeTestCase
         $this->assertNull($options['class']);
         $this->assertNull($options['property']);
         $this->assertNull($options['query']);
-        $this->assertSame(0, count($options['choices']));
-        $this->assertSame(0, count($options['preferred_choices']));
+        $this->assertCount(0, $options['choices']);
+        $this->assertCount(0, $options['preferred_choices']);
         $this->assertSame('link_add', $options['btn_add']);
         $this->assertSame('link_list', $options['btn_list']);
         $this->assertSame('link_delete', $options['btn_delete']);

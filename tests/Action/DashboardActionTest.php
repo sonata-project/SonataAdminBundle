@@ -11,13 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Controller;
+namespace Sonata\AdminBundle\Tests\Action;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\DashboardAction;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Controller\CoreController;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -25,11 +24,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
-class CoreControllerTest extends TestCase
+class DashboardActionTest extends TestCase
 {
-    /**
-     * @group legacy
-     */
     public function testdashboardActionStandardRequest(): void
     {
         $container = $this->createMock(ContainerInterface::class);
@@ -50,13 +46,13 @@ class CoreControllerTest extends TestCase
 
         $breadcrumbsBuilder = $this->getMockForAbstractClass(BreadcrumbsBuilderInterface::class);
 
+        $dashboardAction = new DashboardAction(
+            [],
+            $breadcrumbsBuilder,
+            $templateRegistry->reveal(),
+            $pool
+        );
         $values = [
-            DashboardAction::class => $dashboardAction = new DashboardAction(
-                [],
-                $breadcrumbsBuilder,
-                $templateRegistry->reveal(),
-                $pool
-            ),
             'templating' => $templating,
             'request_stack' => $requestStack,
         ];
@@ -72,16 +68,10 @@ class CoreControllerTest extends TestCase
                 return 'templating' === $id;
             }));
 
-        $controller = new CoreController();
-        $controller->setContainer($container);
-
-        $this->isInstanceOf(Response::class, $controller->dashboardAction());
+        $this->isInstanceOf(Response::class, $dashboardAction($request));
     }
 
-    /**
-     * @group legacy
-     */
-    public function testdashboardActionAjaxLayout(): void
+    public function testDashboardActionAjaxLayout(): void
     {
         $container = $this->createMock(ContainerInterface::class);
 
@@ -101,13 +91,14 @@ class CoreControllerTest extends TestCase
         $requestStack = new RequestStack();
         $requestStack->push($request);
 
+        $dashboardAction = new DashboardAction(
+            [],
+            $breadcrumbsBuilder,
+            $templateRegistry->reveal(),
+            $pool
+        );
+        $dashboardAction->setContainer($container);
         $values = [
-            DashboardAction::class => $dashboardAction = new DashboardAction(
-                [],
-                $breadcrumbsBuilder,
-                $templateRegistry->reveal(),
-                $pool
-            ),
             'templating' => $templating,
             'request_stack' => $requestStack,
         ];
@@ -123,11 +114,6 @@ class CoreControllerTest extends TestCase
                 return 'templating' === $id;
             }));
 
-        $controller = new CoreController();
-        $controller->setContainer($container);
-
-        $response = $controller->dashboardAction($request);
-
-        $this->isInstanceOf(Response::class, $response);
+        $this->isInstanceOf(Response::class, $dashboardAction($request));
     }
 }
