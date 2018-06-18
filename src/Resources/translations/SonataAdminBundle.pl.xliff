@@ -478,6 +478,10 @@
                 <source>read_less</source>
                 <target>read_less</target>
             </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Zwiń/rozwiń menu nawigacji</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
