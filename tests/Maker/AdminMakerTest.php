@@ -41,11 +41,11 @@ class AdminMakerTest extends TestCase
 
     protected function setup()
     {
-        $manager_orm_proxy = $this->prophesize(ModelManagerInterface::class);
-        $manager_orm_proxy->getExportFields(Argument::exact('Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo'))
+        $managerOrmProxy = $this->prophesize(ModelManagerInterface::class);
+        $managerOrmProxy->getExportFields(Argument::exact('Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo'))
             ->willReturn(['bar', 'baz']);
 
-        $this->modelManagers = ['sonata.admin.manager.orm' => $manager_orm_proxy->reveal()];
+        $this->modelManagers = ['sonata.admin.manager.orm' => $managerOrmProxy->reveal()];
         $this->servicesFile = sprintf('%s.yml', lcg_value());
         $this->projectDirectory = sys_get_temp_dir();
     }

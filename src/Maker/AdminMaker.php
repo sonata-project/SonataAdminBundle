@@ -138,24 +138,21 @@ final class AdminMaker extends AbstractMaker
     {
         $this->configure($input);
 
-        $adminClassFullName = $this->genAdmin($io, $generator);
-        $controllerClassFullName = $this->genController($input, $io, $generator);
-        $this->genService($input, $io, $adminClassFullName, $controllerClassFullName);
+        $adminClassFullName = $this->generateAdmin($io, $generator);
+        $controllerClassFullName = $this->generateController($input, $io, $generator);
+        $this->generateService($input, $io, $adminClassFullName, $controllerClassFullName);
     }
 
     private function getAdminServiceId(string $adminClassBasename): string
     {
-        $suffix = 'Admin' == substr($adminClassBasename, -5) ?
-            substr($adminClassBasename, 0, -5) : $adminClassBasename;
-        $suffix = str_replace('\\', '.', $suffix);
-
         return Container::underscore(sprintf(
             'admin.%s',
-            $suffix
+            str_replace('\\', '.', 'Admin' == substr($adminClassBasename, -5) ?
+                substr($adminClassBasename, 0, -5) : $adminClassBasename)
         ));
     }
 
-    private function genService(InputInterface $input, ConsoleStyle $io, $adminClassFullName, $controllerClassFullName)
+    private function generateService(InputInterface $input, ConsoleStyle $io, $adminClassFullName, $controllerClassFullName)
     {
         if ($servicesFile = $input->getOption('services')) {
             $file = sprintf('%s/config/%s', $this->projectDirectory, $servicesFile);
@@ -182,7 +179,7 @@ final class AdminMaker extends AbstractMaker
         }
     }
 
-    private function genController(InputInterface $input, ConsoleStyle $io, Generator $generator)
+    private function generateController(InputInterface $input, ConsoleStyle $io, Generator $generator)
     {
         $controllerClassFullName = null;
         if ($this->controllerClassBasename) {
@@ -212,7 +209,7 @@ final class AdminMaker extends AbstractMaker
         return $controllerClassFullName;
     }
 
-    private function genAdmin(ConsoleStyle $io, Generator $generator)
+    private function generateAdmin(ConsoleStyle $io, Generator $generator)
     {
         $adminClassNameDetails = $generator->createClassNameDetails(
             $this->modelClassBasename,
