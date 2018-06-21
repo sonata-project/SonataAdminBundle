@@ -151,6 +151,43 @@ class GroupMenuProviderTest extends TestCase
     /**
      * @param array $adminGroups
      *
+     * @dataProvider getAdminGroupsMultipleRoles
+     */
+    public function testGetMenuProviderWithCheckerGrantedMultipleGroupRoles(
+        array $adminGroups
+    ) {
+        $this->checker->expects($this->any())
+            ->method('isGranted')
+            ->willReturnCallback(function ($args) {
+                if ($args === ['foo', 'bar']) {
+                    return false;
+                }
+
+                if ($args === ['foo'] || $args === ['bar']) {
+                    return true;
+                }
+
+                return false;
+            });
+
+        $menu = $this->provider->get(
+            'providerFoo',
+            [
+                'name' => 'foo',
+                'group' => $adminGroups,
+            ]
+        );
+
+        $this->assertInstanceOf(ItemInterface::class, $menu);
+
+        $children = $menu->getChildren();
+
+        $this->assertCount(3, $children);
+    }
+
+    /**
+     * @param array $adminGroups
+     *
      * @dataProvider getAdminGroups
      */
     public function testGetMenuProviderWithAdmin(array $adminGroups)
@@ -335,6 +372,49 @@ class GroupMenuProviderTest extends TestCase
                     ],
                     'item_adds' => [],
                     'roles' => ['foo'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdminGroupsMultipleRoles()
+    {
+        return [
+            [
+                'bar' => [
+                    'label' => 'foo',
+                    'icon' => '<i class="fa fa-edit"></i>',
+                    'label_catalogue' => 'SonataAdminBundle',
+                    'items' => [
+                        [
+                            'admin' => '',
+                            'label' => 'route_label1',
+                            'route' => 'FooRoute1',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                            'roles' => ['foo', 'bar'],
+                        ],
+                        [
+                            'admin' => '',
+                            'label' => 'route_label2',
+                            'route' => 'FooRoute2',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                            'roles' => ['foo'],
+                        ],
+                        [
+                            'admin' => '',
+                            'label' => 'route_label3',
+                            'route' => 'FooRoute3',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                            'roles' => ['bar'],
+                        ],
+                    ],
+                    'item_adds' => [],
                 ],
             ],
         ];

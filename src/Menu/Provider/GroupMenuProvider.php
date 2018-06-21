@@ -134,10 +134,28 @@ class GroupMenuProvider implements MenuProviderInterface
         }
 
         //NEXT_MAJOR: Remove if statement of null checker.
-        return null === $this->checker || (
-            (empty($item['roles']) || $this->checker->isGranted($item['roles'])) &&
-            (empty($group['roles']) || $this->checker->isGranted($group['roles']))
-        );
+        if (null === $this->checker) {
+            return true;
+        }
+
+        // Making the checker behave affirmatively even if it's globally unanimous
+        $roles = null;
+        if (!empty($item['roles'])) {
+            $roles = $item['roles'];
+        } elseif (!empty($group['roles'])) {
+            $roles = $group['roles'];
+        }
+        if (null === $roles) {
+            return true;
+        }
+
+        foreach ($roles as $role) {
+            if ($this->checker->isGranted([$role])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
