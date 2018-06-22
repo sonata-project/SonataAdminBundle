@@ -119,7 +119,7 @@ class SimplePager extends Pager
             $this->initializeIterator();
 
             $t = (int) ceil($this->thresholdCount / $this->getMaxPerPage()) + $this->getPage() - 1;
-            $this->setLastPage($t);
+            $this->setLastPage(\max(1, $t));
         }
     }
 
