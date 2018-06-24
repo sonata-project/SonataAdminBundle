@@ -96,9 +96,6 @@ class GlobalVariables
     }
 
     /**
-     * @param $code
-     * @param $action
-     *
      * @return array
      */
     private function getCodeAction($code, $action)
