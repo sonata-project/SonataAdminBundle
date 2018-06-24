@@ -996,7 +996,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             $subClass = $this->getRequest()->query->get('subclass');
 
             if (!$this->hasSubClass($subClass)) {
-                throw new \RuntimeException(sprintf('Subclass "%" is not defined.', $subClass));
+                throw new \RuntimeException(sprintf('Subclass "%s" is not defined.', $subClass));
             }
 
             return $this->getSubClass($subClass);
