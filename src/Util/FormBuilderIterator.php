@@ -48,6 +48,7 @@ class FormBuilderIterator extends \RecursiveArrayIterator
      */
     public function __construct(FormBuilderInterface $formBuilder, $prefix = false)
     {
+        parent::__construct();
         $this->formBuilder = $formBuilder;
         $this->prefix = $prefix ? $prefix : $formBuilder->getName();
         $this->iterator = new \ArrayIterator(self::getKeys($formBuilder));
