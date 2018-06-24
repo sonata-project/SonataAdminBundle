@@ -41,7 +41,7 @@ class GlobalVariables
         // NEXT_MAJOR : remove this block and set adminPool from parameter.
         if ($adminPool instanceof ContainerInterface) {
             @trigger_error(
-                'Using an instance of Symfony\Component\DependencyInjection\ContainerInterface is deprecated since 
+                'Using an instance of Symfony\Component\DependencyInjection\ContainerInterface is deprecated since
                 version 3.5 and will be removed in 4.0. Use Sonata\AdminBundle\Admin\Pool instead.',
                 E_USER_DEPRECATED
             );
