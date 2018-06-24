@@ -154,8 +154,6 @@ class Admin implements MetadataProcessorInterface
 
     /**
      * Set group and label from class name it not set.
-     *
-     * @param $name
      */
     private function generateFallback($name)
     {

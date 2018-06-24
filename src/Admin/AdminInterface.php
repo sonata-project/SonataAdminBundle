@@ -642,8 +642,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getTranslationLabel($label, $context = '', $type = '');
 
     /**
-     * @param $object
-     *
      * @return Metadata
      */
     public function getObjectMetadata($object);
