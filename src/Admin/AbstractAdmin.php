@@ -2740,7 +2740,7 @@ EOT;
     }
 
     /**
-     * @param FormMapper $form
+     * @param FormMapper $object
      */
     final public function getSearchResultLink($object)
     {

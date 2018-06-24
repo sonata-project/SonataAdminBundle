@@ -337,7 +337,6 @@ class CRUDController implements ContainerAwareInterface
             );
         }
 
-        /** @var $form Form */
         $form = $this->admin->getForm();
         $form->setData($existingObject);
         $form->handleRequest($request);
@@ -591,7 +590,7 @@ class CRUDController implements ContainerAwareInterface
 
         $this->admin->setSubject($newObject);
 
-        /** @var $form \Symfony\Component\Form\Form */
+        /** @var \Symfony\Component\Form\Form */
         $form = $this->admin->getForm();
         $form->setData($newObject);
         $form->handleRequest($request);
