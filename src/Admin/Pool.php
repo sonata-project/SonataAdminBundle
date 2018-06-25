@@ -196,7 +196,7 @@ class Pool
     public function getAdminByClass($class)
     {
         if (!$this->hasAdminByClass($class)) {
-            return;
+            return null;
         }
 
         if (!is_array($this->adminClasses[$class])) {
