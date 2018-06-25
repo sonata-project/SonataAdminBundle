@@ -335,7 +335,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns the uniqid.
      *
-     * @return int
+     * @return string
      */
     public function getUniqid();
 
