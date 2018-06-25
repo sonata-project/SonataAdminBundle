@@ -36,17 +36,17 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     private $adminPool;
 
     /**
-     * @var string|bool
+     * @var MessageCatalogue|bool
      */
     private $catalogue;
 
     /**
-     * @var string|bool
+     * @var TranslatorInterface|bool
      */
     private $translator;
 
     /**
-     * @var string|bool
+     * @var LabelTranslatorStrategyInterface|bool
      */
     private $labelStrategy;
 
