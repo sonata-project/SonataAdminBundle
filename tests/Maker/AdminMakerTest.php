@@ -41,8 +41,8 @@ class AdminMakerTest extends TestCase
 
     protected function setup()
     {
-        if (5 == PHP_MAJOR_VERSION) {
-            $this->markTestSkipped('Test only available for PHP 7');
+        if (5 == PHP_MAJOR_VERSION && !class_exists('Symfony\Component\Console\CommandLoader\CommandLoaderInterface')) {
+            $this->markTestSkipped('Test only available for PHP 7 and SF 3.4');
         }
         
         $managerOrmProxy = $this->prophesize(ModelManagerInterface::class);
