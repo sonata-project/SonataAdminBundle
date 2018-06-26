@@ -41,6 +41,10 @@ class AdminMakerTest extends TestCase
 
     protected function setup()
     {
+        if (5 == PHP_MAJOR_VERSION) {
+            $this->markTestSkipped('Test only available for PHP 7');
+        }
+        
         $managerOrmProxy = $this->prophesize(ModelManagerInterface::class);
         $managerOrmProxy->getExportFields(Argument::exact('Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo'))
             ->willReturn(['bar', 'baz']);
