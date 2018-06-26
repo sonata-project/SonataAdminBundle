@@ -67,7 +67,6 @@
         "sensio/generator-bundle": "^3.1",
         "sonata-project/intl-bundle": "^2.4",
         "symfony/filesystem": "^2.8 || ^3.2 || ^4.0",
-        "symfony/maker-bundle": "^1.0",
         "symfony/phpunit-bridge": "^4.0",
         "symfony/yaml": "^2.8 || ^3.2 || ^4.0"
     },
