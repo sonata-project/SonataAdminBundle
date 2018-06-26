@@ -14,6 +14,8 @@ if [ "$TRAVIS_PHP_VERSION" '>=' '7.0' ]; then
     # but only with Symfony 3.4 and higher
     if [ "$SYMFONY" != "" && "$SYMFONY" '>=' '3.4' ]; then
         composer require "symfony/maker-bundle:1" --no-update
+    else
+        composer require "symfony/maker-bundle:1" --no-update
     fi
 fi
 
