@@ -44,7 +44,7 @@ class AdminMakerTest extends TestCase
         if (5 == PHP_MAJOR_VERSION && !class_exists('Symfony\Component\Console\CommandLoader\CommandLoaderInterface')) {
             $this->markTestSkipped('Test only available for PHP 7 and SF 3.4');
         }
-        
+
         $managerOrmProxy = $this->prophesize(ModelManagerInterface::class);
         $managerOrmProxy->getExportFields(Argument::exact('Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo'))
             ->willReturn(['bar', 'baz']);
