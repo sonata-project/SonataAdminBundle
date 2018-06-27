@@ -92,7 +92,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
                 continue;
             }
 
-            $collection->add($this->modelManager->find($this->className, $id));
+            $collection[] = $this->modelManager->find($this->className, $id);
         }
 
         return $collection;
