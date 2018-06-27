@@ -113,9 +113,9 @@ file that was distributed with this source code.
                                 // admin
                                 {% if sonata_admin.admin is not null %}
                                     'uniqid': '{{ sonata_admin.admin.uniqid }}',
-                                    'admin_code': '{{ sonata_admin.admin.code }}',
+                                    'admin_code': '{{ sonata_admin.admin.code|e('js') }}',
                                 {% elseif admin_code %}
-                                    'admin_code':  '{{ admin_code }}',
+                                    'admin_code':  '{{ admin_code|e('js') }}',
                                 {% endif %}
 
                                  // subclass
