@@ -10,10 +10,13 @@ echo "memory_limit=3072M" >> "$TRAVIS_INI_FILE"
 sed --in-place "s/\"dev-master\":/\"dev-${TRAVIS_COMMIT}\":/" composer.json
 
 # symfony/maker-bundle only works with PHP 7 and higher
-if [ "$TRAVIS_PHP_VERSION" '>=' '7.0' ]; then
+if [ "$TRAVIS_PHP_VERSION" '>' '7.0' ]; then
     # but only with Symfony 3.4 and higher
-    if [ "$SYMFONY" != "" && "$SYMFONY" '>=' '3.4' ]; then
-        composer require "symfony/maker-bundle:1" --no-update
+    
+    if [ "$SYMFONY" != "" ]; then 
+        if [ "$SYMFONY" '>=' '3.4' ] ; then
+            composer require "symfony/maker-bundle:1" --no-update
+        fi
     else
         composer require "symfony/maker-bundle:1" --no-update
     fi
