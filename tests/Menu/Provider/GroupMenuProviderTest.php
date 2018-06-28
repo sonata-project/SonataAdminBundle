@@ -149,6 +149,24 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
+     * @param array $args
+     *
+     * @return bool
+     */
+    public function unanimousGrantCheckerMock($args)
+    {
+        if ($args === ['foo', 'bar']) {
+            return false;
+        }
+
+        if ($args === ['foo'] || $args === ['bar']) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @param array $adminGroups
      *
      * @dataProvider getAdminGroupsMultipleRoles
@@ -158,17 +176,7 @@ class GroupMenuProviderTest extends TestCase
     ) {
         $this->checker->expects($this->any())
             ->method('isGranted')
-            ->willReturnCallback(function ($args) {
-                if ($args === ['foo', 'bar']) {
-                    return false;
-                }
-
-                if ($args === ['foo'] || $args === ['bar']) {
-                    return true;
-                }
-
-                return false;
-            });
+            ->willReturnCallback([$this, 'unanimousGrantCheckerMock']);
 
         $menu = $this->provider->get(
             'providerFoo',
@@ -183,6 +191,30 @@ class GroupMenuProviderTest extends TestCase
         $children = $menu->getChildren();
 
         $this->assertCount(3, $children);
+    }
+
+    /**
+     * @param array $adminGroups
+     *
+     * @dataProvider getAdminGroupsMultipleRolesOnTop
+     */
+    public function testGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTop(
+        array $adminGroups
+    ) {
+        $this->checker->expects($this->any())
+            ->method('isGranted')
+            ->willReturnCallback([$this, 'unanimousGrantCheckerMock']);
+
+        $menu = $this->provider->get(
+            'providerFoo',
+            [
+                'name' => 'foo',
+                'group' => $adminGroups,
+            ]
+        );
+        $this->assertInstanceOf(ItemInterface::class, $menu);
+
+        $this->assertTrue($menu->isDisplayed());
     }
 
     /**
@@ -415,6 +447,70 @@ class GroupMenuProviderTest extends TestCase
                         ],
                     ],
                     'item_adds' => [],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdminGroupsMultipleRolesOnTop()
+    {
+        return [
+            [
+                [
+                    'label' => 'foo1',
+                    'icon' => '<i class="fa fa-edit"></i>',
+                    'label_catalogue' => 'SonataAdminBundle',
+                    'items' => [
+                        [
+                            'admin' => '',
+                            'label' => 'route_label1',
+                            'route' => 'FooRoute1',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                        ],
+                    ],
+                    'item_adds' => [],
+                    'roles' => ['foo', 'bar'],
+                    'on_top' => true,
+                ],
+            ], [
+                [
+                    'label' => 'foo2',
+                    'icon' => '<i class="fa fa-edit"></i>',
+                    'label_catalogue' => 'SonataAdminBundle',
+                    'items' => [
+                        [
+                            'admin' => '',
+                            'label' => 'route_label2',
+                            'route' => 'FooRoute2',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                        ],
+                    ],
+                    'item_adds' => [],
+                    'roles' => ['foo'],
+                    'on_top' => true,
+                ],
+            ], [
+                [
+                    'label' => 'foo3',
+                    'icon' => '<i class="fa fa-edit"></i>',
+                    'label_catalogue' => 'SonataAdminBundle',
+                    'items' => [
+                        [
+                            'admin' => '',
+                            'label' => 'route_label3',
+                            'route' => 'FooRoute3',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                        ],
+                    ],
+                    'item_adds' => [],
+                    'roles' => ['bar'],
+                    'on_top' => true,
                 ],
             ],
         ];
