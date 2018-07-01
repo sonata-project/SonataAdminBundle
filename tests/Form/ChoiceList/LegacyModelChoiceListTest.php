@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -21,7 +23,7 @@ class LegacyModelChoiceListTest extends TestCase
 {
     private $modelManager = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists(SimpleChoiceList::class)) {
             $this->markTestSkipped('Test only available for <= SF2.8');
@@ -34,7 +36,7 @@ class LegacyModelChoiceListTest extends TestCase
             ->will($this->returnValue(['foo', 'bar']));
     }
 
-    public function testLoadFromEntity()
+    public function testLoadFromEntity(): void
     {
         // Get choices From Entity, count($this->identifier) > 1
         $fooA = new Foo();
@@ -57,7 +59,7 @@ class LegacyModelChoiceListTest extends TestCase
         $this->assertSame(array_keys($result), $modelChoice->getChoices());
     }
 
-    public function testLoadFromCustomQuery()
+    public function testLoadFromCustomQuery(): void
     {
         // Get choices From Custom Query, count($this->identifier) > 1
         $result = [1, 2];
@@ -76,7 +78,7 @@ class LegacyModelChoiceListTest extends TestCase
         $this->assertSame(array_keys($result), $modelChoice->getChoices());
     }
 
-    public function testLoadArrayOfChoices()
+    public function testLoadArrayOfChoices(): void
     {
         // Get choices from Array of choices, count($this->identifier) > 1
         $result = [1, 2];

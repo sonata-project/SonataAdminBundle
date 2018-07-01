@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -108,9 +110,9 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  * @author Michael Williams <michael.williams@funsational.com>
  */
-class SonataAdminExtension extends Extension implements PrependExtensionInterface
+final class SonataAdminExtension extends Extension implements PrependExtensionInterface
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $bundles = $container->getParameter('kernel.bundles');
 
@@ -306,7 +308,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
      *
      * NEXT_MAJOR: remove all code that deals with JMSDiExtraBundle
      */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         $bundles = $container->getParameter('kernel.bundles');
 
@@ -361,7 +363,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         );
     }
 
-    public function configureClassesToCompile()
+    public function configureClassesToCompile(): void
     {
         $this->addClassesToCompile([
             AbstractAdmin::class,
@@ -482,7 +484,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         return $array;
     }
 
-    private function replacePropertyAccessor(ContainerBuilder $container)
+    private function replacePropertyAccessor(ContainerBuilder $container): void
     {
         if (!$container->has('form.property_accessor')) {
             return;

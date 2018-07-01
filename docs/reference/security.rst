@@ -429,6 +429,7 @@ If you have Admin classes, you can install or update the related CRUD ACL rules:
 .. code-block:: bash
 
     $ bin/console sonata:admin:setup-acl
+
     Starting ACL AdminBundle configuration
     > install ACL for sonata.media.admin.media
        - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_GUEST, permissions: ["VIEW","LIST"]

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -37,7 +39,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SonataAdminBundle extends Bundle
 {
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new AddDependencyCallsCompilerPass());
         $container->addCompilerPass(new AddFilterTypeCompilerPass());
@@ -47,7 +49,7 @@ class SonataAdminBundle extends Bundle
         $this->registerFormMapping();
     }
 
-    public function boot()
+    public function boot(): void
     {
         $this->registerFormMapping();
     }
@@ -55,7 +57,7 @@ class SonataAdminBundle extends Bundle
     /**
      * Register form mapping information.
      */
-    public function registerFormMapping()
+    public function registerFormMapping(): void
     {
         FormHelper::registerFormTypeMapping([
             'sonata_type_admin' => AdminType::class,

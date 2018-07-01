@@ -51,5 +51,10 @@ Then, you should be able to dynamically add needed fields to the form::
             if ($this->isCurrentRoute('create')) {
                 $formMapper->add('name', TextType::class);
             }
+
+            // The foo field will added when current action is related acme.demo.admin.code Admin's edit form
+            if ($this->isCurrentRoute('edit', 'acme.demo.admin.code')) {
+                $formMapper->add('foo', 'text');
+            }
         }
     }

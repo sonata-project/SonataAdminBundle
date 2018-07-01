@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -25,11 +27,11 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class ChoiceType extends AbstractType
 {
-    const TYPE_CONTAINS = 1;
+    public const TYPE_CONTAINS = 1;
 
-    const TYPE_NOT_CONTAINS = 2;
+    public const TYPE_NOT_CONTAINS = 2;
 
-    const TYPE_EQUAL = 3;
+    public const TYPE_EQUAL = 3;
 
     /**
      * NEXT_MAJOR: remove this property.
@@ -60,7 +62,7 @@ class ChoiceType extends AbstractType
         return 'sonata_type_filter_choice';
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $choices = [
             'label_type_contains' => self::TYPE_CONTAINS,
@@ -92,12 +94,12 @@ class ChoiceType extends AbstractType
      *
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolverInterface $resolver): void
     {
         $this->configureOptions($resolver);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'field_type' => FormChoiceType::class,

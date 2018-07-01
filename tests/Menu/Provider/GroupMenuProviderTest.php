@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -16,8 +18,8 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuFactory;
 use Knp\Menu\MenuItem;
 use Knp\Menu\Provider\MenuProviderInterface;
+use PHPUnit\Framework\MockObject\MockObject as MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
@@ -44,7 +46,7 @@ class GroupMenuProviderTest extends TestCase
      */
     private $checker;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
         $this->checker = $this
@@ -58,7 +60,7 @@ class GroupMenuProviderTest extends TestCase
         $this->provider = new GroupMenuProvider($this->factory, $this->pool, $this->checker);
     }
 
-    public function testGroupMenuProviderName()
+    public function testGroupMenuProviderName(): void
     {
         $this->assertTrue($this->provider->has('sonata_group_menu'));
     }
@@ -71,7 +73,7 @@ class GroupMenuProviderTest extends TestCase
      * @group legacy
      * @dataProvider getAdminGroups
      */
-    public function testGroupMenuProviderWithoutChecker(array $adminGroups)
+    public function testGroupMenuProviderWithoutChecker(array $adminGroups): void
     {
         $provider = new GroupMenuProvider($this->factory, $this->pool);
 
@@ -113,7 +115,7 @@ class GroupMenuProviderTest extends TestCase
      *
      * @dataProvider getAdminGroups
      */
-    public function testGetMenuProviderWithCheckerGrantedGroupRoles(array $adminGroups)
+    public function testGetMenuProviderWithCheckerGrantedGroupRoles(array $adminGroups): void
     {
         $this->pool->expects($this->any())
             ->method('getInstance')
@@ -153,7 +155,7 @@ class GroupMenuProviderTest extends TestCase
      *
      * @dataProvider getAdminGroups
      */
-    public function testGetMenuProviderWithAdmin(array $adminGroups)
+    public function testGetMenuProviderWithAdmin(array $adminGroups): void
     {
         $this->pool->expects($this->any())
             ->method('getInstance')
@@ -197,7 +199,7 @@ class GroupMenuProviderTest extends TestCase
      *
      * @dataProvider getAdminGroups
      */
-    public function testGetKnpMenuWithListRoute(array $adminGroups)
+    public function testGetKnpMenuWithListRoute(array $adminGroups): void
     {
         $this->pool->expects($this->any())
             ->method('getInstance')
@@ -227,7 +229,7 @@ class GroupMenuProviderTest extends TestCase
      *
      * @dataProvider getAdminGroups
      */
-    public function testGetKnpMenuWithGrantedList(array $adminGroups)
+    public function testGetKnpMenuWithGrantedList(array $adminGroups): void
     {
         $this->pool->expects($this->any())
             ->method('getInstance')
@@ -257,7 +259,7 @@ class GroupMenuProviderTest extends TestCase
      *
      * @dataProvider getAdminGroupsWithOnTopOption
      */
-    public function testGetMenuProviderOnTopOptions(array $adminGroupsOnTopOption)
+    public function testGetMenuProviderOnTopOptions(array $adminGroupsOnTopOption): void
     {
         $this->pool->expects($this->any())
             ->method('getInstance')
@@ -281,7 +283,7 @@ class GroupMenuProviderTest extends TestCase
      *
      * @dataProvider getAdminGroups
      */
-    public function testGetMenuProviderKeepOpenOption(array $adminGroups)
+    public function testGetMenuProviderKeepOpenOption(array $adminGroups): void
     {
         $this->pool->expects($this->any())
             ->method('getInstance')

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -42,7 +44,7 @@ class SearchHandlerTest extends TestCase
         return new Pool($container, 'title', 'logo', ['asd']);
     }
 
-    public function testBuildPagerWithNoGlobalSearchField()
+    public function testBuildPagerWithNoGlobalSearchField(): void
     {
         $filter = $this->getMockForAbstractClass(FilterInterface::class);
         $filter->expects($this->once())->method('getOption')->will($this->returnValue(false));
@@ -57,7 +59,7 @@ class SearchHandlerTest extends TestCase
         $this->assertFalse($handler->search($admin, 'myservice'));
     }
 
-    public function testBuildPagerWithGlobalSearchField()
+    public function testBuildPagerWithGlobalSearchField(): void
     {
         $filter = $this->getMockForAbstractClass(FilterInterface::class);
         $filter->expects($this->once())->method('getOption')->will($this->returnValue(true));

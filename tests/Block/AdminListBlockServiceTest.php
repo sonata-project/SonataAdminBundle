@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -32,7 +34,7 @@ class AdminListBlockServiceTest extends AbstractBlockServiceTestCase
      */
     private $templateRegistry;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -41,7 +43,7 @@ class AdminListBlockServiceTest extends AbstractBlockServiceTestCase
         $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
     }
 
-    public function testDefaultSettings()
+    public function testDefaultSettings(): void
     {
         $blockService = new AdminListBlockService('foo', $this->templating, $this->pool, $this->templateRegistry->reveal());
         $blockContext = $this->getBlockContext($blockService);
@@ -51,7 +53,7 @@ class AdminListBlockServiceTest extends AbstractBlockServiceTestCase
         ], $blockContext);
     }
 
-    public function testOverriddenDefaultSettings()
+    public function testOverriddenDefaultSettings(): void
     {
         $blockService = new FakeBlockService('foo', $this->templating, $this->pool, $this->templateRegistry->reveal());
         $blockContext = $this->getBlockContext($blockService);

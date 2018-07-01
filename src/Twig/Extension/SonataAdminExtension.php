@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -23,7 +25,6 @@ use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceExce
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
-use Twig\Error\LoaderError;
 use Twig\Extension\AbstractExtension;
 use Twig\Template;
 use Twig\TemplateWrapper;
@@ -33,22 +34,21 @@ use Twig\TwigFunction;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class SonataAdminExtension extends AbstractExtension
+final class SonataAdminExtension extends AbstractExtension
 {
-    /**
-     * @var Pool
-     */
-    protected $pool;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
     /**
      * @var TranslatorInterface|null
      */
     protected $translator;
+    /**
+     * @var Pool
+     */
+    private $pool;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * @var string[]
@@ -166,57 +166,6 @@ class SonataAdminExtension extends AbstractExtension
             'value' => $this->getValueFromFieldDescription($object, $fieldDescription),
             'field_description' => $fieldDescription,
         ]), $environment);
-    }
-
-    /**
-     * @deprecated since 3.33, to be removed in 4.0. Use render instead
-     *
-     * @return string
-     */
-    public function output(
-        FieldDescriptionInterface $fieldDescription,
-        Template $template,
-        array $parameters,
-        Environment $environment
-    ) {
-        return $this->render(
-            $fieldDescription,
-            new TemplateWrapper($environment, $template),
-            $parameters,
-            $environment
-        );
-    }
-
-    /**
-     * return the value related to FieldDescription, if the associated object does no
-     * exists => a temporary one is created.
-     *
-     * @param object $object
-     *
-     * @throws \RuntimeException
-     *
-     * @return mixed
-     */
-    public function getValueFromFieldDescription(
-        $object,
-        FieldDescriptionInterface $fieldDescription,
-        array $params = []
-    ) {
-        if (isset($params['loop']) && $object instanceof \ArrayAccess) {
-            throw new \RuntimeException('remove the loop requirement');
-        }
-
-        $value = null;
-
-        try {
-            $value = $fieldDescription->getValue($object);
-        } catch (NoValueException $e) {
-            if ($fieldDescription->getAssociationAdmin()) {
-                $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
-            }
-        }
-
-        return $value;
     }
 
     /**
@@ -375,7 +324,7 @@ class SonataAdminExtension extends AbstractExtension
     /**
      * @param string[] $xEditableTypeMapping
      */
-    public function setXEditableTypeMapping($xEditableTypeMapping)
+    public function setXEditableTypeMapping($xEditableTypeMapping): void
     {
         $this->xEditableTypeMapping = $xEditableTypeMapping;
     }
@@ -439,13 +388,13 @@ class SonataAdminExtension extends AbstractExtension
         return $xEditableChoices;
     }
 
-    /**
+    /*
      * Returns a canonicalized locale for "moment" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
      *
      * @return null|string
      */
-    final public function getCanonicalizedLocaleForMoment(array $context)
+    public function getCanonicalizedLocaleForMoment(array $context)
     {
         $locale = strtolower(str_replace('_', '-', $context['app']->getRequest()->getLocale()));
 
@@ -473,7 +422,7 @@ class SonataAdminExtension extends AbstractExtension
      *
      * @return null|string
      */
-    final public function getCanonicalizedLocaleForSelect2(array $context)
+    public function getCanonicalizedLocaleForSelect2(array $context)
     {
         $locale = str_replace('_', '-', $context['app']->getRequest()->getLocale());
 
@@ -502,13 +451,45 @@ class SonataAdminExtension extends AbstractExtension
     }
 
     /**
+     * return the value related to FieldDescription, if the associated object does no
+     * exists => a temporary one is created.
+     *
+     * @param object $object
+     *
+     * @throws \RuntimeException
+     *
+     * @return mixed
+     */
+    private function getValueFromFieldDescription(
+        $object,
+        FieldDescriptionInterface $fieldDescription,
+        array $params = []
+    ) {
+        if (isset($params['loop']) && $object instanceof \ArrayAccess) {
+            throw new \RuntimeException('remove the loop requirement');
+        }
+
+        $value = null;
+
+        try {
+            $value = $fieldDescription->getValue($object);
+        } catch (NoValueException $e) {
+            if ($fieldDescription->getAssociationAdmin()) {
+                $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
+            }
+        }
+
+        return $value;
+    }
+
+    /**
      * Get template.
      *
      * @param string $defaultTemplate
      *
      * @return TemplateWrapper
      */
-    protected function getTemplate(
+    private function getTemplate(
         FieldDescriptionInterface $fieldDescription,
         $defaultTemplate,
         Environment $environment

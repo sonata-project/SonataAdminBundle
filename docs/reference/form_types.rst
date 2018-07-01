@@ -475,6 +475,7 @@ The available options are:
         }
     }
 
+
 ``Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

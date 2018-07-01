@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -19,9 +21,9 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ExtensionCompilerPass implements CompilerPassInterface
+final class ExtensionCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $universalExtensions = [];
         $targets = [];
@@ -89,7 +91,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
      *
      * @return array
      */
-    protected function getExtensionsForAdmin($id, Definition $admin, ContainerBuilder $container, array $extensionMap)
+    private function getExtensionsForAdmin($id, Definition $admin, ContainerBuilder $container, array $extensionMap)
     {
         $extensions = [];
         $classReflection = $subjectReflection = null;
@@ -150,7 +152,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
      *
      * @return string
      */
-    protected function getManagedClass(Definition $admin, ContainerBuilder $container)
+    private function getManagedClass(Definition $admin, ContainerBuilder $container)
     {
         return $container->getParameterBag()->resolveValue($admin->getArgument(1));
     }
@@ -167,7 +169,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
      *     'uses'       => ['<trait>'     => ['<extension_id>' => ['priority' => <int>]]],
      * ]
      */
-    protected function flattenExtensionConfiguration(array $config)
+    private function flattenExtensionConfiguration(array $config)
     {
         $extensionMap = [
             'excludes' => [],
@@ -197,7 +199,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
     /**
      * @return bool
      */
-    protected function hasTrait(\ReflectionClass $class, $traitName)
+    private function hasTrait(\ReflectionClass $class, $traitName)
     {
         if (in_array($traitName, $class->getTraitNames())) {
             return true;
@@ -216,13 +218,13 @@ class ExtensionCompilerPass implements CompilerPassInterface
      * @param string $target
      * @param string $extension
      */
-    private function addExtension(array &$targets, $target, $extension, array $attributes)
+    private function addExtension(array &$targets, $target, $extension, array $attributes): void
     {
         if (!isset($targets[$target])) {
             $targets[$target] = new \SplPriorityQueue();
         }
 
-        $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
+        $priority = $attributes['priority'] ?? 0;
         $targets[$target]->insert(new Reference($extension), $priority);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -23,17 +25,17 @@ class SessionFilterPersisterTest extends TestCase
      */
     private $session;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->session = $this->prophesize(SessionInterface::class);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->session);
     }
 
-    public function testGetDefaultValueFromSessionIfNotDefined()
+    public function testGetDefaultValueFromSessionIfNotDefined(): void
     {
         $this->session->get('admin.customer.filter.parameters', [])
             ->shouldBeCalledTimes(1)
@@ -42,7 +44,7 @@ class SessionFilterPersisterTest extends TestCase
         self::assertSame([], $this->createPersister()->get('admin.customer'));
     }
 
-    public function testGetValueFromSessionIfDefined()
+    public function testGetValueFromSessionIfDefined(): void
     {
         $filters = [
             'active' => true,
@@ -58,7 +60,7 @@ class SessionFilterPersisterTest extends TestCase
         self::assertSame($filters, $this->createPersister()->get('admin.customer'));
     }
 
-    public function testSetValueToSession()
+    public function testSetValueToSession(): void
     {
         $filters = [
             'active' => true,
@@ -74,7 +76,7 @@ class SessionFilterPersisterTest extends TestCase
         $this->createPersister()->set('admin.customer', $filters);
     }
 
-    public function testResetValueToSession()
+    public function testResetValueToSession(): void
     {
         $this->session->remove('admin.customer.filter.parameters')
             ->shouldBeCalledTimes(1)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -100,7 +102,7 @@ class Admin implements MetadataProcessorInterface
      */
     public $onTop = false;
 
-    public function processMetadata(ClassMetadata $metadata)
+    public function processMetadata(ClassMetadata $metadata): void
     {
         $this->generateFallback($this->class);
         $this->validate();
@@ -136,7 +138,7 @@ class Admin implements MetadataProcessorInterface
     /**
      * Check if all the required fields are given.
      */
-    private function validate()
+    private function validate(): void
     {
         if (!$this->showInDashboard) {
             return;
@@ -157,7 +159,7 @@ class Admin implements MetadataProcessorInterface
      *
      * @param $name
      */
-    private function generateFallback($name)
+    private function generateFallback($name): void
     {
         if (empty($name)) {
             return;

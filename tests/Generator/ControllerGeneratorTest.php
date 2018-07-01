@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -34,7 +36,7 @@ class ControllerGeneratorTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->controllerGenerator = new ControllerGenerator(__DIR__.'/../../src/Resources/skeleton');
         $this->bundleMock = $this->createBundleMock();
@@ -44,13 +46,13 @@ class ControllerGeneratorTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $filesystem = new Filesystem();
         $filesystem->remove($this->bundlePath);
     }
 
-    public function testGenerate()
+    public function testGenerate(): void
     {
         $this->controllerGenerator->generate($this->bundleMock, 'ModelAdminController');
         $file = $this->controllerGenerator->getFile();

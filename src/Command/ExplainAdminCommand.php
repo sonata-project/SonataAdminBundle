@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -22,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ExplainAdminCommand extends ContainerAwareCommand
 {
-    public function configure()
+    public function configure(): void
     {
         $this->setName('sonata:admin:explain');
         $this->setDescription('Explain an admin service');
@@ -30,7 +32,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
         $this->addArgument('admin', InputArgument::REQUIRED, 'The admin service id');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): void
     {
         $admin = $this->getContainer()->get($input->getArgument('admin'));
 

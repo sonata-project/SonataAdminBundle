@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -170,7 +172,7 @@ class ModelChoiceList extends SimpleChoiceList
             // $key is a collection index
             $entities = $this->getEntities();
 
-            return isset($entities[$key]) ? $entities[$key] : null;
+            return $entities[$key] ?? null;
         } elseif ($this->entities) {
             return isset($this->entities[$key]) ? $this->entities[$key] : null;
         }

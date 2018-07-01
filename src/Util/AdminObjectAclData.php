@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -317,7 +319,7 @@ class AdminObjectAclData
     /**
      * Cache masks.
      */
-    protected function updateMasks()
+    protected function updateMasks(): void
     {
         $permissions = $this->getPermissions();
 

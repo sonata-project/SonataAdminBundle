@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -21,13 +23,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class SetupAclCommand extends ContainerAwareCommand
 {
-    public function configure()
+    public function configure(): void
     {
         $this->setName('sonata:admin:setup-acl');
         $this->setDescription('Install ACL for Admin Classes');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): void
     {
         $output->writeln('Starting ACL AdminBundle configuration');
 

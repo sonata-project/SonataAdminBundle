@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -25,7 +27,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class SetupAclCommandTest extends TestCase
 {
-    public function testExecute()
+    public function testExecute(): void
     {
         $application = new Application();
         $command = new SetupAclCommand();
@@ -63,7 +65,7 @@ class SetupAclCommandTest extends TestCase
         $this->assertRegExp('/Starting ACL AdminBundle configuration/', $commandTester->getDisplay());
     }
 
-    public function testExecuteWithException1()
+    public function testExecuteWithException1(): void
     {
         $application = new Application();
         $command = new SetupAclCommand();
@@ -94,7 +96,7 @@ class SetupAclCommandTest extends TestCase
         $this->assertRegExp('@Starting ACL AdminBundle configuration\s+Warning : The admin class cannot be initiated from the command line\s+Foo Exception@', $commandTester->getDisplay());
     }
 
-    public function testExecuteWithException2()
+    public function testExecuteWithException2(): void
     {
         $application = new Application();
         $command = new SetupAclCommand();

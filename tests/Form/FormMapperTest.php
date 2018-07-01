@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -47,7 +49,7 @@ class FormMapperTest extends TestCase
      */
     protected $formMapper;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->contractor = $this->getMockForAbstractClass(FormContractorInterface::class);
 
@@ -82,7 +84,7 @@ class FormMapperTest extends TestCase
         );
     }
 
-    public function testWithNoOptions()
+    public function testWithNoOptions(): void
     {
         $this->formMapper->with('foobar');
 
@@ -111,7 +113,7 @@ class FormMapperTest extends TestCase
         ]], $this->admin->getFormGroups());
     }
 
-    public function testWithOptions()
+    public function testWithOptions(): void
     {
         $this->formMapper->with('foobar', [
             'translation_domain' => 'Foobar',
@@ -142,7 +144,7 @@ class FormMapperTest extends TestCase
         ]], $this->admin->getFormTabs());
     }
 
-    public function testWithFieldsCascadeTranslationDomain()
+    public function testWithFieldsCascadeTranslationDomain(): void
     {
         $this->contractor->expects($this->once())
             ->method('getDefaultOptions')
@@ -188,13 +190,13 @@ class FormMapperTest extends TestCase
         ]], $this->admin->getFormGroups());
     }
 
-    public function testRemoveCascadeRemoveFieldFromFormGroup()
+    public function testRemoveCascadeRemoveFieldFromFormGroup(): void
     {
         $this->formMapper->with('foo');
         $this->formMapper->remove('foo');
     }
 
-    public function testIfTrueApply()
+    public function testIfTrueApply(): void
     {
         $this->contractor->expects($this->once())
             ->method('getDefaultOptions')
@@ -209,7 +211,7 @@ class FormMapperTest extends TestCase
         $this->assertTrue($this->formMapper->has('foo'));
     }
 
-    public function testIfTrueNotApply()
+    public function testIfTrueNotApply(): void
     {
         $this->formMapper
             ->ifTrue(false)
@@ -220,7 +222,7 @@ class FormMapperTest extends TestCase
         $this->assertFalse($this->formMapper->has('foo'));
     }
 
-    public function testIfTrueCombination()
+    public function testIfTrueCombination(): void
     {
         $this->contractor->expects($this->once())
             ->method('getDefaultOptions')
@@ -237,7 +239,7 @@ class FormMapperTest extends TestCase
         $this->assertTrue($this->formMapper->has('baz'));
     }
 
-    public function testIfFalseApply()
+    public function testIfFalseApply(): void
     {
         $this->contractor->expects($this->once())
             ->method('getDefaultOptions')
@@ -252,7 +254,7 @@ class FormMapperTest extends TestCase
         $this->assertTrue($this->formMapper->has('foo'));
     }
 
-    public function testIfFalseNotApply()
+    public function testIfFalseNotApply(): void
     {
         $this->formMapper
             ->ifFalse(true)
@@ -263,7 +265,7 @@ class FormMapperTest extends TestCase
         $this->assertFalse($this->formMapper->has('foo'));
     }
 
-    public function testIfFalseCombination()
+    public function testIfFalseCombination(): void
     {
         $this->contractor->expects($this->once())
             ->method('getDefaultOptions')
@@ -280,7 +282,7 @@ class FormMapperTest extends TestCase
         $this->assertTrue($this->formMapper->has('baz'));
     }
 
-    public function testIfTrueNested()
+    public function testIfTrueNested(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
@@ -289,7 +291,7 @@ class FormMapperTest extends TestCase
         $this->formMapper->ifTrue(true);
     }
 
-    public function testIfFalseNested()
+    public function testIfFalseNested(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
@@ -298,7 +300,7 @@ class FormMapperTest extends TestCase
         $this->formMapper->ifFalse(false);
     }
 
-    public function testIfCombinationNested()
+    public function testIfCombinationNested(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
@@ -307,7 +309,7 @@ class FormMapperTest extends TestCase
         $this->formMapper->ifFalse(false);
     }
 
-    public function testIfFalseCombinationNested2()
+    public function testIfFalseCombinationNested2(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
@@ -316,7 +318,7 @@ class FormMapperTest extends TestCase
         $this->formMapper->ifTrue(true);
     }
 
-    public function testIfFalseCombinationNested3()
+    public function testIfFalseCombinationNested3(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
@@ -325,7 +327,7 @@ class FormMapperTest extends TestCase
         $this->formMapper->ifTrue(false);
     }
 
-    public function testIfFalseCombinationNested4()
+    public function testIfFalseCombinationNested4(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
@@ -334,7 +336,7 @@ class FormMapperTest extends TestCase
         $this->formMapper->ifFalse(true);
     }
 
-    public function testAddAcceptFormBuilder()
+    public function testAddAcceptFormBuilder(): void
     {
         $formBuilder = $this
             ->getMockBuilder(FormBuilder::class)
@@ -365,7 +367,7 @@ class FormMapperTest extends TestCase
         $this->assertSame($this->formMapper->get('foo'), $formBuilder);
     }
 
-    public function testAddFormBuilderWithType()
+    public function testAddFormBuilderWithType(): void
     {
         $formBuilder = $this
             ->getMockBuilder(FormBuilder::class)
@@ -383,7 +385,7 @@ class FormMapperTest extends TestCase
         $this->assertSame($this->formMapper->get('foo'), $formBuilder);
     }
 
-    public function testGroupRemovingWithoutTab()
+    public function testGroupRemovingWithoutTab(): void
     {
         $this->formMapper->with('foobar');
 
@@ -392,7 +394,7 @@ class FormMapperTest extends TestCase
         $this->assertSame([], $this->admin->getFormGroups());
     }
 
-    public function testGroupRemovingWithTab()
+    public function testGroupRemovingWithTab(): void
     {
         $this->formMapper->tab('mytab')->with('foobar');
 
@@ -401,7 +403,7 @@ class FormMapperTest extends TestCase
         $this->assertSame([], $this->admin->getFormGroups());
     }
 
-    public function testGroupRemovingWithoutTabAndWithTabRemoving()
+    public function testGroupRemovingWithoutTabAndWithTabRemoving(): void
     {
         $this->formMapper->with('foobar');
 
@@ -411,7 +413,7 @@ class FormMapperTest extends TestCase
         $this->assertSame([], $this->admin->getFormTabs());
     }
 
-    public function testGroupRemovingWithTabAndWithTabRemoving()
+    public function testGroupRemovingWithTabAndWithTabRemoving(): void
     {
         $this->formMapper->tab('mytab')->with('foobar');
 
@@ -421,7 +423,7 @@ class FormMapperTest extends TestCase
         $this->assertSame([], $this->admin->getFormTabs());
     }
 
-    public function testKeys()
+    public function testKeys(): void
     {
         $this->contractor->expects($this->any())
             ->method('getDefaultOptions')
@@ -435,7 +437,7 @@ class FormMapperTest extends TestCase
         $this->assertSame(['foo', 'baz'], $this->formMapper->keys());
     }
 
-    public function testFieldNameIsSanitized()
+    public function testFieldNameIsSanitized(): void
     {
         $this->contractor->expects($this->any())
             ->method('getDefaultOptions')

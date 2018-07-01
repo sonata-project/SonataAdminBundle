@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -284,7 +286,7 @@ class Pool
         return $this->container;
     }
 
-    public function setAdminGroups(array $adminGroups)
+    public function setAdminGroups(array $adminGroups): void
     {
         $this->adminGroups = $adminGroups;
     }
@@ -297,7 +299,7 @@ class Pool
         return $this->adminGroups;
     }
 
-    public function setAdminServiceIds(array $adminServiceIds)
+    public function setAdminServiceIds(array $adminServiceIds): void
     {
         $this->adminServiceIds = $adminServiceIds;
     }
@@ -310,7 +312,7 @@ class Pool
         return $this->adminServiceIds;
     }
 
-    public function setAdminClasses(array $adminClasses)
+    public function setAdminClasses(array $adminClasses): void
     {
         $this->adminClasses = $adminClasses;
     }
@@ -323,7 +325,7 @@ class Pool
         return $this->adminClasses;
     }
 
-    final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry)
+    final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
     {
         $this->templateRegistry = $templateRegistry;
     }
@@ -331,7 +333,7 @@ class Pool
     /**
      * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
      */
-    public function setTemplates(array $templates)
+    public function setTemplates(array $templates): void
     {
         // NEXT MAJOR: Remove this line
         $this->templates = $templates;
