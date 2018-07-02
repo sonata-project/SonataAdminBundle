@@ -123,4 +123,44 @@ class SimplePagerTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->pager->init();
     }
+
+    /**
+     * NEXT_MAJOR: Remove this test along with fixes to SimplePager.
+     */
+    public function testGetResultsReturnTypeArrayCollection(): void
+    {
+        $this->proxyQuery->expects($this->once())
+            ->method('execute')
+            ->with([], null)
+            ->willReturn(['foo', 'bar']);
+
+        $this->pager->setQuery($this->proxyQuery);
+        $this->pager->setMaxPerPage(1);
+
+        $this->assertInstanceOf(ArrayCollection::class, $this->pager->getResults());
+    }
+
+    public function getResultsReturnType(): array
+    {
+        return [
+            [['foo', 'bar'], 2],
+            [[], null],
+        ];
+    }
+
+    /**
+     * @dataProvider getResultsReturnType
+     */
+    public function testGetResultsReturnTypeArray(array $queryReturnValues, ?int $maxPerPage): void
+    {
+        $this->proxyQuery->expects($this->once())
+            ->method('execute')
+            ->with([], null)
+            ->willReturn($queryReturnValues);
+
+        $this->pager->setQuery($this->proxyQuery);
+        $this->pager->setMaxPerPage($maxPerPage);
+
+        $this->assertIsArray($this->pager->getResults());
+    }
 }
