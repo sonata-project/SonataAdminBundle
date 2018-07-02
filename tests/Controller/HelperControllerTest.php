@@ -333,7 +333,7 @@ class HelperControllerTest extends TestCase
 
         $renderer = $this->configureFormRenderer();
 
-        $this->admin->getModelManager()->willReturn($modelManager->reveal());
+        $this->admin->getObject(42)->willReturn($object);
         $this->admin->getClass()->willReturn(get_class($object));
         $this->admin->setSubject($object)->shouldBeCalled();
         $this->admin->getFormTheme()->willReturn($formView);
@@ -372,7 +372,7 @@ class HelperControllerTest extends TestCase
 
         $renderer = $this->configureFormRenderer();
 
-        $this->admin->getModelManager()->willReturn($modelManager->reveal());
+        $this->admin->getObject(42)->willReturn($object);
         $this->admin->getClass()->willReturn(get_class($object));
         $this->admin->setSubject($object)->shouldBeCalled();
         $this->admin->getFormTheme()->willReturn($formView);
