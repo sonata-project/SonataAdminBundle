@@ -139,23 +139,31 @@ class GroupMenuProvider implements MenuProviderInterface
         }
 
         // Making the checker behave affirmatively even if it's globally unanimous
-        $roles = null;
-        if (!empty($item['roles'])) {
-            $roles = $item['roles'];
-        } elseif (!empty($group['roles'])) {
-            $roles = $group['roles'];
-        }
-        if (null === $roles) {
-            return true;
-        }
+        // Still must be granted unanimously to group and item
 
-        foreach ($roles as $role) {
-            if ($this->checker->isGranted([$role])) {
-                return true;
+        $isItemGranted = true;
+        if (!empty($item['roles'])) {
+            $isItemGranted = false;
+            foreach ($item['roles'] as $role) {
+                if ($this->checker->isGranted([$role])) {
+                    $isItemGranted = true;
+                    break;
+                }
             }
         }
 
-        return false;
+        $isGroupGranted = true;
+        if (!empty($group['roles'])) {
+            $isGroupGranted = false;
+            foreach ($group['roles'] as $role) {
+                if ($this->checker->isGranted([$role])) {
+                    $isGroupGranted = true;
+                    break;
+                }
+            }
+        }
+
+        return $isItemGranted && $isGroupGranted;
     }
 
     /**

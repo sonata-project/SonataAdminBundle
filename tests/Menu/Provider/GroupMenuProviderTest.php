@@ -159,6 +159,24 @@ class GroupMenuProviderTest extends TestCase
             return false;
         }
 
+        if ($args === ['foo'] || $args === ['bar'] || $args === ['baz']) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array $args
+     *
+     * @return bool
+     */
+    public function unanimousGrantCheckerNoBazMock($args)
+    {
+        if ($args === ['foo', 'bar'] || $args === ['baz']) {
+            return false;
+        }
+
         if ($args === ['foo'] || $args === ['bar']) {
             return true;
         }
@@ -190,7 +208,35 @@ class GroupMenuProviderTest extends TestCase
 
         $children = $menu->getChildren();
 
-        $this->assertCount(3, $children);
+        $this->assertCount(4, $children);
+    }
+
+    /**
+     * @param array $adminGroups
+     *
+     * @dataProvider getAdminGroupsMultipleRoles
+     */
+    public function testGetMenuProviderWithCheckerGrantedGroupAndItemRoles(
+        array $adminGroups
+    ) {
+        $this->checker->expects($this->any())
+            ->method('isGranted')
+            ->willReturnCallback([$this, 'unanimousGrantCheckerNoBazMock']);
+
+        $menu = $this->provider->get(
+            'providerFoo',
+            [
+                'name' => 'foo',
+                'group' => $adminGroups,
+            ]
+        );
+        $isBazItem = $adminGroups['roles'] === ['baz'];
+
+        $this->assertInstanceOf(ItemInterface::class, $menu);
+        $this->assertEquals(!$isBazItem, $menu->isDisplayed());
+
+        $children = $menu->getChildren();
+        $this->assertCount($isBazItem ? 0 : 3, $children);
     }
 
     /**
@@ -416,7 +462,8 @@ class GroupMenuProviderTest extends TestCase
     {
         return [
             [
-                'bar' => [
+                // group for all roles, children with different roles
+                [
                     'label' => 'foo',
                     'icon' => '<i class="fa fa-edit"></i>',
                     'label_catalogue' => 'SonataAdminBundle',
@@ -445,7 +492,59 @@ class GroupMenuProviderTest extends TestCase
                             'route_absolute' => true,
                             'roles' => ['bar'],
                         ],
+                        [
+                            'admin' => '',
+                            'label' => 'route_label4',
+                            'route' => 'FooRoute4',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                            'roles' => ['baz'],
+                        ],
                     ],
+                    'roles' => ['foo', 'bar'],
+                    'item_adds' => [],
+                ],
+            ], [
+                // group for one role, children with different roles
+                [
+                    'label' => 'foo',
+                    'icon' => '<i class="fa fa-edit"></i>',
+                    'label_catalogue' => 'SonataAdminBundle',
+                    'items' => [
+                        [
+                            'admin' => '',
+                            'label' => 'route_label1',
+                            'route' => 'FooRoute1',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                            'roles' => ['foo', 'bar'],
+                        ],
+                        [
+                            'admin' => '',
+                            'label' => 'route_label2',
+                            'route' => 'FooRoute2',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                            'roles' => ['foo'],
+                        ],
+                        [
+                            'admin' => '',
+                            'label' => 'route_label3',
+                            'route' => 'FooRoute3',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                            'roles' => ['bar'],
+                        ],
+                        [
+                            'admin' => '',
+                            'label' => 'route_label4',
+                            'route' => 'FooRoute4',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                            'roles' => ['baz'],
+                        ],
+                    ],
+                    'roles' => ['baz'],
                     'item_adds' => [],
                 ],
             ],
