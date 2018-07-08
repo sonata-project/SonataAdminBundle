@@ -1532,10 +1532,8 @@ class CRUDController implements ContainerAwareInterface
 
     /**
      * Sets the admin form theme to form view. Used for compatibility between Symfony versions.
-     *
-     * @param array $theme
      */
-    private function setFormTheme(FormView $formView, $theme)
+    private function setFormTheme(FormView $formView, array $theme = null)
     {
         $twig = $this->get('twig');
 
