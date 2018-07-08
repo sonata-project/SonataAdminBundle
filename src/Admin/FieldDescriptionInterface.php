@@ -50,7 +50,7 @@ interface FieldDescriptionInterface
      * @param string     $name
      * @param mixed|null $default
      *
-     * @return array|null the value represented by the provided name
+     * @return mixed the value represented by the provided name
      */
     public function getOption($name, $default = null);
 
@@ -176,7 +176,7 @@ interface FieldDescriptionInterface
     /**
      * return the associated Admin instance (only used if the field is linked to an Admin).
      *
-     * @return AdminInterface
+     * @return AdminInterface|null
      */
     public function getAssociationAdmin();
 

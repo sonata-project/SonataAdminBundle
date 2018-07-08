@@ -19,7 +19,7 @@ class Validators
     /**
      * @static
      *
-     * @param string $username
+     * @param string|null $username
      *
      * @throws \InvalidArgumentException
      *

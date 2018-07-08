@@ -215,7 +215,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The subject only set in edit/update/create mode.
      *
-     * @var object
+     * @var object|null
      */
     protected $subject;
 
@@ -284,7 +284,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The current request object.
      *
-     * @var \Symfony\Component\HttpFoundation\Request
+     * @var \Symfony\Component\HttpFoundation\Request|null
      */
     protected $request;
 
@@ -335,14 +335,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The datagrid instance.
      *
-     * @var \Sonata\AdminBundle\Datagrid\DatagridInterface
+     * @var \Sonata\AdminBundle\Datagrid\DatagridInterface|null
      */
     protected $datagrid;
 
     /**
      * The router instance.
      *
-     * @var RouteGeneratorInterface
+     * @var RouteGeneratorInterface|null
      */
     protected $routeGenerator;
 
@@ -487,12 +487,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     private $list;
 
     /**
-     * @var FieldDescriptionCollection
+     * @var FieldDescriptionCollection|null
      */
     private $show;
 
     /**
-     * @var Form
+     * @var Form|null
      */
     private $form;
 
@@ -2740,7 +2740,7 @@ EOT;
     }
 
     /**
-     * @param FormMapper $object
+     * @param object $object
      */
     final public function getSearchResultLink($object)
     {

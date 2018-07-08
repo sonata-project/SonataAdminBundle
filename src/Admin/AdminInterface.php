@@ -445,7 +445,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function createObjectSecurity($object);
 
     /**
-     * @return AdminInterface
+     * @return AdminInterface|null
      */
     public function getParent();
 
