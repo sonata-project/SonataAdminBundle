@@ -50,6 +50,7 @@ class GlobalVariables
         }
         if ($adminPool instanceof Pool) {
             $this->adminPool = $adminPool;
+
             return;
         }
         throw new \InvalidArgumentException(
