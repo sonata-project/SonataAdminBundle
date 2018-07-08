@@ -29,6 +29,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -590,7 +591,6 @@ class CRUDController implements ContainerAwareInterface
 
         $this->admin->setSubject($newObject);
 
-        /** @var \Symfony\Component\Form\Form */
         $form = $this->admin->getForm();
         $form->setData($newObject);
         $form->handleRequest($request);
@@ -1530,7 +1530,7 @@ class CRUDController implements ContainerAwareInterface
     /**
      * Sets the admin form theme to form view. Used for compatibility between Symfony versions.
      *
-     * @param string $theme
+     * @param array $theme
      */
     private function setFormTheme(FormView $formView, $theme)
     {

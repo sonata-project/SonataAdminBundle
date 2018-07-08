@@ -265,7 +265,7 @@ class Pool
      *
      * @throws \InvalidArgumentException
      *
-     * @return AdminInterface
+     * @return AdminInterface|null
      */
     public function getInstance($id)
     {

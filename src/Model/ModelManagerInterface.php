@@ -70,7 +70,7 @@ interface ModelManagerInterface
      * @param string $class
      * @param mixed  $id
      *
-     * @return object the object with id or null if not found
+     * @return object|null the object with id or null if not found
      */
     public function find($class, $id);
 
