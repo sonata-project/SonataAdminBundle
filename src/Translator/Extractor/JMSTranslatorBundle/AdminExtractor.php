@@ -244,7 +244,10 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
      */
     private function getAdmin($id)
     {
-        return $this->adminPool->getContainer()->get($id);
+        $admin = $this->adminPool->getContainer()->get($id);
+        assert($admin instanceof AdminInterface);
+
+        return $admin;
     }
 
     /**
