@@ -1165,7 +1165,10 @@ class CRUDController implements ContainerAwareInterface
     protected function getLogger()
     {
         if ($this->container->has('logger')) {
-            return $this->container->get('logger');
+            $logger = $this->container->get('logger');
+            assert($logger instanceof LoggerInterface);
+
+            return $logger;
         }
 
         return new NullLogger();

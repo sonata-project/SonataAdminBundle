@@ -279,7 +279,10 @@ class GenerateAdminCommand extends QuestionableCommand
      */
     private function getModelManager($managerType)
     {
-        return $this->getContainer()->get('sonata.admin.manager.'.$managerType);
+        $modelManager =  $this->getContainer()->get('sonata.admin.manager.'.$managerType);
+        assert($modelManager instanceof ModelManagerInterface);
+
+        return $modelManager;
     }
 
     /**
