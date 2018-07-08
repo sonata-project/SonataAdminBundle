@@ -46,14 +46,15 @@ class GlobalVariables
                 E_USER_DEPRECATED
             );
 
-            $this->adminPool = $adminPool->get('sonata.admin.pool');
-        } elseif ($adminPool instanceof Pool) {
-            $this->adminPool = $adminPool;
-        } else {
-            throw new \InvalidArgumentException(
-                '$adminPool should be an instance of Sonata\AdminBundle\Admin\Pool'
-            );
+            $adminPool = $adminPool->get('sonata.admin.pool');
         }
+        if ($adminPool instanceof Pool) {
+            $this->adminPool = $adminPool;
+            return;
+        }
+        throw new \InvalidArgumentException(
+            '$adminPool should be an instance of Sonata\AdminBundle\Admin\Pool'
+        );
     }
 
     /**
