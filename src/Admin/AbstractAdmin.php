@@ -284,7 +284,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The current request object.
      *
-     * @var \Symfony\Component\HttpFoundation\Request|null
+     * @var Request|null
      */
     protected $request;
 
@@ -335,7 +335,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The datagrid instance.
      *
-     * @var \Sonata\AdminBundle\Datagrid\DatagridInterface|null
+     * @var DatagridInterface|null
      */
     protected $datagrid;
 
