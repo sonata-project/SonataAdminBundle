@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Datagrid;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Sjoerd Peters <sjoerd.peters@gmail.com>
@@ -74,6 +76,10 @@ class SimplePager extends Pager
         $this->thresholdCount = count($this->results);
         if (count($this->results) > $this->getMaxPerPage()) {
             $this->haveToPaginate = true;
+            // doctrine/phpcr-odm returns ArrayCollection
+            if ($this->results instanceof ArrayCollection) {
+                $this->results = $this->results->toArray();
+            }
             $this->results = \array_slice($this->results, 0, $this->getMaxPerPage());
         } else {
             $this->haveToPaginate = false;
