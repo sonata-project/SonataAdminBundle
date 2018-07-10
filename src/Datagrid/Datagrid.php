@@ -53,6 +53,11 @@ class Datagrid implements DatagridInterface
     protected $bound = false;
 
     /**
+     * @var bool
+     */
+    private $boundFilters = false;
+
+    /**
      * @var ProxyQueryInterface
      */
     protected $query;
@@ -102,9 +107,9 @@ class Datagrid implements DatagridInterface
         return $this->results;
     }
 
-    public function buildPager()
+    public function buildFilters()
     {
-        if ($this->bound) {
+        if ($this->boundFilters) {
             return;
         }
 
@@ -153,6 +158,17 @@ class Datagrid implements DatagridInterface
                 $this->query->setSortOrder(isset($this->values['_sort_order']) ? $this->values['_sort_order'] : null);
             }
         }
+
+        $this->boundFilters = true;
+    }
+
+    public function buildPager()
+    {
+        if ($this->bound) {
+            return;
+        }
+
+        $this->buildFilters();
 
         $maxPerPage = 25;
         if (isset($this->values['_per_page'])) {

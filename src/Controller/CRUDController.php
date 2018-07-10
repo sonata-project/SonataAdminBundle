@@ -15,6 +15,7 @@ use Doctrine\Common\Inflector\Inflector;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
@@ -480,6 +481,9 @@ class CRUDController implements ContainerAwareInterface
         }
 
         $datagrid = $this->admin->getDatagrid();
+        if (!($datagrid instanceof Datagrid)) {
+            $datagrid->buildPager();
+        }
 
         if (true !== $nonRelevantMessage) {
             $this->addFlash(
@@ -495,12 +499,14 @@ class CRUDController implements ContainerAwareInterface
             true;
 
         if ($askConfirmation && 'ok' != $confirmation) {
+            if ($datagrid instanceof Datagrid) {
+                $datagrid->buildPager();
+            }
+
             $actionLabel = $batchActions[$action]['label'];
             $batchTranslationDomain = isset($batchActions[$action]['translation_domain']) ?
                 $batchActions[$action]['translation_domain'] :
                 $this->admin->getTranslationDomain();
-
-            $datagrid->buildPager();
 
             $formView = $datagrid->getForm()->createView();
             $this->setFormTheme($formView, $this->admin->getFilterTheme());
@@ -518,6 +524,10 @@ class CRUDController implements ContainerAwareInterface
                 'data' => $data,
                 'csrf_token' => $this->getCsrfToken('sonata.batch'),
             ], null);
+        }
+
+        if ($datagrid instanceof Datagrid) {
+            $datagrid->buildFilters();
         }
 
         // execute the action, batchActionXxxxx
