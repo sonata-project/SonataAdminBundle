@@ -480,6 +480,7 @@ class CRUDController implements ContainerAwareInterface
         }
 
         $datagrid = $this->admin->getDatagrid();
+        $datagrid->buildPager();
 
         if (true !== $nonRelevantMessage) {
             $this->addFlash(
@@ -499,8 +500,6 @@ class CRUDController implements ContainerAwareInterface
             $batchTranslationDomain = isset($batchActions[$action]['translation_domain']) ?
                 $batchActions[$action]['translation_domain'] :
                 $this->admin->getTranslationDomain();
-
-            $datagrid->buildPager();
 
             $formView = $datagrid->getForm()->createView();
             $this->setFormTheme($formView, $this->admin->getFilterTheme());
