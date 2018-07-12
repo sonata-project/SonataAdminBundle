@@ -33,7 +33,6 @@ use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -332,26 +331,25 @@ class HelperControllerTest extends TestCase
         $modelManager = $this->prophesize(ModelManagerInterface::class);
         $formView = new FormView();
         $form = $this->prophesize(Form::class);
-        $formBuilder = $this->prophesize(FormBuilder::class);
 
         $renderer = $this->configureFormRenderer();
 
-        $this->admin->getModelManager()->willReturn($modelManager->reveal());
+        $this->admin->getObject(42)->willReturn($object);
         $this->admin->getClass()->willReturn(get_class($object));
         $this->admin->setSubject($object)->shouldBeCalled();
         $this->admin->getFormTheme()->willReturn($formView);
-        $this->admin->getFormBuilder()->willReturn($formBuilder->reveal());
+        $this->helper->appendFormFieldElement($this->admin->reveal(), $object, null)->willReturn([
+            $this->prophesize(FieldDescriptionInterface::class),
+            $form->reveal(),
+        ]);
         $this->helper->getChildFormView($formView, null)
             ->willReturn($formView);
         $modelManager->find(get_class($object), 42)->willReturn($object);
-        $form->setData($object)->shouldBeCalled();
-        $form->handleRequest($request)->shouldBeCalled();
         $form->createView()->willReturn($formView);
-        $formBuilder->getForm()->willReturn($form->reveal());
         $renderer->setTheme($formView, $formView)->shouldBeCalled();
         $renderer->searchAndRenderBlock($formView, 'widget')->willReturn('block');
 
-        $response = $this->controller->retrieveFormFieldElementAction($request);
+        $response = $this->controller->appendFormFieldElementAction($request);
 
         $this->isInstanceOf(Response::class, $response);
         $this->assertSame($response->getContent(), 'block');

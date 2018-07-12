@@ -95,7 +95,7 @@ class HelperController
             $admin->setUniqid($uniqid);
         }
 
-        $subject = $admin->getModelManager()->find($admin->getClass(), $objectId);
+        $subject = $admin->getObject($objectId);
         if ($objectId && !$subject) {
             throw new NotFoundHttpException();
         }
@@ -138,7 +138,7 @@ class HelperController
         }
 
         if ($objectId) {
-            $subject = $admin->getModelManager()->find($admin->getClass(), $objectId);
+            $subject = $admin->getObject($objectId);
             if (!$subject) {
                 throw new NotFoundHttpException(
                     sprintf('Unable to find the object id: %s, class: %s', $objectId, $admin->getClass())
