@@ -89,6 +89,9 @@ class AdminControllerHelper_Bar
     }
 }
 
+/**
+ * @group legacy
+ */
 class HelperControllerTest extends TestCase
 {
     /**
