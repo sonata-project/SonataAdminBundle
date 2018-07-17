@@ -14,7 +14,7 @@ namespace Sonata\AdminBundle\Controller;
 // NEXT_MAJOR: remove this file
 
 @trigger_error(
-    'The '.__NAMESPACE__.'\CoreController class is deprecated since version 3.x and will be removed in 4.0.'
+    'The '.__NAMESPACE__.'\CoreController class is deprecated since version 3.36 and will be removed in 4.0.'
     .' Use '.__NAMESPACE__.'\SearchAction or '.__NAMESPACE__.'\DashboardAction instead.',
     E_USER_DEPRECATED
 );
