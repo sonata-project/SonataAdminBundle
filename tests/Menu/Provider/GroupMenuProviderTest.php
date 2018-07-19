@@ -193,7 +193,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetMenuProviderWithCheckerGrantedMultipleGroupRoles(
         array $adminGroups
-    ) {
+    ): void {
         $this->checker->expects($this->any())
             ->method('isGranted')
             ->willReturnCallback([$this, 'unanimousGrantCheckerMock']);
@@ -220,7 +220,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetMenuProviderWithCheckerGrantedGroupAndItemRoles(
         array $adminGroups
-    ) {
+    ): void {
         $this->checker->expects($this->any())
             ->method('isGranted')
             ->willReturnCallback([$this, 'unanimousGrantCheckerNoBazMock']);
@@ -248,7 +248,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTop(
         array $adminGroups
-    ) {
+    ): void {
         $this->checker->expects($this->any())
             ->method('isGranted')
             ->willReturnCallback([$this, 'unanimousGrantCheckerMock']);

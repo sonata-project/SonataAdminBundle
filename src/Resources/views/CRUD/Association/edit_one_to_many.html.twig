@@ -32,8 +32,8 @@ file that was distributed with this source code.
 
         </span>
 
-        {% set display_create_button = sonata_admin.field_description.associationadmin.hasroute('create')
-            and sonata_admin.field_description.associationadmin.isGranted('CREATE')
+        {% set display_create_button = sonata_admin.field_description.associationadmin.hasRoute('create')
+            and sonata_admin.field_description.associationadmin.hasAccess('create')
             and btn_add
             and (
                 sonata_admin.field_description.options.limit is not defined or

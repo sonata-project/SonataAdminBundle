@@ -47,6 +47,28 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.36.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.35.2...3.36.0) - 2018-07-17
+### Added
+- Added `title` to sidebar toggle
+- Added missing polish translation for `Toggle Navigation`
+- Added new JS function in Admin.js, which handle the control of a tabs and change address in URL query string when you change tab.
+- Added a condition in the `getFieldGetterKey` in order remove the new warning produced by PHP7.2.
+
+### Changed
+- Escaped admin code in autocomplete
+- `Controller\CoreController` is now deprecated in favor of `Action\{Search,Dasbhoard}Action`
+- Added table-hover class to the table
+- Changed ID's and added class name to tabs elements in edit view and show view, so we can control the address.
+- Default load order of `assets.javascripts` at `Configuration::getConfigTreeBuilder()`
+
+### Fixed
+- Warning "Parameter must be an array or an object that implements Countable" for count(null) in php 7.2
+- Fixed issue with `appendFormFieldElementAction` and `retrieveFormFieldElementAction` using ModelManager instead `getObject` admin class method
+- Menu item security was expected to be checked affirmatively rather than unanimously
+- Fixed choice field mask initial display when field value is empty
+- Added missing russian translation for `Toggle Navigation`
+- ECMAScript error `jquery.js:250 Uncaught Error: cannot call methods on button prior to initialization;` while trying to use `$.fn.button()` (ref: https://github.com/twbs/bootstrap/issues/6094)
+
 ## [3.35.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.35.1...3.35.2) - 2018-05-05
 ### Fixed
 - Fixed route generation with parameter for on_top menu items
