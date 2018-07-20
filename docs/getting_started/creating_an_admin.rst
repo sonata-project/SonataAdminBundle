@@ -66,7 +66,7 @@ two very simple ``Post`` and ``Tag`` entities will be used::
          * @ORM\Column(type="integer")
          * @ORM\GeneratedValue(strategy="AUTO")
          */
-        protected $id;
+        private $id;
 
         /**
          * @var string
