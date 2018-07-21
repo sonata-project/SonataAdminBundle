@@ -166,6 +166,11 @@ interface AdminExtensionInterface
 
     /*
      * NEXT_MAJOR: Uncomment in next major release
+     */
+    // public function configureDashboardActions(AdminInterface $admin, array $actions): array;
+
+    /*
+     * NEXT_MAJOR: Uncomment in next major release
      *
      * Returns a list of default filters
      *

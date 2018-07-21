@@ -2714,6 +2714,13 @@ EOT;
             ];
         }
 
+        foreach ($this->getExtensions() as $extension) {
+            // TODO: remove method check in next major release
+            if (method_exists($extension, 'configureDashboardActions')) {
+                $actions = $extension->configureDashboardActions($this, $actions);
+            }
+        }
+
         return $actions;
     }
 
