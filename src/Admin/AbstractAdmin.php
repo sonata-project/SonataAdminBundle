@@ -2715,8 +2715,7 @@ EOT;
         }
 
         foreach ($this->getExtensions() as $extension) {
-            // TODO: remove method check in next major release
-            if (method_exists($extension, 'configureDashboardActions')) {
+            if ($extension instanceof ConfigureDashboardActionsExtensionInterface) {
                 $actions = $extension->configureDashboardActions($this, $actions);
             }
         }
