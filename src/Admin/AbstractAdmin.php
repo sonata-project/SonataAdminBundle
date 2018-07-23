@@ -15,6 +15,30 @@ use Doctrine\Common\Util\ClassUtils;
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\ItemInterface as MenuItemInterface;
+use Sonata\AdminBundle\Admin\AdminExtensionInterface as OldAdminExtensionInterface;
+use Sonata\AdminBundle\Admin\Extension\AdminExtensionInterface as NewAdminExtensionInterface;
+use Sonata\AdminBundle\Admin\Extension\AlterNewInstanceInterface;
+use Sonata\AdminBundle\Admin\Extension\AlterObjectInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureActionButtonsInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureBatchActionsInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureDatagridFieldsInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureDefaultFilterValuesInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureExportFieldsInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureFormFieldsInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureListFieldsInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureQueryInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureRoutesInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureShowFieldsInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureTabMenuInterface;
+use Sonata\AdminBundle\Admin\Extension\GetAccessMappingInterface;
+use Sonata\AdminBundle\Admin\Extension\GetPersistentParametersInterface;
+use Sonata\AdminBundle\Admin\Extension\PostPersistInterface;
+use Sonata\AdminBundle\Admin\Extension\PostRemoveInterface;
+use Sonata\AdminBundle\Admin\Extension\PostUpdateInterface;
+use Sonata\AdminBundle\Admin\Extension\PrePersistInterface;
+use Sonata\AdminBundle\Admin\Extension\PreRemoveInterface;
+use Sonata\AdminBundle\Admin\Extension\PreUpdateInterface;
+use Sonata\AdminBundle\Admin\Extension\ValidateInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
@@ -410,7 +434,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $templates = [];
 
     /**
-     * @var AdminExtensionInterface[]
+     * @var OldAdminExtensionInterface|NewAdminExtensionInterface[]
      */
     protected $extensions = [];
 
@@ -599,8 +623,17 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $fields = $this->getModelManager()->getExportFields($this->getClass());
 
         foreach ($this->getExtensions() as $extension) {
+            // NEXT_MAJOR: check if extension implements ConfigureExportFieldsInterface before calling the method
             if (method_exists($extension, 'configureExportFields')) {
                 $fields = $extension->configureExportFields($this, $fields);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof ConfigureExportFieldsInterface) {
+                $this->triggerExtensionDeprecationMessage(
+                    'configureExportFields',
+                    ConfigureExportFieldsInterface::class
+                );
             }
         }
 
@@ -657,7 +690,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         $this->preUpdate($object);
         foreach ($this->extensions as $extension) {
-            $extension->preUpdate($this, $object);
+            // NEXT_MAJOR: check if extension implements PreUpdateInterface before calling the method
+            if (method_exists($extension, 'preUpdate')) {
+                $extension->preUpdate($this, $object);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof PreUpdateInterface) {
+                $this->triggerExtensionDeprecationMessage('preUpdate', PreUpdateInterface::class);
+            }
         }
 
         $result = $this->getModelManager()->update($object);
@@ -668,7 +709,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         $this->postUpdate($object);
         foreach ($this->extensions as $extension) {
-            $extension->postUpdate($this, $object);
+            // NEXT_MAJOR: check if extension implements PostUpdateInterface before calling the method
+            if (method_exists($extension, 'postUpdate')) {
+                $extension->postUpdate($this, $object);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof PostUpdateInterface) {
+                $this->triggerExtensionDeprecationMessage('postUpdate', PostUpdateInterface::class);
+            }
         }
 
         return $object;
@@ -678,7 +727,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         $this->prePersist($object);
         foreach ($this->extensions as $extension) {
-            $extension->prePersist($this, $object);
+            // NEXT_MAJOR: check if extension implements PrePersistInterface before calling the method
+            if (method_exists($extension, 'prePersist')) {
+                $extension->prePersist($this, $object);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof PrePersistInterface) {
+                $this->triggerExtensionDeprecationMessage('prePersist', PrePersistInterface::class);
+            }
         }
 
         $result = $this->getModelManager()->create($object);
@@ -689,7 +746,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         $this->postPersist($object);
         foreach ($this->extensions as $extension) {
-            $extension->postPersist($this, $object);
+            // NEXT_MAJOR: check if extension implements PostPersistInterface before calling the method
+            if (method_exists($extension, 'postPersist')) {
+                $extension->postPersist($this, $object);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof PostPersistInterface) {
+                $this->triggerExtensionDeprecationMessage('postPersist', PostPersistInterface::class);
+            }
         }
 
         $this->createObjectSecurity($object);
@@ -701,7 +766,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         $this->preRemove($object);
         foreach ($this->extensions as $extension) {
-            $extension->preRemove($this, $object);
+            // NEXT_MAJOR: check if extension implements PreRemoveInterface before calling the method
+            if (method_exists($extension, 'preRemove')) {
+                $extension->preRemove($this, $object);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof PreRemoveInterface) {
+                $this->triggerExtensionDeprecationMessage('preRemove', PreRemoveInterface::class);
+            }
         }
 
         $this->getSecurityHandler()->deleteObjectSecurity($this, $object);
@@ -709,7 +782,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         $this->postRemove($object);
         foreach ($this->extensions as $extension) {
-            $extension->postRemove($this, $object);
+            // NEXT_MAJOR: check if extension implements PostRemoveInterface before calling the method
+            if (method_exists($extension, 'postRemove')) {
+                $extension->postRemove($this, $object);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof PostRemoveInterface) {
+                $this->triggerExtensionDeprecationMessage('postRemove', PostRemoveInterface::class);
+            }
         }
     }
 
@@ -840,7 +921,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         foreach ($this->getExtensions() as $extension) {
-            $extension->configureDatagridFilters($mapper);
+            // NEXT_MAJOR: check if extension implements ConfigureDatagridFieldsInterface before calling the method
+            if (method_exists($extension, 'configureDatagridFilters')) {
+                $extension->configureDatagridFilters($mapper);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof ConfigureDatagridFieldsInterface) {
+                $this->triggerExtensionDeprecationMessage(
+                    'configureDatagridFilters',
+                    ConfigureDatagridFieldsInterface::class
+                );
+            }
         }
     }
 
@@ -1088,9 +1180,17 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $actions = $this->configureBatchActions($actions);
 
         foreach ($this->getExtensions() as $extension) {
-            // TODO: remove method check in next major release
+            // NEXT_MAJOR: check if extension implements ConfigureBatchActionsInterface before calling the method
             if (method_exists($extension, 'configureBatchActions')) {
                 $actions = $extension->configureBatchActions($this, $actions);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof ConfigureBatchActionsInterface) {
+                $this->triggerExtensionDeprecationMessage(
+                    'configureBatchActions',
+                    ConfigureBatchActionsInterface::class
+                );
             }
         }
 
@@ -1229,7 +1329,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         $object = $this->getModelManager()->getModelInstance($this->getClass());
         foreach ($this->getExtensions() as $extension) {
-            $extension->alterNewInstance($this, $object);
+            // NEXT_MAJOR: check if extension implements AlterNewInstanceInterface before calling the method
+            if (method_exists($extension, 'alterNewInstance')) {
+                $extension->alterNewInstance($this, $object);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof AlterNewInstanceInterface) {
+                $this->triggerExtensionDeprecationMessage(
+                    'alterNewInstance',
+                    AlterNewInstanceInterface::class
+                );
+            }
         }
 
         return $object;
@@ -1260,7 +1371,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->configureFormFields($mapper);
 
         foreach ($this->getExtensions() as $extension) {
-            $extension->configureFormFields($mapper);
+            // NEXT_MAJOR: check if extension implements ConfigureFormFieldsInterface before calling the method
+            if (method_exists($extension, 'configureFormFields')) {
+                $extension->configureFormFields($mapper);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof ConfigureFormFieldsInterface) {
+                $this->triggerExtensionDeprecationMessage(
+                    'configureFormFields',
+                    ConfigureFormFieldsInterface::class
+                );
+            }
         }
 
         $this->attachInlineValidator();
@@ -1293,7 +1415,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         $object = $this->getModelManager()->find($this->getClass(), $id);
         foreach ($this->getExtensions() as $extension) {
-            $extension->alterObject($this, $object);
+            // NEXT_MAJOR: check if extension implements AlterObjectInterface before calling the method
+            if (method_exists($extension, 'alterObject')) {
+                $extension->alterObject($this, $object);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof AlterObjectInterface) {
+                $this->triggerExtensionDeprecationMessage(
+                    'alterObject',
+                    AlterObjectInterface::class
+                );
+            }
         }
 
         return $object;
@@ -1324,7 +1457,15 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $query = $this->getModelManager()->createQuery($this->getClass());
 
         foreach ($this->extensions as $extension) {
-            $extension->configureQuery($this, $query, $context);
+            // NEXT_MAJOR: check if extension implements ConfigureQueryInterface before calling the method
+            if (method_exists($extension, 'configureQuery')) {
+                $extension->configureQuery($this, $query, $context);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof ConfigureQueryInterface) {
+                $this->triggerExtensionDeprecationMessage('configureQuery', ConfigureQueryInterface::class);
+            }
         }
 
         return $query;
@@ -1357,7 +1498,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->configureTabMenu($menu, $action, $childAdmin);
 
         foreach ($this->getExtensions() as $extension) {
-            $extension->configureTabMenu($this, $menu, $action, $childAdmin);
+            // NEXT_MAJOR: check if extension implements ConfigureTabMenuInterface before calling the method
+            if (method_exists($extension, 'configureTabMenu')) {
+                $extension->configureTabMenu($this, $menu, $action, $childAdmin);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof ConfigureTabMenuInterface) {
+                $this->triggerExtensionDeprecationMessage(
+                    'configureTabMenu',
+                    ConfigureTabMenuInterface::class
+                );
+            }
         }
 
         $this->menu = $menu;
@@ -1887,7 +2039,20 @@ EOT;
         $parameters = [];
 
         foreach ($this->getExtensions() as $extension) {
-            $params = $extension->getPersistentParameters($this);
+            $params = [];
+
+            // NEXT_MAJOR: check if extension implements GetPersistentParametersInterface before calling the method
+            if (method_exists($extension, 'getPersistentParameters')) {
+                $params = $extension->getPersistentParameters($this);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof GetPersistentParametersInterface) {
+                $this->triggerExtensionDeprecationMessage(
+                    'getPersistentParameters',
+                    GetPersistentParametersInterface::class
+                );
+            }
 
             if (!is_array($params)) {
                 throw new \RuntimeException(sprintf('The %s::getPersistentParameters must return an array', get_class($extension)));
@@ -2391,8 +2556,35 @@ EOT;
         return $this->filterTheme;
     }
 
-    public function addExtension(AdminExtensionInterface $extension)
+    public function addExtension(OldAdminExtensionInterface $extension)
     {
+        @trigger_error(
+            'Method "addExtension" is deprecated. Check "addAdminExtension".',
+            E_USER_DEPRECATED
+        );
+
+        $this->extensions[] = $extension;
+    }
+
+    /**
+     * NEXT_MAJOR: remove whole if and add only NewAdminExtensionInterface typehint.
+     *
+     * @param NewAdminExtensionInterface|OldAdminExtensionInterface $extension
+     */
+    public function addAdminExtension($extension)
+    {
+        if ($extension instanceof OldAdminExtensionInterface) {
+            @trigger_error(sprintf(
+                'Extensions implementing "%s" are deprecated since 3.x and will be removed in 4.0.'
+                .' Implement single-method interfaces from "Sonata\AdminBundle\Admin\Extension" namespace.',
+                OldAdminExtensionInterface::class
+            ), E_USER_DEPRECATED);
+        } elseif (!$extension instanceof NewAdminExtensionInterface) {
+            throw new \InvalidArgumentException(
+                'Extension has to implement one of the interfaces in "Sonata\AdminBundle\Admin\Extension" namespace.'
+            );
+        }
+
         $this->extensions[] = $extension;
     }
 
@@ -2675,9 +2867,17 @@ EOT;
         $list = $this->configureActionButtons($action, $object);
 
         foreach ($this->getExtensions() as $extension) {
-            // TODO: remove method check in next major release
+            // NEXT_MAJOR: check if extension implements ConfigureActionButtonsInterface before calling the method
             if (method_exists($extension, 'configureActionButtons')) {
                 $list = $extension->configureActionButtons($this, $list, $action, $object);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof ConfigureActionButtonsInterface) {
+                $this->triggerExtensionDeprecationMessage(
+                    'configureActionButtons',
+                    ConfigureActionButtonsInterface::class
+                );
             }
         }
 
@@ -2796,9 +2996,17 @@ EOT;
         $this->configureDefaultFilterValues($defaultFilterValues);
 
         foreach ($this->getExtensions() as $extension) {
-            // NEXT_MAJOR: remove method check in next major release
+            // NEXT_MAJOR: check if extension implements ConfigureDefaultFilterValuesInterface before calling the method
             if (method_exists($extension, 'configureDefaultFilterValues')) {
                 $extension->configureDefaultFilterValues($this, $defaultFilterValues);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof ConfigureDefaultFilterValuesInterface) {
+                $this->triggerExtensionDeprecationMessage(
+                    'configureDefaultFilterValues',
+                    ConfigureDefaultFilterValuesInterface::class
+                );
             }
         }
 
@@ -2877,7 +3085,18 @@ EOT;
         $this->configureShowFields($mapper);
 
         foreach ($this->getExtensions() as $extension) {
-            $extension->configureShowFields($mapper);
+            // NEXT_MAJOR: check if extension implements ConfigureShowFieldsInterface before calling the method
+            if (method_exists($extension, 'configureShowFields')) {
+                $extension->configureShowFields($mapper);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof ConfigureShowFieldsInterface) {
+                $this->triggerExtensionDeprecationMessage(
+                    'configureShowFields',
+                    ConfigureShowFieldsInterface::class
+                );
+            }
         }
     }
 
@@ -2917,7 +3136,18 @@ EOT;
         $this->configureListFields($mapper);
 
         foreach ($this->getExtensions() as $extension) {
-            $extension->configureListFields($mapper);
+            // NEXT_MAJOR: check if extension implements ConfigureListFieldsInterface before calling the method
+            if (method_exists($extension, 'configureListFields')) {
+                $extension->configureListFields($mapper);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof ConfigureListFieldsInterface) {
+                $this->triggerExtensionDeprecationMessage(
+                    'configureListFields',
+                    ConfigureListFieldsInterface::class
+                );
+            }
         }
 
         if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
@@ -3022,7 +3252,18 @@ EOT;
                 $admin->validate($errorElement, $object);
 
                 foreach ($admin->getExtensions() as $extension) {
-                    $extension->validate($admin, $errorElement, $object);
+                    // NEXT_MAJOR: check if extension implements ValidateInterface before calling the method
+                    if (method_exists($extension, 'validate')) {
+                        $extension->validate($admin, $errorElement, $object);
+                    }
+
+                    // NEXT_MAJOR: remove this conditional
+                    if (!$extension instanceof ValidateInterface) {
+                        $this->triggerExtensionDeprecationMessage(
+                            'validate',
+                            ValidateInterface::class
+                        );
+                    }
                 }
             },
             'serializingWarning' => true,
@@ -3061,9 +3302,14 @@ EOT;
         ], $this->getAccessMapping());
 
         foreach ($this->extensions as $extension) {
-            // TODO: remove method check in next major release
+            // NEXT_MAJOR: check if extension implements GetAccessMappingInterface before calling the method
             if (method_exists($extension, 'getAccessMapping')) {
                 $access = array_merge($access, $extension->getAccessMapping($this));
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof GetAccessMappingInterface) {
+                $this->triggerExtensionDeprecationMessage('getAccessMapping', GetAccessMappingInterface::class);
             }
         }
 
@@ -3075,6 +3321,21 @@ EOT;
      */
     protected function configureDefaultFilterValues(array &$filterValues)
     {
+    }
+
+    /**
+     * NEXT_MAJOR: remove this method.
+     *
+     * @param string $method
+     * @param string $class
+     */
+    private function triggerExtensionDeprecationMessage($method, $class)
+    {
+        @trigger_error(sprintf(
+            'Calling "%s" without implementing "%s" in your extension is deprecated.',
+            $method,
+            $class
+        ), E_USER_DEPRECATED);
     }
 
     /**
@@ -3100,7 +3361,18 @@ EOT;
         $this->configureRoutes($this->routes);
 
         foreach ($this->getExtensions() as $extension) {
-            $extension->configureRoutes($this, $this->routes);
+            // NEXT_MAJOR: check if extension implements ConfigureRoutesInterface before calling the method
+            if (method_exists($extension, 'configureRoutes')) {
+                $extension->configureRoutes($this, $this->routes);
+            }
+
+            // NEXT_MAJOR: remove this conditional
+            if (!$extension instanceof ConfigureRoutesInterface) {
+                $this->triggerExtensionDeprecationMessage(
+                    'configureRoutes',
+                    ConfigureRoutesInterface::class
+                );
+            }
         }
     }
 }

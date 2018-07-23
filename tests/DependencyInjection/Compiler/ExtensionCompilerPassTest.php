@@ -16,7 +16,7 @@ use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Admin\AdminExtensionInterface;
+use Sonata\AdminBundle\Admin\Extension\AdminExtensionInterface;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait;
@@ -232,6 +232,8 @@ class ExtensionCompilerPassTest extends TestCase
     }
 
     /**
+     * @group legacy
+     * @expectedDeprecation Extensions implementing "Sonata\AdminBundle\Admin\AdminExtensionInterface" are deprecated since 3.x and will be removed in 4.0. Implement single-method interfaces from "Sonata\AdminBundle\Admin\Extension" namespace.
      * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::process
      */
     public function testProcess()

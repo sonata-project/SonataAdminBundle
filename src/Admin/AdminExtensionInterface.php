@@ -12,29 +12,34 @@
 namespace Sonata\AdminBundle\Admin;
 
 use Knp\Menu\ItemInterface as MenuItemInterface;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\CoreBundle\Validator\ErrorElement;
+use Sonata\AdminBundle\Admin\Extension\AlterNewInstanceInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureDatagridFieldsInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureFormFieldsInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureListFieldsInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureQueryInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureRoutesInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureShowFieldsInterface;
+use Sonata\AdminBundle\Admin\Extension\ConfigureTabMenuInterface;
+use Sonata\AdminBundle\Admin\Extension\GetPersistentParametersInterface;
+use Sonata\AdminBundle\Admin\Extension\PostPersistInterface;
+use Sonata\AdminBundle\Admin\Extension\PostRemoveInterface;
+use Sonata\AdminBundle\Admin\Extension\PostUpdateInterface;
+use Sonata\AdminBundle\Admin\Extension\PrePersistInterface;
+use Sonata\AdminBundle\Admin\Extension\PreRemoveInterface;
+use Sonata\AdminBundle\Admin\Extension\PreUpdateInterface;
+use Sonata\AdminBundle\Admin\Extension\ValidateInterface;
+
+@trigger_error(sprintf(
+    '"%s" is deprecated since 3.x and will be removed in 4.0.'
+    .' Implement single interfaces from "Sonata\AdminBundle\Admin\Extension" namespace.',
+    AdminExtensionInterface::class
+), E_USER_DEPRECATED);
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-interface AdminExtensionInterface
+interface AdminExtensionInterface extends ConfigureFormFieldsInterface, ConfigureListFieldsInterface, ConfigureDatagridFieldsInterface, ConfigureShowFieldsInterface, ConfigureRoutesInterface, ConfigureTabMenuInterface, ValidateInterface, ConfigureQueryInterface, AlterNewInstanceInterface, GetPersistentParametersInterface, PreUpdateInterface, PostUpdateInterface, PrePersistInterface, PostPersistInterface, PreRemoveInterface, PostRemoveInterface
 {
-    public function configureFormFields(FormMapper $formMapper);
-
-    public function configureListFields(ListMapper $listMapper);
-
-    public function configureDatagridFilters(DatagridMapper $datagridMapper);
-
-    public function configureShowFields(ShowMapper $showMapper);
-
-    public function configureRoutes(AdminInterface $admin, RouteCollection $collection);
-
     /**
      * DEPRECATED: Use configureTabMenu instead.
      *
@@ -51,50 +56,7 @@ interface AdminExtensionInterface
         AdminInterface $childAdmin = null
     );
 
-    /**
-     * Builds the tab menu.
-     *
-     * @param string $action
-     */
-    public function configureTabMenu(
-        AdminInterface $admin,
-        MenuItemInterface $menu,
-        $action,
-        AdminInterface $childAdmin = null
-    );
-
-    /**
-     * @param mixed $object
-     */
-    public function validate(AdminInterface $admin, ErrorElement $errorElement, $object);
-
-    /**
-     * @param string $context
-     */
-    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list');
-
-    /**
-     * Get a chance to modify a newly created instance.
-     *
-     * @param mixed $object
-     */
-    public function alterNewInstance(AdminInterface $admin, $object);
-
-    /**
-     * Get a chance to modify object instance.
-     *
-     * @param mixed $object
-     */
-    public function alterObject(AdminInterface $admin, $object);
-
-    /**
-     * Get a chance to add persistent parameters.
-     *
-     * @return array
-     */
-    public function getPersistentParameters(AdminInterface $admin);
-
-    /**
+    /*
      * Return the controller access mapping.
      *
      * @return array
@@ -102,7 +64,7 @@ interface AdminExtensionInterface
     // TODO: Uncomment in next major release
     // public function getAccessMapping(AdminInterface $admin);
 
-    /**
+    /*
      * Returns the list of batch actions.
      *
      * @param array $actions
@@ -112,7 +74,7 @@ interface AdminExtensionInterface
     // TODO: Uncomment in next major release
     // public function configureBatchActions(AdminInterface $admin, array $actions);
 
-    /**
+    /*
      * Get a chance to modify export fields.
      *
      * @param string[] $fields
@@ -121,36 +83,6 @@ interface AdminExtensionInterface
      */
     // TODO: Uncomment in next major release
     // public function configureExportFields(AdminInterface $admin, array $fields);
-
-    /**
-     * @param mixed $object
-     */
-    public function preUpdate(AdminInterface $admin, $object);
-
-    /**
-     * @param mixed $object
-     */
-    public function postUpdate(AdminInterface $admin, $object);
-
-    /**
-     * @param mixed $object
-     */
-    public function prePersist(AdminInterface $admin, $object);
-
-    /**
-     * @param mixed $object
-     */
-    public function postPersist(AdminInterface $admin, $object);
-
-    /**
-     * @param mixed $object
-     */
-    public function preRemove(AdminInterface $admin, $object);
-
-    /**
-     * @param mixed $object
-     */
-    public function postRemove(AdminInterface $admin, $object);
 
     /*
      * Get all action buttons for an action

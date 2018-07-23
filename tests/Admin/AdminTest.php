@@ -15,12 +15,15 @@ use Doctrine\Common\Collections\Collection;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Admin\AbstractAdminExtension;
-use Sonata\AdminBundle\Admin\AdminExtensionInterface;
+use Sonata\AdminBundle\Admin\AdminExtensionInterface as OldAdminExtensionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
+use Sonata\AdminBundle\Admin\Extension\AdminExtensionInterface;
+use Sonata\AdminBundle\Admin\Extension\GetAccessMappingInterface;
+use Sonata\AdminBundle\Admin\Extension\GetPersistentParametersInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
@@ -42,6 +45,7 @@ use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentVoteAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentWithCustomRouteAdmin;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\Extension\DummyExtension;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FilteredAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\ModelAdmin;
@@ -161,11 +165,11 @@ class AdminTest extends TestCase
         $securityHandler = $this->prophesize(SecurityHandlerInterface::class);
         $securityHandler->isGranted($admin, 'CUSTOM_ROLE', $admin)->willReturn(true);
         $securityHandler->isGranted($admin, 'EXTRA_CUSTOM_ROLE', $admin)->willReturn(false);
-        $customExtension = $this->prophesize(AbstractAdminExtension::class);
+        $customExtension = $this->prophesize(GetAccessMappingInterface::class);
         $customExtension->getAccessMapping($admin)->willReturn(
             ['custom_action' => ['CUSTOM_ROLE', 'EXTRA_CUSTOM_ROLE']]
         );
-        $admin->addExtension($customExtension->reveal());
+        $admin->addAdminExtension($customExtension->reveal());
         $admin->setSecurityHandler($securityHandler->reveal());
         $this->expectException(
             AccessDeniedException::class
@@ -197,11 +201,11 @@ class AdminTest extends TestCase
         $securityHandler = $this->prophesize(SecurityHandlerInterface::class);
         $securityHandler->isGranted($admin, 'CUSTOM_ROLE', $admin)->willReturn(true);
         $securityHandler->isGranted($admin, 'EXTRA_CUSTOM_ROLE', $admin)->willReturn(false);
-        $customExtension = $this->prophesize(AbstractAdminExtension::class);
+        $customExtension = $this->prophesize(GetAccessMappingInterface::class);
         $customExtension->getAccessMapping($admin)->willReturn(
             ['custom_action' => ['CUSTOM_ROLE', 'EXTRA_CUSTOM_ROLE']]
         );
-        $admin->addExtension($customExtension->reveal());
+        $admin->addAdminExtension($customExtension->reveal());
         $admin->setSecurityHandler($securityHandler->reveal());
 
         $this->assertFalse($admin->hasAccess('custom_action'));
@@ -217,11 +221,11 @@ class AdminTest extends TestCase
         $securityHandler = $this->prophesize(SecurityHandlerInterface::class);
         $securityHandler->isGranted($admin, 'CUSTOM_ROLE', $admin)->willReturn(true);
         $securityHandler->isGranted($admin, 'EXTRA_CUSTOM_ROLE', $admin)->willReturn(true);
-        $customExtension = $this->prophesize(AbstractAdminExtension::class);
+        $customExtension = $this->prophesize(GetAccessMappingInterface::class);
         $customExtension->getAccessMapping($admin)->willReturn(
             ['custom_action' => ['CUSTOM_ROLE', 'EXTRA_CUSTOM_ROLE']]
         );
-        $admin->addExtension($customExtension->reveal());
+        $admin->addAdminExtension($customExtension->reveal());
         $admin->setSecurityHandler($securityHandler->reveal());
 
         $this->assertTrue($admin->hasAccess('custom_action'));
@@ -236,11 +240,11 @@ class AdminTest extends TestCase
         );
         $securityHandler = $this->prophesize(SecurityHandlerInterface::class);
         $securityHandler->isGranted($admin, 'EDIT_ROLE', $admin)->willReturn(true);
-        $customExtension = $this->prophesize(AbstractAdminExtension::class);
+        $customExtension = $this->prophesize(GetAccessMappingInterface::class);
         $customExtension->getAccessMapping($admin)->willReturn(
             ['edit_action' => ['EDIT_ROLE']]
         );
-        $admin->addExtension($customExtension->reveal());
+        $admin->addAdminExtension($customExtension->reveal());
         $admin->setSecurityHandler($securityHandler->reveal());
 
         $this->assertTrue($admin->hasAccess('edit_action'));
@@ -878,17 +882,21 @@ class AdminTest extends TestCase
         $this->assertSame($menuFactory, $admin->getMenuFactory());
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Extensions implementing "Sonata\AdminBundle\Admin\AdminExtensionInterface" are deprecated since 3.x and will be removed in 4.0. Implement single-method interfaces from "Sonata\AdminBundle\Admin\Extension" namespace.
+     */
     public function testGetExtensions()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
         $this->assertSame([], $admin->getExtensions());
 
-        $adminExtension1 = $this->createMock(AdminExtensionInterface::class);
+        $adminExtension1 = $this->createMock(OldAdminExtensionInterface::class);
         $adminExtension2 = $this->createMock(AdminExtensionInterface::class);
 
-        $admin->addExtension($adminExtension1);
-        $admin->addExtension($adminExtension2);
+        $admin->addAdminExtension($adminExtension1);
+        $admin->addAdminExtension($adminExtension2);
         $this->assertSame([$adminExtension1, $adminExtension2], $admin->getExtensions());
     }
 
@@ -1518,10 +1526,10 @@ class AdminTest extends TestCase
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
-        $extension = $this->createMock(AdminExtensionInterface::class);
+        $extension = $this->createMock(GetPersistentParametersInterface::class);
         $extension->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(null));
 
-        $admin->addExtension($extension);
+        $admin->addAdminExtension($extension);
 
         $admin->getPersistentParameters();
     }
@@ -1534,10 +1542,10 @@ class AdminTest extends TestCase
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
-        $extension = $this->createMock(AdminExtensionInterface::class);
+        $extension = $this->createMock(GetPersistentParametersInterface::class);
         $extension->expects($this->once())->method('getPersistentParameters')->will($this->returnValue($expected));
 
-        $admin->addExtension($extension);
+        $admin->addAdminExtension($extension);
 
         $this->assertSame($expected, $admin->getPersistentParameters());
     }
@@ -2459,6 +2467,73 @@ class AdminTest extends TestCase
         $this->assertSame($commentVoteAdmin, $postAdmin->getCurrentLeafChildAdmin());
         $this->assertSame($commentVoteAdmin, $commentAdmin->getCurrentLeafChildAdmin());
         $this->assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Calling "configureBatchActions" without implementing "Sonata\AdminBundle\Admin\Extension\ConfigureBatchActionsInterface" in your extension is deprecated.
+     */
+    public function testConfigureBatchActionsDeprection()
+    {
+        $admin = new PostAdmin(
+            'sonata.post.admin.post',
+            'Application\Sonata\NewsBundle\Entity\Post',
+            'SonataNewsBundle:PostAdmin'
+        );
+
+        $routeGenerator = $this->prophesize(RouteGeneratorInterface::class);
+        $routeGenerator->hasAdminRoute(Argument::cetera())->willReturn(true);
+
+        $securityHandler = $this->prophesize(SecurityHandlerInterface::class);
+        $securityHandler->isGranted(Argument::cetera())->willReturn(true);
+
+        $admin->setSecurityHandler($securityHandler->reveal());
+        $admin->setRouteGenerator($routeGenerator->reveal());
+        $admin->addAdminExtension(new DummyExtension());
+
+        $admin->getBatchActions();
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Calling "configureActionButtons" without implementing "Sonata\AdminBundle\Admin\Extension\ConfigureActionButtonsInterface" in your extension is deprecated.
+     */
+    public function testConfigureActionButtonsDeprection()
+    {
+        $admin = new PostAdmin(
+            'sonata.post.admin.post',
+            'Application\Sonata\NewsBundle\Entity\Post',
+            'SonataNewsBundle:PostAdmin'
+        );
+
+        $routeGenerator = $this->prophesize(RouteGeneratorInterface::class);
+        $routeGenerator->hasAdminRoute(Argument::cetera())->willReturn(true);
+
+        $securityHandler = $this->prophesize(SecurityHandlerInterface::class);
+        $securityHandler->isGranted(Argument::cetera())->willReturn(true);
+
+        $admin->setSecurityHandler($securityHandler->reveal());
+        $admin->setRouteGenerator($routeGenerator->reveal());
+        $admin->addAdminExtension(new DummyExtension());
+
+        $admin->getActionButtons('dummy');
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Calling "configureDefaultFilterValues" without implementing "Sonata\AdminBundle\Admin\Extension\ConfigureDefaultFilterValuesInterface" in your extension is deprecated.
+     */
+    public function testConfigureDefaultFilterValuesDeprection()
+    {
+        $admin = new PostAdmin(
+            'sonata.post.admin.post',
+            'Application\Sonata\NewsBundle\Entity\Post',
+            'SonataNewsBundle:PostAdmin'
+        );
+
+        $admin->addAdminExtension(new DummyExtension());
+
+        $admin->isDefaultFilter('dummy');
     }
 
     private function createTagAdmin(Post $post)
