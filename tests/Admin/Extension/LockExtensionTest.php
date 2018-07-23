@@ -59,6 +59,10 @@ class LockExtensionTest extends TestCase
      */
     private $request;
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Sonata\AdminBundle\Admin\AbstractAdminExtension" is deprecated since 3.x and will be removed in 4.0.
+     */
     protected function setUp()
     {
         $this->modelManager = $this->prophesize(LockInterface::class);

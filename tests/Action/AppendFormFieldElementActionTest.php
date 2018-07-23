@@ -63,6 +63,9 @@ final class AppendFormFieldElementActionTest extends TestCase
      */
     private $helper;
 
+    /**
+     * @group legacy
+     */
     protected function setUp()
     {
         $this->twig = $this->prophesize(Environment::class);

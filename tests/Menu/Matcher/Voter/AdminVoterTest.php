@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class AdminVoterTest extends AbstractVoterTest
 {
     /**
-     * {@inheritdoc}
+     * @group legacy
      */
     public function provideData()
     {

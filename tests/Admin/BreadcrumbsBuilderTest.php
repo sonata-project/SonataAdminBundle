@@ -36,6 +36,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class BreadcrumbsBuilderTest extends TestCase
 {
+    use SetExtensionEmitterTrait;
+
     /**
      * @group legacy
      */
@@ -63,6 +65,10 @@ class BreadcrumbsBuilderTest extends TestCase
         $postAdmin = new PostAdmin('sonata.post.admin.post', DummySubject::class, 'SonataNewsBundle:PostAdmin');
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'SonataNewsBundle:CommentAdmin');
         $subCommentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'SonataNewsBundle:CommentAdmin');
+
+        $this->setExtensionEmitter($postAdmin);
+        $this->setExtensionEmitter($commentAdmin);
+        $this->setExtensionEmitter($subCommentAdmin);
 
         $postAdmin->addChild($commentAdmin);
         $postAdmin->setRequest(new Request(['id' => $postAdminSubjectId]));
@@ -234,6 +240,9 @@ class BreadcrumbsBuilderTest extends TestCase
 
         $postAdmin = new PostAdmin('sonata.post.admin.post', DummySubject::class, 'SonataNewsBundle:PostAdmin');
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'SonataNewsBundle:CommentAdmin');
+
+        $this->setExtensionEmitter($postAdmin);
+        $this->setExtensionEmitter($commentAdmin);
 
         $postAdmin->addChild($commentAdmin);
         $postAdmin->setRequest(new Request(['id' => $postAdminSubjectId]));
