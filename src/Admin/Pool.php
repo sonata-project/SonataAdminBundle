@@ -270,7 +270,11 @@ class Pool
     public function getInstance($id)
     {
         if (!in_array($id, $this->adminServiceIds)) {
-            throw new \InvalidArgumentException(sprintf('Admin service "%s" not found in admin pool. Did you mean one of those: [%s] ?', $id, implode(', ',$this->adminServiceIds)));
+            throw new \InvalidArgumentException(sprintf(
+                'Admin service "%s" not found in admin pool. Did you mean one of those: [%s] ?',
+                $id,
+                implode(', ',$this->adminServiceIds)
+            ));
         }
 
         return $this->container->get($id);
