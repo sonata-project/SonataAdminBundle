@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.37.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.36.0...3.37.0) - 2018-07-26
+### Fixed
+- fixed bug with complex properties in `ModelAutocompleteType`
+
+### Changed
+- Enable TimeZone for datetime and time templating
+- Changing the way of checking the permissions when displaying links in templates
+
 ## [3.36.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.35.2...3.36.0) - 2018-07-17
 ### Added
 - Added `title` to sidebar toggle
