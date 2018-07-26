@@ -522,6 +522,12 @@ class SonataAdminExtensionTest extends TestCase
                 [],
             ],
             [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-time" objectId="12345"> 18:11:12 </td>',
+                'time',
+                new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
+                ['timezone' => 'Asia/Hong_Kong'],
+            ],
+            [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-time" objectId="12345"> &nbsp; </td>',
                 'time',
                 null,
@@ -1464,6 +1470,12 @@ EOT
                 ['format' => 'd.m.Y H:i:s'],
             ],
             [
+                '<th>Data</th> <td>December 24, 2013 18:11</td>',
+                'datetime',
+                new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
+                ['timezone' => 'Asia/Hong_Kong'],
+            ],
+            [
                 '<th>Data</th> <td>December 24, 2013</td>',
                 'date',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
@@ -1480,6 +1492,12 @@ EOT
                 'time',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 [],
+            ],
+            [
+                '<th>Data</th> <td>18:11:12</td>',
+                'time',
+                new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
+                ['timezone' => 'Asia/Hong_Kong'],
             ],
             ['<th>Data</th> <td>10.746135</td>', 'number', 10.746135, ['safe' => false]],
             ['<th>Data</th> <td>5678</td>', 'integer', 5678, ['safe' => false]],

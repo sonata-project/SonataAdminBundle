@@ -14,9 +14,7 @@ file that was distributed with this source code.
 {% block field %}
     {%- if value is empty -%}
         &nbsp;
-    {%- elseif field_description.options.format is defined -%}
-        {{ value|date(field_description.options.format) }}
     {%- else -%}
-        {{ value|date }}
+        {{ value|date(field_description.options.format|default(null), field_description.options.timezone|default(null)) }}
     {%- endif -%}
 {% endblock %}
