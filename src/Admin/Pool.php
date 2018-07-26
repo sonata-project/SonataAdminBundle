@@ -273,7 +273,7 @@ class Pool
             throw new \InvalidArgumentException(sprintf(
                 'Admin service "%s" not found in admin pool. Did you mean one of those: [%s] ?',
                 $id,
-                implode(', ',$this->adminServiceIds)
+                implode(', ', $this->adminServiceIds)
             ));
         }
 
