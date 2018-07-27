@@ -270,11 +270,31 @@ class Pool
     public function getInstance($id)
     {
         if (!in_array($id, $this->adminServiceIds)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Admin service "%s" not found in admin pool. Did you mean one of those: [%s] ?',
-                $id,
-                implode(', ', $this->adminServiceIds)
-            ));
+            $msg = sprintf('Admin service "%s" not found in admin pool.', $id);
+            $shortest = -1;
+            $closest = null;
+            $alternatives = [];
+            foreach ($this->adminServiceIds as $adminServiceId) {
+                $lev = levenshtein($id, $adminServiceId);
+                if ($lev <= $shortest || $shortest < 0) {
+                    $closest = $adminServiceId;
+                    $shortest = $lev;
+                }
+                if ($lev <= strlen($adminServiceId) / 3 || false !== strpos($adminServiceId, $id)) {
+                    $alternatives[$adminServiceId] = $lev;
+                }
+            }
+            if (null !== $closest) {
+                asort($alternatives);
+                unset($alternatives[$closest]);
+                $msg = sprintf(
+                    'Admin service "%s" not found in admin pool. Did you mean "%s" or one of those: [%s]?',
+                    $id,
+                    $closest,
+                    implode(', ', array_keys($alternatives))
+                );
+            }
+            throw new \InvalidArgumentException($msg);
         }
 
         return $this->container->get($id);
