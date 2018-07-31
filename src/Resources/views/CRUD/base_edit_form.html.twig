@@ -83,7 +83,9 @@
                             <button type="submit" class="btn btn-success" name="btn_update"><i class="fa fa-save" aria-hidden="true"></i> {{ 'btn_update'|trans({}, 'SonataAdminBundle') }}</button>
                             {% if admin.hasRoute('delete') and admin.hasAccess('delete', object) %}
                                 {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
-                                <a class="btn btn-danger" href="{{ admin.generateObjectUrl('delete', object) }}"><i class="fa fa-minus-circle" aria-hidden="true"></i> {{ 'link_delete'|trans({}, 'SonataAdminBundle') }}</a>
+                                <a class="btn btn-danger" href="{{ admin.generateObjectUrl('delete', object) }}">
+                                    <i class="fa fa-minus-circle" aria-hidden="true"></i> {{ 'link_delete'|trans({}, 'SonataAdminBundle') }}
+                                </a>
                             {% endif %}
                         {% else %}
                             <button type="submit" class="btn btn-success" name="btn_create"><i class="fa fa-plus-circle" aria-hidden="true"></i> {{ 'btn_create'|trans({}, 'SonataAdminBundle') }}</button>
