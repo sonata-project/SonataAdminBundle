@@ -3,7 +3,7 @@ Deleting a Group of Fields from an Admin
 
 In some cases, when you extend existing Admins, you might want to delete
 fields from the admin, or make them not show. You could delete every
-field by hand, using the ``FormMapper``s ``remove`` method.
+field by hand, using the ``FormMapper`` ``remove`` method.
 
     .. code-block:: php
 
