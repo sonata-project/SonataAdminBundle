@@ -1866,7 +1866,7 @@ EOT;
     public function getUniqid()
     {
         if (!$this->uniqid) {
-            $this->uniqid = 's'.uniqid();
+            $this->uniqid = 's'.crc32($this->getBaseCodeRoute());
         }
 
         return $this->uniqid;
