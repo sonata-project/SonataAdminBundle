@@ -2487,7 +2487,7 @@ EOT;
     final public function showMosaicButton($isShown): void
     {
         if ($isShown) {
-            $this->listModes['mosaic'] = ['class' => self::MOSAIC_ICON_CLASS];
+            $this->listModes['mosaic'] = ['class' => static::MOSAIC_ICON_CLASS];
         } else {
             unset($this->listModes['mosaic']);
         }
