@@ -212,8 +212,8 @@ Or from a Twig template:
 
 .. code-block:: jinja
 
-    {% if is_granted('VIEW') %}
-        <p>Hello there!</p>
+    {% if admin.hasAccess('list') %}
+        {# ... #}
     {% endif %}
 
 Note that you do not have to re-specify the prefix.
