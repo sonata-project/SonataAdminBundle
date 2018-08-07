@@ -184,6 +184,21 @@ class PoolTest extends TestCase
         $this->pool->getInstance('sonata.news.admin.post');
     }
 
+    public function testGetInstanceWithUndefinedServiceIdAndExistsOther()
+    {
+        $this->pool->setAdminServiceIds([
+            'sonata.news.admin.post',
+            'sonata.news.admin.category',
+        ]);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Admin service "sonata.news.admin.pos" not found in admin pool. '
+            .'Did you mean "sonata.news.admin.post" '
+            .'or one of those: [sonata.news.admin.category]?');
+
+        $this->pool->getInstance('sonata.news.admin.pos');
+    }
+
     public function testGetAdminByAdminCode()
     {
         $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
