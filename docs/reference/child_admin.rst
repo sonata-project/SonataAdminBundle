@@ -95,7 +95,7 @@ or not. To get rid of them, you may override the ``configureRoutes`` method::
 
     class VideoAdmin extends AbstractAdmin
     {
-        protected $parentAssociationMapping = 'playlist';
+        // ...
 
         protected function configureRoutes(RouteCollection $collection)
         {
