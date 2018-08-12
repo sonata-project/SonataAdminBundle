@@ -1,6 +1,11 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated `SonataAdminBundle\Controller\HelperController` in favor of actions
+
+If you extended that controller, you should split your extended controller and
+extend the corresponding classes in `SonataAdminBundle\Action\`.
+
 UPGRADE FROM 3.34 to 3.35
 =========================
 
@@ -9,13 +14,13 @@ UPGRADE FROM 3.34 to 3.35
 Admin classes can now have multiple parents, when registering the service
 you should pass a field name:
 
-```
+```xml
 <service id="sonata.admin.playlist" class="App\Admin\PlaylistAdmin">
     <!-- ... -->
 
     <call method="addChild">
         <argument type="service" id="sonata.admin.video" />
-        <argument>playlist</<argument>
+        <argument>playlist</argument>
     </call>
 </service>
 ```
