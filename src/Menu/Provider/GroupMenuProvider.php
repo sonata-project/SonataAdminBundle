@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Menu\Provider;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -130,7 +131,7 @@ class GroupMenuProvider implements MenuProviderInterface
             $admin = $this->pool->getInstance($item['admin']);
 
             // skip menu item if no `list` url is available or user doesn't have the LIST access rights
-            return $admin->hasRoute('list') && $admin->hasAccess('list');
+            return $admin->hasRoute('list') && $admin->hasAccess('list') && $admin->showIn(AbstractAdmin::CONTEXT_MENU);
         }
 
         //NEXT_MAJOR: Remove if statement of null checker.
