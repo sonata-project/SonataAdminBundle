@@ -300,7 +300,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @param int|string|null $id
      *
-     * @throws \RuntimeException If no editable attribut is defined
+     * @throws \RuntimeException     If no editable attribut is defined
      * @throws NotFoundHttpException If the object does not exist
      * @throws AccessDeniedException If access is not granted
      *
