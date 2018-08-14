@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Twig\Environment;
 
 @trigger_error(
-    'The '.__NAMESPACE__.'\HelperController class is deprecated since version 3.x and will be removed in 4.0.'
+    'The '.__NAMESPACE__.'\HelperController class is deprecated since version 3.38.0 and will be removed in 4.0.'
     .' Use actions inside Sonata\AdminBundle\Action instead.',
     E_USER_DEPRECATED
 );
@@ -35,7 +35,7 @@ use Twig\Environment;
 /**
  * NEXT_MAJOR: remove this class.
  *
- * @deprecated since version 3.1, to be removed in 4.0. Use Sonata\AdminBundle\AbstractAdmin instead
+ * @deprecated since version 3.38.0, to be removed in 4.0. Use actions inside Sonata\AdminBundle\Action instead.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
