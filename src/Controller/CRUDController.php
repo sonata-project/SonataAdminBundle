@@ -332,8 +332,9 @@ class CRUDController implements ContainerAwareInterface
         $objectId = $this->admin->getNormalizedIdentifier($existingObject);
 
         if (!$this->admin->getFormTabs()) {
-            throw new \RuntimeException('No editable field defined.
-            Did you forget to implement the "configureFormFields" method?');
+            throw new \RuntimeException(
+                'No editable field defined. Did you forget to implement the "configureFormFields" method?'
+            );
         }
 
         /** @var $form Form */
