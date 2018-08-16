@@ -1431,6 +1431,26 @@ class CRUDControllerTest extends TestCase
         $this->controller->editAction(null, $this->request);
     }
 
+    public function testEditActionRuntimeException()
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue(new \stdClass()));
+
+        $this->admin->expects($this->once())
+            ->method('checkAccess')
+            ->with($this->equalTo('edit'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->once())
+            ->method('getFormTabs')
+            ->will($this->returnValue(false));
+
+        $this->controller->editAction(null, $this->request);
+    }
+
     public function testEditActionAccessDenied()
     {
         $this->expectException(AccessDeniedException::class);
@@ -1482,6 +1502,10 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
 
+        $this->admin->expects($this->once())
+            ->method('getFormTabs')
+            ->will($this->returnValue(true));
+
         $form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -1527,6 +1551,10 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('edit'));
+
+        $this->admin->expects($this->once())
+            ->method('getFormTabs')
+            ->will($this->returnValue(true));
 
         $this->admin->expects($this->once())
             ->method('hasRoute')
@@ -1588,6 +1616,10 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('edit'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->once())
+            ->method('getFormTabs')
             ->will($this->returnValue(true));
 
         $form = $this->getMockBuilder(Form::class)
@@ -1652,6 +1684,10 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
 
+        $this->admin->expects($this->once())
+            ->method('getFormTabs')
+            ->will($this->returnValue(true));
+
         $form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -1702,6 +1738,10 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('edit'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->once())
+            ->method('getFormTabs')
             ->will($this->returnValue(true));
 
         $form = $this->getMockBuilder(Form::class)
@@ -1762,6 +1802,10 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->any())
             ->method('getClass')
             ->will($this->returnValue('stdClass'));
+
+        $this->admin->expects($this->once())
+            ->method('getFormTabs')
+            ->will($this->returnValue(true));
 
         $form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
@@ -1837,6 +1881,10 @@ class CRUDControllerTest extends TestCase
             ->method('supportsPreviewMode')
             ->will($this->returnValue(true));
 
+        $this->admin->expects($this->once())
+            ->method('getFormTabs')
+            ->will($this->returnValue(true));
+
         $formView = $this->createMock(FormView::class);
 
         $form->expects($this->any())
@@ -1885,6 +1933,10 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->any())
             ->method('getClass')
             ->will($this->returnValue($class));
+
+        $this->admin->expects($this->once())
+            ->method('getFormTabs')
+            ->will($this->returnValue(true));
 
         $form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()

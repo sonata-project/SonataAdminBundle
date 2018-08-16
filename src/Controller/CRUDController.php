@@ -301,6 +301,7 @@ class CRUDController implements ContainerAwareInterface
      * @param int|string|null $id
      *
      * @throws NotFoundHttpException If the object does not exist
+     * @throws \RuntimeException     If no editable field is defined
      * @throws AccessDeniedException If access is not granted
      *
      * @return Response|RedirectResponse
@@ -329,6 +330,12 @@ class CRUDController implements ContainerAwareInterface
 
         $this->admin->setSubject($existingObject);
         $objectId = $this->admin->getNormalizedIdentifier($existingObject);
+
+        if (!$this->admin->getFormTabs()) {
+            throw new \RuntimeException(
+                'No editable field defined. Did you forget to implement the "configureFormFields" method?'
+            );
+        }
 
         /** @var $form Form */
         $form = $this->admin->getForm();
