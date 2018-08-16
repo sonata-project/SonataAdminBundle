@@ -46,6 +46,8 @@ we are manipulating form fields we do this from within ``ImageAdmin::configureFo
 
 .. code-block:: php
 
+    <?php
+
     class ImageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
@@ -94,6 +96,8 @@ instance under management by the embedded Admin. Instead we need to detect that 
 Admin class is embedded and use a different method:
 
 .. code-block:: php
+
+    <?php
 
     class ImageAdmin extends AbstractAdmin
     {

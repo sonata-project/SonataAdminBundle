@@ -97,6 +97,8 @@ Part 2 : Update the data model entities
 
 Update the ``UserBundle\Entity\User.php`` entity with the following::
 
+    <?php
+
     // ...
 
     /**
@@ -157,6 +159,8 @@ Update the ``UserBundle\Entity\User.php`` entity with the following::
     // ...
 
 Update the ``UserBundle\Entity\Expectation.php`` entity with the following::
+
+    <?php
 
     // ...
 
@@ -352,6 +356,8 @@ So we are going to start by creating this ``UserBundle\Admin\UserHasExpectations
 Now update the ``UserBundle\Admin\UserAdmin.php`` by adding the ``sonata_type_model`` field.
 
 .. code-block:: php
+
+    <?php
 
     /**
      * {@inheritdoc}
