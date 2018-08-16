@@ -33,6 +33,8 @@ To disable select2 on some ``select`` form element, set data attribute ``data-so
 
 .. code-block:: php
 
+    <?php
+
     use Sonata\AdminBundle\Form\Type\ModelType;
 
     public function configureFormFields(FormMapper $formMapper)
@@ -58,6 +60,8 @@ to overload the default functionality, you can set data attribute ``data-sonata-
 to enable ``allowClear`` or ``data-sonata-select2-allow-clear = "false"`` to disable the ``allowClear`` parameter.
 
 .. code-block:: php
+
+    <?php
 
     use Sonata\AdminBundle\Form\Type\ModelType;
 

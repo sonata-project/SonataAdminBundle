@@ -31,6 +31,8 @@ This represents your security user, you can read more about it `here <http://sym
 
 .. code-block:: php
 
+    <?php
+
     namespace App\Entity;
 
     use Doctrine\ORM\Mapping as ORM;
@@ -73,6 +75,8 @@ This represents your user provider, it will be used to load your security users,
 more about it `here <http://symfony.com/doc/current/security/custom_provider.html#create-a-user-provider>`__.
 
 .. code-block:: php
+
+    <?php
 
     namespace App\Security;
 
@@ -144,6 +148,8 @@ A small login form that will basically just validate our data:
 
 .. code-block:: php
 
+    <?php
+
     namespace App\Form;
 
     use Symfony\Component\Form\AbstractType;
@@ -168,6 +174,8 @@ This represents your custom authentication system, read
 more about it `here <https://symfony.com/doc/current/security/guard_authentication.html#step-1-create-the-authenticator-class>`__.
 
 .. code-block:: php
+
+    <?php
 
     namespace App\Security;
 
@@ -281,6 +289,8 @@ A Controller, used to render login form. Logout is left empty intentionally beca
 this will be handled by Symfony, but we still need to register that route.
 
 .. code-block:: php
+
+    <?php
 
     namespace App\Controller;
 
