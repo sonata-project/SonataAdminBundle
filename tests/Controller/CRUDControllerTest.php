@@ -1431,6 +1431,26 @@ class CRUDControllerTest extends TestCase
         $this->controller->editAction(null, $this->request);
     }
 
+    public function testEditActionRuntimeException()
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue(new \stdClass()));
+
+        $this->admin->expects($this->once())
+            ->method('checkAccess')
+            ->with($this->equalTo('edit'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->once())
+            ->method('getFormTabs')
+            ->will($this->returnValue(false));
+
+        $this->controller->editAction(null, $this->request);
+    }
+
     public function testEditActionAccessDenied()
     {
         $this->expectException(AccessDeniedException::class);
