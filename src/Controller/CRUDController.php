@@ -41,6 +41,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use function is_array;
 
 // BC for Symfony < 3.3 where this trait does not exist
 // NEXT_MAJOR: Remove the polyfill and inherit from \Symfony\Bundle\FrameworkBundle\Controller\Controller again
@@ -331,7 +332,7 @@ class CRUDController implements ContainerAwareInterface
         $this->admin->setSubject($existingObject);
         $objectId = $this->admin->getNormalizedIdentifier($existingObject);
 
-        if (!$this->admin->getFormTabs()) {
+        if (!is_array($fields = $this->admin->getForm()->all()) || 0 === count($fields)) {
             throw new \RuntimeException(
                 'No editable field defined. Did you forget to implement the "configureFormFields" method?'
             );

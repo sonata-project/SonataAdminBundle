@@ -1444,9 +1444,15 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
 
+        $form = $this->createMock(Form::class);
+
         $this->admin->expects($this->once())
-            ->method('getFormTabs')
-            ->will($this->returnValue(false));
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn([]);
 
         $this->controller->editAction(null, $this->request);
     }
@@ -1502,15 +1508,9 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
 
-        $this->admin->expects($this->once())
-            ->method('getFormTabs')
-            ->will($this->returnValue(true));
+        $form = $this->createMock(Form::class);
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getForm')
             ->will($this->returnValue($form));
 
@@ -1519,6 +1519,10 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->any())
             ->method('createView')
             ->will($this->returnValue($formView));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $this->assertInstanceOf(Response::class, $this->controller->editAction(null, $this->request));
 
@@ -1553,10 +1557,6 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'));
 
         $this->admin->expects($this->once())
-            ->method('getFormTabs')
-            ->will($this->returnValue(true));
-
-        $this->admin->expects($this->once())
             ->method('hasRoute')
             ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
@@ -1566,15 +1566,13 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $form->expects($this->once())
             ->method('getData')
             ->will($this->returnValue($object));
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getForm')
             ->will($this->returnValue($form));
 
@@ -1585,6 +1583,10 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $this->admin->expects($this->once())
             ->method('toString')
@@ -1618,15 +1620,9 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
 
-        $this->admin->expects($this->once())
-            ->method('getFormTabs')
-            ->will($this->returnValue(true));
+        $form = $this->createMock(Form::class);
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getForm')
             ->will($this->returnValue($form));
 
@@ -1637,6 +1633,10 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(false));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $this->admin->expects($this->once())
             ->method('toString')
@@ -1684,15 +1684,9 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
 
-        $this->admin->expects($this->once())
-            ->method('getFormTabs')
-            ->will($this->returnValue(true));
+        $form = $this->createMock(Form::class);
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getForm')
             ->will($this->returnValue($form));
 
@@ -1707,6 +1701,10 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('getData')
             ->will($this->returnValue($object));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $this->admin->expects($this->once())
             ->method('getNormalizedIdentifier')
@@ -1740,15 +1738,9 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
 
-        $this->admin->expects($this->once())
-            ->method('getFormTabs')
-            ->will($this->returnValue(true));
+        $form = $this->createMock(Form::class);
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getForm')
             ->will($this->returnValue($form));
 
@@ -1759,6 +1751,10 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(false));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $this->request->setMethod('POST');
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
@@ -1803,15 +1799,9 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->will($this->returnValue('stdClass'));
 
-        $this->admin->expects($this->once())
-            ->method('getFormTabs')
-            ->will($this->returnValue(true));
+        $form = $this->createMock(Form::class);
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getForm')
             ->will($this->returnValue($form));
 
@@ -1822,6 +1812,10 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('getData')
             ->will($this->returnValue($object));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $this->admin->expects($this->once())
             ->method('toString')
@@ -1869,20 +1863,14 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('getForm')
             ->will($this->returnValue($form));
 
         $this->admin->expects($this->once())
             ->method('supportsPreviewMode')
-            ->will($this->returnValue(true));
-
-        $this->admin->expects($this->once())
-            ->method('getFormTabs')
             ->will($this->returnValue(true));
 
         $formView = $this->createMock(FormView::class);
@@ -1898,6 +1886,10 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $this->request->setMethod('POST');
         $this->request->request->set('btn_preview', 'Preview');
@@ -1934,13 +1926,7 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->will($this->returnValue($class));
 
-        $this->admin->expects($this->once())
-            ->method('getFormTabs')
-            ->will($this->returnValue(true));
-
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $form->expects($this->any())
             ->method('isValid')
@@ -1949,6 +1935,10 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('getData')
             ->will($this->returnValue($object));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $this->admin->expects($this->any())
             ->method('getForm')
@@ -2038,9 +2028,7 @@ class CRUDControllerTest extends TestCase
             ->method('getNewInstance')
             ->will($this->returnValue($object));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
@@ -2109,9 +2097,7 @@ class CRUDControllerTest extends TestCase
             ->method('create')
             ->will($this->returnArgument(0));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->any())
             ->method('getClass')
@@ -2172,9 +2158,7 @@ class CRUDControllerTest extends TestCase
             ->method('getNewInstance')
             ->will($this->returnValue($object));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->any())
             ->method('getClass')
@@ -2221,9 +2205,7 @@ class CRUDControllerTest extends TestCase
             ->method('getNewInstance')
             ->will($this->returnValue($object));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
@@ -2286,9 +2268,7 @@ class CRUDControllerTest extends TestCase
             ->method('getNewInstance')
             ->will($this->returnValue($object));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
@@ -2363,9 +2343,7 @@ class CRUDControllerTest extends TestCase
             ->method('create')
             ->will($this->returnArgument(0));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
@@ -2415,9 +2393,7 @@ class CRUDControllerTest extends TestCase
             ->method('getNewInstance')
             ->will($this->returnValue($object));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->any())
             ->method('getClass')
@@ -2471,9 +2447,7 @@ class CRUDControllerTest extends TestCase
             ->method('getNewInstance')
             ->will($this->returnValue($object));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->any())
             ->method('getClass')
