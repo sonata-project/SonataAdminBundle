@@ -15,6 +15,7 @@ use Doctrine\Common\Inflector\Inflector;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
@@ -595,6 +596,13 @@ class CRUDController implements ContainerAwareInterface
 
         /** @var $form Form */
         $form = $this->admin->getForm();
+
+        if (!is_array($fields = $form->all()) || 0 === count($fields)) {
+            throw new \RuntimeException(
+                'No editable field defined. Did you forget to implement the "configureFormFields" method?'
+            );
+        }
+
         $form->setData($newObject);
         $form->handleRequest($request);
 
@@ -677,6 +685,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @throws NotFoundHttpException If the object does not exist
      * @throws AccessDeniedException If access is not granted
+     * @throws \RuntimeException     If no field to show is defined
      *
      * @return Response
      */
@@ -702,6 +711,15 @@ class CRUDController implements ContainerAwareInterface
 
         $this->admin->setSubject($object);
 
+        /** @var $fields FieldDescriptionCollection */
+        $fields = $this->admin->getShow();
+
+        if (!is_array($fields->getElements()) || 0 === $fields->count()) {
+            throw new \RuntimeException(
+                'No field to show. Did you forget to implement the "configureShowFields" method?'
+            );
+        }
+
         // NEXT_MAJOR: Remove this line and use commented line below it instead
         $template = $this->admin->getTemplate('show');
         //$template = $this->templateRegistry->getTemplate('show');
@@ -709,7 +727,7 @@ class CRUDController implements ContainerAwareInterface
         return $this->renderWithExtraParams($template, [
             'action' => 'show',
             'object' => $object,
-            'elements' => $this->admin->getShow(),
+            'elements' => $fields,
         ], null);
     }
 
