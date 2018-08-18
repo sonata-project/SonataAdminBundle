@@ -7,6 +7,8 @@ field by hand, using the ``remove`` method of the ``FormMapper`` class.
 
     .. code-block:: php
 
+        <?php
+
         use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
 
         class UserAdmin extends SonataUserAdmin
@@ -33,6 +35,8 @@ For this case, the FormMapper comes with a method, which allows you to get rid
 of a whole form group: ``removeGroup``.
 
     .. code-block:: php
+
+        <?php
 
         use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
 

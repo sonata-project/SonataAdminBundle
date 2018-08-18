@@ -47,6 +47,35 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.38.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.38.1...3.38.2) - 2018-08-17
+
+### Fixed
+- Checking the wrong method for form fields
+
+## [3.38.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.38.0...3.38.1) - 2018-08-16
+### Added
+- Added exception message if no field is defined with the  `configureFormFields()` method
+
+### Fixed
+- Fixed tab id when the Admin Id contains backslashes
+
+## [3.38.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.37.0...3.38.0) - 2018-08-14
+
+### Added
+- Added delete button in form action buttons when the request is ajax
+
+### Fixed
+- Added missing french translation
+- Missing translation for `link_edit` in Dutch translation file.
+
+### Changed
+- Admin uniqids are now more consistent
+- allow using overwritten constant for the mosaic html classes inside of admin class
+- An exception message was improved to include hints about the correct configuration value
+
+### Deprecated
+- `SonataAdminBundle\Controller\HelperController` is now deprecated in favor of actions
+
 ## [3.37.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.36.0...3.37.0) - 2018-07-26
 ### Fixed
 - fixed bug with complex properties in `ModelAutocompleteType`
