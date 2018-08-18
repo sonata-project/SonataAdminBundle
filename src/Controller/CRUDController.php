@@ -332,13 +332,15 @@ class CRUDController implements ContainerAwareInterface
         $this->admin->setSubject($existingObject);
         $objectId = $this->admin->getNormalizedIdentifier($existingObject);
 
-        if (!\is_array($fields = $this->admin->getForm()->all()) || 0 === \count($fields)) {
+        /** @var $form Form */
+        $form = $this->admin->getForm();
+
+        if (!is_array($fields = $form->all()) || 0 === count($fields)) {
             throw new \RuntimeException(
                 'No editable field defined. Did you forget to implement the "configureFormFields" method?'
             );
         }
 
-        $form = $this->admin->getForm();
         $form->setData($existingObject);
         $form->handleRequest($request);
 
@@ -591,6 +593,7 @@ class CRUDController implements ContainerAwareInterface
 
         $this->admin->setSubject($newObject);
 
+        /** @var $form Form */
         $form = $this->admin->getForm();
         $form->setData($newObject);
         $form->handleRequest($request);

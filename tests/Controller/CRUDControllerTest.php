@@ -1510,7 +1510,7 @@ class CRUDControllerTest extends TestCase
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
 
@@ -1572,7 +1572,7 @@ class CRUDControllerTest extends TestCase
             ->method('getData')
             ->will($this->returnValue($object));
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
 
@@ -1622,7 +1622,7 @@ class CRUDControllerTest extends TestCase
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
 
@@ -1686,7 +1686,7 @@ class CRUDControllerTest extends TestCase
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
 
@@ -1740,7 +1740,7 @@ class CRUDControllerTest extends TestCase
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
 
@@ -1801,7 +1801,7 @@ class CRUDControllerTest extends TestCase
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
 
@@ -1865,7 +1865,7 @@ class CRUDControllerTest extends TestCase
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->exactly(2))
+        $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
 
