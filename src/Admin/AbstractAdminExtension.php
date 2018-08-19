@@ -20,6 +20,11 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Validator\ErrorElement;
 
+@trigger_error(sprintf(
+    '"%s" is deprecated since 3.x and will be removed in 4.0.',
+    AbstractAdminExtension::class
+), E_USER_DEPRECATED);
+
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */

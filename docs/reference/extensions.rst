@@ -2,11 +2,11 @@ Extensions
 ==========
 
 Admin extensions allow you to add or change features of one or more Admin
-instances. To create an extension your class
-must implement the interface ``Sonata\AdminBundle\Admin\AdminExtensionInterface``
-and be registered as a service. The interface defines a number of functions which
-you can use to customize the edit form, list view, form validation, alter newly
-created objects and other admin features.
+instances. To create an extension your class must implement one or more interfaces
+in the ``Sonata\AdminBundle\Admin\Extension`` namespace and be registered as a service.
+The interface defines a number of functions which you can use to customize the
+edit form, list view, form validation, alter newly created objects and other admin
+features.
 
 .. note::
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
@@ -15,11 +15,11 @@ created objects and other admin features.
 
 .. code-block:: php
 
-    use Sonata\AdminBundle\Admin\AbstractAdminExtension;
+    use Sonata\AdminBundle\Admin\Extension\ConfigureFormFieldsInterface;
     use Sonata\AdminBundle\Form\FormMapper;
     use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-    class PublishStatusAdminExtension extends AbstractAdminExtension
+    class PublishStatusAdminExtension implements ConfigureFormFieldsInterface
     {
         public function configureFormFields(FormMapper $formMapper)
         {

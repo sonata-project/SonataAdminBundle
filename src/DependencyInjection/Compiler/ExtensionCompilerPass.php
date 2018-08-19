@@ -79,7 +79,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
             $admin = $container->getDefinition($target);
 
             foreach (array_values($extensions) as $extension) {
-                $admin->addMethodCall('addExtension', [$extension]);
+                $admin->addMethodCall('addAdminExtension', [$extension]);
             }
         }
     }
