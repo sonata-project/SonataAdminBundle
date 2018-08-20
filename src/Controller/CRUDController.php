@@ -714,9 +714,11 @@ class CRUDController implements ContainerAwareInterface
         /** @var $fields FieldDescriptionCollection */
         $fields = $this->admin->getShow();
 
+        // NEXT_MAJOR: remove this check
         if (!is_array($fields->getElements()) || 0 === $fields->count()) {
-            throw new \RuntimeException(
-                'No field to show. Did you forget to implement the "configureShowFields" method?'
+            @trigger_error(
+                'Calling this method without implementing "configureShowFields" is not supported since 3.x and will no longer be possible in 4.0',
+                E_USER_DEPRECATED
             );
         }
 
