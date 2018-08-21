@@ -156,7 +156,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @return array An array with the following structure.
+     * @return array an array with the following structure.
      *
      * [
      *     'excludes'   => ['<admin_id>'  => ['<extension_id>' => ['priority' => <int>]]],
