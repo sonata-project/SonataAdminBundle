@@ -19,6 +19,7 @@ use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Exception\InvalidState;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -95,7 +96,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     public function extract()
     {
         if ($this->catalogue) {
-            throw new \RuntimeException('Invalid state');
+            throw InvalidState::create();
         }
 
         $this->catalogue = new MessageCatalogue();

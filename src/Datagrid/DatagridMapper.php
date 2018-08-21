@@ -14,6 +14,8 @@ namespace Sonata\AdminBundle\Datagrid;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
+use Sonata\AdminBundle\Exception\DuplicateFieldNameInMapper;
+use Sonata\AdminBundle\Exception\UnknownFieldNameInMapper;
 use Sonata\AdminBundle\Mapper\BaseMapper;
 
 /**
@@ -68,7 +70,7 @@ class DatagridMapper extends BaseMapper
             $fieldDescription->mergeOptions($filterOptions);
         } elseif (is_string($name)) {
             if ($this->admin->hasFilterFieldDescription($name)) {
-                throw new \RuntimeException(sprintf('Duplicate field name "%s" in datagrid mapper. Names should be unique.', $name));
+                throw DuplicateFieldNameInMapper::create('datagrid', $name);
             }
 
             if (!isset($filterOptions['field_name'])) {
@@ -81,10 +83,7 @@ class DatagridMapper extends BaseMapper
                 array_merge($filterOptions, $fieldDescriptionOptions)
             );
         } else {
-            throw new \RuntimeException(
-                'Unknown field name in datagrid mapper.'
-                .' Field name should be either of FieldDescriptionInterface interface or string.'
-            );
+            throw UnknownFieldNameInMapper::create('datagrid');
         }
 
         // add the field with the DatagridBuilder

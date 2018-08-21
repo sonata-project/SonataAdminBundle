@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Command;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Exception\ServiceNotAnAdminClass;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,7 +36,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
         $admin = $this->getContainer()->get($input->getArgument('admin'));
 
         if (!$admin instanceof AdminInterface) {
-            throw new \RuntimeException(sprintf('Service "%s" is not an admin class', $input->getArgument('admin')));
+            throw ServiceNotAnAdminClass::create($input->getArgument('admin'));
         }
 
         $output->writeln('<comment>AdminBundle Information</comment>');

@@ -16,8 +16,16 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Exception\BatchActionNotDefined;
+use Sonata\AdminBundle\Exception\ExportFormatNotAllowed;
 use Sonata\AdminBundle\Exception\LockException;
+use Sonata\AdminBundle\Exception\MissingAdminClass;
+use Sonata\AdminBundle\Exception\MissingParameter;
+use Sonata\AdminBundle\Exception\MissingTemplateRegistry;
 use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\Exception\NoFieldDefined;
+use Sonata\AdminBundle\Exception\NonCallableMethod;
+use Sonata\AdminBundle\Exception\UndefinedMethod;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
@@ -85,7 +93,7 @@ class CRUDController implements ContainerAwareInterface
             return $this->proxyToControllerClass($method, $arguments);
         }
 
-        throw new \LogicException('Call to undefined method '.__CLASS__.'::'.$method);
+        throw UndefinedMethod::create(__CLASS__.'::'.$method);
     }
 
     public function setContainer(ContainerInterface $container = null)
@@ -334,9 +342,7 @@ class CRUDController implements ContainerAwareInterface
         $objectId = $this->admin->getNormalizedIdentifier($existingObject);
 
         if (!is_array($fields = $this->admin->getForm()->all()) || 0 === count($fields)) {
-            throw new \RuntimeException(
-                'No editable field defined. Did you forget to implement the "configureFormFields" method?'
-            );
+            throw NoFieldDefined::forMethod('configureFormFields');
         }
 
         $form = $this->admin->getForm();
@@ -471,7 +477,7 @@ class CRUDController implements ContainerAwareInterface
         }
         $batchActions = $this->admin->getBatchActions();
         if (!array_key_exists($action, $batchActions)) {
-            throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
+            throw BatchActionNotDefined::create($action);
         }
 
         $camelizedAction = Inflector::classify($action);
@@ -530,7 +536,7 @@ class CRUDController implements ContainerAwareInterface
         // execute the action, batchActionXxxxx
         $finalAction = sprintf('batchAction%s', $camelizedAction);
         if (!method_exists($this, $finalAction)) {
-            throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', get_class($this), $finalAction));
+            throw NonCallableMethod::create(get_class($this).'::'.$finalAction);
         }
 
         $query = $datagrid->getQuery();
@@ -943,13 +949,10 @@ class CRUDController implements ContainerAwareInterface
         }
 
         if (!in_array($format, $allowedExportFormats)) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`',
-                    $format,
-                    $this->admin->getClass(),
-                    implode(', ', $allowedExportFormats)
-                )
+            throw ExportFormatNotAllowed::create(
+                $format,
+                $this->admin->getClass(),
+                implode(', ', $allowedExportFormats)
             );
         }
 
@@ -1118,28 +1121,18 @@ class CRUDController implements ContainerAwareInterface
         $adminCode = $request->get('_sonata_admin');
 
         if (!$adminCode) {
-            throw new \RuntimeException(sprintf(
-                'There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`',
-                get_class($this),
-                $request->get('_route')
-            ));
+            throw MissingParameter::forControllerAndRoute(get_class($this), $request->get('_route'));
         }
 
         $this->admin = $this->container->get('sonata.admin.pool')->getAdminByAdminCode($adminCode);
 
         if (!$this->admin) {
-            throw new \RuntimeException(sprintf(
-                'Unable to find the admin class related to the current controller (%s)',
-                get_class($this)
-            ));
+            throw MissingAdminClass::forController(get_class($this));
         }
 
         $this->templateRegistry = $this->container->get($this->admin->getCode().'.template_registry');
         if (!$this->templateRegistry instanceof TemplateRegistryInterface) {
-            throw new \RuntimeException(sprintf(
-                'Unable to find the template registry related to the current admin (%s)',
-                $this->admin->getCode()
-            ));
+            throw MissingTemplateRegistry::forAdmin($this->admin->getCode());
         }
 
         $rootAdmin = $this->admin;
