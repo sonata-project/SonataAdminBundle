@@ -69,7 +69,7 @@ final class GetShortObjectDescriptionAction
 
         $object = $admin->getObject($objectId);
 
-        if (!$object && in_array($request->get('_format'), ['html', 'json'])) {
+        if (!$object && 'html' == $request->get('_format')) {
             return new Response();
         }
 

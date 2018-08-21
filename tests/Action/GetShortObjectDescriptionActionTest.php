@@ -16,6 +16,7 @@ use Prophecy\Argument;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -142,11 +143,14 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
         $this->admin->setUniqid('asdasd123')->shouldBeCalled();
         $this->admin->getObject(null)->willReturn(false);
+        $this->admin->id(false)->willReturn('');
+        $this->admin->toString(false)->willReturn('');
 
         $action = $this->action;
         $response = $action($request);
 
-        $this->assertInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertSame('{"result":{"id":"","label":""}}', $response->getContent());
     }
 
     public function testGetShortObjectDescriptionActionObjectAsJson()
