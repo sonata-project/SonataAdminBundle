@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Twig\Environment;
@@ -68,7 +69,7 @@ final class GetShortObjectDescriptionAction
 
         $object = $admin->getObject($objectId);
 
-        if (!$object && 'html' == $request->get('_format')) {
+        if (!$object && in_array($request->get('_format'), ['html', 'json'])) {
             return new Response();
         }
 
