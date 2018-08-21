@@ -833,6 +833,40 @@ class CRUDControllerTest extends TestCase
         $this->controller->showAction(null, $this->request);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Calling this method without implementing "configureShowFields" is not supported since 3.x and will no longer be possible in 4.0
+     */
+    public function testShowActionDeprecation()
+    {
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('checkAccess')
+            ->with($this->equalTo('show'))
+            ->will($this->returnValue(true));
+
+        $show = $this->createMock(FieldDescriptionCollection::class);
+
+        $this->admin->expects($this->once())
+            ->method('getShow')
+            ->will($this->returnValue($show));
+
+        $show->expects($this->once())
+            ->method('getElements')
+            ->willReturn([]);
+
+        $show->expects($this->once())
+            ->method('count')
+            ->willReturn(0);
+
+        $this->controller->showAction(null, $this->request);
+    }
+
     public function testPreShow()
     {
         $object = new \stdClass();
