@@ -21,6 +21,9 @@ use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use Symfony\Component\Security\Acl\Voter\FieldVote;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -60,11 +63,17 @@ class SonataAdminExtension extends AbstractExtension
      */
     private $templateRegistries;
 
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $securityChecker;
+
     public function __construct(
         Pool $pool,
         LoggerInterface $logger = null,
         TranslatorInterface $translator = null,
-        ContainerInterface $templateRegistries = null
+        ContainerInterface $templateRegistries = null,
+        AuthorizationCheckerInterface $securityChecker = null
     ) {
         // NEXT_MAJOR: make the translator parameter required
         if (null === $translator) {
@@ -77,6 +86,7 @@ class SonataAdminExtension extends AbstractExtension
         $this->logger = $logger;
         $this->translator = $translator;
         $this->templateRegistries = $templateRegistries;
+        $this->securityChecker = $securityChecker;
     }
 
     public function getFilters()
@@ -130,6 +140,7 @@ class SonataAdminExtension extends AbstractExtension
         return [
             new TwigFunction('canonicalize_locale_for_moment', [$this, 'getCanonicalizedLocaleForMoment'], ['needs_context' => true]),
             new TwigFunction('canonicalize_locale_for_select2', [$this, 'getCanonicalizedLocaleForSelect2'], ['needs_context' => true]),
+            new TwigFunction('is_granted_affirmative', [$this, 'isGrantedAffirmative']),
         ];
     }
 
@@ -499,6 +510,40 @@ class SonataAdminExtension extends AbstractExtension
         }
 
         return $locale;
+    }
+
+    /**
+     * @param string|array $role
+     * @param object|null  $object
+     * @param string|null  $field
+     *
+     * @return bool
+     */
+    public function isGrantedAffirmative($role, $object = null, $field = null)
+    {
+        if (null === $this->securityChecker) {
+            return false;
+        }
+
+        if (null !== $field) {
+            $object = new FieldVote($object, $field);
+        }
+
+        if (!is_array($role)) {
+            $role = [$role];
+        }
+
+        foreach ($role as $oneRole) {
+            try {
+                if ($this->securityChecker->isGranted($oneRole, $object)) {
+                    return true;
+                }
+            } catch (AuthenticationCredentialsNotFoundException $e) {
+                // empty on purpose
+            }
+        }
+
+        return false;
     }
 
     /**

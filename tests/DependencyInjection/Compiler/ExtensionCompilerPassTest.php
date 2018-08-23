@@ -34,6 +34,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ExtensionCompilerPassTest extends TestCase
@@ -389,6 +390,9 @@ class ExtensionCompilerPassTest extends TestCase
         $container
             ->register('session')
             ->setClass(Session::class);
+        $container
+            ->register('security.authorization_checker')
+            ->setClass(AuthorizationCheckerInterface::class);
 
         // Add admin definition's
         $container
