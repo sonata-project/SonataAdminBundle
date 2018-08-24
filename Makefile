@@ -58,3 +58,7 @@ test:
 docs:
 	cd docs && sphinx-build -W -b html -d _build/doctrees . _build/html
 .PHONY: docs
+
+bc_check:
+	bcc
+.PHONY: bc_check

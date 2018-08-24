@@ -40,29 +40,7 @@ matrix:
   fast_finish: true
   include:
     - php: '7.2'
-      env: TARGET=docs
-    - php: '7.2'
-      env: TARGET=lint
-    - php: '5.6'
-      env: COMPOSER_FLAGS="--prefer-lowest"
-    - php: '7.2'
-      env: SYMFONY=2.8.*
-    - php: '7.2'
-      env: SYMFONY=3.3.*
-    - php: '7.2'
-      env: SYMFONY=3.4.*
-    - php: '7.2'
-      env: SYMFONY='dev-master as 3.4.x-dev'
-    - php: '7.2'
-      env: SONATA_CORE=3.*
-    - php: '7.2'
-      env: SONATA_CORE='dev-master as 3.x-dev'
-    - php: '7.2'
-      env: SONATA_BLOCK=3.*
-    - php: '7.2'
-      env: SONATA_BLOCK='dev-master as 3.x-dev'
-    - php: '7.2'
-      env: SYMFONY_DEPRECATIONS_HELPER=0
+      env: TARGET=bc_check
   allow_failures:
     - php: nightly
     - env: SYMFONY_DEPRECATIONS_HELPER=0
