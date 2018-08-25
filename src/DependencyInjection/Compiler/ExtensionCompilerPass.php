@@ -199,7 +199,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
      */
     protected function hasTrait(\ReflectionClass $class, $traitName)
     {
-        if (in_array($traitName, $class->getTraitNames())) {
+        if (\in_array($traitName, $class->getTraitNames())) {
             return true;
         }
 

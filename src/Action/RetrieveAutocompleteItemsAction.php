@@ -102,20 +102,20 @@ final class RetrieveAutocompleteItemsAction
         $datagrid = $targetAdmin->getDatagrid();
 
         if (null !== $callback) {
-            if (!is_callable($callback)) {
+            if (!\is_callable($callback)) {
                 throw new \RuntimeException('Callback does not contain callable function.');
             }
 
-            call_user_func($callback, $targetAdmin, $property, $searchText);
+            \call_user_func($callback, $targetAdmin, $property, $searchText);
         } else {
-            if (is_array($property)) {
+            if (\is_array($property)) {
                 // multiple properties
                 foreach ($property as $prop) {
                     if (!$datagrid->hasFilter($prop)) {
                         throw new \RuntimeException(sprintf(
                             'To retrieve autocomplete items,'
                             .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
-                            $prop, get_class($targetAdmin)
+                            $prop, \get_class($targetAdmin)
                         ));
                     }
 
@@ -130,7 +130,7 @@ final class RetrieveAutocompleteItemsAction
                         'To retrieve autocomplete items,'
                         .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
                         $property,
-                        get_class($targetAdmin)
+                        \get_class($targetAdmin)
                     ));
                 }
 
@@ -149,11 +149,11 @@ final class RetrieveAutocompleteItemsAction
 
         foreach ($results as $entity) {
             if (null !== $toStringCallback) {
-                if (!is_callable($toStringCallback)) {
+                if (!\is_callable($toStringCallback)) {
                     throw new \RuntimeException('Option "to_string_callback" does not contain callable function.');
                 }
 
-                $label = call_user_func($toStringCallback, $entity, $property);
+                $label = \call_user_func($toStringCallback, $entity, $property);
             } else {
                 $resultMetadata = $targetAdmin->getObjectMetadata($entity);
                 $label = $resultMetadata->getTitle();

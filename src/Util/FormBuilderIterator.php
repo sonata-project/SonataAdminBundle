@@ -88,7 +88,7 @@ class FormBuilderIterator extends \RecursiveArrayIterator
 
     public function hasChildren()
     {
-        return count(self::getKeys($this->current())) > 0;
+        return \count(self::getKeys($this->current())) > 0;
     }
 
     /**

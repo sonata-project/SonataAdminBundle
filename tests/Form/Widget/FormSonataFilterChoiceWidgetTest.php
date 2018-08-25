@@ -92,7 +92,7 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
             $reflection = new \ReflectionClass($extension);
             $property = $reflection->getProperty('types');
             $property->setAccessible(true);
-            $property->setValue($extension, [get_class($type) => current($property->getValue($extension))]);
+            $property->setValue($extension, [\get_class($type) => current($property->getValue($extension))]);
         }
 
         $extensions[] = $extension;

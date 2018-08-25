@@ -143,7 +143,7 @@ abstract class BaseGroupedMapper extends BaseMapper
             $tabs = $this->getTabs();
         }
 
-        if ($this->currentGroup && isset($tabs[$this->currentTab]) && !in_array($this->currentGroup, $tabs[$this->currentTab]['groups'])) {
+        if ($this->currentGroup && isset($tabs[$this->currentTab]) && !\in_array($this->currentGroup, $tabs[$this->currentTab]['groups'])) {
             $tabs[$this->currentTab]['groups'][] = $this->currentGroup;
         }
 

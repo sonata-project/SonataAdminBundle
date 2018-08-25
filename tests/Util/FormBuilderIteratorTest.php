@@ -61,7 +61,7 @@ class FormBuilderIteratorTest extends TestCase
     {
         $this->builder->add('name', 'text');
         $iterator = new FormBuilderIterator($this->builder);
-        $this->assertInstanceOf(get_class($iterator), $iterator->getChildren());
+        $this->assertInstanceOf(\get_class($iterator), $iterator->getChildren());
     }
 
     public function testHasChildren()

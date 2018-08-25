@@ -46,12 +46,12 @@ class SetupAclCommand extends ContainerAwareCommand
             if (!$manipulator instanceof AdminAclManipulatorInterface) {
                 $output->writeln(sprintf(
                     'The interface "AdminAclManipulatorInterface" is not implemented for %s: <info>ignoring</info>',
-                    get_class($manipulator)
+                    \get_class($manipulator)
                 ));
 
                 continue;
             }
-            assert($admin instanceof AdminInterface);
+            \assert($admin instanceof AdminInterface);
             $manipulator->configureAcls($output, $admin);
         }
     }

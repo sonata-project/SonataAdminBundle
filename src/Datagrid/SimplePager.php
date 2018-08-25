@@ -71,14 +71,14 @@ class SimplePager extends Pager
         }
 
         $this->results = $this->getQuery()->execute([], $hydrationMode);
-        $this->thresholdCount = count($this->results);
-        if (count($this->results) > $this->getMaxPerPage()) {
+        $this->thresholdCount = \count($this->results);
+        if (\count($this->results) > $this->getMaxPerPage()) {
             $this->haveToPaginate = true;
 
             if ($this->results instanceof ArrayCollection) {
                 $this->results = new ArrayCollection($this->results->slice(0, $this->getMaxPerPage()));
             } else {
-                $this->results = new ArrayCollection(array_slice($this->results, 0, $this->getMaxPerPage()));
+                $this->results = new ArrayCollection(\array_slice($this->results, 0, $this->getMaxPerPage()));
             }
         } else {
             $this->haveToPaginate = false;

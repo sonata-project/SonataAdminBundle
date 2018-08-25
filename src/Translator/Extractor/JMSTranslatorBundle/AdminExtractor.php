@@ -142,7 +142,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
             ];
 
             if ($this->logger) {
-                $this->logger->info(sprintf('Retrieving message from admin:%s - class: %s', $admin->getCode(), get_class($admin)));
+                $this->logger->info(sprintf('Retrieving message from admin:%s - class: %s', $admin->getCode(), \get_class($admin)));
             }
 
             foreach ($methods as $method) {
@@ -245,7 +245,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     private function getAdmin($id)
     {
         $admin = $this->adminPool->getContainer()->get($id);
-        assert($admin instanceof AdminInterface);
+        \assert($admin instanceof AdminInterface);
 
         return $admin;
     }

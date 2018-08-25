@@ -174,8 +174,8 @@ class AdminHelperTest extends TestCase
         $dataMapper = $this->createMock(DataMapperInterface::class);
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $formBuilder = new FormBuilder('test', get_class($simpleObject), $eventDispatcher, $formFactory);
-        $childFormBuilder = new FormBuilder('subObject', get_class($subObject), $eventDispatcher, $formFactory);
+        $formBuilder = new FormBuilder('test', \get_class($simpleObject), $eventDispatcher, $formFactory);
+        $childFormBuilder = new FormBuilder('subObject', \get_class($subObject), $eventDispatcher, $formFactory);
 
         $object->expects($this->atLeastOnce())->method('getSubObject')->will($this->returnValue([$subObject]));
         $subObject->expects($this->atLeastOnce())->method('getAnd')->will($this->returnValue($sub2Object));

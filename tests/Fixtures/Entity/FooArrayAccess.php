@@ -1,15 +1,33 @@
 <?php
 
+/*
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 
 class FooArrayAccess implements \ArrayAccess
 {
+    private $bar;
+
+    private $baz;
+
+    public function __toString()
+    {
+        return (string) $this->bar;
+    }
+
     // methods to enable ArrayAccess
     public function offsetExists($offset)
     {
         $value = $this->offsetGet($offset);
 
-        return $value !== null;
+        return null !== $value;
     }
 
     public function offsetGet($offset)
@@ -18,24 +36,20 @@ class FooArrayAccess implements \ArrayAccess
         $methodName = "get$offset";
         if (method_exists($this, $methodName)) {
             return $this->$methodName();
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     public function offsetSet($offset, $value)
     {
-        throw new \BadMethodCallException ("Array access of class " . get_class($this) . " is read-only!");
+        throw new \BadMethodCallException('Array access of class '.\get_class($this).' is read-only!');
     }
 
     public function offsetUnset($offset)
     {
-        throw new \BadMethodCallException("Array access of class " . get_class($this) . " is read-only!");
+        throw new \BadMethodCallException('Array access of class '.\get_class($this).' is read-only!');
     }
-
-    private $bar;
-
-    private $baz;
 
     public function getBar()
     {
@@ -55,10 +69,5 @@ class FooArrayAccess implements \ArrayAccess
     public function setBaz($baz)
     {
         $this->baz = $baz;
-    }
-
-    public function __toString()
-    {
-        return (string) $this->bar;
     }
 }

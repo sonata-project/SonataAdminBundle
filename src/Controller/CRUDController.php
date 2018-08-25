@@ -42,7 +42,6 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
-use function is_array;
 
 // BC for Symfony < 3.3 where this trait does not exist
 // NEXT_MAJOR: Remove the polyfill and inherit from \Symfony\Bundle\FrameworkBundle\Controller\Controller again
@@ -77,8 +76,8 @@ class CRUDController implements ContainerAwareInterface
     // BC for Symfony 3.3 where ControllerTrait exists but does not contain get() and has() methods.
     public function __call($method, $arguments)
     {
-        if (in_array($method, ['get', 'has'])) {
-            return call_user_func_array([$this->container, $method], $arguments);
+        if (\in_array($method, ['get', 'has'])) {
+            return \call_user_func_array([$this->container, $method], $arguments);
         }
 
         if (method_exists($this, 'proxyToControllerClass')) {
@@ -333,7 +332,7 @@ class CRUDController implements ContainerAwareInterface
         $this->admin->setSubject($existingObject);
         $objectId = $this->admin->getNormalizedIdentifier($existingObject);
 
-        if (!is_array($fields = $this->admin->getForm()->all()) || 0 === count($fields)) {
+        if (!\is_array($fields = $this->admin->getForm()->all()) || 0 === \count($fields)) {
             throw new \RuntimeException(
                 'No editable field defined. Did you forget to implement the "configureFormFields" method?'
             );
@@ -462,7 +461,7 @@ class CRUDController implements ContainerAwareInterface
 
         // NEXT_MAJOR: Remove reflection check.
         $reflector = new \ReflectionMethod($this->admin, 'getBatchActions');
-        if ($reflector->getDeclaringClass()->getName() === get_class($this->admin)) {
+        if ($reflector->getDeclaringClass()->getName() === \get_class($this->admin)) {
             @trigger_error('Override Sonata\AdminBundle\Admin\AbstractAdmin::getBatchActions method'
                 .' is deprecated since version 3.2.'
                 .' Use Sonata\AdminBundle\Admin\AbstractAdmin::configureBatchActions instead.'
@@ -478,9 +477,9 @@ class CRUDController implements ContainerAwareInterface
         $isRelevantAction = sprintf('batchAction%sIsRelevant', $camelizedAction);
 
         if (method_exists($this, $isRelevantAction)) {
-            $nonRelevantMessage = call_user_func([$this, $isRelevantAction], $idx, $allElements, $request);
+            $nonRelevantMessage = \call_user_func([$this, $isRelevantAction], $idx, $allElements, $request);
         } else {
-            $nonRelevantMessage = 0 != count($idx) || $allElements; // at least one item is selected
+            $nonRelevantMessage = 0 != \count($idx) || $allElements; // at least one item is selected
         }
 
         if (!$nonRelevantMessage) { // default non relevant message (if false of null)
@@ -530,7 +529,7 @@ class CRUDController implements ContainerAwareInterface
         // execute the action, batchActionXxxxx
         $finalAction = sprintf('batchAction%s', $camelizedAction);
         if (!method_exists($this, $finalAction)) {
-            throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', get_class($this), $finalAction));
+            throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', \get_class($this), $finalAction));
         }
 
         $query = $datagrid->getQuery();
@@ -540,7 +539,7 @@ class CRUDController implements ContainerAwareInterface
 
         $this->admin->preBatchAction($action, $query, $idx, $allElements);
 
-        if (count($idx) > 0) {
+        if (\count($idx) > 0) {
             $this->admin->getModelManager()->addIdentifiersToQuery($this->admin->getClass(), $query, $idx);
         } elseif (!$allElements) {
             $this->addFlash(
@@ -551,7 +550,7 @@ class CRUDController implements ContainerAwareInterface
             return $this->redirectToList();
         }
 
-        return call_user_func([$this, $finalAction], $query, $request);
+        return \call_user_func([$this, $finalAction], $query, $request);
     }
 
     /**
@@ -942,7 +941,7 @@ class CRUDController implements ContainerAwareInterface
             $exporter = $this->get('sonata.exporter.exporter');
         }
 
-        if (!in_array($format, $allowedExportFormats)) {
+        if (!\in_array($format, $allowedExportFormats)) {
             throw new \RuntimeException(
                 sprintf(
                     'Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`',
@@ -1120,7 +1119,7 @@ class CRUDController implements ContainerAwareInterface
         if (!$adminCode) {
             throw new \RuntimeException(sprintf(
                 'There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`',
-                get_class($this),
+                \get_class($this),
                 $request->get('_route')
             ));
         }
@@ -1130,7 +1129,7 @@ class CRUDController implements ContainerAwareInterface
         if (!$this->admin) {
             throw new \RuntimeException(sprintf(
                 'Unable to find the admin class related to the current controller (%s)',
-                get_class($this)
+                \get_class($this)
             ));
         }
 
@@ -1166,7 +1165,7 @@ class CRUDController implements ContainerAwareInterface
     {
         if ($this->container->has('logger')) {
             $logger = $this->container->get('logger');
-            assert($logger instanceof LoggerInterface);
+            \assert($logger instanceof LoggerInterface);
 
             return $logger;
         }
@@ -1343,7 +1342,7 @@ class CRUDController implements ContainerAwareInterface
             }
         }
 
-        return is_array($aclUsers) ? new \ArrayIterator($aclUsers) : $aclUsers;
+        return \is_array($aclUsers) ? new \ArrayIterator($aclUsers) : $aclUsers;
     }
 
     /**
@@ -1378,7 +1377,7 @@ class CRUDController implements ContainerAwareInterface
 
         $aclRoles = array_unique($aclRoles);
 
-        return is_array($aclRoles) ? new \ArrayIterator($aclRoles) : $aclRoles;
+        return \is_array($aclRoles) ? new \ArrayIterator($aclRoles) : $aclRoles;
     }
 
     /**

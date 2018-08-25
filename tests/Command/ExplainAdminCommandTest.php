@@ -223,11 +223,11 @@ class ExplainAdminCommandTest extends TestCase
 
         $this->assertSame(sprintf(
             str_replace("\n", PHP_EOL, file_get_contents(__DIR__.'/../Fixtures/Command/explain_admin.txt')),
-            get_class($this->admin),
-            get_class($modelManager),
-            get_class($formBuilder),
-            get_class($datagridBuilder),
-            get_class($listBuilder)
+            \get_class($this->admin),
+            \get_class($modelManager),
+            \get_class($formBuilder),
+            \get_class($datagridBuilder),
+            \get_class($listBuilder)
         ), $commandTester->getDisplay());
     }
 
@@ -277,11 +277,11 @@ class ExplainAdminCommandTest extends TestCase
                 PHP_EOL,
                 file_get_contents(__DIR__.'/../Fixtures/Command/explain_admin_empty_validator.txt')
             ),
-            get_class($this->admin),
-            get_class($modelManager),
-            get_class($formBuilder),
-            get_class($datagridBuilder),
-            get_class($listBuilder)
+            \get_class($this->admin),
+            \get_class($modelManager),
+            \get_class($formBuilder),
+            \get_class($datagridBuilder),
+            \get_class($listBuilder)
         ), $commandTester->getDisplay());
     }
 

@@ -78,27 +78,27 @@ class RoleSecurityHandlerTest extends TestCase
         $this->authorizationChecker->expects($this->any())
             ->method('isGranted')
             ->will($this->returnCallback(function (array $attributes, $object) {
-                if (in_array('ROLE_BATMAN', $attributes)) {
+                if (\in_array('ROLE_BATMAN', $attributes)) {
                     return true;
                 }
 
-                if (in_array('ROLE_IRONMAN', $attributes)) {
+                if (\in_array('ROLE_IRONMAN', $attributes)) {
                     return true;
                 }
 
-                if (in_array('ROLE_AUTH_EXCEPTION', $attributes)) {
+                if (\in_array('ROLE_AUTH_EXCEPTION', $attributes)) {
                     throw new AuthenticationCredentialsNotFoundException();
                 }
 
-                if (in_array('ROLE_FOO_BAR_ABC', $attributes)) {
+                if (\in_array('ROLE_FOO_BAR_ABC', $attributes)) {
                     return true;
                 }
 
-                if (in_array('ROLE_FOO_BAR_DEF', $attributes) && is_a($object, 'stdClass')) {
+                if (\in_array('ROLE_FOO_BAR_DEF', $attributes) && is_a($object, 'stdClass')) {
                     return true;
                 }
 
-                if (in_array('ROLE_FOO_BAR_BAZ_ALL', $attributes)) {
+                if (\in_array('ROLE_FOO_BAR_BAZ_ALL', $attributes)) {
                     return true;
                 }
 

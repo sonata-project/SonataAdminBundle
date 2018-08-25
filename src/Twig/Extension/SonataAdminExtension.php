@@ -327,7 +327,7 @@ class SonataAdminExtension extends AbstractExtension
      */
     public function renderRelationElement($element, FieldDescriptionInterface $fieldDescription)
     {
-        if (!is_object($element)) {
+        if (!\is_object($element)) {
             return $element;
         }
 
@@ -351,16 +351,16 @@ class SonataAdminExtension extends AbstractExtension
                 throw new \RuntimeException(sprintf(
                     'You must define an `associated_property` option or '.
                     'create a `%s::__toString` method to the field option %s from service %s is ',
-                    get_class($element),
+                    \get_class($element),
                     $fieldDescription->getName(),
                     $fieldDescription->getAdmin()->getCode()
                 ));
             }
 
-            return call_user_func([$element, $method]);
+            return \call_user_func([$element, $method]);
         }
 
-        if (is_callable($propertyPath)) {
+        if (\is_callable($propertyPath)) {
             return $propertyPath($element);
         }
 
@@ -417,7 +417,7 @@ class SonataAdminExtension extends AbstractExtension
             reset($choices);
             $first = current($choices);
             // the choices are already in the right format
-            if (is_array($first) && array_key_exists('value', $first) && array_key_exists('text', $first)) {
+            if (\is_array($first) && array_key_exists('value', $first) && array_key_exists('text', $first)) {
                 $xEditableChoices = $choices;
             } else {
                 foreach ($choices as $value => $text) {
@@ -461,14 +461,14 @@ class SonataAdminExtension extends AbstractExtension
         $locale = strtolower(str_replace('_', '-', $context['app']->getRequest()->getLocale()));
 
         // "en" language doesn't require localization.
-        if (('en' === $lang = substr($locale, 0, 2)) && !in_array($locale, ['en-au', 'en-ca', 'en-gb', 'en-ie', 'en-nz'], true)) {
+        if (('en' === $lang = substr($locale, 0, 2)) && !\in_array($locale, ['en-au', 'en-ca', 'en-gb', 'en-ie', 'en-nz'], true)) {
             return null;
         }
 
-        if ('es' === $lang && !in_array($locale, ['es', 'es-do'], true)) {
+        if ('es' === $lang && !\in_array($locale, ['es', 'es-do'], true)) {
             // `moment: ^2.8` only ships "es" and "es-do" locales for "es" language
             $locale = 'es';
-        } elseif ('nl' === $lang && !in_array($locale, ['nl', 'nl-be'], true)) {
+        } elseif ('nl' === $lang && !\in_array($locale, ['nl', 'nl-be'], true)) {
             // `moment: ^2.8` only ships "nl" and "nl-be" locales for "nl" language
             $locale = 'nl';
         }
@@ -504,7 +504,7 @@ class SonataAdminExtension extends AbstractExtension
                 $locale = 'zh-CN';
                 break;
             default:
-                if (!in_array($locale, ['pt-BR', 'pt-PT', 'ug-CN', 'zh-CN', 'zh-TW'], true)) {
+                if (!\in_array($locale, ['pt-BR', 'pt-PT', 'ug-CN', 'zh-CN', 'zh-TW'], true)) {
                     $locale = $lang;
                 }
         }
@@ -529,7 +529,7 @@ class SonataAdminExtension extends AbstractExtension
             $object = new FieldVote($object, $field);
         }
 
-        if (!is_array($role)) {
+        if (!\is_array($role)) {
             $role = [$role];
         }
 
