@@ -11,6 +11,13 @@
 
 namespace Sonata\AdminBundle\Command;
 
+use Sonata\AdminBundle\Exception\BadNameFormat;
+use Sonata\AdminBundle\Exception\BadEntityNameFormat;
+use Sonata\AdminBundle\Exception\MissingClass;
+use Sonata\AdminBundle\Exception\MissingControllerSuffix;
+use Sonata\AdminBundle\Exception\MissingUsername;
+use Sonata\AdminBundle\Exception\ServiceContainsInvalidCharacters;
+
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
@@ -28,7 +35,7 @@ class Validators
     public static function validateUsername($username)
     {
         if (null === $username) {
-            throw new \InvalidArgumentException('The username must be set');
+            throw MissingUsername::create();
         }
 
         return $username;
@@ -48,11 +55,7 @@ class Validators
         $entity = str_replace('/', '\\', $shortcut);
 
         if (false === $pos = strpos($entity, ':')) {
-            throw new \InvalidArgumentException(sprintf(
-                'The entity name must contain a ":" (colon sign) '
-                .'("%s" given, expecting something like AcmeBlogBundle:Post)',
-                $entity
-            ));
+            throw BadEntityNameFormat::create($entity);
         }
 
         return [substr($entity, 0, $pos), substr($entity, $pos + 1)];
@@ -72,7 +75,7 @@ class Validators
         $class = str_replace('/', '\\', $class);
 
         if (!class_exists($class)) {
-            throw new \InvalidArgumentException(sprintf('The class "%s" does not exist.', $class));
+            throw MissingClass::create($class);
         }
 
         return $class;
@@ -92,11 +95,7 @@ class Validators
         $adminClassBasename = str_replace('/', '\\', $adminClassBasename);
 
         if (false !== strpos($adminClassBasename, ':')) {
-            throw new \InvalidArgumentException(sprintf(
-                'The admin class name must not contain a ":" (colon sign) '
-                .'("%s" given, expecting something like PostAdmin")',
-                $adminClassBasename
-            ));
+            throw BadNameFormat::forAdmin($adminClassBasename);
         }
 
         return $adminClassBasename;
@@ -116,15 +115,11 @@ class Validators
         $controllerClassBasename = str_replace('/', '\\', $controllerClassBasename);
 
         if (false !== strpos($controllerClassBasename, ':')) {
-            throw new \InvalidArgumentException(sprintf(
-                'The controller class name must not contain a ":" (colon sign) ("%s" given, '
-                .'expecting something like PostAdminController")',
-                $controllerClassBasename
-            ));
+            throw BadNameFormat::forController($controllerClassBasename);
         }
 
         if ('Controller' != substr($controllerClassBasename, -10)) {
-            throw new \InvalidArgumentException('The controller class name must end with "Controller".');
+            throw MissingControllerSuffix::create();
         }
 
         return $controllerClassBasename;
@@ -154,11 +149,7 @@ class Validators
     public static function validateServiceId($serviceId)
     {
         if (preg_match('/[^A-Za-z\._0-9]/', $serviceId, $matches)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Service ID "%s" contains invalid character "%s".',
-                $serviceId,
-                $matches[0]
-            ));
+            throw ServiceContainsInvalidCharacters::create($serviceId, $matches[0]);
         }
 
         return $serviceId;

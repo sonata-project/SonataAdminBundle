@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
+use Sonata\AdminBundle\Exception\DuplicateFieldNameInMapper;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 
 /**
@@ -64,7 +65,7 @@ class ShowMapper extends BaseGroupedMapper
                     $fieldDescriptionOptions
                 );
             } else {
-                throw new \RuntimeException(sprintf('Duplicate field name "%s" in show mapper. Names should be unique.', $name));
+                throw DuplicateFieldNameInMapper::create('show', $name);
             }
         } else {
             throw new \RuntimeException('invalid state');

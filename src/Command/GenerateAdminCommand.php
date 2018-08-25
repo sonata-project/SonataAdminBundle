@@ -12,6 +12,8 @@
 namespace Sonata\AdminBundle\Command;
 
 use Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle;
+use Sonata\AdminBundle\Exception\InvalidModelManager;
+use Sonata\AdminBundle\Exception\MissingModelManager;
 use Sonata\AdminBundle\Generator\AdminGenerator;
 use Sonata\AdminBundle\Generator\ControllerGenerator;
 use Sonata\AdminBundle\Manipulator\ServicesManipulator;
@@ -68,11 +70,7 @@ class GenerateAdminCommand extends QuestionableCommand
         $managerTypes = $this->getAvailableManagerTypes();
 
         if (!isset($managerTypes[$managerType])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Invalid manager type "%s". Available manager types are "%s".',
-                $managerType,
-                implode('", "', $managerTypes)
-            ));
+            throw InvalidModelManager::create($managerType, implode('", "', $managerTypes));
         }
 
         return $managerType;
@@ -266,7 +264,7 @@ class GenerateAdminCommand extends QuestionableCommand
     private function getDefaultManagerType()
     {
         if (!$managerTypes = $this->getAvailableManagerTypes()) {
-            throw new \RuntimeException('There are no model managers registered.');
+            throw MissingModelManager::create();
         }
 
         return current($managerTypes);

@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Datagrid;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Sonata\AdminBundle\Exception\Uninitialized;
 
 /**
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
@@ -100,7 +101,7 @@ class SimplePager extends Pager
     public function init()
     {
         if (!$this->getQuery()) {
-            throw new \RuntimeException('Uninitialized QueryBuilder');
+            throw Uninitialized::create('QueryBuilder');
         }
         $this->resetIterator();
 

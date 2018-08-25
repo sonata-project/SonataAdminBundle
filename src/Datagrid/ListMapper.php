@@ -15,6 +15,8 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
+use Sonata\AdminBundle\Exception\DuplicateFieldNameInMapper;
+use Sonata\AdminBundle\Exception\UnknownFieldNameInMapper;
 use Sonata\AdminBundle\Mapper\BaseMapper;
 
 /**
@@ -95,10 +97,7 @@ class ListMapper extends BaseMapper
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
         } elseif (is_string($name)) {
             if ($this->admin->hasListFieldDescription($name)) {
-                throw new \RuntimeException(sprintf(
-                    'Duplicate field name "%s" in list mapper. Names should be unique.',
-                    $name
-                ));
+                throw DuplicateFieldNameInMapper::create('list', $name);
             }
 
             $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
@@ -107,10 +106,7 @@ class ListMapper extends BaseMapper
                 $fieldDescriptionOptions
             );
         } else {
-            throw new \RuntimeException(
-                'Unknown field name in list mapper. '
-                .'Field name should be either of FieldDescriptionInterface interface or string.'
-            );
+            throw UnknownFieldNameInMapper::create('list');
         }
 
         if (null === $fieldDescription->getLabel()) {

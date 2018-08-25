@@ -13,6 +13,8 @@ namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
 use Doctrine\Common\Inflector\Inflector;
 use Sonata\AdminBundle\Datagrid\Pager;
+use Sonata\AdminBundle\Exception\OnTopWithSameGroups;
+use Sonata\AdminBundle\Exception\TranslatorNotEnabled;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -33,12 +35,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     {
         // check if translator service exist
         if (!$container->has('translator')) {
-            throw new \RuntimeException('The "translator" service is not yet enabled.
-                It\'s required by SonataAdmin to display all labels properly.
-
-                To learn how to enable the translator service please visit:
-                http://symfony.com/doc/current/translation.html#configuration
-             ');
+            throw TranslatorNotEnabled::create();
         }
 
         $parameterBag = $container->getParameterBag();
@@ -111,7 +108,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 if (isset($groupDefaults[$resolvedGroupName]['on_top']) && $groupDefaults[$resolvedGroupName]['on_top']
                     || $onTop && (count($groupDefaults[$resolvedGroupName]['items']) > 1)) {
-                    throw new \RuntimeException('You can\'t use "on_top" option with multiple same name groups.');
+                    throw OnTopWithSameGroups::create();
                 }
                 $groupDefaults[$resolvedGroupName]['on_top'] = $onTop;
 
@@ -161,7 +158,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 if (isset($groups[$resolvedGroupName]['on_top']) && !empty($group['on_top']) && $group['on_top']
                     && (count($groups[$resolvedGroupName]['items']) > 1)) {
-                    throw new \RuntimeException('You can\'t use "on_top" option with multiple same name groups.');
+                    throw OnTopWithSameGroups::create();
                 }
                 if (empty($group['on_top'])) {
                     $groups[$resolvedGroupName]['on_top'] = $groupDefaults[$resolvedGroupName]['on_top'];

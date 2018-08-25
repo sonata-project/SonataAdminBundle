@@ -11,6 +11,8 @@
 
 namespace Sonata\AdminBundle\Manipulator;
 
+use Sonata\AdminBundle\Exception\ServiceAlreadyDefined;
+use Sonata\AdminBundle\Exception\UnableToAppendService;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -66,11 +68,7 @@ class ServicesManipulator
 
             if (array_key_exists('services', $data)) {
                 if (array_key_exists($serviceId, (array) $data['services'])) {
-                    throw new \RuntimeException(sprintf(
-                        'The service "%s" is already defined in the file "%s".',
-                        $serviceId,
-                        realpath($this->file)
-                    ));
+                    throw ServiceAlreadyDefined::forService($serviceId, realpath($this->file));
                 }
 
                 if (null !== $data['services']) {
@@ -93,11 +91,7 @@ class ServicesManipulator
         @mkdir(dirname($this->file), 0777, true);
 
         if (false === @file_put_contents($this->file, $code)) {
-            throw new \RuntimeException(sprintf(
-                'Unable to append service "%s" to the file "%s". You will have to do it manually.',
-                $serviceId,
-                $this->file
-            ));
+            throw UnableToAppendService::forService($serviceId, $this->file);
         }
     }
 }

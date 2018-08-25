@@ -11,6 +11,8 @@
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
+use Sonata\AdminBundle\Exception\BadConfigValueAlongsideProvider;
+use Sonata\AdminBundle\Exception\BadParameterForConfigItems;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -151,7 +153,7 @@ class Configuration implements ConfigurationInterface
                                             $disallowedItems = ['items', 'label'];
                                             foreach ($disallowedItems as $item) {
                                                 if (isset($items[$item])) {
-                                                    throw new \InvalidArgumentException(sprintf('The config value "%s" cannot be used alongside "provider" config value', $item));
+                                                    throw BadConfigValueAlongsideProvider::fromConfiguration($item);
                                                 }
                                             }
                                         }
@@ -175,7 +177,7 @@ class Configuration implements ConfigurationInterface
                                                 foreach ($items as $key => $item) {
                                                     if (is_array($item)) {
                                                         if (!array_key_exists('label', $item) || !array_key_exists('route', $item)) {
-                                                            throw new \InvalidArgumentException('Expected either parameters "route" and "label" for array items');
+                                                            throw BadParameterForConfigItems::create();
                                                         }
 
                                                         if (!array_key_exists('route_params', $item)) {

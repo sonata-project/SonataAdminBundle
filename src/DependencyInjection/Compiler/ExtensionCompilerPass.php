@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
+use Sonata\AdminBundle\Exception\ExtensionNotFound;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -64,9 +65,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
 
             foreach ($extensions as $extension => $attributes) {
                 if (!$container->has($extension)) {
-                    throw new \InvalidArgumentException(
-                        sprintf('Unable to find extension service for id %s', $extension)
-                    );
+                    throw ExtensionNotFound::fromServiceId($extension);
                 }
 
                 $this->addExtension($targets, $id, $extension, $attributes);

@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Annotation;
 use JMS\DiExtraBundle\Annotation\MetadataProcessorInterface;
 use JMS\DiExtraBundle\Metadata\ClassMetadata;
 use Sonata\AdminBundle\Admin\AbstractAdmin as AdminClass;
+use Sonata\AdminBundle\Exception\UnableToGenerateGroupAndLabel;
 
 /**
  * Use annotations to define admin classes.
@@ -143,12 +144,7 @@ class Admin implements MetadataProcessorInterface
         }
 
         if (empty($this->group) || empty($this->label)) {
-            throw new \LogicException(
-                sprintf(
-                    'Unable to generate admin group and label for class %s.',
-                    $this->class
-                )
-            );
+            throw UnableToGenerateGroupAndLabel::forClass($this->class);
         }
     }
 

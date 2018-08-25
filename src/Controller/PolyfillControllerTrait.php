@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Controller;
 
+use Sonata\AdminBundle\Exception\UndefinedMethod;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -41,7 +42,7 @@ trait PolyfillControllerTrait
     final protected function proxyToControllerClass($methodName, $arguments)
     {
         if (!method_exists(Controller::class, $methodName)) {
-            throw new \LogicException('Call to undefined method '.__CLASS__.'::'.$methodName);
+            throw UndefinedMethod::create(__CLASS__.'::'.$methodName);
         }
 
         $controller = new PolyfillProxyContainer($this->container);
