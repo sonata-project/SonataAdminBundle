@@ -336,7 +336,7 @@ class CRUDController implements ContainerAwareInterface
         /** @var $form Form */
         $form = $this->admin->getForm();
 
-        if (!\is_array($fields = $form->all()) || 0 === count($fields)) {
+        if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
             throw new \RuntimeException(
                 'No editable field defined. Did you forget to implement the "configureFormFields" method?'
             );
@@ -597,7 +597,7 @@ class CRUDController implements ContainerAwareInterface
         /** @var $form Form */
         $form = $this->admin->getForm();
 
-        if (!\is_array($fields = $form->all()) || 0 === count($fields)) {
+        if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
             throw new \RuntimeException(
                 'No editable field defined. Did you forget to implement the "configureFormFields" method?'
             );
