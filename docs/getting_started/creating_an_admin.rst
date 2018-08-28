@@ -61,6 +61,12 @@ two very simple ``Post`` and ``Tag`` entities will be used::
     class Category
     {
         // ...
+       /**
+         * @ORM\Id
+         * @ORM\Column(type="integer")
+         * @ORM\GeneratedValue(strategy="AUTO")
+         */
+        private $id;
 
         /**
          * @var string
@@ -83,7 +89,38 @@ two very simple ``Post`` and ``Tag`` entities will be used::
         {
             return $this->blogPosts;
         }
+        
+        /**
+         * Get id
+         *
+         * @return integer 
+         */
+        public function getId() 
+        {
+            return $this->id;
+        }
 
+        /**
+         * Get name
+         *
+         * @return string 
+         */
+        public function getName() 
+        {
+            return $this->name;
+        }
+
+        /**
+         * Set name
+         *
+         * @param string $name
+         * @return Category
+         */
+        public function setName($name) 
+        {
+            $this->name = $name;
+            return $this;
+        }
         // ...
     }
 
