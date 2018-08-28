@@ -84,10 +84,10 @@ class FormMapper extends BaseGroupedMapper
 
         // Try to autodetect type
         if ($name instanceof FormBuilderInterface && null === $type) {
-            $fieldDescriptionOptions['type'] = get_class($name->getType()->getInnerType());
+            $fieldDescriptionOptions['type'] = \get_class($name->getType()->getInnerType());
         }
 
-        if (!isset($fieldDescriptionOptions['type']) && is_string($type)) {
+        if (!isset($fieldDescriptionOptions['type']) && \is_string($type)) {
             $fieldDescriptionOptions['type'] = $type;
         }
 
@@ -202,7 +202,7 @@ class FormMapper extends BaseGroupedMapper
         if (false !== $key) {
             unset($tabs[$tab]['groups'][$key]);
         }
-        if ($deleteEmptyTab && 0 == count($tabs[$tab]['groups'])) {
+        if ($deleteEmptyTab && 0 == \count($tabs[$tab]['groups'])) {
             unset($tabs[$tab]);
         }
 

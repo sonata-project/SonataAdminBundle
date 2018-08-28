@@ -56,7 +56,7 @@ class ShowMapper extends BaseGroupedMapper
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
-        } elseif (is_string($name)) {
+        } elseif (\is_string($name)) {
             if (!$this->admin->hasShowFieldDescription($name)) {
                 $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
                     $this->admin->getClass(),
@@ -132,7 +132,7 @@ class ShowMapper extends BaseGroupedMapper
         if (false !== $key) {
             unset($tabs[$tab]['groups'][$key]);
         }
-        if ($deleteEmptyTab && 0 == count($tabs[$tab]['groups'])) {
+        if ($deleteEmptyTab && 0 == \count($tabs[$tab]['groups'])) {
             unset($tabs[$tab]);
         }
 

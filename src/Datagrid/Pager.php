@@ -147,7 +147,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
             $links[] = $i++;
         }
 
-        $this->currentMaxLink = count($links) ? $links[count($links) - 1] : 1;
+        $this->currentMaxLink = \count($links) ? $links[\count($links) - 1] : 1;
 
         return $links;
     }
@@ -499,7 +499,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
             $this->initializeIterator();
         }
 
-        $this->resultsCounter = count($this->results);
+        $this->resultsCounter = \count($this->results);
 
         return reset($this->results);
     }
@@ -600,7 +600,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     protected function initializeIterator()
     {
         $this->results = $this->getResults();
-        $this->resultsCounter = count($this->results);
+        $this->resultsCounter = \count($this->results);
     }
 
     /**

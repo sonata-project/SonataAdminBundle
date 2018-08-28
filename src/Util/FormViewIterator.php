@@ -35,7 +35,7 @@ class FormViewIterator implements \RecursiveIterator
 
     public function hasChildren()
     {
-        return count($this->current()->children) > 0;
+        return \count($this->current()->children) > 0;
     }
 
     public function current()

@@ -83,7 +83,7 @@ final class AppendFormFieldElementAction
 
         list(, $form) = $this->helper->appendFormFieldElement($admin, $subject, $elementId);
 
-        assert($form instanceof Form);
+        \assert($form instanceof Form);
         $view = $this->helper->getChildFormView($form->createView(), $elementId);
 
         // render the widget

@@ -399,7 +399,7 @@ class CRUDControllerTest extends TestCase
             ->will(
                 $this->returnCallback(
                     function ($name, $object, array $parameters = [], $absolute = false) {
-                        $result = get_class($object).'_'.$name;
+                        $result = \get_class($object).'_'.$name;
                         if (!empty($parameters)) {
                             $result .= '?'.http_build_query($parameters);
                         }
@@ -529,7 +529,7 @@ class CRUDControllerTest extends TestCase
         $this->protectedTestedMethods['configure']->invoke($this->controller);
 
         $this->assertSame(123456, $uniqueId);
-        $this->assertAttributeInstanceOf(get_class($adminParent), 'admin', $this->controller);
+        $this->assertAttributeInstanceOf(\get_class($adminParent), 'admin', $this->controller);
     }
 
     public function testConfigureWithException()
@@ -1911,7 +1911,7 @@ class CRUDControllerTest extends TestCase
     public function testEditActionWithLockException()
     {
         $object = new \stdClass();
-        $class = get_class($object);
+        $class = \get_class($object);
 
         $this->admin->expects($this->any())
             ->method('getObject')

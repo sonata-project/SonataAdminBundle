@@ -88,7 +88,7 @@ class CoreController extends Controller
     protected function getAdminPool()
     {
         $pool = $this->container->get('sonata.admin.pool');
-        assert($pool instanceof Pool);
+        \assert($pool instanceof Pool);
 
         return $pool;
     }
@@ -99,7 +99,7 @@ class CoreController extends Controller
     protected function getSearchHandler()
     {
         $searchHandler = $this->get('sonata.admin.search.handler');
-        assert($searchHandler instanceof SearchHandler);
+        \assert($searchHandler instanceof SearchHandler);
 
         return $searchHandler;
     }
@@ -122,7 +122,7 @@ class CoreController extends Controller
     private function getTemplateRegistry()
     {
         $templateRegistry = $this->container->get('sonata.admin.global_template_registry');
-        assert($templateRegistry instanceof TemplateRegistryInterface);
+        \assert($templateRegistry instanceof TemplateRegistryInterface);
 
         return $templateRegistry;
     }

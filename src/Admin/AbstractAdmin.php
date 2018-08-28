@@ -800,7 +800,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $filterParameters = $this->getFilterParameters();
 
         // transform _sort_by from a string to a FieldDescriptionInterface for the datagrid.
-        if (isset($filterParameters['_sort_by']) && is_string($filterParameters['_sort_by'])) {
+        if (isset($filterParameters['_sort_by']) && \is_string($filterParameters['_sort_by'])) {
             if ($this->hasListFieldDescription($filterParameters['_sort_by'])) {
                 $filterParameters['_sort_by'] = $this->getListFieldDescription($filterParameters['_sort_by']);
             } else {
@@ -901,7 +901,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
-                    throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
+                    throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', \get_class($this)));
                 }
                 $baseRoutePattern = $this->urlize($matches[5], '-');
             }
@@ -918,7 +918,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             preg_match(self::CLASS_REGEX, $this->class, $matches);
 
             if (!$matches) {
-                throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', get_class($this)));
+                throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', \get_class($this)));
             }
 
             $this->cachedBaseRoutePattern = sprintf(
@@ -951,7 +951,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
-                    throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
+                    throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', \get_class($this)));
                 }
                 $baseRouteName = $this->urlize($matches[5]);
             }
@@ -967,7 +967,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             preg_match(self::CLASS_REGEX, $this->class, $matches);
 
             if (!$matches) {
-                throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', get_class($this)));
+                throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', \get_class($this)));
             }
 
             $this->cachedBaseRouteName = sprintf('admin_%s%s_%s',
@@ -1010,7 +1010,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         // see https://github.com/sonata-project/SonataCoreBundle/commit/247eeb0a7ca7211142e101754769d70bc402a5b4
-        if ($this->subject && is_object($this->subject)) {
+        if ($this->subject && \is_object($this->subject)) {
             return ClassUtils::getClass($this->subject);
         }
 
@@ -1032,7 +1032,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             __METHOD__
         ), E_USER_DEPRECATED);
 
-        if (!in_array($subClass, $this->subClasses)) {
+        if (!\in_array($subClass, $this->subClasses)) {
             $this->subClasses[] = $subClass;
         }
     }
@@ -1049,7 +1049,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function hasActiveSubClass()
     {
-        if (count($this->subClasses) > 0 && $this->request) {
+        if (\count($this->subClasses) > 0 && $this->request) {
             return null !== $this->getRequest()->query->get('subclass');
         }
 
@@ -1322,7 +1322,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function createQuery($context = 'list')
     {
-        if (func_num_args() > 0) {
+        if (\func_num_args() > 0) {
             @trigger_error(
                 'The $context argument of '.__METHOD__.' is deprecated since 3.3, to be removed in 4.0.',
                 E_USER_DEPRECATED
@@ -1584,7 +1584,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function setSubject($subject)
     {
-        if (is_object($subject) && !is_a($subject, $this->getClass(), true)) {
+        if (\is_object($subject) && !is_a($subject, $this->getClass(), true)) {
             $message = <<<'EOT'
 You are trying to set entity an instance of "%s",
 which is not the one registered with this admin class ("%s").
@@ -1592,7 +1592,7 @@ This is deprecated since 3.5 and will no longer be supported in 4.0.
 EOT;
 
             @trigger_error(
-                sprintf($message, get_class($subject), $this->getClass()),
+                sprintf($message, \get_class($subject), $this->getClass()),
                 E_USER_DEPRECATED
             ); // NEXT_MAJOR : throw an exception instead
         }
@@ -1862,7 +1862,7 @@ EOT;
      */
     public function hasChildren()
     {
-        return count($this->children) > 0;
+        return \count($this->children) > 0;
     }
 
     public function setUniqid($uniqid)
@@ -1896,8 +1896,8 @@ EOT;
         foreach ($this->getExtensions() as $extension) {
             $params = $extension->getPersistentParameters($this);
 
-            if (!is_array($params)) {
-                throw new \RuntimeException(sprintf('The %s::getPersistentParameters must return an array', get_class($extension)));
+            if (!\is_array($params)) {
+                throw new \RuntimeException(sprintf('The %s::getPersistentParameters must return an array', \get_class($extension)));
             }
 
             $parameters = array_merge($parameters, $params);
@@ -2072,7 +2072,7 @@ EOT;
      */
     public function setTranslator(TranslatorInterface $translator)
     {
-        $args = func_get_args();
+        $args = \func_get_args();
         if (isset($args[1]) && $args[1]) {
             @trigger_error(
                 'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
@@ -2430,7 +2430,7 @@ EOT;
 
     public function toString($object)
     {
-        if (!is_object($object)) {
+        if (!\is_object($object)) {
             return '';
         }
 
@@ -2503,7 +2503,7 @@ EOT;
      */
     public function determinedPerPageValue($perPage)
     {
-        return in_array($perPage, $this->perPageOptions);
+        return \in_array($perPage, $this->perPageOptions);
     }
 
     public function isAclEnabled()
@@ -2556,7 +2556,7 @@ EOT;
             ));
         }
 
-        if (!is_array($access[$action])) {
+        if (!\is_array($access[$action])) {
             $access[$action] = [$access[$action]];
         }
 
@@ -2583,7 +2583,7 @@ EOT;
             return false;
         }
 
-        if (!is_array($access[$action])) {
+        if (!\is_array($access[$action])) {
             $access[$action] = [$access[$action]];
         }
 
@@ -2600,7 +2600,7 @@ EOT;
     {
         $list = [];
 
-        if (in_array($action, ['tree', 'show', 'edit', 'delete', 'list', 'batch'])
+        if (\in_array($action, ['tree', 'show', 'edit', 'delete', 'list', 'batch'])
             && $this->hasAccess('create')
             && $this->hasRoute('create')
         ) {
@@ -2611,7 +2611,7 @@ EOT;
             ];
         }
 
-        if (in_array($action, ['show', 'delete', 'acl', 'history'])
+        if (\in_array($action, ['show', 'delete', 'acl', 'history'])
             && $this->canAccessObject('edit', $object)
             && $this->hasRoute('edit')
         ) {
@@ -2622,7 +2622,7 @@ EOT;
             ];
         }
 
-        if (in_array($action, ['show', 'edit', 'acl'])
+        if (\in_array($action, ['show', 'edit', 'acl'])
             && $this->canAccessObject('history', $object)
             && $this->hasRoute('history')
         ) {
@@ -2633,7 +2633,7 @@ EOT;
             ];
         }
 
-        if (in_array($action, ['edit', 'history'])
+        if (\in_array($action, ['edit', 'history'])
             && $this->isAclEnabled()
             && $this->canAccessObject('acl', $object)
             && $this->hasRoute('acl')
@@ -2645,9 +2645,9 @@ EOT;
             ];
         }
 
-        if (in_array($action, ['edit', 'history', 'acl'])
+        if (\in_array($action, ['edit', 'history', 'acl'])
             && $this->canAccessObject('show', $object)
-            && count($this->getShow()) > 0
+            && \count($this->getShow()) > 0
             && $this->hasRoute('show')
         ) {
             $list['show'] = [
@@ -2657,7 +2657,7 @@ EOT;
             ];
         }
 
-        if (in_array($action, ['show', 'edit', 'delete', 'acl', 'batch'])
+        if (\in_array($action, ['show', 'edit', 'delete', 'acl', 'batch'])
             && $this->hasAccess('list')
             && $this->hasRoute('list')
         ) {
@@ -2901,7 +2901,7 @@ EOT;
 
         $mapper = new ListMapper($this->getListBuilder(), $this->list, $this);
 
-        if (count($this->getBatchActions()) > 0) {
+        if (\count($this->getBatchActions()) > 0) {
             $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
                 $this->getClass(),
                 'batch',
@@ -2969,7 +2969,7 @@ EOT;
 
             $value = $propertyAccessor->getValue($object, $propertyPath);
 
-            if (is_array($value) || ($value instanceof \Traversable && $value instanceof \ArrayAccess)) {
+            if (\is_array($value) || ($value instanceof \Traversable && $value instanceof \ArrayAccess)) {
                 $value[] = $parent;
                 $propertyAccessor->setValue($object, $propertyPath, $value);
             } else {
@@ -3001,7 +3001,7 @@ EOT;
         throw new \RuntimeException(sprintf(
             'Unable to find the subclass `%s` for admin `%s`',
             $name,
-            get_class($this)
+            \get_class($this)
         ));
     }
 

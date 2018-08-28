@@ -158,7 +158,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         if ($admin->isChild()) {
             $this->loadCache($admin->getParent());
         } else {
-            if (in_array($admin->getCode(), $this->loaded)) {
+            if (\in_array($admin->getCode(), $this->loaded)) {
                 return;
             }
 

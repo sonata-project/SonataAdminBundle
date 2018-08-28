@@ -1,12 +1,21 @@
 <?php
 
+/*
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 
 /**
  * This class is intended to be used when testing with 3-level admin nesting.
- * PostAdmin -> CommentAdmin -> CommentVoteAdmin
+ * PostAdmin -> CommentAdmin -> CommentVoteAdmin.
  */
 class CommentVoteAdmin extends AbstractAdmin
 {
