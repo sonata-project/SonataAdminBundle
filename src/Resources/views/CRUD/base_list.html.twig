@@ -54,45 +54,48 @@ file that was distributed with this source code.
 
                 {% if admin.datagrid.results|length > 0 %}
                     <table class="table table-bordered table-striped table-hover sonata-ba-list">
-                        {% block table_header %}
-                            <thead>
-                                <tr class="sonata-ba-list-field-header">
-                                    {% for field_description in admin.list.elements %}
-                                        {% if admin.hasRoute('batch') and field_description.getOption('code') == '_batch' and batchactions|length > 0 %}
-                                            <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
-                                              <input type="checkbox" id="list_batch_checkbox">
-                                            </th>
-                                        {% elseif field_description.getOption('code') == '_select' %}
-                                            <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
-                                        {% elseif field_description.name == '_action' and app.request.isXmlHttpRequest %}
-                                            {# Action buttons disabled in ajax view! #}
-                                        {% elseif field_description.getOption('ajax_hidden') == true and app.request.isXmlHttpRequest %}
-                                            {# Disable fields with 'ajax_hidden' option set to true #}
-                                        {% else %}
-                                            {% set sortable = false %}
-                                            {% if field_description.options.sortable is defined and field_description.options.sortable %}
-                                                {% set sortable             = true %}
-                                                {% set sort_parameters      = admin.modelmanager.sortparameters(field_description, admin.datagrid) %}
-                                                {% set current              = admin.datagrid.values._sort_by == field_description or admin.datagrid.values._sort_by.name == sort_parameters.filter._sort_by %}
-                                                {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
-                                                {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.options._sort_order %}
-                                            {% endif %}
 
-                                            {% spaceless %}
-                                                <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}{% if field_description.options.header_class is defined %} {{ field_description.options.header_class }}{% endif %}"{% if field_description.options.header_style is defined %} style="{{ field_description.options.header_style }}"{% endif %}>
-                                                    {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters|merge({_list_mode: admin.getListMode()})) }}">{% endif %}
-                                                    {% if field_description.getOption('label_icon') %}
-                                                        <i class="sonata-ba-list-field-header-label-icon {{ field_description.getOption('label_icon') }}" aria-hidden="true"></i>
-                                                    {% endif %}
-                                                    {{ field_description.label|trans({}, field_description.translationDomain) }}
-                                                    {% if sortable %}</a>{% endif %}
+                        {% if admin.getListMode != 'mosaic' %}
+                            {% block table_header %}
+                                <thead>
+                                    <tr class="sonata-ba-list-field-header">
+                                        {% for field_description in admin.list.elements %}
+                                            {% if admin.hasRoute('batch') and field_description.getOption('code') == '_batch' and batchactions|length > 0 %}
+                                                <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
+                                                <input type="checkbox" id="list_batch_checkbox">
                                                 </th>
-                                            {% endspaceless %}
-                                        {% endif %}
-                                    {% endfor %}
-                                </tr>
-                            </thead>
-                        {% endblock %}
+                                            {% elseif field_description.getOption('code') == '_select' %}
+                                                <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
+                                            {% elseif field_description.name == '_action' and app.request.isXmlHttpRequest %}
+                                                {# Action buttons disabled in ajax view! #}
+                                            {% elseif field_description.getOption('ajax_hidden') == true and app.request.isXmlHttpRequest %}
+                                                {# Disable fields with 'ajax_hidden' option set to true #}
+                                            {% else %}
+                                                {% set sortable = false %}
+                                                {% if field_description.options.sortable is defined and field_description.options.sortable %}
+                                                    {% set sortable             = true %}
+                                                    {% set sort_parameters      = admin.modelmanager.sortparameters(field_description, admin.datagrid) %}
+                                                    {% set current              = admin.datagrid.values._sort_by == field_description or admin.datagrid.values._sort_by.name == sort_parameters.filter._sort_by %}
+                                                    {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
+                                                    {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.options._sort_order %}
+                                                {% endif %}
+
+                                                {% spaceless %}
+                                                    <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}{% if field_description.options.header_class is defined %} {{ field_description.options.header_class }}{% endif %}"{% if field_description.options.header_style is defined %} style="{{ field_description.options.header_style }}"{% endif %}>
+                                                        {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters) }}">{% endif %}
+                                                        {% if field_description.getOption('label_icon') %}
+                                                            <i class="sonata-ba-list-field-header-label-icon {{ field_description.getOption('label_icon') }}" aria-hidden="true"></i>
+                                                        {% endif %}
+                                                        {{ field_description.label|trans({}, field_description.translationDomain) }}
+                                                        {% if sortable %}</a>{% endif %}
+                                                    </th>
+                                                {% endspaceless %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                            {% endblock %}
+                        {% endif %}
 
                         {% block table_body %}
                             <tbody>
