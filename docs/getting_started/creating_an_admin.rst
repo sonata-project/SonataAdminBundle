@@ -95,7 +95,8 @@ two very simple ``Post`` and ``Tag`` entities will be used::
          *
          * @return integer 
          */
-        public function getId() {
+        public function getId() 
+        {
             return $this->id;
         }
 
@@ -104,7 +105,8 @@ two very simple ``Post`` and ``Tag`` entities will be used::
          *
          * @return string 
          */
-        public function getName() {
+        public function getName() 
+        {
             return $this->name;
         }
 
@@ -114,9 +116,9 @@ two very simple ``Post`` and ``Tag`` entities will be used::
          * @param string $name
          * @return Category
          */
-        public function setName($name) {
+        public function setName($name) 
+        {
             $this->name = $name;
-
             return $this;
         }
         // ...
