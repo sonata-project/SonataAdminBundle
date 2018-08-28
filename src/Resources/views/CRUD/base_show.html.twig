@@ -41,7 +41,7 @@ file that was distributed with this source code.
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs" role="tablist">
                     {% for name, show_tab in admin.showtabs %}
-                        {% set _tab_name = ('tab_'~admin.code~'_'~loop.index)|replace({'.': '_', '\\': '_'}) %}
+                        {% set _tab_name = 'tab_'~admin.uniqid~'_'~loop.index %}
                         <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (app.request.query.get('_tab') == _tab_name) %} class="active"{% endif %}>
                             <a href="#{{ _tab_name }}" class="changer-tab" aria-controls="{{ _tab_name }}" data-toggle="tab">
                                 {{ show_tab.label|trans({}, show_tab.translation_domain ?: admin.translationDomain) }}
@@ -52,7 +52,7 @@ file that was distributed with this source code.
 
                 <div class="tab-content">
                     {% for code, show_tab in admin.showtabs %}
-                        {% set _tab_name = ('tab_'~admin.code~'_'~loop.index)|replace({'.': '_', '\\': '_'}) %}
+                        {% set _tab_name = 'tab_'~admin.uniqid~'_'~loop.index %}
                         <div
                             class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (app.request.query.get('_tab') == _tab_name) %} in active{% endif %}"
                             id="{{ _tab_name }}"
