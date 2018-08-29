@@ -560,6 +560,7 @@ class CRUDController implements ContainerAwareInterface
      * Create action.
      *
      * @throws AccessDeniedException If access is not granted
+     * @throws \RuntimeException     If no editable field is defined
      *
      * @return Response
      */
@@ -685,7 +686,6 @@ class CRUDController implements ContainerAwareInterface
      *
      * @throws NotFoundHttpException If the object does not exist
      * @throws AccessDeniedException If access is not granted
-     * @throws \RuntimeException     If no field to show is defined
      *
      * @return Response
      */
