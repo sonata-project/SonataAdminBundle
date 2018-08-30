@@ -19,6 +19,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
+ * @group legacy
+ *
+ * NEXT_MAJOR: Remove this class.
+ *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
 class CreateClassCacheCommandTest extends TestCase

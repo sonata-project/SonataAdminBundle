@@ -30,7 +30,6 @@
         "sonata-project/core-bundle": "^3.9",
         "sonata-project/exporter": "^1.8",
         "symfony/asset": "^2.8 || ^3.2 || ^4.0",
-        "symfony/class-loader": "^2.8 || ^3.2",
         "symfony/config": "^2.8 || ^3.2 || ^4.0",
         "symfony/console": "^2.8 || ^3.2 || ^4.0",
         "symfony/dependency-injection": "^2.8 || ^3.2 || ^4.0",
@@ -66,6 +65,7 @@
         "matthiasnoback/symfony-dependency-injection-test": "^1.1",
         "sensio/generator-bundle": "^3.1",
         "sonata-project/intl-bundle": "^2.4",
+        "symfony/class-loader": "^2.8 || ^3.2",
         "symfony/filesystem": "^2.8 || ^3.2 || ^4.0",
         "symfony/phpunit-bridge": "^4.0",
         "symfony/yaml": "^2.8 || ^3.2 || ^4.0"
