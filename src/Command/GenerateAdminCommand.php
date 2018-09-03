@@ -83,7 +83,7 @@ class GenerateAdminCommand extends QuestionableCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $modelClass = Validators::validateClass($input->getArgument('model'));
-        $modelClassBasename = current(array_slice(explode('\\', $modelClass), -1));
+        $modelClassBasename = current(\array_slice(explode('\\', $modelClass), -1));
         $bundle = $this->getBundle($input->getOption('bundle') ?: $this->getBundleNameFromClass($modelClass));
         $adminClassBasename = $input->getOption('admin') ?: $modelClassBasename.'Admin';
         $adminClassBasename = Validators::validateAdminClassBasename($adminClassBasename);
@@ -158,7 +158,7 @@ class GenerateAdminCommand extends QuestionableCommand
             $input->getArgument('model'),
             'Sonata\AdminBundle\Command\Validators::validateClass'
         );
-        $modelClassBasename = current(array_slice(explode('\\', $modelClass), -1));
+        $modelClassBasename = current(\array_slice(explode('\\', $modelClass), -1));
         $bundleName = $this->askAndValidate(
             $input,
             $output,
@@ -174,7 +174,7 @@ class GenerateAdminCommand extends QuestionableCommand
             'Sonata\AdminBundle\Command\Validators::validateAdminClassBasename'
         );
 
-        if (count($this->getAvailableManagerTypes()) > 1) {
+        if (\count($this->getAvailableManagerTypes()) > 1) {
             $managerType = $this->askAndValidate(
                 $input,
                 $output,

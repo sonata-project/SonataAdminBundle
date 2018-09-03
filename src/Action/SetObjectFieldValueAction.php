@@ -45,7 +45,7 @@ final class SetObjectFieldValueAction
         // NEXT_MAJOR: Move ValidatorInterface check to method signature
         if (!($validator instanceof ValidatorInterface)) {
             throw new \InvalidArgumentException(
-                'Argument 3 is an instance of '.get_class($validator).', expecting an instance of'
+                'Argument 3 is an instance of '.\get_class($validator).', expecting an instance of'
                 .' \Symfony\Component\Validator\Validator\ValidatorInterface'
             );
         }
@@ -146,7 +146,7 @@ final class SetObjectFieldValueAction
 
         $violations = $this->validator->validate($object);
 
-        if (count($violations)) {
+        if (\count($violations)) {
             $messages = [];
 
             foreach ($violations as $violation) {

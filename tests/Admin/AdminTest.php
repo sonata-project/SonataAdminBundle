@@ -1607,7 +1607,7 @@ class AdminTest extends TestCase
                 ->method('addEventListener')
                 ->with($this->identicalTo(FormEvents::POST_SUBMIT),
                         $this->callback(function ($callback) use ($testAdminPreValidate, $event) {
-                            if (is_callable($callback)) {
+                            if (\is_callable($callback)) {
                                 $closure = $callback->bindTo($testAdminPreValidate);
                                 $closure($event);
 

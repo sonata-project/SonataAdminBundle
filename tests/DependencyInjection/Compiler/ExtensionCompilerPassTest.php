@@ -416,7 +416,7 @@ class ExtensionCompilerPassTest extends TestCase
             ->setClass(EventDispatcher::class);
 
         // Add admin extension definition's
-        $extensionClass = get_class($this->createMock(AdminExtensionInterface::class));
+        $extensionClass = \get_class($this->createMock(AdminExtensionInterface::class));
 
         $container
             ->register('sonata_extension_publish')

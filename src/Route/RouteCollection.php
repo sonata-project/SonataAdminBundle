@@ -191,7 +191,7 @@ class RouteCollection
      */
     public function clearExcept($routeList)
     {
-        if (!is_array($routeList)) {
+        if (!\is_array($routeList)) {
             $routeList = [$routeList];
         }
 
@@ -202,7 +202,7 @@ class RouteCollection
 
         $elements = $this->elements;
         foreach ($elements as $key => $element) {
-            if (!in_array($key, $routeCodeList)) {
+            if (!\in_array($key, $routeCodeList)) {
                 unset($this->elements[$key]);
             }
         }
@@ -281,8 +281,8 @@ class RouteCollection
      */
     private function resolve($element)
     {
-        if (is_callable($element)) {
-            return call_user_func($element);
+        if (\is_callable($element)) {
+            return \call_user_func($element);
         }
 
         return $element;

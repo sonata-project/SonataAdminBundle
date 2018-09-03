@@ -187,7 +187,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->getCode()->willReturn('sonata.post.admin');
         $this->admin->hasAccess('edit', $object)->willReturn(true);
         $this->admin->getListFieldDescription('bar')->willReturn($fieldDescription->reveal());
-        $this->admin->getClass()->willReturn(get_class($object));
+        $this->admin->getClass()->willReturn(\get_class($object));
         $this->admin->update($object)->shouldBeCalled();
         $container->get('sonata.post.admin.template_registry')->willReturn($templateRegistry->reveal());
         // NEXT_MAJOR: Remove this line
@@ -208,7 +208,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
         $fieldDescription->getTemplate()->willReturn('field_template');
         $fieldDescription->getValue(Argument::cetera())->willReturn('some value');
-        $modelManager->find(get_class($associationObject), 1)->willReturn($associationObject);
+        $modelManager->find(\get_class($associationObject), 1)->willReturn($associationObject);
 
         $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
         $action = $this->action;

@@ -69,7 +69,7 @@ class RoutesCache
                 $routes[$code] = $route->getDefault('_sonata_name');
             }
 
-            if (!is_array($admin->getExtensions())) {
+            if (!\is_array($admin->getExtensions())) {
                 throw new \RuntimeException('extensions must be an array');
             }
 

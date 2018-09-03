@@ -90,9 +90,9 @@ class ServicesManipulator
             $modelClass,
             $controllerName,
             $managerType,
-            current(array_slice(explode('\\', $modelClass), -1))
+            current(\array_slice(explode('\\', $modelClass), -1))
         );
-        @mkdir(dirname($this->file), 0777, true);
+        @mkdir(\dirname($this->file), 0777, true);
 
         if (false === @file_put_contents($this->file, $code)) {
             throw new \RuntimeException(sprintf(

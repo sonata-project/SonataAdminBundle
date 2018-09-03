@@ -94,7 +94,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
             }
             $manipulator = $this->getContainer()->get($manipulatorId);
             if (!$manipulator instanceof ObjectAclManipulatorInterface) {
-                $output->writeln(sprintf('The interface "ObjectAclManipulatorInterface" is not implemented for %s: <info>ignoring</info>', get_class($manipulator)));
+                $output->writeln(sprintf('The interface "ObjectAclManipulatorInterface" is not implemented for %s: <info>ignoring</info>', \get_class($manipulator)));
 
                 continue;
             }

@@ -143,7 +143,7 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
                 $this->logger->info(sprintf(
                     'Retrieving message from admin:%s - class: %s',
                     $admin->getCode(),
-                    get_class($admin)
+                    \get_class($admin)
                 ));
             }
 
