@@ -133,6 +133,8 @@ If you want to add the current filter parameters to the redirect url you can add
 
 .. code-block:: php
 
+    <?php
+
     return new RedirectResponse($this->admin->generateUrl('list', ['filter' => $this->admin->getFilterParameters()]));
 
 .. tip::
@@ -172,6 +174,8 @@ You have to add the new route in ``configureRoutes``:
 
 .. code-block:: php
 
+    <?php
+
     // ...
     use Sonata\AdminBundle\Route\RouteCollection;
 
@@ -186,6 +190,8 @@ You could also just write ``$collection->add('clone');`` to get a route like ``.
 Next we have to add the action in ``configureListFields`` specifying the template we created.
 
 .. code-block:: php
+
+    <?php
 
     protected function configureListFields(ListMapper $listMapper)
     {
@@ -282,6 +288,8 @@ Custom Action without Entity
 Creating an action that is not connected to an Entity is also possible.
 Let's imagine we have an import action. We register our route::
 
+    <?php
+
     // ...
     use Sonata\AdminBundle\Route\RouteCollection;
 
@@ -291,6 +299,8 @@ Let's imagine we have an import action. We register our route::
     }
 
 We add the controller action::
+
+    <?php
 
     use Sonata\AdminBundle\Controller\CRUDController as Controller;
     use Symfony\Component\HttpFoundation\Request;
@@ -305,6 +315,8 @@ We add the controller action::
 Now, instead of adding the action to the form mapper, we can add it next to
 the add button. In your admin class, overwrite the ``configureActionButtons``
 method::
+
+    <?php
 
     public function configureActionButtons($action, $object = null)
     {
@@ -329,6 +341,8 @@ You can also add this action to your dashboard actions, you have to overwrite
 the ``getDashboardActions`` method in your admin class and there are two
 ways you can add action::
 
+    <?php
+
     public function getDashboardActions()
     {
         $actions = parent::getDashboardActions();
@@ -347,6 +361,8 @@ Create a template for that button:
     </a>
 
 Or you can just pass values as array::
+
+    <?php
 
     public function getDashboardActions()
     {

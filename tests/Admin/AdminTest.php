@@ -656,7 +656,7 @@ class AdminTest extends TestCase
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::setUniqid
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getUniqid
      */
-    public function testUniqid()
+    public function testSetUniqid()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
@@ -664,6 +664,33 @@ class AdminTest extends TestCase
         $admin->setUniqid($uniqid);
 
         $this->assertSame($uniqid, $admin->getUniqid());
+    }
+
+    public function testUniqidConsistency()
+    {
+        $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
+            'sonata.abstract.admin',
+            'AbstractBundle\Entity\Foo',
+            'SonataAbstractBundle:FooAdmin',
+        ]);
+        $admin->initialize();
+
+        $uniqid = $admin->getUniqid();
+        $admin->setUniqid(null);
+
+        $this->assertSame($uniqid, $admin->getUniqid());
+
+        $parentAdmin = $this->getMockForAbstractClass(AbstractAdmin::class, [
+            'sonata.abstract.parent.admin',
+            'AbstractBundle\Entity\Bar',
+            'SonataAbstractBundle:BarAdmin',
+        ]);
+        $parentAdmin->initialize();
+
+        $admin->setParent($parentAdmin);
+        $admin->setUniqid(null);
+
+        $this->assertNotSame($uniqid, $admin->getUniqid());
     }
 
     public function testToString()
@@ -1597,7 +1624,7 @@ class AdminTest extends TestCase
                 ->method('addEventListener')
                 ->with($this->identicalTo(FormEvents::POST_SUBMIT),
                         $this->callback(function ($callback) use ($testAdminPreValidate, $event) {
-                            if (is_callable($callback)) {
+                            if (\is_callable($callback)) {
                                 $closure = $callback->bindTo($testAdminPreValidate);
                                 $closure($event);
 

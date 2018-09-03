@@ -279,7 +279,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             $parameters = $this->getOption('parameters');
         }
 
-        if (is_string($fieldName) && '' !== $fieldName) {
+        if (\is_string($fieldName) && '' !== $fieldName) {
             if ($this->hasCachedFieldGetter($object, $fieldName)) {
                 return $this->callCachedGetter($object, $fieldName, $parameters);
             }
@@ -292,17 +292,17 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
 
         foreach ($getters as $getter) {
-            if (method_exists($object, $getter) && is_callable([$object, $getter])) {
+            if (method_exists($object, $getter) && \is_callable([$object, $getter])) {
                 $this->cacheFieldGetter($object, $fieldName, 'getter', $getter);
 
-                return call_user_func_array([$object, $getter], $parameters);
+                return \call_user_func_array([$object, $getter], $parameters);
             }
         }
 
         if (method_exists($object, '__call')) {
             $this->cacheFieldGetter($object, $fieldName, 'call');
 
-            return call_user_func_array([$object, '__call'], [$fieldName, $parameters]);
+            return \call_user_func_array([$object, '__call'], [$fieldName, $parameters]);
         }
 
         if (isset($object->{$fieldName})) {
@@ -330,7 +330,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             $this->options[$name] = [];
         }
 
-        if (!is_array($this->options[$name])) {
+        if (!\is_array($this->options[$name])) {
             throw new \RuntimeException(sprintf('The key `%s` does not point to an array value', $name));
         }
 
@@ -431,12 +431,15 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     private function getFieldGetterKey($object, $fieldName)
     {
-        if (!is_string($fieldName)) {
+        if (!\is_string($fieldName)) {
             return null;
         }
-        $components = [get_class($object), $fieldName];
+        if (!\is_object($object)) {
+            return null;
+        }
+        $components = [\get_class($object), $fieldName];
         $code = $this->getOption('code');
-        if (is_string($code) && '' !== $code) {
+        if (\is_string($code) && '' !== $code) {
             $components[] = $code;
         }
 
@@ -453,13 +456,13 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     private function callCachedGetter($object, $fieldName, array $parameters = [])
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
-        if (self::$fieldGetters[$getterKey]['method'] === 'getter') {
-            return call_user_func_array(
+        if ('getter' === self::$fieldGetters[$getterKey]['method']) {
+            return \call_user_func_array(
                 [$object, self::$fieldGetters[$getterKey]['getter']],
                 $parameters
             );
-        } elseif (self::$fieldGetters[$getterKey]['method'] === 'call') {
-            return call_user_func_array(
+        } elseif ('call' === self::$fieldGetters[$getterKey]['method']) {
+            return \call_user_func_array(
                 [$object, '__call'],
                 [$fieldName, $parameters]
             );

@@ -156,7 +156,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @return array An array with the following structure.
+     * @return array an array with the following structure.
      *
      * [
      *     'excludes'   => ['<admin_id>'  => ['<extension_id>' => ['priority' => <int>]]],
@@ -199,7 +199,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
      */
     protected function hasTrait(\ReflectionClass $class, $traitName)
     {
-        if (in_array($traitName, $class->getTraitNames())) {
+        if (\in_array($traitName, $class->getTraitNames())) {
             return true;
         }
 

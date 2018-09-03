@@ -149,6 +149,121 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
+     * @param array $args
+     *
+     * @return bool
+     */
+    public function unanimousGrantCheckerMock($args)
+    {
+        if ($args === ['foo', 'bar']) {
+            return false;
+        }
+
+        if ($args === ['foo'] || $args === ['bar'] || $args === ['baz']) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array $args
+     *
+     * @return bool
+     */
+    public function unanimousGrantCheckerNoBazMock($args)
+    {
+        if ($args === ['foo', 'bar'] || $args === ['baz']) {
+            return false;
+        }
+
+        if ($args === ['foo'] || $args === ['bar']) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array $adminGroups
+     *
+     * @dataProvider getAdminGroupsMultipleRoles
+     */
+    public function testGetMenuProviderWithCheckerGrantedMultipleGroupRoles(
+        array $adminGroups
+    ) {
+        $this->checker->expects($this->any())
+            ->method('isGranted')
+            ->willReturnCallback([$this, 'unanimousGrantCheckerMock']);
+
+        $menu = $this->provider->get(
+            'providerFoo',
+            [
+                'name' => 'foo',
+                'group' => $adminGroups,
+            ]
+        );
+
+        $this->assertInstanceOf(ItemInterface::class, $menu);
+
+        $children = $menu->getChildren();
+
+        $this->assertCount(4, $children);
+    }
+
+    /**
+     * @param array $adminGroups
+     *
+     * @dataProvider getAdminGroupsMultipleRoles
+     */
+    public function testGetMenuProviderWithCheckerGrantedGroupAndItemRoles(
+        array $adminGroups
+    ) {
+        $this->checker->expects($this->any())
+            ->method('isGranted')
+            ->willReturnCallback([$this, 'unanimousGrantCheckerNoBazMock']);
+
+        $menu = $this->provider->get(
+            'providerFoo',
+            [
+                'name' => 'foo',
+                'group' => $adminGroups,
+            ]
+        );
+        $isBazItem = $adminGroups['roles'] === ['baz'];
+
+        $this->assertInstanceOf(ItemInterface::class, $menu);
+        $this->assertEquals(!$isBazItem, $menu->isDisplayed());
+
+        $children = $menu->getChildren();
+        $this->assertCount($isBazItem ? 0 : 3, $children);
+    }
+
+    /**
+     * @param array $adminGroups
+     *
+     * @dataProvider getAdminGroupsMultipleRolesOnTop
+     */
+    public function testGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTop(
+        array $adminGroups
+    ) {
+        $this->checker->expects($this->any())
+            ->method('isGranted')
+            ->willReturnCallback([$this, 'unanimousGrantCheckerMock']);
+
+        $menu = $this->provider->get(
+            'providerFoo',
+            [
+                'name' => 'foo',
+                'group' => $adminGroups,
+            ]
+        );
+        $this->assertInstanceOf(ItemInterface::class, $menu);
+
+        $this->assertTrue($menu->isDisplayed());
+    }
+
+    /**
      * @param array $adminGroups
      *
      * @dataProvider getAdminGroups
@@ -335,6 +450,166 @@ class GroupMenuProviderTest extends TestCase
                     ],
                     'item_adds' => [],
                     'roles' => ['foo'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdminGroupsMultipleRoles()
+    {
+        return [
+            [
+                // group for all roles, children with different roles
+                [
+                    'label' => 'foo',
+                    'icon' => '<i class="fa fa-edit"></i>',
+                    'label_catalogue' => 'SonataAdminBundle',
+                    'items' => [
+                        [
+                            'admin' => '',
+                            'label' => 'route_label1',
+                            'route' => 'FooRoute1',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                            'roles' => ['foo', 'bar'],
+                        ],
+                        [
+                            'admin' => '',
+                            'label' => 'route_label2',
+                            'route' => 'FooRoute2',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                            'roles' => ['foo'],
+                        ],
+                        [
+                            'admin' => '',
+                            'label' => 'route_label3',
+                            'route' => 'FooRoute3',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                            'roles' => ['bar'],
+                        ],
+                        [
+                            'admin' => '',
+                            'label' => 'route_label4',
+                            'route' => 'FooRoute4',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                            'roles' => ['baz'],
+                        ],
+                    ],
+                    'roles' => ['foo', 'bar'],
+                    'item_adds' => [],
+                ],
+            ], [
+                // group for one role, children with different roles
+                [
+                    'label' => 'foo',
+                    'icon' => '<i class="fa fa-edit"></i>',
+                    'label_catalogue' => 'SonataAdminBundle',
+                    'items' => [
+                        [
+                            'admin' => '',
+                            'label' => 'route_label1',
+                            'route' => 'FooRoute1',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                            'roles' => ['foo', 'bar'],
+                        ],
+                        [
+                            'admin' => '',
+                            'label' => 'route_label2',
+                            'route' => 'FooRoute2',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                            'roles' => ['foo'],
+                        ],
+                        [
+                            'admin' => '',
+                            'label' => 'route_label3',
+                            'route' => 'FooRoute3',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                            'roles' => ['bar'],
+                        ],
+                        [
+                            'admin' => '',
+                            'label' => 'route_label4',
+                            'route' => 'FooRoute4',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                            'roles' => ['baz'],
+                        ],
+                    ],
+                    'roles' => ['baz'],
+                    'item_adds' => [],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdminGroupsMultipleRolesOnTop()
+    {
+        return [
+            [
+                [
+                    'label' => 'foo1',
+                    'icon' => '<i class="fa fa-edit"></i>',
+                    'label_catalogue' => 'SonataAdminBundle',
+                    'items' => [
+                        [
+                            'admin' => '',
+                            'label' => 'route_label1',
+                            'route' => 'FooRoute1',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                        ],
+                    ],
+                    'item_adds' => [],
+                    'roles' => ['foo', 'bar'],
+                    'on_top' => true,
+                ],
+            ], [
+                [
+                    'label' => 'foo2',
+                    'icon' => '<i class="fa fa-edit"></i>',
+                    'label_catalogue' => 'SonataAdminBundle',
+                    'items' => [
+                        [
+                            'admin' => '',
+                            'label' => 'route_label2',
+                            'route' => 'FooRoute2',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                        ],
+                    ],
+                    'item_adds' => [],
+                    'roles' => ['foo'],
+                    'on_top' => true,
+                ],
+            ], [
+                [
+                    'label' => 'foo3',
+                    'icon' => '<i class="fa fa-edit"></i>',
+                    'label_catalogue' => 'SonataAdminBundle',
+                    'items' => [
+                        [
+                            'admin' => '',
+                            'label' => 'route_label3',
+                            'route' => 'FooRoute3',
+                            'route_params' => ['foo' => 'bar'],
+                            'route_absolute' => true,
+                        ],
+                    ],
+                    'item_adds' => [],
+                    'roles' => ['bar'],
+                    'on_top' => true,
                 ],
             ],
         ];

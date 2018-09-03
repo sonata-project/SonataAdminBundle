@@ -6,26 +6,26 @@
         <default key="permanent">true</default>
     </route>
     <route id="sonata_admin_dashboard" path="/dashboard">
-        <default key="_controller">SonataAdminBundle:Core:dashboard</default>
+        <default key="_controller">Sonata\AdminBundle\Action\DashboardAction</default>
     </route>
     <route id="sonata_admin_retrieve_form_element" path="/core/get-form-field-element">
-        <default key="_controller">sonata.admin.controller.admin:retrieveFormFieldElementAction</default>
+        <default key="_controller">sonata.admin.action.retrieve_form_field_element</default>
     </route>
     <route id="sonata_admin_append_form_element" path="/core/append-form-field-element">
-        <default key="_controller">sonata.admin.controller.admin:appendFormFieldElementAction</default>
+        <default key="_controller">sonata.admin.action.append_form_field_element</default>
     </route>
     <route id="sonata_admin_short_object_information" path="/core/get-short-object-description.{_format}">
-        <default key="_controller">sonata.admin.controller.admin:getShortObjectDescriptionAction</default>
+        <default key="_controller">sonata.admin.action.get_short_object_description</default>
         <default key="_format">html</default>
         <requirement key="_format">html|json</requirement>
     </route>
     <route id="sonata_admin_set_object_field_value" path="/core/set-object-field-value">
-        <default key="_controller">sonata.admin.controller.admin:setObjectFieldValueAction</default>
+        <default key="_controller">sonata.admin.action.set_object_field_value</default>
     </route>
     <route id="sonata_admin_search" path="/search">
-        <default key="_controller">SonataAdminBundle:Core:search</default>
+        <default key="_controller">Sonata\AdminBundle\Action\SearchAction</default>
     </route>
     <route id="sonata_admin_retrieve_autocomplete_items" path="/core/get-autocomplete-items">
-        <default key="_controller">sonata.admin.controller.admin:retrieveAutocompleteItemsAction</default>
+        <default key="_controller">sonata.admin.action.retrieve_autocomplete_items</default>
     </route>
 </routes>

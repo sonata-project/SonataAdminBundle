@@ -22,6 +22,8 @@ like in the `getting started chapter`_:
 
 .. code-block:: php
 
+    <?php
+
     namespace App\Entity;
 
     use Doctrine\ORM\Mapping as ORM;
@@ -58,6 +60,8 @@ like in the `getting started chapter`_:
     }
 
 .. code-block:: php
+
+    <?php
 
     namespace App\Entity;
 

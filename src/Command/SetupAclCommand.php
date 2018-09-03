@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Command;
 
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Util\AdminAclManipulatorInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,11 +46,12 @@ class SetupAclCommand extends ContainerAwareCommand
             if (!$manipulator instanceof AdminAclManipulatorInterface) {
                 $output->writeln(sprintf(
                     'The interface "AdminAclManipulatorInterface" is not implemented for %s: <info>ignoring</info>',
-                    get_class($manipulator)
+                    \get_class($manipulator)
                 ));
 
                 continue;
             }
+            \assert($admin instanceof AdminInterface);
             $manipulator->configureAcls($output, $admin);
         }
     }

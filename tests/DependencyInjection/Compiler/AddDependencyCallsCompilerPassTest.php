@@ -37,6 +37,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @author Tiago Garcia
@@ -182,7 +183,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertContains('sonata_post_admin', $adminGroups['sonata_group_one']['items'][0]['admin']);
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['items']);
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['item_adds']);
-        $this->assertFalse(in_array('sonata_article_admin', $adminGroups['sonata_group_one']['items']));
+        $this->assertFalse(\in_array('sonata_article_admin', $adminGroups['sonata_group_one']['items']));
         $this->assertContains('ROLE_ONE', $adminGroups['sonata_group_one']['roles']);
 
         $this->assertArrayHasKey('sonata_group_two', $adminGroups);
@@ -666,6 +667,9 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $container
             ->register('session')
             ->setClass(Session::class);
+        $container
+            ->register('security.authorization_checker')
+            ->setClass(AuthorizationCheckerInterface::class);
         foreach ([
             'doctrine_phpcr' => 'PHPCR',
             'orm' => 'ORM', ] as $key => $bundleSubstring) {

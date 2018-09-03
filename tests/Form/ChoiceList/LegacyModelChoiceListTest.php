@@ -17,7 +17,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 
-class ModelChoiceListTest extends TestCase
+class LegacyModelChoiceListTest extends TestCase
 {
     private $modelManager = null;
 

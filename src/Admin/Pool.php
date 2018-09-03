@@ -196,14 +196,14 @@ class Pool
     public function getAdminByClass($class)
     {
         if (!$this->hasAdminByClass($class)) {
-            return;
+            return null;
         }
 
-        if (!is_array($this->adminClasses[$class])) {
+        if (!\is_array($this->adminClasses[$class])) {
             throw new \RuntimeException('Invalid format for the Pool::adminClass property');
         }
 
-        if (count($this->adminClasses[$class]) > 1) {
+        if (\count($this->adminClasses[$class]) > 1) {
             throw new \RuntimeException(sprintf(
                 'Unable to find a valid admin for the class: %s, there are too many registered: %s',
                 $class,
@@ -265,12 +265,36 @@ class Pool
      *
      * @throws \InvalidArgumentException
      *
-     * @return AdminInterface
+     * @return AdminInterface|null
      */
     public function getInstance($id)
     {
-        if (!in_array($id, $this->adminServiceIds)) {
-            throw new \InvalidArgumentException(sprintf('Admin service "%s" not found in admin pool.', $id));
+        if (!\in_array($id, $this->adminServiceIds)) {
+            $msg = sprintf('Admin service "%s" not found in admin pool.', $id);
+            $shortest = -1;
+            $closest = null;
+            $alternatives = [];
+            foreach ($this->adminServiceIds as $adminServiceId) {
+                $lev = levenshtein($id, $adminServiceId);
+                if ($lev <= $shortest || $shortest < 0) {
+                    $closest = $adminServiceId;
+                    $shortest = $lev;
+                }
+                if ($lev <= \strlen($adminServiceId) / 3 || false !== strpos($adminServiceId, $id)) {
+                    $alternatives[$adminServiceId] = $lev;
+                }
+            }
+            if (null !== $closest) {
+                asort($alternatives);
+                unset($alternatives[$closest]);
+                $msg = sprintf(
+                    'Admin service "%s" not found in admin pool. Did you mean "%s" or one of those: [%s]?',
+                    $id,
+                    $closest,
+                    implode(', ', array_keys($alternatives))
+                );
+            }
+            throw new \InvalidArgumentException($msg);
         }
 
         return $this->container->get($id);

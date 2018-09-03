@@ -17,6 +17,8 @@ To add a custom controller entry in the admin menu:
 
 Create your controller::
 
+    <?php
+
     class BlogController
     {
         /**

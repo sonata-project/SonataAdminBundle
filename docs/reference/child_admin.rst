@@ -18,14 +18,21 @@ its parent:
 
 .. configuration-block::
 
+    .. code-block:: yaml
+
+        # app/config/services.yml
+        App\Admin\PlaylistAdmin:
+            calls:
+                - [ addChild, ['@App\Admin\VideoAdmin', 'playlist']]
+
     .. code-block:: xml
 
-        <!-- app/config/config.xml -->
-        <service id="sonata.admin.playlist" class="App\Admin\PlaylistAdmin">
+        <!-- app/config/services.xml -->
+        <service id="App\Admin\PlaylistAdmin">
             <!-- ... -->
 
             <call method="addChild">
-                <argument type="service" id="sonata.admin.video" />
+                <argument type="service" id="App\Admin\PlaylistAdmin" />
                 <argument>playlist</argument>
             </call>
         </service>
@@ -88,7 +95,7 @@ or not. To get rid of them, you may override the ``configureRoutes`` method::
 
     class VideoAdmin extends AbstractAdmin
     {
-        protected $parentAssociationMapping = 'playlist';
+        // ...
 
         protected function configureRoutes(RouteCollection $collection)
         {

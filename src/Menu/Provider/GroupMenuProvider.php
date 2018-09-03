@@ -96,7 +96,7 @@ class GroupMenuProvider implements MenuProviderInterface
                 $menuItem->setAttribute('class', 'keep-open');
                 $menuItem->setExtra('keep_open', $group['keep_open']);
             }
-        } elseif (1 === count($group['items'])) {
+        } elseif (1 === \count($group['items'])) {
             if ($this->canGenerateMenuItem($group['items'][0], $group)) {
                 $menuItem = $this->generateMenuItem($group['items'][0], $group);
                 $menuItem->setExtra('on_top', $group['on_top']);
@@ -134,10 +134,36 @@ class GroupMenuProvider implements MenuProviderInterface
         }
 
         //NEXT_MAJOR: Remove if statement of null checker.
-        return null === $this->checker || (
-            (empty($item['roles']) || $this->checker->isGranted($item['roles'])) &&
-            (empty($group['roles']) || $this->checker->isGranted($group['roles']))
-        );
+        if (null === $this->checker) {
+            return true;
+        }
+
+        // Making the checker behave affirmatively even if it's globally unanimous
+        // Still must be granted unanimously to group and item
+
+        $isItemGranted = true;
+        if (!empty($item['roles'])) {
+            $isItemGranted = false;
+            foreach ($item['roles'] as $role) {
+                if ($this->checker->isGranted([$role])) {
+                    $isItemGranted = true;
+                    break;
+                }
+            }
+        }
+
+        $isGroupGranted = true;
+        if (!empty($group['roles'])) {
+            $isGroupGranted = false;
+            foreach ($group['roles'] as $role) {
+                if ($this->checker->isGranted([$role])) {
+                    $isGroupGranted = true;
+                    break;
+                }
+            }
+        }
+
+        return $isItemGranted && $isGroupGranted;
     }
 
     /**

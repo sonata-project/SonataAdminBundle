@@ -2,6 +2,76 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.38.3](https://github.com/sonata-project/SonataAdminBundle/compare/3.38.2...3.38.3) - 2018-08-21
+
+### Fixed
+- An error message about subclasses has been fixed
+- issue Error 500 when requesting short object description as JSON
+
+## [3.38.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.38.1...3.38.2) - 2018-08-17
+
+### Fixed
+- Checking the wrong method for form fields
+
+## [3.38.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.38.0...3.38.1) - 2018-08-16
+### Added
+- Added exception message if no field is defined with the  `configureFormFields()` method
+
+### Fixed
+- Fixed tab id when the Admin Id contains backslashes
+
+## [3.38.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.37.0...3.38.0) - 2018-08-14
+
+### Added
+- Added delete button in form action buttons when the request is ajax
+
+### Fixed
+- Added missing french translation
+- Missing translation for `link_edit` in Dutch translation file.
+
+### Changed
+- Admin uniqids are now more consistent
+- allow using overwritten constant for the mosaic html classes inside of admin class
+- An exception message was improved to include hints about the correct configuration value
+
+### Deprecated
+- `SonataAdminBundle\Controller\HelperController` is now deprecated in favor of actions
+
+## [3.37.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.36.0...3.37.0) - 2018-07-26
+### Fixed
+- fixed bug with complex properties in `ModelAutocompleteType`
+
+### Changed
+- Enable TimeZone for datetime and time templating
+- Changing the way of checking the permissions when displaying links in templates
+
+## [3.36.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.35.2...3.36.0) - 2018-07-17
+### Added
+- Added `title` to sidebar toggle
+- Added missing polish translation for `Toggle Navigation`
+- Added new JS function in Admin.js, which handle the control of a tabs and change address in URL query string when you change tab.
+- Added a condition in the `getFieldGetterKey` in order remove the new warning produced by PHP7.2.
+
+### Changed
+- Escaped admin code in autocomplete
+- `Controller\CoreController` is now deprecated in favor of `Action\{Search,Dasbhoard}Action`
+- Added table-hover class to the table
+- Changed ID's and added class name to tabs elements in edit view and show view, so we can control the address.
+- Default load order of `assets.javascripts` at `Configuration::getConfigTreeBuilder()`
+
+### Fixed
+- Warning "Parameter must be an array or an object that implements Countable" for count(null) in php 7.2
+- Fixed issue with `appendFormFieldElementAction` and `retrieveFormFieldElementAction` using ModelManager instead `getObject` admin class method
+- Menu item security was expected to be checked affirmatively rather than unanimously
+- Fixed choice field mask initial display when field value is empty
+- Added missing russian translation for `Toggle Navigation`
+- ECMAScript error `jquery.js:250 Uncaught Error: cannot call methods on button prior to initialization;` while trying to use `$.fn.button()` (ref: https://github.com/twbs/bootstrap/issues/6094)
+
+## [3.35.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.35.1...3.35.2) - 2018-05-05
+### Fixed
+- Fixed route generation with parameter for on_top menu items
+- Fixed custom group permission for menu items
+
 ## [3.35.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.35.0...3.35.1) - 2018-04-20
 ### Fixed
 - Edit on list is fixed for choices not related to an entity

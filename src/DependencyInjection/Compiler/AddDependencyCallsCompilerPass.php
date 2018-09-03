@@ -110,7 +110,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 ];
 
                 if (isset($groupDefaults[$resolvedGroupName]['on_top']) && $groupDefaults[$resolvedGroupName]['on_top']
-                    || $onTop && (count($groupDefaults[$resolvedGroupName]['items']) > 1)) {
+                    || $onTop && (\count($groupDefaults[$resolvedGroupName]['items']) > 1)) {
                     throw new \RuntimeException('You can\'t use "on_top" option with multiple same name groups.');
                 }
                 $groupDefaults[$resolvedGroupName]['on_top'] = $onTop;
@@ -160,7 +160,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 }
 
                 if (isset($groups[$resolvedGroupName]['on_top']) && !empty($group['on_top']) && $group['on_top']
-                    && (count($groups[$resolvedGroupName]['items']) > 1)) {
+                    && (\count($groups[$resolvedGroupName]['items']) > 1)) {
                     throw new \RuntimeException('You can\'t use "on_top" option with multiple same name groups.');
                 }
                 if (empty($group['on_top'])) {
@@ -378,7 +378,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
             // set template for simple pager if it is not already overwritten
             if ('setPagerType' === $method[0]
-                && $method[1][0] === Pager::TYPE_SIMPLE
+                && Pager::TYPE_SIMPLE === $method[1][0]
                 && (
                     !isset($definedTemplates['pager_results'])
                     || '@SonataAdmin/Pager/results.html.twig' === $definedTemplates['pager_results']
@@ -425,7 +425,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $declaredInParent = $parentDefinition && array_key_exists($index, $parentArguments);
             $argumentValue = $declaredInParent ? $parentArguments[$index] : $arguments[$index];
 
-            if (null === $argumentValue || 0 === strlen($argumentValue)) {
+            if (null === $argumentValue || 0 === \strlen($argumentValue)) {
                 $arguments[$declaredInParent ? sprintf('index_%s', $index) : $index] = $value;
             }
         }

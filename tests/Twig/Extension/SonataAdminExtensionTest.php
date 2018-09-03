@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -31,6 +32,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\DependencyInjection\TranslationDumperPass;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\MessageSelector;
@@ -104,6 +106,11 @@ class SonataAdminExtensionTest extends TestCase
      */
     private $templateRegistry;
 
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $securityChecker;
+
     public function setUp()
     {
         date_default_timezone_set('Europe/London');
@@ -152,7 +159,13 @@ class SonataAdminExtensionTest extends TestCase
         $this->container = $this->prophesize(ContainerInterface::class);
         $this->container->get('sonata_admin_foo_service.template_registry')->willReturn($this->templateRegistry->reveal());
 
-        $this->twigExtension = new SonataAdminExtension($this->pool, $this->logger, $this->translator, $this->container->reveal());
+        $this->securityChecker = $this->prophesize(AuthorizationCheckerInterface::class);
+        $this->securityChecker->isGranted(['foo', 'bar'], null)->willReturn(false);
+        $this->securityChecker->isGranted(Argument::type('string'), null)->willReturn(true);
+
+        $this->twigExtension = new SonataAdminExtension(
+            $this->pool, $this->logger, $this->translator, $this->container->reveal(), $this->securityChecker->reveal()
+        );
         $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
 
         $request = $this->createMock(Request::class);
@@ -249,7 +262,7 @@ class SonataAdminExtensionTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDepreaction The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
+     * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
      * @dataProvider getRenderListElementTests
      */
     public function testRenderListElement($expected, $type, $value, array $options)
@@ -520,6 +533,12 @@ class SonataAdminExtensionTest extends TestCase
                 'time',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 [],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-time" objectId="12345"> 18:11:12 </td>',
+                'time',
+                new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
+                ['timezone' => 'Asia/Hong_Kong'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-time" objectId="12345"> &nbsp; </td>',
@@ -1464,6 +1483,12 @@ EOT
                 ['format' => 'd.m.Y H:i:s'],
             ],
             [
+                '<th>Data</th> <td>December 24, 2013 18:11</td>',
+                'datetime',
+                new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
+                ['timezone' => 'Asia/Hong_Kong'],
+            ],
+            [
                 '<th>Data</th> <td>December 24, 2013</td>',
                 'date',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
@@ -1480,6 +1505,12 @@ EOT
                 'time',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 [],
+            ],
+            [
+                '<th>Data</th> <td>18:11:12</td>',
+                'time',
+                new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
+                ['timezone' => 'Asia/Hong_Kong'],
             ],
             ['<th>Data</th> <td>10.746135</td>', 'number', 10.746135, ['safe' => false]],
             ['<th>Data</th> <td>5678</td>', 'integer', 5678, ['safe' => false]],
@@ -2105,7 +2136,7 @@ EOT
 
     /**
      * @group legacy
-     * @expectedDepreaction The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
+     * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
      */
     public function testRenderWithDebug()
     {
@@ -2591,6 +2622,15 @@ EOT
     public function testCanonicalizedLocaleForMoment($expected, $original)
     {
         $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForMoment($this->mockExtensionContext($original)));
+    }
+
+    public function testIsGrantedAffirmative()
+    {
+        $this->assertTrue(
+            $this->twigExtension->isGrantedAffirmative(['foo', 'bar'])
+        );
+        $this->assertTrue($this->twigExtension->isGrantedAffirmative('foo'));
+        $this->assertTrue($this->twigExtension->isGrantedAffirmative('bar'));
     }
 
     /**

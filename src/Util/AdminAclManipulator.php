@@ -70,7 +70,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
         AclSecurityHandlerInterface $securityHandler,
         array $roleInformation = []
     ) {
-        if (count($securityHandler->getAdminPermissions()) > 0) {
+        if (\count($securityHandler->getAdminPermissions()) > 0) {
             $builder = new $this->maskBuilderClass();
 
             foreach ($roleInformation as $role => $permissions) {
@@ -79,13 +79,13 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
 
                 foreach ($permissions as $permission) {
                     // add only the admin permissions
-                    if (in_array($permission, $securityHandler->getAdminPermissions())) {
+                    if (\in_array($permission, $securityHandler->getAdminPermissions())) {
                         $builder->add($permission);
                         $roleAdminPermissions[] = $permission;
                     }
                 }
 
-                if (count($roleAdminPermissions) > 0) {
+                if (\count($roleAdminPermissions) > 0) {
                     if (false === $aceIndex) {
                         $acl->insertClassAce(new RoleSecurityIdentity($role), $builder->get());
                         $action = 'add';

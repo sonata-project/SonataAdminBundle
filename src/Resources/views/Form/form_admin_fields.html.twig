@@ -522,7 +522,11 @@ file that was distributed with this source code.
                 }
             }
 
-            choice_field_mask_show('{{ value }}');
+            {% if value is empty %}
+                choice_field_mask_show(showMaskChoiceEl.val());
+            {% else %}
+                choice_field_mask_show('{{ value }}');
+            {% endif %}
         });
 
     </script>

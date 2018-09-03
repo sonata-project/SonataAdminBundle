@@ -84,7 +84,7 @@ class ModelType extends AbstractType
         $options = [];
         $propertyAccessor = $this->propertyAccessor;
         $options['choice_loader'] = function (Options $options, $previousValue) use ($propertyAccessor) {
-            if ($previousValue && count($choices = $previousValue->getChoices())) {
+            if ($previousValue && \count($choices = $previousValue->getChoices())) {
                 return $choices;
             }
 

@@ -101,10 +101,16 @@ var Admin = {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_ICHECK) {
             Admin.log('[core|setup_icheck] configure iCheck on', subject);
 
-            jQuery("input[type='checkbox']:not('label.btn>input'), input[type='radio']:not('label.btn>input')", subject).iCheck({
-                checkboxClass: 'icheckbox_square-blue',
-                radioClass: 'iradio_square-blue'
-            });
+            jQuery("input[type='checkbox']:not('label.btn>input'), input[type='radio']:not('label.btn>input')", subject)
+                .iCheck({
+                    checkboxClass: 'icheckbox_square-blue',
+                    radioClass: 'iradio_square-blue'
+                })
+                // See https://github.com/fronteed/iCheck/issues/244
+                .on('ifToggled', function (e) {
+                    $(e.target).trigger('change');
+                })
+            ;
         }
     },
     /**
@@ -688,6 +694,35 @@ var Admin = {
                 form.find('button').prop('disabled', true);
             }, 1);
         });
+    },
+    /**
+     * Remember open tab after refreshing page.
+     */
+    setup_view_tabs_changer: function () {
+        jQuery('.changer-tab').on('click', function () {
+            var tab = jQuery(this).attr('aria-controls'),
+                search = location.search.substring(1);
+
+            /* Get query string parameters from URL */
+            var parameters = decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"'),
+                jsonURL = '{}';
+
+            /* If the parameters exist and their length is greater than 0, we put them in json */
+            if (parameters.length) {
+                jsonURL = '{"' + parameters + '"}';
+            }
+
+            var hashes = JSON.parse(jsonURL);
+
+            /* Replace tab parameter */
+            hashes._tab = tab;
+
+            /* Setting new URL */
+            var newurl = window.location.origin + window.location.pathname + '?' + jQuery.param(hashes, true);
+            window.history.pushState({
+                path: newurl
+            }, '', newurl);
+        });
     }
 };
 
@@ -707,6 +742,7 @@ jQuery(document).ready(function() {
 
     Admin.setup_per_page_switcher(document);
     Admin.setup_collection_buttons(document);
+    Admin.setup_view_tabs_changer();
     Admin.shared_setup(document);
 });
 
