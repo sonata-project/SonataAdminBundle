@@ -82,7 +82,7 @@ final class AdminMaker extends AbstractMaker
             $input->getArgument('model'),
             [Validators::class, 'validateClass']
         );
-        $modelClassBasename = current(array_slice(explode('\\', $modelClass), -1));
+        $modelClassBasename = current(\array_slice(explode('\\', $modelClass), -1));
 
         $adminClassBasename = $io->ask(
             'The admin class basename',
@@ -167,7 +167,7 @@ final class AdminMaker extends AbstractMaker
                 $this->modelClass,
                 $adminClassFullName,
                 $controllerName,
-                substr($this->managerType, strlen('sonata.admin.manager.'))
+                substr($this->managerType, \strlen('sonata.admin.manager.'))
             );
 
             $io->writeln(sprintf(
