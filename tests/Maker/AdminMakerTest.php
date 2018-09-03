@@ -41,6 +41,10 @@ class AdminMakerTest extends TestCase
 
     protected function setup()
     {
+        if (5 == PHP_MAJOR_VERSION || !class_exists('Symfony\Component\Console\CommandLoader\CommandLoaderInterface')) {
+            $this->markTestSkipped('Test only available for PHP 7 and SF 3.4');
+        }
+
         $managerOrmProxy = $this->prophesize(ModelManagerInterface::class);
         $managerOrmProxy->getExportFields(Argument::exact('Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo'))
             ->willReturn(['bar', 'baz']);
@@ -78,7 +82,7 @@ class AdminMakerTest extends TestCase
 
         $this->input = new ArrayInput($in, $definition);
 
-        $this->output = new StreamOutput(fopen('php://memory', 'w', false));
+        $this->output = new StreamOutput(fopen('php://memory', 'wb', false));
 
         $this->io = new ConsoleStyle($this->input, $this->output);
         $fileManager = new FileManager(new Filesystem(), '.');
