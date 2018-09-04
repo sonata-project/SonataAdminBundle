@@ -37,7 +37,7 @@ final class AdminMakerCompilerPass implements CompilerPassInterface
         }
 
         $definition = $container->getDefinition('sonata.admin.maker');
-        $definition->setArgument(0, $container->getParameter('kernel.project_dir'));
-        $definition->setArgument(1, $availableManagers);
+        $definition->replaceArgument(0, $container->getParameter('kernel.project_dir'));
+        $definition->replaceArgument(1, $availableManagers);
     }
 }
