@@ -1873,7 +1873,7 @@ EOT;
     public function getUniqid()
     {
         if (!$this->uniqid) {
-            $this->uniqid = 's'.crc32($this->getBaseCodeRoute());
+            $this->uniqid = 's'.substr(md5($this->getBaseCodeRoute()), 0, 10);
         }
 
         return $this->uniqid;
