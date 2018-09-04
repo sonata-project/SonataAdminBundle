@@ -32,7 +32,7 @@ class AdminMakerCompilerPassTest extends TestCase
 
         parent::setUp();
         $this->adminMaker = $this->prophesize(Definition::class);
-        $this->adminMaker->setArgument(Argument::type('integer'), Argument::any())->shouldBeCalledTimes(2);
+        $this->adminMaker->replaceArgument(Argument::type('integer'), Argument::any())->shouldBeCalledTimes(2);
     }
 
     public function testProcess()
