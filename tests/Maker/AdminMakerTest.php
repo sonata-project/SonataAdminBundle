@@ -91,9 +91,4 @@ class AdminMakerTest extends TestCase
 
         $maker->generate($this->input, $this->io, $this->generator);
     }
-
-    private function getService($id)
-    {
-        return self::$kernel->getContainer()->get($id);
-    }
 }
