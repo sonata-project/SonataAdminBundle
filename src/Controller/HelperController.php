@@ -71,7 +71,7 @@ class HelperController
         // NEXT_MAJOR: Move ValidatorInterface check to method signature
         if (!($validator instanceof ValidatorInterface)) {
             throw new \InvalidArgumentException(
-                'Argument 4 is an instance of '.get_class($validator).', expecting an instance of'
+                'Argument 4 is an instance of '.\get_class($validator).', expecting an instance of'
                 .' \Symfony\Component\Validator\Validator\ValidatorInterface'
             );
         }

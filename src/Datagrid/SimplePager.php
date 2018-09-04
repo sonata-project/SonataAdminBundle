@@ -73,8 +73,8 @@ class SimplePager extends Pager
         }
 
         $this->results = $this->getQuery()->execute([], $hydrationMode);
-        $this->thresholdCount = count($this->results);
-        if (count($this->results) > $this->getMaxPerPage()) {
+        $this->thresholdCount = \count($this->results);
+        if (\count($this->results) > $this->getMaxPerPage()) {
             $this->haveToPaginate = true;
             // doctrine/phpcr-odm returns ArrayCollection
             if ($this->results instanceof ArrayCollection) {

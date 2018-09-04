@@ -63,9 +63,9 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         __construct() signature should be : public function __construct(ModelManager $modelManager, $class)
          */
 
-        $args = func_get_args();
+        $args = \func_get_args();
 
-        if (3 == func_num_args()) {
+        if (3 == \func_num_args()) {
             $this->legacyConstructor($args);
         } else {
             $this->modelManager = $args[0];
@@ -139,7 +139,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
 
     public function reverseTransform($keys)
     {
-        if (!is_array($keys)) {
+        if (!\is_array($keys)) {
             throw new UnexpectedTypeException($keys, 'array');
         }
 
@@ -155,7 +155,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
             }
         }
 
-        if (count($notFound) > 0) {
+        if (\count($notFound) > 0) {
             throw new TransformationFailedException(sprintf('The entities with keys "%s" could not be found', implode('", "', $notFound)));
         }
 

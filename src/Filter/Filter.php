@@ -89,7 +89,7 @@ abstract class Filter implements FilterInterface
 
     public function getFieldOption($name, $default = null)
     {
-        if (isset($this->options['field_options'][$name]) && is_array($this->options['field_options'])) {
+        if (isset($this->options['field_options'][$name]) && \is_array($this->options['field_options'])) {
             return $this->options['field_options'][$name];
         }
 

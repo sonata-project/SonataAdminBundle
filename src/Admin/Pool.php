@@ -201,11 +201,11 @@ class Pool
             return;
         }
 
-        if (!is_array($this->adminClasses[$class])) {
+        if (!\is_array($this->adminClasses[$class])) {
             throw new \RuntimeException('Invalid format for the Pool::adminClass property');
         }
 
-        if (count($this->adminClasses[$class]) > 1) {
+        if (\count($this->adminClasses[$class]) > 1) {
             throw new \RuntimeException(sprintf(
                 'Unable to find a valid admin for the class: %s, there are too many registered: %s',
                 $class,
@@ -271,7 +271,7 @@ class Pool
      */
     public function getInstance($id)
     {
-        if (!in_array($id, $this->adminServiceIds)) {
+        if (!\in_array($id, $this->adminServiceIds)) {
             $msg = sprintf('Admin service "%s" not found in admin pool.', $id);
             $shortest = -1;
             $closest = null;
@@ -282,7 +282,7 @@ class Pool
                     $closest = $adminServiceId;
                     $shortest = $lev;
                 }
-                if ($lev <= strlen($adminServiceId) / 3 || false !== strpos($adminServiceId, $id)) {
+                if ($lev <= \strlen($adminServiceId) / 3 || false !== strpos($adminServiceId, $id)) {
                     $alternatives[$adminServiceId] = $lev;
                 }
             }

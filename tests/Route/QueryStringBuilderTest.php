@@ -40,7 +40,7 @@ class QueryStringBuilderTest extends TestCase
 
         $pathBuilder->build($admin, $routeCollection);
 
-        $this->assertCount(count($expectedRoutes), $routeCollection->getElements());
+        $this->assertCount(\count($expectedRoutes), $routeCollection->getElements());
 
         foreach ($expectedRoutes as $expectedRoute) {
             $this->assertTrue($routeCollection->has($expectedRoute), sprintf('Expected route: "%s" doesn`t exist.', $expectedRoute));
@@ -87,7 +87,7 @@ class QueryStringBuilderTest extends TestCase
         $pathBuilder->build($admin, $routeCollection);
 
         $expectedRoutes = ['list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'history_compare_revisions', 'acl', 'child1.Code.Route.foo', 'child1.Code.Route.bar', 'child2.Code.Route.baz'];
-        $this->assertCount(count($expectedRoutes), $routeCollection->getElements());
+        $this->assertCount(\count($expectedRoutes), $routeCollection->getElements());
 
         foreach ($expectedRoutes as $expectedRoute) {
             $this->assertTrue($routeCollection->has($expectedRoute), sprintf('Expected route: "%s" doesn`t exist.', $expectedRoute));

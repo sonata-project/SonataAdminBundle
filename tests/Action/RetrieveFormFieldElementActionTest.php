@@ -93,13 +93,13 @@ final class RetrieveFormFieldElementActionTest extends TestCase
         $renderer = $this->configureFormRenderer();
 
         $this->admin->getObject(42)->willReturn($object);
-        $this->admin->getClass()->willReturn(get_class($object));
+        $this->admin->getClass()->willReturn(\get_class($object));
         $this->admin->setSubject($object)->shouldBeCalled();
         $this->admin->getFormTheme()->willReturn($formView);
         $this->admin->getFormBuilder()->willReturn($formBuilder->reveal());
         $this->helper->getChildFormView($formView, null)
             ->willReturn($formView);
-        $modelManager->find(get_class($object), 42)->willReturn($object);
+        $modelManager->find(\get_class($object), 42)->willReturn($object);
         $form->setData($object)->shouldBeCalled();
         $form->handleRequest($request)->shouldBeCalled();
         $form->createView()->willReturn($formView);

@@ -93,7 +93,7 @@ final class Configuration implements ConfigurationInterface
                             ->info('Perhaps one of the three options: show, fade, hide.')
                             ->validate()
                                 ->ifTrue(function ($v) {
-                                    return !in_array($v, ['show', 'fade', 'hide']);
+                                    return !\in_array($v, ['show', 'fade', 'hide']);
                                 })
                                 ->thenInvalid('Configuration value of "global_search.empty_boxes" must be one of show, fade or hide.')
                             ->end()
@@ -175,7 +175,7 @@ final class Configuration implements ConfigurationInterface
                                             ->ifArray()
                                             ->then(function ($items) {
                                                 foreach ($items as $key => $item) {
-                                                    if (is_array($item)) {
+                                                    if (\is_array($item)) {
                                                         if (!array_key_exists('label', $item) || !array_key_exists('route', $item)) {
                                                             throw new \InvalidArgumentException('Expected either parameters "route" and "label" for array items');
                                                         }

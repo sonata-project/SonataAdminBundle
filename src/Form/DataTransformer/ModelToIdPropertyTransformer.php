@@ -85,8 +85,8 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
             return $this->modelManager->find($this->className, $value);
         }
 
-        if (!is_array($value)) {
-            throw new \UnexpectedValueException(sprintf('Value should be array, %s given.', gettype($value)));
+        if (!\is_array($value)) {
+            throw new \UnexpectedValueException(sprintf('Value should be array, %s given.', \gettype($value)));
         }
 
         foreach ($value as $key => $id) {
@@ -109,8 +109,8 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
         }
 
         if ($this->multiple) {
-            $isArray = is_array($entityOrCollection);
-            if (!$isArray && substr(get_class($entityOrCollection), -1 * strlen($this->className)) == $this->className) {
+            $isArray = \is_array($entityOrCollection);
+            if (!$isArray && substr(\get_class($entityOrCollection), -1 * \strlen($this->className)) == $this->className) {
                 throw new \InvalidArgumentException('A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
             } elseif ($isArray || ($entityOrCollection instanceof \ArrayAccess)) {
                 $collection = $entityOrCollection;
@@ -118,7 +118,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
                 throw new \InvalidArgumentException('A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
             }
         } else {
-            if (substr(get_class($entityOrCollection), -1 * strlen($this->className)) == $this->className) {
+            if (substr(\get_class($entityOrCollection), -1 * \strlen($this->className)) == $this->className) {
                 $collection = [$entityOrCollection];
             } elseif ($entityOrCollection instanceof \ArrayAccess) {
                 throw new \InvalidArgumentException('A single selection must be passed a single value not a collection. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
@@ -135,11 +135,11 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
             $id = current($this->modelManager->getIdentifierValues($entity));
 
             if (null !== $this->toStringCallback) {
-                if (!is_callable($this->toStringCallback)) {
+                if (!\is_callable($this->toStringCallback)) {
                     throw new \RuntimeException('Callback in "to_string_callback" option doesn`t contain callable function.');
                 }
 
-                $label = call_user_func($this->toStringCallback, $entity, $this->property);
+                $label = \call_user_func($this->toStringCallback, $entity, $this->property);
             } else {
                 try {
                     $label = (string) $entity;

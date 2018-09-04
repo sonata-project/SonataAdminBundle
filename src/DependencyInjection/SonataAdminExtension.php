@@ -216,7 +216,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
 
         switch ($config['security']['handler']) {
             case 'sonata.admin.security.handler.role':
-                if (0 === count($config['security']['information'])) {
+                if (0 === \count($config['security']['information'])) {
                     $config['security']['information'] = [
                         'EDIT' => ['EDIT'],
                         'LIST' => ['LIST'],
@@ -230,7 +230,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
 
                 break;
             case 'sonata.admin.security.handler.acl':
-                if (0 === count($config['security']['information'])) {
+                if (0 === \count($config['security']['information'])) {
                     $config['security']['information'] = [
                         'GUEST' => ['VIEW', 'LIST'],
                         'STAFF' => ['EDIT', 'LIST', 'CREATE'],
@@ -476,7 +476,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
             array_push($array, $toAdd);
         }
         foreach ($removeArray as $toRemove) {
-            if (in_array($toRemove, $array)) {
+            if (\in_array($toRemove, $array)) {
                 array_splice($array, array_search($toRemove, $array), 1);
             }
         }

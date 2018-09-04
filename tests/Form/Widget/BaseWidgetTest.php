@@ -68,7 +68,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
      */
     protected function getRenderingEngine(\Twig_Environment $environment = null)
     {
-        if (!in_array($this->type, ['form', 'filter'])) {
+        if (!\in_array($this->type, ['form', 'filter'])) {
             throw new \Exception('Please override $this->type in your test class specifying template to use (either form or filter)');
         }
 

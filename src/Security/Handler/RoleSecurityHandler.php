@@ -48,7 +48,7 @@ class RoleSecurityHandler implements SecurityHandlerInterface
 
     public function isGranted(AdminInterface $admin, $attributes, $object = null)
     {
-        if (!is_array($attributes)) {
+        if (!\is_array($attributes)) {
             $attributes = [$attributes];
         }
 

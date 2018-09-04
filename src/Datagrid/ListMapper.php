@@ -73,14 +73,14 @@ class ListMapper extends BaseMapper
     public function add($name, $type = null, array $fieldDescriptionOptions = [])
     {
         // Ensure batch and action pseudo-fields are tagged as virtual
-        if (in_array($type, ['actions', 'batch', 'select'])) {
+        if (\in_array($type, ['actions', 'batch', 'select'])) {
             $fieldDescriptionOptions['virtual_field'] = true;
         }
 
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
-        } elseif (is_string($name)) {
+        } elseif (\is_string($name)) {
             if ($this->admin->hasListFieldDescription($name)) {
                 throw new \RuntimeException(sprintf(
                     'Duplicate field name "%s" in list mapper. Names should be unique.',

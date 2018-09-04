@@ -94,7 +94,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
 
     public function count()
     {
-        return count($this->elements);
+        return \count($this->elements);
     }
 
     public function reorder(array $keys): void

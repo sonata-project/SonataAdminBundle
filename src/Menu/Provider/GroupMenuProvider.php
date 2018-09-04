@@ -98,7 +98,7 @@ class GroupMenuProvider implements MenuProviderInterface
                 $menuItem->setAttribute('class', 'keep-open');
                 $menuItem->setExtra('keep_open', $group['keep_open']);
             }
-        } elseif (1 === count($group['items'])) {
+        } elseif (1 === \count($group['items'])) {
             if ($this->canGenerateMenuItem($group['items'][0], $group)) {
                 $menuItem = $this->generateMenuItem($group['items'][0], $group);
                 $menuItem->setExtra('on_top', $group['on_top']);

@@ -293,7 +293,7 @@ class HelperControllerTest extends TestCase
         $this->admin->getCode()->willReturn('sonata.post.admin');
         $this->admin->hasAccess('edit', $object)->willReturn(true);
         $this->admin->getListFieldDescription('bar')->willReturn($fieldDescription->reveal());
-        $this->admin->getClass()->willReturn(get_class($object));
+        $this->admin->getClass()->willReturn(\get_class($object));
         $this->admin->update($object)->shouldBeCalled();
         $container->get('sonata.post.admin.template_registry')->willReturn($templateRegistry->reveal());
         // NEXT_MAJOR: Remove this line
@@ -314,7 +314,7 @@ class HelperControllerTest extends TestCase
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
         $fieldDescription->getTemplate()->willReturn('field_template');
         $fieldDescription->getValue(Argument::cetera())->willReturn('some value');
-        $modelManager->find(get_class($associationObject), 1)->willReturn($associationObject);
+        $modelManager->find(\get_class($associationObject), 1)->willReturn($associationObject);
 
         $response = $this->controller->setObjectFieldValueAction($request);
 
@@ -339,7 +339,7 @@ class HelperControllerTest extends TestCase
         $renderer = $this->configureFormRenderer();
 
         $this->admin->getObject(42)->willReturn($object);
-        $this->admin->getClass()->willReturn(get_class($object));
+        $this->admin->getClass()->willReturn(\get_class($object));
         $this->admin->setSubject($object)->shouldBeCalled();
         $this->admin->getFormTheme()->willReturn($formView);
         $this->helper->appendFormFieldElement($this->admin->reveal(), $object, null)->willReturn([
@@ -348,7 +348,7 @@ class HelperControllerTest extends TestCase
         ]);
         $this->helper->getChildFormView($formView, null)
             ->willReturn($formView);
-        $modelManager->find(get_class($object), 42)->willReturn($object);
+        $modelManager->find(\get_class($object), 42)->willReturn($object);
         $form->createView()->willReturn($formView);
         $renderer->setTheme($formView, $formView)->shouldBeCalled();
         $renderer->searchAndRenderBlock($formView, 'widget')->willReturn('block');
