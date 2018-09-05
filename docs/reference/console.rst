@@ -64,7 +64,7 @@ As an argument you need to specify the fully qualified model class.
 All passed arguments and options are used as default values in interactive mode.
 You can disable the interactive mode with ``--no-interaction`` option.
 
-The command require the SensioGeneratorBundle_ to work. If you don't already have it, you can install it with :
+The command requires the SensioGeneratorBundle_ to work. If you don't already have it, you can install it with :
 
 .. code-block:: bash
 
