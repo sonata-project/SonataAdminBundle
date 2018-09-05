@@ -711,8 +711,8 @@ class CRUDController implements ContainerAwareInterface
 
         $this->admin->setSubject($object);
 
-        /** @var $fields FieldDescriptionCollection */
         $fields = $this->admin->getShow();
+        \assert($fields instanceof FieldDescriptionCollection);
 
         // NEXT_MAJOR: replace deprecation with exception
         if (!\is_array($fields->getElements()) || 0 === $fields->count()) {
