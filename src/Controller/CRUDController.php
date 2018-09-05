@@ -333,8 +333,8 @@ class CRUDController implements ContainerAwareInterface
         $this->admin->setSubject($existingObject);
         $objectId = $this->admin->getNormalizedIdentifier($existingObject);
 
-        /** @var $form Form */
         $form = $this->admin->getForm();
+        \assert($form instanceof Form);
 
         if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
             throw new \RuntimeException(
@@ -595,8 +595,8 @@ class CRUDController implements ContainerAwareInterface
 
         $this->admin->setSubject($newObject);
 
-        /** @var $form Form */
         $form = $this->admin->getForm();
+        \assert($form instanceof Form);
 
         if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
             throw new \RuntimeException(
