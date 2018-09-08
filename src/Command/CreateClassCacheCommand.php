@@ -17,7 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 @trigger_error(
-    'The '.__NAMESPACE__.'\CreateClassCacheCommand class is deprecated since version 3.x and will be removed in 4.0.',
+    'The '.__NAMESPACE__.'\CreateClassCacheCommand class is deprecated since version 3.39.0 and will be removed in 4.0.',
     E_USER_DEPRECATED
 );
 
