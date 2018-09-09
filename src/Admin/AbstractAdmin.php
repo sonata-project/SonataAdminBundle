@@ -2721,6 +2721,12 @@ EOT;
             ];
         }
 
+        foreach ($this->getExtensions() as $extension) {
+            if ($extension instanceof ConfigureDashboardActionsExtensionInterface) {
+                $actions = $extension->configureDashboardActions($this, $actions);
+            }
+        }
+
         return $actions;
     }
 
