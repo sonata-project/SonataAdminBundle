@@ -233,6 +233,8 @@ class ExtensionCompilerPassTest extends TestCase
     }
 
     /**
+     * @group legacy
+     * @expectedDeprecation Extensions implementing "Sonata\AdminBundle\Admin\AdminExtensionInterface" are deprecated since 3.x and will be removed in 4.0. Implement single-method interfaces from "Sonata\AdminBundle\Admin\Extension" namespace.
      * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::process
      */
     public function testProcess()
@@ -262,6 +264,7 @@ class ExtensionCompilerPassTest extends TestCase
 
         $def = $container->get('sonata_post_admin');
         $extensions = $def->getExtensions();
+
         $this->assertCount(4, $extensions);
 
         $this->assertSame($historyExtension, $extensions[0]);

@@ -30,6 +30,7 @@ use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\DefaultRouteGenerator;
@@ -42,6 +43,7 @@ use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentVoteAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentWithCustomRouteAdmin;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\Extension\DummyExtension;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FilteredAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\ModelAdmin;
@@ -73,6 +75,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AdminTest extends TestCase
 {
+    use SetExtensionEmitterTrait;
+
     protected $cacheTempFolder;
 
     public function setUp()
@@ -142,6 +146,9 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\Post',
             'SonataNewsBundle:PostAdmin'
         );
+
+        $this->setExtensionEmitter($admin);
+
         $this->expectException(
             \InvalidArgumentException::class
         );
@@ -151,6 +158,10 @@ class AdminTest extends TestCase
         $admin->checkAccess('made-up');
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Extensions implementing "Sonata\AdminBundle\Admin\AdminExtensionInterface" are deprecated since 3.x and will be removed in 4.0. Implement single-method interfaces from "Sonata\AdminBundle\Admin\Extension" namespace.
+     */
     public function testCheckAccessThrowsAccessDeniedException()
     {
         $admin = new PostAdmin(
@@ -158,6 +169,9 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\Post',
             'SonataNewsBundle:PostAdmin'
         );
+
+        $this->setExtensionEmitter($admin);
+
         $securityHandler = $this->prophesize(SecurityHandlerInterface::class);
         $securityHandler->isGranted($admin, 'CUSTOM_ROLE', $admin)->willReturn(true);
         $securityHandler->isGranted($admin, 'EXTRA_CUSTOM_ROLE', $admin)->willReturn(false);
@@ -183,10 +197,15 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\Post',
             'SonataNewsBundle:PostAdmin'
         );
+        $this->setExtensionEmitter($admin);
 
         $this->assertFalse($admin->hasAccess('made-up'));
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Extensions implementing "Sonata\AdminBundle\Admin\AdminExtensionInterface" are deprecated since 3.x and will be removed in 4.0. Implement single-method interfaces from "Sonata\AdminBundle\Admin\Extension" namespace.
+     */
     public function testHasAccess()
     {
         $admin = new PostAdmin(
@@ -203,10 +222,15 @@ class AdminTest extends TestCase
         );
         $admin->addExtension($customExtension->reveal());
         $admin->setSecurityHandler($securityHandler->reveal());
+        $this->setExtensionEmitter($admin);
 
         $this->assertFalse($admin->hasAccess('custom_action'));
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Extensions implementing "Sonata\AdminBundle\Admin\AdminExtensionInterface" are deprecated since 3.x and will be removed in 4.0. Implement single-method interfaces from "Sonata\AdminBundle\Admin\Extension" namespace.
+     */
     public function testHasAccessAllowsAccess()
     {
         $admin = new PostAdmin(
@@ -223,10 +247,15 @@ class AdminTest extends TestCase
         );
         $admin->addExtension($customExtension->reveal());
         $admin->setSecurityHandler($securityHandler->reveal());
+        $this->setExtensionEmitter($admin);
 
         $this->assertTrue($admin->hasAccess('custom_action'));
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Extensions implementing "Sonata\AdminBundle\Admin\AdminExtensionInterface" are deprecated since 3.x and will be removed in 4.0. Implement single-method interfaces from "Sonata\AdminBundle\Admin\Extension" namespace.
+     */
     public function testHasAccessAllowsAccessEditAction()
     {
         $admin = new PostAdmin(
@@ -242,6 +271,7 @@ class AdminTest extends TestCase
         );
         $admin->addExtension($customExtension->reveal());
         $admin->setSecurityHandler($securityHandler->reveal());
+        $this->setExtensionEmitter($admin);
 
         $this->assertTrue($admin->hasAccess('edit_action'));
     }
@@ -535,6 +565,7 @@ class AdminTest extends TestCase
         $postAdmin->setConfigurationPool($pool);
         $postAdmin->setRouteBuilder($pathInfo);
         $postAdmin->setRouteGenerator($routeGenerator);
+        $this->setExtensionEmitter($postAdmin);
         $postAdmin->initialize();
 
         $commentAdmin = new CommentAdmin(
@@ -546,6 +577,7 @@ class AdminTest extends TestCase
         $commentAdmin->setConfigurationPool($pool);
         $commentAdmin->setRouteBuilder($pathInfo);
         $commentAdmin->setRouteGenerator($routeGenerator);
+        $this->setExtensionEmitter($commentAdmin);
         $commentAdmin->initialize();
 
         $postAdmin->addChild($commentAdmin, 'post');
@@ -560,6 +592,7 @@ class AdminTest extends TestCase
         $commentVoteAdmin->setConfigurationPool($pool);
         $commentVoteAdmin->setRouteBuilder($pathInfo);
         $commentVoteAdmin->setRouteGenerator($routeGenerator);
+        $this->setExtensionEmitter($commentVoteAdmin);
         $commentVoteAdmin->initialize();
 
         $commentAdmin->addChild($commentVoteAdmin);
@@ -878,6 +911,10 @@ class AdminTest extends TestCase
         $this->assertSame($menuFactory, $admin->getMenuFactory());
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Extensions implementing "Sonata\AdminBundle\Admin\AdminExtensionInterface" are deprecated since 3.x and will be removed in 4.0. Implement single-method interfaces from "Sonata\AdminBundle\Admin\Extension" namespace.
+     */
     public function testGetExtensions()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
@@ -1502,6 +1539,8 @@ class AdminTest extends TestCase
             ->will($this->returnValue(['foo', 'bar']));
 
         $admin->setModelManager($modelManager);
+        $this->setExtensionEmitter($admin);
+
         $this->assertSame(['foo', 'bar'], $admin->getExportFields());
     }
 
@@ -1509,9 +1548,15 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
+        $this->setExtensionEmitter($admin);
+
         $this->assertEmpty($admin->getPersistentParameters());
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Extensions implementing "Sonata\AdminBundle\Admin\AdminExtensionInterface" are deprecated since 3.x and will be removed in 4.0. Implement single-method interfaces from "Sonata\AdminBundle\Admin\Extension" namespace.
+     */
     public function testGetPersistentParametersWithInvalidExtension()
     {
         $this->expectException(\RuntimeException::class);
@@ -1526,6 +1571,10 @@ class AdminTest extends TestCase
         $admin->getPersistentParameters();
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Extensions implementing "Sonata\AdminBundle\Admin\AdminExtensionInterface" are deprecated since 3.x and will be removed in 4.0. Implement single-method interfaces from "Sonata\AdminBundle\Admin\Extension" namespace.
+     */
     public function testGetPersistentParametersWithValidExtension()
     {
         $expected = [
@@ -1538,6 +1587,7 @@ class AdminTest extends TestCase
         $extension->expects($this->once())->method('getPersistentParameters')->will($this->returnValue($expected));
 
         $admin->addExtension($extension);
+        $this->setExtensionEmitter($admin);
 
         $this->assertSame($expected, $admin->getPersistentParameters());
     }
@@ -1607,6 +1657,7 @@ class AdminTest extends TestCase
             ->method('getNewFieldDescriptionInstance')
             ->will($this->returnValue(new FieldDescription()));
         $modelAdmin->setModelManager($modelManager);
+        $this->setExtensionEmitter($modelAdmin);
 
         // a Admin class to test that preValidate is called
         $testAdminPreValidate = $this->createMock(AbstractAdmin::class, ['preValidate']);
@@ -1685,6 +1736,7 @@ class AdminTest extends TestCase
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
         $commentAdmin->setParentAssociationMapping('post.author');
         $commentAdmin->setParent($postAdmin);
+        $this->setExtensionEmitter($commentAdmin);
 
         $request = $this->createMock(Request::class, ['get']);
         $query = $this->createMock(ParameterBag::class, ['get']);
@@ -1750,6 +1802,7 @@ class AdminTest extends TestCase
             }));
 
         $modelAdmin->setModelManager($modelManager);
+        $this->setExtensionEmitter($modelAdmin);
 
         $pager = $this->createMock(PagerInterface::class);
 
@@ -1792,6 +1845,7 @@ class AdminTest extends TestCase
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
         $admin->setModelManager($modelManager);
+        $this->setExtensionEmitter($admin);
 
         $this->assertNull($admin->getSubject());
     }
@@ -1817,6 +1871,7 @@ class AdminTest extends TestCase
         $modelAdmin = new ModelAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'SonataFooBundle:ModelAdmin');
         $modelAdmin->setMenuFactory($menuFactory);
         $modelAdmin->setTranslationDomain('foo_bar_baz');
+        $this->setExtensionEmitter($modelAdmin);
 
         $modelAdmin->getSideMenu('foo');
     }
@@ -1849,6 +1904,7 @@ class AdminTest extends TestCase
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
         $admin->setModelManager($modelManager);
+        $this->setExtensionEmitter($admin);
 
         $admin->setRequest(new Request(['id' => $id]));
         $this->assertNull($admin->getSubject());
@@ -1870,6 +1926,7 @@ class AdminTest extends TestCase
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
         $admin->setModelManager($modelManager);
+        $this->setExtensionEmitter($admin);
 
         $admin->setRequest(new Request(['id' => $id]));
         $this->assertSame($entity, $admin->getSubject());
@@ -1897,6 +1954,7 @@ class AdminTest extends TestCase
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
         $commentAdmin->setRequest($request);
         $commentAdmin->setModelManager($modelManager);
+        $this->setExtensionEmitter($commentAdmin);
 
         $this->assertEquals($comment, $commentAdmin->getSubject());
 
@@ -1931,6 +1989,7 @@ class AdminTest extends TestCase
             ->with($admin, 'CREATE', $admin)
             ->will($this->returnValue(true));
         $admin->setSecurityHandler($securityHandler);
+        $this->setExtensionEmitter($admin, [new DummyExtension()]);
 
         $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
         $routeGenerator
@@ -1957,6 +2016,7 @@ class AdminTest extends TestCase
             ->with($admin, 'CREATE', $admin)
             ->will($this->returnValue(false));
         $admin->setSecurityHandler($securityHandler);
+        $this->setExtensionEmitter($admin, [new DummyExtension()]);
 
         $this->assertSame([], $admin->getActionButtons('list', null));
     }
@@ -1999,6 +2059,7 @@ class AdminTest extends TestCase
         $admin->setRouteBuilder($pathInfo);
         $admin->setTranslationDomain('SonataAdminBundle');
         $admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
+        $this->setExtensionEmitter($admin, [new DummyExtension()]);
 
         $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
         $routeGenerator
@@ -2066,6 +2127,7 @@ class AdminTest extends TestCase
         $admin = new PostAdmin('sonata.post.admin.post', $objFqn, 'SonataNewsBundle:PostAdmin');
         $admin->setRouteBuilder($pathInfo);
         $admin->setRouteGenerator($routeGenerator);
+        $this->setExtensionEmitter($admin);
         $admin->initialize();
 
         $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
@@ -2128,6 +2190,7 @@ class AdminTest extends TestCase
             ->will($this->returnValue([]));
 
         $admin->setModelManager($modelManager);
+        $this->setExtensionEmitter($admin, [new DummyExtension()]);
 
         $this->assertEquals([
             'foo' => [
@@ -2241,10 +2304,12 @@ class AdminTest extends TestCase
         $modelManager->expects($this->once())
             ->method('createQuery')
             ->with('My\Class')
-            ->willReturn('a query');
+            ->willReturn($this->createMock($proxyClass = ProxyQueryInterface::class));
 
         $admin->setModelManager($modelManager);
-        $this->assertSame('a query', $admin->createQuery('list'));
+        $this->setExtensionEmitter($admin);
+
+        $this->assertInstanceOf($proxyClass, $admin->createQuery('list'));
     }
 
     public function testGetDataSourceIterator()
@@ -2271,6 +2336,7 @@ class AdminTest extends TestCase
             ->getMockForAbstractClass();
         $admin->method('getDatagrid')->will($this->returnValue($datagrid));
         $admin->setModelManager($modelManager);
+        $this->setExtensionEmitter($admin);
 
         $admin->expects($this->any())
             ->method('getTranslationLabel')

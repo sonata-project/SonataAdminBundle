@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\Tests\Admin;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 
@@ -22,6 +23,8 @@ class BaseAdminModelManager_Admin extends AbstractAdmin
 
 class BaseAdminModelManagerTest extends TestCase
 {
+    use SetExtensionEmitterTrait;
+
     public function testHook()
     {
         $securityHandler = $this->getMockForAbstractClass(SecurityHandlerInterface::class);
@@ -34,6 +37,7 @@ class BaseAdminModelManagerTest extends TestCase
         $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);
         $admin->setSecurityHandler($securityHandler);
+        $this->setExtensionEmitter($admin);
 
         $t = new \stdClass();
 
@@ -57,20 +61,20 @@ class BaseAdminModelManagerTest extends TestCase
 
         $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);
+        $this->setExtensionEmitter($admin);
         $admin->getObject(10);
     }
 
     public function testCreateQuery()
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->once())->method('createQuery')->will($this->returnCallback(function ($class) {
-            if ('class' != $class) {
-                throw new \RuntimeException('Invalid class argument');
-            }
-        }));
+        $modelManager->expects($this->once())
+            ->method('createQuery')
+            ->willReturn($this->createMock($proxyClass = ProxyQueryInterface::class));
 
         $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);
+        $this->setExtensionEmitter($admin);
         $admin->createQuery();
     }
 

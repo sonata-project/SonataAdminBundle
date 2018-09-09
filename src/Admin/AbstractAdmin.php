@@ -25,6 +25,8 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Extension\Event;
+use Sonata\AdminBundle\Extension\ExtensionEmitter;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
@@ -411,6 +413,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     /**
      * @var AdminExtensionInterface[]
+     *
+     * @deprecated since 3.x, will be dropped in 4.0. Extensions are moved to Sonata\AdminBundle\Extension\ExtensionProvider
      */
     protected $extensions = [];
 
@@ -565,6 +569,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     private $filterPersister;
 
     /**
+     * @var ExtensionEmitter
+     */
+    private $extensionEmitter;
+
+    /**
      * @param string $code
      * @param string $class
      * @param string $baseControllerName
@@ -598,13 +607,17 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         $fields = $this->getModelManager()->getExportFields($this->getClass());
 
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->getExtensions() as $extension) {
             if (method_exists($extension, 'configureExportFields')) {
                 $fields = $extension->configureExportFields($this, $fields);
             }
         }
+        $this->extensionEmitter->dispatch(
+            $configureExportFieldsTask = new Event\ConfigureExportFieldsTask($this, $fields)
+        );
 
-        return $fields;
+        return $configureExportFieldsTask->result();
     }
 
     public function getDataSourceIterator()
@@ -656,9 +669,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function update($object)
     {
         $this->preUpdate($object);
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->extensions as $extension) {
             $extension->preUpdate($this, $object);
         }
+        $this->extensionEmitter->dispatch(new Event\PreUpdateMessage($this, $object));
 
         $result = $this->getModelManager()->update($object);
         // BC compatibility
@@ -667,9 +682,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         $this->postUpdate($object);
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->extensions as $extension) {
             $extension->postUpdate($this, $object);
         }
+        $this->extensionEmitter->dispatch(new Event\PostUpdateMessage($this, $object));
 
         return $object;
     }
@@ -677,9 +694,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function create($object)
     {
         $this->prePersist($object);
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->extensions as $extension) {
             $extension->prePersist($this, $object);
         }
+        $this->extensionEmitter->dispatch(new Event\PrePersistMessage($this, $object));
 
         $result = $this->getModelManager()->create($object);
         // BC compatibility
@@ -688,9 +707,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         $this->postPersist($object);
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->extensions as $extension) {
             $extension->postPersist($this, $object);
         }
+        $this->extensionEmitter->dispatch(new Event\PostPersistMessage($this, $object));
 
         $this->createObjectSecurity($object);
 
@@ -700,17 +721,21 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function delete($object)
     {
         $this->preRemove($object);
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->extensions as $extension) {
             $extension->preRemove($this, $object);
         }
+        $this->extensionEmitter->dispatch(new Event\PreRemoveMessage($this, $object));
 
         $this->getSecurityHandler()->deleteObjectSecurity($this, $object);
         $this->getModelManager()->delete($object);
 
         $this->postRemove($object);
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->extensions as $extension) {
             $extension->postRemove($this, $object);
         }
+        $this->extensionEmitter->dispatch(new Event\PostRemoveMessage($this, $object));
     }
 
     public function preValidate($object)
@@ -839,9 +864,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             ]);
         }
 
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->getExtensions() as $extension) {
             $extension->configureDatagridFilters($mapper);
         }
+
+        $this->extensionEmitter->dispatch(new Event\ConfigureDatagridFiltersMessage($mapper));
     }
 
     /**
@@ -1094,12 +1122,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         $actions = $this->configureBatchActions($actions);
 
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->getExtensions() as $extension) {
-            // TODO: remove method check in next major release
             if (method_exists($extension, 'configureBatchActions')) {
                 $actions = $extension->configureBatchActions($this, $actions);
             }
         }
+
+        $this->extensionEmitter->dispatch(
+            $configureBatchActionsTask = new Event\ConfigureBatchActionsTask($this, $actions)
+        );
+
+        $actions = $configureBatchActionsTask->result();
 
         foreach ($actions  as $name => &$action) {
             if (!array_key_exists('label', $action)) {
@@ -1235,9 +1269,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function getNewInstance()
     {
         $object = $this->getModelManager()->getModelInstance($this->getClass());
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->getExtensions() as $extension) {
             $extension->alterNewInstance($this, $object);
         }
+
+        $this->extensionEmitter->dispatch(new Event\AlterNewInstanceMessage($this, $object));
 
         return $object;
     }
@@ -1266,9 +1303,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         $this->configureFormFields($mapper);
 
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->getExtensions() as $extension) {
             $extension->configureFormFields($mapper);
         }
+
+        $this->extensionEmitter->dispatch(new Event\ConfigureFormFieldsMessage($mapper));
 
         $this->attachInlineValidator();
     }
@@ -1299,9 +1339,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function getObject($id)
     {
         $object = $this->getModelManager()->find($this->getClass(), $id);
+
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->getExtensions() as $extension) {
             $extension->alterObject($this, $object);
         }
+
+        $this->extensionEmitter->dispatch(new Event\AlterObjectMessage($this, $object));
 
         return $object;
     }
@@ -1330,9 +1374,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
         $query = $this->getModelManager()->createQuery($this->getClass());
 
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->extensions as $extension) {
             $extension->configureQuery($this, $query, $context);
         }
+
+        $this->extensionEmitter->dispatch(new Event\ConfigureQueryMessage($this, $query, $context));
 
         return $query;
     }
@@ -1363,9 +1410,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         $this->configureTabMenu($menu, $action, $childAdmin);
 
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->getExtensions() as $extension) {
             $extension->configureTabMenu($this, $menu, $action, $childAdmin);
         }
+
+        $this->extensionEmitter->dispatch(new Event\ConfigureTabMenuMessage($this, $menu, $action, $childAdmin));
 
         $this->menu = $menu;
     }
@@ -1893,6 +1943,7 @@ EOT;
     {
         $parameters = [];
 
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->getExtensions() as $extension) {
             $params = $extension->getPersistentParameters($this);
 
@@ -1903,7 +1954,9 @@ EOT;
             $parameters = array_merge($parameters, $params);
         }
 
-        return $parameters;
+        $this->extensionEmitter->dispatch($getPersistentParametersTask = new Event\GetPersistentParametersTask($this));
+
+        return array_merge($parameters, $getPersistentParametersTask->result());
     }
 
     /**
@@ -2323,6 +2376,11 @@ EOT;
         $this->securityHandler = $securityHandler;
     }
 
+    public function setExtensionEmitter(ExtensionEmitter $extensionEmitter)
+    {
+        $this->extensionEmitter = $extensionEmitter;
+    }
+
     public function getSecurityHandler()
     {
         return $this->securityHandler;
@@ -2400,9 +2458,18 @@ EOT;
 
     public function addExtension(AdminExtensionInterface $extension)
     {
+        @trigger_error(sprintf(
+            'Extensions implementing "%s" are deprecated since 3.x and will be removed in 4.0.'
+            .' Implement single-method interfaces from "Sonata\AdminBundle\Admin\Extension" namespace.',
+            AdminExtensionInterface::class
+        ), E_USER_DEPRECATED);
+
         $this->extensions[] = $extension;
     }
 
+    /**
+     * @deprecated since 3.x, will be dropped in 4.0. Extensions are moved to Sonata\AdminBundle\Extension\ExtensionProvider
+     */
     public function getExtensions()
     {
         return $this->extensions;
@@ -2681,14 +2748,18 @@ EOT;
     {
         $list = $this->configureActionButtons($action, $object);
 
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->getExtensions() as $extension) {
-            // TODO: remove method check in next major release
             if (method_exists($extension, 'configureActionButtons')) {
                 $list = $extension->configureActionButtons($this, $list, $action, $object);
             }
         }
 
-        return $list;
+        $this->extensionEmitter->dispatch(
+            $configureActionButtonsTask = new Event\ConfigureActionButtonsTask($this, $list, $action, $object)
+        );
+
+        return $configureActionButtonsTask->result();
     }
 
     /**
@@ -2802,12 +2873,14 @@ EOT;
 
         $this->configureDefaultFilterValues($defaultFilterValues);
 
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->getExtensions() as $extension) {
-            // NEXT_MAJOR: remove method check in next major release
             if (method_exists($extension, 'configureDefaultFilterValues')) {
                 $extension->configureDefaultFilterValues($this, $defaultFilterValues);
             }
         }
+
+        $this->extensionEmitter->dispatch(new Event\ConfigureDefaultFilterValuesMessage($this, $defaultFilterValues));
 
         return $defaultFilterValues;
     }
@@ -2883,9 +2956,12 @@ EOT;
 
         $this->configureShowFields($mapper);
 
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->getExtensions() as $extension) {
             $extension->configureShowFields($mapper);
         }
+
+        $this->extensionEmitter->dispatch(new Event\ConfigureShowFieldsMessage($mapper));
     }
 
     /**
@@ -2923,9 +2999,12 @@ EOT;
 
         $this->configureListFields($mapper);
 
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->getExtensions() as $extension) {
             $extension->configureListFields($mapper);
         }
+
+        $this->extensionEmitter->dispatch(new Event\ConfigureListFieldsMessage($mapper));
 
         if ($this->hasRequest() && $this->getRequest()->isXmlHttpRequest()) {
             $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
@@ -3028,9 +3107,12 @@ EOT;
 
                 $admin->validate($errorElement, $object);
 
+                // NEXT_MAJOR: remove this foreach
                 foreach ($admin->getExtensions() as $extension) {
                     $extension->validate($admin, $errorElement, $object);
                 }
+
+                $this->extensionEmitter->dispatch(new Event\ValidateMessage($admin, $errorElement, $object));
             },
             'serializingWarning' => true,
         ]));
@@ -3067,14 +3149,16 @@ EOT;
             'list' => 'LIST',
         ], $this->getAccessMapping());
 
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->extensions as $extension) {
-            // TODO: remove method check in next major release
             if (method_exists($extension, 'getAccessMapping')) {
                 $access = array_merge($access, $extension->getAccessMapping($this));
             }
         }
 
-        return $access;
+        $this->extensionEmitter->dispatch($getAccessMappingTask = new Event\GetAccessMappingTask($this));
+
+        return array_merge($access, $getAccessMappingTask->result());
     }
 
     /**
@@ -3106,8 +3190,10 @@ EOT;
 
         $this->configureRoutes($this->routes);
 
+        // NEXT_MAJOR: remove this foreach
         foreach ($this->getExtensions() as $extension) {
             $extension->configureRoutes($this, $this->routes);
         }
+        $this->extensionEmitter->dispatch(new Event\ConfigureRoutesMessage($this, $this->routes));
     }
 }
