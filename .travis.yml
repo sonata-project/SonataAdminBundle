@@ -60,6 +60,10 @@ matrix:
     - php: '7.2'
       env: SONATA_BLOCK=3.*
     - php: '7.2'
+      env: SYMFONY_MAKER=1.7.*
+    - php: '7.2'
+      env: SYMFONY_MAKER='dev-master as 1.7.x-dev'
+    - php: '7.2'
       env: SONATA_BLOCK='dev-master as 3.x-dev'
     - php: '7.2'
       env: SYMFONY_DEPRECATIONS_HELPER=0
@@ -69,6 +73,7 @@ matrix:
     - env: SYMFONY='dev-master as 3.4.x-dev'
     - env: SONATA_CORE='dev-master as 3.x-dev'
     - env: SONATA_BLOCK='dev-master as 3.x-dev'
+    - env: SYMFONY_MAKER='dev-master as 1.7.x-dev'
 
 before_install:
   - git remote add upstream ${UPSTREAM_URL} && git fetch --all
