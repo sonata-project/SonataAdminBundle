@@ -83,7 +83,8 @@ class RouteCollection
         $routeName = $this->baseRouteName.'_'.$name;
 
         if (!isset($defaults['_controller'])) {
-            $defaults['_controller'] = $this->baseControllerName.':'.$this->actionify($code);
+            $actionJoiner = false === \strpos($this->baseControllerName, '\\') ? ':' : '::';
+            $defaults['_controller'] = $this->baseControllerName . $actionJoiner . $this->actionify($code);
         }
 
         if (!isset($defaults['_sonata_admin'])) {
