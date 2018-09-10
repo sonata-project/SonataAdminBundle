@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Command;
 
 use Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Generator\AdminGenerator;
 use Sonata\AdminBundle\Generator\ControllerGenerator;
 use Sonata\AdminBundle\Manipulator\ServicesManipulator;
@@ -24,7 +25,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Sonata\AdminBundle\Controller\CRUDController;
 
 /**
  * @author Marek Stipek <mario.dweller@seznam.cz>
