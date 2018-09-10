@@ -30,6 +30,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 use Symfony\Component\Validator\Mapping\GenericMetadata;
 use Symfony\Component\Validator\Mapping\MetadataInterface;
+use Sonata\AdminBundle\Controller\CRUDController;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -70,9 +71,9 @@ class ExplainAdminCommandTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('getBaseControllerName')
-            ->will($this->returnValue('SonataAdminBundle:CRUD'));
+            ->will($this->returnValue(CRUDController::class));
 
-        $routeCollection = new RouteCollection('foo', 'fooBar', 'foo-bar', 'SonataAdminBundle:CRUD');
+        $routeCollection = new RouteCollection('foo', 'fooBar', 'foo-bar', CRUDController::class);
         $routeCollection->add('list');
         $routeCollection->add('edit');
 

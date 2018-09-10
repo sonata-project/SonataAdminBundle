@@ -553,7 +553,7 @@ that looks like this:
                 arguments:
                     - ~
                     - App\Entity\Image
-                    - 'SonataAdminBundle:CRUD'
+                    - 'Sonata\AdminBundle\Controller\CRUDController'
                 calls:
                     - [ setTranslationDomain, [App]]
                 public: true

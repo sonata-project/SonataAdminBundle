@@ -24,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Sonata\AdminBundle\Controller\CRUDController;
 
 /**
  * @author Marek Stipek <mario.dweller@seznam.cz>
@@ -125,7 +126,7 @@ class GenerateAdminCommand extends QuestionableCommand
             $servicesManipulator = new ServicesManipulator($file);
             $controllerName = $controllerClassBasename
                 ? sprintf('%s:%s', $bundle->getName(), substr($controllerClassBasename, 0, -10))
-                : 'SonataAdminBundle:CRUD'
+                : CRUDController::class
             ;
 
             try {
