@@ -217,7 +217,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The subject only set in edit/update/create mode.
      *
-     * @var object
+     * @var object|null
      */
     protected $subject;
 
@@ -287,7 +287,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The current request object.
      *
-     * @var \Symfony\Component\HttpFoundation\Request
+     * @var Request|null
      */
     protected $request;
 
@@ -338,14 +338,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The datagrid instance.
      *
-     * @var \Sonata\AdminBundle\Datagrid\DatagridInterface
+     * @var DatagridInterface|null
      */
     protected $datagrid;
 
     /**
      * The router instance.
      *
-     * @var RouteGeneratorInterface
+     * @var RouteGeneratorInterface|null
      */
     protected $routeGenerator;
 
@@ -481,12 +481,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     private $list;
 
     /**
-     * @var FieldDescriptionCollection
+     * @var FieldDescriptionCollection|null
      */
     private $show;
 
     /**
-     * @var Form
+     * @var Form|null
      */
     private $form;
 
@@ -823,18 +823,21 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         if ($this->isChild()) { // the admin class is a child, prefix it with the parent route pattern
+            $baseRoutePattern = $this->baseRoutePattern;
             if (!$this->baseRoutePattern) {
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
                     throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', \get_class($this)));
                 }
+                $baseRoutePattern = $this->urlize($matches[5], '-');
             }
 
-            $this->cachedBaseRoutePattern = sprintf('%s/%s/%s',
+            $this->cachedBaseRoutePattern = sprintf(
+                '%s/%s/%s',
                 $this->getParent()->getBaseRoutePattern(),
                 $this->getParent()->getRouterIdParameter(),
-                $this->baseRoutePattern ?: $this->urlize($matches[5], '-')
+                $baseRoutePattern
             );
         } elseif ($this->baseRoutePattern) {
             $this->cachedBaseRoutePattern = $this->baseRoutePattern;
@@ -845,7 +848,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', \get_class($this)));
             }
 
-            $this->cachedBaseRoutePattern = sprintf('/%s%s/%s',
+            $this->cachedBaseRoutePattern = sprintf(
+                '/%s%s/%s',
                 empty($matches[1]) ? '' : $this->urlize($matches[1], '-').'/',
                 $this->urlize($matches[3], '-'),
                 $this->urlize($matches[5], '-')
@@ -869,17 +873,20 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
+            $baseRouteName = $this->baseRouteName;
             if (!$this->baseRouteName) {
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
                     throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', \get_class($this)));
                 }
+                $baseRouteName = $this->urlize($matches[5]);
             }
 
-            $this->cachedBaseRouteName = sprintf('%s_%s',
+            $this->cachedBaseRouteName = sprintf(
+                '%s_%s',
                 $this->getParent()->getBaseRouteName(),
-                $this->baseRouteName ?: $this->urlize($matches[5])
+                $baseRouteName
             );
         } elseif ($this->baseRouteName) {
             $this->cachedBaseRouteName = $this->baseRouteName;
@@ -910,7 +917,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             $subClass = $this->getRequest()->query->get('subclass');
 
             if (!$this->hasSubClass($subClass)) {
-                throw new \RuntimeException(sprintf('Subclass "%" is not defined.', $subClass));
+                throw new \RuntimeException(sprintf('Subclass "%s" is not defined.', $subClass));
             }
 
             return $this->getSubClass($subClass);
@@ -1771,7 +1778,7 @@ EOT;
     public function getUniqid()
     {
         if (!$this->uniqid) {
-            $this->uniqid = 's'.crc32($this->getBaseCodeRoute());
+            $this->uniqid = 's'.substr(md5($this->getBaseCodeRoute()), 0, 10);
         }
 
         return $this->uniqid;
@@ -2494,7 +2501,7 @@ EOT;
     }
 
     /**
-     * {@inheritdoc}
+     * @param object $object
      */
     final public function getSearchResultLink($object)
     {

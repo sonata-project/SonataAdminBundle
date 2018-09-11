@@ -89,7 +89,10 @@ class CoreController extends Controller
      */
     protected function getAdminPool()
     {
-        return $this->container->get('sonata.admin.pool');
+        $pool = $this->container->get('sonata.admin.pool');
+        \assert($pool instanceof Pool);
+
+        return $pool;
     }
 
     /**
@@ -97,7 +100,10 @@ class CoreController extends Controller
      */
     protected function getSearchHandler()
     {
-        return $this->get('sonata.admin.search.handler');
+        $searchHandler = $this->get('sonata.admin.search.handler');
+        \assert($searchHandler instanceof SearchHandler);
+
+        return $searchHandler;
     }
 
     /**
@@ -117,7 +123,10 @@ class CoreController extends Controller
      */
     private function getTemplateRegistry()
     {
-        return $this->container->get('sonata.admin.global_template_registry');
+        $templateRegistry = $this->container->get('sonata.admin.global_template_registry');
+        \assert($templateRegistry instanceof TemplateRegistryInterface);
+
+        return $templateRegistry;
     }
 
     /**

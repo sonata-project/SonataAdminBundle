@@ -54,7 +54,7 @@ All you have to do is include ``Sonata\AdminBundle\Annotation`` and define the v
      *   class="AcmeBundle\Entity\MyEntity",
      *   id="service id (generated per default)",
      *   managerType="doctrine_mongodb (orm per default)",
-     *   baseControllerName="SonataAdminBundle:CRUD",
+     *   baseControllerName="Sonata\AdminBundle\Controller\CRUDController",
      *   group="myGroup",
      *   label="myLabel",
      *   showInDashboard=true,

@@ -35,7 +35,7 @@
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs" role="tablist">
                                 {% for name, form_tab in admin.formtabs %}
-                                    {% set _tab_name = ('tab_'~admin.code~'_'~loop.index)|replace({'.': '_', '\\': '_'}) %}
+                                    {% set _tab_name = 'tab_'~admin.uniqid~'_'~loop.index %}
                                     <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (app.request.query.get('_tab') == _tab_name) %} class="active"{% endif %}>
                                         <a href="#{{ _tab_name }}" class="changer-tab" aria-controls="{{ _tab_name }}" data-toggle="tab">
                                             <i class="fa fa-exclamation-circle has-errors hide" aria-hidden="true"></i> {{ form_tab.label|trans({}, form_tab.translation_domain ?: admin.translationDomain) }}
@@ -45,7 +45,7 @@
                             </ul>
                             <div class="tab-content">
                                 {% for code, form_tab in admin.formtabs %}
-                                    {% set _tab_name = ('tab_'~admin.code~'_'~loop.index)|replace({'.': '_', '\\': '_'}) %}
+                                    {% set _tab_name = 'tab_'~admin.uniqid~'_'~loop.index %}
                                     <div class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (app.request.query.get('_tab') == _tab_name) %} in active{% endif %}" id="{{ _tab_name }}">
                                         <div class="box-body  container-fluid">
                                             <div class="sonata-ba-collapsed-fields">

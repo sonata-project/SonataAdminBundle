@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
 

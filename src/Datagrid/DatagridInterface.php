@@ -65,9 +65,9 @@ interface DatagridInterface
     public function getColumns();
 
     /**
-     * @param string $name
-     * @param string $operator
-     * @param mixed  $value
+     * @param string      $name
+     * @param string|null $operator
+     * @param mixed       $value
      */
     public function setValue($name, $operator, $value);
 

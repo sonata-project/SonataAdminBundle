@@ -24,7 +24,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 @trigger_error(
-    'The '.__CLASS__.' class is deprecated since 3.24 and will be removed in 4.0.'
+    'The '.__NAMESPACE__.'\ModelChoiceList class is deprecated since 3.24 and will be removed in 4.0.'
     .' Use '.__NAMESPACE__.'\ModelChoiceLoader instead.',
     E_USER_DEPRECATED
 );

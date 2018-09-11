@@ -72,7 +72,7 @@ interface ModelManagerInterface
      * @param string $class
      * @param mixed  $id
      *
-     * @return object the object with id or null if not found
+     * @return object|null the object with id or null if not found
      */
     public function find($class, $id);
 
@@ -163,7 +163,7 @@ interface ModelManagerInterface
     /**
      * @param string $class
      *
-     * @return array
+     * @return array|\ArrayAccess
      */
     public function getModelCollectionInstance($class);
 

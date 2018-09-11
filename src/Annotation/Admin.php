@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Annotation;
 use JMS\DiExtraBundle\Annotation\MetadataProcessorInterface;
 use JMS\DiExtraBundle\Metadata\ClassMetadata;
 use Sonata\AdminBundle\Admin\AbstractAdmin as AdminClass;
+use Sonata\AdminBundle\Controller\CRUDController;
 
 /**
  * Use annotations to define admin classes.
@@ -80,7 +81,7 @@ class Admin implements MetadataProcessorInterface
     /**
      * @var string
      */
-    public $baseControllerName = 'SonataAdminBundle:CRUD';
+    public $baseControllerName = CRUDController::class;
 
     /**
      * @var string
@@ -156,8 +157,6 @@ class Admin implements MetadataProcessorInterface
 
     /**
      * Set group and label from class name it not set.
-     *
-     * @param $name
      */
     private function generateFallback($name): void
     {

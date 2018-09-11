@@ -37,6 +37,7 @@ class ModelReferenceType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver): void
     {
+        \assert($resolver instanceof OptionsResolver);
         $this->configureOptions($resolver);
     }
 

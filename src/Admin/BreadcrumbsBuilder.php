@@ -124,22 +124,23 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
 
         if ('list' === $action) {
             $menu->setUri(false);
-        } elseif ('create' !== $action && $admin->hasSubject()) {
-            $menu = $menu->addChild($admin->toString($admin->getSubject()), [
+
+            return $menu;
+        }
+        if ('create' !== $action && $admin->hasSubject()) {
+            return $menu->addChild($admin->toString($admin->getSubject()), [
                 'extras' => [
                     'translation_domain' => false,
                 ],
             ]);
-        } else {
-            $menu = $this->createMenuItem(
-                $admin,
-                $menu,
-                sprintf('%s_%s', $admin->getClassnameLabel(), $action),
-                $admin->getTranslationDomain()
-            );
         }
 
-        return $menu;
+        return $this->createMenuItem(
+            $admin,
+            $menu,
+            sprintf('%s_%s', $admin->getClassnameLabel(), $action),
+            $admin->getTranslationDomain()
+        );
     }
 
     /**

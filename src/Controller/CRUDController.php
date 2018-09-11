@@ -17,6 +17,7 @@ use Doctrine\Common\Inflector\Inflector;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
@@ -31,6 +32,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -331,14 +333,15 @@ class CRUDController implements ContainerAwareInterface
         $this->admin->setSubject($existingObject);
         $objectId = $this->admin->getNormalizedIdentifier($existingObject);
 
-        if (!\is_array($fields = $this->admin->getForm()->all()) || 0 === \count($fields)) {
+        $form = $this->admin->getForm();
+        \assert($form instanceof Form);
+
+        if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
             throw new \RuntimeException(
                 'No editable field defined. Did you forget to implement the "configureFormFields" method?'
             );
         }
 
-        /** @var $form Form */
-        $form = $this->admin->getForm();
         $form->setData($existingObject);
         $form->handleRequest($request);
 
@@ -546,6 +549,7 @@ class CRUDController implements ContainerAwareInterface
      * Create action.
      *
      * @throws AccessDeniedException If access is not granted
+     * @throws \RuntimeException     If no editable field is defined
      *
      * @return Response
      */
@@ -580,8 +584,15 @@ class CRUDController implements ContainerAwareInterface
 
         $this->admin->setSubject($newObject);
 
-        /** @var $form \Symfony\Component\Form\Form */
         $form = $this->admin->getForm();
+        \assert($form instanceof Form);
+
+        if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
+            throw new \RuntimeException(
+                'No editable field defined. Did you forget to implement the "configureFormFields" method?'
+            );
+        }
+
         $form->setData($newObject);
         $form->handleRequest($request);
 
@@ -689,6 +700,19 @@ class CRUDController implements ContainerAwareInterface
 
         $this->admin->setSubject($object);
 
+        $fields = $this->admin->getShow();
+        \assert($fields instanceof FieldDescriptionCollection);
+
+        // NEXT_MAJOR: replace deprecation with exception
+        if (!\is_array($fields->getElements()) || 0 === $fields->count()) {
+            @trigger_error(
+                'Calling this method without implementing "configureShowFields"'
+                .' is not supported since 3.x'
+                .' and will no longer be possible in 4.0',
+                E_USER_DEPRECATED
+            );
+        }
+
         // NEXT_MAJOR: Remove this line and use commented line below it instead
         $template = $this->admin->getTemplate('show');
         //$template = $this->templateRegistry->getTemplate('show');
@@ -696,7 +720,7 @@ class CRUDController implements ContainerAwareInterface
         return $this->renderWithExtraParams($template, [
             'action' => 'show',
             'object' => $object,
-            'elements' => $this->admin->getShow(),
+            'elements' => $fields,
         ], null);
     }
 
@@ -1154,7 +1178,10 @@ class CRUDController implements ContainerAwareInterface
     protected function getLogger()
     {
         if ($this->container->has('logger')) {
-            return $this->container->get('logger');
+            $logger = $this->container->get('logger');
+            \assert($logger instanceof LoggerInterface);
+
+            return $logger;
         }
 
         return new NullLogger();
@@ -1519,10 +1546,8 @@ class CRUDController implements ContainerAwareInterface
 
     /**
      * Sets the admin form theme to form view. Used for compatibility between Symfony versions.
-     *
-     * @param string $theme
      */
-    private function setFormTheme(FormView $formView, $theme): void
+    private function setFormTheme(FormView $formView, array $theme = null): void
     {
         $twig = $this->get('twig');
 

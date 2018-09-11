@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
 use Doctrine\Common\Inflector\Inflector;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Symfony\Component\DependencyInjection\ChildDefinition;
@@ -64,7 +65,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 $this->replaceDefaultArguments([
                     0 => $id,
-                    2 => 'SonataAdminBundle:CRUD',
+                    2 => CRUDController::class,
                 ], $definition, $parentDefinition);
                 $this->applyConfigurationFromAttribute($definition, $attributes);
                 $this->applyDefaults($container, $id, $attributes);

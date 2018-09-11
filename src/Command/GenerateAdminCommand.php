@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Command;
 
 use Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Generator\AdminGenerator;
 use Sonata\AdminBundle\Generator\ControllerGenerator;
 use Sonata\AdminBundle\Manipulator\ServicesManipulator;
@@ -127,7 +128,7 @@ class GenerateAdminCommand extends QuestionableCommand
             $servicesManipulator = new ServicesManipulator($file);
             $controllerName = $controllerClassBasename
                 ? sprintf('%s:%s', $bundle->getName(), substr($controllerClassBasename, 0, -10))
-                : 'SonataAdminBundle:CRUD'
+                : CRUDController::class
             ;
 
             try {
@@ -281,7 +282,10 @@ class GenerateAdminCommand extends QuestionableCommand
      */
     private function getModelManager($managerType)
     {
-        return $this->getContainer()->get('sonata.admin.manager.'.$managerType);
+        $modelManager = $this->getContainer()->get('sonata.admin.manager.'.$managerType);
+        \assert($modelManager instanceof ModelManagerInterface);
+
+        return $modelManager;
     }
 
     /**

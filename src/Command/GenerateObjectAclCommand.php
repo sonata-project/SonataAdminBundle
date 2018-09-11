@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Command;
 
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -99,6 +100,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
                 continue;
             }
 
+            \assert($admin instanceof AdminInterface);
             $manipulator->batchConfigureAcls($output, $admin, $securityIdentity);
         }
     }

@@ -47,6 +47,32 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.39.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.38.3...3.39.0) - 2018-09-09
+
+### Added
+- An affirmative grant checker for Twig
+- Translation file for `zh_HK` (Traditional Chinese).
+
+### Fixed
+- Updated Luxembourgish translations
+- Fixed negative admin unique id on 32 bits platforms
+- Fixed iCheck inputs not triggering change event
+- Fixed issue with `getNbResults` return negative result, if there where no results
+- Dashboard block security was expected to be checked affirmatively rather than unanimously
+
+### Changed
+- moved `symfony/class-loader` into `require-dev` section of composer
+- Use `Admin::getUniqid()` to generate HTML tab id
+
+### Deprecated
+- `CreateClassCacheCommand` is deprecated
+
+## [3.38.3](https://github.com/sonata-project/SonataAdminBundle/compare/3.38.2...3.38.3) - 2018-08-21
+
+### Fixed
+- An error message about subclasses has been fixed
+- issue Error 500 when requesting short object description as JSON
+
 ## [3.38.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.38.1...3.38.2) - 2018-08-17
 
 ### Fixed

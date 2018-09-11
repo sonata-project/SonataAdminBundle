@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -33,6 +34,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\DependencyInjection\TranslationDumperPass;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\MessageSelector;
@@ -106,6 +108,11 @@ class SonataAdminExtensionTest extends TestCase
      */
     private $templateRegistry;
 
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $securityChecker;
+
     public function setUp(): void
     {
         date_default_timezone_set('Europe/London');
@@ -154,7 +161,13 @@ class SonataAdminExtensionTest extends TestCase
         $this->container = $this->prophesize(ContainerInterface::class);
         $this->container->get('sonata_admin_foo_service.template_registry')->willReturn($this->templateRegistry->reveal());
 
-        $this->twigExtension = new SonataAdminExtension($this->pool, $this->logger, $this->translator, $this->container->reveal());
+        $this->securityChecker = $this->prophesize(AuthorizationCheckerInterface::class);
+        $this->securityChecker->isGranted(['foo', 'bar'], null)->willReturn(false);
+        $this->securityChecker->isGranted(Argument::type('string'), null)->willReturn(true);
+
+        $this->twigExtension = new SonataAdminExtension(
+            $this->pool, $this->logger, $this->translator, $this->container->reveal(), $this->securityChecker->reveal()
+        );
         $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
 
         $request = $this->createMock(Request::class);
@@ -2453,6 +2466,15 @@ EOT
     public function testCanonicalizedLocaleForMoment($expected, $original): void
     {
         $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForMoment($this->mockExtensionContext($original)));
+    }
+
+    public function testIsGrantedAffirmative(): void
+    {
+        $this->assertTrue(
+            $this->twigExtension->isGrantedAffirmative(['foo', 'bar'])
+        );
+        $this->assertTrue($this->twigExtension->isGrantedAffirmative('foo'));
+        $this->assertTrue($this->twigExtension->isGrantedAffirmative('bar'));
     }
 
     /**

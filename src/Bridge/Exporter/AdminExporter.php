@@ -27,7 +27,7 @@ final class AdminExporter
     private $exporter;
 
     /**
-     * @param Exporter will be used to get global settings
+     * @param Exporter $exporter will be used to get global settings
      */
     public function __construct(Exporter $exporter)
     {

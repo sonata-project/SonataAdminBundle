@@ -114,7 +114,8 @@ class SimplePagerTest extends TestCase
 
         $this->pager->setQuery($this->proxyQuery);
         $this->pager->init();
-        $this->AssertEquals(0, $this->pager->getLastPage());
+        $this->assertEquals(1, $this->pager->getLastPage());
+        $this->assertEquals(0, $this->pager->getNbResults());
     }
 
     public function testInitNoQuery(): void

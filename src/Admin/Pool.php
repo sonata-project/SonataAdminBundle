@@ -198,7 +198,7 @@ class Pool
     public function getAdminByClass($class)
     {
         if (!$this->hasAdminByClass($class)) {
-            return;
+            return null;
         }
 
         if (!\is_array($this->adminClasses[$class])) {
@@ -267,7 +267,7 @@ class Pool
      *
      * @throws \InvalidArgumentException
      *
-     * @return AdminInterface
+     * @return AdminInterface|null
      */
     public function getInstance($id)
     {

@@ -20,6 +20,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Command\ExplainAdminCommand;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Console\Application;
@@ -72,9 +73,9 @@ class ExplainAdminCommandTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('getBaseControllerName')
-            ->will($this->returnValue('SonataAdminBundle:CRUD'));
+            ->will($this->returnValue(CRUDController::class));
 
-        $routeCollection = new RouteCollection('foo', 'fooBar', 'foo-bar', 'SonataAdminBundle:CRUD');
+        $routeCollection = new RouteCollection('foo', 'fooBar', 'foo-bar', CRUDController::class);
         $routeCollection->add('list');
         $routeCollection->add('edit');
 

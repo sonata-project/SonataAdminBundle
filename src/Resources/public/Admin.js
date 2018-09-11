@@ -101,10 +101,16 @@ var Admin = {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_ICHECK) {
             Admin.log('[core|setup_icheck] configure iCheck on', subject);
 
-            jQuery("input[type='checkbox']:not('label.btn>input'), input[type='radio']:not('label.btn>input')", subject).iCheck({
-                checkboxClass: 'icheckbox_square-blue',
-                radioClass: 'iradio_square-blue'
-            });
+            jQuery("input[type='checkbox']:not('label.btn>input'), input[type='radio']:not('label.btn>input')", subject)
+                .iCheck({
+                    checkboxClass: 'icheckbox_square-blue',
+                    radioClass: 'iradio_square-blue'
+                })
+                // See https://github.com/fronteed/iCheck/issues/244
+                .on('ifToggled', function (e) {
+                    $(e.target).trigger('change');
+                })
+            ;
         }
     },
     /**
