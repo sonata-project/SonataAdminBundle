@@ -15,6 +15,7 @@ use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Knp\Menu\Silex\RouterAwareFactory;
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Route\RoutesCache;
@@ -438,7 +439,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $container
             ->register('sonata_report_one_admin')
             ->setClass(MockAdmin::class)
-            ->setArguments(['', ReportOne::class, 'SonataAdminBundle:CRUD'])
+            ->setArguments(['', ReportOne::class, CRUDController::class])
             ->addTag('sonata.admin', ['group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true]);
 
         $this->expectException(\RuntimeException::class, 'You can\'t use "on_top" option with multiple same name groups.');
@@ -459,7 +460,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $container
             ->register('sonata_report_two_admin')
             ->setClass(MockAdmin::class)
-            ->setArguments(['', ReportOne::class, 'SonataAdminBundle:CRUD'])
+            ->setArguments(['', ReportOne::class, CRUDController::class])
             ->addTag('sonata.admin', ['group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => false]);
 
         $this->expectException(\RuntimeException::class, 'You can\'t use "on_top" option with multiple same name groups.');
@@ -480,12 +481,12 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $container
             ->register('sonata_document_one_admin')
             ->setClass(MockAdmin::class)
-            ->setArguments(['', ReportOne::class, 'SonataAdminBundle:CRUD'])
+            ->setArguments(['', ReportOne::class, CRUDController::class])
             ->addTag('sonata.admin', ['group' => 'sonata_document_group', 'manager_type' => 'orm', 'on_top' => false]);
         $container
             ->register('sonata_document_two_admin')
             ->setClass(MockAdmin::class)
-            ->setArguments(['', ReportOne::class, 'SonataAdminBundle:CRUD'])
+            ->setArguments(['', ReportOne::class, CRUDController::class])
             ->addTag('sonata.admin', ['group' => 'sonata_document_group', 'manager_type' => 'orm', 'on_top' => false]);
 
         try {
@@ -550,13 +551,13 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $definition = $container->getDefinition('sonata_post_one_admin');
         $this->assertSame('sonata_post_one_admin', $definition->getArgument(0));
         $this->assertSame(Post::class, $definition->getArgument(1));
-        $this->assertSame('SonataAdminBundle:CRUD', $definition->getArgument(2));
+        $this->assertSame(CRUDController::class, $definition->getArgument(2));
         $this->assertSame('extra_argument_1', $definition->getArgument(3));
 
         $definition = $container->getDefinition('sonata_post_two_admin');
         $this->assertSame('sonata_post_two_admin', $definition->getArgument(0));
         $this->assertSame(Post::class, $definition->getArgument(1));
-        $this->assertSame('SonataAdminBundle:CRUD', $definition->getArgument(2));
+        $this->assertSame(CRUDController::class, $definition->getArgument(2));
         $this->assertSame('extra_argument_2', $definition->getArgument(3));
     }
 
@@ -728,35 +729,35 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             ->register('sonata_news_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->setArguments(['', News::class, 'SonataAdminBundle:CRUD'])
+            ->setArguments(['', News::class, CRUDController::class])
             ->addTag('sonata.admin', ['group' => 'sonata_group_two', 'label' => '5 Entry', 'manager_type' => 'orm']);
         $container
             ->register('sonata_post_admin')
             ->setClass(MockAdmin::class)
             ->setPublic(true)
-            ->setArguments(['', Post::class, 'SonataAdminBundle:CRUD'])
+            ->setArguments(['', Post::class, CRUDController::class])
             ->addTag('sonata.admin', ['group' => 'sonata_group_one', 'manager_type' => 'orm']);
         $container
             ->register('sonata_article_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->setArguments(['', Article::class, 'SonataAdminBundle:CRUD'])
+            ->setArguments(['', Article::class, CRUDController::class])
             ->addTag('sonata.admin', ['group' => 'sonata_group_one', 'label' => '1 Entry', 'manager_type' => 'doctrine_phpcr']);
         $container
             ->register('sonata_report_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->setArguments(['', Report::class, 'SonataAdminBundle:CRUD'])
+            ->setArguments(['', Report::class, CRUDController::class])
             ->addTag('sonata.admin', ['group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true]);
         $container
             ->register('sonata_report_one_admin')
             ->setClass(MockAdmin::class)
-            ->setArguments(['', ReportOne::class, 'SonataAdminBundle:CRUD'])
+            ->setArguments(['', ReportOne::class, CRUDController::class])
             ->addTag('sonata.admin', ['group' => 'sonata_report_one_group', 'manager_type' => 'orm', 'show_mosaic_button' => false]);
         $container
             ->register('sonata_report_two_admin')
             ->setClass(MockAdmin::class)
-            ->setArguments(['', ReportTwo::class, 'SonataAdminBundle:CRUD'])
+            ->setArguments(['', ReportTwo::class, CRUDController::class])
             ->addTag('sonata.admin', ['group' => 'sonata_report_two_group', 'manager_type' => 'orm', 'show_mosaic_button' => true]);
 
         // translator

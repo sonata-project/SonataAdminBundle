@@ -36,7 +36,7 @@
             </trans-unit>
             <trans-unit id="btn_advanced_filters">
                 <source>btn_advanced_filters</source>
-                <target>btn_advanced_filters</target>
+                <target>Erweidert Filteren</target>
             </trans-unit>
             <trans-unit id="btn_update">
                 <source>btn_update</source>
@@ -74,6 +74,10 @@
                 <source>link_add</source>
                 <target>Nei</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>Beaarbechten</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>Lëscht</target>
@@ -88,7 +92,7 @@
             </trans-unit>
             <trans-unit id="title_show">
                 <source>title_show</source>
-                <target>title_show</target>
+                <target>"%name%" uweisen</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
@@ -112,11 +116,11 @@
             </trans-unit>
             <trans-unit id="link_first_pager">
                 <source>link_first_pager</source>
-                <target>link_first_pager</target>
+                <target>Éischt Säit</target>
             </trans-unit>
             <trans-unit id="link_last_pager">
                 <source>link_last_pager</source>
-                <target>link_last_pager</target>
+                <target>Lescht Säit</target>
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
@@ -168,11 +172,15 @@
             </trans-unit>
             <trans-unit id="flash_lock_error">
                 <source>flash_lock_error</source>
-                <target>flash_lock_error</target>
+                <target>Een anere Benotzer huet d'Element Element "%name%" beaarbecht. Wann ech gelift %link_start%hei klicken%link_end%, fir d'Säit nei ze lueden an déi neisten Ännerungen ze iwwerhuelen.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Déi ausgewielten Elementer goufen erfollegräich geläscht.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_no_elements_processed">
+                <source>flash_batch_no_elements_processed</source>
+                <target>Keng Elementer veraarbecht.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
@@ -188,7 +196,7 @@
             </trans-unit>
             <trans-unit id="form_not_available">
                 <source>form_not_available</source>
-                <target>form_not_available</target>
+                <target>Formulaire net disponibel</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>link_breadcrumb_dashboard</source>
@@ -212,11 +220,11 @@
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Bass Du sécher dass Du dës Aktioun bestätegen a fir all d'ausgewielten Elementer ausféiere wëlls?</target>
+                <target>Bass Du sécher, dass Du dës Aktioun bestätegen a fir dat ausgewielten Element ausféiere wëlls?|Bass Du sécher, dass Du dës Aktioun bestätegen a fir all d'ausgewielten Elementer ausféiere wëlls?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
-                <target>message_batch_all_confirmation</target>
+                <target>Bass Du sécher, dass Du dës Aktioun bestätegen a fir all d'Elementer ausféiere wëlls?</target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
@@ -244,7 +252,7 @@
             </trans-unit>
             <trans-unit id="label_type_not_equals">
                 <source>label_type_not_equals</source>
-                <target>label_type_not_equals</target>
+                <target>ass net gläich</target>
             </trans-unit>
             <trans-unit id="label_type_equal">
                 <source>label_type_equal</source>
@@ -336,7 +344,7 @@
             </trans-unit>
             <trans-unit id="td_role">
                 <source>td_role</source>
-                <target>td_role</target>
+                <target>Roll</target>
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
@@ -344,11 +352,11 @@
             </trans-unit>
             <trans-unit id="label_compare_revision">
                 <source>label_compare_revision</source>
-                <target>label_compare_revision</target>
+                <target>Versioun vergläichen</target>
             </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
-                <target>list_results_count_prefix</target>
+                <target>méi wéi</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
@@ -477,6 +485,10 @@
             <trans-unit id="read_less">
                 <source>read_less</source>
                 <target>manner uweisen</target>
+            </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Navigatioun an-/ausblenden</target>
             </trans-unit>
         </body>
     </file>

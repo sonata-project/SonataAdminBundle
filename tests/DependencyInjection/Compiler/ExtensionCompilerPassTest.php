@@ -17,6 +17,7 @@ use Knp\Menu\Provider\MenuProviderInterface;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminExtensionInterface;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Tests\Fixtures\DependencyInjection\TimestampableTrait;
@@ -399,19 +400,19 @@ class ExtensionCompilerPassTest extends TestCase
             ->register('sonata_post_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->setArguments(['', Post::class, 'SonataAdminBundle:CRUD'])
+            ->setArguments(['', Post::class, CRUDController::class])
             ->addTag('sonata.admin');
         $container
             ->register('sonata_news_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->setArguments(['', News::class, 'SonataAdminBundle:CRUD'])
+            ->setArguments(['', News::class, CRUDController::class])
             ->addTag('sonata.admin');
         $container
             ->register('sonata_article_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->setArguments(['', Article::class, 'SonataAdminBundle:CRUD'])
+            ->setArguments(['', Article::class, CRUDController::class])
             ->addTag('sonata.admin');
         $container
             ->register('event_dispatcher')

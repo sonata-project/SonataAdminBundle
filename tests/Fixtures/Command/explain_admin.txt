@@ -2,7 +2,7 @@ AdminBundle Information
 id                   : foo
 Admin                : %1$s
 Model                : Acme\Entity\Foo
-Controller           : SonataAdminBundle:CRUD
+Controller           : Sonata\AdminBundle\Controller\CRUDController
 Model Manager        : %2$s
 Form Builder         : %3$s
 Datagrid Builder     : %4$s
