@@ -8,6 +8,8 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 
 #}
+{% use 'form_div_layout.html.twig' %}
+
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -16,12 +18,15 @@ file that was distributed with this source code.
                     <th>{{ 'action_delete'|trans({}, 'SonataAdminBundle') }}</th>
                 {% else %}
                     <th
-                        {% if nested_field.vars['required']|default(false) %}
-                            class="required"
-                        {% endif %}
-                        {% if nested_field.vars['attr']['hidden']|default(false) %}
-                            style="display:none;"
-                        {% endif %}
+                        {% with {attr: sonata_admin.header_attr[field_name]|default([])} %}
+                            {% if nested_field.vars['required']|default(false) %}
+                                {% set attr = attr|merge({class: (attr.class|default('') ~ ' required')|trim}) %}
+                            {% endif %}
+                            {% if nested_field.vars['attr']['hidden']|default(false) %}
+                                {% set attr = attr|merge({style: (attr.style|default('') ~ ' display:none;')|trim}) %}
+                            {% endif %}
+                            {{ block('attributes') }}
+                        {% endwith %}
                     >
                         {{ nested_field.vars.label|trans({}, nested_field.vars['sonata_admin'].admin.translationDomain
                             |default(nested_field.vars.translation_domain)
