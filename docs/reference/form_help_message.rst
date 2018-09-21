@@ -105,7 +105,7 @@ This Extension for example adds a note field to some entities which use a custom
         /**
          * @param DatagridMapper $datagridMapper
          */
-        public function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
             $datagridMapper
                 ->add('note')
@@ -118,7 +118,7 @@ This Extension for example adds a note field to some entities which use a custom
         /**
          * @param FormMapper $formMapper
          */
-        public function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->addHelp('note', 'Use this field for an internal note.')
@@ -129,7 +129,7 @@ This Extension for example adds a note field to some entities which use a custom
         /**
          * @param ShowMapper $showMapper
          */
-        public function configureShowFields(ShowMapper $showMapper)
+        protected function configureShowFields(ShowMapper $showMapper)
         {
             $showMapper
                 ->with('Internal')

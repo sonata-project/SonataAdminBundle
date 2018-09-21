@@ -392,7 +392,7 @@ list action's links to point to a different action, set the ``route`` option in 
 
     class PostAdmin extends AbstractAdmin
     {
-        public function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $listMapper)
         {
             $listMapper
                 ->addIdentifier('name', null, [

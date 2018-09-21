@@ -21,7 +21,7 @@ created objects and other admin features.
 
     class PublishStatusAdminExtension extends AbstractAdminExtension
     {
-        public function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->add('status', ChoiceType::class, [

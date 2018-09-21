@@ -161,7 +161,7 @@ To specify options, do as follows::
     {
         // ...
 
-        public function configureFormFields(FormMapper $formMapper): void
+        protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
                 ->tab('General') // the tab call is optional
