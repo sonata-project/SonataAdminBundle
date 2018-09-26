@@ -19,6 +19,7 @@ use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Bundle\MakerBundle\InputConfiguration;
 use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
+use Symfony\Bundle\MakerBundle\Util\ClassNameDetails;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,18 +35,37 @@ final class AdminMaker extends AbstractMaker
      * @var string
      */
     private $projectDirectory;
-
     /**
-     * @var ModelManagerInterface[]
+     * @var string[]
      */
     private $availableModelManagers;
-
+    /**
+     * @var string
+     */
     private $skeletonDirectory;
+    /**
+     * @var string
+     */
     private $modelClass;
+    /**
+     * @var string
+     */
     private $modelClassBasename;
+    /**
+     * @var string
+     */
     private $adminClassBasename;
+    /**
+     * @var string
+     */
     private $controllerClassBasename;
+    /**
+     * @var string
+     */
     private $managerType;
+    /**
+     * @var ModelManagerInterface
+     */
     private $modelManager;
 
     public function __construct($projectDirectory, array $modelManagers = [])
@@ -138,8 +158,27 @@ final class AdminMaker extends AbstractMaker
     {
         $this->configure($input);
 
-        $adminClassFullName = $this->generateAdmin($io, $generator);
-        $controllerClassFullName = $this->generateController($input, $io, $generator);
+        $adminClassNameDetails = $generator->createClassNameDetails(
+            $this->modelClassBasename,
+            'Admin\\',
+            'Admin'
+        );
+
+        $adminClassFullName = $adminClassNameDetails->getFullName();
+        $this->generateAdmin($io, $generator, $adminClassNameDetails);
+
+        $controllerClassFullName = null;
+        if ($this->controllerClassBasename) {
+            $controllerClassNameDetails = $generator->createClassNameDetails(
+                $this->controllerClassBasename,
+                'Controller\\',
+                'Controller'
+            );
+
+            $controllerClassFullName = $controllerClassNameDetails->getFullName();
+        }
+
+        $this->generateController($input, $io, $generator, $controllerClassNameDetails);
         $this->generateService($input, $io, $adminClassFullName, $controllerClassFullName);
     }
 
@@ -152,8 +191,12 @@ final class AdminMaker extends AbstractMaker
         ));
     }
 
-    private function generateService(InputInterface $input, ConsoleStyle $io, $adminClassFullName, $controllerClassFullName)
-    {
+    private function generateService(
+        InputInterface $input,
+        ConsoleStyle $io,
+        $adminClassFullName,
+        $controllerClassFullName
+    ) {
         if ($servicesFile = $input->getOption('services')) {
             $file = sprintf('%s/config/%s', $this->projectDirectory, $servicesFile);
             $servicesManipulator = new ServicesManipulator($file);
@@ -179,25 +222,20 @@ final class AdminMaker extends AbstractMaker
         }
     }
 
-    private function generateController(InputInterface $input, ConsoleStyle $io, Generator $generator)
-    {
+    private function generateController(
+        InputInterface $input,
+        ConsoleStyle $io,
+        Generator $generator,
+        ClassNameDetails $controllerClassNameDetails
+    ) {
         $controllerClassFullName = null;
-        if ($this->controllerClassBasename) {
-            $controllerClassNameDetails = $generator->createClassNameDetails(
-                $this->controllerClassBasename,
-                'Controller\\',
-                'Controller'
-            );
-
+        if ($controllerClassNameDetails) {
             $controllerClassFullName = $controllerClassNameDetails->getFullName();
-
             $generator->generateClass($controllerClassFullName,
                 $this->skeletonDirectory.'/AdminController.tpl.php',
                 []
             );
-
             $generator->writeChanges();
-
             $io->writeln(sprintf(
                 '%sThe controller class "<info>%s</info>" has been generated under the file "<info>%s</info>".',
                 PHP_EOL,
@@ -205,18 +243,10 @@ final class AdminMaker extends AbstractMaker
                 $controllerClassFullName
             ));
         }
-
-        return $controllerClassFullName;
     }
 
-    private function generateAdmin(ConsoleStyle $io, Generator $generator)
+    private function generateAdmin(ConsoleStyle $io, Generator $generator, ClassNameDetails $adminClassNameDetails)
     {
-        $adminClassNameDetails = $generator->createClassNameDetails(
-            $this->modelClassBasename,
-            'Admin\\',
-            'Admin'
-        );
-
         $adminClassFullName = $adminClassNameDetails->getFullName();
 
         $fields = $this->modelManager->getExportFields($this->modelClass);
@@ -239,8 +269,6 @@ final class AdminMaker extends AbstractMaker
             $adminClassNameDetails->getShortName(),
             $adminClassFullName
         ));
-
-        return $adminClassFullName;
     }
 
     private function configure(InputInterface $input)

@@ -4,6 +4,7 @@
         <defaults public="false"/>
         <service id="sonata.admin.maker" class="Sonata\AdminBundle\Maker\AdminMaker">
             <argument>%kernel.project_dir%</argument>
+            <argument type="collection"/>
             <tag name="maker.command"/>
         </service>
     </services>
