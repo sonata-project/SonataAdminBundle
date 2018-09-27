@@ -148,7 +148,6 @@ final class AdminMaker extends AbstractMaker
      */
     public function configureDependencies(DependencyBuilder $dependencies)
     {
-        // TODO: Implement configureDependencies() method.
     }
 
     /**
