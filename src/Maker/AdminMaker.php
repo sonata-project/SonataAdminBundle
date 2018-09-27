@@ -193,9 +193,9 @@ final class AdminMaker extends AbstractMaker
 
     /**
      * @param InputInterface $input
-     * @param ConsoleStyle $io
-     * @param string $adminClassFullName
-     * @param string $controllerClassFullName
+     * @param ConsoleStyle   $io
+     * @param string         $adminClassFullName
+     * @param string         $controllerClassFullName
      */
     private function generateService(
         InputInterface $input,
