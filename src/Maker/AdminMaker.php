@@ -190,17 +190,11 @@ final class AdminMaker extends AbstractMaker
         ));
     }
 
-    /**
-     * @param InputInterface $input
-     * @param ConsoleStyle   $io
-     * @param string         $adminClassFullName
-     * @param string         $controllerClassFullName
-     */
     private function generateService(
         InputInterface $input,
         ConsoleStyle $io,
-        $adminClassFullName,
-        $controllerClassFullName
+        string $adminClassFullName,
+        string $controllerClassFullName
     ) {
         if ($servicesFile = $input->getOption('services')) {
             $file = sprintf('%s/config/%s', $this->projectDirectory, $servicesFile);
