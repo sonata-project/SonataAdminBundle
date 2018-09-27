@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
+use Sonata\AdminBundle\Maker\AdminMaker;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -22,6 +23,9 @@ use Symfony\Component\DependencyInjection\Definition;
  */
 class AdminMakerCompilerPassTest extends TestCase
 {
+    /**
+     * @var AdminMaker
+     */
     private $adminMaker;
 
     public function setUp()

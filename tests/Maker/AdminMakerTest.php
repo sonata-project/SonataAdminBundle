@@ -21,7 +21,9 @@ use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -30,13 +32,33 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class AdminMakerTest extends TestCase
 {
+    /**
+     * @var string
+     */
     private $projectDirectory;
+    /**
+     * @var array
+     */
     private $modelManagers = [];
-
+    /**
+     * @var InputInterface
+     */
     private $input;
+    /**
+     * @var OutputInterface
+     */
     private $output;
+    /**
+     * @var ConsoleStyle
+     */
     private $io;
+    /**
+     * @var Generator
+     */
     private $generator;
+    /**
+     * @var string
+     */
     private $servicesFile;
 
     protected function setup()
