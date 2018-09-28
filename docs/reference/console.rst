@@ -41,7 +41,7 @@ The command require the `Symfony Maker Bundle`_ to work. If you don't already ha
 ===============   ===============================================================================================================================
 Options           Description
 ===============   ===============================================================================================================================
- **model**        The fully qualified model class, e.g. "App/Entity/Foo"
+ **model**        The fully qualified model class, e.g. "App\Entity\Foo"
  **admin**        the admin class basename (by default this adds "Admin" to the model class name, e.g. "FooAdmin")
  **controller**   the controller class basename (by default this adds "AdminController" to the model class name, e.g. "FooAdminController")
  **manager**      the model manager type (by default this is the first registered model manager type, e.g. "orm")
