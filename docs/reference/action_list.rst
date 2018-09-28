@@ -49,7 +49,7 @@ Here is an example:
     <?php
     // ...
 
-    public function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             // addIdentifier allows to specify that this column
@@ -361,10 +361,10 @@ given the default type ``is equal`` is used.
 
 .. code-block:: php
 
-    public function configureDefaultFilterValues(array &$filterValues)
+    protected function configureDefaultFilterValues(array &$filterValues)
     {
         $filterValues['foo'] = [
-            'type'  => ChoiceFilter::TYPE_CONTAINS,
+            'type'  => ChoiceType::TYPE_CONTAINS,
             'value' => 'bar',
         ];
     }
@@ -558,7 +558,7 @@ You can:
 
     <?php
 
-    public function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list)
     {
         $list
             ->add('id', null, [

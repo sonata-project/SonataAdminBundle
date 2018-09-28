@@ -52,7 +52,7 @@ To specify options, do as follow:
 
     class PersonAdmin extends AbstractAdmin
     {
-        public function configureShowFields(ShowMapper $showMapper)
+        protected function configureShowFields(ShowMapper $showMapper)
         {
             $showMapper
                 ->tab('General') // the tab call is optional
@@ -81,7 +81,7 @@ Here is an example of how to achieve this :
 
     class PersonAdmin extends ParentAdmin
     {
-        public function configureShowFields(ShowMapper $showMapper)
+        protected function configureShowFields(ShowMapper $showMapper)
         {
             parent::configureShowFields($showMapper);
 
