@@ -32,7 +32,7 @@ As an argument you need to specify the fully qualified model class.
 All passed arguments and options are used as default values in interactive mode.
 You can disable the interactive mode with ``--no-interaction`` option.
 
-The command require the  SymfonyMakerBundle_ to work. If you don't already have it, you can install it with :
+The command require the `Symfony Maker Bundle`_ to work. If you don't already have it, you can install it with :
 
 .. code-block:: bash
 
@@ -151,4 +151,4 @@ you to generate ACL entities for the objects handled by your Admins. See the hel
 of the command for more information.
 
 .. _SensioGeneratorBundle: http://symfony.com/doc/current/bundles/SensioGeneratorBundle/index.html
-.. _SymfonyMakerBundle: https://symfony.com/doc/current/bundles/SymfonyMakerBundle/index.html
+.. _`Symfony Maker Bundle`: https://symfony.com/doc/current/bundles/SymfonyMakerBundle/index.html
