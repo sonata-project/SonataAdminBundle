@@ -119,7 +119,7 @@ label can be defined as the third argument of the ``add`` method::
 
     class PageAdmin extends AbstractAdmin
     {
-        public function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->add('isValid', null, [

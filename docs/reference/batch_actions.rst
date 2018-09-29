@@ -37,7 +37,7 @@ merges them onto a single target item. It should only be available when two cond
     <?php
     // in your Admin class
 
-    public function configureBatchActions($actions)
+    protected function configureBatchActions($actions)
     {
         if (
           $this->hasRoute('edit') && $this->hasAccess('edit') &&

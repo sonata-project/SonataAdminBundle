@@ -145,6 +145,10 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
         $loader->load('commands.xml');
         $loader->load('actions.xml');
 
+        if (isset($bundles['MakerBundle'])) {
+            $loader->load('makers.xml');
+        }
+
         if (isset($bundles['SonataExporterBundle'])) {
             $loader->load('exporter.xml');
         }

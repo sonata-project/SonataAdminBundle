@@ -47,7 +47,7 @@ This is currently limited to scalar types (text, integer, url...) and choice typ
 
 .. code-block:: php
 
-    public function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
 
@@ -76,7 +76,7 @@ Parameter                               Description
 
 .. code-block:: php
 
-    public function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper)
     {
         // For the value `prog`, the displayed text is `In progress`. The `App` catalogue will be used to translate `In progress` message.
         $listMapper
@@ -95,7 +95,7 @@ The ``choice`` field type also supports multiple values that can be separated by
 
 .. code-block:: php
 
-    public function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper)
     {
         // For the value `['r', 'b']`, the displayed text ist `red | blue`.
         $listMapper
@@ -136,7 +136,7 @@ Parameter                               Description
 
 .. code-block:: php
 
-    public function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             // Output for value `http://example.com`:
@@ -206,7 +206,7 @@ Parameter                   Description
 
 .. code-block:: php
 
-    public function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
 
