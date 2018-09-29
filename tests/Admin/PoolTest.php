@@ -37,13 +37,9 @@ class PoolTest extends TestCase
             'adminGroup1' => ['sonata.user.admin.group1' => []],
         ]);
 
-        $expectedOutput = [
-            'adminGroup1' => [
-                'sonata.user.admin.group1' => 'sonata_user_admin_group1_AdminClass',
-            ],
-        ];
-
-        $this->assertSame($expectedOutput, $this->pool->getGroups());
+        $result = $this->pool->getGroups();
+        $this->assertArrayHasKey('adminGroup1', $result);
+        $this->assertArrayHasKey('sonata.user.admin.group1', $result['adminGroup1']);
     }
 
     public function testHasGroup()
@@ -129,11 +125,8 @@ class PoolTest extends TestCase
             ],
         ]);
 
-        $this->assertEquals([
-            'sonata_admin1_AdminClass',
-            'sonata_admin2_AdminClass',
-        ], $this->pool->getAdminsByGroup('adminGroup1'));
-        $this->assertEquals(['sonata_admin3_AdminClass'], $this->pool->getAdminsByGroup('adminGroup2'));
+        $this->assertCount(2, $this->pool->getAdminsByGroup('adminGroup1'));
+        $this->assertCount(1, $this->pool->getAdminsByGroup('adminGroup2'));
     }
 
     public function testGetAdminForClassWhenAdminClassIsNotSet()
@@ -173,7 +166,7 @@ class PoolTest extends TestCase
         ]);
 
         $this->assertTrue($this->pool->hasAdminByClass('someclass'));
-        $this->assertSame('sonata_user_admin_group1_AdminClass', $this->pool->getAdminByClass('someclass'));
+        $this->assertInstanceOf(AdminInterface::class, $this->pool->getAdminByClass('someclass'));
     }
 
     public function testGetInstanceWithUndefinedServiceId()
@@ -203,7 +196,7 @@ class PoolTest extends TestCase
     {
         $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
 
-        $this->assertSame('sonata_news_admin_post_AdminClass', $this->pool->getAdminByAdminCode('sonata.news.admin.post'));
+        $this->assertInstanceOf(AdminInterface::class, $this->pool->getAdminByAdminCode('sonata.news.admin.post'));
     }
 
     public function testGetAdminByAdminCodeForChildClass()
@@ -342,8 +335,8 @@ class PoolTest extends TestCase
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($serviceId) {
-                return str_replace('.', '_', $serviceId).'_AdminClass';
+            ->will($this->returnCallback(function () {
+                return $this->createMock(AdminInterface::class);
             }));
 
         return $containerMock;
