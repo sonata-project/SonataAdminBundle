@@ -547,9 +547,8 @@ class CRUDControllerTest extends TestCase
     public function testConfigureWithException2(): void
     {
         $this->expectException(
-            \RuntimeException::class,
-            'Unable to find the admin class related to the current controller '.
-            '(Sonata\AdminBundle\Controller\CRUDController)'
+            \InvalidArgumentException::class,
+            'Found service "nonexistent.admin" is not a valid admin service'
         );
 
         $this->pool->setAdminServiceIds(['nonexistent.admin']);

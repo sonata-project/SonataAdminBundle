@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
+use InvalidArgumentException;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -167,7 +168,7 @@ class Pool
      *
      * @throws \InvalidArgumentException
      *
-     * @return array
+     * @return AdminInterface[]
      */
     public function getAdminsByGroup($group)
     {
@@ -232,7 +233,7 @@ class Pool
      *
      * @param string $adminCode
      *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface|false|null
+     * @return \Sonata\AdminBundle\Admin\AdminInterface|false
      */
     public function getAdminByAdminCode($adminCode)
     {
@@ -267,7 +268,7 @@ class Pool
      *
      * @throws \InvalidArgumentException
      *
-     * @return AdminInterface|null
+     * @return AdminInterface
      */
     public function getInstance($id)
     {
@@ -299,7 +300,13 @@ class Pool
             throw new \InvalidArgumentException($msg);
         }
 
-        return $this->container->get($id);
+        $admin = $this->container->get($id);
+
+        if (!$admin instanceof AdminInterface) {
+            throw new InvalidArgumentException(sprintf('Found service "%s" is not a valid admin service', $id));
+        }
+
+        return $admin;
     }
 
     /**
