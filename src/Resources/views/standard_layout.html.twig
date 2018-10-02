@@ -39,24 +39,6 @@ file that was distributed with this source code.
 
         {% block javascripts %}
             {% block sonata_javascript_config %}
-                <script>
-                    window.SONATA_CONFIG = {
-                        CONFIRM_EXIT: {% if sonata_admin.adminPool.getOption('confirm_exit') %}true{% else %}false{% endif %},
-                        USE_SELECT2: {% if sonata_admin.adminPool.getOption('use_select2') %}true{% else %}false{% endif %},
-                        USE_ICHECK: {% if sonata_admin.adminPool.getOption('use_icheck') %}true{% else %}false{% endif %},
-                        USE_STICKYFORMS: {% if sonata_admin.adminPool.getOption('use_stickyforms') %}true{% else %}false{% endif %}
-                    };
-                    window.SONATA_TRANSLATIONS = {
-                        CONFIRM_EXIT: '{{ 'confirm_exit'|trans({}, 'SonataAdminBundle')|escape('js') }}'
-                    };
-
-                    // http://getbootstrap.com/getting-started/#support-ie10-width
-                    if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
-                        var msViewportStyle = document.createElement('style');
-                        msViewportStyle.appendChild(document.createTextNode('@-ms-viewport{width:auto!important}'));
-                        document.querySelector('head').appendChild(msViewportStyle);
-                    }
-                </script>
             {% endblock %}
 
             {% block sonata_javascript_pool %}
@@ -119,6 +101,17 @@ file that was distributed with this source code.
                 {% if app.request.cookies.get('sonata_sidebar_hide') -%}
                     sidebar-collapse
                 {%- endif -%}"
+                data-sonata-admin='{{ {
+                    config: {
+                        CONFIRM_EXIT: sonata_admin.adminPool.getOption('confirm_exit') ? 'true' : 'false',
+                        USE_SELECT2: sonata_admin.adminPool.getOption('use_select2') ? 'true' : 'false',
+                        USE_ICHECK: sonata_admin.adminPool.getOption('use_icheck') ? 'true' : 'false',
+                        USE_STICKYFORMS: sonata_admin.adminPool.getOption('use_stickyforms') ? 'true' : 'false'
+                    },
+                    translations: {
+                        CONFIRM_EXIT: 'confirm_exit'|trans({}, 'SonataAdminBundle'),
+                    },
+                }|json_encode()|raw }}'
             {%- endblock -%}
     >
 
