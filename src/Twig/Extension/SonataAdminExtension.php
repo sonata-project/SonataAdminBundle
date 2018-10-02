@@ -471,6 +471,9 @@ class SonataAdminExtension extends AbstractExtension
         } elseif ('nl' === $lang && !\in_array($locale, ['nl', 'nl-be'], true)) {
             // `moment: ^2.8` only ships "nl" and "nl-be" locales for "nl" language
             $locale = 'nl';
+        } elseif ('fr' === $lang && !\in_array($locale, ['fr', 'fr-ca', 'fr-ch'], true)) {
+            // `moment: ^2.8` only ships "fr", "fr-ca" and "fr-ch" locales for "fr" language
+            $locale = 'fr';
         }
 
         // @todo: there are more locales which are not supported by moment and they need to be translated/normalized/canonicalized here
