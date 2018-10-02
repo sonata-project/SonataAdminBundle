@@ -15,11 +15,11 @@
         });
 
         return $(this);
-	}
+	  };
 
     $(window).on('beforeunload', function(event) {
         var e = event || window.event,
-            message = window.SONATA_TRANSLATIONS.CONFIRM_EXIT,
+            message = Admin.get_translations('CONFIRM_EXIT'),
             changes = false
         ;
 
