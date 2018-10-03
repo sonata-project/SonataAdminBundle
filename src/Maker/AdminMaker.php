@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -80,7 +82,7 @@ final class AdminMaker extends AbstractMaker
         return 'make:sonata:admin';
     }
 
-    public function configureCommand(Command $command, InputConfiguration $inputConfig)
+    public function configureCommand(Command $command, InputConfiguration $inputConfig): void
     {
         $command
             ->setDescription('Generates an admin class based on the given model class')
@@ -94,7 +96,7 @@ final class AdminMaker extends AbstractMaker
         $inputConfig->setArgumentAsNonInteractive('model');
     }
 
-    public function interact(InputInterface $input, ConsoleStyle $io, Command $command)
+    public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void
     {
         $io->section('Welcome to the Sonata Admin');
         $modelClass = $io->ask(
@@ -146,14 +148,14 @@ final class AdminMaker extends AbstractMaker
     /**
      * Configure any library dependencies that your maker requires.
      */
-    public function configureDependencies(DependencyBuilder $dependencies)
+    public function configureDependencies(DependencyBuilder $dependencies): void
     {
     }
 
     /**
      * Called after normal code generation: allows you to do anything.
      */
-    public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
+    public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
         $this->configure($input);
 
@@ -195,7 +197,7 @@ final class AdminMaker extends AbstractMaker
         ConsoleStyle $io,
         string $adminClassFullName,
         string $controllerClassFullName
-    ) {
+    ): void {
         if ($servicesFile = $input->getOption('services')) {
             $file = sprintf('%s/config/%s', $this->projectDirectory, $servicesFile);
             $servicesManipulator = new ServicesManipulator($file);
@@ -226,7 +228,7 @@ final class AdminMaker extends AbstractMaker
         ConsoleStyle $io,
         Generator $generator,
         ClassNameDetails $controllerClassNameDetails
-    ) {
+    ): void {
         $controllerClassFullName = null;
         if ($controllerClassNameDetails) {
             $controllerClassFullName = $controllerClassNameDetails->getFullName();
@@ -244,7 +246,7 @@ final class AdminMaker extends AbstractMaker
         }
     }
 
-    private function generateAdmin(ConsoleStyle $io, Generator $generator, ClassNameDetails $adminClassNameDetails)
+    private function generateAdmin(ConsoleStyle $io, Generator $generator, ClassNameDetails $adminClassNameDetails): void
     {
         $adminClassFullName = $adminClassNameDetails->getFullName();
 
@@ -270,7 +272,7 @@ final class AdminMaker extends AbstractMaker
         ));
     }
 
-    private function configure(InputInterface $input)
+    private function configure(InputInterface $input): void
     {
         $this->modelClass = Validators::validateClass($input->getArgument('model'));
         $this->modelClassBasename = (new \ReflectionClass($this->modelClass))->getShortName();
