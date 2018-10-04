@@ -726,6 +726,8 @@ var Admin = {
     }
 };
 
+window.Admin = Admin;
+
 jQuery(document).ready(function() {
     Admin.handle_top_navbar_height();
 });

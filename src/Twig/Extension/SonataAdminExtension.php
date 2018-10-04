@@ -39,6 +39,13 @@ use Twig\TwigFunction;
  */
 final class SonataAdminExtension extends AbstractExtension
 {
+    // @todo: there are more locales which are not supported by moment and they need to be translated/normalized/canonicalized here
+    const MOMENT_UNSUPPORTED_LOCALES = [
+        'es' => ['es', 'es-do'],
+        'nl' => ['nl', 'nl-be'],
+        'fr' => ['fr', 'fr-ca', 'fr-ch'],
+    ];
+
     /**
      * @var TranslatorInterface|null
      */
@@ -414,15 +421,11 @@ final class SonataAdminExtension extends AbstractExtension
             return null;
         }
 
-        if ('es' === $lang && !\in_array($locale, ['es', 'es-do'], true)) {
-            // `moment: ^2.8` only ships "es" and "es-do" locales for "es" language
-            $locale = 'es';
-        } elseif ('nl' === $lang && !\in_array($locale, ['nl', 'nl-be'], true)) {
-            // `moment: ^2.8` only ships "nl" and "nl-be" locales for "nl" language
-            $locale = 'nl';
+        foreach (self::MOMENT_UNSUPPORTED_LOCALES as $language => $locales) {
+            if ($language === $lang && !\in_array($locale, $locales)) {
+                $locale = $language;
+            }
         }
-
-        // @todo: there are more locales which are not supported by moment and they need to be translated/normalized/canonicalized here
 
         return $locale;
     }

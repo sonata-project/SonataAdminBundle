@@ -2386,6 +2386,7 @@ EOT
             ['fo', 'fo'],
             ['fr-ca', 'fr-ca'],
             ['fr-ch', 'fr-ch'],
+            ['fr', 'fr-fr'],
             ['fr', 'fr'],
             ['fy', 'fy'],
             ['gd', 'gd'],
