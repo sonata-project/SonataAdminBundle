@@ -13,49 +13,11 @@ namespace Sonata\AdminBundle\Datagrid;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @deprecated since 3.x, to be removed in 4.0
  */
-interface PagerInterface
+interface PagerInterface extends \Sonata\DatagridBundle\Pager\PagerInterface
 {
-    /**
-     * Initialize the Pager.
-     */
-    public function init();
-
-    /**
-     * Returns the maximum number of results per page.
-     *
-     * @return int
-     */
-    public function getMaxPerPage();
-
-    /**
-     * Sets the maximum number of results per page.
-     *
-     * @param int $max
-     */
-    public function setMaxPerPage($max);
-
-    /**
-     * Sets the current page.
-     *
-     * @param int $page
-     */
-    public function setPage($page);
-
-    /**
-     * Set query.
-     *
-     * @param ProxyQueryInterface $query
-     */
-    public function setQuery($query);
-
-    /**
-     * Returns an array of results on the given page.
-     *
-     * @return array
-     */
-    public function getResults();
-
     /**
      * Sets the maximum number of page numbers.
      *
