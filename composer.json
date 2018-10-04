@@ -28,6 +28,7 @@
         "knplabs/knp-menu-bundle": "^2.2",
         "sonata-project/block-bundle": "^3.11",
         "sonata-project/core-bundle": "^3.9",
+        "sonata-project/datagrid-bundle": "^2.3",
         "sonata-project/exporter": "^1.8",
         "symfony/asset": "^2.8 || ^3.2 || ^4.0",
         "symfony/config": "^2.8 || ^3.2 || ^4.0",
