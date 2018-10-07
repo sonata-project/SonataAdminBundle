@@ -52,8 +52,8 @@ var Admin = {
     read_config: function() {
       var data = $('[data-sonata-admin]').data('sonata-admin');
 
-      this.config = data.config();
-      this.translations = data.translations();
+      this.config = data.config;
+      this.translations = data.translations;
     },
     get_config: function(key) {
         if (this.config == null) {
