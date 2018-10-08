@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 final class AdminMakerCompilerPass implements CompilerPassInterface
 {
-    const MANAGERS = [
+    private const MANAGERS = [
         'sonata.admin.manager.orm',
         'sonata.admin.manager.doctrine_mongodb',
         'sonata.admin.manager.doctrine_phpcr',
