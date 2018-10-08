@@ -2,7 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [3.40.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.39.0...3.40.0) - 2018-09-09
+## [3.40.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.40.0...3.40.1) - 2018-10-08
+### Fixed
+- Minor bug in JavaScripts (Admin.js)
+
+## [3.40.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.39.0...3.40.0) - 2018-10-06
 ### Added
 - Added `Admin` object reference to javascript `window` object
 - Added `RuntimeException` message for `Create` and `Show` actions from `CRUDController`
