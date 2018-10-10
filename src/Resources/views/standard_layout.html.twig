@@ -103,10 +103,10 @@ file that was distributed with this source code.
                 {%- endif -%}"
                 data-sonata-admin='{{ {
                     config: {
-                        CONFIRM_EXIT: sonata_admin.adminPool.getOption('confirm_exit') ? 'true' : 'false',
-                        USE_SELECT2: sonata_admin.adminPool.getOption('use_select2') ? 'true' : 'false',
-                        USE_ICHECK: sonata_admin.adminPool.getOption('use_icheck') ? 'true' : 'false',
-                        USE_STICKYFORMS: sonata_admin.adminPool.getOption('use_stickyforms') ? 'true' : 'false'
+                        CONFIRM_EXIT: sonata_admin.adminPool.getOption('confirm_exit'),
+                        USE_SELECT2: sonata_admin.adminPool.getOption('use_select2'),
+                        USE_ICHECK: sonata_admin.adminPool.getOption('use_icheck'),
+                        USE_STICKYFORMS: sonata_admin.adminPool.getOption('use_stickyforms'),
                     },
                     translations: {
                         CONFIRM_EXIT: 'confirm_exit'|trans({}, 'SonataAdminBundle'),
