@@ -166,18 +166,18 @@ final class AdminMaker extends AbstractMaker
         $adminClassFullName = $adminClassNameDetails->getFullName();
         $this->generateAdmin($io, $generator, $adminClassNameDetails);
 
-        $controllerClassFullName = null;
+        $controllerClassFullName = '';
         if ($this->controllerClassBasename) {
             $controllerClassNameDetails = $generator->createClassNameDetails(
                 $this->controllerClassBasename,
                 'Controller\\',
                 'Controller'
             );
+            $this->generateController($input, $io, $generator, $controllerClassNameDetails);
 
             $controllerClassFullName = $controllerClassNameDetails->getFullName();
         }
 
-        $this->generateController($input, $io, $generator, $controllerClassNameDetails);
         $this->generateService($input, $io, $adminClassFullName, $controllerClassFullName);
     }
 
