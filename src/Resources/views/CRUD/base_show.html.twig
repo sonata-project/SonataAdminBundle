@@ -39,11 +39,16 @@ file that was distributed with this source code.
 
         {% if has_tab %}
             {% set random_string = random() %}
+            {% set tab_query_index = -1 %}
+            {% if app.request.query.has('_tab') %}
+                {% set tab_query_index = app.request.query.get('_tab')|split("_")|last %}
+            {% endif %}
+
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs" role="tablist">
                     {% for name, show_tab in admin.showtabs %}
                         {% set _tab_name = 'tab_'~admin.uniqid~'_'~random_string~'_'~loop.index %}
-                        <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (app.request.query.get('_tab') == _tab_name) %} class="active"{% endif %}>
+                        <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %} class="active"{% endif %}>
                             <a href="#{{ _tab_name }}" class="changer-tab" aria-controls="{{ _tab_name }}" data-toggle="tab">
                                 {{ show_tab.label|trans({}, show_tab.translation_domain ?: admin.translationDomain) }}
                             </a>
@@ -55,7 +60,7 @@ file that was distributed with this source code.
                     {% for code, show_tab in admin.showtabs %}
                         {% set _tab_name = 'tab_'~admin.uniqid~'_'~random_string~'_'~loop.index %}
                         <div
-                            class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (app.request.query.get('_tab') == _tab_name) %} in active{% endif %}"
+                            class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (tab_query_index == loop.index) %} in active{% endif %}"
                             id="{{ _tab_name }}"
                         >
                             <div class="box-body  container-fluid">
