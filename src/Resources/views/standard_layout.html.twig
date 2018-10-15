@@ -101,6 +101,8 @@ file that was distributed with this source code.
                 {% if app.request.cookies.get('sonata_sidebar_hide') -%}
                     sidebar-collapse
                 {%- endif -%}"
+            {%- endblock -%}
+            {% block body_data_attributes -%}
                 data-sonata-admin='{{ {
                     config: {
                         CONFIRM_EXIT: sonata_admin.adminPool.getOption('confirm_exit'),
