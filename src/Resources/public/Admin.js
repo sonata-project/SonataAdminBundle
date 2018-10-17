@@ -636,7 +636,7 @@ var Admin = {
 
         jQuery(window).scroll(
             Admin.debounce(function() {
-                if (footer.length && jQuery(window).scrollTop() + jQuery(window).height() == jQuery(document).height()) {
+                if (footer.length && Math.round(jQuery(window).scrollTop() + jQuery(window).height()) >= jQuery(document).height()) {
                     jQuery(footer).removeClass('stuck');
                 }
 
