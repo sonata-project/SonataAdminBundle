@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.40.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.40.1...3.40.2) - 2018-10-17
+### Fixed
+- Add display of missing `sonata_help` on many form type
+- confirm_exit, use_select2, use_icheck and use_stickyforms settings.
+- `make:sonata:admin` not working
+- Moved the JS config in a meta tag in head section of the sonata_layout twig file
+
 ## [3.40.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.40.0...3.40.1) - 2018-10-08
 ### Fixed
 - Minor bug in JavaScripts (Admin.js)
