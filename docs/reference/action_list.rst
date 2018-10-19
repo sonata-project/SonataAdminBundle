@@ -648,4 +648,4 @@ Checkbox range selection
 
 .. _`issues on GitHub`: https://github.com/sonata-project/SonataAdminBundle/issues/1519
 .. _`SonataDoctrineORMAdminBundle Documentation`: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html
-.. _`here`: https://github.com/sonata-project/SonataCoreBundle/tree/master/Form/Type
+.. _`here`: https://github.com/sonata-project/SonataCoreBundle/tree/master/src/Form/Type
