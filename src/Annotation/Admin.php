@@ -19,6 +19,8 @@ use Sonata\AdminBundle\Controller\CRUDController;
 /**
  * Use annotations to define admin classes.
  *
+ * @deprecated since 3.40.2, Use https://github.com/kunicmarko20/SonataAnnotationBundle instead.
+ *
  * @Annotation
  * @Target("CLASS")
  */
