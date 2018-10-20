@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -28,7 +30,7 @@ class AdminMakerCompilerPassTest extends TestCase
      */
     private $adminMaker;
 
-    public function setUp()
+    public function setUp(): void
     {
         if (5 == PHP_MAJOR_VERSION || !class_exists('Symfony\Component\Console\CommandLoader\CommandLoaderInterface')) {
             $this->markTestSkipped('Test only available for PHP 7 and SF 3.4');
@@ -39,7 +41,7 @@ class AdminMakerCompilerPassTest extends TestCase
         $this->adminMaker->replaceArgument(Argument::type('integer'), Argument::any())->shouldBeCalledTimes(2);
     }
 
-    public function testProcess()
+    public function testProcess(): void
     {
         $containerBuilderMock = $this->prophesize(ContainerBuilder::class);
 
