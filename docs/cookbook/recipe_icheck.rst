@@ -20,7 +20,7 @@ If you don't want to use iCheck in your admin, you can disable it in configurati
 
         sonata_admin:
             options:
-                use_icheck:    false # disable iCheck
+                use_icheck: false # disable iCheck
 
 Disable iCheck on some form elements
 -------------------------------------
