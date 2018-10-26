@@ -29,6 +29,7 @@ To disable iCheck on some ``checkbox`` or ``radio`` form elements, set data att
 
 .. code-block:: php
 
+    use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Form\Type\ModelType;
 
     public function configureFormFields(FormMapper $formMapper)
