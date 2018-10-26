@@ -12,6 +12,7 @@
 namespace Sonata\AdminBundle\Command;
 
 use Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Generator\AdminGenerator;
 use Sonata\AdminBundle\Generator\ControllerGenerator;
 use Sonata\AdminBundle\Manipulator\ServicesManipulator;
@@ -81,7 +82,7 @@ class GenerateAdminCommand extends QuestionableCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $modelClass = Validators::validateClass($input->getArgument('model'));
-        $modelClassBasename = current(array_slice(explode('\\', $modelClass), -1));
+        $modelClassBasename = current(\array_slice(explode('\\', $modelClass), -1));
         $bundle = $this->getBundle($input->getOption('bundle') ?: $this->getBundleNameFromClass($modelClass));
         $adminClassBasename = $input->getOption('admin') ?: $modelClassBasename.'Admin';
         $adminClassBasename = Validators::validateAdminClassBasename($adminClassBasename);
@@ -125,7 +126,7 @@ class GenerateAdminCommand extends QuestionableCommand
             $servicesManipulator = new ServicesManipulator($file);
             $controllerName = $controllerClassBasename
                 ? sprintf('%s:%s', $bundle->getName(), substr($controllerClassBasename, 0, -10))
-                : 'SonataAdminBundle:CRUD'
+                : CRUDController::class
             ;
 
             try {
@@ -156,7 +157,7 @@ class GenerateAdminCommand extends QuestionableCommand
             $input->getArgument('model'),
             'Sonata\AdminBundle\Command\Validators::validateClass'
         );
-        $modelClassBasename = current(array_slice(explode('\\', $modelClass), -1));
+        $modelClassBasename = current(\array_slice(explode('\\', $modelClass), -1));
         $bundleName = $this->askAndValidate(
             $input,
             $output,
@@ -172,7 +173,7 @@ class GenerateAdminCommand extends QuestionableCommand
             'Sonata\AdminBundle\Command\Validators::validateAdminClassBasename'
         );
 
-        if (count($this->getAvailableManagerTypes()) > 1) {
+        if (\count($this->getAvailableManagerTypes()) > 1) {
             $managerType = $this->askAndValidate(
                 $input,
                 $output,
@@ -279,7 +280,10 @@ class GenerateAdminCommand extends QuestionableCommand
      */
     private function getModelManager($managerType)
     {
-        return $this->getContainer()->get('sonata.admin.manager.'.$managerType);
+        $modelManager = $this->getContainer()->get('sonata.admin.manager.'.$managerType);
+        \assert($modelManager instanceof ModelManagerInterface);
+
+        return $modelManager;
     }
 
     /**

@@ -7,10 +7,11 @@
             <argument/>
             <argument type="collection"/>
             <argument type="service" id="property_accessor"/>
-            <call method="setTemplates">
-                <argument>%sonata.admin.configuration.templates%</argument>
+            <call method="setTemplateRegistry">
+                <argument type="service" id="sonata.admin.global_template_registry"/>
             </call>
         </service>
+        <service id="Sonata\AdminBundle\Admin\Pool" alias="sonata.admin.pool"/>
         <service id="sonata.admin.route_loader" class="Sonata\AdminBundle\Route\AdminPoolLoader" public="true">
             <argument type="service" id="sonata.admin.pool"/>
             <argument/>
@@ -44,6 +45,7 @@
         </service>
         <!-- controller as services -->
         <service id="sonata.admin.controller.admin" class="Sonata\AdminBundle\Controller\HelperController" public="true">
+            <deprecated>The controller service "%service_id%" is deprecated in favor of several action services since version 3.38.0 and will be removed in 4.0.</deprecated>
             <argument type="service" id="twig"/>
             <argument type="service" id="sonata.admin.pool"/>
             <argument type="service" id="sonata.admin.helper"/>
@@ -54,7 +56,9 @@
             <argument type="service" id="service_container"/>
         </service>
         <!-- NEXT_MAJOR : remove this service -->
-        <service id="sonata.admin.exporter" class="Sonata\AdminBundle\Export\Exporter" public="true"/>
+        <service id="sonata.admin.exporter" class="Sonata\AdminBundle\Export\Exporter" public="true">
+            <deprecated>The service "%service_id%" is deprecated in favor of the "sonata.exporter.exporter" service since version 3.14 and will be removed in 4.0.</deprecated>
+        </service>
         <service id="sonata.admin.search.handler" class="Sonata\AdminBundle\Search\SearchHandler" public="true">
             <argument type="service" id="sonata.admin.pool"/>
         </service>
@@ -70,6 +74,14 @@
         <!-- twig -->
         <service id="sonata.admin.twig.global" class="Sonata\AdminBundle\Twig\GlobalVariables" public="true">
             <argument type="service" id="sonata.admin.pool"/>
+        </service>
+        <!-- filter persister -->
+        <service id="sonata.admin.filter_persister.session" class="Sonata\AdminBundle\Filter\Persister\SessionFilterPersister">
+            <argument type="service" id="session"/>
+        </service>
+        <!-- templating -->
+        <service id="sonata.admin.global_template_registry" class="Sonata\AdminBundle\Templating\TemplateRegistry" public="true">
+            <argument>%sonata.admin.configuration.templates%</argument>
         </service>
     </services>
 </container>

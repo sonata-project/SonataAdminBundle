@@ -74,6 +74,10 @@
                 <source>link_add</source>
                 <target>Dodaj</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>Edytuj</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>Zarządzaj</target>
@@ -477,6 +481,10 @@
             <trans-unit id="read_less">
                 <source>read_less</source>
                 <target>read_less</target>
+            </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Zwiń/rozwiń menu nawigacji</target>
             </trans-unit>
         </body>
     </file>

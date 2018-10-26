@@ -11,6 +11,8 @@
 
 namespace Sonata\AdminBundle\Admin;
 
+use InvalidArgumentException;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -41,7 +43,9 @@ class Pool
     protected $adminClasses = [];
 
     /**
-     * @var string[]
+     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     *
+     * @var array
      */
     protected $templates = [];
 
@@ -69,6 +73,11 @@ class Pool
      * @var PropertyAccessorInterface
      */
     protected $propertyAccessor;
+
+    /**
+     * @var MutableTemplateRegistryInterface
+     */
+    private $templateRegistry;
 
     /**
      * @param string $title
@@ -157,7 +166,7 @@ class Pool
      *
      * @throws \InvalidArgumentException
      *
-     * @return array
+     * @return AdminInterface[]
      */
     public function getAdminsByGroup($group)
     {
@@ -188,14 +197,14 @@ class Pool
     public function getAdminByClass($class)
     {
         if (!$this->hasAdminByClass($class)) {
-            return;
+            return null;
         }
 
-        if (!is_array($this->adminClasses[$class])) {
+        if (!\is_array($this->adminClasses[$class])) {
             throw new \RuntimeException('Invalid format for the Pool::adminClass property');
         }
 
-        if (count($this->adminClasses[$class]) > 1) {
+        if (\count($this->adminClasses[$class]) > 1) {
             throw new \RuntimeException(sprintf(
                 'Unable to find a valid admin for the class: %s, there are too many registered: %s',
                 $class,
@@ -222,7 +231,7 @@ class Pool
      *
      * @param string $adminCode
      *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface|false|null
+     * @return \Sonata\AdminBundle\Admin\AdminInterface|false
      */
     public function getAdminByAdminCode($adminCode)
     {
@@ -261,11 +270,41 @@ class Pool
      */
     public function getInstance($id)
     {
-        if (!in_array($id, $this->adminServiceIds)) {
-            throw new \InvalidArgumentException(sprintf('Admin service "%s" not found in admin pool.', $id));
+        if (!\in_array($id, $this->adminServiceIds)) {
+            $msg = sprintf('Admin service "%s" not found in admin pool.', $id);
+            $shortest = -1;
+            $closest = null;
+            $alternatives = [];
+            foreach ($this->adminServiceIds as $adminServiceId) {
+                $lev = levenshtein($id, $adminServiceId);
+                if ($lev <= $shortest || $shortest < 0) {
+                    $closest = $adminServiceId;
+                    $shortest = $lev;
+                }
+                if ($lev <= \strlen($adminServiceId) / 3 || false !== strpos($adminServiceId, $id)) {
+                    $alternatives[$adminServiceId] = $lev;
+                }
+            }
+            if (null !== $closest) {
+                asort($alternatives);
+                unset($alternatives[$closest]);
+                $msg = sprintf(
+                    'Admin service "%s" not found in admin pool. Did you mean "%s" or one of those: [%s]?',
+                    $id,
+                    $closest,
+                    implode(', ', array_keys($alternatives))
+                );
+            }
+            throw new \InvalidArgumentException($msg);
         }
 
-        return $this->container->get($id);
+        $admin = $this->container->get($id);
+
+        if (!$admin instanceof AdminInterface) {
+            throw new InvalidArgumentException(sprintf('Found service "%s" is not a valid admin service', $id));
+        }
+
+        return $admin;
     }
 
     /**
@@ -315,29 +354,42 @@ class Pool
         return $this->adminClasses;
     }
 
-    public function setTemplates(array $templates)
+    final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry)
     {
-        $this->templates = $templates;
+        $this->templateRegistry = $templateRegistry;
     }
 
     /**
+     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     */
+    public function setTemplates(array $templates)
+    {
+        // NEXT MAJOR: Remove this line
+        $this->templates = $templates;
+
+        $this->templateRegistry->setTemplates($templates);
+    }
+
+    /**
+     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     *
      * @return array
      */
     public function getTemplates()
     {
-        return $this->templates;
+        return $this->templateRegistry->getTemplates();
     }
 
     /**
+     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     *
      * @param string $name
      *
      * @return null|string
      */
     public function getTemplate($name)
     {
-        if (isset($this->templates[$name])) {
-            return $this->templates[$name];
-        }
+        return $this->templateRegistry->getTemplate($name);
     }
 
     /**

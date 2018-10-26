@@ -81,6 +81,7 @@ class Configuration implements ConfigurationInterface
 
                 ->scalarNode('title')->defaultValue('Sonata Admin')->cannotBeEmpty()->end()
                 ->scalarNode('title_logo')->defaultValue('bundles/sonataadmin/logo_title.png')->cannotBeEmpty()->end()
+                ->booleanNode('search')->defaultTrue()->info('Enable/disable the search form in the sidebar')->end()
 
                 ->arrayNode('global_search')
                     ->addDefaultsIfNotSet()
@@ -90,7 +91,7 @@ class Configuration implements ConfigurationInterface
                             ->info('Perhaps one of the three options: show, fade, hide.')
                             ->validate()
                                 ->ifTrue(function ($v) {
-                                    return !in_array($v, ['show', 'fade', 'hide']);
+                                    return !\in_array($v, ['show', 'fade', 'hide']);
                                 })
                                 ->thenInvalid('Configuration value of "global_search.empty_boxes" must be one of show, fade or hide.')
                             ->end()
@@ -172,7 +173,7 @@ class Configuration implements ConfigurationInterface
                                             ->ifArray()
                                             ->then(function ($items) {
                                                 foreach ($items as $key => $item) {
-                                                    if (is_array($item)) {
+                                                    if (\is_array($item)) {
                                                         if (!array_key_exists('label', $item) || !array_key_exists('route', $item)) {
                                                             throw new \InvalidArgumentException('Expected either parameters "route" and "label" for array items');
                                                         }
@@ -376,10 +377,10 @@ class Configuration implements ConfigurationInterface
                                 'bundles/sonatacore/vendor/jquery/dist/jquery.min.js',
                                 'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js',
 
-                                'bundles/sonatacore/vendor/moment/min/moment.min.js',
-
                                 'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js',
                                 'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js',
+
+                                'bundles/sonatacore/vendor/moment/min/moment.min.js',
 
                                 'bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js',
 
@@ -463,6 +464,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
 
                 ->scalarNode('persist_filters')->defaultFalse()->end()
+                ->scalarNode('filter_persister')->defaultValue('sonata.admin.filter_persister.session')->end()
 
                 ->booleanNode('show_mosaic_button')
                     ->defaultTrue()

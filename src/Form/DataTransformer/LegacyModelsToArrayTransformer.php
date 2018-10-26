@@ -48,7 +48,7 @@ class LegacyModelsToArrayTransformer implements DataTransformerInterface
 
         $array = [];
 
-        if (count($this->choiceList->getIdentifier()) > 1) {
+        if (\count($this->choiceList->getIdentifier()) > 1) {
             // load all choices
             $availableEntities = $this->choiceList->getEntities();
 
@@ -80,7 +80,7 @@ class LegacyModelsToArrayTransformer implements DataTransformerInterface
             return $collection;
         }
 
-        if (!is_array($keys)) {
+        if (!\is_array($keys)) {
             throw new UnexpectedTypeException($keys, 'array');
         }
 
@@ -95,7 +95,7 @@ class LegacyModelsToArrayTransformer implements DataTransformerInterface
             }
         }
 
-        if (count($notFound) > 0) {
+        if (\count($notFound) > 0) {
             throw new TransformationFailedException(sprintf('The entities with keys "%s" could not be found', implode('", "', $notFound)));
         }
 

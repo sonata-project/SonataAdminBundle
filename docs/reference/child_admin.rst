@@ -12,42 +12,30 @@ This will create new routes like, for example, ``/playlist/{id}/video/list``,
 where the videos will automatically be filtered by post.
 
 To do this, you first need to call the ``addChild`` method in your ``PlaylistAdmin``
-service configuration:
+service configuration with two arguments, the child admin name (in this case
+``VideoAdmin`` service) and the Entity field that relates our child Entity with
+its parent:
 
 .. configuration-block::
 
+    .. code-block:: yaml
+
+        # app/config/services.yml
+        App\Admin\PlaylistAdmin:
+            calls:
+                - [ addChild, ['@App\Admin\VideoAdmin', 'playlist']]
+
     .. code-block:: xml
 
-        <!-- app/config/config.xml -->
-        <service id="sonata.admin.playlist" class="App\Admin\PlaylistAdmin">
+        <!-- app/config/services.xml -->
+        <service id="App\Admin\PlaylistAdmin">
             <!-- ... -->
 
             <call method="addChild">
-                <argument type="service" id="sonata.admin.video" />
+                <argument type="service" id="App\Admin\PlaylistAdmin" />
+                <argument>playlist</argument>
             </call>
         </service>
-
-Then, you have to set the VideoAdmin ``parentAssociationMapping`` attribute to ``playlist`` :
-
-.. code-block:: php
-
-    <?php
-
-    namespace App\Admin;
-
-    // ...
-
-    class VideoAdmin extends AbstractAdmin
-    {
-        protected $parentAssociationMapping = 'playlist';
-
-        // OR
-
-        public function getParentAssociationMapping()
-        {
-            return 'playlist';
-        }
-    }
 
 To display the ``VideoAdmin`` extend the menu in your ``PlaylistAdmin``
 class::
@@ -107,7 +95,7 @@ or not. To get rid of them, you may override the ``configureRoutes`` method::
 
     class VideoAdmin extends AbstractAdmin
     {
-        protected $parentAssociationMapping = 'playlist';
+        // ...
 
         protected function configureRoutes(RouteCollection $collection)
         {

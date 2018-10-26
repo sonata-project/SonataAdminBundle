@@ -1,6 +1,63 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated `SonataAdminBundle\Controller\HelperController` in favor of actions
+
+If you extended that controller, you should split your extended controller and
+extend the corresponding classes in `SonataAdminBundle\Action\`.
+
+UPGRADE FROM 3.34 to 3.35
+=========================
+
+## Multiple parents
+
+Admin classes can now have multiple parents, when registering the service
+you should pass a field name:
+
+```xml
+<service id="sonata.admin.playlist" class="App\Admin\PlaylistAdmin">
+    <!-- ... -->
+
+    <call method="addChild">
+        <argument type="service" id="sonata.admin.video" />
+        <argument>playlist</argument>
+    </call>
+</service>
+```
+
+Overwriting `$parentAssociationMapping` is discouraged.
+
+Deprecated calling of `AbstractAdmin::addChild` without second argument.
+
+UPGRADE FROM 3.33 to 3.34
+=========================
+
+## Deprecated use of $templates in AbstractAdmin and Pool
+
+The `AbstractAdmin::$templates` attribute and the methods `getTemplate()` and
+`getTemplates()` are deprecated. Please use the new TemplateRegistry services
+instead. One per admin is generated and available through the admin code +
+`.template_registry` (for example, `app.admin.news` uses `app.admin.news.template_registry`).
+
+The `Pool::$templates` attribute and the methods `getTemplate()`, `getTemplates()`
+and `setTemplates()` are deprecated. Please use the TemplateRegistry service
+`sonata.admin.global_template_registry` instead.
+
+The Twig function `get_admin_pool_template()` is deprecated. Please use
+`get_global_template()` instead.
+
+## Deprecated AbstractAdmin::$persistFilters
+
+The `AbstractAdmin::$persistFilters` is deprecated and should not be used anymore.
+The problem was that it was not easy to change the way filters are persisted.
+Instead of a simple boolean var (whether to persist or not filters) you can now inject a service,
+that will be responsible for doing the job (see `FilterPersisterInterface`).
+An implementation was added, which falls back to the previous behavior : `SessionFilterPersister`.
+
+## Deprecated edit/show/delete of a child admin that does not belong to a given parent
+
+This is not allowed anymore and will throw a 404 error in the future.
+
 UPGRADE FROM 3.32 to 3.33
 =========================
 

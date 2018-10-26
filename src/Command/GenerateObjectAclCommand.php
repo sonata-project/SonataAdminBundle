@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Command;
 
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -92,11 +93,12 @@ class GenerateObjectAclCommand extends QuestionableCommand
             }
             $manipulator = $this->getContainer()->get($manipulatorId);
             if (!$manipulator instanceof ObjectAclManipulatorInterface) {
-                $output->writeln(sprintf('The interface "ObjectAclManipulatorInterface" is not implemented for %s: <info>ignoring</info>', get_class($manipulator)));
+                $output->writeln(sprintf('The interface "ObjectAclManipulatorInterface" is not implemented for %s: <info>ignoring</info>', \get_class($manipulator)));
 
                 continue;
             }
 
+            \assert($admin instanceof AdminInterface);
             $manipulator->batchConfigureAcls($output, $admin, $securityIdentity);
         }
     }

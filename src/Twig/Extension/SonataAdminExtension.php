@@ -17,6 +17,13 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use Symfony\Component\Security\Acl\Voter\FieldVote;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -31,6 +38,13 @@ use Twig\TwigFunction;
  */
 class SonataAdminExtension extends AbstractExtension
 {
+    // @todo: there are more locales which are not supported by moment and they need to be translated/normalized/canonicalized here
+    const MOMENT_UNSUPPORTED_LOCALES = [
+        'es' => ['es', 'es-do'],
+        'nl' => ['nl', 'nl-be'],
+        'fr' => ['fr', 'fr-ca', 'fr-ch'],
+    ];
+
     /**
      * @var Pool
      */
@@ -51,8 +65,23 @@ class SonataAdminExtension extends AbstractExtension
      */
     private $xEditableTypeMapping = [];
 
-    public function __construct(Pool $pool, LoggerInterface $logger = null, TranslatorInterface $translator = null)
-    {
+    /**
+     * @var ContainerInterface
+     */
+    private $templateRegistries;
+
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $securityChecker;
+
+    public function __construct(
+        Pool $pool,
+        LoggerInterface $logger = null,
+        TranslatorInterface $translator = null,
+        ContainerInterface $templateRegistries = null,
+        AuthorizationCheckerInterface $securityChecker = null
+    ) {
         // NEXT_MAJOR: make the translator parameter required
         if (null === $translator) {
             @trigger_error(
@@ -63,6 +92,8 @@ class SonataAdminExtension extends AbstractExtension
         $this->pool = $pool;
         $this->logger = $logger;
         $this->translator = $translator;
+        $this->templateRegistries = $templateRegistries;
+        $this->securityChecker = $securityChecker;
     }
 
     public function getFilters()
@@ -116,6 +147,7 @@ class SonataAdminExtension extends AbstractExtension
         return [
             new TwigFunction('canonicalize_locale_for_moment', [$this, 'getCanonicalizedLocaleForMoment'], ['needs_context' => true]),
             new TwigFunction('canonicalize_locale_for_select2', [$this, 'getCanonicalizedLocaleForSelect2'], ['needs_context' => true]),
+            new TwigFunction('is_granted_affirmative', [$this, 'isGrantedAffirmative']),
         ];
     }
 
@@ -140,7 +172,9 @@ class SonataAdminExtension extends AbstractExtension
     ) {
         $template = $this->getTemplate(
             $fieldDescription,
+            // NEXT_MAJOR: Remove this line and use commented line below instead
             $fieldDescription->getAdmin()->getTemplate('base_list_field'),
+            //$this->getTemplateRegistry($fieldDescription->getAdmin()->getCode())->getTemplate('base_list_field'),
             $environment
         );
 
@@ -300,7 +334,7 @@ class SonataAdminExtension extends AbstractExtension
      */
     public function renderRelationElement($element, FieldDescriptionInterface $fieldDescription)
     {
-        if (!is_object($element)) {
+        if (!\is_object($element)) {
             return $element;
         }
 
@@ -324,16 +358,16 @@ class SonataAdminExtension extends AbstractExtension
                 throw new \RuntimeException(sprintf(
                     'You must define an `associated_property` option or '.
                     'create a `%s::__toString` method to the field option %s from service %s is ',
-                    get_class($element),
+                    \get_class($element),
                     $fieldDescription->getName(),
                     $fieldDescription->getAdmin()->getCode()
                 ));
             }
 
-            return call_user_func([$element, $method]);
+            return \call_user_func([$element, $method]);
         }
 
-        if (is_callable($propertyPath)) {
+        if (\is_callable($propertyPath)) {
             return $propertyPath($element);
         }
 
@@ -390,7 +424,7 @@ class SonataAdminExtension extends AbstractExtension
             reset($choices);
             $first = current($choices);
             // the choices are already in the right format
-            if (is_array($first) && array_key_exists('value', $first) && array_key_exists('text', $first)) {
+            if (\is_array($first) && array_key_exists('value', $first) && array_key_exists('text', $first)) {
                 $xEditableChoices = $choices;
             } else {
                 foreach ($choices as $value => $text) {
@@ -411,6 +445,15 @@ class SonataAdminExtension extends AbstractExtension
             }
         }
 
+        if (false === $fieldDescription->getOption('required', true)
+            && false === $fieldDescription->getOption('multiple', false)
+        ) {
+            $xEditableChoices = array_merge([[
+                'value' => '',
+                'text' => '',
+            ]], $xEditableChoices);
+        }
+
         return $xEditableChoices;
     }
 
@@ -425,19 +468,15 @@ class SonataAdminExtension extends AbstractExtension
         $locale = strtolower(str_replace('_', '-', $context['app']->getRequest()->getLocale()));
 
         // "en" language doesn't require localization.
-        if (('en' === $lang = substr($locale, 0, 2)) && !in_array($locale, ['en-au', 'en-ca', 'en-gb', 'en-ie', 'en-nz'], true)) {
+        if (('en' === $lang = substr($locale, 0, 2)) && !\in_array($locale, ['en-au', 'en-ca', 'en-gb', 'en-ie', 'en-nz'], true)) {
             return null;
         }
 
-        if ('es' === $lang && !in_array($locale, ['es', 'es-do'], true)) {
-            // `moment: ^2.8` only ships "es" and "es-do" locales for "es" language
-            $locale = 'es';
-        } elseif ('nl' === $lang && !in_array($locale, ['nl', 'nl-be'], true)) {
-            // `moment: ^2.8` only ships "nl" and "nl-be" locales for "nl" language
-            $locale = 'nl';
+        foreach (self::MOMENT_UNSUPPORTED_LOCALES as $language => $locales) {
+            if ($language === $lang && !\in_array($locale, $locales)) {
+                $locale = $language;
+            }
         }
-
-        // @todo: there are more locales which are not supported by moment and they need to be translated/normalized/canonicalized here
 
         return $locale;
     }
@@ -468,12 +507,46 @@ class SonataAdminExtension extends AbstractExtension
                 $locale = 'zh-CN';
                 break;
             default:
-                if (!in_array($locale, ['pt-BR', 'pt-PT', 'ug-CN', 'zh-CN', 'zh-TW'], true)) {
+                if (!\in_array($locale, ['pt-BR', 'pt-PT', 'ug-CN', 'zh-CN', 'zh-TW'], true)) {
                     $locale = $lang;
                 }
         }
 
         return $locale;
+    }
+
+    /**
+     * @param string|array $role
+     * @param object|null  $object
+     * @param string|null  $field
+     *
+     * @return bool
+     */
+    public function isGrantedAffirmative($role, $object = null, $field = null)
+    {
+        if (null === $this->securityChecker) {
+            return false;
+        }
+
+        if (null !== $field) {
+            $object = new FieldVote($object, $field);
+        }
+
+        if (!\is_array($role)) {
+            $role = [$role];
+        }
+
+        foreach ($role as $oneRole) {
+            try {
+                if ($this->securityChecker->isGranted($oneRole, $object)) {
+                    return true;
+                }
+            } catch (AuthenticationCredentialsNotFoundException $e) {
+                // empty on purpose
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -549,5 +622,25 @@ EOT;
         }
 
         return $content;
+    }
+
+    /**
+     * @param string $adminCode
+     *
+     * @throws ServiceCircularReferenceException
+     * @throws ServiceNotFoundException
+     *
+     * @return TemplateRegistryInterface
+     */
+    private function getTemplateRegistry($adminCode)
+    {
+        $serviceId = $adminCode.'.template_registry';
+        $templateRegistry = $this->templateRegistries->get($serviceId);
+
+        if ($templateRegistry instanceof TemplateRegistryInterface) {
+            return $templateRegistry;
+        }
+
+        throw new ServiceNotFoundException($serviceId);
     }
 }

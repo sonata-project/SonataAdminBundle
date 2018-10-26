@@ -40,13 +40,13 @@ class ExplainAdminCommand extends ContainerAwareCommand
 
         $output->writeln('<comment>AdminBundle Information</comment>');
         $output->writeln(sprintf('<info>% -20s</info> : %s', 'id', $admin->getCode()));
-        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Admin', get_class($admin)));
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Admin', \get_class($admin)));
         $output->writeln(sprintf('<info>% -20s</info> : %s', 'Model', $admin->getClass()));
         $output->writeln(sprintf('<info>% -20s</info> : %s', 'Controller', $admin->getBaseControllerName()));
-        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Model Manager', get_class($admin->getModelManager())));
-        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Form Builder', get_class($admin->getFormBuilder())));
-        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Datagrid Builder', get_class($admin->getDatagridBuilder())));
-        $output->writeln(sprintf('<info>% -20s</info> : %s', 'List Builder', get_class($admin->getListBuilder())));
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Model Manager', \get_class($admin->getModelManager())));
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Form Builder', \get_class($admin->getFormBuilder())));
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Datagrid Builder', \get_class($admin->getDatagridBuilder())));
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'List Builder', \get_class($admin->getListBuilder())));
 
         if ($admin->isChild()) {
             $output->writeln(sprintf('<info>% -15s</info> : %s', 'Parent', $admin->getParent()->getCode()));
@@ -97,14 +97,13 @@ class ExplainAdminCommand extends ContainerAwareCommand
             ));
         }
 
-        $factory = $this->getContainer()->get('validator.validator_factory');
-        $metadata = $factory->getMetadataFor($admin->getClass());
+        $metadata = $this->getContainer()->get('validator')->getMetadataFor($admin->getClass());
 
         $output->writeln('');
         $output->writeln('<comment>Validation Framework</comment> - http://symfony.com/doc/3.0/book/validation.html');
         $output->writeln('<info>Properties constraints</info>');
 
-        if (0 == count($metadata->properties)) {
+        if (0 == \count($metadata->properties)) {
             $output->writeln('    <error>no property constraints defined !!</error>');
         } else {
             foreach ($metadata->properties as $name => $property) {
@@ -113,7 +112,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
                 foreach ($property->getConstraints() as $constraint) {
                     $output->writeln(sprintf(
                         '    % -70s %s',
-                        get_class($constraint),
+                        \get_class($constraint),
                         implode('|', $constraint->groups)
                     ));
                 }
@@ -123,7 +122,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
         $output->writeln('');
         $output->writeln('<info>Getters constraints</info>');
 
-        if (0 == count($metadata->getters)) {
+        if (0 == \count($metadata->getters)) {
             $output->writeln('    <error>no getter constraints defined !!</error>');
         } else {
             foreach ($metadata->getters as $name => $property) {
@@ -132,7 +131,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
                 foreach ($property->getConstraints() as $constraint) {
                     $output->writeln(sprintf(
                         '    % -70s %s',
-                        get_class($constraint),
+                        \get_class($constraint),
                         implode('|', $constraint->groups)
                     ));
                 }

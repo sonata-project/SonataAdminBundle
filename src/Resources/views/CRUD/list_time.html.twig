@@ -15,6 +15,6 @@ file that was distributed with this source code.
     {%- if value is empty -%}
         &nbsp;
     {%- else -%}
-        {{ value|date('H:i:s') }}
+        {{ value|date('H:i:s', field_description.options.timezone|default(null)) }}
     {%- endif -%}
 {% endblock %}

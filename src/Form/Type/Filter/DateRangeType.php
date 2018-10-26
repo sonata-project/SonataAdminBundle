@@ -11,6 +11,7 @@
 
 namespace Sonata\AdminBundle\Form\Type\Filter;
 
+use Sonata\CoreBundle\Form\Type\DateRangeType as FormDateRangeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -91,7 +92,7 @@ class DateRangeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'field_type' => 'sonata_type_date_range',
+            'field_type' => FormDateRangeType::class,
             'field_options' => ['format' => 'yyyy-MM-dd'],
         ]);
     }

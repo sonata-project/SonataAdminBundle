@@ -11,11 +11,20 @@
 
 namespace Sonata\AdminBundle\Controller;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
+// NEXT_MAJOR: remove this file
+
+@trigger_error(
+    'The '.__NAMESPACE__.'\CoreController class is deprecated since version 3.36 and will be removed in 4.0.'
+    .' Use '.__NAMESPACE__.'\SearchAction or '.__NAMESPACE__.'\DashboardAction instead.',
+    E_USER_DEPRECATED
+);
+
+use Sonata\AdminBundle\Action\DashboardAction;
+use Sonata\AdminBundle\Action\SearchAction;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,29 +39,9 @@ class CoreController extends Controller
      */
     public function dashboardAction()
     {
-        $blocks = [
-            'top' => [],
-            'left' => [],
-            'center' => [],
-            'right' => [],
-            'bottom' => [],
-        ];
+        $dashboardAction = $this->container->get(DashboardAction::class);
 
-        foreach ($this->container->getParameter('sonata.admin.configuration.dashboard_blocks') as $block) {
-            $blocks[$block['position']][] = $block;
-        }
-
-        $parameters = [
-            'base_template' => $this->getBaseTemplate(),
-            'admin_pool' => $this->container->get('sonata.admin.pool'),
-            'blocks' => $blocks,
-        ];
-
-        if (!$this->getCurrentRequest()->isXmlHttpRequest()) {
-            $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
-        }
-
-        return $this->render($this->getAdminPool()->getTemplate('dashboard'), $parameters);
+        return $dashboardAction($this->getCurrentRequest());
     }
 
     /**
@@ -65,48 +54,9 @@ class CoreController extends Controller
      */
     public function searchAction(Request $request)
     {
-        if ($request->get('admin') && $request->isXmlHttpRequest()) {
-            try {
-                $admin = $this->getAdminPool()->getAdminByAdminCode($request->get('admin'));
-            } catch (ServiceNotFoundException $e) {
-                throw new \RuntimeException('Unable to find the Admin instance', $e->getCode(), $e);
-            }
+        $searchAction = $this->container->get(SearchAction::class);
 
-            if (!$admin instanceof AdminInterface) {
-                throw new \RuntimeException('The requested service is not an Admin instance');
-            }
-
-            $handler = $this->getSearchHandler();
-
-            $results = [];
-
-            if ($pager = $handler->search($admin, $request->get('q'), $request->get('page'), $request->get('offset'))) {
-                foreach ($pager->getResults() as $result) {
-                    $results[] = [
-                        'label' => $admin->toString($result),
-                        'link' => $admin->generateObjectUrl('edit', $result),
-                        'id' => $admin->id($result),
-                    ];
-                }
-            }
-
-            $response = new JsonResponse([
-                'results' => $results,
-                'page' => $pager ? (int) $pager->getPage() : false,
-                'total' => $pager ? (int) $pager->getNbResults() : false,
-            ]);
-            $response->setPrivate();
-
-            return $response;
-        }
-
-        return $this->render($this->container->get('sonata.admin.pool')->getTemplate('search'), [
-            'base_template' => $this->getBaseTemplate(),
-            'breadcrumbs_builder' => $this->get('sonata.admin.breadcrumbs_builder'),
-            'admin_pool' => $this->container->get('sonata.admin.pool'),
-            'query' => $request->get('q'),
-            'groups' => $this->getAdminPool()->getDashboardGroups(),
-        ]);
+        return $searchAction($request);
     }
 
     /**
@@ -137,7 +87,10 @@ class CoreController extends Controller
      */
     protected function getAdminPool()
     {
-        return $this->container->get('sonata.admin.pool');
+        $pool = $this->container->get('sonata.admin.pool');
+        \assert($pool instanceof Pool);
+
+        return $pool;
     }
 
     /**
@@ -145,7 +98,10 @@ class CoreController extends Controller
      */
     protected function getSearchHandler()
     {
-        return $this->get('sonata.admin.search.handler');
+        $searchHandler = $this->get('sonata.admin.search.handler');
+        \assert($searchHandler instanceof SearchHandler);
+
+        return $searchHandler;
     }
 
     /**
@@ -154,10 +110,21 @@ class CoreController extends Controller
     protected function getBaseTemplate()
     {
         if ($this->getCurrentRequest()->isXmlHttpRequest()) {
-            return $this->getAdminPool()->getTemplate('ajax');
+            return $this->getTemplateRegistry()->getTemplate('ajax');
         }
 
-        return $this->getAdminPool()->getTemplate('layout');
+        return $this->getTemplateRegistry()->getTemplate('layout');
+    }
+
+    /**
+     * @return TemplateRegistryInterface
+     */
+    private function getTemplateRegistry()
+    {
+        $templateRegistry = $this->container->get('sonata.admin.global_template_registry');
+        \assert($templateRegistry instanceof TemplateRegistryInterface);
+
+        return $templateRegistry;
     }
 
     /**

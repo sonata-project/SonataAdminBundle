@@ -14,12 +14,7 @@ file that was distributed with this source code.
 {% block field %}
     {%- if value is empty -%}
         &nbsp;
-    {%- elseif field_description.options.format is defined -%}
-        {% set timezone = field_description.options.timezone is defined ? field_description.options.timezone : null %}
-        {{ value|date(field_description.options.format, timezone) }}
-    {%- elseif field_description.options.timezone is defined -%}
-        {{ value|date(null, field_description.options.timezone) }}
     {%- else -%}
-        {{ value|date }}
+        {{ value|date(field_description.options.format|default(null), field_description.options.timezone|default(null)) }}
     {%- endif -%}
 {% endblock %}

@@ -38,6 +38,7 @@ use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Route\RoutesCache;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentVoteAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentWithCustomRouteAdmin;
@@ -260,13 +261,15 @@ class AdminTest extends TestCase
         $this->assertFalse($postAdmin->hasChild('comment'));
 
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
-        $postAdmin->addChild($commentAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
+
         $this->assertTrue($postAdmin->hasChildren());
         $this->assertTrue($postAdmin->hasChild('sonata.post.admin.comment'));
 
         $this->assertSame('sonata.post.admin.comment', $postAdmin->getChild('sonata.post.admin.comment')->getCode());
         $this->assertSame('sonata.post.admin.post|sonata.post.admin.comment', $postAdmin->getChild('sonata.post.admin.comment')->getBaseCodeRoute());
         $this->assertSame($postAdmin, $postAdmin->getChild('sonata.post.admin.comment')->getParent());
+        $this->assertSame('post', $commentAdmin->getParentAssociationMapping());
 
         $this->assertFalse($postAdmin->isChild());
         $this->assertTrue($commentAdmin->isChild());
@@ -512,6 +515,8 @@ class AdminTest extends TestCase
     }
 
     /**
+     * @group legacy
+     * @expectedDeprecation Calling "addChild" without second argument is deprecated since 3.35 and will not be allowed in 4.0.
      * @dataProvider provideGetBaseRouteName
      */
     public function testGetBaseRouteNameWithChildAdmin($objFqn, $expected)
@@ -543,13 +548,14 @@ class AdminTest extends TestCase
         $commentAdmin->setRouteGenerator($routeGenerator);
         $commentAdmin->initialize();
 
-        $postAdmin->addChild($commentAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
 
         $commentVoteAdmin = new CommentVoteAdmin(
             'sonata.post.admin.comment_vote',
             'Application\Sonata\NewsBundle\Entity\CommentVote',
             'SonataNewsBundle:CommentVoteAdmin'
         );
+
         $container->set('sonata.post.admin.comment_vote', $commentVoteAdmin);
         $commentVoteAdmin->setConfigurationPool($pool);
         $commentVoteAdmin->setRouteBuilder($pathInfo);
@@ -573,6 +579,7 @@ class AdminTest extends TestCase
         $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.comment|sonata.post.admin.comment_vote.list'));
         $this->assertFalse($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.edit'));
         $this->assertFalse($commentAdmin->hasRoute('edit'));
+        $this->assertSame('post', $commentAdmin->getParentAssociationMapping());
 
         /*
          * Test the route name from request
@@ -649,7 +656,7 @@ class AdminTest extends TestCase
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::setUniqid
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getUniqid
      */
-    public function testUniqid()
+    public function testSetUniqid()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
@@ -657,6 +664,33 @@ class AdminTest extends TestCase
         $admin->setUniqid($uniqid);
 
         $this->assertSame($uniqid, $admin->getUniqid());
+    }
+
+    public function testUniqidConsistency()
+    {
+        $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
+            'sonata.abstract.admin',
+            'AbstractBundle\Entity\Foo',
+            'SonataAbstractBundle:FooAdmin',
+        ]);
+        $admin->initialize();
+
+        $uniqid = $admin->getUniqid();
+        $admin->setUniqid(null);
+
+        $this->assertSame($uniqid, $admin->getUniqid());
+
+        $parentAdmin = $this->getMockForAbstractClass(AbstractAdmin::class, [
+            'sonata.abstract.parent.admin',
+            'AbstractBundle\Entity\Bar',
+            'SonataAbstractBundle:BarAdmin',
+        ]);
+        $parentAdmin->initialize();
+
+        $admin->setParent($parentAdmin);
+        $admin->setUniqid(null);
+
+        $this->assertNotSame($uniqid, $admin->getUniqid());
     }
 
     public function testToString()
@@ -801,7 +835,12 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
-        $this->assertSame([16, 32, 64, 128, 192], $admin->getPerPageOptions());
+        $perPageOptions = $admin->getPerPageOptions();
+
+        foreach ($perPageOptions as $perPage) {
+            $this->assertEquals(0, $perPage % 4);
+        }
+
         $admin->setPerPageOptions([500, 1000]);
         $this->assertSame([500, 1000], $admin->getPerPageOptions());
     }
@@ -1162,15 +1201,17 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
-        $this->assertSame([], $admin->getTemplates());
-
         $templates = [
             'list' => '@FooAdmin/CRUD/list.html.twig',
             'show' => '@FooAdmin/CRUD/show.html.twig',
             'edit' => '@FooAdmin/CRUD/edit.html.twig',
         ];
 
-        $admin->setTemplates($templates);
+        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
+        $templateRegistry->getTemplates()->shouldBeCalled()->willReturn($templates);
+
+        $admin->setTemplateRegistry($templateRegistry->reveal());
+
         $this->assertSame($templates, $admin->getTemplates());
     }
 
@@ -1178,28 +1219,11 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
-        $this->assertNull($admin->getTemplate('edit'));
+        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
+        $templateRegistry->getTemplate('edit')->shouldBeCalled()->willReturn('@FooAdmin/CRUD/edit.html.twig');
+        $templateRegistry->getTemplate('show')->shouldBeCalled()->willReturn('@FooAdmin/CRUD/show.html.twig');
 
-        $admin->setTemplate('edit', '@FooAdmin/CRUD/edit.html.twig');
-        $admin->setTemplate('show', '@FooAdmin/CRUD/show.html.twig');
-
-        $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $admin->getTemplate('edit'));
-        $this->assertSame('@FooAdmin/CRUD/show.html.twig', $admin->getTemplate('show'));
-    }
-
-    public function testGetTemplate2()
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
-
-        $this->assertNull($admin->getTemplate('edit'));
-
-        $templates = [
-            'list' => '@FooAdmin/CRUD/list.html.twig',
-            'show' => '@FooAdmin/CRUD/show.html.twig',
-            'edit' => '@FooAdmin/CRUD/edit.html.twig',
-        ];
-
-        $admin->setTemplates($templates);
+        $admin->setTemplateRegistry($templateRegistry->reveal());
 
         $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $admin->getTemplate('edit'));
         $this->assertSame('@FooAdmin/CRUD/show.html.twig', $admin->getTemplate('show'));
@@ -1267,18 +1291,10 @@ class AdminTest extends TestCase
         $this->assertFalse($admin->determinedPerPageValue('foo'));
         $this->assertFalse($admin->determinedPerPageValue(123));
         $this->assertTrue($admin->determinedPerPageValue(16));
-        $this->assertTrue($admin->determinedPerPageValue(32));
-        $this->assertTrue($admin->determinedPerPageValue(64));
-        $this->assertTrue($admin->determinedPerPageValue(128));
-        $this->assertTrue($admin->determinedPerPageValue(192));
 
         $admin->setPerPageOptions([101, 102, 103]);
-        $this->assertFalse($admin->determinedPerPageValue(15));
-        $this->assertFalse($admin->determinedPerPageValue(25));
-        $this->assertFalse($admin->determinedPerPageValue(200));
+        $this->assertFalse($admin->determinedPerPageValue(16));
         $this->assertTrue($admin->determinedPerPageValue(101));
-        $this->assertTrue($admin->determinedPerPageValue(102));
-        $this->assertTrue($admin->determinedPerPageValue(103));
     }
 
     public function testIsGranted()
@@ -1427,12 +1443,15 @@ class AdminTest extends TestCase
         $this->assertSame('fooTranslated', $admin->transChoice('foo', 2, ['name' => 'Andrej'], 'fooMessageDomain'));
     }
 
-    public function testSetPersistFilters()
+    public function testSetFilterPersister()
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
-        $this->assertAttributeSame(false, 'persistFilters', $admin);
-        $admin->setPersistFilters(true);
+        $filterPersister = $this->createMock('Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface');
+
+        $this->assertAttributeSame(null, 'filterPersister', $admin);
+        $admin->setFilterPersister($filterPersister);
+        $this->assertAttributeSame($filterPersister, 'filterPersister', $admin);
         $this->assertAttributeSame(true, 'persistFilters', $admin);
     }
 
@@ -1605,7 +1624,7 @@ class AdminTest extends TestCase
                 ->method('addEventListener')
                 ->with($this->identicalTo(FormEvents::POST_SUBMIT),
                         $this->callback(function ($callback) use ($testAdminPreValidate, $event) {
-                            if (is_callable($callback)) {
+                            if (\is_callable($callback)) {
                                 $closure = $callback->bindTo($testAdminPreValidate);
                                 $closure($event);
 
@@ -1900,6 +1919,11 @@ class AdminTest extends TestCase
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
+        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
+        $templateRegistry->getTemplate('button_create')->willReturn('Foo.html.twig');
+
+        $admin->setTemplateRegistry($templateRegistry->reveal());
+
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
             ->expects($this->once())
@@ -1915,8 +1939,6 @@ class AdminTest extends TestCase
             ->with($admin, 'create')
             ->will($this->returnValue(true));
         $admin->setRouteGenerator($routeGenerator);
-
-        $admin->setTemplate('button_create', 'Foo.html.twig');
 
         $this->assertSame($expected, $admin->getActionButtons('list', null));
     }
@@ -2045,6 +2067,11 @@ class AdminTest extends TestCase
         $admin->setRouteBuilder($pathInfo);
         $admin->setRouteGenerator($routeGenerator);
         $admin->initialize();
+
+        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
+        $templateRegistry->getTemplate('action_create')->willReturn('Foo.html.twig');
+
+        $admin->setTemplateRegistry($templateRegistry->reveal());
 
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler->expects($this->any())
@@ -2280,8 +2307,8 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\Comment',
             'SonataNewsBundle:CommentAdmin'
         );
-        $postAdmin->addChild($commentAdmin);
-        $commentAdmin->addChild($postAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
+        $commentAdmin->addChild($postAdmin, 'comment');
     }
 
     public function testCircularChildAdminTripleLevel()
@@ -2306,9 +2333,9 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\CommentVote',
             'SonataNewsBundle:CommentVoteAdmin'
         );
-        $postAdmin->addChild($commentAdmin);
-        $commentAdmin->addChild($commentVoteAdmin);
-        $commentVoteAdmin->addChild($postAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
+        $commentAdmin->addChild($commentVoteAdmin, 'comment');
+        $commentVoteAdmin->addChild($postAdmin, 'post');
     }
 
     public function testCircularChildAdminWithItself()
@@ -2348,13 +2375,13 @@ class AdminTest extends TestCase
         $this->assertSame($commentAdmin, $commentAdmin->getRootAncestor());
         $this->assertSame($commentVoteAdmin, $commentVoteAdmin->getRootAncestor());
 
-        $postAdmin->addChild($commentAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
 
         $this->assertSame($postAdmin, $postAdmin->getRootAncestor());
         $this->assertSame($postAdmin, $commentAdmin->getRootAncestor());
         $this->assertSame($commentVoteAdmin, $commentVoteAdmin->getRootAncestor());
 
-        $commentAdmin->addChild($commentVoteAdmin);
+        $commentAdmin->addChild($commentVoteAdmin, 'comment');
 
         $this->assertSame($postAdmin, $postAdmin->getRootAncestor());
         $this->assertSame($postAdmin, $commentAdmin->getRootAncestor());
@@ -2383,13 +2410,13 @@ class AdminTest extends TestCase
         $this->assertSame(0, $commentAdmin->getChildDepth());
         $this->assertSame(0, $commentVoteAdmin->getChildDepth());
 
-        $postAdmin->addChild($commentAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
 
         $this->assertSame(0, $postAdmin->getChildDepth());
         $this->assertSame(1, $commentAdmin->getChildDepth());
         $this->assertSame(0, $commentVoteAdmin->getChildDepth());
 
-        $commentAdmin->addChild($commentVoteAdmin);
+        $commentAdmin->addChild($commentVoteAdmin, 'comment');
 
         $this->assertSame(0, $postAdmin->getChildDepth());
         $this->assertSame(1, $commentAdmin->getChildDepth());
@@ -2414,8 +2441,8 @@ class AdminTest extends TestCase
             'SonataNewsBundle:CommentVoteAdmin'
         );
 
-        $postAdmin->addChild($commentAdmin);
-        $commentAdmin->addChild($commentVoteAdmin);
+        $postAdmin->addChild($commentAdmin, 'post');
+        $commentAdmin->addChild($commentVoteAdmin, 'comment');
 
         $this->assertNull($postAdmin->getCurrentLeafChildAdmin());
         $this->assertNull($commentAdmin->getCurrentLeafChildAdmin());

@@ -22,7 +22,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 @trigger_error(
-    'The '.__CLASS__.' class is deprecated since 3.24 and will be removed in 4.0.'
+    'The '.__NAMESPACE__.'\ModelChoiceList class is deprecated since 3.24 and will be removed in 4.0.'
     .' Use '.__NAMESPACE__.'\ModelChoiceLoader instead.',
     E_USER_DEPRECATED
 );
@@ -166,7 +166,7 @@ class ModelChoiceList extends SimpleChoiceList
      */
     public function getEntity($key)
     {
-        if (count($this->identifier) > 1) {
+        if (\count($this->identifier) > 1) {
             // $key is a collection index
             $entities = $this->getEntities();
 
@@ -238,7 +238,7 @@ class ModelChoiceList extends SimpleChoiceList
      */
     protected function load($choices)
     {
-        if (is_array($choices) && count($choices) > 0) {
+        if (\is_array($choices) && \count($choices) > 0) {
             $entities = $choices;
         } elseif ($this->query) {
             $entities = $this->modelManager->executeQuery($this->query);
@@ -267,7 +267,7 @@ class ModelChoiceList extends SimpleChoiceList
                 }
             }
 
-            if (count($this->identifier) > 1) {
+            if (\count($this->identifier) > 1) {
                 // When the identifier consists of multiple field, use
                 // naturally ordered keys to refer to the choices
                 $choices[$key] = $value;

@@ -43,6 +43,8 @@ First of all we are going to add a position field in our ``Client`` entity.
 
 .. code-block:: php
 
+    <?php
+
     /**
      * @Gedmo\SortablePosition
      * @ORM\Column(name="position", type="integer")
@@ -78,6 +80,8 @@ In our ``ClientAdmin`` we are going to add a custom action in the ``configureLis
 and use the default twig template provided in the ``pixSortableBehaviorBundle``
 
 .. code-block:: php
+
+    <?php
 
     $listMapper
         ->add('_action', null, [

@@ -19,7 +19,7 @@ file that was distributed with this source code.
     {% if action is defined %}
         {{ knp_menu_render(admin.sidemenu(action), {
             'currentClass': 'active',
-            'template': get_admin_pool_template('tab_menu_template')
+            'template': get_global_template('tab_menu_template')
         }, 'twig') }}
     {% endif %}
 {%- endblock -%}

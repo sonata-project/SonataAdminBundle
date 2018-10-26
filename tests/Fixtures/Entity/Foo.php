@@ -1,16 +1,29 @@
 <?php
 
+/*
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 
 class Foo
 {
+    public $qux;
     private $bar;
 
     private $baz;
 
     private $quux;
 
-    public $qux;
+    public function __toString()
+    {
+        return (string) $this->bar;
+    }
 
     public function getBar()
     {
@@ -27,11 +40,6 @@ class Foo
         return $this->baz;
     }
 
-    protected function getQuux()
-    {
-        return $this->quux;
-    }
-
     public function setBaz($baz)
     {
         $this->baz = $baz;
@@ -42,8 +50,8 @@ class Foo
         $this->quux = $quux;
     }
 
-    public function __toString()
+    protected function getQuux()
     {
-        return (string) $this->bar;
+        return $this->quux;
     }
 }

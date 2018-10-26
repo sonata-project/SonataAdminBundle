@@ -81,7 +81,9 @@ file that was distributed with this source code.
 
         {% if sonata_admin.edit == 'inline' %}
 
-            {% if sonata_admin.field_description.associationadmin.hasroute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
+            {% if sonata_admin.field_description.associationadmin.hasRoute('create')
+                and sonata_admin.field_description.associationadmin.hasAccess('create')
+                and btn_add %}
                 <span id="field_actions_{{ id }}" >
                     <a
                         href="{{ sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})) }}"
@@ -105,7 +107,9 @@ file that was distributed with this source code.
                 </span>
 
                 <span id="field_actions_{{ id }}" class="field-actions">
-                    {% if sonata_admin.field_description.associationadmin.hasRoute('create') and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
+                    {% if sonata_admin.field_description.associationadmin.hasRoute('create')
+                        and sonata_admin.field_description.associationadmin.hasAccess('create')
+                        and btn_add %}
                         <a
                             href="{{ sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})) }}"
                             onclick="return start_field_dialog_form_add_{{ id }}(this);"

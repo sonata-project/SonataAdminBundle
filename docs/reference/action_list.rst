@@ -49,7 +49,7 @@ Here is an example:
     <?php
     // ...
 
-    public function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             // addIdentifier allows to specify that this column
@@ -361,10 +361,10 @@ given the default type ``is equal`` is used.
 
 .. code-block:: php
 
-    public function configureDefaultFilterValues(array &$filterValues)
+    protected function configureDefaultFilterValues(array &$filterValues)
     {
         $filterValues['foo'] = [
-            'type'  => ChoiceFilter::TYPE_CONTAINS,
+            'type'  => ChoiceType::TYPE_CONTAINS,
             'value' => 'bar',
         ];
     }
@@ -558,7 +558,7 @@ You can:
 
     <?php
 
-    public function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list)
     {
         $list
             ->add('id', null, [
@@ -594,8 +594,8 @@ to override the default parameters.
                 'header_style' => 'width: 35%',
                 'collapse' => [
                     'height' => 40, // height in px
-                    'read_more' => 'I want to see the full description', // content of the "read more" link
-                    'read_less' => 'This text is too long, reduce the size' // content of the "read less" link
+                    'more' => 'I want to see the full description', // content of the "read more" link
+                    'less' => 'This text is too long, reduce the size' // content of the "read less" link
                 ]
             ])
             // ...
@@ -648,4 +648,4 @@ Checkbox range selection
 
 .. _`issues on GitHub`: https://github.com/sonata-project/SonataAdminBundle/issues/1519
 .. _`SonataDoctrineORMAdminBundle Documentation`: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html
-.. _`here`: https://github.com/sonata-project/SonataCoreBundle/tree/master/Form/Type
+.. _`here`: https://github.com/sonata-project/SonataCoreBundle/tree/3.x/src/Form/Type

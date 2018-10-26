@@ -190,11 +190,11 @@ Other steps needed to create your new action
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In addition to defining the route for your new action you also need to create a
-handler for it in your Controller. By default Admin classes use ``SonataAdminBundle:CRUD``
+handler for it in your Controller. By default Admin classes use ``Sonata\AdminBundle\Controller\CRUDController``
 as their controller, but this can be changed by altering the third argument when defining
 your Admin service (in your admin.yml file).
 
-For example, lets change the Controller for our MediaAdmin class to App:MediaCRUD:
+For example, lets change the Controller for our MediaAdmin class to ``App\Controller\MediaCRUDController``:
 
 .. configuration-block::
 
@@ -392,7 +392,7 @@ list action's links to point to a different action, set the ``route`` option in 
 
     class PostAdmin extends AbstractAdmin
     {
-        public function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $listMapper)
         {
             $listMapper
                 ->addIdentifier('name', null, [

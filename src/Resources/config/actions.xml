@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <!-- NEXT_MAJOR: remove the "class" and "public" attributes -->
+        <service id="Sonata\AdminBundle\Action\DashboardAction" class="Sonata\AdminBundle\Action\DashboardAction" public="true">
+            <argument>%sonata.admin.configuration.dashboard_blocks%</argument>
+            <argument type="service" id="sonata.admin.breadcrumbs_builder"/>
+            <argument type="service" id="sonata.admin.global_template_registry"/>
+            <argument type="service" id="sonata.admin.pool"/>
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+        <service id="Sonata\AdminBundle\Action\SearchAction" class="Sonata\AdminBundle\Action\SearchAction" public="true">
+            <argument type="service" id="sonata.admin.pool"/>
+            <argument type="service" id="sonata.admin.search.handler"/>
+            <argument type="service" id="sonata.admin.global_template_registry"/>
+            <argument type="service" id="sonata.admin.breadcrumbs_builder"/>
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+        <service id="sonata.admin.action.append_form_field_element" class="Sonata\AdminBundle\Action\AppendFormFieldElementAction" public="true">
+            <argument type="service" id="twig"/>
+            <argument type="service" id="sonata.admin.pool"/>
+            <argument type="service" id="sonata.admin.helper"/>
+        </service>
+        <service id="sonata.admin.action.retrieve_form_field_element" class="Sonata\AdminBundle\Action\RetrieveFormFieldElementAction" public="true">
+            <argument type="service" id="twig"/>
+            <argument type="service" id="sonata.admin.pool"/>
+            <argument type="service" id="sonata.admin.helper"/>
+        </service>
+        <service id="sonata.admin.action.get_short_object_description" class="Sonata\AdminBundle\Action\GetShortObjectDescriptionAction" public="true">
+            <argument type="service" id="twig"/>
+            <argument type="service" id="sonata.admin.pool"/>
+        </service>
+        <service id="sonata.admin.action.set_object_field_value" class="Sonata\AdminBundle\Action\SetObjectFieldValueAction" public="true">
+            <argument type="service" id="twig"/>
+            <argument type="service" id="sonata.admin.pool"/>
+            <argument type="service" id="validator"/>
+        </service>
+        <service id="sonata.admin.action.retrieve_autocomplete_items" class="Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction" public="true">
+            <argument type="service" id="sonata.admin.pool"/>
+        </service>
+    </services>
+</container>

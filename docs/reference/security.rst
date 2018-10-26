@@ -144,7 +144,7 @@ The role name will be based on the name of your admin service.
 ========================   ======================================================
 app.admin.foo              ROLE_APP_ADMIN_FOO_{PERMISSION}
 my.blog.admin.foo_bar      ROLE_MY_BLOG_ADMIN_FOO_BAR_{PERMISSION}
-App\Admin\FooAdmin   ROLE_APPBUNDLE\ADMIN\FOOADMIN_{PERMISSION}
+App\Admin\FooAdmin         ROLE_APPBUNDLE\ADMIN\FOOADMIN_{PERMISSION}
 ========================   ======================================================
 
 .. note::
@@ -212,8 +212,8 @@ Or from a Twig template:
 
 .. code-block:: jinja
 
-    {% if is_granted('VIEW') %}
-        <p>Hello there!</p>
+    {% if admin.hasAccess('list') %}
+        {# ... #}
     {% endif %}
 
 Note that you do not have to re-specify the prefix.

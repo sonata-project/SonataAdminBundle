@@ -335,7 +335,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns the uniqid.
      *
-     * @return int
+     * @return string
      */
     public function getUniqid();
 
@@ -445,7 +445,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function createObjectSecurity($object);
 
     /**
-     * @return AdminInterface
+     * @return AdminInterface|null
      */
     public function getParent();
 
@@ -460,6 +460,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Returns template.
+     *
+     * @deprecated since 3.35. To be removed in 4.0. Use TemplateRegistry services instead
      *
      * @param string $name
      *
@@ -640,8 +642,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getTranslationLabel($label, $context = '', $type = '');
 
     /**
-     * @param $object
-     *
      * @return Metadata
      */
     public function getObjectMetadata($object);

@@ -26,7 +26,7 @@ $rules = [
     'header_comment' => [
         'header' => $header,
     ],
-    'no_extra_consecutive_blank_lines' => true,
+    'no_extra_blank_lines' => true,
     'no_php4_constructor' => true,
     'no_useless_else' => true,
     'no_useless_return' => true,

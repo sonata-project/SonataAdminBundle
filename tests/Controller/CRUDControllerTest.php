@@ -30,6 +30,8 @@ use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
@@ -80,6 +82,11 @@ class CRUDControllerTest extends TestCase
      * @var AbstractAdmin
      */
     private $admin;
+
+    /**
+     * @var TemplateRegistryInterface
+     */
+    private $templateRegistry;
 
     /**
      * @var Pool
@@ -153,6 +160,8 @@ class CRUDControllerTest extends TestCase
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->parameters = [];
         $this->template = '';
+
+        $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
 
         $templating = $this->getMockBuilder(DelegatingEngine::class)
             ->setConstructorArgs([$this->container, []])
@@ -269,6 +278,8 @@ class CRUDControllerTest extends TestCase
                         return $requestStack;
                     case 'foo.admin':
                         return $this->admin;
+                    case 'foo.admin.template_registry':
+                        return $this->templateRegistry->reveal();
                     case 'templating':
                         return $templating;
                     case 'twig':
@@ -327,40 +338,38 @@ class CRUDControllerTest extends TestCase
                 }
             }));
 
-        $this->admin->expects($this->any())
-            ->method('getTemplate')
-            ->will($this->returnCallback(function ($name) {
-                switch ($name) {
-                    case 'ajax':
-                        return '@SonataAdmin/ajax_layout.html.twig';
-                    case 'layout':
-                        return '@SonataAdmin/standard_layout.html.twig';
-                    case 'show':
-                        return '@SonataAdmin/CRUD/show.html.twig';
-                    case 'show_compare':
-                        return '@SonataAdmin/CRUD/show_compare.html.twig';
-                    case 'edit':
-                        return '@SonataAdmin/CRUD/edit.html.twig';
-                    case 'dashboard':
-                        return '@SonataAdmin/Core/dashboard.html.twig';
-                    case 'search':
-                        return '@SonataAdmin/Core/search.html.twig';
-                    case 'list':
-                        return '@SonataAdmin/CRUD/list.html.twig';
-                    case 'preview':
-                        return '@SonataAdmin/CRUD/preview.html.twig';
-                    case 'history':
-                        return '@SonataAdmin/CRUD/history.html.twig';
-                    case 'acl':
-                        return '@SonataAdmin/CRUD/acl.html.twig';
-                    case 'delete':
-                        return '@SonataAdmin/CRUD/delete.html.twig';
-                    case 'batch':
-                        return '@SonataAdmin/CRUD/list__batch.html.twig';
-                    case 'batch_confirmation':
-                        return '@SonataAdmin/CRUD/batch_confirmation.html.twig';
-                }
-            }));
+        $this->templateRegistry->getTemplate('ajax')->willReturn('@SonataAdmin/ajax_layout.html.twig');
+        $this->templateRegistry->getTemplate('layout')->willReturn('@SonataAdmin/standard_layout.html.twig');
+        $this->templateRegistry->getTemplate('show')->willReturn('@SonataAdmin/CRUD/show.html.twig');
+        $this->templateRegistry->getTemplate('show_compare')->willReturn('@SonataAdmin/CRUD/show_compare.html.twig');
+        $this->templateRegistry->getTemplate('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
+        $this->templateRegistry->getTemplate('dashboard')->willReturn('@SonataAdmin/Core/dashboard.html.twig');
+        $this->templateRegistry->getTemplate('search')->willReturn('@SonataAdmin/Core/search.html.twig');
+        $this->templateRegistry->getTemplate('list')->willReturn('@SonataAdmin/CRUD/list.html.twig');
+        $this->templateRegistry->getTemplate('preview')->willReturn('@SonataAdmin/CRUD/preview.html.twig');
+        $this->templateRegistry->getTemplate('history')->willReturn('@SonataAdmin/CRUD/history.html.twig');
+        $this->templateRegistry->getTemplate('acl')->willReturn('@SonataAdmin/CRUD/acl.html.twig');
+        $this->templateRegistry->getTemplate('delete')->willReturn('@SonataAdmin/CRUD/delete.html.twig');
+        $this->templateRegistry->getTemplate('batch')->willReturn('@SonataAdmin/CRUD/list__batch.html.twig');
+        $this->templateRegistry->getTemplate('batch_confirmation')->willReturn('@SonataAdmin/CRUD/batch_confirmation.html.twig');
+
+        // NEXT_MAJOR: Remove this call
+        $this->admin->method('getTemplate')->willReturnMap([
+            ['ajax', '@SonataAdmin/ajax_layout.html.twig'],
+            ['layout', '@SonataAdmin/standard_layout.html.twig'],
+            ['show', '@SonataAdmin/CRUD/show.html.twig'],
+            ['show_compare', '@SonataAdmin/CRUD/show_compare.html.twig'],
+            ['edit', '@SonataAdmin/CRUD/edit.html.twig'],
+            ['dashboard', '@SonataAdmin/Core/dashboard.html.twig'],
+            ['search', '@SonataAdmin/Core/search.html.twig'],
+            ['list', '@SonataAdmin/CRUD/list.html.twig'],
+            ['preview', '@SonataAdmin/CRUD/preview.html.twig'],
+            ['history', '@SonataAdmin/CRUD/history.html.twig'],
+            ['acl', '@SonataAdmin/CRUD/acl.html.twig'],
+            ['delete', '@SonataAdmin/CRUD/delete.html.twig'],
+            ['batch', '@SonataAdmin/CRUD/list__batch.html.twig'],
+            ['batch_confirmation', '@SonataAdmin/CRUD/batch_confirmation.html.twig'],
+        ]);
 
         $this->admin->expects($this->any())
             ->method('getIdParameter')
@@ -390,7 +399,7 @@ class CRUDControllerTest extends TestCase
             ->will(
                 $this->returnCallback(
                     function ($name, $object, array $parameters = [], $absolute = false) {
-                        $result = get_class($object).'_'.$name;
+                        $result = \get_class($object).'_'.$name;
                         if (!empty($parameters)) {
                             $result .= '?'.http_build_query($parameters);
                         }
@@ -399,6 +408,10 @@ class CRUDControllerTest extends TestCase
                     }
                 )
             );
+
+        $this->admin->expects($this->any())
+            ->method('getCode')
+            ->willReturn('foo.admin');
 
         $this->controller = new CRUDController();
         $this->controller->setContainer($this->container);
@@ -516,7 +529,7 @@ class CRUDControllerTest extends TestCase
         $this->protectedTestedMethods['configure']->invoke($this->controller);
 
         $this->assertSame(123456, $uniqueId);
-        $this->assertAttributeInstanceOf(get_class($adminParent), 'admin', $this->controller);
+        $this->assertAttributeInstanceOf(\get_class($adminParent), 'admin', $this->controller);
     }
 
     public function testConfigureWithException()
@@ -533,9 +546,8 @@ class CRUDControllerTest extends TestCase
     public function testConfigureWithException2()
     {
         $this->expectException(
-            \RuntimeException::class,
-            'Unable to find the admin class related to the current controller '.
-            '(Sonata\AdminBundle\Controller\CRUDController)'
+            \InvalidArgumentException::class,
+            'Found service "nonexistent.admin" is not a valid admin service'
         );
 
         $this->pool->setAdminServiceIds(['nonexistent.admin']);
@@ -820,6 +832,40 @@ class CRUDControllerTest extends TestCase
         $this->controller->showAction(null, $this->request);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation Calling this method without implementing "configureShowFields" is not supported since 3.x and will no longer be possible in 4.0
+     */
+    public function testShowActionDeprecation()
+    {
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('checkAccess')
+            ->with($this->equalTo('show'))
+            ->will($this->returnValue(true));
+
+        $show = $this->createMock(FieldDescriptionCollection::class);
+
+        $this->admin->expects($this->once())
+            ->method('getShow')
+            ->will($this->returnValue($show));
+
+        $show->expects($this->once())
+            ->method('getElements')
+            ->willReturn([]);
+
+        $show->expects($this->once())
+            ->method('count')
+            ->willReturn(0);
+
+        $this->controller->showAction(null, $this->request);
+    }
+
     public function testPreShow()
     {
         $object = new \stdClass();
@@ -860,6 +906,10 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('getShow')
             ->will($this->returnValue($show));
+
+        $show->expects($this->once())
+            ->method('getElements')
+            ->willReturn(['field' => 'fielddata']);
 
         $this->assertInstanceOf(Response::class, $this->controller->showAction(null, $this->request));
 
@@ -1013,6 +1063,62 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame([], $this->session->getFlashBag()->all());
         $this->assertSame('@SonataAdmin/CRUD/delete.html.twig', $this->template);
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Accessing a child that isn't connected to a given parent is deprecated since 3.34 and won't be allowed in 4.0.
+     */
+    public function testDeleteActionChildDeprecation()
+    {
+        $object = new \stdClass();
+        $object->parent = 'test';
+
+        $object2 = new \stdClass();
+
+        $admin = $this->createMock(PostAdmin::class);
+
+        $admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object2));
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('getParent')
+            ->will($this->returnValue($admin));
+
+        $this->admin->expects($this->exactly(2))
+            ->method('getParentAssociationMapping')
+            ->will($this->returnValue('parent'));
+
+        $this->controller->deleteAction(1, $this->request);
+    }
+
+    public function testDeleteActionNoParentMappings()
+    {
+        $object = new \stdClass();
+
+        $admin = $this->createMock(PostAdmin::class);
+
+        $admin->expects($this->never())
+            ->method('getObject');
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue($object));
+
+        $this->admin->expects($this->once())
+            ->method('getParent')
+            ->will($this->returnValue($admin));
+
+        $this->admin->expects($this->once())
+            ->method('getParentAssociationMapping')
+            ->will($this->returnValue(false));
+
+        $this->controller->deleteAction(1, $this->request);
     }
 
     public function testDeleteActionNoCsrfToken()
@@ -1362,6 +1468,32 @@ class CRUDControllerTest extends TestCase
         $this->controller->editAction(null, $this->request);
     }
 
+    public function testEditActionRuntimeException()
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->will($this->returnValue(new \stdClass()));
+
+        $this->admin->expects($this->once())
+            ->method('checkAccess')
+            ->with($this->equalTo('edit'))
+            ->will($this->returnValue(true));
+
+        $form = $this->createMock(Form::class);
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn([]);
+
+        $this->controller->editAction(null, $this->request);
+    }
+
     public function testEditActionAccessDenied()
     {
         $this->expectException(AccessDeniedException::class);
@@ -1413,9 +1545,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
@@ -1426,6 +1556,10 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->any())
             ->method('createView')
             ->will($this->returnValue($formView));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $this->assertInstanceOf(Response::class, $this->controller->editAction(null, $this->request));
 
@@ -1469,9 +1603,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $form->expects($this->once())
             ->method('getData')
@@ -1488,6 +1620,10 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $this->admin->expects($this->once())
             ->method('toString')
@@ -1521,9 +1657,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
@@ -1536,6 +1670,10 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(false));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $this->admin->expects($this->once())
             ->method('toString')
@@ -1583,9 +1721,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
@@ -1602,6 +1738,10 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('getData')
             ->will($this->returnValue($object));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $this->admin->expects($this->once())
             ->method('getNormalizedIdentifier')
@@ -1635,9 +1775,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
@@ -1650,6 +1788,10 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(false));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $this->request->setMethod('POST');
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
@@ -1694,9 +1836,7 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->will($this->returnValue('stdClass'));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
@@ -1709,6 +1849,10 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('getData')
             ->will($this->returnValue($object));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $this->admin->expects($this->once())
             ->method('toString')
@@ -1756,9 +1900,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->will($this->returnValue(true));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
@@ -1782,6 +1924,10 @@ class CRUDControllerTest extends TestCase
             ->method('isValid')
             ->will($this->returnValue(true));
 
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
+
         $this->request->setMethod('POST');
         $this->request->request->set('btn_preview', 'Preview');
 
@@ -1802,7 +1948,7 @@ class CRUDControllerTest extends TestCase
     public function testEditActionWithLockException()
     {
         $object = new \stdClass();
-        $class = get_class($object);
+        $class = \get_class($object);
 
         $this->admin->expects($this->any())
             ->method('getObject')
@@ -1817,9 +1963,7 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->will($this->returnValue($class));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $form->expects($this->any())
             ->method('isValid')
@@ -1828,6 +1972,10 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('getData')
             ->will($this->returnValue($object));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $this->admin->expects($this->any())
             ->method('getForm')
@@ -1870,6 +2018,36 @@ class CRUDControllerTest extends TestCase
             ->method('checkAccess')
             ->with($this->equalTo('create'))
             ->will($this->throwException(new AccessDeniedException()));
+
+        $this->controller->createAction($this->request);
+    }
+
+    public function testCreateActionRuntimeException()
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $this->admin->expects($this->once())
+            ->method('checkAccess')
+            ->with($this->equalTo('create'))
+            ->will($this->returnValue(true));
+
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue('stdClass'));
+
+        $this->admin->expects($this->once())
+            ->method('getNewInstance')
+            ->will($this->returnValue(new \stdClass()));
+
+        $form = $this->createMock(Form::class);
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn([]);
 
         $this->controller->createAction($this->request);
     }
@@ -1917,13 +2095,15 @@ class CRUDControllerTest extends TestCase
             ->method('getNewInstance')
             ->will($this->returnValue($object));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $formView = $this->createMock(FormView::class);
 
@@ -1988,9 +2168,7 @@ class CRUDControllerTest extends TestCase
             ->method('create')
             ->will($this->returnArgument(0));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->any())
             ->method('getClass')
@@ -1999,6 +2177,10 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $form->expects($this->once())
             ->method('isSubmitted')
@@ -2051,9 +2233,7 @@ class CRUDControllerTest extends TestCase
             ->method('getNewInstance')
             ->will($this->returnValue($object));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->any())
             ->method('getClass')
@@ -2062,6 +2242,10 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $form->expects($this->once())
             ->method('isSubmitted')
@@ -2100,13 +2284,15 @@ class CRUDControllerTest extends TestCase
             ->method('getNewInstance')
             ->will($this->returnValue($object));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $form->expects($this->once())
             ->method('isSubmitted')
@@ -2165,13 +2351,15 @@ class CRUDControllerTest extends TestCase
             ->method('getNewInstance')
             ->will($this->returnValue($object));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $form->expects($this->once())
             ->method('isValid')
@@ -2242,13 +2430,15 @@ class CRUDControllerTest extends TestCase
             ->method('create')
             ->will($this->returnArgument(0));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $form->expects($this->once())
             ->method('isSubmitted')
@@ -2294,9 +2484,7 @@ class CRUDControllerTest extends TestCase
             ->method('getNewInstance')
             ->will($this->returnValue($object));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->any())
             ->method('getClass')
@@ -2305,6 +2493,10 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $form->expects($this->once())
             ->method('isSubmitted')
@@ -2350,9 +2542,7 @@ class CRUDControllerTest extends TestCase
             ->method('getNewInstance')
             ->will($this->returnValue($object));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $this->admin->expects($this->any())
             ->method('getClass')
@@ -2361,6 +2551,10 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($form));
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
 
         $this->admin->expects($this->once())
             ->method('supportsPreviewMode')

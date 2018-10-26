@@ -26,7 +26,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 class AdminExtractor implements ExtractorInterface, TranslatorInterface, SecurityHandlerInterface, LabelTranslatorStrategyInterface
 {
     /**
-     * @var LoggerInterface
+     * @var LoggerInterface|null
      */
     private $logger;
 
@@ -36,17 +36,17 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     private $adminPool;
 
     /**
-     * @var string|bool
+     * @var MessageCatalogue|bool
      */
     private $catalogue;
 
     /**
-     * @var string|bool
+     * @var TranslatorInterface|bool
      */
     private $translator;
 
     /**
-     * @var string|bool
+     * @var LabelTranslatorStrategyInterface|bool
      */
     private $labelStrategy;
 
@@ -142,7 +142,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
             ];
 
             if ($this->logger) {
-                $this->logger->info(sprintf('Retrieving message from admin:%s - class: %s', $admin->getCode(), get_class($admin)));
+                $this->logger->info(sprintf('Retrieving message from admin:%s - class: %s', $admin->getCode(), \get_class($admin)));
             }
 
             foreach ($methods as $method) {
@@ -244,7 +244,10 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
      */
     private function getAdmin($id)
     {
-        return $this->adminPool->getContainer()->get($id);
+        $admin = $this->adminPool->getContainer()->get($id);
+        \assert($admin instanceof AdminInterface);
+
+        return $admin;
     }
 
     /**

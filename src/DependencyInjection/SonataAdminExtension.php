@@ -141,14 +141,15 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $loader->load('block.xml');
         $loader->load('menu.xml');
         $loader->load('commands.xml');
+        $loader->load('actions.xml');
+
+        if (isset($bundles['MakerBundle'])) {
+            $loader->load('makers.xml');
+        }
 
         if (isset($bundles['SonataExporterBundle'])) {
             $loader->load('exporter.xml');
         }
-
-        $container->getDefinition('sonata.admin.exporter')->setDeprecated(
-            'The service "%service_id%" is deprecated in favor of the "sonata.exporter.exporter" service'
-        );
 
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
@@ -157,6 +158,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $config['options']['stylesheets'] = $this->buildStylesheets($config);
         $config['options']['role_admin'] = $config['security']['role_admin'];
         $config['options']['role_super_admin'] = $config['security']['role_super_admin'];
+        $config['options']['search'] = $config['search'];
 
         $pool = $container->getDefinition('sonata.admin.pool');
         $pool->replaceArgument(1, $config['title']);
@@ -216,7 +218,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
         switch ($config['security']['handler']) {
             case 'sonata.admin.security.handler.role':
-                if (0 === count($config['security']['information'])) {
+                if (0 === \count($config['security']['information'])) {
                     $config['security']['information'] = [
                         'EDIT' => ['EDIT'],
                         'LIST' => ['LIST'],
@@ -230,7 +232,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
                 break;
             case 'sonata.admin.security.handler.acl':
-                if (0 === count($config['security']['information'])) {
+                if (0 === \count($config['security']['information'])) {
                     $config['security']['information'] = [
                         'GUEST' => ['VIEW', 'LIST'],
                         'STAFF' => ['EDIT', 'LIST', 'CREATE'],
@@ -290,6 +292,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
         // set filter persistence
         $container->setParameter('sonata.admin.configuration.filters.persist', $config['persist_filters']);
+        $container->setParameter('sonata.admin.configuration.filters.persister', $config['filter_persister']);
 
         $container->setParameter('sonata.admin.configuration.show.mosaic.button', $config['show_mosaic_button']);
 
@@ -475,7 +478,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             array_push($array, $toAdd);
         }
         foreach ($removeArray as $toRemove) {
-            if (in_array($toRemove, $array)) {
+            if (\in_array($toRemove, $array)) {
                 array_splice($array, array_search($toRemove, $array), 1);
             }
         }

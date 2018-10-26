@@ -91,7 +91,7 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
         if (!$this->choiceList) {
             if ($this->query) {
                 $entities = $this->modelManager->executeQuery($this->query);
-            } elseif (is_array($this->choices) && count($this->choices) > 0) {
+            } elseif (\is_array($this->choices) && \count($this->choices) > 0) {
                 $entities = $this->choices;
             } else {
                 $entities = $this->modelManager->findBy($this->class);
@@ -122,7 +122,7 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
 
             $finalChoices = [];
             foreach ($choices as $valueObject => $idx) {
-                if (count($idx) > 1) { // avoid issue with identical values ...
+                if (\count($idx) > 1) { // avoid issue with identical values ...
                     foreach ($idx as $id) {
                         $finalChoices[sprintf('%s (id: %s)', $valueObject, $id)] = $id;
                     }

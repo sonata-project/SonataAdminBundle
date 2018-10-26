@@ -18,6 +18,29 @@ use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 class SonataAdminExtensionTest extends AbstractExtensionTestCase
 {
     /**
+     * @var string[]
+     */
+    private $defaultStylesheets = [];
+
+    /**
+     * @var string[]
+     */
+    private $defaultJavascripts = [];
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->container->setParameter('kernel.bundles', []);
+        $this->load();
+        $this->defaultStylesheets = $this->container
+            ->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets']
+        ;
+        $this->defaultJavascripts = $this->container
+            ->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts']
+        ;
+    }
+
+    /**
      * @group legacy
      */
     public function testContainerCompileWithJMSDiExtraBundle()
@@ -65,208 +88,101 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
     public function testExtraStylesheetsGetAdded()
     {
         $this->container->setParameter('kernel.bundles', []);
+        $extraStylesheets = ['foo/bar.css', 'bar/quux.css'];
         $this->load([
             'assets' => [
-                'extra_stylesheets' => [
-                    'foo/bar.css',
-                    'bar/quux.css',
-                ],
+                'extra_stylesheets' => $extraStylesheets,
             ],
         ]);
         $stylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
 
-        $this->assertEquals($stylesheets, [
-            'bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css',
-            'bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css',
-            'bundles/sonatacore/vendor/ionicons/css/ionicons.min.css',
-            'bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css',
-            'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css',
-            'bundles/sonataadmin/vendor/iCheck/skins/square/blue.css',
-            'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
-            'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
-            'bundles/sonatacore/vendor/select2/select2.css',
-            'bundles/sonatacore/vendor/select2-bootstrap-css/select2-bootstrap.min.css',
-            'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
-            'bundles/sonataadmin/css/styles.css',
-            'bundles/sonataadmin/css/layout.css',
-            'bundles/sonataadmin/css/tree.css',
-            'foo/bar.css',
-            'bar/quux.css',
-        ]);
+        $this->assertSame(array_merge($this->defaultStylesheets, $extraStylesheets), $stylesheets);
     }
 
     public function testRemoveStylesheetsGetRemoved()
     {
         $this->container->setParameter('kernel.bundles', []);
+        $removeStylesheets = [
+            'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css',
+            'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
+        ];
         $this->load([
             'assets' => [
-                'remove_stylesheets' => [
-                    'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css',
-                    'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
-                ],
+                'remove_stylesheets' => $removeStylesheets,
             ],
         ]);
-
         $stylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
 
-        $this->assertEquals($stylesheets, [
-            'bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css',
-            'bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css',
-            'bundles/sonatacore/vendor/ionicons/css/ionicons.min.css',
-            'bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css',
-            'bundles/sonataadmin/vendor/iCheck/skins/square/blue.css',
-            'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
-            'bundles/sonatacore/vendor/select2/select2.css',
-            'bundles/sonatacore/vendor/select2-bootstrap-css/select2-bootstrap.min.css',
-            'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
-            'bundles/sonataadmin/css/styles.css',
-            'bundles/sonataadmin/css/layout.css',
-            'bundles/sonataadmin/css/tree.css',
-        ]);
+        $this->assertSame(array_values(array_diff($this->defaultStylesheets, $removeStylesheets)), $stylesheets);
     }
 
     public function testExtraJavascriptsGetAdded()
     {
         $this->container->setParameter('kernel.bundles', []);
+        $extraJavascripts = ['foo/bar.js', 'bar/quux.js'];
         $this->load([
             'assets' => [
-                'extra_javascripts' => [
-                    'foo/bar.js',
-                    'bar/quux.js',
-                ],
+                'extra_javascripts' => $extraJavascripts,
             ],
         ]);
         $javascripts = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts'];
 
-        $this->assertEquals($javascripts, [
-            'bundles/sonatacore/vendor/jquery/dist/jquery.min.js',
-            'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js',
-            'bundles/sonatacore/vendor/moment/min/moment.min.js',
-            'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js',
-            'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js',
-            'bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js',
-            'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-            'bundles/sonataadmin/vendor/jquery-form/jquery.form.js',
-            'bundles/sonataadmin/jquery/jquery.confirmExit.js',
-            'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js',
-            'bundles/sonatacore/vendor/select2/select2.min.js',
-            'bundles/sonataadmin/vendor/admin-lte/dist/js/app.min.js',
-            'bundles/sonataadmin/vendor/iCheck/icheck.min.js',
-            'bundles/sonataadmin/vendor/slimScroll/jquery.slimscroll.min.js',
-            'bundles/sonataadmin/vendor/waypoints/lib/jquery.waypoints.min.js',
-            'bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js',
-            'bundles/sonataadmin/vendor/readmore-js/readmore.min.js',
-            'bundles/sonataadmin/vendor/masonry/dist/masonry.pkgd.min.js',
-            'bundles/sonataadmin/Admin.js',
-            'bundles/sonataadmin/treeview.js',
-            'bundles/sonataadmin/sidebar.js',
-            'foo/bar.js',
-            'bar/quux.js',
-        ]);
+        $this->assertSame(array_merge($this->defaultJavascripts, $extraJavascripts), $javascripts);
     }
 
     public function testRemoveJavascriptsGetRemoved()
     {
         $this->container->setParameter('kernel.bundles', []);
+        $removeJavascripts = [
+            'bundles/sonataadmin/vendor/readmore-js/readmore.min.js',
+            'bundles/sonataadmin/jquery/jquery.confirmExit.js',
+        ];
         $this->load([
             'assets' => [
-                'remove_javascripts' => [
-                    'bundles/sonataadmin/vendor/readmore-js/readmore.min.js',
-                    'bundles/sonataadmin/jquery/jquery.confirmExit.js',
-                ],
+                'remove_javascripts' => $removeJavascripts,
             ],
         ]);
         $javascripts = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts'];
 
-        $this->assertEquals($javascripts, [
-            'bundles/sonatacore/vendor/jquery/dist/jquery.min.js',
-            'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js',
-            'bundles/sonatacore/vendor/moment/min/moment.min.js',
-            'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js',
-            'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js',
-            'bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js',
-            'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-            'bundles/sonataadmin/vendor/jquery-form/jquery.form.js',
-            'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js',
-            'bundles/sonatacore/vendor/select2/select2.min.js',
-            'bundles/sonataadmin/vendor/admin-lte/dist/js/app.min.js',
-            'bundles/sonataadmin/vendor/iCheck/icheck.min.js',
-            'bundles/sonataadmin/vendor/slimScroll/jquery.slimscroll.min.js',
-            'bundles/sonataadmin/vendor/waypoints/lib/jquery.waypoints.min.js',
-            'bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js',
-            'bundles/sonataadmin/vendor/masonry/dist/masonry.pkgd.min.js',
-            'bundles/sonataadmin/Admin.js',
-            'bundles/sonataadmin/treeview.js',
-            'bundles/sonataadmin/sidebar.js',
-        ]);
+        $this->assertSame(array_values(array_diff($this->defaultJavascripts, $removeJavascripts)), $javascripts);
     }
 
     public function testAssetsCanBeAddedAndRemoved()
     {
         $this->container->setParameter('kernel.bundles', []);
+        $extraStylesheets = ['foo/bar.css', 'bar/quux.css'];
+        $extraJavascripts = ['foo/bar.js', 'bar/quux.js'];
+        $removeStylesheets = [
+            'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css',
+            'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
+        ];
+        $removeJavascripts = [
+            'bundles/sonataadmin/vendor/readmore-js/readmore.min.js',
+            'bundles/sonataadmin/jquery/jquery.confirmExit.js',
+        ];
         $this->load([
             'assets' => [
-                'extra_stylesheets' => [
-                    'foo/bar.css',
-                    'bar/quux.css',
-                ],
-                'remove_stylesheets' => [
-                    'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css',
-                    'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
-                ],
-                'extra_javascripts' => [
-                    'foo/bar.js',
-                    'bar/quux.js',
-                ],
-                'remove_javascripts' => [
-                    'bundles/sonataadmin/vendor/readmore-js/readmore.min.js',
-                    'bundles/sonataadmin/jquery/jquery.confirmExit.js',
-                ],
+                'extra_stylesheets' => $extraStylesheets,
+                'remove_stylesheets' => $removeStylesheets,
+                'extra_javascripts' => $extraJavascripts,
+                'remove_javascripts' => $removeJavascripts,
             ],
         ]);
-        $stylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
+        $stylesheets = $this->container
+            ->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets']
+        ;
+
+        $this->assertSame(
+            array_merge(array_diff($this->defaultStylesheets, $removeStylesheets), $extraStylesheets),
+            $stylesheets
+        );
+
         $javascripts = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts'];
 
-        $this->assertEquals($stylesheets, [
-            'bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css',
-            'bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css',
-            'bundles/sonatacore/vendor/ionicons/css/ionicons.min.css',
-            'bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css',
-            'bundles/sonataadmin/vendor/iCheck/skins/square/blue.css',
-            'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
-            'bundles/sonatacore/vendor/select2/select2.css',
-            'bundles/sonatacore/vendor/select2-bootstrap-css/select2-bootstrap.min.css',
-            'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
-            'bundles/sonataadmin/css/styles.css',
-            'bundles/sonataadmin/css/layout.css',
-            'bundles/sonataadmin/css/tree.css',
-            'foo/bar.css',
-            'bar/quux.css',
-        ]);
-
-        $this->assertEquals($javascripts, [
-            'bundles/sonatacore/vendor/jquery/dist/jquery.min.js',
-            'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js',
-            'bundles/sonatacore/vendor/moment/min/moment.min.js',
-            'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js',
-            'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js',
-            'bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js',
-            'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
-            'bundles/sonataadmin/vendor/jquery-form/jquery.form.js',
-            'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js',
-            'bundles/sonatacore/vendor/select2/select2.min.js',
-            'bundles/sonataadmin/vendor/admin-lte/dist/js/app.min.js',
-            'bundles/sonataadmin/vendor/iCheck/icheck.min.js',
-            'bundles/sonataadmin/vendor/slimScroll/jquery.slimscroll.min.js',
-            'bundles/sonataadmin/vendor/waypoints/lib/jquery.waypoints.min.js',
-            'bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js',
-            'bundles/sonataadmin/vendor/masonry/dist/masonry.pkgd.min.js',
-            'bundles/sonataadmin/Admin.js',
-            'bundles/sonataadmin/treeview.js',
-            'bundles/sonataadmin/sidebar.js',
-            'foo/bar.js',
-            'bar/quux.js',
-        ]);
+        $this->assertSame(
+            array_merge(array_diff($this->defaultJavascripts, $removeJavascripts), $extraJavascripts),
+            $javascripts
+        );
     }
 
     protected function getContainerExtensions()

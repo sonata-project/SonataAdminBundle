@@ -12,7 +12,9 @@
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
 use Doctrine\Common\Inflector\Inflector;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\Pager;
+use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -61,7 +63,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 $this->replaceDefaultArguments([
                     0 => $id,
-                    2 => 'SonataAdminBundle:CRUD',
+                    2 => CRUDController::class,
                 ], $definition, $parentDefinition);
                 $this->applyConfigurationFromAttribute($definition, $attributes);
                 $this->applyDefaults($container, $id, $attributes);
@@ -109,7 +111,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 ];
 
                 if (isset($groupDefaults[$resolvedGroupName]['on_top']) && $groupDefaults[$resolvedGroupName]['on_top']
-                    || $onTop && (count($groupDefaults[$resolvedGroupName]['items']) > 1)) {
+                    || $onTop && (\count($groupDefaults[$resolvedGroupName]['items']) > 1)) {
                     throw new \RuntimeException('You can\'t use "on_top" option with multiple same name groups.');
                 }
                 $groupDefaults[$resolvedGroupName]['on_top'] = $onTop;
@@ -159,7 +161,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 }
 
                 if (isset($groups[$resolvedGroupName]['on_top']) && !empty($group['on_top']) && $group['on_top']
-                    && (count($groups[$resolvedGroupName]['items']) > 1)) {
+                    && (\count($groups[$resolvedGroupName]['items']) > 1)) {
                     throw new \RuntimeException('You can\'t use "on_top" option with multiple same name groups.');
                 }
                 if (empty($group['on_top'])) {
@@ -308,13 +310,20 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->addMethodCall('setLabel', [$label]);
 
+        $persistFilters = $container->getParameter('sonata.admin.configuration.filters.persist');
+        // override default configuration with admin config if set
         if (isset($attributes['persist_filters'])) {
-            $persistFilters = (bool) $attributes['persist_filters'];
-        } else {
-            $persistFilters = (bool) $container->getParameter('sonata.admin.configuration.filters.persist');
+            $persistFilters = $attributes['persist_filters'];
         }
-
-        $definition->addMethodCall('setPersistFilters', [$persistFilters]);
+        $filtersPersister = $container->getParameter('sonata.admin.configuration.filters.persister');
+        // override default configuration with admin config if set
+        if (isset($attributes['filter_persister'])) {
+            $filtersPersister = $attributes['filter_persister'];
+        }
+        // configure filters persistence, if configured to
+        if ($persistFilters) {
+            $definition->addMethodCall('setFilterPersister', [new Reference($filtersPersister)]);
+        }
 
         if (isset($overwriteAdminConfiguration['show_mosaic_button'])) {
             $showMosaicButton = $overwriteAdminConfiguration['show_mosaic_button'];
@@ -326,7 +335,12 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->addMethodCall('showMosaicButton', [$showMosaicButton]);
 
-        $this->fixTemplates($container, $definition, isset($overwriteAdminConfiguration['templates']) ? $overwriteAdminConfiguration['templates'] : ['view' => []]);
+        $this->fixTemplates(
+            $serviceId,
+            $container,
+            $definition,
+            isset($overwriteAdminConfiguration['templates']) ? $overwriteAdminConfiguration['templates'] : ['view' => []]
+        );
 
         if ($container->hasParameter('sonata.admin.configuration.security.information') && !$definition->hasMethodCall('setSecurityInformation')) {
             $definition->addMethodCall('setSecurityInformation', ['%sonata.admin.configuration.security.information%']);
@@ -337,8 +351,15 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         return $definition;
     }
 
-    public function fixTemplates(ContainerBuilder $container, Definition $definition, array $overwrittenTemplates = [])
-    {
+    /**
+     * @param string $serviceId
+     */
+    public function fixTemplates(
+        $serviceId,
+        ContainerBuilder $container,
+        Definition $definition,
+        array $overwrittenTemplates = []
+    ) {
         $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
 
         $methods = [];
@@ -358,7 +379,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
             // set template for simple pager if it is not already overwritten
             if ('setPagerType' === $method[0]
-                && $method[1][0] === Pager::TYPE_SIMPLE
+                && Pager::TYPE_SIMPLE === $method[1][0]
                 && (
                     !isset($definedTemplates['pager_results'])
                     || '@SonataAdmin/Pager/results.html.twig' === $definedTemplates['pager_results']
@@ -375,11 +396,19 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definedTemplates = $overwrittenTemplates['view'] + $definedTemplates;
 
+        $templateRegistryId = $serviceId.'.template_registry';
+        $templateRegistryDefinition = $container
+            ->register($templateRegistryId, TemplateRegistry::class)
+            ->addTag('sonata.admin.template_registry')
+            ->setPublic(true); // Temporary fix until we can support service locators
+
         if ($container->getParameter('sonata.admin.configuration.templates') !== $definedTemplates) {
-            $definition->addMethodCall('setTemplates', [$definedTemplates]);
+            $templateRegistryDefinition->addArgument($definedTemplates);
         } else {
-            $definition->addMethodCall('setTemplates', ['%sonata.admin.configuration.templates%']);
+            $templateRegistryDefinition->addArgument('%sonata.admin.configuration.templates%');
         }
+
+        $definition->addMethodCall('setTemplateRegistry', [new Reference($templateRegistryId)]);
     }
 
     /**
@@ -397,7 +426,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $declaredInParent = $parentDefinition && array_key_exists($index, $parentArguments);
             $argumentValue = $declaredInParent ? $parentArguments[$index] : $arguments[$index];
 
-            if (null === $argumentValue || 0 === strlen($argumentValue)) {
+            if (null === $argumentValue || 0 === \strlen($argumentValue)) {
                 $arguments[$declaredInParent ? sprintf('index_%s', $index) : $index] = $value;
             }
         }

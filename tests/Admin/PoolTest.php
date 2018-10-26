@@ -14,6 +14,7 @@ namespace Sonata\AdminBundle\Tests\Admin;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PoolTest extends TestCase
@@ -36,13 +37,9 @@ class PoolTest extends TestCase
             'adminGroup1' => ['sonata.user.admin.group1' => []],
         ]);
 
-        $expectedOutput = [
-            'adminGroup1' => [
-                'sonata.user.admin.group1' => 'sonata_user_admin_group1_AdminClass',
-            ],
-        ];
-
-        $this->assertSame($expectedOutput, $this->pool->getGroups());
+        $result = $this->pool->getGroups();
+        $this->assertArrayHasKey('adminGroup1', $result);
+        $this->assertArrayHasKey('sonata.user.admin.group1', $result['adminGroup1']);
     }
 
     public function testHasGroup()
@@ -128,11 +125,8 @@ class PoolTest extends TestCase
             ],
         ]);
 
-        $this->assertEquals([
-            'sonata_admin1_AdminClass',
-            'sonata_admin2_AdminClass',
-        ], $this->pool->getAdminsByGroup('adminGroup1'));
-        $this->assertEquals(['sonata_admin3_AdminClass'], $this->pool->getAdminsByGroup('adminGroup2'));
+        $this->assertCount(2, $this->pool->getAdminsByGroup('adminGroup1'));
+        $this->assertCount(1, $this->pool->getAdminsByGroup('adminGroup2'));
     }
 
     public function testGetAdminForClassWhenAdminClassIsNotSet()
@@ -172,7 +166,7 @@ class PoolTest extends TestCase
         ]);
 
         $this->assertTrue($this->pool->hasAdminByClass('someclass'));
-        $this->assertSame('sonata_user_admin_group1_AdminClass', $this->pool->getAdminByClass('someclass'));
+        $this->assertInstanceOf(AdminInterface::class, $this->pool->getAdminByClass('someclass'));
     }
 
     public function testGetInstanceWithUndefinedServiceId()
@@ -183,11 +177,26 @@ class PoolTest extends TestCase
         $this->pool->getInstance('sonata.news.admin.post');
     }
 
+    public function testGetInstanceWithUndefinedServiceIdAndExistsOther()
+    {
+        $this->pool->setAdminServiceIds([
+            'sonata.news.admin.post',
+            'sonata.news.admin.category',
+        ]);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Admin service "sonata.news.admin.pos" not found in admin pool. '
+            .'Did you mean "sonata.news.admin.post" '
+            .'or one of those: [sonata.news.admin.category]?');
+
+        $this->pool->getInstance('sonata.news.admin.pos');
+    }
+
     public function testGetAdminByAdminCode()
     {
         $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
 
-        $this->assertSame('sonata_news_admin_post_AdminClass', $this->pool->getAdminByAdminCode('sonata.news.admin.post'));
+        $this->assertInstanceOf(AdminInterface::class, $this->pool->getAdminByAdminCode('sonata.news.admin.post'));
     }
 
     public function testGetAdminByAdminCodeForChildClass()
@@ -257,14 +266,43 @@ class PoolTest extends TestCase
         $this->assertInstanceOf(ContainerInterface::class, $this->pool->getContainer());
     }
 
-    public function testTemplates()
+    /**
+     * @group legacy
+     */
+    public function testTemplate()
     {
-        $this->assertInternalType('array', $this->pool->getTemplates());
+        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
+        $templateRegistry->getTemplate('ajax')
+            ->shouldBeCalledTimes(1)
+            ->willReturn('Foo.html.twig');
 
-        $this->pool->setTemplates(['ajax' => 'Foo.html.twig']);
+        $this->pool->setTemplateRegistry($templateRegistry->reveal());
 
-        $this->assertNull($this->pool->getTemplate('bar'));
         $this->assertSame('Foo.html.twig', $this->pool->getTemplate('ajax'));
+    }
+
+    /**
+     * @group legacy
+     */
+    public function testSetGetTemplates()
+    {
+        $templates = [
+            'ajax' => 'Foo.html.twig',
+            'layout' => 'Bar.html.twig',
+        ];
+
+        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
+        $templateRegistry->setTemplates($templates)
+            ->shouldBeCalledTimes(1);
+        $templateRegistry->getTemplates()
+            ->shouldBeCalledTimes(1)
+            ->willReturn($templates);
+
+        $this->pool->setTemplateRegistry($templateRegistry->reveal());
+
+        $this->pool->setTemplates($templates);
+
+        $this->assertSame($templates, $this->pool->getTemplates());
     }
 
     public function testGetTitleLogo()
@@ -297,8 +335,8 @@ class PoolTest extends TestCase
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($serviceId) {
-                return str_replace('.', '_', $serviceId).'_AdminClass';
+            ->will($this->returnCallback(function () {
+                return $this->createMock(AdminInterface::class);
             }));
 
         return $containerMock;

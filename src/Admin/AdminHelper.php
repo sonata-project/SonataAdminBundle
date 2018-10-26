@@ -148,8 +148,8 @@ class AdminHelper
                 $data[$childFormBuilder->getName()] = [];
             }
 
-            $objectCount = count($value);
-            $postCount = count($data[$childFormBuilder->getName()]);
+            $objectCount = null === $value ? 0 : \count($value);
+            $postCount = \count($data[$childFormBuilder->getName()]);
 
             $fields = array_keys($fieldDescription->getAssociationAdmin()->getFormFieldDescriptions());
 
@@ -288,7 +288,7 @@ class AdminHelper
     {
         $element = array_shift($elements);
         $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
-        if (0 == count($elements)) {
+        if (0 == \count($elements)) {
             return $associationAdmin->getClass();
         }
 

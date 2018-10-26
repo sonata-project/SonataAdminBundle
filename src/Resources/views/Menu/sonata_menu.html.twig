@@ -1,7 +1,7 @@
 {% extends 'knp_menu.html.twig' %}
 
 {% block root %}
-    {%- set listAttributes = item.childrenAttributes|merge({'class': 'sidebar-menu'}) %}
+    {%- set listAttributes = item.childrenAttributes|merge({'class': 'sidebar-menu', 'data-widget': 'tree'}) %}
     {%- set request        = item.extra('request') ?: app.request %}
     {{ block('list') -}}
 {% endblock %}

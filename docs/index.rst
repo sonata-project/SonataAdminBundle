@@ -94,3 +94,7 @@ The demo website can be found at http://demo.sonata-project.org.
    cookbook/recipe_delete_field_group
    cookbook/recipe_data_mapper
    cookbook/recipe_custom_view
+   cookbook/recipe_persisting_filters
+   cookbook/recipe_creating_an_admin_with_annotations
+   cookbook/recipe_workflow_integration
+   cookbook/recipe_sonata_admin_without_user_bundle

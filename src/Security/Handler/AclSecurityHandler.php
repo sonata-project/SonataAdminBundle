@@ -114,7 +114,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
 
     public function isGranted(AdminInterface $admin, $attributes, $object = null)
     {
-        if (!is_array($attributes)) {
+        if (!\is_array($attributes)) {
             $attributes = [$attributes];
         }
 
@@ -194,7 +194,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     {
         if (false === $this->findClassAceIndexByUsername($acl, $securityIdentity->getUsername())) {
             // only add if not already exists
-            $acl->insertObjectAce($securityIdentity, constant("$this->maskBuilderClass::MASK_OWNER"));
+            $acl->insertObjectAce($securityIdentity, \constant("$this->maskBuilderClass::MASK_OWNER"));
         }
     }
 
@@ -208,7 +208,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
 
             foreach ($permissions as $permission) {
                 // add only the object permissions
-                if (in_array($permission, $this->getObjectPermissions())) {
+                if (\in_array($permission, $this->getObjectPermissions())) {
                     $builder->add($permission);
                     $hasRole = true;
                 }

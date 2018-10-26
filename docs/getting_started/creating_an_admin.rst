@@ -14,17 +14,7 @@ Step 0: Create a Model
 ----------------------
 
 For the rest of the tutorial, you'll need some sort of model. In this tutorial,
-two very simple ``Post`` and ``Tag`` entities will be used. Generate them by
-using these commands:
-
-.. code-block:: bash
-
-    $ bin/console doctrine:generate:entity --entity="App:Category" --fields="name:string(255)" --no-interaction
-    $ bin/console doctrine:generate:entity --entity="App:BlogPost" --fields="title:string(255) body:text draft:boolean" --no-interaction
-
-After this, you'll need to tweak the entities a bit:
-
-.. code-block:: php
+two very simple ``Post`` and ``Tag`` entities will be used::
 
     // src/Entity/BlogPost.php
 
@@ -34,33 +24,18 @@ After this, you'll need to tweak the entities a bit:
         // ...
 
         /**
-         * @ORM\ManyToOne(targetEntity="Category", inversedBy="blogPosts")
+         * @var string
+         *
+         * @ORM\Column(name="title", type="string")
          */
-        private $category;
+        private $title;
 
-        public function setCategory(Category $category)
-        {
-            $this->category = $category;
-        }
-
-        public function getCategory()
-        {
-            return $this->category;
-        }
-
-        // ...
-    }
-
-Set the default value to ``false``.
-
-.. code-block:: php
-
-    // src/Entity/BlogPost.php
-
-    // ...
-    class BlogPost
-    {
-        // ...
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="body", type="text")
+         */
+        private $body;
 
         /**
          * @var bool
@@ -69,7 +44,10 @@ Set the default value to ``false``.
          */
         private $draft = false;
 
-        // ...
+        /**
+         * @ORM\ManyToOne(targetEntity="Category", inversedBy="blogPosts")
+         */
+        private $category;
     }
 
 .. code-block:: php
@@ -83,6 +61,13 @@ Set the default value to ``false``.
     class Category
     {
         // ...
+
+        /**
+         * @var string
+         *
+         * @ORM\Column(name="name", type="string")
+         */
+        private $name;
 
         /**
         * @ORM\OneToMany(targetEntity="BlogPost", mappedBy="category")

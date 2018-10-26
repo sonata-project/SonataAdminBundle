@@ -48,7 +48,7 @@ class ArrayToModelTransformer implements DataTransformerInterface
 
         $instance = new $this->className();
 
-        if (!is_array($array)) {
+        if (!\is_array($array)) {
             return $instance;
         }
 

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Sonata\AdminBundle\Tests\Fixtures\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -7,20 +16,20 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * BatchAdminController is used to test relevant batch action
+ * BatchAdminController is used to test relevant batch action.
  */
 class BatchAdminController extends CRUDController
 {
     /**
-     * Returns true if $idx contains 123 and 456
+     * Returns true if $idx contains 123 and 456.
      */
     public function batchActionFooIsRelevant(array $idx, $allElements)
     {
-        if (isset($idx[0]) && $idx[0]==123 && isset($idx[1]) && $idx[1]==456) {
+        if (isset($idx[0]) && 123 == $idx[0] && isset($idx[1]) && 456 == $idx[1]) {
             return true;
         }
 
-        if (isset($idx[0]) && $idx[0]==999) {
+        if (isset($idx[0]) && 999 == $idx[0]) {
             return 'flash_foo_error';
         }
 
@@ -36,9 +45,9 @@ class BatchAdminController extends CRUDController
         return true;
     }
 
-    public function batchActionBar(ProxyQueryInterface $query=null)
+    public function batchActionBar(ProxyQueryInterface $query = null)
     {
-        if ($query === null) {
+        if (null === $query) {
             return new Response('batchActionBar executed');
         }
 
