@@ -33,7 +33,7 @@
                 <div class="col-md-12">
                     {% if has_tab %}
                         {% set tab_prefix = 'tab_' ~ admin.uniqid ~ '_' ~ random() %}
-                        {% set tab_query_index = 0 %}
+                        {% set tab_query_index =  app.request.query.get('_tab', 0)|split("_")|last %}
                         {% if app.request.query.has('_tab') %}
                             {% set tab_query_index = app.request.query.get('_tab')|split("_")|last %}
                         {% endif %}
