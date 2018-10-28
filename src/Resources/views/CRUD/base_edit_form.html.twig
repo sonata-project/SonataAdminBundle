@@ -48,7 +48,7 @@
                             </ul>
                             <div class="tab-content">
                                 {% for code, form_tab in admin.formtabs %}
-                                    {% set _tab_name = 'tab_'~admin.uniqid~'_'~random_string~'_'~loop.index %}
+                                    {% set _tab_name = tab_prefix ~ loop.index %}
                                     <div class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (tab_query_index == loop.index) %} in active{% endif %}" id="{{ _tab_name }}">
                                         <div class="box-body  container-fluid">
                                             <div class="sonata-ba-collapsed-fields">
