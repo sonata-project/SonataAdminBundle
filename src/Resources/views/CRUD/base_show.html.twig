@@ -39,7 +39,7 @@ file that was distributed with this source code.
 
         {% if has_tab %}
             {% set tab_prefix = 'tab_' ~ admin.uniqid ~ '_' ~ random() %}
-            {% set tab_query_index =  app.request.query.get('_tab', 0)|split("_")|last %}
+            {% set tab_query_index = app.request.query.get('_tab', 0)|split("_")|last %}
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs" role="tablist">
                     {% for name, show_tab in admin.showtabs %}
