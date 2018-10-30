@@ -143,6 +143,7 @@ th.sonata-ba-list-field-header-order-desc a,
 th.sonata-ba-list-field-header-order-asc a {
     position: relative;
     margin-right: 10px;
+    display: inline-block;
 }
 
 th.sonata-ba-list-field-header-order-asc a:hover:after,
