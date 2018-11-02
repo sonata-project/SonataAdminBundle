@@ -67,7 +67,8 @@ The demo website can be found at http://demo.sonata-project.org.
    reference/extensions
    reference/events
    reference/advanced_configuration
-   reference/annotations
+   reference/annotations_jms
+   reference/annotations_doctrine
    reference/preview_mode
 
 .. toctree::

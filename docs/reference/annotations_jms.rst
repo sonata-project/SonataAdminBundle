@@ -1,5 +1,9 @@
-Annotations
-===========
+Annotations using JMS
+=====================
+
+.. note::
+
+    This documentation is outdated and will only work with symfony 2/3.
 
 All annotations require jms/di-extra-bundle, it can easily be installed by composer:
 

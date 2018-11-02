@@ -60,6 +60,7 @@
         "sonata-project/user-bundle": "<3.3"
     },
     "require-dev": {
+        "doctrine/annotations": "^1.4",
         "jms/di-extra-bundle": "^1.9",
         "jms/translation-bundle": "^1.4",
         "matthiasnoback/symfony-dependency-injection-test": "^1.1",
@@ -71,7 +72,7 @@
         "symfony/yaml": "^2.8 || ^3.2 || ^4.0"
     },
     "suggest": {
-        "jms/di-extra-bundle": "Annotations for Admin definition",
+        "doctrine/annotations": "Annotations for Admin definition",
         "jms/translation-bundle": "Extract message keys from Admins",
         "sensio/generator-bundle": "Add sonata:admin:generate command",
         "sonata-project/intl-bundle": "Add localized date and number into the list"

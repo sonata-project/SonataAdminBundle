@@ -108,6 +108,18 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+
+                ->arrayNode('annotations')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('enabled')
+                            ->defaultFalse()
+                            ->info('Enable automatic registration of annotations with doctrine')
+                        ->end()
+                        ->scalarNode('directory')->defaultValue('%kernel.project_dir%/src/Admin')->end()
+                    ->end()
+                ->end()
+
                 ->arrayNode('options')
                     ->addDefaultsIfNotSet()
                     ->children()
@@ -130,10 +142,10 @@ class Configuration implements ConfigurationInterface
                             ->defaultFalse()
                             ->info('Enable locking when editing an object, if the corresponding object manager supports it.')
                         ->end()
-                        ->booleanNode('enable_jms_di_extra_autoregistration') // NEXT_MAJOR: remove this option
-                            ->defaultTrue()
-                            ->info('Enable automatic registration of annotations with JMSDiExtraBundle')
-                        ->end()
+                            ->booleanNode('enable_jms_di_extra_autoregistration') // NEXT_MAJOR: remove this option
+                                ->defaultTrue()
+                                ->info('Enable automatic registration of annotations with JMSDiExtraBundle')
+                            ->end()
                     ->end()
                 ->end()
                 ->arrayNode('dashboard')
