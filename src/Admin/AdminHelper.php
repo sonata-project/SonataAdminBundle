@@ -100,15 +100,30 @@ class AdminHelper
      */
     public function appendFormFieldElement(AdminInterface $admin, $subject, $elementId)
     {
+        // child rows marked as toDelete
+        $toDelete = [];
         // retrieve the subject
         $formBuilder = $admin->getFormBuilder();
+
+        // get the field element
+        $childFormBuilder = $this->getChildFormBuilder($formBuilder, $elementId);
+
+        $formData = $admin->getRequest()->get($formBuilder->getName(), []);
+
+        if ($childFormBuilder && array_key_exists($childFormBuilder->getName(), $formData)) {
+            foreach ($formData[$childFormBuilder->getName()] as $name => &$field) {
+                if (array_key_exists('_delete', $field)) {
+                    // save child name in array and unset the field to fix row deletion on add
+                    $toDelete[] = $name;
+                    unset($field['_delete']);
+                }
+            }
+        }
+        $admin->getRequest()->request->set($formBuilder->getName(), $formData);
 
         $form = $formBuilder->getForm();
         $form->setData($subject);
         $form->handleRequest($admin->getRequest());
-
-        // get the field element
-        $childFormBuilder = $this->getChildFormBuilder($formBuilder, $elementId);
 
         //Child form not found (probably nested one)
         //if childFormBuilder was not found resulted in fatal error getName() method call on non object
@@ -177,6 +192,10 @@ class AdminHelper
         // bind the data
         $finalForm->setData($form->getData());
 
+        // back up delete field
+        foreach ($toDelete as $name) {
+            $finalForm->get($childFormBuilder->getName())->get($name)->get('_delete')->setData(true);
+        }
         return [$fieldDescription, $finalForm];
     }
 
