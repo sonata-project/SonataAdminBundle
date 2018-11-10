@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.40.3](https://github.com/sonata-project/SonataAdminBundle/compare/3.40.2...3.40.3) - 2018-11-10
+### Added
+- Added missing polish translation for `link_edit`
+
+### Fixed
+- Change icon on list column sorting
+- invalid html in the export links list
+- FrameworkBundle redirect action notation to the current syntax
+- BC break when baseControllerName uses bundle notation with subfolder
+
 ## [3.40.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.40.1...3.40.2) - 2018-10-17
 ### Fixed
 - Add display of missing `sonata_help` on many form type
