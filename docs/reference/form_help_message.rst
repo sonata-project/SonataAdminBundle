@@ -39,6 +39,10 @@ Example
         }
     }
 
+.. figure:: ../images/help_message.png
+   :align: center
+   :alt: Example of the two form fields with help messages.
+
 Alternative Ways To Define Help Messages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

@@ -143,7 +143,8 @@ file that was distributed with this source code.
                                                                 .closest('table')
                                                                 .find('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
                                                             ;
-                                                            if (window.SONATA_CONFIG.USE_ICHECK) {
+
+                                                            if (Admin.get_config('USE_ICHECK')) {
                                                                 checkboxes.iCheck($(this).is(':checked') ? 'check' : 'uncheck');
                                                             } else {
                                                                 checkboxes.prop('checked', this.checked);
@@ -202,7 +203,7 @@ file that was distributed with this source code.
                                                         <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
                                                         {{ ("export_format_" ~ format)|trans({}, 'SonataAdminBundle') }}
                                                     </a>
-                                                <li>
+                                                </li>
                                                 {% endfor %}
                                             </ul>
                                         </div>

@@ -74,6 +74,10 @@
                 <source>link_add</source>
                 <target>Dodaj</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>Edytuj</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>Zarządzaj</target>

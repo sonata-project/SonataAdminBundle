@@ -143,36 +143,35 @@ th.sonata-ba-list-field-header-order-desc a,
 th.sonata-ba-list-field-header-order-asc a {
     position: relative;
     margin-right: 10px;
+    display: inline-block;
 }
 
 th.sonata-ba-list-field-header-order-asc a:hover:after,
 th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active a:after,
 th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active a:hover:after {
-    content: "";
+    content: "↓";
+    color: black;
+    line-height: 20px;
+    font-size: 20px;
     display: block;
-    border-top: 4px solid black;
-    border-right: 4px solid transparent;
-    border-left: 4px solid transparent;
-    border-bottom: 4px solid transparent;
     position: absolute;
     top: 50%;
-    right: -10px;
-    margin-top: -1px;
+    right: -12px;
+    margin-top: -12px;
 }
 
 th.sonata-ba-list-field-header-order-desc a:hover:after,
 th.sonata-ba-list-field-header-order-desc.sonata-ba-list-field-order-active a:after,
 th.sonata-ba-list-field-header-order-asc.sonata-ba-list-field-order-active a:hover:after {
-    content: "";
+    content: "↑";
+    color: black;
+    line-height: 20px;
+    font-size: 20px;
     display: block;
-    border-bottom: 4px solid black;
-    border-right: 4px solid transparent;
-    border-left: 4px solid transparent;
-    border-top: 4px solid transparent;
     position: absolute;
     top: 50%;
-    right: -10px;
-    margin-top: -5px;
+    right: -12px;
+    margin-top: -12px;
 }
 
 .sonata-ba-list-field-header-label-icon {

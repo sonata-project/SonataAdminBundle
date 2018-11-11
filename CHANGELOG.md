@@ -47,6 +47,41 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.40.3](https://github.com/sonata-project/SonataAdminBundle/compare/3.40.2...3.40.3) - 2018-11-10
+### Added
+- Added missing polish translation for `link_edit`
+
+### Fixed
+- Change icon on list column sorting
+- invalid html in the export links list
+- FrameworkBundle redirect action notation to the current syntax
+- BC break when baseControllerName uses bundle notation with subfolder
+
+## [3.40.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.40.1...3.40.2) - 2018-10-17
+### Fixed
+- Add display of missing `sonata_help` on many form type
+- confirm_exit, use_select2, use_icheck and use_stickyforms settings.
+- `make:sonata:admin` not working
+- Moved the JS config in a meta tag in head section of the sonata_layout twig file
+
+## [3.40.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.40.0...3.40.1) - 2018-10-08
+### Fixed
+- Minor bug in JavaScripts (Admin.js)
+
+## [3.40.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.39.0...3.40.0) - 2018-10-06
+### Added
+- Added `Admin` object reference to javascript `window` object
+- Added `RuntimeException` message for `Create` and `Show` actions from `CRUDController`
+- Added a new maker to generate admin class, controller and service definition
+
+### Fixed
+- Added support for moment.js French language
+- `Pool::getInstance` will always return a valid admin instance
+- Fixed controller reference deprecations
+
+### Removed
+- Removed inline scripts for `SONATA_CONFIG` and `SONATA_TRANSLATIONS`
+
 ## [3.39.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.38.3...3.39.0) - 2018-09-09
 
 ### Added

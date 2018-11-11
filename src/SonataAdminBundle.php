@@ -47,7 +47,8 @@ class SonataAdminBundle extends Bundle
         $container->addCompilerPass(new ExtensionCompilerPass());
         $container->addCompilerPass(new GlobalVariablesCompilerPass());
 
-        if ($container->has('MakerBundle')) {
+        $bundles = $container->getParameter('kernel.bundles');
+        if (isset($bundles['MakerBundle'])) {
             $container->addCompilerPass(new AdminMakerCompilerPass());
         }
 

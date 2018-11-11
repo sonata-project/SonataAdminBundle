@@ -168,7 +168,7 @@ final class AdminMaker extends AbstractMaker
         $adminClassFullName = $adminClassNameDetails->getFullName();
         $this->generateAdmin($io, $generator, $adminClassNameDetails);
 
-        $controllerClassFullName = null;
+        $controllerClassFullName = '';
         if ($this->controllerClassBasename) {
             $controllerClassNameDetails = $generator->createClassNameDetails(
                 $this->controllerClassBasename,
@@ -176,10 +176,11 @@ final class AdminMaker extends AbstractMaker
                 'Controller'
             );
 
+            $this->generateController($input, $io, $generator, $controllerClassNameDetails);
+
             $controllerClassFullName = $controllerClassNameDetails->getFullName();
         }
 
-        $this->generateController($input, $io, $generator, $controllerClassNameDetails);
         $this->generateService($input, $io, $adminClassFullName, $controllerClassFullName);
     }
 
@@ -284,8 +285,8 @@ final class AdminMaker extends AbstractMaker
             $this->controllerClassBasename = Validators::validateControllerClassBasename($this->controllerClassBasename);
         }
 
-        if (!\count($this->availableModelManagers)) {
-            throw new \RuntimeException('There are no model managers registered.');
+        if (0 === \count($this->availableModelManagers)) {
+            throw new \InvalidArgumentException('There are no model managers registered.');
         }
 
         $this->managerType = $input->getOption('manager') ?: array_keys($this->availableModelManagers)[0];

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Route;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Routing\Route;
 
@@ -186,5 +187,23 @@ class RouteCollectionTest extends TestCase
         $this->assertSame('baseControllerServiceName:viewAction', $route->getDefault('_controller'));
         $this->assertSame('baseCodeRoute', $route->getDefault('_sonata_admin'));
         $this->assertSame('baseRouteName_view', $route->getDefault('_sonata_name'));
+    }
+
+    public function testControllerWithFQCN(): void
+    {
+        $routeCollection = new RouteCollection('baseCodeRoute', 'baseRouteName', 'baseRoutePattern', CRUDController::class);
+        $routeCollection->add('view');
+        $route = $routeCollection->get('view');
+
+        $this->assertSame('Sonata\AdminBundle\Controller\CRUDController::viewAction', $route->getDefault('_controller'));
+    }
+
+    public function testControllerWithBundleSubFolder(): void
+    {
+        $routeCollection = new RouteCollection('baseCodeRoute', 'baseRouteName', 'baseRoutePattern', 'AppBundle\Admin:Test');
+        $routeCollection->add('view');
+        $route = $routeCollection->get('view');
+
+        $this->assertSame('AppBundle\Admin:Test:view', $route->getDefault('_controller'));
     }
 }
