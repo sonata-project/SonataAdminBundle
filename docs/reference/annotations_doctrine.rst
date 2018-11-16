@@ -1,7 +1,7 @@
 Annotations using doctrine
 ==========================
 
-All annotations require doctrine/annotations, it can easily be installed by composer:
+All annotations require doctrine/annotations, it can be installed by composer:
 
 .. code-block:: bash
 
@@ -28,7 +28,7 @@ All you have to do is include ``Sonata\AdminBundle\Annotation`` and define the v
 
     <?php
 
-    namespace AcmeBundle\Admin;
+    namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Annotation as Sonata;
@@ -44,7 +44,7 @@ All you have to do is include ``Sonata\AdminBundle\Annotation`` and define the v
      *   showInDashboard=true,
      *   translationDomain="AppBundle",
      *   pagerType="",
-     *   persistFilters="",
+     *   persistFilters=false,
      *   icon="<i class='fa fa-folder'></i>",
      *   keepOpen=false,
      *   onTop=false
@@ -52,4 +52,5 @@ All you have to do is include ``Sonata\AdminBundle\Annotation`` and define the v
      */
     class MyAdmin extends AbstractAdmin
     {
+        // ...
     }
