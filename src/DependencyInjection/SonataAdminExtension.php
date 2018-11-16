@@ -438,7 +438,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         }
 
         @trigger_error(
-            'Automatic registration of annotations is deprecated since 3.14, to be removed in 4.0.',
+            'Using DiExtraBundle for admin annotations is deprecated since 3.x, please use doctrine annotations instead.',
             E_USER_DEPRECATED
         );
 

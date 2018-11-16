@@ -181,6 +181,11 @@ class SonataAdmin
 
 // NEXT_MAJOR: Remove this hack together with DiExtraBundle
 if (interface_exists(MetadataProcessorInterface::class)) {
+    @trigger_error(
+        'Using DiExtraBundle for admin annotations is deprecated since 3.x, please use doctrine annotations instead.',
+        E_USER_DEPRECATED
+    );
+
     /**
      * @Annotation
      * @Target("CLASS")

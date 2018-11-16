@@ -36,6 +36,7 @@
         "symfony/event-dispatcher": "^2.8 || ^3.2 || ^4.0",
         "symfony/expression-language": "^2.8 || ^3.2 || ^4.0",
         "symfony/form": "^2.8 || ^3.2 || ^4.0",
+        "symfony/finder": "^2.8 || ^3.2 || ^4.0",
         "symfony/framework-bundle": "^2.8 || ^3.2 || ^4.0",
         "symfony/http-foundation": "^2.8 || ^3.2 || ^4.0",
         "symfony/http-kernel": "^2.8 || ^3.2 || ^4.0",

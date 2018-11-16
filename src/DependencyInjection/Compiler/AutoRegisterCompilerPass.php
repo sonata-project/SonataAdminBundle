@@ -36,6 +36,10 @@ final class AutoRegisterCompilerPass implements CompilerPassInterface
                 continue;
             }
 
+            if (!\class_exists($className)) {
+                continue;
+            }
+
             if (!($annotation = $this->getClassAnnotation($reader, $reflection = new \ReflectionClass($className)))) {
                 continue;
             }
