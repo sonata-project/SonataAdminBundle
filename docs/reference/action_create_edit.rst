@@ -25,6 +25,7 @@ SonataAdmin Options that may affect the create or edit view:
         options:
             html5_validate:    true     # enable or disable html5 form validation
             confirm_exit:      true     # enable or disable a confirmation before navigating away
+            js_debug:          false    # enable or disable to show javascript debug messages
             use_select2:       true     # enable or disable usage of the Select2 jQuery library
             use_icheck:        true     # enable or disable usage of the iCheck library
             use_bootlint:      false    # enable or disable usage of Bootlint
