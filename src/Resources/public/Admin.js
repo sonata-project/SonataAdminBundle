@@ -22,9 +22,9 @@ var Admin = {
      * @param subject
      */
     shared_setup: function(subject) {
+        Admin.read_config();
         Admin.log("[core|shared_setup] Register services on", subject);
         Admin.setup_ie10_polyfill();
-        Admin.read_config();
         Admin.set_object_field_value(subject);
         Admin.add_filters(subject);
         Admin.setup_select2(subject);
@@ -220,6 +220,10 @@ var Admin = {
      * @param mixed
      */
     log: function() {
+        if (!Admin.get_config('DEBUG')) {
+          return;
+        }
+
         var msg = '[Sonata.Admin] ' + Array.prototype.join.call(arguments,', ');
         if (window.console && window.console.log) {
             window.console.log(msg);
