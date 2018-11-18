@@ -76,6 +76,7 @@ Full Configuration Options
                 # Auto order groups and admins by label or id
                 sort_admins: false
                 confirm_exit: true
+                js_debug: false
                 use_select2: true
                 use_icheck: true
                 use_bootlint: false
