@@ -203,6 +203,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             'outer_list_rows_tree' => '@SonataAdmin/CRUD/list_outer_rows_tree.html.twig',
         ]);
         $container->setParameter('sonata.admin.configuration.admin_services', $config['admin_services']);
+        $container->setParameter('sonata.admin.configuration.dashboard_redirect', $config['dashboard']['redirect']);
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
         $container->setParameter('sonata.admin.configuration.dashboard_blocks', $config['dashboard']['blocks']);
         $container->setParameter('sonata.admin.configuration.sort_admins', $config['options']['sort_admins']);

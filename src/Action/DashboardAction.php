@@ -39,20 +39,33 @@ final class DashboardAction extends Controller
      */
     private $pool;
 
+    /**
+     * @var string
+     */
+    private $redirect;
+
     public function __construct(
         array $dashboardBlocks,
         BreadcrumbsBuilderInterface $breadcrumbsBuilder,
         TemplateRegistryInterface $templateRegistry,
-        Pool $pool
+        Pool $pool,
+        string $redirect = ''
     ) {
         $this->dashboardBlocks = $dashboardBlocks;
         $this->breadcrumbsBuilder = $breadcrumbsBuilder;
         $this->templateRegistry = $templateRegistry;
         $this->pool = $pool;
+        $this->redirect = $redirect;
     }
 
     public function __invoke(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            if (!empty($this->redirect)) {
+                return $this->redirect($this->redirect);
+            }
+        }
+
         $blocks = [
             'top' => [],
             'left' => [],
