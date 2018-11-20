@@ -16,7 +16,7 @@ file that was distributed with this source code.
                     <th>{{ 'action_delete'|trans({}, 'SonataAdminBundle') }}</th>
                 {% else %}
                     <th
-                        {% if nested_field.vars['required'] %}
+                        {% if (nested_field.vars['required'] is defined) and nested_field.vars['required'] %}
                             class="required"
                         {% endif %}
                         {% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %}
@@ -38,7 +38,7 @@ file that was distributed with this source code.
                     <td class="
                         sonata-ba-td-{{ id }}-{{ field_name  }}
                         control-group
-                        {% if nested_field.vars.errors|length > 0 %} error sonata-ba-field-error{% endif %}
+                        {% if (nested_field.vars.errors is defined) and nested_field.vars.errors|length > 0 %} error sonata-ba-field-error{% endif %}
                         "
                         {% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %}
                             style="display:none;"
@@ -55,7 +55,7 @@ file that was distributed with this source code.
                                 {{ form_widget(nested_field) }}
                             {% endif %}
                         {% endif %}
-                        {% if nested_field.vars.errors|length > 0 %}
+                        {% if  (nested_field.vars.errors is defined) and nested_field.vars.errors|length > 0 %}
                             <div class="help-inline sonata-ba-field-error-messages">
                                 {{ form_errors(nested_field) }}
                             </div>
