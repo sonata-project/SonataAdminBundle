@@ -70,6 +70,7 @@ Full Configuration Options
             title: 'Sonata Admin'
             title_logo: bundles/sonataadmin/logo_title.png
             search: true
+            default_controller: Sonata\AdminBundle\ControllerCRUDController
             options:
                 html5_validate: true
 

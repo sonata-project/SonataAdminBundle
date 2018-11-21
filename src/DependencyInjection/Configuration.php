@@ -13,6 +13,7 @@ namespace Sonata\AdminBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Sonata\AdminBundle\Controller\CRUDController;
 
 /**
  * This class contains the configuration information for the bundle.
@@ -99,6 +100,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
 
+                ->scalarNode('default_controller')->defaultValue(CRUDController::class)->cannotBeEmpty()->end()
                 ->arrayNode('breadcrumbs')
                     ->addDefaultsIfNotSet()
                     ->children()
