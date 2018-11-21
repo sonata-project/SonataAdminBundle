@@ -116,6 +116,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $container->setParameter('sonata.admin.configuration.global_search.case_sensitive', $config['global_search']['case_sensitive']);
         $container->setParameter('sonata.admin.configuration.templates', $config['templates']);
         $container->setParameter('sonata.admin.configuration.admin_services', $config['admin_services']);
+        $container->setParameter('sonata.admin.configuration.default_controller', $config['default_controller']);
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
         $container->setParameter('sonata.admin.configuration.dashboard_blocks', $config['dashboard']['blocks']);
         $container->setParameter('sonata.admin.configuration.sort_admins', $config['options']['sort_admins']);

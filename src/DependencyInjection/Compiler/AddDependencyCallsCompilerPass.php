@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
 use Doctrine\Inflector\InflectorFactory;
-use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
@@ -50,6 +49,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $groupDefaults = $admins = $classes = [];
 
         $pool = $container->getDefinition('sonata.admin.pool');
+        $defaultController = $container->getParameter('sonata.admin.configuration.default_controller');
 
         $defaultValues = [
             'group' => $container->getParameter('sonata.admin.configuration.default_group'),
@@ -71,7 +71,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 $this->replaceDefaultArguments([
                     0 => $id,
-                    2 => CRUDController::class,
+                    2 => $defaultController,
                 ], $definition, $parentDefinition);
                 $this->applyConfigurationFromAttribute($definition, $attributes);
                 $this->applyDefaults($container, $id, $attributes);

@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Route\RoutesCache;
+use Sonata\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
 use Sonata\BlockBundle\DependencyInjection\SonataBlockExtension;
 use Sonata\DoctrinePHPCRAdminBundle\Route\PathInfoBuilderSlashes;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -571,6 +572,24 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertSame('extra_argument_2', $definition->getArgument(3));
     }
 
+    public function testDefaultControllerCanBeChanged(): void
+    {
+        $container = $this->getContainer();
+
+        $config = $this->config;
+        $config['default_controller'] = FooAdminController::class;
+
+        $this->extension->load([$config], $container);
+
+        $compilerPass = new AddDependencyCallsCompilerPass();
+
+        $compilerPass->process($container);
+        $container->compile();
+
+        $definition = $container->getDefinition('sonata_without_controller');
+        $this->assertSame(FooAdminController::class, $definition->getArgument(2));
+    }
+
     /**
      * @return array
      */
@@ -767,6 +786,11 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             ->setClass(MockAdmin::class)
             ->setArguments(['', ReportTwo::class, CRUDController::class])
             ->addTag('sonata.admin', ['group' => 'sonata_report_two_group', 'manager_type' => 'orm', 'show_mosaic_button' => true]);
+        $container
+            ->register('sonata_without_controller')
+            ->setClass(MockAdmin::class)
+            ->setArguments(['', ReportTwo::class, ''])
+            ->addTag('sonata.admin', ['group' => 'sonata_report_two_group', 'manager_type' => 'orm']);
 
         // translator
         $container

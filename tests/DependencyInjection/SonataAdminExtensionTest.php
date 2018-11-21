@@ -145,6 +145,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_group');
         $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_label_catalogue');
         $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_icon');
+        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_controller');
     }
 
     public function testExtraStylesheetsGetAdded(): void
