@@ -11,9 +11,9 @@
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
+use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Sonata\AdminBundle\Controller\CRUDController;
 
 /**
  * This class contains the configuration information for the bundle.
