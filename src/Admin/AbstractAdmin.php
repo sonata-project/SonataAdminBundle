@@ -1524,7 +1524,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     /**
      * @param string $group
-     * @param array $keys
+     * @param array  $keys
      */
     public function reorderFormGroup($group, array $keys)
     {
