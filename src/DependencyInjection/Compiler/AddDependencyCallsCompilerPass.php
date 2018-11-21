@@ -45,7 +45,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $groupDefaults = $admins = $classes = [];
 
         $pool = $container->getDefinition('sonata.admin.pool');
-        $defaultController = $container->getParameter('sonata.admin.configuration.default_container');
+        $defaultController = $container->getParameter('sonata.admin.configuration.default_controller');
 
         foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $tags) {
             foreach ($tags as $attributes) {
