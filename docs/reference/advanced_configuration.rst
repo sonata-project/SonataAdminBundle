@@ -451,4 +451,19 @@ by overriding ``checkAccess`` function::
         }
     }
 
+Use your own custom controller as default
+-----------------------------------------
+
+By default, ``CRUDController`` is the controller used when no controller has been specified. You can modify this by
+adding the following in the configuration:
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # config/packages/sonata_admin.yaml
+
+        sonata_admin:
+            default_controller: App\Controller\DefaultCRUDController
+
 .. _`Core's documentation`: https://sonata-project.org/bundles/core/master/doc/reference/form_types.html#sonata-type-translatable-choice

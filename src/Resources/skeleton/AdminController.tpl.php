@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace <?= $namespace ?>;
 
-use Sonata\AdminBundle\Controller\CRUDController;
+use <?= $default_controller ?>;
 
-final class <?= $class_name ?> extends CRUDController
+final class <?= $class_name ?> extends <?= $default_controller_short_name ?>
 {
 
 }

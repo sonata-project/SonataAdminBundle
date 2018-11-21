@@ -85,9 +85,11 @@
         </UndefinedGlobalVariable>
     </file>
     <file src="src/Resources/skeleton/AdminController.tpl.php">
-        <UndefinedGlobalVariable occurrences="2">
+        <UndefinedGlobalVariable occurrences="4">
             <code>$namespace</code>
             <code>$class_name</code>
+            <code>$default_controller</code>
+            <code>$default_controller_short_name</code>
         </UndefinedGlobalVariable>
     </file>
     <!--will be removed in v4. Currently BC break-->
