@@ -98,3 +98,4 @@ The demo website can be found at http://demo.sonata-project.org.
    cookbook/recipe_creating_an_admin_with_annotations
    cookbook/recipe_workflow_integration
    cookbook/recipe_sonata_admin_without_user_bundle
+   cookbook/recipe_creating_a_locale_switcher
