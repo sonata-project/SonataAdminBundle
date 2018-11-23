@@ -53,7 +53,7 @@ Usage example:
 
 .. code-block:: bash
 
-    $ bin/console sonata:admin:generate App/Entity/Foo
+    $ bin/console make:sonata:admin App/Entity/Foo
 
 sonata:admin:generate
 ---------------------
