@@ -63,6 +63,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - An error message about subclasses has been fixed
 - issue Error 500 when requesting short object description as JSON
 
+## [3.39.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.38.2...3.39.0) - 2018-11-23
+### Added
+- Allow disabling front debug logs
+
+### Fixed
+- Fixed `AdminType` tabs ids when used in collections
+- the list mode view is now preserved when a sorting is applied
+
 ## [3.38.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.38.1...3.38.2) - 2018-08-17
 
 ### Fixed
