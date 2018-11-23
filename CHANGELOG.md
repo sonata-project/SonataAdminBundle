@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [3.41.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.40.3...3.41.0) - 2018-11-23
+### Added
+- Allow disabling front debug logs
+
+### Fixed
+- Fixed `AdminType` tabs ids when used in collections
+- the list mode view is now preserved when a sorting is applied
 ## [3.40.3](https://github.com/sonata-project/SonataAdminBundle/compare/3.40.2...3.40.3) - 2018-11-10
 ### Added
 - Added missing polish translation for `link_edit`
@@ -62,14 +70,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - An error message about subclasses has been fixed
 - issue Error 500 when requesting short object description as JSON
-
-## [3.39.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.38.2...3.39.0) - 2018-11-23
-### Added
-- Allow disabling front debug logs
-
-### Fixed
-- Fixed `AdminType` tabs ids when used in collections
-- the list mode view is now preserved when a sorting is applied
 
 ## [3.38.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.38.1...3.38.2) - 2018-08-17
 
