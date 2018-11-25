@@ -16,7 +16,7 @@ file that was distributed with this source code.
                     {% for name, form_group in associationAdmin.formgroups %}
                         <li class="{% if loop.first %}active{% endif %}">
                             <a
-                                href="#{{ associationAdmin.uniqid }}_{{ loop.parent.loop.index }}_{{ loop.index }}"
+                                href="#{{ id }}_{{ loop.parent.loop.index }}_{{ loop.index }}"
                                 data-toggle="tab"
                             >
                                 <i class="icon-exclamation-sign has-errors hide"></i>
@@ -30,7 +30,7 @@ file that was distributed with this source code.
                     {% for name, form_group in associationAdmin.formgroups %}
                         <div
                             class="tab-pane {% if loop.first %}active{% endif %}"
-                            id="{{ associationAdmin.uniqid }}_{{ loop.parent.loop.index }}_{{ loop.index }}"
+                            id="{{ id }}_{{ loop.parent.loop.index }}_{{ loop.index }}"
                         >
                             <fieldset>
                                 <div class="sonata-ba-collapsed-fields">

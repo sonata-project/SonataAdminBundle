@@ -47,6 +47,14 @@ specified in a field description cannot be found was removed.
 - Removed deprecated `AbstractAdmin::buildSideMenu` method
 - `AdminInterface::configure` was removed
 
+## [3.41.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.40.3...3.41.0) - 2018-11-23
+### Added
+- Allow disabling front debug logs
+
+### Fixed
+- Fixed `AdminType` tabs ids when used in collections
+- the list mode view is now preserved when a sorting is applied
+
 ## [3.40.3](https://github.com/sonata-project/SonataAdminBundle/compare/3.40.2...3.40.3) - 2018-11-10
 ### Added
 - Added missing polish translation for `link_edit`
