@@ -482,6 +482,10 @@
                 <source>read_less</source>
                 <target>Cerrar</target>
             </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Cambiar modo de navegación</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
