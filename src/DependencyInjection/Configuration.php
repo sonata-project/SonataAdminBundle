@@ -100,7 +100,12 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
 
-                ->scalarNode('default_controller')->defaultValue(CRUDController::class)->cannotBeEmpty()->end()
+                ->scalarNode('default_controller')
+                    ->defaultValue(CRUDController::class)
+                    ->cannotBeEmpty()
+                    ->info('Name of the controller class to be used as a default in admin definitions')
+                ->end()
+
                 ->arrayNode('breadcrumbs')
                     ->addDefaultsIfNotSet()
                     ->children()
