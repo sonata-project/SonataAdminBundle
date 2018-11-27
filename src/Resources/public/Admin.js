@@ -758,6 +758,7 @@ var Admin = {
             window.history.pushState({
                 path: newurl
             }, '', newurl);
+            jQuery(this).closest('form').find('input[name="_tab"]').val(tab);
         });
     }
 };

@@ -1267,7 +1267,11 @@ class CRUDController implements ContainerAwareInterface
         if (!$url) {
             foreach (['edit', 'show'] as $route) {
                 if ($this->admin->hasRoute($route) && $this->admin->hasAccess($route, $object)) {
-                    $url = $this->admin->generateObjectUrl($route, $object);
+                    $url = $this->admin->generateObjectUrl(
+                        $route,
+                        $object,
+                        $request->request->has('_tab') ? ['_tab' => $request->request->get('_tab')] : []
+                    );
 
                     break;
                 }
