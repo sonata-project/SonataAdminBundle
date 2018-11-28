@@ -6,6 +6,11 @@ UPGRADE 3.x
 If you extended that controller, you should split your extended controller and
 extend the corresponding classes in `SonataAdminBundle\Action\`.
 
+## Deprecated `header_style` option
+
+If you need to style headers prefer to use CSS classes and not in the html DOM.
+In this case please use `header_class` option.
+
 UPGRADE FROM 3.34 to 3.35
 =========================
 
