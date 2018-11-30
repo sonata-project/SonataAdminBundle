@@ -172,7 +172,7 @@ can specify the templates to use in the ``Admin`` service definition:
             <argument />
             <call method="setTemplate">
                 <argument>edit</argument>
-                <argument>@App/PostAdmin/edit.html.twig</argument>
+                <argument>AppBundle:PostAdmin/edit.html.twig</argument>
             </call>
         </service>
 
@@ -188,7 +188,7 @@ can specify the templates to use in the ``Admin`` service definition:
                     - App\Entity\Post
                     - ~
                 calls:
-                    - [ setTemplate, [edit, "@App/PostAdmin/edit.html.twig"]]
+                    - [ setTemplate, [edit, "AppBundle:PostAdmin/edit.html.twig"]]
                 public: true
 
 .. note::
