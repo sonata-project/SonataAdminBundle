@@ -16,10 +16,10 @@ file that was distributed with this source code.
                     <th>{{ 'action_delete'|trans({}, 'SonataAdminBundle') }}</th>
                 {% else %}
                     <th
-                        {% if nested_field.vars['required'] %}
+                        {% if nested_field.vars['required']|default(false) %}
                             class="required"
                         {% endif %}
-                        {% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %}
+                        {% if nested_field.vars['attr']['hidden']|default(false) %}
                             style="display:none;"
                         {% endif %}
                     >
@@ -38,9 +38,9 @@ file that was distributed with this source code.
                     <td class="
                         sonata-ba-td-{{ id }}-{{ field_name  }}
                         control-group
-                        {% if nested_field.vars.errors|length > 0 %} error sonata-ba-field-error{% endif %}
+                        {% if nested_field.vars.errors|default(false) %} error sonata-ba-field-error{% endif %}
                         "
-                        {% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %}
+                        {% if nested_field.vars['attr']['hidden']|default(false) %}
                             style="display:none;"
                         {% endif %}
                     >
@@ -53,9 +53,9 @@ file that was distributed with this source code.
                                 {{ form_widget(nested_field, { label: false }) }}
                             {% else %}
                                 {{ form_widget(nested_field) }}
-                            {% endif %}
+                            {% endif %}e
                         {% endif %}
-                        {% if nested_field.vars.errors|length > 0 %}
+                        {% if nested_field.vars.errors|default(false) %}
                             <div class="help-inline sonata-ba-field-error-messages">
                                 {{ form_errors(nested_field) }}
                             </div>
