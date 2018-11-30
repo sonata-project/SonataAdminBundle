@@ -531,7 +531,7 @@ class CRUDController implements ContainerAwareInterface
 
         // execute the action, batchActionXxxxx
         $finalAction = sprintf('batchAction%s', $camelizedAction);
-        if (!is_callable([$this, $finalAction])) {
+        if (!\is_callable([$this, $finalAction])) {
             throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', \get_class($this), $finalAction));
         }
 
