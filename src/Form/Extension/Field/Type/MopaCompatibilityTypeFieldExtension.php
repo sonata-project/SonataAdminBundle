@@ -56,4 +56,9 @@ class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension
     {
         return FormType::class;
     }
+
+    public static function getExtendedTypes()
+    {
+        return [FormType::class];
+    }
 }
