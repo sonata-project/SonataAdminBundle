@@ -28,6 +28,7 @@ class FormTypeFieldExtensionTest extends TestCase
         $extension = new FormTypeFieldExtension([], []);
 
         $this->assertSame(FormType::class, $extension->getExtendedType());
+        $this->assertSame([FormType::class], FormTypeFieldExtension::getExtendedTypes());
     }
 
     public function testDefaultOptions()

@@ -62,6 +62,11 @@ class ChoiceTypeExtensionTest extends TestCase
             ChoiceType::class,
             $extension->getExtendedType()
         );
+
+        $this->assertSame(
+            [ChoiceType::class],
+            ChoiceTypeExtension::getExtendedTypes()
+        );
     }
 
     public function testDefaultOptionsWithSortable()
