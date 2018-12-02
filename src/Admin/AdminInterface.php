@@ -206,23 +206,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function hasRoute($name);
 
-    /**
-     * Check the current request is given route or not.
-     *
-     * TODO: uncomment this method before releasing 4.0
-     *
-     * ```
-     * $this->isCurrentRoute('create'); // is create page?
-     * $this->isCurrentRoute('edit', 'some.admin.code'); // is some.admin.code admin's edit page?
-     * ```
-     *
-     * @param string $name
-     * @param string $adminCode
-     *
-     * @return bool
-     */
-    // public function isCurrentRoute($name, $adminCode = null);
-
     public function setSecurityHandler(SecurityHandlerInterface $securityHandler);
 
     /**
@@ -662,6 +645,23 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @return string
      */
     public function getListMode();
+
+    /*
+     * Check the current request is given route or not.
+     *
+     * TODO: uncomment this method before releasing 4.0
+     *
+     * ```
+     * $this->isCurrentRoute('create'); // is create page?
+     * $this->isCurrentRoute('edit', 'some.admin.code'); // is some.admin.code admin's edit page?
+     * ```
+     *
+     * @param string $name
+     * @param string $adminCode
+     *
+     * @return bool
+     */
+    // public function isCurrentRoute($name, $adminCode = null);
 
     /*
      * Configure buttons for an action
