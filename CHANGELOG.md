@@ -3,6 +3,16 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [3.42.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.41.0...3.42.0) - 2018-12-03
+
+### Fixed
+- incorrect deprecation message about `AdminInterface::setSecurityHandler()`
+- Error on some fields in collection table when `strict_variables` mode is enabled
+- Newly created media were not autoselected
+
+### Deprecated
+- `header_style` option
+
 ## [3.41.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.40.3...3.41.0) - 2018-11-23
 ### Added
 - Allow disabling front debug logs
