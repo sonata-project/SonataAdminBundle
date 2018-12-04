@@ -1,4 +1,7 @@
 <!-- THE PR TEMPLATE IS NOT AN OPTION. DO NOT DELETE IT, MAKE SURE YOU READ AND EDIT IT! -->
+## Subject
+
+<!-- Describe your Pull Request content here -->
 
 <!--
     Show us you choose the right branch.
@@ -56,7 +59,3 @@ Closes #{put_issue_number_here}
     - [ ] Update the documentation
     - [ ] Add an upgrade note
 -->
-
-## Subject
-
-<!-- Describe your Pull Request content here -->
