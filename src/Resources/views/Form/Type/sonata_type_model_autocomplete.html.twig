@@ -274,40 +274,42 @@ file that was distributed with this source code.
                 return true;
             });
 
-            {% set create_url = sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})) %}
-
-            $(document).ajaxSuccess(function(event, xhr, settings) {
-              if(typeof xhr.responseJSON != 'undefined') {
-                  if ('{{ create_url }}'.indexOf(settings.url) !== -1 && typeof xhr.responseJSON != 'string' && xhr.responseJSON.result == 'ok') {
-                    var form = JSON.parse('{"' + decodeURI(settings.data).replace('+', ' ').replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
-                    var item = new Option(
-                      form['{{ sonata_admin.field_description.associationadmin.uniqid }}[{{ form.vars.property }}]'],
-                      xhr.responseJSON.objectId,
-                      true, true
-                      );
-
-                    {%- if multiple -%}
-                      var data = autocompleteInput.select2('data');
-                      data.push(item);
-                    {%- else -%}
-                      var data = item;
-                    {%- endif -%}
-
-                    $('#{{ id }}_hidden_inputs_wrap').html('<input type="hidden" name="{{ full_name }}" value="'+xhr.responseJSON.objectId+'" />');
-
-                    // append to Select2
-                    autocompleteInput.select2('data', data).append(data).trigger('change');
-
-                    // manually trigger the `select2:select` event
-                    autocompleteInput.select2('data', data).trigger({
-                        type: 'select2:select',
-                        params: {
-                            data: data
-                        }
-                    });
+            {% if sonata_admin.field_description and sonata_admin.field_description.hasAssociationAdmin %}
+                {% set create_url = sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})) %}
+    
+                $(document).ajaxSuccess(function(event, xhr, settings) {
+                  if(typeof xhr.responseJSON != 'undefined') {
+                      if ('{{ create_url }}'.indexOf(settings.url) !== -1 && typeof xhr.responseJSON != 'string' && xhr.responseJSON.result == 'ok') {
+                        var form = JSON.parse('{"' + decodeURI(settings.data).replace('+', ' ').replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+                        var item = new Option(
+                          form['{{ sonata_admin.field_description.associationadmin.uniqid }}[{{ form.vars.property }}]'],
+                          xhr.responseJSON.objectId,
+                          true, true
+                          );
+    
+                        {%- if multiple -%}
+                          var data = autocompleteInput.select2('data');
+                          data.push(item);
+                        {%- else -%}
+                          var data = item;
+                        {%- endif -%}
+    
+                        $('#{{ id }}_hidden_inputs_wrap').html('<input type="hidden" name="{{ full_name }}" value="'+xhr.responseJSON.objectId+'" />');
+    
+                        // append to Select2
+                        autocompleteInput.select2('data', data).append(data).trigger('change');
+    
+                        // manually trigger the `select2:select` event
+                        autocompleteInput.select2('data', data).trigger({
+                            type: 'select2:select',
+                            params: {
+                                data: data
+                            }
+                        });
+                      }
                   }
-              }
-            });
+                });
+            {% endif %}
         });
         {% endautoescape %}
     </script>
