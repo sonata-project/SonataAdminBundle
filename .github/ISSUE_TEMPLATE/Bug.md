@@ -1,6 +1,10 @@
 ---
-name: 🐞 Bug Report
-about: Something is broken? 🔨
+name: "\U0001F41E Bug Report"
+about: "Something is broken? \U0001F528"
+title: ''
+labels: bug, unconfirmed
+assignees: ''
+
 ---
 
 <!--

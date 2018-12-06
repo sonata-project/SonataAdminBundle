@@ -1,6 +1,10 @@
 ---
-name: ⛔ NO support questions
+name: "⛔ NO support questions"
 about: If you have a question, please check out our Slack or StackOverflow!
+title: ''
+labels: ''
+assignees: ''
+
 ---
 
 Hi, we try to keep Github issues for bug reports and feature requests only.
