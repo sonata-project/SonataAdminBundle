@@ -3712,6 +3712,43 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('list', $result->getTargetUrl());
     }
 
+    public function testBatchActionWithCustomConfirmationTemplate()
+    {
+        $batchActions = ['delete' => ['label' => 'Foo Bar', 'ask_confirmation' => true, 'template' => 'custom_template.html.twig']];
+
+        $this->admin->expects($this->once())
+            ->method('getBatchActions')
+            ->will($this->returnValue($batchActions));
+
+        $data = ['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false];
+
+        $this->request->setMethod('POST');
+        $this->request->request->set('data', json_encode($data));
+        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+
+        $datagrid = $this->createMock(DatagridInterface::class);
+
+        $this->admin->expects($this->once())
+            ->method('getDatagrid')
+            ->will($this->returnValue($datagrid));
+
+        $form = $this->getMockBuilder(Form::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $form->expects($this->once())
+            ->method('createView')
+            ->will($this->returnValue($this->createMock(FormView::class)));
+
+        $datagrid->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $this->controller->batchAction($this->request);
+
+        $this->assertSame('custom_template.html.twig', $this->template);
+    }
+
     /**
      * NEXT_MAJOR: Remove this legacy group.
      *
