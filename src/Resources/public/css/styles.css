@@ -367,7 +367,6 @@ td.sonata-ba-list-field .editable-empty:not(.editable-open) {
 .checkbox label,
 .radio label {
     font-weight: 700;
-    margin-left: -20px;
 }
 
 /**
