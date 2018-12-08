@@ -26,7 +26,7 @@ Each key represent a batch action and could contain these settings:
 - **ask_confirmation**: defaults to true and means that the user will be asked
   for confirmation before the batch action is processed
 - **template**: Override ``ask_confirmation`` template for this specific action. This allows you
-  to specify different template for each batch action that requires confirmation.
+  to specify different templates for each batch action that requires confirmation.
 
 For example, lets define a new ``merge`` action which takes a number of source items and
 merges them onto a single target item. It should only be available when two conditions are met:

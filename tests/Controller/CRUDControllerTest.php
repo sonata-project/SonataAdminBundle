@@ -3732,9 +3732,7 @@ class CRUDControllerTest extends TestCase
             ->method('getDatagrid')
             ->will($this->returnValue($datagrid));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $form->expects($this->once())
             ->method('createView')
