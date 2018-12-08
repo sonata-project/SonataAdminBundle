@@ -42,3 +42,11 @@ entry, the whole $formOptions property or set validation_groups to an empty arra
     protected $formOptions = [
         'validation_groups' => []
     ];
+
+If there are some validation groups already configured that you want to keep, for
+example if you use ``UserAdmin`` from SonataUserBundle, you can simply add the
+``'Default'`` entry::
+
+    protected $formOptions = [
+        'validation_groups' => ['ExistingGroup', 'Default']
+    ];
