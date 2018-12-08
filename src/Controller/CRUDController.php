@@ -514,9 +514,13 @@ class CRUDController implements ContainerAwareInterface
             $formView = $datagrid->getForm()->createView();
             $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-            // NEXT_MAJOR: Remove this line and use commented line below it instead
-            $template = $this->admin->getTemplate('batch_confirmation');
-            // $template = $this->templateRegistry->getTemplate('batch_confirmation');
+            // NEXT_MAJOR: Remove these lines and use commented lines below them instead
+            $template = !empty($batchActions[$action]['template']) ?
+                $batchActions[$action]['template'] :
+                $this->admin->getTemplate('batch_confirmation');
+            // $template = !empty($batchActions[$action]['template']) ?
+            //     $batchActions[$action]['template'] :
+            //     $this->templateRegistry->getTemplate('batch_confirmation');
 
             return $this->renderWithExtraParams($template, [
                 'action' => 'list',
