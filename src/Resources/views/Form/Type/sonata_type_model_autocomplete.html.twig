@@ -13,14 +13,12 @@ file that was distributed with this source code.
     <input type="text" id="{{ id }}_autocomplete_input" value=""
         {%- for attribute,value in attr %} {{attribute}}="{{value}}" {% endfor -%}
         {%- if read_only|default(false) %} readonly="readonly"{% endif -%}    {# NEXT_MAJOR: remove #}
-        {%- if disabled %} disabled="disabled"{% endif -%}
-        {%- if required %} required="required"{% endif %}
+        {%- if disabled %} disabled="disabled"{% endif %}
     />
 
     <select id="{{ id }}_autocomplete_input_v4" data-sonata-select2="false"
         {%- if read_only|default(false) %} readonly="readonly"{% endif -%}
-        {%- if disabled %} disabled="disabled"{% endif -%}
-        {%- if required %} required="required"{% endif %}
+        {%- if disabled %} disabled="disabled"{% endif %}
     >
         {%- for idx, val  in value if idx~'' != '_labels' -%}
             <option value="{{ val }}" selected>{{ value['_labels'][idx] }}</option>
@@ -274,7 +272,13 @@ file that was distributed with this source code.
                 return true;
             });
 
-            {% if sonata_admin.field_description and sonata_admin.field_description.hasAssociationAdmin %}
+            // Automatically select the created record after closing the popup window
+            {% if sonata_admin.field_description 
+                and sonata_admin.field_description.hasAssociationAdmin 
+                and btn_add 
+                and sonata_admin.field_description.associationadmin.hasRoute('create')
+                and sonata_admin.field_description.associationadmin.hasAccess('create') %}
+
                 {% set create_url = sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})) %}
     
                 $(document).ajaxSuccess(function(event, xhr, settings) {
