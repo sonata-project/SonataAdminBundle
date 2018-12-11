@@ -3,12 +3,6 @@ set -ev
 
 mkdir --parents "${HOME}/bin"
 
-# PHPUnit install
-if [ "${TRAVIS_BRANCH}" = 'master' ]; then
-    PHPUNIT_VERSION=7
-else
-    PHPUNIT_VERSION=5.7
-fi
 wget "https://phar.phpunit.de/phpunit-${PHPUNIT_VERSION}.phar" --output-document="${HOME}/bin/phpunit"
 chmod u+x "${HOME}/bin/phpunit"
 

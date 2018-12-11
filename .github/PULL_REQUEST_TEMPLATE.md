@@ -24,11 +24,13 @@ Closes #{put_issue_number_here}
 <!-- MANDATORY
     Fill the changelog part inside the code block.
     Follow this schema: http://keepachangelog.com/
+    This will end up on https://github.com/sonata-project/SonataAdminBundle/releases,
+    please keep it short and clear and to the point
 -->
 
 <!-- 
     If you are updating something that doesn't require
-    a release, you can delete whole Changelog section.
+    a release, you can delete the whole Changelog section.
     (eg. update to docs, tests)
 -->
 
