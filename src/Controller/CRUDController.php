@@ -627,6 +627,7 @@ class CRUDController implements ContainerAwareInterface
                         return $this->renderJson([
                             'result' => 'ok',
                             'objectId' => $this->admin->getNormalizedIdentifier($newObject),
+                            'objectName' => $this->escapeHtml($this->admin->toString($newObject)),
                         ], 200, []);
                     }
 
