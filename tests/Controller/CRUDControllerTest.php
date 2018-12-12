@@ -2461,13 +2461,17 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo($object))
             ->will($this->returnValue('foo_normalized'));
 
+        $this->admin->expects($this->once())
+            ->method('toString')
+            ->will($this->returnValue('foo'));
+
         $this->request->setMethod('POST');
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $response = $this->controller->createAction($this->request);
 
         $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(json_encode(['result' => 'ok', 'objectId' => 'foo_normalized']), $response->getContent());
+        $this->assertSame(json_encode(['result' => 'ok', 'objectId' => 'foo_normalized', 'objectName' => 'foo']), $response->getContent());
         $this->assertSame([], $this->session->getFlashBag()->all());
     }
 
