@@ -172,6 +172,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         }
 
         $container->setParameter('sonata.admin.configuration.global_search.empty_boxes', $config['global_search']['empty_boxes']);
+        $container->setParameter('sonata.admin.configuration.global_search.case_sensitive', $config['global_search']['case_sensitive']);
         $container->setParameter('sonata.admin.configuration.templates', $config['templates'] + [
             'user_block' => '@SonataAdmin/Core/user_block.html.twig',
             'add_block' => '@SonataAdmin/Core/add_block.html.twig',
