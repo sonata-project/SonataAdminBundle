@@ -40,6 +40,14 @@ class Configuration implements ConfigurationInterface
             $rootNode = $treeBuilder->getRootNode();
         }
 
+        $caseSensitiveInfo = <<<'CASESENSITIVE'
+Whether the global search should behave case sensitive or not.
+Using case-insensitivity might lead to performance issues.
+
+See https://use-the-index-luke.com/sql/where-clause/functions/case-insensitive-search
+for more information.
+CASESENSITIVE;
+
         $rootNode
             ->fixXmlConfig('option')
             ->fixXmlConfig('admin_service')
@@ -103,6 +111,10 @@ class Configuration implements ConfigurationInterface
                                 })
                                 ->thenInvalid('Configuration value of "global_search.empty_boxes" must be one of show, fade or hide.')
                             ->end()
+                        ->end()
+                        ->booleanNode('case_sensitive')
+                            ->defaultTrue()
+                            ->info($caseSensitiveInfo)
                         ->end()
                     ->end()
                 ->end()
