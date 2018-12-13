@@ -1,0 +1,21 @@
+{#
+
+This file is part of SonataAdminBundle and based on @SonataAdmin\CRUD\list__action_show.html.twig.
+
+(c) Daniel Reiche <d.reiche@gmx.ch>
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+The 'history' routes and actions are already defined by SonataAdmin, they just lack a default list action template.
+We're using the 'link_action_history' message placeholder here, since this is already defined and well translated.
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% if admin.hasAccess('history', object) and admin.hasRoute('history') %}
+    <a href="{{ admin.generateObjectUrl('history', object) }}" class="btn btn-sm btn-default view_link" title="{{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}">
+        <i class="fa fa-history" aria-hidden="true"></i>
+        {{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}
+    </a>
+{% endif %}
