@@ -83,7 +83,8 @@ class RouteCollection
         $routeName = $this->baseRouteName.'_'.$name;
 
         if (!isset($defaults['_controller'])) {
-            $actionJoiner = false === \strpos($this->baseControllerName, '\\') ? ':' : '::';
+            $actionJoiner = false !== \strpos($this->baseControllerName, '\\')
+                && false === \strpos($this->baseControllerName, ':') ? '::' : ':';
             if (':' !== $actionJoiner && false !== \strpos($this->baseControllerName, ':')) {
                 $actionJoiner = ':';
             }
