@@ -30,7 +30,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -334,7 +333,6 @@ class CRUDController implements ContainerAwareInterface
         $objectId = $this->admin->getNormalizedIdentifier($existingObject);
 
         $form = $this->admin->getForm();
-        \assert($form instanceof FormInterface);
 
         if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
             throw new \RuntimeException(
@@ -600,7 +598,6 @@ class CRUDController implements ContainerAwareInterface
         $this->admin->setSubject($newObject);
 
         $form = $this->admin->getForm();
-        \assert($form instanceof FormInterface);
 
         if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
             throw new \RuntimeException(
