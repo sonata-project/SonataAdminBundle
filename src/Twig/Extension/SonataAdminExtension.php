@@ -43,6 +43,7 @@ class SonataAdminExtension extends AbstractExtension
         'es' => ['es', 'es-do'],
         'nl' => ['nl', 'nl-be'],
         'fr' => ['fr', 'fr-ca', 'fr-ch'],
+        'ru' => ['ru', 'ru-ru'],
     ];
 
     /**
