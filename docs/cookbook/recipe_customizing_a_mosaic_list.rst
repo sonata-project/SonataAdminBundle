@@ -1,7 +1,9 @@
 Customizing a mosaic list
 =========================
 
-Since version 3.0, the AdminBundle now include a mosaic list mode in order to have a more visual representation.
+.. versionadded:: 3.0
+
+   Since 3.0, the AdminBundle includes a mosaic list mode in order to have a more visual representation.
 
 .. figure:: ../images/list_mosaic_default.png
    :align: center
@@ -10,11 +12,27 @@ Since version 3.0, the AdminBundle now include a mosaic list mode in order to ha
 
 It is possible to configure the default view by creating a dedicated template.
 
+.. note::
+
+   If you want to change the default mosaic background globally,
+   please use the following configuration:
+
+    .. code-block:: yaml
+    
+        # config/packages/sonata_admin.yaml
+
+        sonata_admin:
+            # ...
+            options:
+                # ...
+                mosaic_background: '/path/to/image.png' # or use base64
+
+
 First, configure the ``outer_list_rows_mosaic`` template key:
 
 .. code-block:: xml
 
-       <service id="sonata.media.admin.media" class="%sonata.media.admin.media.class%">
+        <service id="sonata.media.admin.media" class="%sonata.media.admin.media.class%">
             <tag name="sonata.admin" manager_type="orm" group="sonata_media" label_catalogue="%sonata.media.admin.media.translation_domain%" label="media" label_translator_strategy="sonata.admin.label.strategy.underscore" />
             <argument />
             <argument>%sonata.media.admin.media.entity%</argument>

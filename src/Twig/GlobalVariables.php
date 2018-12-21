@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the Sonata Project package.
  *
@@ -36,10 +34,17 @@ class GlobalVariables
     protected $adminPool;
 
     /**
+     * @var string|null
+     */
+    private $mosaicBackground;
+
+    /**
      * @param ContainerInterface|Pool $adminPool
      */
-    public function __construct($adminPool)
+    public function __construct($adminPool, ?string $mosaicBackground = null)
     {
+        $this->mosaicBackground = $mosaicBackground;
+
         // NEXT_MAJOR : remove this block and set adminPool from parameter.
         if ($adminPool instanceof ContainerInterface) {
             @trigger_error(
@@ -99,7 +104,15 @@ class GlobalVariables
         return $this->getAdminPool()->getAdminByAdminCode($code)->generateObjectUrl($action, $object, $parameters, $absolute);
     }
 
-    private function getCodeAction($code, $action): array
+    public function getMosaicBackground(): ?string
+    {
+        return $this->mosaicBackground;
+    }
+
+    /**
+     * @return array
+     */
+    private function getCodeAction($code, $action)
     {
         if ($pipe = strpos($code, '|')) {
             // convert code=sonata.page.admin.page|sonata.page.admin.snapshot, action=list
