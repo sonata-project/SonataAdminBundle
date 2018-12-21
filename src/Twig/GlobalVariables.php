@@ -111,4 +111,12 @@ class GlobalVariables
 
         return [$action, $code];
     }
+
+    /**
+     * @return string
+     */
+    public function getDefaultMosaicBackground()
+    {
+        return $this->adminPool->getContainer()->getParameter('sonata.admin.configuration.default_mosaic_background');
+    }
 }
