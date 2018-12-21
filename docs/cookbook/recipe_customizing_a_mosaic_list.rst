@@ -91,7 +91,7 @@ the MediaBundle defines the method as::
 
         public function getObjectMetadata($object)
         {
-            $provider = $this->getConfigurationPool()->getContainer()->get($object->getProviderName());
+            $provider = $this->pool->getProvider($object->getProviderName());
 
             $url = $provider->generatePublicUrl($object, $provider->getFormatName($object, 'admin'));
 
@@ -99,6 +99,9 @@ the MediaBundle defines the method as::
         }
     }
 
+.. note::
+    To get the provider from your ``Admin`` class, use this:
+    ``$provider = $this->getConfigurationPool()->getContainer()->get($object->getProviderName());``
 
 The final view will look like:
 
