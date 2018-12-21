@@ -79,8 +79,9 @@ Block types:
  - ``sonata_mosaic_description``: this block will be always on screen and should represent the entity's name.
 
 
-The ``ObjectMetadata`` object is returned by the related admin class,
-for instance the MediaBundle defines the method as::
+The ``ObjectMetadata`` object is returned by the related admin class, and can be
+used to define wich image from entity will be displayed if available. For instance,
+the MediaBundle defines the method as::
 
     <?php
 
@@ -90,7 +91,7 @@ for instance the MediaBundle defines the method as::
 
         public function getObjectMetadata($object)
         {
-            $provider = $this->pool->getProvider($object->getProviderName());
+            $provider = $this->getConfigurationPool()->getContainer()->get($object->getProviderName());
 
             $url = $provider->generatePublicUrl($object, $provider->getFormatName($object, 'admin'));
 
