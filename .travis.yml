@@ -35,7 +35,7 @@ env:
     - SYMFONY_DEPRECATIONS_HELPER=weak_vendors
     - TARGET=test
     - UPSTREAM_URL=https://github.com/sonata-project/SonataAdminBundle.git
-    - PHPUNIT_VERSION=5.7
+    - PHPUNIT_VERSION=5.7.26
 
 matrix:
   fast_finish: true
