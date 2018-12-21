@@ -100,8 +100,68 @@ the MediaBundle defines the method as::
     }
 
 .. note::
-    To get the provider from your ``Admin`` class, use this:
-    ``$provider = $this->getConfigurationPool()->getContainer()->get($object->getProviderName());``
+    In your own admin, media is just a field and not the ``$object``. Therefore,
+    the code above must be updated this way:
+
+    .. code-block:: php
+
+        <?php
+
+            ...
+
+            public function getObjectMetadata($object)
+            {
+                $media = $object->getMediaField();
+
+                $provider = $this->pool->getProvider($media->getProviderName());
+
+                $url = $provider->generatePublicUrl($media, $provider->getFormatName($media, 'admin'));
+
+                return new Metadata($media->getName(), $media->getDescription(), $url);
+            }
+
+    Also, the ``$pool`` variable is not available so you will have to replace
+    ``$provider = $this->pool->getProvider($media->getProviderName());`` by
+    ``$provider = $this->getConfigurationPool()->getContainer()->get($object->getProviderName());``.
+
+    Another better option is to use dependency injection. For this, first define
+    the ``$pool`` variable and override the constructor:
+
+    .. code-block:: php
+
+        <?php
+
+            ...
+
+            protected $pool;
+
+            ...
+
+            public function __construct($code, $class, $baseControllerName, Pool $pool)
+            {
+                parent::__construct($code, $class, $baseControllerName);
+
+                $this->pool = $pool;
+            }
+
+    Then add ``'@sonata.media.pool'`` to your service definition:
+
+    .. code-block:: yaml
+
+        services:
+            app.admin.post:
+                class: App\Admin\PostAdmin
+                tags:
+                    - name: sonata.admin
+                    manager_type: orm
+                    group: "Content"
+                    label: "Post"
+                arguments:
+                    - ~
+                    - App\Entity\Post
+                    - ~
+                    - '@sonata.media.pool'
+                public: true
 
 The final view will look like:
 
