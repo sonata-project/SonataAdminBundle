@@ -107,7 +107,7 @@ the MediaBundle defines the method as::
 
         <?php
 
-            ...
+            // ...
 
             public function getObjectMetadata($object)
             {
@@ -120,22 +120,18 @@ the MediaBundle defines the method as::
                 return new Metadata($media->getName(), $media->getDescription(), $url);
             }
 
-    Also, the ``$pool`` variable is not available so you will have to replace
-    ``$provider = $this->pool->getProvider($media->getProviderName());`` by
-    ``$provider = $this->getConfigurationPool()->getContainer()->get($object->getProviderName());``.
-
-    Another better option is to use dependency injection. For this, first define
+    You will also have to use dependency injection. For this, first define
     the ``$pool`` variable and override the constructor:
 
     .. code-block:: php
 
         <?php
 
-            ...
+            // ...
 
             private $pool;
 
-            ...
+            // ...
 
             public function __construct($code, $class, $baseControllerName, Pool $pool)
             {
