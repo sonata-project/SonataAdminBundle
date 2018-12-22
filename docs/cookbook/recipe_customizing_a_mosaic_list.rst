@@ -133,7 +133,7 @@ the MediaBundle defines the method as::
 
             // ...
 
-            public function __construct($code, $class, $baseControllerName, Pool $pool)
+            public function __construct(string $code, string $class, string $baseControllerName, Pool $pool)
             {
                 parent::__construct($code, $class, $baseControllerName);
 
