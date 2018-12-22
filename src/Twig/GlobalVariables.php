@@ -34,10 +34,17 @@ class GlobalVariables
     protected $adminPool;
 
     /**
+     * @var string
+     */
+    private $defaultMosaicBackground;
+
+    /**
      * @param ContainerInterface|Pool $adminPool
      */
-    public function __construct($adminPool)
+    public function __construct($adminPool, $defaultMosaicBackground)
     {
+        $this->defaultMosaicBackground = $defaultMosaicBackground;
+
         // NEXT_MAJOR : remove this block and set adminPool from parameter.
         if ($adminPool instanceof ContainerInterface) {
             @trigger_error(
@@ -117,6 +124,6 @@ class GlobalVariables
      */
     public function getDefaultMosaicBackground()
     {
-        return $this->adminPool->getContainer()->getParameter('sonata.admin.configuration.default_mosaic_background');
+        return $this->defaultMosaicBackground;
     }
 }
