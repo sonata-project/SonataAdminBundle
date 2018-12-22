@@ -40,6 +40,7 @@ class GlobalVariables
 
     /**
      * @param ContainerInterface|Pool $adminPool
+     * @param string $defaultMosaicBackground
      */
     public function __construct($adminPool, $defaultMosaicBackground)
     {
