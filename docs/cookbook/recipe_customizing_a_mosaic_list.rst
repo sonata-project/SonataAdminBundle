@@ -133,7 +133,7 @@ the MediaBundle defines the method as::
 
             ...
 
-            protected $pool;
+            private $pool;
 
             ...
 
