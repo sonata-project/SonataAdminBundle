@@ -24,6 +24,7 @@ First, configure the ``outer_list_rows_mosaic`` template key:
                     <argument key="outer_list_rows_mosaic">@SonataMedia/MediaAdmin/list_outer_rows_mosaic.html.twig</argument>
                 </argument>
             </call>
+       </service>
 
 
 The ``list_outer_rows_mosaic.html.twig`` is the name of one mosaic's tile. You should also extends the template and overwrite the default blocks availables.
