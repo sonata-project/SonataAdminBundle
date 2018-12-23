@@ -67,7 +67,6 @@ You can use the provided extension to take care of your entity admin.
 
        app.admin.extension.workflow.blog_post:
            class: Yokai\SonataWorkflow\Admin\Extension\WorkflowExtension
-           public: true
            arguments:
                - '@workflow.registry'
                - transitions_icons:
@@ -75,6 +74,7 @@ You can use the provided extension to take care of your entity admin.
                      interrupt_review: fa fa-edit
                      restart_review: fa fa-question
                      publish: fa fa-check
+           public: true
 
 .. code-block:: yaml
 
