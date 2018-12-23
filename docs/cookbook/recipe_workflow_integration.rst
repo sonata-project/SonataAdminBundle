@@ -57,7 +57,7 @@ You can use the provided extension to take care of your entity admin.
 
 .. code-block:: yaml
 
-   # config/services.yaml
+   # config/packages/sonata_admin.yaml
    services:
        admin.blog_post:
            class: App\Admin\BlogPostAdmin
