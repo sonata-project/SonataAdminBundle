@@ -60,10 +60,10 @@ Per Admin :
         <!-- src/AppBundle/Resources/config/admin.xml -->
 
         <service id="app.admin.user" class="AppBundle\Admin\UserAdmin">
-            <tag name="sonata.admin" manager_type="orm" filter_persister="filter_persister_service_id" />
             <argument />
             <argument>AppBundle\Entity\User</argument>
             <argument />
+            <tag name="sonata.admin" manager_type="orm" filter_persister="filter_persister_service_id" />
         </service>
 
     .. code-block:: yaml
@@ -73,16 +73,12 @@ Per Admin :
         services:
             app.admin.user:
                 class: AppBundle\Admin\UserAdmin
-                tags:
-                    -
-                        name: sonata.admin
-                        manager_type: orm
-                        filter_persister: filter_persister_service_id
                 arguments:
                     - ~
                     - AppBundle\Entity\User
                     - ~
-
+                tags:
+                    - { name: sonata.admin manager_type: orm filter_persister: filter_persister_service_id }
 
 Disable filters persistence for some Admin
 ------------------------------------------
@@ -101,10 +97,10 @@ You can disable it per Admin if you want.
         <!-- src/AppBundle/Resources/config/admin.xml -->
 
         <service id="app.admin.user" class="AppBundle\Admin\UserAdmin">
-            <tag name="sonata.admin" manager_type="orm" persist_filters="false" />
             <argument />
             <argument>AppBundle\Entity\User</argument>
             <argument />
+            <tag name="sonata.admin" manager_type="orm" persist_filters="false" />
         </service>
 
     .. code-block:: yaml
@@ -114,16 +110,12 @@ You can disable it per Admin if you want.
         services:
             app.admin.user:
                 class: AppBundle\Admin\UserAdmin
-                tags:
-                    -
-                        name: sonata.admin
-                        manager_type: orm
-                        persist_filters: false
                 arguments:
                     - ~
                     - AppBundle\Entity\User
                     - ~
-
+                tags:
+                    - { name: sonata.admin, manager_type: orm, persist_filters: false }
 
 .. note::
 
