@@ -23,7 +23,7 @@ its parent:
         # app/config/services.yml
         App\Admin\PlaylistAdmin:
             calls:
-                - [ addChild, ['@App\Admin\VideoAdmin', 'playlist']]
+                - [addChild, ['@App\Admin\VideoAdmin', 'playlist']]
 
     .. code-block:: xml
 

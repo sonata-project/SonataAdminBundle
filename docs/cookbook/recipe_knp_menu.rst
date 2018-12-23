@@ -80,11 +80,11 @@ group roles will be checked.
                             - sonata.news.admin.post
                             - route:        blog_home
                               label:        Blog
-                              roles:        [ ROLE_FOO, ROLE_BAR ]
+                              roles:        ['ROLE_FOO', 'ROLE_BAR']
                             - route:        blog_article
                               route_params: { articleId: 3 }
                               label:        Article
-                        roles: [ ROLE_ADMIN, ROLE_SONATA_ADMIN]
+                        roles: ['ROLE_ADMIN', 'ROLE_SONATA_ADMIN']
 
 You can also override the template of knp_menu used by sonata. The default
 one is `@SonataAdmin/Menu/sonata_menu.html.twig`:

@@ -62,7 +62,7 @@ Then we need to inject the Sortable listener. If you only have the Gedmo bundle 
             tags:
                 - { name: doctrine.event_subscriber, connection: default }
             calls:
-                - [ setAnnotationReader, [ "@annotation_reader" ] ]
+                - [setAnnotationReader, ['@annotation_reader']]
 
 
 If you have the ``stof/doctrine-extensions-bundle``, you only need to enable the sortable
