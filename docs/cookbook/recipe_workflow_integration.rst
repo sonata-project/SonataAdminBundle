@@ -4,12 +4,8 @@ Integrate Symfony Workflow Component
 If you are using Symfony `Workflow Component`_ and if you wish to use it with Sonata,
 there is a 3rd party library that provides toolkit classes.
 
-You can find it on `Packagist`_ and `GitHub`_.
-
-Downloading the library
------------------------
-
-From a terminal, use composer to install the library :
+Require yokai/sonata-workflow
+-----------------------------
 
 .. code-block:: bash
 
@@ -99,5 +95,3 @@ you will see something like this:
 
 
 .. _`Workflow Component`: https://symfony.com/doc/current/components/workflow.html
-.. _`Packagist`: https://packagist.org/packages/yokai/sonata-workflow
-.. _`GitHub`: https://github.com/yokai-php/sonata-workflow
