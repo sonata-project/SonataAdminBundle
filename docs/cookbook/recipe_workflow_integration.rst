@@ -74,7 +74,7 @@ You can use the provided extension to take care of your entity admin.
                      start_review: fa fa-question
                      interrupt_review: fa fa-edit
                      restart_review: fa fa-question
-                     publish: fa fa-times
+                     publish: fa fa-check
 
 .. code-block:: yaml
 
