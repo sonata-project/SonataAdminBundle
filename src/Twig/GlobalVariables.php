@@ -36,15 +36,15 @@ class GlobalVariables
     /**
      * @var string
      */
-    private $defaultMosaicBackground;
+    private $mosaicBackground;
 
     /**
      * @param ContainerInterface|Pool $adminPool
-     * @param string $defaultMosaicBackground
+     * @param string $mosaicBackground
      */
-    public function __construct($adminPool, $defaultMosaicBackground)
+    public function __construct($adminPool, $mosaicBackground)
     {
-        $this->defaultMosaicBackground = $defaultMosaicBackground;
+        $this->mosaicBackground = $mosaicBackground;
 
         // NEXT_MAJOR : remove this block and set adminPool from parameter.
         if ($adminPool instanceof ContainerInterface) {
@@ -123,8 +123,8 @@ class GlobalVariables
     /**
      * @return string
      */
-    public function getDefaultMosaicBackground()
+    public function getMosaicBackground()
     {
-        return $this->defaultMosaicBackground;
+        return $this->mosaicBackground;
     }
 }
