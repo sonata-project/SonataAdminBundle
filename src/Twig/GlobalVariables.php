@@ -34,15 +34,15 @@ class GlobalVariables
     protected $adminPool;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $mosaicBackground;
 
     /**
      * @param ContainerInterface|Pool $adminPool
-     * @param string $mosaicBackground
+     * @param string|null $mosaicBackground
      */
-    public function __construct($adminPool, $mosaicBackground)
+    public function __construct($adminPool, $mosaicBackground = null)
     {
         $this->mosaicBackground = $mosaicBackground;
 
@@ -121,7 +121,7 @@ class GlobalVariables
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getMosaicBackground()
     {
