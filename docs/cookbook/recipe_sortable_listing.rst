@@ -117,11 +117,11 @@ Now you can update your ``services.yml`` to use the handler provider by the ``pi
         app.admin.client:
             class: App\Admin\ClientAdmin
             tags:
-              - { name: sonata.admin, manager_type: orm, label: "Clients" }
+                - { name: sonata.admin, manager_type: orm, label: "Clients" }
             arguments:
-              - ~
-              - App\Entity\Client
-              - 'PixSortableBehaviorBundle:SortableAdmin' # define the new controller via the third argument
+                - ~
+                - App\Entity\Client
+                - 'PixSortableBehaviorBundle:SortableAdmin' # define the new controller via the third argument
             public: true
 
 Now we need to define the sort by field to be ``$position``:
