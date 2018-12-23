@@ -14,7 +14,7 @@ Step 0: Create a Model
 ----------------------
 
 For the rest of the tutorial, you'll need some sort of model. In this tutorial,
-two very simple ``Post`` and ``Tag`` entities will be used::
+``BlogPost`` and ``Category`` will be used::
 
     // src/Entity/BlogPost.php
 
