@@ -79,9 +79,9 @@ Per Admin :
                         manager_type: orm
                         filter_persister: filter_persister_service_id
                 arguments:
-                    - null
+                    - ~
                     - AppBundle\Entity\User
-                    - null
+                    - ~
 
 
 Disable filters persistence for some Admin
@@ -120,9 +120,9 @@ You can disable it per Admin if you want.
                         manager_type: orm
                         persist_filters: false
                 arguments:
-                    - null
+                    - ~
                     - AppBundle\Entity\User
-                    - null
+                    - ~
 
 
 .. note::

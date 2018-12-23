@@ -72,7 +72,7 @@ or by adding it to your ``admin.yml``:
             tags:
                 - { name: sonata.admin, manager_type: orm, group: Demo, label: Car }
             arguments:
-                - null
+                - ~
                 - App\Entity\Car
                 - App\Controller\CRUDController
             public: true
