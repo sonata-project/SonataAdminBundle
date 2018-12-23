@@ -555,7 +555,7 @@ that looks like this:
                     - App\Entity\Image
                     - 'Sonata\AdminBundle\Controller\CRUDController'
                 calls:
-                    - [ setTranslationDomain, [App]]
+                    - [setTranslationDomain, ['App']]
                 public: true
 
 .. note::

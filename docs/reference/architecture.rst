@@ -96,7 +96,7 @@ your ``Admin`` services. This is done using a ``call`` to the matching ``setter`
                     - App\Entity\Post
                     - ~
                 calls:
-                    - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
+                    - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.underscore']]
                 public: true
 
 Here, we declare the same ``Admin`` service as in the :doc:`../getting_started/creating_an_admin`
@@ -152,7 +152,7 @@ to set the controller to ``App\Controller\PostAdminController``:
                     - App\Entity\Post
                     - App\Controller\PostAdminController
                 calls:
-                    - [ setTranslationDomain, [App]]
+                    - [setTranslationDomain, ['App']]
                 public: true
 
 When extending ``CRUDController``, remember that the ``Admin`` class already has

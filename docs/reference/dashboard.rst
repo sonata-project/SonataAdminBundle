@@ -162,7 +162,7 @@ declarations.
                         items: ~
                         item_adds:
                             - sonata.admin.page
-                        roles: [ ROLE_ONE, ROLE_TWO ]
+                        roles: ['ROLE_ONE', 'ROLE_TWO']
 
                     app.admin.group.misc: ~
 

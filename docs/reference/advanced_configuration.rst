@@ -110,8 +110,8 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
                 - App\Entity\Project
                 - ~
             calls:
-                - [ setLabelTranslatorStrategy, [ "@sonata.admin.label.strategy.native" ]]
-                - [ setRouteBuilder, [ "@sonata.admin.route.path_info" ]]
+                - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.native']]
+                - [setRouteBuilder, ['@sonata.admin.route.path_info']]
             public: true
 
 If you want to modify the service that is going to be injected, add the following code to your
