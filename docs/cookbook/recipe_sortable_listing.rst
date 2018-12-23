@@ -57,6 +57,8 @@ Then we need to inject the Sortable listener. If you only have the Gedmo bundle 
 
 .. code-block:: yaml
 
+    # config/services.yaml
+
     services:
         gedmo.listener.sortable:
             class: Gedmo\Sortable\SortableListener
@@ -71,6 +73,8 @@ feature in your config.yml such as
 
 .. code-block:: yaml
 
+    # config/packages/stof_doctrine_extensions.yaml
+
     stof_doctrine_extensions:
         orm:
             default:
@@ -82,7 +86,7 @@ and use the default twig template provided in the ``pixSortableBehaviorBundle``
 
 .. code-block:: php
 
-    <?php
+   <?php
 
     $listMapper
         ->add('_action', null, [
@@ -94,7 +98,9 @@ and use the default twig template provided in the ``pixSortableBehaviorBundle``
         ]);
 
 
-In order to add new routes for these actions we are also adding the following method::
+In order to add new routes for these actions we are also adding the following method:
+
+.. code-block:: php
 
     <?php
     // src/Admin/ClientAdmin.php
@@ -113,6 +119,8 @@ In order to add new routes for these actions we are also adding the following me
 Now you can update your ``services.yml`` to use the handler provider by the ``pixSortableBehaviorBundle``
 
 .. code-block:: yaml
+
+    # config/services.yaml
 
     services:
         app.admin.client:
@@ -168,8 +176,6 @@ Now we need to define the sort by field to be ``$position``:
             ;
         }
     }
-
-Enjoy ;)
 
 Further work
 ------------

@@ -31,13 +31,13 @@ First you need to create your own Controller extending the one from SonataAdmin
 .. code-block:: php
 
     <?php
-    // src/Controller/CRUDController.php
+    // src/Controller/CarAdminController.php
 
     namespace App\Controller;
 
-    use Sonata\AdminBundle\Controller\CRUDController as Controller;
+    use Sonata\AdminBundle\Controller\CRUDController;
 
-    class CRUDController extends Controller
+    class CarAdminController extends CRUDController
     {
         // ...
     }
@@ -58,7 +58,7 @@ Either by using XML:
             <tag name="sonata.admin" manager_type="orm" group="Demo" label="Car" />
             <argument />
             <argument>App\Entity\Car</argument>
-            <argument>App\Controller\CRUDController</argument>
+            <argument>App\Controller\CarAdminController</argument>
         </service>
 
 or by adding it to your ``admin.yml``:
@@ -75,7 +75,7 @@ or by adding it to your ``admin.yml``:
             arguments:
                 - ~
                 - App\Entity\Car
-                - App\Controller\CRUDController
+                - App\Controller\CarAdminController
 
 For more information about service configuration please refer to Step 3 of :doc:`../getting_started/creating_an_admin`
 
@@ -88,15 +88,15 @@ to implement a ``clone`` action.
 .. code-block:: php
 
     <?php
-    // src/Controller/CRUDController.php
+    // src/Controller/CarAdminController.php
 
     namespace App\Controller;
 
-    use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-    use Sonata\AdminBundle\Controller\CRUDController as Controller;
+    use Sonata\AdminBundle\Controller\CRUDController;
     use Symfony\Component\HttpFoundation\RedirectResponse;
+    use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-    class CRUDController extends Controller
+    class CarAdminController extends CRUDController
     {
         /**
          * @param $id
@@ -287,7 +287,9 @@ Custom Action without Entity
 ----------------------------
 
 Creating an action that is not connected to an Entity is also possible.
-Let's imagine we have an import action. We register our route::
+Let's imagine we have an import action. We register our route:
+
+.. code-block:: php
 
     <?php
 
@@ -299,14 +301,19 @@ Let's imagine we have an import action. We register our route::
         $collection->add('import');
     }
 
-We add the controller action::
+We add the controller action:
+
+.. code-block:: php
 
     <?php
+    // src/Controller/CarAdminController.php
 
-    use Sonata\AdminBundle\Controller\CRUDController as Controller;
+    namespace App\Controller;
+
+    use Sonata\AdminBundle\Controller\CRUDController;
     use Symfony\Component\HttpFoundation\Request;
 
-    class CRUDController extends Controller
+    class CarAdminController extends CRUDController
     {
         public function importAction(Request $request)
         {
@@ -315,7 +322,9 @@ We add the controller action::
 
 Now, instead of adding the action to the form mapper, we can add it next to
 the add button. In your admin class, overwrite the ``configureActionButtons``
-method::
+method:
+
+.. code-block:: php
 
     <?php
 
@@ -340,7 +349,9 @@ Create a template for that button:
 
 You can also add this action to your dashboard actions, you have to overwrite
 the ``getDashboardActions`` method in your admin class and there are two
-ways you can add action::
+ways you can add action:
+
+.. code-block:: php
 
     <?php
 
@@ -361,7 +372,9 @@ Create a template for that button:
         <i class="fa fa-level-up"></i>{{ 'import_action'|trans({}, 'SonataAdminBundle') }}
     </a>
 
-Or you can just pass values as array::
+Or you can just pass values as array:
+
+.. code-block:: php
 
     <?php
 
