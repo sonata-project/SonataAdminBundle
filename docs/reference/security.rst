@@ -605,7 +605,7 @@ because for example you want to restrict access using extra rules:
 
     .. code-block:: xml
 
-        <!-- src/Resources/config/services.xml -->
+        <!-- config/services.xml -->
 
         <!-- <service id="security.acl.user_permission.map" class="App\Security\Acl\Permission\UserAdminPermissionMap" public="false"></service> -->
 

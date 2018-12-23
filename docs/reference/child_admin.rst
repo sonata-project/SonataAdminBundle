@@ -21,14 +21,16 @@ its parent:
 
     .. code-block:: yaml
 
-        # app/config/services.yml
+        # config/services.yaml
+
         App\Admin\PlaylistAdmin:
             calls:
                 - [addChild, ['@App\Admin\VideoAdmin', 'playlist']]
 
     .. code-block:: xml
 
-        <!-- app/config/services.xml -->
+        <!-- config/services.xml -->
+
         <service id="App\Admin\PlaylistAdmin">
             <!-- ... -->
 

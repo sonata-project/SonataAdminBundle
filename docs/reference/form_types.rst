@@ -537,14 +537,14 @@ creation (and editing) of new Images instead of just selecting an existing Image
 from a list.
 
 First we need to create an ``ImageAdmin`` class and register it as an admin class
-for managing ``Image`` objects. In our ``admin.yml`` we have an entry for ``ImageAdmin``
+for managing ``Image`` objects. In our ``services.yaml`` we have an entry for ``ImageAdmin``
 that looks like this:
 
 .. configuration-block::
 
     .. code-block:: yaml
 
-        # src/Resources/config/admin.yml
+        # config/services.yaml
 
         services:
             app.admin.image:
@@ -585,7 +585,7 @@ for the ``image1`` field to ``sonata_type_admin`` in our ``PageAdmin`` class:
     }
 
 We do not need to define any options since Sonata calculates that the linked class
-is of type ``Image`` and the service definition (in ``admin.yml``) defines that ``Image``
+is of type ``Image`` and the service definition (in ``services.yaml``) defines that ``Image``
 objects are managed by the ``ImageAdmin`` class.
 
 The available options (which can be passed as a third parameter to ``FormMapper::add()``) are:

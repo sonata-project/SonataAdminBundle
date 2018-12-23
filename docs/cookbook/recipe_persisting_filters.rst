@@ -16,7 +16,7 @@ You can enable it in your ``sonata_admin`` configuration :
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/sonata_admin.yaml
 
         sonata_admin:
             persist_filters: true
@@ -44,7 +44,7 @@ Globally :
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/sonata_admin.yaml
 
         sonata_admin:
             persist_filters: true
@@ -56,7 +56,7 @@ Per Admin :
 
     .. code-block:: xml
 
-        <!-- src/AppBundle/Resources/config/admin.xml -->
+        <!-- config/services.xml -->
 
         <service id="app.admin.user" class="AppBundle\Admin\UserAdmin">
             <argument />
@@ -71,7 +71,7 @@ Per Admin :
 
     .. code-block:: yaml
 
-        # src/AppBundle/Resources/config/admin.yml
+        # config/services.yaml
 
         services:
             app.admin.user:
@@ -100,7 +100,7 @@ You can disable it per Admin if you want.
 
     .. code-block:: xml
 
-        <!-- src/AppBundle/Resources/config/admin.xml -->
+        <!-- config/services.xml -->
 
         <service id="app.admin.user" class="AppBundle\Admin\UserAdmin">
             <argument />
@@ -111,7 +111,7 @@ You can disable it per Admin if you want.
 
     .. code-block:: yaml
 
-        # src/AppBundle/Resources/config/admin.yml
+        # config/services.yaml
 
         services:
             app.admin.user:
