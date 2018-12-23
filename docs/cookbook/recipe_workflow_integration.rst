@@ -59,20 +59,21 @@ You can use the provided extension to take care of your entity admin.
 
    # config/packages/sonata_admin.yaml
    services:
-       admin.blog_post:
+       app.admin.blog_post:
            class: App\Admin\BlogPostAdmin
            arguments:
                - ~
-               - App\Entity\PullRequest
+               - App\Entity\BlogPost
                - Yokai\SonataWorkflow\Controller\WorkflowController
            tags:
                - { name: 'sonata.admin', manager_type: orm }
+           public: true
 
-       admin.extension.blog_post_workflow:
+       app.admin.extension.workflow.blog_post:
            class: Yokai\SonataWorkflow\Admin\Extension\WorkflowExtension
            public: true
            arguments:
-               - "@workflow.registry"
+               - '@workflow.registry'
                - transitions_icons:
                      start_review: fa fa-question
                      interrupt_review: fa fa-edit
@@ -84,10 +85,9 @@ You can use the provided extension to take care of your entity admin.
    # config/packages/sonata_admin.yaml
    sonata_admin:
        extensions:
-           admin.extension.blog_post_workflow:
+           admin.extension.workflow.blog_post:
                admins:
-                   - admin.blog_post
-
+                   - app.admin.blog_post
 
 You are all set. If you visit your admin page in edit or show mode,
 you will see something like this:
