@@ -556,7 +556,6 @@ that looks like this:
                     - [setTranslationDomain, ['App']]
                 tags:
                     - { name: sonata.admin, manager_type: orm, label: "Image" }
-                public: true
 
 .. note::
 

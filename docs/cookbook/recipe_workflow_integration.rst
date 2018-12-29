@@ -61,7 +61,6 @@ You can use the provided extension to take care of your entity admin.
    services:
        admin.blog_post:
            class: App\Admin\BlogPostAdmin
-           public: true
            arguments:
                - ~
                - App\Entity\PullRequest
