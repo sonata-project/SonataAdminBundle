@@ -50,7 +50,6 @@ Globally :
             persist_filters: true
             filter_persister: filter_persister_service_id
 
-
 Per Admin :
 
 .. configuration-block::
@@ -63,7 +62,11 @@ Per Admin :
             <argument />
             <argument>AppBundle\Entity\User</argument>
             <argument />
-            <tag name="sonata.admin" manager_type="orm" filter_persister="filter_persister_service_id" />
+            <tag
+                name="sonata.admin"
+                manager_type="orm"
+                filter_persister="filter_persister_service_id"
+                />
         </service>
 
     .. code-block:: yaml
@@ -78,7 +81,10 @@ Per Admin :
                     - AppBundle\Entity\User
                     - ~
                 tags:
-                    - { name: sonata.admin manager_type: orm filter_persister: filter_persister_service_id }
+                    -
+                        name: sonata.admin
+                        manager_type: orm
+                        filter_persister: filter_persister_service_id
 
 Disable filters persistence for some Admin
 ------------------------------------------

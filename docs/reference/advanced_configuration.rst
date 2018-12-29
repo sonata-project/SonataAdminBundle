@@ -68,7 +68,13 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
                 - App\Entity\Project
                 - ~
             tags:
-                - { name: sonata.admin, manager_type: orm, group: "Project", label: "Project", label_translator_strategy: "sonata.admin.label.strategy.native",  route_builder: "sonata.admin.route.path_info" }
+                -
+                    name: sonata.admin
+                    manager_type: orm
+                    group: 'Project'
+                    label: 'Project'
+                    label_translator_strategy: 'sonata.admin.label.strategy.native'
+                    route_builder: 'sonata.admin.route.path_info'
             public: true
 
 * With a method call, more verbose
