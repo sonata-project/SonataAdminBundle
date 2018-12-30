@@ -80,8 +80,8 @@ Block types:
 
 
 The ``ObjectMetadata`` object is returned by the related admin class, and can be
-used to define which image from entity will be displayed if available. For instance,
-the Media bundle defines the method as::
+used to define which image field from the entity will be displayed if available.
+For instance, the Media bundle defines the method as::
 
     <?php
 
