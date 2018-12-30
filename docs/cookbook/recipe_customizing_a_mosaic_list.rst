@@ -107,18 +107,18 @@ the MediaBundle defines the method as::
 
         <?php
 
-            // ...
+        // ...
 
-            public function getObjectMetadata($object)
-            {
-                $media = $object->getMediaField();
+        public function getObjectMetadata($object)
+        {
+            $media = $object->getMediaField();
 
-                $provider = $this->pool->getProvider($media->getProviderName());
+            $provider = $this->pool->getProvider($media->getProviderName());
 
-                $url = $provider->generatePublicUrl($media, $provider->getFormatName($media, 'admin'));
+            $url = $provider->generatePublicUrl($media, $provider->getFormatName($media, 'admin'));
 
-                return new Metadata($media->getName(), $media->getDescription(), $url);
-            }
+            return new Metadata($media->getName(), $media->getDescription(), $url);
+        }
 
     You will also have to use dependency injection. For this, first define
     the ``$pool`` variable and override the constructor:
@@ -127,7 +127,11 @@ the MediaBundle defines the method as::
 
         <?php
 
-            // ...
+        // ...
+
+        use Sonata\MediaBundle\Provider\Pool;
+
+        // ...
 
             private $pool;
 
@@ -135,9 +139,9 @@ the MediaBundle defines the method as::
 
             public function __construct(string $code, string $class, string $baseControllerName, Pool $pool)
             {
-                parent::__construct($code, $class, $baseControllerName);
-
                 $this->pool = $pool;
+
+                parent::__construct($code, $class, $baseControllerName);
             }
 
     Then add ``'@sonata.media.pool'`` to your service definition:
@@ -149,17 +153,16 @@ the MediaBundle defines the method as::
         services:
             app.admin.post:
                 class: App\Admin\PostAdmin
-                tags:
-                    - name: sonata.admin
-                    manager_type: orm
-                    group: "Content"
-                    label: "Post"
                 arguments:
                     - ~
                     - App\Entity\Post
                     - ~
                     - '@sonata.media.pool'
-                public: true
+                tags:
+                    - name: sonata.admin
+                    manager_type: orm
+                    group: "Content"
+                    label: "Post"
 
 The final view will look like:
 
