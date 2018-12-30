@@ -40,7 +40,7 @@ class GlobalVariables
 
     /**
      * @param ContainerInterface|Pool $adminPool
-     * @param string|null $mosaicBackground
+     * @param string|null             $mosaicBackground
      */
     public function __construct($adminPool, $mosaicBackground = null)
     {
@@ -106,6 +106,14 @@ class GlobalVariables
     }
 
     /**
+     * @return string|null
+     */
+    public function getMosaicBackground()
+    {
+        return $this->mosaicBackground;
+    }
+
+    /**
      * @return array
      */
     private function getCodeAction($code, $action)
@@ -118,13 +126,5 @@ class GlobalVariables
         }
 
         return [$action, $code];
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getMosaicBackground()
-    {
-        return $this->mosaicBackground;
     }
 }
