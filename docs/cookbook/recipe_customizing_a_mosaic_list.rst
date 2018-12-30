@@ -109,7 +109,7 @@ the MediaBundle defines the method as::
 
         // ...
 
-        public function getObjectMetadata($object)
+        public function getObjectMetadata($object): Metadata
         {
             $media = $object->getMediaField();
 
