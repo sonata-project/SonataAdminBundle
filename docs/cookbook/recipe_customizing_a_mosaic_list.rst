@@ -142,7 +142,7 @@ the Media bundle defines the method as::
                 parent::__construct($code, $class, $baseControllerName);
             }
 
-    Then add ``'@sonata.media.pool'`` to your service definition:
+    Then add ``'@sonata.media.pool'`` to your service definition arguments:
 
     .. code-block:: yaml
 
