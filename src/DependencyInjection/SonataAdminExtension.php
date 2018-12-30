@@ -210,6 +210,9 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             'sonata.admin.configuration.mosaic_background',
             $config['options']['mosaic_background']
         );
+        $container->setParameter('sonata.admin.configuration.default_group', $config['options']['default_group']);
+        $container->setParameter('sonata.admin.configuration.default_label_catalogue', $config['options']['default_label_catalogue']);
+        $container->setParameter('sonata.admin.configuration.default_icon', $config['options']['default_icon']);
         $container->setParameter('sonata.admin.configuration.breadcrumbs', $config['breadcrumbs']);
 
         if (null === $config['security']['acl_user_manager'] && isset($bundles['FOSUserBundle'])) {

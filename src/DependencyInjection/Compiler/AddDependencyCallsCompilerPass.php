@@ -85,9 +85,9 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     continue;
                 }
 
-                $resolvedGroupName = isset($attributes['group']) ? $parameterBag->resolveValue($attributes['group']) : 'default';
-                $labelCatalogue = isset($attributes['label_catalogue']) ? $attributes['label_catalogue'] : 'SonataAdminBundle';
-                $icon = isset($attributes['icon']) ? $attributes['icon'] : '<i class="fa fa-folder"></i>';
+                $resolvedGroupName = isset($attributes['group']) ? $parameterBag->resolveValue($attributes['group']) : $container->getParameter('sonata.admin.configuration.default_group');
+                $labelCatalogue = isset($attributes['label_catalogue']) ? $attributes['label_catalogue'] : $container->getParameter('sonata.admin.configuration.default_label_catalogue');
+                $icon = isset($attributes['icon']) ? $attributes['icon'] : $container->getParameter('sonata.admin.configuration.default_icon');
                 $onTop = isset($attributes['on_top']) ? $attributes['on_top'] : false;
                 $keepOpen = isset($attributes['keep_open']) ? $attributes['keep_open'] : false;
 
