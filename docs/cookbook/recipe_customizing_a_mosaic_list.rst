@@ -112,7 +112,6 @@ the Media bundle defines the method as::
         public function getObjectMetadata($object): Metadata
         {
             $media = $object->getMediaField();
-
             $provider = $this->pool->getProvider($media->getProviderName());
 
             $url = $provider->generatePublicUrl($media, $provider->getFormatName($media, 'admin'));
