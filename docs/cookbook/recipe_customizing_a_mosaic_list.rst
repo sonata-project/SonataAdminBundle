@@ -144,6 +144,8 @@ the MediaBundle defines the method as::
 
     .. code-block:: yaml
 
+
+        # config/services.yaml
         services:
             app.admin.post:
                 class: App\Admin\PostAdmin
