@@ -81,7 +81,9 @@ Block types:
 
 The ``ObjectMetadata`` object is returned by the related admin class, and can be
 used to define which image field from the entity will be displayed if available.
-For instance, the SonataMediaBundle defines the method as::
+For instance, the SonataMediaBundle defines the method as:
+
+.. code-block:: php
 
     <?php
 
@@ -129,7 +131,7 @@ For instance, the SonataMediaBundle defines the method as::
 
         use Sonata\MediaBundle\Provider\Pool;
 
-        // ...
+            // ...
 
             private $pool;
 
