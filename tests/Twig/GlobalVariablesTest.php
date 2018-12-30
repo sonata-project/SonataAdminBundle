@@ -123,7 +123,7 @@ class GlobalVariablesTest extends TestCase
     {
         return [
             'background is null' => [null, null],
-            'background is null' => ['image.png', 'image.png']
+            'background is set' => ['image.png', 'image.png']
         ];
     }
 }
