@@ -97,31 +97,31 @@ final class AdminMaker extends AbstractMaker
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command)
     {
         $io->section('Welcome to the Sonata Admin');
-        $modelClass = $io->ask(
+        $this->modelClass = $io->ask(
             'The fully qualified model class',
             $input->getArgument('model'),
             [Validators::class, 'validateClass']
         );
-        $modelClassBasename = current(\array_slice(explode('\\', $modelClass), -1));
+        $this->modelClassBasename = current(\array_slice(explode('\\', $this->modelClass), -1));
 
-        $adminClassBasename = $io->ask(
+        $this->adminClassBasename = $io->ask(
             'The admin class basename',
-            $input->getOption('admin') ?: $modelClassBasename.'Admin',
+            $input->getOption('admin') ?: $this->modelClassBasename.'Admin',
             [Validators::class, 'validateAdminClassBasename']
         );
         if (\count($this->availableModelManagers) > 1) {
             $managerTypes = array_keys($this->availableModelManagers);
-            $managerType = $io->choice('The manager type', $managerTypes, $managerTypes[0]);
+            $this->managerType = $io->choice('The manager type', $managerTypes, $managerTypes[0]);
 
-            $input->setOption('manager', $managerType);
+            $input->setOption('manager', $this->managerType);
         }
         if ($io->confirm('Do you want to generate a controller?', false)) {
-            $controllerClassBasename = $io->ask(
+            $this->controllerClassBasename = $io->ask(
                 'The controller class basename',
-                $input->getOption('controller') ?: $modelClassBasename.'AdminController',
+                $input->getOption('controller') ?: $this->modelClassBasename.'AdminController',
                 [Validators::class, 'validateControllerClassBasename']
             );
-            $input->setOption('controller', $controllerClassBasename);
+            $input->setOption('controller', $this->controllerClassBasename);
         }
         $input->setOption('services', false);
         if ($io->confirm('Do you want to update the services YAML configuration file?', true)) {
@@ -133,14 +133,14 @@ final class AdminMaker extends AbstractMaker
             );
             $id = $io->ask(
                 'The admin service ID',
-                $this->getAdminServiceId($adminClassBasename),
+                $this->getAdminServiceId($this->adminClassBasename),
                 [Validators::class, 'validateServiceId']
             );
             $input->setOption('services', $servicesFile);
             $input->setOption('id', $id);
         }
-        $input->setArgument('model', $modelClass);
-        $input->setOption('admin', $adminClassBasename);
+        $input->setArgument('model', $this->modelClass);
+        $input->setOption('admin', $this->adminClassBasename);
     }
 
     /**
@@ -158,7 +158,7 @@ final class AdminMaker extends AbstractMaker
         $this->configure($input);
 
         $adminClassNameDetails = $generator->createClassNameDetails(
-            $this->modelClassBasename,
+            $this->adminClassBasename,
             'Admin\\',
             'Admin'
         );
