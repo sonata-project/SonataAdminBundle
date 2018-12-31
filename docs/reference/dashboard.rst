@@ -101,9 +101,13 @@ service belongs to the ``Content`` group.
               <argument />
               <argument>App\Entity\Post</argument>
               <argument />
-              <tag name="sonata.admin" manager_type="orm"
+              <tag
+                  name="sonata.admin"
+                  manager_type="orm"
                   group="app.admin.group.content"
-                  label="app.admin.model.post" label_catalogue="App" />
+                  label="app.admin.model.post"
+                  label_catalogue="App"
+                  />
           </service>
 
     .. code-block:: yaml
