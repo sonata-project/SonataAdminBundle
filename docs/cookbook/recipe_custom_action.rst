@@ -129,11 +129,7 @@ to implement a ``clone`` action.
 Here we first get the object, see if it exists then clone it and insert the clone
 as a new object. Finally we set a flash message indicating success and redirect to the list view.
 
-If you want to add the current filter parameters to the redirect url you can add them to the `generateUrl` method:
-
-.. code-block:: php
-
-    <?php
+If you want to add the current filter parameters to the redirect url you can add them to the `generateUrl` method::
 
     return new RedirectResponse($this->admin->generateUrl('list', ['filter' => $this->admin->getFilterParameters()]));
 
@@ -171,11 +167,7 @@ Bringing it all together
 
 What is left now is actually adding your custom action to the admin class.
 
-You have to add the new route in ``configureRoutes``:
-
-.. code-block:: php
-
-    <?php
+You have to add the new route in ``configureRoutes``::
 
     // ...
     use Sonata\AdminBundle\Route\RouteCollection;
@@ -188,11 +180,7 @@ You have to add the new route in ``configureRoutes``:
 This gives us a route like ``../admin/app/car/1/clone``.
 You could also just write ``$collection->add('clone');`` to get a route like ``../admin/app/car/clone?id=1``
 
-Next we have to add the action in ``configureListFields`` specifying the template we created.
-
-.. code-block:: php
-
-    <?php
+Next we have to add the action in ``configureListFields`` specifying the template we created::
 
     protected function configureListFields(ListMapper $listMapper)
     {
@@ -214,11 +202,8 @@ Next we have to add the action in ``configureListFields`` specifying the templat
     }
 
 
-The full ``CarAdmin.php`` example looks like this:
+The full ``CarAdmin.php`` example looks like this::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/CarAdmin.php
 
     namespace App\Admin;
@@ -287,11 +272,7 @@ Custom Action without Entity
 ----------------------------
 
 Creating an action that is not connected to an Entity is also possible.
-Let's imagine we have an import action. We register our route:
-
-.. code-block:: php
-
-    <?php
+Let's imagine we have an import action. We register our route::
 
     // ...
     use Sonata\AdminBundle\Route\RouteCollection;
@@ -301,11 +282,8 @@ Let's imagine we have an import action. We register our route:
         $collection->add('import');
     }
 
-We add the controller action:
+and the controller action::
 
-.. code-block:: php
-
-    <?php
     // src/Controller/CarAdminController.php
 
     namespace App\Controller;
@@ -322,11 +300,7 @@ We add the controller action:
 
 Now, instead of adding the action to the form mapper, we can add it next to
 the add button. In your admin class, overwrite the ``configureActionButtons``
-method:
-
-.. code-block:: php
-
-    <?php
+method::
 
     public function configureActionButtons($action, $object = null)
     {
@@ -349,11 +323,7 @@ Create a template for that button:
 
 You can also add this action to your dashboard actions, you have to overwrite
 the ``getDashboardActions`` method in your admin class and there are two
-ways you can add action:
-
-.. code-block:: php
-
-    <?php
+ways you can add action::
 
     public function getDashboardActions()
     {
@@ -372,11 +342,7 @@ Create a template for that button:
         <i class="fa fa-level-up"></i>{{ 'import_action'|trans({}, 'SonataAdminBundle') }}
     </a>
 
-Or you can just pass values as array:
-
-.. code-block:: php
-
-    <?php
+Or you can just pass values as array::
 
     public function getDashboardActions()
     {
