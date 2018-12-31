@@ -63,7 +63,6 @@ line in `bundles.php` file of your project::
 
     // app/AppKernel.php
 
-    // ...
     class AppKernel extends Kernel
     {
         public function registerBundles()
@@ -87,8 +86,6 @@ line in `bundles.php` file of your project::
 
             // ...
         }
-
-        // ...
     }
 
 .. note::
