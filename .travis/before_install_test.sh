@@ -19,4 +19,3 @@ if [ "${TRAVIS_PHP_VERSION:0:3}" != "5.6" ]; then
         composer require "symfony/maker-bundle:${SYMFONY_MAKER:=1.7}" --no-update
     fi
 fi
-    
