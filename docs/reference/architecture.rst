@@ -75,13 +75,13 @@ your ``Admin`` services. This is done using a ``call`` to the matching ``setter`
     .. code-block:: xml
 
         <service id="app.admin.post" class="App\Admin\PostAdmin">
-              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" />
               <argument />
               <argument>App\Entity\Post</argument>
               <argument />
               <call method="setLabelTranslatorStrategy">
                   <argument type="service" id="sonata.admin.label.strategy.underscore" />
               </call>
+              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" />
           </service>
 
     .. code-block:: yaml
@@ -89,14 +89,14 @@ your ``Admin`` services. This is done using a ``call`` to the matching ``setter`
         services:
             app.admin.post:
                 class: App\Admin\PostAdmin
-                tags:
-                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
                 arguments:
                     - ~
                     - App\Entity\Post
                     - ~
                 calls:
                     - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.underscore']]
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
                 public: true
 
 Here, we declare the same ``Admin`` service as in the :doc:`../getting_started/creating_an_admin`
@@ -131,13 +131,13 @@ to set the controller to ``App\Controller\PostAdminController``:
     .. code-block:: xml
 
         <service id="app.admin.post" class="App\Admin\PostAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" />
             <argument />
             <argument>App\Entity\Post</argument>
             <argument>App\Controller\PostAdminController</argument>
             <call method="setTranslationDomain">
                 <argument>App</argument>
             </call>
+            <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" />
         </service>
 
     .. code-block:: yaml
@@ -145,14 +145,14 @@ to set the controller to ``App\Controller\PostAdminController``:
         services:
             app.admin.post:
                 class: App\Admin\PostAdmin
-                tags:
-                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
                 arguments:
                     - ~
                     - App\Entity\Post
                     - App\Controller\PostAdminController
                 calls:
                     - [setTranslationDomain, ['App']]
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
                 public: true
 
 When extending ``CRUDController``, remember that the ``Admin`` class already has

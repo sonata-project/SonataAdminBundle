@@ -44,6 +44,9 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
     .. code-block:: xml
 
         <service id="app.admin.project" class="App\Admin\ProjectAdmin">
+            <argument />
+            <argument>App\Entity\Project</argument>
+            <argument />
             <tag
                 name="sonata.admin"
                 manager_type="orm"
@@ -52,9 +55,6 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
                 label_translator_strategy="sonata.admin.label.strategy.native"
                 route_builder="sonata.admin.route.path_info"
                 />
-            <argument />
-            <argument>App\Entity\Project</argument>
-            <argument />
         </service>
 
 .. configuration-block::
@@ -63,12 +63,18 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
 
         app.admin.project:
             class: App\Admin\ProjectAdmin
-            tags:
-                - { name: sonata.admin, manager_type: orm, group: "Project", label: "Project", label_translator_strategy: "sonata.admin.label.strategy.native",  route_builder: "sonata.admin.route.path_info" }
             arguments:
                 - ~
                 - App\Entity\Project
                 - ~
+            tags:
+                -
+                    name: sonata.admin
+                    manager_type: orm
+                    group: 'Project'
+                    label: 'Project'
+                    label_translator_strategy: 'sonata.admin.label.strategy.native'
+                    route_builder: 'sonata.admin.route.path_info'
             public: true
 
 * With a method call, more verbose
@@ -78,23 +84,16 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
     .. code-block:: xml
 
         <service id="app.admin.project" class="App\Admin\ProjectAdmin">
-            <tag
-                name="sonata.admin"
-                manager_type="orm"
-                group="Project"
-                label="Project"
-                />
             <argument />
             <argument>App\Entity\Project</argument>
             <argument />
-
             <call method="setLabelTranslatorStrategy">
                 <argument type="service" id="sonata.admin.label.strategy.native" />
             </call>
-
             <call method="setRouteBuilder">
                 <argument type="service" id="sonata.admin.route.path_info" />
             </call>
+            <tag name="sonata.admin" manager_type="orm" group="Project" label="Project" />
         </service>
 
 .. configuration-block::
@@ -103,8 +102,6 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
 
         app.admin.project:
             class: App\Admin\ProjectAdmin
-            tags:
-                - { name: sonata.admin, manager_type: orm, group: "Project", label: "Project" }
             arguments:
                 - ~
                 - App\Entity\Project
@@ -112,6 +109,8 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
             calls:
                 - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.native']]
                 - [setRouteBuilder, ['@sonata.admin.route.path_info']]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Project", label: "Project" }
             public: true
 
 If you want to modify the service that is going to be injected, add the following code to your
@@ -199,7 +198,6 @@ Lets consider a base class named `Person` and its subclasses `Student` and `Teac
     .. code-block:: xml
 
         <service id="app.admin.person" class="App\Admin\PersonAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="admin" label="Person" />
             <argument/>
             <argument>App\Entity\Person</argument>
             <argument></argument>
@@ -209,6 +207,7 @@ Lets consider a base class named `Person` and its subclasses `Student` and `Teac
                     <argument key="teacher">App\Entity\Teacher</argument>
                 </argument>
             </call>
+            <tag name="sonata.admin" manager_type="orm" group="admin" label="Person" />
         </service>
 
 You will just need to change the way forms are configured in order to

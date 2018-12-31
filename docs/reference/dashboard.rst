@@ -71,12 +71,10 @@ services:
     .. code-block:: xml
 
         <service id="app.admin.post" class="App\Admin\PostAdmin">
-              <tag name="sonata.admin" manager_type="orm"
-                  group="Content"
-                  label="Post" />
               <argument />
               <argument>App\Entity\Post</argument>
               <argument />
+              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" />
           </service>
 
     .. code-block:: yaml
@@ -84,15 +82,12 @@ services:
         services:
             app.admin.post:
                 class: App\Admin\PostAdmin
-                tags:
-                    - name: sonata.admin
-                      manager_type: orm
-                      group: "Content"
-                      label: "Post"
                 arguments:
                     - ~
                     - App\Entity\Post
                     - ~
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
                 public: true
 
 In these examples, notice the ``group`` tag, stating that this particular ``Admin``
@@ -103,12 +98,12 @@ service belongs to the ``Content`` group.
     .. code-block:: xml
 
         <service id="app.admin.post" class="App\Admin\PostAdmin">
-              <tag name="sonata.admin" manager_type="orm"
-                  group="app.admin.group.content"
-                  label="app.admin.model.post" label_catalogue="App" />
               <argument />
               <argument>App\Entity\Post</argument>
               <argument />
+              <tag name="sonata.admin" manager_type="orm"
+                  group="app.admin.group.content"
+                  label="app.admin.model.post" label_catalogue="App" />
           </service>
 
     .. code-block:: yaml
@@ -116,16 +111,16 @@ service belongs to the ``Content`` group.
         services:
             app.admin.post:
                 class: App\Admin\PostAdmin
+                arguments:
+                    - ~
+                    - App\Entity\Post
+                    - ~
                 tags:
                     - name: sonata.admin
                       manager_type: orm
                       group: "app.admin.group.content"
                       label: "app.admin.model.post"
                       label_catalogue: "App"
-                arguments:
-                    - ~
-                    - App\Entity\Post
-                    - ~
 
 In this example, the labels are translated by ``App``, using the given
 ``label_catalogue``. So, you can use the above examples to support multiple languages

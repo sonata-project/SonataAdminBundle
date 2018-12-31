@@ -548,14 +548,14 @@ that looks like this:
         services:
             app.admin.image:
                 class: App\Admin\ImageAdmin
-                tags:
-                    - { name: sonata.admin, manager_type: orm, label: "Image" }
                 arguments:
                     - ~
                     - App\Entity\Image
                     - 'Sonata\AdminBundle\Controller\CRUDController'
                 calls:
                     - [setTranslationDomain, ['App']]
+                tags:
+                    - { name: sonata.admin, manager_type: orm, label: "Image" }
                 public: true
 
 .. note::
