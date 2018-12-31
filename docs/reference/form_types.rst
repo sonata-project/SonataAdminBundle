@@ -556,7 +556,7 @@ that looks like this:
                 calls:
                     - [setTranslationDomain, ['App']]
                 tags:
-                    - { name: sonata.admin, manager_type: orm, label: "Image" }
+                    - { name: sonata.admin, manager_type: orm, label: 'Image' }
 
 To embed ``ImageAdmin`` within ``PageAdmin`` we just need to change the reference
 for the ``image1`` field to ``sonata_type_admin`` in our ``PageAdmin`` class:
