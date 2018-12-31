@@ -133,8 +133,6 @@ Creating a custom RouteBuilder
 
 To create your own RouteBuilder create the PHP class and register it as a service:
 
-* php Route Generator
-
 .. code-block:: php
 
     <?php
@@ -164,7 +162,6 @@ To create your own RouteBuilder create the PHP class and register it as a servic
         }
     }
 
-* xml service registration
 
 .. configuration-block::
 
@@ -173,10 +170,6 @@ To create your own RouteBuilder create the PHP class and register it as a servic
         <service id="app.admin.entity_route_builder" class="App\Route\EntityRouterBuilder">
             <argument type="service" id="sonata.admin.audit.manager" />
         </service>
-
-* YAML service registration
-
-.. configuration-block::
 
     .. code-block:: yaml
 
