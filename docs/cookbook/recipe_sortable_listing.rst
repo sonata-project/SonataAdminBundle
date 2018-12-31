@@ -40,11 +40,7 @@ Bundles
 The recipe
 ----------
 
-First of all we are going to add a position field in our ``Client`` entity.
-
-.. code-block:: php
-
-    <?php
+First of all we are going to add a position field in our ``Client`` entity::
 
     /**
      * @Gedmo\SortablePosition
@@ -82,11 +78,7 @@ feature in your config.yml such as
 
 
 In our ``ClientAdmin`` we are going to add a custom action in the ``configureListFields`` method
-and use the default twig template provided in the ``pixSortableBehaviorBundle``
-
-.. code-block:: php
-
-   <?php
+and use the default twig template provided in the ``pixSortableBehaviorBundle``::
 
     $listMapper
         ->add('_action', null, [
@@ -98,11 +90,8 @@ and use the default twig template provided in the ``pixSortableBehaviorBundle``
         ]);
 
 
-In order to add new routes for these actions we are also adding the following method:
+In order to add new routes for these actions we are also adding the following method::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/ClientAdmin.php
 
     namespace App/Admin;
@@ -132,11 +121,8 @@ Now you can update your ``services.yml`` to use the handler provider by the ``pi
             tags:
                 - { name: sonata.admin, manager_type: orm, label: "Clients" }
 
-Now we need to define the sort by field to be ``$position``:
+Now we need to define the sort by field to be ``$position``::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/ClientAdmin.php
 
     namespace App\Admin;
