@@ -34,10 +34,18 @@ class GlobalVariables
     protected $adminPool;
 
     /**
-     * @param ContainerInterface|Pool $adminPool
+     * @var string|null
      */
-    public function __construct($adminPool)
+    private $mosaicBackground;
+
+    /**
+     * @param ContainerInterface|Pool $adminPool
+     * @param string|null             $mosaicBackground
+     */
+    public function __construct($adminPool, $mosaicBackground = null)
     {
+        $this->mosaicBackground = $mosaicBackground;
+
         // NEXT_MAJOR : remove this block and set adminPool from parameter.
         if ($adminPool instanceof ContainerInterface) {
             @trigger_error(
@@ -95,6 +103,14 @@ class GlobalVariables
         list($action, $code) = $this->getCodeAction($code, $action);
 
         return $this->getAdminPool()->getAdminByAdminCode($code)->generateObjectUrl($action, $object, $parameters, $absolute);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMosaicBackground()
+    {
+        return $this->mosaicBackground;
     }
 
     /**
