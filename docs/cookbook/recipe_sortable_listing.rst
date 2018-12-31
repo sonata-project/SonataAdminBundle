@@ -4,6 +4,7 @@ Sortable behavior in admin listing
 This is a full working example of how to implement a sortable feature in your Sonata admin listing
 
 .. note::
+
    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.

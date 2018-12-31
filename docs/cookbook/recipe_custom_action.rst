@@ -6,6 +6,7 @@ The example is based on an existing ``CarAdmin`` class in a ``App`` namespace.
 It is assumed you already have an admin service up and running.
 
 .. note::
+
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.

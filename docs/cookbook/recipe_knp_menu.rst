@@ -6,6 +6,7 @@ It integrates a menu with the KnpMenu library. This menu can be a SonataAdmin
 service, a menu created with a Knp menu provider or a route of a custom controller.
 
 .. note::
+
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.
