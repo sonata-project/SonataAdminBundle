@@ -138,6 +138,7 @@ If you want to add the current filter parameters to the redirect url you can add
     return new RedirectResponse($this->admin->generateUrl('list', ['filter' => $this->admin->getFilterParameters()]));
 
 .. tip::
+
     If you want to render something here you can create new template anywhere, extend sonata layout
     and use `sonata_admin_content` block.
 

@@ -140,6 +140,7 @@ The following is a working example of a ShowAction::
     }
 
 .. tip::
+
     To customize the displayed label of a show field you can use the ``label`` option::
 
         $showMapper->add('name', null, ['label' => 'UserName']);
