@@ -644,6 +644,7 @@ Checkbox range selection
 ------------------------
 
 .. tip::
+
     You can check / uncheck a range of checkboxes by clicking a first one,
     then a second one with shift + click.
 
