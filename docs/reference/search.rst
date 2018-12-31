@@ -26,6 +26,7 @@ The default template values can be configured in the configuration section
                 search_result_block: '@SonataAdmin/Block/block_search_result.html.twig'
 
 .. note::
+
     If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.
 
 You also need to configure the block in the sonata block config
@@ -42,6 +43,7 @@ You also need to configure the block in the sonata block config
                     contexts: [admin]
 
 .. note::
+
     If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.
 
 You can also configure the block template per admin while defining the admin:
@@ -113,6 +115,7 @@ We can fade out the boxes that have no results with:
             empty_boxes: fade
 
 .. note::
+
     If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.
 
 and it looks like this:
@@ -133,6 +136,7 @@ The third option is to hide the empty boxes:
             empty_boxes: hide
 
 .. note::
+
     If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.
 
 and it looks like this:

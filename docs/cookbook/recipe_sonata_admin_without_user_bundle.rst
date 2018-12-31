@@ -8,6 +8,7 @@ Code used in this short guide can be found `here <https://github.com/kunicmarko2
 with support for different Symfony versions.
 
 .. note::
+
     This article assumes you are using Symfony 4.
 
 The recipe
