@@ -88,7 +88,6 @@ services:
                     - ~
                 tags:
                     - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
-                public: true
 
 In these examples, notice the ``group`` tag, stating that this particular ``Admin``
 service belongs to the ``Content`` group.

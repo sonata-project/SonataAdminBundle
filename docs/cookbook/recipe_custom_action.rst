@@ -75,7 +75,6 @@ or by adding it to your ``admin.yml``:
                 - ~
                 - App\Entity\Car
                 - App\Controller\CRUDController
-            public: true
 
 For more information about service configuration please refer to Step 3 of :doc:`../getting_started/creating_an_admin`
 

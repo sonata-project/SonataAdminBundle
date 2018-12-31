@@ -52,7 +52,6 @@ The same applies to the service definition:
             arguments: [~, App\Entity\BlogPost, ~]
             tags:
                 - { name: sonata.admin, manager_type: orm, label: Blog post }
-            public: true
 
 Configuring the Form Mapper
 ---------------------------

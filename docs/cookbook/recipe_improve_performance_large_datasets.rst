@@ -41,7 +41,6 @@ To use `SimplePager` in your admin just define ``pager_type`` inside the service
                     - ~
                 tags:
                     - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post", pager_type: "simple" }
-                public: true
 
 .. note::
 

@@ -75,7 +75,6 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
                     label: 'Project'
                     label_translator_strategy: 'sonata.admin.label.strategy.native'
                     route_builder: 'sonata.admin.route.path_info'
-            public: true
 
 * With a method call, more verbose
 
@@ -111,7 +110,6 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
                 - [setRouteBuilder, ['@sonata.admin.route.path_info']]
             tags:
                 - { name: sonata.admin, manager_type: orm, group: "Project", label: "Project" }
-            public: true
 
 If you want to modify the service that is going to be injected, add the following code to your
 application's config file:
