@@ -119,13 +119,16 @@ body > .header .logo {
 
 /* MEGA MENU STYLE
 ********************************/
-.dropdown-menu.multi-column .dropdown-menu {
+.dropdown-menu .dropdown-menu {
     display: block !important;
     position: static !important;
     margin: 0 !important;
     border: none !important;
     box-shadow: none !important;
-    min-width:100px;
+}
+
+.dropdown-menu.multi-column .dropdown-menu {
+    min-width: 100px;
 }
 
 .dropdown-add .dropdown-menu > li > a {

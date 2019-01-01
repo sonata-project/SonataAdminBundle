@@ -181,15 +181,14 @@ can specify the templates to use in the ``Admin`` service definition:
         services:
             app.admin.post:
                 class: App\Admin\PostAdmin
-                tags:
-                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
                 arguments:
                     - ~
                     - App\Entity\Post
                     - ~
                 calls:
-                    - [ setTemplate, [edit, "@App/PostAdmin/edit.html.twig"]]
-                public: true
+                    - [setTemplate, ['edit', '@App/PostAdmin/edit.html.twig']]
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
 
 .. note::
 

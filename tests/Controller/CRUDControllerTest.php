@@ -2406,13 +2406,17 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo($object))
             ->will($this->returnValue('foo_normalized'));
 
+        $this->admin->expects($this->once())
+            ->method('toString')
+            ->will($this->returnValue('foo'));
+
         $this->request->setMethod('POST');
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $response = $this->controller->createAction($this->request);
 
         $this->assertInstanceOf(Response::class, $response);
-        $this->assertSame(json_encode(['result' => 'ok', 'objectId' => 'foo_normalized']), $response->getContent());
+        $this->assertSame(json_encode(['result' => 'ok', 'objectId' => 'foo_normalized', 'objectName' => 'foo']), $response->getContent());
         $this->assertSame([], $this->session->getFlashBag()->all());
     }
 
@@ -3629,6 +3633,41 @@ class CRUDControllerTest extends TestCase
         $this->assertInstanceOf(RedirectResponse::class, $result);
         $this->assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sonata_flash_info'));
         $this->assertSame('list', $result->getTargetUrl());
+    }
+
+    public function testBatchActionWithCustomConfirmationTemplate(): void
+    {
+        $batchActions = ['delete' => ['label' => 'Foo Bar', 'ask_confirmation' => true, 'template' => 'custom_template.html.twig']];
+
+        $this->admin->expects($this->once())
+            ->method('getBatchActions')
+            ->will($this->returnValue($batchActions));
+
+        $data = ['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false];
+
+        $this->request->setMethod('POST');
+        $this->request->request->set('data', json_encode($data));
+        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+
+        $datagrid = $this->createMock(DatagridInterface::class);
+
+        $this->admin->expects($this->once())
+            ->method('getDatagrid')
+            ->will($this->returnValue($datagrid));
+
+        $form = $this->createMock(Form::class);
+
+        $form->expects($this->once())
+            ->method('createView')
+            ->will($this->returnValue($this->createMock(FormView::class)));
+
+        $datagrid->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
+        $this->controller->batchAction($this->request);
+
+        $this->assertSame('custom_template.html.twig', $this->template);
     }
 
     public function testBatchActionNonRelevantAction2(): void

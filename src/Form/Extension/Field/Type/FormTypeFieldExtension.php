@@ -157,6 +157,11 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         return FormType::class;
     }
 
+    public static function getExtendedTypes()
+    {
+        return [FormType::class];
+    }
+
     /**
      * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
      *

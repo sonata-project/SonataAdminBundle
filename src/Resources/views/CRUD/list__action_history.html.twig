@@ -1,0 +1,20 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% if admin.hasAccess('history', object) and admin.hasRoute('history') %}
+    <a 
+        href="{{ admin.generateObjectUrl('history', object) }}"
+        class="btn btn-sm btn-default view_link"
+        title="{{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}">
+        <i class="fa fa-history" aria-hidden="true"></i>
+        {{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}
+    </a>
+{% endif %}

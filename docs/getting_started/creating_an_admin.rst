@@ -14,7 +14,7 @@ Step 0: Create a Model
 ----------------------
 
 For the rest of the tutorial, you'll need some sort of model. In this tutorial,
-two very simple ``Post`` and ``Tag`` entities will be used::
+``BlogPost`` and ``Category`` will be used::
 
     // src/Entity/BlogPost.php
 
@@ -110,9 +110,7 @@ to find entries and what the create form will look like. Each model will have
 its own Admin class.
 
 Knowing this, let's create an Admin class for the ``Category`` entity. The
-easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin``.
-
-.. code-block:: php
+easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin``::
 
     // src/Admin/CategoryAdmin.php
     namespace App\Admin;
@@ -176,7 +174,6 @@ service and tag it with the ``sonata.admin`` tag:
                 arguments: [~, App\Entity\Category, ~]
                 tags:
                     - { name: sonata.admin, manager_type: orm, label: Category }
-                public: true
 
 The constructor of the base Admin class has many arguments. SonataAdminBundle
 provides a compiler pass which takes care of configuring it correctly for you.

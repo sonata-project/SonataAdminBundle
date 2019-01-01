@@ -32,7 +32,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -334,7 +333,6 @@ class CRUDController implements ContainerAwareInterface
         $objectId = $this->admin->getNormalizedIdentifier($existingObject);
 
         $form = $this->admin->getForm();
-        \assert($form instanceof Form);
 
         if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
             throw new \RuntimeException(
@@ -503,9 +501,13 @@ class CRUDController implements ContainerAwareInterface
             $formView = $datagrid->getForm()->createView();
             $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-            // NEXT_MAJOR: Remove this line and use commented line below it instead
-            $template = $this->admin->getTemplate('batch_confirmation');
-            // $template = $this->templateRegistry->getTemplate('batch_confirmation');
+            // NEXT_MAJOR: Remove these lines and use commented lines below them instead
+            $template = !empty($batchActions[$action]['template']) ?
+                $batchActions[$action]['template'] :
+                $this->admin->getTemplate('batch_confirmation');
+            // $template = !empty($batchActions[$action]['template']) ?
+            //     $batchActions[$action]['template'] :
+            //     $this->templateRegistry->getTemplate('batch_confirmation');
 
             return $this->renderWithExtraParams($template, [
                 'action' => 'list',
@@ -585,7 +587,6 @@ class CRUDController implements ContainerAwareInterface
         $this->admin->setSubject($newObject);
 
         $form = $this->admin->getForm();
-        \assert($form instanceof Form);
 
         if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
             throw new \RuntimeException(
@@ -612,6 +613,7 @@ class CRUDController implements ContainerAwareInterface
                         return $this->renderJson([
                             'result' => 'ok',
                             'objectId' => $this->admin->getNormalizedIdentifier($newObject),
+                            'objectName' => $this->escapeHtml($this->admin->toString($newObject)),
                         ], 200, []);
                     }
 

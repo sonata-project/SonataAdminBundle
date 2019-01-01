@@ -29,6 +29,9 @@ class ConfigurationTest extends TestCase
         $this->assertTrue($config['options']['confirm_exit']);
         $this->assertFalse($config['options']['js_debug']);
         $this->assertTrue($config['options']['use_icheck']);
+        $this->assertSame('default', $config['options']['default_group']);
+        $this->assertSame('SonataAdminBundle', $config['options']['default_label_catalogue']);
+        $this->assertSame('<i class="fa fa-folder"></i>', $config['options']['default_icon']);
     }
 
     public function testBreadcrumbsChildRouteDefaultsToEdit(): void
@@ -42,7 +45,7 @@ class ConfigurationTest extends TestCase
     {
         $this->expectException(InvalidTypeException::class);
 
-        $config = $this->process([[
+        $this->process([[
             'options' => [
                 'html5_validate' => '1',
             ],
@@ -195,7 +198,7 @@ class ConfigurationTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class, 'Expected either parameters "route" and "label" for array items');
 
-        $config = $this->process([[
+        $this->process([[
             'dashboard' => [
                 'groups' => [
                     'bar' => [

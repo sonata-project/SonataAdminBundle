@@ -204,13 +204,12 @@ For example, lets change the Controller for our MediaAdmin class to ``App\Contro
 
         app.admin.media:
             class: App\Admin\MediaAdmin
-            tags:
-                - { name: sonata.admin, manager_type: orm, label: "Media" }
             arguments:
                 - ~
                 - App\Entity\Page
                 - App\Controller\MediaCRUDController # define the new controller via the third argument
-            public: true
+            tags:
+                - { name: sonata.admin, manager_type: orm, label: "Media" }
 
 We now need to create our Controller, the easiest way is to extend the
 basic Sonata CRUD controller::

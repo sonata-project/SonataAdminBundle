@@ -88,6 +88,7 @@ class ModelAutocompleteType extends AbstractType
             'btn_catalogue',
             // allow HTML
             'safe_label',
+            'property',
         ] as $passthroughOption) {
             $view->vars[$passthroughOption] = $options[$passthroughOption];
         }

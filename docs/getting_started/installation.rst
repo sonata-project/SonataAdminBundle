@@ -40,11 +40,7 @@ Enable the Bundle
 -----------------
 
 Then, enable the bundle and the bundles it relies on by adding the following
-line in `bundles.php` file of your project:
-
-.. code-block:: php
-
-    <?php
+line in `bundles.php` file of your project::
 
     // config/bundles.php
 
@@ -136,7 +132,7 @@ For more information: http://symfony.com/doc/current/translation.html#configurat
 
         # config/packages/framework.yaml
         framework:
-                translator: { fallbacks: ["%locale%"] }
+            translator: { fallbacks: ["%locale%"] }
 
 .. note::
     If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.

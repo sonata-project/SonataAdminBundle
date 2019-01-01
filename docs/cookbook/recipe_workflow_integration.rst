@@ -22,7 +22,7 @@ Let's say we have a ``BlogPost`` entity that is under a Symfony workflow:
 
 .. code-block:: yaml
 
-   # config/packages/workflow.yml
+   # config/packages/workflow.yaml
    framework:
        workflows:
            blog_post:
@@ -57,11 +57,10 @@ You can use the provided extension to take care of your entity admin.
 
 .. code-block:: yaml
 
-   # config/packages/sonata_admin.yml
+   # config/services.yaml
    services:
        admin.blog_post:
            class: App\Admin\BlogPostAdmin
-           public: true
            arguments:
                - ~
                - App\Entity\PullRequest
@@ -80,6 +79,9 @@ You can use the provided extension to take care of your entity admin.
                      restart_review: fa fa-question
                      publish: fa fa-times
 
+.. code-block:: yaml
+
+   # config/packages/sonata_admin.yaml
    sonata_admin:
        extensions:
            admin.extension.blog_post_workflow:

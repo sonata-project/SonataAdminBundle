@@ -31,8 +31,14 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('sonata_admin', 'array');
+        $treeBuilder = new TreeBuilder('sonata_admin');
+
+        // Keep compatibility with symfony/config < 4.2
+        if (!\method_exists($treeBuilder, 'getRootNode')) {
+            $rootNode = $treeBuilder->root('sonata_admin');
+        } else {
+            $rootNode = $treeBuilder->getRootNode();
+        }
 
         $rootNode
             ->fixXmlConfig('option')
@@ -123,6 +129,18 @@ final class Configuration implements ConfigurationInterface
                         ->booleanNode('use_stickyforms')->defaultTrue()->end()
                         ->integerNode('pager_links')->defaultNull()->end()
                         ->scalarNode('form_type')->defaultValue('standard')->end()
+                        ->scalarNode('default_group')
+                            ->defaultValue('default')
+                            ->info("Group used for admin services if one isn't provided.")
+                        ->end()
+                        ->scalarNode('default_label_catalogue')
+                            ->defaultValue('SonataAdminBundle')
+                            ->info("Label Catalogue used for admin services if one isn't provided.")
+                        ->end()
+                        ->scalarNode('default_icon')
+                            ->defaultValue('<i class="fa fa-folder"></i>')
+                            ->info("Icon used for admin services if one isn't provided.")
+                        ->end()
                         ->integerNode('dropdown_number_groups_per_colums')->defaultValue(2)->end()
                         ->enumNode('title_mode')
                             ->values(['single_text', 'single_image', 'both'])

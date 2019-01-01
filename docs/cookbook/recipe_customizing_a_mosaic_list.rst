@@ -79,8 +79,11 @@ Block types:
  - ``sonata_mosaic_description``: this block will be always on screen and should represent the entity's name.
 
 
-The ``ObjectMetadata`` object is returned by the related admin class,
-for instance the MediaBundle defines the method as::
+The ``ObjectMetadata`` object is returned by the related admin class, and can be
+used to define which image field from the entity will be displayed if available.
+For instance, the SonataMediaBundle defines the method as:
+
+.. code-block:: php
 
     <?php
 
@@ -98,6 +101,69 @@ for instance the MediaBundle defines the method as::
         }
     }
 
+.. note::
+
+    In your own admin, media is just a field and not the ``$object``. Therefore,
+    the code above must be updated this way:
+
+.. code-block:: php
+
+    <?php
+
+    // ...
+
+    public function getObjectMetadata($object): Metadata
+    {
+        $media = $object->getMediaField();
+        $provider = $this->pool->getProvider($media->getProviderName());
+        $url = $provider->generatePublicUrl($media, $provider->getFormatName($media, 'admin'));
+
+        return new Metadata($media->getName(), $media->getDescription(), $url);
+    }
+
+You will also have to use dependency injection. For this, first define
+the ``$pool`` variable and override the constructor:
+
+.. code-block:: php
+
+    <?php
+
+    // ...
+
+    use Sonata\MediaBundle\Provider\Pool;
+
+        // ...
+
+        private $pool;
+
+        // ...
+
+        public function __construct(string $code, string $class, string $baseControllerName, Pool $pool)
+        {
+            $this->pool = $pool;
+
+            parent::__construct($code, $class, $baseControllerName);
+    }
+
+Then add ``'@sonata.media.pool'`` to your service definition arguments:
+
+.. code-block:: yaml
+
+    # config/services.yaml
+    services:
+        app.admin.post:
+            class: App\Admin\PostAdmin
+            arguments:
+                - ~
+                - App\Entity\Post
+                - ~
+                - '@sonata.media.pool'
+            tags:
+                -
+                    name: sonata.admin
+                    manager_type: orm
+                    group: 'Content'
+                    label: 'Post'
 
 The final view will look like:
 

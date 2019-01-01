@@ -59,10 +59,10 @@ Then we need to inject the Sortable listener. If you only have the Gedmo bundle 
     services:
         gedmo.listener.sortable:
             class: Gedmo\Sortable\SortableListener
+            calls:
+                - [setAnnotationReader, ['@annotation_reader']]
             tags:
                 - { name: doctrine.event_subscriber, connection: default }
-            calls:
-                - [ setAnnotationReader, [ "@annotation_reader" ] ]
 
 
 If you have the ``stof/doctrine-extensions-bundle``, you only need to enable the sortable
@@ -116,13 +116,12 @@ Now you can update your ``services.yml`` to use the handler provider by the ``pi
     services:
         app.admin.client:
             class: App\Admin\ClientAdmin
-            tags:
-              - { name: sonata.admin, manager_type: orm, label: "Clients" }
             arguments:
-              - ~
-              - App\Entity\Client
-              - 'PixSortableBehaviorBundle:SortableAdmin' # define the new controller via the third argument
-            public: true
+                - ~
+                - App\Entity\Client
+                - 'PixSortableBehaviorBundle:SortableAdmin' # define the new controller via the third argument
+            tags:
+                - { name: sonata.admin, manager_type: orm, label: "Clients" }
 
 Now we need to define the sort by field to be ``$position``:
 

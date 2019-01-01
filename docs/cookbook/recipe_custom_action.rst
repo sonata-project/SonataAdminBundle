@@ -72,10 +72,9 @@ or by adding it to your ``admin.yml``:
             tags:
                 - { name: sonata.admin, manager_type: orm, group: Demo, label: Car }
             arguments:
-                - null
+                - ~
                 - App\Entity\Car
                 - App\Controller\CRUDController
-            public: true
 
 For more information about service configuration please refer to Step 3 of :doc:`../getting_started/creating_an_admin`
 

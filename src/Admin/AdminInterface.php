@@ -23,8 +23,8 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\CoreBundle\Model\Metadata;
 use Sonata\CoreBundle\Validator\ErrorElement;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -146,7 +146,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns a form depend on the given $object.
      *
-     * @return Form
+     * @return FormInterface
      */
     public function getForm();
 
@@ -229,16 +229,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @return bool
      */
     public function hasRoute($name);
-
-    /**
-     * Check the current request is given route or not.
-     *
-     * @param string $name
-     * @param string $adminCode
-     *
-     * @return bool
-     */
-    public function isCurrentRoute($name, $adminCode = null);
 
     public function setSecurityHandler(SecurityHandlerInterface $securityHandler);
 
@@ -703,7 +693,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getListMode();
 
-    /**
+    /*
+     * Configure buttons for an action
+     *
      * @param string $action
      * @param mixed  $object
      *
@@ -717,6 +709,16 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @return array
      */
     public function getDashboardActions();
+
+    /**
+     * Check the current request is given route or not.
+     *
+     * @param string $name
+     * @param string $adminCode
+     *
+     * @return bool
+     */
+    public function isCurrentRoute($name, $adminCode = null);
 
     /**
      * Returns the result link for an object.

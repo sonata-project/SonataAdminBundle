@@ -55,99 +55,98 @@ upload timestamp.
             table: images
             id:
                 id:
-                    type:         integer
-                    generator:    { strategy: AUTO }
+                    type:      integer
+                    generator: { strategy: AUTO }
             fields:
                 filename:
-                    type:         string
-                    length:       100
+                    type:      string
+                    length:    100
 
                 # changed when files are uploaded, to force preUpdate and postUpdate to fire
                 updated:
-                    type:         datetime
-                    nullable:     true
+                    type:      datetime
+                    nullable:  true
 
-                # ... other fields ...
+                # ...
             lifecycleCallbacks:
-                prePersist:   [ lifecycleFileUpload ]
-                preUpdate:    [ lifecycleFileUpload ]
+                prePersist: ['lifecycleFileUpload']
+                preUpdate:  ['lifecycleFileUpload']
 
 We then have the following methods in our ``Image`` class to manage file uploads::
 
     <?php
     // src/Entity/Image.php
 
-    const SERVER_PATH_TO_IMAGE_FOLDER = '/server/path/to/images';
-
-    /**
-     * Unmapped property to handle file uploads
-     */
-    private $file;
-
-    /**
-     * Sets file.
-     *
-     * @param UploadedFile $file
-     */
-    public function setFile(UploadedFile $file = null)
+    class Image
     {
-        $this->file = $file;
-    }
+        const SERVER_PATH_TO_IMAGE_FOLDER = '/server/path/to/images';
 
-    /**
-     * Get file.
-     *
-     * @return UploadedFile
-     */
-    public function getFile()
-    {
-        return $this->file;
-    }
+        /**
+         * Unmapped property to handle file uploads
+         */
+        private $file;
 
-    /**
-     * Manages the copying of the file to the relevant place on the server
-     */
-    public function upload()
-    {
-        // the file property can be empty if the field is not required
-        if (null === $this->getFile()) {
-            return;
+        /**
+         * @param UploadedFile $file
+         */
+        public function setFile(UploadedFile $file = null)
+        {
+            $this->file = $file;
         }
 
-        // we use the original file name here but you should
-        // sanitize it at least to avoid any security issues
+        /**
+         * @return UploadedFile
+         */
+        public function getFile()
+        {
+            return $this->file;
+        }
 
-        // move takes the target directory and target filename as params
-        $this->getFile()->move(
-            self::SERVER_PATH_TO_IMAGE_FOLDER,
-            $this->getFile()->getClientOriginalName()
-        );
+        /**
+         * Manages the copying of the file to the relevant place on the server
+         */
+        public function upload()
+        {
+            // the file property can be empty if the field is not required
+            if (null === $this->getFile()) {
+                return;
+            }
 
-        // set the path property to the filename where you've saved the file
-        $this->filename = $this->getFile()->getClientOriginalName();
+           // we use the original file name here but you should
+           // sanitize it at least to avoid any security issues
 
-        // clean up the file property as you won't need it anymore
-        $this->setFile(null);
+           // move takes the target directory and target filename as params
+           $this->getFile()->move(
+               self::SERVER_PATH_TO_IMAGE_FOLDER,
+               $this->getFile()->getClientOriginalName()
+           );
+
+           // set the path property to the filename where you've saved the file
+           $this->filename = $this->getFile()->getClientOriginalName();
+
+           // clean up the file property as you won't need it anymore
+           $this->setFile(null);
+       }
+
+       /**
+        * Lifecycle callback to upload the file to the server.
+        */
+       public function lifecycleFileUpload()
+       {
+           $this->upload();
+       }
+
+       /**
+        * Updates the hash value to force the preUpdate and postUpdate events to fire.
+        */
+       public function refreshUpdated()
+       {
+          $this->setUpdated(new \DateTime());
+       }
+
+       // ... the rest of your class lives under here, including the generated fields
+       //     such as filename and updated
     }
-
-    /**
-     * Lifecycle callback to upload the file to the server
-     */
-    public function lifecycleFileUpload()
-    {
-        $this->upload();
-    }
-
-    /**
-     * Updates the hash value to force the preUpdate and postUpdate events to fire
-     */
-    public function refreshUpdated()
-    {
-        $this->setUpdated(new \DateTime());
-    }
-
-    // ... the rest of your class lives under here, including the generated fields
-    //     such as filename and updated
 
 When we upload a file to our Image, the file itself is transient and not persisted
 to our database (it is not part of our mapping). However, the lifecycle callbacks

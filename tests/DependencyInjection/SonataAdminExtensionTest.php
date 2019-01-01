@@ -87,6 +87,16 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter('sonata.admin.configuration.security.role_super_admin');
     }
 
+    public function testHasDefaultServiceParameters(): void
+    {
+        $this->container->setParameter('kernel.bundles', []);
+        $this->load();
+
+        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_group');
+        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_label_catalogue');
+        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_icon');
+    }
+
     public function testExtraStylesheetsGetAdded(): void
     {
         $this->container->setParameter('kernel.bundles', []);

@@ -80,11 +80,11 @@ group roles will be checked.
                             - sonata.news.admin.post
                             - route:        blog_home
                               label:        Blog
-                              roles:        [ ROLE_FOO, ROLE_BAR ]
+                              roles:        ['ROLE_FOO', 'ROLE_BAR']
                             - route:        blog_article
                               route_params: { articleId: 3 }
                               label:        Article
-                        roles: [ ROLE_ADMIN, ROLE_SONATA_ADMIN]
+                        roles: ['ROLE_ADMIN', 'ROLE_SONATA_ADMIN']
 
 You can also override the template of knp_menu used by sonata. The default
 one is `@SonataAdmin/Menu/sonata_menu.html.twig`:
@@ -201,7 +201,6 @@ your admin services or simply remove menu items from the ``sonata_admin`` dashbo
         arguments: [~, Sonata\AdminBundle\Entity\Post, Sonata\AdminBundle\Controller\CRUDController]
         tags:
             - {name: sonata.admin, manager_type: orm, group: admin, label: Post, show_in_dashboard: false}
-        public: true
 
 .. code-block:: yaml
 
@@ -259,7 +258,6 @@ or in sonata_admin dashboard group configuration:
         arguments: [~, Sonata\AdminBundle\Entity\Post, Sonata\AdminBundle\Controller\CRUDController]
         tags:
             - {name: sonata.admin, manager_type: orm, group: admin, label: Post, on_top: true}
-        public: true
 
 .. code-block:: yaml
 
