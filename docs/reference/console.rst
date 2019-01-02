@@ -133,5 +133,9 @@ The ``sonata:admin:generate-object-acl`` is an interactive command which helps
 you to generate ACL entities for the objects handled by your Admins. See the help
 of the command for more information.
 
+.. code-block:: bash
+
+    $ bin/console sonata:admin:generate-object-acl
+
 .. _SensioGeneratorBundle: http://symfony.com/doc/current/bundles/SensioGeneratorBundle/index.html
 .. _`Symfony Maker Bundle`: https://symfony.com/doc/current/bundles/SymfonyMakerBundle/index.html
