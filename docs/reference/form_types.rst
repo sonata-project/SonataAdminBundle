@@ -37,7 +37,7 @@ All we need to do now is add a reference for this field in our ``PageAdmin`` cla
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Form\Type\ModelType;
 
-    class PageAdmin extends AbstractAdmin
+    final class PageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -143,7 +143,7 @@ All we need to do now is add a reference for this field in our ``PageAdmin`` cla
     use Sonata\AdminBundle\Form\Type\ModelListType;
     use Sonata\AdminBundle\Form\FormMapper;
 
-    class PageAdmin extends AbstractAdmin
+    final class PageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -187,7 +187,7 @@ The value of hidden field is identifier of related entity.
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 
-    class PageAdmin extends AbstractAdmin
+    final class PageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -235,7 +235,7 @@ datagrid filter for the property ``title``.
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 
-    class ArticleAdmin extends AbstractAdmin
+    final class ArticleAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -257,7 +257,7 @@ datagrid filter for the property ``title``.
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-    class CategoryAdmin extends AbstractAdmin
+    final class CategoryAdmin extends AbstractAdmin
     {
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
@@ -395,7 +395,7 @@ The available options are:
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 
-    class ArticleAdmin extends AbstractAdmin
+    final class ArticleAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -437,7 +437,7 @@ The available options are:
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 
-    class ArticleAdmin extends AbstractAdmin
+    final class ArticleAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -460,7 +460,7 @@ The available options are:
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-    class CategoryAdmin extends AbstractAdmin
+    final class CategoryAdmin extends AbstractAdmin
     {
         protected $accessMapping = [
             'autocomplete' => 'AUTOCOMPLETE',
@@ -491,7 +491,7 @@ According the choice made only associated fields are displayed. The others field
     use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
     use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-    class AppMenuAdmin extends AbstractAdmin
+    final class AppMenuAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -570,7 +570,7 @@ for the ``image1`` field to ``sonata_type_admin`` in our ``PageAdmin`` class:
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Form\Type\AdminType;
 
-    class PageAdmin extends AbstractAdmin
+    final class PageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -615,7 +615,7 @@ to the underlying forms.
     use Sonata\CoreBundle\Form\Type\CollectionType;
     use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
-    class ProductAdmin extends AbstractAdmin
+    final class ProductAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -713,7 +713,7 @@ example above:
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Form\Type\AdminType;
 
-    class PageAdmin extends AbstractAdmin
+    final class PageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -775,7 +775,7 @@ you can reuse it like this:
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use App\Form\PostType;
 
-    class Post extend AbstractAdmin
+    final class Post extend AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -810,7 +810,7 @@ General
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-    class PageAdmin extends AbstractAdmin
+    final class PageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -840,7 +840,7 @@ General
     use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-    class PageAdmin extends AbstractAdmin
+    final class PageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {

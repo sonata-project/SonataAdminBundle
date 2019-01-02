@@ -66,7 +66,7 @@ All you have to do is include ``Sonata\AdminBundle\Annotation`` and define the v
      *   onTop=false
      * )
      */
-    class MyAdmin extends AbstractAdmin
+    final class MyAdmin extends AbstractAdmin
     {
     }
 

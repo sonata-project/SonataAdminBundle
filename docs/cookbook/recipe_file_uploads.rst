@@ -173,7 +173,7 @@ Both of these are straightforward when you know what to do::
 
     use Symfony\Component\Form\Extension\Core\Type\FileType;
 
-    class ImageAdmin extends AbstractAdmin
+    final class ImageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -235,7 +235,7 @@ looks like this::
 
     use Sonata\AdminBundle\Form\Type\AdminType;
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -265,7 +265,7 @@ In our PostAdmin we then have the following code to manage the relationships' li
     <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         // ...
 

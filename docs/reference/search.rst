@@ -76,7 +76,7 @@ permissions exists. If no route is found, the item will be displayed as a text.
     <?php
     // src/Admin/PersonAdmin.php
 
-    class PersonAdmin extends AbstractAdmin
+    final class PersonAdmin extends AbstractAdmin
     {
         // ...
 

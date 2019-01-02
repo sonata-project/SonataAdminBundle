@@ -23,7 +23,7 @@ Example
     <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -52,7 +52,7 @@ All at once::
     <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -74,7 +74,7 @@ or step by step::
     <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -103,9 +103,8 @@ This Extension for example adds a note field to some entities which use a custom
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    class NoteAdminExtension extends AbstractAdminExtension
+    final class NoteAdminExtension extends AbstractAdminExtension
     {
-
         // add this field to the datagrid every time its available
         /**
          * @param DatagridMapper $datagridMapper
@@ -144,7 +143,6 @@ This Extension for example adds a note field to some entities which use a custom
         }
     }
 
-
 Help messages in a sub-field
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -157,7 +155,7 @@ Help messages in a sub-field
     use Symfony\Component\Form\Extension\Core\Type\TextareaType;
     use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -197,7 +195,7 @@ Example
     <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {

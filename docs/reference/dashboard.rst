@@ -374,7 +374,7 @@ other two on the dashboard, you can do so by overriding the
     <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         // ...
 
@@ -400,7 +400,7 @@ You can also hide an action from the dashboard by unsetting it::
     <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         // ...
 

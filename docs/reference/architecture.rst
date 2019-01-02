@@ -193,7 +193,7 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
     use Symfony\Component\Form\Extension\Core\Type\TextType;
     use App\Entity\User;
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         // Fields to be shown on create/edit forms
         protected function configureFormFields(FormMapper $formMapper)

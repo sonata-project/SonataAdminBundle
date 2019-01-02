@@ -215,7 +215,7 @@ The full ``CarAdmin.php`` example looks like this::
     use Sonata\AdminBundle\Route\RouteCollection;
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    class CarAdmin extends AbstractAdmin
+    final class CarAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {

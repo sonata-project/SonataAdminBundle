@@ -17,7 +17,7 @@ The preview step can be enabled for an admin entity by overriding the public pro
     <?php
     // src/AdminPostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         public $supportsPreviewMode = true;
 

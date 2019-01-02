@@ -30,7 +30,7 @@ Then, you should be able to dynamically add needed fields to the form::
     use Symfony\Component\Form\Extension\Core\Type\TextareaType;
     use Symfony\Component\Form\Extension\Core\Type\FileType;
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         // ...
 

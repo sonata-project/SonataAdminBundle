@@ -131,7 +131,7 @@ Now we need to define the sort by field to be ``$position``::
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class ClientAdmin extends AbstractAdmin
+    final class ClientAdmin extends AbstractAdmin
     {
         protected $datagridValues = [
             '_page' => 1,

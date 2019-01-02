@@ -26,7 +26,6 @@ advantage.
     When embedding one Admin within another, for example using the ``sonata_type_admin``
     field type, the child Admin's hooks are **not** fired.
 
-
 Example used with the FOS/UserBundle
 ------------------------------------
 
@@ -40,15 +39,14 @@ solve the issue by using the ``preUpdate`` saving hook.
 
 .. code-block:: php
 
-    <?php
-    namespace FOS\UserBundle\Admin\Entity;
+    namespace Sonata\UserBundle\Admin\Entity;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use FOS\UserBundle\Model\UserManagerInterface;
     use Sonata\AdminBundle\Form\Type\ModelType;
     use Sonata\UserBundle\Form\Type\SecurityRolesType;
 
-    class UserAdmin extends AbstractAdmin
+    final class UserAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -134,6 +132,5 @@ can generate easily a redirection to the object show page by using the method
 
     Use case: you need to prohibit the deletion of a specific item. You may do a simple
     check in the ``preDelete($object)`` method.
-
 
 .. _FOSUserBundle on GitHub: https://github.com/FriendsOfSymfony/FOSUserBundle/

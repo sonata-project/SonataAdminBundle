@@ -20,7 +20,7 @@ created objects and other admin features.
     use Sonata\AdminBundle\Form\FormMapper;
     use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-    class PublishStatusAdminExtension extends AbstractAdminExtension
+    final class PublishStatusAdminExtension extends AbstractAdminExtension
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -68,7 +68,7 @@ The higher the priority, the earlier it's executed.
                 tags:
                     - { name: sonata.admin.extension, priority: 5 }
 
-The second option is to add it to your config.yml file.
+The second option is to add it to your configuration file.
 
 .. configuration-block::
 
