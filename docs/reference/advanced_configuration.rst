@@ -13,9 +13,9 @@ Service Configuration
 When you create a new Admin service you can configure its dependencies,
 the services which are injected by default are:
 
-=========================     =============================================
-Dependencies                  Service Id
-=========================     =============================================
+=========================     ===================================================================
+Dependencies                  Service ID
+=========================     ===================================================================
 model_manager                 sonata.admin.manager.%manager-type%
 form_contractor               sonata.admin.builder.%manager-type%_form
 show_builder                  sonata.admin.builder.%manager-type%_show
@@ -29,20 +29,22 @@ security_handler              sonata.admin.security.handler
 menu_factory                  knp_menu.factory
 route_builder                 sonata.admin.route.path_info | sonata.admin.route.path_info_slashes
 label_translator_strategy     sonata.admin.label.strategy.form_component
-=========================     =============================================
+=========================     ===================================================================
 
 .. note::
 
     %manager-type% is to be replaced by the manager type (orm, doctrine_mongodb...),
     and the default route_builder depends on it.
 
-You have 2 ways of defining the dependencies inside ``services.xml``:
+You have 2 ways of defining the dependencies inside your services config file (``services.xml`` or ``services.yaml``):
 
 * With a tag attribute, less verbose:
 
 .. configuration-block::
 
     .. code-block:: xml
+
+        <!-- config/services.xml -->
 
         <service id="app.admin.project" class="App\Admin\ProjectAdmin">
             <argument />
@@ -61,6 +63,8 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
 .. configuration-block::
 
     .. code-block:: yaml
+
+        # config/services.yaml
 
         app.admin.project:
             class: App\Admin\ProjectAdmin
@@ -83,6 +87,8 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
 
     .. code-block:: xml
 
+        <!-- config/services.xml -->
+
         <service id="app.admin.project" class="App\Admin\ProjectAdmin">
             <argument />
             <argument>App\Entity\Project</argument>
@@ -99,6 +105,8 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
 .. configuration-block::
 
     .. code-block:: yaml
+
+        # config/services.yaml
 
         app.admin.project:
             class: App\Admin\ProjectAdmin
@@ -120,6 +128,7 @@ application's config file:
     .. code-block:: yaml
 
         # config/packages/sonata_admin.yaml
+
         admins:
             sonata_admin:
                 sonata.order.admin.order:   # id of the admin service this setting is for
@@ -130,11 +139,8 @@ application's config file:
 Creating a custom RouteBuilder
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To create your own RouteBuilder create the PHP class and register it as a service:
+To create your own RouteBuilder create the PHP class and register it as a service::
 
-.. code-block:: php
-
-    <?php
     namespace App\Route;
 
     use Sonata\AdminBundle\Builder\RouteBuilderInterface;
@@ -166,11 +172,15 @@ To create your own RouteBuilder create the PHP class and register it as a servic
 
     .. code-block:: xml
 
+        <!-- config/services.xml -->
+
         <service id="app.admin.entity_route_builder" class="App\Route\EntityRouterBuilder">
             <argument type="service" id="sonata.admin.audit.manager" />
         </service>
 
     .. code-block:: yaml
+
+        # config/services.yaml
 
         services:
             app.admin.entity_route_builder:
@@ -189,6 +199,8 @@ Lets consider a base class named `Person` and its subclasses `Student` and `Teac
 
     .. code-block:: xml
 
+        <!-- config/services.xml -->
+
         <service id="app.admin.person" class="App\Admin\PersonAdmin">
             <argument/>
             <argument>App\Entity\Person</argument>
@@ -205,7 +217,6 @@ Lets consider a base class named `Person` and its subclasses `Student` and `Teac
 You will just need to change the way forms are configured in order to
 take into account these new subclasses::
 
-    <?php
     // src/Admin/PersonAdmin.php
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -233,8 +244,6 @@ ACL
 Though the route linked by a menu may be protected the Tab Menu will not automatically check the ACl for you.
 The link will still appear unless you manually check it using the `hasAccess` method::
 
-    <?php
-
     protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
         // Link will always appear even if it is protected by ACL
@@ -256,7 +265,6 @@ Dropdowns
 You can use dropdowns inside the Tab Menu by default. This can be achieved by using
 the `'dropdown' => true` attribute::
 
-    <?php
     // src/Admin/PersonAdmin.php
 
     protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
@@ -290,11 +298,8 @@ Translations
 
 The translation parameters and domain can be customised by using the
 ``translation_domain`` and ``translation_parameters`` keys of the extra array
-of data associated with the item, respectively.
+of data associated with the item, respectively::
 
-.. code-block:: php
-
-    <?php
     $menuItem->setExtras([
         'translation_parameters' => ['myparam' => 'myvalue'],
         'translation_domain' => 'My domain',
@@ -303,16 +308,12 @@ of data associated with the item, respectively.
 You can also set the translation domain on the menu root, and children will
 inherit it::
 
-    <?php
-
     $menu->setExtra('translation_domain', 'My domain');
 
 Filter parameters
 ^^^^^^^^^^^^^^^^^
 
 You can add or override filter parameters to the Tab Menu::
-
-    <?php
 
     use Knp\Menu\ItemInterface as MenuItemInterface;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -349,7 +350,6 @@ You can add or override filter parameters to the Tab Menu::
 
 The `Delivery` class is based on the `sonata_type_translatable_choice` example inside the `Core's documentation`_.
 
-
 Actions Menu
 ------------
 
@@ -382,8 +382,6 @@ You can disable ``html``, ``body`` and ``sidebar`` elements stretching.
 These containers are forced to be full height by default. If you use
 custom layout or just don't need such behavior, add ``no-stretch`` class
 to the ``<html>`` tag.
-
-For example:
 
 .. code-block:: html+jinja
 
