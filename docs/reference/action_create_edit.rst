@@ -2,6 +2,7 @@ Creating and Editing objects
 ============================
 
 .. note::
+
     This document is a stub representing a new work in progress. If you're reading
     this you can help contribute, **no matter what your experience level with Sonata
     is**. Check out the `issues on Github`_ for more information about how to get involved.
@@ -10,6 +11,7 @@ This document will cover the Create and Edit actions. It will cover configuratio
 of the fields and forms available in these views and any other relevant settings.
 
 .. note::
+
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.

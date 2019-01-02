@@ -5,6 +5,7 @@ This is a full working example of a file upload management method using
 SonataAdmin with the DoctrineORM persistence layer.
 
 .. note::
+
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.

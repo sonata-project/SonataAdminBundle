@@ -6,6 +6,7 @@ chapter <installation>`. In this tutorial, you'll learn how to tell SonataAdmin
 how an admin can manage your models.
 
 .. note::
+
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.
@@ -94,6 +95,7 @@ After this, create the schema for these entities:
     $ bin/console doctrine:schema:create
 
 .. note::
+
     This article assumes you have basic knowledge of the Doctrine2 ORM and
     you've set up a database correctly.
 
@@ -215,6 +217,7 @@ Project". In the next chapters, you'll create an admin for the ``BlogPost``
 entity and learn more about this class.
 
 .. note::
+
     If you're not seeing the nice labels, but instead something like
     "link_add", you should make sure that you've `enabled the translator`_.
 

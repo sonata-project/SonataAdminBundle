@@ -4,6 +4,7 @@ Sortable behavior in admin listing
 This is a full working example of how to implement a sortable feature in your Sonata admin listing
 
 .. note::
+
    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.
@@ -39,11 +40,7 @@ Bundles
 The recipe
 ----------
 
-First of all we are going to add a position field in our ``Client`` entity.
-
-.. code-block:: php
-
-    <?php
+First of all we are going to add a position field in our ``Client`` entity::
 
     /**
      * @Gedmo\SortablePosition
@@ -55,6 +52,8 @@ First of all we are going to add a position field in our ``Client`` entity.
 Then we need to inject the Sortable listener. If you only have the Gedmo bundle enabled, you only have to add the listener to your config.yml and skip this step.
 
 .. code-block:: yaml
+
+    # config/services.yaml
 
     services:
         gedmo.listener.sortable:
@@ -70,6 +69,8 @@ feature in your config.yml such as
 
 .. code-block:: yaml
 
+    # config/packages/stof_doctrine_extensions.yaml
+
     stof_doctrine_extensions:
         orm:
             default:
@@ -77,11 +78,7 @@ feature in your config.yml such as
 
 
 In our ``ClientAdmin`` we are going to add a custom action in the ``configureListFields`` method
-and use the default twig template provided in the ``pixSortableBehaviorBundle``
-
-.. code-block:: php
-
-    <?php
+and use the default twig template provided in the ``pixSortableBehaviorBundle``::
 
     $listMapper
         ->add('_action', null, [
@@ -95,7 +92,6 @@ and use the default twig template provided in the ``pixSortableBehaviorBundle``
 
 In order to add new routes for these actions we are also adding the following method::
 
-    <?php
     // src/Admin/ClientAdmin.php
 
     namespace App/Admin;
@@ -113,6 +109,8 @@ Now you can update your ``services.yml`` to use the handler provider by the ``pi
 
 .. code-block:: yaml
 
+    # config/services.yaml
+
     services:
         app.admin.client:
             class: App\Admin\ClientAdmin
@@ -123,11 +121,8 @@ Now you can update your ``services.yml`` to use the handler provider by the ``pi
             tags:
                 - { name: sonata.admin, manager_type: orm, label: "Clients" }
 
-Now we need to define the sort by field to be ``$position``:
+Now we need to define the sort by field to be ``$position``::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/ClientAdmin.php
 
     namespace App\Admin;
@@ -167,8 +162,6 @@ Now we need to define the sort by field to be ``$position``:
             ;
         }
     }
-
-Enjoy ;)
 
 Further work
 ------------
