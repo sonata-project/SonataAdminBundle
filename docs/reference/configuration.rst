@@ -83,6 +83,9 @@ Full Configuration Options
                 use_stickyforms: true
                 pager_links: null
                 form_type: standard
+                default_group: default
+                default_label_catalogue: SonataAdminBundle
+                default_icon: '<i class="fa fa-folder"></i>'
                 dropdown_number_groups_per_colums:  2
                 title_mode: ~ # One of "single_text"; "single_image"; "both"
 

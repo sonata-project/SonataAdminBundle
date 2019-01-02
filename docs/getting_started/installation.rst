@@ -33,6 +33,7 @@ You can download them in the same way as the SonataAdminBundle. Please, choose o
 and follow its installation instructions before proceeding.
 
 .. note::
+
     Don't know which to choose? Most new users prefer SonataDoctrineORMAdmin,
     to interact with traditional relational databases (MySQL, PostgreSQL, etc).
 
@@ -40,11 +41,7 @@ Enable the Bundle
 -----------------
 
 Then, enable the bundle and the bundles it relies on by adding the following
-line in `bundles.php` file of your project:
-
-.. code-block:: php
-
-    <?php
+line in `bundles.php` file of your project::
 
     // config/bundles.php
 
@@ -58,6 +55,7 @@ line in `bundles.php` file of your project:
     ];
 
 .. note::
+
     If you are not using Symfony Flex, you should enable bundles in your
     ``AppKernel.php``.
 
@@ -65,7 +63,6 @@ line in `bundles.php` file of your project:
 
     // app/AppKernel.php
 
-    // ...
     class AppKernel extends Kernel
     {
         public function registerBundles()
@@ -89,11 +86,10 @@ line in `bundles.php` file of your project:
 
             // ...
         }
-
-        // ...
     }
 
 .. note::
+
     If a bundle is already registered, you should not register it again.
 
 Configure the Installed Bundles
@@ -117,9 +113,11 @@ admin block:
 
                 # ...
 .. note::
+
     If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.
 
 .. note::
+
     Don't worry too much if, at this point, you don't yet understand fully
     what a block is. The SonataBlockBundle is a useful tool, but it's not vital
     that you understand it in order to use the admin bundle.
@@ -136,9 +134,10 @@ For more information: http://symfony.com/doc/current/translation.html#configurat
 
         # config/packages/framework.yaml
         framework:
-                translator: { fallbacks: ["%locale%"] }
+            translator: { fallbacks: ["%locale%"] }
 
 .. note::
+
     If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.
 
 Define routes
@@ -164,14 +163,17 @@ You can do this by adding its routes to your application's routing file:
             prefix: /admin
 
 .. note::
+
     If you are not using Symfony Flex, routes should be added to ``app/config/routing.yml``.
 
 .. note::
+
     If you're using XML or PHP to specify your application's configuration,
     the above routing configuration must be placed in routing.xml or
     routing.php according to your format (i.e. XML or PHP).
 
 .. note::
+
     For those curious about the ``resource: .`` setting: it is unusual syntax but used
     because Symfony requires a resource to be defined (which points to a real file).
     Once this validation passes Sonata's ``AdminPoolLoader`` is in charge of processing
@@ -198,6 +200,7 @@ You've finished the installation process, congratulations. If you fire up the
 server, you can now visit the admin page on http://localhost:8000/admin
 
 .. note::
+
     This tutorial assumes you are using the build-in server using the
     ``bin/console server:start`` (or ``server:run``) command.
 

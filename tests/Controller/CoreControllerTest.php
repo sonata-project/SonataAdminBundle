@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -28,7 +30,7 @@ class CoreControllerTest extends TestCase
     /**
      * @group legacy
      */
-    public function testdashboardActionStandardRequest()
+    public function testdashboardActionStandardRequest(): void
     {
         $container = $this->createMock(ContainerInterface::class);
 
@@ -79,7 +81,7 @@ class CoreControllerTest extends TestCase
     /**
      * @group legacy
      */
-    public function testdashboardActionAjaxLayout()
+    public function testdashboardActionAjaxLayout(): void
     {
         $container = $this->createMock(ContainerInterface::class);
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -63,7 +65,7 @@ final class AppendFormFieldElementActionTest extends TestCase
      */
     private $helper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->twig = $this->prophesize(Environment::class);
         $this->pool = $this->prophesize(Pool::class);
@@ -79,7 +81,7 @@ final class AppendFormFieldElementActionTest extends TestCase
         );
     }
 
-    public function testAppendFormFieldElementAction()
+    public function testAppendFormFieldElementAction(): void
     {
         $object = new \stdClass();
         $request = new Request([

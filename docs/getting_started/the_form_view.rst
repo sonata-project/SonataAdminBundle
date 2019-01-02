@@ -8,6 +8,7 @@ complex ``BlogPost`` model. Meanwhile, you'll learn how to make things a bit
 more pretty.
 
 .. note::
+
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.
@@ -52,7 +53,6 @@ The same applies to the service definition:
             arguments: [~, App\Entity\BlogPost, ~]
             tags:
                 - { name: sonata.admin, manager_type: orm, label: Blog post }
-            public: true
 
 Configuring the Form Mapper
 ---------------------------
@@ -264,6 +264,7 @@ SonataAdminBundle. You can change it by defining a ``toString()`` method in the
 Admin class. This receives the object to transform to a string as the first parameter:
 
 .. note::
+
     No underscore prefix! ``toString()`` is correct!
 
 .. code-block:: php

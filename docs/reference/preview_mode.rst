@@ -7,6 +7,7 @@ The preview step can be enabled for an admin entity by overriding the public pro
 ``$supportsPreviewMode`` and setting it to true.
 
 .. note::
+
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.

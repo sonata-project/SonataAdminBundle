@@ -7,9 +7,6 @@ using annotations instead of creating admin classes.
 Download the SonataAnnotationBundle
 -----------------------------------
 
-Open a command console, enter your project directory and execute the
-following command to download the latest stable version of this bundle:
-
 .. code-block:: bash
 
     $ composer require kunicmarko/sonata-annotation-bundle

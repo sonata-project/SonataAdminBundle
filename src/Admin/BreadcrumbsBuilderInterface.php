@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -10,8 +12,6 @@
  */
 
 namespace Sonata\AdminBundle\Admin;
-
-use Knp\Menu\ItemInterface;
 
 /**
  * Builds a breacrumbs. There is a dependency on the AdminInterface because
@@ -31,18 +31,4 @@ interface BreadcrumbsBuilderInterface
      * @return mixed array|Traversable the breadcrumbs
      */
     public function getBreadcrumbs(AdminInterface $admin, $action);
-
-    /**
-     * Builds breadcrumbs for $action, starting from $menu.
-     *
-     * Note: the method will be called by the top admin instance (parent => child)
-     * NEXT_MAJOR : remove this method from the public interface.
-     *
-     * @param string $action
-     */
-    public function buildBreadcrumbs(
-        AdminInterface $admin,
-        $action,
-        ItemInterface $menu = null
-    );
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -37,7 +39,7 @@ class FormBuilderIteratorTest extends TestCase
      */
     private $builder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->dispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
         $this->factory = $this->getMockForAbstractClass(FormFactoryInterface::class);
@@ -45,26 +47,26 @@ class FormBuilderIteratorTest extends TestCase
         $this->factory->expects($this->any())->method('createNamedBuilder')->willReturn($this->builder);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->dispatcher = null;
         $this->factory = null;
         $this->builder = null;
     }
 
-    public function testConstructor()
+    public function testConstructor(): void
     {
         new FormBuilderIterator($this->builder);
     }
 
-    public function testGetChildren()
+    public function testGetChildren(): void
     {
         $this->builder->add('name', 'text');
         $iterator = new FormBuilderIterator($this->builder);
         $this->assertInstanceOf(\get_class($iterator), $iterator->getChildren());
     }
 
-    public function testHasChildren()
+    public function testHasChildren(): void
     {
         $this->builder->add('name', 'text');
         $iterator = new FormBuilderIterator($this->builder);

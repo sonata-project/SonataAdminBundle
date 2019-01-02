@@ -2,6 +2,7 @@ Modifying form fields dynamically depending on edited object
 ============================================================
 
 .. note::
+
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.
@@ -50,6 +51,11 @@ Then, you should be able to dynamically add needed fields to the form::
             // Name field will be added only when create an item
             if ($this->isCurrentRoute('create')) {
                 $formMapper->add('name', TextType::class);
+            }
+
+            // The foo field will added when current action is related acme.demo.admin.code Admin's edit form
+            if ($this->isCurrentRoute('edit', 'acme.demo.admin.code')) {
+                $formMapper->add('foo', 'text');
             }
         }
     }

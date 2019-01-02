@@ -2,6 +2,7 @@ Advanced configuration
 ======================
 
 .. note::
+
    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.
@@ -44,6 +45,9 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
     .. code-block:: xml
 
         <service id="app.admin.project" class="App\Admin\ProjectAdmin">
+            <argument />
+            <argument>App\Entity\Project</argument>
+            <argument />
             <tag
                 name="sonata.admin"
                 manager_type="orm"
@@ -52,9 +56,6 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
                 label_translator_strategy="sonata.admin.label.strategy.native"
                 route_builder="sonata.admin.route.path_info"
                 />
-            <argument />
-            <argument>App\Entity\Project</argument>
-            <argument />
         </service>
 
 .. configuration-block::
@@ -63,13 +64,18 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
 
         app.admin.project:
             class: App\Admin\ProjectAdmin
-            tags:
-                - { name: sonata.admin, manager_type: orm, group: "Project", label: "Project", label_translator_strategy: "sonata.admin.label.strategy.native",  route_builder: "sonata.admin.route.path_info" }
             arguments:
                 - ~
                 - App\Entity\Project
                 - ~
-            public: true
+            tags:
+                -
+                    name: sonata.admin
+                    manager_type: orm
+                    group: 'Project'
+                    label: 'Project'
+                    label_translator_strategy: 'sonata.admin.label.strategy.native'
+                    route_builder: 'sonata.admin.route.path_info'
 
 * With a method call, more verbose
 
@@ -78,23 +84,16 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
     .. code-block:: xml
 
         <service id="app.admin.project" class="App\Admin\ProjectAdmin">
-            <tag
-                name="sonata.admin"
-                manager_type="orm"
-                group="Project"
-                label="Project"
-                />
             <argument />
             <argument>App\Entity\Project</argument>
             <argument />
-
             <call method="setLabelTranslatorStrategy">
                 <argument type="service" id="sonata.admin.label.strategy.native" />
             </call>
-
             <call method="setRouteBuilder">
                 <argument type="service" id="sonata.admin.route.path_info" />
             </call>
+            <tag name="sonata.admin" manager_type="orm" group="Project" label="Project" />
         </service>
 
 .. configuration-block::
@@ -103,8 +102,6 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
 
         app.admin.project:
             class: App\Admin\ProjectAdmin
-            tags:
-                - { name: sonata.admin, manager_type: orm, group: "Project", label: "Project" }
             arguments:
                 - ~
                 - App\Entity\Project
@@ -112,7 +109,8 @@ You have 2 ways of defining the dependencies inside ``services.xml``:
             calls:
                 - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.native']]
                 - [setRouteBuilder, ['@sonata.admin.route.path_info']]
-            public: true
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Project", label: "Project" }
 
 If you want to modify the service that is going to be injected, add the following code to your
 application's config file:
@@ -133,8 +131,6 @@ Creating a custom RouteBuilder
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To create your own RouteBuilder create the PHP class and register it as a service:
-
-* php Route Generator
 
 .. code-block:: php
 
@@ -165,7 +161,6 @@ To create your own RouteBuilder create the PHP class and register it as a servic
         }
     }
 
-* xml service registration
 
 .. configuration-block::
 
@@ -174,10 +169,6 @@ To create your own RouteBuilder create the PHP class and register it as a servic
         <service id="app.admin.entity_route_builder" class="App\Route\EntityRouterBuilder">
             <argument type="service" id="sonata.admin.audit.manager" />
         </service>
-
-* YAML service registration
-
-.. configuration-block::
 
     .. code-block:: yaml
 
@@ -199,7 +190,6 @@ Lets consider a base class named `Person` and its subclasses `Student` and `Teac
     .. code-block:: xml
 
         <service id="app.admin.person" class="App\Admin\PersonAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="admin" label="Person" />
             <argument/>
             <argument>App\Entity\Person</argument>
             <argument></argument>
@@ -209,6 +199,7 @@ Lets consider a base class named `Person` and its subclasses `Student` and `Teac
                     <argument key="teacher">App\Entity\Teacher</argument>
                 </argument>
             </call>
+            <tag name="sonata.admin" manager_type="orm" group="admin" label="Person" />
         </service>
 
 You will just need to change the way forms are configured in order to
@@ -368,15 +359,15 @@ overriding the following method::
     public function configureActionButtons(AdminInterface $admin, $list, $action, $object)
     {
         if (in_array($action, ['show', 'edit', 'acl']) && $object) {
-            $list['custom'] = [
+            $buttonList['custom'] = [
                 'template' => '@App/Button/custom_button.html.twig',
             ];
         }
 
         // Remove history action
-        unset($list['history']);
+        unset($buttonList['history']);
 
-        return $list;
+        return $buttonList;
     }
 
 

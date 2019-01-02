@@ -15,7 +15,7 @@ cache:create-cache-class
 ------------------------
 
 The ``cache:create-cache-class`` command generates the cache class
-(``app/cache/...env.../classes.php``) from the classes.map file.
+(``var/cache/...env.../classes.php``) from the classes.map file.
 
 Usage example:
 
@@ -53,7 +53,7 @@ Usage example:
 
 .. code-block:: bash
 
-    $ bin/console sonata:admin:generate App/Entity/Foo
+    $ bin/console make:sonata:admin App/Entity/Foo
 
 sonata:admin:generate
 ---------------------

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -42,14 +44,14 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ModelListType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->resetViewTransformers()
             ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         if (isset($view->vars['sonata_admin'])) {
             // set the correct edit mode
@@ -67,12 +69,12 @@ class ModelListType extends AbstractType
      *
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolverInterface $resolver): void
     {
         $this->configureOptions($resolver);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'model_manager' => null,

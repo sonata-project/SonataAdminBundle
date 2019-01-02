@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -25,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 trait PolyfillControllerTrait
 {
-    public function __call($methodName, $arguments)
+    public function __call($methodName, $arguments): void
     {
         $this->proxyToController($methodName, $arguments);
     }

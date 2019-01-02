@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -19,7 +21,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class DateTimeRangeTypeTest extends TypeTestCase
 {
-    public function testGetDefaultOptions()
+    public function testGetDefaultOptions(): void
     {
         $stub = $this->getMockForAbstractClass(TranslatorInterface::class);
 

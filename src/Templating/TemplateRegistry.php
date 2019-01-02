@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -28,7 +30,7 @@ final class TemplateRegistry implements MutableTemplateRegistryInterface
         return $this->templates;
     }
 
-    public function setTemplates(array $templates)
+    public function setTemplates(array $templates): void
     {
         $this->templates = $templates;
     }
@@ -40,7 +42,7 @@ final class TemplateRegistry implements MutableTemplateRegistryInterface
         }
     }
 
-    public function setTemplate($name, $template)
+    public function setTemplate($name, $template): void
     {
         $this->templates[$name] = $template;
     }

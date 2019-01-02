@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -37,7 +39,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         $this->config = $resolver->resolve($config);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'child_admin_route' => 'edit',
@@ -64,10 +66,15 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
     }
 
     /**
-     * {@inheritdoc}
-     * NEXT_MAJOR : make this method private.
+     * Builds breadcrumbs for $action, starting from $menu.
+     *
+     * Note: the method will be called by the top admin instance (parent => child)
+     *
+     * @param AdminInterface     $admin
+     * @param string             $action
+     * @param ItemInterface|null $menu
      */
-    public function buildBreadcrumbs(AdminInterface $admin, $action, ItemInterface $menu = null)
+    private function buildBreadcrumbs(AdminInterface $admin, $action, ItemInterface $menu = null)
     {
         if (!$menu) {
             $menu = $admin->getMenuFactory()->createItem('root');

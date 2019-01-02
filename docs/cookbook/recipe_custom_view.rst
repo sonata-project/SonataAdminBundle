@@ -92,9 +92,9 @@ that we do not specify the Entity, we leave it as ``null``.
                 - ~
                 - ~
                 - App\Controller\CustomViewCRUDController
-            public: true
 
 .. note::
+
     If you are not using Symfony Flex, this service should be registered
     in ``app/config/services.yml``.
 

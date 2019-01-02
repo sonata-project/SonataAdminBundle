@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -86,7 +88,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * @internal
      */
-    public function __set($name, $value)
+    public function __set($name, $value): void
     {
         if ('choiceList' === $name) {
             $this->triggerDeprecation();
@@ -110,7 +112,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * @internal
      */
-    public function __unset($name)
+    public function __unset($name): void
     {
         if ('choiceList' === $name) {
             $this->triggerDeprecation();
@@ -167,7 +169,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
      *
      * @throws RuntimeException
      */
-    private function legacyConstructor($args)
+    private function legacyConstructor($args): void
     {
         $choiceList = $args[0];
 
@@ -200,7 +202,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * @internal
      */
-    private function triggerDeprecation()
+    private function triggerDeprecation(): void
     {
         @trigger_error(sprintf(
                 'Using the "%s::$choiceList" property is deprecated since version 3.12 and will be removed in 4.0.',

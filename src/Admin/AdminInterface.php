@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -21,8 +23,8 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\CoreBundle\Model\Metadata;
 use Sonata\CoreBundle\Validator\ErrorElement;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -98,6 +100,28 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getBaseControllerName();
 
     /**
+     * Sets a list of templates.
+     *
+     * @param array $templates
+     */
+    public function setTemplates(array $templates);
+
+    /**
+     * Sets a specific template.
+     *
+     * @param string $name
+     * @param string $template
+     */
+    public function setTemplate($name, $template);
+
+    /**
+     * Get all templates.
+     *
+     * @return array
+     */
+    public function getTemplates();
+
+    /**
      * @return \Sonata\AdminBundle\Model\ModelManagerInterface
      */
     public function getModelManager();
@@ -122,7 +146,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns a form depend on the given $object.
      *
-     * @return Form
+     * @return FormInterface
      */
     public function getForm();
 
@@ -323,6 +347,13 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getUniqid();
 
     /**
+     * Returns the classname label.
+     *
+     * @return string the classname label
+     */
+    public function getClassnameLabel();
+
+    /**
      * @param mixed $id
      *
      * @return mixed
@@ -372,13 +403,18 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getExportFormats();
 
     /**
+     * Retuns a list of exported fields.
+     *
+     * @return array
+     */
+    public function getExportFields();
+
+    /**
      * Returns SourceIterator.
      *
      * @return \Exporter\Source\SourceIteratorInterface
      */
     public function getDataSourceIterator();
-
-    public function configure();
 
     /**
      * Call before the batch action, allow you to alter the query and the idx.
@@ -534,6 +570,20 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function isAclEnabled();
 
     /**
+     * Returns list of supported sub classes.
+     *
+     * @return array
+     */
+    public function getSubClasses();
+
+    /**
+     * Adds a new class to a list of supported sub classes.
+     *
+     * @param $subClass
+     */
+    public function addSubClass($subClass);
+
+    /**
      * Sets the list of supported sub classes.
      */
     public function setSubClasses(array $subClasses);
@@ -590,14 +640,11 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getPersistentParameters();
 
     /**
-     * NEXT_MAJOR: remove this signature
-     * Get breadcrumbs for $action.
+     * @param string $name
      *
-     * @param string $action
-     *
-     * @return mixed array|Traversable
+     * @return null|mixed
      */
-    public function getBreadcrumbs($action);
+    public function getPersistentParameter($name);
 
     /**
      * Set the current child status.
@@ -647,57 +694,55 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getListMode();
 
     /*
+     * Configure buttons for an action
+     *
+     * @param string $action
+     * @param mixed  $object
+     *
+     * @return array
+     */
+    public function getActionButtons($action, $object = null);
+
+    /**
+     * Get the list of actions that can be accessed directly from the dashboard.
+     *
+     * @return array
+     */
+    public function getDashboardActions();
+
+    /**
      * Check the current request is given route or not.
-     *
-     * TODO: uncomment this method before releasing 4.0
-     *
-     * ```
-     * $this->isCurrentRoute('create'); // is create page?
-     * $this->isCurrentRoute('edit', 'some.admin.code'); // is some.admin.code admin's edit page?
-     * ```
      *
      * @param string $name
      * @param string $adminCode
      *
      * @return bool
      */
-    // public function isCurrentRoute($name, $adminCode = null);
+    public function isCurrentRoute($name, $adminCode = null);
 
-    /*
-     * Configure buttons for an action
-     *
-     * @param string $action
-     * @param object $object
-     *
-     */
-    // public function configureActionButtons($action, $object = null);
-
-    //TODO: uncomment this method for 4.0
-    /*
+    /**
      * Returns the result link for an object.
      *
      * @param mixed $object
      *
      * @return string|null
      */
-    //public function getSearchResultLink($object)
+    public function getSearchResultLink($object);
 
-//    TODO: uncomment this method in 4.0
-//    /**
-//     * Setting to true will enable mosaic button for the admin screen.
-//     * Setting to false will hide mosaic button for the admin screen.
-//     *
-//     * @param bool $isShown
-//     */
-//    public function showMosaicButton($isShown);
+    /**
+     * Setting to true will enable mosaic button for the admin screen.
+     * Setting to false will hide mosaic button for the admin screen.
+     *
+     * @param bool $isShown
+     */
+    public function showMosaicButton($isShown);
 
-    /*
-     * Checks if a filter type is set to a default value
+    /**
+     * Checks if a filter type is set to a default value.
      *
      * @param string $name
      *
      * @return bool
      */
-//    NEXT_MAJOR: uncomment this method in 4.0
-    // public function isDefaultFilter($name);
+    public function isDefaultFilter($name);
 }

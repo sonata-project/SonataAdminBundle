@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -19,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FilterFactoryTest extends TestCase
 {
-    public function testEmptyType()
+    public function testEmptyType(): void
     {
         $this->expectException(\RuntimeException::class, 'The type must be defined');
 
@@ -29,7 +31,7 @@ class FilterFactoryTest extends TestCase
         $filter->create('test', null);
     }
 
-    public function testUnknownType()
+    public function testUnknownType(): void
     {
         $this->expectException(\RuntimeException::class, 'No attached service to type named `mytype`');
 
@@ -39,7 +41,7 @@ class FilterFactoryTest extends TestCase
         $filter->create('test', 'mytype');
     }
 
-    public function testUnknownClassType()
+    public function testUnknownClassType(): void
     {
         $this->expectException(\RuntimeException::class, 'No attached service to type named `Sonata\AdminBundle\Form\Type\Filter\FooType`');
 
@@ -49,7 +51,7 @@ class FilterFactoryTest extends TestCase
         $filter->create('test', 'Sonata\AdminBundle\Form\Type\Filter\FooType');
     }
 
-    public function testClassType()
+    public function testClassType(): void
     {
         $this->expectException(\RuntimeException::class, 'The service `Sonata\AdminBundle\Form\Type\Filter\DefaultType` must implement `FilterInterface`');
 
@@ -59,7 +61,7 @@ class FilterFactoryTest extends TestCase
         $filter->create('test', DefaultType::class);
     }
 
-    public function testInvalidTypeInstance()
+    public function testInvalidTypeInstance(): void
     {
         $this->expectException(\RuntimeException::class, 'The service `mytype` must implement `FilterInterface`');
 
@@ -72,7 +74,7 @@ class FilterFactoryTest extends TestCase
         $filter->create('test', 'mytype');
     }
 
-    public function testCreateFilter()
+    public function testCreateFilter(): void
     {
         $filter = $this->getMockForAbstractClass(FilterInterface::class);
         $filter->expects($this->once())

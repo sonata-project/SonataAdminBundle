@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -44,7 +46,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
      */
     private $admin;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->admin = $this->prophesize(AbstractAdmin::class);
         $this->admin->setRequest(Argument::type(Request::class))->shouldBeCalled();
@@ -55,7 +57,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         );
     }
 
-    public function testRetrieveAutocompleteItemsActionNotGranted()
+    public function testRetrieveAutocompleteItemsActionNotGranted(): void
     {
         $this->expectException(AccessDeniedException::class);
 
@@ -70,7 +72,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $action($request);
     }
 
-    public function testRetrieveAutocompleteItemsActionDisabledFormelememt()
+    public function testRetrieveAutocompleteItemsActionDisabledFormelememt(): void
     {
         $this->expectException(AccessDeniedException::class);
         $this->expectExceptionMessage('Autocomplete list can`t be retrieved because the form element is disabled or read_only.');
@@ -98,7 +100,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $action($request);
     }
 
-    public function testRetrieveAutocompleteItemsTooShortSearchString()
+    public function testRetrieveAutocompleteItemsTooShortSearchString(): void
     {
         $object = new \stdClass();
         $request = new Request([
@@ -117,7 +119,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->admin->hasAccess('create')->willReturn(true);
         $this->admin->getFormFieldDescription('barField')->willReturn($fieldDescription->reveal());
         $this->admin->getFormFieldDescriptions()->willReturn(null);
-        $targetAdmin->checkAccess('list')->willReturn(null);
+        $targetAdmin->checkAccess('list')->shouldBeCalled();
         $fieldDescription->getTargetEntity()->willReturn(Foo::class);
         $fieldDescription->getName()->willReturn('barField');
         $fieldDescription->getAssociationAdmin()->willReturn($targetAdmin->reveal());
@@ -130,7 +132,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->assertSame('{"status":"KO","message":"Too short search string."}', $response->getContent());
     }
 
-    public function testRetrieveAutocompleteItems()
+    public function testRetrieveAutocompleteItems(): void
     {
         $entity = new \stdClass();
         $request = new Request([
@@ -163,7 +165,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
 
-    public function testRetrieveAutocompleteItemsComplexPropertyArray()
+    public function testRetrieveAutocompleteItemsComplexPropertyArray(): void
     {
         $request = new Request([
             'admin_code' => 'foo.admin',
@@ -196,7 +198,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
 
-    public function testRetrieveAutocompleteItemsComplexProperty()
+    public function testRetrieveAutocompleteItemsComplexProperty(): void
     {
         $request = new Request([
             'admin_code' => 'foo.admin',
@@ -257,7 +259,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         return $datagrid;
     }
 
-    private function configureFormConfig($field, $disabled = false)
+    private function configureFormConfig($field, $disabled = false): void
     {
         $form = $this->prophesize(Form::class);
         $formType = $this->prophesize(Form::class);
@@ -276,7 +278,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $formConfig->getAttribute('target_admin_access_action')->willReturn('list');
     }
 
-    private function configureFormConfigComplexProperty($field)
+    private function configureFormConfigComplexProperty($field): void
     {
         $form = $this->prophesize(Form::class);
         $formType = $this->prophesize(Form::class);
@@ -295,7 +297,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $formConfig->getAttribute('target_admin_access_action')->willReturn('list');
     }
 
-    private function configureFormConfigComplexPropertyArray($field)
+    private function configureFormConfigComplexPropertyArray($field): void
     {
         $form = $this->prophesize(Form::class);
         $formType = $this->prophesize(Form::class);

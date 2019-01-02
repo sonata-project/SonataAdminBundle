@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -23,7 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class AuditManagerTest extends TestCase
 {
-    public function testGetReader()
+    public function testGetReader(): void
     {
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
 
@@ -52,7 +54,7 @@ class AuditManagerTest extends TestCase
         $this->assertSame($fooReader, $auditManager->getReader('Foo\Foo1'));
     }
 
-    public function testGetReaderWithException()
+    public function testGetReaderWithException(): void
     {
         $this->expectException(\RuntimeException::class, 'The class "Foo\Foo" does not have any reader manager');
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -27,7 +29,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
      */
     private $defaultJavascripts = [];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->container->setParameter('kernel.bundles', []);
@@ -43,7 +45,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
     /**
      * @group legacy
      */
-    public function testContainerCompileWithJMSDiExtraBundle()
+    public function testContainerCompileWithJMSDiExtraBundle(): void
     {
         $this->container->setParameter('kernel.bundles', [
             'JMSDiExtraBundle' => true,
@@ -52,21 +54,21 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->container->compile();
     }
 
-    public function testHasServiceDefinitionForLockExtension()
+    public function testHasServiceDefinitionForLockExtension(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load(['options' => ['lock_protection' => true]]);
         $this->assertContainerBuilderHasService('sonata.admin.lock.extension');
     }
 
-    public function testNotHasServiceDefinitionForLockExtension()
+    public function testNotHasServiceDefinitionForLockExtension(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load(['options' => ['lock_protection' => false]]);
         $this->assertContainerBuilderNotHasService('sonata.admin.lock.extension');
     }
 
-    public function testLoadsExporterServiceDefinitionWhenExporterBundleIsRegistered()
+    public function testLoadsExporterServiceDefinitionWhenExporterBundleIsRegistered(): void
     {
         $this->container->setParameter('kernel.bundles', ['SonataExporterBundle' => 'whatever']);
         $this->load();
@@ -76,7 +78,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    public function testHasSecurityRoleParameters()
+    public function testHasSecurityRoleParameters(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load();
@@ -85,7 +87,17 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter('sonata.admin.configuration.security.role_super_admin');
     }
 
-    public function testExtraStylesheetsGetAdded()
+    public function testHasDefaultServiceParameters(): void
+    {
+        $this->container->setParameter('kernel.bundles', []);
+        $this->load();
+
+        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_group');
+        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_label_catalogue');
+        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_icon');
+    }
+
+    public function testExtraStylesheetsGetAdded(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $extraStylesheets = ['foo/bar.css', 'bar/quux.css'];
@@ -99,7 +111,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->assertSame(array_merge($this->defaultStylesheets, $extraStylesheets), $stylesheets);
     }
 
-    public function testRemoveStylesheetsGetRemoved()
+    public function testRemoveStylesheetsGetRemoved(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $removeStylesheets = [
@@ -116,7 +128,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->assertSame(array_values(array_diff($this->defaultStylesheets, $removeStylesheets)), $stylesheets);
     }
 
-    public function testExtraJavascriptsGetAdded()
+    public function testExtraJavascriptsGetAdded(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $extraJavascripts = ['foo/bar.js', 'bar/quux.js'];
@@ -130,7 +142,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->assertSame(array_merge($this->defaultJavascripts, $extraJavascripts), $javascripts);
     }
 
-    public function testRemoveJavascriptsGetRemoved()
+    public function testRemoveJavascriptsGetRemoved(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $removeJavascripts = [
@@ -147,7 +159,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->assertSame(array_values(array_diff($this->defaultJavascripts, $removeJavascripts)), $javascripts);
     }
 
-    public function testAssetsCanBeAddedAndRemoved()
+    public function testAssetsCanBeAddedAndRemoved(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $extraStylesheets = ['foo/bar.css', 'bar/quux.css'];

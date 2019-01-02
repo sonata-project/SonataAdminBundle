@@ -29,11 +29,11 @@
             <argument>%sonata.admin.configuration.breadcrumbs%</argument>
         </service>
         <!-- Services used to format the label, default is sonata.admin.label.strategy.noop -->
-        <service id="sonata.admin.label.strategy.bc" class="Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy" public="true"/>
-        <service id="sonata.admin.label.strategy.native" class="Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy" public="true"/>
-        <service id="sonata.admin.label.strategy.noop" class="Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy" public="true"/>
-        <service id="sonata.admin.label.strategy.underscore" class="Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy" public="true"/>
-        <service id="sonata.admin.label.strategy.form_component" class="Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy" public="true"/>
+        <service id="sonata.admin.label.strategy.bc" class="Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy" public="false"/>
+        <service id="sonata.admin.label.strategy.native" class="Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy" public="false"/>
+        <service id="sonata.admin.label.strategy.noop" class="Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy" public="false"/>
+        <service id="sonata.admin.label.strategy.underscore" class="Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy" public="false"/>
+        <service id="sonata.admin.label.strategy.form_component" class="Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy" public="false"/>
         <!-- Translation extractor -->
         <service id="sonata.admin.translator.extractor.jms_translator_bundle" class="Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor" public="true">
             <tag name="jms_translation.extractor" alias="sonata_admin"/>

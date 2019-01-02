@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -18,7 +20,7 @@ use Symfony\Component\Config\Definition\Processor;
 
 class ConfigurationTest extends TestCase
 {
-    public function testOptions()
+    public function testOptions(): void
     {
         $config = $this->process([]);
 
@@ -27,27 +29,30 @@ class ConfigurationTest extends TestCase
         $this->assertTrue($config['options']['confirm_exit']);
         $this->assertFalse($config['options']['js_debug']);
         $this->assertTrue($config['options']['use_icheck']);
+        $this->assertSame('default', $config['options']['default_group']);
+        $this->assertSame('SonataAdminBundle', $config['options']['default_label_catalogue']);
+        $this->assertSame('<i class="fa fa-folder"></i>', $config['options']['default_icon']);
     }
 
-    public function testBreadcrumbsChildRouteDefaultsToEdit()
+    public function testBreadcrumbsChildRouteDefaultsToEdit(): void
     {
         $config = $this->process([]);
 
         $this->assertSame('edit', $config['breadcrumbs']['child_admin_route']);
     }
 
-    public function testOptionsWithInvalidFormat()
+    public function testOptionsWithInvalidFormat(): void
     {
         $this->expectException(InvalidTypeException::class);
 
-        $config = $this->process([[
+        $this->process([[
             'options' => [
                 'html5_validate' => '1',
             ],
         ]]);
     }
 
-    public function testCustomTemplatesPerAdmin()
+    public function testCustomTemplatesPerAdmin(): void
     {
         $config = $this->process([[
             'admin_services' => [
@@ -64,7 +69,7 @@ class ConfigurationTest extends TestCase
         $this->assertSame('@SonataAdmin/mycustomtemplate.html.twig', $config['admin_services']['my_admin_id']['templates']['view']['user_block']);
     }
 
-    public function testAdminServicesDefault()
+    public function testAdminServicesDefault(): void
     {
         $config = $this->process([[
             'admin_services' => ['my_admin_id' => []],
@@ -94,14 +99,14 @@ class ConfigurationTest extends TestCase
         ], $config['admin_services']['my_admin_id']);
     }
 
-    public function testDashboardWithoutRoles()
+    public function testDashboardWithoutRoles(): void
     {
         $config = $this->process([]);
 
         $this->assertEmpty($config['dashboard']['blocks'][0]['roles']);
     }
 
-    public function testDashboardWithRoles()
+    public function testDashboardWithRoles(): void
     {
         $config = $this->process([[
             'dashboard' => [
@@ -115,7 +120,7 @@ class ConfigurationTest extends TestCase
         $this->assertSame($config['dashboard']['blocks'][0]['roles'], ['ROLE_ADMIN']);
     }
 
-    public function testDashboardGroups()
+    public function testDashboardGroups(): void
     {
         $config = $this->process([[
             'dashboard' => [
@@ -189,11 +194,11 @@ class ConfigurationTest extends TestCase
         );
     }
 
-    public function testDashboardGroupsWithBadItemsParams()
+    public function testDashboardGroupsWithBadItemsParams(): void
     {
         $this->expectException(\InvalidArgumentException::class, 'Expected either parameters "route" and "label" for array items');
 
-        $config = $this->process([[
+        $this->process([[
             'dashboard' => [
                 'groups' => [
                     'bar' => [
@@ -212,7 +217,7 @@ class ConfigurationTest extends TestCase
         ]]);
     }
 
-    public function testSecurityConfigurationDefaults()
+    public function testSecurityConfigurationDefaults(): void
     {
         $config = $this->process([[]]);
 
@@ -220,7 +225,7 @@ class ConfigurationTest extends TestCase
         $this->assertSame('ROLE_SUPER_ADMIN', $config['security']['role_super_admin']);
     }
 
-    public function testExtraAssetsDefaults()
+    public function testExtraAssetsDefaults(): void
     {
         $config = $this->process([[]]);
 
@@ -228,7 +233,7 @@ class ConfigurationTest extends TestCase
         $this->assertSame([], $config['assets']['extra_javascripts']);
     }
 
-    public function testRemoveAssetsDefaults()
+    public function testRemoveAssetsDefaults(): void
     {
         $config = $this->process([[]]);
 

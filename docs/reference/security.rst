@@ -2,6 +2,7 @@ Security
 ========
 
 .. note::
+
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.
@@ -429,6 +430,7 @@ If you have Admin classes, you can install or update the related CRUD ACL rules:
 .. code-block:: bash
 
     $ bin/console sonata:admin:setup-acl
+
     Starting ACL AdminBundle configuration
     > install ACL for sonata.media.admin.media
        - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_GUEST, permissions: ["VIEW","LIST"]

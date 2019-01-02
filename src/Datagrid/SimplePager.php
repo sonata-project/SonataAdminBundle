@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -74,12 +76,11 @@ class SimplePager extends Pager
         $this->thresholdCount = \count($this->results);
         if (\count($this->results) > $this->getMaxPerPage()) {
             $this->haveToPaginate = true;
-
+            // doctrine/phpcr-odm returns ArrayCollection
             if ($this->results instanceof ArrayCollection) {
-                $this->results = new ArrayCollection($this->results->slice(0, $this->getMaxPerPage()));
-            } else {
-                $this->results = new ArrayCollection(\array_slice($this->results, 0, $this->getMaxPerPage()));
+                $this->results = $this->results->toArray();
             }
+            $this->results = \array_slice($this->results, 0, $this->getMaxPerPage());
         } else {
             $this->haveToPaginate = false;
         }
@@ -97,7 +98,7 @@ class SimplePager extends Pager
      *
      * @throws \RuntimeException the QueryBuilder is uninitialized
      */
-    public function init()
+    public function init(): void
     {
         if (!$this->getQuery()) {
             throw new \RuntimeException('Uninitialized QueryBuilder');
@@ -128,7 +129,7 @@ class SimplePager extends Pager
      *
      * @param int $threshold
      */
-    public function setThreshold($threshold)
+    public function setThreshold($threshold): void
     {
         $this->threshold = (int) $threshold;
     }
@@ -141,7 +142,7 @@ class SimplePager extends Pager
         return $this->threshold;
     }
 
-    protected function resetIterator()
+    protected function resetIterator(): void
     {
         parent::resetIterator();
         $this->haveToPaginate = false;

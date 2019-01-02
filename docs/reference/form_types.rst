@@ -2,6 +2,7 @@ Form Types
 ==========
 
 .. note::
+
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.
@@ -475,6 +476,7 @@ The available options are:
         }
     }
 
+
 ``Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -548,15 +550,14 @@ that looks like this:
         services:
             app.admin.image:
                 class: App\Admin\ImageAdmin
-                tags:
-                    - { name: sonata.admin, manager_type: orm, label: "Image" }
                 arguments:
                     - ~
                     - App\Entity\Image
                     - 'Sonata\AdminBundle\Controller\CRUDController'
                 calls:
                     - [setTranslationDomain, ['App']]
-                public: true
+                tags:
+                    - { name: sonata.admin, manager_type: orm, label: "Image" }
 
 .. note::
 

@@ -13,6 +13,7 @@ Admin's list view. As Sonata doesn't know which fields to show, it just shows
 empty rows.
 
 .. note::
+
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.

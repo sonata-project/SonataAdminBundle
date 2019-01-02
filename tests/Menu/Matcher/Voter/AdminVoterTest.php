@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -42,7 +44,7 @@ class AdminVoterTest extends AbstractVoterTest
     /**
      * @group legacy
      */
-    public function testDeprecatedRequestSetter()
+    public function testDeprecatedRequestSetter(): void
     {
         $request = new Request();
 

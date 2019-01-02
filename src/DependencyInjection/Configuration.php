@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -22,7 +24,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *
  * @author Michael Williams <mtotheikle@gmail.com>
  */
-class Configuration implements ConfigurationInterface
+final class Configuration implements ConfigurationInterface
 {
     /**
      * @return TreeBuilder
@@ -127,6 +129,18 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('use_stickyforms')->defaultTrue()->end()
                         ->integerNode('pager_links')->defaultNull()->end()
                         ->scalarNode('form_type')->defaultValue('standard')->end()
+                        ->scalarNode('default_group')
+                            ->defaultValue('default')
+                            ->info("Group used for admin services if one isn't provided.")
+                        ->end()
+                        ->scalarNode('default_label_catalogue')
+                            ->defaultValue('SonataAdminBundle')
+                            ->info("Label Catalogue used for admin services if one isn't provided.")
+                        ->end()
+                        ->scalarNode('default_icon')
+                            ->defaultValue('<i class="fa fa-folder"></i>')
+                            ->info("Icon used for admin services if one isn't provided.")
+                        ->end()
                         ->integerNode('dropdown_number_groups_per_colums')->defaultValue(2)->end()
                         ->enumNode('title_mode')
                             ->values(['single_text', 'single_image', 'both'])
