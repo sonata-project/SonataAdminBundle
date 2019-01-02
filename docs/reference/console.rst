@@ -64,7 +64,7 @@ The command requires the SensioGeneratorBundle_ to work. If you don't already ha
 
 .. code-block:: bash
 
-    $ composer require --dev sensio/generator-bundle
+    $ composer require sensio/generator-bundle --dev
 
 ===============   ===============================================================================================================================
 Options           Description
