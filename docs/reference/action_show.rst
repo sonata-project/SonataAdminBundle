@@ -52,7 +52,7 @@ To specify options, do as follow:
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    class PersonAdmin extends AbstractAdmin
+    final class PersonAdmin extends AbstractAdmin
     {
         protected function configureShowFields(ShowMapper $showMapper)
         {
@@ -81,7 +81,7 @@ Here is an example of how to achieve this :
 
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    class PersonAdmin extends ParentAdmin
+    final class PersonAdmin extends ParentAdmin
     {
         protected function configureShowFields(ShowMapper $showMapper)
         {
@@ -101,6 +101,10 @@ Here is an example of how to achieve this :
         }
     }
 
+.. note::
+
+    ``ParentAdmin`` is not allowed to be ``final`` then!
+
 Customising the query used to show the object from within your Admin class
 --------------------------------------------------------------------------
 
@@ -114,7 +118,7 @@ The following is a working example of a ShowAction::
 
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    class ClientAdmin extends AbstractAdmin
+    final class ClientAdmin extends AbstractAdmin
     {
         protected function configureShowFields(ShowMapper $showMapper)
         {

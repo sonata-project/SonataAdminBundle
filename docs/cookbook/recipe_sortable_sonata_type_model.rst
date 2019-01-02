@@ -316,7 +316,7 @@ So we are going to start by creating this ``UserBundle\Admin\UserHasExpectations
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Form\FormMapper;
 
-    class UserHasExpectationsAdmin extends AbstractAdmin
+    final class UserHasExpectationsAdmin extends AbstractAdmin
     {
         /**
          * @param \Sonata\AdminBundle\Form\FormMapper $formMapper

@@ -338,7 +338,7 @@ You can add or override filter parameters to the Tab Menu::
     use Sonata\AdminBundle\Admin\AdminInterface;
     use Sonata\CoreBundle\Form\Type\EqualType;
 
-    class DeliveryAdmin extends AbstractAdmin
+    final class DeliveryAdmin extends AbstractAdmin
     {
         protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
         {
@@ -418,13 +418,15 @@ some entries inside the  `$accessMapping` array in the linked Admin.
     <?php
     // src/Admin/PostAdmin.php
 
-    class CustomAdmin extends AbstractAdmin
+    final class CustomAdmin extends AbstractAdmin
     {
         protected $accessMapping = [
             'myCustomFoo' => 'EDIT',
             'myCustomBar' => ['EDIT', 'LIST'],
         ];
     }
+
+.. code-block:: php
 
     <?php
     // src/Controller/CustomCRUDController.php
@@ -456,7 +458,7 @@ by simply overriding ``checkAccess`` function::
     <?php
     // src/Admin/CustomAdmin.php
 
-    class CustomAdmin extends AbstractAdmin
+    final class CustomAdmin extends AbstractAdmin
     {
         public function checkAccess($action, $object = null)
         {

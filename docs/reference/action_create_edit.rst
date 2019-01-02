@@ -62,7 +62,7 @@ For more detailed information about routes, see :doc:`routing`.
     <?php
     // src/Admin/PersonAdmin.php
 
-    class PersonAdmin extends AbstractAdmin
+    final class PersonAdmin extends AbstractAdmin
     {
         // ...
 
@@ -116,7 +116,7 @@ has 4 parameters:
     <?php
     // src/Admin/PersonAdmin.php
 
-    class PersonAdmin extends AbstractAdmin
+    final class PersonAdmin extends AbstractAdmin
     {
         // ...
 
@@ -160,7 +160,7 @@ To specify options, do as follows::
     <?php
     // src/Admin/PersonAdmin.php
 
-    class PersonAdmin extends AbstractAdmin
+    final class PersonAdmin extends AbstractAdmin
     {
         // ...
 

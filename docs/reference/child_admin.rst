@@ -51,7 +51,7 @@ class::
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Admin\AdminInterface;
 
-    class PlaylistAdmin extends AbstractAdmin
+    final class PlaylistAdmin extends AbstractAdmin
     {
         // ...
 
@@ -96,7 +96,7 @@ or not. To get rid of them, you may override the ``configureRoutes`` method::
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class VideoAdmin extends AbstractAdmin
+    final class VideoAdmin extends AbstractAdmin
     {
         // ...
 

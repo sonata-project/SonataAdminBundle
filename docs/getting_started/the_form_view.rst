@@ -27,7 +27,7 @@ The basic class definition will look the same as the ``CategoryAdmin``:
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Form\FormMapper;
 
-    class BlogPostAdmin extends AbstractAdmin
+    final class BlogPostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -274,7 +274,7 @@ Admin class. This receives the object to transform to a string as the first para
     // ...
     use App\Entity\BlogPost;
 
-    class BlogPostAdmin extends AbstractAdmin
+    final class BlogPostAdmin extends AbstractAdmin
     {
         // ...
 

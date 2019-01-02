@@ -36,7 +36,7 @@ First we need to create an admin class and we will clear all routes except
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class CustomViewAdmin extends AbstractAdmin
+    final class CustomViewAdmin extends AbstractAdmin
     {
         protected $baseRoutePattern = 'custom_view';
         protected $baseRouteName = 'custom_view';

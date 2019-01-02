@@ -25,7 +25,7 @@ You have two options to configure the catalogue for the Admin class:
 
       <?php
 
-      class PageAdmin extends AbstractAdmin
+      final class PageAdmin extends AbstractAdmin
       {
           protected $translationDomain = 'SonataPageBundle'; // default is 'messages'
       }
@@ -118,7 +118,9 @@ Setting the label name
 By default, the label is set to a sanitized version of the field name. A custom
 label can be defined as the third argument of the ``add`` method::
 
-    class PageAdmin extends AbstractAdmin
+    // src/Admin/PageAdmin.php
+
+    final class PageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {

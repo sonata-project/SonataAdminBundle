@@ -88,7 +88,7 @@ For instance, the SonataMediaBundle defines the method as:
 
     <?php
 
-    class MediaAdmin extends AbstractAdmin
+    final class MediaAdmin extends AbstractAdmin
     {
         // [...] others methods
 

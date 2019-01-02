@@ -128,7 +128,7 @@ Now we need to configure the form to use our ``ExampleDataMapper``.
     use Sonata\AdminBundle\Form\FormMapper;
     use App\Form\DataMapper\ExampleDataMapper;
 
-    class ExampleAdmin extends AbstractAdmin
+    final class ExampleAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {

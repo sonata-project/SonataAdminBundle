@@ -85,7 +85,7 @@ you can override the ``getDataSourceIterator()`` method::
     <?php
     // src/Admin/PersonAdmin.php
 
-    class PersonAdmin extends AbstractAdmin
+    final class PersonAdmin extends AbstractAdmin
     {
         public function getDataSourceIterator()
         {

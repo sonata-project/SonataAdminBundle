@@ -48,7 +48,7 @@ we are manipulating form fields we do this from within ``ImageAdmin::configureFo
 
     <?php
 
-    class ImageAdmin extends AbstractAdmin
+    final class ImageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -99,7 +99,7 @@ Admin class is embedded and use a different method:
 
     <?php
 
-    class ImageAdmin extends AbstractAdmin
+    final class ImageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {

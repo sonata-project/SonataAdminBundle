@@ -34,7 +34,7 @@ be added to generate the actual route names.
     <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected $baseRouteName = 'sonata_post';
         // will result in routes named:
@@ -55,16 +55,21 @@ will be thrown with a related message.
 If the admin class is a child of another admin class the route name will
 be prefixed by the parent route name, example::
 
-    <?php
+    // src/Admin/PostAdmin.php
+
     // The parent admin class
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected $baseRouteName = 'sonata_post';
         // ...
     }
 
+.. code-block:: php
+
+    // src/Admin/CommentAdmin.php
+
     // The child admin class
-    class CommentAdmin extends AbstractAdmin
+    final class CommentAdmin extends AbstractAdmin
     {
         protected $baseRouteName = 'comment'
         // will result in routes named :
@@ -84,10 +89,9 @@ For example, to use ``http://yourdomain.com/admin/foo`` as the base URL for
 the ``FooAdmin`` class (instead of the default of ``http://yourdomain.com/admin/vendor/bundle/foo``)
 use the following code::
 
-    <?php
     // src/Admin/FooAdmin.php
 
-    class FooAdmin extends AbstractAdmin
+    final class FooAdmin extends AbstractAdmin
     {
         protected $baseRoutePattern = 'foo';
     }
@@ -98,16 +102,21 @@ You will then have route URLs like ``http://yourdomain.com/admin/foo/list`` and
 If the admin class is a child of another admin class the route pattern will
 be prefixed by the parent route pattern, example::
 
-    <?php
+    // src/Admin/PostAdmin.php
+
     // The parent admin class
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected $baseRoutePattern = 'post';
         // ...
     }
 
+.. code-block:: php
+
+    // src/Admin/CommentAdmin.php
+
     // The child admin class
-    class CommentAdmin extends AbstractAdmin
+    final class CommentAdmin extends AbstractAdmin
     {
         protected $baseRoutePattern = 'comment'
         // ...
@@ -157,7 +166,7 @@ explicitly this defaults to the action name.
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class MediaAdmin extends AbstractAdmin
+    final class MediaAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -179,7 +188,7 @@ in the ``add`` method to set additional settings like this:
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class MediaAdmin extends AbstractAdmin
+    final class MediaAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -269,7 +278,7 @@ Any single registered route can be easily removed by name::
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class MediaAdmin extends AbstractAdmin
+    final class MediaAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -291,7 +300,7 @@ the ``clearExcept()`` method. This method accepts an array of routes you want to
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class MediaAdmin extends AbstractAdmin
+    final class MediaAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -314,7 +323,7 @@ If you want to remove all default routes, you can use ``clear()`` method.
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class MediaAdmin extends AbstractAdmin
+    final class MediaAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -337,7 +346,7 @@ can use ``hasParentFieldDescription()`` to detect this case and remove the route
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class TagAdmin extends AbstractAdmin
+    final class TagAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -361,7 +370,7 @@ method. This method will be used when a link is being generated.
     <?php
     // src/Admin/MediaAdmin.php
 
-    class MediaAdmin extends AbstractAdmin
+    final class MediaAdmin extends AbstractAdmin
     {
         public function getPersistentParameters()
         {
@@ -389,7 +398,7 @@ list action's links to point to a different action, set the ``route`` option in 
     <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected function configureListFields(ListMapper $listMapper)
         {
