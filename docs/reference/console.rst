@@ -17,8 +17,6 @@ cache:create-cache-class
 The ``cache:create-cache-class`` command generates the cache class
 (``app/cache/...env.../classes.php``) from the classes.map file.
 
-Usage example:
-
 .. code-block:: bash
 
     $ bin/console cache:create-cache-class
@@ -48,8 +46,6 @@ Options           Description
  **services**     the services YAML file (the default value is "services.yaml")
  **id**           the admin service ID (the default value is combination of "admin" and admin class basename like "admin.foo_bar")
 ===============   ===============================================================================================================================
-
-Usage example:
 
 .. code-block:: bash
 
@@ -81,8 +77,6 @@ Options           Description
  **id**           the admin service ID (the default value is combination of the bundle name and admin class basename like "your_ns_foo.admin.bar")
 ===============   ===============================================================================================================================
 
-Usage example:
-
 .. code-block:: bash
 
     $ bin/console sonata:admin:generate App/Entity/Foo
@@ -95,27 +89,20 @@ It prints all the admin service ids available in your application. This command
 gets the ids from the ``sonata.admin.pool`` service where all the available admin
 services are registered.
 
-Usage example:
-
 .. code-block:: bash
 
     $ bin/console sonata:admin:list
-
 
 .. figure:: ../images/console_admin_list.png
    :align: center
    :alt: List command
    :width: 700px
 
-   List command
-
 sonata:admin:explain
 --------------------
 
 The ``sonata:admin:explain`` command prints details about the admin of a model.
 As an argument you need to specify the admin service id of the Admin to explain.
-
-Usage example:
 
 .. code-block:: bash
 
@@ -126,8 +113,6 @@ Usage example:
    :alt: Explain command
    :width: 700px
 
-   Explain command
-
 sonata:admin:setup-acl
 ----------------------
 
@@ -136,8 +121,6 @@ classes available in ``sonata.admin.pool``. For instance, every time you create 
 new ``Admin`` class, you can create its ACL by using the ``sonata:admin:setup-acl``
 command. The ACL database will be automatically updated with the latest masks
 and roles.
-
-Usage example:
 
 .. code-block:: bash
 
