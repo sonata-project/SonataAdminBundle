@@ -558,10 +558,6 @@ that looks like this:
                 tags:
                     - { name: sonata.admin, manager_type: orm, label: "Image" }
 
-.. note::
-
-    Refer to `Getting started documentation`_ to see how to define your ``admin.yml`` file.
-
 To embed ``ImageAdmin`` within ``PageAdmin`` we just need to change the reference
 for the ``image1`` field to ``sonata_type_admin`` in our ``PageAdmin`` class:
 
@@ -864,7 +860,6 @@ General
 .. _`Symfony field types`: http://symfony.com/doc/current/book/forms.html#built-in-field-types
 .. _`Symfony choice Field Type docs`: http://symfony.com/doc/current/reference/forms/types/choice.html
 .. _`Symfony PropertyPath`: http://api.symfony.com/2.0/Symfony/Component/Form/Util/PropertyPath.html
-.. _`Getting started documentation`: https://sonata-project.org/bundles/admin/master/doc/reference/getting_started.html#importing-it-in-the-main-config-yml
 .. _`ORM`: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/form_field_definition.html
 .. _`PHPCR`: https://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/reference/form_field_definition.html
 .. _`MongoDB`: https://sonata-project.org/bundles/mongo-admin/master/doc/reference/form_field_definition.html
