@@ -152,7 +152,7 @@ App\Admin\FooAdmin         ROLE_APPBUNDLE\ADMIN\FOOADMIN_{PERMISSION}
 
     If your admin service is named like ``my.blog.admin.foo_bar`` (note the underscore ``_``) it will become: ``ROLE_MY_BLOG_ADMIN_FOO_BAR_{PERMISSION}``
 
-So our ``security.yml`` file may look something like this:
+So our ``security.yaml`` file may look something like this:
 
 .. configuration-block::
 
