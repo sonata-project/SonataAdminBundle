@@ -49,46 +49,6 @@ use Twig\Environment;
 use Twig\Template;
 use Twig\TemplateWrapper;
 
-class AdminControllerHelper_Foo
-{
-    private $bar;
-
-    public function getAdminTitle()
-    {
-        return 'foo';
-    }
-
-    public function setEnabled($value)
-    {
-    }
-
-    public function setBar(AdminControllerHelper_Bar $bar)
-    {
-        $this->bar = $bar;
-    }
-
-    public function getBar()
-    {
-        return $this->bar;
-    }
-}
-
-class AdminControllerHelper_Bar
-{
-    public function getAdminTitle()
-    {
-        return 'bar';
-    }
-
-    public function setEnabled($value)
-    {
-    }
-
-    public function getEnabled()
-    {
-    }
-}
-
 /**
  * @group legacy
  */

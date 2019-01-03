@@ -39,35 +39,6 @@ use Twig\Loader\ArrayLoader;
 use Twig\RuntimeLoader\FactoryRuntimeLoader;
 use Twig\Template;
 
-class Foo
-{
-    public function setEnabled($value)
-    {
-    }
-}
-
-class Bar
-{
-    public function setEnabled($value)
-    {
-    }
-}
-
-class Baz
-{
-    private $bar;
-
-    public function setBar(Bar $bar)
-    {
-        $this->bar = $bar;
-    }
-
-    public function getBar()
-    {
-        return $this->bar;
-    }
-}
-
 final class SetObjectFieldValueActionTest extends TestCase
 {
     /**
