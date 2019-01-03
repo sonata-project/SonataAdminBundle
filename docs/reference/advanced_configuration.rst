@@ -213,6 +213,25 @@ Lets consider a base class named `Person` and its subclasses `Student` and `Teac
             <tag name="sonata.admin" manager_type="orm" group="admin" label="Person" />
         </service>
 
+    .. code-block:: yaml
+
+        # config/services.yaml
+
+        app.admin.person:
+            class: App\Admin\PersonAdmin
+            arguments:
+                - ~
+                - App\Entity\Person
+                - ~
+            calls:
+                -
+                    - setSubClasses
+                    -
+                        student: App\Entity\Student
+                        teacher: App\Entity\Teacher
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "admin", label: "Person" }
+
 You will just need to change the way forms are configured in order to
 take into account these new subclasses::
 
