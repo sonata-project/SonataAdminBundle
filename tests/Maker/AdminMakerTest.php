@@ -104,7 +104,7 @@ class AdminMakerTest extends TestCase
 
         $this->input = new ArrayInput($in, $definition);
 
-        $this->output = new StreamOutput(fopen('php://memory', 'wb', false));
+        $this->output = new StreamOutput(fopen('php://memory', 'w', false));
 
         $this->io = new ConsoleStyle($this->input, $this->output);
         $fileManager = new FileManager(new Filesystem(), '.');
