@@ -39,7 +39,8 @@ label_translator_strategy     sonata.admin.label.strategy.form_component
 You have 2 ways of defining the dependencies inside your services config file
 (``services.xml`` or ``services.yaml``):
 
-* With a tag attribute, less verbose:
+With a tag attribute (less verbose)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. configuration-block::
 
@@ -82,7 +83,8 @@ You have 2 ways of defining the dependencies inside your services config file
                     label_translator_strategy: 'sonata.admin.label.strategy.native'
                     route_builder: 'sonata.admin.route.path_info'
 
-* With a method call, more verbose
+With a method call (more verbose)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. configuration-block::
 
