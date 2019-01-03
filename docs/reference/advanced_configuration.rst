@@ -62,8 +62,6 @@ With a tag attribute (less verbose)
                 />
         </service>
 
-.. configuration-block::
-
     .. code-block:: yaml
 
         # config/services.yaml
@@ -104,8 +102,6 @@ With a method call (more verbose)
             </call>
             <tag name="sonata.admin" manager_type="orm" group="Project" label="Project" />
         </service>
-
-.. configuration-block::
 
     .. code-block:: yaml
 
