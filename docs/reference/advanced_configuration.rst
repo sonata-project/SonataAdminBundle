@@ -136,7 +136,7 @@ application's config file:
 
 
 Creating a custom RouteBuilder
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------------
 
 To create your own RouteBuilder create the PHP class and register it as a service::
 
