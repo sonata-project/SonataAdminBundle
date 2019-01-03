@@ -36,7 +36,8 @@ label_translator_strategy     sonata.admin.label.strategy.form_component
     ``%manager-type%`` is to be replaced by the manager type (orm, doctrine_mongodb...),
     and the default route_builder depends on it.
 
-You have 2 ways of defining the dependencies inside your services config file (``services.xml`` or ``services.yaml``):
+You have 2 ways of defining the dependencies inside your services config file
+(``services.xml`` or ``services.yaml``):
 
 * With a tag attribute, less verbose:
 
