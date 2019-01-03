@@ -77,7 +77,7 @@ Options           Description
  **admin**        the admin class basename (by default this adds "Admin" to the model class name, e.g. "BarAdmin")
  **controller**   the controller class basename (by default this adds "AdminController" to the model class name, e.g. "BarAdminController")
  **manager**      the model manager type (by default this is the first registered model manager type, e.g. "orm")
- **services**     the services YAML file (the default value is "services.yml" or "admin.yml" if it already exist)
+ **services**     the services YAML file (the default value is "services.yaml" or "admin.yml" if it already exist)
  **id**           the admin service ID (the default value is combination of the bundle name and admin class basename like "your_ns_foo.admin.bar")
 ===============   ===============================================================================================================================
 

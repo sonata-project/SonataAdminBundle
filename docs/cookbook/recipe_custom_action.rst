@@ -52,7 +52,7 @@ Either by using XML:
 
 .. code-block:: xml
 
-        <!-- src/Resources/config/admin.xml -->
+        <!-- config/services.xml -->
 
         <service id="app.admin.car" class="App\Admin\CarAdmin">
             <tag name="sonata.admin" manager_type="orm" group="Demo" label="Car" />
@@ -61,11 +61,11 @@ Either by using XML:
             <argument>App\Controller\CarAdminController</argument>
         </service>
 
-or by adding it to your ``admin.yml``:
+or by adding it to your ``services.yaml``:
 
 .. code-block:: yaml
 
-    # src/Resources/config/admin.yml
+    # config/services.yaml
 
     services:
         app.admin.car:

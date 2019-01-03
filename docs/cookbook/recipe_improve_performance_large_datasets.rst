@@ -19,7 +19,7 @@ To use `SimplePager` in your admin just define ``pager_type`` inside the service
 
     .. code-block:: xml
 
-        <!-- src/Resources/config/admin.xml -->
+        <!-- config/services.xml -->
 
         <service id="app.admin.post" class="App\Admin\PostAdmin">
             <argument />

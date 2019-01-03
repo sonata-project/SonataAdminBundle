@@ -44,7 +44,7 @@ The same applies to the service definition:
 
 .. code-block:: yaml
 
-    # app/config/services.yml
+    # config/services.yaml
 
     services:
         # ...
