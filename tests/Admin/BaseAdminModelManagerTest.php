@@ -12,13 +12,8 @@
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
-
-class BaseAdminModelManager_Admin extends AbstractAdmin
-{
-}
 
 class BaseAdminModelManagerTest extends TestCase
 {
