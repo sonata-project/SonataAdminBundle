@@ -57,7 +57,7 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
      *
      * @abstract
      *
-     * @return null|AclInterface or NULL if not found
+     * @return AclInterface|null or NULL if not found
      */
     public function getObjectAcl(ObjectIdentityInterface $objectIdentity);
 

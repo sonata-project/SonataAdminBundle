@@ -55,7 +55,7 @@ final class TemplateRegistryExtension extends AbstractExtension
      * @throws ServiceNotFoundException
      * @throws ServiceCircularReferenceException
      *
-     * @return null|string
+     * @return string|null
      */
     public function getAdminTemplate($name, $adminCode)
     {
@@ -69,7 +69,7 @@ final class TemplateRegistryExtension extends AbstractExtension
      *
      * @param string $name
      *
-     * @return null|string
+     * @return string|null
      */
     public function getPoolTemplate($name)
     {
@@ -79,7 +79,7 @@ final class TemplateRegistryExtension extends AbstractExtension
     /**
      * @param string $name
      *
-     * @return null|string
+     * @return string|null
      */
     public function getGlobalTemplate($name)
     {

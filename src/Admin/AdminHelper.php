@@ -56,7 +56,7 @@ class AdminHelper
     /**
      * @param string $elementId
      *
-     * @return null|FormView
+     * @return FormView|null
      */
     public function getChildFormView(FormView $formView, $elementId)
     {
