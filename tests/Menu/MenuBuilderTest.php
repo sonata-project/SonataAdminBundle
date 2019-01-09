@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -32,7 +34,7 @@ class MenuBuilderTest extends TestCase
      */
     private $builder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
         $this->provider = $this->getMockForAbstractClass(MenuProviderInterface::class);
@@ -42,7 +44,7 @@ class MenuBuilderTest extends TestCase
         $this->builder = new MenuBuilder($this->pool, $this->factory, $this->provider, $this->eventDispatcher);
     }
 
-    public function testGetKnpMenuWithDefaultProvider()
+    public function testGetKnpMenuWithDefaultProvider(): void
     {
         $adminGroups = [
             'bar' => [
@@ -78,7 +80,7 @@ class MenuBuilderTest extends TestCase
         }
     }
 
-    public function testGetKnpMenuWithSpecifiedProvider()
+    public function testGetKnpMenuWithSpecifiedProvider(): void
     {
         $adminGroups = [
             'bar' => [
@@ -115,7 +117,7 @@ class MenuBuilderTest extends TestCase
         }
     }
 
-    public function testGetKnpMenuAndDispatchEvent()
+    public function testGetKnpMenuAndDispatchEvent(): void
     {
         $adminGroups = [
             'bar' => [
@@ -141,7 +143,7 @@ class MenuBuilderTest extends TestCase
         $this->builder->createSidebarMenu();
     }
 
-    private function preparePool($adminGroups, $admin = null)
+    private function preparePool($adminGroups, $admin = null): void
     {
         $this->pool->expects($this->once())
             ->method('getAdminGroups')

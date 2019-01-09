@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -15,7 +17,7 @@ class Baz
 {
     private $bar;
 
-    public function setBar(Bar $bar)
+    public function setBar(Bar $bar): void
     {
         $this->bar = $bar;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -72,7 +74,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         $this->domain = false;
     }
 
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
     }
@@ -80,7 +82,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     /**
      * NEXT_MAJOR : use a constructor argument instead.
      */
-    final public function setBreadcrumbsBuilder(BreadcrumbsBuilderInterface $breadcrumbsBuilder)
+    final public function setBreadcrumbsBuilder(BreadcrumbsBuilderInterface $breadcrumbsBuilder): void
     {
         $this->breadcrumbsBuilder = $breadcrumbsBuilder;
     }
@@ -197,7 +199,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         return $id;
     }
 
-    public function setLocale($locale)
+    public function setLocale($locale): void
     {
         $this->translator->setLocale($locale);
     }
@@ -212,19 +214,19 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         return true;
     }
 
-    public function buildSecurityInformation(AdminInterface $admin)
+    public function buildSecurityInformation(AdminInterface $admin): void
     {
     }
 
-    public function createObjectSecurity(AdminInterface $admin, $object)
+    public function createObjectSecurity(AdminInterface $admin, $object): void
     {
     }
 
-    public function deleteObjectSecurity(AdminInterface $admin, $object)
+    public function deleteObjectSecurity(AdminInterface $admin, $object): void
     {
     }
 
-    public function getBaseRole(AdminInterface $admin)
+    public function getBaseRole(AdminInterface $admin): void
     {
     }
 
@@ -254,7 +256,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
      * @param string $id
      * @param string $domain
      */
-    private function addMessage($id, $domain)
+    private function addMessage($id, $domain): void
     {
         $message = new Message($id, $domain);
 

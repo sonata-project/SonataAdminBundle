@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -43,7 +45,7 @@ class ControllerGenerator extends Generator
      *
      * @throws \RuntimeException
      */
-    public function generate(BundleInterface $bundle, $controllerClassBasename)
+    public function generate(BundleInterface $bundle, $controllerClassBasename): void
     {
         $this->class = sprintf('%s\Controller\%s', $bundle->getNamespace(), $controllerClassBasename);
         $this->file = sprintf(

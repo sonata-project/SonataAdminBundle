@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -45,7 +47,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
      */
     private $admin;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->twig = new Environment(new ArrayLoader(['template' => 'renderedTemplate']));
         $this->pool = $this->prophesize(Pool::class);
@@ -58,7 +60,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         );
     }
 
-    public function testGetShortObjectDescriptionActionInvalidAdmin()
+    public function testGetShortObjectDescriptionActionInvalidAdmin(): void
     {
         $this->expectException(NotFoundHttpException::class);
 
@@ -75,7 +77,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $action($request);
     }
 
-    public function testGetShortObjectDescriptionActionObjectDoesNotExist()
+    public function testGetShortObjectDescriptionActionObjectDoesNotExist(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Invalid format');
@@ -93,7 +95,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $action($request);
     }
 
-    public function testGetShortObjectDescriptionActionEmptyObjectId()
+    public function testGetShortObjectDescriptionActionEmptyObjectId(): void
     {
         $request = new Request([
             'code' => 'sonata.post.admin',
@@ -111,7 +113,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->assertInstanceOf(Response::class, $response);
     }
 
-    public function testGetShortObjectDescriptionActionObject()
+    public function testGetShortObjectDescriptionActionObject(): void
     {
         $request = new Request([
             'code' => 'sonata.post.admin',
@@ -132,7 +134,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->assertSame('renderedTemplate', $response->getContent());
     }
 
-    public function testGetShortObjectDescriptionActionEmptyObjectIdAsJson()
+    public function testGetShortObjectDescriptionActionEmptyObjectIdAsJson(): void
     {
         $request = new Request([
             'code' => 'sonata.post.admin',
@@ -153,7 +155,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->assertSame('{"result":{"id":"","label":""}}', $response->getContent());
     }
 
-    public function testGetShortObjectDescriptionActionObjectAsJson()
+    public function testGetShortObjectDescriptionActionObjectAsJson(): void
     {
         $request = new Request([
             'code' => 'sonata.post.admin',

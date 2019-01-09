@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -41,7 +43,7 @@ class DatagridMapperTest extends TestCase
      */
     private $datagrid;
 
-    public function setUp()
+    public function setUp(): void
     {
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
 
@@ -58,7 +60,7 @@ class DatagridMapperTest extends TestCase
 
         $datagridBuilder->expects($this->any())
             ->method('addFilter')
-            ->will($this->returnCallback(function ($datagrid, $type, $fieldDescription, $admin) {
+            ->will($this->returnCallback(function ($datagrid, $type, $fieldDescription, $admin): void {
                 $fieldDescription->setType($type);
 
                 $filter = $this->getMockForAbstractClass(Filter::class);
@@ -90,7 +92,7 @@ class DatagridMapperTest extends TestCase
         $this->datagridMapper = new DatagridMapper($datagridBuilder, $this->datagrid, $admin);
     }
 
-    public function testFluidInterface()
+    public function testFluidInterface(): void
     {
         $fieldDescription = $this->getFieldDescriptionMock('fooName', 'fooLabel');
 
@@ -99,7 +101,7 @@ class DatagridMapperTest extends TestCase
         $this->assertSame($this->datagridMapper, $this->datagridMapper->reorder([]));
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $this->assertFalse($this->datagridMapper->has('fooName'));
 
@@ -125,7 +127,7 @@ class DatagridMapperTest extends TestCase
         ], $filter->getOptions());
     }
 
-    public function testGet2()
+    public function testGet2(): void
     {
         $this->assertFalse($this->datagridMapper->has('fooName'));
 
@@ -154,7 +156,7 @@ class DatagridMapperTest extends TestCase
         ], $filter->getOptions());
     }
 
-    public function testAdd()
+    public function testAdd(): void
     {
         $this->datagridMapper->add('fooName');
 
@@ -166,7 +168,7 @@ class DatagridMapperTest extends TestCase
         $this->assertSame('fooName', $fieldDescription->getName());
     }
 
-    public function testAddWithoutFieldName()
+    public function testAddWithoutFieldName(): void
     {
         $this->datagridMapper->add('foo.bar');
 
@@ -179,7 +181,7 @@ class DatagridMapperTest extends TestCase
         $this->assertSame('bar', $fieldDescription->getOption('field_name'));
     }
 
-    public function testAddRemove()
+    public function testAddRemove(): void
     {
         $this->assertFalse($this->datagridMapper->has('fooName'));
 
@@ -193,14 +195,14 @@ class DatagridMapperTest extends TestCase
         $this->assertSame('fooFilterName', $fieldDescription->getOption('field_name'));
     }
 
-    public function testAddException()
+    public function testAddException(): void
     {
         $this->expectException(\RuntimeException::class, 'Unknown field name in datagrid mapper. Field name should be either of FieldDescriptionInterface interface or string');
 
         $this->datagridMapper->add(12345);
     }
 
-    public function testAddDuplicateNameException()
+    public function testAddDuplicateNameException(): void
     {
         $tmpNames = [];
         $this->datagridMapper->getAdmin()
@@ -221,7 +223,7 @@ class DatagridMapperTest extends TestCase
         $this->datagridMapper->add('fooName');
     }
 
-    public function testKeys()
+    public function testKeys(): void
     {
         $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
         $fieldDescription2 = $this->getFieldDescriptionMock('fooName2', 'fooLabel2');
@@ -232,7 +234,7 @@ class DatagridMapperTest extends TestCase
         $this->assertSame(['fooName1', 'fooName2'], $this->datagridMapper->keys());
     }
 
-    public function testReorder()
+    public function testReorder(): void
     {
         $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
         $fieldDescription2 = $this->getFieldDescriptionMock('fooName2', 'fooLabel2');

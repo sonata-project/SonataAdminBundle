@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -129,7 +131,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     private static $fieldGetters = [];
 
-    public function setFieldName($fieldName)
+    public function setFieldName($fieldName): void
     {
         $this->fieldName = $fieldName;
     }
@@ -139,7 +141,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->fieldName;
     }
 
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
 
@@ -158,12 +160,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return isset($this->options[$name]) ? $this->options[$name] : $default;
     }
 
-    public function setOption($name, $value)
+    public function setOption($name, $value): void
     {
         $this->options[$name] = $value;
     }
 
-    public function setOptions(array $options)
+    public function setOptions(array $options): void
     {
         // set the type if provided
         if (isset($options['type'])) {
@@ -200,7 +202,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->options;
     }
 
-    public function setTemplate($template)
+    public function setTemplate($template): void
     {
         $this->template = $template;
     }
@@ -210,7 +212,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->template;
     }
 
-    public function setType($type)
+    public function setType($type): void
     {
         $this->type = $type;
     }
@@ -220,7 +222,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->type;
     }
 
-    public function setParent(AdminInterface $parent)
+    public function setParent(AdminInterface $parent): void
     {
         $this->parent = $parent;
     }
@@ -245,7 +247,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->parentAssociationMappings;
     }
 
-    public function setAssociationAdmin(AdminInterface $associationAdmin)
+    public function setAssociationAdmin(AdminInterface $associationAdmin): void
     {
         $this->associationAdmin = $associationAdmin;
         $this->associationAdmin->setParentFieldDescription($this);
@@ -314,7 +316,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         throw new NoValueException(sprintf('Unable to retrieve the value of `%s`', $this->getName()));
     }
 
-    public function setAdmin(AdminInterface $admin)
+    public function setAdmin(AdminInterface $admin): void
     {
         $this->admin = $admin;
     }
@@ -324,7 +326,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->admin;
     }
 
-    public function mergeOption($name, array $options = [])
+    public function mergeOption($name, array $options = []): void
     {
         if (!isset($this->options[$name])) {
             $this->options[$name] = [];
@@ -337,12 +339,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->options[$name] = array_merge($this->options[$name], $options);
     }
 
-    public function mergeOptions(array $options = [])
+    public function mergeOptions(array $options = []): void
     {
         $this->setOptions(array_merge_recursive($this->options, $options));
     }
 
-    public function setMappingType($mappingType)
+    public function setMappingType($mappingType): void
     {
         $this->mappingType = $mappingType;
     }
@@ -384,7 +386,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      *
      * @param string $help
      */
-    public function setHelp($help)
+    public function setHelp($help): void
     {
         $this->help = $help;
     }
@@ -471,7 +473,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $object->{$fieldName};
     }
 
-    private function cacheFieldGetter($object, $fieldName, $method, $getter = null)
+    private function cacheFieldGetter($object, $fieldName, $method, $getter = null): void
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
         if (null !== $getterKey) {

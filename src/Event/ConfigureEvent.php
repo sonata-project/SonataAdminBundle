@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -30,10 +32,10 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ConfigureEvent extends Event
 {
-    const TYPE_SHOW = 'show';
-    const TYPE_DATAGRID = 'datagrid';
-    const TYPE_FORM = 'form';
-    const TYPE_LIST = 'list';
+    public const TYPE_SHOW = 'show';
+    public const TYPE_DATAGRID = 'datagrid';
+    public const TYPE_FORM = 'form';
+    public const TYPE_LIST = 'list';
 
     /**
      * @var AdminInterface

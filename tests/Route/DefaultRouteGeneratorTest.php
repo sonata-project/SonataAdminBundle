@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -25,14 +27,14 @@ class DefaultRouteGeneratorTest extends TestCase
 {
     protected $cacheTempFolder;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->cacheTempFolder = sys_get_temp_dir().'/sonata_test_route';
 
         exec('rm -rf '.$this->cacheTempFolder);
     }
 
-    public function testGenerate()
+    public function testGenerate(): void
     {
         $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->once())->method('generate')->will($this->returnValue('/foo/bar'));
@@ -47,7 +49,7 @@ class DefaultRouteGeneratorTest extends TestCase
     /**
      * @dataProvider getGenerateUrlTests
      */
-    public function testGenerateUrl($expected, $name, array $parameters)
+    public function testGenerateUrl($expected, $name, array $parameters): void
     {
         $childCollection = new RouteCollection('base.Code.Foo|base.Code.Bar', 'admin_acme_child', '/foo/', 'BundleName:ControllerName');
         $childCollection->add('bar');
@@ -99,7 +101,7 @@ class DefaultRouteGeneratorTest extends TestCase
         ];
     }
 
-    public function testGenerateUrlWithException()
+    public function testGenerateUrlWithException(): void
     {
         $this->expectException(\RuntimeException::class, 'unable to find the route `base.Code.Route.foo`');
 
@@ -123,7 +125,7 @@ class DefaultRouteGeneratorTest extends TestCase
     /**
      * @dataProvider getGenerateUrlChildTests
      */
-    public function testGenerateUrlChild($type, $expected, $name, array $parameters)
+    public function testGenerateUrlChild($type, $expected, $name, array $parameters): void
     {
         $childCollection = new RouteCollection('base.Code.Parent|base.Code.Child', 'admin_acme_child', '/foo/', 'BundleName:ControllerName');
         $childCollection->add('bar');
@@ -204,7 +206,7 @@ class DefaultRouteGeneratorTest extends TestCase
     /**
      * @dataProvider getGenerateUrlParentFieldDescriptionTests
      */
-    public function testGenerateUrlParentFieldDescription($expected, $name, array $parameters)
+    public function testGenerateUrlParentFieldDescription($expected, $name, array $parameters): void
     {
         $childCollection = new RouteCollection('base.Code.Parent|base.Code.Child', 'admin_acme_child', '/foo/', 'BundleName:ControllerName');
         $childCollection->add('bar');
@@ -272,7 +274,7 @@ class DefaultRouteGeneratorTest extends TestCase
     /**
      * @dataProvider getGenerateUrlLoadCacheTests
      */
-    public function testGenerateUrlLoadCache($expected, $name, array $parameters)
+    public function testGenerateUrlLoadCache($expected, $name, array $parameters): void
     {
         $childCollection = new RouteCollection('base.Code.Parent|base.Code.Child', 'admin_acme_child', '/foo', 'BundleName:ControllerName');
         $childCollection->add('bar');

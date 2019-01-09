@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -18,11 +20,11 @@ class AdminControllerHelper_Bar
         return 'bar';
     }
 
-    public function setEnabled($value)
+    public function setEnabled($value): void
     {
     }
 
-    public function getEnabled()
+    public function getEnabled(): void
     {
     }
 }

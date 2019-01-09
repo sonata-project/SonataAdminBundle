@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -21,12 +23,12 @@ class TemplateRegistryTest extends TestCase
      */
     private $templateRegistry;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->templateRegistry = new TemplateRegistry();
     }
 
-    public function testGetTemplates()
+    public function testGetTemplates(): void
     {
         $this->assertSame([], $this->templateRegistry->getTemplates());
 
@@ -40,7 +42,7 @@ class TemplateRegistryTest extends TestCase
         $this->assertSame($templates, $this->templateRegistry->getTemplates());
     }
 
-    public function testGetTemplate1()
+    public function testGetTemplate1(): void
     {
         $this->assertNull($this->templateRegistry->getTemplate('edit'));
 
@@ -51,7 +53,7 @@ class TemplateRegistryTest extends TestCase
         $this->assertSame('@FooAdmin/CRUD/show.html.twig', $this->templateRegistry->getTemplate('show'));
     }
 
-    public function testGetTemplate2()
+    public function testGetTemplate2(): void
     {
         $this->assertNull($this->templateRegistry->getTemplate('edit'));
 

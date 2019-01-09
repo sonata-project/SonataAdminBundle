@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -37,7 +39,7 @@ class GenerateAdminCommand extends QuestionableCommand
      */
     private $managerTypes;
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('sonata:admin:generate')
@@ -146,7 +148,7 @@ class GenerateAdminCommand extends QuestionableCommand
         return 0;
     }
 
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         $questionHelper = $this->getQuestionHelper();
         $questionHelper->writeSection($output, 'Welcome to the Sonata admin generator');
@@ -254,7 +256,7 @@ class GenerateAdminCommand extends QuestionableCommand
     /**
      * @param string $message
      */
-    private function writeError(OutputInterface $output, $message)
+    private function writeError(OutputInterface $output, $message): void
     {
         $output->writeln(sprintf("\n<error>%s</error>", $message));
     }

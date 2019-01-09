@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -17,7 +19,7 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 
 class BaseAdminModelManagerTest extends TestCase
 {
-    public function testHook()
+    public function testHook(): void
     {
         $securityHandler = $this->getMockForAbstractClass(SecurityHandlerInterface::class);
 
@@ -37,10 +39,10 @@ class BaseAdminModelManagerTest extends TestCase
         $admin->delete($t);
     }
 
-    public function testObject()
+    public function testObject(): void
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->once())->method('find')->will($this->returnCallback(function ($class, $id) {
+        $modelManager->expects($this->once())->method('find')->will($this->returnCallback(function ($class, $id): void {
             if ('class' != $class) {
                 throw new \RuntimeException('Invalid class argument');
             }
@@ -55,10 +57,10 @@ class BaseAdminModelManagerTest extends TestCase
         $admin->getObject(10);
     }
 
-    public function testCreateQuery()
+    public function testCreateQuery(): void
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->once())->method('createQuery')->will($this->returnCallback(function ($class) {
+        $modelManager->expects($this->once())->method('createQuery')->will($this->returnCallback(function ($class): void {
             if ('class' != $class) {
                 throw new \RuntimeException('Invalid class argument');
             }
@@ -69,7 +71,7 @@ class BaseAdminModelManagerTest extends TestCase
         $admin->createQuery();
     }
 
-    public function testId()
+    public function testId(): void
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
         $modelManager->expects($this->exactly(2))->method('getNormalizedIdentifier');

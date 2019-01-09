@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -61,7 +63,7 @@ class AdminMakerTest extends TestCase
      */
     private $servicesFile;
 
-    protected function setup()
+    protected function setup(): void
     {
         if (5 == PHP_MAJOR_VERSION || !class_exists('Symfony\Component\Console\CommandLoader\CommandLoaderInterface')) {
             $this->markTestSkipped('Test only available for PHP 7 and SF 3.4');
@@ -76,12 +78,12 @@ class AdminMakerTest extends TestCase
         $this->projectDirectory = sys_get_temp_dir();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         @unlink($this->projectDirectory.'/config/'.$this->servicesFile);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $maker = new AdminMaker($this->projectDirectory, $this->modelManagers);
 

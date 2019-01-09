@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -30,7 +32,7 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class AddDependencyCallsCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         // check if translator service exist
         if (!$container->has('translator')) {
@@ -88,14 +90,12 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $resolvedGroupName = isset($attributes['group']) ?
                     $parameterBag->resolveValue($attributes['group']) :
                     $container->getParameter('sonata.admin.configuration.default_group');
-                $labelCatalogue = isset($attributes['label_catalogue']) ?
-                    $attributes['label_catalogue'] :
+                $labelCatalogue = $attributes['label_catalogue'] ??
                     $container->getParameter('sonata.admin.configuration.default_label_catalogue');
-                $icon = isset($attributes['icon']) ?
-                    $attributes['icon'] :
+                $icon = $attributes['icon'] ??
                     $container->getParameter('sonata.admin.configuration.default_icon');
-                $onTop = isset($attributes['on_top']) ? $attributes['on_top'] : false;
-                $keepOpen = isset($attributes['keep_open']) ? $attributes['keep_open'] : false;
+                $onTop = $attributes['on_top'] ?? false;
+                $keepOpen = $attributes['keep_open'] ?? false;
 
                 if (!isset($groupDefaults[$resolvedGroupName])) {
                     $groupDefaults[$resolvedGroupName] = [
@@ -181,7 +181,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         } elseif ($container->getParameter('sonata.admin.configuration.sort_admins')) {
             $groups = $groupDefaults;
 
-            $elementSort = function (&$element) {
+            $elementSort = function (&$element): void {
                 usort(
                     $element['items'],
                     function ($a, $b) {
@@ -218,7 +218,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     /**
      * This method read the attribute keys and configure admin class to use the related dependency.
      */
-    public function applyConfigurationFromAttribute(Definition $definition, array $attributes)
+    public function applyConfigurationFromAttribute(Definition $definition, array $attributes): void
     {
         $keys = [
             'model_manager',
@@ -262,7 +262,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $manager_type = $attributes['manager_type'];
 
-        $overwriteAdminConfiguration = isset($settings[$serviceId]) ? $settings[$serviceId] : [];
+        $overwriteAdminConfiguration = $settings[$serviceId] ?? [];
 
         $defaultAddServices = [
             'model_manager' => sprintf('sonata.admin.manager.%s', $manager_type),
@@ -287,7 +287,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $method = 'set'.Inflector::classify($attr);
 
             if (isset($overwriteAdminConfiguration[$attr]) || !$definition->hasMethodCall($method)) {
-                $args = [new Reference(isset($overwriteAdminConfiguration[$attr]) ? $overwriteAdminConfiguration[$attr] : $addServiceId)];
+                $args = [new Reference($overwriteAdminConfiguration[$attr] ?? $addServiceId)];
                 if ('translator' === $attr) {
                     $args[] = false;
                 }
@@ -345,7 +345,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $serviceId,
             $container,
             $definition,
-            isset($overwriteAdminConfiguration['templates']) ? $overwriteAdminConfiguration['templates'] : ['view' => []]
+            $overwriteAdminConfiguration['templates'] ?? ['view' => []]
         );
 
         if ($container->hasParameter('sonata.admin.configuration.security.information') && !$definition->hasMethodCall('setSecurityInformation')) {
@@ -365,7 +365,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         ContainerBuilder $container,
         Definition $definition,
         array $overwrittenTemplates = []
-    ) {
+    ): void {
         $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
 
         $methods = [];
@@ -424,7 +424,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         array $defaultArguments,
         Definition $definition,
         Definition $parentDefinition = null
-    ) {
+    ): void {
         $arguments = $definition->getArguments();
         $parentArguments = $parentDefinition ? $parentDefinition->getArguments() : [];
 
