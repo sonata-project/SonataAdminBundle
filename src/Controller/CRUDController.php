@@ -443,7 +443,7 @@ class CRUDController implements ContainerAwareInterface
 
         $confirmation = $request->get('confirmation', false);
 
-        if ($data = json_decode($request->get('data'), true)) {
+        if ($data = json_decode((string) $request->get('data'), true)) {
             $action = $data['action'];
             $idx = $data['idx'];
             $allElements = $data['all_elements'];
@@ -951,10 +951,10 @@ class CRUDController implements ContainerAwareInterface
             );
             $allowedExportFormats = (array) $this->admin->getExportFormats();
 
-            $class = $this->admin->getClass();
+            $class = (string) $this->admin->getClass();
             $filename = sprintf(
                 'export_%s_%s.%s',
-                strtolower(substr($class, strripos($class, '\\') + 1)),
+                strtolower((string) substr($class, strripos($class, '\\') + 1)),
                 date('Y_m_d_H_i_s', strtotime('now')),
                 $format
             );
