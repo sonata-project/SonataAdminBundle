@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -30,8 +32,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class AdminObjectAclManipulator
 {
-    const ACL_USERS_FORM_NAME = 'acl_users_form';
-    const ACL_ROLES_FORM_NAME = 'acl_roles_form';
+    public const ACL_USERS_FORM_NAME = 'acl_users_form';
+    public const ACL_ROLES_FORM_NAME = 'acl_roles_form';
 
     /**
      * @var FormFactoryInterface

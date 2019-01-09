@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -57,10 +59,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, AdminTreeInterface
 {
-    const CONTEXT_MENU = 'menu';
-    const CONTEXT_DASHBOARD = 'dashboard';
+    public const CONTEXT_MENU = 'menu';
+    public const CONTEXT_DASHBOARD = 'dashboard';
 
-    const CLASS_REGEX =
+    public const CLASS_REGEX =
         '@
         (?:([A-Za-z0-9]*)\\\)?        # vendor name / app name
         (Bundle\\\)?                  # optional bundle directory
@@ -70,7 +72,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             Doctrine\\\Orm|Doctrine\\\Phpcr|Doctrine\\\MongoDB|Doctrine\\\CouchDB
         )\\\(.*)@x';
 
-    const MOSAIC_ICON_CLASS = 'fa fa-th-large fa-fw';
+    public const MOSAIC_ICON_CLASS = 'fa fa-th-large fa-fw';
 
     /**
      * The list FieldDescription constructed from the configureListField method.
@@ -1915,7 +1917,7 @@ EOT;
     {
         $parameters = $this->getPersistentParameters();
 
-        return isset($parameters[$name]) ? $parameters[$name] : null;
+        return $parameters[$name] ?? null;
     }
 
     public function getBreadcrumbs($action)

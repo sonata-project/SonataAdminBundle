@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -25,8 +27,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class DateTimeRangeType extends AbstractType
 {
-    const TYPE_BETWEEN = 1;
-    const TYPE_NOT_BETWEEN = 2;
+    public const TYPE_BETWEEN = 1;
+    public const TYPE_NOT_BETWEEN = 2;
 
     /**
      * NEXT_MAJOR: remove this property.
