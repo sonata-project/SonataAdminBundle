@@ -410,7 +410,7 @@ final class SonataAdminExtension extends AbstractExtension
      * Returns a canonicalized locale for "moment" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getCanonicalizedLocaleForMoment(array $context)
     {
@@ -434,7 +434,7 @@ final class SonataAdminExtension extends AbstractExtension
      * Returns a canonicalized locale for "select2" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getCanonicalizedLocaleForSelect2(array $context)
     {

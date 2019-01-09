@@ -942,10 +942,10 @@ class CRUDController implements ContainerAwareInterface
             );
             $allowedExportFormats = (array) $this->admin->getExportFormats();
 
-            $class = $this->admin->getClass();
+            $class = (string) $this->admin->getClass();
             $filename = sprintf(
                 'export_%s_%s.%s',
-                strtolower(substr($class, strripos($class, '\\') + 1)),
+                strtolower((string) substr($class, strripos($class, '\\') + 1)),
                 date('Y_m_d_H_i_s', strtotime('now')),
                 $format
             );

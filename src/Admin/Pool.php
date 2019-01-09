@@ -387,7 +387,7 @@ class Pool
      *
      * @param string $name
      *
-     * @return null|string
+     * @return string|null
      */
     public function getTemplate($name)
     {

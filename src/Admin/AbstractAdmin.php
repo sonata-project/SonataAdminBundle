@@ -777,7 +777,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @throws \InvalidArgumentException
      *
-     * @return null|string
+     * @return string|null
      */
     public function getParentAssociationMapping()
     {
@@ -1135,7 +1135,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @param string $name
      *
-     * @return null|string
+     * @return string|null
      */
     public function getTemplate($name)
     {
