@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -222,7 +224,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
             $targets[$target] = new \SplPriorityQueue();
         }
 
-        $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
+        $priority = $attributes['priority'] ?? 0;
         $targets[$target]->insert(new Reference($extension), $priority);
     }
 }

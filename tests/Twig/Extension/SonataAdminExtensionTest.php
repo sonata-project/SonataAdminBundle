@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -298,7 +300,7 @@ class SonataAdminExtensionTest extends TestCase
         $this->fieldDescription->expects($this->any())
             ->method('getOption')
             ->will($this->returnCallback(function ($name, $default = null) use ($options) {
-                return isset($options[$name]) ? $options[$name] : $default;
+                return $options[$name] ?? $default;
             }));
 
         $this->fieldDescription->expects($this->any())
@@ -382,7 +384,7 @@ class SonataAdminExtensionTest extends TestCase
         $this->fieldDescription->expects($this->any())
             ->method('getOption')
             ->will($this->returnCallback(function ($name, $default = null) use ($options) {
-                return isset($options[$name]) ? $options[$name] : $default;
+                return $options[$name] ?? $default;
             }));
 
         $this->fieldDescription->expects($this->any())
@@ -2428,7 +2430,7 @@ EOT
             ->will($this->onConsecutiveCalls(
                 $options['choices'],
                 'MyCatalogue',
-                isset($options['multiple']) ? $options['multiple'] : null
+                $options['multiple'] ?? null
             ));
 
         $this->assertSame($expectedChoices, $this->twigExtension->getXEditableChoices($fieldDescription));

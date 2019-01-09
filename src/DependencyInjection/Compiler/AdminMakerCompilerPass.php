@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -21,7 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 final class AdminMakerCompilerPass implements CompilerPassInterface
 {
-    const MANAGERS = [
+    public const MANAGERS = [
         'sonata.admin.manager.orm',
         'sonata.admin.manager.doctrine_mongodb',
         'sonata.admin.manager.doctrine_phpcr',
