@@ -17,7 +17,7 @@ class Baz
 {
     private $bar;
 
-    public function setBar(Bar $bar)
+    public function setBar(Bar $bar): void
     {
         $this->bar = $bar;
     }

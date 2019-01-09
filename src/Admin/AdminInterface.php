@@ -642,7 +642,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * @param string $name
      *
-     * @return null|mixed
+     * @return mixed|null
      */
     public function getPersistentParameter($name);
 

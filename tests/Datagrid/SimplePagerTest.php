@@ -131,11 +131,11 @@ class SimplePagerTest extends TestCase
         $this->proxyQuery->expects($this->once())
             ->method('execute')
             ->with([], null)
-            ->will($this->returnValue(new ArrayCollection(\range(0, 12))));
+            ->will($this->returnValue(new ArrayCollection(range(0, 12))));
 
         $this->pager->setQuery($this->proxyQuery);
         $this->pager->setMaxPerPage(2);
 
-        $this->assertSame(\range(0, 1), $this->pager->getResults());
+        $this->assertSame(range(0, 1), $this->pager->getResults());
     }
 }

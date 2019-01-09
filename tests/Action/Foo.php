@@ -15,7 +15,7 @@ namespace Sonata\AdminBundle\Tests\Action;
 
 class Foo
 {
-    public function setEnabled($value)
+    public function setEnabled($value): void
     {
     }
 }
