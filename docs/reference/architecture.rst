@@ -97,7 +97,7 @@ your ``Admin`` services. This is done using a ``call`` to the matching ``setter`
                 calls:
                     - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.underscore']]
                 tags:
-                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
+                    - { name: sonata.admin, manager_type: orm, group: 'Content', label: 'Post' }
 
 Here, we declare the same ``Admin`` service as in the :doc:`../getting_started/creating_an_admin`
 chapter, but using a different label translator strategy, replacing the default one. Notice that
@@ -152,7 +152,7 @@ to set the controller to ``App\Controller\PostAdminController``:
                 calls:
                     - [setTranslationDomain, ['App']]
                 tags:
-                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
+                    - { name: sonata.admin, manager_type: orm, group: 'Content', label: 'Post' }
 
 When extending ``CRUDController``, remember that the ``Admin`` class already has
 a set of automatically injected dependencies that are useful when implementing several

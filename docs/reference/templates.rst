@@ -189,7 +189,7 @@ can specify the templates to use in the ``Admin`` service definition:
                 calls:
                     - [setTemplate, ['edit', '@App/PostAdmin/edit.html.twig']]
                 tags:
-                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
+                    - { name: sonata.admin, manager_type: orm, group: 'Content', label: 'Post' }
 
 .. note::
 

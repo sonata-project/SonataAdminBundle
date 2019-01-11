@@ -88,7 +88,7 @@ services:
                     - App\Entity\Post
                     - ~
                 tags:
-                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post" }
+                    - { name: sonata.admin, manager_type: orm, group: 'Content', label: 'Post' }
 
 In these examples, notice the ``group`` tag, stating that this particular ``Admin``
 service belongs to the ``Content`` group.
@@ -122,9 +122,9 @@ service belongs to the ``Content`` group.
                 tags:
                     - name: sonata.admin
                       manager_type: orm
-                      group: "app.admin.group.content"
-                      label: "app.admin.model.post"
-                      label_catalogue: "App"
+                      group: 'app.admin.group.content'
+                      label: 'app.admin.model.post'
+                      label_catalogue: 'App'
 
 In this example, the labels are translated by ``App``, using the given
 ``label_catalogue``. So, you can use the above examples to support multiple languages
