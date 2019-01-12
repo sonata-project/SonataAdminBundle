@@ -61,7 +61,7 @@ class ShowMapperTest extends TestCase
      */
     private $listShowFields;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->showBuilder = $this->getMockForAbstractClass(ShowBuilderInterface::class);
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
@@ -86,13 +86,13 @@ class ShowMapperTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('setShowGroups')
-            ->will($this->returnCallback(function ($showGroups) {
+            ->will($this->returnCallback(function ($showGroups): void {
                 $this->groups = $showGroups;
             }));
 
         $this->admin->expects($this->any())
             ->method('reorderShowGroup')
-            ->will($this->returnCallback(function ($group, $keys) {
+            ->will($this->returnCallback(function ($group, $keys): void {
                 $this->groups[$group]['fields'] = array_merge(array_flip($keys), $this->groups[$group]['fields']);
             }));
 
@@ -131,14 +131,14 @@ class ShowMapperTest extends TestCase
 
         $this->showBuilder->expects($this->any())
             ->method('addField')
-            ->will($this->returnCallback(function ($list, $type, $fieldDescription, $admin) {
+            ->will($this->returnCallback(function ($list, $type, $fieldDescription, $admin): void {
                 $list->add($fieldDescription);
             }));
 
         $this->showMapper = new ShowMapper($this->showBuilder, $this->fieldDescriptionCollection, $this->admin);
     }
 
-    public function testFluidInterface()
+    public function testFluidInterface(): void
     {
         $fieldDescription = $this->getFieldDescriptionMock('fooName', 'fooLabel');
 
@@ -147,7 +147,7 @@ class ShowMapperTest extends TestCase
         $this->assertSame($this->showMapper, $this->showMapper->reorder([]));
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $this->assertFalse($this->showMapper->has('fooName'));
 
@@ -157,7 +157,7 @@ class ShowMapperTest extends TestCase
         $this->assertSame($fieldDescription, $this->showMapper->get('fooName'));
     }
 
-    public function testAdd()
+    public function testAdd(): void
     {
         $this->showMapper->add('fooName');
 
@@ -170,7 +170,7 @@ class ShowMapperTest extends TestCase
         $this->assertSame('fooName', $fieldDescription->getOption('label'));
     }
 
-    public function testIfTrueApply()
+    public function testIfTrueApply(): void
     {
         $this->showMapper->ifTrue(true);
         $this->showMapper->add('fooName');
@@ -184,7 +184,7 @@ class ShowMapperTest extends TestCase
         $this->assertSame('fooName', $fieldDescription->getOption('label'));
     }
 
-    public function testIfTrueNotApply()
+    public function testIfTrueNotApply(): void
     {
         $this->showMapper->ifTrue(false);
         $this->showMapper->add('fooName');
@@ -193,7 +193,7 @@ class ShowMapperTest extends TestCase
         $this->assertFalse($this->showMapper->has('fooName'));
     }
 
-    public function testIfTrueCombination()
+    public function testIfTrueCombination(): void
     {
         $this->showMapper->ifTrue(false);
         $this->showMapper->add('fooName');
@@ -209,7 +209,7 @@ class ShowMapperTest extends TestCase
         $this->assertSame('barName', $fieldDescription->getOption('label'));
     }
 
-    public function testIfFalseApply()
+    public function testIfFalseApply(): void
     {
         $this->showMapper->ifFalse(false);
         $this->showMapper->add('fooName');
@@ -223,7 +223,7 @@ class ShowMapperTest extends TestCase
         $this->assertSame('fooName', $fieldDescription->getOption('label'));
     }
 
-    public function testIfFalseNotApply()
+    public function testIfFalseNotApply(): void
     {
         $this->showMapper->ifFalse(true);
         $this->showMapper->add('fooName');
@@ -232,7 +232,7 @@ class ShowMapperTest extends TestCase
         $this->assertFalse($this->showMapper->has('fooName'));
     }
 
-    public function testIfFalseCombination()
+    public function testIfFalseCombination(): void
     {
         $this->showMapper->ifFalse(true);
         $this->showMapper->add('fooName');
@@ -248,7 +248,7 @@ class ShowMapperTest extends TestCase
         $this->assertSame('barName', $fieldDescription->getOption('label'));
     }
 
-    public function testIfTrueNested()
+    public function testIfTrueNested(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
@@ -257,7 +257,7 @@ class ShowMapperTest extends TestCase
         $this->showMapper->ifTrue(true);
     }
 
-    public function testIfFalseNested()
+    public function testIfFalseNested(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
@@ -266,7 +266,7 @@ class ShowMapperTest extends TestCase
         $this->showMapper->ifFalse(false);
     }
 
-    public function testIfCombinationNested()
+    public function testIfCombinationNested(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
@@ -275,7 +275,7 @@ class ShowMapperTest extends TestCase
         $this->showMapper->ifFalse(false);
     }
 
-    public function testIfFalseCombinationNested2()
+    public function testIfFalseCombinationNested2(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
@@ -284,7 +284,7 @@ class ShowMapperTest extends TestCase
         $this->showMapper->ifTrue(true);
     }
 
-    public function testIfFalseCombinationNested3()
+    public function testIfFalseCombinationNested3(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
@@ -293,7 +293,7 @@ class ShowMapperTest extends TestCase
         $this->showMapper->ifTrue(false);
     }
 
-    public function testIfFalseCombinationNested4()
+    public function testIfFalseCombinationNested4(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
@@ -302,7 +302,7 @@ class ShowMapperTest extends TestCase
         $this->showMapper->ifFalse(true);
     }
 
-    public function testAddRemove()
+    public function testAddRemove(): void
     {
         $this->assertFalse($this->showMapper->has('fooName'));
 
@@ -315,14 +315,14 @@ class ShowMapperTest extends TestCase
         $this->assertFalse($this->showMapper->has('fooName'));
     }
 
-    public function testAddException()
+    public function testAddException(): void
     {
         $this->expectException(\RuntimeException::class, 'invalid state');
 
         $this->showMapper->add(12345);
     }
 
-    public function testAddDuplicateFieldNameException()
+    public function testAddDuplicateFieldNameException(): void
     {
         $name = 'name';
         $this->expectException(\RuntimeException::class, sprintf('Duplicate field %s "name" in show mapper. Names should be unique.', $name));
@@ -331,7 +331,7 @@ class ShowMapperTest extends TestCase
         $this->showMapper->add($name);
     }
 
-    public function testKeys()
+    public function testKeys(): void
     {
         $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
         $fieldDescription2 = $this->getFieldDescriptionMock('fooName2', 'fooLabel2');
@@ -342,7 +342,7 @@ class ShowMapperTest extends TestCase
         $this->assertSame(['fooName1', 'fooName2'], $this->showMapper->keys());
     }
 
-    public function testReorder()
+    public function testReorder(): void
     {
         $this->assertSame([], $this->admin->getShowGroups());
 
@@ -385,7 +385,7 @@ class ShowMapperTest extends TestCase
             ], ], true), print_r($this->admin->getShowGroups(), true));
     }
 
-    public function testGroupRemovingWithoutTab()
+    public function testGroupRemovingWithoutTab(): void
     {
         $this->cleanShowMapper();
 
@@ -395,7 +395,7 @@ class ShowMapperTest extends TestCase
         $this->assertSame([], $this->admin->getShowGroups());
     }
 
-    public function testGroupRemovingWithTab()
+    public function testGroupRemovingWithTab(): void
     {
         $this->cleanShowMapper();
 
@@ -405,7 +405,7 @@ class ShowMapperTest extends TestCase
         $this->assertSame([], $this->admin->getShowGroups());
     }
 
-    public function testGroupRemovingWithoutTabAndWithTabRemoving()
+    public function testGroupRemovingWithoutTabAndWithTabRemoving(): void
     {
         $this->cleanShowMapper();
 
@@ -416,7 +416,7 @@ class ShowMapperTest extends TestCase
         $this->assertSame([], $this->admin->getShowTabs());
     }
 
-    public function testGroupRemovingWithTabAndWithTabRemoving()
+    public function testGroupRemovingWithTabAndWithTabRemoving(): void
     {
         $this->cleanShowMapper();
 
@@ -427,7 +427,7 @@ class ShowMapperTest extends TestCase
         $this->assertSame([], $this->admin->getShowTabs());
     }
 
-    public function testEmptyFieldLabel()
+    public function testEmptyFieldLabel(): void
     {
         $this->showMapper->add('foo', null, ['label' => false]);
 

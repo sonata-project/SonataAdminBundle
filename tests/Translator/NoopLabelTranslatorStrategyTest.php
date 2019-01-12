@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 
 class NoopLabelTranslatorStrategyTest extends TestCase
 {
-    public function testLabel()
+    public function testLabel(): void
     {
         $strategy = new NoopLabelTranslatorStrategy();
 

@@ -19,12 +19,12 @@ class FilterChoiceWidgetTest extends BaseWidgetTest
 {
     protected $type = 'filter';
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
 
-    public function testDefaultValueRendering()
+    public function testDefaultValueRendering(): void
     {
         $choice = $this->factory->create(
             $this->getChoiceClass(),
@@ -40,7 +40,7 @@ class FilterChoiceWidgetTest extends BaseWidgetTest
         );
     }
 
-    public function testRequiredIsDisabledForEmptyPlaceholder()
+    public function testRequiredIsDisabledForEmptyPlaceholder(): void
     {
         $choice = $this->factory->create(
             $this->getChoiceClass(),
@@ -56,7 +56,7 @@ class FilterChoiceWidgetTest extends BaseWidgetTest
         );
     }
 
-    public function testRequiredIsEnabledIfPlaceholderIsSet()
+    public function testRequiredIsEnabledIfPlaceholderIsSet(): void
     {
         $choice = $this->factory->create(
             $this->getChoiceClass(),

@@ -25,14 +25,14 @@ class ModelAutocompleteTypeTest extends TypeTestCase
      */
     private $type;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->type = new ModelAutocompleteType();
 
         parent::setUp();
     }
 
-    public function testGetDefaultOptions()
+    public function testGetDefaultOptions(): void
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
         $optionResolver = new OptionsResolver();
@@ -79,7 +79,7 @@ class ModelAutocompleteTypeTest extends TypeTestCase
         $this->assertSame('SonataAdminBundle', $options['btn_catalogue']);
     }
 
-    public function testGetBlockPrefix()
+    public function testGetBlockPrefix(): void
     {
         $this->assertSame('sonata_type_model_autocomplete', $this->type->getBlockPrefix());
     }

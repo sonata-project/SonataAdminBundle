@@ -24,7 +24,7 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateUsernameTests
      */
-    public function testValidateUsername($expected, $value)
+    public function testValidateUsername($expected, $value): void
     {
         $this->assertSame($expected, Validators::validateUsername($value));
     }
@@ -40,7 +40,7 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateUsernameWithExceptionTests
      */
-    public function testValidateUsernameWithException($value)
+    public function testValidateUsernameWithException($value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -57,7 +57,7 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateEntityNameTests
      */
-    public function testValidateEntityName($expected, $value)
+    public function testValidateEntityName($expected, $value): void
     {
         $this->assertSame($expected, Validators::validateEntityName($value));
     }
@@ -74,7 +74,7 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateEntityNamesWithExceptionTests
      */
-    public function testValidateEntityNameWithException($value)
+    public function testValidateEntityNameWithException($value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -97,7 +97,7 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateClassTests
      */
-    public function testValidateClass($expected, $value)
+    public function testValidateClass($expected, $value): void
     {
         $this->assertSame($expected, Validators::validateClass($value));
     }
@@ -113,7 +113,7 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateClassWithExceptionTests
      */
-    public function testValidateClassWithException($value)
+    public function testValidateClassWithException($value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -132,7 +132,7 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateAdminClassBasenameTests
      */
-    public function testValidateAdminClassBasename($expected, $value)
+    public function testValidateAdminClassBasename($expected, $value): void
     {
         $this->assertSame($expected, Validators::validateAdminClassBasename($value));
     }
@@ -149,7 +149,7 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateAdminClassBasenameWithExceptionTests
      */
-    public function testValidateAdminClassBasenameWithException($value)
+    public function testValidateAdminClassBasenameWithException($value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -168,7 +168,7 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateControllerClassBasenameTests
      */
-    public function testValidateControllerClassBasename($expected, $value)
+    public function testValidateControllerClassBasename($expected, $value): void
     {
         $this->assertSame($expected, Validators::validateControllerClassBasename($value));
     }
@@ -185,7 +185,7 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateControllerClassBasenameWithExceptionTests
      */
-    public function testValidateControllerClassBasenameWithException($value)
+    public function testValidateControllerClassBasenameWithException($value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -221,7 +221,7 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateServicesFileTests
      */
-    public function testValidateServicesFile($expected, $value)
+    public function testValidateServicesFile($expected, $value): void
     {
         $this->assertSame($expected, Validators::validateServicesFile($value));
     }
@@ -242,7 +242,7 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateServiceIdTests
      */
-    public function testValidateServiceId($value)
+    public function testValidateServiceId($value): void
     {
         $this->assertSame($value, Validators::validateServiceId($value));
     }
@@ -259,7 +259,7 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateServiceIdWithExceptionTests
      */
-    public function testValidateServiceIdWithException($value)
+    public function testValidateServiceIdWithException($value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

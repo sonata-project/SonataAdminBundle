@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
 
 class BCLabelTranslatorStrategyTest extends TestCase
 {
-    public function testLabel()
+    public function testLabel(): void
     {
         $strategy = new BCLabelTranslatorStrategy();
 

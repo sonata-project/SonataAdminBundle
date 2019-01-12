@@ -53,7 +53,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
     /** @var array $config */
     private $config;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -61,7 +61,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->config = $this->getConfig();
     }
 
-    public function testTranslatorDisabled()
+    public function testTranslatorDisabled(): void
     {
         $this->expectException(
             \RuntimeException::class, 'The "translator" service is not yet enabled.
@@ -85,7 +85,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
     /**
      * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass::process
      */
-    public function testProcessParsingFullValidConfig()
+    public function testProcessParsingFullValidConfig(): void
     {
         $container = $this->getContainer();
         $this->extension->load([$this->config], $container);
@@ -149,7 +149,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
     /**
      * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass::process
      */
-    public function testProcessResultingConfig()
+    public function testProcessResultingConfig(): void
     {
         $container = $this->getContainer();
         $this->extension->load([$this->config], $container);
@@ -235,7 +235,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         }
     }
 
-    public function testProcessSortAdmins()
+    public function testProcessSortAdmins(): void
     {
         $container = $this->getContainer();
 
@@ -256,7 +256,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertSame('1 Entry', $adminGroups[0]['items'][0]['label'], 'second entry for group in configuration, first in list');
     }
 
-    public function testProcessGroupNameAsParameter()
+    public function testProcessGroupNameAsParameter(): void
     {
         $config = [
             'dashboard' => [
@@ -281,7 +281,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertArrayNotHasKey('%sonata.admin.parameter.groupname%', $adminGroups);
     }
 
-    public function testApplyTemplatesConfiguration()
+    public function testApplyTemplatesConfiguration(): void
     {
         $container = $this->getContainer();
 
@@ -340,7 +340,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         }
     }
 
-    public function testApplyShowMosaicButtonConfiguration()
+    public function testApplyShowMosaicButtonConfiguration(): void
     {
         $container = $this->getContainer();
 
@@ -370,7 +370,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         }
     }
 
-    public function testProcessMultipleOnTopOptions()
+    public function testProcessMultipleOnTopOptions(): void
     {
         $container = $this->getContainer();
 
@@ -392,7 +392,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $compilerPass->process($container);
     }
 
-    public function testProcessMultipleOnTopOptionsAdditionalGroup()
+    public function testProcessMultipleOnTopOptionsAdditionalGroup(): void
     {
         $container = $this->getContainer();
 
@@ -428,7 +428,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $compilerPass->process($container);
     }
 
-    public function testProcessMultipleOnTopOptionsInServiceDefinition()
+    public function testProcessMultipleOnTopOptionsInServiceDefinition(): void
     {
         $container = $this->getContainer();
 
@@ -449,7 +449,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $compilerPass->process($container);
     }
 
-    public function testProcessMultipleOnTopOptionsInServiceDefinition1()
+    public function testProcessMultipleOnTopOptionsInServiceDefinition1(): void
     {
         $container = $this->getContainer();
 
@@ -473,7 +473,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
     /**
      * @doesNotPerformAssertions
      */
-    public function testProcessMultipleOnTopOptionsInServiceDefinition2()
+    public function testProcessMultipleOnTopOptionsInServiceDefinition2(): void
     {
         $container = $this->getContainer();
 
@@ -501,7 +501,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         }
     }
 
-    public function testProcessAbstractAdminServiceInServiceDefinition()
+    public function testProcessAbstractAdminServiceInServiceDefinition(): void
     {
         $container = $this->getContainer();
 

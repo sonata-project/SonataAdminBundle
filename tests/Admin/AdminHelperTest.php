@@ -32,7 +32,7 @@ class AdminHelperTest extends TestCase
      */
     protected $helper;
 
-    public function setUp()
+    public function setUp(): void
     {
         $container = $this->createMock(ContainerInterface::class);
 
@@ -40,7 +40,7 @@ class AdminHelperTest extends TestCase
         $this->helper = new AdminHelper($pool);
     }
 
-    public function testGetChildFormBuilder()
+    public function testGetChildFormBuilder(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
@@ -54,7 +54,7 @@ class AdminHelperTest extends TestCase
         $this->isInstanceOf(FormBuilder::class, $this->helper->getChildFormBuilder($formBuilder, 'test_elementId'));
     }
 
-    public function testGetChildFormView()
+    public function testGetChildFormView(): void
     {
         $formView = new FormView();
         $formView->vars['id'] = 'test';
@@ -65,7 +65,7 @@ class AdminHelperTest extends TestCase
         $this->isInstanceOf(FormView::class, $this->helper->getChildFormView($formView, 'test_elementId'));
     }
 
-    public function testAddNewInstance()
+    public function testAddNewInstance(): void
     {
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
@@ -82,7 +82,7 @@ class AdminHelperTest extends TestCase
         $this->helper->addNewInstance($object, $fieldDescription);
     }
 
-    public function testAddNewInstancePlural()
+    public function testAddNewInstancePlural(): void
     {
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
@@ -99,7 +99,7 @@ class AdminHelperTest extends TestCase
         $this->helper->addNewInstance($object, $fieldDescription);
     }
 
-    public function testAddNewInstanceInflector()
+    public function testAddNewInstanceInflector(): void
     {
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())->method('getNewInstance')->will($this->returnValue(new \stdClass()));
@@ -116,7 +116,7 @@ class AdminHelperTest extends TestCase
         $this->helper->addNewInstance($object, $fieldDescription);
     }
 
-    public function testGetElementAccessPath()
+    public function testGetElementAccessPath(): void
     {
         $object = $this->getMockBuilder('stdClass')
             ->setMethods(['getPathToObject'])
@@ -137,7 +137,7 @@ class AdminHelperTest extends TestCase
         $this->assertSame('path_to_object[0].another.more_things', $path);
     }
 
-    public function testItThrowsExceptionWhenDoesNotFindTheFullPath()
+    public function testItThrowsExceptionWhenDoesNotFindTheFullPath(): void
     {
         $path = 'uniquePartOfId_path_to_object_0_more_calls';
         $object = $this->getMockBuilder('stdClass')
@@ -155,7 +155,7 @@ class AdminHelperTest extends TestCase
         $this->helper->getElementAccessPath($path, $object);
     }
 
-    public function testAppendFormFieldElementNested()
+    public function testAppendFormFieldElementNested(): void
     {
         $admin = $this->createMock(AdminInterface::class);
         $object = $this->getMockBuilder('stdClass')

@@ -32,7 +32,7 @@ class AdminExporterTest extends TestCase
     /**
      * @dataProvider provideExportFormats
      */
-    public function testAdminHasPriorityOverGlobalSettings(array $expectedFormats, array $adminFormats, array $globalFormats)
+    public function testAdminHasPriorityOverGlobalSettings(array $expectedFormats, array $adminFormats, array $globalFormats): void
     {
         $writers = [];
         foreach ($globalFormats as $exportFormat) {
@@ -52,7 +52,7 @@ class AdminExporterTest extends TestCase
         $this->assertSame($expectedFormats, $adminExporter->getAvailableFormats($admin));
     }
 
-    public function testGetExportFilename()
+    public function testGetExportFilename(): void
     {
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())

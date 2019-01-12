@@ -31,7 +31,7 @@ class CoreControllerTest extends TestCase
      * @doesNotPerformAssertions
      * @group legacy
      */
-    public function testdashboardActionStandardRequest()
+    public function testdashboardActionStandardRequest(): void
     {
         $container = $this->createMock(ContainerInterface::class);
 
@@ -83,7 +83,7 @@ class CoreControllerTest extends TestCase
      * @doesNotPerformAssertions
      * @group legacy
      */
-    public function testdashboardActionAjaxLayout()
+    public function testdashboardActionAjaxLayout(): void
     {
         $container = $this->createMock(ContainerInterface::class);
 

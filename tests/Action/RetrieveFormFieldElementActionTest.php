@@ -59,7 +59,7 @@ final class RetrieveFormFieldElementActionTest extends TestCase
      */
     private $helper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->twig = $this->prophesize(Environment::class);
         $this->admin = $this->prophesize(AbstractAdmin::class);
@@ -74,7 +74,7 @@ final class RetrieveFormFieldElementActionTest extends TestCase
         );
     }
 
-    public function testRetrieveFormFieldElementAction()
+    public function testRetrieveFormFieldElementAction(): void
     {
         $object = new \stdClass();
         $request = new Request([

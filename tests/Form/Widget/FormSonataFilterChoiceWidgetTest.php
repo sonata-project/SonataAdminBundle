@@ -24,12 +24,12 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 {
     protected $type = 'filter';
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
 
-    public function testDefaultValueRendering()
+    public function testDefaultValueRendering(): void
     {
         $choice = $this->factory->create(
             $this->getParentClass(),

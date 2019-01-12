@@ -39,7 +39,7 @@ class CreateClassCacheCommandTest extends TestCase
      */
     private $application;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $tempFile = tempnam(sys_get_temp_dir(), 'sonata_');
         if (file_exists($tempFile)) {
@@ -80,7 +80,7 @@ class CreateClassCacheCommandTest extends TestCase
         $this->application->add($command);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ($this->tempDirectory) {
             if (file_exists($this->tempDirectory.'/classes.map')) {
@@ -97,7 +97,7 @@ class CreateClassCacheCommandTest extends TestCase
         }
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $this->markTestSkipped();
         $this->assertFileExists($this->tempDirectory.'/classes.map');
@@ -113,7 +113,7 @@ class CreateClassCacheCommandTest extends TestCase
         $this->assertFileEquals(__DIR__.'/../Fixtures/Command/classes.php', $this->tempDirectory.'/classes.php');
     }
 
-    public function testExecuteWithException()
+    public function testExecuteWithException(): void
     {
         $this->assertFileExists($this->tempDirectory.'/classes.map');
         unlink($this->tempDirectory.'/classes.map');

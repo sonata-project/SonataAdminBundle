@@ -20,12 +20,12 @@ class FormChoiceWidgetTest extends BaseWidgetTest
 {
     protected $type = 'form';
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
 
-    public function testLabelRendering()
+    public function testLabelRendering(): void
     {
         $choices = ['some', 'choices'];
         if (!method_exists(FormTypeInterface::class, 'setDefaultOptions')) {
@@ -49,7 +49,7 @@ class FormChoiceWidgetTest extends BaseWidgetTest
         );
     }
 
-    public function testDefaultValueRendering()
+    public function testDefaultValueRendering(): void
     {
         $choice = $this->factory->create(
             $this->getChoiceClass(),
@@ -65,7 +65,7 @@ class FormChoiceWidgetTest extends BaseWidgetTest
         );
     }
 
-    public function testRequiredIsDisabledForEmptyPlaceholder()
+    public function testRequiredIsDisabledForEmptyPlaceholder(): void
     {
         $choice = $this->factory->create(
             $this->getChoiceClass(),
@@ -81,7 +81,7 @@ class FormChoiceWidgetTest extends BaseWidgetTest
         );
     }
 
-    public function testRequiredIsEnabledIfPlaceholderIsSet()
+    public function testRequiredIsEnabledIfPlaceholderIsSet(): void
     {
         $choice = $this->factory->create(
             $this->getChoiceClass(),

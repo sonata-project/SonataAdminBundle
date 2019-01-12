@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ExporterTest extends TestCase
 {
-    public function testFilter()
+    public function testFilter(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -39,7 +39,7 @@ class ExporterTest extends TestCase
     /**
      * @dataProvider getGetResponseTests
      */
-    public function testGetResponse($format, $filename, $contentType)
+    public function testGetResponse($format, $filename, $contentType): void
     {
         $source = new ArraySourceIterator([
             ['foo' => 'bar'],

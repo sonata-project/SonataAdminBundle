@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 
 class UnderscoreLabelTranslatorStrategyTest extends TestCase
 {
-    public function testLabel()
+    public function testLabel(): void
     {
         $strategy = new UnderscoreLabelTranslatorStrategy();
 

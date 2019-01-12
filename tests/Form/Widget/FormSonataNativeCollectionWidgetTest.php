@@ -22,7 +22,7 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
 {
     protected $type = 'form';
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
@@ -38,7 +38,7 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
     /**
      * @dataProvider prototypeRenderingProvider
      */
-    public function testPrototypeIsDeletableNoMatterTheShrinkability(array $options)
+    public function testPrototypeIsDeletableNoMatterTheShrinkability(array $options): void
     {
         $choice = $this->factory->create(
             $this->getChoiceClass(),

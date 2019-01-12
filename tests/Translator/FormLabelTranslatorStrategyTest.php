@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy;
 
 class FormLabelTranslatorStrategyTest extends TestCase
 {
-    public function testLabel()
+    public function testLabel(): void
     {
         $strategy = new FormLabelTranslatorStrategy();
 

@@ -21,14 +21,14 @@ class ModelListTypeTest extends TypeTestCase
 {
     private $modelManager;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->modelManager = $this->prophesize(ModelManagerInterface::class);
 
         parent::setUp();
     }
 
-    public function testSubmitValidData()
+    public function testSubmitValidData(): void
     {
         $formData = 42;
 

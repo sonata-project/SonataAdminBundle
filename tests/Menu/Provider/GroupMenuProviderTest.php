@@ -45,7 +45,7 @@ class GroupMenuProviderTest extends TestCase
      */
     private $checker;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
         $this->checker = $this
@@ -59,7 +59,7 @@ class GroupMenuProviderTest extends TestCase
         $this->provider = new GroupMenuProvider($this->factory, $this->pool, $this->checker);
     }
 
-    public function testGroupMenuProviderName()
+    public function testGroupMenuProviderName(): void
     {
         $this->assertTrue($this->provider->has('sonata_group_menu'));
     }
@@ -72,7 +72,7 @@ class GroupMenuProviderTest extends TestCase
      * @group legacy
      * @dataProvider getAdminGroups
      */
-    public function testGroupMenuProviderWithoutChecker(array $adminGroups)
+    public function testGroupMenuProviderWithoutChecker(array $adminGroups): void
     {
         $provider = new GroupMenuProvider($this->factory, $this->pool);
 
@@ -114,7 +114,7 @@ class GroupMenuProviderTest extends TestCase
      *
      * @dataProvider getAdminGroups
      */
-    public function testGetMenuProviderWithCheckerGrantedGroupRoles(array $adminGroups)
+    public function testGetMenuProviderWithCheckerGrantedGroupRoles(array $adminGroups): void
     {
         $this->pool->expects($this->any())
             ->method('getInstance')
@@ -192,7 +192,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetMenuProviderWithCheckerGrantedMultipleGroupRoles(
         array $adminGroups
-    ) {
+    ): void {
         $this->checker->expects($this->any())
             ->method('isGranted')
             ->willReturnCallback([$this, 'unanimousGrantCheckerMock']);
@@ -219,7 +219,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetMenuProviderWithCheckerGrantedGroupAndItemRoles(
         array $adminGroups
-    ) {
+    ): void {
         $this->checker->expects($this->any())
             ->method('isGranted')
             ->willReturnCallback([$this, 'unanimousGrantCheckerNoBazMock']);
@@ -247,7 +247,7 @@ class GroupMenuProviderTest extends TestCase
      */
     public function testGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTop(
         array $adminGroups
-    ) {
+    ): void {
         $this->checker->expects($this->any())
             ->method('isGranted')
             ->willReturnCallback([$this, 'unanimousGrantCheckerMock']);
@@ -269,7 +269,7 @@ class GroupMenuProviderTest extends TestCase
      *
      * @dataProvider getAdminGroups
      */
-    public function testGetMenuProviderWithAdmin(array $adminGroups)
+    public function testGetMenuProviderWithAdmin(array $adminGroups): void
     {
         $this->pool->expects($this->any())
             ->method('getInstance')
@@ -313,7 +313,7 @@ class GroupMenuProviderTest extends TestCase
      *
      * @dataProvider getAdminGroups
      */
-    public function testGetKnpMenuWithListRoute(array $adminGroups)
+    public function testGetKnpMenuWithListRoute(array $adminGroups): void
     {
         $this->pool->expects($this->any())
             ->method('getInstance')
@@ -343,7 +343,7 @@ class GroupMenuProviderTest extends TestCase
      *
      * @dataProvider getAdminGroups
      */
-    public function testGetKnpMenuWithGrantedList(array $adminGroups)
+    public function testGetKnpMenuWithGrantedList(array $adminGroups): void
     {
         $this->pool->expects($this->any())
             ->method('getInstance')
@@ -373,7 +373,7 @@ class GroupMenuProviderTest extends TestCase
      *
      * @dataProvider getAdminGroupsWithOnTopOption
      */
-    public function testGetMenuProviderOnTopOptions(array $adminGroupsOnTopOption)
+    public function testGetMenuProviderOnTopOptions(array $adminGroupsOnTopOption): void
     {
         $this->pool->expects($this->any())
             ->method('getInstance')
@@ -397,7 +397,7 @@ class GroupMenuProviderTest extends TestCase
      *
      * @dataProvider getAdminGroups
      */
-    public function testGetMenuProviderKeepOpenOption(array $adminGroups)
+    public function testGetMenuProviderKeepOpenOption(array $adminGroups): void
     {
         $this->pool->expects($this->any())
             ->method('getInstance')

@@ -20,11 +20,11 @@ class AdminControllerHelper_Bar
         return 'bar';
     }
 
-    public function setEnabled($value)
+    public function setEnabled($value): void
     {
     }
 
-    public function getEnabled()
+    public function getEnabled(): void
     {
     }
 }
