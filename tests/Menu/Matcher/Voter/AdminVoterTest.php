@@ -42,6 +42,7 @@ class AdminVoterTest extends AbstractVoterTest
     }
 
     /**
+     * @doesNotPerformAssertions
      * @group legacy
      */
     public function testDeprecatedRequestSetter()
