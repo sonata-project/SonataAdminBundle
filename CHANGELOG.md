@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Default admin service options (group, label catalogue and icon) are now configurable
+- Added possibility to search globally case-sensitive/case-insensitive
 
 ### Removed
 - support for php 5 and php 7.0
