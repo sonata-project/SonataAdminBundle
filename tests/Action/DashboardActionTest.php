@@ -77,7 +77,7 @@ class DashboardActionTest extends TestCase
     /**
      * @doesNotPerformAssertions
      */
-    public function testDashboardActionAjaxLayout()
+    public function testDashboardActionAjaxLayout(): void
     {
         $container = $this->createMock(ContainerInterface::class);
 

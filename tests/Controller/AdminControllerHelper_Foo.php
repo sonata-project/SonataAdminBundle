@@ -22,11 +22,11 @@ class AdminControllerHelper_Foo
         return 'foo';
     }
 
-    public function setEnabled($value)
+    public function setEnabled($value): void
     {
     }
 
-    public function setBar(AdminControllerHelper_Bar $bar)
+    public function setBar(AdminControllerHelper_Bar $bar): void
     {
         $this->bar = $bar;
     }

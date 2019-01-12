@@ -29,7 +29,7 @@ use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class AdminTypeTest extends TypeTestCase
 {
-    public function testGetDefaultOptions()
+    public function testGetDefaultOptions(): void
     {
         $type = new AdminType();
 
@@ -47,7 +47,7 @@ class AdminTypeTest extends TypeTestCase
         $this->assertSame('SonataAdminBundle', $options['btn_catalogue']);
     }
 
-    public function testSubmitValidData()
+    public function testSubmitValidData(): void
     {
         $parentAdmin = $this->prophesize(AdminInterface::class);
         $parentField = $this->prophesize(FieldDescriptionInterface::class);
@@ -85,7 +85,7 @@ class AdminTypeTest extends TypeTestCase
         $this->assertTrue($form->isSynchronized());
     }
 
-    public function testDotFields()
+    public function testDotFields(): void
     {
         $parentSubject = new \stdClass();
         $parentSubject->foo = 1;

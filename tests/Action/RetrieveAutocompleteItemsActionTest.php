@@ -47,7 +47,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
      */
     private $admin;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->admin = $this->prophesize(AbstractAdmin::class);
         $this->admin->setRequest(Argument::type(Request::class))->shouldBeCalled();
@@ -58,7 +58,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         );
     }
 
-    public function testRetrieveAutocompleteItemsActionNotGranted()
+    public function testRetrieveAutocompleteItemsActionNotGranted(): void
     {
         $this->expectException(AccessDeniedException::class);
 
@@ -73,7 +73,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $action($request);
     }
 
-    public function testRetrieveAutocompleteItemsActionDisabledFormelememt()
+    public function testRetrieveAutocompleteItemsActionDisabledFormelememt(): void
     {
         $this->expectException(AccessDeniedException::class);
         $this->expectExceptionMessage('Autocomplete list can`t be retrieved because the form element is disabled or read_only.');
@@ -101,7 +101,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $action($request);
     }
 
-    public function testRetrieveAutocompleteItemsTooShortSearchString()
+    public function testRetrieveAutocompleteItemsTooShortSearchString(): void
     {
         $object = new \stdClass();
         $request = new Request([
@@ -133,7 +133,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->assertSame('{"status":"KO","message":"Too short search string."}', $response->getContent());
     }
 
-    public function testRetrieveAutocompleteItems()
+    public function testRetrieveAutocompleteItems(): void
     {
         $entity = new \stdClass();
         $request = new Request([
@@ -166,7 +166,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
 
-    public function testRetrieveAutocompleteItemsComplexPropertyArray()
+    public function testRetrieveAutocompleteItemsComplexPropertyArray(): void
     {
         $request = new Request([
             'admin_code' => 'foo.admin',
@@ -199,7 +199,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
 
-    public function testRetrieveAutocompleteItemsComplexProperty()
+    public function testRetrieveAutocompleteItemsComplexProperty(): void
     {
         $request = new Request([
             'admin_code' => 'foo.admin',

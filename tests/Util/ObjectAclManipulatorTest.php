@@ -28,7 +28,7 @@ use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
  */
 class ObjectAclManipulatorTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->output = $this->prophesize(OutputInterface::class);
         $this->admin = $this->prophesize(AdminInterface::class);
@@ -39,7 +39,7 @@ class ObjectAclManipulatorTest extends TestCase
         $this->securityIdentity = new UserSecurityIdentity('Michael', 'stdClass');
     }
 
-    public function testConfigureAclsIgnoresNonAclSecurityHandlers()
+    public function testConfigureAclsIgnoresNonAclSecurityHandlers(): void
     {
         $this->admin->getSecurityHandler()->shouldBeCalled();
         $this->admin->getCode()->shouldBeCalled()->willReturn('test');
@@ -59,7 +59,7 @@ class ObjectAclManipulatorTest extends TestCase
         );
     }
 
-    public function testConfigureAcls()
+    public function testConfigureAcls(): void
     {
         $securityHandler = $this->prophesize(AclSecurityHandlerInterface::class);
         $acls = $this->prophesize('SplObjectStorage');

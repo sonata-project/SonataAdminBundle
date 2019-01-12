@@ -27,14 +27,14 @@ class AdminStatsBlockServiceTest extends AbstractBlockServiceTestCase
      */
     private $pool;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
     }
 
-    public function testDefaultSettings()
+    public function testDefaultSettings(): void
     {
         $blockService = new AdminStatsBlockService('foo', $this->templating, $this->pool);
         $blockContext = $this->getBlockContext($blockService);

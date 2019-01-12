@@ -19,12 +19,12 @@ use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 
 class AdminPermissionMapTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->permissionMap = new AdminPermissionMap();
     }
 
-    public function testGetMaskReturnsAnArrayOfMasks()
+    public function testGetMaskReturnsAnArrayOfMasks(): void
     {
         $reflection = new \ReflectionClass(AdminPermissionMap::class);
         foreach ($reflection->getConstants() as $permission) {
@@ -41,7 +41,7 @@ class AdminPermissionMapTest extends TestCase
         }
     }
 
-    public function testGetMaskReturnsNullIfPermissionIsNotSupported()
+    public function testGetMaskReturnsNullIfPermissionIsNotSupported(): void
     {
         $this->assertNull($this->permissionMap->getMasks(
             'unknown permission',
@@ -66,7 +66,7 @@ class AdminPermissionMapTest extends TestCase
     /**
      * @dataProvider permissionProvider
      */
-    public function testContainsReturnsABoolean($expectedResult, $permission)
+    public function testContainsReturnsABoolean($expectedResult, $permission): void
     {
         $this->assertSame($expectedResult, $this->permissionMap->contains($permission));
     }

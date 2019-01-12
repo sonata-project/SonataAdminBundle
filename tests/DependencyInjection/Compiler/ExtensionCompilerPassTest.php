@@ -57,7 +57,7 @@ class ExtensionCompilerPassTest extends TestCase
      */
     private $root;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->extension = new SonataAdminExtension();
         $this->config = $this->getConfig();
@@ -68,7 +68,7 @@ class ExtensionCompilerPassTest extends TestCase
     /**
      * @covers \Sonata\AdminBundle\DependencyInjection\SonataAdminExtension::load
      */
-    public function testAdminExtensionLoad()
+    public function testAdminExtensionLoad(): void
     {
         $this->extension->load([], $container = $this->getContainer());
 
@@ -86,7 +86,7 @@ class ExtensionCompilerPassTest extends TestCase
     /**
      * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::flattenExtensionConfiguration
      */
-    public function testFlattenEmptyExtensionConfiguration()
+    public function testFlattenEmptyExtensionConfiguration(): void
     {
         $this->extension->load([], $container = $this->getContainer());
         $extensionMap = $container->getParameter($this->root.'.extension.map');
@@ -116,7 +116,7 @@ class ExtensionCompilerPassTest extends TestCase
     /**
      * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::flattenExtensionConfiguration
      */
-    public function testFlattenExtensionConfiguration()
+    public function testFlattenExtensionConfiguration(): void
     {
         $config = $this->getConfig();
         $this->extension->load([$config], $container = $this->getContainer());
@@ -190,7 +190,7 @@ class ExtensionCompilerPassTest extends TestCase
     /**
      * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::process
      */
-    public function testProcessWithInvalidExtensionId()
+    public function testProcessWithInvalidExtensionId(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -215,7 +215,7 @@ class ExtensionCompilerPassTest extends TestCase
      * @doesNotPerformAssertions
      * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::process
      */
-    public function testProcessWithInvalidAdminId()
+    public function testProcessWithInvalidAdminId(): void
     {
         $config = [
             'extensions' => [
@@ -239,7 +239,7 @@ class ExtensionCompilerPassTest extends TestCase
     /**
      * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::process
      */
-    public function testProcess()
+    public function testProcess(): void
     {
         $container = $this->getContainer();
         $this->extension->load([$this->config], $container);
@@ -293,7 +293,7 @@ class ExtensionCompilerPassTest extends TestCase
     /**
      * @doesNotPerformAssertions
      */
-    public function testProcessThrowsExceptionIfTraitsAreNotAvailable()
+    public function testProcessThrowsExceptionIfTraitsAreNotAvailable(): void
     {
         if (!$this->hasTraits) {
             $this->expectException(InvalidConfigurationException::class, 'PHP >= 5.4.0 is required to use traits.');

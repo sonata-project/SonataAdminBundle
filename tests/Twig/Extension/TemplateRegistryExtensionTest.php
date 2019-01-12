@@ -48,7 +48,7 @@ class TemplateRegistryExtensionTest extends TestCase
      */
     private $admin;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
         $this->container = $this->prophesize(ContainerInterface::class);
@@ -67,7 +67,7 @@ class TemplateRegistryExtensionTest extends TestCase
         );
     }
 
-    public function getFunctionsTest()
+    public function getFunctionsTest(): void
     {
         $expected = [
             new TwigFunction('get_admin_template', [$this->extension, 'getAdminTemplate']),
@@ -80,7 +80,7 @@ class TemplateRegistryExtensionTest extends TestCase
         $this->assertEquals($expected, $this->extension->getFunctions());
     }
 
-    public function testGetAdminTemplate()
+    public function testGetAdminTemplate(): void
     {
         // NEXT_MAJOR: Remove this line
         $this->container->get('admin.post')->willReturn($this->admin->reveal());
@@ -93,7 +93,7 @@ class TemplateRegistryExtensionTest extends TestCase
         );
     }
 
-    public function testGetAdminTemplateFailure()
+    public function testGetAdminTemplateFailure(): void
     {
         // NEXT_MAJOR: Remove this line
         $this->container->get('admin.post')->willReturn(null);
@@ -111,7 +111,7 @@ class TemplateRegistryExtensionTest extends TestCase
         );
     }
 
-    public function testGetGlobalTemplate()
+    public function testGetGlobalTemplate(): void
     {
         $this->assertEquals(
             '@SonataAdmin/CRUD/edit.html.twig',

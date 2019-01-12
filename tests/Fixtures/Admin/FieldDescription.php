@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -15,22 +17,22 @@ use Sonata\AdminBundle\Admin\BaseFieldDescription;
 
 class FieldDescription extends BaseFieldDescription
 {
-    public function setAssociationMapping($associationMapping)
+    public function setAssociationMapping($associationMapping): void
     {
         // TODO: Implement setAssociationMapping() method.
     }
 
-    public function getTargetEntity()
+    public function getTargetEntity(): void
     {
         // TODO: Implement getTargetEntity() method.
     }
 
-    public function setFieldMapping($fieldMapping)
+    public function setFieldMapping($fieldMapping): void
     {
         // TODO: Implement setFieldMapping() method.
     }
 
-    public function isIdentifier()
+    public function isIdentifier(): void
     {
         // TODO: Implement isIdentifier() method.
     }
@@ -40,7 +42,7 @@ class FieldDescription extends BaseFieldDescription
      *
      * @param array $parentAssociationMappings
      */
-    public function setParentAssociationMappings(array $parentAssociationMappings)
+    public function setParentAssociationMappings(array $parentAssociationMappings): void
     {
         // TODO: Implement setParentAssociationMappings() method.
     }

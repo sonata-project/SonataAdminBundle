@@ -35,7 +35,7 @@ class BaseMapperTest extends TestCase
      */
     protected $admin;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->admin = $this->getMockForAbstractClass(AdminInterface::class);
         $builder = $this->getMockForAbstractClass(BuilderInterface::class);
@@ -43,7 +43,7 @@ class BaseMapperTest extends TestCase
         $this->baseMapper = $this->getMockForAbstractClass(BaseMapper::class, [$builder, $this->admin]);
     }
 
-    public function testGetAdmin()
+    public function testGetAdmin(): void
     {
         $this->assertSame($this->admin, $this->baseMapper->getAdmin());
     }

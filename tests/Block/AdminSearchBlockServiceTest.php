@@ -35,7 +35,7 @@ class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
      */
     private $searchHandler;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -43,7 +43,7 @@ class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
         $this->searchHandler = $this->getMockBuilder(SearchHandler::class)->disableOriginalConstructor()->getMock();
     }
 
-    public function testDefaultSettings()
+    public function testDefaultSettings(): void
     {
         $blockService = new AdminSearchBlockService('foo', $this->templating, $this->pool, $this->searchHandler);
         $blockContext = $this->getBlockContext($blockService);
@@ -57,7 +57,7 @@ class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
         ], $blockContext);
     }
 
-    public function testGlobalSearchReturnsEmptyWhenFiltersAreDisabled()
+    public function testGlobalSearchReturnsEmptyWhenFiltersAreDisabled(): void
     {
         $admin = $this->getMockBuilder(AbstractAdmin::class)->disableOriginalConstructor()->getMock();
         $templating = $this->getMockBuilder(FakeTemplating::class)->disableOriginalConstructor()->getMock();

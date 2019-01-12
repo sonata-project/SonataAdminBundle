@@ -34,7 +34,7 @@ class SearchActionTest extends TestCase
     private $templating;
     private $breadcrumbsBuilder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->container = new Container();
 
@@ -58,7 +58,7 @@ class SearchActionTest extends TestCase
         $this->container->set('templating', $this->templating->reveal());
     }
 
-    public function testGlobalPage()
+    public function testGlobalPage(): void
     {
         $request = new Request(['q' => 'some search']);
         $this->templating->render('search.html.twig', [
@@ -81,7 +81,7 @@ class SearchActionTest extends TestCase
         $this->assertInstanceOf(Response::class, $action($request));
     }
 
-    public function testAjaxCall()
+    public function testAjaxCall(): void
     {
         $admin = new CleanAdmin('code', 'class', 'controller');
         $this->container->set('foo', $admin);
