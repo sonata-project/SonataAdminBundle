@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Bridge\Exporter;
 
-use Exporter\Exporter;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\Exporter\Exporter;
 
 /**
  * @author Grégoire Paris <postmaster@greg0ire.fr>

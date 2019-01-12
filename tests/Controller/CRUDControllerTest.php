@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Controller;
 
-use Exporter\Exporter;
-use Exporter\Source\SourceIteratorInterface;
-use Exporter\Writer\JsonWriter;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -38,6 +35,9 @@ use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
+use Sonata\Exporter\Exporter;
+use Sonata\Exporter\Source\SourceIteratorInterface;
+use Sonata\Exporter\Writer\JsonWriter;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
