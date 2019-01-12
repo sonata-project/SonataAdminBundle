@@ -39,10 +39,8 @@ final class RetrieveAutocompleteItemsAction
      *
      * @throws \RuntimeException
      * @throws AccessDeniedException
-     *
-     * @return JsonResponse
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
         $admin = $this->pool->getInstance($request->get('admin_code'));
         $admin->setRequest($request);
@@ -180,8 +178,10 @@ final class RetrieveAutocompleteItemsAction
      *
      * @throws \RuntimeException
      */
-    private function retrieveFilterFieldDescription(AdminInterface $admin, string $field): FieldDescriptionInterface
-    {
+    private function retrieveFilterFieldDescription(
+        AdminInterface $admin,
+        string $field
+    ): FieldDescriptionInterface {
         $admin->getFilterFieldDescriptions();
 
         $fieldDescription = $admin->getFilterFieldDescription($field);
@@ -202,8 +202,10 @@ final class RetrieveAutocompleteItemsAction
      *
      * @throws \RuntimeException
      */
-    private function retrieveFormFieldDescription(AdminInterface $admin, string $field): FieldDescriptionInterface
-    {
+    private function retrieveFormFieldDescription(
+        AdminInterface $admin,
+        string $field
+    ): FieldDescriptionInterface {
         $admin->getFormFieldDescriptions();
 
         $fieldDescription = $admin->getFormFieldDescription($field);

@@ -29,7 +29,7 @@ final class AdminMakerCompilerPass implements CompilerPassInterface
         'sonata.admin.manager.doctrine_phpcr',
     ];
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $availableManagers = [];
         foreach (self::MANAGERS as $manager) {
