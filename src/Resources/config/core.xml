@@ -61,6 +61,7 @@
         </service>
         <service id="sonata.admin.search.handler" class="Sonata\AdminBundle\Search\SearchHandler" public="true">
             <argument type="service" id="sonata.admin.pool"/>
+            <argument>%sonata.admin.configuration.global_search.case_sensitive%</argument>
         </service>
         <!-- event -->
         <service id="sonata.admin.event.extension" class="Sonata\AdminBundle\Event\AdminEventExtension" public="true">

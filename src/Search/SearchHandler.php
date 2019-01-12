@@ -28,9 +28,20 @@ class SearchHandler
      */
     protected $pool;
 
-    public function __construct(Pool $pool)
+    /**
+     * @var bool
+     */
+    private $caseSensitive;
+
+    /**
+     * NEXT_MAJOR: remove default true value for $caseSensitive and add bool type hint.
+     *
+     * @param bool $caseSensitive
+     */
+    public function __construct(Pool $pool, $caseSensitive = true)
     {
         $this->pool = $pool;
+        $this->caseSensitive = $caseSensitive;
     }
 
     /**
@@ -50,6 +61,7 @@ class SearchHandler
         foreach ($datagrid->getFilters() as $filter) {
             /** @var $filter FilterInterface */
             if ($filter->getOption('global_search', false)) {
+                $filter->setOption('case_sensitive', $this->caseSensitive);
                 $filter->setCondition(FilterInterface::CONDITION_OR);
                 $datagrid->setValue($filter->getFormName(), null, $term);
                 $found = true;
