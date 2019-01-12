@@ -190,6 +190,9 @@ class FormMapperTest extends TestCase
         ]], $this->admin->getFormGroups());
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testRemoveCascadeRemoveFieldFromFormGroup()
     {
         $this->formMapper->with('foo');

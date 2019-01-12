@@ -212,6 +212,7 @@ class ExtensionCompilerPassTest extends TestCase
     }
 
     /**
+     * @doesNotPerformAssertions
      * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::process
      */
     public function testProcessWithInvalidAdminId()
@@ -289,6 +290,9 @@ class ExtensionCompilerPassTest extends TestCase
         $this->assertSame($orderExtension, $extensions[4]);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testProcessThrowsExceptionIfTraitsAreNotAvailable()
     {
         if (!$this->hasTraits) {
