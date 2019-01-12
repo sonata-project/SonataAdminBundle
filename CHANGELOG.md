@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.44.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.43.0...3.44.0) - 2010-01-12
+
+### Added
+- Default admin service options (group, label catalogue and icon) are now configurable
+
+### Removed
+- support for php 5 and php 7.0
+
+### Fixed
+- Default values not getting overridden in `make:sonata:admin`
+
 ## [3.43.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.42.2...3.43.0) - 2018-12-15
 
 ### Added
