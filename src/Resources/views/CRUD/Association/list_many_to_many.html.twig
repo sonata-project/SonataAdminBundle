@@ -23,7 +23,7 @@ file that was distributed with this source code.
             {% if not loop.last %}, {% endif %}
         {% endfor %}
     {% else %}
-        {% for element in value%}
+        {% for element in value %}
             {{ block('relation_value') }}
             {% if not loop.last %}, {% endif %}
         {% endfor %}
