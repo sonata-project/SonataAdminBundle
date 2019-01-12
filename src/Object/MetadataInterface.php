@@ -18,30 +18,18 @@ namespace Sonata\AdminBundle\Object;
  */
 interface MetadataInterface extends \Sonata\CoreBundle\Model\MetadataInterface
 {
-    /**
-     * @return string
-     */
-    public function getTitle();
+    public function getTitle(): string;
 
-    /**
-     * @return string|null
-     */
-    public function getDescription();
+    public function getDescription(): ?string;
 
-    /**
-     * @return string|null
-     */
-    public function getImage();
+    public function getImage(): ?string;
 
-    /**
-     * @return string|null
-     */
-    public function getDomain();
+    public function getDomain(): ?string;
 
     /**
      * @return array<string, mixed>
      */
-    public function getOptions();
+    public function getOptions(): array;
 
     /**
      * @param string $name    The option key
