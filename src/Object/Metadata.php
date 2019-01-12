@@ -57,52 +57,31 @@ final class Metadata implements MetadataInterface
         $this->options = $options;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getImage()
+    public function getImage(): ?string
     {
         return $this->image;
     }
 
-    /**
-     * @return string
-     */
-    public function getDomain()
+    public function getDomain(): ?string
     {
         return $this->domain;
     }
 
-    /**
-     * @return array
-     */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
 
-    /**
-     * @param string $name    The option key
-     * @param mixed  $default The default value if option not found
-     *
-     * @return bool
-     */
     public function getOption($name, $default = null)
     {
         return array_key_exists($name, $this->options) ? $this->options[$name] : $default;
