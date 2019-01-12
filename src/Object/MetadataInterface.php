@@ -34,6 +34,8 @@ interface MetadataInterface extends \Sonata\CoreBundle\Model\MetadataInterface
     /**
      * @param string $name    The option key
      * @param mixed  $default The default value if option not found
+     *
+     * @return mixed
      */
     public function getOption($name, $default = null);
 }
