@@ -32,8 +32,8 @@ class AdminMakerCompilerPassTest extends TestCase
 
     public function setUp()
     {
-        if (5 == PHP_MAJOR_VERSION || !class_exists('Symfony\Component\Console\CommandLoader\CommandLoaderInterface')) {
-            $this->markTestSkipped('Test only available for PHP 7 and SF 3.4');
+        if (!class_exists('Symfony\Component\Console\CommandLoader\CommandLoaderInterface')) {
+            $this->markTestSkipped('Test only available for SF 3.4');
         }
 
         parent::setUp();
