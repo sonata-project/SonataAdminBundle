@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Filter;
 
-use Exporter\Source\ArraySourceIterator;
-use Exporter\Source\SourceIteratorInterface;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Export\Exporter;
+use Sonata\Exporter\Source\ArraySourceIterator;
+use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
