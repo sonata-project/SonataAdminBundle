@@ -41,7 +41,7 @@ final class AdminExporter
      *
      * @return string[] an array of formats
      */
-    public function getAvailableFormats(AdminInterface $admin)
+    public function getAvailableFormats(AdminInterface $admin): array
     {
         $adminExportFormats = $admin->getExportFormats();
 
@@ -60,7 +60,7 @@ final class AdminExporter
      * @param AdminInterface $admin  the current admin object
      * @param string         $format the format of the export file
      */
-    public function getExportFilename(AdminInterface $admin, $format)
+    public function getExportFilename(AdminInterface $admin, string $format): string
     {
         $class = $admin->getClass();
 

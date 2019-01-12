@@ -66,7 +66,7 @@ final class SearchAction extends Controller
      *
      * @return JsonResponse|Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         if (!$request->get('admin') || !$request->isXmlHttpRequest()) {
             return $this->render($this->templateRegistry->getTemplate('search'), [

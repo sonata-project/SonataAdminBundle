@@ -51,10 +51,8 @@ final class RetrieveFormFieldElementAction
 
     /**
      * @throws NotFoundHttpException
-     *
-     * @return Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $code = $request->get('code');
         $elementId = $request->get('elementId');

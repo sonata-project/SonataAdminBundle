@@ -82,7 +82,7 @@ final class AdminMaker extends AbstractMaker
         return 'make:sonata:admin';
     }
 
-    public function configureCommand(Command $command, InputConfiguration $inputConfig)
+    public function configureCommand(Command $command, InputConfiguration $inputConfig): void
     {
         $command
             ->setDescription('Generates an admin class based on the given model class')
@@ -96,7 +96,7 @@ final class AdminMaker extends AbstractMaker
         $inputConfig->setArgumentAsNonInteractive('model');
     }
 
-    public function interact(InputInterface $input, ConsoleStyle $io, Command $command)
+    public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void
     {
         $io->section('Welcome to the Sonata Admin');
         $this->modelClass = $io->ask(
@@ -148,14 +148,14 @@ final class AdminMaker extends AbstractMaker
     /**
      * Configure any library dependencies that your maker requires.
      */
-    public function configureDependencies(DependencyBuilder $dependencies)
+    public function configureDependencies(DependencyBuilder $dependencies): void
     {
     }
 
     /**
      * Called after normal code generation: allows you to do anything.
      */
-    public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
+    public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
         $this->configure($input);
 
