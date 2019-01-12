@@ -63,7 +63,6 @@ You can use the provided extension to take care of your entity admin.
                - Yokai\SonataWorkflow\Controller\WorkflowController
            tags:
                - { name: sonata.admin, manager_type: orm }
-           public: true
 
        app.admin.extension.workflow.blog_post:
            class: Yokai\SonataWorkflow\Admin\Extension\WorkflowExtension
@@ -74,7 +73,6 @@ You can use the provided extension to take care of your entity admin.
                      interrupt_review: fa fa-edit
                      restart_review: fa fa-question
                      publish: fa fa-check
-           public: true
 
 .. code-block:: yaml
 
