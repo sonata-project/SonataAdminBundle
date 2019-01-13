@@ -216,18 +216,12 @@ class RoleSecurityHandlerTest extends TestCase
         $this->assertSame([], $handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
-    /**
-     * @return RoleSecurityHandler
-     */
-    private function getRoleSecurityHandler(array $superAdminRoles)
+    private function getRoleSecurityHandler(array $superAdminRoles): RoleSecurityHandler
     {
         return new RoleSecurityHandler($this->authorizationChecker, $superAdminRoles);
     }
 
-    /**
-     * @return AdminInterface
-     */
-    private function getSonataAdminObject()
+    private function getSonataAdminObject(): AdminInterface
     {
         return $this->getMockForAbstractClass(AdminInterface::class);
     }

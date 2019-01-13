@@ -3964,7 +3964,7 @@ class CRUDControllerTest extends TestCase
         ];
     }
 
-    private function assertLoggerLogsModelManagerException($subject, $method)
+    private function assertLoggerLogsModelManagerException($subject, string $method): void
     {
         $exception = new ModelManagerException(
             $message = 'message',
@@ -3986,8 +3986,12 @@ class CRUDControllerTest extends TestCase
             ]);
     }
 
-    private function expectTranslate($id, array $parameters = [], $domain = null, $locale = null)
-    {
+    private function expectTranslate(
+        string $id,
+        array $parameters = [],
+        ?string $domain = null,
+        ?string $locale = null
+    ): void {
         $this->translator->expects($this->once())
             ->method('trans')
             ->with($this->equalTo($id), $this->equalTo($parameters), $this->equalTo($domain), $this->equalTo($locale))

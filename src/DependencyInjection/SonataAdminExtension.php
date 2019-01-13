@@ -460,7 +460,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         return 'https://sonata-project.org/schema/dic/admin';
     }
 
-    private function buildStylesheets($config)
+    private function buildStylesheets($config): array
     {
         return $this->mergeArray(
             $config['assets']['stylesheets'],
@@ -469,7 +469,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         );
     }
 
-    private function buildJavascripts($config)
+    private function buildJavascripts($config): array
     {
         return $this->mergeArray(
             $config['assets']['javascripts'],
@@ -478,7 +478,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         );
     }
 
-    private function mergeArray($array, $addArray, $removeArray = [])
+    private function mergeArray(array $array, array $addArray, array $removeArray = []): array
     {
         foreach ($addArray as $toAdd) {
             array_push($array, $toAdd);
@@ -492,7 +492,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         return $array;
     }
 
-    private function replacePropertyAccessor(ContainerBuilder $container)
+    private function replacePropertyAccessor(ContainerBuilder $container): void
     {
         if (!$container->has('form.property_accessor')) {
             return;

@@ -154,10 +154,7 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
         $this->assertSame($expectedMap, $view->reveal()->vars['map'], '"map" is not as expected');
     }
 
-    /**
-     * @return array
-     */
-    private function resolveOptions(array $options)
+    private function resolveOptions(array $options): array
     {
         $type = new ChoiceFieldMaskType();
         $optionResolver = new OptionsResolver();

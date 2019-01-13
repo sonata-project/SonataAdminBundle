@@ -2638,17 +2638,13 @@ EOT
 
     /**
      * This method generates url part for Twig layout.
-     *
-     * @param array $url
-     *
-     * @return string
      */
-    private function buildTwigLikeUrl($url)
+    private function buildTwigLikeUrl(array $url): string
     {
         return htmlspecialchars(http_build_query($url, '', '&', PHP_QUERY_RFC3986));
     }
 
-    private function removeExtraWhitespace($string)
+    private function removeExtraWhitespace($string): string
     {
         return trim(preg_replace(
             '/\s+/',
@@ -2657,7 +2653,7 @@ EOT
         ));
     }
 
-    private function mockExtensionContext($locale)
+    private function mockExtensionContext($locale): array
     {
         $request = $this->createMock(Request::class);
         $request->method('getLocale')->willReturn($locale);

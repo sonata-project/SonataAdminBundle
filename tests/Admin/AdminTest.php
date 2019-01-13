@@ -2463,7 +2463,7 @@ class AdminTest extends TestCase
         $this->assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
     }
 
-    private function createTagAdmin(Post $post)
+    private function createTagAdmin(Post $post): TagAdmin
     {
         $postAdmin = $this->getMockBuilder(PostAdmin::class)
             ->disableOriginalConstructor()

@@ -239,12 +239,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         return $label;
     }
 
-    /**
-     * @param string $id
-     *
-     * @return AdminInterface
-     */
-    private function getAdmin($id)
+    private function getAdmin(string $id): AdminInterface
     {
         $admin = $this->adminPool->getContainer()->get($id);
         \assert($admin instanceof AdminInterface);
@@ -252,11 +247,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         return $admin;
     }
 
-    /**
-     * @param string $id
-     * @param string $domain
-     */
-    private function addMessage($id, $domain)
+    private function addMessage(string $id, string $domain): void
     {
         $message = new Message($id, $domain);
 

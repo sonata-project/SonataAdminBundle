@@ -1530,7 +1530,7 @@ class CRUDController implements ContainerAwareInterface
         return $this->get('translator')->trans($id, $parameters, $domain, $locale);
     }
 
-    private function checkParentChildAssociation(Request $request, $object)
+    private function checkParentChildAssociation(Request $request, $object): void
     {
         if (!($parentAdmin = $this->admin->getParent())) {
             return;
@@ -1558,7 +1558,7 @@ class CRUDController implements ContainerAwareInterface
     /**
      * Sets the admin form theme to form view. Used for compatibility between Symfony versions.
      */
-    private function setFormTheme(FormView $formView, array $theme = null)
+    private function setFormTheme(FormView $formView, array $theme = null): void
     {
         $twig = $this->get('twig');
 

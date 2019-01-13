@@ -85,10 +85,7 @@ class SessionFilterPersisterTest extends TestCase
         $this->createPersister()->reset('admin.customer');
     }
 
-    /**
-     * @return SessionFilterPersister
-     */
-    private function createPersister()
+    private function createPersister(): SessionFilterPersister
     {
         return new SessionFilterPersister($this->session->reveal());
     }

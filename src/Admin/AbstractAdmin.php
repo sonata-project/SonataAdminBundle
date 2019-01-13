@@ -3089,7 +3089,7 @@ EOT;
     /**
      * Build all the related urls to the current admin.
      */
-    private function buildRoutes()
+    private function buildRoutes(): void
     {
         if ($this->loaded['routes']) {
             return;

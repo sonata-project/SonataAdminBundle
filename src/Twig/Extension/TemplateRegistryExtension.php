@@ -89,14 +89,10 @@ final class TemplateRegistryExtension extends AbstractExtension
     }
 
     /**
-     * @param string $adminCode
-     *
      * @throws ServiceNotFoundException
      * @throws ServiceCircularReferenceException
-     *
-     * @return TemplateRegistryInterface
      */
-    private function getTemplateRegistry($adminCode)
+    private function getTemplateRegistry(string $adminCode): TemplateRegistryInterface
     {
         $serviceId = $adminCode.'.template_registry';
         $templateRegistry = $this->container->get($serviceId);
@@ -110,14 +106,10 @@ final class TemplateRegistryExtension extends AbstractExtension
     /**
      * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      *
-     * @param string $adminCode
-     *
      * @throws ServiceNotFoundException
      * @throws ServiceCircularReferenceException
-     *
-     * @return AdminInterface
      */
-    private function getAdmin($adminCode)
+    private function getAdmin(string $adminCode): AdminInterface
     {
         $admin = $this->container->get($adminCode);
         if ($admin instanceof AdminInterface) {

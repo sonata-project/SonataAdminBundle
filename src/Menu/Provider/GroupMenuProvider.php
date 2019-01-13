@@ -123,10 +123,7 @@ class GroupMenuProvider implements MenuProviderInterface
         return 'sonata_group_menu' === $name;
     }
 
-    /**
-     * @return bool
-     */
-    private function canGenerateMenuItem(array $item, array $group)
+    private function canGenerateMenuItem(array $item, array $group): bool
     {
         if (isset($item['admin']) && !empty($item['admin'])) {
             $admin = $this->pool->getInstance($item['admin']);
@@ -168,10 +165,7 @@ class GroupMenuProvider implements MenuProviderInterface
         return $isItemGranted && $isGroupGranted;
     }
 
-    /**
-     * @return ItemInterface
-     */
-    private function generateMenuItem(array $item, array $group)
+    private function generateMenuItem(array $item, array $group): ItemInterface
     {
         if (isset($item['admin']) && !empty($item['admin'])) {
             $admin = $this->pool->getInstance($item['admin']);
