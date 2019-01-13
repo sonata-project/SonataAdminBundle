@@ -43,11 +43,8 @@ Customizing the fields displayed on the list page
 -------------------------------------------------
 
 You can customize the columns displayed on the list through the ``configureListFields`` method.
-Here is an example:
+Here is an example::
 
-.. code-block:: php
-
-    <?php
     // ...
 
     protected function configureListFields(ListMapper $listMapper)
@@ -208,11 +205,7 @@ to more field types, see `SonataDoctrineORMAdminBundle Documentation`_.
 Customizing the query used to generate the list
 -----------------------------------------------
 
-You can customize the list query thanks to the ``createQuery`` method.
-
-.. code-block:: php
-
-    <?php
+You can customize the list query thanks to the ``createQuery`` method::
 
     public function createQuery($context = 'list')
     {
@@ -232,11 +225,8 @@ Configure the default ordering in the list view
 
 Configuring the default ordering column can simply be achieved by overriding
 the ``datagridValues`` array property. All three keys ``_page``, ``_sort_order`` and
-``_sort_by`` can be omitted.
+``_sort_by`` can be omitted::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/PostAdmin.php
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -271,11 +261,8 @@ the ``datagridValues`` array property. All three keys ``_page``, ``_sort_order``
 Filters
 -------
 
-You can add filters to let user control which data will be displayed.
+You can add filters to let user control which data will be displayed::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/PostAdmin.php
 
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -297,11 +284,7 @@ All filters are hidden by default for space-saving. User has to check which
 filter he wants to use.
 
 To make the filter always visible (even when it is inactive), set the parameter
-``show_filter`` to ``true``.
-
-.. code-block:: php
-
-    <?php
+``show_filter`` to ``true``::
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
@@ -316,9 +299,7 @@ To make the filter always visible (even when it is inactive), set the parameter
     }
 
 By default the template generates an ``operator`` for a filter which defaults to ``sonata_type_equal``.
-Though this ``operator_type`` is automatically detected it can be changed or even be hidden:
-
-.. code-block:: php
+Though this ``operator_type`` is automatically detected it can be changed or even be hidden::
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
@@ -336,9 +317,7 @@ Though this ``operator_type`` is automatically detected it can be changed or eve
 
 If you don't need the advanced filters, or all your ``operator_type``
 are hidden, you can disable them by setting ``advanced_filter`` to ``false``.
-You need to disable all advanced filters to make the button disappear.
-
-.. code-block:: php
+You need to disable all advanced filters to make the button disappear::
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
@@ -357,9 +336,7 @@ Default filters
 
 Default filters can be added to the datagrid values by using the ``configureDefaultFilterValues`` method.
 A filter has a ``value`` and an optional ``type``. If no ``type`` is
-given the default type ``is equal`` is used.
-
-.. code-block:: php
+given the default type ``is equal`` is used::
 
     protected function configureDefaultFilterValues(array &$filterValues)
     {
@@ -420,9 +397,7 @@ as defined in the class constants::
     }
 
 Default filters can also be added to the datagrid values by overriding
-the ``getFilterParameters`` method.
-
-.. code-block:: php
+the ``getFilterParameters`` method::
 
     use Sonata\CoreBundle\Form\Type\EqualType;
     use Sonata\CoreBundle\Form\Type\BooleanType;
@@ -442,9 +417,7 @@ the ``getFilterParameters`` method.
         }
     }
 
-This approach is useful when you need to create dynamic filters.
-
-.. code-block:: php
+This approach is useful when you need to create dynamic filters::
 
     class PostAdmin extends SonataUserAdmin
     {
@@ -554,9 +527,7 @@ You can:
 - `row_align`: Customize the alignment of the rendered inner cells
 - `label_icon`: Add an icon before label
 
-.. code-block:: php
-
-    <?php
+Example::
 
     protected function configureListFields(ListMapper $list)
     {
@@ -585,11 +556,8 @@ You can:
     }
 
 If you want to customise the `collapse` option, you can also give an array
-to override the default parameters.
+to override the default parameters::
 
-.. code-block:: php
-
-            // ...
             ->add('description', TextType::class, [
                 'header_style' => 'width: 35%',
                 'collapse' => [
