@@ -4,12 +4,6 @@ Creating and Editing objects
 This document will cover the Create and Edit actions. It will cover configuration
 of the fields and forms available in these views and any other relevant settings.
 
-.. note::
-
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 Basic configuration
 -------------------
 
@@ -21,14 +15,14 @@ SonataAdmin Options that may affect the create or edit view:
 
     sonata_admin:
         options:
-            html5_validate:    true     # enable or disable html5 form validation
-            confirm_exit:      true     # enable or disable a confirmation before navigating away
-            js_debug:          false    # enable or disable to show javascript debug messages
-            use_select2:       true     # enable or disable usage of the Select2 jQuery library
-            use_icheck:        true     # enable or disable usage of the iCheck library
-            use_bootlint:      false    # enable or disable usage of Bootlint
-            use_stickyforms:   true     # enable or disable the floating buttons
-            form_type:         standard # can also be 'horizontal'
+            html5_validate:  true     # enable or disable html5 form validation
+            confirm_exit:    true     # enable or disable a confirmation before navigating away
+            js_debug:        false    # enable or disable to show javascript debug messages
+            use_select2:     true     # enable or disable usage of the Select2 jQuery library
+            use_icheck:      true     # enable or disable usage of the iCheck library
+            use_bootlint:    false    # enable or disable usage of Bootlint
+            use_stickyforms: true     # enable or disable the floating buttons
+            form_type:       standard # can also be 'horizontal'
 
         templates:
             edit:              '@SonataAdmin/CRUD/edit.html.twig'
@@ -40,7 +34,6 @@ For more information about optional libraries:
 - iCheck: http://icheck.fronteed.com/
 - Bootlint: https://github.com/twbs/bootlint#in-the-browser
 
-
 .. note::
 
     **TODO**:
@@ -50,17 +43,12 @@ Routes
 ~~~~~~
 
 You can disable creating or editing entities by removing the corresponding routes in your Admin.
-For more detailed information about routes, see :doc:`routing`.
+For more detailed information about routes, see :doc:`routing`::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/PersonAdmin.php
 
     final class PersonAdmin extends AbstractAdmin
     {
-        // ...
-
         protected function configureRoutes(RouteCollection $collection): void
         {
             /* Removing the edit route will disable editing entities. It will also
@@ -71,8 +59,6 @@ For more detailed information about routes, see :doc:`routing`.
             remove the 'Add new' button in the list view. */
             $collection->remove('create');
         }
-
-        // ...
     }
 
 Adding form fields
@@ -105,13 +91,10 @@ has 4 parameters:
 
 .. code-block:: php
 
-    <?php
     // src/Admin/PersonAdmin.php
 
     final class PersonAdmin extends AbstractAdmin
     {
-        // ...
-
         protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
@@ -125,8 +108,6 @@ has 4 parameters:
                 ->end() // End tab
             ;
         }
-
-        // ...
     }
 
 FormGroup options
@@ -152,8 +133,6 @@ To specify options, do as follows::
 
     final class PersonAdmin extends AbstractAdmin
     {
-        // ...
-
         protected function configureFormFields(FormMapper $formMapper): void
         {
             $formMapper
@@ -170,8 +149,6 @@ To specify options, do as follows::
                 ->end()
             ;
         }
-
-        // ...
     }
 
 Here is an example of what you can do with customizing the box_class on

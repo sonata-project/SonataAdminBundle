@@ -5,12 +5,6 @@ Batch actions are actions triggered on a set of selected objects. By default,
 Admins have a ``delete`` action which allows you to remove several entries
 at once.
 
-.. note::
-
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 Defining new actions
 --------------------
 
@@ -37,9 +31,6 @@ merges them onto a single target item. It should only be available when two cond
 
 .. code-block:: php
 
-    <?php
-    // in your Admin class
-
     protected function configureBatchActions($actions)
     {
         if (
@@ -49,7 +40,6 @@ merges them onto a single target item. It should only be available when two cond
             $actions['merge'] = [
                 'ask_confirmation' => true
             ];
-
         }
 
         return $actions;
@@ -70,7 +60,6 @@ granularity), the passed query is ``null``.
 
 .. code-block:: php
 
-    <?php
     // src/Controller/CRUDController.php
 
     namespace App\Controller;
@@ -140,7 +129,6 @@ granularity), the passed query is ``null``.
         // ...
     }
 
-
 (Optional) Overriding the batch selection template
 --------------------------------------------------
 
@@ -158,10 +146,10 @@ a radio button to choose the target object.
     {% extends get_admin_template('base_list_field', admin.code) %}
 
     {% block field %}
-        <input type="checkbox" name="idx[]" value="{{ admin.id(object) }}" />
+        <input type="checkbox" name="idx[]" value="{{ admin.id(object) }}"/>
 
         {# the new radio button #}
-        <input type="radio" name="targetId" value="{{ admin.id(object) }}" />
+        <input type="radio" name="targetId" value="{{ admin.id(object) }}"/>
     {% endblock %}
 
 (Optional) Overriding the default relevancy check function
@@ -184,7 +172,6 @@ This method may return three different values:
 
 .. code-block:: php
 
-    <?php
     // src/Controller/CRUDController.php
 
     namespace App\Controller;
@@ -222,8 +209,6 @@ This method may return three different values:
             // if at least one but not the target model is selected, a merge can be done.
             return count($selectedIds) > 0;
         }
-
-        // ...
     }
 
 (Optional) Executing a pre batch hook
@@ -231,12 +216,7 @@ This method may return three different values:
 
 In your admin class you can create a ``preBatchAction`` method to execute
 something before doing the batch action. The main purpose of this method
-is to alter the query or the list of selected ids.
-
-.. code-block:: php
-
-    <?php
-    // in your Admin class
+is to alter the query or the list of selected IDs::
 
     public function preBatchAction($actionName, ProxyQueryInterface $query, array & $idx, $allElements)
     {

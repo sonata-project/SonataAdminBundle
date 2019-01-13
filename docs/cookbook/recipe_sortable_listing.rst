@@ -3,12 +3,6 @@ Sortable behavior in admin listing
 
 This is a full working example of how to implement a sortable feature in your Sonata admin listing
 
-.. note::
-
-   This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 Background
 ----------
 
@@ -21,12 +15,12 @@ your records such as showed in the following screen
    :alt: Sortable listing
    :width: 700px
 
-
 Pre-requisites
 --------------
 
 Configuration
 ^^^^^^^^^^^^^
+
 - you already have SonataAdmin and DoctrineORM up and running
 - you already have an Entity class for which you want to implement a sortable feature. For the purpose of the example we are going to call it ``Client``.
 - you already have an Admin set up, in this example we will call it ``ClientAdmin``
@@ -35,7 +29,6 @@ Bundles
 ^^^^^^^
 - install ``gedmo/doctrine-extensions`` bundle in your project (check ``stof/doctrine-extensions-bundle`` for easier integration in your project) and enable the sortable feature in your config
 - install ``pixassociates/sortable-behavior-bundle`` at least version ^1.1 in your project
-
 
 The recipe
 ----------
@@ -47,7 +40,6 @@ First of all we are going to add a position field in our ``Client`` entity::
      * @ORM\Column(name="position", type="integer")
      */
     private $position;
-
 
 Then we need to inject the Sortable listener. If you only have the Gedmo bundle enabled, you only have to add the listener to your config.yml and skip this step.
 
@@ -63,7 +55,6 @@ Then we need to inject the Sortable listener. If you only have the Gedmo bundle 
             tags:
                 - { name: doctrine.event_subscriber, connection: default }
 
-
 If you have the ``stof/doctrine-extensions-bundle``, you only need to enable the sortable
 feature in your config.yml such as
 
@@ -75,7 +66,6 @@ feature in your config.yml such as
         orm:
             default:
                 sortable: true
-
 
 In our ``ClientAdmin`` we are going to add a custom action in the ``configureListFields`` method
 and use the default twig template provided in the ``pixSortableBehaviorBundle``::
@@ -89,7 +79,6 @@ and use the default twig template provided in the ``pixSortableBehaviorBundle``:
             ]
         ]);
 
-
 In order to add new routes for these actions we are also adding the following method::
 
     // src/Admin/ClientAdmin.php
@@ -97,11 +86,9 @@ In order to add new routes for these actions we are also adding the following me
     namespace App/Admin;
 
     use Sonata\AdminBundle\Route\RouteCollection;
-    // ...
 
     protected function configureRoutes(RouteCollection $collection)
     {
-        // ...
         $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
     }
 
@@ -141,11 +128,8 @@ Now we need to define the sort by field to be ``$position``::
 
         protected function configureRoutes(RouteCollection $collection)
         {
-            // ...
             $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
         }
-
-        // ...
 
         protected function configureListFields(ListMapper $listMapper)
         {
@@ -162,9 +146,3 @@ Now we need to define the sort by field to be ``$position``::
             ;
         }
     }
-
-Further work
-------------
-
-* handle ajax request
-* interface for SonataAdminBundle

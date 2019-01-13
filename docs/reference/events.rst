@@ -25,7 +25,6 @@ This event is generated when a persistency layer update, save or delete an objec
 - ``sonata.admin.event.persistence.pre_remove``
 - ``sonata.admin.event.persistence.post_remove``
 
-
 ConfigureQueryEvent
 ~~~~~~~~~~~~~~~~~~~
 

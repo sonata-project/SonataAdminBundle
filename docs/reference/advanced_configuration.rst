@@ -1,12 +1,6 @@
 Advanced configuration
 ======================
 
-.. note::
-
-   This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 Service Configuration
 ---------------------
 
@@ -49,9 +43,9 @@ With a tag attribute (less verbose)
         <!-- config/services.xml -->
 
         <service id="app.admin.project" class="App\Admin\ProjectAdmin">
-            <argument />
+            <argument/>
             <argument>App\Entity\Project</argument>
-            <argument />
+            <argument/>
             <tag
                 name="sonata.admin"
                 manager_type="orm"
@@ -91,16 +85,16 @@ With a method call (more verbose)
         <!-- config/services.xml -->
 
         <service id="app.admin.project" class="App\Admin\ProjectAdmin">
-            <argument />
+            <argument/>
             <argument>App\Entity\Project</argument>
-            <argument />
+            <argument/>
             <call method="setLabelTranslatorStrategy">
-                <argument type="service" id="sonata.admin.label.strategy.native" />
+                <argument type="service" id="sonata.admin.label.strategy.native"/>
             </call>
             <call method="setRouteBuilder">
-                <argument type="service" id="sonata.admin.route.path_info" />
+                <argument type="service" id="sonata.admin.route.path_info"/>
             </call>
-            <tag name="sonata.admin" manager_type="orm" group="Project" label="Project" />
+            <tag name="sonata.admin" manager_type="orm" group="Project" label="Project"/>
         </service>
 
     .. code-block:: yaml
@@ -134,7 +128,6 @@ application's config file:
                     model_manager:          # dependency name, from the table above
                         sonata.order.admin.order.manager  # customised service id
 
-
 Creating a custom RouteBuilder
 ------------------------------
 
@@ -166,7 +159,6 @@ To create your own RouteBuilder create the PHP class and register it as a servic
         }
     }
 
-
 .. configuration-block::
 
     .. code-block:: xml
@@ -174,7 +166,7 @@ To create your own RouteBuilder create the PHP class and register it as a servic
         <!-- config/services.xml -->
 
         <service id="app.admin.entity_route_builder" class="App\Route\EntityRouterBuilder">
-            <argument type="service" id="sonata.admin.audit.manager" />
+            <argument type="service" id="sonata.admin.audit.manager"/>
         </service>
 
     .. code-block:: yaml
@@ -210,7 +202,7 @@ Lets consider a base class named `Person` and its subclasses `Student` and `Teac
                     <argument key="teacher">App\Entity\Teacher</argument>
                 </argument>
             </call>
-            <tag name="sonata.admin" manager_type="orm" group="admin" label="Person" />
+            <tag name="sonata.admin" manager_type="orm" group="admin" label="Person"/>
         </service>
 
     .. code-block:: yaml
@@ -388,7 +380,6 @@ overriding the following method::
         return $list;
     }
 
-
 .. figure:: ../images/custom_action_buttons.png
    :align: center
    :alt: Custom action buttons
@@ -411,11 +402,8 @@ Custom Action Access Management
 -------------------------------
 
 You can customize the access system inside the CRUDController by adding
-some entries inside the  `$accessMapping` array in the linked Admin.
+some entries inside the  `$accessMapping` array in the linked Admin::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/PostAdmin.php
 
     final class CustomAdmin extends AbstractAdmin
@@ -428,7 +416,6 @@ some entries inside the  `$accessMapping` array in the linked Admin.
 
 .. code-block:: php
 
-    <?php
     // src/Controller/CustomCRUDController.php
 
     class CustomCRUDController extends CRUDController
@@ -448,14 +435,11 @@ some entries inside the  `$accessMapping` array in the linked Admin.
 
             // ...
         }
-
-        // ...
     }
 
 You can also fully customize how you want to handle your access management
 by simply overriding ``checkAccess`` function::
 
-    <?php
     // src/Admin/CustomAdmin.php
 
     final class CustomAdmin extends AbstractAdmin
@@ -464,8 +448,6 @@ by simply overriding ``checkAccess`` function::
         {
             $this->customAccessLogic();
         }
-
-        // ...
     }
 
 .. _`Core's documentation`: http://sonata-project.org/bundles/core/master/doc/reference/form_types.html#sonata-type-translatable-choice

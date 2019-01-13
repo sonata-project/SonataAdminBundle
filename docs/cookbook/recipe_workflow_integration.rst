@@ -9,7 +9,7 @@ Download the Bundle
 
 .. code-block:: bash
 
-    $ composer require yokai/sonata-workflow
+    composer require yokai/sonata-workflow
 
 Usage
 -----
@@ -90,6 +90,5 @@ you will see something like this:
    :align: center
    :alt: Sonata Admin with Workflow
    :width: 700px
-
 
 .. _`Workflow Component`: https://symfony.com/doc/current/components/workflow.html
