@@ -565,9 +565,6 @@ If you want to show only the `label_icon`::
                 'label' => false,
                 'label_icon' => 'fa fa-thumbs-o-up'
             ])
-            // ...
-
-`issues on GitHub`_
 
 Mosaic view button
 ------------------
@@ -609,6 +606,5 @@ Checkbox range selection
     You can check / uncheck a range of checkboxes by clicking a first one,
     then a second one with shift + click.
 
-.. _`issues on GitHub`: https://github.com/sonata-project/SonataAdminBundle/issues/1519
 .. _`SonataDoctrineORMAdminBundle Documentation`: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html
 .. _`here`: https://github.com/sonata-project/SonataCoreBundle/tree/3.x/src/Form/Type
