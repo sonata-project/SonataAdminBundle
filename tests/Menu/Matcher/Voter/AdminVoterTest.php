@@ -94,7 +94,7 @@ class AdminVoterTest extends AbstractVoterTest
     /**
      * {@inheritdoc}
      */
-    private function getAdmin($code, $list = false, $granted = false)
+    private function getAdmin(string $code, bool $list = false, bool $granted = false): AbstractAdmin
     {
         $admin = $this->createMock(AbstractAdmin::class);
         $admin
@@ -126,8 +126,12 @@ class AdminVoterTest extends AbstractVoterTest
     /**
      * {@inheritdoc}
      */
-    private function getChildAdmin($parentCode, $childCode, $list = false, $granted = false)
-    {
+    private function getChildAdmin(
+        string $parentCode,
+        string $childCode,
+        bool $list = false,
+        bool $granted = false
+    ): AbstractAdmin {
         $parentAdmin = $this->createMock(AbstractAdmin::class);
         $parentAdmin
             ->expects($this->any())

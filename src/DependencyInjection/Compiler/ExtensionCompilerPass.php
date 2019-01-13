@@ -214,12 +214,13 @@ class ExtensionCompilerPass implements CompilerPassInterface
 
     /**
      * Add extension configuration to the targets array.
-     *
-     * @param string $target
-     * @param string $extension
      */
-    private function addExtension(array &$targets, $target, $extension, array $attributes)
-    {
+    private function addExtension(
+        array &$targets,
+        string $target,
+        string $extension,
+        array $attributes
+    ): void {
         if (!isset($targets[$target])) {
             $targets[$target] = new \SplPriorityQueue();
         }

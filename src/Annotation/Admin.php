@@ -136,10 +136,7 @@ class Admin implements MetadataProcessorInterface
         }
     }
 
-    /**
-     * Check if all the required fields are given.
-     */
-    private function validate()
+    private function validate(): void
     {
         if (!$this->showInDashboard) {
             return;
@@ -158,7 +155,7 @@ class Admin implements MetadataProcessorInterface
     /**
      * Set group and label from class name it not set.
      */
-    private function generateFallback($name)
+    private function generateFallback($name): void
     {
         if (empty($name)) {
             return;

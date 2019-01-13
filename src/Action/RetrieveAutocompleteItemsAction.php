@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\Form;
@@ -177,13 +178,9 @@ final class RetrieveAutocompleteItemsAction
     /**
      * Retrieve the filter field description given by field name.
      *
-     * @param string $field
-     *
      * @throws \RuntimeException
-     *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
-    private function retrieveFilterFieldDescription(AdminInterface $admin, $field)
+    private function retrieveFilterFieldDescription(AdminInterface $admin, string $field): FieldDescriptionInterface
     {
         $admin->getFilterFieldDescriptions();
 
@@ -203,13 +200,9 @@ final class RetrieveAutocompleteItemsAction
     /**
      * Retrieve the form field description given by field name.
      *
-     * @param string $field
-     *
      * @throws \RuntimeException
-     *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
-    private function retrieveFormFieldDescription(AdminInterface $admin, $field)
+    private function retrieveFormFieldDescription(AdminInterface $admin, string $field): FieldDescriptionInterface
     {
         $admin->getFormFieldDescriptions();
 

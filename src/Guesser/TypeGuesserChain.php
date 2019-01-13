@@ -61,7 +61,7 @@ class TypeGuesserChain implements TypeGuesserInterface
      *
      * @return Guess The guess with the highest confidence
      */
-    private function guess(\Closure $closure)
+    private function guess(\Closure $closure): Guess
     {
         $guesses = [];
 

@@ -431,7 +431,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return false !== $this->getOption('virtual_field', false);
     }
 
-    private function getFieldGetterKey($object, $fieldName)
+    private function getFieldGetterKey($object, ?string $fieldName): ?string
     {
         if (!\is_string($fieldName)) {
             return null;
@@ -448,14 +448,14 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return implode('-', $components);
     }
 
-    private function hasCachedFieldGetter($object, $fieldName)
+    private function hasCachedFieldGetter($object, string $fieldName): bool
     {
         return isset(
             self::$fieldGetters[$this->getFieldGetterKey($object, $fieldName)]
         );
     }
 
-    private function callCachedGetter($object, $fieldName, array $parameters = [])
+    private function callCachedGetter($object, string $fieldName, array $parameters = [])
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
         if ('getter' === self::$fieldGetters[$getterKey]['method']) {
@@ -473,7 +473,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $object->{$fieldName};
     }
 
-    private function cacheFieldGetter($object, $fieldName, $method, $getter = null)
+    private function cacheFieldGetter($object, ?string $fieldName, string $method, ?string $getter = null)
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
         if (null !== $getterKey) {

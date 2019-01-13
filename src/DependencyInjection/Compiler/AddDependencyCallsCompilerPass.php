@@ -424,7 +424,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         array $defaultArguments,
         Definition $definition,
         Definition $parentDefinition = null
-    ) {
+    ): void {
         $arguments = $definition->getArguments();
         $parentArguments = $parentDefinition ? $parentDefinition->getArguments() : [];
 

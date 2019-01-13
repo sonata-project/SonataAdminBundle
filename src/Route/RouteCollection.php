@@ -281,10 +281,7 @@ class RouteCollection
         return $this->baseRoutePattern;
     }
 
-    /**
-     * @return Route
-     */
-    private function resolve($element)
+    private function resolve($element): Route
     {
         if (\is_callable($element)) {
             return \call_user_func($element);
