@@ -70,13 +70,11 @@ For more detailed information about routes, see :doc:`routing`.
         protected function configureRoutes(RouteCollection $collection): void
         {
             /* Removing the edit route will disable editing entities. It will also
-             * use the 'show' view as default link on the identifier columns in the list view.
-             */
+            use the 'show' view as default link on the identifier columns in the list view. */
             $collection->remove('edit');
 
             /* Removing the create route will disable creating new entities. It will also
-             * remove the 'Add new' button in the list view.
-             */
+            remove the 'Add new' button in the list view. */
             $collection->remove('create');
         }
 
