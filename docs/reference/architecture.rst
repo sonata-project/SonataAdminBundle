@@ -12,12 +12,6 @@ In this chapter, we'll discuss more in depth how it works.
 The Admin Class
 ---------------
 
-.. note::
-
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 The ``Admin`` class maps a specific model to the rich CRUD interface provided by
 ``SonataAdminBundle``. In other words, using your ``Admin`` classes, you can configure
 what is shown by ``SonataAdminBundle`` in each CRUD action for the associated model.
@@ -34,7 +28,6 @@ form                The fields used to create/edit the entity
 show                The fields used to show the entity
 batch actions       Actions that can be performed on a group of entities (e.g. bulk delete)
 =============       =========================================================================
-
 
 The ``Sonata\AdminBundle\Admin\AbstractAdmin`` class is provided as an easy way to
 map your models, by extending it. However, any implementation of the
@@ -67,7 +60,6 @@ MenuFactory                     generates the side menu, depending on the curren
     If you wish to learn more about how they are used, check the respective documentation
     chapter. In most cases, you won't need to worry about their underlying implementation.
 
-
 All of these dependencies have default values that you can override when declaring any of
 your ``Admin`` services. This is done using a ``call`` to the matching ``setter``:
 
@@ -76,13 +68,13 @@ your ``Admin`` services. This is done using a ``call`` to the matching ``setter`
     .. code-block:: xml
 
         <service id="app.admin.post" class="App\Admin\PostAdmin">
-              <argument />
+              <argument/>
               <argument>App\Entity\Post</argument>
-              <argument />
+              <argument/>
               <call method="setLabelTranslatorStrategy">
-                  <argument type="service" id="sonata.admin.label.strategy.underscore" />
+                  <argument type="service" id="sonata.admin.label.strategy.underscore"/>
               </call>
-              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" />
+              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
           </service>
 
     .. code-block:: yaml
@@ -131,13 +123,13 @@ to set the controller to ``App\Controller\PostAdminController``:
     .. code-block:: xml
 
         <service id="app.admin.post" class="App\Admin\PostAdmin">
-            <argument />
+            <argument/>
             <argument>App\Entity\Post</argument>
             <argument>App\Controller\PostAdminController</argument>
             <call method="setTranslationDomain">
                 <argument>App</argument>
             </call>
-            <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" />
+            <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
         </service>
 
     .. code-block:: yaml
@@ -179,7 +171,6 @@ is generated. These lists are implemented using the ``FieldDescriptionCollection
 which stores instances of ``FieldDescriptionInterface``. Picking up on our previous
 ``PostAdmin`` class example::
 
-    <?php
     // src/Admin/PostAdmin.php
 
     namespace App\Admin;

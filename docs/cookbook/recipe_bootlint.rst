@@ -10,11 +10,13 @@ the eventual Twitter Bootstrap conventions' mistakes.
 Enable Bootlint
 ---------------
 
-To use Bootlint in your admin, you can enable it in ``config.yml``.
+To use Bootlint in your admin, you can enable it in your config file:
 
 .. configuration-block::
 
     .. code-block:: yaml
+
+        # config/packages/sonata_admin.yaml
 
         sonata_admin:
             options:

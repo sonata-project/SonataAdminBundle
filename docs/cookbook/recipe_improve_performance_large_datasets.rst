@@ -22,10 +22,10 @@ To use `SimplePager` in your admin just define ``pager_type`` inside the service
         <!-- config/services.xml -->
 
         <service id="app.admin.post" class="App\Admin\PostAdmin">
-            <argument />
+            <argument/>
             <argument>App\Entity\Post</argument>
-            <argument />
-            <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" pager_type="simple" />
+            <argument/>
+            <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" pager_type="simple"/>
         </service>
 
     .. code-block:: yaml

@@ -19,7 +19,7 @@ The ``cache:create-cache-class`` command generates the cache class
 
 .. code-block:: bash
 
-    $ bin/console cache:create-cache-class
+    bin/console cache:create-cache-class
 
 make:sonata:admin
 -----------------
@@ -34,7 +34,7 @@ The command require the `Symfony Maker Bundle`_ to work. If you don't already ha
 
 .. code-block:: bash
 
-    $ composer require symfony/maker-bundle --dev
+    composer require symfony/maker-bundle --dev
 
 ===============   ===============================================================================================================================
 Options           Description
@@ -49,7 +49,7 @@ Options           Description
 
 .. code-block:: bash
 
-    $ bin/console sonata:admin:generate App/Entity/Foo
+    bin/console sonata:admin:generate App/Entity/Foo
 
 sonata:admin:generate
 ---------------------
@@ -64,7 +64,7 @@ The command requires the SensioGeneratorBundle_ to work. If you don't already ha
 
 .. code-block:: bash
 
-    $ composer require sensio/generator-bundle --dev
+    composer require sensio/generator-bundle --dev
 
 ===============   ===============================================================================================================================
 Options           Description
@@ -73,13 +73,13 @@ Options           Description
  **admin**        the admin class basename (by default this adds "Admin" to the model class name, e.g. "BarAdmin")
  **controller**   the controller class basename (by default this adds "AdminController" to the model class name, e.g. "BarAdminController")
  **manager**      the model manager type (by default this is the first registered model manager type, e.g. "orm")
- **services**     the services YAML file (the default value is "services.yaml" or "admin.yml" if it already exist)
+ **services**     the services YAML file (the default value is "services.yaml")
  **id**           the admin service ID (the default value is combination of the bundle name and admin class basename like "your_ns_foo.admin.bar")
 ===============   ===============================================================================================================================
 
 .. code-block:: bash
 
-    $ bin/console sonata:admin:generate App/Entity/Foo
+    bin/console sonata:admin:generate App/Entity/Foo
 
 sonata:admin:list
 -----------------
@@ -91,7 +91,7 @@ services are registered.
 
 .. code-block:: bash
 
-    $ bin/console sonata:admin:list
+    bin/console sonata:admin:list
 
 .. figure:: ../images/console_admin_list.png
    :align: center
@@ -106,7 +106,7 @@ As an argument you need to specify the admin service id of the Admin to explain.
 
 .. code-block:: bash
 
-    $ bin/console sonata:admin:explain sonata.news.admin.post
+    bin/console sonata:admin:explain sonata.news.admin.post
 
 .. figure:: ../images/console_admin_explain.png
    :align: center
@@ -124,7 +124,7 @@ and roles.
 
 .. code-block:: bash
 
-    $ bin/console sonata:admin:setup-acl
+    bin/console sonata:admin:setup-acl
 
 sonata:admin:generate-object-acl
 --------------------------------
@@ -135,7 +135,7 @@ of the command for more information.
 
 .. code-block:: bash
 
-    $ bin/console sonata:admin:generate-object-acl
+    bin/console sonata:admin:generate-object-acl
 
 .. _SensioGeneratorBundle: http://symfony.com/doc/current/bundles/SensioGeneratorBundle/index.html
 .. _`Symfony Maker Bundle`: https://symfony.com/doc/current/bundles/SymfonyMakerBundle/index.html

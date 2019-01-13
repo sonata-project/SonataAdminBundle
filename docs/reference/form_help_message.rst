@@ -1,12 +1,6 @@
 Form Help Messages and Descriptions
 ===================================
 
-.. note::
-
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 Help Messages
 -------------
 
@@ -20,7 +14,6 @@ Example
 
 .. code-block:: php
 
-    <?php
     // src/Admin/PostAdmin.php
 
     final class PostAdmin extends AbstractAdmin
@@ -49,7 +42,6 @@ Alternative Ways To Define Help Messages
 
 All at once::
 
-    <?php
     // src/Admin/PostAdmin.php
 
     final class PostAdmin extends AbstractAdmin
@@ -71,7 +63,6 @@ All at once::
 
 or step by step::
 
-    <?php
     // src/Admin/PostAdmin.php
 
     final class PostAdmin extends AbstractAdmin
@@ -90,11 +81,7 @@ or step by step::
     }
 
 This can be very useful if you want to apply general help messages via an ``AdminExtension``.
-This Extension for example adds a note field to some entities which use a custom trait.
-
-.. code-block:: php
-
-    <?php
+This Extension for example adds a note field to some entities which use a custom trait::
 
     namespace App\Admin\Extension;
 
@@ -148,7 +135,6 @@ Help messages in a sub-field
 
 .. code-block:: php
 
-    <?php
     // src/Admin/PostAdmin.php
 
     use Sonata\CoreBundle\Form\Type\ImmutableArrayType;
@@ -192,7 +178,6 @@ Example
 
 .. code-block:: php
 
-    <?php
     // src/Admin/PostAdmin.php
 
     final class PostAdmin extends AbstractAdmin

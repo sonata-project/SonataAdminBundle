@@ -1,12 +1,6 @@
 Troubleshooting
 ===============
 
-.. note::
-
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 The toString method
 -------------------
 
@@ -15,40 +9,29 @@ objects are converted to string by using the `__toString`_ magic method.
 Take care to never return anything else than a string in this method.
 For example, if your method looks like that::
 
-    <?php
     // src/Entity/Post.php
 
     class Post
     {
-        // ...
-
         public function __toString()
         {
             return $this->getTitle();
         }
-
-        // ...
     }
 
 You cannot be sure your object will *always* have a title when the bundle will want to convert it to a string.
 So in order to avoid any fatal error, you must return an empty string
 (or anything you prefer) for when the title is missing, like this::
 
-    <?php
     // src/Entity/Post.php
 
     class Post
     {
-        // ...
-
         public function __toString()
         {
             return $this->getTitle() ?: '';
         }
-
-        // ...
     }
-
 
 .. _`__toString`: http://www.php.net/manual/en/language.oop5.magic.php#object.tostring
 
@@ -59,7 +42,7 @@ If you will try to add hundreds of filters to a single admin class, you will get
 In most cases you will get server response like *Error 400 Bad Request* OR *Error 414 Request-URI Too Long*. According to
 `a StackOverflow discussion <http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers>`_
 "safe" URL length is just around 2000 characters.
-You can fix this issue by adding a simple JQuery piece of code on your edit template :
+You can fix this issue by adding a simple JQuery piece of code on your edit template:
 
 .. code-block:: javascript
 
