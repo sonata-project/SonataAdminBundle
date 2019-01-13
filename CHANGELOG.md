@@ -2,6 +2,47 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.44.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.43.0...3.44.0) - 2010-01-12
+
+### Added
+- Default admin service options (group, label catalogue and icon) are now configurable
+- Added possibility to search globally case-sensitive/case-insensitive
+
+### Removed
+- support for php 5 and php 7.0
+
+### Fixed
+- Default values not getting overridden in `make:sonata:admin`
+
+## [3.43.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.42.2...3.43.0) - 2018-12-15
+
+### Added
+- Added `template` option to admin `batchActions`
+
+### Fixed
+- Fix crash on form pages that use `ModelAutocompleteType` and does not have a
+  create route
+
+### Changed
+- Better css layout for single column dropdowns
+
+## [3.42.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.42.1...3.42.2) - 2018-12-07
+### Fixed
+- Remove "e" letter added after delete checkbox in inline table collection form
+
+## [3.42.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.42.0...3.42.1) - 2018-12-06
+### Fixed
+- Fix crash on listing pages that have a datagrid filter
+
+## [3.42.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.41.0...3.42.0) - 2018-12-03
+
+### Fixed
+- incorrect deprecation message about `AdminInterface::setSecurityHandler()`
+- Error on some fields in collection table when `strict_variables` mode is enabled
+- Newly created media were not autoselected
+
+### Deprecated
+- `header_style` option
 
 ## [3.41.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.40.3...3.41.0) - 2018-11-23
 ### Added

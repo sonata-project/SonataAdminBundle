@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -298,7 +300,7 @@ class SonataAdminExtensionTest extends TestCase
         $this->fieldDescription->expects($this->any())
             ->method('getOption')
             ->will($this->returnCallback(function ($name, $default = null) use ($options) {
-                return isset($options[$name]) ? $options[$name] : $default;
+                return $options[$name] ?? $default;
             }));
 
         $this->fieldDescription->expects($this->any())
@@ -382,7 +384,7 @@ class SonataAdminExtensionTest extends TestCase
         $this->fieldDescription->expects($this->any())
             ->method('getOption')
             ->will($this->returnCallback(function ($name, $default = null) use ($options) {
-                return isset($options[$name]) ? $options[$name] : $default;
+                return $options[$name] ?? $default;
             }));
 
         $this->fieldDescription->expects($this->any())
@@ -2428,7 +2430,7 @@ EOT
             ->will($this->onConsecutiveCalls(
                 $options['choices'],
                 'MyCatalogue',
-                isset($options['multiple']) ? $options['multiple'] : null
+                $options['multiple'] ?? null
             ));
 
         $this->assertSame($expectedChoices, $this->twigExtension->getXEditableChoices($fieldDescription));
@@ -2636,17 +2638,13 @@ EOT
 
     /**
      * This method generates url part for Twig layout.
-     *
-     * @param array $url
-     *
-     * @return string
      */
-    private function buildTwigLikeUrl($url)
+    private function buildTwigLikeUrl(array $url): string
     {
         return htmlspecialchars(http_build_query($url, '', '&', PHP_QUERY_RFC3986));
     }
 
-    private function removeExtraWhitespace($string)
+    private function removeExtraWhitespace($string): string
     {
         return trim(preg_replace(
             '/\s+/',
@@ -2655,7 +2653,7 @@ EOT
         ));
     }
 
-    private function mockExtensionContext($locale)
+    private function mockExtensionContext($locale): array
     {
         $request = $this->createMock(Request::class);
         $request->method('getLocale')->willReturn($locale);

@@ -13,14 +13,12 @@ file that was distributed with this source code.
     <input type="text" id="{{ id }}_autocomplete_input" value=""
         {%- for attribute,value in attr %} {{attribute}}="{{value}}" {% endfor -%}
         {%- if read_only|default(false) %} readonly="readonly"{% endif -%}    {# NEXT_MAJOR: remove #}
-        {%- if disabled %} disabled="disabled"{% endif -%}
-        {%- if required %} required="required"{% endif %}
+        {%- if disabled %} disabled="disabled"{% endif %}
     />
 
     <select id="{{ id }}_autocomplete_input_v4" data-sonata-select2="false"
         {%- if read_only|default(false) %} readonly="readonly"{% endif -%}
-        {%- if disabled %} disabled="disabled"{% endif -%}
-        {%- if required %} required="required"{% endif %}
+        {%- if disabled %} disabled="disabled"{% endif %}
     >
         {%- for idx, val  in value if idx~'' != '_labels' -%}
             <option value="{{ val }}" selected>{{ value['_labels'][idx] }}</option>
@@ -273,6 +271,49 @@ file that was distributed with this source code.
                 $(usedInputRef).remove();
                 return true;
             });
+
+            // Automatically select the created record after closing the popup window
+            {% if sonata_admin.field_description 
+                and sonata_admin.field_description.hasAssociationAdmin 
+                and btn_add 
+                and sonata_admin.field_description.associationadmin.hasRoute('create')
+                and sonata_admin.field_description.associationadmin.hasAccess('create') %}
+
+                {% set create_url = sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})) %}
+    
+                $(document).ajaxSuccess(function(event, xhr, settings) {
+                  if(typeof xhr.responseJSON != 'undefined') {
+                      if ('{{ create_url }}'.indexOf(settings.url) !== -1 && typeof xhr.responseJSON != 'string' && xhr.responseJSON.result == 'ok') {
+                        var form = JSON.parse('{"' + decodeURI(settings.data).replace('+', ' ').replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+                        var item = new Option(
+                          new DOMParser().parseFromString(xhr.responseJSON.objectName, "text/html").documentElement.textContent,
+                          xhr.responseJSON.objectId,
+                          true, true
+                          );
+    
+                        {%- if multiple -%}
+                          var data = autocompleteInput.select2('data');
+                          data.push(item);
+                        {%- else -%}
+                          var data = item;
+                        {%- endif -%}
+    
+                        $('#{{ id }}_hidden_inputs_wrap').html('<input type="hidden" name="{{ full_name }}" value="'+xhr.responseJSON.objectId+'" />');
+    
+                        // append to Select2
+                        autocompleteInput.select2('data', data).append(data).trigger('change');
+    
+                        // manually trigger the `select2:select` event
+                        autocompleteInput.select2('data', data).trigger({
+                            type: 'select2:select',
+                            params: {
+                                data: data
+                            }
+                        });
+                      }
+                  }
+                });
+            {% endif %}
         });
         {% endautoescape %}
     </script>

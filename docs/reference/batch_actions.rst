@@ -6,6 +6,7 @@ Admins have a ``delete`` action which allows you to remove several entries
 at once.
 
 .. note::
+
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.
@@ -25,6 +26,8 @@ Each key represent a batch action and could contain these settings:
   (default: the translation domain of the admin)
 - **ask_confirmation**: defaults to true and means that the user will be asked
   for confirmation before the batch action is processed
+- **template**: Override ``ask_confirmation`` template for this specific action. This allows you
+  to specify different templates for each batch action that requires confirmation.
 
 For example, lets define a new ``merge`` action which takes a number of source items and
 merges them onto a single target item. It should only be available when two conditions are met:

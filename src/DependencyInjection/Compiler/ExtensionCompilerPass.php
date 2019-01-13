@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -212,17 +214,18 @@ class ExtensionCompilerPass implements CompilerPassInterface
 
     /**
      * Add extension configuration to the targets array.
-     *
-     * @param string $target
-     * @param string $extension
      */
-    private function addExtension(array &$targets, $target, $extension, array $attributes)
-    {
+    private function addExtension(
+        array &$targets,
+        string $target,
+        string $extension,
+        array $attributes
+    ): void {
         if (!isset($targets[$target])) {
             $targets[$target] = new \SplPriorityQueue();
         }
 
-        $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
+        $priority = $attributes['priority'] ?? 0;
         $targets[$target]->insert(new Reference($extension), $priority);
     }
 }

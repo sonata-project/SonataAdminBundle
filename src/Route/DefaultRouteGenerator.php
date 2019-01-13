@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -121,12 +123,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         return array_key_exists($this->getCode($admin, $name), $this->caches);
     }
 
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
-    private function getCode(AdminInterface $admin, $name)
+    private function getCode(AdminInterface $admin, string $name): string
     {
         $this->loadCache($admin);
 
@@ -153,18 +150,20 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         return $codePrefix.'.'.$name;
     }
 
-    private function loadCache(AdminInterface $admin)
+    private function loadCache(AdminInterface $admin): void
     {
         if ($admin->isChild()) {
             $this->loadCache($admin->getParent());
-        } else {
-            if (\in_array($admin->getCode(), $this->loaded)) {
-                return;
-            }
 
-            $this->caches = array_merge($this->cache->load($admin), $this->caches);
-
-            $this->loaded[] = $admin->getCode();
+            return;
         }
+
+        if (\in_array($admin->getCode(), $this->loaded)) {
+            return;
+        }
+
+        $this->caches = array_merge($this->cache->load($admin), $this->caches);
+
+        $this->loaded[] = $admin->getCode();
     }
 }

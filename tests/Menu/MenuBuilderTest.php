@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -141,7 +143,7 @@ class MenuBuilderTest extends TestCase
         $this->builder->createSidebarMenu();
     }
 
-    private function preparePool($adminGroups, $admin = null)
+    private function preparePool(array $adminGroups, ?AdminInterface $admin = null)
     {
         $this->pool->expects($this->once())
             ->method('getAdminGroups')

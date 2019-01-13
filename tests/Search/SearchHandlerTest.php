@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -46,6 +48,7 @@ class SearchHandlerTest extends TestCase
     {
         $filter = $this->getMockForAbstractClass(FilterInterface::class);
         $filter->expects($this->once())->method('getOption')->will($this->returnValue(false));
+        $filter->expects($this->never())->method('setOption');
 
         $datagrid = $this->getMockForAbstractClass(DatagridInterface::class);
         $datagrid->expects($this->once())->method('getFilters')->will($this->returnValue([$filter]));
@@ -57,10 +60,16 @@ class SearchHandlerTest extends TestCase
         $this->assertFalse($handler->search($admin, 'myservice'));
     }
 
-    public function testBuildPagerWithGlobalSearchField()
+    /**
+     * @test
+     *
+     * @dataProvider buildPagerWithGlobalSearchFieldProvider
+     */
+    public function buildPagerWithGlobalSearchField($caseSensitive)
     {
         $filter = $this->getMockForAbstractClass(FilterInterface::class);
         $filter->expects($this->once())->method('getOption')->will($this->returnValue(true));
+        $filter->expects($this->once())->method('setOption')->with('case_sensitive', $caseSensitive);
 
         $pager = $this->getMockForAbstractClass(PagerInterface::class);
         $pager->expects($this->once())->method('setPage');
@@ -74,7 +83,15 @@ class SearchHandlerTest extends TestCase
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->once())->method('getDatagrid')->will($this->returnValue($datagrid));
 
-        $handler = new SearchHandler($this->getPool($admin));
+        $handler = new SearchHandler($this->getPool($admin), $caseSensitive);
         $this->assertInstanceOf(PagerInterface::class, $handler->search($admin, 'myservice'));
+    }
+
+    public function buildPagerWithGlobalSearchFieldProvider()
+    {
+        return [
+            [true],
+            [false],
+        ];
     }
 }

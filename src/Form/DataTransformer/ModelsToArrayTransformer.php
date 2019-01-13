@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -163,11 +165,9 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * Simulates the old constructor for BC.
      *
-     * @param array $args
-     *
      * @throws RuntimeException
      */
-    private function legacyConstructor($args)
+    private function legacyConstructor(array $args)
     {
         $choiceList = $args[0];
 
@@ -185,10 +185,8 @@ class ModelsToArrayTransformer implements DataTransformerInterface
 
     /**
      * @param object $entity
-     *
-     * @return array
      */
-    private function getIdentifierValues($entity)
+    private function getIdentifierValues($entity): array
     {
         try {
             return $this->modelManager->getIdentifierValues($entity);
@@ -200,12 +198,11 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * @internal
      */
-    private function triggerDeprecation()
+    private function triggerDeprecation(): void
     {
         @trigger_error(sprintf(
-                'Using the "%s::$choiceList" property is deprecated since version 3.12 and will be removed in 4.0.',
-                __CLASS__),
-            E_USER_DEPRECATED)
-        ;
+            'Using the "%s::$choiceList" property is deprecated since version 3.12 and will be removed in 4.0.',
+            __CLASS__
+        ), E_USER_DEPRECATED);
     }
 }

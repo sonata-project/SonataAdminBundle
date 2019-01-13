@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -30,7 +32,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -129,12 +130,10 @@ class CRUDController implements ContainerAwareInterface
         if (!$this->isXmlHttpRequest()) {
             $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
         }
-        $parameters['admin'] = isset($parameters['admin']) ?
-            $parameters['admin'] :
+        $parameters['admin'] = $parameters['admin'] ??
             $this->admin;
 
-        $parameters['base_template'] = isset($parameters['base_template']) ?
-            $parameters['base_template'] :
+        $parameters['base_template'] = $parameters['base_template'] ??
             $this->getBaseTemplate();
 
         $parameters['admin_pool'] = $this->get('sonata.admin.pool');
@@ -334,7 +333,6 @@ class CRUDController implements ContainerAwareInterface
         $objectId = $this->admin->getNormalizedIdentifier($existingObject);
 
         $form = $this->admin->getForm();
-        \assert($form instanceof Form);
 
         if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
             throw new \RuntimeException(
@@ -445,7 +443,7 @@ class CRUDController implements ContainerAwareInterface
 
         $confirmation = $request->get('confirmation', false);
 
-        if ($data = json_decode($request->get('data'), true)) {
+        if ($data = json_decode((string) $request->get('data'), true)) {
             $action = $data['action'];
             $idx = $data['idx'];
             $allElements = $data['all_elements'];
@@ -501,22 +499,24 @@ class CRUDController implements ContainerAwareInterface
             return $this->redirectToList();
         }
 
-        $askConfirmation = isset($batchActions[$action]['ask_confirmation']) ?
-            $batchActions[$action]['ask_confirmation'] :
+        $askConfirmation = $batchActions[$action]['ask_confirmation'] ??
             true;
 
         if ($askConfirmation && 'ok' != $confirmation) {
             $actionLabel = $batchActions[$action]['label'];
-            $batchTranslationDomain = isset($batchActions[$action]['translation_domain']) ?
-                $batchActions[$action]['translation_domain'] :
+            $batchTranslationDomain = $batchActions[$action]['translation_domain'] ??
                 $this->admin->getTranslationDomain();
 
             $formView = $datagrid->getForm()->createView();
             $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-            // NEXT_MAJOR: Remove this line and use commented line below it instead
-            $template = $this->admin->getTemplate('batch_confirmation');
-            // $template = $this->templateRegistry->getTemplate('batch_confirmation');
+            // NEXT_MAJOR: Remove these lines and use commented lines below them instead
+            $template = !empty($batchActions[$action]['template']) ?
+                $batchActions[$action]['template'] :
+                $this->admin->getTemplate('batch_confirmation');
+            // $template = !empty($batchActions[$action]['template']) ?
+            //     $batchActions[$action]['template'] :
+            //     $this->templateRegistry->getTemplate('batch_confirmation');
 
             return $this->renderWithExtraParams($template, [
                 'action' => 'list',
@@ -596,7 +596,6 @@ class CRUDController implements ContainerAwareInterface
         $this->admin->setSubject($newObject);
 
         $form = $this->admin->getForm();
-        \assert($form instanceof Form);
 
         if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
             throw new \RuntimeException(
@@ -623,6 +622,7 @@ class CRUDController implements ContainerAwareInterface
                         return $this->renderJson([
                             'result' => 'ok',
                             'objectId' => $this->admin->getNormalizedIdentifier($newObject),
+                            'objectName' => $this->escapeHtml($this->admin->toString($newObject)),
                         ], 200, []);
                     }
 
@@ -951,10 +951,10 @@ class CRUDController implements ContainerAwareInterface
             );
             $allowedExportFormats = (array) $this->admin->getExportFormats();
 
-            $class = $this->admin->getClass();
+            $class = (string) $this->admin->getClass();
             $filename = sprintf(
                 'export_%s_%s.%s',
-                strtolower(substr($class, strripos($class, '\\') + 1)),
+                strtolower((string) substr($class, strripos($class, '\\') + 1)),
                 date('Y_m_d_H_i_s', strtotime('now')),
                 $format
             );
@@ -1530,7 +1530,7 @@ class CRUDController implements ContainerAwareInterface
         return $this->get('translator')->trans($id, $parameters, $domain, $locale);
     }
 
-    private function checkParentChildAssociation(Request $request, $object)
+    private function checkParentChildAssociation(Request $request, $object): void
     {
         if (!($parentAdmin = $this->admin->getParent())) {
             return;
@@ -1558,7 +1558,7 @@ class CRUDController implements ContainerAwareInterface
     /**
      * Sets the admin form theme to form view. Used for compatibility between Symfony versions.
      */
-    private function setFormTheme(FormView $formView, array $theme = null)
+    private function setFormTheme(FormView $formView, array $theme = null): void
     {
         $twig = $this->get('twig');
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -97,10 +99,7 @@ class GlobalVariables
         return $this->getAdminPool()->getAdminByAdminCode($code)->generateObjectUrl($action, $object, $parameters, $absolute);
     }
 
-    /**
-     * @return array
-     */
-    private function getCodeAction($code, $action)
+    private function getCodeAction($code, $action): array
     {
         if ($pipe = strpos($code, '|')) {
             // convert code=sonata.page.admin.page|sonata.page.admin.snapshot, action=list

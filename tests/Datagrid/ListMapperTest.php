@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -206,8 +208,11 @@ class ListMapperTest extends TestCase
             $this->listMapper->add('_'.$type, $type);
         }
 
-        foreach ($this->fieldDescriptionCollection as $field) {
-            $this->assertTrue($field->isVirtual(), 'Failed asserting that FieldDescription with type "'.$field->getType().'" is tagged with virtual flag.');
+        foreach ($this->fieldDescriptionCollection->getElements() as $field) {
+            $this->assertTrue(
+                $field->isVirtual(),
+                'Failed asserting that FieldDescription with type "'.$field->getType().'" is tagged with virtual flag.'
+            );
         }
     }
 
@@ -252,7 +257,7 @@ class ListMapperTest extends TestCase
         ], true), print_r($this->fieldDescriptionCollection->getElements(), true));
     }
 
-    private function getFieldDescriptionMock($name = null, $label = null)
+    private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription
     {
         $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);
 

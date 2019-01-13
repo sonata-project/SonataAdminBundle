@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -55,5 +57,10 @@ class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension
     public function getExtendedType()
     {
         return FormType::class;
+    }
+
+    public static function getExtendedTypes()
+    {
+        return [FormType::class];
     }
 }

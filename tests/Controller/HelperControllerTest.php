@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -13,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Controller;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
@@ -21,11 +24,11 @@ use Sonata\AdminBundle\Controller\HelperController;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
-use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Command\DebugCommand;
 use Symfony\Bridge\Twig\Extension\FormExtension;
@@ -48,46 +51,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Twig\Environment;
 use Twig\Template;
 use Twig\TemplateWrapper;
-
-class AdminControllerHelper_Foo
-{
-    private $bar;
-
-    public function getAdminTitle()
-    {
-        return 'foo';
-    }
-
-    public function setEnabled($value)
-    {
-    }
-
-    public function setBar(AdminControllerHelper_Bar $bar)
-    {
-        $this->bar = $bar;
-    }
-
-    public function getBar()
-    {
-        return $this->bar;
-    }
-}
-
-class AdminControllerHelper_Bar
-{
-    public function getAdminTitle()
-    {
-        return 'bar';
-    }
-
-    public function setEnabled($value)
-    {
-    }
-
-    public function getEnabled()
-    {
-    }
-}
 
 /**
  * @group legacy
@@ -584,13 +547,13 @@ class HelperControllerTest extends TestCase
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
 
-    private function configureAutocompleteItemsDatagrid()
+    private function configureAutocompleteItemsDatagrid(): ObjectProphecy
     {
         $entity = new Foo();
 
         $targetAdmin = $this->prophesize(AbstractAdmin::class);
         $datagrid = $this->prophesize(DatagridInterface::class);
-        $metadata = $this->prophesize(Metadata::class);
+        $metadata = $this->prophesize(MetadataInterface::class);
         $pager = $this->prophesize(Pager::class);
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
 
@@ -619,7 +582,7 @@ class HelperControllerTest extends TestCase
         return $datagrid;
     }
 
-    private function configureFormConfig($field, $disabled = false)
+    private function configureFormConfig(string $field, bool $disabled = false): void
     {
         $form = $this->prophesize(Form::class);
         $formType = $this->prophesize(Form::class);
@@ -638,7 +601,7 @@ class HelperControllerTest extends TestCase
         $formConfig->getAttribute('target_admin_access_action')->willReturn('list');
     }
 
-    private function configureFormConfigComplexProperty($field)
+    private function configureFormConfigComplexProperty(string $field): void
     {
         $form = $this->prophesize(Form::class);
         $formType = $this->prophesize(Form::class);
@@ -657,7 +620,7 @@ class HelperControllerTest extends TestCase
         $formConfig->getAttribute('target_admin_access_action')->willReturn('list');
     }
 
-    private function configureFormConfigComplexPropertyArray($field)
+    private function configureFormConfigComplexPropertyArray(string $field): void
     {
         $form = $this->prophesize(Form::class);
         $formType = $this->prophesize(Form::class);

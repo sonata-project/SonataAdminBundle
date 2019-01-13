@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -188,6 +190,9 @@ class FormMapperTest extends TestCase
         ]], $this->admin->getFormGroups());
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testRemoveCascadeRemoveFieldFromFormGroup()
     {
         $this->formMapper->with('foo');
@@ -449,8 +454,11 @@ class FormMapperTest extends TestCase
         $this->assertSame(['fo__o', 'ba____z'], $this->formMapper->keys());
     }
 
-    private function getFieldDescriptionMock($name = null, $label = null, $translationDomain = null)
-    {
+    private function getFieldDescriptionMock(
+        ?string $name = null,
+        ?string $label = null,
+        ?string $translationDomain = null
+    ): BaseFieldDescription {
         $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);
 
         if (null !== $name) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -28,12 +30,12 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class PersistenceEvent extends Event
 {
-    const TYPE_PRE_UPDATE = 'pre_update';
-    const TYPE_POST_UPDATE = 'post_update';
-    const TYPE_PRE_PERSIST = 'pre_persist';
-    const TYPE_POST_PERSIST = 'post_persist';
-    const TYPE_PRE_REMOVE = 'pre_remove';
-    const TYPE_POST_REMOVE = 'post_remove';
+    public const TYPE_PRE_UPDATE = 'pre_update';
+    public const TYPE_POST_UPDATE = 'post_update';
+    public const TYPE_PRE_PERSIST = 'pre_persist';
+    public const TYPE_POST_PERSIST = 'post_persist';
+    public const TYPE_PRE_REMOVE = 'pre_remove';
+    public const TYPE_POST_REMOVE = 'post_remove';
 
     /**
      * @var AdminInterface

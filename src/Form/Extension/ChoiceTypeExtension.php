@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -48,5 +50,10 @@ class ChoiceTypeExtension extends AbstractTypeExtension
     public function getExtendedType()
     {
         return ChoiceType::class;
+    }
+
+    public static function getExtendedTypes()
+    {
+        return [ChoiceType::class];
     }
 }

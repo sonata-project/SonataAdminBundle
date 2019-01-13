@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -183,6 +185,9 @@ class BaseFieldDescriptionTest extends TestCase
         $description->getFieldValue($mock, 'fake');
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testGetVirtualValue()
     {
         $description = new FieldDescription();

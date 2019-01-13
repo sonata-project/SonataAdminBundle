@@ -6,6 +6,7 @@ chapter <installation>`. In this tutorial, you'll learn how to tell SonataAdmin
 how an admin can manage your models.
 
 .. note::
+
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.
@@ -14,7 +15,7 @@ Step 0: Create a Model
 ----------------------
 
 For the rest of the tutorial, you'll need some sort of model. In this tutorial,
-two very simple ``Post`` and ``Tag`` entities will be used::
+``BlogPost`` and ``Category`` will be used::
 
     // src/Entity/BlogPost.php
 
@@ -94,6 +95,7 @@ After this, create the schema for these entities:
     $ bin/console doctrine:schema:create
 
 .. note::
+
     This article assumes you have basic knowledge of the Doctrine2 ORM and
     you've set up a database correctly.
 
@@ -110,9 +112,7 @@ to find entries and how the create form will look like. Each model will have
 its own Admin class.
 
 Knowing this, let's create an Admin class for the ``Category`` entity. The
-easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin``.
-
-.. code-block:: php
+easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin``::
 
     // src/Admin/CategoryAdmin.php
     namespace App\Admin;
@@ -176,7 +176,6 @@ service and tag it with the ``sonata.admin`` tag:
                 arguments: [~, App\Entity\Category, ~]
                 tags:
                     - { name: sonata.admin, manager_type: orm, label: Category }
-                public: true
 
 The constructor of the base Admin class has many arguments. SonataAdminBundle
 provides a compiler pass which takes care of configuring it correctly for you.
@@ -218,6 +217,7 @@ Project". In the next chapters, you'll create an admin for the ``BlogPost``
 entity and learn more about this class.
 
 .. note::
+
     If you're not seeing the nice labels, but instead something like
     "link_add", you should make sure that you've `enabled the translator`_.
 

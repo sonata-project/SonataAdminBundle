@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -63,8 +65,8 @@ class AdminMakerTest extends TestCase
 
     protected function setup()
     {
-        if (5 == PHP_MAJOR_VERSION || !class_exists('Symfony\Component\Console\CommandLoader\CommandLoaderInterface')) {
-            $this->markTestSkipped('Test only available for PHP 7 and SF 3.4');
+        if (!class_exists('Symfony\Component\Console\CommandLoader\CommandLoaderInterface')) {
+            $this->markTestSkipped('Test only available for SF 3.4');
         }
 
         $managerOrmProxy = $this->prophesize(ModelManagerInterface::class);
@@ -104,7 +106,7 @@ class AdminMakerTest extends TestCase
 
         $this->input = new ArrayInput($in, $definition);
 
-        $this->output = new StreamOutput(fopen('php://memory', 'wb', false));
+        $this->output = new StreamOutput(fopen('php://memory', 'w', false));
 
         $this->io = new ConsoleStyle($this->input, $this->output);
         $fileManager = new FileManager(new Filesystem(), '.');

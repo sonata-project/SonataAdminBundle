@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -53,10 +55,7 @@ class NoopSecurityHandlerTest extends TestCase
         $this->assertSame('', $this->handler->getBaseRole($this->getSonataAdminObject()));
     }
 
-    /**
-     * @return AdminInterface
-     */
-    private function getSonataAdminObject()
+    private function getSonataAdminObject(): AdminInterface
     {
         return $this->getMockForAbstractClass(AdminInterface::class);
     }

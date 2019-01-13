@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,7 +11,9 @@
  * file that was distributed with this source code.
  */
 
-// fix encoding issue while running text on different host with different locale configuration
+/*
+ * fix encoding issue while running text on different host with different locale configuration
+ */
 setlocale(LC_ALL, 'en_US.UTF-8');
 
 if (file_exists($file = __DIR__.'/autoload.php')) {
@@ -18,7 +22,9 @@ if (file_exists($file = __DIR__.'/autoload.php')) {
     require_once $file;
 }
 
-// try to get Symfony's PHPUnit Bridge
+/*
+ * try to get Symfony's PHPUnit Bridge
+ */
 $files = array_filter([
     __DIR__.'/../vendor/symfony/symfony/src/Symfony/Bridge/PhpUnit/bootstrap.php',
     __DIR__.'/../vendor/symfony/phpunit-bridge/bootstrap.php',

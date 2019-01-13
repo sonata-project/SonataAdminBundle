@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -78,7 +80,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $sonataAdmin = $form->getConfig()->getAttribute('sonata_admin');
-        $sonataAdminHelp = isset($options['sonata_help']) ? $options['sonata_help'] : null;
+        $sonataAdminHelp = $options['sonata_help'] ?? null;
 
         /*
          * We have a child, so we need to upgrade block prefix
@@ -153,6 +155,11 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     public function getExtendedType()
     {
         return FormType::class;
+    }
+
+    public static function getExtendedTypes()
+    {
+        return [FormType::class];
     }
 
     /**

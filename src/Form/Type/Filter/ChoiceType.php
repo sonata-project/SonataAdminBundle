@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -25,11 +27,11 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class ChoiceType extends AbstractType
 {
-    const TYPE_CONTAINS = 1;
+    public const TYPE_CONTAINS = 1;
 
-    const TYPE_NOT_CONTAINS = 2;
+    public const TYPE_NOT_CONTAINS = 2;
 
-    const TYPE_EQUAL = 3;
+    public const TYPE_EQUAL = 3;
 
     /**
      * NEXT_MAJOR: remove this property.

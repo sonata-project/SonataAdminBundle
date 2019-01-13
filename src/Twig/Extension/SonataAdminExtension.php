@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -39,7 +41,7 @@ use Twig\TwigFunction;
 class SonataAdminExtension extends AbstractExtension
 {
     // @todo: there are more locales which are not supported by moment and they need to be translated/normalized/canonicalized here
-    const MOMENT_UNSUPPORTED_LOCALES = [
+    public const MOMENT_UNSUPPORTED_LOCALES = [
         'es' => ['es', 'es-do'],
         'nl' => ['nl', 'nl-be'],
         'fr' => ['fr', 'fr-ca', 'fr-ch'],
@@ -461,7 +463,7 @@ class SonataAdminExtension extends AbstractExtension
      * Returns a canonicalized locale for "moment" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
      *
-     * @return null|string
+     * @return string|null
      */
     final public function getCanonicalizedLocaleForMoment(array $context)
     {
@@ -485,7 +487,7 @@ class SonataAdminExtension extends AbstractExtension
      * Returns a canonicalized locale for "select2" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
      *
-     * @return null|string
+     * @return string|null
      */
     final public function getCanonicalizedLocaleForSelect2(array $context)
     {
@@ -588,15 +590,12 @@ class SonataAdminExtension extends AbstractExtension
         return $template;
     }
 
-    /**
-     * @return string
-     */
     private function render(
         FieldDescriptionInterface $fieldDescription,
         TemplateWrapper $template,
         array $parameters,
         Environment $environment
-    ) {
+    ): ?string {
         $content = $template->render($parameters);
 
         if ($environment->isDebug()) {
@@ -625,14 +624,10 @@ EOT;
     }
 
     /**
-     * @param string $adminCode
-     *
      * @throws ServiceCircularReferenceException
      * @throws ServiceNotFoundException
-     *
-     * @return TemplateRegistryInterface
      */
-    private function getTemplateRegistry($adminCode)
+    private function getTemplateRegistry(string $adminCode): TemplateRegistryInterface
     {
         $serviceId = $adminCode.'.template_registry';
         $templateRegistry = $this->templateRegistries->get($serviceId);

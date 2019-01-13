@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -170,6 +172,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         }
 
         $container->setParameter('sonata.admin.configuration.global_search.empty_boxes', $config['global_search']['empty_boxes']);
+        $container->setParameter('sonata.admin.configuration.global_search.case_sensitive', $config['global_search']['case_sensitive']);
         $container->setParameter('sonata.admin.configuration.templates', $config['templates'] + [
             'user_block' => '@SonataAdmin/Core/user_block.html.twig',
             'add_block' => '@SonataAdmin/Core/add_block.html.twig',
@@ -206,6 +209,9 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
         $container->setParameter('sonata.admin.configuration.dashboard_blocks', $config['dashboard']['blocks']);
         $container->setParameter('sonata.admin.configuration.sort_admins', $config['options']['sort_admins']);
+        $container->setParameter('sonata.admin.configuration.default_group', $config['options']['default_group']);
+        $container->setParameter('sonata.admin.configuration.default_label_catalogue', $config['options']['default_label_catalogue']);
+        $container->setParameter('sonata.admin.configuration.default_icon', $config['options']['default_icon']);
         $container->setParameter('sonata.admin.configuration.breadcrumbs', $config['breadcrumbs']);
 
         if (null === $config['security']['acl_user_manager'] && isset($bundles['FOSUserBundle'])) {
@@ -454,7 +460,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         return 'https://sonata-project.org/schema/dic/admin';
     }
 
-    private function buildStylesheets($config)
+    private function buildStylesheets($config): array
     {
         return $this->mergeArray(
             $config['assets']['stylesheets'],
@@ -463,7 +469,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         );
     }
 
-    private function buildJavascripts($config)
+    private function buildJavascripts($config): array
     {
         return $this->mergeArray(
             $config['assets']['javascripts'],
@@ -472,7 +478,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         );
     }
 
-    private function mergeArray($array, $addArray, $removeArray = [])
+    private function mergeArray(array $array, array $addArray, array $removeArray = []): array
     {
         foreach ($addArray as $toAdd) {
             array_push($array, $toAdd);
@@ -486,7 +492,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         return $array;
     }
 
-    private function replacePropertyAccessor(ContainerBuilder $container)
+    private function replacePropertyAccessor(ContainerBuilder $container): void
     {
         if (!$container->has('form.property_accessor')) {
             return;

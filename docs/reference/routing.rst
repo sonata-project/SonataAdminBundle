@@ -2,6 +2,7 @@ Routing
 =======
 
 .. note::
+
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.
@@ -191,8 +192,7 @@ Other steps needed to create your new action
 
 In addition to defining the route for your new action you also need to create a
 handler for it in your Controller. By default Admin classes use ``Sonata\AdminBundle\Controller\CRUDController``
-as their controller, but this can be changed by altering the third argument when defining
-your Admin service (in your admin.yml file).
+as their controller, but this can be changed by altering the third argument when defining your Admin service.
 
 For example, lets change the Controller for our MediaAdmin class to ``App\Controller\MediaCRUDController``:
 
@@ -200,17 +200,16 @@ For example, lets change the Controller for our MediaAdmin class to ``App\Contro
 
     .. code-block:: yaml
 
-        # src/Resources/config/admin.yml
+        # config/services.yaml
 
         app.admin.media:
             class: App\Admin\MediaAdmin
-            tags:
-                - { name: sonata.admin, manager_type: orm, label: "Media" }
             arguments:
                 - ~
                 - App\Entity\Page
                 - App\Controller\MediaCRUDController # define the new controller via the third argument
-            public: true
+            tags:
+                - { name: sonata.admin, manager_type: orm, label: 'Media' }
 
 We now need to create our Controller, the easiest way is to extend the
 basic Sonata CRUD controller::

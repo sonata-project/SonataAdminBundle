@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -237,12 +239,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         return $label;
     }
 
-    /**
-     * @param string $id
-     *
-     * @return AdminInterface
-     */
-    private function getAdmin($id)
+    private function getAdmin(string $id): AdminInterface
     {
         $admin = $this->adminPool->getContainer()->get($id);
         \assert($admin instanceof AdminInterface);
@@ -250,17 +247,13 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         return $admin;
     }
 
-    /**
-     * @param string $id
-     * @param string $domain
-     */
-    private function addMessage($id, $domain)
+    private function addMessage(string $id, string $domain): void
     {
         $message = new Message($id, $domain);
 
         //        $this->logger->debug(sprintf('extract: %s - domain:%s', $id, $domain));
 
-        $trace = debug_backtrace(false);
+        $trace = debug_backtrace(0);
         if (isset($trace[1]['file'])) {
             $message->addSource(new FileSource($trace[1]['file']));
         }

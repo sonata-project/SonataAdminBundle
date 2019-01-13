@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -16,10 +18,9 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuFactory;
 use Knp\Menu\MenuItem;
 use Knp\Menu\Provider\MenuProviderInterface;
+use PHPUnit\Framework\MockObject\MockObject as MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Menu\Provider\GroupMenuProvider;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -642,13 +643,7 @@ class GroupMenuProviderTest extends TestCase
         ];
     }
 
-    /**
-     * @param bool $hasRoute
-     * @param bool $isGranted
-     *
-     * @return MockObject|AdminInterface
-     */
-    private function getAdminMock($hasRoute = true, $isGranted = true)
+    private function getAdminMock(bool $hasRoute = true, bool $isGranted = true): AbstractAdmin
     {
         $admin = $this->createMock(AbstractAdmin::class);
         $admin->expects($this->once())

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -59,7 +61,7 @@ class TypeGuesserChain implements TypeGuesserInterface
      *
      * @return Guess The guess with the highest confidence
      */
-    private function guess(\Closure $closure)
+    private function guess(\Closure $closure): Guess
     {
         $guesses = [];
 

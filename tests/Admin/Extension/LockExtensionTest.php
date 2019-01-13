@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -12,6 +14,7 @@
 namespace Sonata\AdminBundle\Tests\Admin\Extension;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Extension\LockExtension;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
@@ -173,6 +176,7 @@ class LockExtensionTest extends TestCase
         $modelManager = $this->prophesize(ModelManagerInterface::class);
         $uniqid = 'admin123';
         $this->configureAdmin($uniqid, $this->request, $modelManager->reveal());
+        $this->modelManager->lock()->shouldNotBeCalled();
 
         $this->request->request->set($uniqid, ['_lock_version' => 1]);
         $this->lockExtension->preUpdate($this->admin->reveal(), $this->object);
@@ -189,7 +193,7 @@ class LockExtensionTest extends TestCase
         $this->lockExtension->preUpdate($this->admin->reveal(), $this->object);
     }
 
-    private function configureForm()
+    private function configureForm(): ObjectProphecy
     {
         $form = $this->prophesize(FormInterface::class);
 
@@ -199,7 +203,7 @@ class LockExtensionTest extends TestCase
         return $form;
     }
 
-    private function configureFormMapper()
+    private function configureFormMapper(): FormMapper
     {
         $contractor = $this->prophesize(FormContractorInterface::class);
         $formFactory = $this->prophesize(FormFactoryInterface::class);
@@ -208,8 +212,11 @@ class LockExtensionTest extends TestCase
         return new FormMapper($contractor->reveal(), $formBuilder, $this->admin->reveal());
     }
 
-    private function configureAdmin($uniqid = null, $request = null, $modelManager = null)
-    {
+    private function configureAdmin(
+        ?string $uniqid = null,
+        ?Request $request = null,
+        $modelManager = null
+    ): void {
         $this->admin->getUniqid()->willReturn($uniqid);
         $this->admin->getRequest()->willReturn($request);
         $this->admin->hasRequest()->willReturn(null !== $request);

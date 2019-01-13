@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -50,11 +52,6 @@ class FormBuilderIteratorTest extends TestCase
         $this->dispatcher = null;
         $this->factory = null;
         $this->builder = null;
-    }
-
-    public function testConstructor()
-    {
-        new FormBuilderIterator($this->builder);
     }
 
     public function testGetChildren()

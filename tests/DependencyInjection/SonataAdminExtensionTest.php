@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -41,6 +43,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
     }
 
     /**
+     * @doesNotPerformAssertions
      * @group legacy
      */
     public function testContainerCompileWithJMSDiExtraBundle()
@@ -83,6 +86,16 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $this->assertContainerBuilderHasParameter('sonata.admin.configuration.security.role_admin');
         $this->assertContainerBuilderHasParameter('sonata.admin.configuration.security.role_super_admin');
+    }
+
+    public function testHasDefaultServiceParameters()
+    {
+        $this->container->setParameter('kernel.bundles', []);
+        $this->load();
+
+        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_group');
+        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_label_catalogue');
+        $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_icon');
     }
 
     public function testExtraStylesheetsGetAdded()

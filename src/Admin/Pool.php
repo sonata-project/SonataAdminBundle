@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -385,7 +387,7 @@ class Pool
      *
      * @param string $name
      *
-     * @return null|string
+     * @return string|null
      */
     public function getTemplate($name)
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -67,10 +69,7 @@ class AdminGeneratorTest extends TestCase
         $this->adminGenerator->generate($this->bundleMock, 'ModelAdmin', 'Model');
     }
 
-    /**
-     * @return ModelManagerInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private function createModelManagerMock()
+    private function createModelManagerMock(): ModelManagerInterface
     {
         $modelManagerMock = $this->getMockForAbstractClass(ModelManagerInterface::class);
         $modelManagerMock
@@ -83,10 +82,7 @@ class AdminGeneratorTest extends TestCase
         return $modelManagerMock;
     }
 
-    /**
-     * @return BundleInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private function createBundleMock()
+    private function createBundleMock(): BundleInterface
     {
         $bundleMock = $this->getMockForAbstractClass(BundleInterface::class);
         $bundleMock

@@ -1,5 +1,7 @@
 <?= "<?php\n" ?>
 
+declare(strict_types=1);
+
 namespace <?= $namespace ?>;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -11,13 +13,13 @@ use Sonata\AdminBundle\Show\ShowMapper;
 final class <?= $class_name ?> extends AbstractAdmin
 {
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
 <?= $fields ?>;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
 <?= $fields ?>->add('_action', null, [
@@ -29,13 +31,13 @@ final class <?= $class_name ?> extends AbstractAdmin
             ]);
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
 <?= $fields ?>;
     }
 
-    protected function configureShowFields(ShowMapper $showMapper)
+    protected function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
 <?= $fields ?>;

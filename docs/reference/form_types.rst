@@ -2,6 +2,7 @@ Form Types
 ==========
 
 .. note::
+
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.
@@ -536,31 +537,26 @@ creation (and editing) of new Images instead of just selecting an existing Image
 from a list.
 
 First we need to create an ``ImageAdmin`` class and register it as an admin class
-for managing ``Image`` objects. In our ``admin.yml`` we have an entry for ``ImageAdmin``
+for managing ``Image`` objects. In our ``services.yaml`` we have an entry for ``ImageAdmin``
 that looks like this:
 
 .. configuration-block::
 
     .. code-block:: yaml
 
-        # src/Resources/config/admin.yml
+        # config/services.yaml
 
         services:
             app.admin.image:
                 class: App\Admin\ImageAdmin
-                tags:
-                    - { name: sonata.admin, manager_type: orm, label: "Image" }
                 arguments:
                     - ~
                     - App\Entity\Image
                     - 'Sonata\AdminBundle\Controller\CRUDController'
                 calls:
-                    - [ setTranslationDomain, [App]]
-                public: true
-
-.. note::
-
-    Refer to `Getting started documentation`_ to see how to define your ``admin.yml`` file.
+                    - [setTranslationDomain, ['App']]
+                tags:
+                    - { name: sonata.admin, manager_type: orm, label: 'Image' }
 
 To embed ``ImageAdmin`` within ``PageAdmin`` we just need to change the reference
 for the ``image1`` field to ``sonata_type_admin`` in our ``PageAdmin`` class:
@@ -585,7 +581,7 @@ for the ``image1`` field to ``sonata_type_admin`` in our ``PageAdmin`` class:
     }
 
 We do not need to define any options since Sonata calculates that the linked class
-is of type ``Image`` and the service definition (in ``admin.yml``) defines that ``Image``
+is of type ``Image`` and the service definition (in ``services.yaml``) defines that ``Image``
 objects are managed by the ``ImageAdmin`` class.
 
 The available options (which can be passed as a third parameter to ``FormMapper::add()``) are:
@@ -864,7 +860,6 @@ General
 .. _`Symfony field types`: http://symfony.com/doc/current/book/forms.html#built-in-field-types
 .. _`Symfony choice Field Type docs`: http://symfony.com/doc/current/reference/forms/types/choice.html
 .. _`Symfony PropertyPath`: http://api.symfony.com/2.0/Symfony/Component/Form/Util/PropertyPath.html
-.. _`Getting started documentation`: https://sonata-project.org/bundles/admin/master/doc/reference/getting_started.html#importing-it-in-the-main-config-yml
 .. _`ORM`: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/form_field_definition.html
 .. _`PHPCR`: https://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/reference/form_field_definition.html
 .. _`MongoDB`: https://sonata-project.org/bundles/mongo-admin/master/doc/reference/form_field_definition.html

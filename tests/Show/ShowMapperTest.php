@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -432,7 +434,7 @@ class ShowMapperTest extends TestCase
         $this->assertFalse($this->showMapper->get('foo')->getOption('label'));
     }
 
-    private function cleanShowMapper()
+    private function cleanShowMapper(): void
     {
         $this->showBuilder = $this->getMockForAbstractClass(ShowBuilderInterface::class);
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
@@ -440,7 +442,7 @@ class ShowMapperTest extends TestCase
         $this->showMapper = new ShowMapper($this->showBuilder, $this->fieldDescriptionCollection, $this->admin);
     }
 
-    private function getFieldDescriptionMock($name = null, $label = null)
+    private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription
     {
         $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);
 

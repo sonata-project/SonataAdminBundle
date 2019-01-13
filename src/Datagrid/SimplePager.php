@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -119,7 +121,7 @@ class SimplePager extends Pager
             $this->initializeIterator();
 
             $t = (int) ceil($this->thresholdCount / $this->getMaxPerPage()) + $this->getPage() - 1;
-            $this->setLastPage(\max(1, $t));
+            $this->setLastPage(max(1, $t));
         }
     }
 

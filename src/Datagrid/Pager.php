@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -17,8 +19,8 @@ namespace Sonata\AdminBundle\Datagrid;
  */
 abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInterface
 {
-    const TYPE_DEFAULT = 'default';
-    const TYPE_SIMPLE = 'simple';
+    public const TYPE_DEFAULT = 'default';
+    public const TYPE_SIMPLE = 'simple';
 
     /**
      * @var int

@@ -2,6 +2,7 @@ Create child admins
 -------------------
 
 .. note::
+
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.
@@ -20,14 +21,16 @@ its parent:
 
     .. code-block:: yaml
 
-        # app/config/services.yml
+        # config/services.yaml
+
         App\Admin\PlaylistAdmin:
             calls:
-                - [ addChild, ['@App\Admin\VideoAdmin', 'playlist']]
+                - [addChild, ['@App\Admin\VideoAdmin', 'playlist']]
 
     .. code-block:: xml
 
-        <!-- app/config/services.xml -->
+        <!-- config/services.xml -->
+
         <service id="App\Admin\PlaylistAdmin">
             <!-- ... -->
 

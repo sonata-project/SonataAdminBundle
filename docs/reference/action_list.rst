@@ -199,6 +199,7 @@ If you have the SonataDoctrineORMAdminBundle installed, you have access
 to more field types, see `SonataDoctrineORMAdminBundle Documentation`_.
 
 .. note::
+
     It is better to prefer non negative notions when possible for boolean
     values so use the ``inverse`` option if you really cannot find a good enough
     antonym for the name you have.
@@ -643,6 +644,7 @@ Checkbox range selection
 ------------------------
 
 .. tip::
+
     You can check / uncheck a range of checkboxes by clicking a first one,
     then a second one with shift + click.
 

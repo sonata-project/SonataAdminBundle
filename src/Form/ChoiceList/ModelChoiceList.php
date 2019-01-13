@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -13,6 +15,7 @@ namespace Sonata\AdminBundle\Form\ChoiceList;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\QueryBuilder;
+use ReflectionProperty;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\Exception\RuntimeException;
@@ -170,7 +173,7 @@ class ModelChoiceList extends SimpleChoiceList
             // $key is a collection index
             $entities = $this->getEntities();
 
-            return isset($entities[$key]) ? $entities[$key] : null;
+            return $entities[$key] ?? null;
         } elseif ($this->entities) {
             return isset($this->entities[$key]) ? $this->entities[$key] : null;
         }
@@ -292,7 +295,7 @@ class ModelChoiceList extends SimpleChoiceList
      *
      * @return \ReflectionProperty The reflection instance
      */
-    private function getReflProperty($property)
+    private function getReflProperty(string $property): ReflectionProperty
     {
         if (!isset($this->reflProperties[$property])) {
             $this->reflProperties[$property] = new \ReflectionProperty($this->class, $property);

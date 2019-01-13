@@ -36,6 +36,13 @@ $rules = [
     '@PHP56Migration' => true,
     '@PHP56Migration:risky' => true,
     '@PHPUnit57Migration:risky' => true,
+    '@PHP70Migration' => true,
+    '@PHP70Migration:risky' => true,
+    '@PHPUnit60Migration:risky' => true,
+    '@PHP71Migration' => true,
+    '@PHP71Migration:risky' => true,
+    'compact_nullable_typehint' => true,
+    'void_return' => null,
     // To be tested before insertion:
 //    'strict_comparison' => true,
 //    'strict_param' => true,

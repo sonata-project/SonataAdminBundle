@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -507,6 +509,8 @@ class BreadcrumbsBuilderTest extends TestCase
         if ('list' == $action) {
             $admin->isChild()->willReturn(true);
             $menu->setUri(false)->shouldBeCalled();
+        } else {
+            $menu->setUri()->shouldNotBeCalled();
         }
         $request = $this->prophesize(Request::class);
         $request->get('slug')->willReturn('my-object');

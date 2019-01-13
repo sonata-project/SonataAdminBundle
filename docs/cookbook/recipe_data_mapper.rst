@@ -4,6 +4,7 @@ Using DataMapper to work with domain entities without per field setters
 This is an example of using DataMapper with entities that avoid setters/getters for each field.
 
 .. note::
+
     This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
     will require to slightly modify some namespaces and paths when creating
     entities and admins.

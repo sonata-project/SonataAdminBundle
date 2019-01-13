@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -56,7 +58,7 @@ class AdminHelper
     /**
      * @param string $elementId
      *
-     * @return null|FormView
+     * @return FormView|null
      */
     public function getChildFormView(FormView $formView, $elementId)
     {

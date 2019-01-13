@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -116,10 +118,7 @@ class CoreController extends Controller
         return $this->getTemplateRegistry()->getTemplate('layout');
     }
 
-    /**
-     * @return TemplateRegistryInterface
-     */
-    private function getTemplateRegistry()
+    private function getTemplateRegistry(): TemplateRegistryInterface
     {
         $templateRegistry = $this->container->get('sonata.admin.global_template_registry');
         \assert($templateRegistry instanceof TemplateRegistryInterface);
@@ -127,12 +126,7 @@ class CoreController extends Controller
         return $templateRegistry;
     }
 
-    /**
-     * Get the request object from the container.
-     *
-     * @return Request
-     */
-    private function getCurrentRequest()
+    private function getCurrentRequest(): Request
     {
         return $this->container->get('request_stack')->getCurrentRequest();
     }

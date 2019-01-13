@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -29,6 +31,7 @@ use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Object\Metadata;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
@@ -36,7 +39,6 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Sonata\CoreBundle\Model\Metadata;
 use Sonata\CoreBundle\Validator\Constraints\InlineConstraint;
 use Sonata\CoreBundle\Validator\ErrorElement;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -57,10 +59,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, AdminTreeInterface
 {
-    const CONTEXT_MENU = 'menu';
-    const CONTEXT_DASHBOARD = 'dashboard';
+    public const CONTEXT_MENU = 'menu';
+    public const CONTEXT_DASHBOARD = 'dashboard';
 
-    const CLASS_REGEX =
+    public const CLASS_REGEX =
         '@
         (?:([A-Za-z0-9]*)\\\)?        # vendor name / app name
         (Bundle\\\)?                  # optional bundle directory
@@ -70,7 +72,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             Doctrine\\\Orm|Doctrine\\\Phpcr|Doctrine\\\MongoDB|Doctrine\\\CouchDB
         )\\\(.*)@x';
 
-    const MOSAIC_ICON_CLASS = 'fa fa-th-large fa-fw';
+    public const MOSAIC_ICON_CLASS = 'fa fa-th-large fa-fw';
 
     /**
      * The list FieldDescription constructed from the configureListField method.
@@ -850,7 +852,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @throws \InvalidArgumentException
      *
-     * @return null|string
+     * @return string|null
      */
     public function getParentAssociationMapping()
     {
@@ -1225,7 +1227,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @param string $name
      *
-     * @return null|string
+     * @return string|null
      */
     public function getTemplate($name)
     {
@@ -1909,13 +1911,13 @@ EOT;
     /**
      * @param string $name
      *
-     * @return null|mixed
+     * @return mixed|null
      */
     public function getPersistentParameter($name)
     {
         $parameters = $this->getPersistentParameters();
 
-        return isset($parameters[$name]) ? $parameters[$name] : null;
+        return $parameters[$name] ?? null;
     }
 
     public function getBreadcrumbs($action)
@@ -3087,7 +3089,7 @@ EOT;
     /**
      * Build all the related urls to the current admin.
      */
-    private function buildRoutes()
+    private function buildRoutes(): void
     {
         if ($this->loaded['routes']) {
             return;

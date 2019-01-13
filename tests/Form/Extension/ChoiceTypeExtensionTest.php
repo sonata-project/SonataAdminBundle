@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -61,6 +63,11 @@ class ChoiceTypeExtensionTest extends TestCase
         $this->assertSame(
             ChoiceType::class,
             $extension->getExtendedType()
+        );
+
+        $this->assertSame(
+            [ChoiceType::class],
+            ChoiceTypeExtension::getExtendedTypes()
         );
     }
 

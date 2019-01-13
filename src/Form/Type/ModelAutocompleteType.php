@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -86,6 +88,7 @@ class ModelAutocompleteType extends AbstractType
             'btn_catalogue',
             // allow HTML
             'safe_label',
+            'property',
         ] as $passthroughOption) {
             $view->vars[$passthroughOption] = $options[$passthroughOption];
         }

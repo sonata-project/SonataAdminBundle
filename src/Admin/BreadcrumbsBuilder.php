@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -145,16 +147,14 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
      * @param string         $name              the source of the final label
      * @param string         $translationDomain for label translation
      * @param array          $options           menu item options
-     *
-     * @return ItemInterface
      */
     private function createMenuItem(
         AdminInterface $admin,
         ItemInterface $menu,
-        $name,
-        $translationDomain = null,
-        $options = []
-    ) {
+        string $name,
+        ?string $translationDomain = null,
+        array $options = []
+    ): ItemInterface {
         $options = array_merge([
             'extras' => [
                 'translation_domain' => $translationDomain,

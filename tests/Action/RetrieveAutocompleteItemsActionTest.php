@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -13,14 +15,15 @@ namespace Sonata\AdminBundle\Tests\Action;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\Pager;
+use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
-use Sonata\CoreBundle\Model\Metadata;
 use Sonata\DatagridBundle\Datagrid\DatagridInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormConfigInterface;
@@ -141,7 +144,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $targetAdmin = $this->prophesize(AbstractAdmin::class);
         $datagrid = $this->prophesize(DatagridInterface::class);
-        $metadata = $this->prophesize(Metadata::class);
+        $metadata = $this->prophesize(MetadataInterface::class);
         $pager = $this->prophesize(Pager::class);
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
 
@@ -222,13 +225,13 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
 
-    private function configureAutocompleteItemsDatagrid()
+    private function configureAutocompleteItemsDatagrid(): ObjectProphecy
     {
         $entity = new \stdClass();
 
         $targetAdmin = $this->prophesize(AbstractAdmin::class);
         $datagrid = $this->prophesize(DatagridInterface::class);
-        $metadata = $this->prophesize(Metadata::class);
+        $metadata = $this->prophesize(MetadataInterface::class);
         $pager = $this->prophesize(Pager::class);
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
 
@@ -257,7 +260,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         return $datagrid;
     }
 
-    private function configureFormConfig($field, $disabled = false)
+    private function configureFormConfig(string $field, bool $disabled = false): void
     {
         $form = $this->prophesize(Form::class);
         $formType = $this->prophesize(Form::class);
@@ -276,7 +279,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $formConfig->getAttribute('target_admin_access_action')->willReturn('list');
     }
 
-    private function configureFormConfigComplexProperty($field)
+    private function configureFormConfigComplexProperty(string $field): void
     {
         $form = $this->prophesize(Form::class);
         $formType = $this->prophesize(Form::class);
@@ -295,7 +298,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $formConfig->getAttribute('target_admin_access_action')->willReturn('list');
     }
 
-    private function configureFormConfigComplexPropertyArray($field)
+    private function configureFormConfigComplexPropertyArray($field): void
     {
         $form = $this->prophesize(Form::class);
         $formType = $this->prophesize(Form::class);

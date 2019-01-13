@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -83,8 +85,8 @@ class RouteCollection
         $routeName = $this->baseRouteName.'_'.$name;
 
         if (!isset($defaults['_controller'])) {
-            $actionJoiner = false === \strpos($this->baseControllerName, '\\') ? ':' : '::';
-            if (':' !== $actionJoiner && false !== \strpos($this->baseControllerName, ':')) {
+            $actionJoiner = false === strpos($this->baseControllerName, '\\') ? ':' : '::';
+            if (':' !== $actionJoiner && false !== strpos($this->baseControllerName, ':')) {
                 $actionJoiner = ':';
             }
 
@@ -279,10 +281,7 @@ class RouteCollection
         return $this->baseRoutePattern;
     }
 
-    /**
-     * @return Route
-     */
-    private function resolve($element)
+    private function resolve($element): Route
     {
         if (\is_callable($element)) {
             return \call_user_func($element);

@@ -89,14 +89,14 @@ that we do not specify the Entity, we leave it as ``null``.
             tags:
                 - { name: sonata.admin, manager_type: orm, group: Demo, label: Custom View }
             arguments:
-                - null
-                - null
+                - ~
+                - ~
                 - App\Controller\CustomViewCRUDController
-            public: true
 
 .. note::
+
     If you are not using Symfony Flex, this service should be registered
-    in ``app/config/services.yml``.
+    in ``app/config/services.yaml``.
 
 For more information about service configuration please refer to Step 3
 of :doc:`../getting_started/creating_an_admin`

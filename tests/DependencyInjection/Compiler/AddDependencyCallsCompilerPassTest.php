@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -468,6 +470,9 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $compilerPass->process($container);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testProcessMultipleOnTopOptionsInServiceDefinition2()
     {
         $container = $this->getContainer();
@@ -627,7 +632,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         return $config;
     }
 
-    private function getContainer()
+    private function getContainer(): ContainerBuilder
     {
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', [

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -83,10 +85,7 @@ class SessionFilterPersisterTest extends TestCase
         $this->createPersister()->reset('admin.customer');
     }
 
-    /**
-     * @return SessionFilterPersister
-     */
-    private function createPersister()
+    private function createPersister(): SessionFilterPersister
     {
         return new SessionFilterPersister($this->session->reveal());
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -85,11 +87,15 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     continue;
                 }
 
-                $resolvedGroupName = isset($attributes['group']) ? $parameterBag->resolveValue($attributes['group']) : 'default';
-                $labelCatalogue = isset($attributes['label_catalogue']) ? $attributes['label_catalogue'] : 'SonataAdminBundle';
-                $icon = isset($attributes['icon']) ? $attributes['icon'] : '<i class="fa fa-folder"></i>';
-                $onTop = isset($attributes['on_top']) ? $attributes['on_top'] : false;
-                $keepOpen = isset($attributes['keep_open']) ? $attributes['keep_open'] : false;
+                $resolvedGroupName = isset($attributes['group']) ?
+                    $parameterBag->resolveValue($attributes['group']) :
+                    $container->getParameter('sonata.admin.configuration.default_group');
+                $labelCatalogue = $attributes['label_catalogue'] ??
+                    $container->getParameter('sonata.admin.configuration.default_label_catalogue');
+                $icon = $attributes['icon'] ??
+                    $container->getParameter('sonata.admin.configuration.default_icon');
+                $onTop = $attributes['on_top'] ?? false;
+                $keepOpen = $attributes['keep_open'] ?? false;
 
                 if (!isset($groupDefaults[$resolvedGroupName])) {
                     $groupDefaults[$resolvedGroupName] = [
@@ -256,7 +262,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $manager_type = $attributes['manager_type'];
 
-        $overwriteAdminConfiguration = isset($settings[$serviceId]) ? $settings[$serviceId] : [];
+        $overwriteAdminConfiguration = $settings[$serviceId] ?? [];
 
         $defaultAddServices = [
             'model_manager' => sprintf('sonata.admin.manager.%s', $manager_type),
@@ -281,7 +287,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $method = 'set'.Inflector::classify($attr);
 
             if (isset($overwriteAdminConfiguration[$attr]) || !$definition->hasMethodCall($method)) {
-                $args = [new Reference(isset($overwriteAdminConfiguration[$attr]) ? $overwriteAdminConfiguration[$attr] : $addServiceId)];
+                $args = [new Reference($overwriteAdminConfiguration[$attr] ?? $addServiceId)];
                 if ('translator' === $attr) {
                     $args[] = false;
                 }
@@ -339,7 +345,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $serviceId,
             $container,
             $definition,
-            isset($overwriteAdminConfiguration['templates']) ? $overwriteAdminConfiguration['templates'] : ['view' => []]
+            $overwriteAdminConfiguration['templates'] ?? ['view' => []]
         );
 
         if ($container->hasParameter('sonata.admin.configuration.security.information') && !$definition->hasMethodCall('setSecurityInformation')) {
@@ -418,7 +424,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         array $defaultArguments,
         Definition $definition,
         Definition $parentDefinition = null
-    ) {
+    ): void {
         $arguments = $definition->getArguments();
         $parentArguments = $parentDefinition ? $parentDefinition->getArguments() : [];
 
