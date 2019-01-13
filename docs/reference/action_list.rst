@@ -511,7 +511,7 @@ Visual configuration
 You have the possibility to configure your List View to customize the
 render without overriding to whole template.
 
-You can:
+The following options are available:
 
 - `header_style`: Customize the style of header (width, color, background, align...)
 - `header_class`: Customize the class of the header
@@ -558,11 +558,9 @@ to override the default parameters::
                     'less' => 'This text is too long, reduce the size' // content of the "read less" link
                 ]
             ])
-            // ...
 
 If you want to show only the `label_icon`::
 
-            // ...
             ->add('upvotes', null, [
                 'label' => false,
                 'label_icon' => 'fa fa-thumbs-o-up'
@@ -582,7 +580,7 @@ You have the possibility to show/hide mosaic view button.
 
     sonata_admin:
         # for hide mosaic view button on all screen using `false`
-        show_mosaic_button:   true
+        show_mosaic_button: true
 
 You can show/hide mosaic view button using admin service configuration.
 You need to add option ``show_mosaic_button`` in your admin services:
