@@ -43,6 +43,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
     }
 
     /**
+     * @doesNotPerformAssertions
      * @group legacy
      */
     public function testContainerCompileWithJMSDiExtraBundle(): void

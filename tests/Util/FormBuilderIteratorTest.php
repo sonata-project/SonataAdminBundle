@@ -54,11 +54,6 @@ class FormBuilderIteratorTest extends TestCase
         $this->builder = null;
     }
 
-    public function testConstructor(): void
-    {
-        new FormBuilderIterator($this->builder);
-    }
-
     public function testGetChildren(): void
     {
         $this->builder->add('name', 'text');

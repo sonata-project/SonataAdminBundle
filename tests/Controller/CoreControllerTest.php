@@ -28,6 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 class CoreControllerTest extends TestCase
 {
     /**
+     * @doesNotPerformAssertions
      * @group legacy
      */
     public function testdashboardActionStandardRequest(): void
@@ -79,6 +80,7 @@ class CoreControllerTest extends TestCase
     }
 
     /**
+     * @doesNotPerformAssertions
      * @group legacy
      */
     public function testdashboardActionAjaxLayout(): void

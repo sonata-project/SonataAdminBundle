@@ -23,11 +23,11 @@ use Sonata\AdminBundle\Controller\HelperController;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
-use Sonata\CoreBundle\Model\Metadata;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Command\DebugCommand;
 use Symfony\Bridge\Twig\Extension\FormExtension;
@@ -515,7 +515,7 @@ class HelperControllerTest extends TestCase
 
         $targetAdmin = $this->prophesize(AbstractAdmin::class);
         $datagrid = $this->prophesize(DatagridInterface::class);
-        $metadata = $this->prophesize(Metadata::class);
+        $metadata = $this->prophesize(MetadataInterface::class);
         $pager = $this->prophesize(Pager::class);
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
 

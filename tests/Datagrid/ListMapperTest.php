@@ -190,8 +190,11 @@ class ListMapperTest extends TestCase
             $this->listMapper->add('_'.$type, $type);
         }
 
-        foreach ($this->fieldDescriptionCollection as $field) {
-            $this->assertTrue($field->isVirtual(), 'Failed asserting that FieldDescription with type "'.$field->getType().'" is tagged with virtual flag.');
+        foreach ($this->fieldDescriptionCollection->getElements() as $field) {
+            $this->assertTrue(
+                $field->isVirtual(),
+                'Failed asserting that FieldDescription with type "'.$field->getType().'" is tagged with virtual flag.'
+            );
         }
     }
 

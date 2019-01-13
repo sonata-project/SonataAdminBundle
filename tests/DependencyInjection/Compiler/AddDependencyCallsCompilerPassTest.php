@@ -470,6 +470,9 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $compilerPass->process($container);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testProcessMultipleOnTopOptionsInServiceDefinition2(): void
     {
         $container = $this->getContainer();

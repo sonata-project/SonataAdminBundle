@@ -19,9 +19,9 @@ use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Sonata\CoreBundle\Model\Metadata;
 use Sonata\CoreBundle\Validator\ErrorElement;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -672,7 +672,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getTranslationLabel($label, $context = '', $type = '');
 
     /**
-     * @return Metadata
+     * @return MetadataInterface
      */
     public function getObjectMetadata($object);
 

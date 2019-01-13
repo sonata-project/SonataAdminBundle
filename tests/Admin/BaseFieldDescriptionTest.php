@@ -184,6 +184,9 @@ class BaseFieldDescriptionTest extends TestCase
         $description->getFieldValue($mock, 'fake');
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testGetVirtualValue(): void
     {
         $description = new FieldDescription();

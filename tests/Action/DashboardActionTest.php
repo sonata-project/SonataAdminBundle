@@ -26,6 +26,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DashboardActionTest extends TestCase
 {
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testdashboardActionStandardRequest(): void
     {
         $container = $this->createMock(ContainerInterface::class);
@@ -71,6 +74,9 @@ class DashboardActionTest extends TestCase
         $this->isInstanceOf(Response::class, $dashboardAction($request));
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testDashboardActionAjaxLayout(): void
     {
         $container = $this->createMock(ContainerInterface::class);

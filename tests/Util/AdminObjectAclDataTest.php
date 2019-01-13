@@ -29,13 +29,13 @@ class AdminObjectAclDataTest extends TestCase
     public function testGetAdmin(): void
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->isInstanceOf(AdminInterface::class, $adminObjectAclData->getAdmin());
+        $this->assertInstanceOf(AdminInterface::class, $adminObjectAclData->getAdmin());
     }
 
     public function testGetObject(): void
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->isInstanceOf(\stdClass::class, $adminObjectAclData->getObject());
+        $this->assertInstanceOf(\stdClass::class, $adminObjectAclData->getObject());
     }
 
     public function testGetAclUsers(): void
@@ -68,7 +68,7 @@ class AdminObjectAclDataTest extends TestCase
      */
     public function testGetAcl($adminObjectAclData): void
     {
-        $this->isInstanceOf(Acl::class, $adminObjectAclData->getAcl());
+        $this->assertInstanceOf(Acl::class, $adminObjectAclData->getAcl());
     }
 
     public function testGetMasks(): void
@@ -105,7 +105,7 @@ class AdminObjectAclDataTest extends TestCase
      */
     public function testGetForm($adminObjectAclData): void
     {
-        $this->isInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
+        $this->assertInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
     }
 
     public function testSetAclUsersForm()
@@ -126,7 +126,7 @@ class AdminObjectAclDataTest extends TestCase
      */
     public function testGetAclUsersForm($adminObjectAclData): void
     {
-        $this->isInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
+        $this->assertInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
     }
 
     public function testSetAclRolesForm()
@@ -147,7 +147,7 @@ class AdminObjectAclDataTest extends TestCase
      */
     public function testGetAclRolesForm($adminObjectAclData): void
     {
-        $this->isInstanceOf(Form::class, $adminObjectAclData->getAclRolesForm());
+        $this->assertInstanceOf(Form::class, $adminObjectAclData->getAclRolesForm());
     }
 
     public function testGetPermissions(): void
@@ -196,7 +196,7 @@ class AdminObjectAclDataTest extends TestCase
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
 
-        $this->isInstanceOf(AclSecurityHandlerInterface::class, $adminObjectAclData->getSecurityHandler());
+        $this->assertInstanceOf(AclSecurityHandlerInterface::class, $adminObjectAclData->getSecurityHandler());
     }
 
     public function testGetSecurityInformation(): void

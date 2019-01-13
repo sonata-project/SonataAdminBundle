@@ -175,6 +175,7 @@ class LockExtensionTest extends TestCase
         $modelManager = $this->prophesize(ModelManagerInterface::class);
         $uniqid = 'admin123';
         $this->configureAdmin($uniqid, $this->request, $modelManager->reveal());
+        $this->modelManager->lock()->shouldNotBeCalled();
 
         $this->request->request->set($uniqid, ['_lock_version' => 1]);
         $this->lockExtension->preUpdate($this->admin->reveal(), $this->object);
