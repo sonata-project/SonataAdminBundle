@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Bridge\Exporter;
 
-use Exporter\Exporter;
-use Exporter\Writer\TypedWriterInterface;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
+use Sonata\Exporter\Exporter;
+use Sonata\Exporter\Writer\TypedWriterInterface;
 
 class AdminExporterTest extends TestCase
 {
