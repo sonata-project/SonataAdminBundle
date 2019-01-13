@@ -33,7 +33,6 @@ SonataAdmin Options that may affect the list view:
             pager_links:                '@SonataAdmin/Pager/links.html.twig'
             pager_results:              '@SonataAdmin/Pager/results.html.twig'
 
-
 .. note::
 
     **TODO**:
@@ -225,7 +224,6 @@ You can customize the list query thanks to the ``createQuery`` method.
         return $query;
     }
 
-
 Customizing the sort order
 --------------------------
 
@@ -284,7 +282,6 @@ You can add filters to let user control which data will be displayed.
 
     class ClientAdmin extends AbstractAdmin
     {
-
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
             $datagridMapper
