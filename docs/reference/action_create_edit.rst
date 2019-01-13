@@ -1,12 +1,6 @@
 Creating and Editing objects
 ============================
 
-.. note::
-
-    This document is a stub representing a new work in progress. If you're reading
-    this you can help contribute, **no matter what your experience level with Sonata
-    is**. Check out the `issues on Github`_ for more information about how to get involved.
-
 This document will cover the Create and Edit actions. It will cover configuration
 of the fields and forms available in these views and any other relevant settings.
 
@@ -205,5 +199,3 @@ Customizing just one of the actions
     **TODO**:
     * how to create settings/fields that appear on just one of the create/edit views
     * and any controller changes needed to manage them
-
-.. _`issues on GitHub`: https://github.com/sonata-project/SonataAdminBundle/issues/1519
