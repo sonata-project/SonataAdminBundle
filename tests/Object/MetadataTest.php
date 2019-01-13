@@ -48,7 +48,7 @@ class MetadataTest extends TestCase
      */
     public function testIsImageAvailable(bool $expected, ?string $image): void
     {
-        $this->assertEquals(
+        $this->assertSame(
             $expected,
             (new Metadata('title', 'description', $image))->isImageAvailable()
         );
