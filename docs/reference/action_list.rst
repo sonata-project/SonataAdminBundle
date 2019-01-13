@@ -351,10 +351,7 @@ Available types are represented through classes which can be found `here`_.
 Types like ``equal`` and ``boolean`` use constants to assign a choice of
 ``type`` to an ``integer`` for its ``value``::
 
-    <?php
-    // SonataCoreBundle/Form/Type/EqualType.php
-
-    namespace Sonata\CoreBundle\Form\Type;
+    namespace Sonata\Form\Type;
 
     class EqualType extends AbstractType
     {
@@ -367,11 +364,10 @@ The integers are then passed in the URL of the list action e.g.:
 
 This is an example using these constants for an ``boolean`` type::
 
-    use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
-    use Sonata\CoreBundle\Form\Type\EqualType;
-    use Sonata\CoreBundle\Form\Type\BooleanType;
+    use Sonata\Form\Type\EqualType;
+    use Sonata\Form\Type\BooleanType;
 
-    class UserAdmin extends SonataUserAdmin
+    class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
         protected $datagridValues = [
             'enabled' => [
@@ -385,10 +381,7 @@ Please note that setting a ``false`` value on a the ``boolean`` type
 will not work since the type expects an integer of  ``2`` as ``value``
 as defined in the class constants::
 
-    <?php
-    // SonataCoreBundle/Form/Type/BooleanType.php
-
-    namespace Sonata\CoreBundle\Form\Type;
+    namespace Sonata\Form\Type;
 
     class BooleanType extends AbstractType
     {
@@ -399,10 +392,10 @@ as defined in the class constants::
 Default filters can also be added to the datagrid values by overriding
 the ``getFilterParameters`` method::
 
-    use Sonata\CoreBundle\Form\Type\EqualType;
-    use Sonata\CoreBundle\Form\Type\BooleanType;
+    use Sonata\Form\Type\EqualType;
+    use Sonata\Form\Type\BooleanType;
 
-    class UserAdmin extends SonataUserAdmin
+    class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
         public function getFilterParameters()
         {
@@ -419,7 +412,7 @@ the ``getFilterParameters`` method::
 
 This approach is useful when you need to create dynamic filters::
 
-    class PostAdmin extends SonataUserAdmin
+    class PostAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
         public function getFilterParameters()
         {
@@ -448,10 +441,9 @@ Callback filter
 If you have the **SonataDoctrineORMAdminBundle** installed you can use the
 ``doctrine_orm_callback`` filter type e.g. for creating a full text filter::
 
-    use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
-    class UserAdmin extends SonataUserAdmin
+    class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
@@ -485,9 +477,9 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the
 You can also get the filter type which can be helpful to change the operator
 type of your condition(s)::
 
-    use Sonata\CoreBundle\Form\Type\EqualType;
+    use Sonata\Form\Type\EqualType;
 
-    class UserAdmin extends SonataUserAdmin
+    class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
         public function getFullTextFilter($queryBuilder, $alias, $field, $value)
         {
