@@ -1,19 +1,7 @@
 The Show action
 ===============
 
-.. note::
-
-    This document is a stub representing a new work in progress. If you're reading
-    this you can help contribute, **no matter what your experience level with Sonata
-    is**. Check out the `issues on GitHub`_ for more information about how to get involved.
-
 This document will cover the Show action and related configuration options.
-
-.. note::
-
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
 
 Basic configuration
 -------------------
@@ -172,5 +160,3 @@ The original template can be found in the following location:
 ``vendor/sonata-project/admin-bundle/Resources/views/CRUD/base_show.html.twig``
 
 Now that you have a copy of the default template, check to make sure it works.
-
-.. _`issues on GitHub`: https://github.com/sonata-project/SonataAdminBundle/issues/1519
