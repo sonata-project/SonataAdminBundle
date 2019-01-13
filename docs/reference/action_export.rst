@@ -85,4 +85,4 @@ you can override the ``getDataSourceIterator()`` method::
     * customising the templates used to render the output
     * publish the exporter documentation on the project's website and update the link
 
-.. _`the exporter bundle documentation`: https://github.com/sonata-project/exporter/blob/1.x/docs/reference/symfony.rst
+.. _`the exporter bundle documentation`: https://github.com/sonata-project/exporter/blob/2.x/docs/reference/symfony.rst
