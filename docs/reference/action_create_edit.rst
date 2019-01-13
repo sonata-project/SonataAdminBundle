@@ -23,6 +23,8 @@ SonataAdmin Options that may affect the create or edit view:
 
 .. code-block:: yaml
 
+    # config/packages/sonata_admin.yaml
+
     sonata_admin:
         options:
             html5_validate:    true     # enable or disable html5 form validation

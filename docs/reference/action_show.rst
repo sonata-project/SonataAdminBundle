@@ -156,6 +156,8 @@ The first thing you need to do is define it in app/config/config/yml:
 
     .. code-block:: yaml
 
+        # config/packages/sonata_admin.yaml
+
         sonata_admin:
             title:      Acme
             title_logo: img/logo_small.png
