@@ -40,7 +40,6 @@ SonataAdmin Options that may affect the create or edit view:
             edit:              '@SonataAdmin/CRUD/edit.html.twig'
             tab_menu_template: '@SonataAdmin/Core/tab_menu_template.html.twig'
 
-
 For more information about optional libraries:
 
 - Select2: https://github.com/select2/select2
@@ -112,7 +111,6 @@ has 4 parameters:
     The property entered in ``name`` should be available in your Entity
     through getters/setters or public access.
 
-
 .. code-block:: php
 
     <?php
@@ -138,7 +136,6 @@ has 4 parameters:
 
         // ...
     }
-
 
 FormGroup options
 ~~~~~~~~~~~~~~~~~
