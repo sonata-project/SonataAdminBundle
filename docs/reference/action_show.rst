@@ -155,11 +155,11 @@ The first thing you need to do is define it in app/config/config/yml:
             title:      Acme
             title_logo: img/logo_small.png
             templates:
-                show:       "@App/Admin/Display_Client.html.twig"
+                show:   '@App/Admin/display_client.html.twig'
 
 Once you have defined this, Sonata Admin looks for it in the following location:
 
-``templates/Admin/Display_Client.html.twig``
+``templates/Admin/display_client.html.twig``
 
 Now that you have told Sonata Admin where to find the template, it is time to put one in there.
 
@@ -172,7 +172,5 @@ The original template can be found in the following location:
 ``vendor/sonata-project/admin-bundle/Resources/views/CRUD/base_show.html.twig``
 
 Now that you have a copy of the default template, check to make sure it works.
-
-That's it, now go code.
 
 .. _`issues on GitHub`: https://github.com/sonata-project/SonataAdminBundle/issues/1519
