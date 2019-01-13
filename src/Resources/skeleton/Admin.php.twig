@@ -16,7 +16,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class {{ classBasename }} extends AbstractAdmin
+final class {{ classBasename }} extends AbstractAdmin
 {
     protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
