@@ -18,6 +18,8 @@ SonataAdmin Options that may affect the list view:
 
 .. code-block:: yaml
 
+    # config/packages/sonata_admin.yaml
+
     sonata_admin:
         templates:
             list:                       '@SonataAdmin/CRUD/list.html.twig'
@@ -619,6 +621,8 @@ You have the possibility to show/hide mosaic view button.
 
 .. code-block:: yaml
 
+    # config/packages/sonata_admin.yaml
+
     sonata_admin:
         # for hide mosaic view button on all screen using `false`
         show_mosaic_button:   true
@@ -627,6 +631,8 @@ You can show/hide mosaic view button using admin service configuration.
 You need to add option ``show_mosaic_button`` in your admin services:
 
 .. code-block:: yaml
+
+    # config/services.yaml
 
     sonata_admin.admin.post:
         class: Sonata\AdminBundle\Admin\PostAdmin
