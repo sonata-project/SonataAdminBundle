@@ -154,7 +154,6 @@ options for the group itself.
 
 To specify options, do as follows::
 
-    <?php
     // src/Admin/PersonAdmin.php
 
     class PersonAdmin extends AbstractAdmin

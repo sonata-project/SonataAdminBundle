@@ -42,11 +42,8 @@ When adding a group to your show page, you may specify some options for the grou
 - ``description``: to complete
 - ``translation_domain``: to complete
 
-To specify options, do as follow:
+To specify options, do as follow::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/PersonAdmin.php
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -72,11 +69,8 @@ To specify options, do as follow:
     }
 
 When extending an existing Admin, you may want to remove some fields, groups or tabs.
-Here is an example of how to achieve this :
+Here is an example of how to achieve this::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/PersonAdmin.php
 
     use Sonata\AdminBundle\Show\ShowMapper;
@@ -109,7 +103,6 @@ in the initial setup. It is actually a bit easier, because we are only
 concerned with displaying information. Smile, the hard part is already done.
 The following is a working example of a ShowAction::
 
-    <?php
     // src/Admin/PostAdmin.php
 
     use Sonata\AdminBundle\Show\ShowMapper;
