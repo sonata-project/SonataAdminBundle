@@ -178,6 +178,10 @@
                 <source>flash_batch_delete_success</source>
                 <target>De geselecteerde items zijn succesvol verwijderd.</target>
             </trans-unit>
+            <trans-unit id="flash_batch_no_elements_processed">
+                <source>flash_batch_no_elements_processed</source>
+                <target>Er zijn geen items gewijzigd.</target>
+            </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
                 <target>De geselecteerde items konden door een fout niet worden verwijderd.</target>
@@ -481,6 +485,10 @@
             <trans-unit id="read_less">
                 <source>read_less</source>
                 <target>Lees minder</target>
+            </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Navigatie weergeven of verbergen</target>
             </trans-unit>
         </body>
     </file>
