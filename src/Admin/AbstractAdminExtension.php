@@ -130,3 +130,5 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
     }
 }
+
+class_exists(\Sonata\Form\Validator\ErrorElement::class);
