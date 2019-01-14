@@ -642,7 +642,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function initialize()
     {
         if (!$this->classnameLabel) {
-            $this->classnameLabel = substr($this->getClass(), strrpos($this->getClass(), '\\') + 1);
+            /* NEXT_MAJOR: remove cast to string, null is not supposed to be
+            supported but was documented as such */
+            $this->classnameLabel = substr(
+                (string) $this->getClass(),
+                strrpos((string) $this->getClass(), '\\') + 1
+            );
         }
 
         // NEXT_MAJOR: Remove this line.
