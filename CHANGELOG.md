@@ -2,7 +2,24 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [3.44.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.43.0...3.44.0) - 2010-01-12
+## [3.45.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.44.0...3.45.0) - 2019-01-14
+
+### Added
+- Added config for default mosaic background
+- Added `Sonata\AdminBundle\Object\Metadata` class
+- Compatibility with `sonata-project/exporter` 2
+- php 7-specific type hints in generated code
+- `strict_types` declaration in generated code
+- generated classes are now final
+
+### Changed
+- Changed `Admin::getObjectMetadata` return type in PHPDoc
+
+### Fixed
+- Some deprecations about the new namespaces have been fixed
+- 2 missing Dutch translations were added
+
+## [3.44.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.43.0...3.44.0) - 2019-01-12
 
 ### Added
 - Default admin service options (group, label catalogue and icon) are now configurable
