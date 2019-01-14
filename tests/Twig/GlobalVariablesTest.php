@@ -111,4 +111,17 @@ class GlobalVariablesTest extends TestCase
 
         new GlobalVariables('foo');
     }
+
+    public function testGetMosaicBackground(): void
+    {
+        $this->assertSame(
+            'image.png',
+            (new GlobalVariables($this->pool, 'image.png'))->getMosaicBackground()
+        );
+    }
+
+    public function testGetMosaicBackgroundNull(): void
+    {
+        $this->assertNull((new GlobalVariables($this->pool))->getMosaicBackground());
+    }
 }

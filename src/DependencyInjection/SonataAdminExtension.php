@@ -209,6 +209,10 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
         $container->setParameter('sonata.admin.configuration.dashboard_blocks', $config['dashboard']['blocks']);
         $container->setParameter('sonata.admin.configuration.sort_admins', $config['options']['sort_admins']);
+        $container->setParameter(
+            'sonata.admin.configuration.mosaic_background',
+            $config['options']['mosaic_background']
+        );
         $container->setParameter('sonata.admin.configuration.default_group', $config['options']['default_group']);
         $container->setParameter('sonata.admin.configuration.default_label_catalogue', $config['options']['default_label_catalogue']);
         $container->setParameter('sonata.admin.configuration.default_icon', $config['options']['default_icon']);
