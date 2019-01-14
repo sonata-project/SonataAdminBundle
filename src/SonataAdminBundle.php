@@ -38,6 +38,7 @@ use Sonata\CoreBundle\Form\FormHelper;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+// 💩
 class SonataAdminBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
