@@ -1530,6 +1530,13 @@ class CRUDController implements ContainerAwareInterface
         return $this->get('translator')->trans($id, $parameters, $domain, $locale);
     }
 
+    final protected function transChoice(string $id, int $number, array $parameters = [], ?string $domain = null, ?string $locale = null): string
+    {
+        $domain = $domain ?: $this->admin->getTranslationDomain();
+
+        return $this->get('translator')->transChoice($id, $number, $parameters, $domain, $locale);
+    }
+
     private function checkParentChildAssociation(Request $request, $object): void
     {
         if (!($parentAdmin = $this->admin->getParent())) {
