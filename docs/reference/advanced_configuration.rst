@@ -328,7 +328,7 @@ You can add or override filter parameters to the Tab Menu::
     use Knp\Menu\ItemInterface as MenuItemInterface;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Admin\AdminInterface;
-    use Sonata\CoreBundle\Form\Type\EqualType;
+    use Sonata\Form\Type\EqualType;
 
     final class DeliveryAdmin extends AbstractAdmin
     {
