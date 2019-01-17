@@ -442,7 +442,7 @@ class ShowMapperTest extends TestCase
         $this->showMapper = new ShowMapper($this->showBuilder, $this->fieldDescriptionCollection, $this->admin);
     }
 
-    private function getFieldDescriptionMock($name = null, $label = null)
+    private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription
     {
         $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);
 

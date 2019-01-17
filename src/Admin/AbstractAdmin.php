@@ -39,8 +39,8 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Sonata\CoreBundle\Validator\Constraints\InlineConstraint;
-use Sonata\CoreBundle\Validator\ErrorElement;
+use Sonata\Form\Validator\Constraints\InlineConstraint;
+use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -627,7 +627,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function initialize(): void
     {
         if (!$this->classnameLabel) {
-            $this->classnameLabel = substr($this->getClass(), strrpos($this->getClass(), '\\') + 1);
+            /* NEXT_MAJOR: remove cast to string, null is not supposed to be
+            supported but was documented as such */
+            $this->classnameLabel = substr(
+                (string) $this->getClass(),
+                strrpos((string) $this->getClass(), '\\') + 1
+            );
         }
 
         $this->configure();
@@ -2947,3 +2952,5 @@ EOT;
         }
     }
 }
+
+class_exists(\Sonata\Form\Validator\ErrorElement::class);

@@ -233,7 +233,8 @@ final class AdminMaker extends AbstractMaker
         $controllerClassFullName = null;
         if ($controllerClassNameDetails) {
             $controllerClassFullName = $controllerClassNameDetails->getFullName();
-            $generator->generateClass($controllerClassFullName,
+            $generator->generateClass(
+                $controllerClassFullName,
                 $this->skeletonDirectory.'/AdminController.tpl.php',
                 []
             );
@@ -247,8 +248,11 @@ final class AdminMaker extends AbstractMaker
         }
     }
 
-    private function generateAdmin(ConsoleStyle $io, Generator $generator, ClassNameDetails $adminClassNameDetails): void
-    {
+    private function generateAdmin(
+        ConsoleStyle $io,
+        Generator $generator,
+        ClassNameDetails $adminClassNameDetails
+    ): void {
         $adminClassFullName = $adminClassNameDetails->getFullName();
 
         $fields = $this->modelManager->getExportFields($this->modelClass);
@@ -259,9 +263,11 @@ final class AdminMaker extends AbstractMaker
 
         $fieldString .= "\t\t\t";
 
-        $generator->generateClass($adminClassFullName,
+        $generator->generateClass(
+            $adminClassFullName,
             $this->skeletonDirectory.'/Admin.tpl.php',
-            ['fields' => $fieldString]);
+            ['fields' => $fieldString]
+        );
 
         $generator->writeChanges();
 

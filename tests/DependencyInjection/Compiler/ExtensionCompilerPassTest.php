@@ -347,7 +347,7 @@ class ExtensionCompilerPassTest extends TestCase
         return $config;
     }
 
-    private function getContainer()
+    private function getContainer(): ContainerBuilder
     {
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', [

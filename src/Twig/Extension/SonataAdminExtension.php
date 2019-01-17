@@ -569,15 +569,12 @@ final class SonataAdminExtension extends AbstractExtension
         return $template;
     }
 
-    /**
-     * @return string
-     */
     private function render(
         FieldDescriptionInterface $fieldDescription,
         TemplateWrapper $template,
         array $parameters,
         Environment $environment
-    ) {
+    ): ?string {
         $content = $template->render($parameters);
 
         if ($environment->isDebug()) {
@@ -606,14 +603,10 @@ EOT;
     }
 
     /**
-     * @param string $adminCode
-     *
      * @throws ServiceCircularReferenceException
      * @throws ServiceNotFoundException
-     *
-     * @return TemplateRegistryInterface
      */
-    private function getTemplateRegistry($adminCode)
+    private function getTemplateRegistry(string $adminCode): TemplateRegistryInterface
     {
         $serviceId = $adminCode.'.template_registry';
         $templateRegistry = $this->templateRegistries->get($serviceId);

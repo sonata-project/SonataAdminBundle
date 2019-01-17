@@ -3,53 +3,39 @@ Deleting a Group of Fields from an Admin
 
 In some cases, when you extend existing Admins, you might want to delete
 fields from the admin, or make them not show. You could delete every
-field by hand, using the ``remove`` method of the ``FormMapper`` class.
+field by hand, using the ``FormMapper``s ``remove`` method::
 
-    .. code-block:: php
-
-        <?php
-
-        use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
-
-        class UserAdmin extends SonataUserAdmin
+    class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
         {
-            protected function configureFormFields(FormMapper $formMapper)
-            {
-                parent::configureFormFields($formMapper);
+            parent::configureFormFields($formMapper);
 
-                $formMapper->remove('facebookName');
-                $formMapper->remove('twitterUid');
-                $formMapper->remove('twitterName');
-                $formMapper->remove('gplusUid');
-                $formMapper->remove('gplusName');
-
-            }
+            $formMapper
+                ->remove('facebookName')
+                ->remove('twitterUid')
+                ->remove('twitterName')
+                ->remove('gplusUid')
+                ->remove('gplusName');
         }
-
+    }
 
 This works, as long as the extended Admin does not use Groups to organize its field.
 In the above example, we try to remove all fields from the User Admin, that comes
 with the SonataUserBundle. However, since the fields we deleted, are all part
 of the 'Social' Group of the form, the fields will be deleted and the empty group will stay.
 For this case, the FormMapper comes with a method, which allows you to get rid
-of a whole form group: ``removeGroup``.
+of a whole form group: ``removeGroup``::
 
-    .. code-block:: php
-
-        <?php
-
-        use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
-
-        class UserAdmin extends SonataUserAdmin
+    class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
         {
+            parent::configureFormFields($formMapper);
 
-            protected function configureFormFields(FormMapper $formMapper)
-            {
-                parent::configureFormFields($formMapper);
-
-                $formMapper->removeGroup('Social', 'User');
-            }
+            $formMapper->removeGroup('Social', 'User');
         }
+    }
 
 This will remove the whole 'Social' group from the form, which happens
 to contain all the fields, we deleted manually in the first example.

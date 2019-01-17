@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\Form;
@@ -38,10 +39,8 @@ final class RetrieveAutocompleteItemsAction
      *
      * @throws \RuntimeException
      * @throws AccessDeniedException
-     *
-     * @return JsonResponse
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
         $admin = $this->pool->getInstance($request->get('admin_code'));
         $admin->setRequest($request);
@@ -177,14 +176,12 @@ final class RetrieveAutocompleteItemsAction
     /**
      * Retrieve the filter field description given by field name.
      *
-     * @param string $field
-     *
      * @throws \RuntimeException
-     *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
-    private function retrieveFilterFieldDescription(AdminInterface $admin, $field)
-    {
+    private function retrieveFilterFieldDescription(
+        AdminInterface $admin,
+        string $field
+    ): FieldDescriptionInterface {
         $admin->getFilterFieldDescriptions();
 
         $fieldDescription = $admin->getFilterFieldDescription($field);
@@ -203,14 +200,12 @@ final class RetrieveAutocompleteItemsAction
     /**
      * Retrieve the form field description given by field name.
      *
-     * @param string $field
-     *
      * @throws \RuntimeException
-     *
-     * @return \Sonata\AdminBundle\Admin\FieldDescriptionInterface
      */
-    private function retrieveFormFieldDescription(AdminInterface $admin, $field)
-    {
+    private function retrieveFormFieldDescription(
+        AdminInterface $admin,
+        string $field
+    ): FieldDescriptionInterface {
         $admin->getFormFieldDescriptions();
 
         $fieldDescription = $admin->getFormFieldDescription($field);

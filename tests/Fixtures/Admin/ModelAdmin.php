@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -8,7 +10,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class ModelAdmin extends AbstractAdmin
+final class ModelAdmin extends AbstractAdmin
 {
     protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {

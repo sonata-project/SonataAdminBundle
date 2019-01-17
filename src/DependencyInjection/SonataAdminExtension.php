@@ -209,6 +209,10 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
         $container->setParameter('sonata.admin.configuration.dashboard_blocks', $config['dashboard']['blocks']);
         $container->setParameter('sonata.admin.configuration.sort_admins', $config['options']['sort_admins']);
+        $container->setParameter(
+            'sonata.admin.configuration.mosaic_background',
+            $config['options']['mosaic_background']
+        );
         $container->setParameter('sonata.admin.configuration.default_group', $config['options']['default_group']);
         $container->setParameter('sonata.admin.configuration.default_label_catalogue', $config['options']['default_label_catalogue']);
         $container->setParameter('sonata.admin.configuration.default_icon', $config['options']['default_icon']);
@@ -460,7 +464,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
         return 'https://sonata-project.org/schema/dic/admin';
     }
 
-    private function buildStylesheets($config)
+    private function buildStylesheets($config): array
     {
         return $this->mergeArray(
             $config['assets']['stylesheets'],
@@ -469,7 +473,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
         );
     }
 
-    private function buildJavascripts($config)
+    private function buildJavascripts($config): array
     {
         return $this->mergeArray(
             $config['assets']['javascripts'],
@@ -478,7 +482,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
         );
     }
 
-    private function mergeArray($array, $addArray, $removeArray = [])
+    private function mergeArray(array $array, array $addArray, array $removeArray = []): array
     {
         foreach ($addArray as $toAdd) {
             array_push($array, $toAdd);

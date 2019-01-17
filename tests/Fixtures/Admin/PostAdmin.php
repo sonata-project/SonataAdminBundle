@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -17,12 +19,12 @@ class PostAdmin extends AbstractAdmin
 {
     protected $metadataClass = null;
 
-    public function setParentAssociationMapping($associationMapping)
+    public function setParentAssociationMapping($associationMapping): void
     {
         $this->parentAssociationMapping = $associationMapping;
     }
 
-    public function setClassMetaData($classMetaData)
+    public function setClassMetaData($classMetaData): void
     {
         $this->classMetaData = $classMetaData;
     }

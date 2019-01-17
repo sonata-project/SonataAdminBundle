@@ -4,12 +4,6 @@ Uploading and saving documents (including images) using DoctrineORM and SonataAd
 This is a full working example of a file upload management method using
 SonataAdmin with the DoctrineORM persistence layer.
 
-.. note::
-
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 Pre-requisites
 --------------
 
@@ -48,9 +42,9 @@ upload timestamp.
 
     .. code-block:: yaml
 
-        # src/Resources/config/Doctrine/Image.orm.yml
+        # src/Resources/config/Doctrine/Image.orm.yaml
 
-        AppBundleBundle\Entity\Image:
+        App\Entity\Image:
             type: entity
             repositoryClass: App\Entity\Repositories\ImageRepository
             table: images
@@ -75,7 +69,6 @@ upload timestamp.
 
 We then have the following methods in our ``Image`` class to manage file uploads::
 
-    <?php
     // src/Entity/Image.php
 
     class Image
@@ -168,12 +161,11 @@ We need to do two things in Sonata to enable file uploads:
 
 Both of these are straightforward when you know what to do::
 
-    <?php
     // src/Admin/ImageAdmin.php
 
     use Symfony\Component\Form\Extension\Core\Type\FileType;
 
-    class ImageAdmin extends AbstractAdmin
+    final class ImageAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -181,8 +173,6 @@ Both of these are straightforward when you know what to do::
                 ->add('file', FileType::class, [
                     'required' => false
                 ])
-
-                // ...
             ;
         }
 
@@ -230,12 +220,11 @@ In this example we have a Page class which has three one-to-one Image relationsh
 defined, linkedImage1 to linkedImage3. The PostAdmin class' form field configuration
 looks like this::
 
-    <?php
     // src/Admin/PostAdmin.php
 
     use Sonata\AdminBundle\Form\Type\AdminType;
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -249,12 +238,8 @@ looks like this::
                 ->add('linkedImage3', AdminType::class, [
                     'delete' => false
                 ])
-
-                // ...
             ;
         }
-
-        // ...
     }
 
 This is easy enough - we have embedded three fields, which will then use our ``ImageAdmin``
@@ -262,13 +247,10 @@ class to determine which fields to show.
 
 In our PostAdmin we then have the following code to manage the relationships' lifecycles::
 
-    <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
-        // ...
-
         public function prePersist($page)
         {
             $this->manageEmbeddedImageAdmins($page);
@@ -306,8 +288,6 @@ In our PostAdmin we then have the following code to manage the relationships' li
                 }
             }
         }
-
-        // ...
     }
 
 Here we loop through the fields of our PageAdmin and look for ones which are ``sonata_type_admin``
@@ -331,6 +311,5 @@ which caters to this need. It is documented online and is created and maintained
 as SonataAdmin.
 
 To learn how to add an image preview to your ImageAdmin take a look at the related cookbook entry.
-
 
 .. _`uploading files with Doctrine and Symfony`: http://symfony.com/doc/current/cookbook/doctrine/file_uploads.html

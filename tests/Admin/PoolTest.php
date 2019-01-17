@@ -329,10 +329,7 @@ class PoolTest extends TestCase
         $this->assertSame([], $this->pool->getOption('nonexistantarray', []));
     }
 
-    /**
-     * @return Symfony\Component\DependencyInjection\ContainerInterface - the mock of container interface
-     */
-    private function getContainer()
+    private function getContainer(): ContainerInterface
     {
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->expects($this->any())
@@ -344,7 +341,7 @@ class PoolTest extends TestCase
         return $containerMock;
     }
 
-    private function getItemArray($serviceId)
+    private function getItemArray($serviceId): array
     {
         return [
             'admin' => $serviceId,

@@ -18,28 +18,45 @@ namespace Sonata\AdminBundle\Templating;
  */
 final class TemplateRegistry implements MutableTemplateRegistryInterface
 {
+    /**
+     * @var string[]
+     */
     private $templates = [];
 
+    /**
+     * @param string[] $templates
+     */
     public function __construct(array $templates = [])
     {
         $this->templates = $templates;
     }
 
-    public function getTemplates()
+    /**
+     * @return string[]
+     */
+    public function getTemplates(): array
     {
         return $this->templates;
     }
 
+    /**
+     * @param string[] $templates
+     */
     public function setTemplates(array $templates): void
     {
         $this->templates = $templates;
     }
 
-    public function getTemplate($name)
+    /**
+     * @param string $name
+     */
+    public function getTemplate($name): ?string
     {
         if (isset($this->templates[$name])) {
             return $this->templates[$name];
         }
+
+        return null;
     }
 
     public function setTemplate($name, $template): void

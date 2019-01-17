@@ -1,12 +1,6 @@
 Modifying form fields dynamically depending on edited object
 ============================================================
 
-.. note::
-
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 It is a quite common situation when you need to modify your form's fields because
 of edited object's properties or structure. Let us assume you only want to display
 an admin form field for new objects and you do not want it to be shown for those
@@ -19,7 +13,6 @@ current object by calling ``$this->getSubject()``. The value returned will be yo
 linked model. And another method ``isCurrentRoute`` for check the current request's route.
 Then, you should be able to dynamically add needed fields to the form::
 
-    <?php
     // src/Admin/PostAdmin
 
     namespace App\Admin;
@@ -30,7 +23,7 @@ Then, you should be able to dynamically add needed fields to the form::
     use Symfony\Component\Form\Extension\Core\Type\TextareaType;
     use Symfony\Component\Form\Extension\Core\Type\FileType;
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         // ...
 

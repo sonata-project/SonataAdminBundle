@@ -33,8 +33,8 @@ Two template keys need to be set:
         <service id="sonata.admin.comment" class="%sonata.admin.comment.class%">
             <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="comments"
                 label_catalogue="%sonata.admin.comment.translation_domain%"
-                label_translator_strategy="sonata.admin.label.strategy.underscore" />
-            <argument />
+                label_translator_strategy="sonata.admin.label.strategy.underscore"/>
+            <argument/>
             <argument>%sonata.admin.comment.entity%</argument>
             <argument>%sonata.admin.comment.controller%</argument>
 
@@ -69,7 +69,7 @@ Once the templates are defined, create the template to render the row:
 
         {{ object|render_list_element(admin.list['name']) }} -
         {{ object|render_list_element(admin.list['url']) }} -
-        {{ object|render_list_element(admin.list['email']) }} <br />
+        {{ object|render_list_element(admin.list['email']) }} <br/>
 
         <small>
             {# or you can use the object variable to render a property #}

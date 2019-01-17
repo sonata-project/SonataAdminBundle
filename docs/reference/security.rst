@@ -1,12 +1,6 @@
 Security
 ========
 
-.. note::
-
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 User management
 ---------------
 
@@ -201,9 +195,7 @@ You can now test if a user is authorized from an Admin class::
         // ...
     }
 
-From a controller extending ``Sonata\AdminBundle\Controller\CRUDController``:
-
-.. code-block:: php
+From a controller extending ``Sonata\AdminBundle\Controller\CRUDController``::
 
     if ($this->admin->hasAccess('list')) {
         // ...
@@ -244,7 +236,7 @@ Then declare your handler as a service:
     .. code-block:: xml
 
         <service id="app.security.handler.role" class="App\Security\Handler\RoleSecurityHandler" public="false">
-            <argument type="service" id="security.context" on-invalid="null" />
+            <argument type="service" id="security.context" on-invalid="null"/>
             <argument type="collection">
                 <argument>ROLE_SUPER_ADMIN</argument>
             </argument>
@@ -283,11 +275,8 @@ Configuration
 
 Before you can use ``FriendsOfSymfony/FOSUserBundle`` you need to set it up as
 described in the documentation of the bundle. In step 4 you need to create a
-User class (in a custom UserBundle). Do it as follows:
+User class (in a custom UserBundle). Do it as follows::
 
-.. code-block:: php
-
-    <?php
     // src/Entity/User.php
 
     namespace App\Entity;
@@ -350,7 +339,6 @@ The following configuration for the SonataUserBundle defines:
         # optionally use a custom MaskBuilder
         parameters:
             sonata.admin.security.mask.builder.class: Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder
-
 
 In ``config/packages/security.yaml``:
 
@@ -419,7 +407,7 @@ In ``config/packages/security.yaml``:
 
 .. code-block:: bash
 
-    $ bin/console fos:user:create --super-admin
+    bin/console fos:user:create --super-admin
         Please choose a username:root
         Please choose an email:root@domain.com
         Please choose a password:root
@@ -429,8 +417,7 @@ If you have Admin classes, you can install or update the related CRUD ACL rules:
 
 .. code-block:: bash
 
-    $ bin/console sonata:admin:setup-acl
-
+    bin/console sonata:admin:setup-acl
     Starting ACL AdminBundle configuration
     > install ACL for sonata.media.admin.media
        - add role: ROLE_SONATA_MEDIA_ADMIN_MEDIA_GUEST, permissions: ["VIEW","LIST"]
@@ -444,7 +431,7 @@ object of an admin:
 
 .. code-block:: bash
 
-    $ bin/console sonata:admin:generate-object-acl
+    bin/console sonata:admin:generate-object-acl
 
 Optionally, you can specify an object owner, and step through each admin. See
 the help of the command for more information.
@@ -457,6 +444,7 @@ An Admin is displayed in the dashboard (and menu) when the user has the role
 
 Roles and Access control lists
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 A user can have several roles when working with an application. Each Admin class
 has several roles, and each role specifies the permissions of the user for the
 ``Admin`` class. Or more specifically, what the user can do with the domain object(s)
@@ -545,11 +533,8 @@ Create a custom voter or a custom permission map
 In some occasions you need to create a custom voter or a custom permission map
 because for example you want to restrict access using extra rules:
 
-- create a custom voter class that extends the ``AclVoter``
+- create a custom voter class that extends the ``AclVoter``::
 
-.. code-block:: php
-
-    <?php
     // src/Security/Authorization/Voter/UserAclVoter.php
 
     namespace App\Security\Authorization\Voter;
@@ -611,13 +596,13 @@ because for example you want to restrict access using extra rules:
         <!-- <service id="security.acl.user_permission.map" class="App\Security\Acl\Permission\UserAdminPermissionMap" public="false"></service> -->
 
         <service id="security.acl.voter.user_permissions" class="App\Security\Authorization\Voter\UserAclVoter" public="false">
-            <tag name="monolog.logger" channel="security" />
-            <argument type="service" id="security.acl.provider" />
-            <argument type="service" id="security.acl.object_identity_retrieval_strategy" />
-            <argument type="service" id="security.acl.security_identity_retrieval_strategy" />
-            <argument type="service" id="security.acl.permission.map" />
-            <argument type="service" id="logger" on-invalid="null" />
-            <tag name="security.voter" priority="255" />
+            <tag name="monolog.logger" channel="security"/>
+            <argument type="service" id="security.acl.provider"/>
+            <argument type="service" id="security.acl.object_identity_retrieval_strategy"/>
+            <argument type="service" id="security.acl.security_identity_retrieval_strategy"/>
+            <argument type="service" id="security.acl.permission.map"/>
+            <argument type="service" id="logger" on-invalid="null"/>
+            <tag name="security.voter" priority="255"/>
         </service>
 
 - change the access decision strategy to ``unanimous``
@@ -722,9 +707,7 @@ By default, the ACL editor allows to set permissions for all users managed by
 
 To customize displayed user override
 ``Sonata\AdminBundle\Controller\CRUDController::getAclUsers()``. This method must
-return an iterable collection of users.
-
-.. code-block:: php
+return an iterable collection of users::
 
     protected function getAclUsers()
     {
@@ -744,9 +727,7 @@ By default, the ACL editor allows to set permissions for all roles.
 
 To customize displayed role override
 ``Sonata\AdminBundle\Controller\CRUDController::getAclRoles()``. This method must
-return an iterable collection of roles.
-
-.. code-block:: php
+return an iterable collection of roles::
 
     protected function getAclRoles()
     {

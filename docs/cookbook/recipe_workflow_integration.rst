@@ -4,16 +4,12 @@ Integrate Symfony Workflow Component
 If you are using Symfony `Workflow Component`_ and if you wish to use it with Sonata,
 there is a 3rd party library that provides toolkit classes.
 
-You can find it on `Packagist`_ and `GitHub`_.
-
-Downloading the library
------------------------
-
-From a terminal, use composer to install the library :
+Download the Bundle
+-------------------
 
 .. code-block:: bash
 
-    $ composer require yokai/sonata-workflow
+    composer require yokai/sonata-workflow
 
 Usage
 -----
@@ -59,35 +55,33 @@ You can use the provided extension to take care of your entity admin.
 
    # config/packages/sonata_admin.yaml
    services:
-       admin.blog_post:
+       app.admin.blog_post:
            class: App\Admin\BlogPostAdmin
            arguments:
                - ~
-               - App\Entity\PullRequest
+               - App\Entity\BlogPost
                - Yokai\SonataWorkflow\Controller\WorkflowController
            tags:
-               - { name: 'sonata.admin', manager_type: orm }
+               - { name: sonata.admin, manager_type: orm }
 
-       admin.extension.blog_post_workflow:
+       app.admin.extension.workflow.blog_post:
            class: Yokai\SonataWorkflow\Admin\Extension\WorkflowExtension
-           public: true
            arguments:
-               - "@workflow.registry"
+               - '@workflow.registry'
                - transitions_icons:
                      start_review: fa fa-question
                      interrupt_review: fa fa-edit
                      restart_review: fa fa-question
-                     publish: fa fa-times
+                     publish: fa fa-check
 
 .. code-block:: yaml
 
    # config/packages/sonata_admin.yaml
    sonata_admin:
        extensions:
-           admin.extension.blog_post_workflow:
+           admin.extension.workflow.blog_post:
                admins:
-                   - admin.blog_post
-
+                   - app.admin.blog_post
 
 You are all set. If you visit your admin page in edit or show mode,
 you will see something like this:
@@ -97,7 +91,4 @@ you will see something like this:
    :alt: Sonata Admin with Workflow
    :width: 700px
 
-
 .. _`Workflow Component`: https://symfony.com/doc/current/components/workflow.html
-.. _`Packagist`: https://packagist.org/packages/yokai/sonata-workflow
-.. _`GitHub`: https://github.com/yokai-php/sonata-workflow

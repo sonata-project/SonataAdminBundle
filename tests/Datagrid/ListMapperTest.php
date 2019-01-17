@@ -239,7 +239,7 @@ class ListMapperTest extends TestCase
         ], true), print_r($this->fieldDescriptionCollection->getElements(), true));
     }
 
-    private function getFieldDescriptionMock($name = null, $label = null)
+    private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription
     {
         $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);
 

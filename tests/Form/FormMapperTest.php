@@ -454,8 +454,11 @@ class FormMapperTest extends TestCase
         $this->assertSame(['fo__o', 'ba____z'], $this->formMapper->keys());
     }
 
-    private function getFieldDescriptionMock($name = null, $label = null, $translationDomain = null)
-    {
+    private function getFieldDescriptionMock(
+        ?string $name = null,
+        ?string $label = null,
+        ?string $translationDomain = null
+    ): BaseFieldDescription {
         $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);
 
         if (null !== $name) {

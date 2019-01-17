@@ -516,6 +516,24 @@ Thank them for contributing. Encourage them if you feel this is going to be long
 In short, try to make them want to contribute again. If they are stuck, try to provide them with
 code yourself, or ping someone who can help.
 
+## Manual merges
+
+Thanks to dev-kit, stable branches are regularly merged into master branches.
+It is great when it works, but often, there will be git conflicts and a human
+intervention will be needed. Let us assume we are working on a repository where
+the stable branch is 42.x. To do the merge manually, follow these steps:
+1. Fetch the latest commits: `git fetch --all`
+2. Checkout the master branch, and make sure it is up to date:
+   `git checkout -B master origin/master`
+3. Proceed with the merge: `git merge origin/42.x`
+4. Fix the conflicts (if you are doing this, it is because of conflicts,
+   right?) `git mergetool`
+5. Create a merge commit `git commit`
+6. Push the result to your fork: `git push fork 42.x`
+7. Create a pull request from `fork/42.x` to `origin/42.x`
+8. When the PR can be merged, do not merge it. Instead, use
+   `git push origin 42.x`.
+
 ## Releases
 
 ### Limitations and requests

@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Controller;
 
-use Exporter\Exporter;
-use Exporter\Source\SourceIteratorInterface;
-use Exporter\Writer\JsonWriter;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -37,6 +34,9 @@ use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
+use Sonata\Exporter\Exporter;
+use Sonata\Exporter\Source\SourceIteratorInterface;
+use Sonata\Exporter\Writer\JsonWriter;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -3861,7 +3861,7 @@ class CRUDControllerTest extends TestCase
         ];
     }
 
-    private function assertLoggerLogsModelManagerException($subject, $method): void
+    private function assertLoggerLogsModelManagerException($subject, string $method): void
     {
         $exception = new ModelManagerException(
             $message = 'message',
@@ -3883,8 +3883,12 @@ class CRUDControllerTest extends TestCase
             ]);
     }
 
-    private function expectTranslate($id, array $parameters = [], $domain = null, $locale = null): void
-    {
+    private function expectTranslate(
+        string $id,
+        array $parameters = [],
+        ?string $domain = null,
+        ?string $locale = null
+    ): void {
         $this->translator->expects($this->once())
             ->method('trans')
             ->with($this->equalTo($id), $this->equalTo($parameters), $this->equalTo($domain), $this->equalTo($locale))

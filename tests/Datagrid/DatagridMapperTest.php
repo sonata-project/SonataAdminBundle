@@ -263,7 +263,7 @@ class DatagridMapperTest extends TestCase
         ], array_keys($this->datagrid->getFilters()));
     }
 
-    private function getFieldDescriptionMock($name = null, $label = null)
+    private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription
     {
         $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);
 

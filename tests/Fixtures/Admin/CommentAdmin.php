@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -16,7 +18,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class CommentAdmin extends AbstractAdmin
 {
-    public function setClassnameLabel($label)
+    public function setClassnameLabel($label): void
     {
         $this->classnameLabel = $label;
     }

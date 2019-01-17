@@ -136,9 +136,6 @@ class Admin implements MetadataProcessorInterface
         }
     }
 
-    /**
-     * Check if all the required fields are given.
-     */
     private function validate(): void
     {
         if (!$this->showInDashboard) {

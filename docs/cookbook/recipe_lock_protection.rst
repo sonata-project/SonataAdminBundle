@@ -3,12 +3,6 @@ Lock Protection
 
 Lock protection will prevent data corruption when multiple users edit an object at the same time.
 
-.. note::
-
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 Example
 -------
 
@@ -41,8 +35,8 @@ field called ``$version`` on which the Doctrine ``Version`` feature is activated
 
 Using Annotations::
 
-    <?php
     // src/Entity/Car.php
+
     namespace App\Entity\Car;
     
     use Doctrine\ORM\Mapping as ORM;
@@ -70,12 +64,11 @@ Using XML:
         <entity name="App\Entity\Car">
             <!-- ... -->
     
-            <field name="version" type="integer" version="true" />
+            <field name="version" type="integer" version="true"/>
     
             <!-- ... -->
         </entity>
     </doctrine-mapping>
-    
 
 For more information about this visit the `Doctrine docs <http://doctrine-orm.readthedocs.org/en/latest/reference/transactions-and-concurrency.html?highlight=optimistic#optimistic-locking>`_
 

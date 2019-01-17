@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 final class DashboardAction extends Controller
 {
@@ -53,7 +54,7 @@ final class DashboardAction extends Controller
         $this->pool = $pool;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $blocks = [
             'top' => [],

@@ -12,7 +12,7 @@ it in your own admin class::
     // add this to your existing use statements
     use Sonata\CoreBundle\Validator\ErrorElement;
 
-    class MyAdmin extends AbstractAdmin
+    final class MyAdmin extends AbstractAdmin
     {
         // add this method
         public function validate(ErrorElement $errorElement, $object)

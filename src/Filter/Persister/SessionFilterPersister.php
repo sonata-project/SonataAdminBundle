@@ -62,12 +62,8 @@ final class SessionFilterPersister implements FilterPersisterInterface
 
     /**
      * Build the session key, under which the filter should be stored for given admin code.
-     *
-     * @param string $adminCode The admin code
-     *
-     * @return string The storage key
      */
-    private function buildStorageKey($adminCode)
+    private function buildStorageKey(string $adminCode): string
     {
         return $adminCode.'.filter.parameters';
     }

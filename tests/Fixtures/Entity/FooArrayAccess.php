@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -41,12 +43,12 @@ class FooArrayAccess implements \ArrayAccess
         return null;
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new \BadMethodCallException('Array access of class '.\get_class($this).' is read-only!');
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new \BadMethodCallException('Array access of class '.\get_class($this).' is read-only!');
     }
@@ -56,7 +58,7 @@ class FooArrayAccess implements \ArrayAccess
         return $this->bar;
     }
 
-    public function setBar($bar)
+    public function setBar($bar): void
     {
         $this->bar = $bar;
     }
@@ -66,7 +68,7 @@ class FooArrayAccess implements \ArrayAccess
         return $this->baz;
     }
 
-    public function setBaz($baz)
+    public function setBaz($baz): void
     {
         $this->baz = $baz;
     }

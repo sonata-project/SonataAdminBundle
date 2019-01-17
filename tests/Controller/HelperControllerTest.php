@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Controller;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
@@ -509,7 +510,7 @@ class HelperControllerTest extends TestCase
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
 
-    private function configureAutocompleteItemsDatagrid()
+    private function configureAutocompleteItemsDatagrid(): ObjectProphecy
     {
         $entity = new Foo();
 
@@ -544,7 +545,7 @@ class HelperControllerTest extends TestCase
         return $datagrid;
     }
 
-    private function configureFormConfig($field, $disabled = false): void
+    private function configureFormConfig(string $field, bool $disabled = false): void
     {
         $form = $this->prophesize(Form::class);
         $formType = $this->prophesize(Form::class);
@@ -563,7 +564,7 @@ class HelperControllerTest extends TestCase
         $formConfig->getAttribute('target_admin_access_action')->willReturn('list');
     }
 
-    private function configureFormConfigComplexProperty($field): void
+    private function configureFormConfigComplexProperty(string $field): void
     {
         $form = $this->prophesize(Form::class);
         $formType = $this->prophesize(Form::class);

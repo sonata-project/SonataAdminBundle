@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Admin\Extension;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\Prophecy\ObjectProphecy;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Extension\LockExtension;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
@@ -192,7 +193,7 @@ class LockExtensionTest extends TestCase
         $this->lockExtension->preUpdate($this->admin->reveal(), $this->object);
     }
 
-    private function configureForm()
+    private function configureForm(): ObjectProphecy
     {
         $form = $this->prophesize(FormInterface::class);
 
@@ -202,7 +203,7 @@ class LockExtensionTest extends TestCase
         return $form;
     }
 
-    private function configureFormMapper()
+    private function configureFormMapper(): FormMapper
     {
         $contractor = $this->prophesize(FormContractorInterface::class);
         $formFactory = $this->prophesize(FormFactoryInterface::class);
@@ -211,8 +212,11 @@ class LockExtensionTest extends TestCase
         return new FormMapper($contractor->reveal(), $formBuilder, $this->admin->reveal());
     }
 
-    private function configureAdmin($uniqid = null, $request = null, $modelManager = null): void
-    {
+    private function configureAdmin(
+        ?string $uniqid = null,
+        ?Request $request = null,
+        $modelManager = null
+    ): void {
         $this->admin->getUniqid()->willReturn($uniqid);
         $this->admin->getRequest()->willReturn($request);
         $this->admin->hasRequest()->willReturn(null !== $request);

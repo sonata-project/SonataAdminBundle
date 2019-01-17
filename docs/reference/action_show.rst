@@ -1,19 +1,7 @@
 The Show action
 ===============
 
-.. note::
-
-    This document is a stub representing a new work in progress. If you're reading
-    this you can help contribute, **no matter what your experience level with Sonata
-    is**. Check out the `issues on GitHub`_ for more information about how to get involved.
-
 This document will cover the Show action and related configuration options.
-
-.. note::
-
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
 
 Basic configuration
 -------------------
@@ -42,17 +30,14 @@ When adding a group to your show page, you may specify some options for the grou
 - ``description``: to complete
 - ``translation_domain``: to complete
 
-To specify options, do as follow:
+To specify options, do as follow::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/PersonAdmin.php
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    class PersonAdmin extends AbstractAdmin
+    final class PersonAdmin extends AbstractAdmin
     {
         protected function configureShowFields(ShowMapper $showMapper)
         {
@@ -72,16 +57,13 @@ To specify options, do as follow:
     }
 
 When extending an existing Admin, you may want to remove some fields, groups or tabs.
-Here is an example of how to achieve this :
+Here is an example of how to achieve this::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/PersonAdmin.php
 
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    class PersonAdmin extends ParentAdmin
+    final class PersonAdmin extends ParentAdmin
     {
         protected function configureShowFields(ShowMapper $showMapper)
         {
@@ -101,6 +83,10 @@ Here is an example of how to achieve this :
         }
     }
 
+.. note::
+
+    ``ParentAdmin`` is not allowed to be ``final`` then!
+
 Customising the query used to show the object from within your Admin class
 --------------------------------------------------------------------------
 
@@ -109,12 +95,11 @@ in the initial setup. It is actually a bit easier, because we are only
 concerned with displaying information. Smile, the hard part is already done.
 The following is a working example of a ShowAction::
 
-    <?php
     // src/Admin/PostAdmin.php
 
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    class ClientAdmin extends AbstractAdmin
+    final class ClientAdmin extends AbstractAdmin
     {
         protected function configureShowFields(ShowMapper $showMapper)
         {
@@ -156,15 +141,17 @@ The first thing you need to do is define it in app/config/config/yml:
 
     .. code-block:: yaml
 
+        # config/packages/sonata_admin.yaml
+
         sonata_admin:
             title:      Acme
             title_logo: img/logo_small.png
             templates:
-                show:       "@App/Admin/Display_Client.html.twig"
+                show:   '@App/Admin/display_client.html.twig'
 
 Once you have defined this, Sonata Admin looks for it in the following location:
 
-``templates/Admin/Display_Client.html.twig``
+``templates/Admin/display_client.html.twig``
 
 Now that you have told Sonata Admin where to find the template, it is time to put one in there.
 
@@ -177,7 +164,3 @@ The original template can be found in the following location:
 ``vendor/sonata-project/admin-bundle/Resources/views/CRUD/base_show.html.twig``
 
 Now that you have a copy of the default template, check to make sure it works.
-
-That's it, now go code.
-
-.. _`issues on GitHub`: https://github.com/sonata-project/SonataAdminBundle/issues/1519

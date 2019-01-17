@@ -17,7 +17,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\CoreBundle\Model\Adapter\AdapterInterface;
+use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\Form\ChoiceList\LazyChoiceList;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\RuntimeException;
@@ -165,11 +165,9 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * Simulates the old constructor for BC.
      *
-     * @param array $args
-     *
      * @throws RuntimeException
      */
-    private function legacyConstructor($args): void
+    private function legacyConstructor(array $args): void
     {
         $choiceList = $args[0];
 
@@ -187,10 +185,8 @@ class ModelsToArrayTransformer implements DataTransformerInterface
 
     /**
      * @param object $entity
-     *
-     * @return array
      */
-    private function getIdentifierValues($entity)
+    private function getIdentifierValues($entity): array
     {
         try {
             return $this->modelManager->getIdentifierValues($entity);
@@ -205,9 +201,8 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     private function triggerDeprecation(): void
     {
         @trigger_error(sprintf(
-                'Using the "%s::$choiceList" property is deprecated since version 3.12 and will be removed in 4.0.',
-                __CLASS__),
-            E_USER_DEPRECATED)
-        ;
+            'Using the "%s::$choiceList" property is deprecated since version 3.12 and will be removed in 4.0.',
+            __CLASS__
+        ), E_USER_DEPRECATED);
     }
 }

@@ -247,3 +247,4 @@ Full Configuration Options
             show_mosaic_button: true
             global_search:
                 show_empty_boxes: show
+                case_sensitive: true

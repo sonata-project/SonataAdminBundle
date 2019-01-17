@@ -68,10 +68,7 @@ class ControllerGeneratorTest extends TestCase
         $this->controllerGenerator->generate($this->bundleMock, 'ModelAdminController');
     }
 
-    /**
-     * @return BundleInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private function createBundleMock()
+    private function createBundleMock(): BundleInterface
     {
         $bundleMock = $this->getMockForAbstractClass(BundleInterface::class);
         $bundleMock

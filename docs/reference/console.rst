@@ -17,11 +17,9 @@ cache:create-cache-class
 The ``cache:create-cache-class`` command generates the cache class
 (``var/cache/...env.../classes.php``) from the classes.map file.
 
-Usage example:
-
 .. code-block:: bash
 
-    $ bin/console cache:create-cache-class
+    bin/console cache:create-cache-class
 
 make:sonata:admin
 -----------------
@@ -36,7 +34,7 @@ The command require the `Symfony Maker Bundle`_ to work. If you don't already ha
 
 .. code-block:: bash
 
-    $ composer require symfony/maker-bundle --dev
+    composer require symfony/maker-bundle --dev
 
 ===============   ===============================================================================================================================
 Options           Description
@@ -48,8 +46,6 @@ Options           Description
  **services**     the services YAML file (the default value is "services.yaml")
  **id**           the admin service ID (the default value is combination of "admin" and admin class basename like "admin.foo_bar")
 ===============   ===============================================================================================================================
-
-Usage example:
 
 .. code-block:: bash
 
@@ -68,7 +64,7 @@ The command requires the SensioGeneratorBundle_ to work. If you don't already ha
 
 .. code-block:: bash
 
-    $ composer require --dev sensio/generator-bundle
+    composer require sensio/generator-bundle --dev
 
 ===============   ===============================================================================================================================
 Options           Description
@@ -77,15 +73,13 @@ Options           Description
  **admin**        the admin class basename (by default this adds "Admin" to the model class name, e.g. "BarAdmin")
  **controller**   the controller class basename (by default this adds "AdminController" to the model class name, e.g. "BarAdminController")
  **manager**      the model manager type (by default this is the first registered model manager type, e.g. "orm")
- **services**     the services YAML file (the default value is "services.yaml" or "admin.yml" if it already exist)
+ **services**     the services YAML file (the default value is "services.yaml")
  **id**           the admin service ID (the default value is combination of the bundle name and admin class basename like "your_ns_foo.admin.bar")
 ===============   ===============================================================================================================================
 
-Usage example:
-
 .. code-block:: bash
 
-    $ bin/console sonata:admin:generate App/Entity/Foo
+    bin/console sonata:admin:generate App/Entity/Foo
 
 sonata:admin:list
 -----------------
@@ -95,19 +89,14 @@ It prints all the admin service ids available in your application. This command
 gets the ids from the ``sonata.admin.pool`` service where all the available admin
 services are registered.
 
-Usage example:
-
 .. code-block:: bash
 
-    $ bin/console sonata:admin:list
-
+    bin/console sonata:admin:list
 
 .. figure:: ../images/console_admin_list.png
    :align: center
    :alt: List command
    :width: 700px
-
-   List command
 
 sonata:admin:explain
 --------------------
@@ -115,18 +104,14 @@ sonata:admin:explain
 The ``sonata:admin:explain`` command prints details about the admin of a model.
 As an argument you need to specify the admin service id of the Admin to explain.
 
-Usage example:
-
 .. code-block:: bash
 
-    $ bin/console sonata:admin:explain sonata.news.admin.post
+    bin/console sonata:admin:explain sonata.news.admin.post
 
 .. figure:: ../images/console_admin_explain.png
    :align: center
    :alt: Explain command
    :width: 700px
-
-   Explain command
 
 sonata:admin:setup-acl
 ----------------------
@@ -137,11 +122,9 @@ new ``Admin`` class, you can create its ACL by using the ``sonata:admin:setup-ac
 command. The ACL database will be automatically updated with the latest masks
 and roles.
 
-Usage example:
-
 .. code-block:: bash
 
-    $ bin/console sonata:admin:setup-acl
+    bin/console sonata:admin:setup-acl
 
 sonata:admin:generate-object-acl
 --------------------------------
@@ -149,6 +132,10 @@ sonata:admin:generate-object-acl
 The ``sonata:admin:generate-object-acl`` is an interactive command which helps
 you to generate ACL entities for the objects handled by your Admins. See the help
 of the command for more information.
+
+.. code-block:: bash
+
+    bin/console sonata:admin:generate-object-acl
 
 .. _SensioGeneratorBundle: http://symfony.com/doc/current/bundles/SensioGeneratorBundle/index.html
 .. _`Symfony Maker Bundle`: https://symfony.com/doc/current/bundles/SymfonyMakerBundle/index.html

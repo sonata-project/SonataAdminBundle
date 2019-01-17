@@ -55,7 +55,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Sonata\CoreBundle\Model\Adapter\AdapterInterface;
+use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -2367,7 +2367,7 @@ class AdminTest extends TestCase
         $this->assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
     }
 
-    private function createTagAdmin(Post $post)
+    private function createTagAdmin(Post $post): TagAdmin
     {
         $postAdmin = $this->getMockBuilder(PostAdmin::class)
             ->disableOriginalConstructor()
