@@ -137,7 +137,7 @@ Help messages in a sub-field
 
     // src/Admin/PostAdmin.php
 
-    use Sonata\CoreBundle\Form\Type\ImmutableArrayType;
+    use Sonata\Form\Type\ImmutableArrayType;
     use Symfony\Component\Form\Extension\Core\Type\TextareaType;
     use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 

@@ -571,7 +571,7 @@ to the underlying forms::
 
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
-    use Sonata\CoreBundle\Form\Type\CollectionType;
+    use Sonata\Form\Type\CollectionType;
     use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
     final class ProductAdmin extends AbstractAdmin
