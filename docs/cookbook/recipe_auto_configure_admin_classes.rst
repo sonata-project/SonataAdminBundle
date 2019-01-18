@@ -56,9 +56,10 @@ with something just add the annotation to your admin class::
 
     namespace App\Admin;
 
-    use KunicMarko\SonataAutoConfigureBundle\Annotation as Sonata;
     use App\Controller\Admin\CategoryController;
     use App\Entity\Category;
+    use KunicMarko\SonataAutoConfigureBundle\Annotation as Sonata;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
 
     /**
      * @Sonata\AdminOptions(
@@ -78,7 +79,7 @@ with something just add the annotation to your admin class::
      *     autowireEntity=true,
      * )
      */
-    class CategoryAdmin
+    final class CategoryAdmin extends AbstractAdmin
     {
     }
 
