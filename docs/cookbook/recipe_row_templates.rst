@@ -78,7 +78,7 @@ Once the templates are defined, create the template to render the row:
 
     {% endblock %}
 
-While this feature is nice to generate a rich list, it is also very easy to
-break the layout and admin features such as batch and object actions. It is
-best to familiarise yourself with the default templates and extend them where
-possible, only changing what you need to customize.
+While this feature is nice to generate a rich list, you can break the layout and
+admin features such as batch and object actions. It is best to familiarise yourself
+with the default templates and extend them where possible, only changing what you
+need to customize.

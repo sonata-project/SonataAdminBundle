@@ -224,7 +224,7 @@ Lets consider a base class named `Person` and its subclasses `Student` and `Teac
             tags:
                 - { name: sonata.admin, manager_type: orm, group: "admin", label: "Person" }
 
-You will just need to change the way forms are configured in order to
+You will need to change the way forms are configured in order to
 take into account these new subclasses::
 
     // src/Admin/PersonAdmin.php
@@ -388,8 +388,8 @@ Disable content stretching
 --------------------------
 
 You can disable ``html``, ``body`` and ``sidebar`` elements stretching.
-These containers are forced to be full height by default. If you use
-custom layout or just don't need such behavior, add ``no-stretch`` class
+These containers are forced to be full height by default. If you use a
+custom layout or don't need such behavior, add the ``no-stretch`` class
 to the ``<html>`` tag.
 
 .. code-block:: html+jinja
@@ -438,7 +438,7 @@ some entries inside the  `$accessMapping` array in the linked Admin::
     }
 
 You can also fully customize how you want to handle your access management
-by simply overriding ``checkAccess`` function::
+by overriding ``checkAccess`` function::
 
     // src/Admin/CustomAdmin.php
 

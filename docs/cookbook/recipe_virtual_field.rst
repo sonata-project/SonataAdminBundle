@@ -9,4 +9,4 @@ field (which doesn't exist), the option ``virtual_field`` is specified for these
 fields.
 
 When the template is instantiated, or whenever the value of the field is
-required, ``null`` will simply be returned without prying on the Model itself.
+required, ``null`` will be returned without prying on the Model itself.

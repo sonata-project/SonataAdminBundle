@@ -123,7 +123,7 @@ For instance, the SonataMediaBundle defines the method as::
 
 .. note::
 
-    In your own admin, media is just a field and not the ``$object``. Therefore,
+    In your own admin, ``media`` is a field and not the ``$object``. Therefore,
     the code above must be updated this way::
 
         public function getObjectMetadata($object): Metadata

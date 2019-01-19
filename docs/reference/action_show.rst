@@ -69,7 +69,7 @@ Here is an example of how to achieve this::
         {
             parent::configureShowFields($showMapper);
 
-            // remove just one field
+            // remove one field
             $showMapper->remove('field_to_remove');
 
             // remove a group from the "default" tab
@@ -107,8 +107,8 @@ The following is a working example of a ShowAction::
             // $showMapper (but this can be called anything)
             $showMapper
 
-                 // The default option is to just display the
-                 // value as text (for boolean this will be 1 or 0)
+                 // The default option is to display the value
+                 // as text (for boolean this will be 1 or 0)
                 ->add('name')
                 ->add('phone')
                 ->add('email')

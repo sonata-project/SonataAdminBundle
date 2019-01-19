@@ -33,10 +33,9 @@ Basic configuration - the Entity
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Following the guidelines from the Symfony cookbook, we have an Entity definition
-that looks something like the YAML below (of course, you can achieve something
-similar with XML or Annotation based definitions too). In this example we are using
-the ``updated`` field to trigger the lifecycle callbacks by setting it based on the
-upload timestamp.
+that looks something like the YAML below (you can achieve something similar with XML
+or Annotation based definitions too). In this example we are using the ``updated``
+field to trigger the lifecycle callbacks by setting it based on the upload timestamp.
 
 .. configuration-block::
 
@@ -148,8 +147,8 @@ trigger a call to ``Image::upload()`` which manages the actual copying of the
 uploaded file to the filesystem and updates the ``filename`` property of our Image,
 this filename field *is* persisted to the database.
 
-Most of the above is simply from the `uploading files with Doctrine and Symfony`_ cookbook
-entry. It is highly recommended reading!
+Most of the above is from the `uploading files with Doctrine and Symfony`_ cookbook entry.
+It is highly recommended to read it!
 
 Basic configuration - the Admin class
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -242,7 +241,7 @@ looks like this::
         }
     }
 
-This is easy enough - we have embedded three fields, which will then use our ``ImageAdmin``
+This is enough - we embedded three fields, which will then use our ``ImageAdmin``
 class to determine which fields to show.
 
 In our PostAdmin we then have the following code to manage the relationships' lifecycles::

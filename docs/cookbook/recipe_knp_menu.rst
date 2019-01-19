@@ -141,8 +141,9 @@ label via the configuration. It is done in your custom menu.
 Extending the menu
 ------------------
 
-You can modify the menu via events easily. You can register as many
-listeners as you want for the event with name ``sonata.admin.event.configure.menu.sidebar``::
+You can modify the menu via events.
+You can register as many listeners as you want for the event with
+name ``sonata.admin.event.configure.menu.sidebar``::
 
     // src/EventListener/MenuBuilderListener.php
 
@@ -183,7 +184,7 @@ Hiding menu items
 -----------------
 
 You can modify the menu to hide some menu items. You need to add the ``show_in_dashboard`` option in
-your admin services or simply remove menu items from the ``sonata_admin`` dashboard group configuration:
+your admin services or remove menu items from the ``sonata_admin`` dashboard group configuration:
 
 .. code-block:: yaml
 
@@ -206,7 +207,7 @@ your admin services or simply remove menu items from the ``sonata_admin`` dashbo
                     label:                ~
                     label_catalogue:      ~
                     items:
-                      # just comment or remove the sonata.news.admin.post declaration to hide it from the menu.
+                      # comment or remove the sonata.news.admin.post declaration to hide it from the menu.
                       #  - sonata.news.admin.post
                         - route:        blog_home
                           label:        Blog

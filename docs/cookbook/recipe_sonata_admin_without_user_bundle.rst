@@ -131,7 +131,7 @@ more about it `here <http://symfony.com/doc/current/security/custom_provider.htm
 AdminLoginForm
 ^^^^^^^^^^^^^^
 
-A small login form that will basically just validate our data::
+A small login form that will validate our data::
 
     namespace App\Form;
 

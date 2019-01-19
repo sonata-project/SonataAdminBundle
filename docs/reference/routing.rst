@@ -130,10 +130,10 @@ the admin variable's ``generateUrl()`` command:
     <a href="{{ admin.generateUrl('list', params|merge('page': 1)) }}">List</a>
 
 Note that you do not need to provide the Admin's route prefix (``baseRouteName``) to
-generate a URL for the current Admin, just the action name.
+generate a URL for the current Admin, only the action name is needed.
 
-To generate a URL for a different Admin you just use the Route Name with the usual
-Twig helpers:
+To generate a URL for a different Admin you only need to use the Route Name with the
+usual Twig helpers:
 
 .. code-block:: html+jinja
 
@@ -264,7 +264,7 @@ removing the 'create' route will prevent any links to "Add new" from appearing.
 Removing a single route
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Any single registered route can be easily removed by name::
+Any single registered route can be removed by name::
 
     // src/Admin/MediaAdmin.php
 

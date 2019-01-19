@@ -12,8 +12,8 @@ The ``FOSUserBundle`` adds support for a database-backed user system in Symfony.
 It provides a flexible framework for user management that aims to handle common
 tasks such as user login, registration and password retrieval.
 
-The ``SonataUserBundle`` is just a thin wrapper to include the ``FOSUserBundle``
-into the ``AdminBundle``. The ``SonataUserBundle`` includes:
+The ``SonataUserBundle`` is a thin wrapper to include the ``FOSUserBundle`` into
+the ``SonataAdminBundle``. The ``SonataUserBundle`` includes:
 
 * A default login area
 * A default ``user_block`` template which is used to display the current user
@@ -257,7 +257,7 @@ And specify it as Sonata security handler on your configuration:
 ACL and FriendsOfSymfony/UserBundle
 -----------------------------------
 
-If you want an easy way to handle users, please use:
+If you want a straightforward way to handle users, please use:
 
 - `FOSUserBundle <https://github.com/FriendsOfSymfony/FOSUserBundle>`_: handles
   users and groups stored in RDBMS or MongoDB
@@ -436,8 +436,8 @@ object of an admin:
 Optionally, you can specify an object owner, and step through each admin. See
 the help of the command for more information.
 
-If you try to access to the admin class you should see the login form, just
-log in with the ``root`` user.
+If you try to access to the admin class you should see the login form, log in
+with the ``root`` user.
 
 An Admin is displayed in the dashboard (and menu) when the user has the role
 ``LIST``. To change this override the ``showIn`` method in the Admin class.

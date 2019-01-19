@@ -163,7 +163,7 @@ You have to add the new route in ``configureRoutes``::
     }
 
 This gives us a route like ``../admin/app/car/1/clone``.
-You could also just write ``$collection->add('clone');`` to get a route like ``../admin/app/car/clone?id=1``
+You could also write ``$collection->add('clone');`` to get a route like ``../admin/app/car/clone?id=1``
 
 Next we have to add the action in ``configureListFields`` specifying the template we created::
 
@@ -325,7 +325,7 @@ Create a template for that button:
         <i class="fa fa-level-up"></i>{{ 'import_action'|trans({}, 'SonataAdminBundle') }}
     </a>
 
-Or you can just pass values as array::
+Or you can pass values as array::
 
     public function getDashboardActions()
     {

@@ -41,7 +41,7 @@ All we need to do now is add a reference for this field in our ``PageAdmin`` cla
     }
 
 Note that the third parameter to ``FormMapper::add()`` is optional so
-there is no need to pass in an empty array, it is shown here just to demonstrate
+there is no need to pass in an empty array, it is shown here only to demonstrate
 where the options go when you want to use them.
 
 Since the ``image1`` field refers to a related entity we do not need to specify
@@ -499,8 +499,7 @@ related objects.
 
 For example, lets use a similar example to the one for ``Sonata\AdminBundle\Form\Type\ModelType`` above.
 This time, when editing a ``Page`` using ``PageAdmin`` we want to enable the inline
-creation (and editing) of new Images instead of just selecting an existing Image
-from a list.
+creation (and editing) of new Images instead of selecting an existing Image from a list.
 
 First we need to create an ``ImageAdmin`` class and register it as an admin class
 for managing ``Image`` objects. In our ``services.yaml`` we have an entry for ``ImageAdmin``
@@ -524,8 +523,8 @@ that looks like this:
                 tags:
                     - { name: sonata.admin, manager_type: orm, label: 'Image' }
 
-To embed ``ImageAdmin`` within ``PageAdmin`` we just need to change the reference
-for the ``image1`` field to ``sonata_type_admin`` in our ``PageAdmin`` class::
+To embed ``ImageAdmin`` within ``PageAdmin`` we need to change the reference
+for the ``image1`` field to ``AdminType`` in our ``PageAdmin`` class::
 
     // src/Admin/PageAdmin.php
 

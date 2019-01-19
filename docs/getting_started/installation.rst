@@ -1,8 +1,7 @@
 Installation
 ============
 
-SonataAdminBundle is just a bundle and as such, you can install it at any
-moment during a project's lifecycle.
+SonataAdminBundle can be installed at any moment during a project's lifecycle.
 
 Download the Bundle
 -------------------
@@ -53,8 +52,7 @@ Configure the Installed Bundles
 
 Now all needed bundles are downloaded and registered, you have to add some
 configuration. The admin interface is using SonataBlockBundle to put everything
-in blocks. You just have to tell the block bundle about the existence of the
-admin block:
+in blocks. You have to tell the block bundle about the existence of thea dmin block:
 
 .. configuration-block::
 
@@ -121,7 +119,7 @@ You can do this by adding its routes to your application's routing file:
     For those curious about the ``resource: .`` setting: it is unusual syntax but used
     because Symfony requires a resource to be defined (which points to a real file).
     Once this validation passes Sonata's ``AdminPoolLoader`` is in charge of processing
-    this route and it simply ignores the resource setting.
+    this route and it ignores the resource setting.
 
 At this point you can already access the (empty) admin dashboard by visiting the URL:
 ``http://yoursite.local/admin/dashboard``.

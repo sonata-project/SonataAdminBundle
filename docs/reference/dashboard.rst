@@ -43,8 +43,8 @@ The ``Admin`` list is defined by the ``sonata.admin.block.admin_list`` service, 
 implemented by the ``Block\AdminListBlockService`` class. It is then rendered using the
 ``@SonataAdmin/Block/block_admin_list.html.twig`` template file.
 
-Feel free to take a look at these files. You'll find the code rather short and easy to
-understand, and it will be a great help when implementing your own blocks.
+Feel free to take a look at these files. The code will be a great help when
+implementing your own blocks.
 
 Configuring the ``Admin`` list
 ------------------------------
@@ -178,7 +178,7 @@ This configuration specifies that the ``app.admin.group.content`` group uses the
 translation catalogue (the same label and translation configuration that we declared
 previously, in the service definition example).
 
-It also states that the ``app.admin.group.content`` group contains just the
+It also states that the ``app.admin.group.content`` group contains only the
 ``app.admin.post`` ``Admin`` mapping, meaning that any other ``Admin`` services
 declared as belonging to this group will not be displayed here.
 
@@ -293,7 +293,7 @@ suit this scenario.
                             - sonata.page.admin.myitem4
 
 In this example, you would have two ``admin_list`` blocks on your dashboard, each
-of them containing just the respectively configured groups.
+of them containing the respectively configured groups.
 
 .. _`SonataBlock documentation page`:  https://sonata-project.org/bundles/block/master/doc/index.html
 

@@ -9,7 +9,7 @@ Background
 
 The sortable function is already available inside Sonata for the ``ChoiceType``.
 But the ``ModelType`` (or sonata_type_model) extends from choice, so this
-function is already available in our form type. We just need some configuration
+function is already available in our form type. We only need some configuration
 to make it work.
 
 The goal here is to fully configure a working example to handle the following need :
