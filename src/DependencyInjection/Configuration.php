@@ -396,6 +396,8 @@ CASESENSITIVE;
                                 'bundles/sonataadmin/css/styles.css',
                                 'bundles/sonataadmin/css/layout.css',
                                 'bundles/sonataadmin/css/tree.css',
+
+                                'bundles/sonatacore/css/flashmessage.css',
                             ])
                             ->prototype('scalar')->end()
                         ->end()
@@ -442,6 +444,8 @@ CASESENSITIVE;
                                 'bundles/sonataadmin/Admin.js',
                                 'bundles/sonataadmin/treeview.js',
                                 'bundles/sonataadmin/sidebar.js',
+
+                                'bundles/sonatacore/js/base.js',
                             ])
                             ->prototype('scalar')->end()
                         ->end()
