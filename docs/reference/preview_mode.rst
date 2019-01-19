@@ -70,8 +70,8 @@ In either way the template should be extending your own layout, injecting the fo
 and finally overriding the action buttons to show the approve/decline buttons like the
 default preview.html.twig.
 
-The entity is passed to the view in a variable called **object**. If your original view expects
-a different object you can just set your own variables prior to calling parent().
+The entity is passed to the view in a variable called **object**. If your original view
+expects a different object you can set your own variables prior to calling ``parent()``.
 
 .. code-block:: jinja
 

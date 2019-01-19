@@ -50,7 +50,7 @@ By default, ``SonataAdminBundle`` uses the following templates for their matchin
 * ``acl`` : @SonataAdmin/CRUD/acl.html.twig
 
 Notice that all these templates extend other templates, and some do only that. This inheritance
-architecture is designed to help you easily make customizations by extending these templates
+architecture is designed to help you to make customizations by extending these templates
 in your own bundle, rather than rewriting everything.
 
 If you look closely, all of these templates ultimately extend the ``base_template`` variable that's
@@ -97,9 +97,9 @@ There are several other templates that can be customized, enabling you to fine-t
 Configuring templates
 ---------------------
 
-Like said before, the main goal of this template structure is to make it easy for you
-to customize the ones you need. You can simply extend the ones you want in your own bundle,
-and tell ``SonataAdminBundle`` to use your templates instead of the default ones. You can do so
+The main goal of this template structure is to make it comfortable for you
+to customize the ones you need. You can extend the ones you want in your own bundle, and
+tell ``SonataAdminBundle`` to use your templates instead of the default ones. You can do so
 in several ways.
 
 You can specify your templates in the config file:
@@ -148,8 +148,10 @@ You can specify your templates in the config file:
                 button_list:                '@SonataAdmin/Button/list_button.html.twig'
                 button_show:                '@SonataAdmin/Button/show_button.html.twig'
 
-Notice that this is a global change, meaning it will affect all model mappings
-automatically, both for ``Admin`` mappings defined by you and by other bundles.
+.. important::
+
+    Notice that this is a global change, meaning it will affect all model mappings
+    automatically, both for ``Admin`` mappings defined by you and by other bundles.
 
 If you wish, you can specify custom templates on a per ``Admin`` mapping
 basis. Internally, the ``CRUDController`` fetches this information from the

@@ -29,11 +29,10 @@ show                The fields used to show the entity
 batch actions       Actions that can be performed on a group of entities (e.g. bulk delete)
 =============       =========================================================================
 
-The ``Sonata\AdminBundle\Admin\AbstractAdmin`` class is provided as an easy way to
-map your models, by extending it. However, any implementation of the
-``Sonata\AdminBundle\Admin\AdminInterface`` can be used to define an ``Admin``
-service. For each ``Admin`` service, the following required dependencies are
-automatically injected by the bundle:
+The ``Sonata\AdminBundle\Admin\AbstractAdmin`` class is provided to map your models, by extending it.
+However, any implementation of the ``Sonata\AdminBundle\Admin\AdminInterface`` can be used to define
+an ``Admin`` service. For each ``Admin`` service, the following required dependencies are automatically
+injected by the bundle:
 
 =========================       =========================================================================
 Class                           Description
@@ -94,7 +93,7 @@ your ``Admin`` services. This is done using a ``call`` to the matching ``setter`
 Here, we declare the same ``Admin`` service as in the :doc:`../getting_started/creating_an_admin`
 chapter, but using a different label translator strategy, replacing the default one. Notice that
 ``sonata.admin.label.strategy.underscore`` is a service provided by ``SonataAdminBundle``,
-but you could just as easily use a service of your own.
+but you could use a service of your own.
 
 CRUDController
 --------------
@@ -264,7 +263,7 @@ Templates
 ---------
 
 Like most actions, ``CRUDController`` actions use view files to render their output.
-``SonataAdminBundle`` provides ready to use views as well as ways to easily customize them.
+``SonataAdminBundle`` provides ready to use views as well as ways to customize them.
 
 The current implementation uses ``Twig`` as the template engine. All templates
 are located in the ``Resources/views`` directory of the bundle.

@@ -1,7 +1,7 @@
 Annotations
 ===========
 
-All annotations require jms/di-extra-bundle, it can easily be installed by composer:
+All annotations require ``jms/di-extra-bundle``, it can be installed by composer:
 
 .. code-block:: bash
 

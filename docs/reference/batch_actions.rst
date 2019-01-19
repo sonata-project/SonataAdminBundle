@@ -158,7 +158,7 @@ a radio button to choose the target object.
 By default, batch actions are not executed if no object was selected, and
 the user is notified of this lack of selection. If your custom batch action
 needs more complex logic to determine if an action can be performed or not,
-just define a ``batchAction<MyAction>IsRelevant`` method (e.g. ``batchActionMergeIsRelevant``)
+define a ``batchAction<MyAction>IsRelevant`` method (e.g. ``batchActionMergeIsRelevant``)
 in your ``CRUDController`` class. This check is performed before the user is asked for confirmation,
 to make sure there is actually something to confirm.
 

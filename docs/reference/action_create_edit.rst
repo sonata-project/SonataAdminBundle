@@ -168,11 +168,11 @@ Embedding other Admins
     * how to embed one Admin in another (1:1, 1:M, M:M)
     * how to access the right object(s) from the embedded Admin's code
 
-Customizing just one of the actions
+Customizing only one of the actions
 -----------------------------------
 
 .. note::
 
     **TODO**:
-    * how to create settings/fields that appear on just one of the create/edit views
+    * how to create settings/fields that appear on only one of the create/edit views
     * and any controller changes needed to manage them

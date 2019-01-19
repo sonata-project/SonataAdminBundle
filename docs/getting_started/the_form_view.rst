@@ -59,10 +59,9 @@ required as the Form component has type guessers to guess the type.
 
 The ``BlogPost`` model has 4 properties: ``id``, ``title``, ``body``,
 ``category``. The ``id`` property's value is generated automatically by the
-database. This means the form view just needs 3 fields: title, body and
-category.
+database. This means the form view needs 3 fields: title, body and category.
 
-The title and body fields are simple ``TextType`` and ``TextareaType`` fields,
+The title and body fields are ``TextType`` and ``TextareaType`` fields,
 you can add them straight away::
 
     // src/Admin/BlogPostAdmin.php
@@ -260,8 +259,7 @@ Round Up
 
 In this tutorial, you've made your first contact with the greatest feature of
 the SonataAdminBundle: Being able to customize literally everything. You've
-started by creating a simple form and ended up with a nice edit page for your
-admin.
+started by creating a form and ended up with a nice edit page for your admin.
 
 In the :doc:`next chapter <the_list_view>`, you're going to look at the list
 and datagrid actions.
