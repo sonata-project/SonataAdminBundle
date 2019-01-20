@@ -81,7 +81,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
 
                 foreach ($permissions as $permission) {
                     // add only the admin permissions
-                    if (\in_array($permission, $securityHandler->getAdminPermissions())) {
+                    if (\in_array($permission, $securityHandler->getAdminPermissions(), true)) {
                         $builder->add($permission);
                         $roleAdminPermissions[] = $permission;
                     }

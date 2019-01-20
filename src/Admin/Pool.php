@@ -272,7 +272,7 @@ class Pool
      */
     public function getInstance($id)
     {
-        if (!\in_array($id, $this->adminServiceIds)) {
+        if (!\in_array($id, $this->adminServiceIds, true)) {
             $msg = sprintf('Admin service "%s" not found in admin pool.', $id);
             $shortest = -1;
             $closest = null;

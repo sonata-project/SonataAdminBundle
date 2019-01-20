@@ -1039,7 +1039,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             __METHOD__
         ), E_USER_DEPRECATED);
 
-        if (!\in_array($subClass, $this->subClasses)) {
+        if (!\in_array($subClass, $this->subClasses, true)) {
             $this->subClasses[] = $subClass;
         }
     }
@@ -2510,7 +2510,7 @@ EOT;
      */
     public function determinedPerPageValue($perPage)
     {
-        return \in_array($perPage, $this->perPageOptions);
+        return \in_array($perPage, $this->perPageOptions, true);
     }
 
     public function isAclEnabled()
@@ -2607,7 +2607,7 @@ EOT;
     {
         $list = [];
 
-        if (\in_array($action, ['tree', 'show', 'edit', 'delete', 'list', 'batch'])
+        if (\in_array($action, ['tree', 'show', 'edit', 'delete', 'list', 'batch'], true)
             && $this->hasAccess('create')
             && $this->hasRoute('create')
         ) {
@@ -2618,7 +2618,7 @@ EOT;
             ];
         }
 
-        if (\in_array($action, ['show', 'delete', 'acl', 'history'])
+        if (\in_array($action, ['show', 'delete', 'acl', 'history'], true)
             && $this->canAccessObject('edit', $object)
             && $this->hasRoute('edit')
         ) {
@@ -2629,7 +2629,7 @@ EOT;
             ];
         }
 
-        if (\in_array($action, ['show', 'edit', 'acl'])
+        if (\in_array($action, ['show', 'edit', 'acl'], true)
             && $this->canAccessObject('history', $object)
             && $this->hasRoute('history')
         ) {
@@ -2640,7 +2640,7 @@ EOT;
             ];
         }
 
-        if (\in_array($action, ['edit', 'history'])
+        if (\in_array($action, ['edit', 'history'], true)
             && $this->isAclEnabled()
             && $this->canAccessObject('acl', $object)
             && $this->hasRoute('acl')
@@ -2652,7 +2652,7 @@ EOT;
             ];
         }
 
-        if (\in_array($action, ['edit', 'history', 'acl'])
+        if (\in_array($action, ['edit', 'history', 'acl'], true)
             && $this->canAccessObject('show', $object)
             && \count($this->getShow()) > 0
             && $this->hasRoute('show')
@@ -2664,7 +2664,7 @@ EOT;
             ];
         }
 
-        if (\in_array($action, ['show', 'edit', 'delete', 'acl', 'batch'])
+        if (\in_array($action, ['show', 'edit', 'delete', 'acl', 'batch'], true)
             && $this->hasAccess('list')
             && $this->hasRoute('list')
         ) {
