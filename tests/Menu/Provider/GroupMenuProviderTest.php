@@ -234,7 +234,7 @@ class GroupMenuProviderTest extends TestCase
         $isBazItem = $adminGroups['roles'] === ['baz'];
 
         $this->assertInstanceOf(ItemInterface::class, $menu);
-        $this->assertEquals(!$isBazItem, $menu->isDisplayed());
+        $this->assertSame(!$isBazItem, $menu->isDisplayed());
 
         $children = $menu->getChildren();
         $this->assertCount($isBazItem ? 0 : 3, $children);

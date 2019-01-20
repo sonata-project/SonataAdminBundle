@@ -840,7 +840,7 @@ class AdminTest extends TestCase
         $perPageOptions = $admin->getPerPageOptions();
 
         foreach ($perPageOptions as $perPage) {
-            $this->assertEquals(0, $perPage % 4);
+            $this->assertSame(0, $perPage % 4);
         }
 
         $admin->setPerPageOptions([500, 1000]);
@@ -1900,7 +1900,7 @@ class AdminTest extends TestCase
         $commentAdmin->setRequest($request);
         $commentAdmin->setModelManager($modelManager);
 
-        $this->assertEquals($comment, $commentAdmin->getSubject());
+        $this->assertSame($comment, $commentAdmin->getSubject());
 
         $commentAdmin->setSubject(null);
         $commentAdmin->setParentFieldDescription(new FieldDescription());
@@ -2131,7 +2131,7 @@ class AdminTest extends TestCase
 
         $admin->setModelManager($modelManager);
 
-        $this->assertEquals([
+        $this->assertSame([
             'foo' => [
                 'type' => '1',
                 'value' => 'bar',
