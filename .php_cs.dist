@@ -45,7 +45,7 @@ $rules = [
     'void_return' => null,
     // To be tested before insertion:
 //    'strict_comparison' => true,
-//    'strict_param' => true,
+      'strict_param' => true,
       'php_unit_strict' => true,
 ];
 
