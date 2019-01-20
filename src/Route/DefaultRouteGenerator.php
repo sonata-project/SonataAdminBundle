@@ -158,7 +158,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
             return;
         }
 
-        if (\in_array($admin->getCode(), $this->loaded)) {
+        if (\in_array($admin->getCode(), $this->loaded, true)) {
             return;
         }
 

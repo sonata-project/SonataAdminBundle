@@ -199,7 +199,7 @@ class FormMapper extends BaseGroupedMapper
         unset($groups[$group]);
 
         $tabs = $this->getTabs();
-        $key = array_search($group, $tabs[$tab]['groups']);
+        $key = array_search($group, $tabs[$tab]['groups'], true);
 
         if (false !== $key) {
             unset($tabs[$tab]['groups'][$key]);

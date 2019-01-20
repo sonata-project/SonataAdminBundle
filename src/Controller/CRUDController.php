@@ -78,7 +78,7 @@ class CRUDController implements ContainerAwareInterface
     // BC for Symfony 3.3 where ControllerTrait exists but does not contain get() and has() methods.
     public function __call($method, $arguments)
     {
-        if (\in_array($method, ['get', 'has'])) {
+        if (\in_array($method, ['get', 'has'], true)) {
             return \call_user_func_array([$this->container, $method], $arguments);
         }
 
@@ -966,7 +966,7 @@ class CRUDController implements ContainerAwareInterface
             $exporter = $this->get('sonata.exporter.exporter');
         }
 
-        if (!\in_array($format, $allowedExportFormats)) {
+        if (!\in_array($format, $allowedExportFormats, true)) {
             throw new \RuntimeException(
                 sprintf(
                     'Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`',
