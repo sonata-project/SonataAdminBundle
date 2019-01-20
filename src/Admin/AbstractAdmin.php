@@ -3118,5 +3118,3 @@ EOT;
         }
     }
 }
-
-class_exists(\Sonata\Form\Validator\ErrorElement::class);

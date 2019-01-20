@@ -703,5 +703,3 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 //    NEXT_MAJOR: uncomment this method in 4.0
     // public function isDefaultFilter($name);
 }
-
-class_exists(\Sonata\Form\Validator\ErrorElement::class);

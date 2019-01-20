@@ -175,5 +175,3 @@ interface AdminExtensionInterface
      */
     // public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues);
 }
-
-class_exists(\Sonata\Form\Validator\ErrorElement::class);
