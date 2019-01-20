@@ -131,7 +131,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $action = $this->action;
         $response = $action($request);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
     }
 
     public function testSetObjectFieldValueActionOnARelationField(): void
@@ -185,7 +185,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $action = $this->action;
         $response = $action($request);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
     }
 
     public function testSetObjectFieldValueActionWithViolations(): void
@@ -218,7 +218,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $action = $this->action;
         $response = $action($request);
 
-        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertSame(400, $response->getStatusCode());
         $this->assertSame(json_encode("error1\nerror2"), $response->getContent());
     }
 
