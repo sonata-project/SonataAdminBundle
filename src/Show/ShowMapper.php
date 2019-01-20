@@ -134,7 +134,7 @@ class ShowMapper extends BaseGroupedMapper
         if (false !== $key) {
             unset($tabs[$tab]['groups'][$key]);
         }
-        if ($deleteEmptyTab && 0 == \count($tabs[$tab]['groups'])) {
+        if ($deleteEmptyTab && 0 === \count($tabs[$tab]['groups'])) {
             unset($tabs[$tab]);
         }
 

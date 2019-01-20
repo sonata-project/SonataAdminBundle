@@ -251,7 +251,7 @@ class CRUDControllerTest extends TestCase
         $this->csrfProvider->expects($this->any())
             ->method('isTokenValid')
             ->will($this->returnCallback(function (CsrfToken $token) {
-                if ($token->getValue() == 'csrf-token-123_'.$token->getId()) {
+                if ($token->getValue() === 'csrf-token-123_'.$token->getId()) {
                     return true;
                 }
 
@@ -308,23 +308,23 @@ class CRUDControllerTest extends TestCase
         $this->container->expects($this->any())
             ->method('has')
             ->will($this->returnCallback(function ($id) {
-                if ('security.csrf.token_manager' == $id && null !== $this->getCsrfProvider()) {
+                if ('security.csrf.token_manager' === $id && null !== $this->getCsrfProvider()) {
                     return true;
                 }
 
-                if ('logger' == $id) {
+                if ('logger' === $id) {
                     return true;
                 }
 
-                if ('session' == $id) {
+                if ('session' === $id) {
                     return true;
                 }
 
-                if ('templating' == $id) {
+                if ('templating' === $id) {
                     return true;
                 }
 
-                if ('translator' == $id) {
+                if ('translator' === $id) {
                     return true;
                 }
 
@@ -2137,11 +2137,11 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->exactly(2))
             ->method('checkAccess')
             ->will($this->returnCallback(function ($name, $objectIn = null) use ($object) {
-                if ('edit' == $name) {
+                if ('edit' === $name) {
                     return true;
                 }
 
-                if ('create' != $name) {
+                if ('create' !== $name) {
                     return false;
                 }
 
@@ -2221,7 +2221,7 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->any())
             ->method('checkAccess')
             ->will($this->returnCallback(function ($name, $object = null) {
-                if ('create' != $name) {
+                if ('create' !== $name) {
                     throw new AccessDeniedException();
                 }
                 if (null === $object) {
@@ -2413,7 +2413,7 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->exactly(2))
             ->method('checkAccess')
             ->will($this->returnCallback(function ($name, $objectIn = null) use ($object) {
-                if ('create' != $name) {
+                if ('create' !== $name) {
                     return false;
                 }
 

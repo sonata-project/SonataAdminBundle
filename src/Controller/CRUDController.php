@@ -244,7 +244,7 @@ class CRUDController implements ContainerAwareInterface
             return $preResponse;
         }
 
-        if ('DELETE' == $this->getRestMethod()) {
+        if ('DELETE' === $this->getRestMethod()) {
             // check the csrf token
             $this->validateCsrfToken('sonata.delete');
 
@@ -480,7 +480,7 @@ class CRUDController implements ContainerAwareInterface
         if (method_exists($this, $isRelevantAction)) {
             $nonRelevantMessage = \call_user_func([$this, $isRelevantAction], $idx, $allElements, $request);
         } else {
-            $nonRelevantMessage = 0 != \count($idx) || $allElements; // at least one item is selected
+            $nonRelevantMessage = 0 !== \count($idx) || $allElements; // at least one item is selected
         }
 
         if (!$nonRelevantMessage) { // default non relevant message (if false of null)
@@ -502,7 +502,7 @@ class CRUDController implements ContainerAwareInterface
         $askConfirmation = $batchActions[$action]['ask_confirmation'] ??
             true;
 
-        if ($askConfirmation && 'ok' != $confirmation) {
+        if ($askConfirmation && 'ok' !== $confirmation) {
             $actionLabel = $batchActions[$action]['label'];
             $batchTranslationDomain = $batchActions[$action]['translation_domain'] ??
                 $this->admin->getTranslationDomain();

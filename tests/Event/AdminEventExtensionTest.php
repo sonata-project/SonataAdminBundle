@@ -59,7 +59,7 @@ class AdminEventExtensionTest extends TestCase
                 return false;
             }
 
-            if ($event->getType() != $type) {
+            if ($event->getType() !== $type) {
                 return false;
             }
 
@@ -79,7 +79,7 @@ class AdminEventExtensionTest extends TestCase
                 return false;
             }
 
-            if ($event->getType() != $type) {
+            if ($event->getType() !== $type) {
                 return false;
             }
 

@@ -480,7 +480,7 @@ class BreadcrumbsBuilderTest extends TestCase
             'breadcrumb',
             'link'
         )->willReturn('My action');
-        if ('create' == $action) {
+        if ('create' === $action) {
             $labelTranslatorStrategy->getLabel(
                 'my_class_name_create',
                 'breadcrumb',
@@ -504,9 +504,9 @@ class BreadcrumbsBuilderTest extends TestCase
         $admin->hasAccess('list')->willReturn(true);
         $admin->generateUrl('list')->willReturn('/myadmin/list');
         $admin->getCurrentChildAdmin()->willReturn(
-            'my_action' == $action ? $childAdmin->reveal() : false
+            'my_action' === $action ? $childAdmin->reveal() : false
         );
-        if ('list' == $action) {
+        if ('list' === $action) {
             $admin->isChild()->willReturn(true);
             $menu->setUri(false)->shouldBeCalled();
         } else {

@@ -125,7 +125,7 @@ class Validators
             ));
         }
 
-        if ('Controller' != substr($controllerClassBasename, -10)) {
+        if ('Controller' !== substr($controllerClassBasename, -10)) {
             throw new \InvalidArgumentException('The controller class name must end with "Controller".');
         }
 
