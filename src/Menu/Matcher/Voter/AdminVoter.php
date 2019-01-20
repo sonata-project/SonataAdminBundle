@@ -89,7 +89,7 @@ class AdminVoter implements VoterInterface
         }
 
         $route = $item->getExtra('route');
-        if ($route && $request && $route == $request->get('_route')) {
+        if ($route && $request && $route === $request->get('_route')) {
             return true;
         }
 

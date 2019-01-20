@@ -75,7 +75,7 @@ final class SetObjectFieldValueAction
             return new JsonResponse('Expected an XmlHttpRequest request header', 405);
         }
 
-        if ('POST' != $request->getMethod()) {
+        if ('POST' !== $request->getMethod()) {
             return new JsonResponse('Expected a POST Request', 405);
         }
 
@@ -90,7 +90,7 @@ final class SetObjectFieldValueAction
             return new JsonResponse('Invalid permissions', 403);
         }
 
-        if ('list' == $context) {
+        if ('list' === $context) {
             $fieldDescription = $admin->getListFieldDescription($field);
         } else {
             return new JsonResponse('Invalid context', 400);
@@ -116,18 +116,18 @@ final class SetObjectFieldValueAction
         }
 
         // Handle date type has setter expect a DateTime object
-        if ('' !== $value && 'date' == $fieldDescription->getType()) {
+        if ('' !== $value && 'date' === $fieldDescription->getType()) {
             $value = new \DateTime($value);
         }
 
         // Handle boolean type transforming the value into a boolean
-        if ('' !== $value && 'boolean' == $fieldDescription->getType()) {
+        if ('' !== $value && 'boolean' === $fieldDescription->getType()) {
             $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
         }
 
         // Handle entity choice association type, transforming the value into entity
         if ('' !== $value
-            && 'choice' == $fieldDescription->getType()
+            && 'choice' === $fieldDescription->getType()
             && null !== $fieldDescription->getOption('class')
             && $fieldDescription->getOption('class') === $fieldDescription->getTargetEntity()
         ) {

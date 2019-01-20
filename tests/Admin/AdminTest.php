@@ -1309,8 +1309,8 @@ class AdminTest extends TestCase
         $securityHandler->expects($this->any())
             ->method('isGranted')
             ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin, $entity) {
-                if ($admin == $adminIn && 'FOO' == $attributes) {
-                    if (($object == $admin) || ($object == $entity)) {
+                if ($admin === $adminIn && 'FOO' === $attributes) {
+                    if (($object === $admin) || ($object === $entity)) {
                         return true;
                     }
                 }
@@ -1350,7 +1350,7 @@ class AdminTest extends TestCase
         $securityHandler->expects($this->any())
             ->method('isGranted')
             ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
-                if ($admin == $adminIn && $attributes == ['LIST']) {
+                if ($admin === $adminIn && $attributes === ['LIST']) {
                     return true;
                 }
 
@@ -2014,7 +2014,7 @@ class AdminTest extends TestCase
         $securityHandler->expects($this->any())
             ->method('isGranted')
             ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
-                if ($admin == $adminIn && 'DELETE' == $attributes) {
+                if ($admin === $adminIn && 'DELETE' === $attributes) {
                     return true;
                 }
 
@@ -2079,7 +2079,7 @@ class AdminTest extends TestCase
         $securityHandler->expects($this->any())
             ->method('isGranted')
             ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
-                if ($admin == $adminIn && ('CREATE' == $attributes || 'LIST' == $attributes)) {
+                if ($admin === $adminIn && ('CREATE' === $attributes || 'LIST' === $attributes)) {
                     return true;
                 }
 
@@ -2282,7 +2282,7 @@ class AdminTest extends TestCase
         $admin->expects($this->any())
             ->method('trans')
             ->will($this->returnCallback(function ($label) {
-                if ('export.label_field' == $label) {
+                if ('export.label_field' === $label) {
                     return 'Feld';
                 }
 

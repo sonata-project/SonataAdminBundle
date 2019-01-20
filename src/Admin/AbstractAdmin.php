@@ -622,7 +622,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
             // NEXT_MAJOR: Remove this hack, because all field labels will be translated with the major release
             // No translation key exists
-            if ($transLabel == $label) {
+            if ($transLabel === $label) {
                 $fields[$key] = $field;
             } else {
                 $fields[$transLabel] = $field;
@@ -1172,7 +1172,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             return false;
         }
 
-        return ($admin->getBaseRouteName().'_'.$name) == $route;
+        return ($admin->getBaseRouteName().'_'.$name) === $route;
     }
 
     public function generateObjectUrl($name, $object, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
@@ -2774,7 +2774,7 @@ EOT;
             return false;
         }
 
-        return $filter[$name] == $default[$name];
+        return $filter[$name] === $default[$name];
     }
 
     /**
