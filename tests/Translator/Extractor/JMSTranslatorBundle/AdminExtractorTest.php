@@ -114,8 +114,8 @@ class AdminExtractorTest extends TestCase
         $this->fooAdmin->expects($this->any())
             ->method('getShow')
             ->will($this->returnCallback(function (): void {
-                $this->assertEquals('foo', $this->adminExtractor->trans('foo', [], 'foo_admin_domain'));
-                $this->assertEquals('foo', $this->adminExtractor->transChoice('foo', 1, [], 'foo_admin_domain'));
+                $this->assertSame('foo', $this->adminExtractor->trans('foo', [], 'foo_admin_domain'));
+                $this->assertSame('foo', $this->adminExtractor->transChoice('foo', 1, [], 'foo_admin_domain'));
             }));
         $this->fooAdmin->expects($this->any())
             ->method('getLabel')

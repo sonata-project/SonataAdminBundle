@@ -75,7 +75,7 @@ class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
 
         $response = $blockService->execute($blockContext);
 
-        static::assertEquals('', $response->getContent());
-        static::assertEquals(204, $response->getStatusCode());
+        static::assertSame('', $response->getContent());
+        static::assertSame(204, $response->getStatusCode());
     }
 }
