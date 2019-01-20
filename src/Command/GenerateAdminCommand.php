@@ -273,8 +273,8 @@ class GenerateAdminCommand extends QuestionableCommand
 
     private function getAdminServiceId(string $bundleName, string $adminClassBasename): string
     {
-        $prefix = 'Bundle' == substr($bundleName, -6) ? substr($bundleName, 0, -6) : $bundleName;
-        $suffix = 'Admin' == substr($adminClassBasename, -5) ? substr($adminClassBasename, 0, -5) : $adminClassBasename;
+        $prefix = 'Bundle' === substr($bundleName, -6) ? substr($bundleName, 0, -6) : $bundleName;
+        $suffix = 'Admin' === substr($adminClassBasename, -5) ? substr($adminClassBasename, 0, -5) : $adminClassBasename;
         $suffix = str_replace('\\', '.', $suffix);
 
         return Container::underscore(sprintf(

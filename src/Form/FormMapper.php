@@ -106,7 +106,7 @@ class FormMapper extends BaseGroupedMapper
         // Note that the builder var is actually the formContractor:
         $this->builder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
 
-        if ($fieldName != $name) {
+        if ($fieldName !== $name) {
             $fieldDescription->setName($fieldName);
         }
 
@@ -204,7 +204,7 @@ class FormMapper extends BaseGroupedMapper
         if (false !== $key) {
             unset($tabs[$tab]['groups'][$key]);
         }
-        if ($deleteEmptyTab && 0 == \count($tabs[$tab]['groups'])) {
+        if ($deleteEmptyTab && 0 === \count($tabs[$tab]['groups'])) {
             unset($tabs[$tab]);
         }
 

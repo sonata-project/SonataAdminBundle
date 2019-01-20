@@ -20,7 +20,7 @@ class BCLabelTranslatorStrategy implements LabelTranslatorStrategyInterface
 {
     public function getLabel($label, $context = '', $type = '')
     {
-        if ('breadcrumb' == $context) {
+        if ('breadcrumb' === $context) {
             return sprintf('%s.%s_%s', $context, $type, strtolower($label));
         }
 

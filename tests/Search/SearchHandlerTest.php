@@ -34,7 +34,7 @@ class SearchHandlerTest extends TestCase
     {
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($admin) {
-            if ('fake' == $id) {
+            if ('fake' === $id) {
                 throw new ServiceNotFoundException('Fake service does not exist');
             }
 

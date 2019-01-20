@@ -188,7 +188,7 @@ final class AdminMaker extends AbstractMaker
     {
         return Container::underscore(sprintf(
             'admin.%s',
-            str_replace('\\', '.', 'Admin' == substr($adminClassBasename, -5) ?
+            str_replace('\\', '.', 'Admin' === substr($adminClassBasename, -5) ?
                 substr($adminClassBasename, 0, -5) : $adminClassBasename)
         ));
     }

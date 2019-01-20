@@ -49,7 +49,7 @@ class AdminHelper
     public function getChildFormBuilder(FormBuilderInterface $formBuilder, $elementId)
     {
         foreach (new FormBuilderIterator($formBuilder) as $name => $formBuilder) {
-            if ($name == $elementId) {
+            if ($name === $elementId) {
                 return $formBuilder;
             }
         }
@@ -290,7 +290,7 @@ class AdminHelper
     {
         $element = array_shift($elements);
         $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
-        if (0 == \count($elements)) {
+        if (0 === \count($elements)) {
             return $associationAdmin->getClass();
         }
 
