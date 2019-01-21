@@ -58,7 +58,7 @@ class SimplePager extends Pager
 
     public function getNbResults()
     {
-        $n = ceil(($this->getLastPage() - 1) * $this->getMaxPerPage());
+        $n = ($this->getLastPage() - 1) * $this->getMaxPerPage();
         if ($this->getLastPage() == $this->getPage()) {
             return $n + $this->thresholdCount;
         }
