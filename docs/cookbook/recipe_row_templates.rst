@@ -30,14 +30,12 @@ Two template keys need to be set:
 
     .. code-block:: xml
 
+        <!-- config/services.xml -->
+
         <service id="sonata.admin.comment" class="%sonata.admin.comment.class%">
-            <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="comments"
-                label_catalogue="%sonata.admin.comment.translation_domain%"
-                label_translator_strategy="sonata.admin.label.strategy.underscore"/>
             <argument/>
             <argument>%sonata.admin.comment.entity%</argument>
             <argument>%sonata.admin.comment.controller%</argument>
-
             <call method="setTemplates">
                 <argument type="collection">
                     <argument key="inner_list_row">
@@ -48,6 +46,14 @@ Two template keys need to be set:
                     </argument>
                 </argument>
             </call>
+            <tag
+                name="sonata.admin"
+                manager_type="orm"
+                group="sonata_blog"
+                label="comments"
+                label_catalogue="%sonata.admin.comment.translation_domain%"
+                label_translator_strategy="sonata.admin.label.strategy.underscore"
+                />
         </service>
 
 Create your customized template

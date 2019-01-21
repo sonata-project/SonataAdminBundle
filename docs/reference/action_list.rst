@@ -433,11 +433,11 @@ Callback filter
 ^^^^^^^^^^^^^^^
 
 If you have the **SonataDoctrineORMAdminBundle** installed you can use the
-``doctrine_orm_callback`` filter type e.g. for creating a full text filter::
+``CallbackFilter`` filter type e.g. for creating a full text filter::
 
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
-    class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
+    final class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
@@ -445,10 +445,7 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the
                 ->add('full_text', CallbackFilter::class, [
                     'callback' => [$this, 'getFullTextFilter'],
                     'field_type' => 'text'
-                ])
-
-                // ...
-            ;
+                ]);
         }
 
         public function getFullTextFilter($queryBuilder, $alias, $field, $value)
@@ -473,7 +470,7 @@ type of your condition(s)::
 
     use Sonata\Form\Type\EqualType;
 
-    class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
+    final class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
         public function getFullTextFilter($queryBuilder, $alias, $field, $value)
         {
@@ -536,8 +533,6 @@ Example::
                 'header_class' => 'customActions',
                 'row_align' => 'right'
             ])
-
-            // ...
         ;
     }
 
@@ -547,9 +542,14 @@ to override the default parameters::
             ->add('description', TextType::class, [
                 'header_style' => 'width: 35%',
                 'collapse' => [
-                    'height' => 40, // height in px
-                    'more' => 'I want to see the full description', // content of the "read more" link
-                    'less' => 'This text is too long, reduce the size' // content of the "read less" link
+                    // height in px
+                    'height' => 40,
+
+                    // content of the "read more" link
+                    'more' => 'I want to see the full description',
+
+                     // content of the "read less" link
+                    'less' => 'This text is too long, reduce the size',
                 ]
             ])
 
@@ -557,7 +557,7 @@ If you want to show only the `label_icon`::
 
             ->add('upvotes', null, [
                 'label' => false,
-                'label_icon' => 'fa fa-thumbs-o-up'
+                'label_icon' => 'fa fa-thumbs-o-up',
             ])
 
 Mosaic view button

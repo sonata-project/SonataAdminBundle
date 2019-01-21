@@ -193,7 +193,7 @@ your admin services or simply remove menu items from the ``sonata_admin`` dashbo
         class: Sonata\AdminBundle\Admin\PostAdmin
         arguments: [~, Sonata\AdminBundle\Entity\Post, Sonata\AdminBundle\Controller\CRUDController]
         tags:
-            - {name: sonata.admin, manager_type: orm, group: admin, label: Post, show_in_dashboard: false}
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Post, show_in_dashboard: false }
 
 .. code-block:: yaml
 
@@ -275,7 +275,7 @@ or in sonata_admin dashboard group configuration:
 
 In this screenshot, we add ``on_top`` option to ``Tag`` and ``Blog Post`` admin services.
 
-Your can't use this option for two or more items in the same time, for example:
+Your can't use this option for two or more items at the same time:
 
 .. code-block:: yaml
 

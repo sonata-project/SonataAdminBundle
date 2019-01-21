@@ -92,7 +92,6 @@ a different object you can just set your own variables prior to calling parent()
         <div class="sonata-preview-form-container">
             {{ block('parentForm') }}
         </div>
-
     {% endblock %}
 
     {% block formactions %}
