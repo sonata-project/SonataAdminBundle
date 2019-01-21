@@ -2132,6 +2132,8 @@ class AdminTest extends TestCase
         $admin->setModelManager($modelManager);
 
         $this->assertSame([
+            '_page' => 1,
+            '_per_page' => 32,
             'foo' => [
                 'type' => '1',
                 'value' => 'bar',
@@ -2140,8 +2142,6 @@ class AdminTest extends TestCase
                 'type' => '5',
                 'value' => 'test',
             ],
-            '_page' => 1,
-            '_per_page' => 32,
             'a' => [
                 'value' => 'b',
             ],
