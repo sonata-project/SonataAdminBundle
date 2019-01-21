@@ -230,13 +230,13 @@ looks like this::
         {
             $formMapper
                 ->add('linkedImage1', AdminType::class, [
-                    'delete' => false
+                    'delete' => false,
                 ])
                 ->add('linkedImage2', AdminType::class, [
-                    'delete' => false
+                    'delete' => false,
                 ])
                 ->add('linkedImage3', AdminType::class, [
-                    'delete' => false
+                    'delete' => false,
                 ])
             ;
         }
@@ -245,7 +245,7 @@ looks like this::
 This is easy enough - we have embedded three fields, which will then use our ``ImageAdmin``
 class to determine which fields to show.
 
-In our PostAdmin we then have the following code to manage the relationships' lifecycles::
+In our ``PostAdmin`` we then have the following code to manage the relationships' lifecycles::
 
     // src/Admin/PostAdmin.php
 
@@ -303,13 +303,12 @@ The final check is to prevent a glitch where Symfony tries to create blank Image
 has been entered in the form. We detect this case and null the relationship to stop this from
 happening.
 
-Notes
------
+.. note::
 
-If you are looking for richer media management functionality there is a complete SonataMediaBundle
-which caters to this need. It is documented online and is created and maintained by the same team
-as SonataAdmin.
+    If you are looking for richer media management functionality there is a complete ``SonataMediaBundle``
+    which caters to this need. It is documented online and is created and maintained by the same team
+    as SonataAdmin.
 
-To learn how to add an image preview to your ImageAdmin take a look at the related cookbook entry.
+To learn how to add an image preview to your ``ImageAdmin`` take a look at the related cookbook entry.
 
 .. _`uploading files with Doctrine and Symfony`: http://symfony.com/doc/current/cookbook/doctrine/file_uploads.html

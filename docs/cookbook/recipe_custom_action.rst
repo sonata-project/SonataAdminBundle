@@ -159,7 +159,8 @@ You have to add the new route in ``configureRoutes``::
 
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->add('clone', $this->getRouterIdParameter().'/clone');
+        $collection
+            ->add('clone', $this->getRouterIdParameter().'/clone');
     }
 
 This gives us a route like ``../admin/app/car/1/clone``.
@@ -170,20 +171,16 @@ Next we have to add the action in ``configureListFields`` specifying the templat
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-
-             // other fields...
-
             ->add('_action', null, [
                 'actions' => [
 
                     // ...
 
                     'clone' => [
-                        'template' => '@App/CRUD/list__action_clone.html.twig'
-                    ]
-                ]
-            ])
-        ;
+                        'template' => '@App/CRUD/list__action_clone.html.twig',
+                    ],
+                ],
+            ]);
     }
 
 The full ``CarAdmin.php`` example looks like this::
@@ -193,27 +190,15 @@ The full ``CarAdmin.php`` example looks like this::
     namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
-    use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Datagrid\ListMapper;
-    use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Route\RouteCollection;
-    use Sonata\AdminBundle\Show\ShowMapper;
 
     final class CarAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
-            $collection->add('clone', $this->getRouterIdParameter().'/clone');
-        }
-
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-        {
-            // ...
-        }
-
-        protected function configureFormFields(FormMapper $formMapper)
-        {
-            // ...
+            $collection
+                ->add('clone', $this->getRouterIdParameter().'/clone');
         }
 
         protected function configureListFields(ListMapper $listMapper)
@@ -229,15 +214,10 @@ The full ``CarAdmin.php`` example looks like this::
                         'edit' => [],
                         'delete' => [],
                         'clone' => [
-                            'template' => '@App/CRUD/list__action_clone.html.twig'
+                            'template' => '@App/CRUD/list__action_clone.html.twig',
                         ]
                     ]
                 ]);
-        }
-
-        protected function configureShowFields(ShowMapper $showMapper)
-        {
-            // ...
         }
     }
 
@@ -278,7 +258,7 @@ and the controller action::
     {
         public function importAction(Request $request)
         {
-            //do your import logic
+            // do your import logic
         }
 
 Now, instead of adding the action to the form mapper, we can add it next to
@@ -300,7 +280,7 @@ Create a template for that button:
 
     <li>
         <a class="sonata-action-element" href="{{ admin.generateUrl('import') }}">
-            <i class="fa fa-level-up"></i>{{ 'import_action'|trans({}, 'SonataAdminBundle') }}
+            <i class="fa fa-level-up"></i> {{ 'import_action'|trans({}, 'SonataAdminBundle') }}
         </a>
     </li>
 
@@ -322,7 +302,7 @@ Create a template for that button:
 .. code-block:: html+jinja
 
     <a class="btn btn-link btn-flat" href="{{ admin.generateUrl('import') }}">
-        <i class="fa fa-level-up"></i>{{ 'import_action'|trans({}, 'SonataAdminBundle') }}
+        <i class="fa fa-level-up"></i> {{ 'import_action'|trans({}, 'SonataAdminBundle') }}
     </a>
 
 Or you can just pass values as array::

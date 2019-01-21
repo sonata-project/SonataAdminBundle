@@ -25,7 +25,7 @@ Configuration
 - you already have ``User`` and ``Expectation`` Entities classes.
 - you already have an ``UserAdmin`` and ``ExpectationAdmin`` set up.
 
-The recipe
+The Recipe
 ----------
 
 Part 1 : Update the data model configuration
