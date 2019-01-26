@@ -9,6 +9,7 @@ Admin Bundle
 * `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle>`_: integrates PHPCR with the core admin bundle
 
 The demo website can be found at http://demo.sonata-project.org.
+Dummy change to trigger a full build.
 
 **Usage examples:**
 

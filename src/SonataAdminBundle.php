@@ -42,6 +42,7 @@ class SonataAdminBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
+        // dummy change to trigger a full build
         $container->addCompilerPass(new AddDependencyCallsCompilerPass());
         $container->addCompilerPass(new AddFilterTypeCompilerPass());
         $container->addCompilerPass(new ExtensionCompilerPass());
