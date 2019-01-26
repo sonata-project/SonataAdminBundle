@@ -78,7 +78,7 @@ class CRUDController implements ContainerAwareInterface
     // BC for Symfony 3.3 where ControllerTrait exists but does not contain get() and has() methods.
     public function __call($method, $arguments)
     {
-        if (\in_array($method, ['get', 'has'])) {
+        if (\in_array($method, ['get', 'has'], true)) {
             return \call_user_func_array([$this->container, $method], $arguments);
         }
 
@@ -244,7 +244,7 @@ class CRUDController implements ContainerAwareInterface
             return $preResponse;
         }
 
-        if ('DELETE' == $this->getRestMethod()) {
+        if ('DELETE' === $this->getRestMethod()) {
             // check the csrf token
             $this->validateCsrfToken('sonata.delete');
 
@@ -471,7 +471,7 @@ class CRUDController implements ContainerAwareInterface
         if (method_exists($this, $isRelevantAction)) {
             $nonRelevantMessage = \call_user_func([$this, $isRelevantAction], $idx, $allElements, $request);
         } else {
-            $nonRelevantMessage = 0 != \count($idx) || $allElements; // at least one item is selected
+            $nonRelevantMessage = 0 !== \count($idx) || $allElements; // at least one item is selected
         }
 
         if (!$nonRelevantMessage) { // default non relevant message (if false of null)
@@ -493,7 +493,7 @@ class CRUDController implements ContainerAwareInterface
         $askConfirmation = $batchActions[$action]['ask_confirmation'] ??
             true;
 
-        if ($askConfirmation && 'ok' != $confirmation) {
+        if ($askConfirmation && 'ok' !== $confirmation) {
             $actionLabel = $batchActions[$action]['label'];
             $batchTranslationDomain = $batchActions[$action]['translation_domain'] ??
                 $this->admin->getTranslationDomain();
@@ -957,7 +957,7 @@ class CRUDController implements ContainerAwareInterface
             $exporter = $this->get('sonata.exporter.exporter');
         }
 
-        if (!\in_array($format, $allowedExportFormats)) {
+        if (!\in_array($format, $allowedExportFormats, true)) {
             throw new \RuntimeException(
                 sprintf(
                     'Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`',

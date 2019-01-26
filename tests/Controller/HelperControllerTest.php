@@ -227,7 +227,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->setObjectFieldValueAction($request);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
     }
 
     public function testappendFormFieldElementAction(): void
@@ -279,7 +279,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->setObjectFieldValueAction($request);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
     }
 
     public function testRetrieveFormFieldElementAction(): void
@@ -349,7 +349,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->setObjectFieldValueAction($request);
 
-        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertSame(400, $response->getStatusCode());
         $this->assertSame(json_encode("error1\nerror2"), $response->getContent());
     }
 

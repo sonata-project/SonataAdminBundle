@@ -341,7 +341,7 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
         foreach ($diExtraConfigs as $diExtraConfig) {
             if (isset($diExtraConfig['annotation_patterns'])) {
                 // don't add our own pattern if user has already done so
-                if (false !== array_search($sonataAdminPattern, $diExtraConfig['annotation_patterns'])) {
+                if (false !== array_search($sonataAdminPattern, $diExtraConfig['annotation_patterns'], true)) {
                     return;
                 }
                 $annotationPatternsConfigured = true;
@@ -488,8 +488,8 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
             array_push($array, $toAdd);
         }
         foreach ($removeArray as $toRemove) {
-            if (\in_array($toRemove, $array)) {
-                array_splice($array, array_search($toRemove, $array), 1);
+            if (\in_array($toRemove, $array, true)) {
+                array_splice($array, array_search($toRemove, $array, true), 1);
             }
         }
 

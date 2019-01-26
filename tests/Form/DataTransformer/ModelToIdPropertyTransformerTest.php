@@ -65,19 +65,19 @@ class ModelToIdPropertyTransformerTest extends TestCase
             ->expects($this->any())
             ->method('find')
             ->will($this->returnCallback(function ($className, $value) use ($entity1, $entity2, $entity3) {
-                if (Foo::class != $className) {
+                if (Foo::class !== $className) {
                     return;
                 }
 
-                if (123 == $value) {
+                if (123 === $value) {
                     return $entity1;
                 }
 
-                if (456 == $value) {
+                if (456 === $value) {
                     return $entity2;
                 }
 
-                if (789 == $value) {
+                if (789 === $value) {
                     return $entity3;
                 }
             }));
@@ -239,15 +239,15 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->modelManager->expects($this->exactly(3))
             ->method('getIdentifierValues')
             ->will($this->returnCallback(function ($value) use ($entity1, $entity2, $entity3) {
-                if ($value == $entity1) {
+                if ($value === $entity1) {
                     return [123];
                 }
 
-                if ($value == $entity2) {
+                if ($value === $entity2) {
                     return [456];
                 }
 
-                if ($value == $entity3) {
+                if ($value === $entity3) {
                     return [789];
                 }
 

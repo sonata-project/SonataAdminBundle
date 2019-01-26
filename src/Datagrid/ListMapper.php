@@ -73,7 +73,7 @@ class ListMapper extends BaseMapper
     public function add($name, $type = null, array $fieldDescriptionOptions = [])
     {
         // Ensure batch and action pseudo-fields are tagged as virtual
-        if (\in_array($type, ['actions', 'batch', 'select'])) {
+        if (\in_array($type, ['actions', 'batch', 'select'], true)) {
             $fieldDescriptionOptions['virtual_field'] = true;
         }
 

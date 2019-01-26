@@ -70,7 +70,7 @@ class CreateClassCacheCommandTest extends TestCase
         $container->expects($this->any())
                 ->method('get')
                 ->will($this->returnCallback(function ($id) use ($kernel) {
-                    if ('kernel' == $id) {
+                    if ('kernel' === $id) {
                         return $kernel;
                     }
                 }));

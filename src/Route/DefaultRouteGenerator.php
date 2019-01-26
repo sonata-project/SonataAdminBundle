@@ -95,7 +95,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
             $parameters['puniqid'] = $admin->getParentFieldDescription()->getAdmin()->getUniqid();
         }
 
-        if ('update' == $name || '|update' == substr($name, -7)) {
+        if ('update' === $name || '|update' === substr($name, -7)) {
             $parameters['uniqid'] = $admin->getUniqid();
             $parameters['code'] = $admin->getCode();
         }
@@ -150,7 +150,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
             return;
         }
 
-        if (\in_array($admin->getCode(), $this->loaded)) {
+        if (\in_array($admin->getCode(), $this->loaded, true)) {
             return;
         }
 

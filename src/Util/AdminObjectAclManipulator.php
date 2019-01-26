@@ -254,7 +254,7 @@ class AdminObjectAclManipulator
                 if (
                     self::ACL_ROLES_FORM_NAME === $formBuilder->getName()
                     && isset($securityInformation[$aclValue])
-                    && false !== array_search($permission, $securityInformation[$aclValue])
+                    && false !== array_search($permission, $securityInformation[$aclValue], true)
                 ) {
                     $attr['disabled'] = 'disabled';
                 }

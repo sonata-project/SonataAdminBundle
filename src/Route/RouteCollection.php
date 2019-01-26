@@ -207,7 +207,7 @@ class RouteCollection
 
         $elements = $this->elements;
         foreach ($elements as $key => $element) {
-            if (!\in_array($key, $routeCodeList)) {
+            if (!\in_array($key, $routeCodeList, true)) {
                 unset($this->elements[$key]);
             }
         }

@@ -210,7 +210,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
 
             foreach ($permissions as $permission) {
                 // add only the object permissions
-                if (\in_array($permission, $this->getObjectPermissions())) {
+                if (\in_array($permission, $this->getObjectPermissions(), true)) {
                     $builder->add($permission);
                     $hasRole = true;
                 }

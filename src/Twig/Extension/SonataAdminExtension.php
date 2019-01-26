@@ -422,7 +422,7 @@ final class SonataAdminExtension extends AbstractExtension
         }
 
         foreach (self::MOMENT_UNSUPPORTED_LOCALES as $language => $locales) {
-            if ($language === $lang && !\in_array($locale, $locales)) {
+            if ($language === $lang && !\in_array($locale, $locales, true)) {
                 $locale = $language;
             }
         }

@@ -48,7 +48,7 @@ class AuditManager implements AuditManagerInterface
     public function hasReader($class)
     {
         foreach ($this->readers as $classes) {
-            if (\in_array($class, $classes)) {
+            if (\in_array($class, $classes, true)) {
                 return true;
             }
         }
@@ -59,7 +59,7 @@ class AuditManager implements AuditManagerInterface
     public function getReader($class)
     {
         foreach ($this->readers as $readerId => $classes) {
-            if (\in_array($class, $classes)) {
+            if (\in_array($class, $classes, true)) {
                 return $this->container->get($readerId);
             }
         }

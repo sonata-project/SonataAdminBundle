@@ -51,8 +51,14 @@ cs-fix-xml:
 	done
 .PHONY: cs-fix-xml
 
-test:
-	phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
+build:
+	mkdir $@
+
+build/xdebug-filter.php: phpunit.xml.dist build
+	phpunit  --dump-xdebug-filter $@
+
+test: build/xdebug-filter.php
+	phpunit --prepend build/xdebug-filter.php -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
 .PHONY: test
 
 docs:

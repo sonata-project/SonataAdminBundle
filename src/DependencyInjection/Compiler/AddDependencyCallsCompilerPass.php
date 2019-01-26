@@ -277,7 +277,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'security_handler' => 'sonata.admin.security.handler',
             'menu_factory' => 'knp_menu.factory',
             'route_builder' => 'sonata.admin.route.path_info'.
-                (('doctrine_phpcr' == $manager_type) ? '_slashes' : ''),
+                (('doctrine_phpcr' === $manager_type) ? '_slashes' : ''),
             'label_translator_strategy' => 'sonata.admin.label.strategy.native',
         ];
 
@@ -368,13 +368,13 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $methods = [];
         $pos = 0;
         foreach ($definition->getMethodCalls() as $method) {
-            if ('setTemplates' == $method[0]) {
+            if ('setTemplates' === $method[0]) {
                 $definedTemplates = array_merge($definedTemplates, $method[1][0]);
 
                 continue;
             }
 
-            if ('setTemplate' == $method[0]) {
+            if ('setTemplate' === $method[0]) {
                 $definedTemplates[$method[1][0]] = $method[1][1];
 
                 continue;
