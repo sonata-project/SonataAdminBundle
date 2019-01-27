@@ -321,6 +321,8 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('outer_list_rows_mosaic')->defaultValue('@SonataAdmin/CRUD/list_outer_rows_mosaic.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('outer_list_rows_list')->defaultValue('@SonataAdmin/CRUD/list_outer_rows_list.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('outer_list_rows_tree')->defaultValue('@SonataAdmin/CRUD/list_outer_rows_tree.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('outer_list_view_mosaic')->defaultValue('@SonataAdmin/CRUD/list_outer_view_mosaic.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('outer_list_view_list')->defaultValue('@SonataAdmin/CRUD/list_outer_view_list.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('base_list_field')->defaultValue('@SonataAdmin/CRUD/base_list_field.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('pager_links')->defaultValue('@SonataAdmin/Pager/links.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('pager_results')->defaultValue('@SonataAdmin/Pager/results.html.twig')->cannotBeEmpty()->end()

@@ -201,6 +201,8 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             'outer_list_rows_mosaic' => '@SonataAdmin/CRUD/list_outer_rows_mosaic.html.twig',
             'outer_list_rows_list' => '@SonataAdmin/CRUD/list_outer_rows_list.html.twig',
             'outer_list_rows_tree' => '@SonataAdmin/CRUD/list_outer_rows_tree.html.twig',
+            'outer_list_view_mosaic' => '@SonataAdmin/CRUD/list_outer_view_mosaic.html.twig',
+            'outer_list_view_list' => '@SonataAdmin/CRUD/list_outer_view_list.html.twig',
         ]);
         $container->setParameter('sonata.admin.configuration.admin_services', $config['admin_services']);
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);

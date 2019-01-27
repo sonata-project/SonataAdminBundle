@@ -1,0 +1,72 @@
+<ul class="" style="list-style: none;">
+    {% for object in admin.datagrid.results %}
+        {% set meta = admin.getObjectMetadata(object) %}
+        {% set mosaic_content %}
+            <div class="mosaic-box-outter">
+                <div class="mosaic-inner-box">
+                    {#
+                        This box will be display when the mouse is not on the box
+                    #}
+
+                    <div class="mosaic-inner-box-default">
+                        {% block sonata_mosaic_background %}
+                            <img src="{{ meta.image }}" alt="" />
+                        {% endblock %}
+                        {% block sonata_mosaic_default_view %}
+                            <span class="mosaic-box-label label label-primary pull-right">#{{ admin.id(object) }}</span>
+                        {% endblock %}
+                    </div>
+
+                    {#
+                        This box will be display when the mouse is on the box
+                        You can add more description
+                    #}
+                    <div class="mosaic-inner-box-hover">
+                        {% block sonata_mosaic_hover_view %}
+                            <span class="mosaic-box-label label label-primary pull-right">#{{ admin.id(object) }}</span>
+                            {{ meta.description }}
+                        {% endblock %}
+                    </div>
+                </div>
+
+                {# NEXT_MAJOR : remove this assignment #}
+                {% set export_formats = export_formats|default(admin.getExportFormats) %}
+
+                <div class="mosaic-inner-text">
+                    {% if (admin.hasRoute('batch') and batchactions|length > 0) or (admin.hasRoute('export') and admin.hasAccess('export') and export_formats|length) %}
+                        <input type="checkbox" name="idx[]" value="{{ admin.id(object) }}">
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
+
+                    {% block sonata_mosaic_description %}
+                        {{ meta.title|truncate(40) }}
+                    {% endblock %}
+                </div>
+            </div>
+        {% endset %}
+        <li class="col-xs-6 col-sm-3 mosaic-box sonata-ba-list-field-batch sonata-ba-list-field"
+                objectId="{{ admin.id(object) }}">
+            {% if admin.hasAccess('edit', object) and admin.hasRoute('edit') %}
+                <a class="mosaic-inner-link"
+                    href="{{ admin.generateUrl('edit', {'id' : object|sonata_urlsafeid(admin) }) }}">
+                    {{ mosaic_content }}
+                </a>
+            {% elseif admin.hasAccess('show', object) and admin.hasRoute('show') %}
+                <a class="mosaic-inner-link"
+                    href="{{ admin.generateUrl('show', {'id' : object|sonata_urlsafeid(admin) }) }}">
+                    {{ mosaic_content }}
+                </a>
+            {% else %}
+                {{ mosaic_content }}
+            {% endif %}
+        </li>
+
+        {% if loop.index % 4 == 0 %}
+            <div class="clearfix hidden-xs"></div>
+        {% endif %}
+        {% if loop.index % 2 == 0 %}
+            <div class="clearfix visible-xs"></div>
+        {% endif %}
+    {% endfor %}
+</ul>
