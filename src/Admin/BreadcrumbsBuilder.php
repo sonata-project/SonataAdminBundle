@@ -39,14 +39,14 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         $this->config = $resolver->resolve($config);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'child_admin_route' => 'edit',
         ]);
     }
 
-    public function getBreadcrumbs(AdminInterface $admin, $action)
+    public function getBreadcrumbs(AdminInterface $admin, $action): array
     {
         $breadcrumbs = [];
         if ($admin->isChild()) {
@@ -69,8 +69,11 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
      * {@inheritdoc}
      * NEXT_MAJOR : make this method private.
      */
-    public function buildBreadcrumbs(AdminInterface $admin, $action, ItemInterface $menu = null)
-    {
+    public function buildBreadcrumbs(
+        AdminInterface $admin,
+        $action,
+        ItemInterface $menu = null
+    ): ItemInterface {
         if (!$menu) {
             $menu = $admin->getMenuFactory()->createItem('root');
 

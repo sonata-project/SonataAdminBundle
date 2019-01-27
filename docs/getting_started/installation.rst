@@ -7,15 +7,9 @@ moment during a project's lifecycle.
 Download the Bundle
 -------------------
 
-Open a command console, enter your project directory and execute the
-following command to download the latest stable version of this bundle:
-
 .. code-block:: bash
 
-    $ composer require sonata-project/admin-bundle
-
-This command requires you to have Composer installed globally, as explained in
-the `installation chapter`_ of the Composer documentation.
+    composer require sonata-project/admin-bundle
 
 Download a Storage Bundle
 -------------------------
@@ -46,51 +40,13 @@ line in `bundles.php` file of your project::
     // config/bundles.php
 
     return [
-        //...
+        // ...
         Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
         Sonata\CoreBundle\SonataCoreBundle::class => ['all' => true],
         Sonata\BlockBundle\SonataBlockBundle::class => ['all' => true],
         Knp\Bundle\MenuBundle\KnpMenuBundle::class => ['all' => true],
         Sonata\AdminBundle\SonataAdminBundle::class => ['all' => true],
     ];
-
-.. note::
-
-    If you are not using Symfony Flex, you should enable bundles in your
-    ``AppKernel.php``.
-
-.. code-block:: php
-
-    // app/AppKernel.php
-
-    class AppKernel extends Kernel
-    {
-        public function registerBundles()
-        {
-            $bundles = [
-                // ...
-
-                // The admin requires some twig functions defined in the security
-                // bundle, like is_granted. Register this bundle if it wasn't the case
-                // already.
-                new Symfony\Bundle\SecurityBundle\SecurityBundle(),
-
-                // These are the other bundles the SonataAdminBundle relies on
-                new Sonata\CoreBundle\SonataCoreBundle(),
-                new Sonata\BlockBundle\SonataBlockBundle(),
-                new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-
-                // And finally
-                new Sonata\AdminBundle\SonataAdminBundle(),
-            ];
-
-            // ...
-        }
-    }
-
-.. note::
-
-    If a bundle is already registered, you should not register it again.
 
 Configure the Installed Bundles
 -------------------------------
@@ -105,16 +61,12 @@ admin block:
     .. code-block:: yaml
 
         # config/packages/sonata_admin.yaml
+
         sonata_block:
             blocks:
                 # enable the SonataAdminBundle block
                 sonata.admin.block.admin_list:
                     contexts: [admin]
-
-                # ...
-.. note::
-
-    If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.
 
 .. note::
 
@@ -133,12 +85,9 @@ For more information: http://symfony.com/doc/current/translation.html#configurat
     .. code-block:: yaml
 
         # config/packages/framework.yaml
+
         framework:
-            translator: { fallbacks: ["%locale%"] }
-
-.. note::
-
-    If you are not using Symfony Flex, this should be added to ``app/config/config.yml``.
+            translator: { fallbacks: ['%locale%'] }
 
 Define routes
 -------------
@@ -164,10 +113,6 @@ You can do this by adding its routes to your application's routing file:
 
 .. note::
 
-    If you are not using Symfony Flex, routes should be added to ``app/config/routing.yml``.
-
-.. note::
-
     If you're using XML or PHP to specify your application's configuration,
     the above routing configuration must be placed in routing.xml or
     routing.php according to your format (i.e. XML or PHP).
@@ -190,8 +135,8 @@ install the assets:
 
 .. code-block:: bash
 
-    $ bin/console cache:clear
-    $ bin/console assets:install
+    bin/console cache:clear
+    bin/console assets:install
 
 The Admin Interface
 -------------------

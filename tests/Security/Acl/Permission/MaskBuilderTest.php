@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 
 class MaskBuilderTest extends TestCase
 {
-    public function testGetPattern()
+    public function testGetPattern(): void
     {
         $builder = new MaskBuilder();
         $this->assertSame(MaskBuilder::ALL_OFF, $builder->getPattern());

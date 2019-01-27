@@ -29,7 +29,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class SonataAdminBundleTest extends TestCase
 {
-    public function testBuild()
+    public function testBuild(): void
     {
         $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)
             ->setMethods(['addCompilerPass', 'getParameter'])
@@ -37,7 +37,7 @@ class SonataAdminBundleTest extends TestCase
 
         $containerBuilder->expects($this->exactly(4))
             ->method('addCompilerPass')
-            ->will($this->returnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION) {
+            ->will($this->returnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION): void {
                 if ($pass instanceof AddDependencyCallsCompilerPass) {
                     return;
                 }
@@ -74,7 +74,7 @@ class SonataAdminBundleTest extends TestCase
         $bundle->build($containerBuilder);
     }
 
-    public function testBuildWithMakerBundle()
+    public function testBuildWithMakerBundle(): void
     {
         $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)
             ->setMethods(['addCompilerPass', 'getParameter'])
@@ -82,7 +82,7 @@ class SonataAdminBundleTest extends TestCase
 
         $containerBuilder->expects($this->exactly(5))
             ->method('addCompilerPass')
-            ->will($this->returnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION) {
+            ->will($this->returnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION): void {
                 if ($pass instanceof AddDependencyCallsCompilerPass) {
                     return;
                 }

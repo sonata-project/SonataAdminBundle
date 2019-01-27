@@ -113,7 +113,7 @@ class SonataAdminExtensionTest extends TestCase
      */
     private $securityChecker;
 
-    public function setUp()
+    public function setUp(): void
     {
         date_default_timezone_set('Europe/London');
 
@@ -239,9 +239,9 @@ class SonataAdminExtensionTest extends TestCase
         $container->expects($this->any())
             ->method('get')
             ->will($this->returnCallback(function ($id) {
-                if ('sonata_admin_foo_service' == $id) {
+                if ('sonata_admin_foo_service' === $id) {
                     return $this->admin;
-                } elseif ('sonata_admin_bar_service' == $id) {
+                } elseif ('sonata_admin_bar_service' === $id) {
                     return $this->adminBar;
                 }
             }));
@@ -267,7 +267,7 @@ class SonataAdminExtensionTest extends TestCase
      * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
      * @dataProvider getRenderListElementTests
      */
-    public function testRenderListElement($expected, $type, $value, array $options)
+    public function testRenderListElement($expected, $type, $value, array $options): void
     {
         $this->admin->expects($this->any())
             ->method('getPersistentParameters')
@@ -355,7 +355,7 @@ class SonataAdminExtensionTest extends TestCase
      * @dataProvider getDeprecatedRenderListElementTests
      * @group legacy
      */
-    public function testDeprecatedRenderListElement($expected, $value, array $options)
+    public function testDeprecatedRenderListElement($expected, $value, array $options): void
     {
         $this->admin->expects($this->any())
             ->method('hasAccess')
@@ -1333,7 +1333,7 @@ EOT
     /**
      * @group legacy
      */
-    public function testRenderListElementNonExistentTemplate()
+    public function testRenderListElementNonExistentTemplate(): void
     {
         // NEXT_MAJOR: Remove this line
         $this->admin->method('getTemplate')
@@ -1374,7 +1374,7 @@ EOT
     /**
      * @group                    legacy
      */
-    public function testRenderListElementErrorLoadingTemplate()
+    public function testRenderListElementErrorLoadingTemplate(): void
     {
         $this->expectException(\Twig_Error_Loader::class);
         $this->expectExceptionMessage('Unable to find template "@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig"');
@@ -1398,7 +1398,7 @@ EOT
     /**
      * @dataProvider getRenderViewElementTests
      */
-    public function testRenderViewElement($expected, $type, $value, array $options)
+    public function testRenderViewElement($expected, $type, $value, array $options): void
     {
         $this->admin->expects($this->any())
             ->method('getTemplate')
@@ -2019,7 +2019,7 @@ EOT
         ];
     }
 
-    public function testGetValueFromFieldDescription()
+    public function testGetValueFromFieldDescription(): void
     {
         $object = new \stdClass();
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
@@ -2031,7 +2031,7 @@ EOT
         $this->assertSame('test123', $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
     }
 
-    public function testGetValueFromFieldDescriptionWithRemoveLoopException()
+    public function testGetValueFromFieldDescriptionWithRemoveLoopException(): void
     {
         $object = $this->createMock(\ArrayAccess::class);
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
@@ -2044,14 +2044,14 @@ EOT
         );
     }
 
-    public function testGetValueFromFieldDescriptionWithNoValueException()
+    public function testGetValueFromFieldDescriptionWithNoValueException(): void
     {
         $object = new \stdClass();
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
 
         $fieldDescription->expects($this->any())
             ->method('getValue')
-            ->will($this->returnCallback(function () {
+            ->will($this->returnCallback(function (): void {
                 throw new NoValueException();
             }));
 
@@ -2062,14 +2062,14 @@ EOT
         $this->assertNull($this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
     }
 
-    public function testGetValueFromFieldDescriptionWithNoValueExceptionNewAdminInstance()
+    public function testGetValueFromFieldDescriptionWithNoValueExceptionNewAdminInstance(): void
     {
         $object = new \stdClass();
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
 
         $fieldDescription->expects($this->any())
             ->method('getValue')
-            ->will($this->returnCallback(function () {
+            ->will($this->returnCallback(function (): void {
                 throw new NoValueException();
             }));
 
@@ -2087,7 +2087,7 @@ EOT
     /**
      * @group legacy
      */
-    public function testOutput()
+    public function testOutput(): void
     {
         $this->fieldDescription->expects($this->any())
             ->method('getTemplate')
@@ -2140,7 +2140,7 @@ EOT
      * @group legacy
      * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
      */
-    public function testRenderWithDebug()
+    public function testRenderWithDebug(): void
     {
         $this->fieldDescription->expects($this->any())
             ->method('getTemplate')
@@ -2180,17 +2180,17 @@ EOT
         );
     }
 
-    public function testRenderRelationElementNoObject()
+    public function testRenderRelationElementNoObject(): void
     {
         $this->assertSame('foo', $this->twigExtension->renderRelationElement('foo', $this->fieldDescription));
     }
 
-    public function testRenderRelationElementToString()
+    public function testRenderRelationElementToString(): void
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
             ->will($this->returnCallback(function ($value, $default = null) {
-                if ('associated_property' == $value) {
+                if ('associated_property' === $value) {
                     return $default;
                 }
             }));
@@ -2202,12 +2202,12 @@ EOT
     /**
      * @group legacy
      */
-    public function testDeprecatedRelationElementToString()
+    public function testDeprecatedRelationElementToString(): void
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
             ->will($this->returnCallback(function ($value, $default = null) {
-                if ('associated_tostring' == $value) {
+                if ('associated_tostring' === $value) {
                     return '__toString';
                 }
             }));
@@ -2222,16 +2222,16 @@ EOT
     /**
      * @group legacy
      */
-    public function testRenderRelationElementCustomToString()
+    public function testRenderRelationElementCustomToString(): void
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
             ->will($this->returnCallback(function ($value, $default = null) {
-                if ('associated_property' == $value) {
+                if ('associated_property' === $value) {
                     return $default;
                 }
 
-                if ('associated_tostring' == $value) {
+                if ('associated_tostring' === $value) {
                     return 'customToString';
                 }
             }));
@@ -2249,13 +2249,13 @@ EOT
     /**
      * @group legacy
      */
-    public function testRenderRelationElementMethodNotExist()
+    public function testRenderRelationElementMethodNotExist(): void
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
 
             ->will($this->returnCallback(function ($value, $default = null) {
-                if ('associated_tostring' == $value) {
+                if ('associated_tostring' === $value) {
                     return 'nonExistedMethod';
                 }
             }));
@@ -2266,13 +2266,13 @@ EOT
         $this->twigExtension->renderRelationElement($element, $this->fieldDescription);
     }
 
-    public function testRenderRelationElementWithPropertyPath()
+    public function testRenderRelationElementWithPropertyPath(): void
     {
         $this->fieldDescription->expects($this->exactly(1))
             ->method('getOption')
 
             ->will($this->returnCallback(function ($value, $default = null) {
-                if ('associated_property' == $value) {
+                if ('associated_property' === $value) {
                     return 'foo';
                 }
             }));
@@ -2283,13 +2283,13 @@ EOT
         $this->assertSame('bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
-    public function testRenderRelationElementWithClosure()
+    public function testRenderRelationElementWithClosure(): void
     {
         $this->fieldDescription->expects($this->exactly(1))
             ->method('getOption')
 
             ->will($this->returnCallback(function ($value, $default = null) {
-                if ('associated_property' == $value) {
+                if ('associated_property' === $value) {
                     return function ($element) {
                         return 'closure '.$element->foo;
                     };
@@ -2305,7 +2305,7 @@ EOT
         );
     }
 
-    public function testGetUrlsafeIdentifier()
+    public function testGetUrlsafeIdentifier(): void
     {
         $entity = new \stdClass();
 
@@ -2321,7 +2321,7 @@ EOT
         $this->assertSame(1234567, $this->twigExtension->getUrlsafeIdentifier($entity));
     }
 
-    public function testGetUrlsafeIdentifier_GivenAdmin_Foo()
+    public function testGetUrlsafeIdentifier_GivenAdmin_Foo(): void
     {
         $entity = new \stdClass();
 
@@ -2346,7 +2346,7 @@ EOT
         $this->assertSame(1234567, $this->twigExtension->getUrlsafeIdentifier($entity, $this->admin));
     }
 
-    public function testGetUrlsafeIdentifier_GivenAdmin_Bar()
+    public function testGetUrlsafeIdentifier_GivenAdmin_Bar(): void
     {
         $entity = new \stdClass();
 
@@ -2416,7 +2416,7 @@ EOT
     /**
      * @dataProvider xEditablechoicesProvider
      */
-    public function testGetXEditableChoicesIsIdempotent(array $options, $expectedChoices)
+    public function testGetXEditableChoicesIsIdempotent(array $options, $expectedChoices): void
     {
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->any())
@@ -2494,7 +2494,7 @@ EOT
     /**
      * @dataProvider select2LocalesProvider
      */
-    public function testCanonicalizedLocaleForSelect2($expected, $original)
+    public function testCanonicalizedLocaleForSelect2($expected, $original): void
     {
         $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForSelect2($this->mockExtensionContext($original)));
     }
@@ -2622,12 +2622,12 @@ EOT
     /**
      * @dataProvider momentLocalesProvider
      */
-    public function testCanonicalizedLocaleForMoment($expected, $original)
+    public function testCanonicalizedLocaleForMoment($expected, $original): void
     {
         $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForMoment($this->mockExtensionContext($original)));
     }
 
-    public function testIsGrantedAffirmative()
+    public function testIsGrantedAffirmative(): void
     {
         $this->assertTrue(
             $this->twigExtension->isGrantedAffirmative(['foo', 'bar'])

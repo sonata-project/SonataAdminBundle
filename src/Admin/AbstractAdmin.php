@@ -39,8 +39,8 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Sonata\CoreBundle\Validator\Constraints\InlineConstraint;
-use Sonata\CoreBundle\Validator\ErrorElement;
+use Sonata\Form\Validator\Constraints\InlineConstraint;
+use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -622,7 +622,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
             // NEXT_MAJOR: Remove this hack, because all field labels will be translated with the major release
             // No translation key exists
-            if ($transLabel == $label) {
+            if ($transLabel === $label) {
                 $fields[$key] = $field;
             } else {
                 $fields[$transLabel] = $field;
@@ -642,7 +642,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function initialize()
     {
         if (!$this->classnameLabel) {
-            $this->classnameLabel = substr($this->getClass(), strrpos($this->getClass(), '\\') + 1);
+            /* NEXT_MAJOR: remove cast to string, null is not supposed to be
+            supported but was documented as such */
+            $this->classnameLabel = substr(
+                (string) $this->getClass(),
+                strrpos((string) $this->getClass(), '\\') + 1
+            );
         }
 
         // NEXT_MAJOR: Remove this line.
@@ -1034,7 +1039,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             __METHOD__
         ), E_USER_DEPRECATED);
 
-        if (!\in_array($subClass, $this->subClasses)) {
+        if (!\in_array($subClass, $this->subClasses, true)) {
             $this->subClasses[] = $subClass;
         }
     }
@@ -1167,7 +1172,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             return false;
         }
 
-        return ($admin->getBaseRouteName().'_'.$name) == $route;
+        return ($admin->getBaseRouteName().'_'.$name) === $route;
     }
 
     public function generateObjectUrl($name, $object, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
@@ -2505,7 +2510,7 @@ EOT;
      */
     public function determinedPerPageValue($perPage)
     {
-        return \in_array($perPage, $this->perPageOptions);
+        return \in_array($perPage, $this->perPageOptions, true);
     }
 
     public function isAclEnabled()
@@ -2602,7 +2607,7 @@ EOT;
     {
         $list = [];
 
-        if (\in_array($action, ['tree', 'show', 'edit', 'delete', 'list', 'batch'])
+        if (\in_array($action, ['tree', 'show', 'edit', 'delete', 'list', 'batch'], true)
             && $this->hasAccess('create')
             && $this->hasRoute('create')
         ) {
@@ -2613,7 +2618,7 @@ EOT;
             ];
         }
 
-        if (\in_array($action, ['show', 'delete', 'acl', 'history'])
+        if (\in_array($action, ['show', 'delete', 'acl', 'history'], true)
             && $this->canAccessObject('edit', $object)
             && $this->hasRoute('edit')
         ) {
@@ -2624,7 +2629,7 @@ EOT;
             ];
         }
 
-        if (\in_array($action, ['show', 'edit', 'acl'])
+        if (\in_array($action, ['show', 'edit', 'acl'], true)
             && $this->canAccessObject('history', $object)
             && $this->hasRoute('history')
         ) {
@@ -2635,7 +2640,7 @@ EOT;
             ];
         }
 
-        if (\in_array($action, ['edit', 'history'])
+        if (\in_array($action, ['edit', 'history'], true)
             && $this->isAclEnabled()
             && $this->canAccessObject('acl', $object)
             && $this->hasRoute('acl')
@@ -2647,7 +2652,7 @@ EOT;
             ];
         }
 
-        if (\in_array($action, ['edit', 'history', 'acl'])
+        if (\in_array($action, ['edit', 'history', 'acl'], true)
             && $this->canAccessObject('show', $object)
             && \count($this->getShow()) > 0
             && $this->hasRoute('show')
@@ -2659,7 +2664,7 @@ EOT;
             ];
         }
 
-        if (\in_array($action, ['show', 'edit', 'delete', 'acl', 'batch'])
+        if (\in_array($action, ['show', 'edit', 'delete', 'acl', 'batch'], true)
             && $this->hasAccess('list')
             && $this->hasRoute('list')
         ) {
@@ -2769,7 +2774,7 @@ EOT;
             return false;
         }
 
-        return $filter[$name] == $default[$name];
+        return $filter[$name] === $default[$name];
     }
 
     /**
@@ -3113,3 +3118,5 @@ EOT;
         }
     }
 }
+
+class_exists(\Sonata\Form\Validator\ErrorElement::class);

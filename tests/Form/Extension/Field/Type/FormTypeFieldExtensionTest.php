@@ -25,7 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FormTypeFieldExtensionTest extends TestCase
 {
-    public function testExtendedType()
+    public function testExtendedType(): void
     {
         $extension = new FormTypeFieldExtension([], []);
 
@@ -33,7 +33,7 @@ class FormTypeFieldExtensionTest extends TestCase
         $this->assertSame([FormType::class], FormTypeFieldExtension::getExtendedTypes());
     }
 
-    public function testDefaultOptions()
+    public function testDefaultOptions(): void
     {
         $extension = new FormTypeFieldExtension([], []);
 
@@ -51,7 +51,7 @@ class FormTypeFieldExtensionTest extends TestCase
         $this->assertNull($options['sonata_help']);
     }
 
-    public function testbuildViewWithNoSonataAdminArray()
+    public function testbuildViewWithNoSonataAdminArray(): void
     {
         $eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
 
@@ -87,7 +87,7 @@ class FormTypeFieldExtensionTest extends TestCase
     //        $extension->buildForm($formBuilder, []);
     //    }
 
-    public function testbuildViewWithWithSonataAdmin()
+    public function testbuildViewWithWithSonataAdmin(): void
     {
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->exactly(2))->method('getCode')->will($this->returnValue('my.admin.reference'));
@@ -133,7 +133,7 @@ class FormTypeFieldExtensionTest extends TestCase
         $this->assertSame('help text', $formView->vars['sonata_help']);
     }
 
-    public function testbuildViewWithNestedForm()
+    public function testbuildViewWithNestedForm(): void
     {
         $eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
 
@@ -192,7 +192,7 @@ class FormTypeFieldExtensionTest extends TestCase
         $this->assertSame($expected, $formView->vars);
     }
 
-    public function testbuildViewWithNestedFormWithNoParent()
+    public function testbuildViewWithNestedFormWithNoParent(): void
     {
         $eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
 

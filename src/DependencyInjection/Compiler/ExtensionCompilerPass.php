@@ -101,8 +101,8 @@ class ExtensionCompilerPass implements CompilerPassInterface
 
         foreach ($extensionMap as $type => $subjects) {
             foreach ($subjects as $subject => $extensionList) {
-                if ('admins' == $type) {
-                    if ($id == $subject) {
+                if ('admins' === $type) {
+                    if ($id === $subject) {
                         $extensions = array_merge($extensions, $extensionList);
                     }
                 } else {
@@ -114,25 +114,25 @@ class ExtensionCompilerPass implements CompilerPassInterface
                     $subjectReflection = new \ReflectionClass($subject);
                 }
 
-                if ('instanceof' == $type) {
-                    if ($subjectReflection->getName() == $classReflection->getName() || $classReflection->isSubclassOf($subject)) {
+                if ('instanceof' === $type) {
+                    if ($subjectReflection->getName() === $classReflection->getName() || $classReflection->isSubclassOf($subject)) {
                         $extensions = array_merge($extensions, $extensionList);
                     }
                 }
 
-                if ('implements' == $type) {
+                if ('implements' === $type) {
                     if ($classReflection->implementsInterface($subject)) {
                         $extensions = array_merge($extensions, $extensionList);
                     }
                 }
 
-                if ('extends' == $type) {
+                if ('extends' === $type) {
                     if ($classReflection->isSubclassOf($subject)) {
                         $extensions = array_merge($extensions, $extensionList);
                     }
                 }
 
-                if ('uses' == $type) {
+                if ('uses' === $type) {
                     if ($this->hasTrait($classReflection, $subject)) {
                         $extensions = array_merge($extensions, $extensionList);
                     }
@@ -201,7 +201,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
      */
     protected function hasTrait(\ReflectionClass $class, $traitName)
     {
-        if (\in_array($traitName, $class->getTraitNames())) {
+        if (\in_array($traitName, $class->getTraitNames(), true)) {
             return true;
         }
 

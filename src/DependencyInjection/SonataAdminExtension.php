@@ -209,6 +209,10 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
         $container->setParameter('sonata.admin.configuration.dashboard_blocks', $config['dashboard']['blocks']);
         $container->setParameter('sonata.admin.configuration.sort_admins', $config['options']['sort_admins']);
+        $container->setParameter(
+            'sonata.admin.configuration.mosaic_background',
+            $config['options']['mosaic_background']
+        );
         $container->setParameter('sonata.admin.configuration.default_group', $config['options']['default_group']);
         $container->setParameter('sonata.admin.configuration.default_label_catalogue', $config['options']['default_label_catalogue']);
         $container->setParameter('sonata.admin.configuration.default_icon', $config['options']['default_icon']);
@@ -337,7 +341,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         foreach ($diExtraConfigs as $diExtraConfig) {
             if (isset($diExtraConfig['annotation_patterns'])) {
                 // don't add our own pattern if user has already done so
-                if (false !== array_search($sonataAdminPattern, $diExtraConfig['annotation_patterns'])) {
+                if (false !== array_search($sonataAdminPattern, $diExtraConfig['annotation_patterns'], true)) {
                     return;
                 }
                 $annotationPatternsConfigured = true;
@@ -484,8 +488,8 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             array_push($array, $toAdd);
         }
         foreach ($removeArray as $toRemove) {
-            if (\in_array($toRemove, $array)) {
-                array_splice($array, array_search($toRemove, $array), 1);
+            if (\in_array($toRemove, $array, true)) {
+                array_splice($array, array_search($toRemove, $array, true), 1);
             }
         }
 

@@ -63,7 +63,7 @@ class AdminMakerTest extends TestCase
      */
     private $servicesFile;
 
-    protected function setup()
+    protected function setup(): void
     {
         if (!class_exists('Symfony\Component\Console\CommandLoader\CommandLoaderInterface')) {
             $this->markTestSkipped('Test only available for SF 3.4');
@@ -78,12 +78,12 @@ class AdminMakerTest extends TestCase
         $this->projectDirectory = sys_get_temp_dir();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         @unlink($this->projectDirectory.'/config/'.$this->servicesFile);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $maker = new AdminMaker($this->projectDirectory, $this->modelManagers);
 

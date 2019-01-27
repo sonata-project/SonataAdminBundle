@@ -5,12 +5,6 @@ This is a full working example of creating a custom list action for SonataAdmin.
 The example is based on an existing ``CarAdmin`` class in a ``App`` namespace.
 It is assumed you already have an admin service up and running.
 
-.. note::
-
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 The recipe
 ----------
 
@@ -26,11 +20,8 @@ To do this we need to:
 Extending the Admin Controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-First you need to create your own Controller extending the one from SonataAdmin
+First you need to create your own Controller extending the one from SonataAdmin::
 
-.. code-block:: php
-
-    <?php
     // src/Controller/CarAdminController.php
 
     namespace App\Controller;
@@ -55,8 +46,8 @@ Either by using XML:
         <!-- config/services.xml -->
 
         <service id="app.admin.car" class="App\Admin\CarAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="Demo" label="Car" />
-            <argument />
+            <tag name="sonata.admin" manager_type="orm" group="Demo" label="Car"/>
+            <argument/>
             <argument>App\Entity\Car</argument>
             <argument>App\Controller\CarAdminController</argument>
         </service>
@@ -83,11 +74,8 @@ Create the custom action in your Controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Now it is time to actually create your custom action here, for this example I chose
-to implement a ``clone`` action.
+to implement a ``clone`` action::
 
-.. code-block:: php
-
-    <?php
     // src/Controller/CarAdminController.php
 
     namespace App\Controller;
@@ -120,18 +108,17 @@ to implement a ``clone`` action.
             $this->addFlash('sonata_flash_success', 'Cloned successfully');
 
             return new RedirectResponse($this->admin->generateUrl('list'));
-
-            // if you have a filtered list and want to keep your filters after the redirect
-            // return new RedirectResponse($this->admin->generateUrl('list', ['filter' => $this->admin->getFilterParameters()]));
         }
     }
 
-Here we first get the object, see if it exists then clone it and insert the clone
-as a new object. Finally we set a flash message indicating success and redirect to the list view.
-
 If you want to add the current filter parameters to the redirect url you can add them to the `generateUrl` method::
 
-    return new RedirectResponse($this->admin->generateUrl('list', ['filter' => $this->admin->getFilterParameters()]));
+    return new RedirectResponse(
+        $this->admin->generateUrl('list', ['filter' => $this->admin->getFilterParameters()])
+    );
+
+Here we first get the object, see if it exists then clone it and insert the clone
+as a new object. Finally we set a flash message indicating success and redirect to the list view.
 
 .. tip::
 
@@ -161,7 +148,6 @@ Admin Controller.
 
 Right now ``clone`` is not a known route, we define it in the next step.
 
-
 Bringing it all together
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -169,12 +155,12 @@ What is left now is actually adding your custom action to the admin class.
 
 You have to add the new route in ``configureRoutes``::
 
-    // ...
     use Sonata\AdminBundle\Route\RouteCollection;
 
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->add('clone', $this->getRouterIdParameter().'/clone');
+        $collection
+            ->add('clone', $this->getRouterIdParameter().'/clone');
     }
 
 This gives us a route like ``../admin/app/car/1/clone``.
@@ -185,22 +171,17 @@ Next we have to add the action in ``configureListFields`` specifying the templat
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-
-             // other fields...
-
             ->add('_action', null, [
                 'actions' => [
 
                     // ...
 
                     'clone' => [
-                        'template' => '@App/CRUD/list__action_clone.html.twig'
-                    ]
-                ]
-            ])
-        ;
+                        'template' => '@App/CRUD/list__action_clone.html.twig',
+                    ],
+                ],
+            ]);
     }
-
 
 The full ``CarAdmin.php`` example looks like this::
 
@@ -209,27 +190,15 @@ The full ``CarAdmin.php`` example looks like this::
     namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
-    use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Sonata\AdminBundle\Datagrid\ListMapper;
-    use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Route\RouteCollection;
-    use Sonata\AdminBundle\Show\ShowMapper;
 
-    class CarAdmin extends AbstractAdmin
+    final class CarAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
-            $collection->add('clone', $this->getRouterIdParameter().'/clone');
-        }
-
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-        {
-            // ...
-        }
-
-        protected function configureFormFields(FormMapper $formMapper)
-        {
-            // ...
+            $collection
+                ->add('clone', $this->getRouterIdParameter().'/clone');
         }
 
         protected function configureListFields(ListMapper $listMapper)
@@ -245,15 +214,10 @@ The full ``CarAdmin.php`` example looks like this::
                         'edit' => [],
                         'delete' => [],
                         'clone' => [
-                            'template' => '@App/CRUD/list__action_clone.html.twig'
+                            'template' => '@App/CRUD/list__action_clone.html.twig',
                         ]
                     ]
                 ]);
-        }
-
-        protected function configureShowFields(ShowMapper $showMapper)
-        {
-            // ...
         }
     }
 
@@ -274,7 +238,6 @@ Custom Action without Entity
 Creating an action that is not connected to an Entity is also possible.
 Let's imagine we have an import action. We register our route::
 
-    // ...
     use Sonata\AdminBundle\Route\RouteCollection;
 
     protected function configureRoutes(RouteCollection $collection)
@@ -295,7 +258,7 @@ and the controller action::
     {
         public function importAction(Request $request)
         {
-            //do your import logic
+            // do your import logic
         }
 
 Now, instead of adding the action to the form mapper, we can add it next to
@@ -317,7 +280,7 @@ Create a template for that button:
 
     <li>
         <a class="sonata-action-element" href="{{ admin.generateUrl('import') }}">
-            <i class="fa fa-level-up"></i>{{ 'import_action'|trans({}, 'SonataAdminBundle') }}
+            <i class="fa fa-level-up"></i> {{ 'import_action'|trans({}, 'SonataAdminBundle') }}
         </a>
     </li>
 
@@ -339,7 +302,7 @@ Create a template for that button:
 .. code-block:: html+jinja
 
     <a class="btn btn-link btn-flat" href="{{ admin.generateUrl('import') }}">
-        <i class="fa fa-level-up"></i>{{ 'import_action'|trans({}, 'SonataAdminBundle') }}
+        <i class="fa fa-level-up"></i> {{ 'import_action'|trans({}, 'SonataAdminBundle') }}
     </a>
 
 Or you can just pass values as array::

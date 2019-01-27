@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class FilterTest extends TestCase
 {
-    public function testFilter()
+    public function testFilter(): void
     {
         $filter = new FooFilter();
 
@@ -57,7 +57,7 @@ class FilterTest extends TestCase
         $this->assertSame('>', $filter->getCondition());
     }
 
-    public function testGetFieldOption()
+    public function testGetFieldOption(): void
     {
         $filter = new FooFilter();
         $filter->initialize('name', [
@@ -69,7 +69,7 @@ class FilterTest extends TestCase
         $this->assertSame(12345, $filter->getFieldOption('baz'));
     }
 
-    public function testSetFieldOption()
+    public function testSetFieldOption(): void
     {
         $filter = new FooFilter();
         $this->assertSame(['required' => false], $filter->getFieldOptions());
@@ -82,7 +82,7 @@ class FilterTest extends TestCase
         $this->assertSame(12345, $filter->getFieldOption('baz'));
     }
 
-    public function testInitialize()
+    public function testInitialize(): void
     {
         $filter = new FooFilter();
         $filter->initialize('name', [
@@ -94,7 +94,7 @@ class FilterTest extends TestCase
         $this->assertSame('bar', $filter->getFieldName());
     }
 
-    public function testLabel()
+    public function testLabel(): void
     {
         $filter = new FooFilter();
         $filter->setLabel('foo');
@@ -102,7 +102,7 @@ class FilterTest extends TestCase
         $this->assertSame('foo', $filter->getLabel());
     }
 
-    public function testExceptionOnNonDefinedFieldName()
+    public function testExceptionOnNonDefinedFieldName(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -117,7 +117,7 @@ class FilterTest extends TestCase
      * @param $expected
      * @param $value
      */
-    public function testIsActive($expected, $value)
+    public function testIsActive($expected, $value): void
     {
         $filter = new FooFilter();
         $filter->setValue($value);
@@ -136,7 +136,7 @@ class FilterTest extends TestCase
         ];
     }
 
-    public function testGetTranslationDomain()
+    public function testGetTranslationDomain(): void
     {
         $filter = new FooFilter();
         $this->assertNull($filter->getTranslationDomain());
@@ -144,7 +144,7 @@ class FilterTest extends TestCase
         $this->assertSame('baz', $filter->getTranslationDomain());
     }
 
-    public function testGetFieldMappingException()
+    public function testGetFieldMappingException(): void
     {
         $filter = new FooFilter();
         $filter->initialize('foo');
@@ -160,7 +160,7 @@ class FilterTest extends TestCase
         $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
     }
 
-    public function testGetFieldMapping()
+    public function testGetFieldMapping(): void
     {
         $fieldMapping = [
             'fieldName' => 'username',
@@ -177,7 +177,7 @@ class FilterTest extends TestCase
         $this->assertSame($fieldMapping, $filter->getFieldMapping());
     }
 
-    public function testGetParentAssociationMappings()
+    public function testGetParentAssociationMappings(): void
     {
         $parentAssociationMapping = [
             0 => ['fieldName' => 'user',
@@ -199,7 +199,7 @@ class FilterTest extends TestCase
         $this->assertSame($parentAssociationMapping, $filter->getParentAssociationMappings());
     }
 
-    public function testGetAssociationMappingException()
+    public function testGetAssociationMappingException(): void
     {
         $filter = new FooFilter();
         $filter->initialize('foo');
@@ -215,7 +215,7 @@ class FilterTest extends TestCase
         $this->fail('Failed asserting that exception of type "\RuntimeException" is thrown.');
     }
 
-    public function testGetAssociationMapping()
+    public function testGetAssociationMapping(): void
     {
         $associationMapping = [
             'fieldName' => 'user',

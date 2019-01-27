@@ -1,12 +1,6 @@
 Create child admins
 -------------------
 
-.. note::
-
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 Let us say you have a ``PlaylistAdmin`` and a ``VideoAdmin``. You can
 optionally declare the ``VideoAdmin`` to be a child of the ``PlaylistAdmin``.
 This will create new routes like, for example, ``/playlist/{id}/video/list``,
@@ -35,7 +29,7 @@ its parent:
             <!-- ... -->
 
             <call method="addChild">
-                <argument type="service" id="App\Admin\PlaylistAdmin" />
+                <argument type="service" id="App\Admin\PlaylistAdmin"/>
                 <argument>playlist</argument>
             </call>
         </service>
@@ -43,18 +37,14 @@ its parent:
 To display the ``VideoAdmin`` extend the menu in your ``PlaylistAdmin``
 class::
 
-    <?php
-
     namespace App\Admin;
 
     use Knp\Menu\ItemInterface as MenuItemInterface;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Admin\AdminInterface;
 
-    class PlaylistAdmin extends AbstractAdmin
+    final class PlaylistAdmin extends AbstractAdmin
     {
-        // ...
-
         protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
         {
             if (!$childAdmin && !in_array($action, ['edit', 'show'])) {
@@ -89,17 +79,13 @@ Be wary that being a child admin is optional, which means that regular
 routes will be created regardless of whether you actually need them
 or not. To get rid of them, you may override the ``configureRoutes`` method::
 
-    <?php
-
     namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class VideoAdmin extends AbstractAdmin
+    final class VideoAdmin extends AbstractAdmin
     {
-        // ...
-
         protected function configureRoutes(RouteCollection $collection)
         {
             if ($this->isChild()) {

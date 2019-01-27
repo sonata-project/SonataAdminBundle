@@ -5,12 +5,6 @@ You've been able to get the admin interface working in :doc:`the previous
 chapter <installation>`. In this tutorial, you'll learn how to tell SonataAdmin
 how an admin can manage your models.
 
-.. note::
-
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 Step 0: Create a Model
 ----------------------
 
@@ -55,9 +49,7 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
 
     // src/Entity/Category.php
 
-    // ...
     use Doctrine\Common\Collections\ArrayCollection;
-    // ...
 
     class Category
     {
@@ -71,8 +63,8 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
         private $name;
 
         /**
-        * @ORM\OneToMany(targetEntity="BlogPost", mappedBy="category")
-        */
+         * @ORM\OneToMany(targetEntity="BlogPost", mappedBy="category")
+         */
         private $blogPosts;
 
         public function __construct()
@@ -84,15 +76,13 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
         {
             return $this->blogPosts;
         }
-
-        // ...
     }
 
 After this, create the schema for these entities:
 
 .. code-block:: bash
 
-    $ bin/console doctrine:schema:create
+    bin/console doctrine:schema:create
 
 .. note::
 
@@ -115,6 +105,7 @@ Knowing this, let's create an Admin class for the ``Category`` entity. The
 easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin``::
 
     // src/Admin/CategoryAdmin.php
+
     namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -123,7 +114,7 @@ easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin`
     use Sonata\AdminBundle\Form\FormMapper;
     use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-    class CategoryAdmin extends AbstractAdmin
+    final class CategoryAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {

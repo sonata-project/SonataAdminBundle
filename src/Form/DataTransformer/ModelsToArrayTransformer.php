@@ -17,7 +17,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\CoreBundle\Model\Adapter\AdapterInterface;
+use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\Form\ChoiceList\LazyChoiceList;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\RuntimeException;
@@ -65,7 +65,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
 
         $args = \func_get_args();
 
-        if (3 == \func_num_args()) {
+        if (3 === \func_num_args()) {
             $this->legacyConstructor($args);
         } else {
             $this->modelManager = $args[0];

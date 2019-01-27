@@ -25,12 +25,12 @@ class ArrayToModelTransformerTest extends TestCase
 {
     private $modelManager = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
     }
 
-    public function testReverseTransformEntity()
+    public function testReverseTransformEntity(): void
     {
         $transformer = new ArrayToModelTransformer($this->modelManager, FooEntity::class);
 
@@ -41,7 +41,7 @@ class ArrayToModelTransformerTest extends TestCase
     /**
      * @dataProvider getReverseTransformTests
      */
-    public function testReverseTransform($value)
+    public function testReverseTransform($value): void
     {
         $transformer = new ArrayToModelTransformer($this->modelManager, FooEntity::class);
 
@@ -68,7 +68,7 @@ class ArrayToModelTransformerTest extends TestCase
     /**
      * @dataProvider getTransformTests
      */
-    public function testTransform($expected, $value)
+    public function testTransform($expected, $value): void
     {
         $transformer = new ArrayToModelTransformer($this->modelManager, FooEntity::class);
 

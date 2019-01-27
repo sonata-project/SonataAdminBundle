@@ -48,7 +48,7 @@ class TemplateRegistryExtensionTest extends TestCase
      */
     private $admin;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
         $this->container = $this->prophesize(ContainerInterface::class);
@@ -67,7 +67,7 @@ class TemplateRegistryExtensionTest extends TestCase
         );
     }
 
-    public function getFunctionsTest()
+    public function getFunctionsTest(): void
     {
         $expected = [
             new TwigFunction('get_admin_template', [$this->extension, 'getAdminTemplate']),
@@ -77,23 +77,23 @@ class TemplateRegistryExtensionTest extends TestCase
             new TwigFunction('get_admin_pool_template', [$this->extension, 'getGlobalTemplate'], ['deprecated' => true]),
         ];
 
-        $this->assertEquals($expected, $this->extension->getFunctions());
+        $this->assertSame($expected, $this->extension->getFunctions());
     }
 
-    public function testGetAdminTemplate()
+    public function testGetAdminTemplate(): void
     {
         // NEXT_MAJOR: Remove this line
         $this->container->get('admin.post')->willReturn($this->admin->reveal());
 
         $this->container->get('admin.post.template_registry')->willReturn($this->templateRegistry->reveal());
 
-        $this->assertEquals(
+        $this->assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
             $this->extension->getAdminTemplate('edit', 'admin.post')
         );
     }
 
-    public function testGetAdminTemplateFailure()
+    public function testGetAdminTemplateFailure(): void
     {
         // NEXT_MAJOR: Remove this line
         $this->container->get('admin.post')->willReturn(null);
@@ -105,15 +105,15 @@ class TemplateRegistryExtensionTest extends TestCase
         $this->expectExceptionMessage('You have requested a non-existent service "admin.post"');
         // $this->expectExceptionMessage('You have requested a non-existent service "admin.post.template_registry"');
 
-        $this->assertEquals(
+        $this->assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
             $this->extension->getAdminTemplate('edit', 'admin.post')
         );
     }
 
-    public function testGetGlobalTemplate()
+    public function testGetGlobalTemplate(): void
     {
-        $this->assertEquals(
+        $this->assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
             $this->extension->getGlobalTemplate('edit')
         );

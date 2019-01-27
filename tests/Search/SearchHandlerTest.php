@@ -34,7 +34,7 @@ class SearchHandlerTest extends TestCase
     {
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($admin) {
-            if ('fake' == $id) {
+            if ('fake' === $id) {
                 throw new ServiceNotFoundException('Fake service does not exist');
             }
 
@@ -44,7 +44,7 @@ class SearchHandlerTest extends TestCase
         return new Pool($container, 'title', 'logo', ['asd']);
     }
 
-    public function testBuildPagerWithNoGlobalSearchField()
+    public function testBuildPagerWithNoGlobalSearchField(): void
     {
         $filter = $this->getMockForAbstractClass(FilterInterface::class);
         $filter->expects($this->once())->method('getOption')->will($this->returnValue(false));
@@ -65,7 +65,7 @@ class SearchHandlerTest extends TestCase
      *
      * @dataProvider buildPagerWithGlobalSearchFieldProvider
      */
-    public function buildPagerWithGlobalSearchField($caseSensitive)
+    public function buildPagerWithGlobalSearchField($caseSensitive): void
     {
         $filter = $this->getMockForAbstractClass(FilterInterface::class);
         $filter->expects($this->once())->method('getOption')->will($this->returnValue(true));

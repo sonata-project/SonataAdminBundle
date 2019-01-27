@@ -21,12 +21,12 @@ class ModelToIdTransformerTest extends TestCase
 {
     private $modelManager = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
     }
 
-    public function testReverseTransformWhenPassing0AsId()
+    public function testReverseTransformWhenPassing0AsId(): void
     {
         $transformer = new ModelToIdTransformer($this->modelManager, 'TEST');
 
@@ -53,7 +53,7 @@ class ModelToIdTransformerTest extends TestCase
     /**
      * @dataProvider getReverseTransformValues
      */
-    public function testReverseTransform($value, $expected)
+    public function testReverseTransform($value, $expected): void
     {
         $transformer = new ModelToIdTransformer($this->modelManager, 'TEST2');
 
@@ -72,7 +72,7 @@ class ModelToIdTransformerTest extends TestCase
         ];
     }
 
-    public function testTransform()
+    public function testTransform(): void
     {
         $this->modelManager->expects($this->once())
             ->method('getNormalizedIdentifier')

@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
 class FieldDescriptionCollectionTest extends TestCase
 {
-    public function testMethods()
+    public function testMethods(): void
     {
         $collection = new FieldDescriptionCollection();
 
@@ -51,7 +51,7 @@ class FieldDescriptionCollectionTest extends TestCase
         $this->assertCount(0, $collection);
     }
 
-    public function testNonExistentField()
+    public function testNonExistentField(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Element "foo" does not exist.');
@@ -60,7 +60,7 @@ class FieldDescriptionCollectionTest extends TestCase
         $collection->get('foo');
     }
 
-    public function testArrayAccessSetField()
+    public function testArrayAccessSetField(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Cannot set value, use add');
@@ -70,7 +70,7 @@ class FieldDescriptionCollectionTest extends TestCase
         $collection['foo'] = null;
     }
 
-    public function testReorderListWithoutBatchField()
+    public function testReorderListWithoutBatchField(): void
     {
         $collection = new FieldDescriptionCollection();
 
@@ -89,7 +89,7 @@ class FieldDescriptionCollectionTest extends TestCase
         $this->assertSame($newOrder, $actualElements, 'the order is wrong');
     }
 
-    public function testReorderListWithBatchField()
+    public function testReorderListWithBatchField(): void
     {
         $collection = new FieldDescriptionCollection();
 

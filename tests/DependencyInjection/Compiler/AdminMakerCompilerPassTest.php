@@ -30,7 +30,7 @@ class AdminMakerCompilerPassTest extends TestCase
      */
     private $adminMaker;
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists('Symfony\Component\Console\CommandLoader\CommandLoaderInterface')) {
             $this->markTestSkipped('Test only available for SF 3.4');
@@ -41,7 +41,7 @@ class AdminMakerCompilerPassTest extends TestCase
         $this->adminMaker->replaceArgument(Argument::type('integer'), Argument::any())->shouldBeCalledTimes(2);
     }
 
-    public function testProcess()
+    public function testProcess(): void
     {
         $containerBuilderMock = $this->prophesize(ContainerBuilder::class);
 

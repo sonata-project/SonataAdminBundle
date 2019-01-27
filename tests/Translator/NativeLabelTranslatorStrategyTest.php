@@ -21,7 +21,7 @@ class NativeLabelTranslatorStrategyTest extends TestCase
     /**
      * @dataProvider getLabelTests
      */
-    public function testLabel($expectedLabel, $label)
+    public function testLabel($expectedLabel, $label): void
     {
         $strategy = new NativeLabelTranslatorStrategy();
 

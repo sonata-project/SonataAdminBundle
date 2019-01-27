@@ -22,7 +22,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Sonata\CoreBundle\Validator\ErrorElement;
+use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -703,3 +703,5 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 //    NEXT_MAJOR: uncomment this method in 4.0
     // public function isDefaultFilter($name);
 }
+
+class_exists(\Sonata\Form\Validator\ErrorElement::class);

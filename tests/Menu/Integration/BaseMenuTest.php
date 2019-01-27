@@ -29,7 +29,7 @@ abstract class BaseMenuTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         // Adapt to both bundle and project-wide test strategy
         $twigPaths = array_filter([

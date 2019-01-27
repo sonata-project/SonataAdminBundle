@@ -32,7 +32,7 @@ abstract class AbstractVoterTest extends TestCase
      *
      * @dataProvider provideData
      */
-    public function testMatching($itemData, $voterData, $route, $expected)
+    public function testMatching($itemData, $voterData, $route, $expected): void
     {
         $item = $this->createItem($itemData);
         $voter = $this->createVoter($voterData, $route);

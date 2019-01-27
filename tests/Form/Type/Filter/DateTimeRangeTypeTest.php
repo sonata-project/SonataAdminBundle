@@ -21,7 +21,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class DateTimeRangeTypeTest extends TypeTestCase
 {
-    public function testGetDefaultOptions()
+    public function testGetDefaultOptions(): void
     {
         $stub = $this->getMockForAbstractClass(TranslatorInterface::class);
 

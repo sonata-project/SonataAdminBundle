@@ -34,7 +34,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
     /**
      * @group legacy
      */
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists(SimpleChoiceList::class)) {
             $this->markTestSkipped('Test only available for < SF2.8');
@@ -56,7 +56,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
     /**
      * @dataProvider getTransformTests
      */
-    public function testTransform($expected, $collection, $identifiers)
+    public function testTransform($expected, $collection, $identifiers): void
     {
         $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
@@ -96,7 +96,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
         ];
     }
 
-    public function testReverseTransformWithException1()
+    public function testReverseTransformWithException1(): void
     {
         $this->expectException(UnexpectedTypeException::class, 'Expected argument of type "\ArrayAccess", "NULL" given');
 
@@ -109,7 +109,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
         $transformer->reverseTransform([]);
     }
 
-    public function testReverseTransformWithException2()
+    public function testReverseTransformWithException2(): void
     {
         $this->expectException(UnexpectedTypeException::class, 'Expected argument of type "array", "integer" given');
 
@@ -125,7 +125,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
     /**
      * @dataProvider getReverseTransformEmptyTests
      */
-    public function testReverseTransformEmpty($keys)
+    public function testReverseTransformEmpty($keys): void
     {
         $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
@@ -144,7 +144,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
         ];
     }
 
-    public function testReverseTransform()
+    public function testReverseTransform(): void
     {
         $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
@@ -177,7 +177,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
         $this->assertCount(2, $collection);
     }
 
-    public function testReverseTransformWithNonexistentEntityKey()
+    public function testReverseTransformWithNonexistentEntityKey(): void
     {
         $this->expectException(TransformationFailedException::class, 'The entities with keys "nonexistent" could not be found');
 

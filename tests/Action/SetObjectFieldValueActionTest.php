@@ -68,7 +68,7 @@ final class SetObjectFieldValueActionTest extends TestCase
      */
     private $validator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->twig = new Environment(new ArrayLoader([
             'admin_template' => 'renderedTemplate',
@@ -86,7 +86,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         );
     }
 
-    public function testSetObjectFieldValueAction()
+    public function testSetObjectFieldValueAction(): void
     {
         $object = new Foo();
         $request = new Request([
@@ -131,10 +131,10 @@ final class SetObjectFieldValueActionTest extends TestCase
         $action = $this->action;
         $response = $action($request);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
     }
 
-    public function testSetObjectFieldValueActionOnARelationField()
+    public function testSetObjectFieldValueActionOnARelationField(): void
     {
         $object = new Baz();
         $associationObject = new Bar();
@@ -185,10 +185,10 @@ final class SetObjectFieldValueActionTest extends TestCase
         $action = $this->action;
         $response = $action($request);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
     }
 
-    public function testSetObjectFieldValueActionWithViolations()
+    public function testSetObjectFieldValueActionWithViolations(): void
     {
         $bar = new Bar();
         $object = new Baz();
@@ -218,7 +218,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $action = $this->action;
         $response = $action($request);
 
-        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertSame(400, $response->getStatusCode());
         $this->assertSame(json_encode("error1\nerror2"), $response->getContent());
     }
 

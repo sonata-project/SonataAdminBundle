@@ -35,7 +35,7 @@ class ConfigureEventTest extends TestCase
      */
     private $mapper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->admin = $this->createMock(AdminInterface::class);
         $this->mapper = $this->getMockBuilder(BaseMapper::class)
@@ -45,12 +45,12 @@ class ConfigureEventTest extends TestCase
         $this->event = new ConfigureEvent($this->admin, $this->mapper, 'Foo');
     }
 
-    public function testGetType()
+    public function testGetType(): void
     {
         $this->assertSame('Foo', $this->event->getType());
     }
 
-    public function testGetAdmin()
+    public function testGetAdmin(): void
     {
         $result = $this->event->getAdmin();
 
@@ -58,7 +58,7 @@ class ConfigureEventTest extends TestCase
         $this->assertSame($this->admin, $result);
     }
 
-    public function testGetMapper()
+    public function testGetMapper(): void
     {
         $result = $this->event->getMapper();
 

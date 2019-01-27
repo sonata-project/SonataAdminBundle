@@ -31,7 +31,7 @@ class TabMenuTest extends BaseMenuTest
         return parent::getTranslator();
     }
 
-    public function testLabelTranslationNominalCase()
+    public function testLabelTranslationNominalCase(): void
     {
         $translatorProphecy = $this->prophesize(TranslatorInterface::class);
         $translatorProphecy
@@ -50,7 +50,7 @@ class TabMenuTest extends BaseMenuTest
         $this->assertContains('my-translation', $this->renderMenu($menu));
     }
 
-    public function testLabelTranslationWithParameters()
+    public function testLabelTranslationWithParameters(): void
     {
         $params = ['my' => 'param'];
         $translatorProphecy = $this->prophesize(TranslatorInterface::class);
@@ -72,7 +72,7 @@ class TabMenuTest extends BaseMenuTest
         $this->assertContains('my-translation', $this->renderMenu($menu));
     }
 
-    public function testLabelTranslationDomainOverride()
+    public function testLabelTranslationDomainOverride(): void
     {
         $translatorProphecy = $this->prophesize(TranslatorInterface::class);
         $translatorProphecy

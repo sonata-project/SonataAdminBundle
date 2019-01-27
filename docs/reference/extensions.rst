@@ -6,21 +6,13 @@ instances. To create an extension your class
 must implement the interface ``Sonata\AdminBundle\Admin\AdminExtensionInterface``
 and be registered as a service. The interface defines a number of functions which
 you can use to customize the edit form, list view, form validation, alter newly
-created objects and other admin features.
-
-.. note::
-
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
-.. code-block:: php
+created objects and other admin features::
 
     use Sonata\AdminBundle\Admin\AbstractAdminExtension;
     use Sonata\AdminBundle\Form\FormMapper;
     use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-    class PublishStatusAdminExtension extends AbstractAdminExtension
+    final class PublishStatusAdminExtension extends AbstractAdminExtension
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -51,6 +43,8 @@ The higher the priority, the earlier it's executed.
 
     .. code-block:: yaml
 
+        # config/services.yaml
+
         services:
             app.publish.extension:
                 class: App\Admin\Extension\PublishStatusAdminExtension
@@ -68,7 +62,7 @@ The higher the priority, the earlier it's executed.
                 tags:
                     - { name: sonata.admin.extension, priority: 5 }
 
-The second option is to add it to your config.yml file.
+The second option is to add it to your config.
 
 .. configuration-block::
 
@@ -82,7 +76,7 @@ The second option is to add it to your config.yml file.
                     admins:
                         - app.admin.article
 
-Using the ``config.yml`` file has some advantages, it allows you to keep your configuration centralized and it provides some
+Using ``config/packages/sonata_admin.yaml`` file has some advantages, it allows you to keep your configuration centralized and it provides some
 extra options you can use to wire your extensions in a more dynamic way. This means you can change the behaviour of all
 admins that manage a class of a specific type.
 
@@ -106,12 +100,11 @@ instanceof:
     of that class the extension will be added to that admin.
 
 uses:
-    Requires PHP >= 5.4.0. Specify one or more traits. If the managed class of an admin uses one of the specified traits the extension will be
+    Specify one or more traits. If the managed class of an admin uses one of the specified traits the extension will be
     added to that admin.
 
 priority:
     Can be a positive or negative integer. The higher the priority, the earlier it’s executed.
-
 
 .. configuration-block::
 

@@ -28,14 +28,14 @@ use Symfony\Component\Form\Guess\TypeGuess;
  */
 class TypeGuesserChainTest extends TestCase
 {
-    public function testConstructorWithException()
+    public function testConstructorWithException(): void
     {
         $this->expectException(UnexpectedTypeException::class);
 
         $typeGuesserChain = new TypeGuesserChain([new \stdClass()]);
     }
 
-    public function testGuessType()
+    public function testGuessType(): void
     {
         $typeGuess1 = new TypeGuess('foo1', [], Guess::MEDIUM_CONFIDENCE);
         $guesser1 = $this->getMockForAbstractClass(TypeGuesserInterface::class);

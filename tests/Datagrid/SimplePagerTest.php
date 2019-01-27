@@ -26,7 +26,7 @@ use Sonata\AdminBundle\Datagrid\SimplePager;
  */
 class SimplePagerTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->pager = new SimplePager(10, 2);
         $this->proxyQuery = $this->getMockBuilder(ProxyQueryInterface::class)
@@ -34,7 +34,7 @@ class SimplePagerTest extends TestCase
             ->getMock();
     }
 
-    public function testInitNumPages()
+    public function testInitNumPages(): void
     {
         $pager = new SimplePager(10, 2);
         $this->proxyQuery->expects($this->once())
@@ -56,7 +56,7 @@ class SimplePagerTest extends TestCase
         $this->assertSame(2, $pager->getLastPage());
     }
 
-    public function testInitOffset()
+    public function testInitOffset(): void
     {
         $this->proxyQuery->expects($this->once())
             ->method('execute')
@@ -79,7 +79,7 @@ class SimplePagerTest extends TestCase
         $this->assertSame(3, $this->pager->getLastPage());
     }
 
-    public function testNoPagesPerConfig()
+    public function testNoPagesPerConfig(): void
     {
         $this->proxyQuery->expects($this->once())
             ->method('setMaxResults')
@@ -98,7 +98,7 @@ class SimplePagerTest extends TestCase
         $this->assertSame(0, $this->pager->getLastPage());
     }
 
-    public function testNoPagesForNoResults()
+    public function testNoPagesForNoResults(): void
     {
         $this->proxyQuery->expects($this->once())
             ->method('execute')
@@ -114,11 +114,11 @@ class SimplePagerTest extends TestCase
 
         $this->pager->setQuery($this->proxyQuery);
         $this->pager->init();
-        $this->assertEquals(1, $this->pager->getLastPage());
-        $this->assertEquals(0, $this->pager->getNbResults());
+        $this->assertSame(1, $this->pager->getLastPage());
+        $this->assertSame(0, $this->pager->getNbResults());
     }
 
-    public function testInitNoQuery()
+    public function testInitNoQuery(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->pager->init();

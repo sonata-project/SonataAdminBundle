@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -17,7 +19,7 @@ class DemoAdminBundle extends Bundle
 {
     protected $path = null;
 
-    public function setPath($path)
+    public function setPath($path): void
     {
         $this->path = $path;
     }

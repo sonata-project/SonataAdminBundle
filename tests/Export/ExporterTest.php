@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Filter;
 
-use Exporter\Source\ArraySourceIterator;
-use Exporter\Source\SourceIteratorInterface;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Export\Exporter;
+use Sonata\Exporter\Source\ArraySourceIterator;
+use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ExporterTest extends TestCase
 {
-    public function testFilter()
+    public function testFilter(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -39,7 +39,7 @@ class ExporterTest extends TestCase
     /**
      * @dataProvider getGetResponseTests
      */
-    public function testGetResponse($format, $filename, $contentType)
+    public function testGetResponse($format, $filename, $contentType): void
     {
         $source = new ArraySourceIterator([
             ['foo' => 'bar'],

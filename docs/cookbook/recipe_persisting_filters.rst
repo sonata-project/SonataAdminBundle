@@ -5,7 +5,6 @@ Persisting filters allow your application to save the filters the authenticated
 user has submitted.
 Then the saved filters will be reused if the page is displayed again.
 
-
 Enable Filters Persistence
 --------------------------
 
@@ -21,7 +20,6 @@ You can enable it in your ``sonata_admin`` configuration :
         sonata_admin:
             persist_filters: true
 
-
 Choose the persistence strategy
 -------------------------------
 
@@ -36,7 +34,6 @@ implements the ``Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface``
 interface and registering it as a service.
 Then the only thing to do is to tell SonataAdmin to use this service as
 filter persister.
-
 
 Globally :
 
@@ -58,10 +55,10 @@ Per Admin :
 
         <!-- config/services.xml -->
 
-        <service id="app.admin.user" class="AppBundle\Admin\UserAdmin">
-            <argument />
-            <argument>AppBundle\Entity\User</argument>
-            <argument />
+        <service id="app.admin.user" class="App\Admin\UserAdmin">
+            <argument/>
+            <argument>App\Entity\User</argument>
+            <argument/>
             <tag
                 name="sonata.admin"
                 manager_type="orm"
@@ -75,10 +72,10 @@ Per Admin :
 
         services:
             app.admin.user:
-                class: AppBundle\Admin\UserAdmin
+                class: App\Admin\UserAdmin
                 arguments:
                     - ~
-                    - AppBundle\Entity\User
+                    - App\Entity\User
                     - ~
                 tags:
                     -
@@ -95,18 +92,17 @@ All registered Admins will have the feature enabled.
 
 You can disable it per Admin if you want.
 
-
 .. configuration-block::
 
     .. code-block:: xml
 
         <!-- config/services.xml -->
 
-        <service id="app.admin.user" class="AppBundle\Admin\UserAdmin">
-            <argument />
-            <argument>AppBundle\Entity\User</argument>
-            <argument />
-            <tag name="sonata.admin" manager_type="orm" persist_filters="false" />
+        <service id="app.admin.user" class="App\Admin\UserAdmin">
+            <argument/>
+            <argument>App\Entity\User</argument>
+            <argument/>
+            <tag name="sonata.admin" manager_type="orm" persist_filters="false"/>
         </service>
 
     .. code-block:: yaml
@@ -115,10 +111,10 @@ You can disable it per Admin if you want.
 
         services:
             app.admin.user:
-                class: AppBundle\Admin\UserAdmin
+                class: App\Admin\UserAdmin
                 arguments:
                     - ~
-                    - AppBundle\Entity\User
+                    - App\Entity\User
                     - ~
                 tags:
                     - { name: sonata.admin, manager_type: orm, persist_filters: false }
@@ -128,4 +124,3 @@ You can disable it per Admin if you want.
     Both ``persist_filters`` and ``filter_persister`` can be used globally
     and per-admin, which provide you the most flexible way to configure
     this feature.
-

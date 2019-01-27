@@ -21,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ModelHiddenTypeTest extends TypeTestCase
 {
-    public function testGetDefaultOptions()
+    public function testGetDefaultOptions(): void
     {
         $type = new ModelHiddenType();
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
@@ -36,13 +36,13 @@ class ModelHiddenTypeTest extends TypeTestCase
         $this->assertSame('\Foo', $options['class']);
     }
 
-    public function testGetBlockPrefix()
+    public function testGetBlockPrefix(): void
     {
         $type = new ModelHiddenType();
         $this->assertSame('sonata_type_model_hidden', $type->getBlockPrefix());
     }
 
-    public function testGetParent()
+    public function testGetParent(): void
     {
         $type = new ModelHiddenType();
         $this->assertSame(HiddenType::class, $type->getParent());

@@ -3,12 +3,6 @@ The Export action
 
 This document will cover the Export action and related configuration options.
 
-.. note::
-
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 Basic configuration
 -------------------
 
@@ -37,8 +31,6 @@ persistence backend you are using, but for instance, the doctrine ORM backend
 exports all fields (associations are not exported). If you want to change this
 behavior for a specific admin, you can override the ``getExportFields()`` method::
 
-    <?php
-
     public function getExportFields()
     {
         return ['givenName', 'familyName', 'contact.phone', 'getAddress'];
@@ -50,9 +42,7 @@ behavior for a specific admin, you can override the ``getExportFields()`` method
     of `Contact` entity. Or use a getter if you have some virtual field.
 
 You can also tweak the list by creating an admin extension that implements the
-``configureExportFields()`` method.
-
-.. code-block:: php
+``configureExportFields()`` method::
 
     public function configureExportFields(AdminInterface $admin, array $fields)
     {
@@ -61,16 +51,11 @@ You can also tweak the list by creating an admin extension that implements the
         return $fields;
     }
 
-
 Overriding the export formats for a specific admin
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Changing the export formats can be done by defining a ``getExportFormats()``
-method in your admin class.
-
-.. code-block:: php
-
-    <?php
+method in your admin class::
 
     public function getExportFormats()
     {
@@ -82,10 +67,9 @@ Customizing the query used to fetch the results
 If you want to customize the query used to fetch the results for a specific admin,
 you can override the ``getDataSourceIterator()`` method::
 
-    <?php
     // src/Admin/PersonAdmin.php
 
-    class PersonAdmin extends AbstractAdmin
+    final class PersonAdmin extends AbstractAdmin
     {
         public function getDataSourceIterator()
         {
@@ -101,4 +85,4 @@ you can override the ``getDataSourceIterator()`` method::
     * customising the templates used to render the output
     * publish the exporter documentation on the project's website and update the link
 
-.. _`the exporter bundle documentation`: https://github.com/sonata-project/exporter/blob/1.x/docs/reference/symfony.rst
+.. _`the exporter bundle documentation`: https://github.com/sonata-project/exporter/blob/2.x/docs/reference/symfony.rst

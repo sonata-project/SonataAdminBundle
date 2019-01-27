@@ -24,12 +24,12 @@ class ModelToIdPropertyTransformerTest extends TestCase
 {
     private $modelManager = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
     }
 
-    public function testReverseTransform()
+    public function testReverseTransform(): void
     {
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
 
@@ -57,7 +57,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
     /**
      * @dataProvider getReverseTransformMultipleTests
      */
-    public function testReverseTransformMultiple($expected, $params, $entity1, $entity2, $entity3)
+    public function testReverseTransformMultiple($expected, $params, $entity1, $entity2, $entity3): void
     {
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
@@ -65,19 +65,19 @@ class ModelToIdPropertyTransformerTest extends TestCase
             ->expects($this->any())
             ->method('find')
             ->will($this->returnCallback(function ($className, $value) use ($entity1, $entity2, $entity3) {
-                if (Foo::class != $className) {
+                if (Foo::class !== $className) {
                     return;
                 }
 
-                if (123 == $value) {
+                if (123 === $value) {
                     return $entity1;
                 }
 
-                if (456 == $value) {
+                if (456 === $value) {
                     return $entity2;
                 }
 
-                if (789 == $value) {
+                if (789 === $value) {
                     return $entity3;
                 }
             }));
@@ -119,7 +119,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
     /**
      * @dataProvider getReverseTransformMultipleInvalidTypeTests
      */
-    public function testReverseTransformMultipleInvalidTypeTests($expected, $params, $type)
+    public function testReverseTransformMultipleInvalidTypeTests($expected, $params, $type): void
     {
         $this->expectException(
             \UnexpectedValueException::class);
@@ -151,7 +151,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
         ];
     }
 
-    public function testTransform()
+    public function testTransform(): void
     {
         $entity = new Foo();
         $entity->setBar('example');
@@ -171,7 +171,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->assertSame([123, '_labels' => ['example']], $transformer->transform($entity));
     }
 
-    public function testTransformWorksWithArrayAccessEntity()
+    public function testTransformWorksWithArrayAccessEntity(): void
     {
         $entity = new FooArrayAccess();
         $entity->setBar('example');
@@ -185,7 +185,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->assertSame([123, '_labels' => ['example']], $transformer->transform($entity));
     }
 
-    public function testTransformToStringCallback()
+    public function testTransformToStringCallback(): void
     {
         $entity = new Foo();
         $entity->setBar('example');
@@ -202,7 +202,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->assertSame([123, '_labels' => ['bazz']], $transformer->transform($entity));
     }
 
-    public function testTransformToStringCallbackException()
+    public function testTransformToStringCallbackException(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Callback in "to_string_callback" option doesn`t contain callable function.');
@@ -220,7 +220,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $transformer->transform($entity);
     }
 
-    public function testTransformMultiple()
+    public function testTransformMultiple(): void
     {
         $entity1 = new Foo();
         $entity1->setBar('foo');
@@ -239,15 +239,15 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->modelManager->expects($this->exactly(3))
             ->method('getIdentifierValues')
             ->will($this->returnCallback(function ($value) use ($entity1, $entity2, $entity3) {
-                if ($value == $entity1) {
+                if ($value === $entity1) {
                     return [123];
                 }
 
-                if ($value == $entity2) {
+                if ($value === $entity2) {
                     return [456];
                 }
 
-                if ($value == $entity3) {
+                if ($value === $entity3) {
                     return [789];
                 }
 
@@ -270,7 +270,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
         ], $transformer->transform($collection));
     }
 
-    public function testTransformCollectionException()
+    public function testTransformCollectionException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
@@ -280,7 +280,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $transformer->transform($entity);
     }
 
-    public function testTransformArrayAccessException()
+    public function testTransformArrayAccessException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
@@ -291,7 +291,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $transformer->transform($entity);
     }
 
-    public function testTransformEntityException()
+    public function testTransformEntityException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('A single selection must be passed a single value not a collection. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');

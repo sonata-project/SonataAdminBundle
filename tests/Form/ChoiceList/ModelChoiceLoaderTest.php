@@ -22,12 +22,12 @@ class ModelChoiceLoaderTest extends TestCase
 {
     private $modelManager = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
     }
 
-    public function testLoadFromEntityWithSamePropertyValues()
+    public function testLoadFromEntityWithSamePropertyValues(): void
     {
         $fooA = new Foo();
         $fooA->setBar(1);

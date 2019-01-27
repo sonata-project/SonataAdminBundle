@@ -1,12 +1,6 @@
 Templates
 =========
 
-.. note::
-
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 ``SonataAdminBundle`` comes with a significant amount of ``twig`` files used to display the
 different parts of each ``Admin`` action's page. If you read the ``Templates`` part of the
 :doc:`architecture` section of this guide, you should know by now how these are organized in
@@ -108,7 +102,7 @@ to customize the ones you need. You can simply extend the ones you want in your 
 and tell ``SonataAdminBundle`` to use your templates instead of the default ones. You can do so
 in several ways.
 
-You can specify your templates in the config.yml file, like so:
+You can specify your templates in the config file:
 
 .. configuration-block::
 
@@ -118,41 +112,41 @@ You can specify your templates in the config.yml file, like so:
 
         sonata_admin:
             templates:
-                layout:                         '@SonataAdmin/standard_layout.html.twig'
-                ajax:                           '@SonataAdmin/ajax_layout.html.twig'
-                list:                           '@SonataAdmin/CRUD/list.html.twig'
-                show:                           '@SonataAdmin/CRUD/show.html.twig'
-                show_compare:                   '@SonataAdmin/CRUD/show_compare.html.twig'
-                edit:                           '@SonataAdmin/CRUD/edit.html.twig'
-                history:                        '@SonataAdmin/CRUD/history.html.twig'
-                preview:                        '@SonataAdmin/CRUD/preview.html.twig'
-                delete:                         '@SonataAdmin/CRUD/delete.html.twig'
-                batch:                          '@SonataAdmin/CRUD/list__batch.html.twig'
-                acl:                            '@SonataAdmin/CRUD/acl.html.twig'
-                action:                         '@SonataAdmin/CRUD/action.html.twig'
-                select:                         '@SonataAdmin/CRUD/list__select.html.twig'
-                filter:                         '@SonataAdmin/Form/filter_admin_fields.html.twig'
-                dashboard:                      '@SonataAdmin/Core/dashboard.html.twig'
-                search:                         '@SonataAdmin/Core/search.html.twig'
-                batch_confirmation:             '@SonataAdmin/CRUD/batch_confirmation.html.twig'
-                inner_list_row:                 '@SonataAdmin/CRUD/list_inner_row.html.twig'
-                base_list_field:                '@SonataAdmin/CRUD/base_list_field.html.twig'
-                list_block:                     '@SonataAdmin/Block/block_admin_list.html.twig'
-                user_block:                     '@SonataAdmin/Core/user_block.html.twig'
-                add_block:                      '@SonataAdmin/Core/add_block.html.twig'
-                pager_links:                    '@SonataAdmin/Pager/links.html.twig'
-                pager_results:                  '@SonataAdmin/Pager/results.html.twig'
-                tab_menu_template:              '@SonataAdmin/Core/tab_menu_template.html.twig'
-                history_revision_timestamp:     '@SonataAdmin/CRUD/history_revision_timestamp.html.twig'
-                short_object_description:       '@SonataAdmin/Helper/short-object-description.html.twig'
-                search_result_block:            '@SonataAdmin/Block/block_search_result.html.twig'
-                action_create:                  '@SonataAdmin/CRUD/dashboard__action_create.html.twig'
-                button_acl:                     '@SonataAdmin/Button/acl_button.html.twig'
-                button_create:                  '@SonataAdmin/Button/create_button.html.twig'
-                button_edit:                    '@SonataAdmin/Button/edit_button.html.twig'
-                button_history:                 '@SonataAdmin/Button/history_button.html.twig'
-                button_list:                    '@SonataAdmin/Button/list_button.html.twig'
-                button_show:                    '@SonataAdmin/Button/show_button.html.twig'
+                layout:                     '@SonataAdmin/standard_layout.html.twig'
+                ajax:                       '@SonataAdmin/ajax_layout.html.twig'
+                list:                       '@SonataAdmin/CRUD/list.html.twig'
+                show:                       '@SonataAdmin/CRUD/show.html.twig'
+                show_compare:               '@SonataAdmin/CRUD/show_compare.html.twig'
+                edit:                       '@SonataAdmin/CRUD/edit.html.twig'
+                history:                    '@SonataAdmin/CRUD/history.html.twig'
+                preview:                    '@SonataAdmin/CRUD/preview.html.twig'
+                delete:                     '@SonataAdmin/CRUD/delete.html.twig'
+                batch:                      '@SonataAdmin/CRUD/list__batch.html.twig'
+                acl:                        '@SonataAdmin/CRUD/acl.html.twig'
+                action:                     '@SonataAdmin/CRUD/action.html.twig'
+                select:                     '@SonataAdmin/CRUD/list__select.html.twig'
+                filter:                     '@SonataAdmin/Form/filter_admin_fields.html.twig'
+                dashboard:                  '@SonataAdmin/Core/dashboard.html.twig'
+                search:                     '@SonataAdmin/Core/search.html.twig'
+                batch_confirmation:         '@SonataAdmin/CRUD/batch_confirmation.html.twig'
+                inner_list_row:             '@SonataAdmin/CRUD/list_inner_row.html.twig'
+                base_list_field:            '@SonataAdmin/CRUD/base_list_field.html.twig'
+                list_block:                 '@SonataAdmin/Block/block_admin_list.html.twig'
+                user_block:                 '@SonataAdmin/Core/user_block.html.twig'
+                add_block:                  '@SonataAdmin/Core/add_block.html.twig'
+                pager_links:                '@SonataAdmin/Pager/links.html.twig'
+                pager_results:              '@SonataAdmin/Pager/results.html.twig'
+                tab_menu_template:          '@SonataAdmin/Core/tab_menu_template.html.twig'
+                history_revision_timestamp: '@SonataAdmin/CRUD/history_revision_timestamp.html.twig'
+                short_object_description:   '@SonataAdmin/Helper/short-object-description.html.twig'
+                search_result_block:        '@SonataAdmin/Block/block_search_result.html.twig'
+                action_create:              '@SonataAdmin/CRUD/dashboard__action_create.html.twig'
+                button_acl:                 '@SonataAdmin/Button/acl_button.html.twig'
+                button_create:              '@SonataAdmin/Button/create_button.html.twig'
+                button_edit:                '@SonataAdmin/Button/edit_button.html.twig'
+                button_history:             '@SonataAdmin/Button/history_button.html.twig'
+                button_list:                '@SonataAdmin/Button/list_button.html.twig'
+                button_show:                '@SonataAdmin/Button/show_button.html.twig'
 
 Notice that this is a global change, meaning it will affect all model mappings
 automatically, both for ``Admin`` mappings defined by you and by other bundles.
@@ -166,11 +160,13 @@ can specify the templates to use in the ``Admin`` service definition:
 
     .. code-block:: xml
 
+       <!-- config/services.xml -->
+
         <service id="app.admin.post" class="App\Admin\PostAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" />
-            <argument />
+            <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
+            <argument/>
             <argument>App\Entity\Post</argument>
-            <argument />
+            <argument/>
             <call method="setTemplate">
                 <argument>edit</argument>
                 <argument>@App/PostAdmin/edit.html.twig</argument>
@@ -178,6 +174,8 @@ can specify the templates to use in the ``Admin`` service definition:
         </service>
 
     .. code-block:: yaml
+
+        # config/services.yaml
 
         services:
             app.admin.post:

@@ -1,7 +1,9 @@
 Customizing a mosaic list
 =========================
 
-Since version 3.0, the AdminBundle now include a mosaic list mode in order to have a more visual representation.
+.. versionadded:: 3.0
+
+   Since 3.0, the AdminBundle includes a mosaic list mode in order to have a more visual representation.
 
 .. figure:: ../images/list_mosaic_default.png
    :align: center
@@ -10,13 +12,29 @@ Since version 3.0, the AdminBundle now include a mosaic list mode in order to ha
 
 It is possible to configure the default view by creating a dedicated template.
 
+.. note::
+
+   If you want to change the default mosaic background globally,
+   please use the following configuration:
+
+    .. code-block:: yaml
+    
+        # config/packages/sonata_admin.yaml
+
+        sonata_admin:
+            # ...
+            options:
+                # ...
+                mosaic_background: '/path/to/image.png' # or use base64
+
 First, configure the ``outer_list_rows_mosaic`` template key:
 
 .. code-block:: xml
 
+      <!-- config/services.xml -->
+
        <service id="sonata.media.admin.media" class="%sonata.media.admin.media.class%">
-            <tag name="sonata.admin" manager_type="orm" group="sonata_media" label_catalogue="%sonata.media.admin.media.translation_domain%" label="media" label_translator_strategy="sonata.admin.label.strategy.underscore" />
-            <argument />
+            <argument/>
             <argument>%sonata.media.admin.media.entity%</argument>
             <argument>%sonata.media.admin.media.controller%</argument>
             <call method="setTemplates">
@@ -24,8 +42,15 @@ First, configure the ``outer_list_rows_mosaic`` template key:
                     <argument key="outer_list_rows_mosaic">@SonataMedia/MediaAdmin/list_outer_rows_mosaic.html.twig</argument>
                 </argument>
             </call>
+            <tag
+                name="sonata.admin"
+                manager_type="orm"
+                group="sonata_media"
+                label_catalogue="%sonata.media.admin.media.translation_domain%"
+                label="media"
+                label_translator_strategy="sonata.admin.label.strategy.underscore"
+                />
        </service>
-
 
 The ``list_outer_rows_mosaic.html.twig`` is the name of one mosaic's tile. You should also extends the template and overwrite the default blocks availables.
 
@@ -47,7 +72,7 @@ The ``list_outer_rows_mosaic.html.twig`` is the name of one mosaic's tile. You s
             ({{ object.length }})
         {% endif %}
 
-        <br />
+        <br/>
 
         {% if object.authorname is not empty %}
            {{ object.authorname }}
@@ -72,26 +97,20 @@ The ``list_outer_rows_mosaic.html.twig`` is the name of one mosaic's tile. You s
         {% endif %}
     {% endblock %}
 
+Block types
+-----------
 
-Block types:
  - ``sonata_mosaic_background``: this block is the background value defined in the ObjectMetadata object.
  - ``sonata_mosaic_default_view``: this block is used when the list is displayed.
  - ``sonata_mosaic_hover_view``: this block is used when the mouse is over the tile.
  - ``sonata_mosaic_description``: this block will be always on screen and should represent the entity's name.
 
-
 The ``ObjectMetadata`` object is returned by the related admin class, and can be
 used to define which image field from the entity will be displayed if available.
-For instance, the SonataMediaBundle defines the method as:
+For instance, the SonataMediaBundle defines the method as::
 
-.. code-block:: php
-
-    <?php
-
-    class MediaAdmin extends AbstractAdmin
+    final class MediaAdmin extends AbstractAdmin
     {
-        // [...] others methods
-
         public function getObjectMetadata($object)
         {
             $provider = $this->pool->getProvider($object->getProviderName());
@@ -105,45 +124,31 @@ For instance, the SonataMediaBundle defines the method as:
 .. note::
 
     In your own admin, media is just a field and not the ``$object``. Therefore,
-    the code above must be updated this way:
+    the code above must be updated this way::
 
-.. code-block:: php
+        public function getObjectMetadata($object): Metadata
+        {
+            $media = $object->getMediaField();
 
-    <?php
+            $provider = $this->pool->getProvider($media->getProviderName());
 
-    // ...
+            $url = $provider->generatePublicUrl($media, $provider->getFormatName($media, 'admin'));
 
-    public function getObjectMetadata($object): Metadata
-    {
-        $media = $object->getMediaField();
-        $provider = $this->pool->getProvider($media->getProviderName());
-        $url = $provider->generatePublicUrl($media, $provider->getFormatName($media, 'admin'));
-
-        return new Metadata($media->getName(), $media->getDescription(), $url);
-    }
+            return new Metadata($media->getName(), $media->getDescription(), $url);
+        }
 
 You will also have to use dependency injection. For this, first define
-the ``$pool`` variable and override the constructor:
-
-.. code-block:: php
-
-    <?php
-
-    // ...
+the ``$pool`` variable and override the constructor::
 
     use Sonata\MediaBundle\Provider\Pool;
 
-        // ...
+    private $pool;
 
-        private $pool;
+    public function __construct(string $code, string $class, string $baseControllerName, Pool $pool)
+    {
+       $this->pool = $pool;
 
-        // ...
-
-        public function __construct(string $code, string $class, string $baseControllerName, Pool $pool)
-        {
-            $this->pool = $pool;
-
-            parent::__construct($code, $class, $baseControllerName);
+       parent::__construct($code, $class, $baseControllerName);
     }
 
 Then add ``'@sonata.media.pool'`` to your service definition arguments:
@@ -151,6 +156,7 @@ Then add ``'@sonata.media.pool'`` to your service definition arguments:
 .. code-block:: yaml
 
     # config/services.yaml
+
     services:
         app.admin.post:
             class: App\Admin\PostAdmin
