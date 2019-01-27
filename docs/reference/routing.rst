@@ -127,6 +127,8 @@ the admin variable's ``generateUrl()`` command:
 
     <a href="{{ admin.generateUrl('list') }}">List</a>
 
+.. code-block:: html+jinja
+
     <a href="{{ admin.generateUrl('list', params|merge('page': 1)) }}">List</a>
 
 Note that you do not need to provide the Admin's route prefix (``baseRouteName``) to

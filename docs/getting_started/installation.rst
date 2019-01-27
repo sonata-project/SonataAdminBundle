@@ -85,8 +85,9 @@ For more information: http://symfony.com/doc/current/translation.html#configurat
     .. code-block:: yaml
 
         # config/packages/framework.yaml
+
         framework:
-            translator: { fallbacks: ["%locale%"] }
+            translator: { fallbacks: ['%locale%'] }
 
 Define routes
 -------------
