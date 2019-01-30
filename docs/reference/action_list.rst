@@ -111,7 +111,7 @@ Options
   when the ``Admin::generateUrl`` is called
 - ``code`` (o): the method name to retrieve the related value (for example,
   if you have an `array` type field, you would like to show info prettier
-  than `[0] => 'Value'`; useful when simple getter is not enough).
+  than `[0] => 'Value'`; useful when a getter is not enough).
   Notice: works with string-like types (string, text, html)
 - ``associated_property`` (o): property path to retrieve the "string"
   representation of the collection element, or a closure with the element
@@ -166,7 +166,7 @@ Available types and associated options
 +-----------+----------------+-----------------------------------------------------------------------+
 | percent   |                | Renders value as a percentage.                                        |
 +-----------+----------------+-----------------------------------------------------------------------+
-| string    |                | Renders a simple string.                                              |
+| string    |                | Renders a string.                                                     |
 +-----------+----------------+-----------------------------------------------------------------------+
 | text      |                | See 'string'                                                          |
 +-----------+----------------+-----------------------------------------------------------------------+
@@ -217,8 +217,8 @@ Customizing the sort order
 Configure the default ordering in the list view
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Configuring the default ordering column can simply be achieved by overriding
-the ``datagridValues`` array property. All three keys ``_page``, ``_sort_order`` and
+Configuring the default ordering column can be achieved by overriding the
+``datagridValues`` array property. All three keys ``_page``, ``_sort_order`` and
 ``_sort_by`` can be omitted::
 
     // src/Admin/PostAdmin.php
@@ -426,8 +426,10 @@ This approach is useful when you need to create dynamic filters::
         }
     }
 
-Please note that this is not a secure approach to hide posts from others.
-It's just an example for setting filters on demand.
+.. note::
+
+    this is not a secure approach to hide posts from others.
+    It's only an example for setting filters on demand!
 
 Callback filter
 ^^^^^^^^^^^^^^^

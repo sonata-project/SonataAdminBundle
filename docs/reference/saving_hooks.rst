@@ -120,13 +120,12 @@ redefine the following methods:
 - list objects : ``preList($object)``
 
 If these methods return a **Response**, the process is interrupted and the response
-will be returned as is by the controller (if it returns null, the process continues). You
-can generate easily a redirection to the object show page by using the method
-``redirectTo($object)``.
+will be returned as is by the controller (if it returns null, the process continues).
+You can generate a redirection to the object show page by using the method ``redirectTo($object)``.
 
 .. note::
 
-    Use case: you need to prohibit the deletion of a specific item. You may do a simple
-    check in the ``preDelete($object)`` method.
+    If you need to prohibit the deletion of a specific item, you may do a check
+    in the ``preDelete($object)`` method.
 
 .. _FOSUserBundle on GitHub: https://github.com/FriendsOfSymfony/FOSUserBundle/

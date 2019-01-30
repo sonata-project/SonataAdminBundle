@@ -11,7 +11,7 @@ Pre-requisites
   method to retrieve a publicly visible URL for that image, in this example that
   method is called ``Image::getWebPath()``
 - you have already set up an Admin to edit the object that contains the images,
-  now you just want to add the previews. In this example that class is called
+  now you want to add the previews. In this example that class is called
   ``ImageAdmin``
 
 .. note::
@@ -38,7 +38,7 @@ Basic example - for single layer Admins
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If we are working directly with our ``ImageAdmin`` class then getting hold of
-the ``Image`` instance is simply a case of calling ``$this->getSubject()``. Since
+the ``Image`` instance can be done by calling ``$this->getSubject()``. Since
 we are manipulating form fields we do this from within ``ImageAdmin::configureFormFields()``::
 
     final class ImageAdmin extends AbstractAdmin
