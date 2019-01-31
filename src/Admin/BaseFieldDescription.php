@@ -297,14 +297,14 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             if (method_exists($object, $getter) && \is_callable([$object, $getter])) {
                 $this->cacheFieldGetter($object, $fieldName, 'getter', $getter);
 
-                return \call_user_func_array([$object, $getter], $parameters);
+                return $object->{$getter}(...$parameters);
             }
         }
 
         if (method_exists($object, '__call')) {
             $this->cacheFieldGetter($object, $fieldName, 'call');
 
-            return \call_user_func_array([$object, '__call'], [$fieldName, $parameters]);
+            return $object->__call($fieldName, $parameters);
         }
 
         if (isset($object->{$fieldName})) {
@@ -430,15 +430,11 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
 
         if ('getter' === self::$fieldGetters[$getterKey]['method']) {
-            return \call_user_func_array(
-                [$object, self::$fieldGetters[$getterKey]['getter']],
-                $parameters
-            );
-        } elseif ('call' === self::$fieldGetters[$getterKey]['method']) {
-            return \call_user_func_array(
-                [$object, '__call'],
-                [$fieldName, $parameters]
-            );
+            return $object->{self::$fieldGetters[$getterKey]['getter']}(...$parameters);
+        }
+
+        if ('call' === self::$fieldGetters[$getterKey]['method']) {
+            return $object->__call($fieldName, $parameters);
         }
 
         return $object->{$fieldName};
