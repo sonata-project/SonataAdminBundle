@@ -297,7 +297,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             if (method_exists($object, $getter) && \is_callable([$object, $getter])) {
                 $this->cacheFieldGetter($object, $fieldName, 'getter', $getter);
 
-                return $object->{$getter}(...$parameters);
+                return $object->$getter(...$parameters);
             }
         }
 
