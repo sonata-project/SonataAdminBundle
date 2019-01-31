@@ -129,13 +129,13 @@ the admin variable's ``generateUrl()`` command:
 
 .. code-block:: html+jinja
 
-    <a href="{{ admin.generateUrl('list', params|merge('page': 1)) }}">List</a>
+    <a href="{{ admin.generateUrl('list', params|merge({'page': 1})) }}">List</a>
 
 Note that you do not need to provide the Admin's route prefix (``baseRouteName``) to
 generate a URL for the current Admin, only the action name is needed.
 
-To generate a URL for a different Admin you only need to use the Route Name with the
-usual Twig helpers:
+To generate a URL to a different Admin, call the Symfony Twig function ``path``
+with the Route Name:
 
 .. code-block:: html+jinja
 
