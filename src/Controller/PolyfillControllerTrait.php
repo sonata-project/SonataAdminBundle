@@ -61,7 +61,7 @@ class PolyfillProxyContainer extends Controller
 
     public function proxyCall($method, $arguments)
     {
-        return $this->{$method}(...$arguments);
+        return $this->$method(...$arguments);
     }
 }
 
