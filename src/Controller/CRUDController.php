@@ -79,7 +79,7 @@ class CRUDController implements ContainerAwareInterface
     public function __call($method, $arguments)
     {
         if (\in_array($method, ['get', 'has'], true)) {
-            return \call_user_func_array([$this->container, $method], $arguments);
+            return $this->container->{$method}(...$arguments);
         }
 
         if (method_exists($this, 'proxyToControllerClass')) {
