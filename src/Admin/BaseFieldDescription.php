@@ -304,7 +304,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if (method_exists($object, '__call')) {
             $this->cacheFieldGetter($object, $fieldName, 'call');
 
-            return $object->__call($fieldName, $parameters);
+            return $object->$fieldName(...$parameters);
         }
 
         if (isset($object->{$fieldName})) {
