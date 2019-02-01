@@ -313,7 +313,7 @@ final class SonataAdminExtension extends AbstractExtension
                 ));
             }
 
-            return \call_user_func([$element, $method]);
+            return $element->$method();
         }
 
         if (\is_callable($propertyPath)) {

@@ -469,7 +469,7 @@ class CRUDController implements ContainerAwareInterface
         $isRelevantAction = sprintf('batchAction%sIsRelevant', ucfirst($camelizedAction));
 
         if (method_exists($this, $isRelevantAction)) {
-            $nonRelevantMessage = \call_user_func([$this, $isRelevantAction], $idx, $allElements, $request);
+            $nonRelevantMessage = $this->$isRelevantAction($idx, $allElements, $request);
         } else {
             $nonRelevantMessage = 0 !== \count($idx) || $allElements; // at least one item is selected
         }
@@ -544,7 +544,7 @@ class CRUDController implements ContainerAwareInterface
             return $this->redirectToList();
         }
 
-        return \call_user_func([$this, $finalAction], $query, $request);
+        return $this->$finalAction($query, $request);
     }
 
     /**
