@@ -52,6 +52,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
     {
         parent::setUp();
         $this->container->setParameter('kernel.bundles', []);
+        $this->load();
 
         $this->defaultConfiguration = (new Processor())->processConfiguration(new Configuration(), []);
     }
@@ -140,130 +141,6 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_group');
         $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_label_catalogue');
         $this->assertContainerBuilderHasParameter('sonata.admin.configuration.default_icon');
-    }
-
-    public function testExtraStylesheetsGetAdded(): void
-    {
-        $this->container->setParameter('kernel.bundles', []);
-
-        $extraStylesheets = ['foo/bar.css', 'bar/quux.css'];
-        $this->load([
-            'assets' => [
-                'extra_stylesheets' => $extraStylesheets,
-            ],
-        ]);
-
-        $stylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
-
-        $this->assertSame(
-            array_merge($this->defaultConfiguration['assets']['stylesheets'], $extraStylesheets),
-            $stylesheets
-        );
-    }
-
-    public function testRemoveStylesheetsGetRemoved(): void
-    {
-        $this->container->setParameter('kernel.bundles', []);
-        $removeStylesheets = [
-            'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css',
-            'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
-        ];
-        $this->load([
-            'assets' => [
-                'remove_stylesheets' => $removeStylesheets,
-            ],
-        ]);
-        $stylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
-
-        $this->assertSame(
-            array_values(
-                array_diff($this->defaultConfiguration['assets']['stylesheets'], $removeStylesheets)
-            ),
-            $stylesheets
-        );
-    }
-
-    public function testExtraJavascriptsGetAdded(): void
-    {
-        $this->container->setParameter('kernel.bundles', []);
-        $extraJavascripts = ['foo/bar.js', 'bar/quux.js'];
-        $this->load([
-            'assets' => [
-                'extra_javascripts' => $extraJavascripts,
-            ],
-        ]);
-        $javascripts = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts'];
-
-        $this->assertSame(
-            array_merge($this->defaultConfiguration['assets']['javascripts'], $extraJavascripts),
-            $javascripts
-        );
-    }
-
-    public function testRemoveJavascriptsGetRemoved(): void
-    {
-        $this->container->setParameter('kernel.bundles', []);
-        $removeJavascripts = [
-            'bundles/sonataadmin/vendor/readmore-js/readmore.min.js',
-            'bundles/sonataadmin/jquery/jquery.confirmExit.js',
-        ];
-        $this->load([
-            'assets' => [
-                'remove_javascripts' => $removeJavascripts,
-            ],
-        ]);
-        $javascripts = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts'];
-
-        $this->assertSame(
-            array_values(
-                array_diff($this->defaultConfiguration['assets']['javascripts'], $removeJavascripts)
-            ),
-            $javascripts
-        );
-    }
-
-    public function testAssetsCanBeAddedAndRemoved(): void
-    {
-        $this->container->setParameter('kernel.bundles', []);
-        $extraStylesheets = ['foo/bar.css', 'bar/quux.css'];
-        $extraJavascripts = ['foo/bar.js', 'bar/quux.js'];
-        $removeStylesheets = [
-            'bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css',
-            'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
-        ];
-        $removeJavascripts = [
-            'bundles/sonataadmin/vendor/readmore-js/readmore.min.js',
-            'bundles/sonataadmin/jquery/jquery.confirmExit.js',
-        ];
-        $this->load([
-            'assets' => [
-                'extra_stylesheets' => $extraStylesheets,
-                'remove_stylesheets' => $removeStylesheets,
-                'extra_javascripts' => $extraJavascripts,
-                'remove_javascripts' => $removeJavascripts,
-            ],
-        ]);
-        $stylesheets = $this->container
-            ->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets']
-        ;
-
-        $this->assertSame(
-            array_merge(
-                array_diff($this->defaultConfiguration['assets']['stylesheets'], $removeStylesheets),
-                $extraStylesheets
-            ),
-            $stylesheets
-        );
-
-        $javascripts = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts'];
-
-        $this->assertSame(
-            array_merge(
-                array_diff($this->defaultConfiguration['assets']['javascripts'], $removeJavascripts),
-                $extraJavascripts
-            ),
-            $javascripts
-        );
     }
 
     public function testDefaultTemplates(): void

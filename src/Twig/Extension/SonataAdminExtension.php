@@ -53,6 +53,7 @@ final class SonataAdminExtension extends AbstractExtension
      * @var TranslatorInterface|null
      */
     protected $translator;
+
     /**
      * @var Pool
      */
@@ -429,64 +430,6 @@ final class SonataAdminExtension extends AbstractExtension
         return $xEditableChoices;
     }
 
-    /*
-     * Returns a canonicalized locale for "moment" NPM library,
-     * or `null` if the locale's language is "en", which doesn't require localization.
-     *
-     * @return string|null
-     */
-    public function getCanonicalizedLocaleForMoment(array $context)
-    {
-        $locale = strtolower(str_replace('_', '-', $context['app']->getRequest()->getLocale()));
-
-        // "en" language doesn't require localization.
-        if (('en' === $lang = substr($locale, 0, 2)) && !\in_array($locale, ['en-au', 'en-ca', 'en-gb', 'en-ie', 'en-nz'], true)) {
-            return null;
-        }
-
-        foreach (self::MOMENT_UNSUPPORTED_LOCALES as $language => $locales) {
-            if ($language === $lang && !\in_array($locale, $locales, true)) {
-                $locale = $language;
-            }
-        }
-
-        return $locale;
-    }
-
-    /**
-     * Returns a canonicalized locale for "select2" NPM library,
-     * or `null` if the locale's language is "en", which doesn't require localization.
-     *
-     * @return string|null
-     */
-    public function getCanonicalizedLocaleForSelect2(array $context)
-    {
-        $locale = str_replace('_', '-', $context['app']->getRequest()->getLocale());
-
-        // "en" language doesn't require localization.
-        if ('en' === $lang = substr($locale, 0, 2)) {
-            return null;
-        }
-
-        switch ($locale) {
-            case 'pt':
-                $locale = 'pt-PT';
-                break;
-            case 'ug':
-                $locale = 'ug-CN';
-                break;
-            case 'zh':
-                $locale = 'zh-CN';
-                break;
-            default:
-                if (!\in_array($locale, ['pt-BR', 'pt-PT', 'ug-CN', 'zh-CN', 'zh-TW'], true)) {
-                    $locale = $lang;
-                }
-        }
-
-        return $locale;
-    }
-
     /**
      * @param string|array $role
      * @param object|null  $object
@@ -519,6 +462,60 @@ final class SonataAdminExtension extends AbstractExtension
         }
 
         return false;
+    }
+
+    /*
+     * Returns a canonicalized locale for "moment" NPM library,
+     * or `null` if the locale's language is "en", which doesn't require localization.
+     *
+     * @return string|null
+     */
+    public function getCanonicalizedLocaleForMoment(array $context)
+    {
+        $locale = strtolower(str_replace('_', '-', $context['app']->getRequest()->getLocale()));
+        // "en" language doesn't require localization.
+        if (('en' === $lang = substr($locale, 0, 2)) && !\in_array($locale, ['en-au', 'en-ca', 'en-gb', 'en-ie', 'en-nz'], true)) {
+            return null;
+        }
+        foreach (self::MOMENT_UNSUPPORTED_LOCALES as $language => $locales) {
+            if ($language === $lang && !\in_array($locale, $locales, true)) {
+                $locale = $language;
+            }
+        }
+
+        return $locale;
+    }
+
+    /**
+     * Returns a canonicalized locale for "select2" NPM library,
+     * or `null` if the locale's language is "en", which doesn't require localization.
+     *
+     * @return string|null
+     */
+    public function getCanonicalizedLocaleForSelect2(array $context)
+    {
+        $locale = str_replace('_', '-', $context['app']->getRequest()->getLocale());
+        // "en" language doesn't require localization.
+        if ('en' === $lang = substr($locale, 0, 2)) {
+            return null;
+        }
+        switch ($locale) {
+            case 'pt':
+                $locale = 'pt-PT';
+                break;
+            case 'ug':
+                $locale = 'ug-CN';
+                break;
+            case 'zh':
+                $locale = 'zh-CN';
+                break;
+            default:
+                if (!\in_array($locale, ['pt-BR', 'pt-PT', 'ug-CN', 'zh-CN', 'zh-TW'], true)) {
+                    $locale = $lang;
+                }
+        }
+
+        return $locale;
     }
 
     /**

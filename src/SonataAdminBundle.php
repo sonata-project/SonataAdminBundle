@@ -19,6 +19,7 @@ use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\WebpackEntriesCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -35,5 +36,6 @@ class SonataAdminBundle extends Bundle
         $container->addCompilerPass(new GlobalVariablesCompilerPass());
         $container->addCompilerPass(new ModelManagerCompilerPass());
         $container->addCompilerPass(new ObjectAclManipulatorCompilerPass());
+        $container->addCompilerPass(new WebpackEntriesCompilerPass());
     }
 }

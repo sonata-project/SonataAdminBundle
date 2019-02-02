@@ -227,22 +227,6 @@ class ConfigurationTest extends TestCase
         $this->assertSame('ROLE_SUPER_ADMIN', $config['security']['role_super_admin']);
     }
 
-    public function testExtraAssetsDefaults(): void
-    {
-        $config = $this->process([[]]);
-
-        $this->assertSame([], $config['assets']['extra_stylesheets']);
-        $this->assertSame([], $config['assets']['extra_javascripts']);
-    }
-
-    public function testRemoveAssetsDefaults(): void
-    {
-        $config = $this->process([[]]);
-
-        $this->assertSame([], $config['assets']['remove_stylesheets']);
-        $this->assertSame([], $config['assets']['remove_javascripts']);
-    }
-
     /**
      * Processes an array of configurations and returns a compiled version.
      *

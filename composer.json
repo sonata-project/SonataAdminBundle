@@ -56,6 +56,7 @@
         "symfony/twig-bridge": "^4.3",
         "symfony/twig-bundle": "^4.3",
         "symfony/validator": "^4.3",
+        "symfony/webpack-encore-bundle": "^1.6",
         "twig/extra-bundle": "^3.0",
         "twig/string-extra": "^3.0",
         "twig/twig": "^2.12.1"
@@ -70,7 +71,6 @@
     "require-dev": {
         "jms/translation-bundle": "^1.4",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
-        "mopa/bootstrap-bundle": "^3.3",
         "phpstan/phpstan": "^0.12.29",
         "psr/event-dispatcher": "^1.0",
         "sonata-project/intl-bundle": "^2.4",

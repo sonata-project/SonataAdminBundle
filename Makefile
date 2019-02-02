@@ -65,3 +65,19 @@ endif
 docs:
 	cd docs && sphinx-build -W -b html -d _build/doctrees . _build/html
 .PHONY: docs
+
+YARN ?= @docker run --rm -it -v ${PWD}:/usr/src/app -w /usr/src/app node:11-alpine yarn
+yarn-install:
+	${YARN} install
+
+yarn-watch:
+	${YARN} watch
+
+yarn.lock:
+	$(MAKE) yarn-install
+
+node_modules: yarn.lock
+	$(MAKE) yarn-install
+
+yarn-build: yarn.lock node_modules
+	${YARN} build
