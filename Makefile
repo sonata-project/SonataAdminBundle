@@ -73,12 +73,12 @@ docs:
 	cd docs && sphinx-build -W -b html -d _build/doctrees . _build/html
 .PHONY: docs
 
+YARN=@docker run --rm -it -v ${PWD}:/usr/src/app -w /usr/src/app node:11-alpine yarn
 yarn-install:
-	@docker run --rm -it -v ${PWD}:/usr/src/app -w /usr/src/app node:11-alpine yarn install
-	$(MAKE) yarn-build
+	${YARN} install
 
 yarn-watch:
-	@docker run --rm -it -v ${PWD}:/usr/src/app -w /usr/src/app node:11-alpine yarn watch
+	${YARN}watch
 
 yarn-build:
-	@docker run --rm -it -v ${PWD}:/usr/src/app -w /usr/src/app node:11-alpine yarn build
+	${YARN} build
