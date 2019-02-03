@@ -78,8 +78,8 @@ final class SonataAdminExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
-        $config['options']['javascripts'] = $this->buildJavascripts($config);
-        $config['options']['stylesheets'] = $this->buildStylesheets($config);
+        //$config['options']['javascripts'] = $this->buildJavascripts($config);
+        //$config['options']['stylesheets'] = $this->buildStylesheets($config);
         $config['options']['role_admin'] = $config['security']['role_admin'];
         $config['options']['role_super_admin'] = $config['security']['role_super_admin'];
         $config['options']['search'] = $config['search'];
@@ -205,38 +205,6 @@ final class SonataAdminExtension extends Extension
     public function getNamespace()
     {
         return 'https://sonata-project.org/schema/dic/admin';
-    }
-
-    private function buildStylesheets(array $config): array
-    {
-        return $this->mergeArray(
-            $config['assets']['stylesheets'],
-            $config['assets']['extra_stylesheets'],
-            $config['assets']['remove_stylesheets']
-        );
-    }
-
-    private function buildJavascripts(array $config): array
-    {
-        return $this->mergeArray(
-            $config['assets']['javascripts'],
-            $config['assets']['extra_javascripts'],
-            $config['assets']['remove_javascripts']
-        );
-    }
-
-    private function mergeArray(array $array, array $addArray, array $removeArray = []): array
-    {
-        foreach ($addArray as $toAdd) {
-            array_push($array, $toAdd);
-        }
-        foreach ($removeArray as $toRemove) {
-            if (\in_array($toRemove, $array, true)) {
-                array_splice($array, array_search($toRemove, $array, true), 1);
-            }
-        }
-
-        return $array;
     }
 
     private function replacePropertyAccessor(ContainerBuilder $container): void

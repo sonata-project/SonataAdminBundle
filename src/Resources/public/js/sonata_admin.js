@@ -1,25 +1,22 @@
 // Globalize jquery
-import jquery from "jquery"
-
-window.$ = jquery;
-window.jQuery = jquery;
-global.$ = jquery;
-global.jQuery = jquery;
+import jquery from "jquery";
+window.$ = window.jQuery = jquery
+global.$ = global.jQuery = jquery
 
 // Styles
 import "../scss/sonata_admin.scss"
 
 // Vendors
-import "bootstrap"
-import "bootstrap-datepicker"
-import "eonasdan-bootstrap-datetimepicker"
 import "admin-lte"
+import "bootstrap"
 
 import "jquery-form"
 import "jquery-ui"
 import "jquery.scrollto"
 import "jquery-slimscroll"
+
 import "x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min"
+
 import "icheck"
 import "waypoints/lib/jquery.waypoints"
 import "waypoints/lib/shortcuts/sticky.min"
@@ -42,6 +39,9 @@ import("moment/locale/" + language + '.js')
 
 import "readmore-js"
 import "masonry-layout"
+
+import "bootstrap-datepicker"
+import "eonasdan-bootstrap-datetimepicker"
 
 // Custom
 import "./Admin"

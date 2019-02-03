@@ -7,7 +7,9 @@ Encore
     .addEntry('sonata_admin', './src/Resources/public/js/sonata_admin.js')
     .autoProvideVariables({
         $: 'jquery',
-        jQuery: 'jquery'
+        jQuery: 'jquery',
+        'window.jQuery': 'jquery',
+        'window.$': 'jquery'
     })
     .enableSassLoader()
     .enableSingleRuntimeChunk()
