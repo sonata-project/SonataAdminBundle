@@ -80,5 +80,10 @@ yarn-install:
 yarn-watch:
 	${YARN} watch
 
-yarn-build:
-	${YARN} build
+yarn.lock:
+	$(MAKE) yarn-install
+
+node_modules: yarn.lock
+	$(MAKE) yarn-install
+
+yarn-build: yarn.lock node_modules
