@@ -7,11 +7,11 @@ Encore
     .addEntry('sonata_admin', './src/Resources/public/js/sonata_admin.js')
     .autoProvideVariables({
         $: 'jquery',
-        jQuery: 'jquery',
-        'window.jQuery': 'jquery'
+        jQuery: 'jquery'
     })
     .enableSassLoader()
-    .disableSingleRuntimeChunk()
+    .enableSingleRuntimeChunk()
+    .splitEntryChunks()
     .enableSourceMaps(!Encore.isProduction())
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()

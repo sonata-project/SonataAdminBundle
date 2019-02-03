@@ -3,6 +3,7 @@
     "@symfony/webpack-encore": "^0.22.4",
     "admin-lte": "~2.3.10",
     "bootstrap": "^3.3",
+    "eonasdan-bootstrap-datetimepicker": "~3.1.3",
     "bootstrap-datepicker": "^1.8.0",
     "bootstrap3-dialog": "^1.34",
     "font-awesome": "^4.7",

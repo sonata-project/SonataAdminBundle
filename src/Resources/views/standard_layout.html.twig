@@ -23,7 +23,7 @@ file that was distributed with this source code.
 {% set _list_filters_actions = block('list_filters_actions') is defined ? block('list_filters_actions')|trim : null -%}
 
 <!DOCTYPE html>
-<html {% block html_attributes %}class="no-js"{% endblock %}>
+<html {% block html_attributes %}class="no-js"{% endblock %} lang="{{ canonicalize_locale_for_select2() }}">
     <head>
         {% block meta_tags %}
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -46,9 +46,7 @@ file that was distributed with this source code.
         >
 
         {% block stylesheets %}
-            {% for stylesheet in sonata_admin.adminPool.getOption('stylesheets', []) %}
-                <link rel="stylesheet" href="{{ asset(stylesheet) }}">
-            {% endfor %}
+            {{ encore_entry_link_tags('sonata_admin', null, 'sonata_admin') }}
         {% endblock %}
 
         {% block javascripts %}
@@ -56,28 +54,8 @@ file that was distributed with this source code.
             {% endblock %}
 
             {% block sonata_javascript_pool %}
-                {% for javascript in sonata_admin.adminPool.getOption('javascripts', []) %}
-                    <script src="{{ asset(javascript) }}"></script>
-                {% endfor %}
+                {{ encore_entry_script_tags('sonata_admin', null, 'sonata_admin') }}
             {% endblock %}
-
-            {# localize moment #}
-           {# {% set localeForMoment = canonicalize_locale_for_moment() %}
-            {% if localeForMoment %}
-                <script>
-                    moment.locale("{{ localeForMoment }}")
-                </script>
-            {% endif %}#}
-
-            {# localize select2 #}
-            {#{% if sonata_admin.adminPool.getOption('use_select2') %}
-                {% set localeForSelect2 = canonicalize_locale_for_select2() %}
-                {% if localeForSelect2 %}
-                    <script>
-                        $.fn.select2.defaults.set('language', '{{ localeForMoment }}');
-                    </script>
-                {% endif %}
-            {% endif %} #}
         {% endblock %}
 
         <title>

@@ -1,11 +1,14 @@
 {
   "entrypoints": {
     "sonata_admin": {
-      "css": [
-        "/bundles/sonataadmin/dist/sonata_admin.css"
-      ],
       "js": [
+        "/bundles/sonataadmin/dist/runtime.js",
+        "/bundles/sonataadmin/dist/2.js",
         "/bundles/sonataadmin/dist/sonata_admin.js"
+      ],
+      "css": [
+        "/bundles/sonataadmin/dist/2.css",
+        "/bundles/sonataadmin/dist/sonata_admin.css"
       ]
     }
   }
