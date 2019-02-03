@@ -73,7 +73,7 @@ docs:
 	cd docs && sphinx-build -W -b html -d _build/doctrees . _build/html
 .PHONY: docs
 
-YARN=@docker run --rm -it -v ${PWD}:/usr/src/app -w /usr/src/app node:11-alpine yarn
+YARN ?= @docker run --rm -it -v ${PWD}:/usr/src/app -w /usr/src/app node:11-alpine yarn
 yarn-install:
 	${YARN} install
 
