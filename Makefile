@@ -78,7 +78,7 @@ yarn-install:
 	${YARN} install
 
 yarn-watch:
-	${YARN}watch
+	${YARN} watch
 
 yarn-build:
 	${YARN} build
