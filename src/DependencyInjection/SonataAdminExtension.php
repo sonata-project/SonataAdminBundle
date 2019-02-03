@@ -78,8 +78,6 @@ final class SonataAdminExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
-        //$config['options']['javascripts'] = $this->buildJavascripts($config);
-        //$config['options']['stylesheets'] = $this->buildStylesheets($config);
         $config['options']['role_admin'] = $config['security']['role_admin'];
         $config['options']['role_super_admin'] = $config['security']['role_super_admin'];
         $config['options']['search'] = $config['search'];
