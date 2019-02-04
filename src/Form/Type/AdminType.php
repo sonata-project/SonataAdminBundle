@@ -24,7 +24,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\PropertyAccess\Exception\NoSuchIndexException;
+use Symfony\Component\PropertyAccess\Exception\AccessException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
@@ -67,7 +67,7 @@ class AdminType extends AbstractType
                     $subject = $p->getValue($parentSubject, $path);
                     $builder->setData($subject);
                 }
-            } catch (NoSuchIndexException $e) {
+            } catch (AccessException $e) {
                 // no object here
             }
         }
