@@ -87,3 +87,4 @@ node_modules: yarn.lock
 	$(MAKE) yarn-install
 
 yarn-build: yarn.lock node_modules
+	${YARN} build
