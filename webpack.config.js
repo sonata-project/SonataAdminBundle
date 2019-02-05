@@ -5,10 +5,10 @@ Encore
     .setPublicPath('/bundles/sonataadmin/dist')
     .setManifestKeyPrefix('dist')
     .addEntry('sonata_admin', './src/Resources/public/js/sonata_admin.js')
+    .autoProvidejQuery()
     .autoProvideVariables({
         $: 'jquery',
         jQuery: 'jquery',
-        'window.jQuery': 'jquery',
         'window.$': 'jquery'
     })
     .enableSassLoader()

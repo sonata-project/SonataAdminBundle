@@ -1,7 +1,6 @@
 // Globalize jquery
-import jquery from "jquery";
-window.$ = window.jQuery = jquery
-global.$ = global.jQuery = jquery
+import jQuery from 'jquery';
+global.jQuery = jQuery;
 
 // Styles
 import "../scss/sonata_admin.scss"
