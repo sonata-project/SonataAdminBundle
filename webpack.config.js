@@ -6,11 +6,6 @@ Encore
     .setManifestKeyPrefix('dist')
     .addEntry('sonata_admin', './src/Resources/public/js/sonata_admin.js')
     .autoProvidejQuery()
-    .autoProvideVariables({
-        $: 'jquery',
-        jQuery: 'jquery',
-        'window.$': 'jquery'
-    })
     .enableSassLoader()
     .enableSingleRuntimeChunk()
     .splitEntryChunks()
@@ -21,4 +16,8 @@ Encore
     //.enableVersioning(Encore.isProduction())
 ;
 
-module.exports = Encore.getWebpackConfig();
+let config = Encore.getWebpackConfig();
+var path = require('path');
+config.resolve.alias.jquery = path.join(__dirname, 'node_modules/jquery/dist/jquery');
+
+module.exports = config;

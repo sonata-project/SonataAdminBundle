@@ -1,5 +1,6 @@
 // Globalize jquery
 import jQuery from 'jquery';
+global.$ = jQuery;
 global.jQuery = jQuery;
 
 // Styles
@@ -39,7 +40,6 @@ import("moment/locale/" + language + '.js')
 import "readmore-js"
 import "masonry-layout"
 
-import "bootstrap-datepicker"
 import "eonasdan-bootstrap-datetimepicker"
 
 // Custom
