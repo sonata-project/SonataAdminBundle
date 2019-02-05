@@ -41,27 +41,11 @@ use Sonata\AdminBundle\Twig\GlobalVariables;
 
 class SonataAdminExtensionTest extends AbstractExtensionTestCase
 {
-    /**
-     * @var string[]
-     */
-    private $defaultStylesheets = [];
-
-    /**
-     * @var string[]
-     */
-    private $defaultJavascripts = [];
-
     protected function setUp(): void
     {
         parent::setUp();
         $this->container->setParameter('kernel.bundles', []);
         $this->load();
-        $this->defaultStylesheets = $this->container
-            ->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets']
-        ;
-        $this->defaultJavascripts = $this->container
-            ->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts']
-        ;
     }
 
     public function testHasCoreServicesAlias(): void
