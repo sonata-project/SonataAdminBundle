@@ -258,10 +258,10 @@ final class AdminMaker extends AbstractMaker
         $fields = $this->modelManager->getExportFields($this->modelClass);
         $fieldString = '';
         foreach ($fields as $field) {
-            $fieldString = $fieldString."\t\t\t->add('".$field."')".PHP_EOL;
+            $fieldString = $fieldString.sprintf('%12s', '')."->add('".$field."')".PHP_EOL;
         }
 
-        $fieldString .= "\t\t\t";
+        $fieldString .= sprintf('%12s', '');
 
         $generator->generateClass(
             $adminClassFullName,
