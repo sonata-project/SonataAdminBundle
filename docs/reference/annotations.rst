@@ -1,6 +1,12 @@
 Annotations
 ===========
 
+.. note::
+
+    This documentation is outdated and will only work with symfony 2/3.
+
+    Plese have a look at https://github.com/kunicmarko20/SonataAutoConfigureBundle
+
 All annotations require ``jms/di-extra-bundle``, it can be installed by composer:
 
 .. code-block:: bash
