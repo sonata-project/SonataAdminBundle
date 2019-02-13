@@ -213,3 +213,5 @@ entity and learn more about this class.
     "link_add", you should make sure that you've `enabled the translator`_.
 
 .. _`enabled the translator`: http://symfony.com/doc/current/book/translation.html#configuration
+
+In the :doc:`next chapter <the_form_view>`, you're going to look at the form view.
