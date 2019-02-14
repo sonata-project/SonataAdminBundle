@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.45.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.45.1...3.45.2) - 2019-02-14
+### Fixed
+- Regression bug which causes SonataMediaBundle's Media list to show fallback
+  image in mosaic view instead of real image preview
+- Crash when using `Metadata` class from block bundle
+- `sonata_type_collection` fields no longer deletes row when adding a new row
+- Admin maker no longer produces tabs
+
 ## [3.45.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.45.0...3.45.1) - 2019-01-14
 
 ### Fixed
