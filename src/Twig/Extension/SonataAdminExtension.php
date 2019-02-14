@@ -373,7 +373,7 @@ final class SonataAdminExtension extends AbstractExtension
             reset($choices);
             $first = current($choices);
             // the choices are already in the right format
-            if (\is_array($first) && array_key_exists('value', $first) && array_key_exists('text', $first)) {
+            if (\is_array($first) && \array_key_exists('value', $first) && \array_key_exists('text', $first)) {
                 $xEditableChoices = $choices;
             } else {
                 foreach ($choices as $value => $text) {

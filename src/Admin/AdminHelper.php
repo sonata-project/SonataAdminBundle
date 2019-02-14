@@ -110,12 +110,12 @@ class AdminHelper
 
         if ($childFormBuilder) {
             $formData = $admin->getRequest()->get($formBuilder->getName(), []);
-            if (array_key_exists($childFormBuilder->getName(), $formData)) {
+            if (\array_key_exists($childFormBuilder->getName(), $formData)) {
                 $formData = $admin->getRequest()->get($formBuilder->getName(), []);
                 $i = 0;
                 foreach ($formData[$childFormBuilder->getName()] as $name => &$field) {
                     $toDelete[$i] = false;
-                    if (array_key_exists('_delete', $field)) {
+                    if (\array_key_exists('_delete', $field)) {
                         $toDelete[$i] = true;
                         unset($field['_delete']);
                     }

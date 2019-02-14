@@ -115,7 +115,7 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
 
                 $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($entity));
 
-                if (!array_key_exists($valueObject, $choices)) {
+                if (!\array_key_exists($valueObject, $choices)) {
                     $choices[$valueObject] = [];
                 }
 
