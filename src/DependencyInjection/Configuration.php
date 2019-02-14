@@ -211,11 +211,11 @@ CASESENSITIVE;
                                             ->then(function ($items) {
                                                 foreach ($items as $key => $item) {
                                                     if (\is_array($item)) {
-                                                        if (!array_key_exists('label', $item) || !array_key_exists('route', $item)) {
+                                                        if (!\array_key_exists('label', $item) || !\array_key_exists('route', $item)) {
                                                             throw new \InvalidArgumentException('Expected either parameters "route" and "label" for array items');
                                                         }
 
-                                                        if (!array_key_exists('route_params', $item)) {
+                                                        if (!\array_key_exists('route_params', $item)) {
                                                             $items[$key]['route_params'] = [];
                                                         }
 

@@ -865,7 +865,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         if (\is_array($this->parentAssociationMapping) && $this->getParent()) {
             $parent = $this->getParent()->getCode();
 
-            if (array_key_exists($parent, $this->parentAssociationMapping)) {
+            if (\array_key_exists($parent, $this->parentAssociationMapping)) {
                 return $this->parentAssociationMapping[$parent];
             }
 
@@ -1109,11 +1109,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         foreach ($actions  as $name => &$action) {
-            if (!array_key_exists('label', $action)) {
+            if (!\array_key_exists('label', $action)) {
                 $action['label'] = $this->getTranslationLabel($name, 'batch', 'label');
             }
 
-            if (!array_key_exists('translation_domain', $action)) {
+            if (!\array_key_exists('translation_domain', $action)) {
                 $action['translation_domain'] = $this->getTranslationDomain();
             }
         }
@@ -1646,7 +1646,7 @@ EOT;
      */
     public function hasFormFieldDescription($name)
     {
-        return array_key_exists($name, $this->formFieldDescriptions) ? true : false;
+        return \array_key_exists($name, $this->formFieldDescriptions) ? true : false;
     }
 
     public function addFormFieldDescription($name, FieldDescriptionInterface $fieldDescription)
@@ -1692,7 +1692,7 @@ EOT;
 
     public function hasShowFieldDescription($name)
     {
-        return array_key_exists($name, $this->showFieldDescriptions);
+        return \array_key_exists($name, $this->showFieldDescriptions);
     }
 
     public function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription)
@@ -1721,7 +1721,7 @@ EOT;
     {
         $this->buildList();
 
-        return array_key_exists($name, $this->listFieldDescriptions) ? true : false;
+        return \array_key_exists($name, $this->listFieldDescriptions) ? true : false;
     }
 
     public function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription)
@@ -1741,7 +1741,7 @@ EOT;
 
     public function hasFilterFieldDescription($name)
     {
-        return array_key_exists($name, $this->filterFieldDescriptions) ? true : false;
+        return \array_key_exists($name, $this->filterFieldDescriptions) ? true : false;
     }
 
     public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription)
@@ -2339,7 +2339,7 @@ EOT;
     {
         $key = md5(json_encode($name).($object ? '/'.spl_object_hash($object) : ''));
 
-        if (!array_key_exists($key, $this->cacheIsGranted)) {
+        if (!\array_key_exists($key, $this->cacheIsGranted)) {
             $this->cacheIsGranted[$key] = $this->securityHandler->isGranted($this, $name, $object ?: $this);
         }
 
@@ -2555,7 +2555,7 @@ EOT;
     {
         $access = $this->getAccess();
 
-        if (!array_key_exists($action, $access)) {
+        if (!\array_key_exists($action, $access)) {
             throw new \InvalidArgumentException(sprintf(
                 'Action "%s" could not be found in access mapping.'
                 .' Please make sure your action is defined into your admin class accessMapping property.',
@@ -2586,7 +2586,7 @@ EOT;
     {
         $access = $this->getAccess();
 
-        if (!array_key_exists($action, $access)) {
+        if (!\array_key_exists($action, $access)) {
             return false;
         }
 
@@ -2770,7 +2770,7 @@ EOT;
         $filter = $this->getFilterParameters();
         $default = $this->getDefaultFilterValues();
 
-        if (!array_key_exists($name, $filter) || !array_key_exists($name, $default)) {
+        if (!\array_key_exists($name, $filter) || !\array_key_exists($name, $default)) {
             return false;
         }
 

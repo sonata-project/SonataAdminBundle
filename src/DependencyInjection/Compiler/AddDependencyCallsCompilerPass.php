@@ -429,7 +429,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $parentArguments = $parentDefinition ? $parentDefinition->getArguments() : [];
 
         foreach ($defaultArguments as $index => $value) {
-            $declaredInParent = $parentDefinition && array_key_exists($index, $parentArguments);
+            $declaredInParent = $parentDefinition && \array_key_exists($index, $parentArguments);
             $argumentValue = $declaredInParent ? $parentArguments[$index] : $arguments[$index];
 
             if (null === $argumentValue || 0 === \strlen($argumentValue)) {

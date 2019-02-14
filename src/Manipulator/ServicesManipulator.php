@@ -66,8 +66,8 @@ class ServicesManipulator
                 $code .= "\n";
             }
 
-            if (array_key_exists('services', $data)) {
-                if (array_key_exists($serviceId, (array) $data['services'])) {
+            if (\array_key_exists('services', $data)) {
+                if (\array_key_exists($serviceId, (array) $data['services'])) {
                     throw new \RuntimeException(sprintf(
                         'The service "%s" is already defined in the file "%s".',
                         $serviceId,

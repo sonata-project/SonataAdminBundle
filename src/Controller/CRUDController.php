@@ -470,7 +470,7 @@ class CRUDController implements ContainerAwareInterface
             );
         }
         $batchActions = $this->admin->getBatchActions();
-        if (!array_key_exists($action, $batchActions)) {
+        if (!\array_key_exists($action, $batchActions)) {
             throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
         }
 

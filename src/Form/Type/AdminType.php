@@ -41,7 +41,7 @@ class AdminType extends AbstractType
         }
 
         if ($options['delete'] && $admin->hasAccess('delete')) {
-            if (!array_key_exists('translation_domain', $options['delete_options']['type_options'])) {
+            if (!\array_key_exists('translation_domain', $options['delete_options']['type_options'])) {
                 $options['delete_options']['type_options']['translation_domain'] = $admin->getTranslationDomain();
             }
 

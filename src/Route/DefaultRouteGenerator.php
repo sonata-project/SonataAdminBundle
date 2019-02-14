@@ -107,7 +107,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
 
         $code = $this->getCode($admin, $name);
 
-        if (!array_key_exists($code, $this->caches)) {
+        if (!\array_key_exists($code, $this->caches)) {
             throw new \RuntimeException(sprintf('unable to find the route `%s`', $code));
         }
 
@@ -120,7 +120,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
 
     public function hasAdminRoute(AdminInterface $admin, $name)
     {
-        return array_key_exists($this->getCode($admin, $name), $this->caches);
+        return \array_key_exists($this->getCode($admin, $name), $this->caches);
     }
 
     private function getCode(AdminInterface $admin, string $name): string
@@ -128,7 +128,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         $this->loadCache($admin);
 
         // someone provide the fullname
-        if (!$admin->isChild() && array_key_exists($name, $this->caches)) {
+        if (!$admin->isChild() && \array_key_exists($name, $this->caches)) {
             return $name;
         }
 
