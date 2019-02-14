@@ -43,7 +43,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
      */
     public function has($name)
     {
-        return array_key_exists($name, $this->elements);
+        return \array_key_exists($name, $this->elements);
     }
 
     /**

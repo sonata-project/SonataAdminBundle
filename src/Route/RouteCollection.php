@@ -152,7 +152,7 @@ class RouteCollection
      */
     public function has($name)
     {
-        return array_key_exists($this->getCode($name), $this->elements);
+        return \array_key_exists($this->getCode($name), $this->elements);
     }
 
     /**

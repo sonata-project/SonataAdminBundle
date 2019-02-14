@@ -165,10 +165,10 @@ class AdminObjectAclManipulator
         foreach ($aclValues as $aclValue) {
             foreach ($matrices as $key => $matrix) {
                 if ($aclValue instanceof UserInterface) {
-                    if (array_key_exists('user', $matrix) && $aclValue->getUsername() === $matrix['user']) {
+                    if (\array_key_exists('user', $matrix) && $aclValue->getUsername() === $matrix['user']) {
                         $matrices[$key]['acl_value'] = $aclValue;
                     }
-                } elseif (array_key_exists('role', $matrix) && $aclValue === $matrix['role']) {
+                } elseif (\array_key_exists('role', $matrix) && $aclValue === $matrix['role']) {
                     $matrices[$key]['acl_value'] = $aclValue;
                 }
             }
@@ -262,7 +262,7 @@ class AdminObjectAclManipulator
                 $permissions[$permission] = [
                     'required' => false,
                     'data' => $checked,
-                    'disabled' => array_key_exists('disabled', $attr),
+                    'disabled' => \array_key_exists('disabled', $attr),
                     'attr' => $attr,
                 ];
             }
