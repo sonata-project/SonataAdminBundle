@@ -19,6 +19,7 @@ Let's say we have a ``BlogPost`` entity that is under a Symfony workflow:
 .. code-block:: yaml
 
    # config/packages/workflow.yaml
+
    framework:
        workflows:
            blog_post:
@@ -54,6 +55,7 @@ You can use the provided extension to take care of your entity admin.
 .. code-block:: yaml
 
    # config/packages/sonata_admin.yaml
+
    services:
        app.admin.blog_post:
            class: App\Admin\BlogPostAdmin
@@ -77,6 +79,7 @@ You can use the provided extension to take care of your entity admin.
 .. code-block:: yaml
 
    # config/packages/sonata_admin.yaml
+
    sonata_admin:
        extensions:
            admin.extension.workflow.blog_post:
