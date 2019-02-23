@@ -71,7 +71,6 @@
         "symfony/yaml": "^2.8 || ^3.2 || ^4.0"
     },
     "suggest": {
-        "jms/di-extra-bundle": "Annotations for Admin definition",
         "jms/translation-bundle": "Extract message keys from Admins",
         "kunicmarko/sonata-auto-configure-bundle": "Auto configures Admin classes",
         "sensio/generator-bundle": "Add sonata:admin:generate command",
