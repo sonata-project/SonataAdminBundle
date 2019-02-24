@@ -13,6 +13,7 @@ Bootstrapping the Admin Class
 The basic class definition will look the same as the ``CategoryAdmin``::
 
     // src/Admin/BlogPostAdmin.php
+
     namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;

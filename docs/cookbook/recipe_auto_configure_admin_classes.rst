@@ -20,6 +20,7 @@ The only thing you need to do is add the configuration for this bundle:
 .. code-block:: yaml
 
     # config/packages/sonata_auto_configure.yaml
+
     sonata_auto_configure:
         admin:
             suffix: Admin
