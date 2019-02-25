@@ -579,7 +579,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     protected function setLastPage($page)
     {
-        $this->lastPage = $page;
+        $this->lastPage = (int) $page;
 
         if ($this->getPage() > $page) {
             $this->setPage($page);
