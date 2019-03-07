@@ -346,7 +346,7 @@ file that was distributed with this source code.
 {% endblock datetime_widget %}
 
 {% block form_row %}
-    {% set show_label = show_label|default(true) %}
+    {% set show_label = show_label ?? true %}
     <div class="form-group{% if errors|length > 0 %} has-error{% endif %}" id="sonata-ba-field-container-{{ id }}">
         {% if sonata_admin.field_description.options is defined %}
             {% set label = sonata_admin.field_description.options.name|default(label)  %}
