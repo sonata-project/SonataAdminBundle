@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.46.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.45.2...3.46.0) - 2019-03-07
+
+## Fixed
+- the batch flash messages looked bad
+
+### Deprecated
+- Deprecated jms annotations
+
 ## [3.45.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.45.1...3.45.2) - 2019-02-14
 ### Fixed
 - Regression bug which causes SonataMediaBundle's Media list to show fallback
