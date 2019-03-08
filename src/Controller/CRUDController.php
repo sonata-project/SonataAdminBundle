@@ -709,7 +709,7 @@ class CRUDController implements ContainerAwareInterface
         if (!\is_array($fields->getElements()) || 0 === $fields->count()) {
             @trigger_error(
                 'Calling this method without implementing "configureShowFields"'
-                .' is not supported since 3.x'
+                .' is not supported since 3.40.0'
                 .' and will no longer be possible in 4.0',
                 E_USER_DEPRECATED
             );

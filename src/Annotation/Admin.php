@@ -24,7 +24,7 @@ use Sonata\AdminBundle\Controller\CRUDController;
  * @Annotation
  * @Target("CLASS")
  *
- * @deprecated since 3.x, to be removed in 4.0.
+ * @deprecated since 3.46.0, to be removed in 4.0.
  * @see https://github.com/kunicmarko20/SonataAutoConfigureBundle
  */
 class Admin implements MetadataProcessorInterface
