@@ -836,7 +836,7 @@ class CRUDControllerTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Calling this method without implementing "configureShowFields" is not supported since 3.x and will no longer be possible in 4.0
+     * @expectedDeprecation Calling this method without implementing "configureShowFields" is not supported since 3.40.0 and will no longer be possible in 4.0
      */
     public function testShowActionDeprecation(): void
     {
