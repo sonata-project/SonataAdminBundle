@@ -329,7 +329,12 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->addMethodCall('showMosaicButton', [$showMosaicButton]);
 
-        $this->fixTemplates($serviceId, $container, $definition, $overwriteAdminConfiguration['templates'] ?? ['view' => []]);
+        $this->fixTemplates(
+            $serviceId,
+            $container,
+            $definition,
+            $overwriteAdminConfiguration['templates'] ?? ['view' => []]
+        );
 
         if ($container->hasParameter('sonata.admin.configuration.security.information') && !$definition->hasMethodCall('setSecurityInformation')) {
             $definition->addMethodCall('setSecurityInformation', ['%sonata.admin.configuration.security.information%']);
@@ -340,8 +345,12 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         return $definition;
     }
 
-    public function fixTemplates(string $serviceId, ContainerBuilder $container, Definition $definition, array $overwrittenTemplates = []): void
-    {
+    public function fixTemplates(
+        string $serviceId,
+        ContainerBuilder $container,
+        Definition $definition,
+        array $overwrittenTemplates = []
+    ): void {
         $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
 
         $methods = [];
