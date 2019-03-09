@@ -1,0 +1,21 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{%- spaceless %}
+    {%- if value is empty -%}
+        &nbsp;
+    {%- else -%}
+        {% set options = field_description.options %}
+        <time datetime="{{ value|date('c', 'UTC') }}" title="{{ value|date('c', 'UTC') }}">
+            {{ value|date(options.format|default(null), options.timezone|default(null)) }}
+        </time>
+    {%- endif -%}
+{% endspaceless -%}

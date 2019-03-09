@@ -12,9 +12,5 @@ file that was distributed with this source code.
 {% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
 
 {% block field %}
-    {%- if value is empty -%}
-        &nbsp;
-    {%- else -%}
-        {{ value|date(field_description.options.format|default(null), field_description.options.timezone|default(null)) }}
-    {%- endif -%}
+    {%- include '@SonataAdmin/CRUD/display_datetime.html.twig' -%}
 {% endblock %}
