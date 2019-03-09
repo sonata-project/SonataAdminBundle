@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 {% spaceless %}
-    {% for item in admin.getActionButtons(action, object|default(null)) %}
+    {% for item in admin.getActionButtons(action, (object is defined) ? object : null ) %}
         {% if item.template is defined %}
             {% include item.template %}
         {% endif %}
