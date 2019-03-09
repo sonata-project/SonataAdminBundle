@@ -16,9 +16,6 @@ namespace Sonata\AdminBundle\Tests\Admin;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\TemplateRegistry;
 
-/**
- * Class TemplateRegistryTest.
- */
 class TemplateRegistryTest extends TestCase
 {
     public function testGetTemplates(): void
