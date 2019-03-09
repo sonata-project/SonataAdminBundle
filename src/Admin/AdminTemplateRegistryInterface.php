@@ -15,13 +15,7 @@ namespace Sonata\AdminBundle\Admin;
 
 interface AdminTemplateRegistryInterface
 {
-    /**
-     * @param TemplateRegistry $templateRegistry
-     */
     public function setTemplateRegistry(TemplateRegistry $templateRegistry): void;
 
-    /**
-     * @return TemplateRegistry
-     */
     public function getTemplateRegistry(): TemplateRegistry;
 }
