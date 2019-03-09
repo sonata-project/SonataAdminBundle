@@ -36,7 +36,7 @@
                         {% set render_first_element = false %}
                     {% else %}
                         </ul>
-                    {%  endif %}
+                    {% endif %}
                     <ul class="dropdown-menu{% if column_count > 1 %} col-md-{{ (12/column_count)|round }}{% endif %}">
                 {% endif %}
                 {% if loop.index0 % items_per_column != 0 %}
