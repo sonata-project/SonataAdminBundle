@@ -16,7 +16,7 @@
     {% set column_count = (groups|length / items_per_column)|round(0, 'ceil') %}
 
     <div class="dropdown-menu multi-column dropdown-add"
-         {% if column_count > 1 %}style="width: {{ column_count*140 }}px;"{% endif %}
+        {% if column_count > 1 %}style="width: {{ column_count*140 }}px;"{% endif %}
     >
         {% for group in groups|reverse %}
             {% set display = (group.roles is empty or is_granted(sonata_admin.adminPool.getOption('role_admin')) ) %}
