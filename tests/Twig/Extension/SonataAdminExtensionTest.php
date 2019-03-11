@@ -458,7 +458,9 @@ class SonataAdminExtensionTest extends TestCase
             ],
             'datetime field' => [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345">
-                    December 24, 2013 10:11
+                    <time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00">
+                        December 24, 2013 10:11
+                    </time>
                 </td>',
                 'datetime',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
@@ -466,7 +468,9 @@ class SonataAdminExtensionTest extends TestCase
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345">
-                    December 24, 2013 18:11
+                    <time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00">
+                        December 24, 2013 18:11
+                    </time>
                 </td>',
                 'datetime',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
@@ -480,7 +484,9 @@ class SonataAdminExtensionTest extends TestCase
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345">
-                    24.12.2013 10:11:12
+                    <time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00">
+                        24.12.2013 10:11:12
+                    </time>
                 </td>',
                 'datetime',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
@@ -494,7 +500,9 @@ class SonataAdminExtensionTest extends TestCase
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345">
-                    24.12.2013 18:11:12
+                    <time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00">
+                        24.12.2013 18:11:12
+                    </time>
                 </td>',
                 'datetime',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
@@ -507,7 +515,11 @@ class SonataAdminExtensionTest extends TestCase
                 ['format' => 'd.m.Y H:i:s', 'timezone' => 'Asia/Hong_Kong'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-date" objectId="12345"> December 24, 2013 </td>',
+                '<td class="sonata-ba-list-field sonata-ba-list-field-date" objectId="12345">
+                    <time datetime="2013-12-24" title="2013-12-24">
+                        December 24, 2013
+                    </time>
+                </td>',
                 'date',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 [],
@@ -519,7 +531,11 @@ class SonataAdminExtensionTest extends TestCase
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-date" objectId="12345"> 24.12.2013 </td>',
+                '<td class="sonata-ba-list-field sonata-ba-list-field-date" objectId="12345">
+                    <time datetime="2013-12-24" title="2013-12-24">
+                        24.12.2013
+                    </time>
+                </td>',
                 'date',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 ['format' => 'd.m.Y'],
@@ -531,13 +547,21 @@ class SonataAdminExtensionTest extends TestCase
                 ['format' => 'd.m.Y'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-time" objectId="12345"> 10:11:12 </td>',
+                '<td class="sonata-ba-list-field sonata-ba-list-field-time" objectId="12345">
+                    <time datetime="10:11:12+00:00" title="10:11:12+00:00">
+                        10:11:12
+                    </time>
+                </td>',
                 'time',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-time" objectId="12345"> 18:11:12 </td>',
+                '<td class="sonata-ba-list-field sonata-ba-list-field-time" objectId="12345">
+                    <time datetime="10:11:12+00:00" title="10:11:12+00:00">
+                        18:11:12
+                    </time>
+                </td>',
                 'time',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
                 ['timezone' => 'Asia/Hong_Kong'],
@@ -1474,42 +1498,42 @@ EOT
             ['<th>Data</th> <td>Example</td>', 'text', 'Example', ['safe' => false]],
             ['<th>Data</th> <td>Example</td>', 'textarea', 'Example', ['safe' => false]],
             [
-                '<th>Data</th> <td>December 24, 2013 10:11</td>',
+                '<th>Data</th> <td><time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00"> December 24, 2013 10:11 </time></td>',
                 'datetime',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')), [],
             ],
             [
-                '<th>Data</th> <td>24.12.2013 10:11:12</td>',
+                '<th>Data</th> <td><time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00"> 24.12.2013 10:11:12 </time></td>',
                 'datetime',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 ['format' => 'd.m.Y H:i:s'],
             ],
             [
-                '<th>Data</th> <td>December 24, 2013 18:11</td>',
+                '<th>Data</th> <td><time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00"> December 24, 2013 18:11 </time></td>',
                 'datetime',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
                 ['timezone' => 'Asia/Hong_Kong'],
             ],
             [
-                '<th>Data</th> <td>December 24, 2013</td>',
+                '<th>Data</th> <td><time datetime="2013-12-24" title="2013-12-24"> December 24, 2013 </time></td>',
                 'date',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 [],
             ],
             [
-                '<th>Data</th> <td>24.12.2013</td>',
+                '<th>Data</th> <td><time datetime="2013-12-24" title="2013-12-24"> 24.12.2013 </time></td>',
                 'date',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 ['format' => 'd.m.Y'],
             ],
             [
-                '<th>Data</th> <td>10:11:12</td>',
+                '<th>Data</th> <td><time datetime="10:11:12+00:00" title="10:11:12+00:00"> 10:11:12 </time></td>',
                 'time',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
                 [],
             ],
             [
-                '<th>Data</th> <td>18:11:12</td>',
+                '<th>Data</th> <td><time datetime="10:11:12+00:00" title="10:11:12+00:00"> 18:11:12 </time></td>',
                 'time',
                 new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
                 ['timezone' => 'Asia/Hong_Kong'],
