@@ -29,7 +29,7 @@ its parent:
             <!-- ... -->
 
             <call method="addChild">
-                <argument type="service" id="App\Admin\PlaylistAdmin"/>
+                <argument type="service" id="App\Admin\VideoAdmin"/>
                 <argument>playlist</argument>
             </call>
         </service>
