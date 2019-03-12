@@ -141,6 +141,7 @@ a radio button to choose the target object.
 .. code-block:: html+jinja
 
     {# templates/bundles/SonataAdminBundle/CRUD/list__batch.html.twig #}
+
     {# see @SonataAdmin/CRUD/list__batch.html.twig for the current default template #}
 
     {% extends get_admin_template('base_list_field', admin.code) %}
