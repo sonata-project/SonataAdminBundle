@@ -2,6 +2,21 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.47.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.46.0...3.47.0) - 2019-03-13
+### Fixed
+- `show_label` option not being honored when set to `false`
+- type int for `_page` and `_per_page` from request
+- display of batch checkbox when list page is loaded with Ajax
+- wrong HTML generated (top nav menu), if the user does not have rights for
+  first or last module
+
+### Changed
+- Changed the rendering for date, datetime and time properties in order to use
+  `<time>` tags, which print the dates in UTC using `datetime` and `title`
+attributes, allowing to view the UTC date with the default browser tooltip.
+- Actions buttons were not displayed if the subject was cast to empty string
+  through the `__toString` method.
+
 ## [3.46.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.45.2...3.46.0) - 2019-03-07
 
 ## Fixed
