@@ -61,6 +61,7 @@
                                     </div>
                                 {% endfor %}
                             </div>
+                            <input type="hidden" name="_tab" value="{{ app.request.query.get('_tab') }}">
                         </div>
                     {% else %}
                         {{ form_helper.render_groups(admin, form, admin.formtabs['default'].groups, has_tab) }}
@@ -123,7 +124,6 @@
                             <button class="btn btn-success" type="submit" name="btn_create_and_create"><i class="fa fa-plus-circle" aria-hidden="true"></i> {{ 'btn_create_and_create_a_new_one'|trans({}, 'SonataAdminBundle') }}</button>
                         {% endif %}
                     {% endif %}
-                    <input type="hidden" name="_tab" value="{{ app.request.query.get('_tab') }}">
                 {% endblock %}
                 </div>
             {% endblock formactions %}
