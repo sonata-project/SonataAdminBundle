@@ -22,6 +22,8 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 /**
+ * NEXT_MAJOR: Remove extending of AbstractAdminExtension.
+ *
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
  */
 class LockExtension extends AbstractAdminExtension

@@ -8,14 +8,16 @@ and be registered as a service. The interface defines a number of functions whic
 you can use to customize the edit form, list view, form validation, alter newly
 created objects and other admin features::
 
-    use Sonata\AdminBundle\Admin\AbstractAdminExtension;
-    use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Admin\Extension\ConfigureFormFieldsInterface;
+    use Sonata\AdminBundle\Extension\Event\ConfigureFormFieldsMessage;
     use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
     final class PublishStatusAdminExtension extends AbstractAdminExtension
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
+            $formMapper = $event->getMapper();
+
             $formMapper
                 ->add('status', ChoiceType::class, [
                     'choices' => [

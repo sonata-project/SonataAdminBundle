@@ -1,6 +1,13 @@
 UPGRADE 3.x
 ===========
 
+`Sonata\AdminBundle\Admin\AdminExtensionInterface` has been deprecated and segregated into
+single-method interfaces, they can be found under the `Sonata\AdminBundle\Admin\Extension` namespace.
+
+`Sonata\AdminBundle\Admin\AbstractAdminExtension` has been deprecated without alternative.
+
+`Sonata\AdminBundle\Admin\AbstractAdmin::addExtension` has been deprecated.
+
 ## Deprecated `SonataAdminBundle\Controller\HelperController` in favor of actions
 
 If you extended that controller, you should split your extended controller and

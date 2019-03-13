@@ -13,6 +13,12 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
+use Sonata\AdminBundle\Admin\AdminExtensionInterface as OldAdminExtensionInterface;
+use Sonata\AdminBundle\Admin\Extension\AdminExtensionInterface as NewAdminExtensionInterface;
+use Sonata\AdminBundle\Extension\ExtensionEmitter;
+use Sonata\AdminBundle\Extension\ExtensionNotifier;
+use Sonata\AdminBundle\Extension\ExtensionProcessor;
+use Sonata\AdminBundle\Extension\ExtensionProvider;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -80,9 +86,31 @@ class ExtensionCompilerPass implements CompilerPassInterface
             krsort($extensions);
             $admin = $container->getDefinition($target);
 
-            foreach (array_values($extensions) as $extension) {
+            list($oldExtensions, $newExtensions) = $this->filterExtensions($container, array_values($extensions));
+
+            foreach ($oldExtensions as $extension) {
                 $admin->addMethodCall('addExtension', [$extension]);
             }
+
+            $extensionProviderDefinition = $container
+                ->register($extensionProviderId = $target.'.extension.provider', ExtensionProvider::class);
+
+            $extensionProviderDefinition->addMethodCall('setExtensions', [$newExtensions]);
+
+            $container
+                ->register($extensionNotifierId = $target.'.extension.notifier', ExtensionNotifier::class)
+                ->addArgument($extensionProviderReference = new Reference($extensionProviderId));
+
+            $container
+                ->register($extensionProcessorId = $target.'.extension.processor', ExtensionProcessor::class)
+                ->addArgument($extensionProviderReference);
+
+            $container
+                ->register($extensionEmitterId = $target.'.extension.emitter', ExtensionEmitter::class)
+                ->addArgument(new Reference($extensionNotifierId))
+                ->addArgument(new Reference($extensionProcessorId));
+
+            $admin->addMethodCall('setExtensionEmitter', [new Reference($extensionEmitterId)]);
         }
     }
 
@@ -227,5 +255,30 @@ class ExtensionCompilerPass implements CompilerPassInterface
 
         $priority = $attributes['priority'] ?? 0;
         $targets[$target]->insert(new Reference($extension), $priority);
+    }
+
+    /**
+     * @param Reference[] $extensions
+     *
+     * @return array
+     */
+    private function filterExtensions(ContainerBuilder $containerBuilder, array $extensions)
+    {
+        $oldExtensions = [];
+        $newExtensions = [];
+
+        foreach ($extensions as $extension) {
+            $extensionDefinition = $containerBuilder->getDefinition((string) $extension);
+
+            if (is_subclass_of($extensionDefinition->getClass(), OldAdminExtensionInterface::class)) {
+                $oldExtensions[] = $extension;
+            }
+
+            if (is_subclass_of($extensionDefinition->getClass(), NewAdminExtensionInterface::class)) {
+                $newExtensions[] = $extension;
+            }
+        }
+
+        return [$oldExtensions, $newExtensions];
     }
 }
