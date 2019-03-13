@@ -1673,7 +1673,13 @@ class AdminTest extends TestCase
         $query = $this->createMock(ParameterBag::class, ['get']);
         $query->expects($this->any())
             ->method('get')
-            ->will($this->returnValue([]));
+            ->will($this->returnValue([
+                'filter' => [
+                    '_page' => '1',
+                    '_per_page' => '32',
+                ],
+            ]));
+
         $request->query = $query;
         $request->expects($this->any())
             ->method('get')

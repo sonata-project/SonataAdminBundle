@@ -41,7 +41,9 @@ First of all we are going to add a position field in our ``Client`` entity::
      */
     private $position;
 
-Then we need to inject the Sortable listener. If you only have the Gedmo bundle enabled, you only have to add the listener to your config.yml and skip this step.
+Then we need to inject the Sortable listener.
+If you only have the Gedmo bundle enabled, you only have to add the listener
+to your `services.yaml` file and skip this step.
 
 .. code-block:: yaml
 
@@ -56,7 +58,7 @@ Then we need to inject the Sortable listener. If you only have the Gedmo bundle 
                 - { name: doctrine.event_subscriber, connection: default }
 
 If you have the ``stof/doctrine-extensions-bundle``, you only need to enable the sortable
-feature in your config.yml such as
+feature in your configuration such as
 
 .. code-block:: yaml
 
