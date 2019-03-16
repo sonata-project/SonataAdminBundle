@@ -2695,7 +2695,7 @@ EOT;
 
         $mapper = new ListMapper($this->getListBuilder(), $this->list, $this);
 
-        if (\count($this->getBatchActions()) > 0 && !$this->getRequest()->isXmlHttpRequest()) {
+        if (\count($this->getBatchActions()) > 0 && $this->hasRequest() && !$this->getRequest()->isXmlHttpRequest()) {
             $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
                 $this->getClass(),
                 'batch',
