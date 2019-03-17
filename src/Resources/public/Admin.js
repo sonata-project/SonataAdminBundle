@@ -735,7 +735,7 @@ var Admin = {
      * Remember open tab after refreshing page.
      */
     setup_view_tabs_changer: function () {
-        jQuery('.changer-tab').on('click', function () {
+          jQuery('.changer-tab').on('click', function () {
             var tab = jQuery(this).attr('aria-controls'),
                 search = location.search.substring(1);
 
@@ -758,6 +758,7 @@ var Admin = {
             window.history.pushState({
                 path: newurl
             }, '', newurl);
+            jQuery(this).parent('.nav-tabs-custom').find('input[name="_tab"]').val(tab);
         });
     }
 };
