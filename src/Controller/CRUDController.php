@@ -22,6 +22,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
+use Sonata\AdminBundle\Twig\AdminEnvironment;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Symfony\Bridge\Twig\AppVariable;
@@ -127,19 +128,7 @@ class CRUDController implements ContainerAwareInterface
      */
     public function renderWithExtraParams($view, array $parameters = [], Response $response = null)
     {
-        if (!$this->isXmlHttpRequest()) {
-            $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
-        }
-        $parameters['admin'] = $parameters['admin'] ??
-            $this->admin;
-
-        $parameters['base_template'] = $parameters['base_template'] ??
-            $this->getBaseTemplate();
-
-        $parameters['admin_pool'] = $this->get('sonata.admin.pool');
-
-        //NEXT_MAJOR: Remove method alias and use $this->render() directly.
-        return $this->originalRender($view, $parameters, $response);
+        return $this->get(AdminEnvironment::class)->render($view, $parameters, $response);
     }
 
     /**

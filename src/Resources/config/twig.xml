@@ -36,5 +36,13 @@
             <argument type="service" id="sonata.admin.global_template_registry"/>
             <argument type="service" id="service_container"/>
         </service>
+        <service id="Sonata\AdminBundle\Twig\AdminEnvironment" class="Sonata\AdminBundle\Twig\AdminEnvironment" public="true">
+            <argument type="service" id="sonata.admin.pool"/>
+            <argument type="service" id="sonata.admin.global_template_registry"/>
+            <argument type="service" id="sonata.admin.breadcrumbs_builder"/>
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="twig"/>
+            <argument type="service" id="templating" on-invalid="null"/>
+        </service>
     </services>
 </container>
