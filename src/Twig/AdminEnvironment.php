@@ -133,24 +133,6 @@ final class AdminEnvironment
     }
 
     /**
-     * Returns the base template name.
-     *
-     * @return string The template name
-     */
-    private function getBaseTemplate(): string
-    {
-        if ($this->isXmlHttpRequest()) {
-            // NEXT_MAJOR: Remove this line and use commented line below it instead
-            return $this->admin->getTemplate('ajax');
-            // return $this->templateRegistry->getTemplate('ajax');
-        }
-
-        // NEXT_MAJOR: Remove this line and use commented line below it instead
-        return $this->admin->getTemplate('layout');
-        // return $this->templateRegistry->getTemplate('layout');
-    }
-
-    /**
      * @return AdminInterface
      */
     public function getAdmin(): AdminInterface
@@ -183,6 +165,24 @@ final class AdminEnvironment
         $admin->setRequest($request);
 
         return $admin;
+    }
+
+    /**
+     * Returns the base template name.
+     *
+     * @return string The template name
+     */
+    private function getBaseTemplate(): string
+    {
+        if ($this->isXmlHttpRequest()) {
+            // NEXT_MAJOR: Remove this line and use commented line below it instead
+            return $this->admin->getTemplate('ajax');
+            // return $this->templateRegistry->getTemplate('ajax');
+        }
+
+        // NEXT_MAJOR: Remove this line and use commented line below it instead
+        return $this->admin->getTemplate('layout');
+        // return $this->templateRegistry->getTemplate('layout');
     }
 
     /**
