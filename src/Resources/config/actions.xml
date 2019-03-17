@@ -42,5 +42,11 @@
         <service id="sonata.admin.action.retrieve_autocomplete_items" class="Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction" public="true">
             <argument type="service" id="sonata.admin.pool"/>
         </service>
+        <service id="Sonata\AdminBundle\Action\ListObjectsAction" class="Sonata\AdminBundle\Action\ListObjectsAction" public="true">
+            <argument type="service" id="Sonata\AdminBundle\Twig\AdminEnvironment"/>
+            <argument type="service" id="sonata.admin.pool"/>
+            <argument type="service" id="security.csrf.token_manager" on-invalid="null"/>
+            <argument type="service" id="sonata.admin.admin_exporter" on-invalid="null"/>
+        </service>
     </services>
 </container>

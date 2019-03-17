@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Controller;
 use Doctrine\Common\Inflector\Inflector;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Sonata\AdminBundle\Action\ListObjectsAction;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -149,29 +150,9 @@ class CRUDController implements ContainerAwareInterface
             return $preResponse;
         }
 
-        if ($listMode = $request->get('_list_mode')) {
-            $this->admin->setListMode($listMode);
-        }
+        $action = $this->container->get(ListObjectsAction::class);
 
-        $datagrid = $this->admin->getDatagrid();
-        $formView = $datagrid->getForm()->createView();
-
-        // set the theme for the current Admin Form
-        $this->setFormTheme($formView, $this->admin->getFilterTheme());
-
-        // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate('list');
-        // $template = $this->templateRegistry->getTemplate('list');
-
-        return $this->renderWithExtraParams($template, [
-            'action' => 'list',
-            'form' => $formView,
-            'datagrid' => $datagrid,
-            'csrf_token' => $this->getCsrfToken('sonata.batch'),
-            'export_formats' => $this->has('sonata.admin.admin_exporter') ?
-                $this->get('sonata.admin.admin_exporter')->getAvailableFormats($this->admin) :
-                $this->admin->getExportFormats(),
-        ], null);
+        return $action();
     }
 
     /**
