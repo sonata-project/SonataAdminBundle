@@ -61,6 +61,7 @@
                                     </div>
                                 {% endfor %}
                             </div>
+                            <input type="hidden" name="_tab" value="{{ app.request.query.get('_tab') }}">
                         </div>
                     {% else %}
                         {{ form_helper.render_groups(admin, form, admin.formtabs['default'].groups, has_tab) }}

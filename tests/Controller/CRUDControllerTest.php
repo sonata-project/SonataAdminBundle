@@ -929,7 +929,7 @@ class CRUDControllerTest extends TestCase
     /**
      * @dataProvider getRedirectToTests
      */
-    public function testRedirectTo($expected, $route, $queryParams, $hasActiveSubclass): void
+    public function testRedirectTo($expected, $route, $queryParams, $requestParams, $hasActiveSubclass): void
     {
         $this->admin->expects($this->any())
             ->method('hasActiveSubclass')
@@ -939,6 +939,10 @@ class CRUDControllerTest extends TestCase
 
         foreach ($queryParams as $key => $value) {
             $this->request->query->set($key, $value);
+        }
+
+        foreach ($requestParams as $key => $value) {
+            $this->request->request->set($key, $value);
         }
 
         $this->admin->expects($this->any())
@@ -982,11 +986,12 @@ class CRUDControllerTest extends TestCase
     public function getRedirectToTests()
     {
         return [
-            ['stdClass_edit', 'edit', [], false],
-            ['list', 'list', ['btn_update_and_list' => true], false],
-            ['list', 'list', ['btn_create_and_list' => true], false],
-            ['create', 'create', ['btn_create_and_create' => true], false],
-            ['create?subclass=foo', 'create', ['btn_create_and_create' => true, 'subclass' => 'foo'], true],
+            ['stdClass_edit', 'edit', [], [], false],
+            ['list', 'list', ['btn_update_and_list' => true], [], false],
+            ['list', 'list', ['btn_create_and_list' => true], [], false],
+            ['create', 'create', ['btn_create_and_create' => true], [], false],
+            ['create?subclass=foo', 'create', ['btn_create_and_create' => true, 'subclass' => 'foo'], [], true],
+            ['stdClass_edit?_tab=first_tab', 'edit', ['btn_update_and_edit' => true], ['_tab' => 'first_tab'], false],
         ];
     }
 
