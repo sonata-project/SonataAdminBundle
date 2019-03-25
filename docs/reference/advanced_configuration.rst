@@ -38,24 +38,6 @@ With a tag attribute (less verbose)
 
 .. configuration-block::
 
-    .. code-block:: xml
-
-        <!-- config/services.xml -->
-
-        <service id="app.admin.project" class="App\Admin\ProjectAdmin">
-            <argument/>
-            <argument>App\Entity\Project</argument>
-            <argument/>
-            <tag
-                name="sonata.admin"
-                manager_type="orm"
-                group="Project"
-                label="Project"
-                label_translator_strategy="sonata.admin.label.strategy.native"
-                route_builder="sonata.admin.route.path_info"
-                />
-        </service>
-
     .. code-block:: yaml
 
         # config/services.yaml
@@ -75,10 +57,44 @@ With a tag attribute (less verbose)
                     label_translator_strategy: 'sonata.admin.label.strategy.native'
                     route_builder: 'sonata.admin.route.path_info'
 
+    .. code-block:: xml
+
+        <!-- config/services.xml -->
+
+        <service id="app.admin.project" class="App\Admin\ProjectAdmin">
+            <argument/>
+            <argument>App\Entity\Project</argument>
+            <argument/>
+            <tag
+                name="sonata.admin"
+                manager_type="orm"
+                group="Project"
+                label="Project"
+                label_translator_strategy="sonata.admin.label.strategy.native"
+                route_builder="sonata.admin.route.path_info"
+                />
+        </service>
+
 With a method call (more verbose)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. configuration-block::
+
+    .. code-block:: yaml
+
+        # config/services.yaml
+
+        app.admin.project:
+            class: App\Admin\ProjectAdmin
+            arguments:
+                - ~
+                - App\Entity\Project
+                - ~
+            calls:
+                - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.native']]
+                - [setRouteBuilder, ['@sonata.admin.route.path_info']]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: 'Project', label: 'Project' }
 
     .. code-block:: xml
 
@@ -96,22 +112,6 @@ With a method call (more verbose)
             </call>
             <tag name="sonata.admin" manager_type="orm" group="Project" label="Project"/>
         </service>
-
-    .. code-block:: yaml
-
-        # config/services.yaml
-
-        app.admin.project:
-            class: App\Admin\ProjectAdmin
-            arguments:
-                - ~
-                - App\Entity\Project
-                - ~
-            calls:
-                - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.native']]
-                - [setRouteBuilder, ['@sonata.admin.route.path_info']]
-            tags:
-                - { name: sonata.admin, manager_type: orm, group: 'Project', label: 'Project' }
 
 If you want to modify the service that is going to be injected, add the following code to your
 application's config file:
@@ -161,14 +161,6 @@ To create your own RouteBuilder create the PHP class and register it as a servic
 
 .. configuration-block::
 
-    .. code-block:: xml
-
-        <!-- config/services.xml -->
-
-        <service id="app.admin.entity_route_builder" class="App\Route\EntityRouterBuilder">
-            <argument type="service" id="sonata.admin.audit.manager"/>
-        </service>
-
     .. code-block:: yaml
 
         # config/services.yaml
@@ -177,7 +169,15 @@ To create your own RouteBuilder create the PHP class and register it as a servic
             app.admin.entity_route_builder:
                 class: App\Route\EntityRouterBuilder
                 arguments:
-                    - "@sonata.admin.audit.manager"
+                    - '@sonata.admin.audit.manager'
+
+    .. code-block:: xml
+
+        <!-- config/services.xml -->
+
+        <service id="app.admin.entity_route_builder" class="App\Route\EntityRouterBuilder">
+            <argument type="service" id="sonata.admin.audit.manager"/>
+        </service>
 
 Inherited classes
 -----------------
@@ -187,23 +187,6 @@ You can manage inherited classes by injecting subclasses using the service confi
 Lets consider a base class named `Person` and its subclasses `Student` and `Teacher`:
 
 .. configuration-block::
-
-    .. code-block:: xml
-
-        <!-- config/services.xml -->
-
-        <service id="app.admin.person" class="App\Admin\PersonAdmin">
-            <argument/>
-            <argument>App\Entity\Person</argument>
-            <argument></argument>
-            <call method="setSubClasses">
-                <argument type="collection">
-                    <argument key="student">App\Entity\Student</argument>
-                    <argument key="teacher">App\Entity\Teacher</argument>
-                </argument>
-            </call>
-            <tag name="sonata.admin" manager_type="orm" group="admin" label="Person"/>
-        </service>
 
     .. code-block:: yaml
 
@@ -223,6 +206,23 @@ Lets consider a base class named `Person` and its subclasses `Student` and `Teac
                         teacher: App\Entity\Teacher
             tags:
                 - { name: sonata.admin, manager_type: orm, group: "admin", label: "Person" }
+
+    .. code-block:: xml
+
+        <!-- config/services.xml -->
+
+        <service id="app.admin.person" class="App\Admin\PersonAdmin">
+            <argument/>
+            <argument>App\Entity\Person</argument>
+            <argument></argument>
+            <call method="setSubClasses">
+                <argument type="collection">
+                    <argument key="student">App\Entity\Student</argument>
+                    <argument key="teacher">App\Entity\Teacher</argument>
+                </argument>
+            </call>
+            <tag name="sonata.admin" manager_type="orm" group="admin" label="Person"/>
+        </service>
 
 You will need to change the way forms are configured in order to
 take into account these new subclasses::
