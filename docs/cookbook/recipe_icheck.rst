@@ -25,9 +25,8 @@ If you don't want to use iCheck in your admin, you can disable it in configurati
 Disable iCheck on some form elements
 -------------------------------------
 
-To disable iCheck on some ``checkbox`` or ``radio`` form elements, set data attribute ``data-sonata-icheck = "false"`` to this form element.
-
-.. code-block:: php
+To disable iCheck on some ``checkbox`` or ``radio`` form elements,
+set data attribute ``data-sonata-icheck = "false"`` to this form element::
 
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Form\Type\ModelType;
