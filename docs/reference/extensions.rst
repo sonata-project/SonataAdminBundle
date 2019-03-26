@@ -77,7 +77,7 @@ The second option is to add it to your config.
                         - app.admin.article
 
 Using ``config/packages/sonata_admin.yaml`` file has some advantages, it allows you to keep your configuration centralized and it provides some
-extra options you can use to wire your extensions in a more dynamic way. This means you can change the behaviour of all
+extra options you can use to wire your extensions in a more dynamic way. This means you can change the behavior of all
 admins that manage a class of a specific type.
 
 admins:

@@ -17,13 +17,7 @@ Route names
 
 You can set a ``baseRouteName`` property inside your ``Admin`` class. This
 represents the route prefix, to which an underscore and the action name will
-be added to generate the actual route names.
-
-.. note::
-
-    This is the internal *name* given to a route (it has nothing to do with the route's visible *URL*).
-
-.. code-block:: php
+be added to generate the actual route names::
 
     // src/Admin/PostAdmin.php
 
@@ -37,6 +31,10 @@ be added to generate the actual route names.
 
         // ...
     }
+
+.. note::
+
+    This is the internal *name* given to a route (it has nothing to do with the route's visible *URL*).
 
 If no ``baseRouteName`` is defined then the Admin will generate one for you,
 based on the following format: 'admin_vendor_bundlename_entityname' so you will have

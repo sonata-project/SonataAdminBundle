@@ -27,9 +27,7 @@ For example, lets define a new ``merge`` action which takes a number of source i
 merges them onto a single target item. It should only be available when two conditions are met:
 
 - the EDIT and DELETE routes exist for this Admin (have not been disabled)
-- the logged in administrator has EDIT and DELETE permissions
-
-.. code-block:: php
+- the logged in administrator has EDIT and DELETE permissions::
 
     protected function configureBatchActions($actions)
     {
@@ -169,9 +167,7 @@ This method may return three different values:
  - ``false``: Same as above, with the default "action aborted, no model selected" notification message.
  - ``string``: The batch action is not relevant given the current request parameters
    (for example the ``target`` is missing for a ``merge`` action).
-   The returned string is a message displayed to the user.
-
-.. code-block:: php
+   The returned string is a message displayed to the user::
 
     // src/Controller/CRUDController.php
 
