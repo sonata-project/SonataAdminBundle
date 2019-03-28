@@ -113,6 +113,7 @@ attributes, allowing to view the UTC date with the default browser tooltip.
 ### Fixed
 - Fixed `AdminType` tabs ids when used in collections
 - the list mode view is now preserved when a sorting is applied
+
 ## [3.40.3](https://github.com/sonata-project/SonataAdminBundle/compare/3.40.2...3.40.3) - 2018-11-10
 ### Added
 - Added missing polish translation for `link_edit`
@@ -528,7 +529,7 @@ attributes, allowing to view the UTC date with the default browser tooltip.
 - Fixed AbstractAdmin::getSubject on admins with parentFieldDescription
 - Fixed deprecation when using hidden form type in model autocomplete
 - Fixed the extra option being retrieved. The translation catalogue to be used is inside the label_catalogue option, not translation_domain.
-- setting the column title 
+- setting the column title
 - Html tags do not appear in the meta title
 
 ## [3.21.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.20.1...3.21.0) - 2017-08-14
@@ -606,7 +607,7 @@ attributes, allowing to view the UTC date with the default browser tooltip.
 - Changed GroupMenuProvider::get to setDisplay(false) on menuItem if on_top used and no items could be displayed
 
 ### Fixed
-- Fixed the bug that caused an error "The helper "dialog" is not defined." on Symfony3 with new `\Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper` when you run command "sonata:admin:generate-object-acl". 
+- Fixed the bug that caused an error "The helper "dialog" is not defined." on Symfony3 with new `\Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper` when you run command "sonata:admin:generate-object-acl".
 - Fixed issue on getExtendedType of MopaCompatibilityTypeFieldExtension and ChoiceTypeExtension because the method requires to return the fully-qualified class name (FQCN) since symfony version 2.8
 - `ModelType` have choices as values by default now on SF 2.7+.
 - Users without the `LIST` role can access the autocomplete items by configuring the `target_admin_access_action` option

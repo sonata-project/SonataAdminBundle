@@ -29,7 +29,7 @@ class DashboardActionTest extends TestCase
     /**
      * @doesNotPerformAssertions
      */
-    public function testdashboardActionStandardRequest()
+    public function testdashboardActionStandardRequest(): void
     {
         $container = $this->createMock(ContainerInterface::class);
 

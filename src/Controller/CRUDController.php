@@ -79,7 +79,7 @@ class CRUDController implements ContainerAwareInterface
     public function __call($method, $arguments)
     {
         if (\in_array($method, ['get', 'has'], true)) {
-            return \call_user_func_array([$this->container, $method], $arguments);
+            return $this->container->$method(...$arguments);
         }
 
         if (method_exists($this, 'proxyToControllerClass')) {
@@ -89,7 +89,7 @@ class CRUDController implements ContainerAwareInterface
         throw new \LogicException('Call to undefined method '.__CLASS__.'::'.$method);
     }
 
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
 
@@ -443,7 +443,7 @@ class CRUDController implements ContainerAwareInterface
 
         $confirmation = $request->get('confirmation', false);
 
-        if ($data = json_decode((string) $request->get('data'), true)) {
+        if ($data = json_decode($request->get('data', ''), true)) {
             $action = $data['action'];
             $idx = $data['idx'];
             $allElements = $data['all_elements'];
@@ -460,25 +460,16 @@ class CRUDController implements ContainerAwareInterface
             unset($data['_sonata_csrf_token']);
         }
 
-        // NEXT_MAJOR: Remove reflection check.
-        $reflector = new \ReflectionMethod($this->admin, 'getBatchActions');
-        if ($reflector->getDeclaringClass()->getName() === \get_class($this->admin)) {
-            @trigger_error('Override Sonata\AdminBundle\Admin\AbstractAdmin::getBatchActions method'
-                .' is deprecated since version 3.2.'
-                .' Use Sonata\AdminBundle\Admin\AbstractAdmin::configureBatchActions instead.'
-                .' The method will be final in 4.0.', E_USER_DEPRECATED
-            );
-        }
         $batchActions = $this->admin->getBatchActions();
         if (!\array_key_exists($action, $batchActions)) {
             throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
         }
 
         $camelizedAction = Inflector::classify($action);
-        $isRelevantAction = sprintf('batchAction%sIsRelevant', $camelizedAction);
+        $isRelevantAction = sprintf('batchAction%sIsRelevant', ucfirst($camelizedAction));
 
         if (method_exists($this, $isRelevantAction)) {
-            $nonRelevantMessage = \call_user_func([$this, $isRelevantAction], $idx, $allElements, $request);
+            $nonRelevantMessage = $this->$isRelevantAction($idx, $allElements, $request);
         } else {
             $nonRelevantMessage = 0 !== \count($idx) || $allElements; // at least one item is selected
         }
@@ -553,7 +544,7 @@ class CRUDController implements ContainerAwareInterface
             return $this->redirectToList();
         }
 
-        return \call_user_func([$this, $finalAction], $query, $request);
+        return $this->$finalAction($query, $request);
     }
 
     /**
@@ -1135,7 +1126,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @throws \RuntimeException
      */
-    protected function configure()
+    protected function configure(): void
     {
         $request = $this->getRequest();
 
@@ -1219,7 +1210,7 @@ class CRUDController implements ContainerAwareInterface
     /**
      * @throws \Exception
      */
-    protected function handleModelManagerException(\Exception $e)
+    protected function handleModelManagerException(\Exception $e): void
     {
         if ($this->get('kernel')->isDebug()) {
             throw $e;
@@ -1416,7 +1407,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @throws HttpException
      */
-    protected function validateCsrfToken($intention)
+    protected function validateCsrfToken($intention): void
     {
         $request = $this->getRequest();
         $token = $request->request->get('_sonata_csrf_token', false);

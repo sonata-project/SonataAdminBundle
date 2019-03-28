@@ -88,7 +88,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * @internal
      */
-    public function __set($name, $value)
+    public function __set($name, $value): void
     {
         if ('choiceList' === $name) {
             $this->triggerDeprecation();
@@ -112,7 +112,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * @internal
      */
-    public function __unset($name)
+    public function __unset($name): void
     {
         if ('choiceList' === $name) {
             $this->triggerDeprecation();
@@ -167,7 +167,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
      *
      * @throws RuntimeException
      */
-    private function legacyConstructor(array $args)
+    private function legacyConstructor(array $args): void
     {
         $choiceList = $args[0];
 

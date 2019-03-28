@@ -42,7 +42,7 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
         $this->assertSame(['map' => []], $options);
     }
 
-    public function setAllowedTypesProvider()
+    public function setAllowedTypesProvider(): array
     {
         return [
             'null' => [null],

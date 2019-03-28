@@ -53,7 +53,7 @@ class AdminGenerator extends Generator
      *
      * @throws \RuntimeException
      */
-    public function generate(BundleInterface $bundle, $adminClassBasename, $modelClass)
+    public function generate(BundleInterface $bundle, $adminClassBasename, $modelClass): void
     {
         $this->class = sprintf('%s\Admin\%s', $bundle->getNamespace(), $adminClassBasename);
         $this->file = sprintf('%s/Admin/%s.php', $bundle->getPath(), str_replace('\\', '/', $adminClassBasename));

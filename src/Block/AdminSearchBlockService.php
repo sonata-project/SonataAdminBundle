@@ -90,7 +90,7 @@ class AdminSearchBlockService extends AbstractBlockService
         return 'Admin Search Result';
     }
 
-    public function configureSettings(OptionsResolver $resolver)
+    public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'admin_code' => false,

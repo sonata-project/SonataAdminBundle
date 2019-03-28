@@ -73,7 +73,7 @@ class AdminStatsBlockService extends AbstractBlockService
         return 'Admin Stats';
     }
 
-    public function configureSettings(OptionsResolver $resolver)
+    public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'icon' => 'fa-line-chart',

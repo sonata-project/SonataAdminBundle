@@ -39,7 +39,7 @@ class GenerateAdminCommand extends QuestionableCommand
      */
     private $managerTypes;
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('sonata:admin:generate')
@@ -148,7 +148,7 @@ class GenerateAdminCommand extends QuestionableCommand
         return 0;
     }
 
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         $questionHelper = $this->getQuestionHelper();
         $questionHelper->writeSection($output, 'Welcome to the Sonata admin generator');

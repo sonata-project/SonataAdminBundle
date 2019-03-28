@@ -334,7 +334,7 @@ class SonataAdminExtensionTest extends TestCase
                     case 'html':
                         return '@SonataAdmin/CRUD/list_html.html.twig';
                     case 'nonexistent':
-                        // template doesn`t exist
+                        // template doesn't exist
                         return '@SonataAdmin/CRUD/list_nonexistent_template.html.twig';
                     default:
                         return false;
@@ -349,72 +349,6 @@ class SonataAdminExtensionTest extends TestCase
                 $this->fieldDescription
             ))
         );
-    }
-
-    /**
-     * @dataProvider getDeprecatedRenderListElementTests
-     * @group legacy
-     */
-    public function testDeprecatedRenderListElement($expected, $value, array $options): void
-    {
-        $this->admin->expects($this->any())
-            ->method('hasAccess')
-            ->will($this->returnValue(true));
-
-        // NEXT_MAJOR: Remove this line
-        $this->admin->expects($this->any())
-            ->method('getTemplate')
-            ->with('base_list_field')
-            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
-
-        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
-
-        $this->fieldDescription->expects($this->any())
-            ->method('getValue')
-            ->will($this->returnValue($value));
-
-        $this->fieldDescription->expects($this->any())
-            ->method('getType')
-            ->will($this->returnValue('nonexistent'));
-
-        $this->fieldDescription->expects($this->any())
-            ->method('getOptions')
-            ->will($this->returnValue($options));
-
-        $this->fieldDescription->expects($this->any())
-            ->method('getOption')
-            ->will($this->returnCallback(function ($name, $default = null) use ($options) {
-                return $options[$name] ?? $default;
-            }));
-
-        $this->fieldDescription->expects($this->any())
-            ->method('getTemplate')
-            ->will($this->returnValue('@SonataAdmin/CRUD/list_nonexistent_template.html.twig'));
-
-        $this->assertSame(
-            $this->removeExtraWhitespace($expected),
-            $this->removeExtraWhitespace($this->twigExtension->renderListElement(
-                $this->environment,
-                $this->object,
-                $this->fieldDescription
-            ))
-        );
-    }
-
-    public function getDeprecatedRenderListElementTests()
-    {
-        return [
-            [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-nonexistent" objectId="12345"> Example </td>',
-                'Example',
-                [],
-            ],
-            [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-nonexistent" objectId="12345"> </td>',
-                null,
-                [],
-            ],
-        ];
     }
 
     public function getRenderListElementTests()
@@ -1355,71 +1289,6 @@ EOT
     }
 
     /**
-     * @group legacy
-     */
-    public function testRenderListElementNonExistentTemplate(): void
-    {
-        // NEXT_MAJOR: Remove this line
-        $this->admin->method('getTemplate')
-            ->with('base_list_field')
-            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
-
-        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
-
-        $this->fieldDescription->expects($this->once())
-            ->method('getValue')
-            ->will($this->returnValue('Foo'));
-
-        $this->fieldDescription->expects($this->once())
-            ->method('getFieldName')
-            ->will($this->returnValue('Foo_name'));
-
-        $this->fieldDescription->expects($this->exactly(2))
-            ->method('getType')
-            ->will($this->returnValue('nonexistent'));
-
-        $this->fieldDescription->expects($this->once())
-            ->method('getTemplate')
-            ->will($this->returnValue('@SonataAdmin/CRUD/list_nonexistent_template.html.twig'));
-
-        $this->logger->expects($this->once())
-            ->method('warning')
-            ->with(($this->stringStartsWith($this->removeExtraWhitespace(
-                'An error occured trying to load the template
-                "@SonataAdmin/CRUD/list_nonexistent_template.html.twig"
-                for the field "Foo_name", the default template
-                    "@SonataAdmin/CRUD/base_list_field.html.twig" was used
-                    instead.'
-            ))));
-
-        $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription);
-    }
-
-    /**
-     * @group                    legacy
-     */
-    public function testRenderListElementErrorLoadingTemplate(): void
-    {
-        $this->expectException(\Twig_Error_Loader::class);
-        $this->expectExceptionMessage('Unable to find template "@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig"');
-
-        // NEXT_MAJOR: Remove this line
-        $this->admin->method('getTemplate')
-            ->with('base_list_field')
-            ->willReturn('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig');
-
-        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig');
-
-        $this->fieldDescription->expects($this->once())
-            ->method('getTemplate')
-            ->will($this->returnValue('@SonataAdmin/CRUD/list_nonexistent_template.html.twig'));
-
-        $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription);
-
-        $this->templateRegistry->getTemplate('base_list_field')->shouldHaveBeenCalled();
-    }
-
-    /**
      * @dataProvider getRenderViewElementTests
      */
     public function testRenderViewElement($expected, $type, $value, array $options): void
@@ -2052,7 +1921,14 @@ EOT
             ->method('getValue')
             ->will($this->returnValue('test123'));
 
-        $this->assertSame('test123', $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
+        $this->assertSame(
+            'test123',
+            $this->getMethodAsPublic('getValueFromFieldDescription')->invoke(
+                $this->twigExtension,
+                $object,
+                $fieldDescription
+            )
+        );
     }
 
     public function testGetValueFromFieldDescriptionWithRemoveLoopException(): void
@@ -2064,7 +1940,12 @@ EOT
 
         $this->assertSame(
             'anything',
-            $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription, ['loop' => true])
+            $this->getMethodAsPublic('getValueFromFieldDescription')->invoke(
+                $this->twigExtension,
+                $object,
+                $fieldDescription,
+                ['loop' => true]
+            )
         );
     }
 
@@ -2083,7 +1964,13 @@ EOT
             ->method('getAssociationAdmin')
             ->will($this->returnValue(null));
 
-        $this->assertNull($this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
+        $this->assertNull(
+            $this->getMethodAsPublic('getValueFromFieldDescription')->invoke(
+                $this->twigExtension,
+                $object,
+                $fieldDescription
+            )
+        );
     }
 
     public function testGetValueFromFieldDescriptionWithNoValueExceptionNewAdminInstance(): void
@@ -2105,57 +1992,12 @@ EOT
             ->method('getNewInstance')
             ->will($this->returnValue('foo'));
 
-        $this->assertSame('foo', $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testOutput(): void
-    {
-        $this->fieldDescription->expects($this->any())
-            ->method('getTemplate')
-            ->will($this->returnValue('@SonataAdmin/CRUD/base_list_field.html.twig'));
-
-        $this->fieldDescription->expects($this->any())
-            ->method('getFieldName')
-            ->will($this->returnValue('fd_name'));
-
-        $this->environment->disableDebug();
-
-        $parameters = [
-            'admin' => $this->admin,
-            'value' => 'foo',
-            'field_description' => $this->fieldDescription,
-            'object' => $this->object,
-        ];
-
-        $template = $this->environment->loadTemplate('@SonataAdmin/CRUD/base_list_field.html.twig');
-
         $this->assertSame(
-            '<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>',
-            $this->removeExtraWhitespace($this->twigExtension->output(
-                $this->fieldDescription,
-                $template,
-                $parameters,
-                $this->environment
-            ))
-        );
-
-        $this->environment->enableDebug();
-        $this->assertSame(
-            $this->removeExtraWhitespace(<<<'EOT'
-<!-- START
-    fieldName: fd_name
-    template: @SonataAdmin/CRUD/base_list_field.html.twig
-    compiled template: @SonataAdmin/CRUD/base_list_field.html.twig
--->
-    <td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>
-<!-- END - fieldName: fd_name -->
-EOT
-            ),
-            $this->removeExtraWhitespace(
-                $this->twigExtension->output($this->fieldDescription, $template, $parameters, $this->environment)
+            'foo',
+            $this->getMethodAsPublic('getValueFromFieldDescription')->invoke(
+                $this->twigExtension,
+                $object,
+                $fieldDescription
             )
         );
     }
@@ -2666,6 +2508,14 @@ EOT
     private function buildTwigLikeUrl(array $url): string
     {
         return htmlspecialchars(http_build_query($url, '', '&', PHP_QUERY_RFC3986));
+    }
+
+    private function getMethodAsPublic($privateMethod): \ReflectionMethod
+    {
+        $reflection = new \ReflectionMethod('Sonata\AdminBundle\Twig\Extension\SonataAdminExtension', $privateMethod);
+        $reflection->setAccessible(true);
+
+        return $reflection;
     }
 
     private function removeExtraWhitespace($string): string

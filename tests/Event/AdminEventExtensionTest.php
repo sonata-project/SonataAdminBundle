@@ -34,7 +34,7 @@ class AdminEventExtensionTest extends TestCase
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $stub = $eventDispatcher->expects($this->once())->method('dispatch');
-        \call_user_func_array([$stub, 'with'], $args);
+        $stub->with(...$args);
 
         return new AdminEventExtension($eventDispatcher);
     }

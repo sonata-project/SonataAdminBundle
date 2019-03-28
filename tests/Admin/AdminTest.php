@@ -21,8 +21,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminExtensionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
@@ -59,7 +57,6 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -975,44 +972,28 @@ class AdminTest extends TestCase
         $this->assertSame($modelManager, $admin->getModelManager());
     }
 
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @group legacy
-     */
     public function testGetBaseCodeRoute(): void
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $postAdmin = new PostAdmin(
+            'sonata.post.admin.post',
+            'NewsBundle\Entity\Post',
+            'SonataNewsBundle:PostAdmin'
+        );
+        $commentAdmin = new CommentAdmin(
+            'sonata.post.admin.comment',
+            'Application\Sonata\NewsBundle\Entity\Comment',
+            'SonataNewsBundle:CommentAdmin'
+        );
 
-        $this->assertSame('', $admin->getBaseCodeRoute());
+        $this->assertSame($postAdmin->getCode(), $postAdmin->getBaseCodeRoute());
 
-        $admin->setBaseCodeRoute('foo');
-        $this->assertSame('foo', $admin->getBaseCodeRoute());
+        $postAdmin->addChild($commentAdmin, 'post');
+
+        $this->assertSame(
+            'sonata.post.admin.post|sonata.post.admin.comment',
+            $commentAdmin->getBaseCodeRoute()
+        );
     }
-
-    // NEXT_MAJOR: uncomment this method.
-    // public function testGetBaseCodeRoute()
-    // {
-    //     $postAdmin = new PostAdmin(
-    //         'sonata.post.admin.post',
-    //         'NewsBundle\Entity\Post',
-    //         'SonataNewsBundle:PostAdmin'
-    //     );
-    //     $commentAdmin = new CommentAdmin(
-    //         'sonata.post.admin.comment',
-    //         'Application\Sonata\NewsBundle\Entity\Comment',
-    //         'SonataNewsBundle:CommentAdmin'
-    //     );
-    //
-    //     $this->assertSame($postAdmin->getCode(), $postAdmin->getBaseCodeRoute());
-    //
-    //     $postAdmin->addChild($commentAdmin);
-    //
-    //     $this->assertSame(
-    //         'sonata.post.admin.post|sonata.post.admin.comment',
-    //         $commentAdmin->getBaseCodeRoute()
-    //     );
-    // }
 
     public function testGetRouteGenerator(): void
     {
@@ -2156,83 +2137,6 @@ class AdminTest extends TestCase
         $this->assertTrue($admin->isDefaultFilter('foo'));
         $this->assertFalse($admin->isDefaultFilter('bar'));
         $this->assertFalse($admin->isDefaultFilter('a'));
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testDefaultBreadcrumbsBuilder(): void
-    {
-        $container = $this->createMock(ContainerInterface::class);
-        $container->expects($this->once())
-            ->method('getParameter')
-            ->with('sonata.admin.configuration.breadcrumbs')
-            ->will($this->returnValue([]));
-
-        $pool = $this->getMockBuilder(Pool::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $pool->expects($this->once())
-            ->method('getContainer')
-            ->will($this->returnValue($container));
-
-        $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
-            'admin.my_code', 'My\Class', 'MyBundle:ClassAdmin',
-        ], '', true, true, true, ['getConfigurationPool']);
-        $admin->expects($this->once())
-            ->method('getConfigurationPool')
-            ->will($this->returnValue($pool));
-
-        $this->assertInstanceOf(BreadcrumbsBuilder::class, $admin->getBreadcrumbsBuilder());
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testBreadcrumbsBuilderSetter(): void
-    {
-        $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
-            'admin.my_code', 'My\Class', 'MyBundle:ClassAdmin',
-        ]);
-        $this->assertSame($admin, $admin->setBreadcrumbsBuilder($builder = $this->createMock(
-            BreadcrumbsBuilderInterface::class
-        )));
-        $this->assertSame($builder, $admin->getBreadcrumbsBuilder());
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testGetBreadcrumbs(): void
-    {
-        $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
-            'admin.my_code', 'My\Class', 'MyBundle:ClassAdmin',
-        ]);
-        $builder = $this->prophesize(BreadcrumbsBuilderInterface::class);
-        $action = 'myaction';
-        $builder->getBreadcrumbs($admin, $action)->shouldBeCalled();
-        $admin->setBreadcrumbsBuilder($builder->reveal())->getBreadcrumbs($action);
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testBuildBreadcrumbs(): void
-    {
-        $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
-            'admin.my_code', 'My\Class', 'MyBundle:ClassAdmin',
-        ]);
-        $builder = $this->prophesize(BreadcrumbsBuilderInterface::class);
-        $action = 'myaction';
-        $menu = $this->createMock(ItemInterface::class);
-        $builder->buildBreadcrumbs($admin, $action, $menu)
-            ->shouldBeCalledTimes(1)
-            ->willReturn($menu);
-        $admin->setBreadcrumbsBuilder($builder->reveal());
-
-        /* check the called is proxied only once */
-        $this->assertSame($menu, $admin->buildBreadcrumbs($action, $menu));
-        $this->assertSame($menu, $admin->buildBreadcrumbs($action, $menu));
     }
 
     /**

@@ -35,11 +35,11 @@ class NoopSecurityHandler implements SecurityHandlerInterface
         return [];
     }
 
-    public function createObjectSecurity(AdminInterface $admin, $object)
+    public function createObjectSecurity(AdminInterface $admin, $object): void
     {
     }
 
-    public function deleteObjectSecurity(AdminInterface $admin, $object)
+    public function deleteObjectSecurity(AdminInterface $admin, $object): void
     {
     }
 }

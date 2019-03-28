@@ -121,7 +121,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @param int $limit
      */
-    public function setMaxRecordLimit($limit)
+    public function setMaxRecordLimit($limit): void
     {
         $this->maxRecordLimit = $limit;
     }
@@ -179,7 +179,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @param int $pos
      */
-    public function setCursor($pos)
+    public function setCursor($pos): void
     {
         if ($pos < 1) {
             $this->cursor = 1;
@@ -355,7 +355,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return max($this->getPage() - 1, $this->getFirstPage());
     }
 
-    public function setPage($page)
+    public function setPage($page): void
     {
         $this->page = (int) $page;
 
@@ -370,7 +370,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return $this->maxPerPage;
     }
 
-    public function setMaxPerPage($max)
+    public function setMaxPerPage($max): void
     {
         if ($max > 0) {
             $this->maxPerPage = $max;
@@ -395,7 +395,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return $this->maxPageLinks;
     }
 
-    public function setMaxPageLinks($maxPageLinks)
+    public function setMaxPageLinks($maxPageLinks): void
     {
         $this->maxPageLinks = $maxPageLinks;
     }
@@ -461,7 +461,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      * @param string $name
      * @param mixed  $value
      */
-    public function setParameter($name, $value)
+    public function setParameter($name, $value): void
     {
         $this->parameters[$name] = $value;
     }
@@ -528,7 +528,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return serialize($vars);
     }
 
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         $array = unserialize($serialized);
 
@@ -553,7 +553,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return $this->countColumn = $countColumn;
     }
 
-    public function setQuery($query)
+    public function setQuery($query): void
     {
         $this->query = $query;
     }
@@ -569,7 +569,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * @param int $nb
      */
-    protected function setNbResults($nb)
+    protected function setNbResults($nb): void
     {
         $this->nbResults = $nb;
     }
@@ -577,7 +577,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * @param int $page
      */
-    protected function setLastPage($page)
+    protected function setLastPage($page): void
     {
         $this->lastPage = $page;
 
@@ -599,7 +599,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Loads data into properties used for iteration.
      */
-    protected function initializeIterator()
+    protected function initializeIterator(): void
     {
         $this->results = $this->getResults();
         $this->resultsCounter = \count($this->results);
@@ -608,7 +608,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Empties properties used for iteration.
      */
-    protected function resetIterator()
+    protected function resetIterator(): void
     {
         $this->results = null;
         $this->resultsCounter = 0;

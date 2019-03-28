@@ -30,7 +30,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
      */
     protected $userEntityClass = '';
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('sonata:admin:generate-object-acl')
@@ -41,7 +41,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
         ;
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): void
     {
         $output->writeln('Welcome to the AdminBundle object ACL generator');
         $output->writeln([

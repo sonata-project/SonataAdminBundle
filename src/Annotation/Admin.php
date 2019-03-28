@@ -106,7 +106,7 @@ class Admin implements MetadataProcessorInterface
      */
     public $onTop = false;
 
-    public function processMetadata(ClassMetadata $metadata)
+    public function processMetadata(ClassMetadata $metadata): void
     {
         $this->generateFallback($this->class);
         $this->validate();

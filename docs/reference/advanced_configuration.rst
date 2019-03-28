@@ -369,15 +369,15 @@ overriding the following method::
     public function configureActionButtons(AdminInterface $admin, $list, $action, $object)
     {
         if (in_array($action, ['show', 'edit', 'acl']) && $object) {
-            $list['custom'] = [
+            $buttonList['custom'] = [
                 'template' => '@App/Button/custom_button.html.twig',
             ];
         }
 
         // Remove history action
-        unset($list['history']);
+        unset($buttonList['history']);
 
-        return $list;
+        return $buttonList;
     }
 
 .. figure:: ../images/custom_action_buttons.png

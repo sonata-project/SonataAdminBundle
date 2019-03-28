@@ -45,7 +45,7 @@ class ControllerGenerator extends Generator
      *
      * @throws \RuntimeException
      */
-    public function generate(BundleInterface $bundle, $controllerClassBasename)
+    public function generate(BundleInterface $bundle, $controllerClassBasename): void
     {
         $this->class = sprintf('%s\Controller\%s', $bundle->getNamespace(), $controllerClassBasename);
         $this->file = sprintf(

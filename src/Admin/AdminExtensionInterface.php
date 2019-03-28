@@ -101,8 +101,7 @@ interface AdminExtensionInterface
      *
      * @return array
      */
-    // TODO: Uncomment in next major release
-    // public function getAccessMapping(AdminInterface $admin);
+    public function getAccessMapping(AdminInterface $admin);
 
     /**
      * Returns the list of batch actions.
@@ -111,8 +110,7 @@ interface AdminExtensionInterface
      *
      * @return array
      */
-    // TODO: Uncomment in next major release
-    // public function configureBatchActions(AdminInterface $admin, array $actions);
+    public function configureBatchActions(AdminInterface $admin, array $actions);
 
     /**
      * Get a chance to modify export fields.
@@ -154,17 +152,16 @@ interface AdminExtensionInterface
      */
     public function postRemove(AdminInterface $admin, $object);
 
-    /*
-     * Get all action buttons for an action
+    /**
+     * Get all action buttons for an action.
      *
-     * @param array          $list
-     * @param string         $action
-     * @param mixed          $object
+     * @param array  $list
+     * @param string $action
+     * @param object $object
      *
      * @return array
      */
-    // TODO: Uncomment in next major release
-    // public function configureActionButtons(AdminInterface $admin, $list, $action, $object);
+    public function configureActionButtons(AdminInterface $admin, $list, $action, $object);
 
     /*
      * NEXT_MAJOR: Uncomment in next major release

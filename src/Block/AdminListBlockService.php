@@ -78,7 +78,7 @@ class AdminListBlockService extends AbstractBlockService
         return 'Admin List';
     }
 
-    public function configureSettings(OptionsResolver $resolver)
+    public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'groups' => false,

@@ -34,7 +34,7 @@ class AdminEventExtension extends AbstractAdminExtension
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function configureFormFields(FormMapper $form)
+    public function configureFormFields(FormMapper $form): void
     {
         $this->eventDispatcher->dispatch(
             'sonata.admin.event.configure.form',
@@ -42,7 +42,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function configureListFields(ListMapper $list)
+    public function configureListFields(ListMapper $list): void
     {
         $this->eventDispatcher->dispatch(
             'sonata.admin.event.configure.list',
@@ -50,7 +50,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function configureDatagridFilters(DatagridMapper $filter)
+    public function configureDatagridFilters(DatagridMapper $filter): void
     {
         $this->eventDispatcher->dispatch(
             'sonata.admin.event.configure.datagrid',
@@ -58,7 +58,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function configureShowFields(ShowMapper $show)
+    public function configureShowFields(ShowMapper $show): void
     {
         $this->eventDispatcher->dispatch(
             'sonata.admin.event.configure.show',
@@ -66,7 +66,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list')
+    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list'): void
     {
         $this->eventDispatcher->dispatch(
             'sonata.admin.event.configure.query',
@@ -74,7 +74,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function preUpdate(AdminInterface $admin, $object)
+    public function preUpdate(AdminInterface $admin, $object): void
     {
         $this->eventDispatcher->dispatch(
             'sonata.admin.event.persistence.pre_update',
@@ -82,7 +82,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function postUpdate(AdminInterface $admin, $object)
+    public function postUpdate(AdminInterface $admin, $object): void
     {
         $this->eventDispatcher->dispatch(
             'sonata.admin.event.persistence.post_update',
@@ -90,7 +90,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function prePersist(AdminInterface $admin, $object)
+    public function prePersist(AdminInterface $admin, $object): void
     {
         $this->eventDispatcher->dispatch(
             'sonata.admin.event.persistence.pre_persist',
@@ -98,7 +98,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function postPersist(AdminInterface $admin, $object)
+    public function postPersist(AdminInterface $admin, $object): void
     {
         $this->eventDispatcher->dispatch(
             'sonata.admin.event.persistence.post_persist',
@@ -106,7 +106,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function preRemove(AdminInterface $admin, $object)
+    public function preRemove(AdminInterface $admin, $object): void
     {
         $this->eventDispatcher->dispatch(
             'sonata.admin.event.persistence.pre_remove',
@@ -114,7 +114,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function postRemove(AdminInterface $admin, $object)
+    public function postRemove(AdminInterface $admin, $object): void
     {
         $this->eventDispatcher->dispatch(
             'sonata.admin.event.persistence.post_remove',

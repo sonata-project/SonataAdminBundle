@@ -94,11 +94,11 @@ Step 1: Create an Admin Class
 
 SonataAdminBundle helps you manage your data using a graphical interface that
 will let you create, update or search your model instances. The bundle relies
-on Admin classes to know which models will be managed and how these actions
+on Admin classes to know which models will be managed and what these actions
 will look like.
 
 An Admin class decides which fields to show on a listing, which fields are used
-to find entries and how the create form will look like. Each model will have
+to find entries and what the create form will look like. Each model will have
 its own Admin class.
 
 Knowing this, let's create an Admin class for the ``Category`` entity. The
@@ -213,3 +213,5 @@ entity and learn more about this class.
     "link_add", you should make sure that you've `enabled the translator`_.
 
 .. _`enabled the translator`: http://symfony.com/doc/current/book/translation.html#configuration
+
+In the :doc:`next chapter <the_form_view>`, you're going to look at the form view.

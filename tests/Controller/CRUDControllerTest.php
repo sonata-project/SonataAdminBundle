@@ -15,7 +15,7 @@ namespace Sonata\AdminBundle\Tests\Controller;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -30,7 +30,6 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
@@ -81,7 +80,7 @@ class CRUDControllerTest extends TestCase
     private $request;
 
     /**
-     * @var AbstractAdmin
+     * @var AdminInterface
      */
     private $admin;
 
@@ -156,7 +155,7 @@ class CRUDControllerTest extends TestCase
         $this->pool = new Pool($this->container, 'title', 'logo.png');
         $this->pool->setAdminServiceIds(['foo.admin']);
         $this->request->attributes->set('_sonata_admin', 'foo.admin');
-        $this->admin = $this->getMockBuilder(AbstractAdmin::class)
+        $this->admin = $this->getMockBuilder(AdminInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->translator = $this->createMock(TranslatorInterface::class);
@@ -520,7 +519,7 @@ class CRUDControllerTest extends TestCase
             ->method('isChild')
             ->will($this->returnValue(true));
 
-        $adminParent = $this->getMockBuilder(AbstractAdmin::class)
+        $adminParent = $this->getMockBuilder(AdminInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->admin->expects($this->once())
@@ -1070,62 +1069,6 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame([], $this->session->getFlashBag()->all());
         $this->assertSame('@SonataAdmin/CRUD/delete.html.twig', $this->template);
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Accessing a child that isn't connected to a given parent is deprecated since 3.34 and won't be allowed in 4.0.
-     */
-    public function testDeleteActionChildDeprecation(): void
-    {
-        $object = new \stdClass();
-        $object->parent = 'test';
-
-        $object2 = new \stdClass();
-
-        $admin = $this->createMock(PostAdmin::class);
-
-        $admin->expects($this->once())
-            ->method('getObject')
-            ->will($this->returnValue($object2));
-
-        $this->admin->expects($this->once())
-            ->method('getObject')
-            ->will($this->returnValue($object));
-
-        $this->admin->expects($this->once())
-            ->method('getParent')
-            ->will($this->returnValue($admin));
-
-        $this->admin->expects($this->exactly(2))
-            ->method('getParentAssociationMapping')
-            ->will($this->returnValue('parent'));
-
-        $this->controller->deleteAction(1, $this->request);
-    }
-
-    public function testDeleteActionNoParentMappings(): void
-    {
-        $object = new \stdClass();
-
-        $admin = $this->createMock(PostAdmin::class);
-
-        $admin->expects($this->never())
-            ->method('getObject');
-
-        $this->admin->expects($this->once())
-            ->method('getObject')
-            ->will($this->returnValue($object));
-
-        $this->admin->expects($this->once())
-            ->method('getParent')
-            ->will($this->returnValue($admin));
-
-        $this->admin->expects($this->once())
-            ->method('getParentAssociationMapping')
-            ->will($this->returnValue(false));
-
-        $this->controller->deleteAction(1, $this->request);
     }
 
     public function testDeleteActionNoCsrfToken(): void
@@ -2647,6 +2590,10 @@ class CRUDControllerTest extends TestCase
             ->method('getExportFormats')
             ->will($this->returnValue(['json']));
 
+        $this->admin->expects($this->once())
+            ->method('getClass')
+            ->will($this->returnValue(\stdClass::class));
+
         $dataSourceIterator = $this->createMock(SourceIteratorInterface::class);
 
         $this->admin->expects($this->once())
@@ -3455,11 +3402,6 @@ class CRUDControllerTest extends TestCase
         $this->controller->batchAction($this->request);
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionActionNotDefined(): void
     {
         $this->expectException(\RuntimeException::class, 'The `foo` batch action is not defined');
@@ -3491,11 +3433,6 @@ class CRUDControllerTest extends TestCase
         }
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionMethodNotExist(): void
     {
         $this->expectException(\RuntimeException::class, 'A `Sonata\AdminBundle\Controller\CRUDController::batchActionFoo` method must be callable');
@@ -3518,11 +3455,6 @@ class CRUDControllerTest extends TestCase
         $this->controller->batchAction($this->request);
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionWithoutConfirmation(): void
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
@@ -3575,11 +3507,6 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('list', $result->getTargetUrl());
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionWithoutConfirmation2(): void
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
@@ -3633,11 +3560,6 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('list', $result->getTargetUrl());
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionWithConfirmation(): void
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'translation_domain' => 'FooBarBaz', 'ask_confirmation' => true]];
@@ -3687,11 +3609,6 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('@SonataAdmin/CRUD/batch_confirmation.html.twig', $this->template);
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionNonRelevantAction(): void
     {
         $controller = new BatchAdminController();
@@ -3758,11 +3675,6 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('custom_template.html.twig', $this->template);
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionNonRelevantAction2(): void
     {
         $controller = new BatchAdminController();
@@ -3794,11 +3706,6 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('list', $result->getTargetUrl());
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionNoItems(): void
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'ask_confirmation' => true]];
@@ -3827,11 +3734,6 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('list', $result->getTargetUrl());
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionNoItemsEmptyQuery(): void
     {
         $controller = new BatchAdminController();
@@ -3876,11 +3778,6 @@ class CRUDControllerTest extends TestCase
         $this->assertRegExp('/Redirecting to list/', $result->getContent());
     }
 
-    /**
-     * NEXT_MAJOR: Remove this legacy group.
-     *
-     * @group legacy
-     */
     public function testBatchActionWithRequesData(): void
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];

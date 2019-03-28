@@ -30,13 +30,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CreateClassCacheCommand extends ContainerAwareCommand
 {
-    public function configure()
+    public function configure(): void
     {
         $this->setName('cache:create-cache-class');
         $this->setDescription('Generate the classes.php files');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): void
     {
         $kernel = $this->getContainer()->get('kernel');
 

@@ -62,7 +62,7 @@ class ChoiceType extends AbstractType
         return 'sonata_type_filter_choice';
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $choices = [
             'label_type_contains' => self::TYPE_CONTAINS,
@@ -94,12 +94,12 @@ class ChoiceType extends AbstractType
      *
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolverInterface $resolver): void
     {
         $this->configureOptions($resolver);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'field_type' => FormChoiceType::class,

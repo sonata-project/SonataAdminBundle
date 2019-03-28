@@ -40,7 +40,7 @@ class AuditManager implements AuditManagerInterface
         $this->container = $container;
     }
 
-    public function setReader($serviceId, array $classes)
+    public function setReader($serviceId, array $classes): void
     {
         $this->readers[$serviceId] = $classes;
     }

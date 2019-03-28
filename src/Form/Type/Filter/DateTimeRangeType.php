@@ -59,7 +59,7 @@ class DateTimeRangeType extends AbstractType
         return 'sonata_type_filter_datetime_range';
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $choices = [
             'label_date_type_between' => self::TYPE_BETWEEN,
@@ -89,12 +89,12 @@ class DateTimeRangeType extends AbstractType
      *
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolverInterface $resolver): void
     {
         $this->configureOptions($resolver);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'field_type' => FormDateTimeRangeType::class,

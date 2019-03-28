@@ -129,24 +129,6 @@ class ListMapperTest extends TestCase
         $this->assertFalse($fieldLabelFalse->getOption('label'));
     }
 
-    /**
-     * @group legacy
-     */
-    public function testLegacyAddViewInlineAction(): void
-    {
-        $this->assertFalse($this->listMapper->has('_action'));
-        $this->listMapper->add('_action', 'actions', ['actions' => ['view' => []]]);
-
-        $this->assertTrue($this->listMapper->has('_action'));
-
-        $fieldDescription = $this->listMapper->get('_action');
-
-        $this->assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
-        $this->assertSame('_action', $fieldDescription->getName());
-        $this->assertCount(1, $fieldDescription->getOption('actions'));
-        $this->assertSame(['show' => []], $fieldDescription->getOption('actions'));
-    }
-
     public function testAddViewInlineAction(): void
     {
         $this->assertFalse($this->listMapper->has('_action'));

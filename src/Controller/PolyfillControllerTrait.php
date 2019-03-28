@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 trait PolyfillControllerTrait
 {
-    public function __call($methodName, $arguments)
+    public function __call($methodName, $arguments): void
     {
         $this->proxyToController($methodName, $arguments);
     }
@@ -61,7 +61,7 @@ class PolyfillProxyContainer extends AbstractController
 
     public function proxyCall($method, $arguments)
     {
-        return \call_user_func_array([$this, $method], $arguments);
+        return $this->$method(...$arguments);
     }
 }
 

@@ -32,7 +32,7 @@ class QueryStringBuilder implements RouteBuilderInterface
         $this->manager = $manager;
     }
 
-    public function build(AdminInterface $admin, RouteCollection $collection)
+    public function build(AdminInterface $admin, RouteCollection $collection): void
     {
         $collection->add('list');
         $collection->add('create');

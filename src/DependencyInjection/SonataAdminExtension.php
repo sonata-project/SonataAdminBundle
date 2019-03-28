@@ -110,9 +110,9 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  * @author Michael Williams <michael.williams@funsational.com>
  */
-class SonataAdminExtension extends Extension implements PrependExtensionInterface
+final class SonataAdminExtension extends Extension implements PrependExtensionInterface
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $bundles = $container->getParameter('kernel.bundles');
 
@@ -320,7 +320,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
      *
      * NEXT_MAJOR: remove all code that deals with JMSDiExtraBundle
      */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         $bundles = $container->getParameter('kernel.bundles');
 
@@ -375,7 +375,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         );
     }
 
-    public function configureClassesToCompile()
+    public function configureClassesToCompile(): void
     {
         $this->addClassesToCompile([
             AbstractAdmin::class,

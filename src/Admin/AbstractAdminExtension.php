@@ -27,50 +27,50 @@ use Sonata\Form\Validator\ErrorElement;
  */
 abstract class AbstractAdminExtension implements AdminExtensionInterface
 {
-    public function configureFormFields(FormMapper $formMapper)
+    public function configureFormFields(FormMapper $formMapper): void
     {
     }
 
-    public function configureListFields(ListMapper $listMapper)
+    public function configureListFields(ListMapper $listMapper): void
     {
     }
 
-    public function configureDatagridFilters(DatagridMapper $datagridMapper)
+    public function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
     }
 
-    public function configureShowFields(ShowMapper $showMapper)
+    public function configureShowFields(ShowMapper $showMapper): void
     {
     }
 
-    public function configureRoutes(AdminInterface $admin, RouteCollection $collection)
+    public function configureRoutes(AdminInterface $admin, RouteCollection $collection): void
     {
     }
 
-    public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null): void
     {
     }
 
-    public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null): void
     {
         // Use configureSideMenu not to mess with previous overrides
         // TODO remove once deprecation period is over
         $this->configureSideMenu($admin, $menu, $action, $childAdmin);
     }
 
-    public function validate(AdminInterface $admin, ErrorElement $errorElement, $object)
+    public function validate(AdminInterface $admin, ErrorElement $errorElement, $object): void
     {
     }
 
-    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list')
+    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list'): void
     {
     }
 
-    public function alterNewInstance(AdminInterface $admin, $object)
+    public function alterNewInstance(AdminInterface $admin, $object): void
     {
     }
 
-    public function alterObject(AdminInterface $admin, $object)
+    public function alterObject(AdminInterface $admin, $object): void
     {
     }
 
@@ -94,27 +94,27 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
         return $fields;
     }
 
-    public function preUpdate(AdminInterface $admin, $object)
+    public function preUpdate(AdminInterface $admin, $object): void
     {
     }
 
-    public function postUpdate(AdminInterface $admin, $object)
+    public function postUpdate(AdminInterface $admin, $object): void
     {
     }
 
-    public function prePersist(AdminInterface $admin, $object)
+    public function prePersist(AdminInterface $admin, $object): void
     {
     }
 
-    public function postPersist(AdminInterface $admin, $object)
+    public function postPersist(AdminInterface $admin, $object): void
     {
     }
 
-    public function preRemove(AdminInterface $admin, $object)
+    public function preRemove(AdminInterface $admin, $object): void
     {
     }
 
-    public function postRemove(AdminInterface $admin, $object)
+    public function postRemove(AdminInterface $admin, $object): void
     {
     }
 
@@ -126,7 +126,7 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     /**
      * Returns a list of default filters.
      */
-    public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues)
+    public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void
     {
     }
 }

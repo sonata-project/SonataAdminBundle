@@ -47,7 +47,7 @@ final class SessionFilterPersister implements FilterPersisterInterface
     /**
      * {@inheritdoc}
      */
-    public function set($adminCode, array $filters)
+    public function set($adminCode, array $filters): void
     {
         $this->session->set($this->buildStorageKey($adminCode), $filters);
     }
@@ -55,7 +55,7 @@ final class SessionFilterPersister implements FilterPersisterInterface
     /**
      * {@inheritdoc}
      */
-    public function reset($adminCode)
+    public function reset($adminCode): void
     {
         $this->session->remove($this->buildStorageKey($adminCode));
     }
