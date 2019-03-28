@@ -40,7 +40,7 @@ use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Exporter\Writer\JsonWriter;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
@@ -432,7 +432,7 @@ class CRUDControllerTest extends TestCase
             if (method_exists(CRUDController::class, $testedMethod)) {
                 $method = new \ReflectionMethod(CRUDController::class, $testedMethod);
             } else {
-                $method = new \ReflectionMethod(Controller::class, $testedMethod);
+                $method = new \ReflectionMethod(AbstractController::class, $testedMethod);
             }
 
             $method->setAccessible(true);
