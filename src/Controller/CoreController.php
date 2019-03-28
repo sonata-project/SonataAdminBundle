@@ -26,7 +26,7 @@ use Sonata\AdminBundle\Action\SearchAction;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +34,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class CoreController extends Controller
+class CoreController extends AbstractController
 {
     /**
      * @return Response
