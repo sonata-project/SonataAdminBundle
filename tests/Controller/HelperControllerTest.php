@@ -198,6 +198,7 @@ class HelperControllerTest extends TestCase
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
         $pool = $this->prophesize(Pool::class);
         $template = $this->prophesize(Template::class);
+        $template->render(Argument::cetera())->willReturn('some value');
         $translator = $this->prophesize(TranslatorInterface::class);
         $propertyAccessor = new PropertyAccessor();
         $templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
@@ -245,6 +246,7 @@ class HelperControllerTest extends TestCase
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
         $modelManager = $this->prophesize(ModelManagerInterface::class);
         $template = $this->prophesize(Template::class);
+        $template->render(Argument::cetera())->willReturn('some value');
         $translator = $this->prophesize(TranslatorInterface::class);
         $propertyAccessor = new PropertyAccessor();
         $templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
