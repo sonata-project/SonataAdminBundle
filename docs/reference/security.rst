@@ -132,15 +132,15 @@ service), Sonata will check if the user has the ``ROLE_APP_ADMIN_FOO_EDIT`` or `
 
 .. note::
 
-    Declaring the same admin as `App\Admin\FooAdmin` results in
-    ``ROLE_APPBUNDLE\ADMIN\FOOADMIN_EDIT`` and ``ROLE_APPBUNDLE\ADMIN\FOOADMIN_ALL``!
+    Declaring the same admin as ``App\Admin\FooAdmin`` results in
+    ``ROLE_APP\ADMIN\FOOADMIN_EDIT`` and ``ROLE_APP\ADMIN\FOOADMIN_ALL``!
 
 The role name will be based on the name of your admin service.
 
 ========================   ======================================================
 app.admin.foo              ROLE_APP_ADMIN_FOO_{PERMISSION}
 my.blog.admin.foo_bar      ROLE_MY_BLOG_ADMIN_FOO_BAR_{PERMISSION}
-App\Admin\FooAdmin         ROLE_APPBUNDLE\ADMIN\FOOADMIN_{PERMISSION}
+App\\Admin\\FooAdmin       ROLE_APP\\ADMIN\\FOOADMIN_{PERMISSION}
 ========================   ======================================================
 
 .. note::
