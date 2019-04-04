@@ -1432,7 +1432,7 @@ class CRUDController implements ContainerAwareInterface
      */
     protected function escapeHtml($s)
     {
-        return htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        return htmlspecialchars((string) $s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 
     /**
