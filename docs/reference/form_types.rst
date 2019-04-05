@@ -287,7 +287,7 @@ The available options are:
     ;
 
 ``to_string_callback``
-  defaults to ``null``. Callable function that can be used to change the default toString behaviour of entity::
+  defaults to ``null``. Callable function that can be used to change the default toString behavior of entity::
 
     $formMapper
         ->add('category', ModelAutocompleteType::class, [
@@ -402,49 +402,49 @@ The available options are:
   which is mapped in the target admin to ``AUTOCOMPLETE`` role. Please make sure that all valid users
   have the ``AUTOCOMPLETE`` role::
 
-    // src/Admin/ArticleAdmin.php
+      // src/Admin/ArticleAdmin.php
 
-    use Sonata\AdminBundle\Form\FormMapper;
-    use Sonata\AdminBundle\Admin\AbstractAdmin;
-    use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+      use Sonata\AdminBundle\Form\FormMapper;
+      use Sonata\AdminBundle\Admin\AbstractAdmin;
+      use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 
-    final class ArticleAdmin extends AbstractAdmin
-    {
-        protected function configureFormFields(FormMapper $formMapper)
-        {
-            // the dropdown autocomplete list will show only Category
-            // entities that contain specified text in "title" attribute
-            $formMapper
-                ->add('category', ModelAutocompleteType::class, [
-                    'property' => 'title',
-                    'target_admin_access_action' => 'autocomplete'
-                ])
-            ;
-        }
-    }
+      final class ArticleAdmin extends AbstractAdmin
+      {
+          protected function configureFormFields(FormMapper $formMapper)
+          {
+              // the dropdown autocomplete list will show only Category
+              // entities that contain specified text in "title" attribute
+              $formMapper
+                  ->add('category', ModelAutocompleteType::class, [
+                      'property' => 'title',
+                      'target_admin_access_action' => 'autocomplete',
+                  ])
+              ;
+          }
+      }
 
-.. code-block:: php
+  You have to modify the target entity in the following way::
 
-    // src/Admin/CategoryAdmin.php
+      // src/Admin/CategoryAdmin.php
 
-    use Sonata\AdminBundle\Datagrid\DatagridMapper;
-    use Sonata\AdminBundle\Admin\AbstractAdmin;
+      use Sonata\AdminBundle\Datagrid\DatagridMapper;
+      use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-    final class CategoryAdmin extends AbstractAdmin
-    {
-        protected $accessMapping = [
-            'autocomplete' => 'AUTOCOMPLETE',
-        ];
+      final class CategoryAdmin extends AbstractAdmin
+      {
+          protected $accessMapping = [
+              'autocomplete' => 'AUTOCOMPLETE',
+          ];
 
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-        {
-            // this text filter will be used to retrieve autocomplete fields
-            // only the users with role AUTOCOMPLETE will be able to get the items
-            $datagridMapper
-                ->add('title')
-            ;
-        }
-    }
+          protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+          {
+              // this text filter will be used to retrieve autocomplete fields
+              // only the users with role AUTOCOMPLETE will be able to get the items
+              $datagridMapper
+                  ->add('title')
+              ;
+          }
+      }
 
 Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

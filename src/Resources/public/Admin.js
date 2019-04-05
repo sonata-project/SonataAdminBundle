@@ -729,6 +729,12 @@ var Admin = {
             setTimeout(function() {
                 form.find('button').prop('disabled', true);
             }, 1);
+
+            var tabSelected = form.find('.nav-tabs li.active .changer-tab');
+
+            if (tabSelected.length > 0) {
+                form.find('input[name="_tab"]').val(tabSelected.attr('aria-controls'));
+            }
         });
     },
     /**
@@ -758,7 +764,6 @@ var Admin = {
             window.history.pushState({
                 path: newurl
             }, '', newurl);
-            jQuery(this).parent('.nav-tabs-custom').find('input[name="_tab"]').val(tab);
         });
     }
 };

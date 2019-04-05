@@ -1,4 +1,4 @@
-Improve performance of large datasets
+Improve Performance of Large Datasets
 =====================================
 
 If your database table contains thousands of records, the database queries generated
@@ -17,17 +17,6 @@ To use `SimplePager` in your admin,  define ``pager_type`` in the service defini
 
 .. configuration-block::
 
-    .. code-block:: xml
-
-        <!-- config/services.xml -->
-
-        <service id="app.admin.post" class="App\Admin\PostAdmin">
-            <argument/>
-            <argument>App\Entity\Post</argument>
-            <argument/>
-            <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" pager_type="simple"/>
-        </service>
-
     .. code-block:: yaml
 
         # config/services.yaml
@@ -42,6 +31,18 @@ To use `SimplePager` in your admin,  define ``pager_type`` in the service defini
                 tags:
                     - { name: sonata.admin, manager_type: orm, group: 'Content', label: 'Post', pager_type: 'simple' }
 
+    .. code-block:: xml
+
+        <!-- config/services.xml -->
+
+        <service id="app.admin.post" class="App\Admin\PostAdmin">
+            <argument/>
+            <argument>App\Entity\Post</argument>
+            <argument/>
+            <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" pager_type="simple"/>
+        </service>
+
 .. note::
 
-    The ``pager_results`` template is automatically changed to ``@SonataAdmin/Pager/simple_pager_results.html.twig`` if it's not already overloaded.
+    The ``pager_results`` template is automatically changed to
+    ``@SonataAdmin/Pager/simple_pager_results.html.twig`` if it's not already overloaded.

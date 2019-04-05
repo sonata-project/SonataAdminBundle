@@ -44,6 +44,6 @@ This is optional. However, when not provided, it will be assumed that
 you mean the 'default' tab. If the group is on another tab, it won't be
 removed, when this is not provided. There is a third optional argument
 for the method, which let's you choose, whether or not, tabs are also
-removed, if you happen to remove all groups of a tab. This behaviour
+removed, if you happen to remove all groups of a tab. This behavior
 is disabled by default, but can be enabled, by setting the third
 argument of ``removeGroup`` to ``true``.

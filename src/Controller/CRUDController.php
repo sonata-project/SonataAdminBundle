@@ -1270,7 +1270,7 @@ class CRUDController implements ContainerAwareInterface
                     $url = $this->admin->generateObjectUrl(
                         $route,
                         $object,
-                        $request->request->has('_tab') ? ['_tab' => $request->request->get('_tab')] : []
+                        $this->getSelectedTab($request)
                     );
 
                     break;
@@ -1441,7 +1441,7 @@ class CRUDController implements ContainerAwareInterface
      */
     protected function escapeHtml($s)
     {
-        return htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        return htmlspecialchars((string) $s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 
     /**
@@ -1532,6 +1532,11 @@ class CRUDController implements ContainerAwareInterface
         $domain = $domain ?: $this->admin->getTranslationDomain();
 
         return $this->get('translator')->trans($id, $parameters, $domain, $locale);
+    }
+
+    private function getSelectedTab(Request $request)
+    {
+        return array_filter(['_tab' => $request->request->get('_tab')]);
     }
 
     private function checkParentChildAssociation(Request $request, $object): void
