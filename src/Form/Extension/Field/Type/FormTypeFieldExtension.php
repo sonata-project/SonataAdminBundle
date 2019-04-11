@@ -96,7 +96,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $blockPrefixes[] = sprintf('%s_%s_%s_%s', $baseName, $baseType, $view->parent->vars['name'], $view->vars['name']);
             $blockPrefixes[] = sprintf('%s_%s_%s_%s', $baseName, $baseType, $view->parent->vars['name'], $blockSuffix);
 
-            $view->vars['block_prefixes'] = $blockPrefixes;
+            $view->vars['block_prefixes'] = array_unique($blockPrefixes);
             $view->vars['sonata_admin_enabled'] = true;
             $view->vars['sonata_admin'] = [
                 'admin' => false,
@@ -132,7 +132,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
                 $blockPrefixes[] = $sonataAdmin['block_name'];
             }
 
-            $view->vars['block_prefixes'] = $blockPrefixes;
+            $view->vars['block_prefixes'] = array_unique($blockPrefixes);
             $view->vars['sonata_admin_enabled'] = true;
             $view->vars['sonata_admin'] = $sonataAdmin;
             $view->vars['sonata_admin_code'] = $sonataAdmin['admin']->getCode();
