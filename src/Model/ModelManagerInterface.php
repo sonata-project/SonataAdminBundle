@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Model;
 
-use Exporter\Source\SourceIteratorInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\Exporter\Source\SourceIteratorInterface;
 
 /**
  * A model manager is a bridge between the model classes and the admin
