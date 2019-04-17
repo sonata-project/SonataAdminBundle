@@ -32,11 +32,13 @@
 
                 <div class="col-md-12">
                     {% if has_tab %}
+                        {% set tab_prefix = 'tab_' ~ admin.uniqid ~ '_' ~ random() %}
+                        {% set tab_query_index = app.request.query.get('_tab', 0)|split("_")|last %}
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs" role="tablist">
                                 {% for name, form_tab in admin.formtabs %}
-                                    {% set _tab_name = 'tab_'~admin.uniqid~'_'~loop.index %}
-                                    <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (app.request.query.get('_tab') == _tab_name) %} class="active"{% endif %}>
+                                    {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
+                                    <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %} class="active"{% endif %}>
                                         <a href="#{{ _tab_name }}" class="changer-tab" aria-controls="{{ _tab_name }}" data-toggle="tab">
                                             <i class="fa fa-exclamation-circle has-errors hide" aria-hidden="true"></i> {{ form_tab.label|trans({}, form_tab.translation_domain ?: admin.translationDomain) }}
                                         </a>
@@ -45,8 +47,11 @@
                             </ul>
                             <div class="tab-content">
                                 {% for code, form_tab in admin.formtabs %}
-                                    {% set _tab_name = 'tab_'~admin.uniqid~'_'~loop.index %}
-                                    <div class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (app.request.query.get('_tab') == _tab_name) %} in active{% endif %}" id="{{ _tab_name }}">
+                                    {% set _tab_name = tab_prefix ~ loop.index %}
+                                    <div
+                                        class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (tab_query_index == loop.index) %} in active{% endif %}"
+                                        id="{{ _tab_name }}"
+                                    >
                                         <div class="box-body  container-fluid">
                                             <div class="sonata-ba-collapsed-fields">
                                                 {% if form_tab.description != false %}
