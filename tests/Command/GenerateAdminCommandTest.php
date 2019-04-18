@@ -210,7 +210,7 @@ class GenerateAdminCommandTest extends TestCase
 
         $questionHelper->expects($this->any())
             ->method('ask')
-            ->will($this->returnCallback(function (InputInterface $input, OutputInterface $output, Question $question) use ($modelEntity) {
+            ->will($this->returnCallback(static function (InputInterface $input, OutputInterface $output, Question $question) use ($modelEntity) {
                 $questionClean = substr($question->getQuestion(), 6, strpos($question->getQuestion(), '</info>') - 6);
 
                 switch ($questionClean) {
@@ -353,7 +353,7 @@ class GenerateAdminCommandTest extends TestCase
 
         $questionHelper->expects($this->any())
             ->method('ask')
-            ->will($this->returnCallback(function (InputInterface $input, OutputInterface $output, Question $question) use ($modelEntity) {
+            ->will($this->returnCallback(static function (InputInterface $input, OutputInterface $output, Question $question) use ($modelEntity) {
                 $questionClean = substr($question->getQuestion(), 6, strpos($question->getQuestion(), '</info>') - 6);
 
                 switch ($questionClean) {

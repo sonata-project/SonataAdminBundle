@@ -3030,7 +3030,7 @@ EOT;
 
         $metadata->addConstraint(new InlineConstraint([
             'service' => $this,
-            'method' => function (ErrorElement $errorElement, $object) use ($admin) {
+            'method' => static function (ErrorElement $errorElement, $object) use ($admin) {
                 /* @var \Sonata\AdminBundle\Admin\AdminInterface $admin */
 
                 // This avoid the main validation to be cascaded to children

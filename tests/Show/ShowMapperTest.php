@@ -131,7 +131,7 @@ class ShowMapperTest extends TestCase
 
         $this->showBuilder->expects($this->any())
             ->method('addField')
-            ->will($this->returnCallback(function ($list, $type, $fieldDescription, $admin): void {
+            ->will($this->returnCallback(static function ($list, $type, $fieldDescription, $admin): void {
                 $list->add($fieldDescription);
             }));
 

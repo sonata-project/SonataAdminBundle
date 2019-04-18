@@ -208,7 +208,7 @@ class DatagridMapperTest extends TestCase
         $this->datagridMapper->getAdmin()
             ->expects($this->exactly(2))
             ->method('hasFilterFieldDescription')
-            ->will($this->returnCallback(function ($name) use (&$tmpNames) {
+            ->will($this->returnCallback(static function ($name) use (&$tmpNames) {
                 if (isset($tmpNames[$name])) {
                     return true;
                 }

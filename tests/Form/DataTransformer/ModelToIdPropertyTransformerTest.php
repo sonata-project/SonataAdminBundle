@@ -39,7 +39,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->modelManager
             ->expects($this->any())
             ->method('find')
-            ->will($this->returnCallback(function ($class, $id) use ($entity) {
+            ->will($this->returnCallback(static function ($class, $id) use ($entity) {
                 if (Foo::class === $class && 123 === $id) {
                     return $entity;
                 }
@@ -64,7 +64,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->modelManager
             ->expects($this->any())
             ->method('find')
-            ->will($this->returnCallback(function ($className, $value) use ($entity1, $entity2, $entity3) {
+            ->will($this->returnCallback(static function ($className, $value) use ($entity1, $entity2, $entity3) {
                 if (Foo::class !== $className) {
                     return;
                 }
@@ -195,7 +195,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
             ->method('getIdentifierValues')
             ->will($this->returnValue([123]));
 
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, function ($entity) {
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, static function ($entity) {
             return $entity->getBaz();
         });
 
@@ -238,7 +238,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $this->modelManager->expects($this->exactly(3))
             ->method('getIdentifierValues')
-            ->will($this->returnCallback(function ($value) use ($entity1, $entity2, $entity3) {
+            ->will($this->returnCallback(static function ($value) use ($entity1, $entity2, $entity3) {
                 if ($value === $entity1) {
                     return [123];
                 }

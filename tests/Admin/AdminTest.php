@@ -1308,7 +1308,7 @@ class AdminTest extends TestCase
         $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
         $securityHandler->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin, $entity) {
+            ->will($this->returnCallback(static function (AdminInterface $adminIn, $attributes, $object = null) use ($admin, $entity) {
                 if ($admin === $adminIn && 'FOO' === $attributes) {
                     if (($object === $admin) || ($object === $entity)) {
                         return true;
@@ -1349,7 +1349,7 @@ class AdminTest extends TestCase
         $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
         $securityHandler->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
+            ->will($this->returnCallback(static function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
                 if ($admin === $adminIn && $attributes === ['LIST']) {
                     return true;
                 }
@@ -1625,7 +1625,7 @@ class AdminTest extends TestCase
         $formBuild->expects($this->once())
                 ->method('addEventListener')
                 ->with($this->identicalTo(FormEvents::POST_SUBMIT),
-                        $this->callback(function ($callback) use ($testAdminPreValidate, $event) {
+                        $this->callback(static function ($callback) use ($testAdminPreValidate, $event) {
                             if (\is_callable($callback)) {
                                 $closure = $callback->bindTo($testAdminPreValidate);
                                 $closure($event);
@@ -1730,7 +1730,7 @@ class AdminTest extends TestCase
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager->expects($this->exactly(3))
             ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnCallback(function ($adminClass, $name, $filterOptions) use ($fooFieldDescription, $barFieldDescription, $bazFieldDescription) {
+            ->will($this->returnCallback(static function ($adminClass, $name, $filterOptions) use ($fooFieldDescription, $barFieldDescription, $bazFieldDescription) {
                 switch ($name) {
                     case 'foo':
                         $fieldDescription = $fooFieldDescription;
@@ -1774,7 +1774,7 @@ class AdminTest extends TestCase
 
         $datagridBuilder->expects($this->exactly(3))
             ->method('addFilter')
-            ->will($this->returnCallback(function ($datagrid, $type, $fieldDescription, AdminInterface $admin): void {
+            ->will($this->returnCallback(static function ($datagrid, $type, $fieldDescription, AdminInterface $admin): void {
                 $admin->addFilterFieldDescription($fieldDescription->getName(), $fieldDescription);
                 $fieldDescription->mergeOption('field_options', ['required' => false]);
             }));
@@ -1999,7 +1999,7 @@ class AdminTest extends TestCase
         $labelTranslatorStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $labelTranslatorStrategy->expects($this->any())
             ->method('getLabel')
-            ->will($this->returnCallback(function ($label, $context = '', $type = '') {
+            ->will($this->returnCallback(static function ($label, $context = '', $type = '') {
                 return $context.'.'.$type.'_'.$label;
             }));
 
@@ -2019,7 +2019,7 @@ class AdminTest extends TestCase
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
+            ->will($this->returnCallback(static function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
                 if ($admin === $adminIn && 'DELETE' === $attributes) {
                     return true;
                 }
@@ -2084,7 +2084,7 @@ class AdminTest extends TestCase
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
+            ->will($this->returnCallback(static function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
                 if ($admin === $adminIn && ('CREATE' === $attributes || 'LIST' === $attributes)) {
                     return true;
                 }
@@ -2282,12 +2282,12 @@ class AdminTest extends TestCase
 
         $admin->expects($this->any())
             ->method('getTranslationLabel')
-            ->will($this->returnCallback(function ($label, $context = '', $type = '') {
+            ->will($this->returnCallback(static function ($label, $context = '', $type = '') {
                 return $context.'.'.$type.'_'.$label;
             }));
         $admin->expects($this->any())
             ->method('trans')
-            ->will($this->returnCallback(function ($label) {
+            ->will($this->returnCallback(static function ($label) {
                 if ('export.label_field' === $label) {
                     return 'Feld';
                 }

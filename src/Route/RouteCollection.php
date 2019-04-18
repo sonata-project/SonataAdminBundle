@@ -99,7 +99,7 @@ class RouteCollection
 
         $defaults['_sonata_name'] = $routeName;
 
-        $this->elements[$this->getCode($name)] = function () use (
+        $this->elements[$this->getCode($name)] = static function () use (
             $pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition) {
             return new Route($pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition);
         };

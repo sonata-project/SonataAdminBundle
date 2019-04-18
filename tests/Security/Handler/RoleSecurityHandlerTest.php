@@ -79,7 +79,7 @@ class RoleSecurityHandlerTest extends TestCase
 
         $this->authorizationChecker->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnCallback(function (array $attributes, $object) {
+            ->will($this->returnCallback(static function (array $attributes, $object) {
                 if (\in_array('ROLE_BATMAN', $attributes, true)) {
                     return true;
                 }
@@ -190,7 +190,7 @@ class RoleSecurityHandlerTest extends TestCase
 
         $this->authorizationChecker->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnCallback(function (array $attributes, $object): void {
+            ->will($this->returnCallback(static function (array $attributes, $object): void {
                 throw new \RuntimeException('Something is wrong');
             }));
 

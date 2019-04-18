@@ -46,7 +46,7 @@ class BaseGroupedMapperTest extends TestCase
         $labelStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $labelStrategy->expects($this->any())
             ->method('getLabel')
-            ->will($this->returnCallback(function ($label) {
+            ->will($this->returnCallback(static function ($label) {
                 return 'label_'.strtolower($label);
             }));
 
