@@ -347,6 +347,33 @@ which could also have a pluralized translation target:
         <target>{count, plural, =0 {results} one {result} other {results}}</target>
     </trans-unit>
 
+Preview Block
+~~~~~~~~~~~~~
+
+A preview block can be used to display a brief of an admin list.
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # config/packages/sonata_admin.yaml
+
+        sonata_admin:
+            dashboard:
+                blocks:
+                    -
+                        position: top                              # zone in the dashboard
+                        type:     sonata.admin.block.admin_preview # block id
+                        settings:
+                            code:  sonata.page.admin.page          # admin code - service id
+                            icon:  fa-magic                        # font awesome icon
+                            limit: 10
+                            text:  Latest Edited Pages
+                            filters:                               # filter values
+                                edited:      { value: 1 }
+                                _sort_by:    updatedAt
+                                _sort_order: DESC
+
 Dashboard Layout
 ~~~~~~~~~~~~~~~~
 

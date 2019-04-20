@@ -466,6 +466,10 @@
                 <source>stats_view_more</source>
                 <target>View more</target>
             </trans-unit>
+            <trans-unit id="preview_view_more">
+                <source>preview_view_more</source>
+                <target>View more</target>
+            </trans-unit>
             <trans-unit id="title_select_subclass">
                 <source>title_select_subclass</source>
                 <target>Select object type</target>
