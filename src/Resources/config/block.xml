@@ -21,5 +21,12 @@
             <argument type="service" id="sonata.templating"/>
             <argument type="service" id="sonata.admin.pool"/>
         </service>
+        <service id="sonata.admin.block.admin_preview" class="Sonata\AdminBundle\Block\AdminPreviewBlockService" public="true">
+            <tag name="sonata.block"/>
+            <argument>sonata.admin.block.admin_preview</argument>
+            <argument type="service" id="sonata.templating"/>
+            <argument type="service" id="sonata.admin.pool"/>
+            <argument type="service" id="sonata.admin.global_template_registry"/>
+        </service>
     </services>
 </container>
