@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Block;
 
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
@@ -46,32 +47,7 @@ final class AdminPreviewBlockService extends AbstractBlockService
     {
         $admin = $this->pool->getAdminByAdminCode($blockContext->getSetting('code'));
 
-        $filters = $blockContext->getSetting('filters');
-
-        if ($sortBy = $filters['_sort_by'] ?? null) {
-            $sortFilters = ['_sort_by' => $sortBy];
-            if ($sortOrder = $filters['_sort_order'] ?? null) {
-                $sortFilters['_sort_order'] = $sortOrder;
-                unset($filters['_sort_order']);
-            }
-            // setting a request to the admin is a workaround since the admin only can handle the "_sort_by" parameter from the query string
-            $request = new Request(['filter' => $sortFilters]);
-            $request->setSession(new Session());
-            $admin->setRequest($request);
-            unset($filters['_sort_by'], $request);
-        }
-
-        if (!isset($filters['_per_page'])) {
-            $filters['_per_page'] = ['value' => $blockContext->getSetting('limit')];
-        }
-
-        $datagrid = $admin->getDatagrid();
-
-        foreach ($filters as $name => $data) {
-            $datagrid->setValue($name, $data['type'] ?? null, $data['value']);
-        }
-
-        $datagrid->buildPager();
+        $this->handleFilters($admin, $blockContext);
 
         foreach ($blockContext->getSetting('remove_list_fields') as $listField) {
             $admin->getList()->remove($listField);
@@ -108,5 +84,38 @@ final class AdminPreviewBlockService extends AbstractBlockService
             'template' => '@SonataAdmin/Block/block_admin_preview.html.twig',
             'remove_list_fields' => ['_action'],
         ]);
+    }
+
+    /**
+     * Maps the block filters to standard admin filters
+     */
+    private function handleFilters(AdminInterface $admin, BlockContextInterface $blockContext): void
+    {
+        $filters = $blockContext->getSetting('filters');
+
+        if ($sortBy = $filters['_sort_by'] ?? null) {
+            $sortFilters = ['_sort_by' => $sortBy];
+            if ($sortOrder = $filters['_sort_order'] ?? null) {
+                $sortFilters['_sort_order'] = $sortOrder;
+                unset($filters['_sort_order']);
+            }
+            // setting a request to the admin is a workaround since the admin only can handle the "_sort_by" parameter from the query string
+            $request = new Request(['filter' => $sortFilters]);
+            $request->setSession(new Session());
+            $admin->setRequest($request);
+            unset($filters['_sort_by'], $request);
+        }
+
+        if (!isset($filters['_per_page'])) {
+            $filters['_per_page'] = ['value' => $blockContext->getSetting('limit')];
+        }
+
+        $datagrid = $admin->getDatagrid();
+
+        foreach ($filters as $name => $data) {
+            $datagrid->setValue($name, $data['type'] ?? null, $data['value']);
+        }
+
+        $datagrid->buildPager();
     }
 }
