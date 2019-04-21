@@ -458,6 +458,10 @@
                 <source>stats_view_more</source>
                 <target>詳細を表示</target>
             </trans-unit>
+            <trans-unit id="preview_view_more">
+                <source>preview_view_more</source>
+                <target>詳細を表示</target>
+            </trans-unit>
             <trans-unit id="title_select_subclass">
                 <source>title_select_subclass</source>
                 <target>オブジェクトの種類を選択</target>
