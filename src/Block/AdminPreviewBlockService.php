@@ -81,6 +81,7 @@ final class AdminPreviewBlockService extends AbstractBlockService
         $resolver->setDefaults([
             'text' => 'Preview',
             'filters' => [],
+            'icon' => false,
             'limit' => 10,
             'code' => false,
             'template' => '@SonataAdmin/Block/block_admin_preview.html.twig',
