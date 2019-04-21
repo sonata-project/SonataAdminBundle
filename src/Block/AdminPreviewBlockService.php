@@ -21,6 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -45,13 +46,14 @@ final class AdminPreviewBlockService extends AbstractBlockService
      */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
-        $admin = $this->pool->getAdminByAdminCode($blockContext->getSetting('code'));
-
+        $admin = $this->getAdmin($blockContext->getSetting('code'));
         $this->handleFilters($admin, $blockContext);
 
         foreach ($blockContext->getSetting('remove_list_fields') as $listField) {
             $admin->getList()->remove($listField);
         }
+
+        $datagrid = $admin->getDatagrid();
 
         return $this->renderPrivateResponse($blockContext->getTemplate(), [
             'block' => $blockContext->getBlock(),
@@ -84,6 +86,26 @@ final class AdminPreviewBlockService extends AbstractBlockService
             'template' => '@SonataAdmin/Block/block_admin_preview.html.twig',
             'remove_list_fields' => ['_action'],
         ]);
+    }
+
+    /**
+     * @throws \RuntimeException if the provided admin code is invalid
+     */
+    private function getAdmin(string $code): AdminInterface
+    {
+        try {
+            $admin = $this->pool->getAdminByAdminCode($code);
+        } catch (ServiceNotFoundException $e) {
+            throw new \RuntimeException('Unable to find the Admin instance', $e->getCode(), $e);
+        }
+
+        if (!$admin instanceof AdminInterface) {
+            throw new \RuntimeException('The requested service is not an Admin instance');
+        }
+
+        $admin->checkAccess('list');
+
+        return $admin;
     }
 
     /**
