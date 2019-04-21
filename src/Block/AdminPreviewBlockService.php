@@ -18,10 +18,10 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -109,7 +109,7 @@ final class AdminPreviewBlockService extends AbstractBlockService
     }
 
     /**
-     * Maps the block filters to standard admin filters
+     * Maps the block filters to standard admin filters.
      */
     private function handleFilters(AdminInterface $admin, BlockContextInterface $blockContext): void
     {

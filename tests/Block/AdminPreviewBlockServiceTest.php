@@ -15,9 +15,9 @@ namespace Sonata\AdminBundle\Tests\Block;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
-use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminPreviewBlockService;
+use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\BlockBundle\Test\AbstractBlockServiceTestCase;
 use Sonata\BlockBundle\Test\FakeTemplating;
 use Symfony\Component\HttpFoundation\Response;
