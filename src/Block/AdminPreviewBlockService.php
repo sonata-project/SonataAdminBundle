@@ -25,23 +25,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
  */
-class AdminPreviewBlockService extends AbstractBlockService
+final class AdminPreviewBlockService extends AbstractBlockService
 {
     /**
      * @var Pool
      */
-    protected $pool;
+    private $pool;
 
-    /**
-     * @param string $name
-     */
-    public function __construct($name, EngineInterface $templating, Pool $pool)
+    public function __construct(string $name, EngineInterface $templating, Pool $pool)
     {
         parent::__construct($name, $templating);
 
         $this->pool = $pool;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         $admin = $this->pool->getAdminByAdminCode($blockContext->getSetting('code'));
