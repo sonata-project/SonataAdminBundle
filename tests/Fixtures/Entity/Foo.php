@@ -37,6 +37,11 @@ class Foo
         $this->bar = $bar;
     }
 
+    public function addBar($bar): void
+    {
+        $this->bar[] = $bar;
+    }
+
     public function getBaz()
     {
         return $this->baz;
