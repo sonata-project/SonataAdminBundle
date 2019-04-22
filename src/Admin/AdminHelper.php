@@ -30,6 +30,11 @@ use Symfony\Component\Form\FormView;
 class AdminHelper
 {
     /**
+     * @var string
+     */
+    private const FORM_FIELD_DELETE = '_delete';
+
+    /**
      * @var Pool
      */
     protected $pool;
@@ -115,9 +120,9 @@ class AdminHelper
                 $i = 0;
                 foreach ($formData[$childFormBuilder->getName()] as $name => &$field) {
                     $toDelete[$i] = false;
-                    if (\array_key_exists('_delete', $field)) {
+                    if (\array_key_exists(self::FORM_FIELD_DELETE, $field)) {
                         $toDelete[$i] = true;
-                        unset($field['_delete']);
+                        unset($field[self::FORM_FIELD_DELETE]);
                     }
                     ++$i;
                 }
@@ -200,7 +205,9 @@ class AdminHelper
         if (\count($toDelete) > 0) {
             $i = 0;
             foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
-                $childField->get('_delete')->setData(isset($toDelete[$i]) && $toDelete[$i]);
+                if ($childField->has(self::FORM_FIELD_DELETE)) {
+                    $childField->get(self::FORM_FIELD_DELETE)->setData($toDelete[$i] ?? false);
+                }
                 ++$i;
             }
         }
