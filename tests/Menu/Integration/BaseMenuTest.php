@@ -70,7 +70,7 @@ abstract class BaseMenuTest extends TestCase
      */
     protected function cleanHtmlWhitespace($html)
     {
-        $html = preg_replace_callback('/>([^<]+)</', function ($value) {
+        $html = preg_replace_callback('/>([^<]+)</', static function ($value) {
             return '>'.trim($value[1]).'<';
         }, $html);
 

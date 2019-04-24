@@ -58,7 +58,7 @@ class BreadcrumbsBuilderTest extends TestCase
 
         $menu->expects($this->any())
             ->method('addChild')
-            ->willReturnCallback(function () use ($menu) {
+            ->willReturnCallback(static function () use ($menu) {
                 return $menu;
             });
 
@@ -97,7 +97,7 @@ class BreadcrumbsBuilderTest extends TestCase
 
         $modelManager->expects($this->any())
             ->method('find')
-            ->willReturnCallback(function ($class, $id) use ($postAdminSubjectId, $commentAdminSubjectId) {
+            ->willReturnCallback(static function ($class, $id) use ($postAdminSubjectId, $commentAdminSubjectId) {
                 if (DummySubject::class === $class && $postAdminSubjectId === $id) {
                     return new DummySubject();
                 }
