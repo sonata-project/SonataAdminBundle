@@ -147,7 +147,7 @@ class AdminExtractorTest extends TestCase
 
         $this->fooAdmin->expects($this->any())
             ->method('getShow')
-            ->will($this->returnCallback(function (): void {
+            ->will($this->returnCallback(static function (): void {
                 throw new \RuntimeException('Foo throws exception');
             }));
 

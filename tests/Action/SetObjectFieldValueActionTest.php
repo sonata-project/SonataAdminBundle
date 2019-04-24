@@ -245,7 +245,7 @@ final class SetObjectFieldValueActionTest extends TestCase
 
             $this->twig->addRuntimeLoader(new FactoryRuntimeLoader(
                 FormRenderer::class,
-                function () use ($runtime) {
+                static function () use ($runtime) {
                     return $runtime;
                 }
             ));
@@ -257,7 +257,7 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $this->twig->addRuntimeLoader(new FactoryRuntimeLoader(
             FormRenderer::class,
-            function () use ($runtime) {
+            static function () use ($runtime) {
                 return $runtime;
             }
         ));

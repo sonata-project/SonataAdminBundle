@@ -47,7 +47,7 @@ class TypeGuesserChain implements TypeGuesserInterface
 
     public function guessType($class, $property, ModelManagerInterface $modelManager)
     {
-        return $this->guess(function ($guesser) use ($class, $property, $modelManager) {
+        return $this->guess(static function ($guesser) use ($class, $property, $modelManager) {
             return $guesser->guessType($class, $property, $modelManager);
         });
     }
