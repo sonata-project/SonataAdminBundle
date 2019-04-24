@@ -52,7 +52,7 @@ class ListMapperTest extends TestCase
 
         $listBuilder->expects($this->any())
             ->method('addField')
-            ->will($this->returnCallback(function ($list, $type, $fieldDescription, $admin): void {
+            ->will($this->returnCallback(static function ($list, $type, $fieldDescription, $admin): void {
                 $list->add($fieldDescription);
             }));
 
@@ -180,7 +180,7 @@ class ListMapperTest extends TestCase
         $tmpNames = [];
         $this->admin->expects($this->any())
             ->method('hasListFieldDescription')
-            ->will($this->returnCallback(function ($name) use (&$tmpNames) {
+            ->will($this->returnCallback(static function ($name) use (&$tmpNames) {
                 if (isset($tmpNames[$name])) {
                     return true;
                 }

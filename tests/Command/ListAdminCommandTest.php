@@ -45,7 +45,7 @@ class ListAdminCommandTest extends TestCase
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($id) use ($container, $admin1, $admin2) {
+            ->will($this->returnCallback(static function ($id) use ($container, $admin1, $admin2) {
                 switch ($id) {
                     case 'sonata.admin.pool':
                         $pool = new Pool($container, '', '');

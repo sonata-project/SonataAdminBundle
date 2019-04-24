@@ -244,13 +244,13 @@ class CRUDControllerTest extends TestCase
 
         $this->csrfProvider->expects($this->any())
             ->method('getToken')
-            ->will($this->returnCallback(function ($intention) {
+            ->will($this->returnCallback(static function ($intention) {
                 return new CsrfToken($intention, 'csrf-token-123_'.$intention);
             }));
 
         $this->csrfProvider->expects($this->any())
             ->method('isTokenValid')
-            ->will($this->returnCallback(function (CsrfToken $token) {
+            ->will($this->returnCallback(static function (CsrfToken $token) {
                 if ($token->getValue() === 'csrf-token-123_'.$token->getId()) {
                     return true;
                 }
@@ -333,7 +333,7 @@ class CRUDControllerTest extends TestCase
 
         $this->container->expects($this->any())
             ->method('getParameter')
-            ->will($this->returnCallback(function ($name) {
+            ->will($this->returnCallback(static function ($name) {
                 switch ($name) {
                     case 'security.role_hierarchy.roles':
                        return ['ROLE_SUPER_ADMIN' => ['ROLE_USER', 'ROLE_SONATA_ADMIN', 'ROLE_ADMIN']];
@@ -385,7 +385,7 @@ class CRUDControllerTest extends TestCase
             ->method('generateUrl')
             ->will(
                 $this->returnCallback(
-                    function ($name, array $parameters = [], $absolute = false) {
+                    static function ($name, array $parameters = [], $absolute = false) {
                         $result = $name;
                         if (!empty($parameters)) {
                             $result .= '?'.http_build_query($parameters);
@@ -400,7 +400,7 @@ class CRUDControllerTest extends TestCase
             ->method('generateObjectUrl')
             ->will(
                 $this->returnCallback(
-                    function ($name, $object, array $parameters = [], $absolute = false) {
+                    static function ($name, $object, array $parameters = [], $absolute = false) {
                         $result = \get_class($object).'_'.$name;
                         if (!empty($parameters)) {
                             $result .= '?'.http_build_query($parameters);
@@ -495,7 +495,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('setUniqid')
-            ->will($this->returnCallback(function ($uniqid) use (&$uniqueId): void {
+            ->will($this->returnCallback(static function ($uniqid) use (&$uniqueId): void {
                 $uniqueId = $uniqid;
             }));
 
@@ -512,7 +512,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('setUniqid')
-            ->will($this->returnCallback(function ($uniqid) use (&$uniqueId): void {
+            ->will($this->returnCallback(static function ($uniqid) use (&$uniqueId): void {
                 $uniqueId = $uniqid;
             }));
 
@@ -792,7 +792,7 @@ class CRUDControllerTest extends TestCase
 
         $modelManager->expects($this->once())
             ->method('batchDelete')
-            ->will($this->returnCallback(function (): void {
+            ->will($this->returnCallback(static function (): void {
                 throw new ModelManagerException();
             }));
 
@@ -1256,7 +1256,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('delete')
-            ->will($this->returnCallback(function (): void {
+            ->will($this->returnCallback(static function (): void {
                 throw new ModelManagerException();
             }));
 
@@ -2141,7 +2141,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->exactly(2))
             ->method('checkAccess')
-            ->will($this->returnCallback(function ($name, $objectIn = null) use ($object) {
+            ->will($this->returnCallback(static function ($name, $objectIn = null) use ($object) {
                 if ('edit' === $name) {
                     return true;
                 }
@@ -2225,7 +2225,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('checkAccess')
-            ->will($this->returnCallback(function ($name, $object = null) {
+            ->will($this->returnCallback(static function ($name, $object = null) {
                 if ('create' !== $name) {
                     throw new AccessDeniedException();
                 }
@@ -2417,7 +2417,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->exactly(2))
             ->method('checkAccess')
-            ->will($this->returnCallback(function ($name, $objectIn = null) use ($object) {
+            ->will($this->returnCallback(static function ($name, $objectIn = null) use ($object) {
                 if ('create' !== $name) {
                     return false;
                 }
@@ -3979,7 +3979,7 @@ class CRUDControllerTest extends TestCase
 
         $subject->expects($this->once())
             ->method($method)
-            ->will($this->returnCallback(function () use ($exception): void {
+            ->will($this->returnCallback(static function () use ($exception): void {
                 throw $exception;
             }));
 

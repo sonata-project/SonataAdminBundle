@@ -72,7 +72,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->once())
             ->method('generate')
-            ->will($this->returnCallback(function ($name, array $parameters = []) {
+            ->will($this->returnCallback(static function ($name, array $parameters = []) {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -161,7 +161,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $request->attributes->expects($this->any())->method('has')->will($this->returnValue(true));
         $request->attributes->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($key) {
+            ->will($this->returnCallback(static function ($key) {
                 if ('childId' === $key) {
                     return '987654';
                 }
@@ -173,7 +173,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->once())
             ->method('generate')
-            ->will($this->returnCallback(function ($name, array $parameters = []) {
+            ->will($this->returnCallback(static function ($name, array $parameters = []) {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -230,7 +230,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->once())
             ->method('generate')
-            ->will($this->returnCallback(function ($name, array $parameters = []) {
+            ->will($this->returnCallback(static function ($name, array $parameters = []) {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -312,7 +312,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $request->attributes->expects($this->any())->method('has')->will($this->returnValue(true));
         $request->attributes->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($key) {
+            ->will($this->returnCallback(static function ($key) {
                 if ('childId' === $key) {
                     return '987654';
                 }
@@ -334,7 +334,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->exactly(2))
             ->method('generate')
-            ->will($this->returnCallback(function ($name, array $parameters = []) {
+            ->will($this->returnCallback(static function ($name, array $parameters = []) {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);

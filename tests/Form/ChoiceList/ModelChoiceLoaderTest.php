@@ -43,7 +43,7 @@ class ModelChoiceLoaderTest extends TestCase
 
         $this->modelManager->expects($this->any())
             ->method('getIdentifierValues')
-            ->will($this->returnCallback(function (Foo $foo) {
+            ->will($this->returnCallback(static function (Foo $foo) {
                 return [$foo->getBar()];
             }));
 

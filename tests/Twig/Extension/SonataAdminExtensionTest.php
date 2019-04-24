@@ -223,7 +223,7 @@ class SonataAdminExtensionTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('trans')
-            ->will($this->returnCallback(function ($id, $parameters = [], $domain = null) use ($translator) {
+            ->will($this->returnCallback(static function ($id, $parameters = [], $domain = null) use ($translator) {
                 return $translator->trans($id, $parameters, $domain);
             }));
 
@@ -299,13 +299,13 @@ class SonataAdminExtensionTest extends TestCase
 
         $this->fieldDescription->expects($this->any())
             ->method('getOption')
-            ->will($this->returnCallback(function ($name, $default = null) use ($options) {
+            ->will($this->returnCallback(static function ($name, $default = null) use ($options) {
                 return $options[$name] ?? $default;
             }));
 
         $this->fieldDescription->expects($this->any())
             ->method('getTemplate')
-            ->will($this->returnCallback(function () use ($type) {
+            ->will($this->returnCallback(static function () use ($type) {
                 switch ($type) {
                     case 'string':
                         return '@SonataAdmin/CRUD/list_string.html.twig';
@@ -383,7 +383,7 @@ class SonataAdminExtensionTest extends TestCase
 
         $this->fieldDescription->expects($this->any())
             ->method('getOption')
-            ->will($this->returnCallback(function ($name, $default = null) use ($options) {
+            ->will($this->returnCallback(static function ($name, $default = null) use ($options) {
                 return $options[$name] ?? $default;
             }));
 
@@ -1430,7 +1430,7 @@ EOT
 
         $this->fieldDescription->expects($this->any())
             ->method('getValue')
-            ->will($this->returnCallback(function () use ($value) {
+            ->will($this->returnCallback(static function () use ($value) {
                 if ($value instanceof NoValueException) {
                     throw  $value;
                 }
@@ -1448,7 +1448,7 @@ EOT
 
         $this->fieldDescription->expects($this->any())
             ->method('getTemplate')
-            ->will($this->returnCallback(function () use ($type) {
+            ->will($this->returnCallback(static function () use ($type) {
                 switch ($type) {
                     case 'boolean':
                         return '@SonataAdmin/CRUD/show_boolean.html.twig';
@@ -2075,7 +2075,7 @@ EOT
 
         $fieldDescription->expects($this->any())
             ->method('getValue')
-            ->will($this->returnCallback(function (): void {
+            ->will($this->returnCallback(static function (): void {
                 throw new NoValueException();
             }));
 
@@ -2093,7 +2093,7 @@ EOT
 
         $fieldDescription->expects($this->any())
             ->method('getValue')
-            ->will($this->returnCallback(function (): void {
+            ->will($this->returnCallback(static function (): void {
                 throw new NoValueException();
             }));
 
@@ -2213,7 +2213,7 @@ EOT
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
-            ->will($this->returnCallback(function ($value, $default = null) {
+            ->will($this->returnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
                     return $default;
                 }
@@ -2230,7 +2230,7 @@ EOT
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
-            ->will($this->returnCallback(function ($value, $default = null) {
+            ->will($this->returnCallback(static function ($value, $default = null) {
                 if ('associated_tostring' === $value) {
                     return '__toString';
                 }
@@ -2250,7 +2250,7 @@ EOT
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
-            ->will($this->returnCallback(function ($value, $default = null) {
+            ->will($this->returnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
                     return $default;
                 }
@@ -2278,7 +2278,7 @@ EOT
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
 
-            ->will($this->returnCallback(function ($value, $default = null) {
+            ->will($this->returnCallback(static function ($value, $default = null) {
                 if ('associated_tostring' === $value) {
                     return 'nonExistedMethod';
                 }
@@ -2295,7 +2295,7 @@ EOT
         $this->fieldDescription->expects($this->exactly(1))
             ->method('getOption')
 
-            ->will($this->returnCallback(function ($value, $default = null) {
+            ->will($this->returnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
                     return 'foo';
                 }
@@ -2312,9 +2312,9 @@ EOT
         $this->fieldDescription->expects($this->exactly(1))
             ->method('getOption')
 
-            ->will($this->returnCallback(function ($value, $default = null) {
+            ->will($this->returnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
-                    return function ($element) {
+                    return static function ($element) {
                         return 'closure '.$element->foo;
                     };
                 }

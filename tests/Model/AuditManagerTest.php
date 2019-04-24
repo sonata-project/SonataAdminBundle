@@ -34,7 +34,7 @@ class AuditManagerTest extends TestCase
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($id) use ($fooReader, $barReader) {
+            ->will($this->returnCallback(static function ($id) use ($fooReader, $barReader) {
                 switch ($id) {
                     case 'foo_reader':
                         return $fooReader;

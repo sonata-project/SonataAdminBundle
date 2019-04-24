@@ -85,7 +85,7 @@ class ModelType extends AbstractType
     {
         $options = [];
         $propertyAccessor = $this->propertyAccessor;
-        $options['choice_loader'] = function (Options $options, $previousValue) use ($propertyAccessor) {
+        $options['choice_loader'] = static function (Options $options, $previousValue) use ($propertyAccessor) {
             if ($previousValue && \count($choices = $previousValue->getChoices())) {
                 return $choices;
             }
@@ -105,7 +105,7 @@ class ModelType extends AbstractType
         }
 
         $resolver->setDefaults(array_merge($options, [
-            'compound' => function (Options $options) {
+            'compound' => static function (Options $options) {
                 if (isset($options['multiple']) && $options['multiple']) {
                     if (isset($options['expanded']) && $options['expanded']) {
                         //checkboxes
