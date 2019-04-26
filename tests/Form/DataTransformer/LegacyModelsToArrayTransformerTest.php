@@ -62,7 +62,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
         $this->choiceList->expects($this->any())
             ->method('getIdentifierValues')
-            ->will($this->returnCallback(function ($entity) use ($identifiers) {
+            ->will($this->returnCallback(static function ($entity) use ($identifiers) {
                 if ($entity instanceof FooEntity) {
                     return $identifiers;
                 }
@@ -72,13 +72,13 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
         $this->choiceList->expects($this->any())
             ->method('getIdentifier')
-            ->will($this->returnCallback(function () use ($identifiers) {
+            ->will($this->returnCallback(static function () use ($identifiers) {
                 return $identifiers;
             }));
 
         $this->choiceList->expects($this->any())
             ->method('getEntities')
-            ->will($this->returnCallback(function () {
+            ->will($this->returnCallback(static function () {
                 return ['bcd' => new FooEntity(['bcd']), 'efg' => new FooEntity(['efg']), 'abc' => new FooEntity(['abc'])];
             }));
 
@@ -158,7 +158,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
         $this->choiceList->expects($this->any())
             ->method('getEntity')
-            ->will($this->returnCallback(function ($key) use ($entity1, $entity2, $entity3) {
+            ->will($this->returnCallback(static function ($key) use ($entity1, $entity2, $entity3) {
                 switch ($key) {
                     case 'foo':
                         return $entity1;

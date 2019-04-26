@@ -54,7 +54,7 @@ class AdminEventExtensionTest extends TestCase
      */
     public function getConfigureEventClosure($type)
     {
-        return function ($event) use ($type) {
+        return static function ($event) use ($type) {
             if (!$event instanceof ConfigureEvent) {
                 return false;
             }
@@ -74,7 +74,7 @@ class AdminEventExtensionTest extends TestCase
      */
     public function getConfigurePersistenceClosure($type)
     {
-        return function ($event) use ($type) {
+        return static function ($event) use ($type) {
             if (!$event instanceof PersistenceEvent) {
                 return false;
             }

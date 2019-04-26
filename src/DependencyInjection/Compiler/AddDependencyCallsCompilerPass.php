@@ -181,10 +181,10 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         } elseif ($container->getParameter('sonata.admin.configuration.sort_admins')) {
             $groups = $groupDefaults;
 
-            $elementSort = function (&$element): void {
+            $elementSort = static function (&$element): void {
                 usort(
                     $element['items'],
-                    function ($a, $b) {
+                    static function ($a, $b) {
                         $a = !empty($a['label']) ? $a['label'] : $a['admin'];
                         $b = !empty($b['label']) ? $b['label'] : $b['admin'];
 

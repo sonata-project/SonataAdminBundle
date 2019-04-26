@@ -123,7 +123,7 @@ class Admin implements MetadataProcessorInterface
             'on_top' => $this->onTop,
         ];
 
-        $tag = array_filter($tag, function ($v) {
+        $tag = array_filter($tag, static function ($v) {
             return null !== $v;
         });
 

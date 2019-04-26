@@ -100,7 +100,7 @@ class AdminType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'delete' => function (Options $options) {
+            'delete' => static function (Options $options) {
                 return false !== $options['btn_delete'];
             },
             'delete_options' => [
