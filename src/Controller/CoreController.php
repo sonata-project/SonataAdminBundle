@@ -68,8 +68,7 @@ class CoreController
         SearchHandler $searchHandler,
         TemplateRegistryInterface $templateRegistry,
         RequestStack $requestStack
-    )
-    {
+    ) {
         $this->dashboard = $dashboardAction;
         $this->search = $searchAction;
         $this->pool = $pool;
