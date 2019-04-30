@@ -67,13 +67,6 @@ class SearchActionTest extends TestCase
             'query' => 'some search',
             'groups' => [],
         ])->willReturn(new Response());
-        $this->templating->renderResponse('search.html.twig', [
-            'base_template' => 'layout.html.twig',
-            'breadcrumbs_builder' => $this->breadcrumbsBuilder,
-            'admin_pool' => $this->pool,
-            'query' => 'some search',
-            'groups' => [],
-        ], null)->willReturn(new Response());
 
         // NEXT_MAJOR: simplify this when dropping php 5
         $action = $this->action;

@@ -54,12 +54,12 @@ class CoreControllerTest extends TestCase
         $breadcrumbsBuilder = $this->getMockForAbstractClass(BreadcrumbsBuilderInterface::class);
 
         $dashboardAction = new DashboardAction(
-                [],
-                $breadcrumbsBuilder,
-                $templateRegistry->reveal(),
-                $pool,
-                $templating
-            );
+            [],
+            $breadcrumbsBuilder,
+            $templateRegistry->reveal(),
+            $pool,
+            $templating
+        );
         $searchAction = new SearchAction(
             $pool,
             new SearchHandler($pool),
@@ -104,31 +104,30 @@ class CoreControllerTest extends TestCase
         $requestStack = new RequestStack();
         $requestStack->push($request);
 
-        $values = [
-            DashboardAction::class => $dashboardAction = new DashboardAction(
-                [],
-                $breadcrumbsBuilder,
-                $templateRegistry->reveal(),
-                $pool,
-                $templating
-            ),
-            'templating' => $templating,
-            'request_stack' => $requestStack,
-        ];
-        $dashboardAction->setContainer($container);
+        $dashboardAction = new DashboardAction(
+            [],
+            $breadcrumbsBuilder,
+            $templateRegistry->reveal(),
+            $pool,
+            $templating
+        );
 
-        $container->expects($this->any())->method('get')->will($this->returnCallback(static function ($id) use ($values) {
-            return $values[$id];
-        }));
+        $searchAction = new SearchAction(
+            $pool,
+            new SearchHandler($pool),
+            $templateRegistry->reveal(),
+            $breadcrumbsBuilder,
+            $templating
+        );
 
-        $container->expects($this->any())
-            ->method('has')
-            ->will($this->returnCallback(static function ($id) {
-                return 'templating' === $id;
-            }));
-
-        $controller = new CoreController();
-        $controller->setContainer($container);
+        $controller = new CoreController(
+            $dashboardAction,
+            $searchAction,
+            $pool,
+            new SearchHandler($pool),
+            $templateRegistry->reveal(),
+            $requestStack
+        );
 
         $response = $controller->dashboardAction($request);
 
