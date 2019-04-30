@@ -56,12 +56,11 @@ class CoreControllerTest extends TestCase
                 [],
                 $breadcrumbsBuilder,
                 $templateRegistry->reveal(),
-                $pool
+                $pool,
+                $templating
             ),
-            'templating' => $templating,
             'request_stack' => $requestStack,
         ];
-        $dashboardAction->setContainer($container);
 
         $container->expects($this->any())->method('get')->willReturnCallback(static function ($id) use ($values) {
             return $values[$id];
@@ -108,22 +107,15 @@ class CoreControllerTest extends TestCase
                 [],
                 $breadcrumbsBuilder,
                 $templateRegistry->reveal(),
-                $pool
+                $pool,
+                $templating
             ),
-            'templating' => $templating,
             'request_stack' => $requestStack,
         ];
-        $dashboardAction->setContainer($container);
 
         $container->expects($this->any())->method('get')->willReturnCallback(static function ($id) use ($values) {
             return $values[$id];
         });
-
-        $container->expects($this->any())
-            ->method('has')
-            ->willReturnCallback(static function ($id) {
-                return 'templating' === $id;
-            });
 
         $controller = new CoreController();
         $controller->setContainer($container);
