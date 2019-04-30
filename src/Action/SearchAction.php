@@ -48,34 +48,32 @@ final class SearchAction
     /**
      * @var EngineInterface
      */
-    private $templatingEngine;
+    private $templateEngine;
 
     public function __construct(
         Pool $pool,
         SearchHandler $searchHandler,
         TemplateRegistryInterface $templateRegistry,
         BreadcrumbsBuilderInterface $breadcrumbsBuilder,
-        EngineInterface $templatingEngine
+        EngineInterface $templateEngine
     ) {
         $this->pool = $pool;
         $this->searchHandler = $searchHandler;
         $this->templateRegistry = $templateRegistry;
         $this->breadcrumbsBuilder = $breadcrumbsBuilder;
-        $this->templatingEngine = $templatingEngine;
+        $this->templateEngine = $templateEngine;
     }
 
     /**
      * The search action first render an empty page, if the query is set, then the template generates
      * some ajax request to retrieve results for each admin. The Ajax query returns a JSON response.
      *
-     * @param Request $request
-     *
      * @return JsonResponse|Response
      */
     public function __invoke(Request $request): Response
     {
         if (!$request->get('admin') || !$request->isXmlHttpRequest()) {
-            return new Response($this->templatingEngine->render($this->templateRegistry->getTemplate('search'), [
+            return new Response($this->templateEngine->render($this->templateRegistry->getTemplate('search'), [
                 'base_template' => $request->isXmlHttpRequest() ?
                     $this->templateRegistry->getTemplate('ajax') :
                     $this->templateRegistry->getTemplate('layout'),
