@@ -15,9 +15,11 @@ namespace Sonata\AdminBundle\Tests\Controller;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\DashboardAction;
+use Sonata\AdminBundle\Action\SearchAction;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\CoreController;
+use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -51,30 +53,29 @@ class CoreControllerTest extends TestCase
 
         $breadcrumbsBuilder = $this->getMockForAbstractClass(BreadcrumbsBuilderInterface::class);
 
-        $values = [
-            DashboardAction::class => $dashboardAction = new DashboardAction(
+        $dashboardAction = new DashboardAction(
                 [],
                 $breadcrumbsBuilder,
                 $templateRegistry->reveal(),
-                $pool
-            ),
-            'templating' => $templating,
-            'request_stack' => $requestStack,
-        ];
-        $dashboardAction->setContainer($container);
+                $pool,
+                $templating
+            );
+        $searchAction = new SearchAction(
+            $pool,
+            new SearchHandler($pool),
+            $templateRegistry->reveal(),
+            $breadcrumbsBuilder,
+            $templating
+        );
 
-        $container->expects($this->any())->method('get')->will($this->returnCallback(static function ($id) use ($values) {
-            return $values[$id];
-        }));
-
-        $container->expects($this->any())
-            ->method('has')
-            ->will($this->returnCallback(static function ($id) {
-                return 'templating' === $id;
-            }));
-
-        $controller = new CoreController();
-        $controller->setContainer($container);
+        $controller = new CoreController(
+            $dashboardAction,
+            $searchAction,
+            $pool,
+            new SearchHandler($pool),
+            $templateRegistry->reveal(),
+            $requestStack
+        );
 
         $this->isInstanceOf(Response::class, $controller->dashboardAction());
     }

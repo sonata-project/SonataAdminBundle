@@ -53,23 +53,9 @@ class DashboardActionTest extends TestCase
             [],
             $breadcrumbsBuilder,
             $templateRegistry->reveal(),
-            $pool
+            $pool,
+            $templating
         );
-        $values = [
-            'templating' => $templating,
-            'request_stack' => $requestStack,
-        ];
-        $dashboardAction->setContainer($container);
-
-        $container->expects($this->any())->method('get')->will($this->returnCallback(static function ($id) use ($values) {
-            return $values[$id];
-        }));
-
-        $container->expects($this->any())
-            ->method('has')
-            ->will($this->returnCallback(static function ($id) {
-                return 'templating' === $id;
-            }));
 
         $this->isInstanceOf(Response::class, $dashboardAction($request));
     }
@@ -101,24 +87,9 @@ class DashboardActionTest extends TestCase
             [],
             $breadcrumbsBuilder,
             $templateRegistry->reveal(),
-            $pool
+            $pool,
+            $templating
         );
-        $dashboardAction->setContainer($container);
-        $values = [
-            'templating' => $templating,
-            'request_stack' => $requestStack,
-        ];
-        $dashboardAction->setContainer($container);
-
-        $container->expects($this->any())->method('get')->will($this->returnCallback(static function ($id) use ($values) {
-            return $values[$id];
-        }));
-
-        $container->expects($this->any())
-            ->method('has')
-            ->will($this->returnCallback(static function ($id) {
-                return 'templating' === $id;
-            }));
 
         $this->isInstanceOf(Response::class, $dashboardAction($request));
     }

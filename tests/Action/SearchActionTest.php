@@ -46,16 +46,15 @@ class SearchActionTest extends TestCase
 
         $this->breadcrumbsBuilder = $this->createMock(BreadcrumbsBuilderInterface::class);
         $this->searchHandler = $this->createMock(SearchHandler::class);
+        $this->templating = $this->prophesize(EngineInterface::class);
 
         $this->action = new SearchAction(
             $this->pool,
             $this->searchHandler,
             $templateRegistry,
-            $this->breadcrumbsBuilder
+            $this->breadcrumbsBuilder,
+            $this->templating
         );
-        $this->action->setContainer($this->container);
-        $this->templating = $this->prophesize(EngineInterface::class);
-        $this->container->set('templating', $this->templating->reveal());
     }
 
     public function testGlobalPage(): void
