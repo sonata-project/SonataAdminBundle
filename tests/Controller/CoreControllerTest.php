@@ -21,11 +21,11 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\CoreController;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Templating\EngineInterface;
 
 class CoreControllerTest extends TestCase
 {
@@ -109,7 +109,8 @@ class CoreControllerTest extends TestCase
                 [],
                 $breadcrumbsBuilder,
                 $templateRegistry->reveal(),
-                $pool
+                $pool,
+                $templating
             ),
             'templating' => $templating,
             'request_stack' => $requestStack,

@@ -82,7 +82,7 @@ class CoreController
      */
     public function dashboardAction()
     {
-        return $this->dashboard($this->getCurrentRequest());
+        return ($this->dashboard)($this->getCurrentRequest());
     }
 
     /**
@@ -95,7 +95,7 @@ class CoreController
      */
     public function searchAction(Request $request)
     {
-        return $this->search($request);
+        return ($this->search)($request);
     }
 
     /**

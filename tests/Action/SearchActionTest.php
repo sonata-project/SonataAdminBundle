@@ -20,11 +20,11 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Templating\EngineInterface;
 
 class SearchActionTest extends TestCase
 {
@@ -53,7 +53,7 @@ class SearchActionTest extends TestCase
             $this->searchHandler,
             $templateRegistry,
             $this->breadcrumbsBuilder,
-            $this->templating
+            $this->templating->reveal()
         );
     }
 
