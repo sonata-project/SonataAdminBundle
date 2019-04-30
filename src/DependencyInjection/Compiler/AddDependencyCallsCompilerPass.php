@@ -182,7 +182,6 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $groups = $groupDefaults;
 
             $elementSort = static function (&$element): void {
-
                 usort(
                     $element['items'],
                     static function ($a, $b) {
