@@ -38,7 +38,7 @@ class SetupAclCommandTest extends TestCase
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($id) use ($container, $admin, $aclManipulator) {
+            ->will($this->returnCallback(static function ($id) use ($container, $admin, $aclManipulator) {
                 switch ($id) {
                     case 'sonata.admin.pool':
                         $pool = new Pool($container, '', '');
@@ -74,7 +74,7 @@ class SetupAclCommandTest extends TestCase
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($id) use ($container) {
+            ->will($this->returnCallback(static function ($id) use ($container) {
                 if ('sonata.admin.pool' === $id) {
                     $pool = new Pool($container, '', '');
                     $pool->setAdminServiceIds(['acme.admin.foo']);
@@ -106,7 +106,7 @@ class SetupAclCommandTest extends TestCase
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($id) use ($container, $admin) {
+            ->will($this->returnCallback(static function ($id) use ($container, $admin) {
                 switch ($id) {
                     case 'sonata.admin.pool':
                         $pool = new Pool($container, '', '');

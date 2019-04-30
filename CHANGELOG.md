@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.48.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.48.0...3.48.1) - 2019-04-13
+### Fixed
+- Changed the way the search action generates links to the results. It used to
+  consider every item editable, but would throw an error if it wasn't the case.
+It now uses the `getSearchResultLink` that choses the best way to link to a
+search result; eg. `edit` if available, or `show`.
+- crash when submitting a form with only spaces in a required field
+- redirecting to a blank tab after saving an object
+- modifying form values changing tabs
+
 ## [3.48.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.47.1...3.48.0) - 2019-03-23
 ### Added
 - Added ability to back to the tab which was edited on saving an object

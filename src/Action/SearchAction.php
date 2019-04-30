@@ -109,7 +109,7 @@ final class SearchAction
             foreach ($pager->getResults() as $result) {
                 $results[] = [
                     'label' => $admin->toString($result),
-                    'link' => $admin->generateObjectUrl('edit', $result),
+                    'link' => $admin->getSearchResultLink($result),
                     'id' => $admin->id($result),
                 ];
             }

@@ -70,7 +70,7 @@ class AdminPoolLoaderTest extends TestCase
 
         $pool->expects($this->any())
             ->method('getInstance')
-            ->will($this->returnCallback(function ($id) use ($admin1, $admin2) {
+            ->will($this->returnCallback(static function ($id) use ($admin1, $admin2) {
                 switch ($id) {
                     case 'foo_admin':
                         return $admin1;

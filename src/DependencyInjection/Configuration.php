@@ -66,7 +66,7 @@ CASESENSITIVE;
                                 ->performNoDeepMerging()
                                 ->beforeNormalization()
                                     ->ifString()
-                                    ->then(function ($v) {
+                                    ->then(static function ($v) {
                                         return [$v];
                                     })
                                 ->end()
@@ -106,7 +106,7 @@ CASESENSITIVE;
                             ->defaultValue('show')
                             ->info('Perhaps one of the three options: show, fade, hide.')
                             ->validate()
-                                ->ifTrue(function ($v) {
+                                ->ifTrue(static function ($v) {
                                     return !\in_array($v, ['show', 'fade', 'hide'], true);
                                 })
                                 ->thenInvalid('Configuration value of "global_search.empty_boxes" must be one of show, fade or hide.')
@@ -183,7 +183,7 @@ CASESENSITIVE;
                             ->prototype('array')
                                 ->beforeNormalization()
                                     ->ifArray()
-                                    ->then(function ($items) {
+                                    ->then(static function ($items) {
                                         if (isset($items['provider'])) {
                                             $disallowedItems = ['items', 'label'];
                                             foreach ($disallowedItems as $item) {
@@ -208,7 +208,7 @@ CASESENSITIVE;
                                     ->arrayNode('items')
                                         ->beforeNormalization()
                                             ->ifArray()
-                                            ->then(function ($items) {
+                                            ->then(static function ($items) {
                                                 foreach ($items as $key => $item) {
                                                     if (\is_array($item)) {
                                                         if (!\array_key_exists('label', $item) || !\array_key_exists('route', $item)) {
@@ -490,7 +490,7 @@ CASESENSITIVE;
                             ->arrayNode('uses')
                                 ->prototype('scalar')->end()
                                 ->validate()
-                                    ->ifTrue(function ($v) {
+                                    ->ifTrue(static function ($v) {
                                         return !empty($v) && version_compare(PHP_VERSION, '5.4.0', '<');
                                     })
                                     ->thenInvalid('PHP >= 5.4.0 is required to use traits.')

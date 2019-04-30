@@ -61,13 +61,13 @@ class DashboardActionTest extends TestCase
         ];
         $dashboardAction->setContainer($container);
 
-        $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($values) {
+        $container->expects($this->any())->method('get')->will($this->returnCallback(static function ($id) use ($values) {
             return $values[$id];
         }));
 
         $container->expects($this->any())
             ->method('has')
-            ->will($this->returnCallback(function ($id) {
+            ->will($this->returnCallback(static function ($id) {
                 return 'templating' === $id;
             }));
 
@@ -110,13 +110,13 @@ class DashboardActionTest extends TestCase
         ];
         $dashboardAction->setContainer($container);
 
-        $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($values) {
+        $container->expects($this->any())->method('get')->will($this->returnCallback(static function ($id) use ($values) {
             return $values[$id];
         }));
 
         $container->expects($this->any())
             ->method('has')
-            ->will($this->returnCallback(function ($id) {
+            ->will($this->returnCallback(static function ($id) {
                 return 'templating' === $id;
             }));
 
