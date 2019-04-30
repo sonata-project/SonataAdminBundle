@@ -16,11 +16,12 @@ namespace Sonata\AdminBundle\Action;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
-final class DashboardAction extends AbstractController
+final class DashboardAction
 {
     /**
      * @var array
@@ -41,17 +42,23 @@ final class DashboardAction extends AbstractController
      * @var Pool
      */
     private $pool;
+    /**
+     * @var Environment
+     */
+    private $templatingEngine;
 
     public function __construct(
         array $dashboardBlocks,
         BreadcrumbsBuilderInterface $breadcrumbsBuilder,
         TemplateRegistryInterface $templateRegistry,
-        Pool $pool
+        Pool $pool,
+        EngineInterface $templatingEngine
     ) {
         $this->dashboardBlocks = $dashboardBlocks;
         $this->breadcrumbsBuilder = $breadcrumbsBuilder;
         $this->templateRegistry = $templateRegistry;
         $this->pool = $pool;
+        $this->templatingEngine = $templatingEngine;
     }
 
     public function __invoke(Request $request): Response
@@ -80,6 +87,6 @@ final class DashboardAction extends AbstractController
             $parameters['breadcrumbs_builder'] = $this->breadcrumbsBuilder;
         }
 
-        return $this->render($this->templateRegistry->getTemplate('dashboard'), $parameters);
+        return new Response($this->templatingEngine->render($this->templateRegistry->getTemplate('dashboard'), $parameters));
     }
 }
