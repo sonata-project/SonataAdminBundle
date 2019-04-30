@@ -18,13 +18,13 @@ use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Templating\EngineInterface;
 
-final class SearchAction extends Controller
+final class SearchAction
 {
     /**
      * @var Pool
@@ -45,31 +45,37 @@ final class SearchAction extends Controller
      * @var BreadcrumbsBuilderInterface
      */
     private $breadcrumbsBuilder;
+    /**
+     * @var EngineInterface
+     */
+    private $templatingEngine;
 
     public function __construct(
         Pool $pool,
         SearchHandler $searchHandler,
         TemplateRegistryInterface $templateRegistry,
-        BreadcrumbsBuilderInterface $breadcrumbsBuilder
+        BreadcrumbsBuilderInterface $breadcrumbsBuilder,
+        EngineInterface $templatingEngine
     ) {
         $this->pool = $pool;
         $this->searchHandler = $searchHandler;
         $this->templateRegistry = $templateRegistry;
         $this->breadcrumbsBuilder = $breadcrumbsBuilder;
+        $this->templatingEngine = $templatingEngine;
     }
 
     /**
      * The search action first render an empty page, if the query is set, then the template generates
      * some ajax request to retrieve results for each admin. The Ajax query returns a JSON response.
      *
-     * @throws \RuntimeException
+     * @param Request $request
      *
      * @return JsonResponse|Response
      */
     public function __invoke(Request $request): Response
     {
         if (!$request->get('admin') || !$request->isXmlHttpRequest()) {
-            return $this->render($this->templateRegistry->getTemplate('search'), [
+            return new Response($this->templatingEngine->render($this->templateRegistry->getTemplate('search'), [
                 'base_template' => $request->isXmlHttpRequest() ?
                     $this->templateRegistry->getTemplate('ajax') :
                     $this->templateRegistry->getTemplate('layout'),
@@ -77,7 +83,7 @@ final class SearchAction extends Controller
                 'admin_pool' => $this->pool,
                 'query' => $request->get('q'),
                 'groups' => $this->pool->getDashboardGroups(),
-            ]);
+            ]));
         }
 
         try {
