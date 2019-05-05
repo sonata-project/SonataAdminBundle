@@ -2389,6 +2389,7 @@ EOT
             ['da', 'da'],
             ['de-at', 'de-at'],
             ['de', 'de'],
+            ['de', 'de-de'],
             ['dv', 'dv'],
             ['el', 'el'],
             [null, 'en'],
