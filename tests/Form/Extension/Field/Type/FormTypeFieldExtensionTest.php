@@ -90,7 +90,7 @@ class FormTypeFieldExtensionTest extends TestCase
     public function testbuildViewWithWithSonataAdmin(): void
     {
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->exactly(2))->method('getCode')->will($this->returnValue('my.admin.reference'));
+        $admin->expects($this->exactly(2))->method('getCode')->willReturn('my.admin.reference');
 
         $eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
 

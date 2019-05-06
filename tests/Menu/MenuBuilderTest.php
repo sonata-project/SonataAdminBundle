@@ -58,7 +58,7 @@ class MenuBuilderTest extends TestCase
             ->expects($this->once())
             ->method('get')
             ->with('sonata_group_menu')
-            ->will($this->returnValue($this->factory->createItem('bar')->addChild('foo')->getParent()));
+            ->willReturn($this->factory->createItem('bar')->addChild('foo')->getParent());
 
         $this->preparePool($adminGroups);
         $menu = $this->builder->createSidebarMenu();
@@ -95,7 +95,7 @@ class MenuBuilderTest extends TestCase
             ->expects($this->once())
             ->method('get')
             ->with('my_menu')
-            ->will($this->returnValue($this->factory->createItem('bar')->addChild('foo')->getParent()));
+            ->willReturn($this->factory->createItem('bar')->addChild('foo')->getParent());
 
         $this->preparePool($adminGroups);
         $menu = $this->builder->createSidebarMenu();
@@ -147,13 +147,13 @@ class MenuBuilderTest extends TestCase
     {
         $this->pool->expects($this->once())
             ->method('getAdminGroups')
-            ->will($this->returnValue($adminGroups));
+            ->willReturn($adminGroups);
 
         if (null !== $admin) {
             $this->pool->expects($this->once())
                 ->method('getInstance')
                 ->with($this->equalTo('sonata_admin_foo_service'))
-                ->will($this->returnValue($admin));
+                ->willReturn($admin);
         }
     }
 }

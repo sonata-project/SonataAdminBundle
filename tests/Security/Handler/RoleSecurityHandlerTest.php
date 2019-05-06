@@ -51,7 +51,7 @@ class RoleSecurityHandlerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('getCode')
-            ->will($this->returnValue($code));
+            ->willReturn($code);
 
         $this->assertSame($expected, $handler->getBaseRole($this->admin));
     }
@@ -75,11 +75,11 @@ class RoleSecurityHandlerTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('getCode')
-            ->will($this->returnValue($adminCode));
+            ->willReturn($adminCode);
 
         $this->authorizationChecker->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnCallback(static function (array $attributes, $object) {
+            ->willReturnCallback(static function (array $attributes, $object) {
                 if (\in_array('ROLE_BATMAN', $attributes, true)) {
                     return true;
                 }
@@ -105,7 +105,7 @@ class RoleSecurityHandlerTest extends TestCase
                 }
 
                 return false;
-            }));
+            });
 
         $this->assertSame($expected, $handler->isGranted($this->admin, $operation, $object));
     }
@@ -186,13 +186,13 @@ class RoleSecurityHandlerTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('getCode')
-            ->will($this->returnValue('foo.bar'));
+            ->willReturn('foo.bar');
 
         $this->authorizationChecker->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnCallback(static function (array $attributes, $object): void {
+            ->willReturnCallback(static function (array $attributes, $object): void {
                 throw new \RuntimeException('Something is wrong');
-            }));
+            });
 
         $handler = $this->getRoleSecurityHandler(['ROLE_BATMAN']);
         $handler->isGranted($this->admin, 'BAZ');

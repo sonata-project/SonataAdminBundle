@@ -60,12 +60,12 @@ class ChildrenVoterTest extends AbstractVoterTest
         $item = $this->getMockForAbstractClass(ItemInterface::class);
         $item->expects($this->any())
             ->method('getChildren')
-            ->will($this->returnValue($childItems));
+            ->willReturn($childItems);
 
         $item->expects($this->any())
              ->method('getExtra')
              ->with('sonata_admin')
-             ->will($this->returnValue(true));
+             ->willReturn(true);
 
         return $item;
     }
