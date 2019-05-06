@@ -37,7 +37,7 @@ class SonataAdminBundleTest extends TestCase
 
         $containerBuilder->expects($this->exactly(4))
             ->method('addCompilerPass')
-            ->will($this->returnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION): void {
+            ->willReturnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION): void {
                 if ($pass instanceof AddDependencyCallsCompilerPass) {
                     return;
                 }
@@ -62,7 +62,7 @@ class SonataAdminBundleTest extends TestCase
                     GlobalVariablesCompilerPass::class,
                     \get_class($pass)
                 ));
-            }));
+            });
 
         $containerBuilder
             ->expects($this->once())
@@ -82,7 +82,7 @@ class SonataAdminBundleTest extends TestCase
 
         $containerBuilder->expects($this->exactly(5))
             ->method('addCompilerPass')
-            ->will($this->returnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION): void {
+            ->willReturnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION): void {
                 if ($pass instanceof AddDependencyCallsCompilerPass) {
                     return;
                 }
@@ -112,7 +112,7 @@ class SonataAdminBundleTest extends TestCase
                     AdminMakerCompilerPass::class,
                     \get_class($pass)
                 ));
-            }));
+            });
 
         $containerBuilder
             ->expects($this->once())

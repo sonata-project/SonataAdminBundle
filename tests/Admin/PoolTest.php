@@ -57,13 +57,13 @@ class PoolTest extends TestCase
     public function testGetDashboardGroups(): void
     {
         $admin_group1 = $this->createMock(AdminInterface::class);
-        $admin_group1->expects($this->once())->method('showIn')->will($this->returnValue(true));
+        $admin_group1->expects($this->once())->method('showIn')->willReturn(true);
 
         $admin_group2 = $this->createMock(AdminInterface::class);
-        $admin_group2->expects($this->once())->method('showIn')->will($this->returnValue(false));
+        $admin_group2->expects($this->once())->method('showIn')->willReturn(false);
 
         $admin_group3 = $this->createMock(AdminInterface::class);
-        $admin_group3->expects($this->once())->method('showIn')->will($this->returnValue(false));
+        $admin_group3->expects($this->once())->method('showIn')->willReturn(false);
 
         $container = $this->createMock(ContainerInterface::class);
 
@@ -208,16 +208,16 @@ class PoolTest extends TestCase
             ->getMock();
         $adminMock->expects($this->any())
             ->method('hasChild')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $adminMock->expects($this->once())
             ->method('getChild')
             ->with($this->equalTo('sonata.news.admin.comment'))
-            ->will($this->returnValue('commentAdminClass'));
+            ->willReturn('commentAdminClass');
 
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->expects($this->any())
             ->method('get')
-            ->will($this->returnValue($adminMock));
+            ->willReturn($adminMock);
 
         $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
         $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
@@ -232,12 +232,12 @@ class PoolTest extends TestCase
             ->getMock();
         $adminMock->expects($this->any())
             ->method('hasChild')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->expects($this->any())
             ->method('get')
-            ->will($this->returnValue($adminMock));
+            ->willReturn($adminMock);
 
         $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
         $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
@@ -334,9 +334,9 @@ class PoolTest extends TestCase
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return $this->createMock(AdminInterface::class);
-            }));
+            });
 
         return $containerMock;
     }

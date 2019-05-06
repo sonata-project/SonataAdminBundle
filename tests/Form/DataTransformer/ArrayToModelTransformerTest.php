@@ -47,7 +47,7 @@ class ArrayToModelTransformerTest extends TestCase
 
         $this->modelManager->expects($this->any())
             ->method('modelReverseTransform')
-            ->will($this->returnValue(new FooEntity()));
+            ->willReturn(new FooEntity());
 
         $this->assertInstanceOf(FooEntity::class, $transformer->reverseTransform($value));
     }

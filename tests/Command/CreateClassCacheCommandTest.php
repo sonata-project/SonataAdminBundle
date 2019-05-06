@@ -61,19 +61,19 @@ class CreateClassCacheCommandTest extends TestCase
 
         $kernel->expects($this->any())
             ->method('getCacheDir')
-            ->will($this->returnValue($this->tempDirectory));
+            ->willReturn($this->tempDirectory);
 
         $kernel->expects($this->any())
             ->method('isDebug')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $container->expects($this->any())
                 ->method('get')
-                ->will($this->returnCallback(static function ($id) use ($kernel) {
+                ->willReturnCallback(static function ($id) use ($kernel) {
                     if ('kernel' === $id) {
                         return $kernel;
                     }
-                }));
+                });
 
         $command->setContainer($container);
 

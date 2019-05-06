@@ -42,7 +42,7 @@ class AdminEventExtensionTest extends TestCase
     public function getMapper($class)
     {
         $mapper = $this->getMockBuilder($class)->disableOriginalConstructor()->getMock();
-        $mapper->expects($this->once())->method('getAdmin')->will($this->returnValue($this->createMock(AdminInterface::class)));
+        $mapper->expects($this->once())->method('getAdmin')->willReturn($this->createMock(AdminInterface::class));
 
         return $mapper;
     }

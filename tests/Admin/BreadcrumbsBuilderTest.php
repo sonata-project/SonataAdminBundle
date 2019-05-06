@@ -81,11 +81,11 @@ class BreadcrumbsBuilderTest extends TestCase
         $container->expects($this->any())
             ->method('getParameter')
             ->with('sonata.admin.configuration.breadcrumbs')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $pool->expects($this->any())
             ->method('getContainer')
-            ->will($this->returnValue($container));
+            ->willReturn($container);
 
         $postAdmin->setConfigurationPool($pool);
         $postAdmin->setMenuFactory($menuFactory);
@@ -112,7 +112,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $menuFactory->expects($this->exactly(5))
             ->method('createItem')
             ->with('root')
-            ->will($this->returnValue($menu));
+            ->willReturn($menu);
 
         $menu->expects($this->once())
             ->method('setUri')
@@ -120,12 +120,12 @@ class BreadcrumbsBuilderTest extends TestCase
 
         $menu->expects($this->exactly(5))
             ->method('getParent')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $routeGenerator->expects($this->exactly(5))
             ->method('generate')
             ->with('sonata_admin_dashboard')
-            ->will($this->returnValue('http://somehost.com'));
+            ->willReturn('http://somehost.com');
 
         $translatorStrategy->expects($this->exactly(10))
             ->method('getLabel')
@@ -202,7 +202,7 @@ class BreadcrumbsBuilderTest extends TestCase
                 ['someLongLabel'],
                 ['this is a comment']
             )
-            ->will($this->returnValue($menu));
+            ->willReturn($menu);
 
         $postAdmin->getBreadcrumbs('repost');
         $postAdmin->setSubject(new DummySubject());
@@ -255,7 +255,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $menuFactory->expects($this->any())
             ->method('createItem')
             ->with('root')
-            ->will($this->returnValue($menu));
+            ->willReturn($menu);
 
         $translatorStrategy->expects($this->any())
             ->method('getLabel')
@@ -283,16 +283,16 @@ class BreadcrumbsBuilderTest extends TestCase
                 ['someCoolLabel'],
                 ['dummy subject representation']
             )
-            ->will($this->returnValue($menu));
+            ->willReturn($menu);
 
         $container->expects($this->any())
             ->method('getParameter')
             ->with('sonata.admin.configuration.breadcrumbs')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $pool->expects($this->any())
             ->method('getContainer')
-            ->will($this->returnValue($container));
+            ->willReturn($container);
 
         $postAdmin->setConfigurationPool($pool);
 

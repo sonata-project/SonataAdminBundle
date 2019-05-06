@@ -61,23 +61,23 @@ class AdminPoolLoaderTest extends TestCase
         $admin1 = $this->getMockForAbstractClass(AdminInterface::class);
         $admin1->expects($this->once())
             ->method('getRoutes')
-            ->will($this->returnValue($routeCollection1));
+            ->willReturn($routeCollection1);
 
         $admin2 = $this->getMockForAbstractClass(AdminInterface::class);
         $admin2->expects($this->once())
             ->method('getRoutes')
-            ->will($this->returnValue($routeCollection2));
+            ->willReturn($routeCollection2);
 
         $pool->expects($this->any())
             ->method('getInstance')
-            ->will($this->returnCallback(static function ($id) use ($admin1, $admin2) {
+            ->willReturnCallback(static function ($id) use ($admin1, $admin2) {
                 switch ($id) {
                     case 'foo_admin':
                         return $admin1;
                     case 'bar_admin':
                         return $admin2;
                 }
-            }));
+            });
 
         $collection = $adminPoolLoader->load('foo', 'sonata_admin');
 

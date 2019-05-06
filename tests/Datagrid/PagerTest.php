@@ -278,7 +278,7 @@ class PagerTest extends TestCase
 
         $this->pager->expects($this->any())
             ->method('getResults')
-            ->will($this->returnValue($expectedObjects));
+            ->willReturn($expectedObjects);
 
         $counter = 0;
         $values = [];
@@ -301,7 +301,7 @@ class PagerTest extends TestCase
     {
         $this->pager->expects($this->any())
             ->method('getResults')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $this->assertFalse($this->pager->valid());
     }
@@ -310,7 +310,7 @@ class PagerTest extends TestCase
     {
         $this->pager->expects($this->any())
             ->method('getResults')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $this->assertFalse($this->pager->next());
     }
@@ -319,7 +319,7 @@ class PagerTest extends TestCase
     {
         $this->pager->expects($this->any())
             ->method('getResults')
-            ->will($this->returnValue([123 => new \stdClass()]));
+            ->willReturn([123 => new \stdClass()]);
 
         $this->assertSame(123, $this->pager->key());
     }
@@ -330,7 +330,7 @@ class PagerTest extends TestCase
 
         $this->pager->expects($this->any())
             ->method('getResults')
-            ->will($this->returnValue([$object]));
+            ->willReturn([$object]);
 
         $this->assertSame($object, $this->pager->current());
     }
@@ -371,16 +371,16 @@ class PagerTest extends TestCase
 
         $query->expects($this->any())
             ->method('setFirstResult')
-            ->will($this->returnValue($query));
+            ->willReturn($query);
 
         $query->expects($this->any())
             ->method('setMaxResults')
-            ->will($this->returnValue($query));
+            ->willReturn($query);
 
         $id = 0;
         $query->expects($this->any())
             ->method('execute')
-            ->will($this->returnCallback(static function () use (&$id, $object1, $object2, $object3) {
+            ->willReturnCallback(static function () use (&$id, $object1, $object2, $object3) {
                 switch ($id) {
                     case 0:
                         return [$object1];
@@ -391,7 +391,7 @@ class PagerTest extends TestCase
                     case 2:
                         return [$object3];
                 }
-            }));
+            });
 
         $this->pager->setQuery($query);
 
@@ -497,16 +497,16 @@ class PagerTest extends TestCase
 
         $query->expects($this->any())
             ->method('setFirstResult')
-            ->will($this->returnValue($query));
+            ->willReturn($query);
 
         $query->expects($this->any())
             ->method('setMaxResults')
-            ->will($this->returnValue($query));
+            ->willReturn($query);
 
         $id = 0;
         $query->expects($this->any())
             ->method('execute')
-            ->will($this->returnCallback(static function () use (&$id, $object1, $object2, $object3) {
+            ->willReturnCallback(static function () use (&$id, $object1, $object2, $object3) {
                 switch ($id) {
                     case 0:
                         return [$object1];
@@ -517,7 +517,7 @@ class PagerTest extends TestCase
                     case 2:
                         return [$object3];
                 }
-            }));
+            });
 
         $this->pager->setQuery($query);
 
@@ -553,16 +553,16 @@ class PagerTest extends TestCase
 
         $query->expects($this->any())
             ->method('setFirstResult')
-            ->will($this->returnValue($query));
+            ->willReturn($query);
 
         $query->expects($this->any())
             ->method('setMaxResults')
-            ->will($this->returnValue($query));
+            ->willReturn($query);
 
         $id = 2;
         $query->expects($this->any())
             ->method('execute')
-            ->will($this->returnCallback(static function () use (&$id, $object1, $object2, $object3) {
+            ->willReturnCallback(static function () use (&$id, $object1, $object2, $object3) {
                 switch ($id) {
                     case 0:
                         return [$object1];
@@ -573,7 +573,7 @@ class PagerTest extends TestCase
                     case 2:
                         return [$object3];
                 }
-            }));
+            });
 
         $this->pager->setQuery($query);
 
@@ -623,7 +623,7 @@ class PagerTest extends TestCase
 
         $this->pager->expects($this->any())
             ->method('getResults')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
         $this->pager->current();
 
         $this->pager->unserialize(serialize($serialized));

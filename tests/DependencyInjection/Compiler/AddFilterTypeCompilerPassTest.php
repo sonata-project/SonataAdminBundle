@@ -40,16 +40,16 @@ class AddFilterTypeCompilerPassTest extends TestCase
         $containerBuilderMock->expects($this->any())
             ->method('getDefinition')
             ->with($this->anything())
-            ->will($this->returnValueMap([
+            ->willReturnMap([
                 ['sonata.admin.builder.filter.factory', $this->filterFactory],
                 ['acme.demo.foo_filter', $this->fooFilter],
                 ['acme.demo.bar_filter', $this->barFilter],
-            ]));
+            ]);
 
         $containerBuilderMock->expects($this->once())
             ->method('findTaggedServiceIds')
             ->with($this->equalTo('sonata.admin.filter.type'))
-            ->will($this->returnValue([
+            ->willReturn([
                 'acme.demo.foo_filter' => [
                     'tag1' => [
                         'alias' => 'foo_filter_alias',
@@ -60,13 +60,13 @@ class AddFilterTypeCompilerPassTest extends TestCase
                         'alias' => 'bar_filter_alias',
                     ],
                 ],
-            ]));
+            ]);
 
         $this->fooFilter->method('getClass')
-            ->will($this->returnValue('Acme\Filter\FooFilter'));
+            ->willReturn('Acme\Filter\FooFilter');
 
         $this->barFilter->method('getClass')
-            ->will($this->returnValue('Acme\Filter\BarFilter'));
+            ->willReturn('Acme\Filter\BarFilter');
 
         $this->filterFactory->expects($this->once())
             ->method('replaceArgument')

@@ -52,31 +52,31 @@ class ListMapperTest extends TestCase
 
         $listBuilder->expects($this->any())
             ->method('addField')
-            ->will($this->returnCallback(static function ($list, $type, $fieldDescription, $admin): void {
+            ->willReturnCallback(static function ($list, $type, $fieldDescription, $admin): void {
                 $list->add($fieldDescription);
-            }));
+            });
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
         $modelManager->expects($this->any())
             ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnCallback(function ($class, $name, array $options = []) {
+            ->willReturnCallback(function ($class, $name, array $options = []) {
                 $fieldDescription = $this->getFieldDescriptionMock();
                 $fieldDescription->setName($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
-            }));
+            });
 
         $this->admin->expects($this->any())
             ->method('getModelManager')
-            ->will($this->returnValue($modelManager));
+            ->willReturn($modelManager);
 
         $labelTranslatorStrategy = new NoopLabelTranslatorStrategy();
 
         $this->admin->expects($this->any())
             ->method('getLabelTranslatorStrategy')
-            ->will($this->returnValue($labelTranslatorStrategy));
+            ->willReturn($labelTranslatorStrategy);
 
         $this->listMapper = new ListMapper($listBuilder, $this->fieldDescriptionCollection, $this->admin);
     }
@@ -180,14 +180,14 @@ class ListMapperTest extends TestCase
         $tmpNames = [];
         $this->admin->expects($this->any())
             ->method('hasListFieldDescription')
-            ->will($this->returnCallback(static function ($name) use (&$tmpNames) {
+            ->willReturnCallback(static function ($name) use (&$tmpNames) {
                 if (isset($tmpNames[$name])) {
                     return true;
                 }
                 $tmpNames[$name] = $name;
 
                 return false;
-            }));
+            });
 
         $this->expectException(\RuntimeException::class, 'Duplicate field name "fooName" in list mapper. Names should be unique.');
 

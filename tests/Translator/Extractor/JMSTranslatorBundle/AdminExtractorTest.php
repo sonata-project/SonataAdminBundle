@@ -68,14 +68,14 @@ class AdminExtractorTest extends TestCase
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($id) {
+            ->willReturnCallback(function ($id) {
                 switch ($id) {
                     case 'foo_admin':
                         return $this->fooAdmin;
                     case 'bar_admin':
                         return $this->barAdmin;
                 }
-            }));
+            });
 
         $logger = $this->getMockForAbstractClass(LoggerInterface::class);
 
@@ -84,15 +84,15 @@ class AdminExtractorTest extends TestCase
             ->getMock();
         $this->pool->expects($this->any())
             ->method('getAdminServiceIds')
-            ->will($this->returnValue(['foo_admin', 'bar_admin']));
+            ->willReturn(['foo_admin', 'bar_admin']);
         $this->pool->expects($this->any())
             ->method('getContainer')
-            ->will($this->returnValue($container));
+            ->willReturn($container);
         $this->pool->expects($this->any())
             ->method('getAdminGroups')
-            ->will($this->returnValue(['group' => [
+            ->willReturn(['group' => [
                 'label_catalogue' => 'admin_domain',
-            ]]));
+            ]]);
 
         $this->adminExtractor = new AdminExtractor($this->pool, $logger);
         $this->adminExtractor->setLogger($logger);
@@ -113,10 +113,10 @@ class AdminExtractorTest extends TestCase
     {
         $this->fooAdmin->expects($this->any())
             ->method('getShow')
-            ->will($this->returnCallback(function (): void {
+            ->willReturnCallback(function (): void {
                 $this->assertSame('foo', $this->adminExtractor->trans('foo', [], 'foo_admin_domain'));
                 $this->assertSame('foo', $this->adminExtractor->transChoice('foo', 1, [], 'foo_admin_domain'));
-            }));
+            });
         $this->fooAdmin->expects($this->any())
             ->method('getLabel')
             ->willReturn('foo_label');
@@ -147,9 +147,9 @@ class AdminExtractorTest extends TestCase
 
         $this->fooAdmin->expects($this->any())
             ->method('getShow')
-            ->will($this->returnCallback(static function (): void {
+            ->willReturnCallback(static function (): void {
                 throw new \RuntimeException('Foo throws exception');
-            }));
+            });
 
         $this->adminExtractor->extract();
     }

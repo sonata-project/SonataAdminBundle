@@ -39,12 +39,12 @@ class AclSecurityHandlerTest extends TestCase
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->any())
             ->method('getCode')
-            ->will($this->returnValue('test'));
+            ->willReturn('test');
 
         $authorizationChecker = $this->getAuthorizationCheckerMock();
         $authorizationChecker->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $aclProvider = $this->getMockForAbstractClass(MutableAclProviderInterface::class);
 
@@ -56,7 +56,7 @@ class AclSecurityHandlerTest extends TestCase
         $authorizationChecker = $this->getAuthorizationCheckerMock();
         $authorizationChecker->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $handler = new AclSecurityHandler($this->getTokenStorageMock(), $authorizationChecker, $aclProvider, MaskBuilder::class, []);
 
@@ -74,11 +74,11 @@ class AclSecurityHandlerTest extends TestCase
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->once())
             ->method('getCode')
-            ->will($this->returnValue('test'));
+            ->willReturn('test');
 
         $admin->expects($this->once())
             ->method('getSecurityInformation')
-            ->will($this->returnValue($informations));
+            ->willReturn($informations);
 
         $aclProvider = $this->getMockForAbstractClass(MutableAclProviderInterface::class);
 

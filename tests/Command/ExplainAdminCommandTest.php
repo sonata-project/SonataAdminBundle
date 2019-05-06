@@ -65,15 +65,15 @@ class ExplainAdminCommandTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('getCode')
-            ->will($this->returnValue('foo'));
+            ->willReturn('foo');
 
         $this->admin->expects($this->any())
             ->method('getClass')
-            ->will($this->returnValue('Acme\Entity\Foo'));
+            ->willReturn('Acme\Entity\Foo');
 
         $this->admin->expects($this->any())
             ->method('getBaseControllerName')
-            ->will($this->returnValue(CRUDController::class));
+            ->willReturn(CRUDController::class);
 
         $routeCollection = new RouteCollection('foo', 'fooBar', 'foo-bar', CRUDController::class);
         $routeCollection->add('list');
@@ -81,74 +81,74 @@ class ExplainAdminCommandTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('getRoutes')
-            ->will($this->returnValue($routeCollection));
+            ->willReturn($routeCollection);
 
         $fieldDescription1 = $this->createMock(FieldDescriptionInterface::class);
 
         $fieldDescription1->expects($this->any())
             ->method('getType')
-            ->will($this->returnValue('text'));
+            ->willReturn('text');
 
         $fieldDescription1->expects($this->any())
             ->method('getTemplate')
-            ->will($this->returnValue('@SonataAdmin/CRUD/foo_text.html.twig'));
+            ->willReturn('@SonataAdmin/CRUD/foo_text.html.twig');
 
         $fieldDescription2 = $this->createMock(FieldDescriptionInterface::class);
 
         $fieldDescription2->expects($this->any())
             ->method('getType')
-            ->will($this->returnValue('datetime'));
+            ->willReturn('datetime');
 
         $fieldDescription2->expects($this->any())
             ->method('getTemplate')
-            ->will($this->returnValue('@SonataAdmin/CRUD/bar_datetime.html.twig'));
+            ->willReturn('@SonataAdmin/CRUD/bar_datetime.html.twig');
 
         $this->admin->expects($this->any())
             ->method('getListFieldDescriptions')
-            ->will($this->returnValue([
+            ->willReturn([
                 'fooTextField' => $fieldDescription1,
                 'barDateTimeField' => $fieldDescription2,
-            ]));
+            ]);
 
         $this->admin->expects($this->any())
             ->method('getFilterFieldDescriptions')
-            ->will($this->returnValue([
+            ->willReturn([
                 'fooTextField' => $fieldDescription1,
                 'barDateTimeField' => $fieldDescription2,
-            ]));
+            ]);
 
         $this->admin->expects($this->any())
             ->method('getFormTheme')
-            ->will($this->returnValue(['@Foo/bar.html.twig']));
+            ->willReturn(['@Foo/bar.html.twig']);
 
         $this->admin->expects($this->any())
             ->method('getFormFieldDescriptions')
-            ->will($this->returnValue([
+            ->willReturn([
                 'fooTextField' => $fieldDescription1,
                 'barDateTimeField' => $fieldDescription2,
-            ]));
+            ]);
 
         $this->admin->expects($this->any())
             ->method('isChild')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $this->admin->expects($this->any())
             ->method('getParent')
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 $adminParent = $this->createMock(AdminInterface::class);
 
                 $adminParent->expects($this->any())
                     ->method('getCode')
-                    ->will($this->returnValue('foo_child'));
+                    ->willReturn('foo_child');
 
                 return $adminParent;
-            }));
+            });
 
         $this->validatorFactory = $this->createMock(MetadataFactoryInterface::class);
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($id) use ($container) {
+            ->willReturnCallback(function ($id) use ($container) {
                 switch ($id) {
                     case 'sonata.admin.pool':
                         $pool = new Pool($container, '', '');
@@ -162,9 +162,9 @@ class ExplainAdminCommandTest extends TestCase
                     case 'acme.admin.foo':
                         return $this->admin;
                 }
-            }));
+            });
 
-        $container->expects($this->any())->method('has')->will($this->returnValue(true));
+        $container->expects($this->any())->method('has')->willReturn(true);
 
         $command->setContainer($container);
 
@@ -178,7 +178,7 @@ class ExplainAdminCommandTest extends TestCase
         $this->validatorFactory->expects($this->once())
             ->method('getMetadataFor')
             ->with($this->equalTo('Acme\Entity\Foo'))
-            ->will($this->returnValue($metadata));
+            ->willReturn($metadata);
 
         $propertyMetadata = $this->getMockForAbstractClass(GenericMetadata::class);
         $propertyMetadata->constraints = [
@@ -200,25 +200,25 @@ class ExplainAdminCommandTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('getModelManager')
-            ->will($this->returnValue($modelManager));
+            ->willReturn($modelManager);
 
         $formBuilder = $this->createMock(FormBuilderInterface::class);
 
         $this->admin->expects($this->any())
              ->method('getFormBuilder')
-             ->will($this->returnValue($formBuilder));
+             ->willReturn($formBuilder);
 
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
 
         $this->admin->expects($this->any())
             ->method('getDatagridBuilder')
-            ->will($this->returnValue($datagridBuilder));
+            ->willReturn($datagridBuilder);
 
         $listBuilder = $this->createMock(ListBuilderInterface::class);
 
         $this->admin->expects($this->any())
             ->method('getListBuilder')
-            ->will($this->returnValue($listBuilder));
+            ->willReturn($listBuilder);
 
         $command = $this->application->find('sonata:admin:explain');
         $commandTester = new CommandTester($command);
@@ -241,7 +241,7 @@ class ExplainAdminCommandTest extends TestCase
         $this->validatorFactory->expects($this->once())
             ->method('getMetadataFor')
             ->with($this->equalTo('Acme\Entity\Foo'))
-            ->will($this->returnValue($metadata));
+            ->willReturn($metadata);
 
         $metadata->properties = [];
         $metadata->getters = [];
@@ -250,25 +250,25 @@ class ExplainAdminCommandTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('getModelManager')
-            ->will($this->returnValue($modelManager));
+            ->willReturn($modelManager);
 
         $formBuilder = $this->createMock(FormBuilderInterface::class);
 
         $this->admin->expects($this->any())
              ->method('getFormBuilder')
-             ->will($this->returnValue($formBuilder));
+             ->willReturn($formBuilder);
 
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
 
         $this->admin->expects($this->any())
             ->method('getDatagridBuilder')
-            ->will($this->returnValue($datagridBuilder));
+            ->willReturn($datagridBuilder);
 
         $listBuilder = $this->createMock(ListBuilderInterface::class);
 
         $this->admin->expects($this->any())
             ->method('getListBuilder')
-            ->will($this->returnValue($listBuilder));
+            ->willReturn($listBuilder);
 
         $command = $this->application->find('sonata:admin:explain');
         $commandTester = new CommandTester($command);

@@ -37,7 +37,7 @@ class DefaultRouteGeneratorTest extends TestCase
     public function testGenerate(): void
     {
         $router = $this->getMockForAbstractClass(RouterInterface::class);
-        $router->expects($this->once())->method('generate')->will($this->returnValue('/foo/bar'));
+        $router->expects($this->once())->method('generate')->willReturn('/foo/bar');
 
         $cache = new RoutesCache($this->cacheTempFolder, true);
 
@@ -59,20 +59,20 @@ class DefaultRouteGeneratorTest extends TestCase
         $collection->addCollection($childCollection);
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->any())->method('isChild')->will($this->returnValue(false));
-        $admin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Foo'));
-        $admin->expects($this->once())->method('hasParentFieldDescription')->will($this->returnValue(false));
-        $admin->expects($this->once())->method('hasRequest')->will($this->returnValue(true));
-        $admin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
-        $admin->expects($this->any())->method('getCode')->will($this->returnValue('foo_code'));
-        $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(['abc' => 'a123', 'efg' => 'e456']));
-        $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
-        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
+        $admin->expects($this->any())->method('isChild')->willReturn(false);
+        $admin->expects($this->any())->method('getCode')->willReturn('base.Code.Foo');
+        $admin->expects($this->once())->method('hasParentFieldDescription')->willReturn(false);
+        $admin->expects($this->once())->method('hasRequest')->willReturn(true);
+        $admin->expects($this->any())->method('getUniqid')->willReturn('foo_uniqueid');
+        $admin->expects($this->any())->method('getCode')->willReturn('foo_code');
+        $admin->expects($this->once())->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
+        $admin->expects($this->any())->method('getRoutes')->willReturn($collection);
+        $admin->expects($this->any())->method('getExtensions')->willReturn([]);
 
         $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->once())
             ->method('generate')
-            ->will($this->returnCallback(static function ($name, array $parameters = []) {
+            ->willReturnCallback(static function ($name, array $parameters = []) {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -84,7 +84,7 @@ class DefaultRouteGeneratorTest extends TestCase
                     case 'admin_acme_child_bar':
                         return '/foo/bar'.$params;
                 }
-            }));
+            });
 
         $cache = new RoutesCache($this->cacheTempFolder, true);
 
@@ -106,13 +106,13 @@ class DefaultRouteGeneratorTest extends TestCase
         $this->expectException(\RuntimeException::class, 'unable to find the route `base.Code.Route.foo`');
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->any())->method('isChild')->will($this->returnValue(false));
-        $admin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Route'));
-        $admin->expects($this->once())->method('hasParentFieldDescription')->will($this->returnValue(false));
-        $admin->expects($this->once())->method('hasRequest')->will($this->returnValue(true));
-        $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue([]));
-        $admin->expects($this->exactly(2))->method('getRoutes')->will($this->returnValue(new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'BundleName:ControllerName')));
-        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
+        $admin->expects($this->any())->method('isChild')->willReturn(false);
+        $admin->expects($this->any())->method('getCode')->willReturn('base.Code.Route');
+        $admin->expects($this->once())->method('hasParentFieldDescription')->willReturn(false);
+        $admin->expects($this->once())->method('hasRequest')->willReturn(true);
+        $admin->expects($this->once())->method('getPersistentParameters')->willReturn([]);
+        $admin->expects($this->exactly(2))->method('getRoutes')->willReturn(new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'BundleName:ControllerName'));
+        $admin->expects($this->any())->method('getExtensions')->willReturn([]);
 
         $router = $this->getMockForAbstractClass(RouterInterface::class);
 
@@ -135,45 +135,45 @@ class DefaultRouteGeneratorTest extends TestCase
         $collection->addCollection($childCollection);
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->any())->method('isChild')->will($this->returnValue(true));
-        $admin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Child'));
-        $admin->expects($this->any())->method('getBaseCodeRoute')->will($this->returnValue('base.Code.Parent|base.Code.Child'));
-        $admin->expects($this->any())->method('getIdParameter')->will($this->returnValue('id'));
-        $admin->expects($this->any())->method('hasParentFieldDescription')->will($this->returnValue(false));
-        $admin->expects($this->any())->method('hasRequest')->will($this->returnValue(true));
-        $admin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
-        $admin->expects($this->any())->method('getCode')->will($this->returnValue('foo_code'));
-        $admin->expects($this->any())->method('getPersistentParameters')->will($this->returnValue(['abc' => 'a123', 'efg' => 'e456']));
-        $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($childCollection));
-        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
+        $admin->expects($this->any())->method('isChild')->willReturn(true);
+        $admin->expects($this->any())->method('getCode')->willReturn('base.Code.Child');
+        $admin->expects($this->any())->method('getBaseCodeRoute')->willReturn('base.Code.Parent|base.Code.Child');
+        $admin->expects($this->any())->method('getIdParameter')->willReturn('id');
+        $admin->expects($this->any())->method('hasParentFieldDescription')->willReturn(false);
+        $admin->expects($this->any())->method('hasRequest')->willReturn(true);
+        $admin->expects($this->any())->method('getUniqid')->willReturn('foo_uniqueid');
+        $admin->expects($this->any())->method('getCode')->willReturn('foo_code');
+        $admin->expects($this->any())->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
+        $admin->expects($this->any())->method('getRoutes')->willReturn($childCollection);
+        $admin->expects($this->any())->method('getExtensions')->willReturn([]);
 
         $parentAdmin = $this->getMockForAbstractClass(AdminInterface::class);
-        $parentAdmin->expects($this->any())->method('getIdParameter')->will($this->returnValue('childId'));
-        $parentAdmin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
-        $parentAdmin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Parent'));
-        $parentAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
+        $parentAdmin->expects($this->any())->method('getIdParameter')->willReturn('childId');
+        $parentAdmin->expects($this->any())->method('getRoutes')->willReturn($collection);
+        $parentAdmin->expects($this->any())->method('getCode')->willReturn('base.Code.Parent');
+        $parentAdmin->expects($this->any())->method('getExtensions')->willReturn([]);
 
         // no request attached in this test, so this will not be used
-        $parentAdmin->expects($this->never())->method('getPersistentParameters')->will($this->returnValue(['from' => 'parent']));
+        $parentAdmin->expects($this->never())->method('getPersistentParameters')->willReturn(['from' => 'parent']);
 
         $request = $this->createMock(Request::class);
         $request->attributes = $this->createMock(ParameterBag::class);
-        $request->attributes->expects($this->any())->method('has')->will($this->returnValue(true));
+        $request->attributes->expects($this->any())->method('has')->willReturn(true);
         $request->attributes->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(static function ($key) {
+            ->willReturnCallback(static function ($key) {
                 if ('childId' === $key) {
                     return '987654';
                 }
-            }));
+            });
 
-        $admin->expects($this->any())->method('getRequest')->will($this->returnValue($request));
-        $admin->expects($this->any())->method('getParent')->will($this->returnValue($parentAdmin));
+        $admin->expects($this->any())->method('getRequest')->willReturn($request);
+        $admin->expects($this->any())->method('getParent')->willReturn($parentAdmin);
 
         $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->once())
             ->method('generate')
-            ->will($this->returnCallback(static function ($name, array $parameters = []) {
+            ->willReturnCallback(static function ($name, array $parameters = []) {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -185,7 +185,7 @@ class DefaultRouteGeneratorTest extends TestCase
                     case 'admin_acme_child_bar':
                         return '/foo/bar'.$params;
                 }
-            }));
+            });
 
         $cache = new RoutesCache($this->cacheTempFolder, true);
 
@@ -216,21 +216,21 @@ class DefaultRouteGeneratorTest extends TestCase
         $collection->addCollection($childCollection);
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->any())->method('isChild')->will($this->returnValue(false));
-        $admin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Parent'));
+        $admin->expects($this->any())->method('isChild')->willReturn(false);
+        $admin->expects($this->any())->method('getCode')->willReturn('base.Code.Parent');
         // embeded admin (not nested ...)
-        $admin->expects($this->once())->method('hasParentFieldDescription')->will($this->returnValue(true));
-        $admin->expects($this->once())->method('hasRequest')->will($this->returnValue(true));
-        $admin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
-        $admin->expects($this->any())->method('getCode')->will($this->returnValue('foo_code'));
-        $admin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(['abc' => 'a123', 'efg' => 'e456']));
-        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
-        $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
+        $admin->expects($this->once())->method('hasParentFieldDescription')->willReturn(true);
+        $admin->expects($this->once())->method('hasRequest')->willReturn(true);
+        $admin->expects($this->any())->method('getUniqid')->willReturn('foo_uniqueid');
+        $admin->expects($this->any())->method('getCode')->willReturn('foo_code');
+        $admin->expects($this->once())->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
+        $admin->expects($this->any())->method('getExtensions')->willReturn([]);
+        $admin->expects($this->any())->method('getRoutes')->willReturn($collection);
 
         $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->once())
             ->method('generate')
-            ->will($this->returnCallback(static function ($name, array $parameters = []) {
+            ->willReturnCallback(static function ($name, array $parameters = []) {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -242,18 +242,18 @@ class DefaultRouteGeneratorTest extends TestCase
                     case 'admin_acme_child_bar':
                         return '/foo/bar'.$params;
                 }
-            }));
+            });
 
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getOption')->will($this->returnValue([]));
+        $fieldDescription->expects($this->once())->method('getOption')->willReturn([]);
 
         $parentAdmin = $this->getMockForAbstractClass(AdminInterface::class);
-        $parentAdmin->expects($this->any())->method('getUniqid')->will($this->returnValue('parent_foo_uniqueid'));
-        $parentAdmin->expects($this->any())->method('getCode')->will($this->returnValue('parent_foo_code'));
-        $parentAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
+        $parentAdmin->expects($this->any())->method('getUniqid')->willReturn('parent_foo_uniqueid');
+        $parentAdmin->expects($this->any())->method('getCode')->willReturn('parent_foo_code');
+        $parentAdmin->expects($this->any())->method('getExtensions')->willReturn([]);
 
-        $fieldDescription->expects($this->any())->method('getAdmin')->will($this->returnValue($parentAdmin));
-        $admin->expects($this->any())->method('getParentFieldDescription')->will($this->returnValue($fieldDescription));
+        $fieldDescription->expects($this->any())->method('getAdmin')->willReturn($parentAdmin);
+        $admin->expects($this->any())->method('getParentFieldDescription')->willReturn($fieldDescription);
 
         $cache = new RoutesCache($this->cacheTempFolder, true);
 
@@ -287,54 +287,54 @@ class DefaultRouteGeneratorTest extends TestCase
         $standaloneCollection->add('bar');
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->any())->method('isChild')->will($this->returnValue(true));
-        $admin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Child'));
-        $admin->expects($this->any())->method('getBaseCodeRoute')->will($this->returnValue('base.Code.Parent|base.Code.Child'));
-        $admin->expects($this->any())->method('getIdParameter')->will($this->returnValue('id'));
-        $admin->expects($this->any())->method('hasParentFieldDescription')->will($this->returnValue(false));
-        $admin->expects($this->any())->method('hasRequest')->will($this->returnValue(true));
-        $admin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
-        $admin->expects($this->any())->method('getPersistentParameters')->will($this->returnValue(['abc' => 'a123', 'efg' => 'e456']));
-        $admin->expects($this->any())->method('getRoutes')->will($this->returnValue($childCollection));
-        $admin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
+        $admin->expects($this->any())->method('isChild')->willReturn(true);
+        $admin->expects($this->any())->method('getCode')->willReturn('base.Code.Child');
+        $admin->expects($this->any())->method('getBaseCodeRoute')->willReturn('base.Code.Parent|base.Code.Child');
+        $admin->expects($this->any())->method('getIdParameter')->willReturn('id');
+        $admin->expects($this->any())->method('hasParentFieldDescription')->willReturn(false);
+        $admin->expects($this->any())->method('hasRequest')->willReturn(true);
+        $admin->expects($this->any())->method('getUniqid')->willReturn('foo_uniqueid');
+        $admin->expects($this->any())->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
+        $admin->expects($this->any())->method('getRoutes')->willReturn($childCollection);
+        $admin->expects($this->any())->method('getExtensions')->willReturn([]);
 
         $parentAdmin = $this->getMockForAbstractClass(AdminInterface::class);
-        $parentAdmin->expects($this->any())->method('getIdParameter')->will($this->returnValue('childId'));
-        $parentAdmin->expects($this->any())->method('getRoutes')->will($this->returnValue($collection));
-        $parentAdmin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Parent'));
-        $parentAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
+        $parentAdmin->expects($this->any())->method('getIdParameter')->willReturn('childId');
+        $parentAdmin->expects($this->any())->method('getRoutes')->willReturn($collection);
+        $parentAdmin->expects($this->any())->method('getCode')->willReturn('base.Code.Parent');
+        $parentAdmin->expects($this->any())->method('getExtensions')->willReturn([]);
 
         // no request attached in this test, so this will not be used
-        $parentAdmin->expects($this->never())->method('getPersistentParameters')->will($this->returnValue(['from' => 'parent']));
+        $parentAdmin->expects($this->never())->method('getPersistentParameters')->willReturn(['from' => 'parent']);
 
         $request = $this->createMock(Request::class);
         $request->attributes = $this->createMock(ParameterBag::class);
-        $request->attributes->expects($this->any())->method('has')->will($this->returnValue(true));
+        $request->attributes->expects($this->any())->method('has')->willReturn(true);
         $request->attributes->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(static function ($key) {
+            ->willReturnCallback(static function ($key) {
                 if ('childId' === $key) {
                     return '987654';
                 }
-            }));
+            });
 
-        $admin->expects($this->any())->method('getRequest')->will($this->returnValue($request));
-        $admin->expects($this->any())->method('getParent')->will($this->returnValue($parentAdmin));
+        $admin->expects($this->any())->method('getRequest')->willReturn($request);
+        $admin->expects($this->any())->method('getParent')->willReturn($parentAdmin);
 
         $standaloneAdmin = $this->getMockForAbstractClass(AdminInterface::class);
-        $standaloneAdmin->expects($this->any())->method('isChild')->will($this->returnValue(false));
-        $standaloneAdmin->expects($this->any())->method('getCode')->will($this->returnValue('base.Code.Child'));
-        $standaloneAdmin->expects($this->once())->method('hasParentFieldDescription')->will($this->returnValue(false));
-        $standaloneAdmin->expects($this->once())->method('hasRequest')->will($this->returnValue(true));
-        $standaloneAdmin->expects($this->any())->method('getUniqid')->will($this->returnValue('foo_uniqueid'));
-        $standaloneAdmin->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(['abc' => 'a123', 'efg' => 'e456']));
-        $standaloneAdmin->expects($this->any())->method('getRoutes')->will($this->returnValue($standaloneCollection));
-        $standaloneAdmin->expects($this->any())->method('getExtensions')->will($this->returnValue([]));
+        $standaloneAdmin->expects($this->any())->method('isChild')->willReturn(false);
+        $standaloneAdmin->expects($this->any())->method('getCode')->willReturn('base.Code.Child');
+        $standaloneAdmin->expects($this->once())->method('hasParentFieldDescription')->willReturn(false);
+        $standaloneAdmin->expects($this->once())->method('hasRequest')->willReturn(true);
+        $standaloneAdmin->expects($this->any())->method('getUniqid')->willReturn('foo_uniqueid');
+        $standaloneAdmin->expects($this->once())->method('getPersistentParameters')->willReturn(['abc' => 'a123', 'efg' => 'e456']);
+        $standaloneAdmin->expects($this->any())->method('getRoutes')->willReturn($standaloneCollection);
+        $standaloneAdmin->expects($this->any())->method('getExtensions')->willReturn([]);
 
         $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->exactly(2))
             ->method('generate')
-            ->will($this->returnCallback(static function ($name, array $parameters = []) {
+            ->willReturnCallback(static function ($name, array $parameters = []) {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -346,7 +346,7 @@ class DefaultRouteGeneratorTest extends TestCase
                     case 'admin_acme_child_standalone_bar':
                         return '/bar'.$params;
                 }
-            }));
+            });
 
         $cache = new RoutesCache($this->cacheTempFolder, true);
 

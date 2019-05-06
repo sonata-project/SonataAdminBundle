@@ -1280,7 +1280,7 @@ class AdminTest extends TestCase
         $modelManager->expects($this->once())
             ->method('getUrlsafeIdentifier')
             ->with($this->equalTo($entity))
-            ->will($this->returnValue('foo'));
+            ->willReturn('foo');
         $admin->setModelManager($modelManager);
 
         $this->assertSame('foo', $admin->getUrlsafeIdentifier($entity));
@@ -1308,7 +1308,7 @@ class AdminTest extends TestCase
         $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
         $securityHandler->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnCallback(static function (AdminInterface $adminIn, $attributes, $object = null) use ($admin, $entity) {
+            ->willReturnCallback(static function (AdminInterface $adminIn, $attributes, $object = null) use ($admin, $entity) {
                 if ($admin === $adminIn && 'FOO' === $attributes) {
                     if (($object === $admin) || ($object === $entity)) {
                         return true;
@@ -1316,7 +1316,7 @@ class AdminTest extends TestCase
                 }
 
                 return false;
-            }));
+            });
 
         $admin->setSecurityHandler($securityHandler);
 
@@ -1349,13 +1349,13 @@ class AdminTest extends TestCase
         $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
         $securityHandler->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnCallback(static function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
+            ->willReturnCallback(static function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
                 if ($admin === $adminIn && $attributes === ['LIST']) {
                     return true;
                 }
 
                 return false;
-            }));
+            });
 
         $admin->setSecurityHandler($securityHandler);
 
@@ -1385,7 +1385,7 @@ class AdminTest extends TestCase
         $translator->expects($this->once())
             ->method('trans')
             ->with($this->equalTo('foo'), $this->equalTo([]), $this->equalTo('fooMessageDomain'))
-            ->will($this->returnValue('fooTranslated'));
+            ->willReturn('fooTranslated');
 
         $this->assertSame('fooTranslated', $admin->trans('foo'));
     }
@@ -1403,7 +1403,7 @@ class AdminTest extends TestCase
         $translator->expects($this->once())
             ->method('trans')
             ->with($this->equalTo('foo'), $this->equalTo(['name' => 'Andrej']), $this->equalTo('fooMessageDomain'))
-            ->will($this->returnValue('fooTranslated'));
+            ->willReturn('fooTranslated');
 
         $this->assertSame('fooTranslated', $admin->trans('foo', ['name' => 'Andrej'], 'fooMessageDomain'));
     }
@@ -1422,7 +1422,7 @@ class AdminTest extends TestCase
         $translator->expects($this->once())
             ->method('transChoice')
             ->with($this->equalTo('foo'), $this->equalTo(2), $this->equalTo([]), $this->equalTo('fooMessageDomain'))
-            ->will($this->returnValue('fooTranslated'));
+            ->willReturn('fooTranslated');
 
         $this->assertSame('fooTranslated', $admin->transChoice('foo', 2));
     }
@@ -1440,7 +1440,7 @@ class AdminTest extends TestCase
         $translator->expects($this->once())
             ->method('transChoice')
             ->with($this->equalTo('foo'), $this->equalTo(2), $this->equalTo(['name' => 'Andrej']), $this->equalTo('fooMessageDomain'))
-            ->will($this->returnValue('fooTranslated'));
+            ->willReturn('fooTranslated');
 
         $this->assertSame('fooTranslated', $admin->transChoice('foo', 2, ['name' => 'Andrej'], 'fooMessageDomain'));
     }
@@ -1467,7 +1467,7 @@ class AdminTest extends TestCase
         $parentFieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $parentFieldDescription->expects($this->once())
             ->method('getAdmin')
-            ->will($this->returnValue($parentAdmin));
+            ->willReturn($parentAdmin);
 
         $this->assertNull($admin->getParentFieldDescription());
         $admin->setParentFieldDescription($parentFieldDescription);
@@ -1485,7 +1485,7 @@ class AdminTest extends TestCase
         $parentFieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $parentFieldDescription->expects($this->once())
             ->method('getAdmin')
-            ->will($this->returnValue($parentAdmin));
+            ->willReturn($parentAdmin);
 
         $this->assertNull($admin->getParentFieldDescription());
         $admin->setParentFieldDescription($parentFieldDescription);
@@ -1501,7 +1501,7 @@ class AdminTest extends TestCase
         $modelManager->expects($this->once())
             ->method('getExportFields')
             ->with($this->equalTo('NewsBundle\Entity\Post'))
-            ->will($this->returnValue(['foo', 'bar']));
+            ->willReturn(['foo', 'bar']);
 
         $admin->setModelManager($modelManager);
         $this->assertSame(['foo', 'bar'], $admin->getExportFields());
@@ -1521,7 +1521,7 @@ class AdminTest extends TestCase
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
         $extension = $this->createMock(AdminExtensionInterface::class);
-        $extension->expects($this->once())->method('getPersistentParameters')->will($this->returnValue(null));
+        $extension->expects($this->once())->method('getPersistentParameters')->willReturn(null);
 
         $admin->addExtension($extension);
 
@@ -1537,7 +1537,7 @@ class AdminTest extends TestCase
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
         $extension = $this->createMock(AdminExtensionInterface::class);
-        $extension->expects($this->once())->method('getPersistentParameters')->will($this->returnValue($expected));
+        $extension->expects($this->once())->method('getPersistentParameters')->willReturn($expected);
 
         $admin->addExtension($extension);
 
@@ -1601,13 +1601,13 @@ class AdminTest extends TestCase
         $validator = $this->createMock(ValidatorInterface::class);
         $validator->expects($this->any())
                 ->method('getMetadataFor')
-                ->will($this->returnValue($this->createMock(MemberMetadata::class)));
+                ->willReturn($this->createMock(MemberMetadata::class));
         $modelAdmin->setValidator($validator);
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager->expects($this->any())
             ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnValue(new FieldDescription()));
+            ->willReturn(new FieldDescription());
         $modelAdmin->setModelManager($modelManager);
 
         // a Admin class to test that preValidate is called
@@ -1619,7 +1619,7 @@ class AdminTest extends TestCase
         $event = $this->createMock(FormEvent::class);
         $event->expects($this->any())
                 ->method('getData')
-                ->will($this->returnValue($object));
+                ->willReturn($object);
 
         $formBuild = $this->createMock(FormBuilder::class, ['addEventListener']);
         $formBuild->expects($this->once())
@@ -1641,10 +1641,10 @@ class AdminTest extends TestCase
         $formContractor = $this->createMock(FormContractorInterface::class, ['getDefaultOptions', 'getFormBuilder']);
         $formContractor->expects($this->any())
                 ->method('getDefaultOptions')
-                ->will($this->returnValue([]));
+                ->willReturn([]);
         $formContractor->expects($this->any())
                 ->method('getFormBuilder')
-                ->will($this->returnValue($formBuild));
+                ->willReturn($formBuild);
 
         $modelAdmin->setFormContractor($formContractor);
         $modelAdmin->defineFormBuilder($formBuild);
@@ -1692,24 +1692,24 @@ class AdminTest extends TestCase
         $query = $this->createMock(ParameterBag::class, ['get']);
         $query->expects($this->any())
             ->method('get')
-            ->will($this->returnValue([
+            ->willReturn([
                 'filter' => [
                     '_page' => '1',
                     '_per_page' => '32',
                 ],
-            ]));
+            ]);
 
         $request->query = $query;
         $request->expects($this->any())
             ->method('get')
-            ->will($this->returnValue($authorId));
+            ->willReturn($authorId);
 
         $commentAdmin->setRequest($request);
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager->expects($this->any())
             ->method('getDefaultSortValues')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $commentAdmin->setModelManager($modelManager);
 
@@ -1730,7 +1730,7 @@ class AdminTest extends TestCase
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager->expects($this->exactly(3))
             ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnCallback(static function ($adminClass, $name, $filterOptions) use ($fooFieldDescription, $barFieldDescription, $bazFieldDescription) {
+            ->willReturnCallback(static function ($adminClass, $name, $filterOptions) use ($fooFieldDescription, $barFieldDescription, $bazFieldDescription) {
                 switch ($name) {
                     case 'foo':
                         $fieldDescription = $fooFieldDescription;
@@ -1755,7 +1755,7 @@ class AdminTest extends TestCase
                 $fieldDescription->setName($name);
 
                 return $fieldDescription;
-            }));
+            });
 
         $modelAdmin->setModelManager($modelManager);
 
@@ -1764,20 +1764,20 @@ class AdminTest extends TestCase
         $datagrid = $this->createMock(DatagridInterface::class);
         $datagrid->expects($this->once())
             ->method('getPager')
-            ->will($this->returnValue($pager));
+            ->willReturn($pager);
 
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
         $datagridBuilder->expects($this->once())
             ->method('getBaseDatagrid')
             ->with($this->identicalTo($modelAdmin), [])
-            ->will($this->returnValue($datagrid));
+            ->willReturn($datagrid);
 
         $datagridBuilder->expects($this->exactly(3))
             ->method('addFilter')
-            ->will($this->returnCallback(static function ($datagrid, $type, $fieldDescription, AdminInterface $admin): void {
+            ->willReturnCallback(static function ($datagrid, $type, $fieldDescription, AdminInterface $admin): void {
                 $admin->addFilterFieldDescription($fieldDescription->getName(), $fieldDescription);
                 $fieldDescription->mergeOption('field_options', ['required' => false]);
-            }));
+            });
 
         $modelAdmin->setDatagridBuilder($datagridBuilder);
 
@@ -1820,7 +1820,7 @@ class AdminTest extends TestCase
         $menuFactory
             ->expects($this->once())
             ->method('createItem')
-            ->will($this->returnValue($item));
+            ->willReturn($item);
 
         $modelAdmin = new ModelAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'SonataFooBundle:ModelAdmin');
         $modelAdmin->setMenuFactory($menuFactory);
@@ -1853,7 +1853,7 @@ class AdminTest extends TestCase
             ->expects($this->once())
             ->method('find')
             ->with('NewsBundle\Entity\Post', $id)
-            ->will($this->returnValue(null)); // entity not found
+            ->willReturn(null); // entity not found
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
         $admin->setModelManager($modelManager);
@@ -1874,7 +1874,7 @@ class AdminTest extends TestCase
             ->expects($this->once())
             ->method('find')
             ->with('NewsBundle\Entity\Post', $id)
-            ->will($this->returnValue($entity));
+            ->willReturn($entity);
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
         $admin->setModelManager($modelManager);
@@ -1895,7 +1895,7 @@ class AdminTest extends TestCase
             ->expects($this->any())
             ->method('find')
             ->with('NewsBundle\Entity\Comment', $adminId)
-            ->will($this->returnValue($comment));
+            ->willReturn($comment);
 
         $request = new Request(['id' => $adminId]);
 
@@ -1937,7 +1937,7 @@ class AdminTest extends TestCase
             ->expects($this->once())
             ->method('isGranted')
             ->with($admin, 'CREATE', $admin)
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $admin->setSecurityHandler($securityHandler);
 
         $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
@@ -1945,7 +1945,7 @@ class AdminTest extends TestCase
             ->expects($this->once())
             ->method('hasAdminRoute')
             ->with($admin, 'create')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $admin->setRouteGenerator($routeGenerator);
 
         $this->assertSame($expected, $admin->getActionButtons('list', null));
@@ -1963,7 +1963,7 @@ class AdminTest extends TestCase
             ->expects($this->once())
             ->method('isGranted')
             ->with($admin, 'CREATE', $admin)
-            ->will($this->returnValue(false));
+            ->willReturn(false);
         $admin->setSecurityHandler($securityHandler);
 
         $this->assertSame([], $admin->getActionButtons('list', null));
@@ -1999,9 +1999,9 @@ class AdminTest extends TestCase
         $labelTranslatorStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $labelTranslatorStrategy->expects($this->any())
             ->method('getLabel')
-            ->will($this->returnCallback(static function ($label, $context = '', $type = '') {
+            ->willReturnCallback(static function ($label, $context = '', $type = '') {
                 return $context.'.'.$type.'_'.$label;
-            }));
+            });
 
         $admin = new PostAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'SonataFooBundle:ModelAdmin');
         $admin->setRouteBuilder($pathInfo);
@@ -2013,19 +2013,19 @@ class AdminTest extends TestCase
             ->expects($this->once())
             ->method('hasAdminRoute')
             ->with($admin, 'delete')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $admin->setRouteGenerator($routeGenerator);
 
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnCallback(static function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
+            ->willReturnCallback(static function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
                 if ($admin === $adminIn && 'DELETE' === $attributes) {
                     return true;
                 }
 
                 return false;
-            }));
+            });
         $admin->setSecurityHandler($securityHandler);
 
         $this->assertSame($expected, $admin->getBatchActions());
@@ -2084,13 +2084,13 @@ class AdminTest extends TestCase
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnCallback(static function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
+            ->willReturnCallback(static function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
                 if ($admin === $adminIn && ('CREATE' === $attributes || 'LIST' === $attributes)) {
                     return true;
                 }
 
                 return false;
-            }));
+            });
 
         $admin->setSecurityHandler($securityHandler);
 
@@ -2109,7 +2109,7 @@ class AdminTest extends TestCase
         $query->expects($this->any())
             ->method('get')
             ->with($this->equalTo('filter'))
-            ->will($this->returnValue([
+            ->willReturn([
                 'a' => [
                     'value' => 'b',
                 ],
@@ -2121,19 +2121,19 @@ class AdminTest extends TestCase
                     'type' => '5',
                     'value' => 'test',
                 ],
-            ]));
+            ]);
         $request->query = $query;
 
         $request->expects($this->any())
             ->method('get')
-            ->will($this->returnValue($subjectId));
+            ->willReturn($subjectId);
 
         $admin->setRequest($request);
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager->expects($this->any())
             ->method('getDefaultSortValues')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $admin->setModelManager($modelManager);
 
@@ -2167,21 +2167,21 @@ class AdminTest extends TestCase
         $container->expects($this->once())
             ->method('getParameter')
             ->with('sonata.admin.configuration.breadcrumbs')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $pool = $this->getMockBuilder(Pool::class)
             ->disableOriginalConstructor()
             ->getMock();
         $pool->expects($this->once())
             ->method('getContainer')
-            ->will($this->returnValue($container));
+            ->willReturn($container);
 
         $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
             'admin.my_code', 'My\Class', 'MyBundle:ClassAdmin',
         ], '', true, true, true, ['getConfigurationPool']);
         $admin->expects($this->once())
             ->method('getConfigurationPool')
-            ->will($this->returnValue($pool));
+            ->willReturn($pool);
 
         $this->assertInstanceOf(BreadcrumbsBuilder::class, $admin->getBreadcrumbsBuilder());
     }
@@ -2261,11 +2261,11 @@ class AdminTest extends TestCase
         $datagrid->method('buildPager');
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
-        $modelManager->method('getExportFields')->will($this->returnValue([
+        $modelManager->method('getExportFields')->willReturn([
             'field',
             'foo',
             'bar',
-        ]));
+        ]);
         $modelManager->expects($this->once())->method('getDataSourceIterator')
             ->with($this->equalTo($datagrid), $this->equalTo([
                 'Feld' => 'field',
@@ -2277,23 +2277,23 @@ class AdminTest extends TestCase
             ->disableOriginalConstructor()
             ->setMethods(['getDatagrid', 'getTranslationLabel', 'trans'])
             ->getMockForAbstractClass();
-        $admin->method('getDatagrid')->will($this->returnValue($datagrid));
+        $admin->method('getDatagrid')->willReturn($datagrid);
         $admin->setModelManager($modelManager);
 
         $admin->expects($this->any())
             ->method('getTranslationLabel')
-            ->will($this->returnCallback(static function ($label, $context = '', $type = '') {
+            ->willReturnCallback(static function ($label, $context = '', $type = '') {
                 return $context.'.'.$type.'_'.$label;
-            }));
+            });
         $admin->expects($this->any())
             ->method('trans')
-            ->will($this->returnCallback(static function ($label) {
+            ->willReturnCallback(static function ($label) {
                 if ('export.label_field' === $label) {
                     return 'Feld';
                 }
 
                 return $label;
-            }));
+            });
 
         $admin->getDataSourceIterator();
     }
@@ -2475,10 +2475,10 @@ class AdminTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $postAdmin->expects($this->any())->method('getObject')->will($this->returnValue($post));
+        $postAdmin->expects($this->any())->method('getObject')->willReturn($post);
 
         $formBuilder = $this->createMock(FormBuilderInterface::class);
-        $formBuilder->expects($this->any())->method('getForm')->will($this->returnValue(null));
+        $formBuilder->expects($this->any())->method('getForm')->willReturn(null);
 
         $tagAdmin = $this->getMockBuilder(TagAdmin::class)
             ->setConstructorArgs([
@@ -2489,7 +2489,7 @@ class AdminTest extends TestCase
             ->setMethods(['getFormBuilder'])
             ->getMock();
 
-        $tagAdmin->expects($this->any())->method('getFormBuilder')->will($this->returnValue($formBuilder));
+        $tagAdmin->expects($this->any())->method('getFormBuilder')->willReturn($formBuilder);
         $tagAdmin->setParent($postAdmin);
 
         $tag = new Tag();
@@ -2502,7 +2502,7 @@ class AdminTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $configurationPool->expects($this->any())->method('getPropertyAccessor')->will($this->returnValue(PropertyAccess::createPropertyAccessor()));
+        $configurationPool->expects($this->any())->method('getPropertyAccessor')->willReturn(PropertyAccess::createPropertyAccessor());
 
         $tagAdmin->setConfigurationPool($configurationPool);
 
