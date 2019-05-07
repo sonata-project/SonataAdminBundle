@@ -173,7 +173,7 @@ your work, please do another PR for that. In some rare cases, you might be
 forced to do it on the same PR. In this kind of situation, please add a comment
 on your PR explaining why you feel it is the case.
 
-#### The Change log
+#### The Changelog
 
 For each PR, a change log must be provided.
 
@@ -271,7 +271,7 @@ For class definitions, methods (or first level functions) and properties, use th
 
 ```php
 /**
- * @deprecated since 42.x, to be removed in 43.0. Use Shiny\New\ClassOfTheMonth instead.
+ * @deprecated since sonata-project/foo-lib 42.x, to be removed in 43.0. Use Shiny\New\ClassOfTheMonth instead.
  */
 final class IAmOldAndUseless
 {
@@ -280,12 +280,12 @@ final class IAmOldAndUseless
 final class StillUsedClass
 {
     /**
-     * @deprecated since 42.x, to be removed in 43.0.
+     * @deprecated since sonata-project/foo-lib 42.x, to be removed in 43.0.
      */
     public $butNotThisProperty;
 
     /**
-     * @deprecated since 42.x, to be removed in 43.0.
+     * @deprecated since sonata-project/foo-lib 42.x, to be removed in 43.0.
      */
     public function iAmBatman()
     {
@@ -299,7 +299,7 @@ If the deprecated thing is a service, you **MUST** specify it on the service def
 ```xml
 <service id="sonata.block.old" class="Sonata\Block\Old">
     <argument type="service" id="security.token_storage" />
-    <deprecated>The "%service_id%" service is deprecated since 42.x and will be removed in 43.0.</deprecated>
+    <deprecated>The "%service_id%" service is deprecated since sonata-project/bar-bundle 42.x and will be removed in 43.0.</deprecated>
  </service>
  ```
 
@@ -311,7 +311,7 @@ For everything else, not managed by the `@deprecated` tag, you **MUST** trigger 
 <?php
 if (/* some condition showing the user is using the legacy way */) {
     @trigger_error(
-        'The '.__METHOD__.' method is deprecated since 42.x, to be removed in 43.0. '.
+        'The '.__METHOD__.' method is deprecated since sonata-project/bar-bundle 42.x, to be removed in 43.0. '.
         'Use FooClass::barMethod() instead.',
         E_USER_DEPRECATED
     );
@@ -551,7 +551,7 @@ but are encouraged to report release requests on the dedicated private Slack cha
 Releasing software is the last step to getting your bugfixes or new features to your user base,
 and should be done regularly, so that users are not tempted to use development branches.
 To know what you are going to release on branch 42.x, given that the last release on this branch is 42.3.1,
-go to `https://github.com/sonata-project/SonataCoreBundle/compare/42.3.1...42.x`.
+go to `https://github.com/sonata-project/SonataAdminBundle/compare/42.3.1...42.x`.
 You should see a list of commits, some of which should contain links to pull requests.
 
 #### Determining the next release number
