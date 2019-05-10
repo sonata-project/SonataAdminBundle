@@ -123,7 +123,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function configureFilterParameters(AdminInterface $admin, FilterBag $filterBag)
+    public function configureFilterParameters(AdminInterface $admin, FilterBag $filterBag): void
     {
         $this->eventDispatcher->dispatch(
             ConfigureFilterParametersEvent::EVENT_FILTER_PARAMETERS,

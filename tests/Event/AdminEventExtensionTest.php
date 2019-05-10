@@ -20,7 +20,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Event\AdminEventExtension;
 use Sonata\AdminBundle\Event\ConfigureEvent;
+use Sonata\AdminBundle\Event\ConfigureFilterParametersEvent;
 use Sonata\AdminBundle\Event\PersistenceEvent;
+use Sonata\AdminBundle\Filter\FilterBag;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -180,5 +182,12 @@ class AdminEventExtensionTest extends TestCase
             $this->equalTo('sonata.admin.event.persistence.post_remove'),
             $this->callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_REMOVE)),
         ])->postRemove($this->createMock(AdminInterface::class), new \stdClass());
+    }
+
+    public function testConfigureFilterParameters(): void
+    {
+        $this->getExtension([
+            $this->equalTo(ConfigureFilterParametersEvent::EVENT_FILTER_PARAMETERS),
+        ])->configureFilterParameters($this->createMock(AdminInterface::class), new FilterBag());
     }
 }

@@ -17,6 +17,7 @@ use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Filter\FilterBag;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
@@ -127,6 +128,10 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
      * Returns a list of default filters.
      */
     public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues)
+    {
+    }
+
+    public function configureFilterParameters(AdminInterface $admin, FilterBag $filterBag): void
     {
     }
 }

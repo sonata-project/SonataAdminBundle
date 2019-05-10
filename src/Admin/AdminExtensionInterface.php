@@ -179,7 +179,7 @@ interface AdminExtensionInterface
     /*
      * NEXT_MAJOR: Uncomment in next major release
      */
-    // public function configureFilterParameters(AdminInterface $admin, FilterBag $filterBag);
+    // public function configureFilterParameters(AdminInterface $admin, FilterBag $filterBag): void;
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);

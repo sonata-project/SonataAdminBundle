@@ -56,7 +56,7 @@ final class FilterBag implements \IteratorAggregate, \Countable
      *
      * @param array $filters An array of filters
      */
-    public function replace(array $filters = [])
+    public function replace(array $filters = []): void
     {
         $this->filters = $filters;
     }
@@ -66,7 +66,7 @@ final class FilterBag implements \IteratorAggregate, \Countable
      *
      * @param array $filters An array of filters
      */
-    public function add(array $filters = [])
+    public function add(array $filters = []): void
     {
         $this->filters = array_replace($this->filters, $filters);
     }
@@ -90,7 +90,7 @@ final class FilterBag implements \IteratorAggregate, \Countable
      * @param string $key   The key
      * @param mixed  $value The value
      */
-    public function set(string $key, $value)
+    public function set(string $key, $value): void
     {
         $this->filters[$key] = $value;
     }
@@ -112,7 +112,7 @@ final class FilterBag implements \IteratorAggregate, \Countable
      *
      * @param string $key The key
      */
-    public function remove(string $key)
+    public function remove(string $key): void
     {
         unset($this->filters[$key]);
     }
