@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Filter\FilterBag;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -119,6 +120,14 @@ class AdminEventExtension extends AbstractAdminExtension
         $this->eventDispatcher->dispatch(
             'sonata.admin.event.persistence.post_remove',
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_POST_REMOVE)
+        );
+    }
+
+    public function configureFilterParameters(AdminInterface $admin, FilterBag $filterBag)
+    {
+        $this->eventDispatcher->dispatch(
+            ConfigureFilterParametersEvent::EVENT_FILTER_PARAMETERS,
+            new ConfigureFilterParametersEvent($admin, $filterBag)
         );
     }
 }

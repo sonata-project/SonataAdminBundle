@@ -17,6 +17,7 @@ use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Filter\FilterBag;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
@@ -174,6 +175,11 @@ interface AdminExtensionInterface
      * @param array          $filterValues
      */
     // public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues);
+
+    /*
+     * NEXT_MAJOR: Uncomment in next major release
+     */
+    // public function configureFilterParameters(AdminInterface $admin, FilterBag $filterBag);
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);

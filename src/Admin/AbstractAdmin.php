@@ -27,6 +27,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Filter\FilterBag;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
@@ -567,6 +568,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     private $filterPersister;
 
     /**
+     * @var FilterBag
+     */
+    private $filterBag;
+
+    /**
      * @param string $code
      * @param string $class
      * @param string $baseControllerName
@@ -754,51 +760,54 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function getFilterParameters()
     {
-        $parameters = [];
-
-        // build the values array
-        if ($this->hasRequest()) {
-            $filters = $this->request->query->get('filter', []);
-            if (isset($filters['_page'])) {
-                $filters['_page'] = (int) $filters['_page'];
+        foreach ($this->getExtensions() as $extension) {
+            // NEXT_MAJOR: remove method check in next major release
+            if (\is_callable([$extension, 'configureFilterParameters'])) {
+                $extension->configureFilterParameters($this, $this->filterBag);
             }
-            if (isset($filters['_per_page'])) {
-                $filters['_per_page'] = (int) $filters['_per_page'];
-            }
+        }
 
-            // if filter persistence is configured
-            // NEXT_MAJOR: remove `$this->persistFilters !== false` from the condition
-            if (false !== $this->persistFilters && null !== $this->filterPersister) {
-                // if reset filters is asked, remove from storage
-                if ('reset' === $this->request->query->get('filters')) {
-                    $this->filterPersister->reset($this->getCode());
-                }
+        $filters = $this->filterBag->all();
 
-                // if no filters, fetch from storage
-                // otherwise save to storage
-                if (empty($filters)) {
-                    $filters = $this->filterPersister->get($this->getCode());
-                } else {
-                    $this->filterPersister->set($this->getCode(), $filters);
-                }
+        if (isset($filters['_page'])) {
+            $filters['_page'] = (int) $filters['_page'];
+        }
+        if (isset($filters['_per_page'])) {
+            $filters['_per_page'] = (int) $filters['_per_page'];
+        }
+
+        // if filter persistence is configured
+        // NEXT_MAJOR: remove `$this->persistFilters !== false` from the condition
+        if (false !== $this->persistFilters && null !== $this->filterPersister) {
+            // if reset filters is asked, remove from storage
+            if ($this->hasRequest() && 'reset' === $this->request->query->get('filters')) {
+                $this->filterPersister->reset($this->getCode());
             }
 
-            $parameters = array_merge(
-                $this->getModelManager()->getDefaultSortValues($this->getClass()),
-                $this->datagridValues,
-                $this->getDefaultFilterValues(),
-                $filters
-            );
-
-            if (!$this->determinedPerPageValue($parameters['_per_page'])) {
-                $parameters['_per_page'] = $this->maxPerPage;
+            // if no filters, fetch from storage
+            // otherwise save to storage
+            if (empty($filters)) {
+                $filters = $this->filterPersister->get($this->getCode());
+            } else {
+                $this->filterPersister->set($this->getCode(), $filters);
             }
+        }
 
-            // always force the parent value
-            if ($this->isChild() && $this->getParentAssociationMapping()) {
-                $name = str_replace('.', '__', $this->getParentAssociationMapping());
-                $parameters[$name] = ['value' => $this->request->get($this->getParent()->getIdParameter())];
-            }
+        $parameters = array_merge(
+            $this->getModelManager()->getDefaultSortValues($this->getClass()),
+            $this->datagridValues,
+            $this->getDefaultFilterValues(),
+            $filters
+        );
+
+        if (!$this->determinedPerPageValue($parameters['_per_page'])) {
+            $parameters['_per_page'] = $this->maxPerPage;
+        }
+
+        // always force the parent value
+        if ($this->hasRequest() && $this->isChild() && $this->getParentAssociationMapping()) {
+            $name = str_replace('.', '__', $this->getParentAssociationMapping());
+            $parameters[$name] = ['value' => $this->request->get($this->getParent()->getIdParameter())];
         }
 
         return $parameters;
@@ -809,6 +818,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         if ($this->datagrid) {
             return;
         }
+
+        $this->filterBag = new FilterBag(($this->hasRequest() && $this->request->query->has('filter')) ? $this->request->query->get('filter', []) : []);
 
         $filterParameters = $this->getFilterParameters();
 
