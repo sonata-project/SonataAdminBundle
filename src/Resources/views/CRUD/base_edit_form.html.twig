@@ -47,7 +47,7 @@
                             </ul>
                             <div class="tab-content">
                                 {% for code, form_tab in admin.formtabs %}
-                                    {% set _tab_name = tab_prefix ~ loop.index %}
+                                    {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
                                     <div
                                         class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (tab_query_index == loop.index) %} in active{% endif %}"
                                         id="{{ _tab_name }}"
