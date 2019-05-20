@@ -39,13 +39,13 @@ class ModelChoiceLoaderTest extends TestCase
 
         $this->modelManager->expects($this->once())
             ->method('findBy')
-            ->will($this->returnValue([$fooA, $fooB]));
+            ->willReturn([$fooA, $fooB]);
 
         $this->modelManager->expects($this->any())
             ->method('getIdentifierValues')
-            ->will($this->returnCallback(static function (Foo $foo) {
+            ->willReturnCallback(static function (Foo $foo) {
                 return [$foo->getBar()];
-            }));
+            });
 
         $modelChoiceLoader = new ModelChoiceLoader(
             $this->modelManager,

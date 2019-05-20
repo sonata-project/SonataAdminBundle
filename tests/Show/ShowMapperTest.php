@@ -69,71 +69,71 @@ class ShowMapperTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('getLabel')
-            ->will($this->returnValue('AdminLabel'));
+            ->willReturn('AdminLabel');
 
         $this->admin->expects($this->any())
             ->method('getShowTabs')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $this->groups = [];
         $this->listShowFields = [];
 
         $this->admin->expects($this->any())
             ->method('getShowGroups')
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return $this->groups;
-            }));
+            });
 
         $this->admin->expects($this->any())
             ->method('setShowGroups')
-            ->will($this->returnCallback(function ($showGroups): void {
+            ->willReturnCallback(function ($showGroups): void {
                 $this->groups = $showGroups;
-            }));
+            });
 
         $this->admin->expects($this->any())
             ->method('reorderShowGroup')
-            ->will($this->returnCallback(function ($group, $keys): void {
+            ->willReturnCallback(function ($group, $keys): void {
                 $this->groups[$group]['fields'] = array_merge(array_flip($keys), $this->groups[$group]['fields']);
-            }));
+            });
 
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
 
         $modelManager->expects($this->any())
             ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnCallback(function ($class, $name, array $options = []) {
+            ->willReturnCallback(function ($class, $name, array $options = []) {
                 $fieldDescription = $this->getFieldDescriptionMock();
                 $fieldDescription->setName($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
-            }));
+            });
 
         $this->admin->expects($this->any())
             ->method('getModelManager')
-            ->will($this->returnValue($modelManager));
+            ->willReturn($modelManager);
 
         $labelTranslatorStrategy = new NoopLabelTranslatorStrategy();
 
         $this->admin->expects($this->any())
             ->method('getLabelTranslatorStrategy')
-            ->will($this->returnValue($labelTranslatorStrategy));
+            ->willReturn($labelTranslatorStrategy);
 
         $this->admin->expects($this->any())
             ->method('hasShowFieldDescription')
-            ->will($this->returnCallback(function ($name) {
+            ->willReturnCallback(function ($name) {
                 if (isset($this->listShowFields[$name])) {
                     return true;
                 }
                 $this->listShowFields[$name] = true;
 
                 return false;
-            }));
+            });
 
         $this->showBuilder->expects($this->any())
             ->method('addField')
-            ->will($this->returnCallback(static function ($list, $type, $fieldDescription, $admin): void {
+            ->willReturnCallback(static function ($list, $type, $fieldDescription, $admin): void {
                 $list->add($fieldDescription);
-            }));
+            });
 
         $this->showMapper = new ShowMapper($this->showBuilder, $this->fieldDescriptionCollection, $this->admin);
     }

@@ -2,6 +2,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.48.2](https://github.com/sonata-project/SonataAdminBundle/compare/3.48.1...3.48.2) - 2019-05-16
+
+### Added
+- Add canonicalization fallback for missing moment.js `de_DE` locale
+
+### Fixed
+- Use proper namespace for `Sonata\Exporter\Source\SourceIteratorInterface`
+- Fix bootstrap tab toggle not working when clicking add button more than 2
+  times.
+
+### Changed
+- Fix in edit page, the footer with actions buttons will be stuck for Windows
+  users and the last field will no longer be hidden
+
 ## [3.48.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.48.0...3.48.1) - 2019-04-13
 ### Fixed
 - Changed the way the search action generates links to the results. It used to

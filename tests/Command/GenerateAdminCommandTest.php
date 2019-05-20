@@ -68,7 +68,7 @@ class GenerateAdminCommandTest extends TestCase
         $kernel = $this->createMock(KernelInterface::class);
         $kernel->expects($this->any())
             ->method('getBundles')
-            ->will($this->returnValue([$bundle]));
+            ->willReturn([$bundle]);
 
         $parameterBag = new ParameterBag();
         $this->container = new Container($parameterBag);
@@ -76,11 +76,11 @@ class GenerateAdminCommandTest extends TestCase
         $kernel->expects($this->any())
             ->method('getBundle')
             ->with($this->equalTo('AcmeDemoBundle'))
-            ->will($this->returnValue($bundle));
+            ->willReturn($bundle);
 
         $kernel->expects($this->any())
             ->method('getContainer')
-            ->will($this->returnValue($this->container));
+            ->willReturn($this->container);
 
         $this->application = new Application($kernel);
         $this->command = new GenerateAdminCommand();
@@ -210,7 +210,7 @@ class GenerateAdminCommandTest extends TestCase
 
         $questionHelper->expects($this->any())
             ->method('ask')
-            ->will($this->returnCallback(static function (InputInterface $input, OutputInterface $output, Question $question) use ($modelEntity) {
+            ->willReturnCallback(static function (InputInterface $input, OutputInterface $output, Question $question) use ($modelEntity) {
                 $questionClean = substr($question->getQuestion(), 6, strpos($question->getQuestion(), '</info>') - 6);
 
                 switch ($questionClean) {
@@ -245,7 +245,7 @@ class GenerateAdminCommandTest extends TestCase
                 }
 
                 return false;
-            }));
+            });
 
         $command->getHelperSet()->set($questionHelper, 'question');
 
@@ -353,7 +353,7 @@ class GenerateAdminCommandTest extends TestCase
 
         $questionHelper->expects($this->any())
             ->method('ask')
-            ->will($this->returnCallback(static function (InputInterface $input, OutputInterface $output, Question $question) use ($modelEntity) {
+            ->willReturnCallback(static function (InputInterface $input, OutputInterface $output, Question $question) use ($modelEntity) {
                 $questionClean = substr($question->getQuestion(), 6, strpos($question->getQuestion(), '</info>') - 6);
 
                 switch ($questionClean) {
@@ -376,7 +376,7 @@ class GenerateAdminCommandTest extends TestCase
                 }
 
                 return false;
-            }));
+            });
 
         $command->getHelperSet()->set($questionHelper, 'question');
 

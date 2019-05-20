@@ -60,34 +60,34 @@ class DatagridMapperTest extends TestCase
 
         $datagridBuilder->expects($this->any())
             ->method('addFilter')
-            ->will($this->returnCallback(function ($datagrid, $type, $fieldDescription, $admin): void {
+            ->willReturnCallback(function ($datagrid, $type, $fieldDescription, $admin): void {
                 $fieldDescription->setType($type);
 
                 $filter = $this->getMockForAbstractClass(Filter::class);
 
                 $filter->expects($this->any())
                     ->method('getDefaultOptions')
-                    ->will($this->returnValue(['foo_default_option' => 'bar_default']));
+                    ->willReturn(['foo_default_option' => 'bar_default']);
 
                 $filter->initialize($fieldDescription->getName(), $fieldDescription->getOptions());
                 $datagrid->addFilter($filter);
-            }));
+            });
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
         $modelManager->expects($this->any())
             ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnCallback(function ($class, $name, array $options = []) {
+            ->willReturnCallback(function ($class, $name, array $options = []) {
                 $fieldDescription = $this->getFieldDescriptionMock();
                 $fieldDescription->setName($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
-            }));
+            });
 
         $admin->expects($this->any())
             ->method('getModelManager')
-            ->will($this->returnValue($modelManager));
+            ->willReturn($modelManager);
 
         $this->datagridMapper = new DatagridMapper($datagridBuilder, $this->datagrid, $admin);
     }
@@ -208,14 +208,14 @@ class DatagridMapperTest extends TestCase
         $this->datagridMapper->getAdmin()
             ->expects($this->exactly(2))
             ->method('hasFilterFieldDescription')
-            ->will($this->returnCallback(static function ($name) use (&$tmpNames) {
+            ->willReturnCallback(static function ($name) use (&$tmpNames) {
                 if (isset($tmpNames[$name])) {
                     return true;
                 }
                 $tmpNames[$name] = $name;
 
                 return false;
-            }));
+            });
 
         $this->expectException(\RuntimeException::class, 'Duplicate field name "fooName" in datagrid mapper. Names should be unique.');
 

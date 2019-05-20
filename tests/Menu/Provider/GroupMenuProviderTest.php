@@ -79,7 +79,7 @@ class GroupMenuProviderTest extends TestCase
         $this->pool->expects($this->any())
             ->method('getInstance')
             ->with($this->equalTo('sonata_admin_foo_service'))
-            ->will($this->returnValue($this->getAdminMock()));
+            ->willReturn($this->getAdminMock());
 
         $menu = $provider->get(
             'providerFoo',
@@ -119,7 +119,7 @@ class GroupMenuProviderTest extends TestCase
         $this->pool->expects($this->any())
             ->method('getInstance')
             ->with($this->equalTo('sonata_admin_foo_service'))
-            ->will($this->returnValue($this->getAdminMock()));
+            ->willReturn($this->getAdminMock());
 
         $this->checker->expects($this->any())
             ->method('isGranted')
@@ -274,7 +274,7 @@ class GroupMenuProviderTest extends TestCase
         $this->pool->expects($this->any())
             ->method('getInstance')
             ->with($this->equalTo('sonata_admin_foo_service'))
-            ->will($this->returnValue($this->getAdminMock()));
+            ->willReturn($this->getAdminMock());
 
         $this->checker->expects($this->any())
             ->method('isGranted')
@@ -318,7 +318,7 @@ class GroupMenuProviderTest extends TestCase
         $this->pool->expects($this->any())
             ->method('getInstance')
             ->with($this->equalTo('sonata_admin_foo_service'))
-            ->will($this->returnValue($this->getAdminMock(false)));
+            ->willReturn($this->getAdminMock(false));
 
         $this->checker->expects($this->any())
             ->method('isGranted')
@@ -348,7 +348,7 @@ class GroupMenuProviderTest extends TestCase
         $this->pool->expects($this->any())
             ->method('getInstance')
             ->with($this->equalTo('sonata_admin_foo_service'))
-            ->will($this->returnValue($this->getAdminMock(true, false)));
+            ->willReturn($this->getAdminMock(true, false));
 
         $this->checker->expects($this->any())
             ->method('isGranted')
@@ -378,7 +378,7 @@ class GroupMenuProviderTest extends TestCase
         $this->pool->expects($this->any())
             ->method('getInstance')
             ->with($this->equalTo('sonata_admin_foo_service'))
-            ->will($this->returnValue($this->getAdminMock(true, false)));
+            ->willReturn($this->getAdminMock(true, false));
 
         $menu = $this->provider->get(
             'providerFoo',
@@ -402,7 +402,7 @@ class GroupMenuProviderTest extends TestCase
         $this->pool->expects($this->any())
             ->method('getInstance')
             ->with($this->equalTo('sonata_admin_foo_service'))
-            ->will($this->returnValue($this->getAdminMock()));
+            ->willReturn($this->getAdminMock());
 
         $this->checker->expects($this->any())
             ->method('isGranted')
@@ -649,24 +649,24 @@ class GroupMenuProviderTest extends TestCase
         $admin->expects($this->once())
             ->method('hasRoute')
             ->with($this->equalTo('list'))
-            ->will($this->returnValue($hasRoute));
+            ->willReturn($hasRoute);
 
         $admin->expects($this->any())
             ->method('hasAccess')
             ->with($this->equalTo('list'))
-            ->will($this->returnValue($isGranted));
+            ->willReturn($isGranted);
 
         $admin->expects($this->any())
             ->method('getLabel')
-            ->will($this->returnValue('foo_admin_label'));
+            ->willReturn('foo_admin_label');
 
         $admin->expects($this->any())
             ->method('generateMenuUrl')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $admin->expects($this->any())
             ->method('getTranslationDomain')
-            ->will($this->returnValue('SonataAdminBundle'));
+            ->willReturn('SonataAdminBundle');
 
         return $admin;
     }

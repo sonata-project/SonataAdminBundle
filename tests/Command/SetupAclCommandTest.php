@@ -38,7 +38,7 @@ class SetupAclCommandTest extends TestCase
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(static function ($id) use ($container, $admin, $aclManipulator) {
+            ->willReturnCallback(static function ($id) use ($container, $admin, $aclManipulator) {
                 switch ($id) {
                     case 'sonata.admin.pool':
                         $pool = new Pool($container, '', '');
@@ -52,7 +52,7 @@ class SetupAclCommandTest extends TestCase
                     case 'acme.admin.foo':
                         return $admin;
                 }
-            }));
+            });
 
         $command->setContainer($container);
 
@@ -74,7 +74,7 @@ class SetupAclCommandTest extends TestCase
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(static function ($id) use ($container) {
+            ->willReturnCallback(static function ($id) use ($container) {
                 if ('sonata.admin.pool' === $id) {
                     $pool = new Pool($container, '', '');
                     $pool->setAdminServiceIds(['acme.admin.foo']);
@@ -83,7 +83,7 @@ class SetupAclCommandTest extends TestCase
                 }
 
                 throw new \Exception('Foo Exception');
-            }));
+            });
 
         $command->setContainer($container);
 
@@ -106,7 +106,7 @@ class SetupAclCommandTest extends TestCase
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(static function ($id) use ($container, $admin) {
+            ->willReturnCallback(static function ($id) use ($container, $admin) {
                 switch ($id) {
                     case 'sonata.admin.pool':
                         $pool = new Pool($container, '', '');
@@ -120,7 +120,7 @@ class SetupAclCommandTest extends TestCase
                     case 'acme.admin.foo':
                         return $admin;
                 }
-            }));
+            });
 
         $command->setContainer($container);
 

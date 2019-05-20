@@ -36,16 +36,16 @@ class ListAdminCommandTest extends TestCase
         $admin1 = $this->createMock(AdminInterface::class);
         $admin1->expects($this->any())
             ->method('getClass')
-            ->will($this->returnValue('Acme\Entity\Foo'));
+            ->willReturn('Acme\Entity\Foo');
 
         $admin2 = $this->createMock(AdminInterface::class);
         $admin2->expects($this->any())
             ->method('getClass')
-            ->will($this->returnValue('Acme\Entity\Bar'));
+            ->willReturn('Acme\Entity\Bar');
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(static function ($id) use ($container, $admin1, $admin2) {
+            ->willReturnCallback(static function ($id) use ($container, $admin1, $admin2) {
                 switch ($id) {
                     case 'sonata.admin.pool':
                         $pool = new Pool($container, '', '');
@@ -59,7 +59,7 @@ class ListAdminCommandTest extends TestCase
                     case 'acme.admin.bar':
                         return $admin2;
                 }
-            }));
+            });
 
         $command->setContainer($container);
 
