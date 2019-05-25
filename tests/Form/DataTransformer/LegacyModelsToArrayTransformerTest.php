@@ -48,9 +48,9 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
         $this->choiceList->expects($this->any())
             ->method('getModelManager')
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return $this->modelManager;
-            }));
+            });
     }
 
     /**
@@ -62,25 +62,25 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
         $this->choiceList->expects($this->any())
             ->method('getIdentifierValues')
-            ->will($this->returnCallback(static function ($entity) use ($identifiers) {
+            ->willReturnCallback(static function ($entity) use ($identifiers) {
                 if ($entity instanceof FooEntity) {
                     return $identifiers;
                 }
 
                 return [];
-            }));
+            });
 
         $this->choiceList->expects($this->any())
             ->method('getIdentifier')
-            ->will($this->returnCallback(static function () use ($identifiers) {
+            ->willReturnCallback(static function () use ($identifiers) {
                 return $identifiers;
-            }));
+            });
 
         $this->choiceList->expects($this->any())
             ->method('getEntities')
-            ->will($this->returnCallback(static function () {
+            ->willReturnCallback(static function () {
                 return ['bcd' => new FooEntity(['bcd']), 'efg' => new FooEntity(['efg']), 'abc' => new FooEntity(['abc'])];
-            }));
+            });
 
         $this->assertSame($expected, $transformer->transform($collection));
     }
@@ -104,7 +104,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
         $this->modelManager->expects($this->any())
             ->method('getModelCollectionInstance')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $transformer->reverseTransform([]);
     }
@@ -117,7 +117,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
         $this->modelManager->expects($this->any())
             ->method('getModelCollectionInstance')
-            ->will($this->returnValue(new ArrayCollection()));
+            ->willReturn(new ArrayCollection());
 
         $transformer->reverseTransform(123);
     }
@@ -131,7 +131,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
         $this->modelManager->expects($this->any())
             ->method('getModelCollectionInstance')
-            ->will($this->returnValue(new ArrayCollection()));
+            ->willReturn(new ArrayCollection());
 
         $this->assertInstanceOf(ArrayCollection::class, $transformer->reverseTransform($keys));
     }
@@ -150,7 +150,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
         $this->modelManager->expects($this->any())
             ->method('getModelCollectionInstance')
-            ->will($this->returnValue(new ArrayCollection()));
+            ->willReturn(new ArrayCollection());
 
         $entity1 = new FooEntity(['foo']);
         $entity2 = new FooEntity(['bar']);
@@ -158,7 +158,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
         $this->choiceList->expects($this->any())
             ->method('getEntity')
-            ->will($this->returnCallback(static function ($key) use ($entity1, $entity2, $entity3) {
+            ->willReturnCallback(static function ($key) use ($entity1, $entity2, $entity3) {
                 switch ($key) {
                     case 'foo':
                         return $entity1;
@@ -169,7 +169,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
                     case 'baz':
                         return $entity3;
                 }
-            }));
+            });
 
         $collection = $transformer->reverseTransform(['foo', 'bar']);
         $this->assertInstanceOf(ArrayCollection::class, $collection);
@@ -185,11 +185,11 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
         $this->modelManager->expects($this->any())
             ->method('getModelCollectionInstance')
-            ->will($this->returnValue(new ArrayCollection()));
+            ->willReturn(new ArrayCollection());
 
         $this->choiceList->expects($this->any())
             ->method('getEntity')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $transformer->reverseTransform(['nonexistent']);
     }

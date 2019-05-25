@@ -33,7 +33,7 @@ class LegacyModelChoiceListTest extends TestCase
 
         $this->modelManager->expects($this->any())
             ->method('getIdentifierFieldNames')
-            ->will($this->returnValue(['foo', 'bar']));
+            ->willReturn(['foo', 'bar']);
     }
 
     public function testLoadFromEntity(): void
@@ -48,7 +48,7 @@ class LegacyModelChoiceListTest extends TestCase
 
         $this->modelManager->expects($this->once())
             ->method('findBy')
-            ->will($this->returnValue($result));
+            ->willReturn($result);
 
         $modelChoice = new ModelChoiceList(
             $this->modelManager,
@@ -66,7 +66,7 @@ class LegacyModelChoiceListTest extends TestCase
 
         $this->modelManager->expects($this->any())
             ->method('executeQuery')
-            ->will($this->returnValue($result));
+            ->willReturn($result);
 
         $modelChoice = new ModelChoiceList(
             $this->modelManager,

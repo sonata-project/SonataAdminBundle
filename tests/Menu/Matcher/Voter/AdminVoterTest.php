@@ -85,7 +85,7 @@ class AdminVoterTest extends AbstractVoterTest
                 $this->equalTo('admin'),
                 $this->equalTo('route')
              ))
-             ->will($this->returnValue($data))
+             ->willReturn($data)
         ;
 
         return $item;
@@ -101,23 +101,23 @@ class AdminVoterTest extends AbstractVoterTest
             ->expects($this->any())
             ->method('hasRoute')
             ->with('list')
-            ->will($this->returnValue($list))
+            ->willReturn($list)
         ;
         $admin
             ->expects($this->any())
             ->method('hasAccess')
             ->with('list')
-            ->will($this->returnValue($granted))
+            ->willReturn($granted)
         ;
         $admin
             ->expects($this->any())
             ->method('getCode')
-            ->will($this->returnValue($code))
+            ->willReturn($code)
         ;
         $admin
             ->expects($this->any())
             ->method('getChildren')
-            ->will($this->returnValue([]))
+            ->willReturn([])
         ;
 
         return $admin;
@@ -137,31 +137,31 @@ class AdminVoterTest extends AbstractVoterTest
             ->expects($this->any())
             ->method('hasRoute')
             ->with('list')
-            ->will($this->returnValue($list))
+            ->willReturn($list)
         ;
         $parentAdmin
             ->expects($this->any())
             ->method('hasAccess')
             ->with('list')
-            ->will($this->returnValue($granted))
+            ->willReturn($granted)
         ;
         $parentAdmin
             ->expects($this->any())
             ->method('getCode')
-            ->will($this->returnValue($parentCode))
+            ->willReturn($parentCode)
         ;
 
         $childAdmin = $this->createMock(AbstractAdmin::class);
         $childAdmin
             ->expects($this->any())
             ->method('getBaseCodeRoute')
-            ->will($this->returnValue($parentCode.'|'.$childCode))
+            ->willReturn($parentCode.'|'.$childCode)
         ;
 
         $parentAdmin
             ->expects($this->any())
             ->method('getChildren')
-            ->will($this->returnValue([$childAdmin]))
+            ->willReturn([$childAdmin])
         ;
 
         return $parentAdmin;

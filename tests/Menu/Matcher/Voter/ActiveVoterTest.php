@@ -52,13 +52,13 @@ class ActiveVoterTest extends AbstractVoterTest
                 $this->equalTo('active'),
                 $this->equalTo('sonata_admin')
              ))
-             ->will($this->returnCallback(static function ($name) use ($data) {
+             ->willReturnCallback(static function ($name) use ($data) {
                  if ('active' === $name) {
                      return $data;
                  }
 
                  return true;
-             }))
+             })
         ;
 
         return $item;

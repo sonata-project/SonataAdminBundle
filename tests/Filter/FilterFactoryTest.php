@@ -68,7 +68,7 @@ class FilterFactoryTest extends TestCase
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $container->expects($this->once())
             ->method('get')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $filter = new FilterFactory($container, ['mytype' => 'mytype']);
         $filter->create('test', 'mytype');
@@ -83,7 +83,7 @@ class FilterFactoryTest extends TestCase
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $container->expects($this->once())
             ->method('get')
-            ->will($this->returnValue($filter));
+            ->willReturn($filter);
 
         $filter = new FilterFactory($container, ['mytype' => 'mytype']);
         $filter->create('test', 'mytype');

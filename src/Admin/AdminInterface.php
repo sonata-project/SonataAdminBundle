@@ -412,7 +412,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns SourceIterator.
      *
-     * @return \Exporter\Source\SourceIteratorInterface
+     * @return \Sonata\Exporter\Source\SourceIteratorInterface
      */
     public function getDataSourceIterator();
 

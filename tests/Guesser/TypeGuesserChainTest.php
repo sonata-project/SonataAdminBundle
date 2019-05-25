@@ -41,19 +41,19 @@ class TypeGuesserChainTest extends TestCase
         $guesser1 = $this->getMockForAbstractClass(TypeGuesserInterface::class);
         $guesser1->expects($this->any())
                 ->method('guessType')
-                ->will($this->returnValue($typeGuess1));
+                ->willReturn($typeGuess1);
 
         $typeGuess2 = new TypeGuess('foo2', [], Guess::HIGH_CONFIDENCE);
         $guesser2 = $this->getMockForAbstractClass(TypeGuesserInterface::class);
         $guesser2->expects($this->any())
                 ->method('guessType')
-                ->will($this->returnValue($typeGuess2));
+                ->willReturn($typeGuess2);
 
         $typeGuess3 = new TypeGuess('foo3', [], Guess::LOW_CONFIDENCE);
         $guesser3 = $this->getMockForAbstractClass(TypeGuesserInterface::class);
         $guesser3->expects($this->any())
                 ->method('guessType')
-                ->will($this->returnValue($typeGuess3));
+                ->willReturn($typeGuess3);
 
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
 
@@ -67,7 +67,7 @@ class TypeGuesserChainTest extends TestCase
         $guesser4 = $this->getMockForAbstractClass(TypeGuesserInterface::class);
         $guesser4->expects($this->any())
                 ->method('guessType')
-                ->will($this->returnValue($typeGuess4));
+                ->willReturn($typeGuess4);
 
         $typeGuesserChain = new TypeGuesserChain([$guesser4, $typeGuesserChain]);
         $this->assertSame($typeGuess2, $typeGuesserChain->guessType($class, $property, $modelManager));

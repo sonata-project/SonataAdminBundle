@@ -209,57 +209,57 @@ class SonataAdminExtensionTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('getCode')
-            ->will($this->returnValue('sonata_admin_foo_service'));
+            ->willReturn('sonata_admin_foo_service');
 
         $this->admin->expects($this->any())
             ->method('id')
             ->with($this->equalTo($this->object))
-            ->will($this->returnValue(12345));
+            ->willReturn(12345);
 
         $this->admin->expects($this->any())
             ->method('getNormalizedIdentifier')
             ->with($this->equalTo($this->object))
-            ->will($this->returnValue(12345));
+            ->willReturn(12345);
 
         $this->admin->expects($this->any())
             ->method('trans')
-            ->will($this->returnCallback(static function ($id, $parameters = [], $domain = null) use ($translator) {
+            ->willReturnCallback(static function ($id, $parameters = [], $domain = null) use ($translator) {
                 return $translator->trans($id, $parameters, $domain);
-            }));
+            });
 
         $this->adminBar = $this->createMock(AbstractAdmin::class);
         $this->adminBar->expects($this->any())
             ->method('hasAccess')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $this->adminBar->expects($this->any())
             ->method('getNormalizedIdentifier')
             ->with($this->equalTo($this->object))
-            ->will($this->returnValue(12345));
+            ->willReturn(12345);
 
         $container->expects($this->any())
             ->method('get')
-            ->will($this->returnCallback(function ($id) {
+            ->willReturnCallback(function ($id) {
                 if ('sonata_admin_foo_service' === $id) {
                     return $this->admin;
                 } elseif ('sonata_admin_bar_service' === $id) {
                     return $this->adminBar;
                 }
-            }));
+            });
 
         // initialize field description
         $this->fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
 
         $this->fieldDescription->expects($this->any())
             ->method('getName')
-            ->will($this->returnValue('fd_name'));
+            ->willReturn('fd_name');
 
         $this->fieldDescription->expects($this->any())
             ->method('getAdmin')
-            ->will($this->returnValue($this->admin));
+            ->willReturn($this->admin);
 
         $this->fieldDescription->expects($this->any())
             ->method('getLabel')
-            ->will($this->returnValue('Data'));
+            ->willReturn('Data');
     }
 
     /**
@@ -271,11 +271,11 @@ class SonataAdminExtensionTest extends TestCase
     {
         $this->admin->expects($this->any())
             ->method('getPersistentParameters')
-            ->will($this->returnValue(['context' => 'foo']));
+            ->willReturn(['context' => 'foo']);
 
         $this->admin->expects($this->any())
             ->method('hasAccess')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         // NEXT_MAJOR: Remove this line
         $this->admin->expects($this->any())
@@ -287,25 +287,25 @@ class SonataAdminExtensionTest extends TestCase
 
         $this->fieldDescription->expects($this->any())
             ->method('getValue')
-            ->will($this->returnValue($value));
+            ->willReturn($value);
 
         $this->fieldDescription->expects($this->any())
             ->method('getType')
-            ->will($this->returnValue($type));
+            ->willReturn($type);
 
         $this->fieldDescription->expects($this->any())
             ->method('getOptions')
-            ->will($this->returnValue($options));
+            ->willReturn($options);
 
         $this->fieldDescription->expects($this->any())
             ->method('getOption')
-            ->will($this->returnCallback(static function ($name, $default = null) use ($options) {
+            ->willReturnCallback(static function ($name, $default = null) use ($options) {
                 return $options[$name] ?? $default;
-            }));
+            });
 
         $this->fieldDescription->expects($this->any())
             ->method('getTemplate')
-            ->will($this->returnCallback(static function () use ($type) {
+            ->willReturnCallback(static function () use ($type) {
                 switch ($type) {
                     case 'string':
                         return '@SonataAdmin/CRUD/list_string.html.twig';
@@ -339,7 +339,7 @@ class SonataAdminExtensionTest extends TestCase
                     default:
                         return false;
                 }
-            }));
+            });
 
         $this->assertSame(
             $this->removeExtraWhitespace($expected),
@@ -1295,29 +1295,29 @@ EOT
     {
         $this->admin->expects($this->any())
             ->method('getTemplate')
-            ->will($this->returnValue('@SonataAdmin/CRUD/base_show_field.html.twig'));
+            ->willReturn('@SonataAdmin/CRUD/base_show_field.html.twig');
 
         $this->fieldDescription->expects($this->any())
             ->method('getValue')
-            ->will($this->returnCallback(static function () use ($value) {
+            ->willReturnCallback(static function () use ($value) {
                 if ($value instanceof NoValueException) {
                     throw  $value;
                 }
 
                 return $value;
-            }));
+            });
 
         $this->fieldDescription->expects($this->any())
             ->method('getType')
-            ->will($this->returnValue($type));
+            ->willReturn($type);
 
         $this->fieldDescription->expects($this->any())
             ->method('getOptions')
-            ->will($this->returnValue($options));
+            ->willReturn($options);
 
         $this->fieldDescription->expects($this->any())
             ->method('getTemplate')
-            ->will($this->returnCallback(static function () use ($type) {
+            ->willReturnCallback(static function () use ($type) {
                 switch ($type) {
                     case 'boolean':
                         return '@SonataAdmin/CRUD/show_boolean.html.twig';
@@ -1346,7 +1346,7 @@ EOT
                     default:
                         return false;
                 }
-            }));
+            });
 
         $this->assertSame(
                 $this->removeExtraWhitespace($expected),
@@ -1919,7 +1919,7 @@ EOT
 
         $fieldDescription->expects($this->any())
             ->method('getValue')
-            ->will($this->returnValue('test123'));
+            ->willReturn('test123');
 
         $this->assertSame(
             'test123',
@@ -1956,13 +1956,13 @@ EOT
 
         $fieldDescription->expects($this->any())
             ->method('getValue')
-            ->will($this->returnCallback(static function (): void {
+            ->willReturnCallback(static function (): void {
                 throw new NoValueException();
-            }));
+            });
 
         $fieldDescription->expects($this->any())
             ->method('getAssociationAdmin')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $this->assertNull(
             $this->getMethodAsPublic('getValueFromFieldDescription')->invoke(
@@ -1980,17 +1980,17 @@ EOT
 
         $fieldDescription->expects($this->any())
             ->method('getValue')
-            ->will($this->returnCallback(static function (): void {
+            ->willReturnCallback(static function (): void {
                 throw new NoValueException();
-            }));
+            });
 
         $fieldDescription->expects($this->any())
             ->method('getAssociationAdmin')
-            ->will($this->returnValue($this->admin));
+            ->willReturn($this->admin);
 
         $this->admin->expects($this->once())
             ->method('getNewInstance')
-            ->will($this->returnValue('foo'));
+            ->willReturn('foo');
 
         $this->assertSame(
             'foo',
@@ -2010,15 +2010,15 @@ EOT
     {
         $this->fieldDescription->expects($this->any())
             ->method('getTemplate')
-            ->will($this->returnValue('@SonataAdmin/CRUD/base_list_field.html.twig'));
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription->expects($this->any())
             ->method('getFieldName')
-            ->will($this->returnValue('fd_name'));
+            ->willReturn('fd_name');
 
         $this->fieldDescription->expects($this->any())
             ->method('getValue')
-            ->will($this->returnValue('foo'));
+            ->willReturn('foo');
 
         $parameters = [
             'admin' => $this->admin,
@@ -2055,11 +2055,11 @@ EOT
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
-            ->will($this->returnCallback(static function ($value, $default = null) {
+            ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
                     return $default;
                 }
-            }));
+            });
 
         $element = new FooToString();
         $this->assertSame('salut', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
@@ -2072,11 +2072,11 @@ EOT
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
-            ->will($this->returnCallback(static function ($value, $default = null) {
+            ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_tostring' === $value) {
                     return '__toString';
                 }
-            }));
+            });
 
         $element = new FooToString();
         $this->assertSame(
@@ -2092,7 +2092,7 @@ EOT
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
-            ->will($this->returnCallback(static function ($value, $default = null) {
+            ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
                     return $default;
                 }
@@ -2100,14 +2100,14 @@ EOT
                 if ('associated_tostring' === $value) {
                     return 'customToString';
                 }
-            }));
+            });
 
         $element = $this->getMockBuilder('stdClass')
             ->setMethods(['customToString'])
             ->getMock();
         $element->expects($this->any())
             ->method('customToString')
-            ->will($this->returnValue('fooBar'));
+            ->willReturn('fooBar');
 
         $this->assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
@@ -2120,11 +2120,11 @@ EOT
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
 
-            ->will($this->returnCallback(static function ($value, $default = null) {
+            ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_tostring' === $value) {
                     return 'nonExistedMethod';
                 }
-            }));
+            });
 
         $element = new \stdClass();
         $this->expectException(\RuntimeException::class, 'You must define an `associated_property` option or create a `stdClass::__toString');
@@ -2137,11 +2137,11 @@ EOT
         $this->fieldDescription->expects($this->exactly(1))
             ->method('getOption')
 
-            ->will($this->returnCallback(static function ($value, $default = null) {
+            ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
                     return 'foo';
                 }
-            }));
+            });
 
         $element = new \stdClass();
         $element->foo = 'bar';
@@ -2154,13 +2154,13 @@ EOT
         $this->fieldDescription->expects($this->exactly(1))
             ->method('getOption')
 
-            ->will($this->returnCallback(static function ($value, $default = null) {
+            ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
                     return static function ($element) {
                         return 'closure '.$element->foo;
                     };
                 }
-            }));
+            });
 
         $element = new \stdClass();
         $element->foo = 'bar';
@@ -2182,7 +2182,7 @@ EOT
         $this->admin->expects($this->once())
             ->method('getUrlsafeIdentifier')
             ->with($this->equalTo($entity))
-            ->will($this->returnValue(1234567));
+            ->willReturn(1234567);
 
         $this->assertSame(1234567, $this->twigExtension->getUrlsafeIdentifier($entity));
     }
@@ -2204,7 +2204,7 @@ EOT
         $this->admin->expects($this->once())
             ->method('getUrlsafeIdentifier')
             ->with($this->equalTo($entity))
-            ->will($this->returnValue(1234567));
+            ->willReturn(1234567);
 
         $this->adminBar->expects($this->never())
             ->method('getUrlsafeIdentifier');
@@ -2229,7 +2229,7 @@ EOT
         $this->adminBar->expects($this->once())
             ->method('getUrlsafeIdentifier')
             ->with($this->equalTo($entity))
-            ->will($this->returnValue(1234567));
+            ->willReturn(1234567);
 
         $this->assertSame(1234567, $this->twigExtension->getUrlsafeIdentifier($entity, $this->adminBar));
     }
@@ -2389,6 +2389,7 @@ EOT
             ['da', 'da'],
             ['de-at', 'de-at'],
             ['de', 'de'],
+            ['de', 'de-de'],
             ['dv', 'dv'],
             ['el', 'el'],
             [null, 'en'],

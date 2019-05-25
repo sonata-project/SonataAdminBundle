@@ -76,7 +76,7 @@ class AdminGeneratorTest extends TestCase
             ->expects($this->any())
             ->method('getExportFields')
             ->with('Model')
-            ->will($this->returnValue(['foo', 'bar', 'baz']))
+            ->willReturn(['foo', 'bar', 'baz'])
         ;
 
         return $modelManagerMock;
@@ -88,12 +88,12 @@ class AdminGeneratorTest extends TestCase
         $bundleMock
             ->expects($this->any())
             ->method('getNamespace')
-            ->will($this->returnValue('Sonata\AdminBundle\Tests\Fixtures'))
+            ->willReturn('Sonata\AdminBundle\Tests\Fixtures')
         ;
         $bundleMock
             ->expects($this->any())
             ->method('getPath')
-            ->will($this->returnValue(sprintf('%s/%s', sys_get_temp_dir(), lcg_value())))
+            ->willReturn(sprintf('%s/%s', sys_get_temp_dir(), lcg_value()))
         ;
 
         return $bundleMock;

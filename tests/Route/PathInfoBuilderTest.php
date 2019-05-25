@@ -24,11 +24,11 @@ class PathInfoBuilderTest extends TestCase
     public function testBuild(): void
     {
         $audit = $this->getMockForAbstractClass(AuditManagerInterface::class);
-        $audit->expects($this->once())->method('hasReader')->will($this->returnValue(true));
+        $audit->expects($this->once())->method('hasReader')->willReturn(true);
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->once())->method('getChildren')->will($this->returnValue([]));
-        $admin->expects($this->once())->method('isAclEnabled')->will($this->returnValue(true));
+        $admin->expects($this->once())->method('getChildren')->willReturn([]);
+        $admin->expects($this->once())->method('isAclEnabled')->willReturn(true);
 
         $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerName');
 

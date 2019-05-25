@@ -109,7 +109,7 @@ class BaseFieldDescriptionTest extends TestCase
         $mock = $this->getMockBuilder('stdClass')
             ->setMethods(['getFoo'])
             ->getMock();
-        $mock->expects($this->once())->method('getFoo')->will($this->returnValue(42));
+        $mock->expects($this->once())->method('getFoo')->willReturn(42);
 
         $this->assertSame(42, $description->getFieldValue($mock, 'fake'));
 
@@ -126,7 +126,7 @@ class BaseFieldDescriptionTest extends TestCase
             ->setMethods(['getWithOneParameter'])
             ->getMock();
         $returnValue1 = $arg1 + 2;
-        $mock1->expects($this->once())->method('getWithOneParameter')->with($this->equalTo($arg1))->will($this->returnValue($returnValue1));
+        $mock1->expects($this->once())->method('getWithOneParameter')->with($this->equalTo($arg1))->willReturn($returnValue1);
 
         $this->assertSame(40, $description1->getFieldValue($mock1, 'fake'));
 
@@ -143,7 +143,7 @@ class BaseFieldDescriptionTest extends TestCase
             ->setMethods(['getWithTwoParameters'])
             ->getMock();
         $returnValue2 = $arg1 + $arg2;
-        $mock2->expects($this->any())->method('getWithTwoParameters')->with($this->equalTo($arg1), $this->equalTo($arg2))->will($this->returnValue($returnValue2));
+        $mock2->expects($this->any())->method('getWithTwoParameters')->with($this->equalTo($arg1), $this->equalTo($arg2))->willReturn($returnValue2);
         $this->assertSame(42, $description2->getFieldValue($mock2, 'fake'));
 
         /*
@@ -155,7 +155,7 @@ class BaseFieldDescriptionTest extends TestCase
                 ->setMethods([$method])
                 ->getMock();
 
-            $mock3->expects($this->once())->method($method)->will($this->returnValue(42));
+            $mock3->expects($this->once())->method($method)->willReturn(42);
             $this->assertSame(42, $description3->getFieldValue($mock3, '_fake'));
         }
 
@@ -164,7 +164,7 @@ class BaseFieldDescriptionTest extends TestCase
             ->getMock();
         $mock4->expects($this->once())
             ->method('myMethod')
-            ->will($this->returnValue('myMethodValue'));
+            ->willReturn('myMethodValue');
 
         $description4 = new FieldDescription();
         $description4->setOption('code', 'myMethod');
@@ -216,7 +216,7 @@ class BaseFieldDescriptionTest extends TestCase
 
         $admin->expects($this->once())
             ->method('getTranslationDomain')
-            ->will($this->returnValue('AdminDomain'));
+            ->willReturn('AdminDomain');
 
         $this->assertSame('AdminDomain', $description->getTranslationDomain());
 

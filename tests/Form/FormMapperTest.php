@@ -64,13 +64,13 @@ class FormMapperTest extends TestCase
 
         $this->modelManager->expects($this->any())
             ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnCallback(function ($class, $name, array $options = []) {
+            ->willReturnCallback(function ($class, $name, array $options = []) {
                 $fieldDescription = $this->getFieldDescriptionMock();
                 $fieldDescription->setName($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
-            }));
+            });
 
         $this->admin->setModelManager($this->modelManager);
 
@@ -148,7 +148,7 @@ class FormMapperTest extends TestCase
     {
         $this->contractor->expects($this->once())
             ->method('getDefaultOptions')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $this->formMapper->with('foobar', [
                 'translation_domain' => 'Foobar',
@@ -203,7 +203,7 @@ class FormMapperTest extends TestCase
     {
         $this->contractor->expects($this->once())
             ->method('getDefaultOptions')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $this->formMapper
             ->ifTrue(true)
@@ -229,7 +229,7 @@ class FormMapperTest extends TestCase
     {
         $this->contractor->expects($this->once())
             ->method('getDefaultOptions')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $this->formMapper
             ->ifTrue(false)
@@ -246,7 +246,7 @@ class FormMapperTest extends TestCase
     {
         $this->contractor->expects($this->once())
             ->method('getDefaultOptions')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $this->formMapper
             ->ifFalse(false)
@@ -272,7 +272,7 @@ class FormMapperTest extends TestCase
     {
         $this->contractor->expects($this->once())
             ->method('getDefaultOptions')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $this->formMapper
             ->ifFalse(true)
@@ -348,7 +348,7 @@ class FormMapperTest extends TestCase
 
         $formBuilder->expects($this->any())
             ->method('getName')
-            ->will($this->returnValue('foo'));
+            ->willReturn('foo');
 
         $formType = $this
             ->getMockBuilder(ResolvedFormTypeInterface::class)
@@ -360,11 +360,11 @@ class FormMapperTest extends TestCase
 
         $formType->expects($this->once())
             ->method('getInnerType')
-            ->will($this->returnValue($innerType));
+            ->willReturn($innerType);
 
         $formBuilder->expects($this->once())
             ->method('getType')
-            ->will($this->returnValue($formType));
+            ->willReturn($formType);
 
         $this->formMapper->add($formBuilder);
         $this->assertSame($this->formMapper->get('foo'), $formBuilder);
@@ -379,7 +379,7 @@ class FormMapperTest extends TestCase
 
         $formBuilder->expects($this->any())
             ->method('getName')
-            ->will($this->returnValue('foo'));
+            ->willReturn('foo');
 
         $formBuilder->expects($this->never())
             ->method('getType');
@@ -430,7 +430,7 @@ class FormMapperTest extends TestCase
     {
         $this->contractor->expects($this->any())
             ->method('getDefaultOptions')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $this->formMapper
             ->add('foo', 'bar')
@@ -444,7 +444,7 @@ class FormMapperTest extends TestCase
     {
         $this->contractor->expects($this->any())
             ->method('getDefaultOptions')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $this->formMapper
             ->add('fo.o', 'bar')

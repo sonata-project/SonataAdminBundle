@@ -41,6 +41,7 @@ final class SonataAdminExtension extends AbstractExtension
 {
     // @todo: there are more locales which are not supported by moment and they need to be translated/normalized/canonicalized here
     public const MOMENT_UNSUPPORTED_LOCALES = [
+        'de' => ['de', 'de-at'],
         'es' => ['es', 'es-do'],
         'nl' => ['nl', 'nl-be'],
         'fr' => ['fr', 'fr-ca', 'fr-ch'],

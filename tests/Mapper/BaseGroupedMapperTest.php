@@ -46,20 +46,20 @@ class BaseGroupedMapperTest extends TestCase
         $labelStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $labelStrategy->expects($this->any())
             ->method('getLabel')
-            ->will($this->returnCallback(static function ($label) {
+            ->willReturnCallback(static function ($label) {
                 return 'label_'.strtolower($label);
-            }));
+            });
 
         $admin->expects($this->any())
             ->method('getLabelTranslatorStrategy')
-            ->will($this->returnValue($labelStrategy));
+            ->willReturn($labelStrategy);
 
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $configurationPool = new Pool($container, 'myTitle', 'myLogoTitle');
 
         $admin->expects($this->any())
             ->method('getConfigurationPool')
-            ->will($this->returnValue($configurationPool));
+            ->willReturn($configurationPool);
 
         $builder = $this->getMockForAbstractClass(BuilderInterface::class);
 
@@ -73,27 +73,27 @@ class BaseGroupedMapperTest extends TestCase
 
         $this->baseGroupedMapper->expects($this->any())
             ->method('getTabs')
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return $this->getTabs();
-            }));
+            });
 
         $this->baseGroupedMapper->expects($this->any())
             ->method('setTabs')
-            ->will($this->returnCallback(function (array $tabs): void {
+            ->willReturnCallback(function (array $tabs): void {
                 $this->setTabs($tabs);
-            }));
+            });
 
         $this->baseGroupedMapper->expects($this->any())
             ->method('getGroups')
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return $this->getTestGroups();
-            }));
+            });
 
         $this->baseGroupedMapper->expects($this->any())
             ->method('setGroups')
-            ->will($this->returnCallback(function (array $groups): void {
+            ->willReturnCallback(function (array $groups): void {
                 $this->setTestGroups($groups);
-            }));
+            });
     }
 
     public function testWith(): void
@@ -201,7 +201,7 @@ class BaseGroupedMapperTest extends TestCase
 
         $container->expects($this->any())
             ->method('getParameter')
-            ->will($this->returnValue($translated));
+            ->willReturn($translated);
 
         $options = [];
 
