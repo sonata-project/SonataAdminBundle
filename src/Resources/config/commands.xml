@@ -2,7 +2,8 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <service id="Sonata\AdminBundle\Command\CreateClassCacheCommand" class="Sonata\AdminBundle\Command\CreateClassCacheCommand" public="true">
-            <tag name="console.command"/>
+            <tag name="console.command" command="cache:create-cache-class"/>
+            <deprecated>The "%service_id%" service is deprecated since version sonata-project/admin-bundle 3.39.0 and will be removed in 4.0.</deprecated>
         </service>
         <service id="Sonata\AdminBundle\Command\ExplainAdminCommand" class="Sonata\AdminBundle\Command\ExplainAdminCommand" public="true">
             <tag name="console.command"/>
