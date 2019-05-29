@@ -26,6 +26,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * NEXT_MAJOR: Remove this class.
  *
+ * @deprecated since version sonata-project/admin-bundle 3.39.0 and will be removed in 4.0.
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class CreateClassCacheCommand extends ContainerAwareCommand
