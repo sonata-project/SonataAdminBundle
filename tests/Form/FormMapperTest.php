@@ -51,10 +51,10 @@ class FormMapperTest extends TestCase
 
     public function setUp(): void
     {
-        $this->contractor = $this->getMockForAbstractClass(FormContractorInterface::class);
+        $this->contractor = $this->createMock(FormContractorInterface::class);
 
-        $formFactory = $this->getMockForAbstractClass(FormFactoryInterface::class);
-        $eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
+        $formFactory = $this->createMock(FormFactoryInterface::class);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $formBuilder = new FormBuilder('test', 'stdClass', $eventDispatcher, $formFactory);
 
