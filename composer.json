@@ -49,6 +49,7 @@
         "symfony/security-core": "^4.3",
         "symfony/security-csrf": "^4.3",
         "symfony/translation": "^4.3",
+        "symfony/translation-contracts": "^1.1 || ^2.0",
         "symfony/twig-bridge": "^4.3",
         "symfony/twig-bundle": "^4.3",
         "symfony/validator": "^4.3",
