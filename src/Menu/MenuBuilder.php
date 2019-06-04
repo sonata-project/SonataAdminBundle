@@ -19,6 +19,7 @@ use Knp\Menu\Provider\MenuProviderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Event\ConfigureMenuEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as ContractsEventDispatcherInterface;
 
 /**
  * Sonata menu builder.
@@ -90,9 +91,17 @@ class MenuBuilder
             $subMenu->setExtras(array_merge($subMenu->getExtras(), $extras));
         }
 
-        $event = new ConfigureMenuEvent($this->factory, $menu);
-        $this->eventDispatcher->dispatch(ConfigureMenuEvent::SIDEBAR, $event);
+        if ($this->eventDispatcher instanceof ContractsEventDispatcherInterface) {
+            $event = new ConfigureMenuEvent($this->factory, $menu);
+            $eventName = ConfigureMenuEvent::SIDEBAR;
+        } else {
+            // BC for Symfony < 4.3 where `dispatch()` has a different signature
+            // NEXT_MAJOR: Remove this condition
+            $event = ConfigureMenuEvent::SIDEBAR;
+            $eventName = new ConfigureMenuEvent($this->factory, $menu);
+        }
+        $this->eventDispatcher->dispatch($event, $eventName);
 
-        return $event->getMenu();
+        return $menu;
     }
 }

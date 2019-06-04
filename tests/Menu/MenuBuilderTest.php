@@ -22,6 +22,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Event\ConfigureMenuEvent;
 use Sonata\AdminBundle\Menu\MenuBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as ContractsEventDispatcherInterface;
 
 class MenuBuilderTest extends TestCase
 {
@@ -132,13 +133,25 @@ class MenuBuilderTest extends TestCase
 
         $this->preparePool($adminGroups);
 
-        $this->eventDispatcher
-            ->expects($this->once())
-            ->method('dispatch')
-            ->with(
-                $this->equalTo('sonata.admin.event.configure.menu.sidebar'),
-                $this->isInstanceOf(ConfigureMenuEvent::class)
-            );
+        if ($this->eventDispatcher instanceof ContractsEventDispatcherInterface) {
+            // BC for Symfony < 4.3 where `dispatch()` has a different signature
+            // NEXT_MAJOR: Remove this condition
+            $this->eventDispatcher
+                ->expects($this->once())
+                ->method('dispatch')
+                ->with(
+                    $this->isInstanceOf(ConfigureMenuEvent::class),
+                    $this->equalTo('sonata.admin.event.configure.menu.sidebar')
+                );
+        } else {
+            $this->eventDispatcher
+                ->expects($this->once())
+                ->method('dispatch')
+                ->with(
+                    $this->equalTo('sonata.admin.event.configure.menu.sidebar'),
+                    $this->isInstanceOf(ConfigureMenuEvent::class)
+                );
+        }
 
         $this->builder->createSidebarMenu();
     }
