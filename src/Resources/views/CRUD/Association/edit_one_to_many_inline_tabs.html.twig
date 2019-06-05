@@ -34,7 +34,7 @@ file that was distributed with this source code.
                         >
                             <fieldset>
                                 <div class="sonata-ba-collapsed-fields">
-                                    {% for field_name in form_group.fields if nested_group_field.children[field_name] is defined %}
+                                    {% for field_name in form_group.fields|filter(field_name => nested_group_field.children[field_name] is defined) %}
                                         {% set nested_field = nested_group_field.children[field_name] %}
                                         <div class="sonata-ba-field-{{ id }}-{{ field_name }}">
                                             {% if associationAdmin.formfielddescriptions[field_name] is defined %}

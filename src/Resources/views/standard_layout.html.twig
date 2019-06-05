@@ -130,7 +130,7 @@ file that was distributed with this source code.
                     </noscript>
                 {% endblock %}
                 {% block logo %}
-                    {% spaceless %}
+                    {% apply spaceless %}
                         <a class="logo" href="{{ path('sonata_admin_dashboard') }}">
                             {% if 'single_image' == sonata_admin.adminPool.getOption('title_mode') or 'both' == sonata_admin.adminPool.getOption('title_mode') %}
                                 <img src="{{ asset(sonata_admin.adminPool.titlelogo) }}" alt="{{ sonata_admin.adminPool.title }}">
@@ -139,7 +139,7 @@ file that was distributed with this source code.
                                 <span>{{ sonata_admin.adminPool.title }}</span>
                             {% endif %}
                         </a>
-                    {% endspaceless %}
+                    {% endapply %}
                 {% endblock %}
                 {% block sonata_nav %}
                     <nav class="navbar navbar-static-top" role="navigation">
