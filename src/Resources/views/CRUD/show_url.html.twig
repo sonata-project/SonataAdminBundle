@@ -12,7 +12,7 @@ file that was distributed with this source code.
 {% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
 
 {% block field %}
-{% spaceless %}
+{% apply spaceless %}
     {% if value is empty %}
         &nbsp;
     {% else %}
@@ -55,5 +55,5 @@ file that was distributed with this source code.
             {%- endif -%}
         </a>
     {% endif %}
-{% endspaceless %}
+{% endapply %}
 {% endblock %}

@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-{%- spaceless %}
+{%- apply spaceless %}
     {%- if value is empty -%}
         &nbsp;
     {%- else -%}
@@ -17,4 +17,4 @@ file that was distributed with this source code.
             {{ value|date('H:i:s', field_description.options.timezone|default(null)) }}
         </time>
     {%- endif -%}
-{% endspaceless -%}
+{% endapply -%}
