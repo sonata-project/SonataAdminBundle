@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.49.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.49.0...3.49.1) - 2019-06-05
+
+### Fixed
+- Crash with Twig 2.11 with message `Template
+  "@SonataAdmin/CRUD/base_edit_form.html.twig" cannot be used as a trait.`
+(second attempt)
+
 ## [3.49.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.48.3...3.49.0) - 2019-06-02
 
 ### Fixed
