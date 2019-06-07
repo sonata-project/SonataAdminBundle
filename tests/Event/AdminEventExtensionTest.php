@@ -20,15 +20,25 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Event\AdminEventExtension;
 use Sonata\AdminBundle\Event\ConfigureEvent;
-use Sonata\AdminBundle\Event\ConfigureQueryEvent;
 use Sonata\AdminBundle\Event\PersistenceEvent;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as ContractsEventDispatcherInterface;
 
 class AdminEventExtensionTest extends TestCase
 {
+    /**
+     * @return AdminEventExtension
+     */
+    public function getExtension($args)
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $stub = $eventDispatcher->expects($this->once())->method('dispatch');
+        \call_user_func_array([$stub, 'with'], $args);
+
+        return new AdminEventExtension($eventDispatcher);
+    }
+
     public function getMapper($class)
     {
         $mapper = $this->getMockBuilder($class)->disableOriginalConstructor()->getMock();
@@ -129,7 +139,6 @@ class AdminEventExtensionTest extends TestCase
     {
         $this->getExtension([
             $this->equalTo('sonata.admin.event.configure.query'),
-            $this->callback($this->getConfigureQueryEventClosure()),
         ])->configureQuery($this->createMock(AdminInterface::class), $this->createMock(ProxyQueryInterface::class));
     }
 
@@ -171,26 +180,5 @@ class AdminEventExtensionTest extends TestCase
             $this->equalTo('sonata.admin.event.persistence.post_remove'),
             $this->callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_REMOVE)),
         ])->postRemove($this->createMock(AdminInterface::class), new \stdClass());
-    }
-
-    private function getExtension($args): AdminEventExtension
-    {
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        if ($eventDispatcher instanceof ContractsEventDispatcherInterface) {
-            // BC for Symfony < 4.3 where `dispatch()` has a different signature
-            // NEXT_MAJOR: Remove this condition and update the calls to this method
-            $args = array_reverse($args);
-        }
-        $stub = $eventDispatcher->expects($this->once())->method('dispatch');
-        \call_user_func_array([$stub, 'with'], $args);
-
-        return new AdminEventExtension($eventDispatcher);
-    }
-
-    private function getConfigureQueryEventClosure(): callable
-    {
-        return static function ($event) {
-            return $event instanceof ConfigureQueryEvent;
-        };
     }
 }
