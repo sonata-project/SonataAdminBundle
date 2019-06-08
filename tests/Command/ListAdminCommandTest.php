@@ -29,7 +29,6 @@ class ListAdminCommandTest extends TestCase
     public function testExecute(): void
     {
         $application = new Application();
-        $command = new ListAdminCommand();
 
         $container = $this->createMock(ContainerInterface::class);
 
@@ -45,14 +44,8 @@ class ListAdminCommandTest extends TestCase
 
         $container->expects($this->any())
             ->method('get')
-            ->willReturnCallback(static function ($id) use ($container, $admin1, $admin2) {
+            ->willReturnCallback(static function (string $id) use ($admin1, $admin2): AdminInterface {
                 switch ($id) {
-                    case 'sonata.admin.pool':
-                        $pool = new Pool($container, '', '');
-                        $pool->setAdminServiceIds(['acme.admin.foo', 'acme.admin.bar']);
-
-                        return $pool;
-
                     case 'acme.admin.foo':
                         return $admin1;
 
@@ -61,7 +54,9 @@ class ListAdminCommandTest extends TestCase
                 }
             });
 
-        $command->setContainer($container);
+        $pool = new Pool($container, '', '');
+        $pool->setAdminServiceIds(['acme.admin.foo', 'acme.admin.bar']);
+        $command = new ListAdminCommand($pool);
 
         $application->add($command);
 

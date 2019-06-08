@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\ClassLoader\ClassCollectionLoader;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -30,19 +30,39 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class CreateClassCacheCommand extends ContainerAwareCommand
+class CreateClassCacheCommand extends Command
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected static $defaultName = 'cache:create-cache-class';
+
+    /**
+     * @var string
+     */
+    private $cacheDir;
+
+    /**
+     * @var bool
+     */
+    private $debug;
+
+    public function __construct(string $cacheDir, bool $debug)
+    {
+        $this->cacheDir = $cacheDir;
+        $this->debug = $debug;
+
+        parent::__construct();
+    }
+
     public function configure()
     {
-        $this->setName('cache:create-cache-class');
         $this->setDescription('Generate the classes.php files');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $kernel = $this->getContainer()->get('kernel');
-
-        $classmap = $kernel->getCacheDir().'/classes.map';
+        $classmap = $this->cacheDir.'/classes.map';
 
         if (!is_file($classmap)) {
             throw new \RuntimeException(sprintf('The file %s does not exist', $classmap));
@@ -54,9 +74,9 @@ class CreateClassCacheCommand extends ContainerAwareCommand
         $output->write('<info>Writing cache file ...</info>');
         ClassCollectionLoader::load(
             include($classmap),
-            $kernel->getCacheDir(),
+            $this->cacheDir,
             $name,
-            $kernel->isDebug(),
+            $this->debug,
             false,
             $extension
         );
