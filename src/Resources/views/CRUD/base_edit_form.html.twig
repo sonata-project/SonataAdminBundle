@@ -56,7 +56,7 @@
                                             <div class="sonata-ba-collapsed-fields">
                                                 {% if form_tab.description != false %}
                                                     <p>
-                                                        {{ form_tab.description|trans({}, form_tab.translation_domain ?: admin.translationDomain) }}
+                                                        {{ form_tab.description|trans({}, form_tab.translation_domain ?: admin.translationDomain)|raw }}
                                                     </p>
                                                 {% endif %}
 
