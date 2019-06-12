@@ -129,8 +129,10 @@ class ListMapper extends BaseMapper
             );
         }
 
-        // add the field with the FormBuilder
-        $this->builder->addField($this->list, $type, $fieldDescription, $this->admin);
+        if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
+            // add the field with the FormBuilder
+            $this->builder->addField($this->list, $type, $fieldDescription, $this->admin);
+        }
 
         return $this;
     }

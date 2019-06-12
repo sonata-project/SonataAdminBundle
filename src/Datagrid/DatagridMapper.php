@@ -89,8 +89,10 @@ class DatagridMapper extends BaseMapper
             );
         }
 
-        // add the field with the DatagridBuilder
-        $this->builder->addFilter($this->datagrid, $type, $fieldDescription, $this->admin);
+        if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
+            // add the field with the DatagridBuilder
+            $this->builder->addFilter($this->datagrid, $type, $fieldDescription, $this->admin);
+        }
 
         return $this;
     }

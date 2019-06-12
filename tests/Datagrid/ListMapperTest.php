@@ -29,6 +29,8 @@ use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
  */
 class ListMapperTest extends TestCase
 {
+    private const DEFAULT_GRANTED_ROLE = 'ROLE_ADMIN_BAZ';
+
     /**
      * @var ListMapper
      */
@@ -44,7 +46,7 @@ class ListMapperTest extends TestCase
      */
     private $admin;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $listBuilder = $this->createMock(ListBuilderInterface::class);
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
@@ -77,6 +79,12 @@ class ListMapperTest extends TestCase
         $this->admin->expects($this->any())
             ->method('getLabelTranslatorStrategy')
             ->willReturn($labelTranslatorStrategy);
+
+        $this->admin->expects($this->any())
+            ->method('isGranted')
+            ->willReturnCallback(static function (string $name, object $object = null): bool {
+                return self::DEFAULT_GRANTED_ROLE === $name;
+            });
 
         $this->listMapper = new ListMapper($listBuilder, $this->fieldDescriptionCollection, $this->admin);
     }
@@ -255,6 +263,27 @@ class ListMapperTest extends TestCase
             'fooName1' => $fieldDescription1,
             'fooName4' => $fieldDescription4,
         ], true), print_r($this->fieldDescriptionCollection->getElements(), true));
+    }
+
+    public function testAddOptionRole(): void
+    {
+        $this->listMapper->add('bar', 'bar');
+
+        $this->assertTrue($this->listMapper->has('bar'));
+
+        $this->listMapper->add('quux', 'bar', ['role' => 'ROLE_QUX']);
+
+        $this->assertTrue($this->listMapper->has('bar'));
+        $this->assertFalse($this->listMapper->has('quux'));
+
+        $this->listMapper
+            ->add('foobar', 'bar', ['role' => self::DEFAULT_GRANTED_ROLE])
+            ->add('foo', 'bar', ['role' => 'ROLE_QUX'])
+            ->add('baz', 'bar');
+
+        $this->assertTrue($this->listMapper->has('foobar'));
+        $this->assertFalse($this->listMapper->has('foo'));
+        $this->assertTrue($this->listMapper->has('baz'));
     }
 
     private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription
