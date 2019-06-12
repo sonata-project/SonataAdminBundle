@@ -33,6 +33,8 @@ use Symfony\Component\Form\FormBuilder;
  */
 class DatagridMapperTest extends TestCase
 {
+    private const DEFAULT_GRANTED_ROLE = 'ROLE_ADMIN_BAZ';
+
     /**
      * @var DatagridMapper
      */
@@ -43,7 +45,7 @@ class DatagridMapperTest extends TestCase
      */
     private $datagrid;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
 
@@ -88,6 +90,12 @@ class DatagridMapperTest extends TestCase
         $admin->expects($this->any())
             ->method('getModelManager')
             ->willReturn($modelManager);
+
+        $admin->expects($this->any())
+            ->method('isGranted')
+            ->willReturnCallback(static function (string $name, object $object = null): bool {
+                return self::DEFAULT_GRANTED_ROLE === $name;
+            });
 
         $this->datagridMapper = new DatagridMapper($datagridBuilder, $this->datagrid, $admin);
     }
@@ -261,6 +269,27 @@ class DatagridMapperTest extends TestCase
             'fooName1',
             'fooName4',
         ], array_keys($this->datagrid->getFilters()));
+    }
+
+    public function testAddOptionRole(): void
+    {
+        $this->datagridMapper->add('bar', 'bar');
+
+        $this->assertTrue($this->datagridMapper->has('bar'));
+
+        $this->datagridMapper->add('quux', 'bar', [], null, null, ['role' => 'ROLE_QUX']);
+
+        $this->assertTrue($this->datagridMapper->has('bar'));
+        $this->assertFalse($this->datagridMapper->has('quux'));
+
+        $this->datagridMapper
+            ->add('foobar', 'bar', [], null, null, ['role' => self::DEFAULT_GRANTED_ROLE])
+            ->add('foo', 'bar', [], null, null, ['role' => 'ROLE_QUX'])
+            ->add('baz', 'bar');
+
+        $this->assertTrue($this->datagridMapper->has('foobar'));
+        $this->assertFalse($this->datagridMapper->has('foo'));
+        $this->assertTrue($this->datagridMapper->has('baz'));
     }
 
     private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription
