@@ -110,7 +110,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
 
         if ($this->multiple) {
             $isArray = \is_array($entityOrCollection);
-            if (!$isArray && substr(\get_class($entityOrCollection), -1 * \strlen($this->className)) === $this->className) {
+            if (!$isArray && substr(\get_class($entityOrCollection), -1 * \strlen((string)$this->className)) === $this->className) {
                 throw new \InvalidArgumentException('A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
             } elseif ($isArray || ($entityOrCollection instanceof \ArrayAccess)) {
                 $collection = $entityOrCollection;
@@ -118,7 +118,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
                 throw new \InvalidArgumentException('A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
             }
         } else {
-            if (substr(\get_class($entityOrCollection), -1 * \strlen($this->className)) === $this->className) {
+            if (substr(\get_class($entityOrCollection), -1 * \strlen((string)$this->className)) === $this->className) {
                 $collection = [$entityOrCollection];
             } elseif ($entityOrCollection instanceof \ArrayAccess) {
                 throw new \InvalidArgumentException('A single selection must be passed a single value not a collection. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
