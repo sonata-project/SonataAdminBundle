@@ -14,8 +14,30 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
+use Sonata\AdminBundle\Admin\AdminHelper;
+use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
+use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
+use Sonata\AdminBundle\Event\AdminEventExtension;
+use Sonata\AdminBundle\Filter\FilterFactory;
+use Sonata\AdminBundle\Filter\FilterFactoryInterface;
+use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
+use Sonata\AdminBundle\Filter\Persister\SessionFilterPersister;
+use Sonata\AdminBundle\Model\AuditManager;
+use Sonata\AdminBundle\Model\AuditManagerInterface;
+use Sonata\AdminBundle\Route\AdminPoolLoader;
+use Sonata\AdminBundle\Search\SearchHandler;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
+use Sonata\AdminBundle\Templating\TemplateRegistry;
+use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
+use Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy;
+use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
+use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
+use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
+use Sonata\AdminBundle\Twig\GlobalVariables;
 
 class SonataAdminExtensionTest extends AbstractExtensionTestCase
 {
@@ -40,6 +62,47 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->defaultJavascripts = $this->container
             ->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts']
         ;
+    }
+
+    public function testHasCoreServicesAlias(): void
+    {
+        $this->assertContainerBuilderHasService(Pool::class);
+        $this->assertContainerBuilderHasService(AdminPoolLoader::class);
+        $this->assertContainerBuilderHasService(AdminHelper::class);
+        $this->assertContainerBuilderHasService(FilterFactory::class);
+        $this->assertContainerBuilderHasService(
+            FilterFactoryInterface::class,
+            FilterFactory::class
+        );
+        $this->assertContainerBuilderHasService(BreadcrumbsBuilder::class);
+        $this->assertContainerBuilderHasService(
+            BreadcrumbsBuilderInterface::class,
+            BreadcrumbsBuilder::class
+        );
+        $this->assertContainerBuilderHasService(BCLabelTranslatorStrategy::class);
+        $this->assertContainerBuilderHasService(NativeLabelTranslatorStrategy::class);
+        $this->assertContainerBuilderHasService(
+            LabelTranslatorStrategyInterface::class,
+            NativeLabelTranslatorStrategy::class
+        );
+        $this->assertContainerBuilderHasService(NoopLabelTranslatorStrategy::class);
+        $this->assertContainerBuilderHasService(UnderscoreLabelTranslatorStrategy::class);
+        $this->assertContainerBuilderHasService(FormLabelTranslatorStrategy::class);
+        $this->assertContainerBuilderHasService(AuditManager::class);
+        $this->assertContainerBuilderHasService(AuditManagerInterface::class, AuditManager::class);
+        $this->assertContainerBuilderHasService(SearchHandler::class);
+        $this->assertContainerBuilderHasService(AdminEventExtension::class);
+        $this->assertContainerBuilderHasService(GlobalVariables::class);
+        $this->assertContainerBuilderHasService(SessionFilterPersister::class);
+        $this->assertContainerBuilderHasService(
+            FilterPersisterInterface::class,
+            SessionFilterPersister::class
+        );
+        $this->assertContainerBuilderHasService(TemplateRegistry::class);
+        $this->assertContainerBuilderHasService(
+            MutableTemplateRegistryInterface::class,
+            TemplateRegistry::class
+        );
     }
 
     /**
