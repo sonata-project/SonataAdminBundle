@@ -327,7 +327,7 @@ Setup firewall in `security.yaml`
                 - ROLE_SONATA_PAGE_ADMIN_PAGE_EDIT
 
         encoders:
-            App\Entity\User: bcrypt
+            App\Entity\User: auto # use bcrypt if you are using "symfony/security-bundle" < 4.3
 
         providers:
             users:
