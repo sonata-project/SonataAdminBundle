@@ -22,19 +22,14 @@ file that was distributed with this source code.
     }, 'twig') }}
 {%- endblock -%}
 
-{% block title %}
-    {#
-        The list template can be used in nested mode,
-        so we define the title corresponding to the parent's admin.
-    #}
+{% set title = admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject) }, 'SonataAdminBundle') : '' %}
 
-    {% if admin.isChild and admin.parent.subject %}
-        {{ "title_edit"|trans({'%name%': admin.parent.toString(admin.parent.subject)|truncate(15) }, 'SonataAdminBundle') }}
-    {% endif %}
+{% block title %}
+    {{ title|truncate(15) }}
 {% endblock %}
 
 {% block navbar_title %}
-    {{ block('title') }}
+    {{ title }}
 {% endblock %}
 
 {% block list_table %}
