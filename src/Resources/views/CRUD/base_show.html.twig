@@ -11,12 +11,14 @@ file that was distributed with this source code.
 
 {% extends base_template %}
 
+{% set title = 'title_show'|trans({'%name%': admin.toString(object) }, 'SonataAdminBundle') %}
+
 {% block title %}
-    {{ "title_show"|trans({'%name%': admin.toString(object)|truncate(15) }, 'SonataAdminBundle') }}
+    {{ title|truncate(15) }}
 {% endblock %}
 
 {% block navbar_title %}
-    {{ block('title') }}
+    {{ title }}
 {% endblock %}
 
 {%- block actions -%}
