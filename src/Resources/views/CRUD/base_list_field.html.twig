@@ -13,7 +13,7 @@ file that was distributed with this source code.
     {% set route = field_description.options.route.name|default(null) %}
 
     {% if
-        field_description.options.identifier is defined
+        field_description.options.identifier|default(false)
         and route
         and admin.hasRoute(route)
         and admin.hasAccess(route, route in ['show', 'edit'] ? object : null)
