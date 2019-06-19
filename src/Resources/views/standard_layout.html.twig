@@ -143,7 +143,7 @@ file that was distributed with this source code.
                 {% endblock %}
                 {% block sonata_nav %}
                     <nav class="navbar navbar-static-top" role="navigation">
-                        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" 
+                        <a href="#" class="sidebar-toggle" data-toggle="offcanvas"
                            role="button" title="{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}">
                             <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
                         </a>
@@ -177,7 +177,7 @@ file that was distributed with this source code.
                                                                 {% endif %}
                                                             </li>
                                                         {% else %}
-                                                            <li class="active"><span>{{ label }}</span></li>
+                                                            <li class="active"><span>{{ label|truncate(100) }}</span></li>
                                                         {% endif %}
                                                     {% endfor %}
                                                 {% endif %}
