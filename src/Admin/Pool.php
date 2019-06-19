@@ -233,24 +233,31 @@ class Pool
      *
      * @param string $adminCode
      *
+     * @throws \InvalidArgumentException if the root admin code is an empty string
+     *
      * @return \Sonata\AdminBundle\Admin\AdminInterface|false
      */
     public function getAdminByAdminCode($adminCode)
     {
         $codes = explode('|', $adminCode);
+        $code = trim(array_shift($codes));
 
-        if (false === $codes) {
-            return false;
+        if ('' === $code) {
+            throw new \InvalidArgumentException('Root admin code must contain a valid admin reference, empty string given.');
         }
 
-        $admin = $this->getInstance($codes[0]);
-        array_shift($codes);
-
-        if (empty($codes)) {
-            return $admin;
-        }
+        $admin = $this->getInstance($code);
 
         foreach ($codes as $code) {
+            if (!\in_array($code, $this->adminServiceIds, true)) {
+                @trigger_error(sprintf(
+                    'Passing an invalid admin code as argument 1 for %s() is deprecated since 3.x and will throw an exception in 4.0.',
+                    __METHOD__
+                ), E_USER_DEPRECATED);
+
+                // NEXT_MAJOR : throw `\InvalidArgumentException` instead
+            }
+
             if (!$admin->hasChild($code)) {
                 return false;
             }

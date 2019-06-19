@@ -171,6 +171,7 @@ class GenerateAdminCommandTest extends TestCase
 
         $configServiceContent = file_get_contents($this->tempDirectory.'/Resources/config/admin.yml');
         $this->assertContains('services:'."\n".'    acme_demo_admin.admin.foo', $configServiceContent);
+        $this->assertContains('        arguments: [~, Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo, Sonata\AdminBundle\Tests\Fixtures\Bundle\Controller\FooAdminController]', $configServiceContent);
         $this->assertContains('            - { name: sonata.admin, manager_type: foo, group: admin, label: Foo }', $configServiceContent);
     }
 
@@ -285,6 +286,7 @@ class GenerateAdminCommandTest extends TestCase
         $configServiceContent = file_get_contents($this->tempDirectory.'/Resources/config/admin.yml');
         $this->assertContains('services:'."\n".'    acme_demo_admin.admin.foo', $configServiceContent);
         $this->assertContains('            - { name: sonata.admin, manager_type: foo, group: admin, label: Foo }', $configServiceContent);
+        $this->assertRegExp('{^        arguments: \[\~, Sonata\\\AdminBundle\\\Tests\\\Fixtures(\\\Bundle)?\\\Entity\\\Foo, Sonata\\\AdminBundle\\\Tests\\\Fixtures\\\Bundle\\\Controller\\\FooAdminController\]$}m', $configServiceContent);
     }
 
     public function getExecuteInteractiveTests()

@@ -105,16 +105,19 @@ class GenerateAdminCommand extends QuestionableCommand
             $this->writeError($output, $e->getMessage());
         }
 
+        $controllerName = CRUDController::class;
+
         if ($controllerClassBasename = $input->getOption('controller')) {
             $controllerClassBasename = Validators::validateControllerClassBasename($controllerClassBasename);
             $controllerGenerator = new ControllerGenerator($skeletonDirectory);
 
             try {
                 $controllerGenerator->generate($bundle, $controllerClassBasename);
+                $controllerName = $controllerGenerator->getClass();
                 $output->writeln(sprintf(
                     '%sThe controller class "<info>%s</info>" has been generated under the file "<info>%s</info>".',
                     PHP_EOL,
-                    $controllerGenerator->getClass(),
+                    $controllerName,
                     realpath($controllerGenerator->getFile())
                 ));
             } catch (\Exception $e) {
@@ -126,10 +129,6 @@ class GenerateAdminCommand extends QuestionableCommand
             $adminClass = $adminGenerator->getClass();
             $file = sprintf('%s/Resources/config/%s', $bundle->getPath(), $servicesFile);
             $servicesManipulator = new ServicesManipulator($file);
-            $controllerName = $controllerClassBasename
-                ? sprintf('%s:%s', $bundle->getName(), substr($controllerClassBasename, 0, -10))
-                : CRUDController::class
-            ;
 
             try {
                 $id = $input->getOption('id') ?: $this->getAdminServiceId($bundle->getName(), $adminClassBasename);
