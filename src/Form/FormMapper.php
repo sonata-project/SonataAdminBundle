@@ -113,10 +113,13 @@ class FormMapper extends BaseGroupedMapper
         $this->admin->addFormFieldDescription($fieldName, $fieldDescription);
 
         if ($name instanceof FormBuilderInterface) {
-            $this->formBuilder->add($name);
+            $type = null;
+            $options = [];
         } else {
+            $name = $fieldDescription->getName();
+
             // Note that the builder var is actually the formContractor:
-            $options = array_replace_recursive($this->builder->getDefaultOptions($type, $fieldDescription), $options);
+            $options = array_replace_recursive($this->builder->getDefaultOptions($type, $fieldDescription) ?? [], $options);
 
             // be compatible with mopa if not installed, avoid generating an exception for invalid option
             // force the default to false ...
@@ -125,7 +128,7 @@ class FormMapper extends BaseGroupedMapper
             }
 
             if (!isset($options['label'])) {
-                $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'form', 'label');
+                $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($name, 'form', 'label');
             }
 
             $help = null;
@@ -134,11 +137,13 @@ class FormMapper extends BaseGroupedMapper
                 unset($options['help']);
             }
 
-            $this->formBuilder->add($fieldDescription->getName(), $type, $options);
-
             if (null !== $help) {
-                $this->admin->getFormFieldDescription($fieldDescription->getName())->setHelp($help);
+                $this->admin->getFormFieldDescription($name)->setHelp($help);
             }
+        }
+
+        if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
+            $this->formBuilder->add($name, $type, $options);
         }
 
         return $this;

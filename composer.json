@@ -33,6 +33,7 @@
         "symfony/config": "^2.8 || ^3.2 || ^4.0",
         "symfony/console": "^2.8 || ^3.2 || ^4.0",
         "symfony/dependency-injection": "^2.8 || ^3.2 || ^4.0",
+        "symfony/doctrine-bridge": "^2.8 || ^3.2 || ^4.0",
         "symfony/event-dispatcher": "^2.8 || ^3.2 || ^4.0",
         "symfony/expression-language": "^2.8 || ^3.2 || ^4.0",
         "symfony/form": "^2.8.18 || ^3.2.5 || ^4.0",
@@ -52,7 +53,7 @@
         "symfony/twig-bundle": "^2.8 || ^3.2 || ^4.0",
         "symfony/validator": "^2.8 || ^3.2 || ^4.0",
         "twig/extensions": "^1.5",
-        "twig/twig": "^1.34 || ^2.0"
+        "twig/twig": "^2.9"
     },
     "conflict": {
         "jms/di-extra-bundle": "<1.9",

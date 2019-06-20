@@ -11,17 +11,19 @@ file that was distributed with this source code.
 
 {% extends base_template %}
 
+{# NEXT_MAJOR: remove default filter #}
+{% if objectId|default(admin.id(object)) is not null %}
+    {% set title = 'title_edit'|trans({'%name%': admin.toString(object) }, 'SonataAdminBundle') %}
+{% else %}
+    {% set title = 'title_create'|trans({}, 'SonataAdminBundle') %}
+{% endif %}
+
 {% block title %}
-    {# NEXT_MAJOR: remove default filter #}
-    {% if objectId|default(admin.id(object)) is not null %}
-        {{ "title_edit"|trans({'%name%': admin.toString(object)|truncate(15) }, 'SonataAdminBundle') }}
-    {% else %}
-        {{ "title_create"|trans({}, 'SonataAdminBundle') }}
-    {% endif %}
+    {{ title|truncate(15) }}
 {% endblock %}
 
 {% block navbar_title %}
-    {{ block('title') }}
+    {{ title }}
 {% endblock %}
 
 {%- block actions -%}

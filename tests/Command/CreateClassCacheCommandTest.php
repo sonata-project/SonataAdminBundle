@@ -17,8 +17,6 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Command\CreateClassCacheCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @group legacy
@@ -54,28 +52,7 @@ class CreateClassCacheCommandTest extends TestCase
         }
 
         $this->application = new Application();
-        $command = new CreateClassCacheCommand();
-
-        $container = $this->createMock(ContainerInterface::class);
-        $kernel = $this->createMock(KernelInterface::class);
-
-        $kernel->expects($this->any())
-            ->method('getCacheDir')
-            ->willReturn($this->tempDirectory);
-
-        $kernel->expects($this->any())
-            ->method('isDebug')
-            ->willReturn(false);
-
-        $container->expects($this->any())
-                ->method('get')
-                ->willReturnCallback(static function ($id) use ($kernel) {
-                    if ('kernel' === $id) {
-                        return $kernel;
-                    }
-                });
-
-        $command->setContainer($container);
+        $command = new CreateClassCacheCommand($this->tempDirectory, false);
 
         $this->application->add($command);
     }

@@ -13,28 +13,43 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ListAdminCommand extends ContainerAwareCommand
+class ListAdminCommand extends Command
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected static $defaultName = 'sonata:admin:list';
+
+    /**
+     * @var Pool
+     */
+    private $pool;
+
+    public function __construct(Pool $pool)
+    {
+        $this->pool = $pool;
+
+        parent::__construct();
+    }
+
     public function configure(): void
     {
-        $this->setName('sonata:admin:list');
         $this->setDescription('List all admin services available');
     }
 
     public function execute(InputInterface $input, OutputInterface $output): void
     {
-        $pool = $this->getContainer()->get('sonata.admin.pool');
-
         $output->writeln('<info>Admin services:</info>');
-        foreach ($pool->getAdminServiceIds() as $id) {
-            $instance = $this->getContainer()->get($id);
+        foreach ($this->pool->getAdminServiceIds() as $id) {
+            $instance = $this->pool->getInstance($id);
             $output->writeln(sprintf('  <info>%-40s</info> %-60s',
                 $id,
                 $instance->getClass()
