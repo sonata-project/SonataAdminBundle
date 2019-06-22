@@ -228,7 +228,7 @@ class PoolTest extends TestCase
     /**
      * @group legacy
      *
-     * @expectedDeprecation Passing an invalid admin code as argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since 3.x and will throw an exception in 4.0.
+     * @expectedDeprecation Passing an invalid admin code as argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since 3.50 and will throw an exception in 4.0.
      */
     public function testGetAdminByAdminCodeForChildInvalidClass(): void
     {
@@ -290,7 +290,7 @@ class PoolTest extends TestCase
      *
      * @group legacy
      *
-     * @expectedDeprecation Passing an invalid admin code as argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since 3.x and will throw an exception in 4.0.
+     * @expectedDeprecation Passing an invalid admin code as argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since 3.50 and will throw an exception in 4.0.
      */
     public function testGetAdminByAdminCodeWithInvalidChildCode(string $adminId): void
     {
