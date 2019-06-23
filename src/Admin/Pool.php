@@ -251,7 +251,7 @@ class Pool
         foreach ($codes as $code) {
             if (!\in_array($code, $this->adminServiceIds, true)) {
                 @trigger_error(sprintf(
-                    'Passing an invalid admin code as argument 1 for %s() is deprecated since 3.x and will throw an exception in 4.0.',
+                    'Passing an invalid admin code as argument 1 for %s() is deprecated since 3.50 and will throw an exception in 4.0.',
                     __METHOD__
                 ), E_USER_DEPRECATED);
 
