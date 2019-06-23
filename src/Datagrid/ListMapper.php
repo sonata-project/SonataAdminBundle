@@ -78,14 +78,7 @@ class ListMapper extends BaseMapper
         }
 
         if (\array_key_exists('identifier', $fieldDescriptionOptions) && !\is_bool($fieldDescriptionOptions['identifier'])) {
-            @trigger_error(
-                'Passing a non boolean value for the "identifier" option is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
-                E_USER_DEPRECATED
-            );
-
-            $fieldDescriptionOptions['identifier'] = (bool) $fieldDescriptionOptions['identifier'];
-            // NEXT_MAJOR: Remove the previous 6 lines and use commented line below it instead
-            // throw new \InvalidArgumentException(sprintf('Value for "identifier" option must be boolean, %s given.', gettype($fieldDescriptionOptions['identifier'])));
+            throw new \InvalidArgumentException(sprintf('Value for "identifier" option must be boolean, %s given.', \gettype($fieldDescriptionOptions['identifier'])));
         }
 
         if ($name instanceof FieldDescriptionInterface) {

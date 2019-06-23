@@ -138,32 +138,14 @@ class ListMapperTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
-     * @expectedDeprecation Passing a non boolean value for the "identifier" option is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
-     *
-     * @dataProvider getWrongIdentifierOptions
-     */
-    public function testAddOptionIdentifierWithDeprecatedValue(bool $expected, $value): void
-    {
-        $this->assertFalse($this->listMapper->has('fooName'));
-        $this->listMapper->add('fooName', null, ['identifier' => $value]);
-        $this->assertTrue($this->listMapper->has('fooName'));
-        $this->assertSame($expected, $this->listMapper->get('fooName')->getOption('identifier'));
-    }
-
-    /**
      * @dataProvider getWrongIdentifierOptions
      */
     public function testAddOptionIdentifierWithWrongValue(bool $expected, $value): void
     {
-        // NEXT_MAJOR: Remove the following `markTestSkipped()` call and the `testAddOptionIdentifierWithDeprecatedValue()` test
-        $this->markTestSkipped('This test must be run in 4.0');
-
         $this->assertFalse($this->listMapper->has('fooName'));
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('{^Value for "identifier" option must be boolean, [^]+ given.$}');
+        $this->expectExceptionMessageRegExp('{^Value for "identifier" option must be boolean, [^ ]+ given\.$}');
 
         $this->listMapper->add('fooName', null, ['identifier' => $value]);
     }

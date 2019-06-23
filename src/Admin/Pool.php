@@ -250,12 +250,12 @@ class Pool
 
         foreach ($codes as $code) {
             if (!\in_array($code, $this->adminServiceIds, true)) {
-                @trigger_error(sprintf(
-                    'Passing an invalid admin code as argument 1 for %s() is deprecated since 3.50 and will throw an exception in 4.0.',
-                    __METHOD__
-                ), E_USER_DEPRECATED);
-
-                // NEXT_MAJOR : throw `\InvalidArgumentException` instead
+                throw new \InvalidArgumentException(sprintf(
+                    'Argument 1 passed to %s() must contain a valid admin reference, "%s" found at "%s".',
+                    __METHOD__,
+                    $code,
+                    $adminCode
+                ));
             }
 
             if (!$admin->hasChild($code)) {
