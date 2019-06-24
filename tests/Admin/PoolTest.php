@@ -225,12 +225,7 @@ class PoolTest extends TestCase
         $this->assertSame('commentAdminClass', $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.comment'));
     }
 
-    /**
-     * @group legacy
-     *
-     * @expectedDeprecation Passing an invalid admin code as argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since 3.50 and will throw an exception in 4.0.
-     */
-    public function testGetAdminByAdminCodeForChildInvalidClass(): void
+    public function testGetAdminByAdminCodeWithInvalidCode(): void
     {
         $adminMock = $this->getMockBuilder(AdminInterface::class)
             ->disableOriginalConstructor()
@@ -247,7 +242,30 @@ class PoolTest extends TestCase
         $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
         $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
 
-        $this->assertFalse($this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid'));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Argument 1 passed to Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() must contain a valid admin reference, "sonata.news.admin.valid" found at "sonata.news.admin.post|sonata.news.admin.valid".');
+
+        $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.valid');
+    }
+
+    public function testGetAdminByAdminCodeWithCodeNotChild(): void
+    {
+        $adminMock = $this->getMockBuilder(AdminInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $adminMock->expects($this->any())
+            ->method('hasChild')
+            ->willReturn(false);
+
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerMock->expects($this->any())
+            ->method('get')
+            ->willReturn($adminMock);
+
+        $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
+        $this->pool->setAdminServiceIds(['sonata.news.admin.post', 'sonata.news.admin.valid']);
+
+        $this->assertFalse($this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.valid'));
     }
 
     /**
@@ -287,10 +305,6 @@ class PoolTest extends TestCase
 
     /**
      * @dataProvider getInvalidChildAdminServiceNames
-     *
-     * @group legacy
-     *
-     * @expectedDeprecation Passing an invalid admin code as argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since 3.50 and will throw an exception in 4.0.
      */
     public function testGetAdminByAdminCodeWithInvalidChildCode(string $adminId): void
     {
@@ -314,7 +328,12 @@ class PoolTest extends TestCase
             ->method('getInstance')
             ->willReturn($adminMock);
 
-        $this->assertFalse($poolMock->getAdminByAdminCode($adminId));
+        $this->expectExceptionMessageRegExp(sprintf(
+            '{^Argument 1 passed to Sonata\\\AdminBundle\\\Admin\\\Pool::getAdminByAdminCode\(\) must contain a valid admin reference, "[^"]+" found at "%s"\.$}',
+            $adminId
+        ));
+
+        $poolMock->getAdminByAdminCode($adminId);
     }
 
     public function getInvalidChildAdminServiceNames()
