@@ -49,7 +49,7 @@ class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([
-            'admin_code' => false,
+            'admin_code' => '',
             'query' => '',
             'page' => 0,
             'per_page' => 10,

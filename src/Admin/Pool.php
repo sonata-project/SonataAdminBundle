@@ -239,6 +239,16 @@ class Pool
      */
     public function getAdminByAdminCode($adminCode)
     {
+        if (!\is_string($adminCode)) {
+            @trigger_error(sprintf(
+                'Passing a non string value as argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+
+            return false;
+
+            // NEXT_MAJOR : remove this condition check and declare "string" as type without default value for argument 1
+        }
         $codes = explode('|', $adminCode);
         $code = trim(array_shift($codes));
 
@@ -251,7 +261,7 @@ class Pool
         foreach ($codes as $code) {
             if (!\in_array($code, $this->adminServiceIds, true)) {
                 @trigger_error(sprintf(
-                    'Passing an invalid admin code as argument 1 for %s() is deprecated since 3.50 and will throw an exception in 4.0.',
+                    'Passing an invalid admin code as argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.50 and will throw an exception in 4.0.',
                     __METHOD__
                 ), E_USER_DEPRECATED);
 
@@ -259,6 +269,19 @@ class Pool
             }
 
             if (!$admin->hasChild($code)) {
+                @trigger_error(sprintf(
+                    'Passing an invalid admin hierarchy inside argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
+                    __METHOD__
+                ), E_USER_DEPRECATED);
+
+                // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following excception and declare AdminInterface as return type
+                // throw new InvalidArgumentException(sprintf(
+                //    'Argument 1 passed to %s() must contain a valid admin hierarchy, "%s" is not a valid child for "%s"',
+                //    __METHOD__,
+                //    $code,
+                //    $admin->getCode()
+                // ));
+
                 return false;
             }
 

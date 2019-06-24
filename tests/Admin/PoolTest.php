@@ -228,9 +228,9 @@ class PoolTest extends TestCase
     /**
      * @group legacy
      *
-     * @expectedDeprecation Passing an invalid admin code as argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since 3.50 and will throw an exception in 4.0.
+     * @expectedDeprecation Passing an invalid admin code as argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since sonata-project/admin-bundle 3.50 and will throw an exception in 4.0.
      */
-    public function testGetAdminByAdminCodeForChildInvalidClass(): void
+    public function testGetAdminByAdminCodeWithInvalidCode(): void
     {
         $adminMock = $this->getMockBuilder(AdminInterface::class)
             ->disableOriginalConstructor()
@@ -248,6 +248,56 @@ class PoolTest extends TestCase
         $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
 
         $this->assertFalse($this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid'));
+    }
+
+    /**
+     * @group legacy
+     *
+     * @expectedDeprecation Passing a non string value as argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     */
+    public function testGetAdminByAdminCodeWithNonStringCode(): void
+    {
+        $this->pool = new Pool($this->createMock(ContainerInterface::class), 'Sonata', '/path/to/logo.png');
+
+        $this->assertFalse($this->pool->getAdminByAdminCode(false));
+        $this->assertFalse($this->pool->getAdminByAdminCode(true));
+        $this->assertFalse($this->pool->getAdminByAdminCode(null));
+        $this->assertFalse($this->pool->getAdminByAdminCode(['']));
+        $this->assertFalse($this->pool->getAdminByAdminCode(['some_value']));
+        $this->assertFalse($this->pool->getAdminByAdminCode(1));
+        $this->assertFalse($this->pool->getAdminByAdminCode(new \stdClass()));
+        // NEXT_MAJOR: remove the previous assertions, the "@group" and "@expectedDeprecation" annotations, and uncomment the following line
+        // $this->expectException(\TypeError::class);
+    }
+
+    /**
+     * @group legacy
+     *
+     * @expectedDeprecation Passing an invalid admin hierarchy inside argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     */
+    public function testGetAdminByAdminCodeWithCodeNotChild(): void
+    {
+        $adminMock = $this->getMockBuilder(AdminInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $adminMock->expects($this->any())
+            ->method('hasChild')
+            ->willReturn(false);
+        $adminMock->expects($this->any())
+            ->method('getCode')
+            ->willReturn('sonata.news.admin.post');
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerMock->expects($this->any())
+            ->method('get')
+            ->willReturn($adminMock);
+        $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
+        $this->pool->setAdminServiceIds(['sonata.news.admin.post', 'sonata.news.admin.valid']);
+        $this->assertFalse($this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.valid'));
+        // NEXT_MAJOR: remove the "@group" and "@expectedDeprecation" annotations, the previous assertion and uncomment the following lines
+        // $this->expectException(\InvalidArgumentException::class);
+        // $this->expectExceptionMessage('Argument 1 passed to Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() must contain a valid admin hierarchy, "sonata.news.admin.valid" is not a valid child for "sonata.news.admin.post"');
+        //
+        // $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.valid');
     }
 
     /**
@@ -290,7 +340,7 @@ class PoolTest extends TestCase
      *
      * @group legacy
      *
-     * @expectedDeprecation Passing an invalid admin code as argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since 3.50 and will throw an exception in 4.0.
+     * @expectedDeprecation Passing an invalid admin code as argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since sonata-project/admin-bundle 3.50 and will throw an exception in 4.0.
      */
     public function testGetAdminByAdminCodeWithInvalidChildCode(string $adminId): void
     {

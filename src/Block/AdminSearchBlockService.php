@@ -92,12 +92,15 @@ class AdminSearchBlockService extends AbstractBlockService
 
     public function configureSettings(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'admin_code' => false,
-            'query' => '',
-            'page' => 0,
-            'per_page' => 10,
-            'icon' => '<i class="fa fa-list"></i>',
-        ]);
+        $resolver
+            ->setDefaults([
+                'admin_code' => '',
+                'query' => '',
+                'page' => 0,
+                'per_page' => 10,
+                'icon' => '<i class="fa fa-list"></i>',
+            ])
+            ->setRequired('admin_code')
+            ->setAllowedTypes('admin_code', ['string']);
     }
 }
