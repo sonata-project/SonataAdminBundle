@@ -235,13 +235,13 @@ class Pool
      *
      * @throws \InvalidArgumentException if the root admin code is an empty string
      *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface|false
+     * @return AdminInterface|false
      */
     public function getAdminByAdminCode($adminCode)
     {
         if (!\is_string($adminCode)) {
             @trigger_error(sprintf(
-                'Passing a non string value as argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.',
+                'Passing a non string value as argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.51 and will result in a PHP TypeError in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
 
@@ -249,6 +249,7 @@ class Pool
 
             // NEXT_MAJOR : remove this condition check and declare "string" as type without default value for argument 1
         }
+
         $codes = explode('|', $adminCode);
         $code = trim(array_shift($codes));
 
@@ -270,12 +271,12 @@ class Pool
 
             if (!$admin->hasChild($code)) {
                 @trigger_error(sprintf(
-                    'Passing an invalid admin hierarchy inside argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.',
+                    'Calling "%s()" with an invalid admin hierarchy is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.',
                     __METHOD__
                 ), E_USER_DEPRECATED);
 
-                // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following excception and declare AdminInterface as return type
-                // throw new InvalidArgumentException(sprintf(
+                // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
+                // throw new \InvalidArgumentException(sprintf(
                 //    'Argument 1 passed to %s() must contain a valid admin hierarchy, "%s" is not a valid child for "%s"',
                 //    __METHOD__,
                 //    $code,
@@ -289,6 +290,53 @@ class Pool
         }
 
         return $admin;
+    }
+
+    /**
+     * See if an admin with a certain admin code exists.
+     *
+     * @param string $adminCode
+     *
+     * @return bool
+     */
+    public function hasAdminByAdminCode($adminCode)
+    {
+        if (!\is_string($adminCode)) {
+            @trigger_error(sprintf(
+                'Passing a non string value as argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.x and will result in a PHP TypeError in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+
+            return false;
+
+            // NEXT_MAJOR : remove this condition check and declare "string" as type without default value for argument 1
+        }
+
+        $codes = explode('|', $adminCode);
+        $code = trim(array_shift($codes));
+
+        if ('' === $code) {
+            return false;
+        }
+
+        try {
+            $admin = $this->getInstance($code);
+        } catch (\InvalidArgumentException $e) {
+            return false;
+        }
+
+        foreach ($codes as $code) {
+            if (!\in_array($code, $this->adminServiceIds, true)) {
+                return false;
+            }
+            if (!$admin->hasChild($code)) {
+                return false;
+            }
+
+            $admin = $admin->getChild($code);
+        }
+
+        return true;
     }
 
     /**
