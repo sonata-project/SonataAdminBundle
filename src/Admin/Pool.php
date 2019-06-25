@@ -241,7 +241,7 @@ class Pool
     {
         if (!\is_string($adminCode)) {
             @trigger_error(sprintf(
-                'Passing a non string value as argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.51 and will result in a PHP TypeError in 4.0.',
+                'Passing a non string value as argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.51 and will cause a \TypeError in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
 
@@ -271,7 +271,7 @@ class Pool
 
             if (!$admin->hasChild($code)) {
                 @trigger_error(sprintf(
-                    'Calling "%s()" with an invalid admin hierarchy is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.',
+                    'Passing an invalid admin hierarchy inside argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.',
                     __METHOD__
                 ), E_USER_DEPRECATED);
 
@@ -293,47 +293,17 @@ class Pool
     }
 
     /**
-     * See if an admin with a certain admin code exists.
-     *
-     * @param string $adminCode
-     *
-     * @return bool
+     * Checks if an admin with a certain admin code exists.
      */
-    public function hasAdminByAdminCode($adminCode)
+    final public function hasAdminByAdminCode(string $adminCode): bool
     {
-        if (!\is_string($adminCode)) {
-            @trigger_error(sprintf(
-                'Passing a non string value as argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.x and will result in a PHP TypeError in 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-
-            return false;
-
-            // NEXT_MAJOR : remove this condition check and declare "string" as type without default value for argument 1
-        }
-
-        $codes = explode('|', $adminCode);
-        $code = trim(array_shift($codes));
-
-        if ('' === $code) {
-            return false;
-        }
-
         try {
-            $admin = $this->getInstance($code);
+            if (!$this->getAdminByAdminCode($adminCode) instanceof AdminInterface) {
+                // NEXT_MAJOR : remove `if (...instanceof...) { return false; }` as getAdminByAdminCode() will then always throw an \InvalidArgumentException when somethings wrong
+                return false;
+            }
         } catch (\InvalidArgumentException $e) {
             return false;
-        }
-
-        foreach ($codes as $code) {
-            if (!\in_array($code, $this->adminServiceIds, true)) {
-                return false;
-            }
-            if (!$admin->hasChild($code)) {
-                return false;
-            }
-
-            $admin = $admin->getChild($code);
         }
 
         return true;
