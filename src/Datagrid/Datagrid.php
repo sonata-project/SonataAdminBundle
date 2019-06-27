@@ -154,11 +154,11 @@ class Datagrid implements DatagridInterface
                 $sortBy = $this->query->getSortBy();
                 $sortOrder = $this->query->getSortOrder();
 
-                if (null === $sortBy) {
+                if ($sortBy === null) {
                     $this->query->setSortBy($this->values['_sort_by']->getSortParentAssociationMapping(), $this->values['_sort_by']->getSortFieldMapping());
                 }
 
-                if (null === $sortOrder) {
+                if ($sortOrder === null) {
                     $this->query->setSortOrder($this->values['_sort_order'] ?? null);
                 }
             }
