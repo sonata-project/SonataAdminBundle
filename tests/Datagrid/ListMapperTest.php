@@ -140,7 +140,7 @@ class ListMapperTest extends TestCase
     /**
      * @group legacy
      *
-     * @expectedDeprecation Passing a non boolean value for the "identifier" option is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     * @expectedDeprecation Passing a non boolean value for the "identifier" option is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.
      *
      * @dataProvider getWrongIdentifierOptions
      */
