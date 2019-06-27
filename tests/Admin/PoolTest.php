@@ -253,7 +253,7 @@ class PoolTest extends TestCase
     /**
      * @group legacy
      *
-     * @expectedDeprecation Passing a non string value as argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     * @expectedDeprecation Passing a non string value as argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.
      */
     public function testGetAdminByAdminCodeWithNonStringCode(): void
     {
@@ -273,7 +273,7 @@ class PoolTest extends TestCase
     /**
      * @group legacy
      *
-     * @expectedDeprecation Passing an invalid admin hierarchy inside argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     * @expectedDeprecation Passing an invalid admin hierarchy inside argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.
      */
     public function testGetAdminByAdminCodeWithCodeNotChild(): void
     {
