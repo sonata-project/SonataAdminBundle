@@ -810,9 +810,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             return;
         }
 
-        $filterParameters = $this->getFilterParameters();
-        $sortingParameters = $this->determineSorting();
-        $filterParameters = array_merge($filterParameters, $sortingParameters);
+        $filterParameters = array_merge($this->getFilterParameters(), $this->determineSorting());
 
         // transform _sort_by from a string to a FieldDescriptionInterface for the datagrid.
         if (isset($filterParameters['_sort_by']) && \is_string($filterParameters['_sort_by'])) {
