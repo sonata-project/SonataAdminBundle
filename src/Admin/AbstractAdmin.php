@@ -811,6 +811,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         $filterParameters = $this->getFilterParameters();
+        $sortingParameters = $this->determineSorting();
+        $filterParameters = array_merge($filterParameters, $sortingParameters);
 
         // transform _sort_by from a string to a FieldDescriptionInterface for the datagrid.
         if (isset($filterParameters['_sort_by']) && \is_string($filterParameters['_sort_by'])) {
@@ -3122,6 +3124,29 @@ EOT;
         foreach ($this->getExtensions() as $extension) {
             $extension->configureRoutes($this, $this->routes);
         }
+    }
+
+    /**
+     * Determines default sorting of list (name of field and direction).
+     * Returns an array with 2 keys: "_sort_by" - name of field, "_sort_order" - sorting direction.
+     *
+     * Looks for sorting parameters in this order (first found will be used):
+     * 1. $this->$datagridValues property
+     * 2. Query used to load data
+     * 3. Defaults based on entity
+     *
+     * @return array
+     */
+    private function determineSorting()
+    {
+        $defaults = $this->getModelManager()->getDefaultSortValues($this->getClass());
+        $query = $this->createQuery();
+        $dataGrid = $this->datagridValues;
+
+        return [
+            '_sort_by'    => $dataGrid['_sort_by'] ?? $query->getSortBy() ?? $defaults['_sort_by'] ?? null,
+            '_sort_order' => $dataGrid['_sort_order'] ?? $query->getSortOrder() ?? $defaults['_sort_order'] ?? null,
+        ];
     }
 }
 
