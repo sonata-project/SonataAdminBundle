@@ -25,6 +25,9 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
+/**
+ * @final since sonata-project/admin-bundle 3.x
+ */
 class AdminExtractor implements ExtractorInterface, TranslatorInterface, SecurityHandlerInterface, LabelTranslatorStrategyInterface
 {
     /**

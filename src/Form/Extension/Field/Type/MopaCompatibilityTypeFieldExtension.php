@@ -24,6 +24,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * This class is built to allow AdminInterface to work properly
  * if the MopaBootstrapBundle is not installed.
  *
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension

@@ -36,6 +36,8 @@ use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 /**
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class SonataAdminExtension extends AbstractExtension

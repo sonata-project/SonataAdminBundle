@@ -23,6 +23,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * This type define a standard hidden field, that stored id to a object.
  *
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
 class ModelHiddenType extends AbstractType

@@ -19,6 +19,11 @@ use Sonata\AdminBundle\Annotation\Admin;
 
 class AnnotationCompilerPassTest extends TestCase
 {
+    /**
+     * @group legacy
+     *
+     * @expectedDeprecation The Sonata\AdminBundle\Annotation\Admin class is deprecated since sonata-project/admin-bundle 3.46 and will be removed in 4.0. Use autoconfiguration instead, see https://github.com/kunicmarko20/SonataAutoConfigureBundle.
+     */
     public function testInvalidAdminAnnotation(): void
     {
         /*

@@ -17,6 +17,8 @@ use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class RoutesCacheWarmUp implements CacheWarmerInterface

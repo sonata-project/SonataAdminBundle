@@ -13,6 +13,14 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Annotation;
 
+// NEXT_MAJOR: remove this file
+
+@trigger_error(
+    'The '.__NAMESPACE__.'\Admin class is deprecated since sonata-project/admin-bundle 3.46 and will be removed in 4.0.'
+    .' Use autoconfiguration instead, see https://github.com/kunicmarko20/SonataAutoConfigureBundle.',
+    E_USER_DEPRECATED
+);
+
 use JMS\DiExtraBundle\Annotation\MetadataProcessorInterface;
 use JMS\DiExtraBundle\Metadata\ClassMetadata;
 use Sonata\AdminBundle\Admin\AbstractAdmin as AdminClass;
@@ -24,7 +32,7 @@ use Sonata\AdminBundle\Controller\CRUDController;
  * @Annotation
  * @Target("CLASS")
  *
- * @deprecated since 3.46.0, to be removed in 4.0.
+ * @deprecated since sonata-project/admin-bundle 3.46, to be removed in 4.0.
  * @see https://github.com/kunicmarko20/SonataAutoConfigureBundle
  */
 class Admin implements MetadataProcessorInterface

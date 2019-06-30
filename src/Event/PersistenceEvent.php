@@ -26,6 +26,8 @@ use Symfony\Component\EventDispatcher\Event;
  *   - sonata.admin.event.persistence.[pre|post]_[persist|update|remove)
  *   - sonata.admin.event.persistence.[admin_code].[pre|post]_[persist|update|remove)  (not implemented yet)
  *
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class PersistenceEvent extends Event
