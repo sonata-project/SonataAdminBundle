@@ -22,6 +22,8 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 /**
  * This class is used to simulate the Form API.
  *
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ShowMapper extends BaseGroupedMapper

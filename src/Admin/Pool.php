@@ -20,6 +20,8 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class Pool

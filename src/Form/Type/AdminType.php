@@ -28,6 +28,8 @@ use Symfony\Component\PropertyAccess\Exception\NoSuchIndexException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminType extends AbstractType

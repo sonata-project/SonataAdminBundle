@@ -16,6 +16,8 @@ namespace Sonata\AdminBundle\Route;
 use Symfony\Component\Routing\Route;
 
 /**
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class RouteCollection
