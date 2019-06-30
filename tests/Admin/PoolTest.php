@@ -208,10 +208,13 @@ class PoolTest extends TestCase
         $adminMock->expects($this->any())
             ->method('hasChild')
             ->willReturn(true);
+
+        $childAdmin = $this->createMock(AdminInterface::class);
+
         $adminMock->expects($this->once())
             ->method('getChild')
             ->with($this->equalTo('sonata.news.admin.comment'))
-            ->willReturn('commentAdminClass');
+            ->willReturn($childAdmin);
 
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->expects($this->any())
@@ -221,7 +224,7 @@ class PoolTest extends TestCase
         $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
         $this->pool->setAdminServiceIds(['sonata.news.admin.post', 'sonata.news.admin.comment']);
 
-        $this->assertSame('commentAdminClass', $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.comment'));
+        $this->assertSame($childAdmin, $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.comment'));
     }
 
     /**
