@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
@@ -203,16 +204,17 @@ class PoolTest extends TestCase
 
     public function testGetAdminByAdminCodeForChildClass(): void
     {
-        $adminMock = $this->getMockBuilder(AdminInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $adminMock = $this->createMock(AdminInterface::class);
         $adminMock->expects($this->any())
             ->method('hasChild')
             ->willReturn(true);
+
+        $childAdmin = $this->createMock(AdminInterface::class);
+
         $adminMock->expects($this->once())
             ->method('getChild')
             ->with($this->equalTo('sonata.news.admin.comment'))
-            ->willReturn('commentAdminClass');
+            ->willReturn($childAdmin);
 
         $containerMock = $this->createMock(ContainerInterface::class);
         $containerMock->expects($this->any())
@@ -222,14 +224,12 @@ class PoolTest extends TestCase
         $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
         $this->pool->setAdminServiceIds(['sonata.news.admin.post', 'sonata.news.admin.comment']);
 
-        $this->assertSame('commentAdminClass', $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.comment'));
+        $this->assertSame($childAdmin, $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.comment'));
     }
 
     public function testGetAdminByAdminCodeWithInvalidCode(): void
     {
-        $adminMock = $this->getMockBuilder(AdminInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $adminMock = $this->createMock(AdminInterface::class);
         $adminMock->expects($this->any())
             ->method('hasChild')
             ->willReturn(false);
@@ -243,9 +243,9 @@ class PoolTest extends TestCase
         $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Argument 1 passed to Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() must contain a valid admin reference, "sonata.news.admin.valid" found at "sonata.news.admin.post|sonata.news.admin.valid".');
+        $this->expectExceptionMessage('Argument 1 passed to Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() must contain a valid admin reference, "sonata.news.admin.invalid" found at "sonata.news.admin.post|sonata.news.admin.invalid".');
 
-        $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.valid');
+        $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid');
     }
 
     public function testGetAdminByAdminCodeWithCodeNotChild(): void
@@ -265,7 +265,29 @@ class PoolTest extends TestCase
         $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
         $this->pool->setAdminServiceIds(['sonata.news.admin.post', 'sonata.news.admin.valid']);
 
-        $this->assertFalse($this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.valid'));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.valid');
+    }
+
+    /**
+     * @dataProvider getNonStringAdminServiceNames
+     */
+    public function testGetAdminByAdminCodeWithNonStringCode($adminId): void
+    {
+        $this->expectException(\TypeError::class);
+
+        $this->pool->getAdminByAdminCode($adminId);
+    }
+
+    public function getNonStringAdminServiceNames()
+    {
+        return [
+            [null],
+            [false],
+            [1],
+            [['some_value']],
+            [new \stdClass()],
+        ];
     }
 
     /**
@@ -281,6 +303,7 @@ class PoolTest extends TestCase
         $containerMock->expects($this->never())
             ->method('get');
 
+        /** @var MockObject|Pool $poolMock */
         $poolMock = $this->getMockBuilder(Pool::class)
             ->setConstructorArgs([$containerMock, 'Sonata', '/path/to/logo.png'])
             ->disableOriginalClone()
@@ -319,6 +342,7 @@ class PoolTest extends TestCase
         $containerMock->expects($this->never())
             ->method('get');
 
+        /** @var MockObject|Pool $poolMock */
         $poolMock = $this->getMockBuilder(Pool::class)
             ->setConstructorArgs([$containerMock, 'Sonata', '/path/to/logo.png'])
             ->disableOriginalClone()
@@ -328,6 +352,7 @@ class PoolTest extends TestCase
             ->method('getInstance')
             ->willReturn($adminMock);
 
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageRegExp(sprintf(
             '{^Argument 1 passed to Sonata\\\AdminBundle\\\Admin\\\Pool::getAdminByAdminCode\(\) must contain a valid admin reference, "[^"]+" found at "%s"\.$}',
             $adminId
@@ -342,6 +367,130 @@ class PoolTest extends TestCase
             ['admin1|'],
             ['admin1|nonexistent_code'],
             ['admin1||admin3'],
+        ];
+    }
+
+    /**
+     * @dataProvider getAdminServiceNamesToCheck
+     */
+    public function testHasAdminByAdminCode(string $adminId): void
+    {
+        $adminMock = $this->createMock(AdminInterface::class);
+
+        if (false !== strpos($adminId, '|')) {
+            $childAdminMock = $this->createMock(AdminInterface::class);
+            $adminMock->expects($this->any())
+                ->method('hasChild')
+                ->willReturn(true);
+            $adminMock->expects($this->once())
+                ->method('getChild')
+                ->with($this->equalTo('sonata.news.admin.comment'))
+                ->willReturn($childAdminMock);
+        } else {
+            $adminMock->expects($this->never())
+                ->method('hasChild');
+            $adminMock->expects($this->never())
+                ->method('getChild');
+        }
+
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerMock->expects($this->any())
+            ->method('get')
+            ->willReturn($adminMock);
+
+        $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
+        $this->pool->setAdminServiceIds(['sonata.news.admin.post', 'sonata.news.admin.comment']);
+
+        $this->assertTrue($this->pool->hasAdminByAdminCode($adminId));
+    }
+
+    public function getAdminServiceNamesToCheck()
+    {
+        return [
+            ['sonata.news.admin.post'],
+            ['sonata.news.admin.post|sonata.news.admin.comment'],
+        ];
+    }
+
+    /**
+     * @dataProvider getNonStringAdminServiceNames
+     */
+    public function testHasAdminByAdminCodeWithNonStringCode($adminId): void
+    {
+        $this->expectException(\TypeError::class);
+        $this->pool->hasAdminByAdminCode($adminId);
+    }
+
+    /**
+     * @dataProvider getInvalidAdminServiceNamesToCheck
+     */
+    public function testHasAdminByAdminCodeWithInvalidCodes(string $adminId): void
+    {
+        $adminMock = $this->createMock(AdminInterface::class);
+        $adminMock->expects($this->any())
+            ->method('hasChild')
+            ->willReturn(false);
+        $adminMock->expects($this->never())
+            ->method('getChild');
+
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerMock->expects($this->never())
+            ->method('get');
+
+        $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
+
+        $this->assertFalse($this->pool->hasAdminByAdminCode($adminId));
+    }
+
+    public function getInvalidAdminServiceNamesToCheck()
+    {
+        return [
+            [''],
+            ['   '],
+            ['|sonata.news.admin.child_of_empty_code'],
+        ];
+    }
+
+    public function testHasAdminByAdminCodeWithNonExistentCode(): void
+    {
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerMock->expects($this->never())
+            ->method('get');
+
+        $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
+
+        $this->assertFalse($this->pool->hasAdminByAdminCode('sonata.news.admin.nonexistent_code'));
+    }
+
+    /**
+     * @dataProvider getInvalidChildAdminServiceNamesToCheck
+     */
+    public function testHasAdminByAdminCodeWithInvalidChildCodes(string $adminId): void
+    {
+        $adminMock = $this->createMock(AdminInterface::class);
+        $adminMock->expects($this->any())
+            ->method('hasChild')
+            ->willReturn(false);
+        $adminMock->expects($this->never())
+            ->method('getChild');
+
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerMock->expects($this->once())
+            ->method('get')
+            ->willReturn($adminMock);
+
+        $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
+        $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
+
+        $this->assertFalse($this->pool->hasAdminByAdminCode($adminId));
+    }
+
+    public function getInvalidChildAdminServiceNamesToCheck()
+    {
+        return [
+            ['sonata.news.admin.post|'],
+            ['sonata.news.admin.post|nonexistent_code'],
+            ['sonata.news.admin.post||admin3'],
         ];
     }
 

@@ -13,17 +13,23 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
+use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\DataMapperInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PropertyAccess\PropertyAccessorBuilder;
 
 class AdminHelperTest extends TestCase
 {
@@ -153,6 +159,107 @@ class AdminHelperTest extends TestCase
         $this->expectException(\Exception::class, 'Could not get element id from '.$path.' Failing part: calls');
 
         $this->helper->getElementAccessPath($path, $object);
+    }
+
+    public function testAppendFormFieldElement(): void
+    {
+        $container = $this->createMock(ContainerInterface::class);
+
+        $propertyAccessorBuilder = new PropertyAccessorBuilder();
+        $propertyAccesor = $propertyAccessorBuilder->getPropertyAccessor();
+        $pool = new Pool($container, 'title', 'logo.png', [], $propertyAccesor);
+        $helper = new AdminHelper($pool);
+
+        $admin = $this->createMock(AdminInterface::class);
+        $admin
+            ->expects($this->any())
+            ->method('getClass')
+            ->willReturn(Foo::class);
+
+        $associationMapping = [
+            'fieldName' => 'bar',
+            'targetEntity' => Foo::class,
+            'sourceEntity' => Foo::class,
+            'isOwningSide' => false,
+        ];
+
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
+        $fieldDescription->expects($this->any())->method('getAssociationAdmin')->willReturn($admin);
+        $fieldDescription->expects($this->any())->method('getAssociationMapping')->willReturn($associationMapping);
+
+        $admin
+            ->expects($this->any())
+            ->method('getFormFieldDescription')
+            ->willReturn($fieldDescription);
+
+        $admin
+            ->expects($this->any())
+            ->method('getFormFieldDescriptions')
+            ->willReturn([
+                'bar' => $fieldDescription,
+            ]);
+
+        $request = $this->createMock(Request::class);
+        $request
+            ->expects($this->any())
+            ->method('get')
+            ->willReturn([
+                'bar' => [
+                    [
+                        'baz' => [
+                            'baz' => true,
+                        ],
+                    ],
+                    ['_delete' => true],
+                ],
+            ]);
+
+        $request->request = new ParameterBag();
+
+        $admin
+            ->expects($this->any())
+            ->method('getRequest')
+            ->will($this->onConsecutiveCalls($request, $request, $request, null, $request, $request, $request, $request, null, $request));
+
+        $foo = $this->createMock(Foo::class);
+
+        $collection = $this->createMock(Collection::class);
+        $foo->setBar($collection);
+
+        $dataMapper = $this->createMock(DataMapperInterface::class);
+        $formFactory = $this->createMock(FormFactoryInterface::class);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $formBuilder = new FormBuilder('test', \get_class($foo), $eventDispatcher, $formFactory);
+        $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory);
+        $childFormBuilder->setCompound(true);
+        $childFormBuilder->setDataMapper($dataMapper);
+        $subChildFormBuilder = new FormBuilder('baz', \stdClass::class, $eventDispatcher, $formFactory);
+        $subChildFormBuilder->setCompound(true);
+        $subChildFormBuilder->setDataMapper($dataMapper);
+        $childFormBuilder->add($subChildFormBuilder);
+
+        $formBuilder->setCompound(true);
+        $formBuilder->setDataMapper($dataMapper);
+        $formBuilder->add($childFormBuilder);
+
+        $admin->expects($this->any())->method('getFormBuilder')->willReturn($formBuilder);
+        $admin->expects($this->any())->method('getSubject')->willReturn($foo);
+
+        $finalForm = $helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
+
+        foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
+            $this->assertFalse($childField->has('_delete'));
+        }
+
+        $deleteFormBuilder = new FormBuilder('_delete', null, $eventDispatcher, $formFactory);
+        $subChildFormBuilder->add($deleteFormBuilder, CheckboxType::class, ['delete' => false]);
+
+        $finalForm = $helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
+
+        foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
+            $this->assertTrue($childField->has('_delete'));
+            $this->assertSame('', $childField->get('_delete')->getData());
+        }
     }
 
     public function testAppendFormFieldElementNested(): void

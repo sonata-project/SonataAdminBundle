@@ -231,13 +231,9 @@ class Pool
      * Returns an admin class by its Admin code
      * ie : sonata.news.admin.post|sonata.news.admin.comment => return the child class of post.
      *
-     * @param string $adminCode
-     *
      * @throws \InvalidArgumentException if the root admin code is an empty string
-     *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface|false
      */
-    public function getAdminByAdminCode($adminCode)
+    public function getAdminByAdminCode(string $adminCode): AdminInterface
     {
         $codes = explode('|', $adminCode);
         $code = trim(array_shift($codes));
@@ -259,13 +255,32 @@ class Pool
             }
 
             if (!$admin->hasChild($code)) {
-                return false;
+                throw new \InvalidArgumentException(sprintf(
+                   'Argument 1 passed to %s() must contain a valid admin hierarchy, "%s" is not a valid child for "%s"',
+                   __METHOD__,
+                   $code,
+                   $admin->getCode()
+                ));
             }
 
             $admin = $admin->getChild($code);
         }
 
         return $admin;
+    }
+
+    /**
+     * Checks if an admin with a certain admin code exists.
+     */
+    final public function hasAdminByAdminCode(string $adminCode): bool
+    {
+        try {
+            $this->getAdminByAdminCode($adminCode);
+        } catch (\InvalidArgumentException $e) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
