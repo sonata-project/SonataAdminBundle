@@ -24,27 +24,27 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PreCRUDController extends CRUDController
 {
-    protected function preCreate(Request $request, $object)
+    protected function preCreate(Request $request, $object): ?Response
     {
         return new Response(sprintf('preCreate called: %s', $object->foo));
     }
 
-    protected function preEdit(Request $request, $object)
+    protected function preEdit(Request $request, $object): ?Response
     {
         return new Response(sprintf('preEdit called: %s', $object->foo));
     }
 
-    protected function preDelete(Request $request, $object)
+    protected function preDelete(Request $request, $object): ?Response
     {
         return new Response(sprintf('preDelete called: %s', $object->foo));
     }
 
-    protected function preShow(Request $request, $object)
+    protected function preShow(Request $request, $object): ?Response
     {
         return new Response(sprintf('preShow called: %s', $object->foo));
     }
 
-    protected function preList(Request $request)
+    protected function preList(Request $request): ?Response
     {
         return new Response(sprintf('preList called'));
     }
