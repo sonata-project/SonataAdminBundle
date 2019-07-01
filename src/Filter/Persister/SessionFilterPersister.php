@@ -36,7 +36,7 @@ final class SessionFilterPersister implements FilterPersisterInterface
     /**
      * {@inheritdoc}
      */
-    public function get($adminCode)
+    public function get($adminCode): array
     {
         return $this->session->get($this->buildStorageKey($adminCode), []);
     }
