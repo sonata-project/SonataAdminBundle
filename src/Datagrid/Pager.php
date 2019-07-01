@@ -333,7 +333,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         }
     }
 
-    public function getMaxPerPage()
+    public function getMaxPerPage(): int
     {
         return $this->maxPerPage;
     }
@@ -358,7 +358,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         }
     }
 
-    public function getMaxPageLinks()
+    public function getMaxPageLinks(): int
     {
         return $this->maxPageLinks;
     }

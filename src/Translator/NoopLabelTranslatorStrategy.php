@@ -18,7 +18,7 @@ namespace Sonata\AdminBundle\Translator;
  */
 class NoopLabelTranslatorStrategy implements LabelTranslatorStrategyInterface
 {
-    public function getLabel($label, $context = '', $type = '')
+    public function getLabel($label, $context = '', $type = ''): string
     {
         return $label;
     }

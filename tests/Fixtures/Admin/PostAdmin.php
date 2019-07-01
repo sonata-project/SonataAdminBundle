@@ -43,7 +43,7 @@ class PostAdmin extends AbstractAdmin
      *
      * @return array
      */
-    protected function configureBatchActions($actions)
+    protected function configureBatchActions($actions): array
     {
         $actions['foo'] = [
             'label' => 'action_foo',

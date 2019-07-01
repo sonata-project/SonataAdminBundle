@@ -30,7 +30,7 @@ interface DatagridInterface
 
     public function buildPager();
 
-    public function addFilter(FilterInterface $filter): FilterInterface;
+    public function addFilter(FilterInterface $filter): void;
 
     public function getFilters(): array;
 

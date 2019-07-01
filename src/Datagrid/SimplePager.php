@@ -56,7 +56,7 @@ class SimplePager extends Pager
         $this->setThreshold($threshold);
     }
 
-    public function getNbResults()
+    public function getNbResults(): int
     {
         $n = ($this->getLastPage() - 1) * $this->getMaxPerPage();
         if ($this->getLastPage() === $this->getPage()) {
@@ -66,7 +66,7 @@ class SimplePager extends Pager
         return $n;
     }
 
-    public function getResults($hydrationMode = null)
+    public function getResults($hydrationMode = null): array
     {
         if ($this->results) {
             return $this->results;
@@ -88,7 +88,7 @@ class SimplePager extends Pager
         return $this->results;
     }
 
-    public function haveToPaginate()
+    public function haveToPaginate(): bool
     {
         return $this->haveToPaginate || $this->getPage() > 1;
     }

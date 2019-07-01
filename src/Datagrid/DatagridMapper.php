@@ -100,7 +100,7 @@ class DatagridMapper extends BaseMapper
         return $this->datagrid->getFilter($name);
     }
 
-    public function has($key)
+    public function has($key): bool
     {
         return $this->datagrid->hasFilter($key);
     }

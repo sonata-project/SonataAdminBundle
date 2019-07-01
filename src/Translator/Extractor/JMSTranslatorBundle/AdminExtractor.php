@@ -211,7 +211,7 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
         return $this->translator->getLocale();
     }
 
-    public function isGranted(AdminInterface $admin, $attributes, $object = null)
+    public function isGranted(AdminInterface $admin, $attributes, $object = null): bool
     {
         return true;
     }
@@ -228,11 +228,11 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
     {
     }
 
-    public function getBaseRole(AdminInterface $admin): void
+    public function getBaseRole(AdminInterface $admin): string
     {
     }
 
-    public function getLabel($label, $context = '', $type = '')
+    public function getLabel($label, $context = '', $type = ''): string
     {
         $label = $this->labelStrategy->getLabel($label, $context, $type);
 

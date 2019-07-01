@@ -88,12 +88,12 @@ class Datagrid implements DatagridInterface
         $this->formBuilder = $formBuilder;
     }
 
-    public function getPager()
+    public function getPager(): PagerInterface
     {
         return $this->pager;
     }
 
-    public function getResults()
+    public function getResults(): array
     {
         $this->buildPager();
 
@@ -188,7 +188,7 @@ class Datagrid implements DatagridInterface
         $this->filters[$filter->getName()] = $filter;
     }
 
-    public function hasFilter($name)
+    public function hasFilter($name): bool
     {
         return isset($this->filters[$name]);
     }
@@ -198,12 +198,12 @@ class Datagrid implements DatagridInterface
         unset($this->filters[$name]);
     }
 
-    public function getFilter($name)
+    public function getFilter($name): FilterInterface
     {
         return $this->hasFilter($name) ? $this->filters[$name] : null;
     }
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return $this->filters;
     }
@@ -213,7 +213,7 @@ class Datagrid implements DatagridInterface
         $this->filters = array_merge(array_flip($keys), $this->filters);
     }
 
-    public function getValues()
+    public function getValues(): array
     {
         return $this->values;
     }
@@ -226,7 +226,7 @@ class Datagrid implements DatagridInterface
         ];
     }
 
-    public function hasActiveFilters()
+    public function hasActiveFilters(): bool
     {
         foreach ($this->filters as $name => $filter) {
             if ($filter->isActive()) {
@@ -237,7 +237,7 @@ class Datagrid implements DatagridInterface
         return false;
     }
 
-    public function hasDisplayableFilters()
+    public function hasDisplayableFilters(): bool
     {
         foreach ($this->filters as $name => $filter) {
             $showFilter = $filter->getOption('show_filter', null);
@@ -249,17 +249,17 @@ class Datagrid implements DatagridInterface
         return false;
     }
 
-    public function getColumns()
+    public function getColumns(): FieldDescriptionCollection
     {
         return $this->columns;
     }
 
-    public function getQuery()
+    public function getQuery(): ProxyQueryInterface
     {
         return $this->query;
     }
 
-    public function getForm()
+    public function getForm(): FormInterface
     {
         $this->buildPager();
 

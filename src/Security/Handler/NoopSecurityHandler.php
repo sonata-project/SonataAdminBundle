@@ -20,12 +20,12 @@ use Sonata\AdminBundle\Admin\AdminInterface;
  */
 class NoopSecurityHandler implements SecurityHandlerInterface
 {
-    public function isGranted(AdminInterface $admin, $attributes, $object = null)
+    public function isGranted(AdminInterface $admin, $attributes, $object = null): bool
     {
         return true;
     }
 
-    public function getBaseRole(AdminInterface $admin)
+    public function getBaseRole(AdminInterface $admin): string
     {
         return '';
     }

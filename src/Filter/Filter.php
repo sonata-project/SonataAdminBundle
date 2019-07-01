@@ -46,12 +46,12 @@ abstract class Filter implements FilterInterface
         $this->setOptions($options);
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function getFormName()
+    public function getFormName(): string
     {
         /*
            Symfony default form class sadly can't handle
@@ -77,12 +77,12 @@ abstract class Filter implements FilterInterface
         $this->options[$name] = $value;
     }
 
-    public function getFieldType()
+    public function getFieldType(): string
     {
         return $this->getOption('field_type', TextType::class);
     }
 
-    public function getFieldOptions()
+    public function getFieldOptions(): array
     {
         return $this->getOption('field_options', ['required' => false]);
     }
@@ -111,7 +111,7 @@ abstract class Filter implements FilterInterface
         $this->setOption('label', $label);
     }
 
-    public function getFieldName()
+    public function getFieldName(): string
     {
         $fieldName = $this->getOption('field_name');
 
@@ -122,12 +122,12 @@ abstract class Filter implements FilterInterface
         return $fieldName;
     }
 
-    public function getParentAssociationMappings()
+    public function getParentAssociationMappings(): array
     {
         return $this->getOption('parent_association_mappings', []);
     }
 
-    public function getFieldMapping()
+    public function getFieldMapping(): array
     {
         $fieldMapping = $this->getOption('field_mapping');
 
@@ -138,7 +138,7 @@ abstract class Filter implements FilterInterface
         return $fieldMapping;
     }
 
-    public function getAssociationMapping()
+    public function getAssociationMapping(): array
     {
         $associationMapping = $this->getOption('association_mapping');
 
@@ -189,7 +189,7 @@ abstract class Filter implements FilterInterface
         return $this->value;
     }
 
-    public function isActive()
+    public function isActive(): bool
     {
         $values = $this->getValue();
 
@@ -203,12 +203,12 @@ abstract class Filter implements FilterInterface
         $this->condition = $condition;
     }
 
-    public function getCondition()
+    public function getCondition(): string
     {
         return $this->condition;
     }
 
-    public function getTranslationDomain()
+    public function getTranslationDomain(): string
     {
         return $this->getOption('translation_domain');
     }

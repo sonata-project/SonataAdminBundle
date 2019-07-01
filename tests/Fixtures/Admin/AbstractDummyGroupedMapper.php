@@ -17,7 +17,7 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 
 abstract class AbstractDummyGroupedMapper extends BaseGroupedMapper
 {
-    protected function getName()
+    protected function getName(): string
     {
         return 'dummy';
     }

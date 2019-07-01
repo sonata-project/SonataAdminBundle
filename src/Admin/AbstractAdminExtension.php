@@ -74,17 +74,17 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
     }
 
-    public function getPersistentParameters(AdminInterface $admin)
+    public function getPersistentParameters(AdminInterface $admin): array
     {
         return [];
     }
 
-    public function getAccessMapping(AdminInterface $admin)
+    public function getAccessMapping(AdminInterface $admin): array
     {
         return [];
     }
 
-    public function configureBatchActions(AdminInterface $admin, array $actions)
+    public function configureBatchActions(AdminInterface $admin, array $actions): array
     {
         return $actions;
     }
@@ -118,7 +118,7 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
     }
 
-    public function configureActionButtons(AdminInterface $admin, $list, $action, $object)
+    public function configureActionButtons(AdminInterface $admin, $list, $action, $object): array
     {
         return $list;
     }

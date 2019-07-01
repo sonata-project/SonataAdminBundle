@@ -18,7 +18,7 @@ namespace Sonata\AdminBundle\Translator;
  */
 class BCLabelTranslatorStrategy implements LabelTranslatorStrategyInterface
 {
-    public function getLabel($label, $context = '', $type = '')
+    public function getLabel($label, $context = '', $type = ''): string
     {
         if ('breadcrumb' === $context) {
             return sprintf('%s.%s_%s', $context, $type, strtolower($label));

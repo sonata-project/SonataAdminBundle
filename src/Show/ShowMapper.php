@@ -91,7 +91,7 @@ class ShowMapper extends BaseGroupedMapper
         return $this->list->get($name);
     }
 
-    public function has($key)
+    public function has($key): bool
     {
         return $this->list->has($key);
     }
@@ -158,7 +158,7 @@ class ShowMapper extends BaseGroupedMapper
         return $this;
     }
 
-    protected function getGroups()
+    protected function getGroups(): array
     {
         return $this->admin->getShowGroups();
     }
@@ -168,7 +168,7 @@ class ShowMapper extends BaseGroupedMapper
         $this->admin->setShowGroups($groups);
     }
 
-    protected function getTabs()
+    protected function getTabs(): array
     {
         return $this->admin->getShowTabs();
     }
@@ -178,7 +178,7 @@ class ShowMapper extends BaseGroupedMapper
         $this->admin->setShowTabs($tabs);
     }
 
-    protected function getName()
+    protected function getName(): string
     {
         return 'show';
     }

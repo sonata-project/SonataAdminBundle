@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Menu\Matcher\Voter;
 
 use Knp\Menu\ItemInterface;
+use Knp\Menu\Matcher\Voter\VoterInterface;
 use Sonata\AdminBundle\Menu\Matcher\Voter\ActiveVoter;
 
 class ActiveVoterTest extends AbstractVoterTest
@@ -21,7 +22,7 @@ class ActiveVoterTest extends AbstractVoterTest
     /**
      * {@inheritdoc}
      */
-    public function createVoter($dataVoter, $route)
+    public function createVoter($dataVoter, $route): VoterInterface
     {
         return new ActiveVoter();
     }
@@ -29,7 +30,7 @@ class ActiveVoterTest extends AbstractVoterTest
     /**
      * {@inheritdoc}
      */
-    public function provideData()
+    public function provideData(): array
     {
         return [
             'active' => [true, null, true, true],

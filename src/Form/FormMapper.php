@@ -156,7 +156,7 @@ class FormMapper extends BaseGroupedMapper
         return $this->formBuilder->get($name);
     }
 
-    public function has($key)
+    public function has($key): bool
     {
         $key = $this->sanitizeFieldName($key);
 
@@ -264,7 +264,7 @@ class FormMapper extends BaseGroupedMapper
         return str_replace(['__', '.'], ['____', '__'], $fieldName);
     }
 
-    protected function getGroups()
+    protected function getGroups(): array
     {
         return $this->admin->getFormGroups();
     }
@@ -274,7 +274,7 @@ class FormMapper extends BaseGroupedMapper
         $this->admin->setFormGroups($groups);
     }
 
-    protected function getTabs()
+    protected function getTabs(): array
     {
         return $this->admin->getFormTabs();
     }
@@ -284,7 +284,7 @@ class FormMapper extends BaseGroupedMapper
         $this->admin->setFormTabs($tabs);
     }
 
-    protected function getName()
+    protected function getName(): string
     {
         return 'form';
     }

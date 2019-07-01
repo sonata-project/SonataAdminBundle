@@ -131,7 +131,7 @@ class ListMapper extends BaseMapper
         return $this->list->get($name);
     }
 
-    public function has($key)
+    public function has($key): bool
     {
         return $this->list->has($key);
     }

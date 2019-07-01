@@ -22,7 +22,7 @@ class FieldDescription extends BaseFieldDescription
         // TODO: Implement setAssociationMapping() method.
     }
 
-    public function getTargetEntity(): void
+    public function getTargetEntity(): ?string
     {
         // TODO: Implement getTargetEntity() method.
     }
@@ -32,7 +32,7 @@ class FieldDescription extends BaseFieldDescription
         // TODO: Implement setFieldMapping() method.
     }
 
-    public function isIdentifier(): void
+    public function isIdentifier(): bool
     {
         // TODO: Implement isIdentifier() method.
     }

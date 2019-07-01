@@ -50,13 +50,13 @@ final class TemplateRegistry implements MutableTemplateRegistryInterface
     /**
      * @param string $name
      */
-    public function getTemplate($name): ?string
+    public function getTemplate($name): string
     {
         if (isset($this->templates[$name])) {
             return $this->templates[$name];
         }
 
-        return null;
+        throw new \InvalidArgumentException();
     }
 
     public function setTemplate($name, $template): void

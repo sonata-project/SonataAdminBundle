@@ -99,7 +99,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         $this->adminPermissions = $permissions;
     }
 
-    public function getAdminPermissions()
+    public function getAdminPermissions(): array
     {
         return $this->adminPermissions;
     }
@@ -109,12 +109,12 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         $this->objectPermissions = $permissions;
     }
 
-    public function getObjectPermissions()
+    public function getObjectPermissions(): array
     {
         return $this->objectPermissions;
     }
 
-    public function isGranted(AdminInterface $admin, $attributes, $object = null)
+    public function isGranted(AdminInterface $admin, $attributes, $object = null): bool
     {
         if (!\is_array($attributes)) {
             $attributes = [$attributes];
@@ -127,7 +127,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         }
     }
 
-    public function getBaseRole(AdminInterface $admin)
+    public function getBaseRole(AdminInterface $admin): string
     {
         return 'ROLE_'.str_replace('.', '_', strtoupper($admin->getCode())).'_%s';
     }
@@ -168,18 +168,18 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         $this->deleteAcl($objectIdentity);
     }
 
-    public function getObjectAcl(ObjectIdentityInterface $objectIdentity)
+    public function getObjectAcl(ObjectIdentityInterface $objectIdentity): ?AclInterface
     {
         try {
             $acl = $this->aclProvider->findAcl($objectIdentity);
         } catch (AclNotFoundException $e) {
-            return;
+            return null;
         }
 
         return $acl;
     }
 
-    public function findObjectAcls(\Traversable $oids, array $sids = [])
+    public function findObjectAcls(\Traversable $oids, array $sids = []): \SplObjectStorage
     {
         try {
             $acls = $this->aclProvider->findAcls(iterator_to_array($oids), $sids);
@@ -230,7 +230,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         }
     }
 
-    public function createAcl(ObjectIdentityInterface $objectIdentity)
+    public function createAcl(ObjectIdentityInterface $objectIdentity): AclInterface
     {
         return $this->aclProvider->createAcl($objectIdentity);
     }

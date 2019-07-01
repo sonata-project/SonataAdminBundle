@@ -26,14 +26,14 @@ class FooFilter extends Filter
     {
     }
 
-    public function getDefaultOptions()
+    public function getDefaultOptions(): array
     {
         return [
             'foo' => 'bar',
         ];
     }
 
-    public function getRenderSettings(): void
+    public function getRenderSettings(): array
     {
     }
 }

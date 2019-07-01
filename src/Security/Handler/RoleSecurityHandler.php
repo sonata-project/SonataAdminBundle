@@ -46,7 +46,7 @@ class RoleSecurityHandler implements SecurityHandlerInterface
         $this->superAdminRoles = $superAdminRoles;
     }
 
-    public function isGranted(AdminInterface $admin, $attributes, $object = null)
+    public function isGranted(AdminInterface $admin, $attributes, $object = null): bool
     {
         if (!\is_array($attributes)) {
             $attributes = [$attributes];
@@ -67,7 +67,7 @@ class RoleSecurityHandler implements SecurityHandlerInterface
         }
     }
 
-    public function getBaseRole(AdminInterface $admin)
+    public function getBaseRole(AdminInterface $admin): string
     {
         return 'ROLE_'.str_replace('.', '_', strtoupper($admin->getCode())).'_%s';
     }

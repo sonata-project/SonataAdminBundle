@@ -136,7 +136,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->fieldName = $fieldName;
     }
 
-    public function getFieldName()
+    public function getFieldName(): string
     {
         return $this->fieldName;
     }
@@ -150,7 +150,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -197,7 +197,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->options = $options;
     }
 
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
@@ -207,7 +207,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->template = $template;
     }
 
-    public function getTemplate()
+    public function getTemplate(): string
     {
         return $this->template;
     }
@@ -227,22 +227,22 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->parent = $parent;
     }
 
-    public function getParent()
+    public function getParent(): AdminInterface
     {
         return $this->parent;
     }
 
-    public function getAssociationMapping()
+    public function getAssociationMapping(): array
     {
         return $this->associationMapping;
     }
 
-    public function getFieldMapping()
+    public function getFieldMapping(): array
     {
         return $this->fieldMapping;
     }
 
-    public function getParentAssociationMappings()
+    public function getParentAssociationMappings(): array
     {
         return $this->parentAssociationMappings;
     }
@@ -253,7 +253,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->associationAdmin->setParentFieldDescription($this);
     }
 
-    public function getAssociationAdmin()
+    public function getAssociationAdmin(): ?AdminInterface
     {
         return $this->associationAdmin;
     }
@@ -321,7 +321,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->admin = $admin;
     }
 
-    public function getAdmin()
+    public function getAdmin(): AdminInterface
     {
         return $this->admin;
     }
@@ -369,7 +369,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->help;
     }
 
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->getOption('label');
     }
@@ -379,17 +379,17 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return false !== $this->getOption('sortable', false);
     }
 
-    public function getSortFieldMapping()
+    public function getSortFieldMapping(): array
     {
         return $this->getOption('sort_field_mapping');
     }
 
-    public function getSortParentAssociationMapping()
+    public function getSortParentAssociationMapping(): array
     {
         return $this->getOption('sort_parent_association_mappings');
     }
 
-    public function getTranslationDomain()
+    public function getTranslationDomain(): string
     {
         return $this->getOption('translation_domain') ?: $this->getAdmin()->getTranslationDomain();
     }
