@@ -211,10 +211,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         return $value;
     }
 
-    /**
-     * @return string
-     */
-    protected function getClass(FormBuilderInterface $formBuilder)
+    protected function getClass(FormBuilderInterface $formBuilder): string
     {
         foreach ($this->getTypes($formBuilder) as $type) {
             // NEXT_MAJOR: Remove the else part when dropping support for SF 2.8
@@ -232,10 +229,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         return '';
     }
 
-    /**
-     * @return array
-     */
-    protected function getTypes(FormBuilderInterface $formBuilder)
+    protected function getTypes(FormBuilderInterface $formBuilder): array
     {
         $types = [];
 

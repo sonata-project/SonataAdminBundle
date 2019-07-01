@@ -143,10 +143,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
         }
     }
 
-    /**
-     * @return string
-     */
-    protected function getUserEntityClass(InputInterface $input, OutputInterface $output)
+    protected function getUserEntityClass(InputInterface $input, OutputInterface $output): string
     {
         if ('' === $this->userEntityClass) {
             if ($input->getOption('user_entity')) {

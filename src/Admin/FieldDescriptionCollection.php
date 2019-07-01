@@ -28,20 +28,15 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
         $this->elements[$fieldDescription->getName()] = $fieldDescription;
     }
 
-    /**
-     * @return array
-     */
-    public function getElements()
+    public function getElements(): array
     {
         return $this->elements;
     }
 
     /**
      * @param string $name
-     *
-     * @return bool
      */
-    public function has($name)
+    public function has($name): bool
     {
         return \array_key_exists($name, $this->elements);
     }
@@ -50,10 +45,8 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
      * @param string $name
      *
      * @throws \InvalidArgumentException
-     *
-     * @return FieldDescriptionInterface
      */
-    public function get($name)
+    public function get($name): FieldDescriptionInterface
     {
         if ($this->has($name)) {
             return $this->elements[$name];

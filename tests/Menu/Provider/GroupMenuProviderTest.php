@@ -67,7 +67,6 @@ class GroupMenuProviderTest extends TestCase
     /**
      * NEXT_MAJOR: Remove this test.
      *
-     * @param array $adminGroups
      *
      * @group legacy
      * @dataProvider getAdminGroups
@@ -110,8 +109,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroups
-     *
      * @dataProvider getAdminGroups
      */
     public function testGetMenuProviderWithCheckerGrantedGroupRoles(array $adminGroups): void
@@ -151,10 +148,8 @@ class GroupMenuProviderTest extends TestCase
 
     /**
      * @param array $args
-     *
-     * @return bool
      */
-    public function unanimousGrantCheckerMock($args)
+    public function unanimousGrantCheckerMock($args): bool
     {
         if ($args === ['foo', 'bar']) {
             return false;
@@ -169,10 +164,8 @@ class GroupMenuProviderTest extends TestCase
 
     /**
      * @param array $args
-     *
-     * @return bool
      */
-    public function unanimousGrantCheckerNoBazMock($args)
+    public function unanimousGrantCheckerNoBazMock($args): bool
     {
         if ($args === ['foo', 'bar'] || $args === ['baz']) {
             return false;
@@ -186,8 +179,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroups
-     *
      * @dataProvider getAdminGroupsMultipleRoles
      */
     public function testGetMenuProviderWithCheckerGrantedMultipleGroupRoles(
@@ -213,8 +204,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroups
-     *
      * @dataProvider getAdminGroupsMultipleRoles
      */
     public function testGetMenuProviderWithCheckerGrantedGroupAndItemRoles(
@@ -241,8 +230,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroups
-     *
      * @dataProvider getAdminGroupsMultipleRolesOnTop
      */
     public function testGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTop(
@@ -265,8 +252,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroups
-     *
      * @dataProvider getAdminGroups
      */
     public function testGetMenuProviderWithAdmin(array $adminGroups): void
@@ -309,8 +294,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroups
-     *
      * @dataProvider getAdminGroups
      */
     public function testGetKnpMenuWithListRoute(array $adminGroups): void
@@ -339,8 +322,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroups
-     *
      * @dataProvider getAdminGroups
      */
     public function testGetKnpMenuWithGrantedList(array $adminGroups): void
@@ -369,8 +350,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroupsOnTopOption
-     *
      * @dataProvider getAdminGroupsWithOnTopOption
      */
     public function testGetMenuProviderOnTopOptions(array $adminGroupsOnTopOption): void
@@ -393,8 +372,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroups
-     *
      * @dataProvider getAdminGroups
      */
     public function testGetMenuProviderKeepOpenOption(array $adminGroups): void
@@ -423,10 +400,7 @@ class GroupMenuProviderTest extends TestCase
         $this->assertTrue($menu->getExtra('keep_open'));
     }
 
-    /**
-     * @return array
-     */
-    public function getAdminGroups()
+    public function getAdminGroups(): array
     {
         return [
             [
@@ -456,10 +430,7 @@ class GroupMenuProviderTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function getAdminGroupsMultipleRoles()
+    public function getAdminGroupsMultipleRoles(): array
     {
         return [
             [
@@ -552,10 +523,7 @@ class GroupMenuProviderTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function getAdminGroupsMultipleRolesOnTop()
+    public function getAdminGroupsMultipleRolesOnTop(): array
     {
         return [
             [
@@ -616,10 +584,7 @@ class GroupMenuProviderTest extends TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function getAdminGroupsWithOnTopOption()
+    public function getAdminGroupsWithOnTopOption(): array
     {
         return [
             [

@@ -91,10 +91,8 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
      * Extract messages to MessageCatalogue.
      *
      * @throws \Exception|\RuntimeException
-     *
-     * @return MessageCatalogue
      */
-    public function extract()
+    public function extract(): MessageCatalogue
     {
         if ($this->catalogue) {
             throw new \RuntimeException('Invalid state');

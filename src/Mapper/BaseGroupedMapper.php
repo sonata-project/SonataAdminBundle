@@ -238,23 +238,15 @@ abstract class BaseGroupedMapper extends BaseMapper
 
     /**
      * Returns a boolean indicating if there is an open tab at the moment.
-     *
-     * @return bool
      */
-    public function hasOpenTab()
+    public function hasOpenTab(): bool
     {
         return null !== $this->currentTab;
     }
 
-    /**
-     * @return array
-     */
-    abstract protected function getGroups();
+    abstract protected function getGroups(): array;
 
-    /**
-     * @return array
-     */
-    abstract protected function getTabs();
+    abstract protected function getTabs(): array;
 
     abstract protected function setGroups(array $groups);
 
@@ -262,10 +254,8 @@ abstract class BaseGroupedMapper extends BaseMapper
 
     /**
      * NEXT_MAJOR: make this method abstract.
-     *
-     * @return string
      */
-    protected function getName()
+    protected function getName(): string
     {
         @trigger_error(__METHOD__.' should be implemented and will be abstract in 4.0.', E_USER_DEPRECATED);
 
@@ -295,10 +285,8 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * Note that this can have the side effect to change the 'group' value
      * returned by the getGroup function
-     *
-     * @return string
      */
-    protected function getCurrentGroupName()
+    protected function getCurrentGroupName(): string
     {
         if (!$this->currentGroup) {
             $this->with($this->admin->getLabel(), ['auto_created' => true]);

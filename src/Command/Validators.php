@@ -42,10 +42,8 @@ class Validators
      * @param string $shortcut
      *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
-    public static function validateEntityName($shortcut)
+    public static function validateEntityName($shortcut): array
     {
         $entity = str_replace('/', '\\', $shortcut);
 
@@ -66,10 +64,8 @@ class Validators
      * @param string $class
      *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
-    public static function validateClass($class)
+    public static function validateClass($class): string
     {
         $class = str_replace('/', '\\', $class);
 
@@ -86,10 +82,8 @@ class Validators
      * @param string $adminClassBasename
      *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
-    public static function validateAdminClassBasename($adminClassBasename)
+    public static function validateAdminClassBasename($adminClassBasename): string
     {
         $adminClassBasename = str_replace('/', '\\', $adminClassBasename);
 
@@ -110,10 +104,8 @@ class Validators
      * @param string $controllerClassBasename
      *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
-    public static function validateControllerClassBasename($controllerClassBasename)
+    public static function validateControllerClassBasename($controllerClassBasename): string
     {
         $controllerClassBasename = str_replace('/', '\\', $controllerClassBasename);
 
@@ -136,10 +128,8 @@ class Validators
      * @static
      *
      * @param string $servicesFile
-     *
-     * @return string
      */
-    public static function validateServicesFile($servicesFile)
+    public static function validateServicesFile($servicesFile): string
     {
         return trim($servicesFile, '/');
     }
@@ -150,10 +140,8 @@ class Validators
      * @param string $serviceId
      *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
-    public static function validateServiceId($serviceId)
+    public static function validateServiceId($serviceId): string
     {
         if (preg_match('/[^A-Za-z\._0-9]/', $serviceId, $matches)) {
             throw new \InvalidArgumentException(sprintf(

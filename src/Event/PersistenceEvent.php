@@ -63,18 +63,12 @@ class PersistenceEvent extends Event
         $this->type = $type;
     }
 
-    /**
-     * @return AdminInterface
-     */
-    public function getAdmin()
+    public function getAdmin(): AdminInterface
     {
         return $this->admin;
     }
 
-    /**
-     * @return object
-     */
-    public function getObject()
+    public function getObject(): object
     {
         return $this->object;
     }

@@ -24,26 +24,22 @@ interface FieldDescriptionRegistryInterface
      * Return FormFieldDescription.
      *
      * @param string $name
-     *
-     * @return FieldDescriptionInterface
      */
-    public function getFormFieldDescription($name);
+    public function getFormFieldDescription($name): FieldDescriptionInterface;
 
     /**
      * Build and return the collection of form FieldDescription.
      *
      * @return FieldDescriptionInterface[] collection of form FieldDescription
      */
-    public function getFormFieldDescriptions();
+    public function getFormFieldDescriptions(): array;
 
     /**
      * Returns true if the admin has a FieldDescription with the given $name.
      *
      * @param string $name
-     *
-     * @return bool
      */
-    public function hasShowFieldDescription($name);
+    public function hasShowFieldDescription($name): bool;
 
     /**
      * Adds a FieldDescription.
@@ -75,19 +71,15 @@ interface FieldDescriptionRegistryInterface
 
     /**
      * Returns a list depend on the given $object.
-     *
-     * @return FieldDescriptionCollection
      */
-    public function getList();
+    public function getList(): FieldDescriptionCollection;
 
     /**
      * Returns true if the filter FieldDescription exists.
      *
      * @param string $name
-     *
-     * @return bool
      */
-    public function hasFilterFieldDescription($name);
+    public function hasFilterFieldDescription($name): bool;
 
     /**
      * Adds a filter FieldDescription.
@@ -108,14 +100,12 @@ interface FieldDescriptionRegistryInterface
      *
      * @return FieldDescriptionInterface[]
      */
-    public function getFilterFieldDescriptions();
+    public function getFilterFieldDescriptions(): array;
 
     /**
      * Returns a filter FieldDescription.
      *
      * @param string $name
-     *
-     * @return FieldDescriptionInterface|null
      */
-    public function getFilterFieldDescription($name);
+    public function getFilterFieldDescription($name): ?FieldDescriptionInterface;
 }

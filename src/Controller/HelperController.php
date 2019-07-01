@@ -84,10 +84,8 @@ class HelperController
 
     /**
      * @throws NotFoundHttpException
-     *
-     * @return Response
      */
-    public function appendFormFieldElementAction(Request $request)
+    public function appendFormFieldElementAction(Request $request): Response
     {
         $action = new AppendFormFieldElementAction($this->twig, $this->pool, $this->helper);
 
@@ -96,10 +94,8 @@ class HelperController
 
     /**
      * @throws NotFoundHttpException
-     *
-     * @return Response
      */
-    public function retrieveFormFieldElementAction(Request $request)
+    public function retrieveFormFieldElementAction(Request $request): Response
     {
         $action = new RetrieveFormFieldElementAction($this->twig, $this->pool, $this->helper);
 
@@ -108,20 +104,15 @@ class HelperController
 
     /**
      * @throws NotFoundHttpException|\RuntimeException
-     *
-     * @return Response
      */
-    public function getShortObjectDescriptionAction(Request $request)
+    public function getShortObjectDescriptionAction(Request $request): Response
     {
         $action = new GetShortObjectDescriptionAction($this->twig, $this->pool);
 
         return $action($request);
     }
 
-    /**
-     * @return Response
-     */
-    public function setObjectFieldValueAction(Request $request)
+    public function setObjectFieldValueAction(Request $request): Response
     {
         $action = new SetObjectFieldValueAction($this->twig, $this->pool, $this->validator);
 
@@ -133,10 +124,8 @@ class HelperController
      *
      * @throws \RuntimeException
      * @throws AccessDeniedException
-     *
-     * @return JsonResponse
      */
-    public function retrieveAutocompleteItemsAction(Request $request)
+    public function retrieveAutocompleteItemsAction(Request $request): JsonResponse
     {
         $action = new RetrieveAutocompleteItemsAction($this->pool);
 

@@ -1,12 +1,12 @@
-<?= "<?php\n" ?>
+<?= "<?php\n"; ?>
 
 declare(strict_types=1);
 
-namespace <?= $namespace ?>;
+namespace <?= $namespace; ?>;
 
 use Sonata\AdminBundle\Controller\CRUDController;
 
-final class <?= $class_name ?> extends CRUDController
+final class <?= $class_name; ?> extends CRUDController
 {
 
 }

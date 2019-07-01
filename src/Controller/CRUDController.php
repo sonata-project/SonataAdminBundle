@@ -108,7 +108,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @deprecated since version 3.27, to be removed in 4.0. Use Sonata\AdminBundle\Controller\CRUDController::renderWithExtraParams() instead.
      */
-    public function render($view, array $parameters = [], Response $response = null)
+    public function render($view, array $parameters = [], Response $response = null): Response
     {
         @trigger_error(
             'Method '.__CLASS__.'::render has been renamed to '.__CLASS__.'::renderWithExtraParams.',
@@ -125,7 +125,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return Response A Response instance
      */
-    public function renderWithExtraParams($view, array $parameters = [], Response $response = null)
+    public function renderWithExtraParams($view, array $parameters = [], Response $response = null): Response
     {
         if (!$this->isXmlHttpRequest()) {
             $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
@@ -146,10 +146,8 @@ class CRUDController implements ContainerAwareInterface
      * List action.
      *
      * @throws AccessDeniedException If access is not granted
-     *
-     * @return Response
      */
-    public function listAction()
+    public function listAction(): Response
     {
         $request = $this->getRequest();
 
@@ -189,10 +187,8 @@ class CRUDController implements ContainerAwareInterface
      * Execute a batch delete.
      *
      * @throws AccessDeniedException If access is not granted
-     *
-     * @return RedirectResponse
      */
-    public function batchActionDelete(ProxyQueryInterface $query)
+    public function batchActionDelete(ProxyQueryInterface $query): RedirectResponse
     {
         $this->admin->checkAccess('batchDelete');
 
@@ -552,10 +548,8 @@ class CRUDController implements ContainerAwareInterface
      *
      * @throws AccessDeniedException If access is not granted
      * @throws \RuntimeException     If no editable field is defined
-     *
-     * @return Response
      */
-    public function createAction()
+    public function createAction(): Response
     {
         $request = $this->getRequest();
         // the key used to lookup the template
@@ -677,10 +671,8 @@ class CRUDController implements ContainerAwareInterface
      *
      * @throws NotFoundHttpException If the object does not exist
      * @throws AccessDeniedException If access is not granted
-     *
-     * @return Response
      */
-    public function showAction($id = null)
+    public function showAction($id = null): Response
     {
         $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
@@ -733,10 +725,8 @@ class CRUDController implements ContainerAwareInterface
      *
      * @throws AccessDeniedException If access is not granted
      * @throws NotFoundHttpException If the object does not exist or the audit reader is not available
-     *
-     * @return Response
      */
-    public function historyAction($id = null)
+    public function historyAction($id = null): Response
     {
         $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
@@ -784,10 +774,8 @@ class CRUDController implements ContainerAwareInterface
      *
      * @throws AccessDeniedException If access is not granted
      * @throws NotFoundHttpException If the object or revision does not exist or the audit reader is not available
-     *
-     * @return Response
      */
-    public function historyViewRevisionAction($id = null, $revision = null)
+    public function historyViewRevisionAction($id = null, $revision = null): Response
     {
         $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
@@ -849,10 +837,8 @@ class CRUDController implements ContainerAwareInterface
      *
      * @throws AccessDeniedException If access is not granted
      * @throws NotFoundHttpException If the object or revision does not exist or the audit reader is not available
-     *
-     * @return Response
      */
-    public function historyCompareRevisionsAction($id = null, $base_revision = null, $compare_revision = null)
+    public function historyCompareRevisionsAction($id = null, $base_revision = null, $compare_revision = null): Response
     {
         $request = $this->getRequest();
 
@@ -924,10 +910,8 @@ class CRUDController implements ContainerAwareInterface
      *
      * @throws AccessDeniedException If access is not granted
      * @throws \RuntimeException     If the export format is invalid
-     *
-     * @return Response
      */
-    public function exportAction(Request $request)
+    public function exportAction(Request $request): Response
     {
         $this->admin->checkAccess('export');
 
@@ -1058,10 +1042,7 @@ class CRUDController implements ContainerAwareInterface
         ], null);
     }
 
-    /**
-     * @return Request
-     */
-    public function getRequest()
+    public function getRequest(): Request
     {
         return $this->container->get('request_stack')->getCurrentRequest();
     }
@@ -1087,7 +1068,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return Response with json encoded data
      */
-    protected function renderJson($data, $status = 200, $headers = [])
+    protected function renderJson($data, $status = 200, $headers = []): Response
     {
         return new JsonResponse($data, $status, $headers);
     }
@@ -1097,7 +1078,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return bool True if the request is an XMLHttpRequest, false otherwise
      */
-    protected function isXmlHttpRequest()
+    protected function isXmlHttpRequest(): bool
     {
         $request = $this->getRequest();
 
@@ -1110,7 +1091,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return string HTTP method, either
      */
-    protected function getRestMethod()
+    protected function getRestMethod(): string
     {
         $request = $this->getRequest();
 
@@ -1174,10 +1155,8 @@ class CRUDController implements ContainerAwareInterface
     /**
      * Proxy for the logger service of the container.
      * If no such service is found, a NullLogger is returned.
-     *
-     * @return LoggerInterface
      */
-    protected function getLogger()
+    protected function getLogger(): LoggerInterface
     {
         if ($this->container->has('logger')) {
             $logger = $this->container->get('logger');
@@ -1194,7 +1173,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return string The template name
      */
-    protected function getBaseTemplate()
+    protected function getBaseTemplate(): string
     {
         if ($this->isXmlHttpRequest()) {
             // NEXT_MAJOR: Remove this line and use commented line below it instead
@@ -1227,10 +1206,8 @@ class CRUDController implements ContainerAwareInterface
      * Redirect the user depend on this choice.
      *
      * @param object $object
-     *
-     * @return RedirectResponse
      */
-    protected function redirectTo($object)
+    protected function redirectTo($object): RedirectResponse
     {
         $request = $this->getRequest();
 
@@ -1278,10 +1255,8 @@ class CRUDController implements ContainerAwareInterface
 
     /**
      * Redirects the user to the list view.
-     *
-     * @return RedirectResponse
      */
-    final protected function redirectToList()
+    final protected function redirectToList(): RedirectResponse
     {
         $parameters = [];
 
@@ -1294,10 +1269,8 @@ class CRUDController implements ContainerAwareInterface
 
     /**
      * Returns true if the preview is requested to be shown.
-     *
-     * @return bool
      */
-    protected function isPreviewRequested()
+    protected function isPreviewRequested(): bool
     {
         $request = $this->getRequest();
 
@@ -1306,10 +1279,8 @@ class CRUDController implements ContainerAwareInterface
 
     /**
      * Returns true if the preview has been approved.
-     *
-     * @return bool
      */
-    protected function isPreviewApproved()
+    protected function isPreviewApproved(): bool
     {
         $request = $this->getRequest();
 
@@ -1321,10 +1292,8 @@ class CRUDController implements ContainerAwareInterface
      *
      * That means either a preview is requested or the preview has already been shown
      * and it got approved/declined.
-     *
-     * @return bool
      */
-    protected function isInPreviewMode()
+    protected function isInPreviewMode(): bool
     {
         return $this->admin->supportsPreviewMode()
         && ($this->isPreviewRequested()
@@ -1334,10 +1303,8 @@ class CRUDController implements ContainerAwareInterface
 
     /**
      * Returns true if the preview has been declined.
-     *
-     * @return bool
      */
-    protected function isPreviewDeclined()
+    protected function isPreviewDeclined(): bool
     {
         $request = $this->getRequest();
 
@@ -1346,10 +1313,8 @@ class CRUDController implements ContainerAwareInterface
 
     /**
      * Gets ACL users.
-     *
-     * @return \Traversable
      */
-    protected function getAclUsers()
+    protected function getAclUsers(): \Traversable
     {
         $aclUsers = [];
 
@@ -1367,10 +1332,8 @@ class CRUDController implements ContainerAwareInterface
 
     /**
      * Gets ACL roles.
-     *
-     * @return \Traversable
      */
-    protected function getAclRoles()
+    protected function getAclRoles(): \Traversable
     {
         $aclRoles = [];
         $roleHierarchy = $this->container->getParameter('security.role_hierarchy.roles');
@@ -1427,10 +1390,8 @@ class CRUDController implements ContainerAwareInterface
      * Escape string for html output.
      *
      * @param string $s
-     *
-     * @return string
      */
-    protected function escapeHtml($s)
+    protected function escapeHtml($s): string
     {
         return htmlspecialchars((string) $s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
@@ -1456,10 +1417,8 @@ class CRUDController implements ContainerAwareInterface
      * It's called from createAction.
      *
      * @param mixed $object
-     *
-     * @return Response|null
      */
-    protected function preCreate(Request $request, $object)
+    protected function preCreate(Request $request, $object): ?Response
     {
     }
 
@@ -1468,10 +1427,8 @@ class CRUDController implements ContainerAwareInterface
      * It's called from editAction.
      *
      * @param mixed $object
-     *
-     * @return Response|null
      */
-    protected function preEdit(Request $request, $object)
+    protected function preEdit(Request $request, $object): ?Response
     {
     }
 
@@ -1480,10 +1437,8 @@ class CRUDController implements ContainerAwareInterface
      * It's called from deleteAction.
      *
      * @param mixed $object
-     *
-     * @return Response|null
      */
-    protected function preDelete(Request $request, $object)
+    protected function preDelete(Request $request, $object): ?Response
     {
     }
 
@@ -1492,20 +1447,16 @@ class CRUDController implements ContainerAwareInterface
      * It's called from showAction.
      *
      * @param mixed $object
-     *
-     * @return Response|null
      */
-    protected function preShow(Request $request, $object)
+    protected function preShow(Request $request, $object): ?Response
     {
     }
 
     /**
      * This method can be overloaded in your custom CRUD controller.
      * It's called from listAction.
-     *
-     * @return Response|null
      */
-    protected function preList(Request $request)
+    protected function preList(Request $request): ?Response
     {
     }
 
@@ -1518,7 +1469,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return string translated string
      */
-    final protected function trans($id, array $parameters = [], $domain = null, $locale = null)
+    final protected function trans($id, array $parameters = [], $domain = null, $locale = null): string
     {
         $domain = $domain ?: $this->admin->getTranslationDomain();
 

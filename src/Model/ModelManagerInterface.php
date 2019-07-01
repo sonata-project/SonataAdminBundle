@@ -28,10 +28,8 @@ interface ModelManagerInterface
     /**
      * @param string $class
      * @param string $name
-     *
-     * @return FieldDescriptionInterface
      */
-    public function getNewFieldDescriptionInstance($class, $name, array $options = []);
+    public function getNewFieldDescriptionInstance($class, $name, array $options = []): FieldDescriptionInterface;
 
     /**
      * @param mixed $object
@@ -59,14 +57,14 @@ interface ModelManagerInterface
      *
      * @return array all objects matching the criteria
      */
-    public function findBy($class, array $criteria = []);
+    public function findBy($class, array $criteria = []): array;
 
     /**
      * @param string $class
      *
      * @return object an object matching the criteria or null if none match
      */
-    public function findOneBy($class, array $criteria = []);
+    public function findOneBy($class, array $criteria = []): object;
 
     /**
      * @param string $class
@@ -74,7 +72,7 @@ interface ModelManagerInterface
      *
      * @return object|null the object with id or null if not found
      */
-    public function find($class, $id);
+    public function find($class, $id): ?object;
 
     /**
      * @param string $class
@@ -92,19 +90,15 @@ interface ModelManagerInterface
     /**
      * @param string $class
      * @param string $alias
-     *
-     * @return ProxyQueryInterface
      */
-    public function createQuery($class, $alias = 'o');
+    public function createQuery($class, $alias = 'o'): ProxyQueryInterface;
 
     /**
      * Get the identifier for the model type of this class.
      *
      * @param string $class fully qualified class name
-     *
-     * @return string
      */
-    public function getModelIdentifier($class);
+    public function getModelIdentifier($class): string;
 
     /**
      * Get the identifiers of this model class.
@@ -117,17 +111,15 @@ interface ModelManagerInterface
      *
      * @return array list of all identifiers of this model
      */
-    public function getIdentifierValues($model);
+    public function getIdentifierValues($model): array;
 
     /**
      * Get a list of the field names models of the specified class use to store
      * the identifier.
      *
      * @param string $class fully qualified class name
-     *
-     * @return array
      */
-    public function getIdentifierFieldNames($class);
+    public function getIdentifierFieldNames($class): array;
 
     /**
      * Get the identifiers for this model class as a string.
@@ -137,7 +129,7 @@ interface ModelManagerInterface
      * @return string a string representation of the identifiers for this
      *                instance
      */
-    public function getNormalizedIdentifier($model);
+    public function getNormalizedIdentifier($model): string;
 
     /**
      * Get the identifiers as a string that is safe to use in a url.
@@ -149,7 +141,7 @@ interface ModelManagerInterface
      *
      * @return string string representation of the id that is safe to use in a url
      */
-    public function getUrlsafeIdentifier($model);
+    public function getUrlsafeIdentifier($model): string;
 
     /**
      * Create a new instance of the model of the specified class.
@@ -190,10 +182,8 @@ interface ModelManagerInterface
      *
      * @param mixed $collection
      * @param mixed $element
-     *
-     * @return bool
      */
-    public function collectionHasElement(&$collection, &$element);
+    public function collectionHasElement(&$collection, &$element): bool;
 
     /**
      * Clear the collection.
@@ -206,17 +196,13 @@ interface ModelManagerInterface
 
     /**
      * Returns the parameters used in the columns header.
-     *
-     * @return array
      */
-    public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid);
+    public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid): array;
 
     /**
      * @param string $class
-     *
-     * @return array
      */
-    public function getDefaultSortValues($class);
+    public function getDefaultSortValues($class): array;
 
     /**
      * @param string $class
@@ -237,22 +223,18 @@ interface ModelManagerInterface
     /**
      * @param int|null $firstResult
      * @param int|null $maxResult
-     *
-     * @return SourceIteratorInterface
      */
     public function getDataSourceIterator(
         DatagridInterface $datagrid,
         array $fields,
         $firstResult = null,
         $maxResult = null
-    );
+    ): SourceIteratorInterface;
 
     /**
      * @param string $class
-     *
-     * @return array
      */
-    public function getExportFields($class);
+    public function getExportFields($class): array;
 
     /**
      * @param int $page
@@ -263,7 +245,6 @@ interface ModelManagerInterface
 
     /**
      * @param string $class
-     * @param array  $idx
      */
     public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
 }

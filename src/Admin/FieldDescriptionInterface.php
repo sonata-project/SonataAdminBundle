@@ -30,7 +30,7 @@ interface FieldDescriptionInterface
      *
      * @return string the field name
      */
-    public function getFieldName();
+    public function getFieldName(): string;
 
     /**
      * Set the name.
@@ -44,7 +44,7 @@ interface FieldDescriptionInterface
      *
      * @return string the name
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Return the value represented by the provided name.
@@ -78,7 +78,7 @@ interface FieldDescriptionInterface
      *
      * @return array options
      */
-    public function getOptions();
+    public function getOptions(): array;
 
     /**
      * return the template used to render the field.
@@ -92,7 +92,7 @@ interface FieldDescriptionInterface
      *
      * @return string the template name
      */
-    public function getTemplate();
+    public function getTemplate(): string;
 
     /**
      * return the field type, the type is a mandatory field as it used to select the correct template
@@ -116,10 +116,8 @@ interface FieldDescriptionInterface
 
     /**
      * return the parent Admin (only used in nested admin).
-     *
-     * @return AdminInterface
      */
-    public function getParent();
+    public function getParent(): AdminInterface;
 
     /**
      * Define the association mapping definition.
@@ -130,17 +128,13 @@ interface FieldDescriptionInterface
 
     /**
      * return the association mapping definition.
-     *
-     * @return array
      */
-    public function getAssociationMapping();
+    public function getAssociationMapping(): array;
 
     /**
      * return the related Target Entity.
-     *
-     * @return string|null
      */
-    public function getTargetEntity();
+    public function getTargetEntity(): ?string;
 
     /**
      * set the field mapping information.
@@ -154,7 +148,7 @@ interface FieldDescriptionInterface
      *
      * @return array the field mapping definition
      */
-    public function getFieldMapping();
+    public function getFieldMapping(): array;
 
     /**
      * set the parent association mappings information.
@@ -166,7 +160,7 @@ interface FieldDescriptionInterface
      *
      * @return array the parent association mapping definitions
      */
-    public function getParentAssociationMappings();
+    public function getParentAssociationMappings(): array;
 
     /**
      * set the association admin instance (only used if the field is linked to an Admin).
@@ -177,17 +171,13 @@ interface FieldDescriptionInterface
 
     /**
      * return the associated Admin instance (only used if the field is linked to an Admin).
-     *
-     * @return AdminInterface|null
      */
-    public function getAssociationAdmin();
+    public function getAssociationAdmin(): ?AdminInterface;
 
     /**
      * return true if the FieldDescription is linked to an identifier field.
-     *
-     * @return bool
      */
-    public function isIdentifier();
+    public function isIdentifier(): bool;
 
     /**
      * return the value linked to the description.
@@ -206,7 +196,7 @@ interface FieldDescriptionInterface
     /**
      * @return AdminInterface the admin class linked to this FieldDescription
      */
-    public function getAdmin();
+    public function getAdmin(): AdminInterface;
 
     /**
      * merge option values related to the provided option name.
@@ -239,38 +229,32 @@ interface FieldDescriptionInterface
 
     /**
      * return the label to use for the current field.
-     *
-     * @return string
      */
-    public function getLabel();
+    public function getLabel(): string;
 
     /**
      * Return the translation domain to use for the current field.
-     *
-     * @return string
      */
-    public function getTranslationDomain();
+    public function getTranslationDomain(): string;
 
     /**
      * Return true if field is sortable.
-     *
-     * @return bool
      */
-    public function isSortable();
+    public function isSortable(): bool;
 
     /**
      * return the field mapping definition used when sorting.
      *
      * @return array the field mapping definition
      */
-    public function getSortFieldMapping();
+    public function getSortFieldMapping(): array;
 
     /**
      * return the parent association mapping definitions used when sorting.
      *
      * @return array the parent association mapping definitions
      */
-    public function getSortParentAssociationMapping();
+    public function getSortParentAssociationMapping(): array;
 
     /**
      * @param object|null $object

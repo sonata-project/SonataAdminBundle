@@ -129,10 +129,7 @@ class ModelChoiceList extends SimpleChoiceList
         parent::__construct($this->load($choices));
     }
 
-    /**
-     * @return array
-     */
-    public function getIdentifier()
+    public function getIdentifier(): array
     {
         return $this->identifier;
     }
@@ -146,7 +143,7 @@ class ModelChoiceList extends SimpleChoiceList
      *
      * @return array An array of entities
      */
-    public function getEntities()
+    public function getEntities(): array
     {
         return $this->entities;
     }
@@ -167,7 +164,7 @@ class ModelChoiceList extends SimpleChoiceList
      *
      * @return object The matching entity
      */
-    public function getEntity($key)
+    public function getEntity($key): object
     {
         if (\count($this->identifier) > 1) {
             // $key is a collection index
@@ -192,10 +189,8 @@ class ModelChoiceList extends SimpleChoiceList
      *
      * @throws InvalidArgumentException If the entity does not exist in Doctrine's
      *                                  identity map
-     *
-     * @return array
      */
-    public function getIdentifierValues($entity)
+    public function getIdentifierValues($entity): array
     {
         try {
             return $this->modelManager->getIdentifierValues($entity);
@@ -204,18 +199,12 @@ class ModelChoiceList extends SimpleChoiceList
         }
     }
 
-    /**
-     * @return ModelManagerInterface
-     */
-    public function getModelManager()
+    public function getModelManager(): ModelManagerInterface
     {
         return $this->modelManager;
     }
 
-    /**
-     * @return string
-     */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
@@ -239,7 +228,7 @@ class ModelChoiceList extends SimpleChoiceList
      *
      * @return array An array of choices
      */
-    protected function load($choices)
+    protected function load($choices): array
     {
         if (\is_array($choices) && \count($choices) > 0) {
             $entities = $choices;

@@ -135,10 +135,8 @@ class AdminType extends AbstractType
 
     /**
      * @throws \RuntimeException
-     *
-     * @return FieldDescriptionInterface
      */
-    protected function getFieldDescription(array $options)
+    protected function getFieldDescription(array $options): FieldDescriptionInterface
     {
         if (!isset($options['sonata_field_description'])) {
             throw new \RuntimeException('Please provide a valid `sonata_field_description` option');
@@ -147,10 +145,7 @@ class AdminType extends AbstractType
         return $options['sonata_field_description'];
     }
 
-    /**
-     * @return AdminInterface
-     */
-    protected function getAdmin(array $options)
+    protected function getAdmin(array $options): AdminInterface
     {
         return $this->getFieldDescription($options)->getAssociationAdmin();
     }

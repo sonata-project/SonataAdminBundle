@@ -48,10 +48,8 @@ class AdminHelper
      * @param string $elementId
      *
      * @throws \RuntimeException
-     *
-     * @return FormBuilderInterface|null
      */
-    public function getChildFormBuilder(FormBuilderInterface $formBuilder, $elementId)
+    public function getChildFormBuilder(FormBuilderInterface $formBuilder, $elementId): ?FormBuilderInterface
     {
         foreach (new FormBuilderIterator($formBuilder) as $name => $formBuilder) {
             if ($name === $elementId) {
@@ -62,10 +60,8 @@ class AdminHelper
 
     /**
      * @param string $elementId
-     *
-     * @return FormView|null
      */
-    public function getChildFormView(FormView $formView, $elementId)
+    public function getChildFormView(FormView $formView, $elementId): ?FormView
     {
         foreach (new \RecursiveIteratorIterator(new FormViewIterator($formView), \RecursiveIteratorIterator::SELF_FIRST) as $name => $formView) {
             if ($name === $elementId) {
@@ -80,10 +76,8 @@ class AdminHelper
      * @deprecated
      *
      * @param string $code
-     *
-     * @return AdminInterface
      */
-    public function getAdmin($code)
+    public function getAdmin($code): AdminInterface
     {
         return $this->pool->getInstance($code);
     }
@@ -100,10 +94,8 @@ class AdminHelper
      *
      * @throws \RuntimeException
      * @throws \Exception
-     *
-     * @return array
      */
-    public function appendFormFieldElement(AdminInterface $admin, $subject, $elementId)
+    public function appendFormFieldElement(AdminInterface $admin, $subject, $elementId): array
     {
         // child rows marked as toDelete
         $toDelete = [];
@@ -254,10 +246,8 @@ class AdminHelper
      * @param mixed  $entity
      *
      * @throws \Exception
-     *
-     * @return string
      */
-    public function getElementAccessPath($elementId, $entity)
+    public function getElementAccessPath($elementId, $entity): string
     {
         $propertyAccessor = $this->pool->getPropertyAccessor();
 
@@ -291,10 +281,8 @@ class AdminHelper
      * Recursively find the class name of the admin responsible for the element at the end of an association chain.
      *
      * @param array $elements
-     *
-     * @return string
      */
-    protected function getEntityClassName(AdminInterface $admin, $elements)
+    protected function getEntityClassName(AdminInterface $admin, $elements): string
     {
         $element = array_shift($elements);
         $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();

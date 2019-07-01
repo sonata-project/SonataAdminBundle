@@ -66,8 +66,6 @@ class RouteCollection
      * @param string $pattern   Pattern (will be automatically combined with @see $this->baseRoutePattern and $name
      * @param string $host
      * @param string $condition
-     *
-     * @return RouteCollection
      */
     public function add(
         $name,
@@ -79,7 +77,7 @@ class RouteCollection
         array $schemes = [],
         array $methods = [],
         $condition = ''
-    ) {
+    ): self {
         $pattern = $this->baseRoutePattern.'/'.($pattern ?: $name);
         $code = $this->getCode($name);
         $routeName = $this->baseRouteName.'_'.$name;
@@ -109,10 +107,8 @@ class RouteCollection
 
     /**
      * @param string $name
-     *
-     * @return string
      */
-    public function getCode($name)
+    public function getCode($name): string
     {
         if (false !== strrpos($name, '.')) {
             return $name;
@@ -121,10 +117,7 @@ class RouteCollection
         return $this->baseCodeRoute.'.'.$name;
     }
 
-    /**
-     * @return RouteCollection
-     */
-    public function addCollection(self $collection)
+    public function addCollection(self $collection): self
     {
         foreach ($collection->getElements() as $code => $route) {
             $this->elements[$code] = $route;
@@ -136,7 +129,7 @@ class RouteCollection
     /**
      * @return Route[]
      */
-    public function getElements()
+    public function getElements(): array
     {
         foreach ($this->elements as $name => $element) {
             $this->elements[$name] = $this->resolve($element);
@@ -147,10 +140,8 @@ class RouteCollection
 
     /**
      * @param string $name
-     *
-     * @return bool
      */
-    public function has($name)
+    public function has($name): bool
     {
         return \array_key_exists($this->getCode($name), $this->elements);
     }
@@ -159,10 +150,8 @@ class RouteCollection
      * @param string $name
      *
      * @throws \InvalidArgumentException
-     *
-     * @return Route
      */
-    public function get($name)
+    public function get($name): Route
     {
         if ($this->has($name)) {
             $code = $this->getCode($name);
@@ -177,10 +166,8 @@ class RouteCollection
 
     /**
      * @param string $name
-     *
-     * @return RouteCollection
      */
-    public function remove($name)
+    public function remove($name): self
     {
         unset($this->elements[$this->getCode($name)]);
 
@@ -191,10 +178,8 @@ class RouteCollection
      * Remove all routes except routes in $routeList.
      *
      * @param string[]|string $routeList
-     *
-     * @return RouteCollection
      */
-    public function clearExcept($routeList)
+    public function clearExcept($routeList): self
     {
         if (!\is_array($routeList)) {
             $routeList = [$routeList];
@@ -217,10 +202,8 @@ class RouteCollection
 
     /**
      * Remove all routes.
-     *
-     * @return RouteCollection
      */
-    public function clear()
+    public function clear(): self
     {
         $this->elements = [];
 
@@ -234,7 +217,7 @@ class RouteCollection
      *
      * @return string Actionified word
      */
-    public function actionify($action)
+    public function actionify($action): string
     {
         if (false !== ($pos = strrpos($action, '.'))) {
             $action = substr($action, $pos + 1);
@@ -249,34 +232,22 @@ class RouteCollection
         return lcfirst(str_replace(' ', '', ucwords(strtr($action, '_-', '  '))));
     }
 
-    /**
-     * @return string
-     */
-    public function getBaseCodeRoute()
+    public function getBaseCodeRoute(): string
     {
         return $this->baseCodeRoute;
     }
 
-    /**
-     * @return string
-     */
-    public function getBaseControllerName()
+    public function getBaseControllerName(): string
     {
         return $this->baseControllerName;
     }
 
-    /**
-     * @return string
-     */
-    public function getBaseRouteName()
+    public function getBaseRouteName(): string
     {
         return $this->baseRouteName;
     }
 
-    /**
-     * @return string
-     */
-    public function getBaseRoutePattern()
+    public function getBaseRoutePattern(): string
     {
         return $this->baseRoutePattern;
     }

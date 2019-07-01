@@ -38,5 +38,5 @@ interface AdminAclManipulatorInterface
         AclInterface $acl,
         AclSecurityHandlerInterface $securityHandler,
         array $roleInformation = []
-    );
+    ): bool;
 }

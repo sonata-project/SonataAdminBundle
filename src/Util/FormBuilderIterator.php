@@ -95,10 +95,8 @@ class FormBuilderIterator extends \RecursiveArrayIterator
 
     /**
      * @static
-     *
-     * @return array
      */
-    private static function getKeys(FormBuilderInterface $formBuilder)
+    private static function getKeys(FormBuilderInterface $formBuilder): array
     {
         return array_keys($formBuilder->all());
     }

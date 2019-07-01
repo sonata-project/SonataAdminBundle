@@ -134,10 +134,7 @@ class SimplePager extends Pager
         $this->threshold = (int) $threshold;
     }
 
-    /**
-     * @return int
-     */
-    public function getThreshold()
+    public function getThreshold(): int
     {
         return $this->threshold;
     }

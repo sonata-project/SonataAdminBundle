@@ -98,20 +98,16 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Returns the current pager's max link.
-     *
-     * @return int
      */
-    public function getCurrentMaxLink()
+    public function getCurrentMaxLink(): int
     {
         return $this->currentMaxLink;
     }
 
     /**
      * Returns the current pager's max record limit.
-     *
-     * @return int
      */
-    public function getMaxRecordLimit()
+    public function getMaxRecordLimit(): int
     {
         return $this->maxRecordLimit;
     }
@@ -130,10 +126,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      * Returns an array of page numbers to use in pagination links.
      *
      * @param int $nbLinks The maximum number of page numbers to return
-     *
-     * @return array
      */
-    public function getLinks($nbLinks = null)
+    public function getLinks($nbLinks = null): array
     {
         if (null === $nbLinks) {
             $nbLinks = $this->getMaxPageLinks();
@@ -156,20 +150,16 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Returns true if the current query requires pagination.
-     *
-     * @return bool
      */
-    public function haveToPaginate()
+    public function haveToPaginate(): bool
     {
         return $this->getMaxPerPage() && $this->getNbResults() > $this->getMaxPerPage();
     }
 
     /**
      * Returns the current cursor.
-     *
-     * @return int
      */
-    public function getCursor()
+    public function getCursor(): int
     {
         return $this->cursor;
     }
@@ -246,10 +236,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Returns the first index on the current page.
-     *
-     * @return int
      */
-    public function getFirstIndex()
+    public function getFirstIndex(): int
     {
         if (0 === $this->page) {
             return 1;
@@ -276,10 +264,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Returns the last index on the current page.
-     *
-     * @return int
      */
-    public function getLastIndex()
+    public function getLastIndex(): int
     {
         if (0 === $this->page) {
             return $this->nbResults;
@@ -307,50 +293,32 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         return $this->getLastIndex();
     }
 
-    /**
-     * @return int
-     */
-    public function getNbResults()
+    public function getNbResults(): int
     {
         return $this->nbResults;
     }
 
-    /**
-     * @return int
-     */
-    public function getFirstPage()
+    public function getFirstPage(): int
     {
         return 1;
     }
 
-    /**
-     * @return int
-     */
-    public function getLastPage()
+    public function getLastPage(): int
     {
         return $this->lastPage;
     }
 
-    /**
-     * @return int
-     */
-    public function getPage()
+    public function getPage(): int
     {
         return $this->page;
     }
 
-    /**
-     * @return int
-     */
-    public function getNextPage()
+    public function getNextPage(): int
     {
         return min($this->getPage() + 1, $this->getLastPage());
     }
 
-    /**
-     * @return int
-     */
-    public function getPreviousPage()
+    public function getPreviousPage(): int
     {
         return max($this->getPage() - 1, $this->getFirstPage());
     }
@@ -402,30 +370,24 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Returns true if on the first page.
-     *
-     * @return bool
      */
-    public function isFirstPage()
+    public function isFirstPage(): bool
     {
         return 1 === $this->page;
     }
 
     /**
      * Returns true if on the last page.
-     *
-     * @return bool
      */
-    public function isLastPage()
+    public function isLastPage(): bool
     {
         return $this->page === $this->lastPage;
     }
 
     /**
      * Returns the current pager's parameter holder.
-     *
-     * @return array
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -447,10 +409,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      * Checks whether a parameter has been set.
      *
      * @param string $name
-     *
-     * @return bool
      */
-    public function hasParameter($name)
+    public function hasParameter($name): bool
     {
         return isset($this->parameters[$name]);
     }
@@ -537,18 +497,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         }
     }
 
-    /**
-     * @return array
-     */
-    public function getCountColumn()
+    public function getCountColumn(): array
     {
         return $this->countColumn;
     }
 
-    /**
-     * @return array
-     */
-    public function setCountColumn(array $countColumn)
+    public function setCountColumn(array $countColumn): array
     {
         return $this->countColumn = $countColumn;
     }
@@ -558,10 +512,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
         $this->query = $query;
     }
 
-    /**
-     * @return ProxyQueryInterface
-     */
-    public function getQuery()
+    public function getQuery(): ProxyQueryInterface
     {
         return $this->query;
     }
@@ -588,10 +539,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
     /**
      * Returns true if the properties used for iteration have been initialized.
-     *
-     * @return bool
      */
-    protected function isIteratorInitialized()
+    protected function isIteratorInitialized(): bool
     {
         return null !== $this->results;
     }
@@ -618,10 +567,8 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      * Retrieve the object for a certain offset.
      *
      * @param int $offset
-     *
-     * @return object
      */
-    protected function retrieveObject($offset)
+    protected function retrieveObject($offset): object
     {
         $queryForRetrieve = clone $this->getQuery();
         $queryForRetrieve

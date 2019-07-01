@@ -25,10 +25,8 @@ interface PagerInterface
 
     /**
      * Returns the maximum number of results per page.
-     *
-     * @return int
      */
-    public function getMaxPerPage();
+    public function getMaxPerPage(): int;
 
     /**
      * Sets the maximum number of results per page.
@@ -53,10 +51,8 @@ interface PagerInterface
 
     /**
      * Returns an array of results on the given page.
-     *
-     * @return array
      */
-    public function getResults();
+    public function getResults(): array;
 
     /**
      * Sets the maximum number of page numbers.
@@ -67,8 +63,6 @@ interface PagerInterface
 
     /**
      * Returns the maximum number of page numbers.
-     *
-     * @return int
      */
-    public function getMaxPageLinks();
+    public function getMaxPageLinks(): int;
 }

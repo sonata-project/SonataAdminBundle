@@ -46,8 +46,6 @@ class DatagridMapper extends BaseMapper
      * @param array  $fieldOptions
      *
      * @throws \RuntimeException
-     *
-     * @return DatagridMapper
      */
     public function add(
         $name,
@@ -56,7 +54,7 @@ class DatagridMapper extends BaseMapper
         $fieldType = null,
         $fieldOptions = null,
         array $fieldDescriptionOptions = []
-    ) {
+    ): self {
         if (\is_array($fieldOptions)) {
             $filterOptions['field_options'] = $fieldOptions;
         }

@@ -49,8 +49,6 @@ abstract class QuestionableCommand extends Command
      * @param string $questionText
      * @param string $default
      * @param string $separator
-     *
-     * @return string
      */
     final protected function askConfirmation(
         InputInterface $input,
@@ -58,7 +56,7 @@ abstract class QuestionableCommand extends Command
         $questionText,
         $default,
         $separator
-    ) {
+    ): string {
         $questionHelper = $this->getQuestionHelper();
 
         $question = new ConfirmationQuestion($questionHelper->getQuestion(
@@ -70,10 +68,7 @@ abstract class QuestionableCommand extends Command
         return $questionHelper->ask($input, $output, $question);
     }
 
-    /**
-     * @return QuestionHelper
-     */
-    final protected function getQuestionHelper()
+    final protected function getQuestionHelper(): QuestionHelper
     {
         $questionHelper = $this->getHelper('question');
 

@@ -250,10 +250,8 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
      * Apply the default values required by the AdminInterface to the Admin service definition.
      *
      * @param string $serviceId
-     *
-     * @return Definition
      */
-    public function applyDefaults(ContainerBuilder $container, $serviceId, array $attributes = [])
+    public function applyDefaults(ContainerBuilder $container, $serviceId, array $attributes = []): Definition
     {
         $definition = $container->getDefinition($serviceId);
         $settings = $container->getParameter('sonata.admin.configuration.admin_services');

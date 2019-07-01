@@ -1810,10 +1810,7 @@ class AdminTest extends TestCase
         $modelAdmin->getSideMenu('foo');
     }
 
-    /**
-     * @return array
-     */
-    public function provideGetSubject()
+    public function provideGetSubject(): array
     {
         return [
             [23],

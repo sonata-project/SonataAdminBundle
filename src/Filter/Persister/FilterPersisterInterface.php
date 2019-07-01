@@ -28,7 +28,7 @@ interface FilterPersisterInterface
      *
      * @return array The persisted filters
      */
-    public function get($adminCode);
+    public function get($adminCode): array;
 
     /**
      * Set persisted filters for given admin.

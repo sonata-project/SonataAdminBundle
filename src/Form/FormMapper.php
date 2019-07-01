@@ -219,10 +219,7 @@ class FormMapper extends BaseGroupedMapper
         return $this;
     }
 
-    /**
-     * @return FormBuilderInterface
-     */
-    public function getFormBuilder()
+    public function getFormBuilder(): FormBuilderInterface
     {
         return $this->formBuilder;
     }
@@ -230,18 +227,13 @@ class FormMapper extends BaseGroupedMapper
     /**
      * @param string $name
      * @param mixed  $type
-     *
-     * @return FormBuilderInterface
      */
-    public function create($name, $type = null, array $options = [])
+    public function create($name, $type = null, array $options = []): FormBuilderInterface
     {
         return $this->formBuilder->create($name, $type, $options);
     }
 
-    /**
-     * @return FormMapper
-     */
-    public function setHelps(array $helps = [])
+    public function setHelps(array $helps = []): self
     {
         foreach ($helps as $name => $help) {
             $this->addHelp($name, $help);
@@ -250,10 +242,7 @@ class FormMapper extends BaseGroupedMapper
         return $this;
     }
 
-    /**
-     * @return FormMapper
-     */
-    public function addHelp($name, $help)
+    public function addHelp($name, $help): self
     {
         if ($this->admin->hasFormFieldDescription($name)) {
             $this->admin->getFormFieldDescription($name)->setHelp($help);
@@ -269,10 +258,8 @@ class FormMapper extends BaseGroupedMapper
      * So use this trick to avoid any issue.
      *
      * @param string $fieldName
-     *
-     * @return string
      */
-    protected function sanitizeFieldName($fieldName)
+    protected function sanitizeFieldName($fieldName): string
     {
         return str_replace(['__', '.'], ['____', '__'], $fieldName);
     }

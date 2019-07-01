@@ -54,26 +54,17 @@ class ConfigureQueryEvent extends Event
         $this->context = $context;
     }
 
-    /**
-     * @return AdminInterface
-     */
-    public function getAdmin()
+    public function getAdmin(): AdminInterface
     {
         return $this->admin;
     }
 
-    /**
-     * @return string
-     */
-    public function getContext()
+    public function getContext(): string
     {
         return $this->context;
     }
 
-    /**
-     * @return ProxyQueryInterface
-     */
-    public function getProxyQuery()
+    public function getProxyQuery(): ProxyQueryInterface
     {
         return $this->proxyQuery;
     }

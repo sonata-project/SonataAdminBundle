@@ -29,10 +29,8 @@ interface AuditManagerInterface
      * Returns true if $class has AuditReaderInterface.
      *
      * @param string $class
-     *
-     * @return bool
      */
-    public function hasReader($class);
+    public function hasReader($class): bool;
 
     /**
      * Get AuditReaderInterface service for $class.
@@ -40,8 +38,6 @@ interface AuditManagerInterface
      * @param string $class
      *
      * @throws \RuntimeException
-     *
-     * @return AuditReaderInterface
      */
-    public function getReader($class);
+    public function getReader($class): AuditReaderInterface;
 }

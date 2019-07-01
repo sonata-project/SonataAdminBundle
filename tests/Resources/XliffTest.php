@@ -20,7 +20,7 @@ class XliffTest extends XliffValidatorTestCase
     /**
      * @return array List all path to validate xliff
      */
-    public function getXliffPaths()
+    public function getXliffPaths(): array
     {
         return [[__DIR__.'/../../src/Resources/translations']];
     }

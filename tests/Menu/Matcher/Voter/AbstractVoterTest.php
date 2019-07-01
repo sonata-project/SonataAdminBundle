@@ -19,10 +19,7 @@ use PHPUnit\Framework\TestCase;
 
 abstract class AbstractVoterTest extends TestCase
 {
-    /**
-     * @return array
-     */
-    abstract public function provideData();
+    abstract public function provideData(): array;
 
     /**
      * @param mixed     $itemData
@@ -43,15 +40,11 @@ abstract class AbstractVoterTest extends TestCase
     /**
      * @param mixed $dataVoter
      * @param mixed $route
-     *
-     * @return VoterInterface
      */
-    abstract protected function createVoter($dataVoter, $route);
+    abstract protected function createVoter($dataVoter, $route): VoterInterface;
 
     /**
      * @param mixed $data
-     *
-     * @return ItemInterface
      */
-    abstract protected function createItem($data);
+    abstract protected function createItem($data): ItemInterface;
 }

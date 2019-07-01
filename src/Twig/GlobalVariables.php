@@ -67,10 +67,7 @@ class GlobalVariables
         );
     }
 
-    /**
-     * @return Pool
-     */
-    public function getAdminPool()
+    public function getAdminPool(): Pool
     {
         return $this->adminPool;
     }
@@ -80,10 +77,8 @@ class GlobalVariables
      * @param string $action
      * @param array  $parameters
      * @param int    $absolute
-     *
-     * @return string
      */
-    public function url($code, $action, $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function url($code, $action, $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {
         list($action, $code) = $this->getCodeAction($code, $action);
 
@@ -96,10 +91,8 @@ class GlobalVariables
      * @param mixed  $object
      * @param array  $parameters
      * @param int    $absolute
-     *
-     * @return string
      */
-    public function objectUrl($code, $action, $object, $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function objectUrl($code, $action, $object, $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {
         list($action, $code) = $this->getCodeAction($code, $action);
 

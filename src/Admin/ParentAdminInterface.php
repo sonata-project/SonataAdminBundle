@@ -34,21 +34,19 @@ interface ParentAdminInterface
      *
      * @return bool True if child exist, false otherwise
      */
-    public function hasChild($code);
+    public function hasChild($code): bool;
 
     /**
      * Returns an collection of admin children.
      *
      * @return array list of Admin children
      */
-    public function getChildren();
+    public function getChildren(): array;
 
     /**
      * Returns an admin child with the given $code.
      *
      * @param string $code
-     *
-     * @return AdminInterface|null
      */
-    public function getChild($code);
+    public function getChild($code): ?AdminInterface;
 }

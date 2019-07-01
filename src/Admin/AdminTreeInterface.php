@@ -20,24 +20,18 @@ interface AdminTreeInterface
 {
     /**
      * Returns the root ancestor or itself if not a child.
-     *
-     * @return AdminInterface
      */
-    public function getRootAncestor();
+    public function getRootAncestor(): AdminInterface;
 
     /**
      * Returns the depth of the admin.
      * e.g. 0 if not a child; 2 if child of a child; etc...
-     *
-     * @return int
      */
-    public function getChildDepth();
+    public function getChildDepth(): int;
 
     /**
      * Returns the current leaf child admin instance,
      * or null if there's no current child.
-     *
-     * @return AdminInterface|null
      */
-    public function getCurrentLeafChildAdmin();
+    public function getCurrentLeafChildAdmin(): ?AdminInterface;
 }

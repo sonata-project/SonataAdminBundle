@@ -55,10 +55,8 @@ class AdminObjectAclManipulator
 
     /**
      * Gets mask builder class name.
-     *
-     * @return string
      */
-    public function getMaskBuilderClass()
+    public function getMaskBuilderClass(): string
     {
         return $this->maskBuilderClass;
     }
@@ -68,11 +66,10 @@ class AdminObjectAclManipulator
      *
      * NEXT_MAJOR: remove this method.
      *
-     * @return Form
      *
      * @deprecated Deprecated since version 3.0. Use createAclUsersForm() instead
      */
-    public function createForm(AdminObjectAclData $data)
+    public function createForm(AdminObjectAclData $data): Form
     {
         @trigger_error(
             'createForm() is deprecated since version 3.0 and will be removed in 4.0. '
@@ -85,10 +82,8 @@ class AdminObjectAclManipulator
 
     /**
      * Gets the ACL users form.
-     *
-     * @return Form
      */
-    public function createAclUsersForm(AdminObjectAclData $data)
+    public function createAclUsersForm(AdminObjectAclData $data): Form
     {
         $aclValues = $data->getAclUsers();
         $formBuilder = $this->formFactory->createNamedBuilder(self::ACL_USERS_FORM_NAME, FormType::class);
@@ -100,10 +95,8 @@ class AdminObjectAclManipulator
 
     /**
      * Gets the ACL roles form.
-     *
-     * @return Form
      */
-    public function createAclRolesForm(AdminObjectAclData $data)
+    public function createAclRolesForm(AdminObjectAclData $data): Form
     {
         $aclValues = $data->getAclRoles();
         $formBuilder = $this->formFactory->createNamedBuilder(self::ACL_ROLES_FORM_NAME, FormType::class);
@@ -222,10 +215,8 @@ class AdminObjectAclManipulator
 
     /**
      * Builds the form.
-     *
-     * @return Form
      */
-    protected function buildForm(AdminObjectAclData $data, FormBuilderInterface $formBuilder, \Traversable $aclValues)
+    protected function buildForm(AdminObjectAclData $data, FormBuilderInterface $formBuilder, \Traversable $aclValues): Form
     {
         // Retrieve object identity
         $objectIdentity = ObjectIdentity::fromDomainObject($data->getObject());

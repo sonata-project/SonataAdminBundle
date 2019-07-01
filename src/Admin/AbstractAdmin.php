@@ -787,10 +787,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * value (ie the parent object) or to filter the object.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return string|null
      */
-    public function getParentAssociationMapping()
+    public function getParentAssociationMapping(): ?string
     {
         // NEXT_MAJOR: remove array check
         if (\is_array($this->parentAssociationMapping) && $this->getParent()) {
@@ -827,7 +825,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @return string the baseRoutePattern used to generate the routing information
      */
-    public function getBaseRoutePattern()
+    public function getBaseRoutePattern(): string
     {
         if (null !== $this->cachedBaseRoutePattern) {
             return $this->cachedBaseRoutePattern;
@@ -877,7 +875,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @return string the baseRouteName used to generate the routing information
      */
-    public function getBaseRouteName()
+    public function getBaseRouteName(): string
     {
         if (null !== $this->cachedBaseRouteName) {
             return $this->cachedBaseRouteName;
@@ -1133,8 +1131,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     /**
      * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
-     *
-     * @return array
      */
     public function getTemplates(): array
     {
@@ -1145,15 +1141,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      *
      * @param string $name
-     *
-     * @return string|null
      */
-    public function getTemplate($name)
+    public function getTemplate($name): ?string
     {
         return $this->getTemplateRegistry()->getTemplate($name);
     }
 
-    public function getNewInstance()
+    public function getNewInstance(): object
     {
         $object = $this->getModelManager()->getModelInstance($this->getClass());
         foreach ($this->getExtensions() as $extension) {
@@ -1293,10 +1287,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     /**
      * @param string $action
-     *
-     * @return ItemInterface
      */
-    public function getSideMenu($action, AdminInterface $childAdmin = null)
+    public function getSideMenu($action, AdminInterface $childAdmin = null): ItemInterface
     {
         if ($this->isChild()) {
             return $this->getParent()->getSideMenu($action, $this);
@@ -1312,7 +1304,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @return string the root code
      */
-    public function getRootCode()
+    public function getRootCode(): string
     {
         return $this->getRoot()->getCode();
     }
@@ -1322,7 +1314,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @return AbstractAdmin the root admin class
      */
-    public function getRoot()
+    public function getRoot(): self
     {
         $parentFieldDescription = $this->getParentFieldDescription();
 
@@ -1373,9 +1365,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->persistFilters = $persist;
     }
 
-    /**
-     * @param FilterPersisterInterface|null $filterPersister
-     */
     public function setFilterPersister(FilterPersisterInterface $filterPersister = null): void
     {
         $this->filterPersister = $filterPersister;
@@ -1391,10 +1380,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->maxPerPage = $maxPerPage;
     }
 
-    /**
-     * @return int
-     */
-    public function getMaxPerPage()
+    public function getMaxPerPage(): int
     {
         return $this->maxPerPage;
     }
@@ -1407,10 +1393,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->maxPageLinks = $maxPageLinks;
     }
 
-    /**
-     * @return int
-     */
-    public function getMaxPageLinks()
+    public function getMaxPageLinks(): int
     {
         return $this->maxPageLinks;
     }
@@ -1516,7 +1499,7 @@ EOT;
         $this->subject = $subject;
     }
 
-    public function getSubject()
+    public function getSubject(): object
     {
         if (null === $this->subject && $this->request && !$this->hasParentFieldDescription()) {
             $id = $this->request->get($this->getIdParameter());
@@ -1550,10 +1533,8 @@ EOT;
      * Returns true if the admin has a FieldDescription with the given $name.
      *
      * @param string $name
-     *
-     * @return bool
      */
-    public function hasFormFieldDescription($name)
+    public function hasFormFieldDescription($name): bool
     {
         return \array_key_exists($name, $this->formFieldDescriptions) ? true : false;
     }
@@ -1578,7 +1559,7 @@ EOT;
      *
      * @return array collection of form FieldDescription
      */
-    public function getShowFieldDescriptions()
+    public function getShowFieldDescriptions(): array
     {
         $this->buildShow();
 
@@ -1589,10 +1570,8 @@ EOT;
      * Returns the form FieldDescription with the given $name.
      *
      * @param string $name
-     *
-     * @return FieldDescriptionInterface
      */
-    public function getShowFieldDescription($name)
+    public function getShowFieldDescription($name): FieldDescriptionInterface
     {
         $this->buildShow();
 
@@ -1776,7 +1755,7 @@ EOT;
      *
      * @return bool if the admin has children
      */
-    public function hasChildren()
+    public function hasChildren(): bool
     {
         return \count($this->children) > 0;
     }
@@ -1845,7 +1824,7 @@ EOT;
      *
      * @return AdminInterface|null the current child admin instance
      */
-    public function getCurrentChildAdmin()
+    public function getCurrentChildAdmin(): ?AdminInterface
     {
         foreach ($this->children as $children) {
             if ($children->getCurrentChild()) {
@@ -1880,7 +1859,7 @@ EOT;
      *
      * @deprecated since 3.9, to be removed with 4.0
      */
-    public function transChoice($id, $count, array $parameters = [], $domain = null, $locale = null)
+    public function transChoice($id, $count, array $parameters = [], $domain = null, $locale = null): string
     {
         @trigger_error(
             'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
@@ -1972,10 +1951,7 @@ EOT;
         $this->formContractor = $formBuilder;
     }
 
-    /**
-     * @return FormContractorInterface
-     */
-    public function getFormContractor()
+    public function getFormContractor(): FormContractorInterface
     {
         return $this->formContractor;
     }
@@ -2005,10 +1981,7 @@ EOT;
         $this->showBuilder = $showBuilder;
     }
 
-    /**
-     * @return ShowBuilderInterface
-     */
-    public function getShowBuilder()
+    public function getShowBuilder(): ShowBuilderInterface
     {
         return $this->showBuilder;
     }
@@ -2018,10 +1991,7 @@ EOT;
         $this->configurationPool = $configurationPool;
     }
 
-    /**
-     * @return Pool
-     */
-    public function getConfigurationPool()
+    public function getConfigurationPool(): Pool
     {
         return $this->configurationPool;
     }
@@ -2031,10 +2001,7 @@ EOT;
         $this->routeGenerator = $routeGenerator;
     }
 
-    /**
-     * @return RouteGeneratorInterface
-     */
-    public function getRouteGenerator()
+    public function getRouteGenerator(): RouteGeneratorInterface
     {
         return $this->routeGenerator;
     }
@@ -2098,10 +2065,8 @@ EOT;
      * Return the list of permissions the user should have in order to display the admin.
      *
      * @param string $context
-     *
-     * @return array
      */
-    public function getPermissionsShow($context)
+    public function getPermissionsShow($context): array
     {
         switch ($context) {
             case self::CONTEXT_DASHBOARD:
@@ -2221,7 +2186,7 @@ EOT;
         $this->menuFactory = $menuFactory;
     }
 
-    public function getMenuFactory()
+    public function getMenuFactory(): MenuFactoryInterface
     {
         return $this->menuFactory;
     }
@@ -2274,10 +2239,8 @@ EOT;
 
     /**
      * Returns predefined per page options.
-     *
-     * @return array
      */
-    public function getPerPageOptions()
+    public function getPerPageOptions(): array
     {
         return $this->perPageOptions;
     }
@@ -2294,10 +2257,8 @@ EOT;
 
     /**
      * Get pager type.
-     *
-     * @return string
      */
-    public function getPagerType()
+    public function getPagerType(): string
     {
         return $this->pagerType;
     }
@@ -2306,10 +2267,8 @@ EOT;
      * Returns true if the per page value is allowed, false otherwise.
      *
      * @param int $perPage
-     *
-     * @return bool
      */
-    public function determinedPerPageValue($perPage)
+    public function determinedPerPageValue($perPage): bool
     {
         return \in_array($perPage, $this->perPageOptions, true);
     }
@@ -2399,7 +2358,7 @@ EOT;
         return true;
     }
 
-    final public function getActionButtons($action, $object = null)
+    final public function getActionButtons($action, $object = null): array
     {
         $buttonList = [];
 
@@ -2527,10 +2486,8 @@ EOT;
      * Checks if a filter type is set to a default value.
      *
      * @param string $name
-     *
-     * @return bool
      */
-    final public function isDefaultFilter($name)
+    final public function isDefaultFilter($name): bool
     {
         $filter = $this->getFilterParameters();
         $default = $this->getDefaultFilterValues();
@@ -2547,10 +2504,8 @@ EOT;
      *
      * @param string $action
      * @param object $object
-     *
-     * @return bool
      */
-    public function canAccessObject($action, $object)
+    public function canAccessObject($action, $object): bool
     {
         return $object && $this->id($object) && $this->hasAccess($action, $object);
     }
@@ -2567,10 +2522,8 @@ EOT;
      *
      * @param string $word
      * @param string $sep  the separator
-     *
-     * @return string
      */
-    final protected function urlize($word, $sep = '_')
+    final protected function urlize($word, $sep = '_'): string
     {
         return strtolower(preg_replace('/[^a-z0-9_]/i', $sep.'$1', $word));
     }
@@ -2582,10 +2535,8 @@ EOT;
 
     /**
      * Returns a list of default filters.
-     *
-     * @return array
      */
-    final protected function getDefaultFilterValues()
+    final protected function getDefaultFilterValues(): array
     {
         $defaultFilterValues = [];
 
@@ -2630,10 +2581,8 @@ EOT;
      * Allows you to customize batch actions.
      *
      * @param array $actions List of actions
-     *
-     * @return array
      */
-    protected function configureBatchActions($actions)
+    protected function configureBatchActions($actions): array
     {
         return $actions;
     }
@@ -2786,7 +2735,7 @@ EOT;
      *
      * @return string the subclass
      */
-    protected function getSubClass($name)
+    protected function getSubClass($name): string
     {
         if ($this->hasSubClass($name)) {
             return $this->subClasses[$name];
@@ -2842,10 +2791,8 @@ EOT;
 
     /**
      * Return list routes with permissions name.
-     *
-     * @return array
      */
-    protected function getAccess()
+    protected function getAccess(): array
     {
         $access = array_merge([
             'acl' => 'MASTER',

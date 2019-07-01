@@ -97,10 +97,8 @@ class AdminObjectAclData
 
     /**
      * Gets admin.
-     *
-     * @return AdminInterface
      */
-    public function getAdmin()
+    public function getAdmin(): AdminInterface
     {
         return $this->admin;
     }
@@ -117,30 +115,24 @@ class AdminObjectAclData
 
     /**
      * Gets ACL users.
-     *
-     * @return \Traversable
      */
-    public function getAclUsers()
+    public function getAclUsers(): \Traversable
     {
         return $this->aclUsers;
     }
 
     /**
      * Gets ACL roles.
-     *
-     * @return \Traversable
      */
-    public function getAclRoles()
+    public function getAclRoles(): \Traversable
     {
         return $this->aclRoles;
     }
 
     /**
      * Sets ACL.
-     *
-     * @return AdminObjectAclData
      */
-    public function setAcl(Acl $acl)
+    public function setAcl(Acl $acl): self
     {
         $this->acl = $acl;
 
@@ -149,20 +141,16 @@ class AdminObjectAclData
 
     /**
      * Gets ACL.
-     *
-     * @return Acl
      */
-    public function getAcl()
+    public function getAcl(): Acl
     {
         return $this->acl;
     }
 
     /**
      * Gets masks.
-     *
-     * @return array
      */
-    public function getMasks()
+    public function getMasks(): array
     {
         return $this->masks;
     }
@@ -172,11 +160,10 @@ class AdminObjectAclData
      *
      * NEXT_MAJOR: remove this method.
      *
-     * @return AdminObjectAclData
      *
      * @deprecated Deprecated since version 3.0. Use setAclUsersForm() instead
      */
-    public function setForm(Form $form)
+    public function setForm(Form $form): self
     {
         @trigger_error(
             'setForm() is deprecated since version 3.0 and will be removed in 4.0. '
@@ -192,11 +179,10 @@ class AdminObjectAclData
      *
      * NEXT_MAJOR: remove this method.
      *
-     * @return Form
      *
      * @deprecated Deprecated since version 3.0. Use getAclUsersForm() instead
      */
-    public function getForm()
+    public function getForm(): Form
     {
         @trigger_error(
             'getForm() is deprecated since version 3.0 and will be removed in 4.0. '
@@ -209,10 +195,8 @@ class AdminObjectAclData
 
     /**
      * Sets ACL users form.
-     *
-     * @return AdminObjectAclData
      */
-    public function setAclUsersForm(Form $form)
+    public function setAclUsersForm(Form $form): self
     {
         $this->aclUsersForm = $form;
 
@@ -221,20 +205,16 @@ class AdminObjectAclData
 
     /**
      * Gets ACL users form.
-     *
-     * @return Form
      */
-    public function getAclUsersForm()
+    public function getAclUsersForm(): Form
     {
         return $this->aclUsersForm;
     }
 
     /**
      * Sets ACL roles form.
-     *
-     * @return AdminObjectAclData
      */
-    public function setAclRolesForm(Form $form)
+    public function setAclRolesForm(Form $form): self
     {
         $this->aclRolesForm = $form;
 
@@ -243,30 +223,24 @@ class AdminObjectAclData
 
     /**
      * Gets ACL roles form.
-     *
-     * @return Form
      */
-    public function getAclRolesForm()
+    public function getAclRolesForm(): Form
     {
         return $this->aclRolesForm;
     }
 
     /**
      * Gets permissions.
-     *
-     * @return array
      */
-    public function getPermissions()
+    public function getPermissions(): array
     {
         return $this->admin->getSecurityHandler()->getObjectPermissions();
     }
 
     /**
      * Get permissions that the current user can set.
-     *
-     * @return array
      */
-    public function getUserPermissions()
+    public function getUserPermissions(): array
     {
         $permissions = $this->getPermissions();
 
@@ -289,10 +263,8 @@ class AdminObjectAclData
 
     /**
      * Tests if the current user has the OWNER right.
-     *
-     * @return bool
      */
-    public function isOwner()
+    public function isOwner(): bool
     {
         // Only a owner can set MASTER and OWNER ACL
         return $this->admin->isGranted('OWNER', $this->object);
@@ -300,18 +272,13 @@ class AdminObjectAclData
 
     /**
      * Gets security handler.
-     *
-     * @return SecurityHandlerInterface
      */
-    public function getSecurityHandler()
+    public function getSecurityHandler(): SecurityHandlerInterface
     {
         return $this->admin->getSecurityHandler();
     }
 
-    /**
-     * @return array
-     */
-    public function getSecurityInformation()
+    public function getSecurityInformation(): array
     {
         return $this->admin->getSecurityHandler()->buildSecurityInformation($this->admin);
     }

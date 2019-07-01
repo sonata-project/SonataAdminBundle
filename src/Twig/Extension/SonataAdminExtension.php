@@ -162,15 +162,13 @@ final class SonataAdminExtension extends AbstractExtension
      *
      * @param mixed $object
      * @param array $params
-     *
-     * @return string
      */
     public function renderListElement(
         Environment $environment,
         $object,
         FieldDescriptionInterface $fieldDescription,
         $params = []
-    ) {
+    ): string {
         $template = $this->getTemplate(
             $fieldDescription,
             // NEXT_MAJOR: Remove this line and use commented line below instead
@@ -191,14 +189,12 @@ final class SonataAdminExtension extends AbstractExtension
      * render a view element.
      *
      * @param mixed $object
-     *
-     * @return string
      */
     public function renderViewElement(
         Environment $environment,
         FieldDescriptionInterface $fieldDescription,
         $object
-    ) {
+    ): string {
         $template = $this->getTemplate(
             $fieldDescription,
             '@SonataAdmin/CRUD/base_show_field.html.twig',
@@ -224,15 +220,13 @@ final class SonataAdminExtension extends AbstractExtension
      *
      * @param mixed $baseObject
      * @param mixed $compareObject
-     *
-     * @return string
      */
     public function renderViewElementCompare(
         Environment $environment,
         FieldDescriptionInterface $fieldDescription,
         $baseObject,
         $compareObject
-    ) {
+    ): string {
         $template = $this->getTemplate(
             $fieldDescription,
             '@SonataAdmin/CRUD/base_show_field.html.twig',
@@ -331,7 +325,7 @@ final class SonataAdminExtension extends AbstractExtension
      *
      * @return string string representation of the id that is safe to use in a url
      */
-    public function getUrlsafeIdentifier($model, AdminInterface $admin = null)
+    public function getUrlsafeIdentifier($model, AdminInterface $admin = null): string
     {
         if (null === $admin) {
             $admin = $this->pool->getAdminByClass(ClassUtils::getClass($model));
@@ -362,10 +356,8 @@ final class SonataAdminExtension extends AbstractExtension
      *     ['Status1' => 'Alias1', 'Status2' => 'Alias2']
      * The method will return:
      *     [['value' => 'Status1', 'text' => 'Alias1'], ['value' => 'Status2', 'text' => 'Alias2']].
-     *
-     * @return array
      */
-    public function getXEditableChoices(FieldDescriptionInterface $fieldDescription)
+    public function getXEditableChoices(FieldDescriptionInterface $fieldDescription): array
     {
         $choices = $fieldDescription->getOption('choices', []);
         $catalogue = $fieldDescription->getOption('catalogue');
@@ -434,10 +426,8 @@ final class SonataAdminExtension extends AbstractExtension
     /**
      * Returns a canonicalized locale for "select2" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
-     *
-     * @return string|null
      */
-    public function getCanonicalizedLocaleForSelect2(array $context)
+    public function getCanonicalizedLocaleForSelect2(array $context): ?string
     {
         $locale = str_replace('_', '-', $context['app']->getRequest()->getLocale());
 
@@ -469,10 +459,8 @@ final class SonataAdminExtension extends AbstractExtension
      * @param string|array $role
      * @param object|null  $object
      * @param string|null  $field
-     *
-     * @return bool
      */
-    public function isGrantedAffirmative($role, $object = null, $field = null)
+    public function isGrantedAffirmative($role, $object = null, $field = null): bool
     {
         if (null === $this->securityChecker) {
             return false;
@@ -535,14 +523,12 @@ final class SonataAdminExtension extends AbstractExtension
      * Get template.
      *
      * @param string $defaultTemplate
-     *
-     * @return TemplateWrapper
      */
     private function getTemplate(
         FieldDescriptionInterface $fieldDescription,
         $defaultTemplate,
         Environment $environment
-    ) {
+    ): TemplateWrapper {
         $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
 
         try {

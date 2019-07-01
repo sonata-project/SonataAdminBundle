@@ -65,10 +65,8 @@ abstract class BaseMenuTest extends TestCase
      * Helper method to strip newline and space characters from html string to make comparing easier.
      *
      * @param string $html
-     *
-     * @return string
      */
-    protected function cleanHtmlWhitespace($html)
+    protected function cleanHtmlWhitespace($html): string
     {
         $html = preg_replace_callback('/>([^<]+)</', static function ($value) {
             return '>'.trim($value[1]).'<';

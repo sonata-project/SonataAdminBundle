@@ -34,11 +34,5 @@ interface DatagridBuilderInterface extends BuilderInterface
         AdminInterface $admin
     );
 
-    /**
-     * @param AdminInterface $admin
-     * @param array          $values
-     *
-     * @return DatagridInterface
-     */
-    public function getBaseDatagrid(AdminInterface $admin, array $values = []);
+    public function getBaseDatagrid(AdminInterface $admin, array $values = []): DatagridInterface;
 }

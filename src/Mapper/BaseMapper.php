@@ -39,10 +39,7 @@ abstract class BaseMapper
         $this->admin = $admin;
     }
 
-    /**
-     * @return AdminInterface
-     */
-    public function getAdmin()
+    public function getAdmin(): AdminInterface
     {
         return $this->admin;
     }
@@ -56,10 +53,8 @@ abstract class BaseMapper
 
     /**
      * @param string $key
-     *
-     * @return bool
      */
-    abstract public function has($key);
+    abstract public function has($key): bool;
 
     /**
      * @param string $key

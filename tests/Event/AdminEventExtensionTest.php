@@ -27,10 +27,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AdminEventExtensionTest extends TestCase
 {
-    /**
-     * @return AdminEventExtension
-     */
-    public function getExtension($args)
+    public function getExtension($args): AdminEventExtension
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $stub = $eventDispatcher->expects($this->once())->method('dispatch');
@@ -49,10 +46,8 @@ class AdminEventExtensionTest extends TestCase
 
     /**
      * @param $type
-     *
-     * @return callable
      */
-    public function getConfigureEventClosure($type)
+    public function getConfigureEventClosure($type): callable
     {
         return static function ($event) use ($type) {
             if (!$event instanceof ConfigureEvent) {
@@ -69,10 +64,8 @@ class AdminEventExtensionTest extends TestCase
 
     /**
      * @param $type
-     *
-     * @return callable
      */
-    public function getConfigurePersistenceClosure($type)
+    public function getConfigurePersistenceClosure($type): callable
     {
         return static function ($event) use ($type) {
             if (!$event instanceof PersistenceEvent) {

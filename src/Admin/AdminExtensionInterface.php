@@ -91,31 +91,22 @@ interface AdminExtensionInterface
 
     /**
      * Get a chance to add persistent parameters.
-     *
-     * @return array
      */
-    public function getPersistentParameters(AdminInterface $admin);
+    public function getPersistentParameters(AdminInterface $admin): array;
 
     /**
      * Return the controller access mapping.
-     *
-     * @return array
      */
-    public function getAccessMapping(AdminInterface $admin);
+    public function getAccessMapping(AdminInterface $admin): array;
 
     /**
      * Returns the list of batch actions.
-     *
-     * @param array $actions
-     *
-     * @return array
      */
-    public function configureBatchActions(AdminInterface $admin, array $actions);
+    public function configureBatchActions(AdminInterface $admin, array $actions): array;
 
     /**
      * Get a chance to modify export fields.
      *
-     * @param string[] $fields
      *
      * @return string[]
      */
@@ -158,10 +149,8 @@ interface AdminExtensionInterface
      * @param array  $list
      * @param string $action
      * @param object $object
-     *
-     * @return array
      */
-    public function configureActionButtons(AdminInterface $admin, $list, $action, $object);
+    public function configureActionButtons(AdminInterface $admin, $list, $action, $object): array;
 
     /*
      * NEXT_MAJOR: Uncomment in next major release

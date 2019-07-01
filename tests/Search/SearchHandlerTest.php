@@ -27,10 +27,8 @@ class SearchHandlerTest extends TestCase
 {
     /**
      * @param AdminInterface $admin
-     *
-     * @return Pool
      */
-    public function getPool(AdminInterface $admin = null)
+    public function getPool(AdminInterface $admin = null): Pool
     {
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $container->expects($this->any())->method('get')->willReturnCallback(static function ($id) use ($admin) {

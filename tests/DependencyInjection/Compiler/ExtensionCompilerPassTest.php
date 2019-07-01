@@ -315,10 +315,7 @@ class ExtensionCompilerPassTest extends TestCase
         $container->compile();
     }
 
-    /**
-     * @return array
-     */
-    protected function getConfig()
+    protected function getConfig(): array
     {
         $config = [
             'extensions' => [

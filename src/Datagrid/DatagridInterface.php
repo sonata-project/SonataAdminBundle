@@ -22,47 +22,26 @@ use Symfony\Component\Form\FormInterface;
  */
 interface DatagridInterface
 {
-    /**
-     * @return PagerInterface
-     */
-    public function getPager();
+    public function getPager(): PagerInterface;
 
-    /**
-     * @return ProxyQueryInterface
-     */
-    public function getQuery();
+    public function getQuery(): ProxyQueryInterface;
 
-    /**
-     * @return array
-     */
-    public function getResults();
+    public function getResults(): array;
 
     public function buildPager();
 
-    /**
-     * @return FilterInterface
-     */
-    public function addFilter(FilterInterface $filter);
+    public function addFilter(FilterInterface $filter): FilterInterface;
 
-    /**
-     * @return array
-     */
-    public function getFilters();
+    public function getFilters(): array;
 
     /**
      * Reorder filters.
      */
     public function reorderFilters(array $keys);
 
-    /**
-     * @return array
-     */
-    public function getValues();
+    public function getValues(): array;
 
-    /**
-     * @return FieldDescriptionCollection
-     */
-    public function getColumns();
+    public function getColumns(): FieldDescriptionCollection;
 
     /**
      * @param string      $name
@@ -71,37 +50,24 @@ interface DatagridInterface
      */
     public function setValue($name, $operator, $value);
 
-    /**
-     * @return FormInterface
-     */
-    public function getForm();
+    public function getForm(): FormInterface;
 
     /**
      * @param string $name
-     *
-     * @return FilterInterface
      */
-    public function getFilter($name);
+    public function getFilter($name): FilterInterface;
 
     /**
      * @param string $name
-     *
-     * @return bool
      */
-    public function hasFilter($name);
+    public function hasFilter($name): bool;
 
     /**
      * @param string $name
      */
     public function removeFilter($name);
 
-    /**
-     * @return bool
-     */
-    public function hasActiveFilters();
+    public function hasActiveFilters(): bool;
 
-    /**
-     * @return bool
-     */
-    public function hasDisplayableFilters();
+    public function hasDisplayableFilters(): bool;
 }

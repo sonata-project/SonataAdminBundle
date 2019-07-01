@@ -22,10 +22,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
  */
 interface ListBuilderInterface extends BuilderInterface
 {
-    /**
-     * @return FieldDescriptionCollection
-     */
-    public function getBaseList(array $options = []);
+    public function getBaseList(array $options = []): FieldDescriptionCollection;
 
     /**
      * Modify a field description to display it in the list view.

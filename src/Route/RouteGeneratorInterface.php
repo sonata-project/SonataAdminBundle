@@ -23,31 +23,23 @@ interface RouteGeneratorInterface
     /**
      * @param string $name
      * @param bool   $absolute
-     *
-     * @return string
      */
-    public function generateUrl(AdminInterface $admin, $name, array $parameters = [], $absolute = false);
+    public function generateUrl(AdminInterface $admin, $name, array $parameters = [], $absolute = false): string;
 
     /**
      * @param string $name
      * @param bool   $absolute
-     *
-     * @return array
      */
-    public function generateMenuUrl(AdminInterface $admin, $name, array $parameters = [], $absolute = false);
+    public function generateMenuUrl(AdminInterface $admin, $name, array $parameters = [], $absolute = false): array;
 
     /**
      * @param string $name
      * @param bool   $absolute
-     *
-     * @return string
      */
-    public function generate($name, array $parameters = [], $absolute = false);
+    public function generate($name, array $parameters = [], $absolute = false): string;
 
     /**
      * @param string $name
-     *
-     * @return bool
      */
-    public function hasAdminRoute(AdminInterface $admin, $name);
+    public function hasAdminRoute(AdminInterface $admin, $name): bool;
 }

@@ -41,17 +41,13 @@ interface FilterInterface
 
     /**
      * Returns the filter name.
-     *
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Returns the filter form name.
-     *
-     * @return string
      */
-    public function getFormName();
+    public function getFormName(): string;
 
     /**
      * Returns the label name.
@@ -65,10 +61,7 @@ interface FilterInterface
      */
     public function setLabel($label);
 
-    /**
-     * @return array
-     */
-    public function getDefaultOptions();
+    public function getDefaultOptions(): array;
 
     /**
      * @param string     $name
@@ -89,30 +82,24 @@ interface FilterInterface
      */
     public function initialize($name, array $options = []);
 
-    /**
-     * @return string
-     */
-    public function getFieldName();
+    public function getFieldName(): string;
 
     /**
      * @return array of mappings
      */
-    public function getParentAssociationMappings();
+    public function getParentAssociationMappings(): array;
 
     /**
      * @return array field mapping
      */
-    public function getFieldMapping();
+    public function getFieldMapping(): array;
 
     /**
      * @return array association mapping
      */
-    public function getAssociationMapping();
+    public function getAssociationMapping(): array;
 
-    /**
-     * @return array
-     */
-    public function getFieldOptions();
+    public function getFieldOptions(): array;
 
     /**
      * Get field option.
@@ -132,24 +119,17 @@ interface FilterInterface
      */
     public function setFieldOption($name, $value);
 
-    /**
-     * @return string
-     */
-    public function getFieldType();
+    public function getFieldType(): string;
 
     /**
      * Returns the main widget used to render the filter.
-     *
-     * @return array
      */
-    public function getRenderSettings();
+    public function getRenderSettings(): array;
 
     /**
      * Returns true if filter is active.
-     *
-     * @return bool
      */
-    public function isActive();
+    public function isActive(): bool;
 
     /**
      * Set the condition to use with the left side of the query : OR or AND.
@@ -158,13 +138,7 @@ interface FilterInterface
      */
     public function setCondition($condition);
 
-    /**
-     * @return string
-     */
-    public function getCondition();
+    public function getCondition(): string;
 
-    /**
-     * @return string
-     */
-    public function getTranslationDomain();
+    public function getTranslationDomain(): string;
 }

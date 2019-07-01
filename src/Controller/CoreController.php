@@ -36,10 +36,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CoreController extends Controller
 {
-    /**
-     * @return Response
-     */
-    public function dashboardAction()
+    public function dashboardAction(): Response
     {
         $dashboardAction = $this->container->get(DashboardAction::class);
 
@@ -70,10 +67,8 @@ class CoreController extends Controller
      *
      * @deprecated since 3.0, to be removed in 4.0 and action methods will be adjusted.
      *             Use Symfony\Component\HttpFoundation\Request as an action argument
-     *
-     * @return Request
      */
-    public function getRequest()
+    public function getRequest(): Request
     {
         @trigger_error(
             'The '.__METHOD__.' method is deprecated since 3.0 and will be removed in 4.0.'.
@@ -84,10 +79,7 @@ class CoreController extends Controller
         return $this->getCurrentRequest();
     }
 
-    /**
-     * @return Pool
-     */
-    protected function getAdminPool()
+    protected function getAdminPool(): Pool
     {
         $pool = $this->container->get('sonata.admin.pool');
         \assert($pool instanceof Pool);
@@ -95,10 +87,7 @@ class CoreController extends Controller
         return $pool;
     }
 
-    /**
-     * @return SearchHandler
-     */
-    protected function getSearchHandler()
+    protected function getSearchHandler(): SearchHandler
     {
         $searchHandler = $this->get('sonata.admin.search.handler');
         \assert($searchHandler instanceof SearchHandler);
@@ -106,10 +95,7 @@ class CoreController extends Controller
         return $searchHandler;
     }
 
-    /**
-     * @return string
-     */
-    protected function getBaseTemplate()
+    protected function getBaseTemplate(): string
     {
         if ($this->getCurrentRequest()->isXmlHttpRequest()) {
             return $this->getTemplateRegistry()->getTemplate('ajax');

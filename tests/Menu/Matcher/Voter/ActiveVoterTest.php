@@ -40,10 +40,8 @@ class ActiveVoterTest extends AbstractVoterTest
 
     /**
      * @param mixed $data
-     *
-     * @return ItemInterface
      */
-    protected function createItem($data)
+    protected function createItem($data): ItemInterface
     {
         $item = $this->getMockForAbstractClass(ItemInterface::class);
         $item->expects($this->any())

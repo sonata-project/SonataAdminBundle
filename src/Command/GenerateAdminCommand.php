@@ -83,10 +83,8 @@ class GenerateAdminCommand extends QuestionableCommand
      * @param string $managerType
      *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
-    public function validateManagerType($managerType)
+    public function validateManagerType($managerType): string
     {
         $managerTypes = $this->getAvailableManagerTypes();
 

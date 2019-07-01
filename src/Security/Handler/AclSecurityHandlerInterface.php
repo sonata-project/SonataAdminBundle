@@ -33,10 +33,8 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
      * Return the permissions not related to an object instance and also to be available when objects do not exist.
      *
      * @abstract
-     *
-     * @return array
      */
-    public function getAdminPermissions();
+    public function getAdminPermissions(): array;
 
     /**
      * Set the permissions related to an object instance.
@@ -49,10 +47,8 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
      * Return the permissions related to an object instance.
      *
      * @abstract
-     *
-     * @return array
      */
-    public function getObjectPermissions();
+    public function getObjectPermissions(): array;
 
     /**
      * Get the ACL for the passed object identity.
@@ -61,7 +57,7 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
      *
      * @return AclInterface|null or NULL if not found
      */
-    public function getObjectAcl(ObjectIdentityInterface $objectIdentity);
+    public function getObjectAcl(ObjectIdentityInterface $objectIdentity): ?AclInterface;
 
     /**
      * Find the ACLs for the passed object identities.
@@ -75,7 +71,7 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
      *
      * @return \SplObjectStorage mapping the passed object identities to ACLs
      */
-    public function findObjectAcls(\Traversable $oids, array $sids = []);
+    public function findObjectAcls(\Traversable $oids, array $sids = []): \SplObjectStorage;
 
     /**
      * Add an object owner ACE to the object ACL.
@@ -93,10 +89,8 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
      * Create an object ACL.
      *
      * @abstract
-     *
-     * @return AclInterface
      */
-    public function createAcl(ObjectIdentityInterface $objectIdentity);
+    public function createAcl(ObjectIdentityInterface $objectIdentity): AclInterface;
 
     /**
      * Update the ACL.

@@ -100,10 +100,7 @@ class Pool
         $this->propertyAccessor = $propertyAccessor;
     }
 
-    /**
-     * @return array
-     */
-    public function getGroups()
+    public function getGroups(): array
     {
         $groups = $this->adminGroups;
 
@@ -120,18 +117,13 @@ class Pool
      * Returns whether an admin group exists or not.
      *
      * @param string $group
-     *
-     * @return bool
      */
-    public function hasGroup($group)
+    public function hasGroup($group): bool
     {
         return isset($this->adminGroups[$group]);
     }
 
-    /**
-     * @return array
-     */
-    public function getDashboardGroups()
+    public function getDashboardGroups(): array
     {
         $groups = $this->adminGroups;
 
@@ -170,7 +162,7 @@ class Pool
      *
      * @return AdminInterface[]
      */
-    public function getAdminsByGroup($group)
+    public function getAdminsByGroup($group): array
     {
         if (!isset($this->adminGroups[$group])) {
             throw new \InvalidArgumentException(sprintf('Group "%s" not found in admin pool.', $group));
@@ -193,10 +185,8 @@ class Pool
      * Return the admin related to the given $class.
      *
      * @param string $class
-     *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface|null
      */
-    public function getAdminByClass($class)
+    public function getAdminByClass($class): ?\Sonata\AdminBundle\Admin\AdminInterface
     {
         if (!$this->hasAdminByClass($class)) {
             return null;
@@ -219,10 +209,8 @@ class Pool
 
     /**
      * @param string $class
-     *
-     * @return bool
      */
-    public function hasAdminByClass($class)
+    public function hasAdminByClass($class): bool
     {
         return isset($this->adminClasses[$class]);
     }
@@ -289,10 +277,8 @@ class Pool
      * @param string $id
      *
      * @throws \InvalidArgumentException
-     *
-     * @return AdminInterface
      */
-    public function getInstance($id)
+    public function getInstance($id): AdminInterface
     {
         if (!\in_array($id, $this->adminServiceIds, true)) {
             $msg = sprintf('Admin service "%s" not found in admin pool.', $id);
@@ -331,10 +317,7 @@ class Pool
         return $admin;
     }
 
-    /**
-     * @return ContainerInterface|null
-     */
-    public function getContainer()
+    public function getContainer(): ?ContainerInterface
     {
         return $this->container;
     }
@@ -344,10 +327,7 @@ class Pool
         $this->adminGroups = $adminGroups;
     }
 
-    /**
-     * @return array
-     */
-    public function getAdminGroups()
+    public function getAdminGroups(): array
     {
         return $this->adminGroups;
     }
@@ -357,10 +337,7 @@ class Pool
         $this->adminServiceIds = $adminServiceIds;
     }
 
-    /**
-     * @return array
-     */
-    public function getAdminServiceIds()
+    public function getAdminServiceIds(): array
     {
         return $this->adminServiceIds;
     }
@@ -370,10 +347,7 @@ class Pool
         $this->adminClasses = $adminClasses;
     }
 
-    /**
-     * @return array
-     */
-    public function getAdminClasses()
+    public function getAdminClasses(): array
     {
         return $this->adminClasses;
     }
@@ -396,10 +370,8 @@ class Pool
 
     /**
      * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
-     *
-     * @return array
      */
-    public function getTemplates()
+    public function getTemplates(): array
     {
         return $this->templateRegistry->getTemplates();
     }
@@ -408,26 +380,18 @@ class Pool
      * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
      *
      * @param string $name
-     *
-     * @return string|null
      */
-    public function getTemplate($name)
+    public function getTemplate($name): ?string
     {
         return $this->templateRegistry->getTemplate($name);
     }
 
-    /**
-     * @return string
-     */
-    public function getTitleLogo()
+    public function getTitleLogo(): string
     {
         return $this->titleLogo;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }

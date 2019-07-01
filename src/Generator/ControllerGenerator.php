@@ -69,18 +69,12 @@ class ControllerGenerator extends Generator
         ]);
     }
 
-    /**
-     * @return string|null
-     */
-    public function getClass()
+    public function getClass(): ?string
     {
         return $this->class;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getFile()
+    public function getFile(): ?string
     {
         return $this->file;
     }

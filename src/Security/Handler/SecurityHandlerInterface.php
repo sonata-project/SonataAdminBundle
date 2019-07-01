@@ -23,17 +23,13 @@ interface SecurityHandlerInterface
     /**
      * @param string|array $attributes
      * @param mixed|null   $object
-     *
-     * @return bool
      */
-    public function isGranted(AdminInterface $admin, $attributes, $object = null);
+    public function isGranted(AdminInterface $admin, $attributes, $object = null): bool;
 
     /**
      * Get a sprintf template to get the role.
-     *
-     * @return string
      */
-    public function getBaseRole(AdminInterface $admin);
+    public function getBaseRole(AdminInterface $admin): string;
 
     public function buildSecurityInformation(AdminInterface $admin);
 

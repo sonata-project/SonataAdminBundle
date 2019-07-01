@@ -70,18 +70,12 @@ class ConfigureEvent extends Event
         return $this->type;
     }
 
-    /**
-     * @return AdminInterface
-     */
-    public function getAdmin()
+    public function getAdmin(): AdminInterface
     {
         return $this->admin;
     }
 
-    /**
-     * @return BaseMapper
-     */
-    public function getMapper()
+    public function getMapper(): BaseMapper
     {
         return $this->mapper;
     }
