@@ -29,4 +29,7 @@ interface TemplateRegistryInterface
      * @return string
      */
     public function getTemplate($name);
+
+    // NEXT_MAJOR: Uncomment the following method
+    // public function hasTemplate(string $name): bool;
 }

@@ -173,7 +173,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         try {
             $acl = $this->aclProvider->findAcl($objectIdentity);
         } catch (AclNotFoundException $e) {
-            return;
+            return null;
         }
 
         return $acl;

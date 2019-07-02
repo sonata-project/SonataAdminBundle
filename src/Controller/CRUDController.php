@@ -1470,6 +1470,7 @@ class CRUDController implements ContainerAwareInterface
      */
     protected function preCreate(Request $request, $object)
     {
+        return null;
     }
 
     /**
@@ -1482,6 +1483,7 @@ class CRUDController implements ContainerAwareInterface
      */
     protected function preEdit(Request $request, $object)
     {
+        return null;
     }
 
     /**
@@ -1494,6 +1496,7 @@ class CRUDController implements ContainerAwareInterface
      */
     protected function preDelete(Request $request, $object)
     {
+        return null;
     }
 
     /**
@@ -1506,6 +1509,7 @@ class CRUDController implements ContainerAwareInterface
      */
     protected function preShow(Request $request, $object)
     {
+        return null;
     }
 
     /**
@@ -1516,6 +1520,7 @@ class CRUDController implements ContainerAwareInterface
      */
     protected function preList(Request $request)
     {
+        return null;
     }
 
     /**

@@ -111,10 +111,14 @@ class DatagridTest extends TestCase
         $this->assertSame($this->pager, $this->datagrid->getPager());
     }
 
+    /**
+     * @group legacy
+     *
+     * @expectedDeprecation Passing a nonexistent filter name as argument 1 to Sonata\AdminBundle\Datagrid\Datagrid::getFilter() is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     */
     public function testFilter(): void
     {
         $this->assertFalse($this->datagrid->hasFilter('foo'));
-        $this->assertNull($this->datagrid->getFilter('foo'));
 
         $filter = $this->createMock(FilterInterface::class);
         $filter->expects($this->once())
@@ -130,6 +134,12 @@ class DatagridTest extends TestCase
         $this->datagrid->removeFilter('foo');
 
         $this->assertFalse($this->datagrid->hasFilter('foo'));
+        $this->assertNull($this->datagrid->getFilter('foo'));
+        // NEXT_MAJOR: Remove previous assertion, the "@group" and "@expectedDeprecation" annotations and uncomment the following lines
+        // $this->expectException(\InvalidArgumentException::class);
+        // $this->expectExceptionMessage('Filter named "foo" doesn\'t exist.');
+        //
+        // $this->datagrid->getFilter('foo');
     }
 
     public function testGetFilters(): void
