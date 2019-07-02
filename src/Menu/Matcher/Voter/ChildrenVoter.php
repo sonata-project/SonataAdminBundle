@@ -49,7 +49,7 @@ class ChildrenVoter implements VoterInterface
     public function matchItem(ItemInterface $item)
     {
         if (!$item->getExtra('sonata_admin', false)) {
-            return;
+            return null;
         }
 
         $children = $item->getChildren();

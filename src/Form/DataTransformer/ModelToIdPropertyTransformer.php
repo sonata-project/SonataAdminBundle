@@ -78,7 +78,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
                 return $collection;
             }
 
-            return;
+            return null;
         }
 
         if (!$this->multiple) {
