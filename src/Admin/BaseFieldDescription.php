@@ -136,7 +136,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->fieldName = $fieldName;
     }
 
-    public function getFieldName(): string
+    public function getFieldName(): ?string
     {
         return $this->fieldName;
     }
@@ -150,7 +150,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }

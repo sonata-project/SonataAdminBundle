@@ -114,7 +114,6 @@ class DatagridTest extends TestCase
     public function testFilter(): void
     {
         $this->assertFalse($this->datagrid->hasFilter('foo'));
-        $this->assertNull($this->datagrid->getFilter('foo'));
 
         $filter = $this->createMock(FilterInterface::class);
         $filter->expects($this->once())
@@ -130,6 +129,10 @@ class DatagridTest extends TestCase
         $this->datagrid->removeFilter('foo');
 
         $this->assertFalse($this->datagrid->hasFilter('foo'));
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->datagrid->getFilter('foo');
     }
 
     public function testGetFilters(): void
@@ -309,20 +312,22 @@ class DatagridTest extends TestCase
 
     public function testGetResults(): void
     {
-        $this->assertNull($this->datagrid->getResults());
+        $this->assertEmpty($this->datagrid->getResults());
 
         $this->pager->expects($this->once())
             ->method('getResults')
             ->willReturn(['foo', 'bar']);
+
+        $this->query->expects($this->never())
+            ->method('execute');
 
         $this->assertSame(['foo', 'bar'], $this->datagrid->getResults());
     }
 
     public function testEmptyResults(): void
     {
-        $this->pager->expects($this->once())
-            ->method('getResults')
-            ->willReturn([]);
+        $this->pager->expects($this->exactly(2))
+            ->method('getResults');
 
         $this->assertSame([], $this->datagrid->getResults());
         $this->assertSame([], $this->datagrid->getResults());

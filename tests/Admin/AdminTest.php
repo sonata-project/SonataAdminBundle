@@ -1497,14 +1497,14 @@ class AdminTest extends TestCase
 
     public function testGetPersistentParametersWithInvalidExtension(): void
     {
-        $this->expectException(\RuntimeException::class);
-
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
         $extension = $this->createMock(AdminExtensionInterface::class);
         $extension->expects($this->once())->method('getPersistentParameters')->willReturn(null);
 
         $admin->addExtension($extension);
+
+        $this->expectException(\TypeError::class);
 
         $admin->getPersistentParameters();
     }

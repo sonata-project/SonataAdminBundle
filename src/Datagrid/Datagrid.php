@@ -72,7 +72,7 @@ class Datagrid implements DatagridInterface
     /**
      * @var array
      */
-    protected $results;
+    protected $results = [];
 
     public function __construct(
         ProxyQueryInterface $query,
@@ -97,7 +97,7 @@ class Datagrid implements DatagridInterface
     {
         $this->buildPager();
 
-        if (null === $this->results) {
+        if (!$this->results) {
             $this->results = $this->pager->getResults();
         }
 
@@ -200,7 +200,11 @@ class Datagrid implements DatagridInterface
 
     public function getFilter($name): FilterInterface
     {
-        return $this->hasFilter($name) ? $this->filters[$name] : null;
+        if (!$this->hasFilter($name)) {
+            throw new \InvalidArgumentException(sprintf('Filter "%s" doesn\'t exist.', $name));
+        }
+
+        return $this->filters[$name];
     }
 
     public function getFilters(): array

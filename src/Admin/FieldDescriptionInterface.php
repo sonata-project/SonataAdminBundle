@@ -28,9 +28,9 @@ interface FieldDescriptionInterface
     /**
      * return the field name.
      *
-     * @return string the field name
+     * @return string|null the field name
      */
-    public function getFieldName(): string;
+    public function getFieldName(): ?string;
 
     /**
      * Set the name.
@@ -42,9 +42,9 @@ interface FieldDescriptionInterface
     /**
      * Return the name, the name can be used as a form label or table header.
      *
-     * @return string the name
+     * @return string|null the name
      */
-    public function getName(): string;
+    public function getName(): ?string;
 
     /**
      * Return the value represented by the provided name.

@@ -174,12 +174,12 @@ class BaseFieldDescriptionTest extends TestCase
 
     public function testGetValueNoValueException(): void
     {
-        $this->expectException(\Sonata\AdminBundle\Exception\NoValueException::class);
-
         $description = new FieldDescription();
         $mock = $this->getMockBuilder('stdClass')
             ->setMethods(['getFoo'])
             ->getMock();
+
+        $this->expectException(NoValueException::class);
 
         $description->getFieldValue($mock, 'fake');
     }

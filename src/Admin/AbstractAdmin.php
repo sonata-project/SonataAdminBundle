@@ -985,7 +985,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function getActiveSubClass(): string
     {
         if (!$this->hasActiveSubClass()) {
-            throw new \BadMethodCallException();
+            throw new \BadMethodCallException('Admin has no active subclass.');
         }
 
         return $this->getSubClass($this->getActiveSubclassCode());
@@ -1790,13 +1790,7 @@ EOT;
         $parameters = [];
 
         foreach ($this->getExtensions() as $extension) {
-            $params = $extension->getPersistentParameters($this);
-
-            if (!\is_array($params)) {
-                throw new \RuntimeException(sprintf('The %s::getPersistentParameters must return an array', \get_class($extension)));
-            }
-
-            $parameters = array_merge($parameters, $params);
+            $parameters = array_merge($parameters, $extension->getPersistentParameters($this));
         }
 
         return $parameters;
