@@ -3132,10 +3132,8 @@ EOT;
      * 1. $this->$datagridValues property
      * 2. Query used to load data
      * 3. Defaults based on entity
-     *
-     * @return array
      */
-    private function determineSorting()
+    private function determineSorting(): array
     {
         $defaults = $this->getModelManager()->getDefaultSortValues($this->getClass());
         $query = $this->createQuery();
