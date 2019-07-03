@@ -76,7 +76,7 @@ class AdminSearchBlockService extends AbstractBlockService
             return $response->setContent('')->setStatusCode(204);
         }
 
-        return $this->renderPrivateResponse($admin->getTemplate('search_result_block'), [
+        return $this->renderPrivateResponse($admin->getTemplateRegistry()->getTemplate('search_result_block'), [
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
             'admin_pool' => $this->pool,

@@ -397,13 +397,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $filterTheme = [];
 
     /**
-     * @var array
-     *
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
-     */
-    protected $templates = [];
-
-    /**
      * @var AdminExtensionInterface[]
      */
     protected $extensions = [];
@@ -1114,9 +1107,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function setTemplates(array $templates): void
     {
-        // NEXT_MAJOR: Remove this line
-        $this->templates = $templates;
-
         $this->getTemplateRegistry()->setTemplates($templates);
     }
 
@@ -1125,9 +1115,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function setTemplate($name, $template): void
     {
-        // NEXT_MAJOR: Remove this line
-        $this->templates[$name] = $template;
-
         $this->getTemplateRegistry()->setTemplate($name, $template);
     }
 
@@ -2457,9 +2444,7 @@ EOT;
             $actions['create'] = [
                 'label' => 'link_add',
                 'translation_domain' => 'SonataAdminBundle',
-                // NEXT_MAJOR: Remove this line and use commented line below it instead
-                'template' => $this->getTemplate('action_create'),
-                // 'template' => $this->getTemplateRegistry()->getTemplate('action_create'),
+                'template' => $this->getTemplateRegistry()->getTemplate('action_create'),
                 'url' => $this->generateUrl('create'),
                 'icon' => 'plus-circle',
             ];
@@ -2686,9 +2671,7 @@ EOT;
             );
 
             $fieldDescription->setAdmin($this);
-            // NEXT_MAJOR: Remove this line and use commented line below it instead
-            $fieldDescription->setTemplate($this->getTemplate('batch'));
-            // $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('batch'));
+            $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('batch'));
 
             $mapper->add($fieldDescription, 'batch');
         }
@@ -2712,9 +2695,7 @@ EOT;
             );
 
             $fieldDescription->setAdmin($this);
-            // NEXT_MAJOR: Remove this line and use commented line below it instead
-            $fieldDescription->setTemplate($this->getTemplate('select'));
-            // $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('select'));
+            $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('select'));
 
             $mapper->add($fieldDescription, 'select');
         }

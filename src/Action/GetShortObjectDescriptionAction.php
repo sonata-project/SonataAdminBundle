@@ -79,7 +79,7 @@ final class GetShortObjectDescriptionAction
                 'label' => $admin->toString($object),
             ]]);
         } elseif ('html' === $request->get('_format')) {
-            return new Response($this->twig->render($admin->getTemplate('short_object_description'), [
+            return new Response($this->twig->render($admin->getTemplateRegistry()->getTemplate('short_object_description'), [
                 'admin' => $admin,
                 'description' => $admin->toString($object),
                 'object' => $object,
