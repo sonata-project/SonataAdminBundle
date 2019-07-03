@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminSearchBlockService;
 use Sonata\AdminBundle\Search\SearchHandler;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\BlockBundle\Test\AbstractBlockServiceTestCase;
 use Sonata\BlockBundle\Test\FakeTemplating;
 
@@ -35,17 +36,23 @@ class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
      */
     private $searchHandler;
 
+    /**
+     * @var TemplateRegistryInterface
+     */
+    private $templateRegistry;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
         $this->searchHandler = $this->getMockBuilder(SearchHandler::class)->disableOriginalConstructor()->getMock();
+        $this->templateRegistry = $this->createMock(TemplateRegistryInterface::class);
     }
 
     public function testDefaultSettings(): void
     {
-        $blockService = new AdminSearchBlockService('foo', $this->templating, $this->pool, $this->searchHandler);
+        $blockService = new AdminSearchBlockService('foo', $this->templating, $this->pool, $this->searchHandler, $this->templateRegistry);
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([
@@ -62,7 +69,7 @@ class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
         $admin = $this->getMockBuilder(AbstractAdmin::class)->disableOriginalConstructor()->getMock();
         $templating = $this->getMockBuilder(FakeTemplating::class)->disableOriginalConstructor()->getMock();
 
-        $blockService = new AdminSearchBlockService('foo', $templating, $this->pool, $this->searchHandler);
+        $blockService = new AdminSearchBlockService('foo', $templating, $this->pool, $this->searchHandler, $this->templateRegistry);
         $blockContext = $this->getBlockContext($blockService);
 
         $this->searchHandler->expects(self::once())->method('search')->willReturn(false);

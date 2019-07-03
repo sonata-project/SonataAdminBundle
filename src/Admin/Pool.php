@@ -384,39 +384,6 @@ class Pool
     }
 
     /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
-     */
-    public function setTemplates(array $templates): void
-    {
-        // NEXT MAJOR: Remove this line
-        $this->templates = $templates;
-
-        $this->templateRegistry->setTemplates($templates);
-    }
-
-    /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
-     *
-     * @return array
-     */
-    public function getTemplates()
-    {
-        return $this->templateRegistry->getTemplates();
-    }
-
-    /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
-     *
-     * @param string $name
-     *
-     * @return string|null
-     */
-    public function getTemplate($name)
-    {
-        return $this->templateRegistry->getTemplate($name);
-    }
-
-    /**
      * @return string
      */
     public function getTitleLogo()

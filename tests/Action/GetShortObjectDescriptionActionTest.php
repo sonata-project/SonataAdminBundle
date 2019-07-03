@@ -18,6 +18,8 @@ use Prophecy\Argument;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,7 +58,8 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->setRequest(Argument::type(Request::class))->shouldBeCalled();
         $this->action = new GetShortObjectDescriptionAction(
             $this->twig,
-            $this->pool->reveal()
+            $this->pool->reveal(),
+            $this->prophesize(TemplateRegistryInterface::class)->reveal()
         );
     }
 
@@ -125,7 +128,15 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
         $this->admin->setUniqid('asdasd123')->shouldBeCalled();
         $this->admin->getObject(42)->willReturn($object);
-        $this->admin->getTemplate('short_object_description')->willReturn('template');
+
+        // mock doesn't work
+        $templateRegistry = $this->createMock(MutableTemplateRegistryInterface::class);
+        $templateRegistry
+            ->method('getTemplate')
+            ->will($this->returnValueMap(['short_object_description', 'template']));
+
+        $this->admin->reveal()->setTemplateRegistry($templateRegistry);
+
         $this->admin->toString($object)->willReturn('bar');
 
         $action = $this->action;

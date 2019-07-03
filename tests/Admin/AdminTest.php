@@ -1180,22 +1180,6 @@ class AdminTest extends TestCase
         $this->assertSame('SonataNewsBundle:FooAdmin', $admin->getBaseControllerName());
     }
 
-    public function testGetTemplates(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
-
-        $templates = [
-            'list' => '@FooAdmin/CRUD/list.html.twig',
-            'show' => '@FooAdmin/CRUD/show.html.twig',
-            'edit' => '@FooAdmin/CRUD/edit.html.twig',
-        ];
-
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->getTemplates()->shouldBeCalled()->willReturn($templates);
-
-        $admin->setTemplateRegistry($templateRegistry->reveal());
-    }
-
     public function testGetTemplate1(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
