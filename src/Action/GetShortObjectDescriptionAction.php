@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,10 +33,16 @@ final class GetShortObjectDescriptionAction
      */
     private $twig;
 
-    public function __construct(Environment $twig, Pool $pool)
+    /**
+     * @var TemplateRegistryInterface
+     */
+    private $templateRegistry;
+
+    public function __construct(Environment $twig, Pool $pool, TemplateRegistryInterface $templateRegistry)
     {
         $this->pool = $pool;
         $this->twig = $twig;
+        $this->templateRegistry = $templateRegistry;
     }
 
     /**
@@ -79,7 +86,7 @@ final class GetShortObjectDescriptionAction
                 'label' => $admin->toString($object),
             ]]);
         } elseif ('html' === $request->get('_format')) {
-            return new Response($this->twig->render($admin->getTemplateRegistry()->getTemplate('short_object_description'), [
+            return new Response($this->twig->render($this->templateRegistry->getTemplate('short_object_description'), [
                 'admin' => $admin,
                 'description' => $admin->toString($object),
                 'object' => $object,
