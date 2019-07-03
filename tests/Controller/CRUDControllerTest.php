@@ -354,24 +354,6 @@ class CRUDControllerTest extends TestCase
         $this->templateRegistry->getTemplate('batch')->willReturn('@SonataAdmin/CRUD/list__batch.html.twig');
         $this->templateRegistry->getTemplate('batch_confirmation')->willReturn('@SonataAdmin/CRUD/batch_confirmation.html.twig');
 
-        // NEXT_MAJOR: Remove this call
-        $this->admin->method('getTemplate')->willReturnMap([
-            ['ajax', '@SonataAdmin/ajax_layout.html.twig'],
-            ['layout', '@SonataAdmin/standard_layout.html.twig'],
-            ['show', '@SonataAdmin/CRUD/show.html.twig'],
-            ['show_compare', '@SonataAdmin/CRUD/show_compare.html.twig'],
-            ['edit', '@SonataAdmin/CRUD/edit.html.twig'],
-            ['dashboard', '@SonataAdmin/Core/dashboard.html.twig'],
-            ['search', '@SonataAdmin/Core/search.html.twig'],
-            ['list', '@SonataAdmin/CRUD/list.html.twig'],
-            ['preview', '@SonataAdmin/CRUD/preview.html.twig'],
-            ['history', '@SonataAdmin/CRUD/history.html.twig'],
-            ['acl', '@SonataAdmin/CRUD/acl.html.twig'],
-            ['delete', '@SonataAdmin/CRUD/delete.html.twig'],
-            ['batch', '@SonataAdmin/CRUD/list__batch.html.twig'],
-            ['batch_confirmation', '@SonataAdmin/CRUD/batch_confirmation.html.twig'],
-        ]);
-
         $this->admin->expects($this->any())
             ->method('getIdParameter')
             ->willReturn('id');

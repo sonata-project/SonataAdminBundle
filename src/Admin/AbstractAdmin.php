@@ -1131,28 +1131,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->getTemplateRegistry()->setTemplate($name, $template);
     }
 
-    /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
-     *
-     * @return array
-     */
-    public function getTemplates(): array
-    {
-        return $this->getTemplateRegistry()->getTemplates();
-    }
-
-    /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
-     *
-     * @param string $name
-     *
-     * @return string|null
-     */
-    public function getTemplate($name)
-    {
-        return $this->getTemplateRegistry()->getTemplate($name);
-    }
-
     public function getNewInstance()
     {
         $object = $this->getModelManager()->getModelInstance($this->getClass());
