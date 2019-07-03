@@ -40,6 +40,7 @@ use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\TranslatorInterface;
+use Twig\Environment;
 
 /**
  * Test for SonataAdminExtension.
@@ -54,7 +55,7 @@ class SonataAdminExtensionTest extends TestCase
     private $twigExtension;
 
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $environment;
 
@@ -178,7 +179,7 @@ class SonataAdminExtensionTest extends TestCase
         ]);
         $loader->addPath(__DIR__.'/../../../src/Resources/views/', 'SonataAdmin');
 
-        $this->environment = new \Twig_Environment($loader, [
+        $this->environment = new Environment($loader, [
             'strict_variables' => true,
             'cache' => false,
             'autoescape' => 'html',
