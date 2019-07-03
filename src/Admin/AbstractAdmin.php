@@ -1316,9 +1316,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * Returns the master admin.
      *
-     * @return AbstractAdmin the root admin class
+     * @return AdminInterface the root admin class
      */
-    public function getRoot(): self
+    public function getRoot(): AdminInterface
     {
         $parentFieldDescription = $this->getParentFieldDescription();
 
