@@ -44,7 +44,7 @@ use Twig\Environment;
 class HelperController
 {
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     protected $twig;
 
