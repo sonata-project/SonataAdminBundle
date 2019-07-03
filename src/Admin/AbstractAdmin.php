@@ -3128,11 +3128,11 @@ EOT;
     {
         $defaults = $this->getModelManager()->getDefaultSortValues($this->getClass());
         $query = $this->createQuery();
-        $dataGrid = $this->datagridValues;
+        $datagrid = $this->datagridValues;
 
         return [
-            '_sort_by' => $dataGrid['_sort_by'] ?? $query->getSortBy() ?? $defaults['_sort_by'] ?? null,
-            '_sort_order' => $dataGrid['_sort_order'] ?? $query->getSortOrder() ?? $defaults['_sort_order'] ?? null,
+            '_sort_by' => $datagrid['_sort_by'] ?? $query->getSortBy() ?? $defaults['_sort_by'] ?? null,
+            '_sort_order' => $datagrid['_sort_order'] ?? $query->getSortOrder() ?? $defaults['_sort_order'] ?? null,
         ];
     }
 }
