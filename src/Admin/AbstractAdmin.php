@@ -3124,7 +3124,18 @@ EOT;
         }
     }
 
-    private function determineSorting(): array
+    /**
+     * Determines default sorting of list (name of field and direction).
+     * Returns an array with 2 keys: "_sort_by" - name of field, "_sort_order" - sorting direction.
+     *
+     * Looks for sorting parameters in this order (first found will be used):
+     * 1. $this->$datagridValues property
+     * 2. Query used to load data
+     * 3. Defaults based on entity
+     *
+     * @return array
+     */
+    private function determineSorting()
     {
         $defaults = $this->getModelManager()->getDefaultSortValues($this->getClass());
         $query = $this->createQuery();
