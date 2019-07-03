@@ -24,11 +24,14 @@ file that was distributed with this source code.
 {%- endblock form_errors %}
 
 {% block sonata_help %}
-{% apply spaceless %}
-{% if sonata_help is defined and sonata_help %}
-    <span class="help-block sonata-ba-field-widget-help">{{ sonata_help|raw }}</span>
-{% endif %}
-{% endapply %}
+    {% apply spaceless %}
+        {% if sonata_help is defined and sonata_help %}
+            {% set translationDomain = sonata_admin.field_description.translationDomain ?: admin.translationDomain %}
+            <span class="help-block sonata-ba-field-widget-help">
+                {{ sonata_help|raw|trans({}, translationDomain)  }}
+            </span>
+        {% endif %}
+    {% endapply %}
 {% endblock %}
 
 {% block form_widget -%}
