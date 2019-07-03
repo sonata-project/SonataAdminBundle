@@ -44,9 +44,6 @@ final class TemplateRegistryExtension extends AbstractExtension
         return [
             new TwigFunction('get_admin_template', [$this, 'getAdminTemplate']),
             new TwigFunction('get_global_template', [$this, 'getGlobalTemplate']),
-
-            // NEXT MAJOR: Remove this line
-            new TwigFunction('get_admin_pool_template', [$this, 'getPoolTemplate'], ['deprecated' => true]),
         ];
     }
 
@@ -61,9 +58,7 @@ final class TemplateRegistryExtension extends AbstractExtension
      */
     public function getAdminTemplate($name, $adminCode)
     {
-        // NEXT_MAJOR: Remove this line and use commented line below it instead
-        return $this->getAdmin($adminCode)->getTemplate($name);
-        // return $this->getTemplateRegistry($adminCode)->getTemplate($name);
+        return $this->getTemplateRegistry($adminCode)->getTemplate($name);
     }
 
     /**

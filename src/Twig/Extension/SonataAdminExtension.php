@@ -173,9 +173,7 @@ final class SonataAdminExtension extends AbstractExtension
     ) {
         $template = $this->getTemplate(
             $fieldDescription,
-            // NEXT_MAJOR: Remove this line and use commented line below instead
-            $fieldDescription->getAdmin()->getTemplate('base_list_field'),
-            //$this->getTemplateRegistry($fieldDescription->getAdmin()->getCode())->getTemplate('base_list_field'),
+            $this->getTemplateRegistry($fieldDescription->getAdmin()->getCode())->getTemplate('base_list_field'),
             $environment
         );
 
@@ -548,14 +546,6 @@ final class SonataAdminExtension extends AbstractExtension
         try {
             $template = $environment->load($templateName);
         } catch (LoaderError $e) {
-            @trigger_error(
-                'Relying on default template loading on field template loading exception '.
-                'is deprecated since 3.1 and will be removed in 4.0. '.
-                'A \Twig_Error_Loader exception will be thrown instead',
-                E_USER_DEPRECATED
-            );
-            $template = $environment->load($defaultTemplate);
-
             if (null !== $this->logger) {
                 $this->logger->warning(sprintf(
                     'An error occured trying to load the template "%s" for the field "%s", '.
@@ -565,6 +555,8 @@ final class SonataAdminExtension extends AbstractExtension
                     $defaultTemplate
                 ), ['exception' => $e]);
             }
+
+            throw $e;
         }
 
         return $template;

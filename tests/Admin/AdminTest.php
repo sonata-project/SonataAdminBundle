@@ -1194,22 +1194,33 @@ class AdminTest extends TestCase
         $templateRegistry->getTemplates()->shouldBeCalled()->willReturn($templates);
 
         $admin->setTemplateRegistry($templateRegistry->reveal());
-
-        $this->assertSame($templates, $admin->getTemplates());
     }
 
     public function testGetTemplate1(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
 
+        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
+        $securityHandler
+            ->method('isGranted')
+            ->willReturn(true);
+
+        $admin->setSecurityHandler($securityHandler);
+
+        $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
+        $routeGenerator
+            ->method('hasAdminRoute')
+            ->willReturn(true);
+
+        $admin->setRouteGenerator($routeGenerator);
+
         $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->getTemplate('edit')->shouldBeCalled()->willReturn('@FooAdmin/CRUD/edit.html.twig');
-        $templateRegistry->getTemplate('show')->shouldBeCalled()->willReturn('@FooAdmin/CRUD/show.html.twig');
+        $templateRegistry->getTemplate('button_create')->shouldBeCalled()->willReturn('@FooAdmin/CRUD/list_button.html.twig');
+        $templateRegistry->getTemplate('button_list')->shouldBeCalled()->willReturn('@FooAdmin/CRUD/create_button.html.twig');
 
         $admin->setTemplateRegistry($templateRegistry->reveal());
 
-        $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $admin->getTemplate('edit'));
-        $this->assertSame('@FooAdmin/CRUD/show.html.twig', $admin->getTemplate('show'));
+        $admin->getActionButtons('edit');
     }
 
     public function testGetIdParameter(): void
