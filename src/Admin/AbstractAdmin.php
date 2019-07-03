@@ -40,15 +40,16 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Form\Validator\Constraints\InlineConstraint;
 use Sonata\Form\Validator\ErrorElement;
-use Sonata\Exporter\Source\SourceIteratorInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
@@ -390,9 +391,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     ];
 
     /**
-     * @var array
+     * @var FormView
      */
-    protected $formTheme = [];
+    protected $formTheme;
 
     /**
      * @var array
@@ -2148,12 +2149,12 @@ EOT;
         return $this->show;
     }
 
-    public function setFormTheme(array $formTheme): void
+    public function setFormTheme(FormView $formTheme): void
     {
         $this->formTheme = $formTheme;
     }
 
-    public function getFormTheme(): array
+    public function getFormTheme(): FormView
     {
         return $this->formTheme;
     }

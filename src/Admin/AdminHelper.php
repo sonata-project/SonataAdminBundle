@@ -128,7 +128,7 @@ class AdminHelper
 
         $form = $formBuilder->getForm();
         $form->setData($subject);
-        $form->handleRequest($admin->getRequest());
+        $form->handleRequest($admin->hasRequest() ? $admin->getRequest() : null);
 
         //Child form not found (probably nested one)
         //if childFormBuilder was not found resulted in fatal error getName() method call on non object
@@ -146,7 +146,7 @@ class AdminHelper
             } elseif ($collection instanceof Collection) {
                 $entityClassName = $this->getEntityClassName($admin, explode('.', preg_replace('#\[\d*?\]#', '', $path)));
             } else {
-                throw new \Exception('unknown collection class');
+                throw new \TypeError(sprintf('Expected collection to be an instance of "%s", "%s" given.', Collection::class, \is_object($collection) ? \get_class($collection) : \gettype($collection)));
             }
 
             $collection->add(new $entityClassName());

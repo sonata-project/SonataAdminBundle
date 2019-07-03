@@ -26,6 +26,7 @@ use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -222,9 +223,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     public function getShow(): array;
 
-    public function setFormTheme(array $formTheme);
+    public function setFormTheme(FormView $formTheme);
 
-    public function getFormTheme(): array;
+    public function getFormTheme(): FormView;
 
     public function setFilterTheme(array $filterTheme);
 

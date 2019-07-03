@@ -265,6 +265,7 @@ class AdminHelperTest extends TestCase
     public function testAppendFormFieldElementNested(): void
     {
         $admin = $this->createMock(AdminInterface::class);
+
         $object = $this->getMockBuilder('stdClass')
             ->setMethods(['getSubObject'])
             ->getMock();
@@ -298,7 +299,8 @@ class AdminHelperTest extends TestCase
         $admin->expects($this->once())->method('getFormBuilder')->willReturn($formBuilder);
         $admin->expects($this->once())->method('getSubject')->willReturn($object);
 
-        $this->expectException(\Exception::class, 'unknown collection class');
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(sprintf('Expected collection to be an instance of "%s", "string" given.', Collection::class));
 
         $this->helper->appendFormFieldElement($admin, $simpleObject, 'uniquePartOfId_sub_object_0_and_more_0_final_data');
     }
