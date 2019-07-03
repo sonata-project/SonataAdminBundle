@@ -91,7 +91,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->admin->getNewInstance()->willReturn($object);
         $this->admin->setSubject($object)->shouldBeCalled();
         $this->admin->hasAccess('create')->willReturn(true);
-        $this->admin->getFormFieldDescriptions()->willReturn(null);
+        $this->admin->getFormFieldDescriptions()->willReturn([]);
         $this->admin->getFormFieldDescription('barField')->willReturn($fieldDescription->reveal());
 
         $fieldDescription->getTargetEntity()->willReturn(Foo::class);
@@ -119,7 +119,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->admin->setSubject($object)->shouldBeCalled();
         $this->admin->hasAccess('create')->willReturn(true);
         $this->admin->getFormFieldDescription('barField')->willReturn($fieldDescription->reveal());
-        $this->admin->getFormFieldDescriptions()->willReturn(null);
+        $this->admin->getFormFieldDescriptions()->willReturn([]);
         $targetAdmin->checkAccess('list')->shouldBeCalled();
         $fieldDescription->getTargetEntity()->willReturn(Foo::class);
         $fieldDescription->getName()->willReturn('barField');
