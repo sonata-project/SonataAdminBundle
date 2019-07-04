@@ -38,7 +38,7 @@ Some classes and methods are now `final` and should not be overridden:
  * Method `Sonata\Admin\AbstractAdmin::getTemplate()`
  * Method `Sonata\Admin\AbstractAdmin::getTemplates()`
  * Method `Sonata\Admin\AdminInterface::getTemplate()`
- * Method `Sonata\Admin\AdminInterface::getTemplates()` method
+ * Method `Sonata\Admin\AdminInterface::getTemplates()`
  * Method `Sonata\Admin\Pool::getTemplate()`
  * Method `Sonata\Admin\Pool::getTemplates()`
  * Method `Sonata\Admin\Pool::setTemplates()`
