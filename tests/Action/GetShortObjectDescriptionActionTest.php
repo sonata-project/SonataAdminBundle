@@ -133,7 +133,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $templateRegistry = $this->createMock(MutableTemplateRegistryInterface::class);
         $templateRegistry
             ->method('getTemplate')
-            ->will($this->returnValueMap(['short_object_description', 'template']));
+            ->willReturnMap(['short_object_description', 'template']);
 
         $this->admin->reveal()->setTemplateRegistry($templateRegistry);
 
