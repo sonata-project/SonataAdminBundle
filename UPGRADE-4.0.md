@@ -29,6 +29,22 @@ Some classes and methods are now `final` and should not be overridden:
 * `Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor`
 * `Sonata\AdminBundle\Twig\Extension`
 
+## Removed deprecated features
+
+ Some classes, methods, properties, services and functions were removed:
+
+ * Property Sonata\Admin\AbstractAdmin::$templates`
+ * Method `Sonata\Admin\AbstractAdmin::getTemplate()`
+ * Method `Sonata\Admin\AbstractAdmin::getTemplates()`
+ * Method `Sonata\Admin\AdminInterface::getTemplate()`
+ * Method `Sonata\Admin\AdminInterface::getTemplates()` method
+ * Class `Sonata\AdminBundle\Controller\HelperController`
+ * Service `sonata.admin.controller.admin`
+ * Method `Sonata\Admin\Pool::getTemplate()`
+ * Method `Sonata\Admin\Pool::getTemplates()`
+ * Method `Sonata\Admin\Pool::setTemplates()`
+ * Twig function `get_admin_pool_template()`
+
 ## Admin
 If you have implemented a custom admin, you must adapt the signature of the following new methods to match the one in `AdminInterface` again:
  * `hasAccess`
