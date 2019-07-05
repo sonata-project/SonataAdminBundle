@@ -127,7 +127,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
             }
 
             $manipulatorId = sprintf('sonata.admin.manipulator.acl.object.%s', $admin->getManagerType());
-            if ($manipulator = $this->aclObjectManipulators[$manipulatorId] ?? null) {
+            if (!($manipulator = $this->aclObjectManipulators[$manipulatorId] ?? null)) {
                 $output->writeln('Admin class is using a manager type that has no manipulator implemented : <info>ignoring</info>');
 
                 continue;
