@@ -17,7 +17,6 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,7 +24,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AdminListBlockService extends AbstractBlockService
+class AdminListBlockService extends AbstractAdminBlockService
 {
     /**
      * @var Pool

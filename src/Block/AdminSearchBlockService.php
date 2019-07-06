@@ -17,7 +17,6 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AdminSearchBlockService extends AbstractBlockService
+class AdminSearchBlockService extends AbstractAdminBlockService
 {
     /**
      * @var Pool
