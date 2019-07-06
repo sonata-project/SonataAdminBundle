@@ -59,6 +59,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Twig\Environment;
 
 /**
  * Test for CRUDController.
@@ -195,7 +196,7 @@ class CRUDControllerTest extends TestCase
 
         $this->session = new Session(new MockArraySessionStorage());
 
-        $twig = $this->getMockBuilder(\Twig_Environment::class)
+        $twig = $this->getMockBuilder(Environment::class)
             ->disableOriginalConstructor()
             ->getMock();
 
