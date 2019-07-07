@@ -134,12 +134,12 @@ easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin`
 
 So, what does this code do?
 
-* **Line 11-14**: These lines configure which fields are displayed on the edit
+* **Line 13-16**: These lines configure which fields are displayed on the edit
   and create actions. The ``FormMapper`` behaves similar to the ``FormBuilder``
   of the Symfony Form component;
-* **Line 16-19**: This method configures the filters, used to filter and sort
+* **Line 18-21**: This method configures the filters, used to filter and sort
   the list of models;
-* **Line 21-24**: Here you specify which fields are shown when all models are
+* **Line 23-26**: Here you specify which fields are shown when all models are
   listed (the ``addIdentifier()`` method means that this field will link to the
   show/edit page of this particular model).
 
