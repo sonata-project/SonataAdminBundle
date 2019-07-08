@@ -284,7 +284,6 @@ file that was distributed with this source code.
                 $(document).ajaxSuccess(function(event, xhr, settings) {
                   if(typeof xhr.responseJSON != 'undefined') {
                       if ('{{ create_url }}'.indexOf(settings.url) !== -1 && typeof xhr.responseJSON != 'string' && xhr.responseJSON.result == 'ok') {
-                        var form = JSON.parse('{"' + decodeURI(settings.data).replace('+', ' ').replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
                         var item = new Option(
                           new DOMParser().parseFromString(xhr.responseJSON.objectName, "text/html").documentElement.textContent,
                           xhr.responseJSON.objectId,
@@ -298,7 +297,7 @@ file that was distributed with this source code.
                           var data = item;
                         {%- endif -%}
 
-                        $('#{{ id }}_hidden_inputs_wrap').html('<input type="hidden" name="{{ full_name }}" value="'+xhr.responseJSON.objectId+'" />');
+                        $('#{{ id }}_hidden_inputs_wrap').html('<input type="hidden" name="{{ full_name }}[]" value="'+xhr.responseJSON.objectId+'" />');
 
                         // append to Select2
                         autocompleteInput.select2('data', data).append(data).trigger('change');
