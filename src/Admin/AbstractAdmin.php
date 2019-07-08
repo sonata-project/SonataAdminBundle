@@ -984,7 +984,19 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function getActiveSubClass()
     {
         if (!$this->hasActiveSubClass()) {
-            return;
+            @trigger_error(sprintf(
+                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Use %s::hasActiveSubClass() to know if there is an active subclass.',
+                __METHOD__,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare string as return type
+            // throw new \LogicException(sprintf(
+            //    'Admin "%s" has no active subclass.',
+            //    static::class
+            // ));
+
+            return null;
         }
 
         return $this->getSubClass($this->getActiveSubclassCode());
@@ -993,13 +1005,37 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function getActiveSubclassCode()
     {
         if (!$this->hasActiveSubClass()) {
-            return;
+            @trigger_error(sprintf(
+                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Use %s::hasActiveSubClass() to know if there is an active subclass.',
+                __METHOD__,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare string as return type
+            // throw new \LogicException(sprintf(
+            //    'Admin "%s" has no active subclass.',
+            //    static::class
+            // ));
+
+            return null;
         }
 
         $subClass = $this->getRequest()->query->get('subclass');
 
         if (!$this->hasSubClass($subClass)) {
-            return;
+            @trigger_error(sprintf(
+                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Use %s::hasActiveSubClass() to know if there is an active subclass.',
+                __METHOD__,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare string as return type
+            // throw new \LogicException(sprintf(
+            //    'Admin "%s" has no active subclass.',
+            //    static::class
+            // ));
+
+            return null;
         }
 
         return $subClass;
@@ -1756,7 +1792,7 @@ EOT;
         $child = $this->getCurrentChildAdmin();
 
         if (null === $child) {
-            return;
+            return null;
         }
 
         for ($c = $child; null !== $c; $c = $child->getCurrentChildAdmin()) {
@@ -2795,7 +2831,7 @@ EOT;
         throw new \RuntimeException(sprintf(
             'Unable to find the subclass `%s` for admin `%s`',
             $name,
-            \get_class($this)
+            static::class
         ));
     }
 

@@ -224,7 +224,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function getNext()
     {
         if ($this->cursor + 1 > $this->nbResults) {
-            return;
+            return null;
         }
 
         return $this->retrieveObject($this->cursor + 1);
@@ -238,7 +238,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function getPrevious()
     {
         if ($this->cursor - 1 < 1) {
-            return;
+            return null;
         }
 
         return $this->retrieveObject($this->cursor - 1);

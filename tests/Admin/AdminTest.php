@@ -722,6 +722,10 @@ class AdminTest extends TestCase
     }
 
     /**
+     * @group legacy
+     *
+     * @expectedDeprecation Calling Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubclassCode() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. Use Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass() to know if there is an active subclass.
+     *
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getSubClasses
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getSubClass
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::setSubClasses
@@ -733,6 +737,7 @@ class AdminTest extends TestCase
      */
     public function testSubClass(): void
     {
+        // NEXT_MAJOR: Remove the "@group" and "@expectedDeprecation" annotations
         $admin = new PostAdmin(
             'sonata.post.admin.post',
             Post::class,
@@ -758,6 +763,7 @@ class AdminTest extends TestCase
         $this->assertTrue($admin->hasSubClass('extended1'));
         $this->assertFalse($admin->hasActiveSubClass());
         $this->assertCount(2, $admin->getSubClasses());
+        // NEXT_MAJOR: remove the following 2 `assertNull()` assertions
         $this->assertNull($admin->getActiveSubClass());
         $this->assertNull($admin->getActiveSubclassCode());
         $this->assertSame(
@@ -785,13 +791,21 @@ class AdminTest extends TestCase
         );
 
         $request->query->set('subclass', 'inject');
+
         $this->assertNull($admin->getActiveSubclassCode());
+        // NEXT_MAJOR: remove the previous `assertNull()` assertion and uncomment the following lines
+        // $this->expectException(\LogicException::class);
+        // $this->expectExceptionMessage(sprintf('Admin "%s" has no active subclass.', PostAdmin::class));
     }
 
+    /**
+     * @group legacy
+     *
+     * @expectedDeprecation Calling Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubclassCode() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. Use Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass() to know if there is an active subclass.
+     */
     public function testNonExistantSubclass(): void
     {
-        $this->expectException(\RuntimeException::class);
-
+        // NEXT_MAJOR: Remove the "@group" and "@expectedDeprecation" annotations
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
         $admin->setModelManager($this->getMockForAbstractClass(ModelManagerInterface::class));
 
@@ -800,6 +814,8 @@ class AdminTest extends TestCase
         $admin->setSubClasses(['extended1' => 'NewsBundle\Entity\PostExtended1', 'extended2' => 'NewsBundle\Entity\PostExtended2']);
 
         $this->assertTrue($admin->hasActiveSubClass());
+
+        $this->expectException(\RuntimeException::class);
 
         $admin->getActiveSubClass();
     }

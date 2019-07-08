@@ -58,6 +58,8 @@ class AdminHelper
                 return $formBuilder;
             }
         }
+
+        return null;
     }
 
     /**
@@ -72,6 +74,8 @@ class AdminHelper
                 return $formView;
             }
         }
+
+        return null;
     }
 
     /**

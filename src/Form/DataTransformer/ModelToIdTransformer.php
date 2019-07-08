@@ -43,7 +43,7 @@ class ModelToIdTransformer implements DataTransformerInterface
     public function reverseTransform($newId)
     {
         if (empty($newId) && !\in_array($newId, ['0', 0], true)) {
-            return;
+            return null;
         }
 
         return $this->modelManager->find($this->className, $newId);
@@ -52,7 +52,7 @@ class ModelToIdTransformer implements DataTransformerInterface
     public function transform($entity)
     {
         if (empty($entity)) {
-            return;
+            return null;
         }
 
         return $this->modelManager->getNormalizedIdentifier($entity);
