@@ -532,7 +532,7 @@ class CRUDController implements ContainerAwareInterface
         // execute the action, batchActionXxxxx
         $finalAction = sprintf('batchAction%s', $camelizedAction);
         if (!method_exists($this, $finalAction)) {
-            throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', \get_class($this), $finalAction));
+            throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', static::class, $finalAction));
         }
 
         $query = $datagrid->getQuery();
@@ -1144,7 +1144,7 @@ class CRUDController implements ContainerAwareInterface
         if (!$adminCode) {
             throw new \RuntimeException(sprintf(
                 'There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`',
-                \get_class($this),
+                static::class,
                 $request->get('_route')
             ));
         }
@@ -1154,7 +1154,7 @@ class CRUDController implements ContainerAwareInterface
         if (!$this->admin) {
             throw new \RuntimeException(sprintf(
                 'Unable to find the admin class related to the current controller (%s)',
-                \get_class($this)
+                static::class
             ));
         }
 

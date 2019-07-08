@@ -914,7 +914,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
-                    throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', \get_class($this)));
+                    throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', static::class));
                 }
                 $baseRoutePattern = $this->urlize($matches[5], '-');
             }
@@ -931,7 +931,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             preg_match(self::CLASS_REGEX, $this->class, $matches);
 
             if (!$matches) {
-                throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', \get_class($this)));
+                throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', static::class));
             }
 
             $this->cachedBaseRoutePattern = sprintf(
@@ -964,7 +964,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
-                    throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', \get_class($this)));
+                    throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', static::class));
                 }
                 $baseRouteName = $this->urlize($matches[5]);
             }
@@ -980,7 +980,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             preg_match(self::CLASS_REGEX, $this->class, $matches);
 
             if (!$matches) {
-                throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', \get_class($this)));
+                throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', static::class));
             }
 
             $this->cachedBaseRouteName = sprintf('admin_%s%s_%s',
