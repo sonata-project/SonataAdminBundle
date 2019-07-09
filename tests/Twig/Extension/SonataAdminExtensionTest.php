@@ -1450,6 +1450,12 @@ EOT
                 'action_delete',
                 ['safe' => false, 'catalogue' => 'SonataAdminBundle'],
             ],
+            [
+                '<th>Data</th> <td> Delete </td>',
+                'trans',
+                'delete',
+                ['safe' => false, 'catalogue' => 'SonataAdminBundle', 'format' => 'action_%s'],
+            ],
             ['<th>Data</th> <td>Status1</td>', 'choice', 'Status1', ['safe' => false]],
             [
                 '<th>Data</th> <td>Alias1</td>',
