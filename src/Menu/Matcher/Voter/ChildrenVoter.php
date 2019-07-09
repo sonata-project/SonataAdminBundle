@@ -38,8 +38,6 @@ class ChildrenVoter implements VoterInterface
 
     /**
      * ChildrenVoter constructor.
-     *
-     * @param MatcherInterface $matcher
      */
     public function __construct(MatcherInterface $matcher)
     {

@@ -67,7 +67,6 @@ class GroupMenuProviderTest extends TestCase
     /**
      * NEXT_MAJOR: Remove this test.
      *
-     * @param array $adminGroups
      *
      * @group legacy
      * @dataProvider getAdminGroups
@@ -110,8 +109,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroups
-     *
      * @dataProvider getAdminGroups
      */
     public function testGetMenuProviderWithCheckerGrantedGroupRoles(array $adminGroups): void
@@ -186,8 +183,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroups
-     *
      * @dataProvider getAdminGroupsMultipleRoles
      */
     public function testGetMenuProviderWithCheckerGrantedMultipleGroupRoles(
@@ -213,8 +208,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroups
-     *
      * @dataProvider getAdminGroupsMultipleRoles
      */
     public function testGetMenuProviderWithCheckerGrantedGroupAndItemRoles(
@@ -241,8 +234,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroups
-     *
      * @dataProvider getAdminGroupsMultipleRolesOnTop
      */
     public function testGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTop(
@@ -265,8 +256,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroups
-     *
      * @dataProvider getAdminGroups
      */
     public function testGetMenuProviderWithAdmin(array $adminGroups): void
@@ -309,8 +298,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroups
-     *
      * @dataProvider getAdminGroups
      */
     public function testGetKnpMenuWithListRoute(array $adminGroups): void
@@ -339,8 +326,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroups
-     *
      * @dataProvider getAdminGroups
      */
     public function testGetKnpMenuWithGrantedList(array $adminGroups): void
@@ -369,8 +354,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroupsOnTopOption
-     *
      * @dataProvider getAdminGroupsWithOnTopOption
      */
     public function testGetMenuProviderOnTopOptions(array $adminGroupsOnTopOption): void
@@ -393,8 +376,6 @@ class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @param array $adminGroups
-     *
      * @dataProvider getAdminGroups
      */
     public function testGetMenuProviderKeepOpenOption(array $adminGroups): void
