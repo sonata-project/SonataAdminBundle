@@ -28,6 +28,7 @@ $rules = [
     ],
     'no_extra_blank_lines' => true,
     'no_php4_constructor' => true,
+    'no_superfluous_phpdoc_tags' => ['allow_mixed' => true],
     'no_useless_else' => true,
     'no_useless_return' => true,
     'ordered_class_elements' => true,

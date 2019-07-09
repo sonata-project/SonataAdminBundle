@@ -386,7 +386,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Call before the batch action, allow you to alter the query and the idx.
      *
      * @param string $actionName
-     * @param array  $idx
      * @param bool   $allElements
      */
     public function preBatchAction($actionName, ProxyQueryInterface $query, array &$idx, $allElements);

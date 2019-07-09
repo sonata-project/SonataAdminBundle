@@ -1506,9 +1506,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->persistFilters = $persist;
     }
 
-    /**
-     * @param FilterPersisterInterface|null $filterPersister
-     */
     public function setFilterPersister(FilterPersisterInterface $filterPersister = null)
     {
         $this->filterPersister = $filterPersister;
