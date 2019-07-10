@@ -1169,8 +1169,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     /**
      * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
-     *
-     * @return array
      */
     public function getTemplates(): array
     {
@@ -1409,9 +1407,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->persistFilters = $persist;
     }
 
-    /**
-     * @param FilterPersisterInterface|null $filterPersister
-     */
     public function setFilterPersister(FilterPersisterInterface $filterPersister = null): void
     {
         $this->filterPersister = $filterPersister;

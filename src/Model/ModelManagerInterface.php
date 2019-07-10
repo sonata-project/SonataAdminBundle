@@ -263,7 +263,6 @@ interface ModelManagerInterface
 
     /**
      * @param string $class
-     * @param array  $idx
      */
     public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
 }

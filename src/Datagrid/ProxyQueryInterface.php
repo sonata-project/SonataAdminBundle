@@ -95,8 +95,6 @@ interface ProxyQueryInterface
     public function getUniqueParameterId();
 
     /**
-     * @param array $associationMappings
-     *
      * @return mixed
      */
     public function entityJoin(array $associationMappings);

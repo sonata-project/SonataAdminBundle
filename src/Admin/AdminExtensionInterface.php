@@ -106,7 +106,6 @@ interface AdminExtensionInterface
     /**
      * Returns the list of batch actions.
      *
-     * @param array $actions
      *
      * @return array
      */
@@ -115,7 +114,6 @@ interface AdminExtensionInterface
     /**
      * Get a chance to modify export fields.
      *
-     * @param string[] $fields
      *
      * @return string[]
      */

@@ -70,9 +70,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
      *
      * Note: the method will be called by the top admin instance (parent => child)
      *
-     * @param AdminInterface     $admin
-     * @param string             $action
-     * @param ItemInterface|null $menu
+     * @param string $action
      */
     public function buildBreadcrumbs(
         AdminInterface $admin,
