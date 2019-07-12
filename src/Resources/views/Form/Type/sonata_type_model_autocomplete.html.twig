@@ -169,7 +169,9 @@ file that was distributed with this source code.
 
             if (window.Select2) {
                 select2Options.initSelection = function (element, callback) {
-                    callback(element.val());
+                    str = element.val();
+                    str = (str.substring(str.length - 1) == ',') ? str.substring(0, str.length - 1) : str;
+                    callback(str);
                 };
                 select2Options.ajax.results = function (data, page) {
                     // notice we return the value of more so Select2 knows if more results can be loaded
@@ -293,13 +295,13 @@ file that was distributed with this source code.
 
                         {%- if multiple -%}
                           var data = autocompleteInput.select2('data');
-                          data.push(item);
-                        {%- else -%}
+                          data.push({id:xhr.responseJSON.objectId, label: xhr.responseJSON.objectName});
+                          $('#{{ id }}_hidden_inputs_wrap').append('<input type="hidden" name="{{ full_name }}[]" value="'+xhr.responseJSON.objectId+'" />');
+                          {%- else -%}
                           var data = item;
+                          $('#{{ id }}_hidden_inputs_wrap').html('<input type="hidden" name="{{ full_name }}" value="'+xhr.responseJSON.objectId+'" />');
                         {%- endif -%}
-
-                        $('#{{ id }}_hidden_inputs_wrap').html('<input type="hidden" name="{{ full_name }}" value="'+xhr.responseJSON.objectId+'" />');
-
+                        
                         // append to Select2
                         autocompleteInput.select2('data', data).append(data).trigger('change');
 
