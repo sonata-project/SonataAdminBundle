@@ -64,6 +64,8 @@ class GenerateAdminCommand extends QuestionableCommand
     {
         $this
             ->setDescription('Generates an admin class based on the given model class')
+            ->setName(static::$defaultName)// BC for symfony/console < 3.4.0
+            // NEXT_MAJOR: drop this line after drop support symfony/console < 3.4.0
             ->addArgument('model', InputArgument::REQUIRED, 'The fully qualified model class')
             ->addOption('bundle', 'b', InputOption::VALUE_OPTIONAL, 'The bundle name')
             ->addOption('admin', 'a', InputOption::VALUE_OPTIONAL, 'The admin class basename')
