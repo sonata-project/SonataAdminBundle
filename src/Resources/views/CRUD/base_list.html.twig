@@ -23,11 +23,11 @@ file that was distributed with this source code.
 {%- endblock -%}
 
 {% block title %}
-    {{ admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject|truncate(15)) }, 'SonataAdminBundle') : '' }}
+    {{ admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject)|truncate(15) }, 'SonataAdminBundle') : '' }}
 {% endblock %}
 
 {% block navbar_title %}
-    {{ admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject|truncate(100)) }, 'SonataAdminBundle') : '' }}
+    {{ admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject)|truncate(100) }, 'SonataAdminBundle') : '' }}
 {% endblock %}
 
 {% block list_table %}
