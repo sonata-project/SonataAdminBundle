@@ -104,7 +104,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
             $id = $admin->getRequest()->get($admin->getIdParameter());
 
             $menu = $menu->addChild(
-                $admin->toString($admin->getSubject()),
+                $admin->subjectToString(),
                 [
                     'uri' => $admin->hasRoute($this->config['child_admin_route']) && $admin->hasAccess($this->config['child_admin_route'], $admin->getSubject()) ?
                     $admin->generateUrl($this->config['child_admin_route'], ['id' => $id]) :
@@ -126,7 +126,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
             return $menu;
         }
         if ('create' !== $action && $admin->hasSubject()) {
-            return $menu->addChild($admin->toString($admin->getSubject()), [
+            return $menu->addChild($admin->subjectToString(), [
                 'extras' => [
                     'translation_domain' => false,
                 ],

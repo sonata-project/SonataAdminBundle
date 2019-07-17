@@ -2474,8 +2474,18 @@ EOT;
         return $this->routeBuilder;
     }
 
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.x, use `subjectToString()` instead.
+     */
     public function toString($object)
     {
+        @trigger_error(sprintf(
+            'Method %s() is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0. '.
+            'Use %s::subjectToString() instead.',
+            __METHOD__,
+            __CLASS__
+        ), E_USER_DEPRECATED);
+
         if (!\is_object($object)) {
             return '';
         }
@@ -2485,6 +2495,24 @@ EOT;
         }
 
         return sprintf('%s:%s', ClassUtils::getClass($object), spl_object_hash($object));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function subjectToString(): string
+    {
+        if (!$this->hasSubject()) {
+            throw new \LogicException('Admin subject is not set.');
+        }
+
+        $subject = $this->getSubject();
+
+        if (\is_callable([$subject, '__toString']) && null !== $toString = $subject->__toString()) {
+            return $toString;
+        }
+
+        return sprintf('%s:%s', ClassUtils::getClass($subject), spl_object_hash($subject));
     }
 
     public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy)

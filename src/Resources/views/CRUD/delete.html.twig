@@ -30,7 +30,7 @@ file that was distributed with this source code.
                 <h3 class="box-title">{{ 'title_delete'|trans({}, 'SonataAdminBundle') }}</h3>
             </div>
             <div class="box-body">
-                {{ 'message_delete_confirmation'|trans({'%object%': admin.toString(object)}, 'SonataAdminBundle') }}
+                {{ 'message_delete_confirmation'|trans({'%object%': admin.subjectToString()}, 'SonataAdminBundle') }}
             </div>
             <div class="box-footer clearfix">
                 <form method="POST" action="{{ admin.generateObjectUrl('delete', object) }}">

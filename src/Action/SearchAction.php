@@ -102,7 +102,7 @@ final class SearchAction extends Controller
         )) {
             foreach ($pager->getResults() as $result) {
                 $results[] = [
-                    'label' => $admin->toString($result),
+                    'label' => $admin->subjectToString(),
                     'link' => $admin->getSearchResultLink($result),
                     'id' => $admin->id($result),
                 ];
