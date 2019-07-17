@@ -73,6 +73,8 @@ final class GetShortObjectDescriptionAction
             return new Response();
         }
 
+        $admin->setSubject($object);
+
         if ('json' === $request->get('_format')) {
             return new JsonResponse(['result' => [
                 'id' => $admin->id($object),

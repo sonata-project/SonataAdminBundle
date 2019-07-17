@@ -1283,8 +1283,7 @@ class CRUDControllerTest extends TestCase
             ->willReturn($object);
 
         $this->admin->expects($this->once())
-            ->method('toString')
-            ->with($this->equalTo($object))
+            ->method('subjectToString')
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_delete_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
@@ -1322,8 +1321,7 @@ class CRUDControllerTest extends TestCase
             ->willReturn(true);
 
         $this->admin->expects($this->once())
-            ->method('toString')
-            ->with($this->equalTo($object))
+            ->method('subjectToString')
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_delete_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
@@ -1359,8 +1357,7 @@ class CRUDControllerTest extends TestCase
             ->willReturn(true);
 
         $this->admin->expects($this->once())
-            ->method('toString')
-            ->with($this->equalTo($object))
+            ->method('subjectToString')
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_delete_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
@@ -1422,8 +1419,7 @@ class CRUDControllerTest extends TestCase
             ->willReturn(true);
 
         $this->admin->expects($this->once())
-            ->method('toString')
-            ->with($this->equalTo($object))
+            ->method('subjectToString')
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_delete_error', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
@@ -1634,8 +1630,7 @@ class CRUDControllerTest extends TestCase
             ->willReturn(['field' => 'fielddata']);
 
         $this->admin->expects($this->once())
-            ->method('toString')
-            ->with($this->equalTo($object))
+            ->method('subjectToString')
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_edit_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
@@ -1684,8 +1679,7 @@ class CRUDControllerTest extends TestCase
             ->willReturn(['field' => 'fielddata']);
 
         $this->admin->expects($this->once())
-            ->method('toString')
-            ->with($this->equalTo($object))
+            ->method('subjectToString')
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_edit_error', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
@@ -1757,7 +1751,7 @@ class CRUDControllerTest extends TestCase
             ->willReturn('foo_normalized');
 
         $this->admin->expects($this->once())
-            ->method('toString')
+            ->method('subjectToString')
             ->willReturn('foo');
 
         $this->request->setMethod('POST');
@@ -1863,8 +1857,7 @@ class CRUDControllerTest extends TestCase
             ->willReturn(['field' => 'fielddata']);
 
         $this->admin->expects($this->once())
-            ->method('toString')
-            ->with($this->equalTo($object))
+            ->method('subjectToString')
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_edit_error', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
@@ -1999,8 +1992,7 @@ class CRUDControllerTest extends TestCase
             ->will($this->throwException(new LockException()));
 
         $this->admin->expects($this->any())
-            ->method('toString')
-            ->with($this->equalTo($object))
+            ->method('subjectToString')
             ->willReturn($class);
 
         $formView = $this->createMock(FormView::class);
@@ -2203,8 +2195,7 @@ class CRUDControllerTest extends TestCase
             ->willReturn($object);
 
         $this->admin->expects($this->once())
-            ->method('toString')
-            ->with($this->equalTo($object))
+            ->method('subjectToString')
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_create_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
@@ -2311,8 +2302,7 @@ class CRUDControllerTest extends TestCase
             ->willReturn(false);
 
         $this->admin->expects($this->once())
-            ->method('toString')
-            ->with($this->equalTo($object))
+            ->method('subjectToString')
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_create_error', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
@@ -2374,8 +2364,7 @@ class CRUDControllerTest extends TestCase
             ->willReturn(true);
 
         $this->admin->expects($this->once())
-            ->method('toString')
-            ->with($this->equalTo($object))
+            ->method('subjectToString')
             ->willReturn($toStringValue);
 
         $this->expectTranslate('flash_create_error', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
@@ -2470,7 +2459,7 @@ class CRUDControllerTest extends TestCase
             ->willReturn('foo_normalized');
 
         $this->admin->expects($this->once())
-            ->method('toString')
+            ->method('subjectToString')
             ->willReturn('foo');
 
         $this->request->setMethod('POST');
