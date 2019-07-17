@@ -2475,7 +2475,7 @@ EOT;
     }
 
     /**
-     * NEXT_MAJOR: Remove this method and uncomment `subjectToString()`
+     * NEXT_MAJOR: Remove this method and uncomment `subjectToString()`.
      *
      * @deprecated since sonata-project/admin-bundle 3.x, use `subjectToString()` instead.
      */
