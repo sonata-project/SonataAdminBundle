@@ -370,7 +370,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $childAdmin->getCurrentChildAdmin()->willReturn(null);
         $childAdmin->hasSubject()->willReturn(true);
         $childAdmin->getSubject()->willReturn('my subject');
-        $childAdmin->subjectToString()->willReturn('My subject');
+        $childAdmin->subjectAsString()->willReturn('My subject');
 
         $admin->hasAccess('show', 'my subject')->willReturn(true)->shouldBeCalled();
         $admin->hasRoute('show')->willReturn(true);
@@ -391,7 +391,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $admin->getRequest()->willReturn($request->reveal());
         $admin->hasSubject()->willReturn(true);
         $admin->getSubject()->willReturn('my subject');
-        $admin->subjectToString()->willReturn('My subject');
+        $admin->subjectAsString()->willReturn('My subject');
         $admin->getTranslationDomain()->willReturn('FooBundle');
         $admin->getLabelTranslatorStrategy()->willReturn(
             $labelTranslatorStrategy->reveal()
@@ -520,7 +520,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $admin->getRequest()->willReturn($request->reveal());
         $admin->hasSubject()->willReturn(true);
         $admin->getSubject()->willReturn('my subject');
-        $admin->subjectToString()->willReturn('My subject');
+        $admin->subjectAsString()->willReturn('My subject');
         $admin->getTranslationDomain()->willReturn('FooBundle');
         $admin->getLabelTranslatorStrategy()->willReturn(
             $labelTranslatorStrategy->reveal()

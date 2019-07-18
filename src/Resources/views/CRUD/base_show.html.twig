@@ -12,11 +12,11 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block title %}
-    {{ 'title_show'|trans({'%name%': admin.subjectToString()|truncate(15) }, 'SonataAdminBundle') }}
+    {{ 'title_show'|trans({'%name%': admin.subjectAsString()|truncate(15) }, 'SonataAdminBundle') }}
 {% endblock %}
 
 {% block navbar_title %}
-    {{ 'title_show'|trans({'%name%': admin.subjectToString()|truncate(100) }, 'SonataAdminBundle') }}
+    {{ 'title_show'|trans({'%name%': admin.subjectAsString()|truncate(100) }, 'SonataAdminBundle') }}
 {% endblock %}
 
 {%- block actions -%}

@@ -50,9 +50,9 @@ file that was distributed with this source code.
                             {% set _ = admin.setSubject(result) %}
                             {% set link = admin.getSearchResultLink(result) %}
                             {% if link %}
-                                <li><a href="{{ link }}">{{ admin.subjectToString()|raw }}</a></li>
+                                <li><a href="{{ link }}">{{ admin.subjectAsString()|raw }}</a></li>
                             {% else %}
-                                <li><a>{{ admin.subjectToString()|raw }}</a></li>
+                                <li><a>{{ admin.subjectAsString()|raw }}</a></li>
                             {% endif %}
                         {% endfor %}
                     </ul>

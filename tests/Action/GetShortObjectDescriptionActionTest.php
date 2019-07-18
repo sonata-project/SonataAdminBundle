@@ -126,7 +126,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->setUniqid('asdasd123')->shouldBeCalled();
         $this->admin->getObject(42)->willReturn($object);
         $this->admin->getTemplate('short_object_description')->willReturn('template');
-        $this->admin->subjectToString()->willReturn('bar');
+        $this->admin->subjectAsString()->willReturn('bar');
 
         $action = $this->action;
         $response = $action($request);
@@ -151,7 +151,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->id(false)->willReturn('');
         $this->admin->toString(false)->willReturn('');
         $this->admin->setSubject(new \stdClass())->shouldBeCalled();
-        $this->admin->subjectToString()->willThrow(\LogicException::class);
+        $this->admin->subjectAsString()->willThrow(\LogicException::class);
 
         $action = $this->action;
         $response = $action($request);
@@ -174,7 +174,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->id($object)->willReturn(42);
         $this->admin->getObject(42)->willReturn($object);
         $this->admin->getTemplate('short_object_description')->willReturn('template');
-        $this->admin->subjectToString()->willReturn('bar');
+        $this->admin->subjectAsString()->willReturn('bar');
 
         $action = $this->action;
         $response = $action($request);

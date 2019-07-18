@@ -78,12 +78,12 @@ final class GetShortObjectDescriptionAction
         if ('json' === $request->get('_format')) {
             return new JsonResponse(['result' => [
                 'id' => $admin->id($object),
-                'label' => $admin->subjectToString(),
+                'label' => $admin->subjectAsString(),
             ]]);
         } elseif ('html' === $request->get('_format')) {
             return new Response($this->twig->render($admin->getTemplate('short_object_description'), [
                 'admin' => $admin,
-                'description' => $admin->subjectToString(),
+                'description' => $admin->subjectAsString(),
                 'object' => $object,
                 'link_parameters' => $linkParameters,
             ]));

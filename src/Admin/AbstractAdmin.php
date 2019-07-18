@@ -2475,15 +2475,15 @@ EOT;
     }
 
     /**
-     * NEXT_MAJOR: Remove this method and uncomment `subjectToString()`.
+     * NEXT_MAJOR: Remove this method and uncomment `subjectAsString()`.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, use `subjectToString()` instead.
+     * @deprecated since sonata-project/admin-bundle 3.x, use `subjectAsString()` instead.
      */
     public function toString($object)
     {
         @trigger_error(sprintf(
             'Method %s() is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0. '.
-            'Use %s::subjectToString() instead.',
+            'Use %s::subjectAsString() instead.',
             __METHOD__,
             __CLASS__
         ), E_USER_DEPRECATED);
@@ -2502,7 +2502,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function subjectToString(): string
+    public function subjectAsString(): string
     {
         if (!$this->hasSubject()) {
             throw new \LogicException('Admin subject is not set.');

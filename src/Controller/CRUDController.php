@@ -248,7 +248,7 @@ class CRUDController implements ContainerAwareInterface
             // check the csrf token
             $this->validateCsrfToken('sonata.delete');
 
-            $objectName = $this->admin->subjectToString();
+            $objectName = $this->admin->subjectAsString();
 
             try {
                 $this->admin->delete($object);
@@ -358,7 +358,7 @@ class CRUDController implements ContainerAwareInterface
                         return $this->renderJson([
                             'result' => 'ok',
                             'objectId' => $objectId,
-                            'objectName' => $this->escapeHtml($this->admin->subjectToString()),
+                            'objectName' => $this->escapeHtml($this->admin->subjectAsString()),
                         ], 200, []);
                     }
 
@@ -366,7 +366,7 @@ class CRUDController implements ContainerAwareInterface
                         'sonata_flash_success',
                         $this->trans(
                             'flash_edit_success',
-                            ['%name%' => $this->escapeHtml($this->admin->subjectToString())],
+                            ['%name%' => $this->escapeHtml($this->admin->subjectAsString())],
                             'SonataAdminBundle'
                         )
                     );
@@ -379,7 +379,7 @@ class CRUDController implements ContainerAwareInterface
                     $isFormValid = false;
                 } catch (LockException $e) {
                     $this->addFlash('sonata_flash_error', $this->trans('flash_lock_error', [
-                        '%name%' => $this->escapeHtml($this->admin->subjectToString()),
+                        '%name%' => $this->escapeHtml($this->admin->subjectAsString()),
                         '%link_start%' => '<a href="'.$this->admin->generateObjectUrl('edit', $existingObject).'">',
                         '%link_end%' => '</a>',
                     ], 'SonataAdminBundle'));
@@ -393,7 +393,7 @@ class CRUDController implements ContainerAwareInterface
                         'sonata_flash_error',
                         $this->trans(
                             'flash_edit_error',
-                            ['%name%' => $this->escapeHtml($this->admin->subjectToString())],
+                            ['%name%' => $this->escapeHtml($this->admin->subjectAsString())],
                             'SonataAdminBundle'
                         )
                     );
@@ -622,7 +622,7 @@ class CRUDController implements ContainerAwareInterface
                         return $this->renderJson([
                             'result' => 'ok',
                             'objectId' => $this->admin->getNormalizedIdentifier($newObject),
-                            'objectName' => $this->escapeHtml($this->admin->subjectToString()),
+                            'objectName' => $this->escapeHtml($this->admin->subjectAsString()),
                         ], 200, []);
                     }
 
@@ -630,7 +630,7 @@ class CRUDController implements ContainerAwareInterface
                         'sonata_flash_success',
                         $this->trans(
                             'flash_create_success',
-                            ['%name%' => $this->escapeHtml($this->admin->subjectToString())],
+                            ['%name%' => $this->escapeHtml($this->admin->subjectAsString())],
                             'SonataAdminBundle'
                         )
                     );
@@ -651,7 +651,7 @@ class CRUDController implements ContainerAwareInterface
                         'sonata_flash_error',
                         $this->trans(
                             'flash_create_error',
-                            ['%name%' => $this->escapeHtml($this->admin->subjectToString())],
+                            ['%name%' => $this->escapeHtml($this->admin->subjectAsString())],
                             'SonataAdminBundle'
                         )
                     );

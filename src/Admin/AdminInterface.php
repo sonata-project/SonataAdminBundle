@@ -285,9 +285,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getRouteBuilder();
 
     /**
-     * NEXT_MAJOR: Remove this method and uncomment `subjectToString()`.
+     * NEXT_MAJOR: Remove this method and uncomment `subjectAsString()`.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, use `subjectToString()` instead.
+     * @deprecated since sonata-project/admin-bundle 3.x, use `subjectAsString()` instead.
      *
      * @param mixed $object
      *
@@ -300,7 +300,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @throws \LogicException if the admin's subject is not set
      */
-    // public function subjectToString(): string;
+    // public function subjectAsString(): string;
 
     public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy);
 
