@@ -214,6 +214,17 @@ You can customize the list query thanks to the ``createQuery`` method::
 Customizing the sort order
 --------------------------
 
+Default ordering in the list view
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The default ordering may be defined in:
+
+1. ``$this->$datagridValues`` property (of your Admin class)
+2. Query used to load data
+3. Defaults based on entity
+
+This order is important, because the first found will be used.
+
 Configure the default ordering in the list view
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -243,6 +254,36 @@ Configuring the default ordering column can be achieved by overriding the
 
         // ...
     }
+
+Default ordering may be defined also in overwritten ``\Sonata\AdminBundle\Admin\AbstractAdmin::createQuery() method``
+directly on the query used to load data::
+
+    // src/Admin/PostAdmin.php
+
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
+
+    final class PostAdmin extends AbstractAdmin
+    {
+        // ...
+
+        /**
+         * {@inheritdoc}
+         */
+        public function createQuery($context = 'list'): ProxyQuery
+        {
+            /** @var ProxyQuery $query */
+            $query = parent::createQuery($context);
+
+            return $query
+                ->setSortOrder('DESC')
+                ->setSortBy([], ['fieldName' => 'updatedAt'])
+                ;
+        }
+
+        // ...
+    }
+
+It may be useful when the sorting depends on custom logic that can't be applied to the ``datagridValues`` property.
 
 .. note::
 
