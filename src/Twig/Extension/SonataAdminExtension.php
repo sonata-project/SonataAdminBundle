@@ -20,6 +20,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
+use Sonata\AdminBundle\Util\AdminSubjectExtractor;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
@@ -78,12 +79,18 @@ class SonataAdminExtension extends AbstractExtension
      */
     private $securityChecker;
 
+    /**
+     * @var AdminSubjectExtractor
+     */
+    private $subjectExtractor;
+
     public function __construct(
         Pool $pool,
         LoggerInterface $logger = null,
         TranslatorInterface $translator = null,
         ContainerInterface $templateRegistries = null,
-        AuthorizationCheckerInterface $securityChecker = null
+        AuthorizationCheckerInterface $securityChecker = null,
+        AdminSubjectExtractor $subjectExtractor = null
     ) {
         // NEXT_MAJOR: make the translator parameter required
         if (null === $translator) {
@@ -92,16 +99,26 @@ class SonataAdminExtension extends AbstractExtension
                 E_USER_DEPRECATED
             );
         }
+
+        // NEXT_MAJOR: make AdminSubjectExtractor required
+        if (null === $subjectExtractor) {
+            @trigger_error(
+                sprintf('Argument 6 for %s() will be required with the 4.0 release.', __METHOD__),
+                E_USER_DEPRECATED
+            );
+        }
+
         $this->pool = $pool;
         $this->logger = $logger;
         $this->translator = $translator;
         $this->templateRegistries = $templateRegistries;
         $this->securityChecker = $securityChecker;
+        $this->subjectExtractor = $subjectExtractor;
     }
 
     public function getFilters()
     {
-        return [
+        $filters = [
             new TwigFilter(
                 'render_list_element',
                 [$this, 'renderListElement'],
@@ -143,6 +160,16 @@ class SonataAdminExtension extends AbstractExtension
                 [$this, 'getXEditableChoices']
             ),
         ];
+
+        // NEXT_MAJOR: Remove the condition in order to return "subject_as_string" filter unconditionally.
+        if ($this->subjectExtractor) {
+            $filters[] = new TwigFilter(
+                'subject_as_string',
+                [$this->subjectExtractor, 'getSubjectAsString']
+            );
+        }
+
+        return $filters;
     }
 
     public function getFunctions()

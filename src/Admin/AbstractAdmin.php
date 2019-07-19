@@ -2505,7 +2505,7 @@ EOT;
     public function subjectAsString(): string
     {
         if (!$this->hasSubject()) {
-            throw new \LogicException('Admin subject is not set.');
+            throw new \LogicException(sprintf('Subject is not set for admin "%s".', $this->getCode()));
         }
 
         $subject = $this->getSubject();

@@ -106,5 +106,8 @@
         </service>
         <service id="Sonata\AdminBundle\Templating\TemplateRegistry" alias="sonata.admin.global_template_registry"/>
         <service id="Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface" alias="sonata.admin.global_template_registry"/>
+        <service id="Sonata\AdminBundle\Util\AdminSubjectExtractor" alias="sonata.admin.subject_extractor" public="true">
+            <argument type="service" id="sonata.admin.pool"/>
+        </service>
     </services>
 </container>

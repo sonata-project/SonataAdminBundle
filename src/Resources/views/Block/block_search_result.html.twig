@@ -46,13 +46,11 @@ file that was distributed with this source code.
                 <div class="box-body no-padding">
                     <ul class="nav nav-stacked sonata-search-result-list">
                         {% for result in pager.getResults() %}
-                            {# @todo: check how to avoid the following `set` #}
-                            {% set _ = admin.setSubject(result) %}
                             {% set link = admin.getSearchResultLink(result) %}
                             {% if link %}
-                                <li><a href="{{ link }}">{{ admin.subjectAsString()|raw }}</a></li>
+                                <li><a href="{{ link }}">{{ result|subjectAsString(admin)|raw }}</a></li>
                             {% else %}
-                                <li><a>{{ admin.subjectAsString()|raw }}</a></li>
+                                <li><a>{{ result|subjectAsString(admin)|raw }}</a></li>
                             {% endif %}
                         {% endfor %}
                     </ul>

@@ -27,6 +27,7 @@
             <argument type="service" id="translator"/>
             <argument type="service" id="service_container"/>
             <argument type="service" id="security.authorization_checker"/>
+            <argument type="service" id="sonata.admin.subject_extractor"/>
             <call method="setXEditableTypeMapping">
                 <argument>%sonata.admin.twig.extension.x_editable_type_mapping%</argument>
             </call>
