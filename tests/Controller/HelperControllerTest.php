@@ -138,6 +138,7 @@ class HelperControllerTest extends TestCase
 
         $this->admin->setUniqid('asdasd123')->shouldBeCalled();
         $this->admin->getObject(42)->willReturn(false);
+        $this->admin->setSubject(false)->shouldBeCalled();
 
         $this->controller->getShortObjectDescriptionAction($request);
     }
@@ -172,6 +173,7 @@ class HelperControllerTest extends TestCase
         $this->admin->setUniqid('asdasd123')->shouldBeCalled();
         $this->admin->getObject(42)->willReturn($object);
         $this->admin->getTemplate('short_object_description')->willReturn('template');
+        $this->admin->setSubject($object)->shouldBeCalled();
         $this->admin->subjectAsString()->willReturn('bar');
         $this->twig->render('template', [
             'admin' => $this->admin->reveal(),

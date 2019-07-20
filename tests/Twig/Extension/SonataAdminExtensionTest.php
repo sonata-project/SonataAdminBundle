@@ -24,6 +24,7 @@ use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
+use Sonata\AdminBundle\Util\AdminSubjectExtractor;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
@@ -167,7 +168,7 @@ class SonataAdminExtensionTest extends TestCase
         $this->securityChecker->isGranted(Argument::type('string'), null)->willReturn(true);
 
         $this->twigExtension = new SonataAdminExtension(
-            $this->pool, $this->logger, $this->translator, $this->container->reveal(), $this->securityChecker->reveal()
+            $this->pool, $this->logger, $this->translator, $this->container->reveal(), $this->securityChecker->reveal(), new AdminSubjectExtractor($this->pool)
         );
         $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
 

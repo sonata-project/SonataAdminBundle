@@ -23,6 +23,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
+use Sonata\AdminBundle\Util\AdminSubjectExtractor;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Command\DebugCommand;
 use Symfony\Bridge\Twig\Extension\FormExtension;
@@ -119,7 +120,9 @@ final class SetObjectFieldValueActionTest extends TestCase
             $pool->reveal(),
             null,
             $translator->reveal(),
-            $container->reveal()
+            $container->reveal(),
+            null,
+            new AdminSubjectExtractor($pool->reveal())
         ));
         $fieldDescription->getOption('editable')->willReturn(true);
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
@@ -169,7 +172,9 @@ final class SetObjectFieldValueActionTest extends TestCase
             $this->pool->reveal(),
             null,
             $translator->reveal(),
-            $container->reveal()
+            $container->reveal(),
+            null,
+            new AdminSubjectExtractor($this->pool->reveal())
         ));
         $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
         $fieldDescription->getType()->willReturn('choice');

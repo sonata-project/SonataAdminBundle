@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 
-class FooToStringNull
+class FooToStringNull extends FooToString
 {
     // In case __toString returns an attribute not yet set
     public function __toString()

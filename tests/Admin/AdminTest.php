@@ -695,6 +695,34 @@ class AdminTest extends TestCase
         $this->assertNotSame($uniqid, $admin->getUniqid());
     }
 
+    public function testSubjectAsString(): void
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', Post::class, 'SonataNewsBundle\Controller\PostAdminController');
+
+        $admin->setSubject(new Post());
+
+        $this->assertNotEmpty($admin->subjectAsString());
+
+        $admin->setSubject(new FooToString());
+        $this->assertSame('salut', $admin->subjectAsString());
+
+        // To string method is implemented, but returns null
+        $admin->setSubject(new FooToStringNull());
+        $this->assertNotEmpty($admin->subjectAsString());
+
+        $admin->setSubject(null);
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Subject is not set for admin "sonata.post.admin.post".');
+
+        $admin->subjectAsString();
+    }
+
+    /**
+     * NEXT_MAJOR: remove this method.
+     *
+     * @group legacy
+     */
     public function testToString(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');

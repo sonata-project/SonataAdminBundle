@@ -36,7 +36,7 @@ final class AdminSubjectExtractor
         $class = \get_class($subject);
 
         if ($admin) {
-            if (!is_subclass_of($class, $admin->getClass())) {
+            if (!is_a($class, $admin->getClass(), true)) {
                 throw new \InvalidArgumentException(sprintf('Admin "%s" isn\'t configured to handle objects of type "%s"', $admin->getCode(), $class));
             }
         } elseif (!$this->pool->hasAdminByClass($class)) {
@@ -47,11 +47,18 @@ final class AdminSubjectExtractor
 
         // Hold the the current admin subject in a variable in order to use `subjectAsString()` from
         // the subject's admin, in order to avoid unwanted overrides.
-        $originalSubject = $admin->getSubject();
-        $admin->setSubject($subject);
+        $originalSubject = $admin->hasSubject() ? $admin->getSubject() : null;
+        $hasPreviousSubject = $originalSubject !== $subject;
+        if ($hasPreviousSubject) {
+            $admin->setSubject($subject);
+        }
+
         $subjectAsString = $admin->subjectAsString();
-        // Restore the original subject.
-        $admin->setSubject($originalSubject);
+
+        if ($hasPreviousSubject) {
+            // Restore the original subject.
+            $admin->setSubject($originalSubject);
+        }
 
         return $subjectAsString;
     }

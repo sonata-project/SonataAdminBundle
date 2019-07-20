@@ -88,6 +88,7 @@ use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension as TwigSonataAdminExtension;
 use Sonata\AdminBundle\Util\AdminAclManipulator;
 use Sonata\AdminBundle\Util\AdminAclManipulatorInterface;
+use Sonata\AdminBundle\Util\AdminSubjectExtractor;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
 use Sonata\AdminBundle\Util\FormViewIterator;
 use Sonata\AdminBundle\Util\ObjectAclManipulator;
@@ -383,6 +384,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             AdminExtensionInterface::class,
             AdminHelper::class,
             AdminInterface::class,
+            AdminSubjectExtractor::class,
             BaseFieldDescription::class,
             FieldDescriptionCollection::class,
             FieldDescriptionInterface::class,

@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 
-class FooToString
+use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post;
+
+class FooToString extends Post
 {
     public function __toString()
     {
