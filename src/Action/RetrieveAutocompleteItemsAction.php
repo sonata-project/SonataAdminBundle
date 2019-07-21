@@ -17,7 +17,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
-use Symfony\Component\Form\Form;
+use Sonata\AdminBundle\Util\AdminSubjectExtractor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -29,9 +29,18 @@ final class RetrieveAutocompleteItemsAction
      */
     private $pool;
 
-    public function __construct(Pool $pool)
+    /**
+     * @var AdminSubjectExtractor
+     */
+    private $subjectExtractor;
+
+    /**
+     * NEXT_MAJOR: Allow only `AdminSubjectExtractor` as type for argument 2.
+     */
+    public function __construct(Pool $pool, AdminSubjectExtractor $subjectExtractor = null)
     {
         $this->pool = $pool;
+        $this->subjectExtractor = $subjectExtractor;
     }
 
     /**
@@ -156,7 +165,12 @@ final class RetrieveAutocompleteItemsAction
 
                 $label = \call_user_func($toStringCallback, $entity, $property);
             } else {
-                $resultMetadata = $targetAdmin->getObjectMetadata($entity);
+                // NEXT_MAJOR: Remove this check and the `else` condition
+                if ($this->subjectExtractor) {
+                    $resultMetadata = $this->subjectExtractor->getSubjectMetadata($entity, $admin);
+                } else {
+                    $resultMetadata = $targetAdmin->getObjectMetadata($entity);
+                }
                 $label = $resultMetadata->getTitle();
             }
 

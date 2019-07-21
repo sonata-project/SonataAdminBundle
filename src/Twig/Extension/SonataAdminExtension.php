@@ -161,11 +161,16 @@ class SonataAdminExtension extends AbstractExtension
             ),
         ];
 
-        // NEXT_MAJOR: Remove the condition in order to return "subject_as_string" filter unconditionally.
+        // NEXT_MAJOR: Remove the condition in order to return these filters unconditionally.
         if ($this->subjectExtractor) {
             $filters[] = new TwigFilter(
                 'subject_as_string',
                 [$this->subjectExtractor, 'getSubjectAsString']
+            );
+
+            $filters[] = new TwigFilter(
+                'subject_metadata',
+                [$this->subjectExtractor, 'getSubjectMetadata']
             );
         }
 

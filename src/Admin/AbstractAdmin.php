@@ -32,6 +32,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Object\Metadata;
+use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
@@ -2587,9 +2588,26 @@ EOT;
         return $this->getSecurityHandler() instanceof AclSecurityHandlerInterface;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method and uncomment `getSubjectMetadata()`.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, use `getSubjectMetadata()` instead.
+     */
     public function getObjectMetadata($object)
     {
+        @trigger_error(sprintf(
+            'Method %s() is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0. '.
+            'Use %s::getSubjectMetadata() instead.',
+            __METHOD__,
+            __CLASS__
+        ), E_USER_DEPRECATED);
+
         return new Metadata($this->toString($object));
+    }
+
+    public function getSubjectMetadata(): MetadataInterface
+    {
+        return new Metadata($this->subjectAsString());
     }
 
     public function getListModes()

@@ -637,9 +637,20 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getTranslationLabel($label, $context = '', $type = '');
 
     /**
+     * NEXT_MAJOR: Remove this method and uncomment `getSubjectMetadata()`.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, use `getSubjectMetadata()` instead.
+     *
      * @return MetadataInterface
      */
     public function getObjectMetadata($object);
+
+    /**
+     * Returns the metadata for the admin's subject.
+     *
+     * @throws \LogicException if the admin's subject is not set
+     */
+    // public function getSubjectMetadata(): MetadataInterface;
 
     /**
      * @return array

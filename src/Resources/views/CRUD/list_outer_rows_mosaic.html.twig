@@ -20,7 +20,7 @@ This template can be customized to match your needs. You should only extends the
     <td colspan="{{ admin.list.elements|length - (app.request.isXmlHttpRequest ? (admin.list.has('_action') + admin.list.has('batch')) : 0) }}">
         <div class="row">
             {% for object in admin.datagrid.results %}
-                {% set meta = admin.getObjectMetadata(object) %}
+                {% set meta = object|subject_metadata(admin) %}
                 {% set mosaic_content %}
                     <div class="mosaic-box-outter">
                         <div class="mosaic-inner-box">

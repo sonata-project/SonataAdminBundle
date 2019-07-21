@@ -20,6 +20,7 @@ use Sonata\AdminBundle\Action\RetrieveFormFieldElementAction;
 use Sonata\AdminBundle\Action\SetObjectFieldValueAction;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Util\AdminSubjectExtractor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -64,9 +65,14 @@ class HelperController
     protected $validator;
 
     /**
+     * @var AdminSubjectExtractor
+     */
+    private $subjectExtractor;
+
+    /**
      * @param ValidatorInterface $validator
      */
-    public function __construct(Environment $twig, Pool $pool, AdminHelper $helper, $validator)
+    public function __construct(Environment $twig, Pool $pool, AdminHelper $helper, $validator, AdminSubjectExtractor $subjectExtractor = null)
     {
         // NEXT_MAJOR: Move ValidatorInterface check to method signature
         if (!($validator instanceof ValidatorInterface)) {
@@ -80,6 +86,7 @@ class HelperController
         $this->pool = $pool;
         $this->helper = $helper;
         $this->validator = $validator;
+        $this->subjectExtractor = $subjectExtractor;
     }
 
     /**
@@ -138,7 +145,7 @@ class HelperController
      */
     public function retrieveAutocompleteItemsAction(Request $request)
     {
-        $action = new RetrieveAutocompleteItemsAction($this->pool);
+        $action = new RetrieveAutocompleteItemsAction($this->pool, $this->subjectExtractor);
 
         return $action($request);
     }

@@ -62,6 +62,7 @@
             <argument type="service" id="sonata.admin.pool"/>
             <argument type="service" id="sonata.admin.helper"/>
             <argument type="service" id="validator"/>
+            <argument type="service" id="sonata.admin.subject_extractor"/>
         </service>
         <!-- audit manager -->
         <service id="sonata.admin.audit.manager" class="Sonata\AdminBundle\Model\AuditManager" public="true">

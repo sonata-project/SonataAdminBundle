@@ -41,6 +41,7 @@
         </service>
         <service id="sonata.admin.action.retrieve_autocomplete_items" class="Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction" public="true">
             <argument type="service" id="sonata.admin.pool"/>
+            <argument type="service" id="sonata.admin.subject_extractor"/>
         </service>
     </services>
 </container>
