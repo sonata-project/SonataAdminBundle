@@ -3139,9 +3139,17 @@ EOT;
         $query = $this->createQuery();
         $datagrid = $this->datagridValues;
 
+        $querySortBy = null;
+        $querySortOrder = null;
+
+        if ($query !== null) {
+            $querySortBy = $query->getSortBy();
+            $querySortOrder = $query->getSortOrder();
+        }
+
         return [
-            '_sort_by' => $datagrid['_sort_by'] ?? $query->getSortBy() ?? $defaults['_sort_by'] ?? null,
-            '_sort_order' => $datagrid['_sort_order'] ?? $query->getSortOrder() ?? $defaults['_sort_order'] ?? null,
+            '_sort_by'    => $datagrid['_sort_by'] ?? $querySortBy ?? $defaults['_sort_by'] ?? null,
+            '_sort_order' => $datagrid['_sort_order'] ?? $querySortOrder ?? $defaults['_sort_order'] ?? null,
         ];
     }
 }

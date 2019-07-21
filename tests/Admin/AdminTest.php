@@ -1769,7 +1769,10 @@ class AdminTest extends TestCase
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
         $datagridBuilder->expects($this->once())
             ->method('getBaseDatagrid')
-            ->with($this->identicalTo($modelAdmin), [])
+            ->with($this->identicalTo($modelAdmin), [
+                '_sort_by'    => null,
+                '_sort_order' => null,
+            ])
             ->willReturn($datagrid);
 
         $datagridBuilder->expects($this->exactly(3))
