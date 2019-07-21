@@ -14,7 +14,9 @@ file that was distributed with this source code.
 {% block title %}
     {# NEXT_MAJOR: remove default filter #}
     {% if objectId|default(admin.id(object)) is not null %}
-        {{ 'title_edit'|trans({'%name%': admin.subjectAsString()|truncate(15) }, 'SonataAdminBundle') }}
+        {{ 'title_edit'|trans({'%name%': admin.toString(object)|truncate(15) }, 'SonataAdminBundle') }}
+        {# NEXT_MAJOR: Remove previous line and uncomment the following one #}
+        {# {{ 'title_edit'|trans({'%name%': admin.subjectAsString()|truncate(15) }, 'SonataAdminBundle') }} #}
     {% else %}
         {{ 'title_create'|trans({}, 'SonataAdminBundle')|truncate(15) }}
     {% endif %}
@@ -23,7 +25,9 @@ file that was distributed with this source code.
 {% block navbar_title %}
     {# NEXT_MAJOR: remove default filter #}
     {% if objectId|default(admin.id(object)) is not null %}
-        {{ 'title_edit'|trans({'%name%': admin.subjectAsString()|truncate(100) }, 'SonataAdminBundle') }}
+        {{ 'title_edit'|trans({'%name%': admin.toString(object)|truncate(100) }, 'SonataAdminBundle') }}
+        {# NEXT_MAJOR: Remove previous line and uncomment the following one #}
+        {# {{ 'title_edit'|trans({'%name%': admin.subjectAsString()|truncate(100) }, 'SonataAdminBundle') }} #}
     {% else %}
         {{ 'title_create'|trans({}, 'SonataAdminBundle')|truncate(100) }}
     {% endif %}

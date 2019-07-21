@@ -48,9 +48,13 @@ file that was distributed with this source code.
                         {% for result in pager.getResults() %}
                             {% set link = admin.getSearchResultLink(result) %}
                             {% if link %}
-                                <li><a href="{{ link }}">{{ result|subjectAsString(admin)|raw }}</a></li>
+                                <li><a href="{{ link }}">{{ admin.toString(result) }}</a></li>
+                                {# NEXT_MAJOR: Remove previous line and uncomment the following one #}
+                                {# <li><a href="{{ link }}">{{ result|subjectAsString(admin)|raw }}</a></li> #}
                             {% else %}
-                                <li><a>{{ result|subjectAsString(admin)|raw }}</a></li>
+                                <li><a>{{ admin.toString(result) }}</a></li>
+                                {# NEXT_MAJOR: Remove previous line and uncomment the following one #}
+                                {# <li><a>{{ result|subjectAsString(admin)|raw }}</a></li> #}
                             {% endif %}
                         {% endfor %}
                     </ul>
