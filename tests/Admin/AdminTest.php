@@ -1770,7 +1770,7 @@ class AdminTest extends TestCase
         $datagridBuilder->expects($this->once())
             ->method('getBaseDatagrid')
             ->with($this->identicalTo($modelAdmin), [
-                '_sort_by'    => null,
+                '_sort_by' => null,
                 '_sort_order' => null,
             ])
             ->willReturn($datagrid);

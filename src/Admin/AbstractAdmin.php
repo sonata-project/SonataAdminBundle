@@ -3142,13 +3142,13 @@ EOT;
         $querySortBy = null;
         $querySortOrder = null;
 
-        if ($query !== null) {
+        if (null !== $query) {
             $querySortBy = $query->getSortBy();
             $querySortOrder = $query->getSortOrder();
         }
 
         return [
-            '_sort_by'    => $datagrid['_sort_by'] ?? $querySortBy ?? $defaults['_sort_by'] ?? null,
+            '_sort_by' => $datagrid['_sort_by'] ?? $querySortBy ?? $defaults['_sort_by'] ?? null,
             '_sort_order' => $datagrid['_sort_order'] ?? $querySortOrder ?? $defaults['_sort_order'] ?? null,
         ];
     }
