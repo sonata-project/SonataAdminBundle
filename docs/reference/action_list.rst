@@ -255,7 +255,7 @@ Configuring the default ordering column can be achieved by overriding the
         // ...
     }
 
-Default ordering may be defined also in overwritten ``\Sonata\AdminBundle\Admin\AbstractAdmin::createQuery() method``
+Default ordering may be defined also in overwritten ``Sonata\AdminBundle\Admin\AbstractAdmin::createQuery()`` method
 directly on the query used to load data::
 
     // src/Admin/PostAdmin.php
