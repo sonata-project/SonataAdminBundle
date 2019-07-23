@@ -266,9 +266,6 @@ directly on the query used to load data::
     {
         // ...
 
-        /**
-         * {@inheritdoc}
-         */
         public function createQuery($context = 'list'): ProxyQuery
         {
             /** @var ProxyQuery $query */
