@@ -219,7 +219,7 @@ Default ordering in the list view
 
 The default ordering may be defined in:
 
-1. ``$this->$datagridValues`` property (of your Admin class)
+1. ``$datagridValues`` property (of your Admin class)
 2. Query used to load data
 3. Defaults based on entity
 
