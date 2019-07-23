@@ -546,7 +546,7 @@ file that was distributed with this source code.
             {% if value is empty %}
                 choice_field_mask_show(showMaskChoiceEl.val());
             {% else %}
-                choice_field_mask_show('{{ value }}');
+                choice_field_mask_show('{{ value|e('js') }}');
             {% endif %}
         });
 
