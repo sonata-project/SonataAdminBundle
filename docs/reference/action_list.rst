@@ -283,7 +283,7 @@ directly on the query used to load data::
         // ...
     }
 
-It may be useful when the sorting depends on custom logic that can't be applied to the ``datagridValues`` property.
+It may be useful when the sorting depends on custom logic that can't be applied to the ``$datagridValues`` property.
 
 .. note::
 
