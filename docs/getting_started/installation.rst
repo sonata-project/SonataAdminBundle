@@ -135,6 +135,22 @@ install the assets:
     bin/console cache:clear
     bin/console assets:install
 
+Webpack Encore Integration
+--------------------------
+
+When the assets are installed add following to ``config/webpack_encore.yaml``
+
+.. code-block:: yaml
+
+    webpack_encore:
+        builds:
+            sonata_admin: '%kernel.project_dir%/public/bundles/sonataadmin/dist'
+            # Handling multiple entry points. For exampe app entry
+            #app: '%kernel.project_dir%/public/build'
+
+This will load the assets to the template.
+
+
 The Admin Interface
 -------------------
 

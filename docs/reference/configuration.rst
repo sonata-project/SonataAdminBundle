@@ -172,62 +172,6 @@ Full Configuration Options
                 pager_results: '@SonataAdmin/Pager/results.html.twig'
                 tab_menu_template: '@SonataAdmin/Core/tab_menu_template.html.twig'
                 knp_menu_template: '@SonataAdmin/Menu/sonata_menu.html.twig'
-            assets:
-                stylesheets:
-
-                    # The default stylesheet list:
-                    - bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css
-                    - bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css
-                    - bundles/sonatacore/vendor/ionicons/css/ionicons.min.css
-                    - bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css
-                    - bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css
-                    - bundles/sonataadmin/vendor/iCheck/skins/square/blue.css
-                    - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css
-                    - bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css
-                    - bundles/sonatacore/vendor/select2/select2.css
-                    - bundles/sonatacore/vendor/select2-bootstrap-css/select2-bootstrap.min.css
-                    - bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css
-                    - bundles/sonataadmin/css/styles.css
-                    - bundles/sonataadmin/css/layout.css
-                    - bundles/sonataadmin/css/tree.css
-                    - bundles/sonataadmin/css/colors.css
-
-                # stylesheet paths to add to the page in addition to the list above
-                extra_stylesheets: []
-
-                # stylesheet paths to remove from the page
-                remove_stylesheets: []
-
-                javascripts:
-
-                    # The default javascript list:
-                    - 'bundles/sonatacore/vendor/jquery/dist/jquery.min.js'
-                    - 'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js'
-                    - 'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js'
-                    - 'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js'
-                    - 'bundles/sonatacore/vendor/moment/min/moment.min.js'
-                    - 'bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js'
-                    - 'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'
-                    - 'bundles/sonataadmin/vendor/jquery-form/jquery.form.js'
-                    - 'bundles/sonataadmin/jquery/jquery.confirmExit.js'
-                    - 'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js'
-                    - 'bundles/sonatacore/vendor/select2/select2.min.js'
-                    - 'bundles/sonataadmin/vendor/admin-lte/dist/js/app.min.js'
-                    - 'bundles/sonataadmin/vendor/iCheck/icheck.min.js'
-                    - 'bundles/sonataadmin/vendor/slimScroll/jquery.slimscroll.min.js'
-                    - 'bundles/sonataadmin/vendor/waypoints/lib/jquery.waypoints.min.js'
-                    - 'bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js'
-                    - 'bundles/sonataadmin/vendor/readmore-js/readmore.min.js'
-                    - 'bundles/sonataadmin/vendor/masonry/dist/masonry.pkgd.min.js'
-                    - 'bundles/sonataadmin/Admin.js'
-                    - 'bundles/sonataadmin/treeview.js'
-                    - 'bundles/sonataadmin/sidebar.js'
-
-                # javascript paths to add to the page in addition to the list above
-                extra_javascripts: []
-
-                # javascript paths to remove from the page
-                remove_javascripts: []
 
             extensions:
 
