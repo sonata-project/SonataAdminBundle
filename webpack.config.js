@@ -1,4 +1,5 @@
 var Encore = require('@symfony/webpack-encore');
+var path = require('path');
 
 Encore
     .setOutputPath('src/Resources/public/dist')
@@ -12,12 +13,11 @@ Encore
     .enableSourceMaps(!Encore.isProduction())
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()
+    .addAliases({
+        jquery: path.resolve(__dirname, 'node_modules/jquery/dist/jquery')
+    })
     //.splitEntryChunks()
     //.enableVersioning(Encore.isProduction())
 ;
 
-let config = Encore.getWebpackConfig();
-var path = require('path');
-config.resolve.alias.jquery = path.join(__dirname, 'node_modules/jquery/dist/jquery');
-
-module.exports = config;
+module.exports = Encore.getWebpackConfig();

@@ -15,19 +15,27 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\WebpackEntriesCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
+/**
+ * @group foo
+ */
 class WebpackEntriesCompilerPassTest extends TestCase
 {
     private $container;
 
     private $definition;
 
+    private $compilerPass;
+
     public function setUp(): void
     {
         $this->container = $this->createMock(ContainerBuilder::class);
         $this->definition = $this->createMock(Definition::class);
+
+        $this->compilerPass = new WebpackEntriesCompilerPass();
     }
 
     public function testProcess(): void
@@ -68,6 +76,8 @@ class WebpackEntriesCompilerPassTest extends TestCase
             ->method('getDefinition')
             ->with('twig')
             ->willReturn($this->definition);
+
+        $this->compilerPass->process($this->container);
     }
 
     public function testProcessBuildNotSet(): void
@@ -104,6 +114,8 @@ class WebpackEntriesCompilerPassTest extends TestCase
             ->method('getDefinition')
             ->with('twig')
             ->willReturn($this->definition);
+
+        $this->compilerPass->process($this->container);
     }
 
     public function testProcessEmptyEntries(): void
@@ -117,11 +129,13 @@ class WebpackEntriesCompilerPassTest extends TestCase
             ->willReturn($webpackConfig);
 
         $this->definition
-            ->expects($this->nwever())
+            ->expects($this->never())
             ->method('addMethodCall');
 
         $this->container
             ->expects($this->never())
             ->method('getDefinition');
+
+        $this->compilerPass->process($this->container);
     }
 }
