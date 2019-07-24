@@ -35,8 +35,11 @@ final class WebpackEntriesCompilerPass implements CompilerPassInterface
             $entries = array_merge($entries, $config['builds']);
         }
 
+        if (!$entries) {
+            return;
+        }
+
         $container->getDefinition('twig')
-            ->addMethodCall('addGlobal', ['webpack_encore_entries', $entries])
-        ;
+            ->addMethodCall('addGlobal', ['webpack_encore_entries', $entries]);
     }
 }
