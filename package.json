@@ -24,7 +24,7 @@
     "x-editable": "^1.5"
   },
   "devDependencies": {
-    "@symfony/webpack-encore": "^0.22.4",
+    "@symfony/webpack-encore": "^0.27.0",
     "webpack-notifier": "^1.6.0"
   },
   "license": "UNLICENSED",
