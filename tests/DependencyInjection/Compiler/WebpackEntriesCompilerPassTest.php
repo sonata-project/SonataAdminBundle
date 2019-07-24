@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\WebpackEntriesCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -42,7 +41,7 @@ class WebpackEntriesCompilerPassTest extends TestCase
     {
         $expectedEntries = [
             'app' => '%kernel.project_dir%/public/build',
-            'sonata_admin' => '%kernel.project_dir%/public/bundles/sonataadmin/dist'
+            'sonata_admin' => '%kernel.project_dir%/public/bundles/sonataadmin/dist',
         ];
 
         $webpackConfig = [
@@ -50,13 +49,13 @@ class WebpackEntriesCompilerPassTest extends TestCase
                 'output_path' => '%kernel.project_dir%/public/build',
                 'builds' => [
                     'app' => '%kernel.project_dir%/public/build',
-                ]
+                ],
             ],
             [
                 'builds' => [
-                    'sonata_admin' => '%kernel.project_dir%/public/bundles/sonataadmin/dist'
-                ]
-            ]
+                    'sonata_admin' => '%kernel.project_dir%/public/bundles/sonataadmin/dist',
+                ],
+            ],
         ];
 
         $this->container
@@ -83,7 +82,7 @@ class WebpackEntriesCompilerPassTest extends TestCase
     public function testProcessBuildNotSet(): void
     {
         $expectedEntries = [
-            'sonata_admin' => '%kernel.project_dir%/public/bundles/sonataadmin/dist'
+            'sonata_admin' => '%kernel.project_dir%/public/bundles/sonataadmin/dist',
         ];
 
         $webpackConfig = [
@@ -92,9 +91,9 @@ class WebpackEntriesCompilerPassTest extends TestCase
             ],
             [
                 'builds' => [
-                    'sonata_admin' => '%kernel.project_dir%/public/bundles/sonataadmin/dist'
-                ]
-            ]
+                    'sonata_admin' => '%kernel.project_dir%/public/bundles/sonataadmin/dist',
+                ],
+            ],
         ];
 
         $this->container
