@@ -20,6 +20,7 @@ use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\WebpackEntriesCompilerPass;
 use Sonata\AdminBundle\SonataAdminBundle;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -36,7 +37,7 @@ class SonataAdminBundleTest extends TestCase
             ->setMethods(['addCompilerPass'])
             ->getMock();
 
-        $containerBuilder->expects($this->exactly(6))
+        $containerBuilder->expects($this->exactly(7))
             ->method('addCompilerPass')
             ->willReturnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION): void {
                 if ($pass instanceof AddDependencyCallsCompilerPass) {
@@ -60,6 +61,10 @@ class SonataAdminBundleTest extends TestCase
                 }
 
                 if ($pass instanceof ObjectAclManipulatorCompilerPass) {
+                    return;
+                }
+
+                if ($pass instanceof WebpackEntriesCompilerPass) {
                     return;
                 }
 
