@@ -145,7 +145,7 @@ When the assets are installed add following to ``config/sonata_admin.yaml``
     webpack_encore:
         builds:
             sonata_admin: '%kernel.project_dir%/public/bundles/sonataadmin/dist'
-            # Handling multiple entry points. For exampe app entry
+            # Handling multiple entry points. For example app entry
             #app: '%kernel.project_dir%/public/build'
 
 This will load the assets to the template.

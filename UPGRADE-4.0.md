@@ -71,3 +71,15 @@ The `sonata_admin` twig extension is now final. You may no longer extend it.
 
 ## SimplePager
 Method `SimplePager::getResults` is always returning an array
+
+## WebpackEncoreBundle
+
+In `config/sonata_admin.yaml` the complete `assets:` section was removed and is no longer available.
+
+Execute `bin/console assets:install` and add following to the `config/sonata_admin.yaml` file:
+
+```yaml
+webpack_encore:
+    builds:
+        sonata_admin: '%kernel.project_dir%/public/bundles/sonataadmin/dist'
+```
