@@ -138,7 +138,7 @@ install the assets:
 Webpack Encore Integration
 --------------------------
 
-When the assets are installed add following to ``config/webpack_encore.yaml``
+When the assets are installed add following to ``config/sonata_admin.yaml``
 
 .. code-block:: yaml
 
