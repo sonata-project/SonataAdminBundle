@@ -150,7 +150,6 @@ When the assets are installed add following to ``config/sonata_admin.yaml``
 
 This will load the assets to the template.
 
-
 The Admin Interface
 -------------------
 
