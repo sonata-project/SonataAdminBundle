@@ -46,7 +46,7 @@ file that was distributed with this source code.
         >
 
         {% block stylesheets %}
-            {% for name, path in webpack_encore_entries %}
+            {% for name, path in sonata_admin_webpack_entries %}
                 {{ encore_entry_link_tags(name, null, name) }}
             {% endfor %}
         {% endblock %}
@@ -56,7 +56,7 @@ file that was distributed with this source code.
             {% endblock %}
 
             {% block sonata_javascript_pool %}
-                {% for name, path in webpack_encore_entries %}
+                {% for name, path in sonata_admin_webpack_entries %}
                     {{ encore_entry_script_tags(name, null, name) }}
                 {% endfor %}
             {% endblock %}

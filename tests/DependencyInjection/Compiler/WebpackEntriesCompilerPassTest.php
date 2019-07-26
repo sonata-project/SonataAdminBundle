@@ -67,7 +67,7 @@ class WebpackEntriesCompilerPassTest extends TestCase
         $this->definition
             ->expects($this->once())
             ->method('addMethodCall')
-            ->with('addGlobal', ['webpack_encore_entries', $expectedEntries])
+            ->with('addGlobal', ['sonata_admin_webpack_entries', $expectedEntries])
             ->willReturnSelf();
 
         $this->container
@@ -105,7 +105,7 @@ class WebpackEntriesCompilerPassTest extends TestCase
         $this->definition
             ->expects($this->once())
             ->method('addMethodCall')
-            ->with('addGlobal', ['webpack_encore_entries', $expectedEntries])
+            ->with('addGlobal', ['sonata_admin_webpack_entries', $expectedEntries])
             ->willReturnSelf();
 
         $this->container

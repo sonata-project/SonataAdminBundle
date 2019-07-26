@@ -39,6 +39,6 @@ final class WebpackEntriesCompilerPass implements CompilerPassInterface
         }
 
         $container->getDefinition('twig')
-            ->addMethodCall('addGlobal', ['webpack_encore_entries', $entries]);
+            ->addMethodCall('addGlobal', ['sonata_admin_webpack_entries', $entries]);
     }
 }
