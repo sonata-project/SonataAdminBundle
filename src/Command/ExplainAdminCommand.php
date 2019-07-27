@@ -25,9 +25,6 @@ use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
  */
 class ExplainAdminCommand extends Command
 {
-    /**
-     * {@inheritdoc}
-     */
     protected static $defaultName = 'sonata:admin:explain';
 
     /**

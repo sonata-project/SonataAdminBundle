@@ -38,11 +38,7 @@ interface AccessRegistryInterface
     /*
      * Hook to handle access authorization, without throwing an exception.
      *
-     * @param string $action
-     * @param object $object
-     *
-     * @return bool
      * TODO: uncomment this method for next major release
      */
-     // public function hasAccess($action, $object = null);
+     // public function hasAccess(string $action, ?object $object = null): bool;
 }

@@ -285,7 +285,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getRouteBuilder();
 
     /**
-     * @param mixed $object
+     * @param object $object
      *
      * @return string
      */
@@ -407,7 +407,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @deprecated this feature cannot be stable, use a custom validator,
      *             the feature will be removed with Symfony 2.2
@@ -424,7 +424,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Add object security, fe. make the current user owner of the object.
      *
-     * @param mixed $object
+     * @param object $object
      */
     public function createObjectSecurity($object);
 
@@ -656,51 +656,32 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * $this->isCurrentRoute('create'); // is create page?
      * $this->isCurrentRoute('edit', 'some.admin.code'); // is some.admin.code admin's edit page?
      * ```
-     *
-     * @param string $name
-     * @param string $adminCode
-     *
-     * @return bool
      */
-    // public function isCurrentRoute($name, $adminCode = null);
+    // public function isCurrentRoute(string $name, ?string $adminCode = null): bool;
 
     /*
      * Configure buttons for an action
-     *
-     * @param string $action
-     * @param object $object
-     *
      */
-    // public function configureActionButtons($action, $object = null);
+    // public function configureActionButtons(string $action, ?object $object = null): void;
 
     //TODO: uncomment this method for 4.0
     /*
      * Returns the result link for an object.
-     *
-     * @param mixed $object
-     *
-     * @return string|null
      */
-    //public function getSearchResultLink($object)
+    //public function getSearchResultLink(object $object): ?string
 
 //    TODO: uncomment this method in 4.0
 //    /**
 //     * Setting to true will enable mosaic button for the admin screen.
 //     * Setting to false will hide mosaic button for the admin screen.
-//     *
-//     * @param bool $isShown
 //     */
-//    public function showMosaicButton($isShown);
+//    public function showMosaicButton(bool $isShown): void;
 
     /*
-     * Checks if a filter type is set to a default value
-     *
-     * @param string $name
-     *
-     * @return bool
+     * Checks if a filter type is set to a default valu
      */
 //    NEXT_MAJOR: uncomment this method in 4.0
-    // public function isDefaultFilter($name);
+    // public function isDefaultFilter(string $name): bool;
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);

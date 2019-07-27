@@ -23,9 +23,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ListAdminCommand extends Command
 {
-    /**
-     * {@inheritdoc}
-     */
     protected static $defaultName = 'sonata:admin:list';
 
     /**

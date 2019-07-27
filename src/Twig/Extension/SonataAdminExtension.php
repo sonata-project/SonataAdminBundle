@@ -162,8 +162,8 @@ class SonataAdminExtension extends AbstractExtension
     /**
      * render a list element from the FieldDescription.
      *
-     * @param mixed $object
-     * @param array $params
+     * @param object $object
+     * @param array  $params
      *
      * @return string
      */
@@ -243,7 +243,7 @@ class SonataAdminExtension extends AbstractExtension
     /**
      * render a view element.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return string
      */

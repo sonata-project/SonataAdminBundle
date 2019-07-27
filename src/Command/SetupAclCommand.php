@@ -25,9 +25,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class SetupAclCommand extends Command
 {
-    /**
-     * {@inheritdoc}
-     */
     protected static $defaultName = 'sonata:admin:setup-acl';
 
     /**

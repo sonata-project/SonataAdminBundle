@@ -1464,7 +1464,7 @@ class CRUDController implements ContainerAwareInterface
      * This method can be overloaded in your custom CRUD controller.
      * It's called from createAction.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return Response|null
      */
@@ -1477,7 +1477,7 @@ class CRUDController implements ContainerAwareInterface
      * This method can be overloaded in your custom CRUD controller.
      * It's called from editAction.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return Response|null
      */
@@ -1490,7 +1490,7 @@ class CRUDController implements ContainerAwareInterface
      * This method can be overloaded in your custom CRUD controller.
      * It's called from deleteAction.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return Response|null
      */
@@ -1503,7 +1503,7 @@ class CRUDController implements ContainerAwareInterface
      * This method can be overloaded in your custom CRUD controller.
      * It's called from showAction.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return Response|null
      */
