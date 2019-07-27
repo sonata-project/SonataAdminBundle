@@ -28,9 +28,6 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
  */
 class GenerateObjectAclCommand extends QuestionableCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     protected static $defaultName = 'sonata:admin:generate-object-acl';
 
     /**

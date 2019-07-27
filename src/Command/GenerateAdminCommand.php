@@ -35,9 +35,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class GenerateAdminCommand extends QuestionableCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     protected static $defaultName = 'sonata:admin:generate';
 
     /**

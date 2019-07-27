@@ -192,7 +192,7 @@ interface FieldDescriptionInterface
     /**
      * return the value linked to the description.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return bool|mixed
      */

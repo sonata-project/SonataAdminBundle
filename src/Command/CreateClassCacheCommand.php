@@ -32,9 +32,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CreateClassCacheCommand extends Command
 {
-    /**
-     * {@inheritdoc}
-     */
     protected static $defaultName = 'cache:create-cache-class';
 
     /**
