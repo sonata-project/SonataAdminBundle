@@ -142,6 +142,7 @@ When the assets are installed add following to ``config/sonata_admin.yaml``
 
 .. code-block:: yaml
 
+    # config/sonata_admin.yaml
     webpack_encore:
         builds:
             sonata_admin: '%kernel.project_dir%/public/bundles/sonataadmin/dist'
