@@ -41,6 +41,8 @@ use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Extensions\TextExtension;
 
 /**
  * Test for SonataAdminExtension.
@@ -200,7 +202,7 @@ class SonataAdminExtensionTest extends TestCase
         $requestContext = new RequestContext();
         $urlGenerator = new UrlGenerator($routeCollection, $requestContext);
         $this->environment->addExtension(new RoutingExtension($urlGenerator));
-        $this->environment->addExtension(new \Twig_Extensions_Extension_Text());
+        $this->environment->addExtension(new TextExtension());
 
         // initialize object
         $this->object = new \stdClass();
@@ -1401,7 +1403,7 @@ EOT
      */
     public function testRenderListElementErrorLoadingTemplate(): void
     {
-        $this->expectException(\Twig_Error_Loader::class);
+        $this->expectException(LoaderError::class);
         $this->expectExceptionMessage('Unable to find template "@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig"');
 
         // NEXT_MAJOR: Remove this line

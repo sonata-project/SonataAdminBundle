@@ -570,9 +570,12 @@ class SonataAdminExtension extends AbstractExtension
             $template = $environment->load($templateName);
         } catch (LoaderError $e) {
             @trigger_error(
-                'Relying on default template loading on field template loading exception '.
-                'is deprecated since 3.1 and will be removed in 4.0. '.
-                'A \Twig_Error_Loader exception will be thrown instead',
+                sprintf(
+                    'Relying on default template loading on field template loading exception '.
+                    'is deprecated since 3.1 and will be removed in 4.0. '.
+                    'A %s exception will be thrown instead',
+                    LoaderError::class
+                ),
                 E_USER_DEPRECATED
             );
             $template = $environment->load($defaultTemplate);
