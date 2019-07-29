@@ -25,8 +25,9 @@ import "select2"
 // Loading langugage files for select2
 let language = window.navigator.userLanguage || window.navigator.language;
 language = language.split("-")[0];
-import('select2/select2_locale_' + language + '.js')
-    .catch('failed to import locale component for select2')
+
+import(`select2/select2_locale_${language}.js`)
+    .catch('failed to import select2 locale')
 
 // Configure momentJS locale
 import("moment").then(moment => {
