@@ -2339,70 +2339,7 @@ EOT
 
         $this->assertSame($expectedChoices, $this->twigExtension->getXEditableChoices($fieldDescription));
     }
-
-    public function select2LocalesProvider()
-    {
-        return [
-            ['ar', 'ar'],
-            ['az', 'az'],
-            ['bg', 'bg'],
-            ['ca', 'ca'],
-            ['cs', 'cs'],
-            ['da', 'da'],
-            ['de', 'de'],
-            ['el', 'el'],
-            [null, 'en'],
-            ['es', 'es'],
-            ['et', 'et'],
-            ['eu', 'eu'],
-            ['fa', 'fa'],
-            ['fi', 'fi'],
-            ['fr', 'fr'],
-            ['gl', 'gl'],
-            ['he', 'he'],
-            ['hr', 'hr'],
-            ['hu', 'hu'],
-            ['id', 'id'],
-            ['is', 'is'],
-            ['it', 'it'],
-            ['ja', 'ja'],
-            ['ka', 'ka'],
-            ['ko', 'ko'],
-            ['lt', 'lt'],
-            ['lv', 'lv'],
-            ['mk', 'mk'],
-            ['ms', 'ms'],
-            ['nb', 'nb'],
-            ['nl', 'nl'],
-            ['pl', 'pl'],
-            ['pt-PT', 'pt'],
-            ['pt-BR', 'pt-BR'],
-            ['pt-PT', 'pt-PT'],
-            ['ro', 'ro'],
-            ['rs', 'rs'],
-            ['ru', 'ru'],
-            ['sk', 'sk'],
-            ['sv', 'sv'],
-            ['th', 'th'],
-            ['tr', 'tr'],
-            ['ug-CN', 'ug'],
-            ['ug-CN', 'ug-CN'],
-            ['uk', 'uk'],
-            ['vi', 'vi'],
-            ['zh-CN', 'zh'],
-            ['zh-CN', 'zh-CN'],
-            ['zh-TW', 'zh-TW'],
-        ];
-    }
-
-    /**
-     * @dataProvider select2LocalesProvider
-     */
-    public function testCanonicalizedLocaleForSelect2(?string $expected, string $original): void
-    {
-        $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForSelect2($this->mockExtensionContext($original)));
-    }
-
+    
     public function testIsGrantedAffirmative(): void
     {
         $this->assertTrue(

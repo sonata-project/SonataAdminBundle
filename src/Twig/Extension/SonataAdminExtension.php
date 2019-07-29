@@ -140,7 +140,6 @@ final class SonataAdminExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('canonicalize_locale_for_select2', [$this, 'getCanonicalizedLocaleForSelect2'], ['needs_context' => true]),
             new TwigFunction('is_granted_affirmative', [$this, 'isGrantedAffirmative']),
         ];
     }
@@ -398,40 +397,6 @@ final class SonataAdminExtension extends AbstractExtension
         }
 
         return $xEditableChoices;
-    }
-
-    /**
-     * Returns a canonicalized locale for "select2" NPM library,
-     * or `null` if the locale's language is "en", which doesn't require localization.
-     *
-     * @return string|null
-     */
-    public function getCanonicalizedLocaleForSelect2(array $context)
-    {
-        $locale = str_replace('_', '-', $context['app']->getRequest()->getLocale());
-
-        // "en" language doesn't require localization.
-        if ('en' === $lang = substr($locale, 0, 2)) {
-            return null;
-        }
-
-        switch ($locale) {
-            case 'pt':
-                $locale = 'pt-PT';
-                break;
-            case 'ug':
-                $locale = 'ug-CN';
-                break;
-            case 'zh':
-                $locale = 'zh-CN';
-                break;
-            default:
-                if (!\in_array($locale, ['pt-BR', 'pt-PT', 'ug-CN', 'zh-CN', 'zh-TW'], true)) {
-                    $locale = $lang;
-                }
-        }
-
-        return $locale;
     }
 
     /**
