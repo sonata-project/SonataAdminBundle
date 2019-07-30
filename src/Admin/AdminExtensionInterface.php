@@ -66,7 +66,7 @@ interface AdminExtensionInterface
     );
 
     /**
-     * @param mixed $object
+     * @param object $object
      */
     public function validate(AdminInterface $admin, ErrorElement $errorElement, $object);
 
@@ -78,14 +78,14 @@ interface AdminExtensionInterface
     /**
      * Get a chance to modify a newly created instance.
      *
-     * @param mixed $object
+     * @param object $object
      */
     public function alterNewInstance(AdminInterface $admin, $object);
 
     /**
      * Get a chance to modify object instance.
      *
-     * @param mixed $object
+     * @param object $object
      */
     public function alterObject(AdminInterface $admin, $object);
 
@@ -118,35 +118,35 @@ interface AdminExtensionInterface
      * @return string[]
      */
     // TODO: Uncomment in next major release
-    // public function configureExportFields(AdminInterface $admin, array $fields);
+    // public function configureExportFields(AdminInterface $admin, array $fields): array;
 
     /**
-     * @param mixed $object
+     * @param object $object
      */
     public function preUpdate(AdminInterface $admin, $object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      */
     public function postUpdate(AdminInterface $admin, $object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      */
     public function prePersist(AdminInterface $admin, $object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      */
     public function postPersist(AdminInterface $admin, $object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      */
     public function preRemove(AdminInterface $admin, $object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      */
     public function postRemove(AdminInterface $admin, $object);
 
@@ -165,10 +165,8 @@ interface AdminExtensionInterface
      * NEXT_MAJOR: Uncomment in next major release
      *
      * Returns a list of default filters
-     *
-     * @param array          $filterValues
      */
-    // public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues);
+    // public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void;
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);

@@ -19,13 +19,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ListAdminCommand extends Command
 {
-    /**
-     * {@inheritdoc}
-     */
     protected static $defaultName = 'sonata:admin:list';
 
     /**

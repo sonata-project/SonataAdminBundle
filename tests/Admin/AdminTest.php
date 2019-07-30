@@ -1587,6 +1587,9 @@ class AdminTest extends TestCase
         $this->assertContains($post, $tag->getPosts());
     }
 
+    /**
+     * @group legacy
+     */
     public function testFormAddPostSubmitEventForPreValidation(): void
     {
         $modelAdmin = new ModelAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'SonataFooBundle:ModelAdmin');

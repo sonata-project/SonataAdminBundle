@@ -21,6 +21,8 @@ use Symfony\Component\Security\Acl\Domain\Acl;
 /**
  * AdminObjectAclData holds data manipulated by {@link AdminObjectAclManipulator}.
  *
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
 class AdminObjectAclData

@@ -107,6 +107,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType as SymfonyTextType;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  * @author Michael Williams <michael.williams@funsational.com>
  */

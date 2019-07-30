@@ -305,7 +305,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getRouteBuilder();
 
     /**
-     * @param mixed $object
+     * @param object $object
      *
      * @return string
      */
@@ -439,7 +439,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @deprecated this feature cannot be stable, use a custom validator,
      *             the feature will be removed with Symfony 2.2
@@ -456,7 +456,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Add object security, fe. make the current user owner of the object.
      *
-     * @param mixed $object
+     * @param object $object
      */
     public function createObjectSecurity($object);
 
@@ -694,7 +694,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Configure buttons for an action
      *
      * @param string $action
-     * @param mixed  $object
+     * @param object $object
      *
      * @return array
      */
@@ -720,7 +720,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns the result link for an object.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return string|null
      */

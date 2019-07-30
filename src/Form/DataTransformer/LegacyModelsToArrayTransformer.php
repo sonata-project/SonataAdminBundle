@@ -23,6 +23,8 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  *
  * This class should be used with Symfony <2.7 only and will be deprecated with 3.0.
  *
+ * @deprecated Since 3.11, to be removed in 4.0. Use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer instead.
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class LegacyModelsToArrayTransformer implements DataTransformerInterface
