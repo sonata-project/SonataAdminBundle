@@ -790,6 +790,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 $filters
             );
 
+            if (isset($parameters['_per_page'])) {
+                $parameters['_per_page'] = (int) $parameters['_per_page'];
+            }            
+            
             if (!$this->determinedPerPageValue($parameters['_per_page'])) {
                 $parameters['_per_page'] = $this->maxPerPage;
             }
