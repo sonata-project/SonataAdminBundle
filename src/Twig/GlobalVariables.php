@@ -95,7 +95,7 @@ class GlobalVariables
     /**
      * @param string $code
      * @param string $action
-     * @param mixed  $object
+     * @param object $object
      * @param array  $parameters
      * @param int    $absolute
      *

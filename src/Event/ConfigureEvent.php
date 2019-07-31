@@ -65,7 +65,7 @@ class ConfigureEvent extends Event
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getType()
     {

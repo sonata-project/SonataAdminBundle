@@ -308,7 +308,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function supportsPreviewMode();
 
     /**
-     * @return mixed a new object instance
+     * @return object a new object instance
      */
     public function getNewInstance();
 
@@ -327,17 +327,17 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * @param mixed $id
      *
-     * @return mixed
+     * @return object|null
      */
     public function getObject($id);
 
     /**
-     * @param object $subject
+     * @param object|null $subject
      */
     public function setSubject($subject);
 
     /**
-     * @return mixed
+     * @return object|null
      */
     public function getSubject();
 
@@ -596,7 +596,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @param string $action
      *
-     * @return mixed array|Traversable
+     * @return iterable
      */
     public function getBreadcrumbs($action);
 

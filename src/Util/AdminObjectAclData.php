@@ -38,7 +38,7 @@ class AdminObjectAclData
     protected $admin;
 
     /**
-     * @var mixed
+     * @var object
      */
     protected $object;
 
@@ -78,7 +78,7 @@ class AdminObjectAclData
     protected $maskBuilderClass;
 
     /**
-     * @param mixed  $object
+     * @param object $object
      * @param string $maskBuilderClass
      */
     public function __construct(
@@ -110,7 +110,7 @@ class AdminObjectAclData
     /**
      * Gets object.
      *
-     * @return mixed
+     * @return object
      */
     public function getObject()
     {
