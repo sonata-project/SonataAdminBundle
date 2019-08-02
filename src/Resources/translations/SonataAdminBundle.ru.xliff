@@ -156,7 +156,7 @@
             </trans-unit>
             <trans-unit id="flash_create_success">
                 <source>flash_create_success</source>
-                <target>Элемент создан успешно</target>
+                <target>Элемент успешно создан</target>
             </trans-unit>
             <trans-unit id="flash_create_error">
                 <source>flash_create_error</source>
