@@ -149,7 +149,6 @@ When the assets are installed add following to  your configuration:
             # Handling multiple entry points. For example app entry
             #app: '%kernel.project_dir%/public/build'
 
-This will load the assets to the template.
 
 The Admin Interface
 -------------------
