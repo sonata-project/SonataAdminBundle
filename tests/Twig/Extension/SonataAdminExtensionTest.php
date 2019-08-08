@@ -41,6 +41,7 @@ use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
+use Twig\Extensions\TextExtension;
 
 /**
  * Test for SonataAdminExtension.
@@ -200,7 +201,7 @@ class SonataAdminExtensionTest extends TestCase
         $requestContext = new RequestContext();
         $urlGenerator = new UrlGenerator($routeCollection, $requestContext);
         $this->environment->addExtension(new RoutingExtension($urlGenerator));
-        $this->environment->addExtension(new \Twig_Extensions_Extension_Text());
+        $this->environment->addExtension(new TextExtension());
 
         // initialize object
         $this->object = new \stdClass();

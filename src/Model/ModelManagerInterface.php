@@ -34,21 +34,21 @@ interface ModelManagerInterface
     public function getNewFieldDescriptionInstance($class, $name, array $options = []);
 
     /**
-     * @param mixed $object
+     * @param object $object
      *
      * @throws ModelManagerException
      */
     public function create($object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      *
      * @throws ModelManagerException
      */
     public function update($object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      *
      * @throws ModelManagerException
      */

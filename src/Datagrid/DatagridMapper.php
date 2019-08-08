@@ -21,6 +21,8 @@ use Sonata\AdminBundle\Mapper\BaseMapper;
 /**
  * This class is use to simulate the Form API.
  *
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class DatagridMapper extends BaseMapper

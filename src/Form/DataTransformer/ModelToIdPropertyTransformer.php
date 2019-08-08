@@ -20,6 +20,8 @@ use Symfony\Component\Form\DataTransformerInterface;
 /**
  * Transform object to ID and property label.
  *
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
 class ModelToIdPropertyTransformer implements DataTransformerInterface

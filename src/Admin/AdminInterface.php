@@ -305,7 +305,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getRouteBuilder();
 
     /**
-     * @param mixed $object
+     * @param object $object
      *
      * @return string
      */
@@ -328,7 +328,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function supportsPreviewMode();
 
     /**
-     * @return mixed a new object instance
+     * @return object a new object instance
      */
     public function getNewInstance();
 
@@ -354,17 +354,17 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * @param mixed $id
      *
-     * @return mixed
+     * @return object|null
      */
     public function getObject($id);
 
     /**
-     * @param object $subject
+     * @param object|null $subject
      */
     public function setSubject($subject);
 
     /**
-     * @return mixed
+     * @return object|null
      */
     public function getSubject();
 
@@ -439,7 +439,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @deprecated this feature cannot be stable, use a custom validator,
      *             the feature will be removed with Symfony 2.2
@@ -456,7 +456,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Add object security, fe. make the current user owner of the object.
      *
-     * @param mixed $object
+     * @param object $object
      */
     public function createObjectSecurity($object);
 
@@ -639,7 +639,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * @param string $name
      *
-     * @return mixed|null
+     * @return iterable
      */
     public function getPersistentParameter($name);
 
@@ -709,39 +709,26 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Check the current request is given route or not.
-     *
-     * @param string $name
-     * @param string $adminCode
-     *
-     * @return bool
      */
-    public function isCurrentRoute($name, $adminCode = null);
+    public function isCurrentRoute(string $name, string $adminCode = null): bool;
 
     /**
      * Returns the result link for an object.
      *
-     * @param mixed $object
-     *
-     * @return string|null
+     * @param object $object
      */
-    public function getSearchResultLink($object);
+    public function getSearchResultLink($object): ?string;
 
     /**
      * Setting to true will enable mosaic button for the admin screen.
      * Setting to false will hide mosaic button for the admin screen.
-     *
-     * @param bool $isShown
      */
-    public function showMosaicButton($isShown);
+    public function showMosaicButton(bool $isShown): void;
 
     /**
      * Checks if a filter type is set to a default value.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
-    public function isDefaultFilter($name);
+    public function isDefaultFilter(string $name): bool;
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);

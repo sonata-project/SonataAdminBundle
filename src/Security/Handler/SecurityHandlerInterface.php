@@ -40,14 +40,14 @@ interface SecurityHandlerInterface
     /**
      * Create object security, fe. make the current user owner of the object.
      *
-     * @param mixed $object
+     * @param object $object
      */
     public function createObjectSecurity(AdminInterface $admin, $object);
 
     /**
      * Remove object security.
      *
-     * @param mixed $object
+     * @param object $object
      */
     public function deleteObjectSecurity(AdminInterface $admin, $object);
 }

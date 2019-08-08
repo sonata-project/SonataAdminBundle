@@ -28,6 +28,8 @@ use Symfony\Component\EventDispatcher\Event;
  *   - sonata.admin.event.configure.[form|list|datagrid|show]
  *   - sonata.admin.event.configure.[admin_code].[form|list|datagrid|show] (not implemented yet)
  *
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ConfigureEvent extends Event
@@ -63,7 +65,7 @@ class ConfigureEvent extends Event
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getType()
     {
