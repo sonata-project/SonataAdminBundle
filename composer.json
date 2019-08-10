@@ -26,7 +26,7 @@
         "doctrine/common": "^2.7",
         "doctrine/inflector": "^1.1",
         "knplabs/knp-menu-bundle": "^2.2",
-        "sonata-project/block-bundle": "^3.11",
+        "sonata-project/block-bundle": "^3.17",
         "sonata-project/core-bundle": "^3.15.0",
         "sonata-project/exporter": "^1.11.0 || ^2.0",
         "symfony/asset": "^2.8 || ^3.2 || ^4.0",
