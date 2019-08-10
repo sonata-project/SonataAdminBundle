@@ -22,6 +22,8 @@ interface AuditReaderInterface
      * @param string $className
      * @param string $id
      * @param string $revision
+     *
+     * @return object
      */
     public function find($className, $id, $revision);
 
@@ -29,18 +31,24 @@ interface AuditReaderInterface
      * @param string $className
      * @param int    $limit
      * @param int    $offset
+     *
+     * @return array<object>
      */
     public function findRevisionHistory($className, $limit = 20, $offset = 0);
 
     /**
      * @param string $classname
      * @param string $revision
+     *
+     * @return object
      */
     public function findRevision($classname, $revision);
 
     /**
      * @param string $className
      * @param string $id
+     *
+     * @return array<object>
      */
     public function findRevisions($className, $id);
 
@@ -49,6 +57,8 @@ interface AuditReaderInterface
      * @param int    $id
      * @param int    $oldRevision
      * @param int    $newRevision
+     *
+     * @return array
      */
     public function diff($className, $id, $oldRevision, $newRevision);
 }

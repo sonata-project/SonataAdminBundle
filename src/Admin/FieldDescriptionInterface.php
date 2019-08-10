@@ -117,7 +117,7 @@ interface FieldDescriptionInterface
     /**
      * return the parent Admin (only used in nested admin).
      *
-     * @return AdminInterface
+     * @return AdminInterface|null
      */
     public function getParent();
 
@@ -210,7 +210,6 @@ interface FieldDescriptionInterface
 
     /**
      * merge option values related to the provided option name.
-     *
      *
      * @param string $name
      *
