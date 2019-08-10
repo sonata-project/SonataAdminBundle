@@ -246,7 +246,7 @@ interface ModelManagerInterface
     /**
      * @param string $class
      *
-     * @return array<string>
+     * @return string[]
      */
     public function getExportFields($class);
 

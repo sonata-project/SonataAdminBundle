@@ -32,7 +32,7 @@ interface AuditReaderInterface
      * @param int    $limit
      * @param int    $offset
      *
-     * @return array<object>
+     * @return object[]
      */
     public function findRevisionHistory($className, $limit = 20, $offset = 0);
 
@@ -48,7 +48,7 @@ interface AuditReaderInterface
      * @param string $className
      * @param string $id
      *
-     * @return array<object>
+     * @return object[]
      */
     public function findRevisions($className, $id);
 
