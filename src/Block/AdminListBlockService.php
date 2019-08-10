@@ -21,6 +21,7 @@ use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 /**
  * @final since sonata-project/admin-bundle 3.52
@@ -40,15 +41,17 @@ class AdminListBlockService extends AbstractBlockService
     private $templateRegistry;
 
     /**
-     * @param string $name
+     * NEXT_MAJOR: Remove `$templating` argument.
+     *
+     * @param Environment|string $twigOrName
      */
     public function __construct(
-        $name,
-        EngineInterface $templating,
+        $twigOrName,
+        ?EngineInterface $templating,
         Pool $pool,
         TemplateRegistryInterface $templateRegistry = null
     ) {
-        parent::__construct($name, $templating);
+        parent::__construct($twigOrName, $templating);
 
         $this->pool = $pool;
         $this->templateRegistry = $templateRegistry ?: new TemplateRegistry();
