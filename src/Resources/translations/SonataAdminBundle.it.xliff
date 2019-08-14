@@ -306,6 +306,10 @@
                 <source>label_date_type_range</source>
                 <target>periodo</target>
             </trans-unit>
+            <trans-unit id="label_date_type_between">
+                <source>label_date_type_between</source>
+                <target>Nel periodo</target>
+            </trans-unit>
             <trans-unit id="label_date_not_between">
                 <source>label_date_type_not_between</source>
                 <target>al di fuori del periodo</target>
