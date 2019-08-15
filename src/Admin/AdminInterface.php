@@ -22,6 +22,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -376,7 +377,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns SourceIterator.
      *
-     * @return \Sonata\Exporter\Source\SourceIteratorInterface
+     * @return SourceIteratorInterface
      */
     public function getDataSourceIterator();
 
@@ -626,6 +627,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getTranslationLabel($label, $context = '', $type = '');
 
     /**
+     * @param object $object
+     *
      * @return MetadataInterface
      */
     public function getObjectMetadata($object);
@@ -636,18 +639,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getListModes();
 
     /**
-     * @param string $mode
-     */
-    public function setListMode($mode);
-
-    /**
-     * return the list mode.
-     *
-     * @return string
-     */
-    public function getListMode();
-
-    /*
      * Check the current request is given route or not.
      *
      * TODO: uncomment this method before releasing 4.0
@@ -659,10 +650,20 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     // public function isCurrentRoute(string $name, ?string $adminCode = null): bool;
 
+    /**
+     * @param string $mode
+     */
+    public function setListMode($mode);
+
+    /**
+     * @return string
+     */
+    public function getListMode();
+
     /*
      * Configure buttons for an action
      */
-    // public function configureActionButtons(string $action, ?object $object = null): void;
+    // public function configureActionButtons(string $action, ?object $object = null): array;
 
     //TODO: uncomment this method for 4.0
     /*
@@ -678,7 +679,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 //    public function showMosaicButton(bool $isShown): void;
 
     /*
-     * Checks if a filter type is set to a default valu
+     * Checks if a filter type is set to a default value
      */
 //    NEXT_MAJOR: uncomment this method in 4.0
     // public function isDefaultFilter(string $name): bool;

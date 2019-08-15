@@ -25,8 +25,6 @@ interface ShowBuilderInterface extends BuilderInterface
     public function getBaseList(array $options = []);
 
     /**
-     * @abstract
-     *
      * @param string|null $type
      */
     public function addField(
