@@ -35,7 +35,7 @@ file that was distributed with this source code.
                 {% if data.all_elements %}
                     {{ 'message_batch_all_confirmation'|trans({}, 'SonataAdminBundle') }}
                 {% else %}
-                    {% transchoice data.idx|length with {'%count%': data.idx|length} from 'SonataAdminBundle' %}message_batch_confirmation{% endtranschoice %}
+                    {% trans with {'%count%': data.idx|length} from 'SonataAdminBundle' %}message_batch_confirmation{% endtrans %}
                 {% endif %}
             </div>
             <div class="box-footer clearfix">
