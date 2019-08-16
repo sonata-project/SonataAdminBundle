@@ -1073,7 +1073,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!$this->hasActiveSubClass()) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
                 'Use %s::hasActiveSubClass() to know if there is an active subclass.',
                 __METHOD__,
                 __CLASS__
@@ -1094,7 +1094,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!$this->hasActiveSubClass()) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
                 'Use %s::hasActiveSubClass() to know if there is an active subclass.',
                 __METHOD__,
                 __CLASS__
@@ -1112,7 +1112,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         if (!$this->hasSubClass($subClass)) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
                 'Use %s::hasActiveSubClass() to know if there is an active subclass.',
                 __METHOD__,
                 __CLASS__

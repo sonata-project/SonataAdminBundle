@@ -21,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.x
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Amine Zaghdoudi <amine.zaghdoudi@ekino.com>
  */

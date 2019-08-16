@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * This class injects available model managers to services which depend on them.
  *
- * @final since sonata-project/admin-bundle 3.x
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Gaurav Singh Faudjdar <faujdar@gmail.com>
  */

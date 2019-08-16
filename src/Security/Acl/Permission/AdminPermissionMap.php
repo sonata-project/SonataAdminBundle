@@ -19,7 +19,7 @@ use Symfony\Component\Security\Acl\Permission\PermissionMapInterface;
  * This is basic permission map complements the masks which have been defined
  * on the standard implementation of the MaskBuilder.
  *
- * @final since sonata-project/admin-bundle 3.x
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  * @author Thomas Rabaix <thomas.rabaix@gmail.com>

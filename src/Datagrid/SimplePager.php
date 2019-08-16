@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Datagrid;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @final since sonata-project/admin-bundle 3.x
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Sjoerd Peters <sjoerd.peters@gmail.com>

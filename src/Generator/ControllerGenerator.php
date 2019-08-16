@@ -17,7 +17,7 @@ use Sensio\Bundle\GeneratorBundle\Generator\Generator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.x
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Marek Stipek <mario.dweller@seznam.cz>
  * @author Simon Cosandey <simon.cosandey@simseo.ch>

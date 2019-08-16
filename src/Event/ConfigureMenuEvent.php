@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * Menu builder event. Used for extending the menus.
  *
- * @final since sonata-project/admin-bundle 3.x
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */

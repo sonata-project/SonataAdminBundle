@@ -27,7 +27,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * This type defines a standard text field with autocomplete feature.
  *
- * @final since sonata-project/admin-bundle 3.x
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  * @author Florent Denis <dflorent.pokap@gmail.com>

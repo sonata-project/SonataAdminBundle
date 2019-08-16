@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.x
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */

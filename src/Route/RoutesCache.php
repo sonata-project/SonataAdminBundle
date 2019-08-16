@@ -18,7 +18,7 @@ use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\Resource\FileResource;
 
 /**
- * @final since sonata-project/admin-bundle 3.x
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */

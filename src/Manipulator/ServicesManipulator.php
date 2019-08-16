@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Manipulator;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * @final since sonata-project/admin-bundle 3.x
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Marek Stipek <mario.dweller@seznam.cz>
  * @author Simon Cosandey <simon.cosandey@simseo.ch>

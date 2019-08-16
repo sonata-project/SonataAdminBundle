@@ -23,7 +23,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * Sonata menu builder.
  *
- * @final since sonata-project/admin-bundle 3.x
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  * @author Alexandru Furculita <alex@furculita.net>

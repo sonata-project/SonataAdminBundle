@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 /**
  * Admin menu voter based on extra `admin`.
  *
- * @final since sonata-project/admin-bundle 3.x
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Samusev Andrey <andrey.simfi@ya.ru>
  */

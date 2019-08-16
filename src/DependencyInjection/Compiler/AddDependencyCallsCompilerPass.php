@@ -28,7 +28,7 @@ use Symfony\Component\DependencyInjection\Reference;
  * Add all dependencies to the Admin class, this avoid to write too many lines
  * in the configuration files.
  *
- * @final since sonata-project/admin-bundle 3.x
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
