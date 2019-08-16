@@ -21,6 +21,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Amine Zaghdoudi <amine.zaghdoudi@ekino.com>
  */
 class ChoiceTypeExtension extends AbstractTypeExtension

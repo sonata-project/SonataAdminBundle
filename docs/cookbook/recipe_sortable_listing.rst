@@ -116,7 +116,7 @@ Now we need to define the sort by field to be ``$position``::
 
     namespace App\Admin;
 
-    use Sonata\AdminBundle\AbstractAdmin;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Route\RouteCollection;
 

@@ -23,6 +23,8 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminEventExtension extends AbstractAdminExtension

@@ -23,8 +23,6 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 interface DatagridBuilderInterface extends BuilderInterface
 {
     /**
-     * @abstract
-     *
      * @param string $type
      */
     public function addFilter(

@@ -1104,7 +1104,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->routeGenerator->hasAdminRoute($this, $name);
     }
 
-    public function isCurrentRoute($name, $adminCode = null)
+    public function isCurrentRoute(string $name, ?string $adminCode = null): bool
     {
         if (!$this->hasRequest()) {
             return false;
@@ -2409,7 +2409,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function hasAccess($action, $object = null)
+    public function hasAccess(string $action, ?object $object = null): bool
     {
         $access = $this->getAccess();
 
@@ -2542,10 +2542,7 @@ EOT;
         }
     }
 
-    /**
-     * @param object $object
-     */
-    final public function getSearchResultLink($object)
+    final public function getSearchResultLink(object $object): ?string
     {
         foreach ($this->searchResultActions as $action) {
             if ($this->hasRoute($action) && $this->hasAccess($action, $object)) {
@@ -2556,12 +2553,8 @@ EOT;
 
     /**
      * Checks if a filter type is set to a default value.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
-    final public function isDefaultFilter($name)
+    final public function isDefaultFilter(string $name): bool
     {
         $filter = $this->getFilterParameters();
         $default = $this->getDefaultFilterValues();
@@ -2672,8 +2665,6 @@ EOT;
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @return mixed
-     *
      * @deprecated Use configureTabMenu instead
      */
     protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
@@ -2684,8 +2675,6 @@ EOT;
      * Configures the tab menu in your admin.
      *
      * @param string $action
-     *
-     * @return mixed
      */
     protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
@@ -2900,7 +2889,7 @@ EOT;
     }
 
     /**
-     * Returns a list of default filters.
+     * Configures a list of default filters.
      */
     protected function configureDefaultFilterValues(array &$filterValues): void
     {

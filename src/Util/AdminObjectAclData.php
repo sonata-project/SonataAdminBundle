@@ -21,6 +21,8 @@ use Symfony\Component\Security\Acl\Domain\Acl;
 /**
  * AdminObjectAclData holds data manipulated by {@link AdminObjectAclManipulator}.
  *
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
 class AdminObjectAclData
@@ -36,7 +38,7 @@ class AdminObjectAclData
     protected $admin;
 
     /**
-     * @var mixed
+     * @var object
      */
     protected $object;
 
@@ -76,7 +78,7 @@ class AdminObjectAclData
     protected $maskBuilderClass;
 
     /**
-     * @param mixed  $object
+     * @param object $object
      * @param string $maskBuilderClass
      */
     public function __construct(
@@ -108,7 +110,7 @@ class AdminObjectAclData
     /**
      * Gets object.
      *
-     * @return mixed
+     * @return object
      */
     public function getObject()
     {

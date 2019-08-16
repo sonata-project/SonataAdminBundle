@@ -197,7 +197,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @param int $pos
      *
-     * @return mixed
+     * @return object
      */
     public function getObjectByCursor($pos)
     {
@@ -209,7 +209,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Returns the current object.
      *
-     * @return mixed
+     * @return object
      */
     public function getCurrent()
     {
@@ -219,7 +219,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Returns the next object.
      *
-     * @return mixed|null
+     * @return object|null
      */
     public function getNext()
     {

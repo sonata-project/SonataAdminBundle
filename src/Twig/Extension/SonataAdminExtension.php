@@ -28,13 +28,15 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
+use Twig\Error\LoaderError;
 use Twig\Extension\AbstractExtension;
-use Twig\Template;
 use Twig\TemplateWrapper;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 /**
+ * @final since sonata-project/admin-bundle 3.x
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 final class SonataAdminExtension extends AbstractExtension
@@ -160,8 +162,8 @@ final class SonataAdminExtension extends AbstractExtension
     /**
      * render a list element from the FieldDescription.
      *
-     * @param mixed $object
-     * @param array $params
+     * @param object $object
+     * @param array  $params
      *
      * @return string
      */
@@ -190,7 +192,7 @@ final class SonataAdminExtension extends AbstractExtension
     /**
      * render a view element.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return string
      */
@@ -549,9 +551,12 @@ final class SonataAdminExtension extends AbstractExtension
             $template = $environment->load($templateName);
         } catch (LoaderError $e) {
             @trigger_error(
-                'Relying on default template loading on field template loading exception '.
-                'is deprecated since 3.1 and will be removed in 4.0. '.
-                'A \Twig_Error_Loader exception will be thrown instead',
+                sprintf(
+                    'Relying on default template loading on field template loading exception '.
+                    'is deprecated since 3.1 and will be removed in 4.0. '.
+                    'A %s exception will be thrown instead',
+                    LoaderError::class
+                ),
                 E_USER_DEPRECATED
             );
             $template = $environment->load($defaultTemplate);
