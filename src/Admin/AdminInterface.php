@@ -32,6 +32,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @method configureActionButtons(string $action, ?object $object = null): array
+ * @method getSearchResultLink(object $object): ?strin
+ * @method showMosaicButton(bool $isShown): void
+ * @method isDefaultFilter(string $name): bool
+ *
+ * Configure buttons for an action
  */
 interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
