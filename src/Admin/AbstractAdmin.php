@@ -385,7 +385,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $menuFactory;
 
     /**
-     * @var array
+     * @var array<string, bool>
      */
     protected $loaded = [
         'view_fields' => false,
@@ -395,17 +395,17 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     ];
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $formTheme = [];
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $filterTheme = [];
 
     /**
-     * @var array
+     * @var array<string, string>
      *
      * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      */
@@ -477,14 +477,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The subclasses supported by the admin class.
      *
-     * @var array
+     * @var array<string, string>
      */
     private $subClasses = [];
 
     /**
      * The list collection.
      *
-     * @var array
+     * @var FieldDescriptionCollection
      */
     private $list;
 
@@ -720,6 +720,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
     }
 
+    /**
+     * @param object $object
+     */
     public function preValidate($object)
     {
     }
@@ -1195,6 +1198,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->routeGenerator->hasAdminRoute($this, $name);
     }
 
+    /**
+     * @param string      $name
+     * @param string|null $adminCode
+     *
+     * @return bool
+     */
     public function isCurrentRoute($name, $adminCode = null)
     {
         if (!$this->hasRequest()) {
@@ -1239,6 +1248,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->templateRegistry = $templateRegistry;
     }
 
+    /**
+     * @param array<string, string> $templates
+     */
     public function setTemplates(array $templates)
     {
         // NEXT_MAJOR: Remove this line
@@ -1262,7 +1274,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      *
-     * @return array
+     * @return array<string, string>
      */
     public function getTemplates()
     {
@@ -2642,6 +2654,12 @@ EOT;
         return true;
     }
 
+    /**
+     * @param string      $action
+     * @param object|null $object
+     *
+     * @return array
+     */
     public function configureActionButtons($action, $object = null)
     {
         $list = [];
@@ -3091,7 +3109,7 @@ EOT;
     /**
      * Return list routes with permissions name.
      *
-     * @return array
+     * @return array<string, string>
      */
     protected function getAccess()
     {
