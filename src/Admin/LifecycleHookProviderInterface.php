@@ -19,7 +19,7 @@ namespace Sonata\AdminBundle\Admin;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @method preValidate($object): void
+ * @method void preValidate($object)
  */
 interface LifecycleHookProviderInterface
 {

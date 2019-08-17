@@ -18,7 +18,7 @@ namespace Sonata\AdminBundle\Admin;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @method hasAccess(string $action, ?object $object = null): bool
+ * @method bool hasAccess(string $action, ?object $object = null)
  */
 interface AccessRegistryInterface
 {
