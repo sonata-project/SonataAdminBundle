@@ -156,29 +156,31 @@ file that was distributed with this source code.
                                             {% if _breadcrumb is empty %}
                                                 {% if action is defined %}
                                                     {% for menu in breadcrumbs_builder.breadcrumbs(admin, action) %}
-                                                        {%- set translation_domain = menu.extra('translation_domain', 'messages') -%}
-                                                        {%- set label = menu.label -%}
-                                                        {%- if translation_domain is not same as(false) -%}
-                                                            {%- set label = label|trans(menu.extra('translation_params', {}), translation_domain) -%}
-                                                        {%- endif -%}
+                                                        <li class="{% if menu.hasChildren %}dropdown{% endif %} {% if loop.last %}active{% endif %}">
+                                                            {% if menu.hasChildren %}
+                                                                <a href="{{ menu.uri|default('#') }}">
+                                                                    {{ menu.label|raw }}
+                                                                    <b class="caret"></b>
+                                                                </a>
+                                                            {% elseif menu.uri is not empty %}
+                                                                <a href="{{ menu.uri }}">{{ menu.label|raw }}</a>
+                                                            {% else %}
+                                                                <span>{{ menu.label }}</span>
+                                                            {% endif %}
 
-                                                        {% if not loop.last %}
-                                                            <li>
-                                                                {% if menu.uri is not empty %}
-                                                                    <a href="{{ menu.uri }}">
-                                                                        {% if menu.extra('safe_label', true) %}
-                                                                            {{- label|raw -}}
-                                                                        {% else %}
-                                                                            {{- label -}}
-                                                                        {% endif %}
-                                                                    </a>
-                                                                {% else %}
-                                                                    <span>{{ label }}</span>
-                                                                {% endif %}
-                                                            </li>
-                                                        {% else %}
-                                                            <li class="active"><span>{{ label|truncate(100) }}</span></li>
-                                                        {% endif %}
+                                                            {% if menu.hasChildren %}
+                                                                <ul class="dropdown-menu">
+                                                                    {% for childMenu in menu.children %}
+                                                                        <li>
+                                                                            <a href="{{ childMenu.uri }}">
+                                                                                <i class="{{ childMenu.extra('icon', 'fa fa-angle-right') }}"></i>
+                                                                                {{ childMenu.label }}
+                                                                            </a>
+                                                                        </li>
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            {% endif %}
+                                                        </li>
                                                     {% endfor %}
                                                 {% endif %}
                                             {% else %}

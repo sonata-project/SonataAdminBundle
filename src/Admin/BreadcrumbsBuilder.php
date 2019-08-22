@@ -77,7 +77,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         if (!$menu) {
             $menu = $admin->getMenuFactory()->createItem('root');
 
-            $menu = $menu->addChild(
+            $menu->addChild(
                 'link_breadcrumb_dashboard',
                 [
                     'uri' => $admin->getRouteGenerator()->generate('sonata_admin_dashboard'),
@@ -100,6 +100,8 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
 
         $childAdmin = $admin->getCurrentChildAdmin();
 
+        $this->addBreadcrumbsDropdown($admin, $menu, 'list');
+
         if ($childAdmin) {
             $id = $admin->getRequest()->get($admin->getIdParameter());
 
@@ -117,6 +119,8 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
 
             $menu->setExtra('safe_label', false);
 
+            $this->addBreadcrumbsDropdown($admin, $menu, 'edit');
+
             return $this->buildBreadcrumbs($childAdmin, $action, $menu);
         }
 
@@ -125,20 +129,132 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
 
             return $menu;
         }
+
         if ('create' !== $action && $admin->hasSubject()) {
-            return $menu->addChild($admin->toString($admin->getSubject()), [
+            $menu = $menu->addChild($admin->toString($admin->getSubject()), [
                 'extras' => [
                     'translation_domain' => false,
                 ],
             ]);
+
+            $this->addBreadcrumbsDropdown($admin, $menu, $action);
+
+            return $menu;
         }
 
-        return $this->createMenuItem(
+        $menu = $this->createMenuItem(
             $admin,
             $menu,
             sprintf('%s_%s', $admin->getClassnameLabel(), $action),
             $admin->getTranslationDomain()
         );
+
+        $this->addBreadcrumbsDropdown($admin, $menu, $action);
+
+        return $menu;
+    }
+
+    /**
+     * Create a new dropdown menu.
+     */
+    private function addBreadcrumbsDropdown(AdminInterface $admin, ItemInterface $menu, string $action): void
+    {
+        if ('list' === $action) {
+            if ($admin->hasRoute('list') && $admin->isGranted('LIST')) {
+                $this->createMenuItem(
+                    $admin,
+                    $menu,
+                    sprintf('%s_list', $admin->getClassnameLabel()),
+                    null,
+                    [
+                        'uri' => $admin->generateUrl('list'),
+                    ]
+                )
+                ->setExtra('icon', 'fa fa-list');
+            }
+
+            if ($admin->hasRoute('create') && $admin->isGranted('CREATE')) {
+                if ($subClasses = $admin->getSubClasses()) {
+                    foreach ($subClasses as $subClass) {
+                        $this->createMenuItem(
+                            $admin,
+                            $menu,
+                            sprintf('%s_crease_%s', $admin->getClassnameLabel(), $subClass),
+                            null,
+                            [
+                                'uri' => $admin->generateUrl('create', [
+                                    'subclass' => $subClass,
+                                ]),
+                            ]
+                        )
+                        ->setExtra('icon', 'fa fa-plus-circle');
+                    }
+                } else {
+                    $this->createMenuItem(
+                        $admin,
+                        $menu,
+                        sprintf('%s_create', $admin->getClassnameLabel()),
+                        null,
+                        [
+                            'uri' => $admin->generateUrl('create'),
+                        ]
+                    )
+                    ->setExtra('icon', 'fa fa-plus-circle');
+                }
+            }
+        } elseif ('create' !== $action) {
+            $id = $admin->getRequest()->get($admin->getIdParameter());
+
+            // TODO: detect actions list dynamic
+            $links = [
+                [
+                    'route' => 'edit',
+                    'role' => 'EDIT',
+                    'icon' => 'fa fa-edit',
+                ],
+            ];
+
+            if (\count($admin->getShow()) > 0) {
+                $links[] = [
+                    'route' => 'show',
+                    'role' => 'VIEW',
+                    'icon' => 'fa fa-eye',
+                ];
+            }
+
+            $links[] = [
+                'route' => 'history',
+                'role' => 'EDIT',
+                'icon' => 'fa fa-clock-o',
+            ];
+
+            foreach ($links as $attributes) {
+                if ($admin->hasRoute($attributes['route']) && $admin->isGranted($attributes['role'])) {
+                    $this->createMenuItem(
+                        $admin,
+                        $menu,
+                        sprintf('%s_'.$attributes['route'], $admin->getClassnameLabel()),
+                        null,
+                        [
+                            'uri' => $admin->generateUrl($attributes['route'], ['id' => $id]),
+                        ]
+                    )
+                    ->setExtra('icon', $attributes['icon']);
+                }
+            }
+
+            if ($admin->hasRoute('acl') && $admin->isGranted('MASTER') && $admin->isAclEnabled()) {
+                $this->createMenuItem(
+                    $admin,
+                    $menu,
+                    sprintf('%s_acl', $admin->getClassnameLabel()),
+                    null,
+                    [
+                        'uri' => $admin->generateUrl('acl', ['id' => $id]),
+                    ]
+                );
+            }
+        }
     }
 
     /**

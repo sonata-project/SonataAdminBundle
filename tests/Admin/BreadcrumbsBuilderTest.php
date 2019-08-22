@@ -559,4 +559,100 @@ class BreadcrumbsBuilderTest extends TestCase
 
         $breadcrumbsBuilder->buildBreadCrumbs($admin->reveal(), $action);
     }
+
+    /**
+     * @dataProvider actionProvider
+     */
+    public function testBreadcrumbsWithDropdowns($action)
+    {
+        $menuFactory = new MenuFactory();
+        $securityHandler = $this->createMock('Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface');
+        $securityHandler->expects($this->any())
+              ->method('isGranted')
+              ->willReturn(true)
+          ;
+        $routeGenerator = $this->createMock('Sonata\AdminBundle\Route\RouteGeneratorInterface');
+        $routeGenerator->expects($this->any())
+              ->method('hasAdminRoute')
+              ->willReturn(true)
+          ;
+        $modelManager = $this->createMock('Sonata\AdminBundle\Model\ModelManagerInterface');
+        $modelManager->expects($this->exactly(1))
+              ->method('find')
+              ->with('Application\Sonata\NewsBundle\Entity\Post', 42)
+              ->willReturn(new DummySubject());
+        $translatorStrategy = $this->createMock('Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface');
+        $translatorStrategy->expects($this->any())
+              ->method('getLabel')
+              ->willReturnCallback(static function ($id) {
+                  return $id;
+              })
+          ;
+        $postAdmin = new PostAdmin(
+              'sonata.post.admin.post',
+              'Application\Sonata\NewsBundle\Entity\Post',
+              'SonataNewsBundle:PostAdmin'
+          );
+        $commentAdmin = new CommentAdmin(
+              'sonata.post.admin.comment',
+              'Application\Sonata\NewsBundle\Entity\Comment',
+              'SonataNewsBundle:CommentAdmin'
+          );
+        foreach ([$postAdmin, $commentAdmin] as $admin) {
+            $admin->setMenuFactory($menuFactory);
+            $admin->setLabelTranslatorStrategy($translatorStrategy);
+            $admin->setRouteGenerator($routeGenerator);
+            $admin->setModelManager($modelManager);
+            $admin->setSecurityHandler($securityHandler);
+        }
+        $postAdmin->addChild($commentAdmin);
+        $postAdmin->setRequest(new Request(['id' => 42]));
+        $commentAdmin->setCurrentChild($postAdmin);
+        $commentAdmin->setRequest(new Request());
+        $commentAdmin->initialize();
+        $postAdmin->initialize();
+        $breadcrumbsBuilder = new BreadcrumbsBuilder();
+        $breadcrumbsBuilder->buildBreadCrumbs($postAdmin->reveal(), $action);
+        $baseExpectedBreadcrumb = [
+              'dashboard' => [],
+              'Post_list' => [
+                  'link_list',
+                  'link_add',
+              ],
+              'dummy subject representation' => [
+                  'Post_edit',
+                  'Post_show',
+                  'Post_history',
+              ],
+              'Comment_list' => [
+                  'link_list',
+                  'link_add',
+              ],
+          ];
+        $expectedBreadcrumbs = [
+              'list' => array_merge($baseExpectedBreadcrumb, ['Comment_list' => [
+                  'link_list',
+                  'link_add',
+              ]]),
+              'create' => array_merge($baseExpectedBreadcrumb, ['Comment_create' => []]),
+              'edit' => array_merge($baseExpectedBreadcrumb, ['Comment_edit' => [
+                  'Comment_edit',
+                  'Comment_show',
+                  'Comment_history',
+              ]]),
+          ];
+        foreach ($expectedBreadcrumbs as $action => $expectedBreadcrumb) {
+            $breadcrumb = $postAdmin
+                  ->getBreadcrumbs($action)
+                  ->getChildren()
+              ;
+            foreach ($expectedBreadcrumb as $name => $children) {
+                $this->assertArrayHasKey($name, $breadcrumb);
+                $this->assertSame(\count($children), $breadcrumb[$name]->count());
+                foreach ($children as $childName) {
+                    $this->assertArrayHasKey($childName, $breadcrumb[$name]);
+                }
+            }
+        }
+    }
 }

@@ -170,6 +170,25 @@ body > .header .logo {
     background-color: #f5f5f5;
 }
 
+.navbar-top-links.breadcrumb .dropdown-menu {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    margin-left: 5px;
+    margin-top: 0; /* remove the gap so it doesn't close */
+}
+
+.navbar-top-links.breadcrumb .dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.navbar-top-links.breadcrumb .dropdown-menu > li > a > .glyphicon,
+.navbar-top-links.breadcrumb .dropdown-menu > li > a > .fa,
+.navbar-top-links.breadcrumb .dropdown-menu > li > a > .ion {
+    width: 14px;
+    text-align: center;
+    margin-right: 5px;
+}
+
 .navbar-top-links .dropdown-menu li {
     display: block;
 }
@@ -181,6 +200,7 @@ body > .header .logo {
 .navbar-top-links .dropdown-menu li a {
     padding: 3px 20px;
     min-height: 0;
+    display: block;
 }
 
 .navbar-top-links .dropdown-menu li a div {
