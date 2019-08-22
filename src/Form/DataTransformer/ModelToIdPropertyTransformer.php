@@ -141,7 +141,7 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
                     throw new \RuntimeException('Callback in "to_string_callback" option doesn`t contain callable function.');
                 }
 
-                $label = \call_user_func($this->toStringCallback, $entity, $this->property);
+                $label = ($this->toStringCallback)($entity, $this->property);
             } else {
                 try {
                     $label = (string) $entity;

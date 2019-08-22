@@ -285,10 +285,6 @@ class RouteCollection
 
     private function resolve($element): Route
     {
-        if (\is_callable($element)) {
-            return \call_user_func($element);
-        }
-
-        return $element;
+        return \is_callable($element) ? $element() : $element;
     }
 }
