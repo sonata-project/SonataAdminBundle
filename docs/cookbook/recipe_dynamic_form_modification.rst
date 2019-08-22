@@ -36,7 +36,7 @@ Then, you should be able to dynamically add needed fields to the form::
 
             $subject = $this->getSubject();
 
-            if ($subject->isNew()) {
+            if ($this->isNew()) {
                 // The thumbnail field will only be added when the edited item is created
                 $formMapper->add('thumbnail', FileType::class);
             }
