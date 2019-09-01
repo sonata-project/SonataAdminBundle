@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 {% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
 
-{% block field%}
+{% block field %}
 {% apply spaceless %}
     {% if field_description.options.choices  is defined %}
         {% if field_description.options.multiple is defined and field_description.options.multiple==true and value is iterable %}

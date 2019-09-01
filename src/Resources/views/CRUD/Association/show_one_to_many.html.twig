@@ -14,7 +14,7 @@ file that was distributed with this source code.
 {% block field %}
     <ul class="sonata-ba-show-one-to-many">
     {% set route_name = field_description.options.route.name %}
-    {% for element in value%}
+    {% for element in value %}
         {% if field_description.hasassociationadmin
         and field_description.associationadmin.hasRoute(route_name)
         and field_description.associationadmin.hasAccess(route_name, element) %}

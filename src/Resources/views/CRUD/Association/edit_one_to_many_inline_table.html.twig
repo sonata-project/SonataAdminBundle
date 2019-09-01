@@ -36,7 +36,7 @@ file that was distributed with this source code.
             <tr>
                 {% for field_name, nested_field in nested_group_field.children %}
                     <td class="
-                        sonata-ba-td-{{ id }}-{{ field_name  }}
+                        sonata-ba-td-{{ id }}-{{ field_name }}
                         control-group
                         {% if nested_field.vars.errors|default(false) %} error sonata-ba-field-error{% endif %}
                         "

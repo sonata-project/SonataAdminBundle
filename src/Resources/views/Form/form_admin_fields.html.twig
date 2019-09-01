@@ -349,7 +349,7 @@ file that was distributed with this source code.
     {% set show_label = show_label ?? true %}
     <div class="form-group{% if errors|length > 0 %} has-error{% endif %}" id="sonata-ba-field-container-{{ id }}">
         {% if sonata_admin.field_description.options is defined %}
-            {% set label = sonata_admin.field_description.options.name|default(label)  %}
+            {% set label = sonata_admin.field_description.options.name|default(label) %}
         {% endif %}
 
         {% set div_class = 'sonata-ba-field' %}
@@ -470,16 +470,16 @@ file that was distributed with this source code.
 
 {% block sonata_type_immutable_array_widget_row %}
     {% apply spaceless %}
-        <div class="form-group{% if child.vars.errors|length > 0%} has-error{%endif%}" id="sonata-ba-field-container-{{ id }}-{{ key }}">
+        <div class="form-group{% if child.vars.errors|length > 0 %} has-error{% endif %}" id="sonata-ba-field-container-{{ id }}-{{ key }}">
 
             {{ form_label(child) }}
 
             {% set div_class = "" %}
             {% if sonata_admin.options['form_type'] == 'horizontal' %}
                 {% set div_class = 'col-sm-9' %}
-            {% endif%}
+            {% endif %}
 
-            <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if child.vars.errors|length > 0 %}sonata-ba-field-error{% endif %}">
+            <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }}{% if child.vars.errors|length > 0 %} sonata-ba-field-error{% endif %}">
                 {{ form_widget(child, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
                 {% set sonata_help = child.vars.sonata_help %}
                 {{ block('sonata_help') }}
@@ -553,7 +553,7 @@ file that was distributed with this source code.
     </script>
 {% endblock %}
 
-{%  block sonata_type_choice_multiple_sortable %}
+{% block sonata_type_choice_multiple_sortable %}
     <input type="hidden" name="{{ full_name }}" id="{{ id }}" value="{{ value|join(',') }}" />
 
     <script>

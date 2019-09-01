@@ -39,8 +39,8 @@ file that was distributed with this source code.
         {% endif %}
 
         {# Add a margin if no pager to prevent dropdown cropping on window #}
-        <div class="box box-primary" {% if admin.datagrid.pager.lastPage == 1 %}style="margin-bottom: 100px;"{% endif %}>
-            <div class="box-body {% if admin.datagrid.results|length > 0 %}table-responsive no-padding{% endif %}">
+        <div class="box box-primary"{% if admin.datagrid.pager.lastPage == 1 %} style="margin-bottom: 100px;"{% endif %}>
+            <div class="box-body{% if admin.datagrid.results|length > 0 %} table-responsive no-padding{% endif %}">
                 {{ sonata_block_render_event('sonata.admin.list.table.top', { 'admin': admin }) }}
 
                 {% block list_header %}{% endblock %}
@@ -72,7 +72,7 @@ file that was distributed with this source code.
                                             {% endif %}
 
                                             {% apply spaceless %}
-                                                <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}{% if field_description.options.header_class is defined %} {{ field_description.options.header_class }}{% endif %}"{% if field_description.options.header_style is defined %} style="{{ field_description.options.header_style }}"{% endif %}>
+                                                <th class="sonata-ba-list-field-header-{{ field_description.type }}{% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}{% if field_description.options.header_class is defined %} {{ field_description.options.header_class }}{% endif %}"{% if field_description.options.header_style is defined %} style="{{ field_description.options.header_style }}"{% endif %}>
                                                     {% if sortable %}<a href="{{ admin.generateUrl('list', sort_parameters|merge({_list_mode: admin.getListMode()})) }}">{% endif %}
                                                     {% if field_description.getOption('label_icon') %}
                                                         <i class="sonata-ba-list-field-header-label-icon {{ field_description.getOption('label_icon') }}" aria-hidden="true"></i>
@@ -125,7 +125,7 @@ file that was distributed with this source code.
                         <div class="form-inline clearfix">
                             {% if not app.request.isXmlHttpRequest %}
                                 <div class="pull-left">
-                                    {% if admin.hasRoute('batch') and batchactions|length > 0  %}
+                                    {% if admin.hasRoute('batch') and batchactions|length > 0 %}
                                         {% block batch %}
                                             <script>
                                                 {% block batch_javascript %}

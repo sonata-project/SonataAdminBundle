@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 {% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
 
-{% block field%}
+{% block field %}
     {% set value_format = field_description.options.format|default('%s') %}
 
     {% if field_description.options.catalogue is not defined %}

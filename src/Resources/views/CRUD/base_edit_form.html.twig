@@ -4,7 +4,7 @@
     {# NEXT_MAJOR: remove default filter #}
     {% set url = objectId|default(admin.id(object)) is not null ? 'edit' : 'create' %}
 
-    {% if not admin.hasRoute(url)%}
+    {% if not admin.hasRoute(url) %}
         <div>
             {{ "form_not_available"|trans({}, "SonataAdminBundle") }}
         </div>
@@ -133,7 +133,7 @@
                 </div>
             {% endblock formactions %}
         </form>
-    {% endif%}
+    {% endif %}
 
     {{ sonata_block_render_event('sonata.admin.edit.form.bottom', { 'admin': admin, 'object': object }) }}
 
