@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-{% if not sonata_admin.field_description.hasassociationadmin%}
+{% if not sonata_admin.field_description.hasassociationadmin %}
     {{ value|render_relation_element(sonata_admin.field_description) }}
 {% elseif sonata_admin.edit == 'inline' %}
     {% for field_description in sonata_admin.field_description.associationadmin.formfielddescriptions %}
