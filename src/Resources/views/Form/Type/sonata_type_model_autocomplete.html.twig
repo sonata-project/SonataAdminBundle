@@ -297,7 +297,11 @@ file that was distributed with this source code.
                           var data = item;
                         {%- endif -%}
 
-                        $('#{{ id }}_hidden_inputs_wrap').html('<input type="hidden" name="{{ full_name ~ (multiple ? '[]' : '') }}" value="'+xhr.responseJSON.objectId+'" />');
+                        {% if multiple %}
+                        $('#{{ id }}_hidden_inputs_wrap').append('<input type="hidden" name="{{ full_name }}[]" value="'+xhr.responseJSON.objectId+'" />');
+                        {% else %}
+                        $('#{{ id }}_hidden_inputs_wrap').html('<input type="hidden" name="{{ full_name }}" value="'+xhr.responseJSON.objectId+'" />');
+                        {% endif %}
 
                         // append to Select2
                         autocompleteInput.select2('data', data).append(data).trigger('change');
