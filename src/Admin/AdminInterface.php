@@ -37,6 +37,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @method string getSearchResultLink(object $object)
  * @method void   showMosaicButton(bool $isShown)
  * @method bool   isDefaultFilter(string $name)
+ * @method bool   isCurrentRoute(string $name, ?string $adminCode)
+ * @method bool   canAccessObject(string $action, object $object)
+ * @method mixed  getPersistentParameter(string $name)
+ * @method array            getExportFields
+ * @method array            getSubClasses
+ * @method AdminInterface   getRoot
+ * @method string           getRootCode
+ * @method array getActionButtons(string $action, ?object $object)
  */
 interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
