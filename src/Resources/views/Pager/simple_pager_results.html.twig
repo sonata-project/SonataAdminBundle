@@ -15,7 +15,9 @@ file that was distributed with this source code.
     {% if admin.datagrid.pager.lastPage != admin.datagrid.pager.page %}
         {{ 'list_results_count_prefix'|trans({}, 'SonataAdminBundle') }}
     {% endif %}
-    {% trans with {'%count%': admin.datagrid.pager.nbresults} from 'SonataAdminBundle' %}list_results_count{% endtrans %}
+    {% transchoice admin.datagrid.pager.nbresults with {'%count%': admin.datagrid.pager.nbresults} from 'SonataAdminBundle' %}list_results_count{% endtranschoice %}
+    {# NEXT_MAJOR: bump "symfony/translation" to ^4.2 and replace the previous line with the following #}
+    {# {% trans with {'%count%': admin.datagrid.pager.nbresults} from 'SonataAdminBundle' %}list_results_count{% endtrans %} #}
     &nbsp;-&nbsp;
 {% endblock %}
 
