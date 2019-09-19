@@ -1419,7 +1419,7 @@ class CRUDController implements ContainerAwareInterface
     protected function validateCsrfToken($intention)
     {
         $request = $this->getRequest();
-        $token = $request->request->get('_sonata_csrf_token');
+        $token = $request->get('_sonata_csrf_token');
 
         if ($this->container->has('security.csrf.token_manager')) {
             $valid = $this->container->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($intention, $token));
