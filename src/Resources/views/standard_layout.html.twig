@@ -162,6 +162,8 @@ file that was distributed with this source code.
                                                             {%- set label = label|trans(menu.extra('translation_params', {}), translation_domain) -%}
                                                         {%- endif -%}
 
+                                                        {% set label = label|truncate(100) %}
+
                                                         {% if not loop.last %}
                                                             <li>
                                                                 {% if menu.uri is not empty %}
@@ -177,7 +179,7 @@ file that was distributed with this source code.
                                                                 {% endif %}
                                                             </li>
                                                         {% else %}
-                                                            <li class="active"><span>{{ label|truncate(100) }}</span></li>
+                                                            <li class="active"><span>{{ label }}</span></li>
                                                         {% endif %}
                                                     {% endfor %}
                                                 {% endif %}
