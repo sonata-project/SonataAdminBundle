@@ -162,8 +162,6 @@ file that was distributed with this source code.
                                                             {%- set label = label|trans(menu.extra('translation_params', {}), translation_domain) -%}
                                                         {%- endif -%}
 
-                                                        {% set label = label|truncate(100) %}
-
                                                         {% if not loop.last %}
                                                             <li>
                                                                 {% if menu.uri is not empty %}
@@ -171,15 +169,15 @@ file that was distributed with this source code.
                                                                         {% if menu.extra('safe_label', true) %}
                                                                             {{- label|raw -}}
                                                                         {% else %}
-                                                                            {{- label -}}
+                                                                            {{- label|truncate(100) -}}
                                                                         {% endif %}
                                                                     </a>
                                                                 {% else %}
-                                                                    <span>{{ label }}</span>
+                                                                    <span>{{ label|truncate(100) }}</span>
                                                                 {% endif %}
                                                             </li>
                                                         {% else %}
-                                                            <li class="active"><span>{{ label }}</span></li>
+                                                            <li class="active"><span>{{ label|truncate(100) }}</span></li>
                                                         {% endif %}
                                                     {% endfor %}
                                                 {% endif %}
