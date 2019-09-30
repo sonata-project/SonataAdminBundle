@@ -101,6 +101,7 @@ Full Configuration Options
                     id:
                         label: ~
                         label_catalogue: ~
+                        position: 1
                         icon: '<i class="fa fa-folder"></i>'
                         provider: ~
                         items:

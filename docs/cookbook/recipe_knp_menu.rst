@@ -296,6 +296,39 @@ Your can't use this option for two or more items at the same time:
 
 In this case you have an exception: "You can't use ``on_top`` option with multiple same name groups".
 
+Order menu groups
+-----------------
+
+By default, menu groups are displayed in their declaration order. You can modify this order by adding a ``position``
+option in your sonata_admin dashboard group configuration:
+
+.. code-block:: yaml
+
+    # config/packages/sonata_admin.yaml
+
+    sonata_admin:
+        dashboard:
+            groups:
+                sonata.admin.group.content:
+                    position:        2
+                    label:           sonata_media
+                    label_catalogue: SonataMediaBundle
+                    icon:            '<i class="fa fa-image"></i>'
+                    items:
+                        - sonata.media.admin.media
+                        - sonata.media.admin.gallery
+                news:
+                    position:       1
+                    label:           ~
+                    label_catalogue: ~
+                    items:
+                        - sonata.news.admin.post
+                        - route:        blog_home
+                          label:        Blog
+
+In this case, ``news`` will be displayed before ``sonata.admin.group.content``. Each group has a ``position`` default
+value of 255.
+
 .. _KnpMenu: https://github.com/KnpLabs/KnpMenu
 .. _Knp documentation: http://symfony.com/doc/current/bundles/KnpMenuBundle/index.html#create-your-first-menu
 .. _Using events to allow a menu to be extended: http://symfony.com/doc/master/bundles/KnpMenuBundle/events.html

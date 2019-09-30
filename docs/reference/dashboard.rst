@@ -156,6 +156,7 @@ declarations.
                     app.admin.group.content:
                         label: app.admin.group.content
                         label_catalogue: App
+                        position: 1
                         items:
                             - app.admin.post
 
