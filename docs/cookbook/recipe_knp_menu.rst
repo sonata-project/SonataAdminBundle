@@ -300,7 +300,7 @@ Order menu groups
 -----------------
 
 By default, menu groups are displayed in their declaration order. You can modify this order by adding a ``position``
-option in your sonata_admin dashboard group configuration:
+option in your `sonata_admin` dashboard group configuration:
 
 .. code-block:: yaml
 
