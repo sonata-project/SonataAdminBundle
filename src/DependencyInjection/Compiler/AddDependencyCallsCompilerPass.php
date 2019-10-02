@@ -131,10 +131,6 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $dashboardGroupsSettings = $container->getParameter('sonata.admin.configuration.dashboard_groups');
         if (!empty($dashboardGroupsSettings)) {
             uasort($dashboardGroupsSettings, static function ($a, $b) {
-                if ($a['position'] === $b['position']) {
-                    return 0;
-                }
-
                 return $a['position'] <=> $b['position'];
             });
 
