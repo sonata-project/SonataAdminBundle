@@ -135,7 +135,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     return 0;
                 }
 
-                return ($a['position'] < $b['position']) ? -1 : 1;
+                return $a['position'] <=> $b['position'];
             });
 
             $groups = $dashboardGroupsSettings;
