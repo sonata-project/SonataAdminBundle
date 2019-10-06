@@ -30,14 +30,13 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Marek Stipek <mario.dweller@seznam.cz>
  * @author Simon Cosandey <simon.cosandey@simseo.ch>
  */
 class GenerateAdminCommand extends QuestionableCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     protected static $defaultName = 'sonata:admin:generate';
 
     /**

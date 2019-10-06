@@ -377,7 +377,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $menuFactory;
 
     /**
-     * @var array
+     * @var array<string, bool>
      */
     protected $loaded = [
         'view_fields' => false,
@@ -387,17 +387,17 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     ];
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $formTheme = [];
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $filterTheme = [];
 
     /**
-     * @var array
+     * @var array<string, string>
      *
      * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      */
@@ -469,14 +469,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The subclasses supported by the admin class.
      *
-     * @var array
+     * @var array<string, string>
      */
     private $subClasses = [];
 
     /**
      * The list collection.
      *
-     * @var array
+     * @var FieldDescriptionCollection
      */
     private $list;
 
@@ -581,7 +581,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function getExportFields()
+    public function getExportFields(): array
     {
         $fields = $this->getModelManager()->getExportFields($this->getClass());
 
@@ -698,6 +698,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
     }
 
+    /**
+     * @param object $object
+     */
     public function preValidate($object): void
     {
     }
@@ -942,7 +945,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->class;
     }
 
-    public function getSubClasses()
+    public function getSubClasses(): array
     {
         return $this->subClasses;
     }
@@ -985,7 +988,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!$this->hasActiveSubClass()) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
                 'Use %s::hasActiveSubClass() to know if there is an active subclass.',
                 __METHOD__,
                 __CLASS__
@@ -1006,7 +1009,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!$this->hasActiveSubClass()) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
                 'Use %s::hasActiveSubClass() to know if there is an active subclass.',
                 __METHOD__,
                 __CLASS__
@@ -1024,7 +1027,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         if (!$this->hasSubClass($subClass)) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
                 'Use %s::hasActiveSubClass() to know if there is an active subclass.',
                 __METHOD__,
                 __CLASS__
@@ -1104,7 +1107,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->routeGenerator->hasAdminRoute($this, $name);
     }
 
-    public function isCurrentRoute($name, $adminCode = null)
+    public function isCurrentRoute(string $name, ?string $adminCode = null): bool
     {
         if (!$this->hasRequest()) {
             return false;
@@ -1148,6 +1151,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->templateRegistry = $templateRegistry;
     }
 
+    /**
+     * @param array<string, string> $templates
+     */
     public function setTemplates(array $templates): void
     {
         // NEXT_MAJOR: Remove this line
@@ -1169,6 +1175,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     /**
      * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
+     *
+     * @return array<string, string>
      */
     public function getTemplates(): array
     {
@@ -1854,7 +1862,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function getPersistentParameter($name)
+    public function getPersistentParameter(string $name)
     {
         $parameters = $this->getPersistentParameters();
 
@@ -2409,7 +2417,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function hasAccess($action, $object = null)
+    public function hasAccess(string $action, $object = null): bool
     {
         $access = $this->getAccess();
 
@@ -2430,7 +2438,10 @@ EOT;
         return true;
     }
 
-    final public function getActionButtons($action, $object = null)
+    /**
+     * @param object|null $object
+     */
+    final public function getActionButtons(string $action, $object = null): array
     {
         $buttonList = [];
 
@@ -2545,7 +2556,7 @@ EOT;
     /**
      * @param object $object
      */
-    final public function getSearchResultLink($object)
+    final public function getSearchResultLink($object): string
     {
         foreach ($this->searchResultActions as $action) {
             if ($this->hasRoute($action) && $this->hasAccess($action, $object)) {
@@ -2556,12 +2567,8 @@ EOT;
 
     /**
      * Checks if a filter type is set to a default value.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
-    final public function isDefaultFilter($name)
+    final public function isDefaultFilter(string $name): bool
     {
         $filter = $this->getFilterParameters();
         $default = $this->getDefaultFilterValues();
@@ -2672,8 +2679,6 @@ EOT;
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @return mixed
-     *
      * @deprecated Use configureTabMenu instead
      */
     protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
@@ -2684,8 +2689,6 @@ EOT;
      * Configures the tab menu in your admin.
      *
      * @param string $action
-     *
-     * @return mixed
      */
     protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
@@ -2874,7 +2877,7 @@ EOT;
     /**
      * Return list routes with permissions name.
      *
-     * @return array
+     * @return array<string, string>
      */
     protected function getAccess()
     {
@@ -2900,7 +2903,7 @@ EOT;
     }
 
     /**
-     * Returns a list of default filters.
+     * Configures a list of default filters.
      */
     protected function configureDefaultFilterValues(array &$filterValues): void
     {

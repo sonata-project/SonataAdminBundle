@@ -26,8 +26,6 @@ interface ObjectAclManipulatorInterface
     /**
      * Batch configure the ACLs for all objects handled by an Admin.
      *
-     * @abstract
-     *
      * @throws ModelManagerException
      */
     public function batchConfigureAcls(

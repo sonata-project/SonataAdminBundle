@@ -15,6 +15,8 @@ namespace Sonata\AdminBundle\Templating;
 
 /**
  * @author Timo Bakx <timobakx@gmail.com>
+ *
+ * @method bool hasTemplate(string $name)
  */
 interface TemplateRegistryInterface
 {

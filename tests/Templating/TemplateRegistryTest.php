@@ -45,7 +45,7 @@ class TemplateRegistryTest extends TestCase
     /**
      * @group legacy
      *
-     * @expectedDeprecation Passing a nonexistent template name as argument 1 to Sonata\AdminBundle\Templating\TemplateRegistry::getTemplate() is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     * @expectedDeprecation Passing a nonexistent template name as argument 1 to Sonata\AdminBundle\Templating\TemplateRegistry::getTemplate() is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0.
      */
     public function testGetTemplate1(): void
     {
@@ -66,7 +66,7 @@ class TemplateRegistryTest extends TestCase
     /**
      * @group legacy
      *
-     * @expectedDeprecation Passing a nonexistent template name as argument 1 to Sonata\AdminBundle\Templating\TemplateRegistry::getTemplate() is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     * @expectedDeprecation Passing a nonexistent template name as argument 1 to Sonata\AdminBundle\Templating\TemplateRegistry::getTemplate() is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0.
      */
     public function testGetTemplate2(): void
     {

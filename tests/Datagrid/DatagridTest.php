@@ -114,7 +114,7 @@ class DatagridTest extends TestCase
     /**
      * @group legacy
      *
-     * @expectedDeprecation Passing a nonexistent filter name as argument 1 to Sonata\AdminBundle\Datagrid\Datagrid::getFilter() is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     * @expectedDeprecation Passing a nonexistent filter name as argument 1 to Sonata\AdminBundle\Datagrid\Datagrid::getFilter() is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0.
      */
     public function testFilter(): void
     {

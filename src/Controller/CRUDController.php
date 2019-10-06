@@ -1410,7 +1410,7 @@ class CRUDController implements ContainerAwareInterface
     protected function validateCsrfToken($intention): void
     {
         $request = $this->getRequest();
-        $token = $request->request->get('_sonata_csrf_token', false);
+        $token = $request->get('_sonata_csrf_token');
 
         if ($this->container->has('security.csrf.token_manager')) {
             $valid = $this->container->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($intention, $token));
@@ -1455,7 +1455,7 @@ class CRUDController implements ContainerAwareInterface
      * This method can be overloaded in your custom CRUD controller.
      * It's called from createAction.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return Response|null
      */
@@ -1468,7 +1468,7 @@ class CRUDController implements ContainerAwareInterface
      * This method can be overloaded in your custom CRUD controller.
      * It's called from editAction.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return Response|null
      */
@@ -1481,7 +1481,7 @@ class CRUDController implements ContainerAwareInterface
      * This method can be overloaded in your custom CRUD controller.
      * It's called from deleteAction.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return Response|null
      */
@@ -1494,7 +1494,7 @@ class CRUDController implements ContainerAwareInterface
      * This method can be overloaded in your custom CRUD controller.
      * It's called from showAction.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return Response|null
      */

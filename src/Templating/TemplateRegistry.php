@@ -62,7 +62,7 @@ final class TemplateRegistry implements MutableTemplateRegistryInterface
         }
 
         @trigger_error(sprintf(
-            'Passing a nonexistent template name as argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
+            'Passing a nonexistent template name as argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 

@@ -107,7 +107,7 @@ final class RetrieveAutocompleteItemsAction
                 throw new \RuntimeException('Callback does not contain callable function.');
             }
 
-            \call_user_func($callback, $targetAdmin, $property, $searchText);
+            $callback($targetAdmin, $property, $searchText);
         } else {
             if (\is_array($property)) {
                 // multiple properties
@@ -154,7 +154,7 @@ final class RetrieveAutocompleteItemsAction
                     throw new \RuntimeException('Option "to_string_callback" does not contain callable function.');
                 }
 
-                $label = \call_user_func($toStringCallback, $entity, $property);
+                $label = $toStringCallback($entity, $property);
             } else {
                 $resultMetadata = $targetAdmin->getObjectMetadata($entity);
                 $label = $resultMetadata->getTitle();

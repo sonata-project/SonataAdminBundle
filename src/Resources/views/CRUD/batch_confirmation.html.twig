@@ -36,6 +36,8 @@ file that was distributed with this source code.
                     {{ 'message_batch_all_confirmation'|trans({}, 'SonataAdminBundle') }}
                 {% else %}
                     {% transchoice data.idx|length with {'%count%': data.idx|length} from 'SonataAdminBundle' %}message_batch_confirmation{% endtranschoice %}
+                    {# NEXT_MAJOR: bump "symfony/translation" to ^4.2 and replace the previous line with the following #}
+                    {# {% trans with {'%count%': data.idx|length} from 'SonataAdminBundle' %}message_batch_confirmation{% endtrans %} #}
                 {% endif %}
             </div>
             <div class="box-footer clearfix">

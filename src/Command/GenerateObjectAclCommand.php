@@ -24,13 +24,12 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class GenerateObjectAclCommand extends QuestionableCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     protected static $defaultName = 'sonata:admin:generate-object-acl';
 
     /**
@@ -104,6 +103,12 @@ class GenerateObjectAclCommand extends QuestionableCommand
             }
         }
 
+        if (!$this->aclObjectManipulators) {
+            $output->writeln('No manipulators are implemented : <info>ignoring</info>');
+
+            return;
+        }
+
         foreach ($this->pool->getAdminServiceIds() as $id) {
             try {
                 $admin = $this->pool->getInstance($id);
@@ -129,7 +134,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
             }
 
             $manipulatorId = sprintf('sonata.admin.manipulator.acl.object.%s', $admin->getManagerType());
-            if ($manipulator = $this->aclObjectManipulators[$manipulatorId] ?? null) {
+            if (!$manipulator = $this->aclObjectManipulators[$manipulatorId] ?? null) {
                 $output->writeln('Admin class is using a manager type that has no manipulator implemented : <info>ignoring</info>');
 
                 continue;

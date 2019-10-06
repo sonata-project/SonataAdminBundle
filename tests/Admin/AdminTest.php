@@ -724,7 +724,7 @@ class AdminTest extends TestCase
     /**
      * @group legacy
      *
-     * @expectedDeprecation Calling Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubclassCode() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. Use Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass() to know if there is an active subclass.
+     * @expectedDeprecation Calling Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubclassCode() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. Use Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass() to know if there is an active subclass.
      *
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getSubClasses
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getSubClass
@@ -801,7 +801,7 @@ class AdminTest extends TestCase
     /**
      * @group legacy
      *
-     * @expectedDeprecation Calling Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubclassCode() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. Use Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass() to know if there is an active subclass.
+     * @expectedDeprecation Calling Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubclassCode() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. Use Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass() to know if there is an active subclass.
      */
     public function testNonExistantSubclass(): void
     {

@@ -22,8 +22,11 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminSearchBlockService extends AbstractBlockService
@@ -39,11 +42,13 @@ class AdminSearchBlockService extends AbstractBlockService
     protected $searchHandler;
 
     /**
-     * @param string $name
+     * NEXT_MAJOR: Remove `$templating` argument.
+     *
+     * @param Environment|string $twigOrName
      */
-    public function __construct($name, EngineInterface $templating, Pool $pool, SearchHandler $searchHandler)
+    public function __construct($twigOrName, ?EngineInterface $templating, Pool $pool, SearchHandler $searchHandler)
     {
-        parent::__construct($name, $templating);
+        parent::__construct($twigOrName, $templating);
 
         $this->pool = $pool;
         $this->searchHandler = $searchHandler;

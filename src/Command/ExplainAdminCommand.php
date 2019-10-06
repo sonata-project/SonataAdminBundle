@@ -21,13 +21,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ExplainAdminCommand extends Command
 {
-    /**
-     * {@inheritdoc}
-     */
     protected static $defaultName = 'sonata:admin:explain';
 
     /**
