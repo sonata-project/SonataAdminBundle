@@ -2797,7 +2797,7 @@ EOT;
 
             $value = $propertyAccessor->getValue($object, $propertyPath);
 
-            if (\is_array($value) || ($value instanceof \Traversable && $value instanceof \ArrayAccess)) {
+            if (\is_array($value) || $value instanceof \ArrayAccess) {
                 $value[] = $parent;
                 $propertyAccessor->setValue($object, $propertyPath, $value);
             } else {

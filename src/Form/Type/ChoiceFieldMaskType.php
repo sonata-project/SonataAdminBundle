@@ -32,7 +32,7 @@ class ChoiceFieldMaskType extends AbstractType
         $sanitizedMap = [];
         $allFieldNames = [];
         foreach ($options['map'] as $value => $fieldNames) {
-            if (\is_array($fieldNames) || $fieldNames instanceof \Traversable) {
+            if (is_iterable($fieldNames)) {
                 foreach ($fieldNames as $fieldName) {
                     $sanitizedFieldName = str_replace(['__', '.'], ['____', '__'], $fieldName);
                     $sanitizedMap[$value][] = $sanitizedFieldName;
