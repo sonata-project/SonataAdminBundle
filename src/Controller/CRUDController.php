@@ -388,16 +388,26 @@ class CRUDController implements ContainerAwareInterface
 
             // show an error message if the form failed validation
             if (!$isFormValid) {
-                if (!$this->isXmlHttpRequest()) {
-                    $this->addFlash(
-                        'sonata_flash_error',
-                        $this->trans(
-                            'flash_edit_error',
-                            ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))],
-                            'SonataAdminBundle'
-                        )
-                    );
+                if ($this->isXmlHttpRequest()) {
+                    $errors = [];
+                    foreach ($form->getErrors(true) as $error) {
+                        $errors[] = $error->getMessage();
+                    }
+
+                    return $this->renderJson([
+                        'result' => 'error',
+                        'errors' => $errors
+                    ], 400, []);
                 }
+
+                $this->addFlash(
+                    'sonata_flash_error',
+                    $this->trans(
+                        'flash_edit_error',
+                        ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))],
+                        'SonataAdminBundle'
+                    )
+                );
             } elseif ($this->isPreviewRequested()) {
                 // enable the preview template if the form was valid and preview was requested
                 $templateKey = 'preview';
@@ -646,16 +656,26 @@ class CRUDController implements ContainerAwareInterface
 
             // show an error message if the form failed validation
             if (!$isFormValid) {
-                if (!$this->isXmlHttpRequest()) {
-                    $this->addFlash(
-                        'sonata_flash_error',
-                        $this->trans(
-                            'flash_create_error',
-                            ['%name%' => $this->escapeHtml($this->admin->toString($newObject))],
-                            'SonataAdminBundle'
-                        )
-                    );
+                if ($this->isXmlHttpRequest()) {
+                    $errors = [];
+                    foreach ($form->getErrors(true) as $error) {
+                        $errors[] = $error->getMessage();
+                    }
+
+                    return $this->renderJson([
+                        'result' => 'error',
+                        'errors' => $errors
+                    ], 400, []);
                 }
+
+                $this->addFlash(
+                    'sonata_flash_error',
+                    $this->trans(
+                        'flash_create_error',
+                        ['%name%' => $this->escapeHtml($this->admin->toString($newObject))],
+                        'SonataAdminBundle'
+                    )
+                );
             } elseif ($this->isPreviewRequested()) {
                 // pick the preview template if the form was valid and preview was requested
                 $templateKey = 'preview';
