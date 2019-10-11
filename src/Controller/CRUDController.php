@@ -32,6 +32,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -389,15 +390,7 @@ class CRUDController implements ContainerAwareInterface
             // show an error message if the form failed validation
             if (!$isFormValid) {
                 if ($this->isXmlHttpRequest()) {
-                    $errors = [];
-                    foreach ($form->getErrors(true) as $error) {
-                        $errors[] = $error->getMessage();
-                    }
-
-                    return $this->renderJson([
-                        'result' => 'error',
-                        'errors' => $errors
-                    ], 400, []);
+                    return $this->handleXmlHttpRequestErrorResponse($form);
                 }
 
                 $this->addFlash(
@@ -657,15 +650,7 @@ class CRUDController implements ContainerAwareInterface
             // show an error message if the form failed validation
             if (!$isFormValid) {
                 if ($this->isXmlHttpRequest()) {
-                    $errors = [];
-                    foreach ($form->getErrors(true) as $error) {
-                        $errors[] = $error->getMessage();
-                    }
-
-                    return $this->renderJson([
-                        'result' => 'error',
-                        'errors' => $errors
-                    ], 400, []);
+                    return $this->handleXmlHttpRequestErrorResponse($form);
                 }
 
                 $this->addFlash(
@@ -1611,5 +1596,18 @@ class CRUDController implements ContainerAwareInterface
         }
 
         $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
+    }
+
+    private function handleXmlHttpRequestErrorResponse(FormInterface $form): Response
+    {
+        $errors = [];
+        foreach ($form->getErrors(true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        return $this->renderJson([
+            'result' => 'error',
+            'errors' => $errors
+        ], 400, []);
     }
 }
