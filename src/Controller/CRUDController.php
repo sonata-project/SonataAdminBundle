@@ -1607,7 +1607,7 @@ class CRUDController implements ContainerAwareInterface
 
         return $this->renderJson([
             'result' => 'error',
-            'errors' => $errors
+            'errors' => $errors,
         ], 400, []);
     }
 }
