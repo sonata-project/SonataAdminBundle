@@ -44,8 +44,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -1801,27 +1803,21 @@ class CRUDControllerTest extends TestCase
             ->method('all')
             ->willReturn(['field' => 'fielddata']);
 
+        $formError = $this->createMock(FormError::class);
+        $formError->expects($this->atLeastOnce())
+            ->method('getMessage')
+            ->willReturn('Form error message');
+
+        $form->expects($this->once())
+            ->method('getErrors')
+            ->with(true)
+            ->willReturn([$formError]);
+
         $this->request->setMethod('POST');
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
-        $formView = $this->createMock(FormView::class);
-
-        $form->expects($this->any())
-            ->method('createView')
-            ->willReturn($formView);
-
-        $this->assertInstanceOf(Response::class, $this->controller->editAction(null, $this->request));
-
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
-
-        $this->assertSame('edit', $this->parameters['action']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['form']);
-        $this->assertSame($object, $this->parameters['object']);
-
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
+        $this->assertInstanceOf(JsonResponse::class, $response = $this->controller->editAction(null, $this->request));
+        $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $response->getContent());
     }
 
     /**
