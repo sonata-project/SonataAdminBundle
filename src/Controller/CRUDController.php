@@ -1099,9 +1099,9 @@ class CRUDController implements ContainerAwareInterface
      * @param int   $status
      * @param array $headers
      *
-     * @return Response with json encoded data
+     * @return JsonResponse with json encoded data
      */
-    protected function renderJson($data, $status = 200, $headers = [])
+    protected function renderJson($data, $status = 200, $headers = []): JsonResponse
     {
         return new JsonResponse($data, $status, $headers);
     }
@@ -1598,7 +1598,7 @@ class CRUDController implements ContainerAwareInterface
         $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
     }
 
-    private function handleXmlHttpRequestErrorResponse(FormInterface $form): Response
+    private function handleXmlHttpRequestErrorResponse(FormInterface $form): JsonResponse
     {
         $errors = [];
         foreach ($form->getErrors(true) as $error) {
