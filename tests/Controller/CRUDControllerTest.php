@@ -2514,27 +2514,21 @@ class CRUDControllerTest extends TestCase
             ->method('isValid')
             ->willReturn(false);
 
+        $formError = $this->createMock(FormError::class);
+        $formError->expects($this->atLeastOnce())
+            ->method('getMessage')
+            ->willReturn('Form error message');
+
+        $form->expects($this->once())
+            ->method('getErrors')
+            ->with(true)
+            ->willReturn([$formError]);
+
         $this->request->setMethod('POST');
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
-        $formView = $this->createMock(FormView::class);
-
-        $form->expects($this->any())
-            ->method('createView')
-            ->willReturn($formView);
-
-        $this->assertInstanceOf(Response::class, $this->controller->createAction($this->request));
-
-        $this->assertSame($this->admin, $this->parameters['admin']);
-        $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
-        $this->assertSame($this->pool, $this->parameters['admin_pool']);
-
-        $this->assertSame('create', $this->parameters['action']);
-        $this->assertInstanceOf(FormView::class, $this->parameters['form']);
-        $this->assertSame($object, $this->parameters['object']);
-
-        $this->assertSame([], $this->session->getFlashBag()->all());
-        $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
+        $this->assertInstanceOf(JsonResponse::class, $response = $this->controller->createAction($this->request));
+        $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $response->getContent());
     }
 
     public function testCreateActionWithPreview(): void
