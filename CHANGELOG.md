@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.54.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.54.0...3.54.1) - 2019-10-14
+### Fixed
+- Using array accessor in traversable objects which aren't implementing
+  `\ArrayAccess` at `AbstractAdmin::buildForm()`.
+- Arguments passed to `transchoice()` Twig filter at `block_stats.html.twig`
+
 ## [3.54.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.53.0...3.54.0) - 2019-10-01
 ### Fixed
 - incorrect sanity check ACL manipulators
