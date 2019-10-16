@@ -1101,7 +1101,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return JsonResponse with json encoded data
      */
-    protected function renderJson($data, $status = 200, $headers = []): Response
+    protected function renderJson($data, $status = 200, $headers = [])
     {
         return new JsonResponse($data, $status, $headers);
     }
