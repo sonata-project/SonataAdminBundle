@@ -356,11 +356,7 @@ class CRUDController implements ContainerAwareInterface
                     $existingObject = $this->admin->update($submittedObject);
 
                     if ($this->isXmlHttpRequest()) {
-                        return $this->renderJson([
-                            'result' => 'ok',
-                            'objectId' => $objectId,
-                            'objectName' => $this->escapeHtml($this->admin->toString($existingObject)),
-                        ], 200, []);
+                        return $this->handleXmlHttpRequestSuccessResponse($existingObject);
                     }
 
                     $this->addFlash(
@@ -622,11 +618,7 @@ class CRUDController implements ContainerAwareInterface
                     $newObject = $this->admin->create($submittedObject);
 
                     if ($this->isXmlHttpRequest()) {
-                        return $this->renderJson([
-                            'result' => 'ok',
-                            'objectId' => $this->admin->getNormalizedIdentifier($newObject),
-                            'objectName' => $this->escapeHtml($this->admin->toString($newObject)),
-                        ], 200, []);
+                        return $this->handleXmlHttpRequestSuccessResponse($newObject);
                     }
 
                     $this->addFlash(
@@ -1609,5 +1601,19 @@ class CRUDController implements ContainerAwareInterface
             'result' => 'error',
             'errors' => $errors,
         ], 400);
+    }
+
+    /**
+     * @param object $object
+     *
+     * @return JsonResponse
+     */
+    private function handleXmlHttpRequestSuccessResponse($object): JsonResponse
+    {
+        return $this->renderJson([
+            'result'     => 'ok',
+            'objectId'   => $this->admin->getNormalizedIdentifier($object),
+            'objectName' => $this->escapeHtml($this->admin->toString($object)),
+        ], 200);
     }
 }
