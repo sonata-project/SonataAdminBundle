@@ -356,7 +356,7 @@ class CRUDController implements ContainerAwareInterface
                     $existingObject = $this->admin->update($submittedObject);
 
                     if ($this->isXmlHttpRequest()) {
-                        return $this->handleXmlHttpRequestSuccessResponse($existingObject);
+                        return $this->handleXmlHttpRequestSuccessResponse($request, $existingObject);
                     }
 
                     $this->addFlash(
@@ -386,7 +386,7 @@ class CRUDController implements ContainerAwareInterface
             // show an error message if the form failed validation
             if (!$isFormValid) {
                 if ($this->isXmlHttpRequest()) {
-                    return $this->handleXmlHttpRequestErrorResponse($form);
+                    return $this->handleXmlHttpRequestErrorResponse($request, $form);
                 }
 
                 $this->addFlash(
@@ -618,7 +618,7 @@ class CRUDController implements ContainerAwareInterface
                     $newObject = $this->admin->create($submittedObject);
 
                     if ($this->isXmlHttpRequest()) {
-                        return $this->handleXmlHttpRequestSuccessResponse($newObject);
+                        return $this->handleXmlHttpRequestSuccessResponse($request, $newObject);
                     }
 
                     $this->addFlash(
@@ -642,7 +642,7 @@ class CRUDController implements ContainerAwareInterface
             // show an error message if the form failed validation
             if (!$isFormValid) {
                 if ($this->isXmlHttpRequest()) {
-                    return $this->handleXmlHttpRequestErrorResponse($form);
+                    return $this->handleXmlHttpRequestErrorResponse($request, $form);
                 }
 
                 $this->addFlash(
@@ -1590,7 +1590,7 @@ class CRUDController implements ContainerAwareInterface
         $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
     }
 
-    private function handleXmlHttpRequestErrorResponse(FormInterface $form): JsonResponse
+    private function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): JsonResponse
     {
         $errors = [];
         foreach ($form->getErrors(true) as $error) {
@@ -1604,11 +1604,12 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
-     * @param object $object
+     * @param Request $request
+     * @param object  $object
      *
      * @return JsonResponse
      */
-    private function handleXmlHttpRequestSuccessResponse($object): JsonResponse
+    private function handleXmlHttpRequestSuccessResponse(Request $request, $object): JsonResponse
     {
         return $this->renderJson([
             'result'     => 'ok',
