@@ -1405,10 +1405,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->datagrid;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildTabMenu($action, AdminInterface $childAdmin = null)
     {
         if ($this->loaded['tab_menu']) {
-            return;
+            return $this->menu;
         }
 
         $this->loaded['tab_menu'] = true;
@@ -1429,6 +1432,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         $this->menu = $menu;
+
+        return $this->menu;
     }
 
     public function buildSideMenu($action, AdminInterface $childAdmin = null)
