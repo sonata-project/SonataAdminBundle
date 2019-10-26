@@ -385,8 +385,8 @@ class CRUDController implements ContainerAwareInterface
 
             // show an error message if the form failed validation
             if (!$isFormValid) {
-                if ($this->isXmlHttpRequest()) {
-                    return $this->handleXmlHttpRequestErrorResponse($request, $form);
+                if ($this->isXmlHttpRequest() && null !== ($response = $this->handleXmlHttpRequestErrorResponse($request, $form))) {
+                    return $response;
                 }
 
                 $this->addFlash(
@@ -641,8 +641,8 @@ class CRUDController implements ContainerAwareInterface
 
             // show an error message if the form failed validation
             if (!$isFormValid) {
-                if ($this->isXmlHttpRequest()) {
-                    return $this->handleXmlHttpRequestErrorResponse($request, $form);
+                if ($this->isXmlHttpRequest() && null !== ($response = $this->handleXmlHttpRequestErrorResponse($request, $form))) {
+                    return $response;
                 }
 
                 $this->addFlash(
@@ -1590,8 +1590,13 @@ class CRUDController implements ContainerAwareInterface
         $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
     }
 
-    private function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): JsonResponse
+    private function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): ?JsonResponse
     {
+        if ($request->headers->get('Accept') !== 'application/json') {
+            @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`', E_USER_DEPRECATED);
+            return null;
+        }
+
         $errors = [];
         foreach ($form->getErrors(true) as $error) {
             $errors[] = $error->getMessage();
@@ -1611,6 +1616,10 @@ class CRUDController implements ContainerAwareInterface
      */
     private function handleXmlHttpRequestSuccessResponse(Request $request, $object): JsonResponse
     {
+        if ($request->headers->get('Accept') !== 'application/json') {
+            @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`', E_USER_DEPRECATED);
+        }
+
         return $this->renderJson([
             'result'     => 'ok',
             'objectId'   => $this->admin->getNormalizedIdentifier($object),
