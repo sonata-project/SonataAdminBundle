@@ -1594,6 +1594,7 @@ class CRUDController implements ContainerAwareInterface
     {
         if ('application/json' !== $request->headers->get('Accept')) {
             @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`', E_USER_DEPRECATED);
+
             return null;
         }
 
