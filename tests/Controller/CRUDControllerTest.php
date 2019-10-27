@@ -44,8 +44,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -1751,7 +1753,7 @@ class CRUDControllerTest extends TestCase
             ->method('all')
             ->willReturn(['field' => 'fielddata']);
 
-        $this->admin->expects($this->once())
+        $this->admin
             ->method('getNormalizedIdentifier')
             ->with($this->equalTo($object))
             ->willReturn('foo_normalized');
@@ -1801,26 +1803,75 @@ class CRUDControllerTest extends TestCase
             ->method('all')
             ->willReturn(['field' => 'fielddata']);
 
+        $formError = $this->createMock(FormError::class);
+        $formError->expects($this->atLeastOnce())
+            ->method('getMessage')
+            ->willReturn('Form error message');
+
+        $form->expects($this->once())
+            ->method('getErrors')
+            ->with(true)
+            ->willReturn([$formError]);
+
+        $this->request->setMethod('POST');
+        $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
+        $this->request->headers->set('Accept', 'application/json');
+
+        $this->assertInstanceOf(JsonResponse::class, $response = $this->controller->editAction(null, $this->request));
+        $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $response->getContent());
+    }
+
+    /**
+     * @legacy
+     * @expectedDeprecation In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`
+     */
+    public function testEditActionAjaxErrorWithoutAcceptApplicationJson(): void
+    {
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->willReturn($object);
+
+        $this->admin->expects($this->once())
+            ->method('checkAccess')
+            ->with($this->equalTo('edit'))
+            ->willReturn(true);
+
+        $form = $this->createMock(Form::class);
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->willReturn($form);
+
+        $form->expects($this->once())
+            ->method('isSubmitted')
+            ->willReturn(true);
+
+        $form->expects($this->once())
+            ->method('isValid')
+            ->willReturn(false);
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
+
         $this->request->setMethod('POST');
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $formView = $this->createMock(FormView::class);
-
-        $form->expects($this->any())
+        $form
             ->method('createView')
             ->willReturn($formView);
 
-        $this->assertInstanceOf(Response::class, $this->controller->editAction(null, $this->request));
-
+        $this->assertInstanceOf(Response::class, $response = $this->controller->editAction(null, $this->request));
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
-
         $this->assertSame('edit', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
         $this->assertSame($object, $this->parameters['object']);
-
-        $this->assertSame([], $this->session->getFlashBag()->all());
+        $this->assertSame(['sonata_flash_error' => [0 => null]], $this->session->getFlashBag()->all());
         $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
@@ -2518,26 +2569,79 @@ class CRUDControllerTest extends TestCase
             ->method('isValid')
             ->willReturn(false);
 
+        $formError = $this->createMock(FormError::class);
+        $formError->expects($this->atLeastOnce())
+            ->method('getMessage')
+            ->willReturn('Form error message');
+
+        $form->expects($this->once())
+            ->method('getErrors')
+            ->with(true)
+            ->willReturn([$formError]);
+
+        $this->request->setMethod('POST');
+        $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
+        $this->request->headers->set('Accept', 'application/json');
+
+        $this->assertInstanceOf(JsonResponse::class, $response = $this->controller->createAction($this->request));
+        $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $response->getContent());
+    }
+
+    /**
+     * @legacy
+     * @expectedDeprecation In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`
+     */
+    public function testCreateActionAjaxErrorWithoutAcceptApplicationJson(): void
+    {
+        $this->admin->expects($this->once())
+            ->method('checkAccess')
+            ->with($this->equalTo('create'))
+            ->willReturn(true);
+
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getNewInstance')
+            ->willReturn($object);
+
+        $form = $this->createMock(Form::class);
+
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->willReturn('stdClass');
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->willReturn($form);
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
+
+        $form->expects($this->once())
+            ->method('isSubmitted')
+            ->willReturn(true);
+
+        $form->expects($this->once())
+            ->method('isValid')
+            ->willReturn(false);
+
         $this->request->setMethod('POST');
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $formView = $this->createMock(FormView::class);
-
-        $form->expects($this->any())
+        $form
             ->method('createView')
             ->willReturn($formView);
 
-        $this->assertInstanceOf(Response::class, $this->controller->createAction($this->request));
-
+        $this->assertInstanceOf(Response::class, $response = $this->controller->createAction($this->request));
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
-
         $this->assertSame('create', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
         $this->assertSame($object, $this->parameters['object']);
-
-        $this->assertSame([], $this->session->getFlashBag()->all());
+        $this->assertSame(['sonata_flash_error' => [0 => null]], $this->session->getFlashBag()->all());
         $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 

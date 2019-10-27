@@ -32,6 +32,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -355,11 +356,7 @@ class CRUDController implements ContainerAwareInterface
                     $existingObject = $this->admin->update($submittedObject);
 
                     if ($this->isXmlHttpRequest()) {
-                        return $this->renderJson([
-                            'result' => 'ok',
-                            'objectId' => $objectId,
-                            'objectName' => $this->escapeHtml($this->admin->toString($existingObject)),
-                        ], 200, []);
+                        return $this->handleXmlHttpRequestSuccessResponse($request, $existingObject);
                     }
 
                     $this->addFlash(
@@ -388,16 +385,18 @@ class CRUDController implements ContainerAwareInterface
 
             // show an error message if the form failed validation
             if (!$isFormValid) {
-                if (!$this->isXmlHttpRequest()) {
-                    $this->addFlash(
-                        'sonata_flash_error',
-                        $this->trans(
-                            'flash_edit_error',
-                            ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))],
-                            'SonataAdminBundle'
-                        )
-                    );
+                if ($this->isXmlHttpRequest() && null !== ($response = $this->handleXmlHttpRequestErrorResponse($request, $form))) {
+                    return $response;
                 }
+
+                $this->addFlash(
+                    'sonata_flash_error',
+                    $this->trans(
+                        'flash_edit_error',
+                        ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))],
+                        'SonataAdminBundle'
+                    )
+                );
             } elseif ($this->isPreviewRequested()) {
                 // enable the preview template if the form was valid and preview was requested
                 $templateKey = 'preview';
@@ -619,11 +618,7 @@ class CRUDController implements ContainerAwareInterface
                     $newObject = $this->admin->create($submittedObject);
 
                     if ($this->isXmlHttpRequest()) {
-                        return $this->renderJson([
-                            'result' => 'ok',
-                            'objectId' => $this->admin->getNormalizedIdentifier($newObject),
-                            'objectName' => $this->escapeHtml($this->admin->toString($newObject)),
-                        ], 200, []);
+                        return $this->handleXmlHttpRequestSuccessResponse($request, $newObject);
                     }
 
                     $this->addFlash(
@@ -646,16 +641,18 @@ class CRUDController implements ContainerAwareInterface
 
             // show an error message if the form failed validation
             if (!$isFormValid) {
-                if (!$this->isXmlHttpRequest()) {
-                    $this->addFlash(
-                        'sonata_flash_error',
-                        $this->trans(
-                            'flash_create_error',
-                            ['%name%' => $this->escapeHtml($this->admin->toString($newObject))],
-                            'SonataAdminBundle'
-                        )
-                    );
+                if ($this->isXmlHttpRequest() && null !== ($response = $this->handleXmlHttpRequestErrorResponse($request, $form))) {
+                    return $response;
                 }
+
+                $this->addFlash(
+                    'sonata_flash_error',
+                    $this->trans(
+                        'flash_create_error',
+                        ['%name%' => $this->escapeHtml($this->admin->toString($newObject))],
+                        'SonataAdminBundle'
+                    )
+                );
             } elseif ($this->isPreviewRequested()) {
                 // pick the preview template if the form was valid and preview was requested
                 $templateKey = 'preview';
@@ -1094,7 +1091,7 @@ class CRUDController implements ContainerAwareInterface
      * @param int   $status
      * @param array $headers
      *
-     * @return Response with json encoded data
+     * @return JsonResponse with json encoded data
      */
     protected function renderJson($data, $status = 200, $headers = [])
     {
@@ -1591,5 +1588,40 @@ class CRUDController implements ContainerAwareInterface
         }
 
         $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
+    }
+
+    private function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): ?JsonResponse
+    {
+        if ('application/json' !== $request->headers->get('Accept')) {
+            @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`', E_USER_DEPRECATED);
+
+            return null;
+        }
+
+        $errors = [];
+        foreach ($form->getErrors(true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        return $this->renderJson([
+            'result' => 'error',
+            'errors' => $errors,
+        ], 400);
+    }
+
+    /**
+     * @param object $object
+     */
+    private function handleXmlHttpRequestSuccessResponse(Request $request, $object): JsonResponse
+    {
+        if ('application/json' !== $request->headers->get('Accept')) {
+            @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`', E_USER_DEPRECATED);
+        }
+
+        return $this->renderJson([
+            'result' => 'ok',
+            'objectId' => $this->admin->getNormalizedIdentifier($object),
+            'objectName' => $this->escapeHtml($this->admin->toString($object)),
+        ], 200);
     }
 }
