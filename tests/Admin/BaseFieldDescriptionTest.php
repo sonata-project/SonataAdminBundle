@@ -87,7 +87,7 @@ class BaseFieldDescriptionTest extends TestCase
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $description->setAdmin($admin);
-        $this->isInstanceOf(AdminInterface::class, $description->getAdmin());
+        $this->assertInstanceOf(AdminInterface::class, $description->getAdmin());
 
         $associationAdmin = $this->getMockForAbstractClass(AdminInterface::class);
         $associationAdmin->expects($this->once())->method('setParentFieldDescription');
@@ -95,11 +95,11 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertFalse($description->hasAssociationAdmin());
         $description->setAssociationAdmin($associationAdmin);
         $this->assertTrue($description->hasAssociationAdmin());
-        $this->isInstanceOf(AdminInterface::class, $description->getAssociationAdmin());
+        $this->assertInstanceOf(AdminInterface::class, $description->getAssociationAdmin());
 
         $parent = $this->getMockForAbstractClass(AdminInterface::class);
         $description->setParent($parent);
-        $this->isInstanceOf(AdminInterface::class, $description->getParent());
+        $this->assertInstanceOf(AdminInterface::class, $description->getParent());
     }
 
     public function testGetValue(): void

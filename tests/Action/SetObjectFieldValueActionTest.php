@@ -128,8 +128,8 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription->getValue(Argument::cetera())->willReturn('some value');
 
         $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
-        $action = $this->action;
-        $response = $action($request);
+
+        $response = ($this->action)($request);
 
         $this->assertSame(200, $response->getStatusCode());
     }
@@ -182,8 +182,8 @@ final class SetObjectFieldValueActionTest extends TestCase
         $modelManager->find(\get_class($associationObject), 1)->willReturn($associationObject);
 
         $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
-        $action = $this->action;
-        $response = $action($request);
+
+        $response = ($this->action)($request);
 
         $this->assertSame(200, $response->getStatusCode());
     }
@@ -215,8 +215,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription->getOption('editable')->willReturn(true);
         $fieldDescription->getType()->willReturn('boolean');
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
         $this->assertSame(400, $response->getStatusCode());
         $this->assertSame(json_encode("error1\nerror2"), $response->getContent());
