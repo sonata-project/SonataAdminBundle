@@ -1310,7 +1310,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function buildTabMenu($action, AdminInterface $childAdmin = null): void
     {
         if ($this->loaded['tab_menu']) {
-            return;
+            return $this->menu;
         }
 
         $this->loaded['tab_menu'] = true;
@@ -1331,6 +1331,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         $this->menu = $menu;
+
+        return $this->menu;
     }
 
     /**
