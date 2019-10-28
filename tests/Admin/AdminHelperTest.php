@@ -57,7 +57,7 @@ class AdminHelperTest extends TestCase
         $formBuilder->add($childFormBuilder);
 
         $this->assertNull($this->helper->getChildFormBuilder($formBuilder, 'foo'));
-        $this->isInstanceOf(FormBuilder::class, $this->helper->getChildFormBuilder($formBuilder, 'test_elementId'));
+        $this->assertInstanceOf(FormBuilder::class, $this->helper->getChildFormBuilder($formBuilder, 'test_elementId'));
     }
 
     public function testGetChildFormView(): void
@@ -65,10 +65,11 @@ class AdminHelperTest extends TestCase
         $formView = new FormView();
         $formView->vars['id'] = 'test';
         $child = new FormView($formView);
+        $formView->children[] = $child;
         $child->vars['id'] = 'test_elementId';
 
         $this->assertNull($this->helper->getChildFormView($formView, 'foo'));
-        $this->isInstanceOf(FormView::class, $this->helper->getChildFormView($formView, 'test_elementId'));
+        $this->assertInstanceOf(FormView::class, $this->helper->getChildFormView($formView, 'test_elementId'));
     }
 
     public function testAddNewInstance(): void

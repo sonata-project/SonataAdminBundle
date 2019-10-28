@@ -319,7 +319,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->appendFormFieldElementAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame($response->getContent(), 'block');
     }
 
@@ -358,7 +358,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->retrieveFormFieldElementAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame($response->getContent(), 'block');
     }
 
@@ -462,7 +462,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"KO","message":"Too short search string."}', $response->getContent());
     }
@@ -487,7 +487,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
@@ -519,7 +519,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
@@ -544,7 +544,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }

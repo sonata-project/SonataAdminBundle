@@ -30,8 +30,8 @@ class SearchActionTest extends TestCase
 {
     private $container;
     private $pool;
-    private $action;
     private $searchHandler;
+    private $action;
     private $templating;
     private $breadcrumbsBuilder;
 

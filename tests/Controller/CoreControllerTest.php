@@ -28,7 +28,6 @@ use Symfony\Component\HttpFoundation\Response;
 class CoreControllerTest extends TestCase
 {
     /**
-     * @doesNotPerformAssertions
      * @group legacy
      */
     public function testdashboardActionStandardRequest(): void
@@ -75,11 +74,10 @@ class CoreControllerTest extends TestCase
         $controller = new CoreController();
         $controller->setContainer($container);
 
-        $this->isInstanceOf(Response::class, $controller->dashboardAction());
+        $this->assertInstanceOf(Response::class, $controller->dashboardAction());
     }
 
     /**
-     * @doesNotPerformAssertions
      * @group legacy
      */
     public function testdashboardActionAjaxLayout(): void
@@ -122,6 +120,6 @@ class CoreControllerTest extends TestCase
 
         $response = $controller->dashboardAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
     }
 }
