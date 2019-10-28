@@ -21,15 +21,13 @@ use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
 class DashboardActionTest extends TestCase
 {
-    /**
-     * @doesNotPerformAssertions
-     */
-    public function testdashboardActionStandardRequest()
+    private $action;
+
+    protected function setUp(): void
     {
         $container = $this->createMock(ContainerInterface::class);
 
@@ -42,55 +40,30 @@ class DashboardActionTest extends TestCase
         $pool->setTemplateRegistry($templateRegistry->reveal());
 
         $templating = $this->createMock(EngineInterface::class);
-        $request = new Request();
-
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
 
         $breadcrumbsBuilder = $this->getMockForAbstractClass(BreadcrumbsBuilderInterface::class);
 
-        $dashboardAction = new DashboardAction(
+        $this->action = new DashboardAction(
             [],
             $breadcrumbsBuilder,
             $templateRegistry->reveal(),
             $pool,
             $templating
         );
-
-        $this->isInstanceOf(Response::class, $dashboardAction($request));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    public function testdashboardActionStandardRequest()
+    {
+        $request = new Request();
+
+        $this->assertInstanceOf(Response::class, ($this->action)($request));
+    }
+
     public function testDashboardActionAjaxLayout(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
-
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->getTemplate('ajax')->willReturn('ajax.html');
-        $templateRegistry->getTemplate('dashboard')->willReturn('dashboard.html');
-        $templateRegistry->getTemplate('layout')->willReturn('layout.html');
-        $breadcrumbsBuilder = $this->getMockForAbstractClass(BreadcrumbsBuilderInterface::class);
-
-        $pool = new Pool($container, 'title', 'logo.png');
-        $pool->setTemplateRegistry($templateRegistry->reveal());
-
-        $templating = $this->createMock(EngineInterface::class);
         $request = new Request();
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
-
-        $dashboardAction = new DashboardAction(
-            [],
-            $breadcrumbsBuilder,
-            $templateRegistry->reveal(),
-            $pool,
-            $templating
-        );
-
-        $this->isInstanceOf(Response::class, $dashboardAction($request));
+        $this->assertInstanceOf(Response::class, ($this->action)($request));
     }
 }
