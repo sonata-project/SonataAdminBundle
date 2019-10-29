@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 final class DashboardAction
 {
@@ -41,23 +41,24 @@ final class DashboardAction
      * @var Pool
      */
     private $pool;
+
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    private $templateEngine;
+    private $twig;
 
     public function __construct(
         array $dashboardBlocks,
         BreadcrumbsBuilderInterface $breadcrumbsBuilder,
         TemplateRegistryInterface $templateRegistry,
         Pool $pool,
-        EngineInterface $templateEngine
+        Environment $twig
     ) {
         $this->dashboardBlocks = $dashboardBlocks;
         $this->breadcrumbsBuilder = $breadcrumbsBuilder;
         $this->templateRegistry = $templateRegistry;
         $this->pool = $pool;
-        $this->templateEngine = $templateEngine;
+        $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response
@@ -86,6 +87,6 @@ final class DashboardAction
             $parameters['breadcrumbs_builder'] = $this->breadcrumbsBuilder;
         }
 
-        return new Response($this->templateEngine->render($this->templateRegistry->getTemplate('dashboard'), $parameters));
+        return new Response($this->twig->render($this->templateRegistry->getTemplate('dashboard'), $parameters));
     }
 }
