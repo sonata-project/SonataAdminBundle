@@ -18,10 +18,10 @@ use Sonata\AdminBundle\Action\DashboardAction;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 class DashboardActionTest extends TestCase
 {
@@ -39,7 +39,7 @@ class DashboardActionTest extends TestCase
         $pool = new Pool($container, 'title', 'logo.png');
         $pool->setTemplateRegistry($templateRegistry->reveal());
 
-        $templating = $this->createMock(EngineInterface::class);
+        $twig = $this->createMock(Environment::class);
 
         $breadcrumbsBuilder = $this->getMockForAbstractClass(BreadcrumbsBuilderInterface::class);
 
@@ -48,7 +48,7 @@ class DashboardActionTest extends TestCase
             $breadcrumbsBuilder,
             $templateRegistry->reveal(),
             $pool,
-            $templating
+            $twig
         );
     }
 

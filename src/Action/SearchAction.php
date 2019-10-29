@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 final class SearchAction
 {
@@ -45,23 +45,24 @@ final class SearchAction
      * @var BreadcrumbsBuilderInterface
      */
     private $breadcrumbsBuilder;
+
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    private $templateEngine;
+    private $twig;
 
     public function __construct(
         Pool $pool,
         SearchHandler $searchHandler,
         TemplateRegistryInterface $templateRegistry,
         BreadcrumbsBuilderInterface $breadcrumbsBuilder,
-        EngineInterface $templateEngine
+        Environment $twig
     ) {
         $this->pool = $pool;
         $this->searchHandler = $searchHandler;
         $this->templateRegistry = $templateRegistry;
         $this->breadcrumbsBuilder = $breadcrumbsBuilder;
-        $this->templateEngine = $templateEngine;
+        $this->twig = $twig;
     }
 
     /**
@@ -73,7 +74,7 @@ final class SearchAction
     public function __invoke(Request $request): Response
     {
         if (!$request->get('admin') || !$request->isXmlHttpRequest()) {
-            return new Response($this->templateEngine->render($this->templateRegistry->getTemplate('search'), [
+            return new Response($this->twig->render($this->templateRegistry->getTemplate('search'), [
                 'base_template' => $request->isXmlHttpRequest() ?
                     $this->templateRegistry->getTemplate('ajax') :
                     $this->templateRegistry->getTemplate('layout'),
