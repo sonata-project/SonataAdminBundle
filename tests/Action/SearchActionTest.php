@@ -31,6 +31,7 @@ class SearchActionTest extends TestCase
     private $container;
     private $pool;
     private $action;
+    private $searchHandler;
     private $templating;
     private $breadcrumbsBuilder;
 
@@ -46,16 +47,15 @@ class SearchActionTest extends TestCase
 
         $this->breadcrumbsBuilder = $this->createMock(BreadcrumbsBuilderInterface::class);
         $this->searchHandler = $this->createMock(SearchHandler::class);
+        $this->templating = $this->prophesize(EngineInterface::class);
 
         $this->action = new SearchAction(
             $this->pool,
             $this->searchHandler,
             $templateRegistry,
-            $this->breadcrumbsBuilder
+            $this->breadcrumbsBuilder,
+            $this->templating->reveal()
         );
-        $this->action->setContainer($this->container);
-        $this->templating = $this->prophesize(EngineInterface::class);
-        $this->container->set('templating', $this->templating->reveal());
     }
 
     public function testGlobalPage(): void
@@ -76,9 +76,7 @@ class SearchActionTest extends TestCase
             'groups' => [],
         ], null)->willReturn(new Response());
 
-        // NEXT_MAJOR: simplify this when dropping php 5
-        $action = $this->action;
-        $this->assertInstanceOf(Response::class, $action($request));
+        $this->assertInstanceOf(Response::class, ($this->action)($request));
     }
 
     public function testAjaxCall(): void
@@ -89,8 +87,6 @@ class SearchActionTest extends TestCase
         $request = new Request(['admin' => 'foo']);
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
-        // NEXT_MAJOR: simplify this when dropping php 5
-        $action = $this->action;
-        $this->assertInstanceOf(JsonResponse::class, $action($request));
+        $this->assertInstanceOf(JsonResponse::class, ($this->action)($request));
     }
 }

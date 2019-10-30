@@ -1307,7 +1307,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->datagrid;
     }
 
-    public function buildTabMenu($action, AdminInterface $childAdmin = null): void
+    public function buildTabMenu($action, AdminInterface $childAdmin = null): MenuItemInterface
     {
         if ($this->loaded['tab_menu']) {
             return $this->menu;
