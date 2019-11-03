@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Tests\Form\Widget;
 
 use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as SymfonyChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\Tests\Fixtures\TestExtension;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -58,20 +57,12 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 
     protected function getParentClass()
     {
-        if (class_exists(RangeType::class)) {
-            return ChoiceType::class;
-        }
-
-        return 'sonata_type_filter_choice';
+        return ChoiceType::class;
     }
 
     protected function getChoiceClass()
     {
-        if (class_exists(RangeType::class)) {
-            return SymfonyChoiceType::class;
-        }
-
-        return 'choice';
+        return SymfonyChoiceType::class;
     }
 
     protected function getExtensions()

@@ -21,10 +21,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Symfony\Bridge\Twig\AppVariable;
-use Symfony\Bridge\Twig\Command\DebugCommand;
-use Symfony\Bridge\Twig\Extension\FormExtension;
-use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormRenderer;
@@ -117,27 +113,6 @@ final class RetrieveFormFieldElementActionTest extends TestCase
     private function configureFormRenderer()
     {
         $runtime = $this->prophesize(FormRenderer::class);
-
-        // Remove the condition when dropping sf < 3.2
-        if (!method_exists(AppVariable::class, 'getToken')) {
-            $extension = $this->prophesize(FormExtension::class);
-
-            $this->twig->getExtension(FormExtension::class)->willReturn($extension->reveal());
-            $extension->initRuntime($this->twig->reveal())->shouldBeCalled();
-            $extension->renderer = $runtime->reveal();
-
-            return $runtime;
-        }
-
-        // Remove the condition when dropping sf < 3.4
-        if (!method_exists(DebugCommand::class, 'getLoaderPaths')) {
-            $twigRuntime = $this->prophesize(TwigRenderer::class);
-
-            $this->twig->getRuntime(TwigRenderer::class)->willReturn($twigRuntime->reveal());
-            $twigRuntime->setEnvironment($this->twig->reveal())->shouldBeCalled();
-
-            return $twigRuntime;
-        }
 
         $this->twig->getRuntime(FormRenderer::class)->willReturn($runtime->reveal());
 

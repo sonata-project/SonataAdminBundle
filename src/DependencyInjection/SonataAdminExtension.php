@@ -270,15 +270,6 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
          * This is a work in progress, so for now it is hardcoded
          */
         $classes = [
-            'email' => '',
-            'textarea' => '',
-            'text' => '',
-            'choice' => '',
-            'integer' => '',
-            'datetime' => 'sonata-medium-date',
-            'date' => 'sonata-medium-date',
-
-            // SF3+
             SymfonyChoiceType::class => '',
             SymfonyDateType::class => 'sonata-medium-date',
             SymfonyDateTimeType::class => 'sonata-medium-date',
@@ -377,88 +368,13 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         );
     }
 
+    /**
+     * NEXT_MAJOR: remove this property.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x
+     */
     public function configureClassesToCompile()
     {
-        $this->addClassesToCompile([
-            AbstractAdmin::class,
-            AbstractAdminExtension::class,
-            AdminExtensionInterface::class,
-            AdminHelper::class,
-            AdminInterface::class,
-            BaseFieldDescription::class,
-            FieldDescriptionCollection::class,
-            FieldDescriptionInterface::class,
-            Pool::class,
-            AdminListBlockService::class,
-            DatagridBuilderInterface::class,
-            FormContractorInterface::class,
-            ListBuilderInterface::class,
-            RouteBuilderInterface::class,
-            ShowBuilderInterface::class,
-            Datagrid::class,
-            DatagridInterface::class,
-            DatagridMapper::class,
-            ListMapper::class,
-            Pager::class,
-            PagerInterface::class,
-            ProxyQueryInterface::class,
-            ModelManagerException::class,
-            NoValueException::class,
-            Filter::class,
-            FilterFactory::class,
-            FilterFactoryInterface::class,
-            FilterInterface::class,
-            ArrayToModelTransformer::class,
-            ModelsToArrayTransformer::class,
-            ModelToIdTransformer::class,
-            MergeCollectionListener::class,
-            FormTypeFieldExtension::class,
-            FormMapper::class,
-            AdminType::class,
-            ChoiceType::class,
-            DateRangeType::class,
-            DateTimeRangeType::class,
-            DateTimeType::class,
-            DateType::class,
-            DefaultType::class,
-            NumberType::class,
-            ModelReferenceType::class,
-            ModelType::class,
-            ModelListType::class,
-            TypeGuesserChain::class,
-            TypeGuesserInterface::class,
-            AuditManager::class,
-            AuditManagerInterface::class,
-            AuditReaderInterface::class,
-            ModelManagerInterface::class,
-            AdminPoolLoader::class,
-            DefaultRouteGenerator::class,
-            PathInfoBuilder::class,
-            QueryStringBuilder::class,
-            RouteCollection::class,
-            RouteGeneratorInterface::class,
-            AdminPermissionMap::class,
-            MaskBuilder::class,
-            AclSecurityHandler::class,
-            AclSecurityHandlerInterface::class,
-            NoopSecurityHandler::class,
-            RoleSecurityHandler::class,
-            SecurityHandlerInterface::class,
-            ShowMapper::class,
-            BCLabelTranslatorStrategy::class,
-            FormLabelTranslatorStrategy::class,
-            LabelTranslatorStrategyInterface::class,
-            NativeLabelTranslatorStrategy::class,
-            NoopLabelTranslatorStrategy::class,
-            UnderscoreLabelTranslatorStrategy::class,
-            TwigSonataAdminExtension::class,
-            AdminAclManipulator::class,
-            AdminAclManipulatorInterface::class,
-            FormBuilderIterator::class,
-            FormViewIterator::class,
-            ObjectAclManipulator::class,
-            ObjectAclManipulatorInterface::class,
-        ]);
     }
 
     public function getNamespace()

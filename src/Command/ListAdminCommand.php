@@ -41,10 +41,7 @@ class ListAdminCommand extends Command
 
     public function configure()
     {
-        $this->setDescription('List all admin services available')
-            ->setName(static::$defaultName)// BC for symfony/console < 3.4.0
-            // NEXT_MAJOR: drop this line after drop support symfony/console < 3.4.0
-        ;
+        $this->setDescription('List all admin services available');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)

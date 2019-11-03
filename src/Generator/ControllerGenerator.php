@@ -19,6 +19,8 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 /**
  * @final since sonata-project/admin-bundle 3.52
  *
+ * @deprecated Since 3.x, to be removed when dropping Symfony < 4.2 support. Use Maker Bundle instead.
+ *
  * @author Marek Stipek <mario.dweller@seznam.cz>
  * @author Simon Cosandey <simon.cosandey@simseo.ch>
  */
@@ -58,11 +60,7 @@ class ControllerGenerator extends Generator
         $parts = explode('\\', $this->class);
 
         if (file_exists($this->file)) {
-            throw new \RuntimeException(sprintf(
-                'Unable to generate the admin controller class "%s". The file "%s" already exists.',
-                $this->class,
-                realpath($this->file)
-            ));
+            throw new \RuntimeException(sprintf('Unable to generate the admin controller class "%s". The file "%s" already exists.', $this->class, realpath($this->file)));
         }
 
         $this->renderFile('AdminController.php.twig', $this->file, [

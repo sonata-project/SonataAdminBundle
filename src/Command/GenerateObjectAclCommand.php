@@ -67,8 +67,6 @@ class GenerateObjectAclCommand extends QuestionableCommand
     {
         $this
             ->setDescription('Install ACL for the objects of the Admin Classes.')
-            ->setName(static::$defaultName)// BC for symfony/console < 3.4.0
-            // NEXT_MAJOR: drop this line after drop support symfony/console < 3.4.0
             ->addOption('object_owner', null, InputOption::VALUE_OPTIONAL, 'If set, the task will set the object owner for each admin.')
             ->addOption('user_entity', null, InputOption::VALUE_OPTIONAL, 'Shortcut notation like <comment>AcmeDemoBundle:User</comment>. If not set, it will be asked the first time an object owner is set.')
             ->addOption('step', null, InputOption::VALUE_NONE, 'If set, the task will ask for each admin if the ACLs need to be generated and what object owner to set, if any.')

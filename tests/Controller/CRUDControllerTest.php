@@ -38,8 +38,6 @@ use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Exporter\Writer\JsonWriter;
-use Symfony\Bridge\Twig\Extension\FormExtension;
-use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -200,11 +198,6 @@ class CRUDControllerTest extends TestCase
             return $response;
         });
 
-        // SF < 3.3.10 BC
-        $templating->expects($this->any())
-            ->method('renderResponse')
-            ->will($templatingRenderReturnCallback);
-
         $templating->expects($this->any())
             ->method('render')
             ->will($templatingRenderReturnCallback);
@@ -216,24 +209,8 @@ class CRUDControllerTest extends TestCase
             ->getMock();
 
         $twig->expects($this->any())
-            ->method('getExtension')
-            ->willReturnCallback(function ($name) {
-                switch ($name) {
-                    case FormExtension::class:
-                        return new FormExtension($this->createMock(TwigRenderer::class));
-                }
-            });
-
-        $twig->expects($this->any())
             ->method('getRuntime')
-            ->willReturnCallback(function ($name) {
-                switch ($name) {
-                    case TwigRenderer::class:
-                        return $this->createMock(TwigRenderer::class);
-                    case FormRenderer::class:
-                        return $this->createMock(FormRenderer::class);
-                }
-            });
+            ->willReturn($this->createMock(FormRenderer::class));
 
         // NEXT_MAJOR : require sonata/exporter ^1.7 and remove conditional
         if (class_exists(Exporter::class)) {

@@ -35,11 +35,6 @@ class AddFilterTypeCompilerPass implements CompilerPassInterface
             $serviceDefinition->setPublic(true); // Temporary fix until we can support service locators
 
             $types[$serviceDefinition->getClass()] = $id;
-
-            // NEXT_MAJOR: Remove the alias when dropping support for symfony 2.x
-            foreach ($attributes as $eachTag) {
-                $types[$eachTag['alias']] = $id;
-            }
         }
 
         $definition->replaceArgument(1, $types);

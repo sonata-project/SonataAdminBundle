@@ -23,13 +23,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
-use Symfony\Bridge\Twig\AppVariable;
-use Symfony\Bridge\Twig\Command\DebugCommand;
-use Symfony\Bridge\Twig\Extension\FormExtension;
-use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\FormRenderer;
-use Symfony\Component\Form\FormRendererEngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -38,7 +32,6 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
-use Twig\RuntimeLoader\FactoryRuntimeLoader;
 use Twig\Template;
 
 final class SetObjectFieldValueActionTest extends TestCase
@@ -219,48 +212,5 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $this->assertSame(400, $response->getStatusCode());
         $this->assertSame(json_encode("error1\nerror2"), $response->getContent());
-    }
-
-    private function configureFormRenderer()
-    {
-        $runtime = new FormRenderer($this->createMock(
-            FormRendererEngineInterface::class,
-            CsrfTokenManagerInterface::class
-        ));
-
-        // Remove the condition when dropping sf < 3.2
-        if (!method_exists(AppVariable::class, 'getToken')) {
-            $extension = new FormExtension();
-
-            $this->twig->addExtension($extension);
-            $extension->renderer = $runtime;
-
-            return $runtime;
-        }
-
-        // Remove the condition when dropping sf < 3.4
-        if (!method_exists(DebugCommand::class, 'getLoaderPaths')) {
-            $twigRuntime = $this->prophesize(TwigRenderer::class);
-
-            $this->twig->addRuntimeLoader(new FactoryRuntimeLoader(
-                FormRenderer::class,
-                static function () use ($runtime) {
-                    return $runtime;
-                }
-            ));
-            $this->twig->getRuntime(TwigRenderer::class)->willReturn($twigRuntime->reveal());
-            $twigRuntime->setEnvironment($this->twig)->shouldBeCalled();
-
-            return $twigRuntime;
-        }
-
-        $this->twig->addRuntimeLoader(new FactoryRuntimeLoader(
-            FormRenderer::class,
-            static function () use ($runtime) {
-                return $runtime;
-            }
-        ));
-
-        return $runtime;
     }
 }
