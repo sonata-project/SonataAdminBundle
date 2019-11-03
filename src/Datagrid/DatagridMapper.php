@@ -85,10 +85,7 @@ class DatagridMapper extends BaseMapper
                 array_merge($filterOptions, $fieldDescriptionOptions)
             );
         } else {
-            throw new \RuntimeException(
-                'Unknown field name in datagrid mapper.'
-                .' Field name should be either of FieldDescriptionInterface interface or string.'
-            );
+            throw new \RuntimeException('Unknown field name in datagrid mapper.'.' Field name should be either of FieldDescriptionInterface interface or string.');
         }
 
         if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {

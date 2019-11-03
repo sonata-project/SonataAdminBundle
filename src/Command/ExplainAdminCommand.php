@@ -49,10 +49,7 @@ class ExplainAdminCommand extends Command
 
     public function configure()
     {
-        $this->setDescription('Explain an admin service')
-            ->setName(static::$defaultName)// BC for symfony/console < 3.4.0
-            // NEXT_MAJOR: drop this line after drop support symfony/console < 3.4.0
-        ;
+        $this->setDescription('Explain an admin service');
 
         $this->addArgument('admin', InputArgument::REQUIRED, 'The admin service id');
     }

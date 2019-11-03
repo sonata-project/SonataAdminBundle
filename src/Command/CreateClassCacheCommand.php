@@ -54,10 +54,7 @@ class CreateClassCacheCommand extends Command
 
     public function configure()
     {
-        $this->setDescription('Generate the classes.php files')
-            ->setName(static::$defaultName)// BC for symfony/console < 3.4.0
-            // NEXT_MAJOR: drop this line after drop support symfony/console < 3.4.0
-        ;
+        $this->setDescription('Generate the classes.php files');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
