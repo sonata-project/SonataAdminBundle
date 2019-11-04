@@ -68,9 +68,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
 
             foreach ($extensions as $extension => $attributes) {
                 if (!$container->has($extension)) {
-                    throw new \InvalidArgumentException(
-                        sprintf('Unable to find extension service for id %s', $extension)
-                    );
+                    throw new \InvalidArgumentException(sprintf('Unable to find extension service for id %s', $extension));
                 }
 
                 $this->addExtension($targets, $id, $extension, $attributes);

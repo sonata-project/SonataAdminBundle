@@ -336,9 +336,7 @@ class CRUDController implements ContainerAwareInterface
         $form = $this->admin->getForm();
 
         if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
-            throw new \RuntimeException(
-                'No editable field defined. Did you forget to implement the "configureFormFields" method?'
-            );
+            throw new \RuntimeException('No editable field defined. Did you forget to implement the "configureFormFields" method?');
         }
 
         $form->setData($existingObject);
@@ -597,9 +595,7 @@ class CRUDController implements ContainerAwareInterface
         $form = $this->admin->getForm();
 
         if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
-            throw new \RuntimeException(
-                'No editable field defined. Did you forget to implement the "configureFormFields" method?'
-            );
+            throw new \RuntimeException('No editable field defined. Did you forget to implement the "configureFormFields" method?');
         }
 
         $form->setData($newObject);
@@ -758,12 +754,7 @@ class CRUDController implements ContainerAwareInterface
         $manager = $this->get('sonata.admin.audit.manager');
 
         if (!$manager->hasReader($this->admin->getClass())) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the audit reader for class : %s',
-                    $this->admin->getClass()
-                )
-            );
+            throw $this->createNotFoundException(sprintf('unable to find the audit reader for class : %s', $this->admin->getClass()));
         }
 
         $reader = $manager->getReader($this->admin->getClass());
@@ -809,12 +800,7 @@ class CRUDController implements ContainerAwareInterface
         $manager = $this->get('sonata.admin.audit.manager');
 
         if (!$manager->hasReader($this->admin->getClass())) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the audit reader for class : %s',
-                    $this->admin->getClass()
-                )
-            );
+            throw $this->createNotFoundException(sprintf('unable to find the audit reader for class : %s', $this->admin->getClass()));
         }
 
         $reader = $manager->getReader($this->admin->getClass());
@@ -823,14 +809,7 @@ class CRUDController implements ContainerAwareInterface
         $object = $reader->find($this->admin->getClass(), $id, $revision);
 
         if (!$object) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
-                    $id,
-                    $revision,
-                    $this->admin->getClass()
-                )
-            );
+            throw $this->createNotFoundException(sprintf('unable to find the targeted object `%s` from the revision `%s` with classname : `%s`', $id, $revision, $this->admin->getClass()));
         }
 
         $this->admin->setSubject($object);
@@ -875,12 +854,7 @@ class CRUDController implements ContainerAwareInterface
         $manager = $this->get('sonata.admin.audit.manager');
 
         if (!$manager->hasReader($this->admin->getClass())) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the audit reader for class : %s',
-                    $this->admin->getClass()
-                )
-            );
+            throw $this->createNotFoundException(sprintf('unable to find the audit reader for class : %s', $this->admin->getClass()));
         }
 
         $reader = $manager->getReader($this->admin->getClass());
@@ -888,27 +862,13 @@ class CRUDController implements ContainerAwareInterface
         // retrieve the base revision
         $base_object = $reader->find($this->admin->getClass(), $id, $base_revision);
         if (!$base_object) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
-                    $id,
-                    $base_revision,
-                    $this->admin->getClass()
-                )
-            );
+            throw $this->createNotFoundException(sprintf('unable to find the targeted object `%s` from the revision `%s` with classname : `%s`', $id, $base_revision, $this->admin->getClass()));
         }
 
         // retrieve the compare revision
         $compare_object = $reader->find($this->admin->getClass(), $id, $compare_revision);
         if (!$compare_object) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
-                    $id,
-                    $compare_revision,
-                    $this->admin->getClass()
-                )
-            );
+            throw $this->createNotFoundException(sprintf('unable to find the targeted object `%s` from the revision `%s` with classname : `%s`', $id, $compare_revision, $this->admin->getClass()));
         }
 
         $this->admin->setSubject($base_object);
@@ -964,14 +924,7 @@ class CRUDController implements ContainerAwareInterface
         }
 
         if (!\in_array($format, $allowedExportFormats, true)) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`',
-                    $format,
-                    $this->admin->getClass(),
-                    implode(', ', $allowedExportFormats)
-                )
-            );
+            throw new \RuntimeException(sprintf('Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`', $format, $this->admin->getClass(), implode(', ', $allowedExportFormats)));
         }
 
         return $exporter->getResponse(
@@ -1139,28 +1092,18 @@ class CRUDController implements ContainerAwareInterface
         $adminCode = $request->get('_sonata_admin');
 
         if (!$adminCode) {
-            throw new \RuntimeException(sprintf(
-                'There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`',
-                static::class,
-                $request->get('_route')
-            ));
+            throw new \RuntimeException(sprintf('There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`', static::class, $request->get('_route')));
         }
 
         $this->admin = $this->container->get('sonata.admin.pool')->getAdminByAdminCode($adminCode);
 
         if (!$this->admin) {
-            throw new \RuntimeException(sprintf(
-                'Unable to find the admin class related to the current controller (%s)',
-                static::class
-            ));
+            throw new \RuntimeException(sprintf('Unable to find the admin class related to the current controller (%s)', static::class));
         }
 
         $this->templateRegistry = $this->container->get($this->admin->getCode().'.template_registry');
         if (!$this->templateRegistry instanceof TemplateRegistryInterface) {
-            throw new \RuntimeException(sprintf(
-                'Unable to find the template registry related to the current admin (%s)',
-                $this->admin->getCode()
-            ));
+            throw new \RuntimeException(sprintf('Unable to find the template registry related to the current admin (%s)', $this->admin->getCode()));
         }
 
         $rootAdmin = $this->admin;

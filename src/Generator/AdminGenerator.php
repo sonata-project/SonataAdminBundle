@@ -62,11 +62,7 @@ class AdminGenerator extends Generator
         $parts = explode('\\', $this->class);
 
         if (file_exists($this->file)) {
-            throw new \RuntimeException(sprintf(
-                'Unable to generate the admin class "%s". The file "%s" already exists.',
-                $this->class,
-                realpath($this->file)
-            ));
+            throw new \RuntimeException(sprintf('Unable to generate the admin class "%s". The file "%s" already exists.', $this->class, realpath($this->file)));
         }
 
         $this->renderFile('Admin.php.twig', $this->file, [

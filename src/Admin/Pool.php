@@ -209,11 +209,7 @@ class Pool
         }
 
         if (\count($this->adminClasses[$class]) > 1) {
-            throw new \RuntimeException(sprintf(
-                'Unable to find a valid admin for the class: %s, there are too many registered: %s',
-                $class,
-                implode(', ', $this->adminClasses[$class])
-            ));
+            throw new \RuntimeException(sprintf('Unable to find a valid admin for the class: %s, there are too many registered: %s', $class, implode(', ', $this->adminClasses[$class])));
         }
 
         return $this->getInstance($this->adminClasses[$class][0]);
