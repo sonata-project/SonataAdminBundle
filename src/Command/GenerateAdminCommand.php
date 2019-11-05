@@ -29,8 +29,16 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
+@trigger_error(
+    'The '.__NAMESPACE__.'\GenerateAdminCommand class is deprecated since 3.55 in favor of Maker Bundle.'
+    .' Install symfony/maker-bundle and use $ bin/console make:sonata:admin instead',
+    E_USER_DEPRECATED
+);
+
 /**
  * @final since sonata-project/admin-bundle 3.52
+ *
+ * Remove this class after dropping support symfony < 4.2.0
  *
  * @author Marek Stipek <mario.dweller@seznam.cz>
  * @author Simon Cosandey <simon.cosandey@simseo.ch>
