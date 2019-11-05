@@ -37,6 +37,7 @@ $rules = [
     '@PHP56Migration' => true,
     '@PHP56Migration:risky' => true,
     '@PHPUnit57Migration:risky' => true,
+    'single_line_throw' => false,
     '@PHP70Migration' => true,
     '@PHP70Migration:risky' => true,
     '@PHPUnit60Migration:risky' => true,
