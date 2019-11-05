@@ -31,6 +31,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
+ *
+ * @group legacy
  */
 class GenerateAdminCommandTest extends TestCase
 {

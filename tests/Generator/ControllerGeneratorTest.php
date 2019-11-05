@@ -21,6 +21,8 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
  * @author Marek Stipek <mario.dweller@seznam.cz>
+ *
+ * @group legacy
  */
 class ControllerGeneratorTest extends TestCase
 {
