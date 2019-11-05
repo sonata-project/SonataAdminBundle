@@ -67,7 +67,6 @@ class GroupMenuProviderTest extends TestCase
     /**
      * NEXT_MAJOR: Remove this test.
      *
-     *
      * @group legacy
      * @dataProvider getAdminGroups
      */
