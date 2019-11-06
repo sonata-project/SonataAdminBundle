@@ -65,7 +65,10 @@ final class AppendFormFieldElementAction
 
         $subject = $admin->getObject($objectId);
         if ($objectId && !$subject) {
-            throw new NotFoundHttpException(sprintf('Could not find subject for id "%s"', $objectId));
+            throw new NotFoundHttpException(sprintf(
+                'Could not find subject for id "%s"',
+                $objectId
+            ));
         }
 
         if (!$subject) {

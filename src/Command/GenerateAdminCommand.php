@@ -98,7 +98,11 @@ class GenerateAdminCommand extends QuestionableCommand
         $managerTypes = $this->getAvailableManagerTypes();
 
         if (!isset($managerTypes[$managerType])) {
-            throw new \InvalidArgumentException(sprintf('Invalid manager type "%s". Available manager types are "%s".', $managerType, implode('", "', array_keys($managerTypes))));
+            throw new \InvalidArgumentException(sprintf(
+                'Invalid manager type "%s". Available manager types are "%s".',
+                $managerType,
+                implode('", "', array_keys($managerTypes))
+            ));
         }
 
         return $managerType;

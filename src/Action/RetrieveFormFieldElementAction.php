@@ -65,7 +65,11 @@ final class RetrieveFormFieldElementAction
         if ($objectId) {
             $subject = $admin->getObject($objectId);
             if (!$subject) {
-                throw new NotFoundHttpException(sprintf('Unable to find the object id: %s, class: %s', $objectId, $admin->getClass()));
+                throw new NotFoundHttpException(sprintf(
+                    'Unable to find the object id: %s, class: %s',
+                    $objectId,
+                    $admin->getClass()
+                ));
             }
         } else {
             $subject = $admin->getNewInstance();

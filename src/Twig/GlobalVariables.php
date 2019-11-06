@@ -64,7 +64,9 @@ class GlobalVariables
 
             return;
         }
-        throw new \InvalidArgumentException('$adminPool should be an instance of Sonata\AdminBundle\Admin\Pool');
+        throw new \InvalidArgumentException(
+            '$adminPool should be an instance of Sonata\AdminBundle\Admin\Pool'
+        );
     }
 
     /**

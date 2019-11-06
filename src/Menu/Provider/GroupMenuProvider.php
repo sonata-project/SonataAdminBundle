@@ -64,7 +64,9 @@ class GroupMenuProvider implements MenuProviderInterface
                 E_USER_DEPRECATED
             );
         } elseif (!$checker instanceof AuthorizationCheckerInterface) {
-            throw new \InvalidArgumentException('Argument 3 must be an instance of \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
+            throw new \InvalidArgumentException(
+                'Argument 3 must be an instance of \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'
+            );
         }
 
         $this->checker = $checker;

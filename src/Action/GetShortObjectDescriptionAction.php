@@ -51,7 +51,10 @@ final class GetShortObjectDescriptionAction
         $admin = $this->pool->getInstance($code);
 
         if (!$admin) {
-            throw new NotFoundHttpException(sprintf('Could not find admin for code "%s"', $code));
+            throw new NotFoundHttpException(sprintf(
+                'Could not find admin for code "%s"',
+                $code
+            ));
         }
 
         $admin->setRequest($request);

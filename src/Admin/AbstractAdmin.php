@@ -878,7 +878,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 return $this->parentAssociationMapping[$parent];
             }
 
-            throw new \InvalidArgumentException(sprintf("There's no association between %s and %s.", $this->getCode(), $this->getParent()->getCode()));
+            throw new \InvalidArgumentException(sprintf(
+                "There's no association between %s and %s.",
+                $this->getCode(),
+                $this->getParent()->getCode()
+            ));
         }
 
         // NEXT_MAJOR: remove this line
@@ -1817,7 +1821,10 @@ EOT;
                 continue;
             }
 
-            throw new \RuntimeException(sprintf('Circular reference detected! The child admin `%s` is already in the parent tree of the `%s` admin.', $child->getCode(), $this->getCode()));
+            throw new \RuntimeException(sprintf(
+                'Circular reference detected! The child admin `%s` is already in the parent tree of the `%s` admin.',
+                $child->getCode(), $this->getCode()
+            ));
         }
 
         $this->children[$child->getCode()] = $child;
@@ -2411,7 +2418,9 @@ EOT;
     {
         // NEXT_MAJOR: Move ValidatorInterface check to method signature
         if (!$validator instanceof ValidatorInterface) {
-            throw new \InvalidArgumentException('Argument 1 must be an instance of Symfony\Component\Validator\Validator\ValidatorInterface');
+            throw new \InvalidArgumentException(
+                'Argument 1 must be an instance of Symfony\Component\Validator\Validator\ValidatorInterface'
+            );
         }
 
         $this->validator = $validator;
@@ -2600,7 +2609,11 @@ EOT;
         $access = $this->getAccess();
 
         if (!\array_key_exists($action, $access)) {
-            throw new \InvalidArgumentException(sprintf('Action "%s" could not be found in access mapping.'.' Please make sure your action is defined into your admin class accessMapping property.', $action));
+            throw new \InvalidArgumentException(sprintf(
+                'Action "%s" could not be found in access mapping.'
+                .' Please make sure your action is defined into your admin class accessMapping property.',
+                $action
+            ));
         }
 
         if (!\is_array($access[$action])) {
@@ -3047,7 +3060,11 @@ EOT;
             return $this->subClasses[$name];
         }
 
-        throw new \RuntimeException(sprintf('Unable to find the subclass `%s` for admin `%s`', $name, static::class));
+        throw new \RuntimeException(sprintf(
+            'Unable to find the subclass `%s` for admin `%s`',
+            $name,
+            static::class
+        ));
     }
 
     /**
