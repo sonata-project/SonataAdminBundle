@@ -154,7 +154,12 @@ class Admin implements MetadataProcessorInterface
         }
 
         if (empty($this->group) || empty($this->label)) {
-            throw new \LogicException(sprintf('Unable to generate admin group and label for class %s.', $this->class));
+            throw new \LogicException(
+                sprintf(
+                    'Unable to generate admin group and label for class %s.',
+                    $this->class
+                )
+            );
         }
     }
 

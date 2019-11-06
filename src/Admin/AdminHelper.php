@@ -241,7 +241,9 @@ class AdminHelper
                 $method = sprintf('add%s', Inflector::classify(Inflector::singularize($mapping['fieldName'])));
 
                 if (!method_exists($object, $method)) {
-                    throw new \RuntimeException(sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object)));
+                    throw new \RuntimeException(
+                        sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object))
+                    );
                 }
             }
         }
@@ -309,7 +311,9 @@ class AdminHelper
         }
 
         if (!empty($currentPath)) {
-            throw new \Exception(sprintf('Could not get element id from %s Failing part: %s', $elementId, $currentPath));
+            throw new \Exception(
+                sprintf('Could not get element id from %s Failing part: %s', $elementId, $currentPath)
+            );
         }
 
         return $totalPath;
