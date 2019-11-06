@@ -12,6 +12,7 @@ language: php
 php:
   - '7.2'
   - '7.3'
+  - '7.4snapshot'
   - nightly
 
 dist: xenial
@@ -37,31 +38,32 @@ env:
 matrix:
   fast_finish: true
   include:
-    - php: '7.3'
+    - php: '7.4snapshot'
       env: TARGET=docs
-    - php: '7.3'
+    - php: '7.4snapshot'
       env: TARGET=lint
     - php: '7.2'
       env: COMPOSER_FLAGS="--prefer-lowest"
-    - php: '7.3'
+    - php: '7.4snapshot'
       env: SYMFONY=3.4.*
-    - php: '7.3'
+    - php: '7.4snapshot'
       env: SYMFONY='dev-master as 3.4.x-dev'
-    - php: '7.3'
+    - php: '7.4snapshot'
       env: SONATA_CORE=3.*
-    - php: '7.3'
+    - php: '7.4snapshot'
       env: SONATA_CORE='dev-master as 3.x-dev'
-    - php: '7.3'
+    - php: '7.4snapshot'
       env: SONATA_BLOCK=3.*
-    - php: '7.3'
+    - php: '7.4snapshot'
       env: SONATA_BLOCK='dev-master as 3.x-dev'
-    - php: '7.3'
+    - php: '7.4snapshot'
       env: SYMFONY_MAKER=1.7.*
-    - php: '7.3'
+    - php: '7.4snapshot'
       env: SYMFONY_MAKER='dev-master as 1.7.x-dev'
-    - php: '7.3'
+    - php: '7.4snapshot'
       env: SYMFONY_DEPRECATIONS_HELPER=0
   allow_failures:
+    - php: 7.4snapshot
     - php: nightly
     - env: SYMFONY_DEPRECATIONS_HELPER=0
     - env: SYMFONY='dev-master as 3.4.x-dev'
