@@ -516,6 +516,8 @@ class DatagridTest extends TestCase
             ['3', '50'],
             [3, '50'],
             ['3', 50],
+            [3, ['type' => null, 'value' => 50]],
+            [3, ['type' => null, 'value' => '50']],
         ];
     }
 

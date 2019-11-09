@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -132,7 +133,15 @@ class Datagrid implements DatagridInterface
 
         $this->formBuilder->add('_sort_order', $hiddenType);
         $this->formBuilder->add('_page', $hiddenType);
-        $this->formBuilder->add('_per_page', $hiddenType);
+
+        if (isset($this->values['_per_page']) && \is_array($this->values['_per_page'])) {
+            $this->formBuilder->add('_per_page', CollectionType::class, [
+                'entry_type' => $hiddenType,
+                'allow_add' => true,
+            ]);
+        } else {
+            $this->formBuilder->add('_per_page', $hiddenType);
+        }
 
         $this->form = $this->formBuilder->getForm();
         $this->form->submit($this->values);
