@@ -241,7 +241,6 @@ file that was distributed with this source code.
 
                 <ul class="dropdown-menu" role="menu">
                     {% for filter in admin.datagrid.filters|filter(filter => filter.options['show_filter'] is same as(true) or filter.options['show_filter'] is null) %}
-                        {% set filterActive = ((filter.isActive() or filter.options['show_filter']) and not admin.isDefaultFilter(filter.formName)) %}
                         <li>
                             <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
                                 <i class="fa {{ (filter.isActive() or filter.options['show_filter']) ? 'fa-check-square-o' : 'fa-square-o' }}"></i>{{ filter.label|trans({}, filter.translationDomain ?: admin.translationDomain) }}
