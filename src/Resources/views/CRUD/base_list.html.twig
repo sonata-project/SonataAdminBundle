@@ -267,7 +267,7 @@ file that was distributed with this source code.
                             <div class="col-sm-9">
                                 {% set withAdvancedFilter = false %}
                                 {% for filter in admin.datagrid.filters %}
-                                    {% set filterActive = ((filter.isActive() and filter.options['show_filter'] is null) or (filter.options['show_filter'] is same as(true))) and not admin.isDefaultFilter(filter.formName) %}
+                                    {% set filterActive = filter.isActive() or filter.options['show_filter'] %}
                                     {% set filterVisible = filter.options['show_filter'] is same as(true) or filter.options['show_filter'] is null %}
                                     <div class="form-group {% block sonata_list_filter_group_class %}{% endblock %}" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ filterVisible ? 'true' : 'false' }}" style="display: {% if filterActive %}block{% else %}none{% endif %}">
                                         {% if filter.label is not same as(false) %}
