@@ -1381,6 +1381,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->list;
     }
 
+    /**
+     * @param string $context
+     *
+     * @return ProxyQueryInterface
+     */
     public function createQuery($context = 'list')
     {
         if (\func_num_args() > 0) {
