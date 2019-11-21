@@ -173,6 +173,12 @@ provides a compiler pass which takes care of configuring it correctly for you.
 You can often tweak things using tag attributes. The code shown here is the
 shortest code needed to get it working.
 
+.. note::
+
+    If you don't like writing configuration and want to some more magic, 
+    have a look at the [SonataAutoConfigureBundle](https://symfony.com/doc/master/bundles/SonataAdminBundle/cookbook/recipe_auto_configure_admin_classes.html)
+    described in chapter 24.
+
 Step 4: Register SonataAdmin custom Routes
 ------------------------------------------
 
