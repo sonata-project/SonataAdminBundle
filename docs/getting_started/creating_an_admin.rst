@@ -175,9 +175,11 @@ shortest code needed to get it working.
 
 .. note::
 
-    If you don't like writing configuration and want to some more magic, 
-    have a look at the [SonataAutoConfigureBundle](https://symfony.com/doc/master/bundles/SonataAdminBundle/cookbook/recipe_auto_configure_admin_classes.html)
+    If you don't like writing configuration and want to some more magic,
+    have a look at the `SonataAutoConfigureBundle`_
     described in chapter 24.
+
+.. _`SonataAutoConfigureBundle`: https://symfony.com/doc/master/bundles/SonataAdminBundle/cookbook/recipe_auto_configure_admin_classes.html
 
 Step 4: Register SonataAdmin custom Routes
 ------------------------------------------
