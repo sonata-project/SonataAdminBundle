@@ -116,19 +116,19 @@ easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin`
 
     final class CategoryAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
-            $formMapper->add('name', TextType::class);
+            $form->add('name', TextType::class);
         }
 
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $filter)
         {
-            $datagridMapper->add('name');
+            $filter->add('name');
         }
 
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $list)
         {
-            $listMapper->addIdentifier('name');
+            $list->addIdentifier('name');
         }
     }
 
