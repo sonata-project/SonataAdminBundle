@@ -13,7 +13,9 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
 
     // src/Entity/BlogPost.php
 
-    // ...
+    /**
+     * @ORM\Entity
+     */
     class BlogPost
     {
         // ...
@@ -51,6 +53,9 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
 
     use Doctrine\Common\Collections\ArrayCollection;
 
+    /**
+     * @ORM\Entity
+     */
     class Category
     {
         // ...
@@ -87,7 +92,8 @@ After this, create the schema for these entities:
 .. note::
 
     This article assumes you have basic knowledge of the Doctrine2 ORM and
-    you've set up a database correctly.
+    you've set up a database correctly. You can learn more on Doctrine entities
+    int the [Databases and the Doctrine ORM](https://symfony.com/doc/current/doctrine.html) chapter.
 
 Step 1: Create an Admin Class
 -----------------------------
