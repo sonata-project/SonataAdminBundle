@@ -41,9 +41,9 @@ Here is an example::
 
     // ...
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $list)
     {
-        $listMapper
+        $list
             // addIdentifier allows to specify that this column
             // will provide a link to the entity
             // (edit or show route, depends on your access rights)
@@ -263,9 +263,9 @@ You can add filters to let user control which data will be displayed::
 
     final class ClientAdmin extends AbstractAdmin
     {
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $datagrid)
         {
-            $datagridMapper
+            $datagrid
                 ->add('phone')
                 ->add('email')
             ;
@@ -280,9 +280,9 @@ filter he wants to use.
 To make the filter always visible (even when it is inactive), set the parameter
 ``show_filter`` to ``true``::
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagrid)
     {
-        $datagridMapper
+        $datagrid
             ->add('phone')
             ->add('email', null, [
                 'show_filter' => true
@@ -295,9 +295,9 @@ To make the filter always visible (even when it is inactive), set the parameter
 By default the template generates an ``operator`` for a filter which defaults to ``sonata_type_equal``.
 Though this ``operator_type`` is automatically detected it can be changed or even be hidden::
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagrid)
     {
-        $datagridMapper
+        $datagrid
             ->add('foo', null, [
                 'operator_type' => 'sonata_type_boolean'
             ])
@@ -313,9 +313,9 @@ If you don't need the advanced filters, or all your ``operator_type``
 are hidden, you can disable them by setting ``advanced_filter`` to ``false``.
 You need to disable all advanced filters to make the button disappear::
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagrid)
     {
-        $datagridMapper
+        $datagrid
             ->add('bar', null, [
                 'operator_type' => 'hidden',
                 'advanced_filter' => false
@@ -441,9 +441,9 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the
 
     final class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $datagrid)
         {
-            $datagridMapper
+            $datagrid
                 ->add('full_text', CallbackFilter::class, [
                     'callback' => [$this, 'getFullTextFilter'],
                     'field_type' => 'text'

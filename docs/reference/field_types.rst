@@ -45,9 +45,9 @@ This is currently limited to scalar types (text, integer, url...) and choice typ
     You can use in lists what `view-timezone <http://symfony.com/doc/current/reference/forms/types/datetime.html#view-timezone>`_ allows on forms,
     a way to render the date in the user timezone::
 
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $list)
         {
-            $listMapper
+            $list
 
                 // store date in UTC but display is in the user timezone
                 ->add('date', null, [
@@ -76,10 +76,10 @@ Parameter                               Description
 
 .. code-block:: php
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $list)
     {
         // For the value `prog`, the displayed text is `In progress`. The `App` catalogue will be used to translate `In progress` message.
-        $listMapper
+        $list
             ->add('status', 'choice', [
                 'choices' => [
                     'prep' => 'Prepared',
@@ -95,10 +95,10 @@ The ``choice`` field type also supports multiple values that can be separated by
 
 .. code-block:: php
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $list)
     {
         // For the value `['r', 'b']`, the displayed text ist `red | blue`.
-        $listMapper
+        $list
             ->add('colors', 'choice', [
                 'multiple' => true,
                 'delimiter' => ' | ',
@@ -136,9 +136,9 @@ Parameter                               Description
 
 .. code-block:: php
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $list)
     {
-        $listMapper
+        $list
             // Output for value `http://example.com`:
             // `<a href="http://example.com">http://example.com</a>`
             ->add('targetUrl', 'url')
@@ -206,9 +206,9 @@ Parameter                   Description
 
 .. code-block:: php
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $list)
     {
-        $listMapper
+        $list
 
             // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
             // `<p><strong>Creating a Template for the Field</strong> and form</p>` (no escaping is done)

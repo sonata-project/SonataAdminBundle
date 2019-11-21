@@ -18,9 +18,9 @@ Example
 
     final class PostAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
-            $formMapper
+            $form
                 ->with('General')
                     ->add('title', null, [
                         'help' => 'Set the title of a web page'
@@ -46,9 +46,9 @@ All at once::
 
     final class PostAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
-            $formMapper
+            $form
                 ->with('General')
                     ->add('title')
                     ->add('keywords')
@@ -67,9 +67,9 @@ or step by step::
 
     final class PostAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
-            $formMapper
+            $form
                 ->with('General')
                     ->add('title')
                     ->add('keywords')
@@ -94,11 +94,11 @@ This Extension for example adds a note field to some entities which use a custom
     {
         // add this field to the datagrid every time its available
         /**
-         * @param DatagridMapper $datagridMapper
+         * @param DatagridMapper $datagrid
          */
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $datagrid)
         {
-            $datagridMapper
+            $datagrid
                 ->add('note')
             ;
         }
@@ -107,11 +107,11 @@ This Extension for example adds a note field to some entities which use a custom
         // the place manually in the admin. But if the filed is available,
         // we want to add the following help message to the field.
         /**
-         * @param FormMapper $formMapper
+         * @param FormMapper $form
          */
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
-            $formMapper
+            $form
                 ->addHelp('note', 'Use this field for an internal note.')
             ;
         }
@@ -143,9 +143,9 @@ Help messages in a sub-field
 
     final class PostAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
-            $formMapper
+            $form
                 ->add('enabled')
                 ->add('settings', ImmutableArrayType::class, [
                     'keys' => [
@@ -182,9 +182,9 @@ Example
 
     final class PostAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
-            $formMapper
+            $form
                 ->with('General', [
                     'description' => 'This section contains general settings for the web page'
                 ])

@@ -34,9 +34,9 @@ set data attribute ``data-sonata-select2 = "false"`` to this form element::
 
     use Sonata\AdminBundle\Form\Type\ModelType;
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $form)
     {
-        $formMapper
+        $form
             ->add('category', ModelType::class, [
                 'attr' => [
                     'data-sonata-select2' => 'false'
@@ -58,9 +58,9 @@ to enable ``allowClear`` or ``data-sonata-select2-allow-clear = "false"`` to dis
 
     use Sonata\AdminBundle\Form\Type\ModelType;
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $form)
     {
-        $formMapper
+        $form
             ->add('category', ModelType::class, [
                 'attr' => [
                     'data-sonata-select2-allow-clear' => 'false'

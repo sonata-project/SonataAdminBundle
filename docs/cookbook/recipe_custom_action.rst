@@ -168,9 +168,9 @@ You could also write ``$collection->add('clone');`` to get a route like ``../adm
 
 Next we have to add the action in ``configureListFields`` specifying the template we created::
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $list)
     {
-        $listMapper
+        $list
             ->add('_action', null, [
                 'actions' => [
 
@@ -201,9 +201,9 @@ The full ``CarAdmin.php`` example looks like this::
                 ->add('clone', $this->getRouterIdParameter().'/clone');
         }
 
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $list)
         {
-            $listMapper
+            $list
                 ->addIdentifier('name')
                 ->add('engine')
                 ->add('rescueEngine')

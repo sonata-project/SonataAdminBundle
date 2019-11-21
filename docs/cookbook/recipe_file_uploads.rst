@@ -166,9 +166,9 @@ Both of these are straightforward when you know what to do::
 
     final class ImageAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
-            $formMapper
+            $form
                 ->add('file', FileType::class, [
                     'required' => false
                 ])
@@ -225,9 +225,9 @@ looks like this::
 
     final class PostAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
-            $formMapper
+            $form
                 ->add('linkedImage1', AdminType::class, [
                     'delete' => false,
                 ])

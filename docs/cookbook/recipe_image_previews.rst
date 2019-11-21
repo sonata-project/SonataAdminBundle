@@ -43,7 +43,7 @@ we are manipulating form fields we do this from within ``ImageAdmin::configureFo
 
     final class ImageAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
             // get the current Image instance
             $image = $this->getSubject();
@@ -59,7 +59,7 @@ we are manipulating form fields we do this from within ``ImageAdmin::configureFo
                 $fileFieldOptions['help'] = '<img src="'.$fullPath.'" class="admin-preview"/>';
             }
 
-            $formMapper
+            $form
                 ->add('file', 'file', $fileFieldOptions)
             ;
         }
@@ -88,7 +88,7 @@ Admin class is embedded and use a different method::
 
     final class ImageAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
             if($this->hasParentFieldDescription()) { // this Admin is embedded
                 // $getter will be something like 'getlogoImage'
@@ -112,7 +112,7 @@ Admin class is embedded and use a different method::
                 $fileFieldOptions['help'] = '<img src="'.$webPath.'" class="admin-preview"/>';
             }
 
-            $formMapper
+            $form
                 ->add('file', 'file', $fileFieldOptions)
             ;
         }

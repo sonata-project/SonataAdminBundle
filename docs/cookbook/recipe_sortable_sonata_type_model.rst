@@ -300,17 +300,17 @@ So we are going to start by creating this ``UserBundle\Admin\UserHasExpectations
 
     final class UserHasExpectationsAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
-            $formMapper
+            $form
                 ->add('expectation', 'sonata_type_model', ['required' => false])
                 ->add('position', 'hidden')
             ;
         }
 
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $list)
         {
-            $listMapper
+            $list
                 ->add('expectation')
                 ->add('user')
                 ->add('position')
@@ -331,9 +331,9 @@ So we are going to start by creating this ``UserBundle\Admin\UserHasExpectations
 
 Now update the ``UserBundle\Admin\UserAdmin.php`` by adding the ``sonata_type_model`` field::
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $form)
     {
-        $formMapper
+        $form
             ->add('userHasExpectations', 'sonata_type_model', [
                 'label'        => 'User\'s expectations',
                 'query'        => $this->modelManager->createQuery('UserBundle\Entity\Expectation'),
@@ -344,7 +344,7 @@ Now update the ``UserBundle\Admin\UserAdmin.php`` by adding the ``sonata_type_mo
             ])
         ;
 
-        $formMapper
+        $form
             ->get('userHasExpectations')
             ->addModelTransformer(new ExpectationDataTransformer($this->getSubject(), $this->modelManager));
     }

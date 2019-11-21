@@ -24,9 +24,9 @@ on the list page to the list view::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper )
         {
-            $listMapper
+            $list
                 ->add('title')
                 ->add('draft')
             ;
@@ -63,9 +63,9 @@ instead of ``ListMapper#add()``::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $list)
         {
-            $listMapper
+            $list
                 ->addIdentifier('title')
                 ->add('draft')
             ;
@@ -95,9 +95,9 @@ category::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $list)
         {
-            $listMapper
+            $list
                 ->addIdentifier('title')
                 ->add('category.name')
                 ->add('draft')
@@ -126,9 +126,9 @@ would do something like::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $datagrid)
         {
-            $datagridMapper->add('title');
+            $datagrid->add('title');
         }
     }
 
@@ -168,9 +168,9 @@ the search field to use the ``name`` property of the Category::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $datagrid)
         {
-            $datagridMapper
+            $datagrid
                 ->add('title')
                 ->add('category', null, [], EntityType::class, [
                     'class' => Category::class,

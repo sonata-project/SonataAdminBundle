@@ -46,9 +46,9 @@ solve the issue by using the ``preUpdate`` saving hook::
 
     final class UserAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
-            $formMapper
+            $form
                 ->with('General')
                     ->add('username')
                     ->add('email')

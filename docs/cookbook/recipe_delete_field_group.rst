@@ -7,11 +7,11 @@ field by hand, using the ``FormMapper``s ``remove`` method::
 
     class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
-            parent::configureFormFields($formMapper);
+            parent::configureFormFields($form);
 
-            $formMapper
+            $form
                 ->remove('facebookName')
                 ->remove('twitterUid')
                 ->remove('twitterName')
@@ -29,11 +29,11 @@ of a whole form group: ``removeGroup``::
 
     class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
-            parent::configureFormFields($formMapper);
+            parent::configureFormFields($form);
 
-            $formMapper->removeGroup('Social', 'User');
+            $form->removeGroup('Social', 'User');
         }
     }
 

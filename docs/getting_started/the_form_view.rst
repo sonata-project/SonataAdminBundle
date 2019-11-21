@@ -22,14 +22,14 @@ The basic class definition will look the same as the ``CategoryAdmin``::
 
     final class BlogPostAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
-            // ... configure $formMapper
+            // ... configure $form
         }
 
-        protected function configureListFields(ListMapper $listMapper)
+        protected function configureListFields(ListMapper $list)
         {
-            // ... configure $listMapper
+            // ... configure $list
         }
     }
 
@@ -70,9 +70,9 @@ you can add them straight away::
     use Symfony\Component\Form\Extension\Core\Type\TextType;
     use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $form)
     {
-        $formMapper
+        $form
             ->add('title', TextType::class)
             ->add('body', TextareaType::class)
         ;
@@ -93,9 +93,9 @@ entities as choice::
     use App\Entity\Category;
     use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $form)
     {
-        $formMapper
+        $form
             // ...
             ->add('category', EntityType::class, [
                 'class' => Category::class,
@@ -127,9 +127,9 @@ dialog with the admin of the referenced model in it::
     use App\Entity\Category;
     use Sonata\AdminBundle\Form\Type\ModelType
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $form)
     {
-        $formMapper
+        $form
             ->add('category', ModelType::class, [
                 'class' => Category::class,
                 'property' => 'name',
@@ -159,9 +159,9 @@ category field to a Meta data group. To do this, use the ``with()`` method::
     use Symfony\Component\Form\Extension\Core\Type\TextType;
     use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $form)
     {
-        $formMapper
+        $form
             ->with('Content')
                 ->add('title', TextType::class)
                 ->add('body', TextareaType::class)
@@ -181,9 +181,9 @@ order to tweak the styling::
 
     // src/Admin/BlogPostAdmin.php
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $form)
     {
-        $formMapper
+        $form
             ->with('Content', ['class' => 'col-md-9'])
                 // ...
             ->end()

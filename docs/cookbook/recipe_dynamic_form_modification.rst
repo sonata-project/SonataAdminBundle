@@ -27,10 +27,10 @@ Then, you should be able to dynamically add needed fields to the form::
     {
         // ...
 
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
             // Description field will always be added to the form:
-            $formMapper
+            $form
                 ->add('description', TextareaType::class)
             ;
 
@@ -38,17 +38,17 @@ Then, you should be able to dynamically add needed fields to the form::
 
             if ($this->isNew()) {
                 // The thumbnail field will only be added when the edited item is created
-                $formMapper->add('thumbnail', FileType::class);
+                $form->add('thumbnail', FileType::class);
             }
 
             // Name field will be added only when create an item
             if ($this->isCurrentRoute('create')) {
-                $formMapper->add('name', TextType::class);
+                $form->add('name', TextType::class);
             }
 
             // The foo field will added when current action is related acme.demo.admin.code Admin's edit form
             if ($this->isCurrentRoute('edit', 'acme.demo.admin.code')) {
-                $formMapper->add('foo', 'text');
+                $form->add('foo', 'text');
             }
         }
     }

@@ -95,9 +95,9 @@ has 4 parameters:
 
     final class PersonAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper): void
+        protected function configureFormFields(FormMapper $form): void
         {
-            $formMapper
+            $form
                 ->tab('General') // The tab call is optional
                     ->with('Addresses')
                         ->add('title') // Add a field and let Sonata decide which type to use
@@ -133,9 +133,9 @@ To specify options, do as follows::
 
     final class PersonAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper): void
+        protected function configureFormFields(FormMapper $form): void
         {
-            $formMapper
+            $form
                 ->tab('General') // the tab call is optional
                     ->with('Addresses', [
                         'class'       => 'col-md-8',

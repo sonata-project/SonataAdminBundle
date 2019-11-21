@@ -229,19 +229,19 @@ take into account these new subclasses::
 
     // src/Admin/PersonAdmin.php
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $form)
     {
         $subject = $this->getSubject();
 
-        $formMapper
+        $form
             ->add('name')
         ;
 
         if ($subject instanceof Teacher) {
-            $formMapper->add('course', 'text');
+            $form->add('course', 'text');
         }
         elseif ($subject instanceof Student) {
-            $formMapper->add('year', 'integer');
+            $form->add('year', 'integer');
         }
     }
 

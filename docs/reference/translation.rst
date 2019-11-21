@@ -114,9 +114,9 @@ label can be defined as the third argument of the ``add`` method::
 
     final class PageAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
-            $formMapper
+            $form
                 ->add('isValid', null, [
                     'required' => false,
                     'label' => 'label.is_valid',

@@ -114,14 +114,14 @@ Now we need to configure the form to use our ``ExampleDataMapper``::
 
     final class ExampleAdmin extends AbstractAdmin
     {
-        protected function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $form)
         {
-            $formMapper
+            $form
                 ->add('name', null)
                 ->add('description', null);
             ;
 
-            $builder = $formMapper->getFormBuilder();
+            $builder = $form->getFormBuilder();
             $builder->setDataMapper(new ExampleDataMapper());
         }
 
