@@ -14,7 +14,7 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
     // src/Entity/BlogPost.php
 
     /**
-     * @ORM\Entity
+     * ... configure your entity be handled by an ORM
      */
     class BlogPost
     {
@@ -54,7 +54,7 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
     use Doctrine\Common\Collections\ArrayCollection;
 
     /**
-     * @ORM\Entity
+     * ...
      */
     class Category
     {
