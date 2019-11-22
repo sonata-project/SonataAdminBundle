@@ -39,8 +39,8 @@ class FieldDescriptionCollectionTest extends TestCase
         $this->assertCount(2, $collection->getElements());
         $this->assertCount(2, $collection);
 
-        $this->isInstanceOf(FieldDescriptionInterface::class, $collection['title']);
-        $this->isInstanceOf(FieldDescriptionInterface::class, $collection->get('title'));
+        $this->assertInstanceOf(FieldDescriptionInterface::class, $collection['title']);
+        $this->assertInstanceOf(FieldDescriptionInterface::class, $collection->get('title'));
 
         $collection->remove('title');
         $this->assertFalse($collection->has('title'));

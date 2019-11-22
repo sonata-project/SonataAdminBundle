@@ -16,6 +16,8 @@ namespace Sonata\AdminBundle\Route;
 use Symfony\Component\Routing\Route;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class RouteCollection
@@ -283,10 +285,6 @@ class RouteCollection
 
     private function resolve($element): Route
     {
-        if (\is_callable($element)) {
-            return $element();
-        }
-
-        return $element;
+        return \is_callable($element) ? $element() : $element;
     }
 }

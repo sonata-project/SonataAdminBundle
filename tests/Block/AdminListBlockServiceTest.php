@@ -53,6 +53,9 @@ class AdminListBlockServiceTest extends AbstractBlockServiceTestCase
         ], $blockContext);
     }
 
+    /**
+     * @group legacy
+     */
     public function testOverriddenDefaultSettings(): void
     {
         $blockService = new FakeBlockService('foo', $this->templating, $this->pool, $this->templateRegistry->reveal());

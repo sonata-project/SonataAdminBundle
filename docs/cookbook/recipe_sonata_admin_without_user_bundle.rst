@@ -168,7 +168,6 @@ more about it `here <https://symfony.com/doc/current/security/guard_authenticati
     use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
     use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
     use Symfony\Component\Security\Core\Exception\AuthenticationException;
-    use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
     use Symfony\Component\Security\Core\Security;
     use Symfony\Component\Security\Core\User\UserInterface;
     use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -232,15 +231,7 @@ more about it `here <https://symfony.com/doc/current/security/guard_authenticati
 
         public function checkCredentials($credentials, UserInterface $user): bool
         {
-            if (!$this->passwordEncoder->isPasswordValid($user, $credentials['password'])) {
-                return false;
-            }
-
-            if (!$user->hasRole('ROLE_ADMIN')) {
-                throw new CustomUserMessageAuthenticationException("You don't have permission to access that page.");
-            }
-
-            return true;
+            return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
         }
 
         public function onAuthenticationFailure(Request $request, AuthenticationException $exception): RedirectResponse
@@ -327,7 +318,7 @@ Setup firewall in `security.yaml`
                 - ROLE_SONATA_PAGE_ADMIN_PAGE_EDIT
 
         encoders:
-            App\Entity\User: bcrypt
+            App\Entity\User: auto # use bcrypt if you are using "symfony/security-bundle" < 4.3
 
         providers:
             users:

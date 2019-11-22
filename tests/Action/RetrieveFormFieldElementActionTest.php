@@ -30,6 +30,7 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
 final class RetrieveFormFieldElementActionTest extends TestCase
@@ -107,10 +108,9 @@ final class RetrieveFormFieldElementActionTest extends TestCase
         $renderer->setTheme($formView, $formView)->shouldBeCalled();
         $renderer->searchAndRenderBlock($formView, 'widget')->willReturn('block');
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame($response->getContent(), 'block');
     }
 

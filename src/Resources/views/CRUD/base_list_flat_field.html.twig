@@ -11,7 +11,7 @@ file that was distributed with this source code.
 
 <span class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}">
     {% if
-            field_description.options.identifier is defined
+        field_description.options.identifier|default(false)
         and field_description.options.route is defined
         and admin.hasAccess(field_description.options.route.name, object)
         and admin.hasRoute(field_description.options.route.name)

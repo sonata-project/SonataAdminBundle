@@ -14,29 +14,54 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Command;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Util\AdminAclManipulatorInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class SetupAclCommand extends ContainerAwareCommand
+class SetupAclCommand extends Command
 {
-    public function configure(): void
+    protected static $defaultName = 'sonata:admin:setup-acl';
+
+    /**
+     * @var Pool
+     */
+    private $pool;
+
+    /**
+     * @var AdminAclManipulatorInterface
+     */
+    private $aclManipulator;
+
+    public function __construct(Pool $pool, AdminAclManipulatorInterface $aclManipulator)
     {
-        $this->setName('sonata:admin:setup-acl');
-        $this->setDescription('Install ACL for Admin Classes');
+        $this->pool = $pool;
+        $this->aclManipulator = $aclManipulator;
+
+        parent::__construct();
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): void
+    public function configure()
+    {
+        $this->setDescription('Install ACL for Admin Classes')
+            ->setName(static::$defaultName)// BC for symfony/console < 3.4.0
+            // NEXT_MAJOR: drop this line after drop support symfony/console < 3.4.0
+        ;
+    }
+
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Starting ACL AdminBundle configuration');
 
-        foreach ($this->getContainer()->get('sonata.admin.pool')->getAdminServiceIds() as $id) {
+        foreach ($this->pool->getAdminServiceIds() as $id) {
             try {
-                $admin = $this->getContainer()->get($id);
+                $admin = $this->pool->getInstance($id);
             } catch (\Exception $e) {
                 $output->writeln('<error>Warning : The admin class cannot be initiated from the command line</error>');
                 $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
@@ -44,17 +69,8 @@ class SetupAclCommand extends ContainerAwareCommand
                 continue;
             }
 
-            $manipulator = $this->getContainer()->get('sonata.admin.manipulator.acl.admin');
-            if (!$manipulator instanceof AdminAclManipulatorInterface) {
-                $output->writeln(sprintf(
-                    'The interface "AdminAclManipulatorInterface" is not implemented for %s: <info>ignoring</info>',
-                    \get_class($manipulator)
-                ));
-
-                continue;
-            }
             \assert($admin instanceof AdminInterface);
-            $manipulator->configureAcls($output, $admin);
+            $this->aclManipulator->configureAcls($output, $admin);
         }
     }
 }

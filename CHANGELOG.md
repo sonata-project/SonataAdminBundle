@@ -2,6 +2,217 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.54.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.54.0...3.54.1) - 2019-10-14
+### Fixed
+- Using array accessor in traversable objects which aren't implementing
+  `\ArrayAccess` at `AbstractAdmin::buildForm()`.
+- Arguments passed to `transchoice()` Twig filter at `block_stats.html.twig`
+
+## [3.54.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.53.0...3.54.0) - 2019-10-01
+### Fixed
+- incorrect sanity check ACL manipulators
+- Broken layout on very large breadcrumb fragments.
+- Using `{% trans %}` Twig tag for pluralized catalogs with
+`symfony/translation` < 4.2.
+- JavaScript exception and incorrect form input type for Autocomplete form type
+
+### Changed
+- `CRUDController::validateCsrfToken` to validate tokens not only from a POST
+request, but GET as well
+- `CRUDController::validateCsrfToken` to accept missing request token.
+
+## [3.53.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.52.0...3.53.0) - 2019-09-03
+### Fixed
+- Fixed error when rendering revision list with Twig's `strict_variables` enabled
+
+### Changed
+- Usages of deprecated `transchoice` tags with `trans`
+- Minimum version required for `sonata-project/block-bundle` (3.11 => 3.17).
+
+## [3.52.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.51.0...3.52.0) - 2019-08-16
+### Added
+- Added `format` option to show type `trans`
+- Method `TemplateRegistry::hasTemplate()` in order to know if a template with a given name is registered.
+
+### Changed
+- The visual aspect at column headers with sorting icons, in order to add some extra spacing between the column's title and its sorting icon.
+
+### Deprecated
+- The inheritance from these classes:
+  * `Sonata\AdminBundle\Admin\AdminHelper`;
+  * `Sonata\AdminBundle\Admin\Extension\LockExtension`;
+  * `Sonata\AdminBundle\Admin\FieldDescriptionCollection`;
+  * `Sonata\AdminBundle\Admin\Pool`;
+  * `Sonata\AdminBundle\Annotation\Admin`;
+  * `Sonata\AdminBundle\Block\AdminListBlockService`;
+  * `Sonata\AdminBundle\Block\AdminSearchBlockService`;
+  * `Sonata\AdminBundle\Block\AdminStatsBlockService`;
+  * `Sonata\AdminBundle\Command\ExplainAdminCommand`;
+  * `Sonata\AdminBundle\Command\GenerateAdminCommand`;
+  * `Sonata\AdminBundle\Command\GenerateObjectAclCommand`;
+  * `Sonata\AdminBundle\Command\ListAdminCommand`;
+  * `Sonata\AdminBundle\Command\SetupAclCommand`;
+  * `Sonata\AdminBundle\Command\Validators`;
+  * `Sonata\AdminBundle\Datagrid\Datagrid`;
+  * `Sonata\AdminBundle\Datagrid\DatagridMapper`;
+  * `Sonata\AdminBundle\Datagrid\ListMapper`;
+  * `Sonata\AdminBundle\Datagrid\SimplePager`;
+  * `Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass`;
+  * `Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass`;
+  * `Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass`;
+  * `Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass`;
+  * `Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass`;
+  * `Sonata\AdminBundle\DependencyInjection\Configuration`;
+  * `Sonata\AdminBundle\DependencyInjection\SonataAdminExtension`;
+  * `Sonata\AdminBundle\Event\AdminEventExtension`;
+  * `Sonata\AdminBundle\Event\ConfigureEvent`;
+  * `Sonata\AdminBundle\Event\ConfigureMenuEvent`;
+  * `Sonata\AdminBundle\Event\ConfigureQueryEvent`;
+  * `Sonata\AdminBundle\Event\PersistenceEvent`;
+  * `Sonata\AdminBundle\Exception\LockException`;
+  * `Sonata\AdminBundle\Exception\ModelManagerException`;
+  * `Sonata\AdminBundle\Exception\NoValueException`;
+  * `Sonata\AdminBundle\Export\Exporter`;
+  * `Sonata\AdminBundle\Filter\FilterFactory`;
+  * `Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader`;
+  * `Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer`;
+  * `Sonata\AdminBundle\Form\DataTransformer\LegacyModelsToArrayTransformer`;
+  * `Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer`;
+  * `Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer`;
+  * `Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer`;
+  * `Sonata\AdminBundle\Form\EventListener\MergeCollectionListener`;
+  * `Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension`;
+  * `Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension`;
+  * `Sonata\AdminBundle\Form\Extension\Field\Type\MopaCompatibilityTypeFieldExtension`;
+  * `Sonata\AdminBundle\Form\FormMapper`;
+  * `Sonata\AdminBundle\Form\Type\AclMatrixType`;
+  * `Sonata\AdminBundle\Form\Type\AdminType`;
+  * `Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType`;
+  * `Sonata\AdminBundle\Form\Type\CollectionType`;
+  * `Sonata\AdminBundle\Form\Type\Filter\ChoiceType`;
+  * `Sonata\AdminBundle\Form\Type\Filter\DateRangeType`;
+  * `Sonata\AdminBundle\Form\Type\Filter\DateTimeRangeType`;
+  * `Sonata\AdminBundle\Form\Type\Filter\DateTimeType`;
+  * `Sonata\AdminBundle\Form\Type\Filter\DateType`;
+  * `Sonata\AdminBundle\Form\Type\Filter\DefaultType`;
+  * `Sonata\AdminBundle\Form\Type\Filter\NumberType`;
+  * `Sonata\AdminBundle\Form\Type\ModelAutocompleteType`;
+  * `Sonata\AdminBundle\Form\Type\ModelHiddenType`;
+  * `Sonata\AdminBundle\Form\Type\ModelListType`;
+  * `Sonata\AdminBundle\Form\Type\ModelReferenceType`;
+  * `Sonata\AdminBundle\Form\Type\ModelType`;
+  * `Sonata\AdminBundle\Generator\AdminGenerator`;
+  * `Sonata\AdminBundle\Generator\ControllerGenerator`;
+  * `Sonata\AdminBundle\Guesser\TypeGuesserChain`;
+  * `Sonata\AdminBundle\Manipulator\ServicesManipulator`;
+  * `Sonata\AdminBundle\Menu\Matcher\Voter\ActiveVoter`;
+  * `Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter`;
+  * `Sonata\AdminBundle\Menu\MenuBuilder`;
+  * `Sonata\AdminBundle\Menu\Provider\GroupMenuProvider`;
+  * `Sonata\AdminBundle\Model\AuditManager`;
+  * `Sonata\AdminBundle\Route\AdminPoolLoader`;
+  * `Sonata\AdminBundle\Route\DefaultRouteGenerator`;
+  * `Sonata\AdminBundle\Route\PathInfoBuilder`;
+  * `Sonata\AdminBundle\Route\QueryStringBuilder`;
+  * `Sonata\AdminBundle\Route\RouteCollection`;
+  * `Sonata\AdminBundle\Route\RoutesCache`;
+  * `Sonata\AdminBundle\Route\RoutesCacheWarmUp`;
+  * `Sonata\AdminBundle\Search\SearchHandler`;
+  * `Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap`;
+  * `Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder`;
+  * `Sonata\AdminBundle\Security\Handler\AclSecurityHandler`;
+  * `Sonata\AdminBundle\Security\Handler\NoopSecurityHandler`;
+  * `Sonata\AdminBundle\Security\Handler\RoleSecurityHandler`;
+  * `Sonata\AdminBundle\Show\ShowMapper`;
+  * `Sonata\AdminBundle\SonataAdminBundle`;
+  * `Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy`;
+  * `Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor`;
+  * `Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy`;
+  * `Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy`;
+  * `Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy`;
+  * `Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy`;
+  * `Sonata\AdminBundle\Twig\Extension\SonataAdminExtension`;
+  * `Sonata\AdminBundle\Twig\GlobalVariables`;
+  * `Sonata\AdminBundle\Util\AdminAclManipulator`;
+  * `Sonata\AdminBundle\Util\AdminObjectAclData`;
+  * `Sonata\AdminBundle\Util\AdminObjectAclManipulator`;
+  * `Sonata\AdminBundle\Util\FormBuilderIterator`;
+  * `Sonata\AdminBundle\Util\FormViewIterator`.
+- Passing invalid filter names to `Datagrid::getFilter()`;
+- Passing invalid template names to `TemplateRegistry::getTemplate()`;
+- Calling `AbstractAdmin::getActiveSubClass()` and `AbstractAdmin::getActiveSubclassCode()` when there is no active subclass.
+
+### Fixed
+- Returning `void` instead of `null` in functions which are capable to return values.
+- Possibility to resolve Twig dependency to versions that don't support arrow functions on Twig filters.
+- Call setName method in configure part of Command, for backward compatibility wiht sf 2.8.x
+- Fixed `ModelManagerCompilerPass` & `ObjectAclManipulatorCompilerPass` to avoid crashing when there's services with numerical ids
+- Error caused by passing a string instead object to `AbstractAdmin::toString()` from `base_list.htm.twig` when the admin's subject doesn't declare `__toString()` method.
+- Fixed ChoiceFieldMaskType's twig template JavaScript using unescaped field value
+- Fix typo in Russian translation
+
+## [3.51.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.50.0...3.51.0) - 2019-06-27
+### Changed
+- The default value for "admin_code" setting  at `AdminSearchBlockService`.
+- Values to passed with the "identifier" option for `ListMapper::add()` are
+  cast to boolean before using them to infer if the field must be used as
+  identifier or not.
+
+### Deprecated
+- Passing a non string value as argument 1 to `Pool::getAdminByAdminCode()`;
+- Passing a non valid admin hierarchy as argument 1 to `Pool::getAdminByAdminCode()`.
+
+### Fixed
+- Edit form field group descriptions may again contain HTML.
+- Crash when clicking "add" on a collection
+
+## [3.50.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.49.1...3.50.0) - 2019-06-22
+### Added
+- Added "role" option for methods `ListMapper::add()`, `DatagridMapper::add()`,
+  `ShowMapper::add()` and `FormMapper::add()`; in order to restrict the content
+  rendering based on the provided role.
+
+### Fixed
+- Fixed deprecation notice when core services are injected in service through
+  autowiring
+- Deprecated controller syntax generated by "sonata:admin:generate" command.
+- Bumped "twig/twig" dependency to "^2.9"
+- Changed usages of `{% spaceless %}` tag, which is deprecated as of Twig 1.38
+  with `{% apply spaceless %}` filter
+- Changed usages of `{% for .. if .. %}`, which is deprecated as of Twig 2.10
+  with `filter` filter'
+- Edit form field group descriptions may again contain HTML.
+
+### Changed
+- Truncate long titles at 100 characters at breadcrumb and navbar.
+- Subject is now fully displayed at navbar. Before, it was using the same title
+  as the `<title>` tag, which is truncated to 15 characters.
+- Values to passed with the "identifier" option for `ListMapper::add()` are
+  cast to boolean before using them to infer if the field must be used as
+  identifier or not.
+
+### Deprecated
+- Passing non boolean values to "identifier" option for `ListMapper::add()`.
+
+## [3.49.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.49.0...3.49.1) - 2019-06-05
+
+### Fixed
+- Crash with Twig 2.11 with message `Template
+  "@SonataAdmin/CRUD/base_edit_form.html.twig" cannot be used as a trait.`
+(second attempt)
+
+## [3.49.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.48.3...3.49.0) - 2019-06-02
+
+### Fixed
+- CreateClassCacheCommand deprecation message on container compiling
+- Crash with Twig 2.11 with message `Template
+  "@SonataAdmin/CRUD/base_edit_form.html.twig" cannot be used as a trait.`
+
+### Changed
+- Changed the rendering for the audit revision timestamp in order to use
+  `<time>` tags, which print the dates in UTC using `datetime` and `title`
+attributes, allowing to view the UTC date with the default browser tooltip.
+
 ## [3.48.3](https://github.com/sonata-project/SonataAdminBundle/compare/3.48.2...3.48.3) - 2019-05-21
 
 ### Fixed

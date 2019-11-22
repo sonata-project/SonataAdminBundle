@@ -35,6 +35,7 @@ use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -108,7 +109,7 @@ class HelperControllerTest extends TestCase
         );
     }
 
-    public function testgetShortObjectDescriptionActionInvalidAdmin(): void
+    public function testGetShortObjectDescriptionActionInvalidAdmin(): void
     {
         $this->expectException(NotFoundHttpException::class);
 
@@ -124,7 +125,7 @@ class HelperControllerTest extends TestCase
         $this->controller->getShortObjectDescriptionAction($request);
     }
 
-    public function testgetShortObjectDescriptionActionObjectDoesNotExist(): void
+    public function testGetShortObjectDescriptionActionObjectDoesNotExist(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Invalid format');
@@ -141,7 +142,7 @@ class HelperControllerTest extends TestCase
         $this->controller->getShortObjectDescriptionAction($request);
     }
 
-    public function testgetShortObjectDescriptionActionEmptyObjectId(): void
+    public function testGetShortObjectDescriptionActionEmptyObjectId(): void
     {
         $request = new Request([
             'code' => 'sonata.post.admin',
@@ -158,7 +159,7 @@ class HelperControllerTest extends TestCase
         $this->assertInstanceOf(Response::class, $response);
     }
 
-    public function testgetShortObjectDescriptionActionObject(): void
+    public function testGetShortObjectDescriptionActionObject(): void
     {
         $request = new Request([
             'code' => 'sonata.post.admin',
@@ -184,7 +185,7 @@ class HelperControllerTest extends TestCase
         $this->assertSame('renderedTemplate', $response->getContent());
     }
 
-    public function testsetObjectFieldValueAction(): void
+    public function testSetObjectFieldValueAction(): void
     {
         $object = new AdminControllerHelper_Foo();
         $request = new Request([
@@ -231,7 +232,7 @@ class HelperControllerTest extends TestCase
         $this->assertSame(200, $response->getStatusCode());
     }
 
-    public function testappendFormFieldElementAction(): void
+    public function testSetObjectFieldValueActionOnARelationField(): void
     {
         $object = new AdminControllerHelper_Foo();
         $associationObject = new AdminControllerHelper_Bar();
@@ -284,7 +285,7 @@ class HelperControllerTest extends TestCase
         $this->assertSame(200, $response->getStatusCode());
     }
 
-    public function testRetrieveFormFieldElementAction(): void
+    public function testAppendFormFieldElementAction(): void
     {
         $object = new AdminControllerHelper_Foo();
         $request = new Request([
@@ -318,7 +319,46 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->appendFormFieldElementAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertSame($response->getContent(), 'block');
+    }
+
+    public function testRetrieveFormFieldElementAction(): void
+    {
+        $object = new AdminControllerHelper_Foo();
+        $request = new Request([
+            'code' => 'sonata.post.admin',
+            'objectId' => 42,
+            'field' => 'enabled',
+            'value' => 1,
+            'context' => 'list',
+        ], [], [], [], [], ['REQUEST_METHOD' => 'POST']);
+
+        $modelManager = $this->prophesize(ModelManagerInterface::class);
+        $formView = new FormView();
+        $form = $this->prophesize(Form::class);
+        $formBuilder = $this->prophesize(FormBuilder::class);
+
+        $renderer = $this->configureFormRenderer();
+
+        $this->admin->getObject(42)->willReturn($object);
+        $this->admin->getClass()->willReturn(\get_class($object));
+        $this->admin->setSubject($object)->shouldBeCalled();
+        $this->admin->getFormTheme()->willReturn($formView);
+        $this->admin->getFormBuilder()->willReturn($formBuilder->reveal());
+        $this->helper->getChildFormView($formView, null)
+            ->willReturn($formView);
+        $modelManager->find(\get_class($object), 42)->willReturn($object);
+        $form->setData($object)->shouldBeCalled();
+        $form->handleRequest($request)->shouldBeCalled();
+        $form->createView()->willReturn($formView);
+        $formBuilder->getForm()->willReturn($form->reveal());
+        $renderer->setTheme($formView, $formView)->shouldBeCalled();
+        $renderer->searchAndRenderBlock($formView, 'widget')->willReturn('block');
+
+        $response = $this->controller->retrieveFormFieldElementAction($request);
+
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame($response->getContent(), 'block');
     }
 
@@ -355,9 +395,6 @@ class HelperControllerTest extends TestCase
         $this->assertSame(json_encode("error1\nerror2"), $response->getContent());
     }
 
-    /**
-     * @exceptionMessage Invalid format
-     */
     public function testRetrieveAutocompleteItemsActionNotGranted(): void
     {
         $this->expectException(AccessDeniedException::class);
@@ -418,14 +455,14 @@ class HelperControllerTest extends TestCase
         $this->admin->hasAccess('create')->willReturn(true);
         $this->admin->getFormFieldDescription('barField')->willReturn($fieldDescription->reveal());
         $this->admin->getFormFieldDescriptions()->willReturn(null);
-        $targetAdmin->checkAccess('list')->shouldBeCalled();
+        $targetAdmin->checkAccess('list')->willReturn(null);
         $fieldDescription->getTargetEntity()->willReturn(Foo::class);
         $fieldDescription->getName()->willReturn('barField');
         $fieldDescription->getAssociationAdmin()->willReturn($targetAdmin->reveal());
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"KO","message":"Too short search string."}', $response->getContent());
     }
@@ -450,7 +487,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
@@ -482,7 +519,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
@@ -507,7 +544,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
@@ -585,7 +622,7 @@ class HelperControllerTest extends TestCase
         $formConfig->getAttribute('target_admin_access_action')->willReturn('list');
     }
 
-    private function configureFormConfigComplexPropertyArray($field): void
+    private function configureFormConfigComplexPropertyArray(string $field): void
     {
         $form = $this->prophesize(Form::class);
         $formType = $this->prophesize(Form::class);

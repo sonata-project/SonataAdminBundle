@@ -38,8 +38,6 @@ class ChildrenVoter implements VoterInterface
 
     /**
      * ChildrenVoter constructor.
-     *
-     * @param MatcherInterface $matcher
      */
     public function __construct(MatcherInterface $matcher)
     {
@@ -49,7 +47,7 @@ class ChildrenVoter implements VoterInterface
     public function matchItem(ItemInterface $item)
     {
         if (!$item->getExtra('sonata_admin', false)) {
-            return;
+            return null;
         }
 
         $children = $item->getChildren();

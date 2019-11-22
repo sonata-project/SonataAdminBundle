@@ -16,9 +16,10 @@ namespace Sonata\AdminBundle\Tests;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompilerPass;
 use Sonata\AdminBundle\SonataAdminBundle;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -32,10 +33,10 @@ class SonataAdminBundleTest extends TestCase
     public function testBuild(): void
     {
         $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)
-            ->setMethods(['addCompilerPass', 'getParameter'])
+            ->setMethods(['addCompilerPass'])
             ->getMock();
 
-        $containerBuilder->expects($this->exactly(4))
+        $containerBuilder->expects($this->exactly(6))
             ->method('addCompilerPass')
             ->willReturnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION): void {
                 if ($pass instanceof AddDependencyCallsCompilerPass) {
@@ -54,71 +55,25 @@ class SonataAdminBundleTest extends TestCase
                     return;
                 }
 
-                $this->fail(sprintf(
-                    'CompilerPass is not one of the expected types. Expects "%s", "%s", "%s" or "%s", but got "%s".',
-                    AddDependencyCallsCompilerPass::class,
-                    AddFilterTypeCompilerPass::class,
-                    ExtensionCompilerPass::class,
-                    GlobalVariablesCompilerPass::class,
-                    \get_class($pass)
-                ));
-            });
-
-        $containerBuilder
-            ->expects($this->once())
-            ->method('getParameter')
-            ->with('kernel.bundles')
-            ->willReturn([]);
-
-        $bundle = new SonataAdminBundle();
-        $bundle->build($containerBuilder);
-    }
-
-    public function testBuildWithMakerBundle(): void
-    {
-        $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)
-            ->setMethods(['addCompilerPass', 'getParameter'])
-            ->getMock();
-
-        $containerBuilder->expects($this->exactly(5))
-            ->method('addCompilerPass')
-            ->willReturnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION): void {
-                if ($pass instanceof AddDependencyCallsCompilerPass) {
+                if ($pass instanceof ModelManagerCompilerPass) {
                     return;
                 }
 
-                if ($pass instanceof AddFilterTypeCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof ExtensionCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof GlobalVariablesCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof AdminMakerCompilerPass) {
+                if ($pass instanceof ObjectAclManipulatorCompilerPass) {
                     return;
                 }
 
                 $this->fail(sprintf(
-                    'CompilerPass is not one of the expected types. Expects "%s", "%s", "%s", "%s" or "%s", but got "%s".',
+                    'CompilerPass is not one of the expected types. Expects "%s", "%s", "%s", "%s", "%s" or "%s", but got "%s".',
                     AddDependencyCallsCompilerPass::class,
                     AddFilterTypeCompilerPass::class,
                     ExtensionCompilerPass::class,
                     GlobalVariablesCompilerPass::class,
-                    AdminMakerCompilerPass::class,
+                    ModelManagerCompilerPass::class,
+                    ObjectAclManipulatorCompilerPass::class,
                     \get_class($pass)
                 ));
             });
-
-        $containerBuilder
-            ->expects($this->once())
-            ->method('getParameter')
-            ->with('kernel.bundles')
-            ->willReturn(['MakerBundle' => 'foo']);
 
         $bundle = new SonataAdminBundle();
         $bundle->build($containerBuilder);

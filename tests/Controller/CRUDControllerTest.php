@@ -43,8 +43,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -59,6 +63,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Twig\Environment;
 
 /**
  * Test for CRUDController.
@@ -145,6 +150,11 @@ class CRUDControllerTest extends TestCase
     private $translator;
 
     /**
+     * @var FormBuilderInterface
+     */
+    private $formBuilder;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
@@ -161,6 +171,11 @@ class CRUDControllerTest extends TestCase
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->parameters = [];
         $this->template = '';
+
+        $this->formBuilder = $this->createMock(FormBuilderInterface::class);
+        $this->admin->expects($this->any())
+            ->method('getFormBuilder')
+            ->willReturn($this->formBuilder);
 
         $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
 
@@ -195,7 +210,7 @@ class CRUDControllerTest extends TestCase
 
         $this->session = new Session(new MockArraySessionStorage());
 
-        $twig = $this->getMockBuilder(\Twig_Environment::class)
+        $twig = $this->getMockBuilder(Environment::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -1113,6 +1128,11 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('delete'))
             ->willReturn(true);
 
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
+
         $this->request->setMethod('DELETE');
 
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
@@ -1136,6 +1156,11 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('delete'))
+            ->willReturn(true);
+
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
             ->willReturn(true);
 
         $this->request->setMethod('POST');
@@ -1168,6 +1193,11 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn('stdClass');
 
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
+
         $this->assertLoggerLogsModelManagerException($this->admin, 'delete');
 
         $this->request->setMethod('DELETE');
@@ -1195,6 +1225,11 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('delete'))
+            ->willReturn(true);
+
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
             ->willReturn(true);
 
         $this->admin->expects($this->once())
@@ -1236,6 +1271,11 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('delete'))
             ->willReturn(true);
 
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
+
         $this->request->setMethod('DELETE');
 
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
@@ -1275,6 +1315,11 @@ class CRUDControllerTest extends TestCase
 
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
 
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
+
         $response = $this->controller->deleteAction(1, $this->request);
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
@@ -1309,6 +1354,11 @@ class CRUDControllerTest extends TestCase
 
         $this->request->setMethod('POST');
         $this->request->request->set('_method', 'DELETE');
+
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
 
         $response = $this->controller->deleteAction(1, $this->request);
 
@@ -1375,6 +1425,11 @@ class CRUDControllerTest extends TestCase
         $this->request->setMethod('DELETE');
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
 
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
+
         $response = $this->controller->deleteAction(1, $this->request);
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
@@ -1399,12 +1454,50 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('_method', 'DELETE');
         $this->request->request->set('_sonata_csrf_token', 'CSRF-INVALID');
 
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
+
         try {
             $this->controller->deleteAction(1, $this->request);
         } catch (HttpException $e) {
             $this->assertSame('The csrf token is not valid, CSRF attack?', $e->getMessage());
             $this->assertSame(400, $e->getStatusCode());
         }
+    }
+
+    public function testDeleteActionWithDisabledCsrfProtection(): void
+    {
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->willReturn($object);
+
+        $this->admin->expects($this->once())
+            ->method('checkAccess')
+            ->with($this->equalTo('delete'))
+            ->willReturn(true);
+
+        $this->request->setMethod('POST');
+        $this->request->request->set('_method', 'DELETE');
+
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(false);
+
+        $this->admin->expects($this->once())
+            ->method('toString')
+            ->with($object)
+            ->willReturn(\stdClass::class);
+
+        $this->admin->expects($this->once())
+            ->method('delete')
+            ->with($object);
+
+        $this->controller->deleteAction(1, $this->request);
     }
 
     public function testEditActionNotFoundException(): void
@@ -1693,7 +1786,7 @@ class CRUDControllerTest extends TestCase
             ->method('all')
             ->willReturn(['field' => 'fielddata']);
 
-        $this->admin->expects($this->once())
+        $this->admin
             ->method('getNormalizedIdentifier')
             ->with($this->equalTo($object))
             ->willReturn('foo_normalized');
@@ -1743,26 +1836,75 @@ class CRUDControllerTest extends TestCase
             ->method('all')
             ->willReturn(['field' => 'fielddata']);
 
+        $formError = $this->createMock(FormError::class);
+        $formError->expects($this->atLeastOnce())
+            ->method('getMessage')
+            ->willReturn('Form error message');
+
+        $form->expects($this->once())
+            ->method('getErrors')
+            ->with(true)
+            ->willReturn([$formError]);
+
+        $this->request->setMethod('POST');
+        $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
+        $this->request->headers->set('Accept', 'application/json');
+
+        $this->assertInstanceOf(JsonResponse::class, $response = $this->controller->editAction(null, $this->request));
+        $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $response->getContent());
+    }
+
+    /**
+     * @legacy
+     * @expectedDeprecation In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`
+     */
+    public function testEditActionAjaxErrorWithoutAcceptApplicationJson(): void
+    {
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getObject')
+            ->willReturn($object);
+
+        $this->admin->expects($this->once())
+            ->method('checkAccess')
+            ->with($this->equalTo('edit'))
+            ->willReturn(true);
+
+        $form = $this->createMock(Form::class);
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->willReturn($form);
+
+        $form->expects($this->once())
+            ->method('isSubmitted')
+            ->willReturn(true);
+
+        $form->expects($this->once())
+            ->method('isValid')
+            ->willReturn(false);
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
+
         $this->request->setMethod('POST');
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $formView = $this->createMock(FormView::class);
-
-        $form->expects($this->any())
+        $form
             ->method('createView')
             ->willReturn($formView);
 
-        $this->assertInstanceOf(Response::class, $this->controller->editAction(null, $this->request));
-
+        $this->assertInstanceOf(Response::class, $response = $this->controller->editAction(null, $this->request));
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
-
         $this->assertSame('edit', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
         $this->assertSame($object, $this->parameters['object']);
-
-        $this->assertSame([], $this->session->getFlashBag()->all());
+        $this->assertSame(['sonata_flash_error' => [0 => null]], $this->session->getFlashBag()->all());
         $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
@@ -2460,26 +2602,79 @@ class CRUDControllerTest extends TestCase
             ->method('isValid')
             ->willReturn(false);
 
+        $formError = $this->createMock(FormError::class);
+        $formError->expects($this->atLeastOnce())
+            ->method('getMessage')
+            ->willReturn('Form error message');
+
+        $form->expects($this->once())
+            ->method('getErrors')
+            ->with(true)
+            ->willReturn([$formError]);
+
+        $this->request->setMethod('POST');
+        $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
+        $this->request->headers->set('Accept', 'application/json');
+
+        $this->assertInstanceOf(JsonResponse::class, $response = $this->controller->createAction($this->request));
+        $this->assertJsonStringEqualsJsonString('{"result":"error","errors":["Form error message"]}', $response->getContent());
+    }
+
+    /**
+     * @legacy
+     * @expectedDeprecation In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`
+     */
+    public function testCreateActionAjaxErrorWithoutAcceptApplicationJson(): void
+    {
+        $this->admin->expects($this->once())
+            ->method('checkAccess')
+            ->with($this->equalTo('create'))
+            ->willReturn(true);
+
+        $object = new \stdClass();
+
+        $this->admin->expects($this->once())
+            ->method('getNewInstance')
+            ->willReturn($object);
+
+        $form = $this->createMock(Form::class);
+
+        $this->admin->expects($this->any())
+            ->method('getClass')
+            ->willReturn('stdClass');
+
+        $this->admin->expects($this->once())
+            ->method('getForm')
+            ->willReturn($form);
+
+        $form->expects($this->once())
+            ->method('all')
+            ->willReturn(['field' => 'fielddata']);
+
+        $form->expects($this->once())
+            ->method('isSubmitted')
+            ->willReturn(true);
+
+        $form->expects($this->once())
+            ->method('isValid')
+            ->willReturn(false);
+
         $this->request->setMethod('POST');
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $formView = $this->createMock(FormView::class);
-
-        $form->expects($this->any())
+        $form
             ->method('createView')
             ->willReturn($formView);
 
-        $this->assertInstanceOf(Response::class, $this->controller->createAction($this->request));
-
+        $this->assertInstanceOf(Response::class, $response = $this->controller->createAction($this->request));
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
         $this->assertSame($this->pool, $this->parameters['admin_pool']);
-
         $this->assertSame('create', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
         $this->assertSame($object, $this->parameters['object']);
-
-        $this->assertSame([], $this->session->getFlashBag()->all());
+        $this->assertSame(['sonata_flash_error' => [0 => null]], $this->session->getFlashBag()->all());
         $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
@@ -3416,6 +3611,11 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
+
         $this->controller->batchAction($this->request);
     }
 
@@ -3425,6 +3625,11 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('_sonata_csrf_token', 'CSRF-INVALID');
 
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
+
         try {
             $this->controller->batchAction($this->request);
         } catch (HttpException $e) {
@@ -3433,6 +3638,49 @@ class CRUDControllerTest extends TestCase
         }
     }
 
+    public function testBatchActionActionWithDisabledCsrfProtection(): void
+    {
+        $this->request->setMethod('POST');
+        $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
+
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(false);
+
+        $this->admin->expects($this->once())
+            ->method('getBatchActions')
+            ->willReturn(['foo' => ['label' => 'foo']]);
+
+        $datagrid = $this->createMock(DatagridInterface::class);
+
+        $this->admin->expects($this->once())
+            ->method('getDatagrid')
+            ->willReturn($datagrid);
+
+        $datagrid->expects($this->once())
+            ->method('buildPager');
+
+        $form = $this->createMock(FormInterface::class);
+
+        $datagrid->expects($this->once())
+            ->method('getForm')
+            ->willReturn($form);
+
+        $formView = $this->createMock(FormView::class);
+
+        $form->expects($this->once())
+            ->method('createView')
+            ->willReturn($formView);
+
+        $this->controller->batchAction($this->request);
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this legacy group.
+     *
+     * @group legacy
+     */
     public function testBatchActionMethodNotExist(): void
     {
         $this->expectException(\RuntimeException::class, 'A `Sonata\AdminBundle\Controller\CRUDController::batchActionFoo` method must be callable');
@@ -3451,6 +3699,11 @@ class CRUDControllerTest extends TestCase
         $this->request->setMethod('POST');
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
 
         $this->controller->batchAction($this->request);
     }
@@ -3499,6 +3752,11 @@ class CRUDControllerTest extends TestCase
         $this->request->setMethod('POST');
         $this->request->request->set('data', json_encode(['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
 
         $result = $this->controller->batchAction($this->request);
 
@@ -3553,6 +3811,11 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('idx', ['123', '456']);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
+
         $result = $this->controller->batchAction($this->request);
 
         $this->assertInstanceOf(RedirectResponse::class, $result);
@@ -3591,6 +3854,11 @@ class CRUDControllerTest extends TestCase
         $datagrid->expects($this->once())
             ->method('getForm')
             ->willReturn($form);
+
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
 
         $this->assertInstanceOf(Response::class, $this->controller->batchAction($this->request));
 
@@ -3633,6 +3901,11 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('idx', ['789']);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
+
         $result = $controller->batchAction($this->request);
 
         $this->assertInstanceOf(RedirectResponse::class, $result);
@@ -3670,6 +3943,11 @@ class CRUDControllerTest extends TestCase
             ->method('getForm')
             ->willReturn($form);
 
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
+
         $this->controller->batchAction($this->request);
 
         $this->assertSame('custom_template.html.twig', $this->template);
@@ -3699,6 +3977,11 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('idx', ['999']);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
+
         $result = $controller->batchAction($this->request);
 
         $this->assertInstanceOf(RedirectResponse::class, $result);
@@ -3726,6 +4009,11 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('action', 'delete');
         $this->request->request->set('idx', []);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
 
         $result = $this->controller->batchAction($this->request);
 
@@ -3765,6 +4053,11 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->any())
             ->method('getClass')
             ->willReturn('Foo');
+
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
 
         $this->request->setMethod('POST');
         $this->request->request->set('action', 'bar');
@@ -3823,6 +4116,11 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('data', json_encode(['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('foo', 'bar');
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+
+        $this->formBuilder->expects($this->once())
+            ->method('getOption')
+            ->with('csrf_protection')
+            ->willReturn(true);
 
         $result = $this->controller->batchAction($this->request);
 

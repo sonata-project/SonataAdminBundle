@@ -25,12 +25,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 class CoreControllerTest extends TestCase
 {
     /**
-     * @doesNotPerformAssertions
      * @group legacy
      */
     public function testdashboardActionStandardRequest(): void
@@ -45,7 +44,7 @@ class CoreControllerTest extends TestCase
         $pool = new Pool($container, 'title', 'logo.png');
         $pool->setTemplateRegistry($templateRegistry->reveal());
 
-        $templating = $this->createMock(EngineInterface::class);
+        $twig = $this->createMock(Environment::class);
         $request = new Request();
 
         $requestStack = new RequestStack();
@@ -53,35 +52,34 @@ class CoreControllerTest extends TestCase
 
         $breadcrumbsBuilder = $this->getMockForAbstractClass(BreadcrumbsBuilderInterface::class);
 
-        $dashboardAction = new DashboardAction(
-            [],
-            $breadcrumbsBuilder,
-            $templateRegistry->reveal(),
-            $pool,
-            $templating
-        );
-        $searchAction = new SearchAction(
-            $pool,
-            new SearchHandler($pool),
-            $templateRegistry->reveal(),
-            $breadcrumbsBuilder,
-            $templating
-        );
+        $values = [
+            DashboardAction::class => $dashboardAction = new DashboardAction(
+                [],
+                $breadcrumbsBuilder,
+                $templateRegistry->reveal(),
+                $pool,
+                $twig
+            ),
+            'request_stack' => $requestStack,
+        ];
 
-        $controller = new CoreController(
-            $dashboardAction,
-            $searchAction,
-            $pool,
-            new SearchHandler($pool),
-            $templateRegistry->reveal(),
-            $requestStack
-        );
+        $container->expects($this->any())->method('get')->willReturnCallback(static function ($id) use ($values) {
+            return $values[$id];
+        });
 
-        $this->isInstanceOf(Response::class, $controller->dashboardAction());
+        $container->expects($this->any())
+            ->method('has')
+            ->willReturnCallback(static function ($id) {
+                return 'templating' === $id;
+            });
+
+        $controller = new CoreController();
+        $controller->setContainer($container);
+
+        $this->assertInstanceOf(Response::class, $controller->dashboardAction());
     }
 
     /**
-     * @doesNotPerformAssertions
      * @group legacy
      */
     public function testdashboardActionAjaxLayout(): void
@@ -97,40 +95,33 @@ class CoreControllerTest extends TestCase
         $pool = new Pool($container, 'title', 'logo.png');
         $pool->setTemplateRegistry($templateRegistry->reveal());
 
-        $templating = $this->createMock(EngineInterface::class);
+        $twig = $this->createMock(Environment::class);
         $request = new Request();
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $requestStack = new RequestStack();
         $requestStack->push($request);
 
-        $dashboardAction = new DashboardAction(
-            [],
-            $breadcrumbsBuilder,
-            $templateRegistry->reveal(),
-            $pool,
-            $templating
-        );
+        $values = [
+            DashboardAction::class => $dashboardAction = new DashboardAction(
+                [],
+                $breadcrumbsBuilder,
+                $templateRegistry->reveal(),
+                $pool,
+                $twig
+            ),
+            'request_stack' => $requestStack,
+        ];
 
-        $searchAction = new SearchAction(
-            $pool,
-            new SearchHandler($pool),
-            $templateRegistry->reveal(),
-            $breadcrumbsBuilder,
-            $templating
-        );
+        $container->expects($this->any())->method('get')->willReturnCallback(static function ($id) use ($values) {
+            return $values[$id];
+        });
 
-        $controller = new CoreController(
-            $dashboardAction,
-            $searchAction,
-            $pool,
-            new SearchHandler($pool),
-            $templateRegistry->reveal(),
-            $requestStack
-        );
+        $controller = new CoreController();
+        $controller->setContainer($container);
 
         $response = $controller->dashboardAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
     }
 }

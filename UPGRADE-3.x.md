@@ -1,6 +1,9 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.51 to 3.52
+=========================
+
 ## Deprecated `SonataAdminBundle\Controller\HelperController` in favor of actions
 
 If you extended that controller, you should split your extended controller and

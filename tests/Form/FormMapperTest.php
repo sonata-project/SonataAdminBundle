@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -29,6 +30,8 @@ use Symfony\Component\Form\ResolvedFormTypeInterface;
 
 class FormMapperTest extends TestCase
 {
+    private const DEFAULT_GRANTED_ROLE = 'ROLE_ADMIN_BAZ';
+
     /**
      * @var FormContractorInterface
      */
@@ -49,16 +52,25 @@ class FormMapperTest extends TestCase
      */
     protected $formMapper;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
-        $this->contractor = $this->getMockForAbstractClass(FormContractorInterface::class);
+        $this->contractor = $this->createMock(FormContractorInterface::class);
 
-        $formFactory = $this->getMockForAbstractClass(FormFactoryInterface::class);
-        $eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
+        $formFactory = $this->createMock(FormFactoryInterface::class);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $formBuilder = new FormBuilder('test', 'stdClass', $eventDispatcher, $formFactory);
 
         $this->admin = new CleanAdmin('code', 'class', 'controller');
+        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
+        $securityHandler
+            ->expects($this->any())
+            ->method('isGranted')
+            ->willReturnCallback(static function (AdminInterface $admin, $attributes, $object = null): bool {
+                return self::DEFAULT_GRANTED_ROLE === $attributes;
+            });
+
+        $this->admin->setSecurityHandler($securityHandler);
 
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
 
@@ -117,6 +129,7 @@ class FormMapperTest extends TestCase
     {
         $this->formMapper->with('foobar', [
             'translation_domain' => 'Foobar',
+            'role' => self::DEFAULT_GRANTED_ROLE,
         ]);
 
         $this->assertSame(['foobar' => [
@@ -128,6 +141,7 @@ class FormMapperTest extends TestCase
             'name' => 'foobar',
             'box_class' => 'box box-primary',
             'fields' => [],
+            'role' => self::DEFAULT_GRANTED_ROLE,
         ]], $this->admin->getFormGroups());
 
         $this->assertSame(['default' => [
@@ -452,6 +466,30 @@ class FormMapperTest extends TestCase
         ;
 
         $this->assertSame(['fo__o', 'ba____z'], $this->formMapper->keys());
+    }
+
+    public function testAddOptionRole(): void
+    {
+        $this->formMapper->add('bar', 'bar');
+
+        $this->assertTrue($this->formMapper->has('bar'));
+
+        $this->formMapper->add('quux', 'bar', [], ['role' => 'ROLE_QUX']);
+
+        $this->assertTrue($this->formMapper->has('bar'));
+        $this->assertFalse($this->formMapper->has('quux'));
+
+        $this->formMapper
+            ->with('qux')
+                ->add('foobar', 'bar', [], ['role' => self::DEFAULT_GRANTED_ROLE])
+                ->add('foo', 'bar', [], ['role' => 'ROLE_QUX'])
+                ->add('baz', 'bar')
+            ->end();
+
+        $this->assertArrayHasKey('qux', $this->admin->getFormGroups());
+        $this->assertTrue($this->formMapper->has('foobar'));
+        $this->assertFalse($this->formMapper->has('foo'));
+        $this->assertTrue($this->formMapper->has('baz'));
     }
 
     private function getFieldDescriptionMock(

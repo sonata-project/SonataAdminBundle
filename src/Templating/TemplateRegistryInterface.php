@@ -15,6 +15,8 @@ namespace Sonata\AdminBundle\Templating;
 
 /**
  * @author Timo Bakx <timobakx@gmail.com>
+ *
+ * @method bool hasTemplate(string $name)
  */
 interface TemplateRegistryInterface
 {
@@ -29,4 +31,7 @@ interface TemplateRegistryInterface
      * @return string
      */
     public function getTemplate($name);
+
+    // NEXT_MAJOR: Uncomment the following method
+    // public function hasTemplate(string $name): bool;
 }

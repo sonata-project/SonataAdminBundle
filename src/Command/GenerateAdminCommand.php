@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Command;
 
 use Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle;
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Generator\AdminGenerator;
 use Sonata\AdminBundle\Generator\ControllerGenerator;
@@ -29,21 +30,41 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Marek Stipek <mario.dweller@seznam.cz>
  * @author Simon Cosandey <simon.cosandey@simseo.ch>
  */
 class GenerateAdminCommand extends QuestionableCommand
 {
+    protected static $defaultName = 'sonata:admin:generate';
+
     /**
-     * @var string[]
+     * @var Pool
      */
-    private $managerTypes;
+    private $pool;
+
+    /**
+     * An array of model managers indexed by their service ids.
+     *
+     * @var ModelManagerInterface[]
+     */
+    private $managerTypes = [];
+
+    public function __construct(Pool $pool, array $managerTypes)
+    {
+        $this->pool = $pool;
+        $this->managerTypes = $managerTypes;
+
+        parent::__construct();
+    }
 
     public function configure(): void
     {
         $this
-            ->setName('sonata:admin:generate')
             ->setDescription('Generates an admin class based on the given model class')
+            ->setName(static::$defaultName)// BC for symfony/console < 3.4.0
+            // NEXT_MAJOR: drop this line after drop support symfony/console < 3.4.0
             ->addArgument('model', InputArgument::REQUIRED, 'The fully qualified model class')
             ->addOption('bundle', 'b', InputOption::VALUE_OPTIONAL, 'The bundle name')
             ->addOption('admin', 'a', InputOption::VALUE_OPTIONAL, 'The admin class basename')
@@ -74,7 +95,7 @@ class GenerateAdminCommand extends QuestionableCommand
             throw new \InvalidArgumentException(sprintf(
                 'Invalid manager type "%s". Available manager types are "%s".',
                 $managerType,
-                implode('", "', $managerTypes)
+                implode('", "', array_keys($managerTypes))
             ));
         }
 
@@ -105,16 +126,19 @@ class GenerateAdminCommand extends QuestionableCommand
             $this->writeError($output, $e->getMessage());
         }
 
+        $controllerName = CRUDController::class;
+
         if ($controllerClassBasename = $input->getOption('controller')) {
             $controllerClassBasename = Validators::validateControllerClassBasename($controllerClassBasename);
             $controllerGenerator = new ControllerGenerator($skeletonDirectory);
 
             try {
                 $controllerGenerator->generate($bundle, $controllerClassBasename);
+                $controllerName = $controllerGenerator->getClass();
                 $output->writeln(sprintf(
                     '%sThe controller class "<info>%s</info>" has been generated under the file "<info>%s</info>".',
                     PHP_EOL,
-                    $controllerGenerator->getClass(),
+                    $controllerName,
                     realpath($controllerGenerator->getFile())
                 ));
             } catch (\Exception $e) {
@@ -126,10 +150,6 @@ class GenerateAdminCommand extends QuestionableCommand
             $adminClass = $adminGenerator->getClass();
             $file = sprintf('%s/Resources/config/%s', $bundle->getPath(), $servicesFile);
             $servicesManipulator = new ServicesManipulator($file);
-            $controllerName = $controllerClassBasename
-                ? sprintf('%s:%s', $bundle->getName(), substr($controllerClassBasename, 0, -10))
-                : CRUDController::class
-            ;
 
             try {
                 $id = $input->getOption('id') ?: $this->getAdminServiceId($bundle->getName(), $adminClassBasename);
@@ -260,12 +280,12 @@ class GenerateAdminCommand extends QuestionableCommand
             throw new \RuntimeException('There are no model managers registered.');
         }
 
-        return current($managerTypes);
+        return current(array_keys($managerTypes));
     }
 
     private function getModelManager(string $managerType): ModelManagerInterface
     {
-        $modelManager = $this->getContainer()->get('sonata.admin.manager.'.$managerType);
+        $modelManager = $this->getAvailableManagerTypes()[$managerType];
         \assert($modelManager instanceof ModelManagerInterface);
 
         return $modelManager;
@@ -289,24 +309,13 @@ class GenerateAdminCommand extends QuestionableCommand
      */
     private function getAvailableManagerTypes(): array
     {
-        $container = $this->getContainer();
-
-        if (!$container instanceof Container) {
-            return [];
+        $managerTypes = [];
+        foreach ($this->managerTypes as $id => $manager) {
+            $managerType = substr($id, 21);
+            $managerTypes[$managerType] = $manager;
         }
 
-        if (null === $this->managerTypes) {
-            $this->managerTypes = [];
-
-            foreach ($container->getServiceIds() as $id) {
-                if (0 === strpos($id, 'sonata.admin.manager.')) {
-                    $managerType = substr($id, 21);
-                    $this->managerTypes[$managerType] = $managerType;
-                }
-            }
-        }
-
-        return $this->managerTypes;
+        return $managerTypes;
     }
 
     private function getKernel(): KernelInterface

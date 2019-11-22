@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Guesser;
 
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Symfony\Component\Form\Guess\Guess;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -24,7 +25,7 @@ interface TypeGuesserInterface
      * @param string $class
      * @param string $property
      *
-     * @return mixed
+     * @return Guess|null
      */
     public function guessType($class, $property, ModelManagerInterface $modelManager);
 }

@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-{%- spaceless %}
+{%- apply spaceless %}
     {% if value %}
         {% set text = 'label_type_yes'|trans({}, 'SonataAdminBundle') %}
     {% else %}
@@ -23,4 +23,4 @@ file that was distributed with this source code.
     {% endif %}
 
     <span class="label {{ class }}">{{ text }}</span>
-{% endspaceless -%}
+{% endapply -%}

@@ -20,6 +20,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Tests\Extension\Fixtures\StubFilesystemLoader;
 use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslator;
+use Twig\Environment;
 
 /**
  * Base class for tests checking rendering of twig templates.
@@ -39,7 +40,7 @@ abstract class BaseMenuTest extends TestCase
         ], 'is_dir');
 
         $loader = new StubFilesystemLoader($twigPaths);
-        $this->environment = new \Twig_Environment($loader, ['strict_variables' => true]);
+        $this->environment = new Environment($loader, ['strict_variables' => true]);
     }
 
     abstract protected function getTemplate();

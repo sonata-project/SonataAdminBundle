@@ -21,6 +21,8 @@ use Sonata\AdminBundle\Mapper\BaseMapper;
 /**
  * This class is use to simulate the Form API.
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class DatagridMapper extends BaseMapper
@@ -89,8 +91,10 @@ class DatagridMapper extends BaseMapper
             );
         }
 
-        // add the field with the DatagridBuilder
-        $this->builder->addFilter($this->datagrid, $type, $fieldDescription, $this->admin);
+        if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
+            // add the field with the DatagridBuilder
+            $this->builder->addFilter($this->datagrid, $type, $fieldDescription, $this->admin);
+        }
 
         return $this;
     }

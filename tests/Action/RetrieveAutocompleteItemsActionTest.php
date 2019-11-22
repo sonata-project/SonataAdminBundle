@@ -28,6 +28,7 @@ use Sonata\DatagridBundle\Datagrid\DatagridInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 final class RetrieveAutocompleteItemsActionTest extends TestCase
@@ -69,8 +70,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->admin->hasAccess('create')->willReturn(false);
         $this->admin->hasAccess('edit')->willReturn(false);
 
-        $action = $this->action;
-        $action($request);
+        ($this->action)($request);
     }
 
     public function testRetrieveAutocompleteItemsActionDisabledFormelememt(): void
@@ -97,8 +97,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $fieldDescription->getTargetEntity()->willReturn(Foo::class);
         $fieldDescription->getName()->willReturn('barField');
 
-        $action = $this->action;
-        $action($request);
+        ($this->action)($request);
     }
 
     public function testRetrieveAutocompleteItemsTooShortSearchString(): void
@@ -125,10 +124,9 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $fieldDescription->getName()->willReturn('barField');
         $fieldDescription->getAssociationAdmin()->willReturn($targetAdmin->reveal());
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"KO","message":"Too short search string."}', $response->getContent());
     }
@@ -158,10 +156,9 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $datagrid->getFilter('foo')->willReturn($filter);
         $datagrid->setValue('foo', null, 'sonata')->shouldBeCalled();
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
@@ -191,10 +188,9 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $datagrid->setValue('entity__property', null, 'sonata')->shouldBeCalled();
         $datagrid->setValue('entity2__property2', null, 'sonata')->shouldBeCalled();
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
@@ -217,10 +213,9 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $datagrid->getFilter('entity.property')->willReturn($filter);
         $datagrid->setValue('entity__property', null, 'sonata')->shouldBeCalled();
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }

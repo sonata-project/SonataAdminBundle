@@ -25,10 +25,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminHelper
 {
+    /**
+     * @var string
+     */
+    private const FORM_FIELD_DELETE = '_delete';
+
     /**
      * @var Pool
      */
@@ -53,6 +60,8 @@ class AdminHelper
                 return $formBuilder;
             }
         }
+
+        return null;
     }
 
     /**
@@ -67,6 +76,8 @@ class AdminHelper
                 return $formView;
             }
         }
+
+        return null;
     }
 
     /**
@@ -88,7 +99,6 @@ class AdminHelper
      *   This code is ugly, but there is no better way of doing it.
      *   For now the append form element action used to add a new row works
      *   only for direct FieldDescription (not nested one).
-     *
      *
      * @param object $subject
      * @param string $elementId
@@ -115,9 +125,9 @@ class AdminHelper
                 $i = 0;
                 foreach ($formData[$childFormBuilder->getName()] as $name => &$field) {
                     $toDelete[$i] = false;
-                    if (\array_key_exists('_delete', $field)) {
+                    if (\array_key_exists(self::FORM_FIELD_DELETE, $field)) {
                         $toDelete[$i] = true;
-                        unset($field['_delete']);
+                        unset($field[self::FORM_FIELD_DELETE]);
                     }
                     ++$i;
                 }
@@ -200,7 +210,9 @@ class AdminHelper
         if (\count($toDelete) > 0) {
             $i = 0;
             foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
-                $childField->get('_delete')->setData(isset($toDelete[$i]) && $toDelete[$i]);
+                if ($childField->has(self::FORM_FIELD_DELETE)) {
+                    $childField->get(self::FORM_FIELD_DELETE)->setData($toDelete[$i] ?? false);
+                }
                 ++$i;
             }
         }

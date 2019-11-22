@@ -18,6 +18,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class GlobalVariables
@@ -93,7 +95,7 @@ class GlobalVariables
     /**
      * @param string $code
      * @param string $action
-     * @param mixed  $object
+     * @param object $object
      * @param array  $parameters
      * @param int    $absolute
      *

@@ -144,7 +144,7 @@ To search case-insensitive use the following option:
             case_sensitive: false
 
 Using case-insensitivity might lead to performance issues. You can find some more information
-`here <hhttps://use-the-index-luke.com/sql/where-clause/functions/case-insensitive-search>`_.
+`here <https://use-the-index-luke.com/sql/where-clause/functions/case-insensitive-search>`_.
 
 Instead of searching **all** fields case-insensitive with PostgreSQL, you can use a dedicated
 `CITEXT type <https://www.postgresql.org/docs/9.1/citext.html>`_ via

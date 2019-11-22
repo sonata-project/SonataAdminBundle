@@ -28,6 +28,8 @@ use Symfony\Component\DependencyInjection\Reference;
  * Add all dependencies to the Admin class, this avoid to write too many lines
  * in the configuration files.
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 final class AddDependencyCallsCompilerPass implements CompilerPassInterface
@@ -260,16 +262,16 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $definition->setShared(false);
 
-        $manager_type = $attributes['manager_type'];
+        $managerType = $attributes['manager_type'];
 
         $overwriteAdminConfiguration = $settings[$serviceId] ?? [];
 
         $defaultAddServices = [
-            'model_manager' => sprintf('sonata.admin.manager.%s', $manager_type),
-            'form_contractor' => sprintf('sonata.admin.builder.%s_form', $manager_type),
-            'show_builder' => sprintf('sonata.admin.builder.%s_show', $manager_type),
-            'list_builder' => sprintf('sonata.admin.builder.%s_list', $manager_type),
-            'datagrid_builder' => sprintf('sonata.admin.builder.%s_datagrid', $manager_type),
+            'model_manager' => sprintf('sonata.admin.manager.%s', $managerType),
+            'form_contractor' => sprintf('sonata.admin.builder.%s_form', $managerType),
+            'show_builder' => sprintf('sonata.admin.builder.%s_show', $managerType),
+            'list_builder' => sprintf('sonata.admin.builder.%s_list', $managerType),
+            'datagrid_builder' => sprintf('sonata.admin.builder.%s_datagrid', $managerType),
             'translator' => 'translator',
             'configuration_pool' => 'sonata.admin.pool',
             'route_generator' => 'sonata.admin.route.default_generator',
@@ -277,11 +279,11 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             'security_handler' => 'sonata.admin.security.handler',
             'menu_factory' => 'knp_menu.factory',
             'route_builder' => 'sonata.admin.route.path_info'.
-                (('doctrine_phpcr' === $manager_type) ? '_slashes' : ''),
+                (('doctrine_phpcr' === $managerType) ? '_slashes' : ''),
             'label_translator_strategy' => 'sonata.admin.label.strategy.native',
         ];
 
-        $definition->addMethodCall('setManagerType', [$manager_type]);
+        $definition->addMethodCall('setManagerType', [$managerType]);
 
         foreach ($defaultAddServices as $attr => $addServiceId) {
             $method = 'set'.Inflector::classify($attr);

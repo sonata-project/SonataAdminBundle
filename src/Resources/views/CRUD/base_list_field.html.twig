@@ -13,14 +13,14 @@ file that was distributed with this source code.
     {% set route = field_description.options.route.name|default(null) %}
 
     {% if
-        field_description.options.identifier is defined
+        field_description.options.identifier|default(false)
         and route
         and admin.hasRoute(route)
         and admin.hasAccess(route, route in ['show', 'edit'] ? object : null)
     %}
         <a class="sonata-link-identifier" href="{{ admin.generateObjectUrl(route, object, field_description.options.route.parameters) }}">
             {%- block field %}
-                {% spaceless %}
+                {% apply spaceless %}
                 {% if field_description.options.collapse is defined %}
                     {% set collapse = field_description.options.collapse %}
                     <div class="sonata-readmore"
@@ -30,7 +30,7 @@ file that was distributed with this source code.
                 {% else %}
                     {{ value }}
                 {% endif %}
-                {% endspaceless %}
+                {% endapply %}
             {% endblock -%}
         </a>
     {% else %}

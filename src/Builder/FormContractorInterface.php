@@ -24,14 +24,9 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 interface FormContractorInterface extends BuilderInterface
 {
-    /**
-     * @abstract
-     */
     public function __construct(FormFactoryInterface $formFactory);
 
     /**
-     * @abstract
-     *
      * @param string $name
      *
      * @return FormBuilder
@@ -40,8 +35,6 @@ interface FormContractorInterface extends BuilderInterface
 
     /**
      * Should provide Symfony form options.
-     *
-     * @abstract
      *
      * @param string $type
      *

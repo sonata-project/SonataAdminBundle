@@ -44,19 +44,19 @@ interface ProxyQueryInterface
     public function setSortBy($parentAssociationMappings, $fieldMapping);
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getSortBy();
 
     /**
-     * @param mixed $sortOrder
+     * @param string $sortOrder
      *
      * @return ProxyQueryInterface
      */
     public function setSortOrder($sortOrder);
 
     /**
-     * @return mixed
+     * @return array<string, string>
      */
     public function getSortOrder();
 
@@ -85,19 +85,17 @@ interface ProxyQueryInterface
     public function setMaxResults($maxResults);
 
     /**
-     * @return mixed
+     * @return int|null
      */
     public function getMaxResults();
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getUniqueParameterId();
 
     /**
-     * @param array $associationMappings
-     *
-     * @return mixed
+     * @return string
      */
     public function entityJoin(array $associationMappings);
 }

@@ -12,11 +12,11 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block title %}
-    {{ "title_show"|trans({'%name%': admin.toString(object)|truncate(15) }, 'SonataAdminBundle') }}
+    {{ 'title_show'|trans({'%name%': admin.toString(object)|truncate(15) }, 'SonataAdminBundle') }}
 {% endblock %}
 
 {% block navbar_title %}
-    {{ block('title') }}
+    {{ 'title_show'|trans({'%name%': admin.toString(object)|truncate(100) }, 'SonataAdminBundle') }}
 {% endblock %}
 
 {%- block actions -%}
@@ -105,7 +105,7 @@ file that was distributed with this source code.
                                     {% block show_field %}
                                         <tr class="sonata-ba-view-container">
                                             {% if elements[field_name] is defined %}
-                                                {{ elements[field_name]|render_view_element(object)}}
+                                                {{ elements[field_name]|render_view_element(object) }}
                                             {% endif %}
                                         </tr>
                                     {% endblock %}

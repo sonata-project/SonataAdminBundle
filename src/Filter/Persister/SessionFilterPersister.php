@@ -28,34 +28,22 @@ final class SessionFilterPersister implements FilterPersisterInterface
      */
     private $session;
 
-    /**
-     * @param SessionInterface $session
-     */
     public function __construct(SessionInterface $session)
     {
         $this->session = $session;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get($adminCode)
     {
         return $this->session->get($this->buildStorageKey($adminCode), []);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function set($adminCode, array $filters): void
+    public function set($adminCode, array $filters)
     {
         $this->session->set($this->buildStorageKey($adminCode), $filters);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function reset($adminCode): void
+    public function reset($adminCode)
     {
         $this->session->remove($this->buildStorageKey($adminCode));
     }

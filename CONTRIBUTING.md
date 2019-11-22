@@ -683,7 +683,7 @@ Before releasing anything, it is best to reduce the gap between branches:
 
 Before abandoning it, the legacy branch MUST receive a last patch version.
 Likewise, the stable branch MUST receive a last version if that version is minor,
-it SHOULD receive one is that version is a patch version.
+it SHOULD receive one if that version is a patch version.
 
 #### Creating the new stable branch and files
 

@@ -57,7 +57,6 @@ class ExplainAdminCommandTest extends TestCase
     protected function setUp(): void
     {
         $this->application = new Application();
-        $command = new ExplainAdminCommand();
 
         $container = $this->createMock(ContainerInterface::class);
 
@@ -144,29 +143,22 @@ class ExplainAdminCommandTest extends TestCase
                 return $adminParent;
             });
 
-        $this->validatorFactory = $this->createMock(MetadataFactoryInterface::class);
-
         $container->expects($this->any())
             ->method('get')
-            ->willReturnCallback(function ($id) use ($container) {
-                switch ($id) {
-                    case 'sonata.admin.pool':
-                        $pool = new Pool($container, '', '');
-                        $pool->setAdminServiceIds(['acme.admin.foo', 'acme.admin.bar']);
-
-                        return $pool;
-
-                    case 'validator':
-                        return $this->validatorFactory;
-
-                    case 'acme.admin.foo':
-                        return $this->admin;
+            ->willReturnCallback(function (string $id): AdminInterface {
+                if ('acme.admin.foo' === $id) {
+                    return $this->admin;
                 }
             });
 
         $container->expects($this->any())->method('has')->willReturn(true);
 
-        $command->setContainer($container);
+        $pool = new Pool($container, '', '');
+        $pool->setAdminServiceIds(['acme.admin.foo', 'acme.admin.bar']);
+
+        $this->validatorFactory = $this->createMock(MetadataFactoryInterface::class);
+
+        $command = new ExplainAdminCommand($pool, $this->validatorFactory);
 
         $this->application->add($command);
     }
@@ -290,16 +282,12 @@ class ExplainAdminCommandTest extends TestCase
 
     public function testExecuteNonAdminService(): void
     {
-        try {
-            $command = $this->application->find('sonata:admin:explain');
-            $commandTester = new CommandTester($command);
-            $commandTester->execute(['command' => $command->getName(), 'admin' => 'nonexistent.service']);
-        } catch (\RuntimeException $e) {
-            $this->assertSame('Service "nonexistent.service" is not an admin class', $e->getMessage());
+        $command = $this->application->find('sonata:admin:explain');
+        $commandTester = new CommandTester($command);
 
-            return;
-        }
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Admin service "nonexistent.service" not found in admin pool. Did you mean "acme.admin.bar" or one of those: []');
 
-        $this->fail('An expected exception has not been raised.');
+        $commandTester->execute(['command' => $command->getName(), 'admin' => 'nonexistent.service']);
     }
 }

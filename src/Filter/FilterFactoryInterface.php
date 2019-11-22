@@ -22,7 +22,7 @@ interface FilterFactoryInterface
      * @param string $name
      * @param string $type
      *
-     * @return mixed
+     * @return FilterInterface
      */
     public function create($name, $type, array $options = []);
 }

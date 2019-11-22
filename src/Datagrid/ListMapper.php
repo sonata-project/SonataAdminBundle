@@ -22,6 +22,8 @@ use Sonata\AdminBundle\Mapper\BaseMapper;
 /**
  * This class is used to simulate the Form API.
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ListMapper extends BaseMapper
@@ -77,6 +79,17 @@ class ListMapper extends BaseMapper
             $fieldDescriptionOptions['virtual_field'] = true;
         }
 
+        if (\array_key_exists('identifier', $fieldDescriptionOptions) && !\is_bool($fieldDescriptionOptions['identifier'])) {
+            @trigger_error(
+                'Passing a non boolean value for the "identifier" option is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.',
+                E_USER_DEPRECATED
+            );
+
+            $fieldDescriptionOptions['identifier'] = (bool) $fieldDescriptionOptions['identifier'];
+            // NEXT_MAJOR: Remove the previous 6 lines and use commented line below it instead
+            // throw new \InvalidArgumentException(sprintf('Value for "identifier" option must be boolean, %s given.', gettype($fieldDescriptionOptions['identifier'])));
+        }
+
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
@@ -114,8 +127,10 @@ class ListMapper extends BaseMapper
             );
         }
 
-        // add the field with the FormBuilder
-        $this->builder->addField($this->list, $type, $fieldDescription, $this->admin);
+        if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
+            // add the field with the FormBuilder
+            $this->builder->addField($this->list, $type, $fieldDescription, $this->admin);
+        }
 
         return $this;
     }

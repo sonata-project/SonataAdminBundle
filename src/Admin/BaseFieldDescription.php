@@ -131,7 +131,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     private static $fieldGetters = [];
 
-    public function setFieldName($fieldName): void
+    public function setFieldName($fieldName)
     {
         $this->fieldName = $fieldName;
     }
@@ -141,7 +141,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->fieldName;
     }
 
-    public function setName($name): void
+    public function setName($name)
     {
         $this->name = $name;
 
@@ -160,12 +160,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return isset($this->options[$name]) ? $this->options[$name] : $default;
     }
 
-    public function setOption($name, $value): void
+    public function setOption($name, $value)
     {
         $this->options[$name] = $value;
     }
 
-    public function setOptions(array $options): void
+    public function setOptions(array $options)
     {
         // set the type if provided
         if (isset($options['type'])) {
@@ -202,7 +202,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->options;
     }
 
-    public function setTemplate($template): void
+    public function setTemplate($template)
     {
         $this->template = $template;
     }
@@ -212,7 +212,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->template;
     }
 
-    public function setType($type): void
+    public function setType($type)
     {
         $this->type = $type;
     }
@@ -222,7 +222,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->type;
     }
 
-    public function setParent(AdminInterface $parent): void
+    public function setParent(AdminInterface $parent)
     {
         $this->parent = $parent;
     }
@@ -247,7 +247,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->parentAssociationMappings;
     }
 
-    public function setAssociationAdmin(AdminInterface $associationAdmin): void
+    public function setAssociationAdmin(AdminInterface $associationAdmin)
     {
         $this->associationAdmin = $associationAdmin;
         $this->associationAdmin->setParentFieldDescription($this);
@@ -266,7 +266,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public function getFieldValue($object, $fieldName)
     {
         if ($this->isVirtual() || null === $object) {
-            return;
+            return null;
         }
 
         $getters = [];
@@ -297,14 +297,14 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             if (method_exists($object, $getter) && \is_callable([$object, $getter])) {
                 $this->cacheFieldGetter($object, $fieldName, 'getter', $getter);
 
-                return $object->$getter(...$parameters);
+                return $object->{$getter}(...$parameters);
             }
         }
 
         if (method_exists($object, '__call')) {
             $this->cacheFieldGetter($object, $fieldName, 'call');
 
-            return $object->$fieldName(...$parameters);
+            return $object->{$fieldName}(...$parameters);
         }
 
         if (isset($object->{$fieldName})) {
@@ -316,7 +316,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         throw new NoValueException(sprintf('Unable to retrieve the value of `%s`', $this->getName()));
     }
 
-    public function setAdmin(AdminInterface $admin): void
+    public function setAdmin(AdminInterface $admin)
     {
         $this->admin = $admin;
     }
@@ -326,7 +326,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->admin;
     }
 
-    public function mergeOption($name, array $options = []): void
+    public function mergeOption($name, array $options = [])
     {
         if (!isset($this->options[$name])) {
             $this->options[$name] = [];
@@ -339,12 +339,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->options[$name] = array_merge($this->options[$name], $options);
     }
 
-    public function mergeOptions(array $options = []): void
+    public function mergeOptions(array $options = [])
     {
         $this->setOptions(array_merge_recursive($this->options, $options));
     }
 
-    public function setMappingType($mappingType): void
+    public function setMappingType($mappingType)
     {
         $this->mappingType = $mappingType;
     }
@@ -355,11 +355,38 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     }
 
     /**
+     * Camelize a string.
+     *
+     * NEXT_MAJOR: remove this method.
+     *
+     * @static
+     *
+     * @param string $property
+     *
+     * @return string
+     *
+     * @deprecated Deprecated since version 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead
+     */
+    public static function camelize($property)
+    {
+        @trigger_error(
+            sprintf(
+                'The %s method is deprecated since 3.1 and will be removed in 4.0. '.
+                'Use \Doctrine\Common\Inflector\Inflector::classify() instead.',
+                __METHOD__
+            ),
+            E_USER_DEPRECATED
+        );
+
+        return Inflector::classify($property);
+    }
+
+    /**
      * Defines the help message.
      *
      * @param string $help
      */
-    public function setHelp($help): void
+    public function setHelp($help)
     {
         $this->help = $help;
     }
@@ -374,7 +401,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->getOption('label');
     }
 
-    public function isSortable(): bool
+    public function isSortable()
     {
         return false !== $this->getOption('sortable', false);
     }
@@ -394,7 +421,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->getOption('translation_domain') ?: $this->getAdmin()->getTranslationDomain();
     }
 
-    public function isVirtual(): bool
+    /**
+     * Return true if field is virtual.
+     *
+     * @return bool
+     */
+    public function isVirtual()
     {
         return false !== $this->getOption('virtual_field', false);
     }
@@ -404,12 +436,10 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if (!\is_string($fieldName)) {
             return null;
         }
-
         if (!\is_object($object)) {
             return null;
         }
         $components = [\get_class($object), $fieldName];
-
         $code = $this->getOption('code');
         if (\is_string($code) && '' !== $code) {
             $components[] = $code;
@@ -428,19 +458,16 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     private function callCachedGetter($object, string $fieldName, array $parameters = [])
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
-
         if ('getter' === self::$fieldGetters[$getterKey]['method']) {
             return $object->{self::$fieldGetters[$getterKey]['getter']}(...$parameters);
-        }
-
-        if ('call' === self::$fieldGetters[$getterKey]['method']) {
-            return $object->__call($fieldName, $parameters);
+        } elseif ('call' === self::$fieldGetters[$getterKey]['method']) {
+            return $object->{$fieldName}(...$parameters);
         }
 
         return $object->{$fieldName};
     }
 
-    private function cacheFieldGetter($object, ?string $fieldName, string $method, ?string $getter = null): void
+    private function cacheFieldGetter($object, ?string $fieldName, string $method, ?string $getter = null)
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
         if (null !== $getterKey) {

@@ -18,11 +18,14 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class Datagrid implements DatagridInterface
@@ -130,7 +133,15 @@ class Datagrid implements DatagridInterface
 
         $this->formBuilder->add('_sort_order', $hiddenType);
         $this->formBuilder->add('_page', $hiddenType);
-        $this->formBuilder->add('_per_page', $hiddenType);
+
+        if (isset($this->values['_per_page']) && \is_array($this->values['_per_page'])) {
+            $this->formBuilder->add('_per_page', CollectionType::class, [
+                'entry_type' => $hiddenType,
+                'allow_add' => true,
+            ]);
+        } else {
+            $this->formBuilder->add('_per_page', $hiddenType);
+        }
 
         $this->form = $this->formBuilder->getForm();
         $this->form->submit($this->values);
@@ -200,7 +211,22 @@ class Datagrid implements DatagridInterface
 
     public function getFilter($name)
     {
-        return $this->hasFilter($name) ? $this->filters[$name] : null;
+        if (!$this->hasFilter($name)) {
+            @trigger_error(sprintf(
+                'Passing a nonexistent filter name as argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare FilterInterface as return type
+            // throw new \InvalidArgumentException(sprintf(
+            //    'Filter named "%s" doesn\'t exist.',
+            //    $name
+            // ));
+
+            return null;
+        }
+
+        return $this->filters[$name];
     }
 
     public function getFilters()

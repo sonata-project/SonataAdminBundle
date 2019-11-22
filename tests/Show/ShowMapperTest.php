@@ -20,6 +20,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
@@ -31,6 +32,8 @@ use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
  */
 class ShowMapperTest extends TestCase
 {
+    private const DEFAULT_GRANTED_ROLE = 'ROLE_ADMIN_BAZ';
+
     /**
      * @var ShowMapper
      */
@@ -61,7 +64,7 @@ class ShowMapperTest extends TestCase
      */
     private $listShowFields;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->showBuilder = $this->getMockForAbstractClass(ShowBuilderInterface::class);
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
@@ -434,12 +437,68 @@ class ShowMapperTest extends TestCase
         $this->assertFalse($this->showMapper->get('foo')->getOption('label'));
     }
 
+    public function testAddOptionRole(): void
+    {
+        $this->cleanShowMapper();
+
+        $this->showMapper->add('bar', 'bar');
+
+        $this->assertTrue($this->showMapper->has('bar'));
+
+        $this->showMapper->add('quux', 'bar', ['role' => 'ROLE_QUX']);
+
+        $this->assertTrue($this->showMapper->has('bar'));
+        $this->assertFalse($this->showMapper->has('quux'));
+
+        $this->showMapper
+            ->with('qux')
+                ->add('foobar', 'bar', ['role' => self::DEFAULT_GRANTED_ROLE])
+                ->add('foo', 'bar', ['role' => 'ROLE_QUX'])
+                ->add('baz', 'bar')
+            ->end();
+
+        $this->assertArrayHasKey('qux', $this->admin->getShowGroups());
+        $this->assertTrue($this->showMapper->has('foobar'));
+        $this->assertFalse($this->showMapper->has('foo'));
+        $this->assertTrue($this->showMapper->has('baz'));
+    }
+
     private function cleanShowMapper(): void
     {
         $this->showBuilder = $this->getMockForAbstractClass(ShowBuilderInterface::class);
+        $this->showBuilder->expects($this->any())
+            ->method('addField')
+            ->willReturnCallback(static function (FieldDescriptionCollection $list, ?string $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin): void {
+                $list->add($fieldDescription);
+            });
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
         $this->admin = new CleanAdmin('code', 'class', 'controller');
+        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
+        $securityHandler
+            ->expects($this->any())
+            ->method('isGranted')
+            ->willReturnCallback(static function (AdminInterface $admin, $attributes, $object = null): bool {
+                return self::DEFAULT_GRANTED_ROLE === $attributes;
+            });
+
+        $this->admin->setSecurityHandler($securityHandler);
+
         $this->showMapper = new ShowMapper($this->showBuilder, $this->fieldDescriptionCollection, $this->admin);
+
+        $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
+
+        $modelManager->expects($this->any())
+            ->method('getNewFieldDescriptionInstance')
+            ->willReturnCallback(function (string $class, string $name, array $options = []): FieldDescriptionInterface {
+                $fieldDescription = $this->getFieldDescriptionMock();
+                $fieldDescription->setName($name);
+                $fieldDescription->setOptions($options);
+
+                return $fieldDescription;
+            });
+
+        $this->admin->setModelManager($modelManager);
+        $this->admin->setLabelTranslatorStrategy(new NoopLabelTranslatorStrategy());
     }
 
     private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription

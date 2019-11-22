@@ -13,32 +13,53 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Command;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ExplainAdminCommand extends ContainerAwareCommand
+class ExplainAdminCommand extends Command
 {
-    public function configure(): void
+    protected static $defaultName = 'sonata:admin:explain';
+
+    /**
+     * @var Pool
+     */
+    private $pool;
+
+    /**
+     * @var MetadataFactoryInterface
+     */
+    private $validator;
+
+    public function __construct(Pool $pool, MetadataFactoryInterface $validator)
     {
-        $this->setName('sonata:admin:explain');
-        $this->setDescription('Explain an admin service');
+        $this->pool = $pool;
+        $this->validator = $validator;
+
+        parent::__construct();
+    }
+
+    public function configure()
+    {
+        $this->setDescription('Explain an admin service')
+            ->setName(static::$defaultName)// BC for symfony/console < 3.4.0
+            // NEXT_MAJOR: drop this line after drop support symfony/console < 3.4.0
+        ;
 
         $this->addArgument('admin', InputArgument::REQUIRED, 'The admin service id');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): void
+    public function execute(InputInterface $input, OutputInterface $output)
     {
-        $admin = $this->getContainer()->get($input->getArgument('admin'));
-
-        if (!$admin instanceof AdminInterface) {
-            throw new \RuntimeException(sprintf('Service "%s" is not an admin class', $input->getArgument('admin')));
-        }
+        $admin = $this->pool->getInstance($input->getArgument('admin'));
 
         $output->writeln('<comment>AdminBundle Information</comment>');
         $output->writeln(sprintf('<info>% -20s</info> : %s', 'id', $admin->getCode()));
@@ -99,7 +120,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
             ));
         }
 
-        $metadata = $this->getContainer()->get('validator')->getMetadataFor($admin->getClass());
+        $metadata = $this->validator->getMetadataFor($admin->getClass());
 
         $output->writeln('');
         $output->writeln('<comment>Validation Framework</comment> - http://symfony.com/doc/3.0/book/validation.html');

@@ -27,6 +27,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * A manipulator for updating ACL related to an object.
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  * @author Baptiste Meyer <baptiste@les-tilleuls.coop>
  */

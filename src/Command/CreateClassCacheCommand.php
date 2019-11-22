@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\ClassLoader\ClassCollectionLoader;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -26,21 +26,43 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * NEXT_MAJOR: Remove this class.
  *
+ * @deprecated since version sonata-project/admin-bundle 3.39.0 and will be removed in 4.0.
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class CreateClassCacheCommand extends ContainerAwareCommand
+class CreateClassCacheCommand extends Command
 {
-    public function configure(): void
+    protected static $defaultName = 'cache:create-cache-class';
+
+    /**
+     * @var string
+     */
+    private $cacheDir;
+
+    /**
+     * @var bool
+     */
+    private $debug;
+
+    public function __construct(string $cacheDir, bool $debug)
     {
-        $this->setName('cache:create-cache-class');
-        $this->setDescription('Generate the classes.php files');
+        $this->cacheDir = $cacheDir;
+        $this->debug = $debug;
+
+        parent::__construct();
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): void
+    public function configure()
     {
-        $kernel = $this->getContainer()->get('kernel');
+        $this->setDescription('Generate the classes.php files')
+            ->setName(static::$defaultName)// BC for symfony/console < 3.4.0
+            // NEXT_MAJOR: drop this line after drop support symfony/console < 3.4.0
+        ;
+    }
 
-        $classmap = $kernel->getCacheDir().'/classes.map';
+    public function execute(InputInterface $input, OutputInterface $output)
+    {
+        $classmap = $this->cacheDir.'/classes.map';
 
         if (!is_file($classmap)) {
             throw new \RuntimeException(sprintf('The file %s does not exist', $classmap));
@@ -52,9 +74,9 @@ class CreateClassCacheCommand extends ContainerAwareCommand
         $output->write('<info>Writing cache file ...</info>');
         ClassCollectionLoader::load(
             include($classmap),
-            $kernel->getCacheDir(),
+            $this->cacheDir,
             $name,
-            $kernel->isDebug(),
+            $this->debug,
             false,
             $extension
         );

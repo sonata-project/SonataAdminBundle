@@ -11,9 +11,9 @@ file that was distributed with this source code.
 
 {% extends get_admin_template('base_list_field', admin.code) %}
 
-{% block field%}
-    {% set translationDomain = field_description.options.catalogue|default(admin.translationDomain) %}
-    {% set valueFormat = field_description.options.format|default('%s') %}
+{% block field %}
+    {% set translation_domain = field_description.options.catalogue|default(admin.translationDomain) %}
+    {% set value_format = field_description.options.format|default('%s') %}
 
-    {{valueFormat|format(value)|trans({}, translationDomain)}}
+    {{ value_format|format(value)|trans({}, translation_domain) }}
 {% endblock %}

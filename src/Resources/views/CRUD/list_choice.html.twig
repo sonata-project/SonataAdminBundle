@@ -20,15 +20,15 @@ file that was distributed with this source code.
 
 {% if is_editable and x_editable_type %}
     {% block field_span_attributes %}
-        {% spaceless %}
+        {% apply spaceless %}
             {{ parent() }}
             data-source="{{ field_description|sonata_xeditable_choices|json_encode }}"
-        {% endspaceless %}
+        {% endapply %}
     {% endblock %}
 {% endif %}
 
 {% block field %}
-{% spaceless %}
+{% apply spaceless %}
     {% if field_description.options.choices is defined %}
         {% if field_description.options.multiple is defined and field_description.options.multiple==true and value is iterable %}
 
@@ -63,5 +63,5 @@ file that was distributed with this source code.
     {% endif %}
 
     {{ value }}
-{% endspaceless %}
+{% endapply %}
 {% endblock %}

@@ -14,34 +14,68 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Command;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class GenerateObjectAclCommand extends QuestionableCommand
 {
+    protected static $defaultName = 'sonata:admin:generate-object-acl';
+
     /**
      * @var string
      */
     protected $userEntityClass = '';
 
-    public function configure(): void
+    /**
+     * @var Pool
+     */
+    private $pool;
+
+    /**
+     * An array of object ACL manipulators indexed by their service ids.
+     *
+     * @var ObjectAclManipulatorInterface[]
+     */
+    private $aclObjectManipulators = [];
+
+    /**
+     * @var RegistryInterface
+     */
+    private $registry;
+
+    public function __construct(Pool $pool, array $aclObjectManipulators, RegistryInterface $registry = null)
+    {
+        $this->pool = $pool;
+        $this->aclObjectManipulators = $aclObjectManipulators;
+        $this->registry = $registry;
+
+        parent::__construct();
+    }
+
+    public function configure()
     {
         $this
-            ->setName('sonata:admin:generate-object-acl')
             ->setDescription('Install ACL for the objects of the Admin Classes.')
+            ->setName(static::$defaultName)// BC for symfony/console < 3.4.0
+            // NEXT_MAJOR: drop this line after drop support symfony/console < 3.4.0
             ->addOption('object_owner', null, InputOption::VALUE_OPTIONAL, 'If set, the task will set the object owner for each admin.')
             ->addOption('user_entity', null, InputOption::VALUE_OPTIONAL, 'Shortcut notation like <comment>AcmeDemoBundle:User</comment>. If not set, it will be asked the first time an object owner is set.')
             ->addOption('step', null, InputOption::VALUE_NONE, 'If set, the task will ask for each admin if the ACLs need to be generated and what object owner to set, if any.')
         ;
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): void
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Welcome to the AdminBundle object ACL generator');
         $output->writeln([
@@ -53,6 +87,12 @@ class GenerateObjectAclCommand extends QuestionableCommand
                 '',
         ]);
 
+        if (!$this->registry) {
+            $msg = sprintf('The command "%s" has a dependency on a non-existent service "doctrine".', static::$defaultName);
+
+            throw new ServiceNotFoundException('doctrine', static::class, null, [], $msg);
+        }
+
         if ($input->getOption('user_entity')) {
             try {
                 $this->getUserEntityClass($input, $output);
@@ -63,9 +103,15 @@ class GenerateObjectAclCommand extends QuestionableCommand
             }
         }
 
-        foreach ($this->getContainer()->get('sonata.admin.pool')->getAdminServiceIds() as $id) {
+        if (!$this->aclObjectManipulators) {
+            $output->writeln('No manipulators are implemented : <info>ignoring</info>');
+
+            return;
+        }
+
+        foreach ($this->pool->getAdminServiceIds() as $id) {
             try {
-                $admin = $this->getContainer()->get($id);
+                $admin = $this->pool->getInstance($id);
             } catch (\Exception $e) {
                 $output->writeln('<error>Warning : The admin class cannot be initiated from the command line</error>');
                 $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
@@ -88,12 +134,11 @@ class GenerateObjectAclCommand extends QuestionableCommand
             }
 
             $manipulatorId = sprintf('sonata.admin.manipulator.acl.object.%s', $admin->getManagerType());
-            if (!$this->getContainer()->has($manipulatorId)) {
+            if (!$manipulator = $this->aclObjectManipulators[$manipulatorId] ?? null) {
                 $output->writeln('Admin class is using a manager type that has no manipulator implemented : <info>ignoring</info>');
 
                 continue;
             }
-            $manipulator = $this->getContainer()->get($manipulatorId);
             if (!$manipulator instanceof ObjectAclManipulatorInterface) {
                 $output->writeln(sprintf('The interface "ObjectAclManipulatorInterface" is not implemented for %s: <info>ignoring</info>', \get_class($manipulator)));
 
@@ -113,12 +158,12 @@ class GenerateObjectAclCommand extends QuestionableCommand
         if ('' === $this->userEntityClass) {
             if ($input->getOption('user_entity')) {
                 list($userBundle, $userEntity) = Validators::validateEntityName($input->getOption('user_entity'));
-                $this->userEntityClass = $this->getContainer()->get('doctrine')->getEntityNamespace($userBundle).'\\'.$userEntity;
+                $this->userEntityClass = $this->registry->getEntityNamespace($userBundle).'\\'.$userEntity;
             } else {
                 list($userBundle, $userEntity) = $this->askAndValidate($input, $output, 'Please enter the User Entity shortcut name: ', '', 'Sonata\AdminBundle\Command\Validators::validateEntityName');
 
                 // Entity exists?
-                $this->userEntityClass = $this->getContainer()->get('doctrine')->getEntityNamespace($userBundle).'\\'.$userEntity;
+                $this->userEntityClass = $this->registry->getEntityNamespace($userBundle).'\\'.$userEntity;
             }
         }
 
