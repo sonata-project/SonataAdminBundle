@@ -13,7 +13,6 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
 
     // src/Entity/BlogPost.php
 
-    // ...
     class BlogPost
     {
         // ...
@@ -87,7 +86,10 @@ After this, create the schema for these entities:
 .. note::
 
     This article assumes you have basic knowledge of the Doctrine2 ORM and
-    you've set up a database correctly.
+    you've set up a database correctly. You can learn more on Doctrine entities
+    in the `Databases and the Doctrine ORM`_ chapter.
+
+.. _`Databases and the Doctrine ORM`: https://symfony.com/doc/current/doctrine.html
 
 Step 1: Create an Admin Class
 -----------------------------
