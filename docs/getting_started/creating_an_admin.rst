@@ -87,7 +87,7 @@ After this, create the schema for these entities:
 
     This article assumes you have basic knowledge of the Doctrine2 ORM and
     you've set up a database correctly. You can learn more on Doctrine entities
-    int the `Databases and the Doctrine ORM`_ chapter.
+    in the `Databases and the Doctrine ORM`_ chapter.
 
 .. _`Databases and the Doctrine ORM`: https://symfony.com/doc/current/doctrine.html
 
