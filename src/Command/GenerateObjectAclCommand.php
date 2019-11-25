@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Command;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
@@ -50,14 +51,22 @@ class GenerateObjectAclCommand extends QuestionableCommand
     private $aclObjectManipulators = [];
 
     /**
-     * @var RegistryInterface
+     * @var RegistryInterface|ManagerRegistry|null
      */
     private $registry;
 
+    /**
+     * @param Pool $pool
+     * @param array $aclObjectManipulators
+     * @param RegistryInterface|ManagerRegistry|null $registry
+     */
     public function __construct(Pool $pool, array $aclObjectManipulators, $registry = null)
     {
         $this->pool = $pool;
         $this->aclObjectManipulators = $aclObjectManipulators;
+        if (!(method_exists($registry, 'getAliasNamespace') || method_exists($this->registry, 'getEntityNamespace'))) {
+            throw new \InvalidArgumentException('$registy need to be either Symfony\Bridge\Doctrine\RegistryInterface or Doctrine\Common\Persistence\ManagerRegistry');
+        }
         $this->registry = $registry;
 
         parent::__construct();
