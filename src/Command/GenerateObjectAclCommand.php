@@ -54,7 +54,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
      */
     private $registry;
 
-    public function __construct(Pool $pool, array $aclObjectManipulators, RegistryInterface $registry = null)
+    public function __construct(Pool $pool, array $aclObjectManipulators, $registry = null)
     {
         $this->pool = $pool;
         $this->aclObjectManipulators = $aclObjectManipulators;
@@ -158,11 +158,13 @@ class GenerateObjectAclCommand extends QuestionableCommand
         if ('' === $this->userEntityClass) {
             if ($input->getOption('user_entity')) {
                 list($userBundle, $userEntity) = Validators::validateEntityName($input->getOption('user_entity'));
-                $this->userEntityClass = $this->registry->getEntityNamespace($userBundle).'\\'.$userEntity;
             } else {
                 list($userBundle, $userEntity) = $this->askAndValidate($input, $output, 'Please enter the User Entity shortcut name: ', '', 'Sonata\AdminBundle\Command\Validators::validateEntityName');
-
-                // Entity exists?
+            }
+            // Entity exists?
+            if (method_exists($this->registry, 'getAliasNamespace')) {
+                $this->userEntityClass = $this->registry->getAliasNamespace($userBundle).'\\'.$userEntity;
+            } else {
                 $this->userEntityClass = $this->registry->getEntityNamespace($userBundle).'\\'.$userEntity;
             }
         }
