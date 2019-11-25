@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Command;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -70,7 +71,7 @@ class GenerateObjectAclCommandTest extends TestCase
         $commandTester->execute(['command' => GenerateObjectAclCommand::getDefaultName()]);
     }
 
-    public function testExecuteWithEmptyManipulators(): void
+    public function testExecuteWithDeprecatedDoctrineService(): void
     {
         $pool = new Pool($this->container, '', '');
 
@@ -87,10 +88,27 @@ class GenerateObjectAclCommandTest extends TestCase
         $this->assertRegExp('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
     }
 
+    public function testExecuteWithEmptyManipulators(): void
+    {
+        $pool = new Pool($this->container, '', '');
+
+        $registry = $this->prophesize(ManagerRegistry::class)->reveal();
+        $command = new GenerateObjectAclCommand($pool, [], $registry);
+
+        $application = new Application();
+        $application->add($command);
+
+        $command = $application->find(GenerateObjectAclCommand::getDefaultName());
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(['command' => $command->getName()]);
+
+        $this->assertRegExp('/No manipulators are implemented : ignoring/', $commandTester->getDisplay());
+    }
+
     public function testExecuteWithManipulatorNotFound(): void
     {
         $admin = $this->prophesize(AbstractAdmin::class);
-        $registry = $this->prophesize(RegistryInterface::class);
+        $registry = $this->prophesize(ManagerRegistry::class);
         $pool = $this->prophesize(Pool::class);
 
         $admin->getManagerType(Argument::any())->willReturn('bar');
@@ -118,7 +136,7 @@ class GenerateObjectAclCommandTest extends TestCase
     public function testExecuteWithManipulatorNotObjectAclManipulatorInterface(): void
     {
         $admin = $this->prophesize(AbstractAdmin::class);
-        $registry = $this->prophesize(RegistryInterface::class);
+        $registry = $this->prophesize(ManagerRegistry::class);
         $pool = $this->prophesize(Pool::class);
 
         $admin->getManagerType(Argument::any())->willReturn('bar');
@@ -145,7 +163,7 @@ class GenerateObjectAclCommandTest extends TestCase
     public function testExecuteWithManipulator(): void
     {
         $admin = $this->prophesize(AbstractAdmin::class);
-        $registry = $this->prophesize(RegistryInterface::class);
+        $registry = $this->prophesize(ManagerRegistry::class);
         $pool = $this->prophesize(Pool::class);
 
         $admin->getManagerType(Argument::any())->willReturn('bar');
