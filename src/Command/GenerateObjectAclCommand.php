@@ -64,7 +64,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
     {
         $this->pool = $pool;
         $this->aclObjectManipulators = $aclObjectManipulators;
-        if (!(method_exists($registry, 'getAliasNamespace') || method_exists($this->registry, 'getEntityNamespace'))) {
+        if (!(method_exists($registry, 'getAliasNamespace') || method_exists($registry, 'getEntityNamespace'))) {
             throw new \InvalidArgumentException('$registy need to be either Symfony\Bridge\Doctrine\RegistryInterface or Doctrine\Common\Persistence\ManagerRegistry');
         }
         $this->registry = $registry;
