@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.55.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.54.1...3.55.0) - 2019-11-25
+### Fixed
+- crash when using the command that generates ACLs
+- crash when using `bin/console list` or just `bin/console`
+- Validation error on dashboard with `sonata.admin.block.stats`
+
+### Changed
+- deleteAction now respects csrf_protection
+
 ## [3.54.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.54.0...3.54.1) - 2019-10-14
 ### Fixed
 - Using array accessor in traversable objects which aren't implementing
