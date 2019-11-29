@@ -34,6 +34,12 @@ class ChoiceType extends AbstractType
 
     public const TYPE_EQUAL = 3;
 
+    public const CHOICES = [
+        'label_type_contains' => self::TYPE_CONTAINS,
+        'label_type_not_contains' => self::TYPE_NOT_CONTAINS,
+        'label_type_equals' => self::TYPE_EQUAL,
+    ];
+
     /**
      * NEXT_MAJOR: remove this property.
      *
@@ -65,17 +71,11 @@ class ChoiceType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $choices = [
-            'label_type_contains' => self::TYPE_CONTAINS,
-            'label_type_not_contains' => self::TYPE_NOT_CONTAINS,
-            'label_type_equals' => self::TYPE_EQUAL,
-        ];
         $operatorChoices = [];
 
         if (HiddenType::class !== $options['operator_type']) {
             $operatorChoices['choice_translation_domain'] = 'SonataAdminBundle';
-
-            $operatorChoices['choices'] = $choices;
+            $operatorChoices['choices'] = self::CHOICES;
         }
 
         $builder

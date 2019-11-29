@@ -42,6 +42,16 @@ class DateType extends AbstractType
 
     public const TYPE_NOT_NULL = 7;
 
+    public const CHOICES = [
+        'label_date_type_equal' => self::TYPE_EQUAL,
+        'label_date_type_greater_equal' => self::TYPE_GREATER_EQUAL,
+        'label_date_type_greater_than' => self::TYPE_GREATER_THAN,
+        'label_date_type_less_equal' => self::TYPE_LESS_EQUAL,
+        'label_date_type_less_than' => self::TYPE_LESS_THAN,
+        'label_date_type_null' => self::TYPE_NULL,
+        'label_date_type_not_null' => self::TYPE_NOT_NULL,
+    ];
+
     /**
      * NEXT_MAJOR: remove this property.
      *
@@ -73,22 +83,12 @@ class DateType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $choices = [
-            'label_date_type_equal' => self::TYPE_EQUAL,
-            'label_date_type_greater_equal' => self::TYPE_GREATER_EQUAL,
-            'label_date_type_greater_than' => self::TYPE_GREATER_THAN,
-            'label_date_type_less_equal' => self::TYPE_LESS_EQUAL,
-            'label_date_type_less_than' => self::TYPE_LESS_THAN,
-            'label_date_type_null' => self::TYPE_NULL,
-            'label_date_type_not_null' => self::TYPE_NOT_NULL,
-        ];
         $choiceOptions = [
             'required' => false,
         ];
 
         $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
-
-        $choiceOptions['choices'] = $choices;
+        $choiceOptions['choices'] = self::CHOICES;
 
         $builder
             ->add('type', FormChoiceType::class, $choiceOptions)
