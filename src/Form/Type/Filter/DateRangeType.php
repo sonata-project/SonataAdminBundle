@@ -31,9 +31,12 @@ class DateRangeType extends AbstractType
     public const TYPE_BETWEEN = 1;
     public const TYPE_NOT_BETWEEN = 2;
 
-    public const CHOICES = [
-        'label_date_type_between' => self::TYPE_BETWEEN,
-        'label_date_type_not_between' => self::TYPE_NOT_BETWEEN,
+    public const OPERATOR_OPTIONS = [
+        'choices' => [
+            'label_date_type_between' => self::TYPE_BETWEEN,
+            'label_date_type_not_between' => self::TYPE_NOT_BETWEEN,
+        ],
+        'choice_translation_domain' => 'SonataAdminBundle',
     ];
 
     /**
@@ -67,12 +70,8 @@ class DateRangeType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $choiceOptions = [
-            'required' => false,
-        ];
-
-        $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
-        $choiceOptions['choices'] = self::CHOICES;
+        $choiceOptions = self::OPERATOR_OPTIONS;
+        $choiceOptions['required'] = false;
 
         $builder
             ->add('type', FormChoiceType::class, $choiceOptions)

@@ -34,10 +34,13 @@ class ChoiceType extends AbstractType
 
     public const TYPE_EQUAL = 3;
 
-    public const CHOICES = [
-        'label_type_contains' => self::TYPE_CONTAINS,
-        'label_type_not_contains' => self::TYPE_NOT_CONTAINS,
-        'label_type_equals' => self::TYPE_EQUAL,
+    public const OPERATOR_OPTIONS = [
+        'choices' => [
+            'label_type_contains' => self::TYPE_CONTAINS,
+            'label_type_not_contains' => self::TYPE_NOT_CONTAINS,
+            'label_type_equals' => self::TYPE_EQUAL,
+        ],
+        'choice_translation_domain' => 'SonataAdminBundle',
     ];
 
     /**
@@ -74,8 +77,7 @@ class ChoiceType extends AbstractType
         $operatorChoices = [];
 
         if (HiddenType::class !== $options['operator_type']) {
-            $operatorChoices['choice_translation_domain'] = 'SonataAdminBundle';
-            $operatorChoices['choices'] = self::CHOICES;
+            $operatorChoices = self::OPERATOR_OPTIONS;
         }
 
         $builder

@@ -38,12 +38,15 @@ class NumberType extends AbstractType
 
     public const TYPE_LESS_THAN = 5;
 
-    public const CHOICES = [
-        'label_type_equal' => self::TYPE_EQUAL,
-        'label_type_greater_equal' => self::TYPE_GREATER_EQUAL,
-        'label_type_greater_than' => self::TYPE_GREATER_THAN,
-        'label_type_less_equal' => self::TYPE_LESS_EQUAL,
-        'label_type_less_than' => self::TYPE_LESS_THAN,
+    public const OPERATOR_OPTIONS = [
+        'choices' => [
+            'label_type_equal' => self::TYPE_EQUAL,
+            'label_type_greater_equal' => self::TYPE_GREATER_EQUAL,
+            'label_type_greater_than' => self::TYPE_GREATER_THAN,
+            'label_type_less_equal' => self::TYPE_LESS_EQUAL,
+            'label_type_less_than' => self::TYPE_LESS_THAN,
+        ],
+        'choice_translation_domain' => 'SonataAdminBundle',
     ];
 
     /**
@@ -77,12 +80,8 @@ class NumberType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $choiceOptions = [
-            'required' => false,
-        ];
-
-        $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
-        $choiceOptions['choices'] = self::CHOICES;
+        $choiceOptions = self::OPERATOR_OPTIONS;
+        $choiceOptions['required'] = false;
 
         $builder
             ->add('type', FormChoiceType::class, $choiceOptions)
