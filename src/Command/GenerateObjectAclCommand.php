@@ -62,7 +62,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
     {
         $this->pool = $pool;
         $this->aclObjectManipulators = $aclObjectManipulators;
-        if (null !== $registry && !(method_exists($registry, 'getAliasNamespace') || method_exists($registry, 'getEntityNamespace'))) {
+        if (null !== $registry && (!$registry instanceof RegistryInterface || !$registry instanceof ManagerRegistry)) {
             throw new \TypeError(sprintf('Argument 3 need to be either an instance of %s or %s, instance of %s given', RegistryInterface::class, ManagerRegistry::class, \get_class($registry)));
         }
         $this->registry = $registry;
