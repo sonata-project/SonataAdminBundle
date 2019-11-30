@@ -24,9 +24,7 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
-use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
@@ -45,13 +43,8 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class CRUDController implements ContainerAwareInterface
+class CRUDController extends Controller
 {
-    // NEXT_MAJOR: Don't use these traits anymore (inherit from Controller instead)
-    use ControllerTrait, ContainerAwareTrait {
-        ControllerTrait::render as originalRender;
-    }
-
     /**
      * The related Admin class.
      *
@@ -125,8 +118,7 @@ class CRUDController implements ContainerAwareInterface
 
         $parameters['admin_pool'] = $this->get('sonata.admin.pool');
 
-        //NEXT_MAJOR: Remove method alias and use $this->render() directly.
-        return $this->originalRender($view, $parameters, $response);
+        return parent::render($view, $parameters, $response);
     }
 
     /**
