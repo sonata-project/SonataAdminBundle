@@ -24,10 +24,6 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
-use Symfony\Bridge\Twig\AppVariable;
-use Symfony\Bridge\Twig\Command\DebugCommand;
-use Symfony\Bridge\Twig\Extension\FormExtension;
-use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -45,12 +41,6 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
-
-// BC for Symfony < 3.3 where this trait does not exist
-// NEXT_MAJOR: Remove the polyfill and inherit from \Symfony\Bundle\FrameworkBundle\Controller\Controller again
-if (!trait_exists(ControllerTrait::class)) {
-    require_once __DIR__.'/PolyfillControllerTrait.php';
-}
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -81,10 +71,6 @@ class CRUDController implements ContainerAwareInterface
     {
         if (\in_array($method, ['get', 'has'], true)) {
             return $this->container->$method(...$arguments);
-        }
-
-        if (method_exists($this, 'proxyToControllerClass')) {
-            return $this->proxyToControllerClass($method, $arguments);
         }
 
         throw new \LogicException('Call to undefined method '.__CLASS__.'::'.$method);
@@ -1406,6 +1392,10 @@ class CRUDController implements ContainerAwareInterface
      */
     protected function validateCsrfToken($intention): void
     {
+        if (false === $this->admin->getFormBuilder()->getOption('csrf_protection')) {
+            return;
+        }
+
         $request = $this->getRequest();
         $token = $request->get('_sonata_csrf_token');
 
@@ -1563,20 +1553,6 @@ class CRUDController implements ContainerAwareInterface
     private function setFormTheme(FormView $formView, array $theme = null): void
     {
         $twig = $this->get('twig');
-
-        // BC for Symfony < 3.2 where this runtime does not exists
-        if (!method_exists(AppVariable::class, 'getToken')) {
-            $twig->getExtension(FormExtension::class)->renderer->setTheme($formView, $theme);
-
-            return;
-        }
-
-        // BC for Symfony < 3.4 where runtime should be TwigRenderer
-        if (!method_exists(DebugCommand::class, 'getLoaderPaths')) {
-            $twig->getRuntime(TwigRenderer::class)->setTheme($formView, $theme);
-
-            return;
-        }
 
         $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
     }

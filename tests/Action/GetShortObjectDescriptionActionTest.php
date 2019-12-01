@@ -73,8 +73,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->pool->getInstance('sonata.post.admin')->willReturn(null);
         $this->admin->setRequest(Argument::type(Request::class))->shouldNotBeCalled();
 
-        $action = $this->action;
-        $action($request);
+        ($this->action)($request);
     }
 
     public function testGetShortObjectDescriptionActionObjectDoesNotExist(): void
@@ -91,8 +90,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->setUniqid('asdasd123')->shouldBeCalled();
         $this->admin->getObject(42)->willReturn(false);
 
-        $action = $this->action;
-        $action($request);
+        ($this->action)($request);
     }
 
     public function testGetShortObjectDescriptionActionEmptyObjectId(): void
@@ -107,10 +105,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->setUniqid('asdasd123')->shouldBeCalled();
         $this->admin->getObject(null)->willReturn(false);
 
-        $action = $this->action;
-        $response = $action($request);
-
-        $this->assertInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, ($this->action)($request));
     }
 
     public function testGetShortObjectDescriptionActionObject(): void
@@ -128,8 +123,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->getTemplate('short_object_description')->willReturn('template');
         $this->admin->toString($object)->willReturn('bar');
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
         $this->assertSame('renderedTemplate', $response->getContent());
     }
@@ -148,8 +142,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->id(false)->willReturn('');
         $this->admin->toString(false)->willReturn('');
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertSame('{"result":{"id":"","label":""}}', $response->getContent());
@@ -171,8 +164,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->getTemplate('short_object_description')->willReturn('template');
         $this->admin->toString($object)->willReturn('bar');
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
         $this->assertSame('{"result":{"id":42,"label":"bar"}}', $response->getContent());
     }

@@ -11,8 +11,8 @@ relationships between one entity class and another.
 
 .. _field-types-model:
 
-Sonata\AdminBundle\Form\Type\ModelType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sonata\\AdminBundle\\Form\\Type\\ModelType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This type allows you to choose an existing
 entity from the linked model class. In effect it shows a list of options from
@@ -116,8 +116,8 @@ The available options are:
     (``sonata-admin-setup-list-modal`` by default and
     ``sonata-admin-append-form-element`` when using ``edit:inline``).
 
-Sonata\AdminBundle\Form\Type\ModelListType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sonata\\AdminBundle\\Form\\Type\\ModelListType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This type allows you to choose an existing entity,
 add a new one or edit the one that is already selected.
@@ -162,8 +162,8 @@ The available options are:
 
     For more info, see the storage-engine-specific form field definitions: `ORM`_, `PHPCR`_, `MongoDB`_
 
-Sonata\AdminBundle\Form\Type\ModelHiddenType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sonata\\AdminBundle\\Form\\Type\\ModelHiddenType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The value of hidden field is identifier of related entity::
 
     // src/Admin/PageAdmin.php
@@ -194,8 +194,8 @@ The available options are:
   calculated from the linked admin class. You usually should not need to set
   this manually.
 
-Sonata\AdminBundle\Form\Type\ModelAutocompleteType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sonata\\AdminBundle\\Form\\Type\\ModelAutocompleteType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This type allows you to choose an existing entity from the linked model class.
 In effect it shows a list of options from which you can choose a value.
@@ -446,9 +446,8 @@ The available options are:
           }
       }
 
-
-Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sonata\\AdminBundle\\Form\\Type\\ChoiceFieldMaskType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 According the choice made only associated fields are displayed. The others fields are hidden::
 
@@ -486,8 +485,8 @@ According the choice made only associated fields are displayed. The others field
 ``map``
   Associative array. Describes the fields that are displayed for each choice.
 
-Sonata\AdminBundle\Form\Type\AdminType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sonata\\AdminBundle\\Form\\Type\\AdminType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Setting a field type of ``Sonata\AdminBundle\Form\Type\AdminType`` will embed another admin class
 and use the embedded admin's configuration when editing this field.
@@ -559,8 +558,8 @@ The available options (which can be passed as a third parameter to ``FormMapper:
   corresponding button. You can also specify a custom translation catalogue
   for these labels, which defaults to ``SonataAdminBundle``.
 
-Sonata\Form\Type\CollectionType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sonata\\Form\\Type\\CollectionType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``Sonata\Form\Type\CollectionType`` is meant to handle creation and editing of model
 collections. Rows can be added and deleted, and your model abstraction layer may
@@ -621,8 +620,8 @@ Setting the 'required' option to ``false`` causes all nested form fields to beco
     You can check / uncheck a range of checkboxes by clicking a first one,
     then a second one with shift + click.
 
-Sonata\AdminBundle\Form\Type\CollectionType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sonata\\AdminBundle\\Form\\Type\\CollectionType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This bundle handle the native Symfony ``collection`` form type by adding:
 
@@ -760,8 +759,8 @@ General
         }
     }
 
-Symfony\Component\Form\Extension\Core\Type\ChoiceType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - ``sortable``: This option can be added for multiple choice widget to activate select2 sortable::
 

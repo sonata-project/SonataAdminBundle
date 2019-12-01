@@ -21,7 +21,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -101,10 +100,6 @@ class ModelType extends AbstractType
                 $propertyAccessor
             );
         };
-        // NEXT_MAJOR: Remove this when dropping support for SF 2.8
-        if (method_exists(FormTypeInterface::class, 'setDefaultOptions')) {
-            $options['choices_as_values'] = true;
-        }
 
         $resolver->setDefaults(array_merge($options, [
             'compound' => static function (Options $options) {

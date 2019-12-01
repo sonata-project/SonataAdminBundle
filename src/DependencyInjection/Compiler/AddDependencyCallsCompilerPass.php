@@ -21,7 +21,6 @@ use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -59,9 +58,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 // Temporary fix until we can support service locators
                 $definition->setPublic(true);
 
-                // NEXT_MAJOR: Remove check for DefinitionDecorator instance when dropping Symfony <3.3 support
-                if ($definition instanceof ChildDefinition ||
-                    (!class_exists(ChildDefinition::class) && $definition instanceof DefinitionDecorator)) {
+                if ($definition instanceof ChildDefinition) {
                     $parentDefinition = $container->getDefinition($definition->getParent());
                 }
 

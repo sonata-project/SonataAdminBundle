@@ -14,84 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\DependencyInjection;
 
 use JMS\DiExtraBundle\DependencyInjection\Configuration as JMSDiExtraBundleDependencyInjectionConfiguration;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Admin\AbstractAdminExtension;
-use Sonata\AdminBundle\Admin\AdminExtensionInterface;
-use Sonata\AdminBundle\Admin\AdminHelper;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\BaseFieldDescription;
-use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Block\AdminListBlockService;
-use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
-use Sonata\AdminBundle\Builder\FormContractorInterface;
-use Sonata\AdminBundle\Builder\ListBuilderInterface;
-use Sonata\AdminBundle\Builder\RouteBuilderInterface;
-use Sonata\AdminBundle\Builder\ShowBuilderInterface;
-use Sonata\AdminBundle\Datagrid\Datagrid;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\Pager;
-use Sonata\AdminBundle\Datagrid\PagerInterface;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Exception\ModelManagerException;
-use Sonata\AdminBundle\Exception\NoValueException;
-use Sonata\AdminBundle\Filter\Filter;
-use Sonata\AdminBundle\Filter\FilterFactory;
-use Sonata\AdminBundle\Filter\FilterFactoryInterface;
-use Sonata\AdminBundle\Filter\FilterInterface;
-use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
-use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
-use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
-use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
-use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\AdminType;
-use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
-use Sonata\AdminBundle\Form\Type\Filter\DateRangeType;
-use Sonata\AdminBundle\Form\Type\Filter\DateTimeRangeType;
-use Sonata\AdminBundle\Form\Type\Filter\DateTimeType;
-use Sonata\AdminBundle\Form\Type\Filter\DateType;
-use Sonata\AdminBundle\Form\Type\Filter\DefaultType;
-use Sonata\AdminBundle\Form\Type\Filter\NumberType;
-use Sonata\AdminBundle\Form\Type\ModelListType;
-use Sonata\AdminBundle\Form\Type\ModelReferenceType;
-use Sonata\AdminBundle\Form\Type\ModelType;
-use Sonata\AdminBundle\Guesser\TypeGuesserChain;
-use Sonata\AdminBundle\Guesser\TypeGuesserInterface;
-use Sonata\AdminBundle\Model\AuditManager;
-use Sonata\AdminBundle\Model\AuditManagerInterface;
-use Sonata\AdminBundle\Model\AuditReaderInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Route\AdminPoolLoader;
-use Sonata\AdminBundle\Route\DefaultRouteGenerator;
-use Sonata\AdminBundle\Route\PathInfoBuilder;
-use Sonata\AdminBundle\Route\QueryStringBuilder;
-use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\AdminBundle\Route\RouteGeneratorInterface;
-use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
-use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
-use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
-use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
-use Sonata\AdminBundle\Security\Handler\NoopSecurityHandler;
-use Sonata\AdminBundle\Security\Handler\RoleSecurityHandler;
-use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
-use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
-use Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy;
-use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
-use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
-use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
-use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension as TwigSonataAdminExtension;
-use Sonata\AdminBundle\Util\AdminAclManipulator;
-use Sonata\AdminBundle\Util\AdminAclManipulatorInterface;
-use Sonata\AdminBundle\Util\FormBuilderIterator;
-use Sonata\AdminBundle\Util\FormViewIterator;
-use Sonata\AdminBundle\Util\ObjectAclManipulator;
-use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -270,15 +192,6 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
          * This is a work in progress, so for now it is hardcoded
          */
         $classes = [
-            'email' => '',
-            'textarea' => '',
-            'text' => '',
-            'choice' => '',
-            'integer' => '',
-            'datetime' => 'sonata-medium-date',
-            'date' => 'sonata-medium-date',
-
-            // SF3+
             SymfonyChoiceType::class => '',
             SymfonyDateType::class => 'sonata-medium-date',
             SymfonyDateTimeType::class => 'sonata-medium-date',
@@ -309,10 +222,6 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
         $container->setParameter('sonata.admin.configuration.show.mosaic.button', $config['show_mosaic_button']);
 
         $container->setParameter('sonata.admin.configuration.translate_group_label', $config['translate_group_label']);
-
-        if (\PHP_VERSION_ID < 70000) {
-            $this->configureClassesToCompile();
-        }
 
         $this->replacePropertyAccessor($container);
     }
@@ -379,86 +288,6 @@ final class SonataAdminExtension extends Extension implements PrependExtensionIn
 
     public function configureClassesToCompile(): void
     {
-        $this->addClassesToCompile([
-            AbstractAdmin::class,
-            AbstractAdminExtension::class,
-            AdminExtensionInterface::class,
-            AdminHelper::class,
-            AdminInterface::class,
-            BaseFieldDescription::class,
-            FieldDescriptionCollection::class,
-            FieldDescriptionInterface::class,
-            Pool::class,
-            AdminListBlockService::class,
-            DatagridBuilderInterface::class,
-            FormContractorInterface::class,
-            ListBuilderInterface::class,
-            RouteBuilderInterface::class,
-            ShowBuilderInterface::class,
-            Datagrid::class,
-            DatagridInterface::class,
-            DatagridMapper::class,
-            ListMapper::class,
-            Pager::class,
-            PagerInterface::class,
-            ProxyQueryInterface::class,
-            ModelManagerException::class,
-            NoValueException::class,
-            Filter::class,
-            FilterFactory::class,
-            FilterFactoryInterface::class,
-            FilterInterface::class,
-            ArrayToModelTransformer::class,
-            ModelsToArrayTransformer::class,
-            ModelToIdTransformer::class,
-            MergeCollectionListener::class,
-            FormTypeFieldExtension::class,
-            FormMapper::class,
-            AdminType::class,
-            ChoiceType::class,
-            DateRangeType::class,
-            DateTimeRangeType::class,
-            DateTimeType::class,
-            DateType::class,
-            DefaultType::class,
-            NumberType::class,
-            ModelReferenceType::class,
-            ModelType::class,
-            ModelListType::class,
-            TypeGuesserChain::class,
-            TypeGuesserInterface::class,
-            AuditManager::class,
-            AuditManagerInterface::class,
-            AuditReaderInterface::class,
-            ModelManagerInterface::class,
-            AdminPoolLoader::class,
-            DefaultRouteGenerator::class,
-            PathInfoBuilder::class,
-            QueryStringBuilder::class,
-            RouteCollection::class,
-            RouteGeneratorInterface::class,
-            AdminPermissionMap::class,
-            MaskBuilder::class,
-            AclSecurityHandler::class,
-            AclSecurityHandlerInterface::class,
-            NoopSecurityHandler::class,
-            RoleSecurityHandler::class,
-            SecurityHandlerInterface::class,
-            ShowMapper::class,
-            BCLabelTranslatorStrategy::class,
-            FormLabelTranslatorStrategy::class,
-            LabelTranslatorStrategyInterface::class,
-            NativeLabelTranslatorStrategy::class,
-            NoopLabelTranslatorStrategy::class,
-            UnderscoreLabelTranslatorStrategy::class,
-            TwigSonataAdminExtension::class,
-            AdminAclManipulator::class,
-            AdminAclManipulatorInterface::class,
-            FormBuilderIterator::class,
-            FormViewIterator::class,
-            ObjectAclManipulator::class,
-            ObjectAclManipulatorInterface::class,
-        ]);
     }
 
     public function getNamespace()

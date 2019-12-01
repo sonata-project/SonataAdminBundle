@@ -49,10 +49,7 @@ class SetupAclCommand extends Command
 
     public function configure(): void
     {
-        $this->setDescription('Install ACL for Admin Classes')
-            ->setName(static::$defaultName)// BC for symfony/console < 3.4.0
-            // NEXT_MAJOR: drop this line after drop support symfony/console < 3.4.0
-        ;
+        $this->setDescription('Install ACL for Admin Classes');
     }
 
     public function execute(InputInterface $input, OutputInterface $output): void

@@ -533,12 +533,16 @@ file that was distributed with this source code.
                 };
 
                 jQuery.each(allFields, function (i, field) {
-                    jQuery(controlGroupIdFunc(field)).hide();
+                    var fieldContainer = controlGroupIdFunc(field);
+                    jQuery(fieldContainer).hide();
+                    jQuery(fieldContainer).find('[required="required"]').attr('data-required', 'required').removeAttr("required");
                 });
 
                 if (map[val]) {
                     jQuery.each(map[val], function (i, field) {
-                        jQuery(controlGroupIdFunc(field)).show();
+                        var fieldContainer = controlGroupIdFunc(field);
+                        jQuery(fieldContainer).show();
+                        jQuery(fieldContainer).find('[data-required="required"]').attr("required", "required");
                     });
                 }
             }

@@ -32,10 +32,6 @@ final class ModelManagerCompilerPass implements CompilerPassInterface
         $availableManagers = [];
 
         foreach ($container->getServiceIds() as $id) {
-            // NEXT_MAJOR: Remove when dropping Symfony <3.4 support.
-            // @see https://github.com/sonata-project/SonataAdminBundle/pull/5638
-            $id = (string) $id;
-
             if (0 !== strpos($id, 'sonata.admin.manager.') || !is_subclass_of($container->getDefinition($id)->getClass(), ModelManagerInterface::class)) {
                 continue;
             }

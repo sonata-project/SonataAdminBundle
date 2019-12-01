@@ -20,19 +20,19 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 class SearchActionTest extends TestCase
 {
     private $container;
     private $pool;
-    private $action;
     private $searchHandler;
-    private $templating;
+    private $action;
+    private $twig;
     private $breadcrumbsBuilder;
 
     protected function setUp(): void
@@ -47,34 +47,27 @@ class SearchActionTest extends TestCase
 
         $this->breadcrumbsBuilder = $this->createMock(BreadcrumbsBuilderInterface::class);
         $this->searchHandler = $this->createMock(SearchHandler::class);
-        $this->templating = $this->prophesize(EngineInterface::class);
+        $this->twig = $this->prophesize(Environment::class);
 
         $this->action = new SearchAction(
             $this->pool,
             $this->searchHandler,
             $templateRegistry,
             $this->breadcrumbsBuilder,
-            $this->templating->reveal()
+            $this->twig->reveal()
         );
     }
 
     public function testGlobalPage(): void
     {
         $request = new Request(['q' => 'some search']);
-        $this->templating->render('search.html.twig', [
+        $this->twig->render('search.html.twig', [
             'base_template' => 'layout.html.twig',
             'breadcrumbs_builder' => $this->breadcrumbsBuilder,
             'admin_pool' => $this->pool,
             'query' => 'some search',
             'groups' => [],
         ])->willReturn(new Response());
-        $this->templating->renderResponse('search.html.twig', [
-            'base_template' => 'layout.html.twig',
-            'breadcrumbs_builder' => $this->breadcrumbsBuilder,
-            'admin_pool' => $this->pool,
-            'query' => 'some search',
-            'groups' => [],
-        ], null)->willReturn(new Response());
 
         $this->assertInstanceOf(Response::class, ($this->action)($request));
     }

@@ -29,10 +29,6 @@ use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
-use Symfony\Bridge\Twig\AppVariable;
-use Symfony\Bridge\Twig\Command\DebugCommand;
-use Symfony\Bridge\Twig\Extension\FormExtension;
-use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormConfigInterface;
@@ -318,7 +314,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->appendFormFieldElementAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame($response->getContent(), 'block');
     }
 
@@ -425,7 +421,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"KO","message":"Too short search string."}', $response->getContent());
     }
@@ -450,7 +446,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
@@ -482,7 +478,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
@@ -507,7 +503,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->retrieveAutocompleteItemsAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
@@ -607,27 +603,6 @@ class HelperControllerTest extends TestCase
     private function configureFormRenderer()
     {
         $runtime = $this->prophesize(FormRenderer::class);
-
-        // Remove the condition when dropping sf < 3.2
-        if (!method_exists(AppVariable::class, 'getToken')) {
-            $extension = $this->prophesize(FormExtension::class);
-
-            $this->twig->getExtension(FormExtension::class)->willReturn($extension->reveal());
-            $extension->initRuntime($this->twig->reveal())->shouldBeCalled();
-            $extension->renderer = $runtime->reveal();
-
-            return $runtime;
-        }
-
-        // Remove the condition when dropping sf < 3.4
-        if (!method_exists(DebugCommand::class, 'getLoaderPaths')) {
-            $twigRuntime = $this->prophesize(TwigRenderer::class);
-
-            $this->twig->getRuntime(TwigRenderer::class)->willReturn($twigRuntime->reveal());
-            $twigRuntime->setEnvironment($this->twig->reveal())->shouldBeCalled();
-
-            return $twigRuntime;
-        }
 
         $this->twig->getRuntime(FormRenderer::class)->willReturn($runtime->reveal());
 

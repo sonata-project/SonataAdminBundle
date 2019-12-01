@@ -19,16 +19,15 @@ use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\CoreController;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 class CoreControllerTest extends TestCase
 {
     /**
-     * @doesNotPerformAssertions
      * @group legacy
      */
     public function testdashboardActionStandardRequest(): void
@@ -43,7 +42,7 @@ class CoreControllerTest extends TestCase
         $pool = new Pool($container, 'title', 'logo.png');
         $pool->setTemplateRegistry($templateRegistry->reveal());
 
-        $templating = $this->createMock(EngineInterface::class);
+        $twig = $this->createMock(Environment::class);
         $request = new Request();
 
         $requestStack = new RequestStack();
@@ -57,7 +56,7 @@ class CoreControllerTest extends TestCase
                 $breadcrumbsBuilder,
                 $templateRegistry->reveal(),
                 $pool,
-                $templating
+                $twig
             ),
             'request_stack' => $requestStack,
         ];
@@ -75,11 +74,10 @@ class CoreControllerTest extends TestCase
         $controller = new CoreController();
         $controller->setContainer($container);
 
-        $this->isInstanceOf(Response::class, $controller->dashboardAction());
+        $this->assertInstanceOf(Response::class, $controller->dashboardAction());
     }
 
     /**
-     * @doesNotPerformAssertions
      * @group legacy
      */
     public function testdashboardActionAjaxLayout(): void
@@ -95,7 +93,7 @@ class CoreControllerTest extends TestCase
         $pool = new Pool($container, 'title', 'logo.png');
         $pool->setTemplateRegistry($templateRegistry->reveal());
 
-        $templating = $this->createMock(EngineInterface::class);
+        $twig = $this->createMock(Environment::class);
         $request = new Request();
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
@@ -108,7 +106,7 @@ class CoreControllerTest extends TestCase
                 $breadcrumbsBuilder,
                 $templateRegistry->reveal(),
                 $pool,
-                $templating
+                $twig
             ),
             'request_stack' => $requestStack,
         ];
@@ -122,6 +120,6 @@ class CoreControllerTest extends TestCase
 
         $response = $controller->dashboardAction($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
     }
 }
