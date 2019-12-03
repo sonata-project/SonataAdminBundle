@@ -69,6 +69,17 @@ Here is an example::
                 ],
             ])
 
+            // editable multiple field
+            ->add('winner', 'choice', [
+                'editable' => true,
+                'multiple' => true,
+                'choices' => [
+                    'jury' => 'Jury',
+                    'voting' => 'Voting',
+                    'encouraging' => 'Encouraging',
+                ],
+            ])
+
             // we can add options to the field depending on the type
             ->add('price', 'currency', [
                 'currency' => $this->currencyDetector->getCurrency()->getLabel()
