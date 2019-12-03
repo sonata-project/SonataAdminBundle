@@ -135,7 +135,7 @@ class BaseGroupedMapperTest extends TestCase
 
     public function testGroupNotClosedException(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('You should close previous group "fooGroup1" with end() before adding new tab "fooGroup2".');
 
         $this->baseGroupedMapper->with('fooGroup1');
@@ -144,7 +144,7 @@ class BaseGroupedMapperTest extends TestCase
 
     public function testGroupInTabException(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields.');
 
         $this->baseGroupedMapper->with('fooGroup');
@@ -153,7 +153,7 @@ class BaseGroupedMapperTest extends TestCase
 
     public function testTabInTabException(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('You should close previous tab "fooTab" with end() before adding new tab "barTab".');
 
         $this->baseGroupedMapper->tab('fooTab');
@@ -173,7 +173,7 @@ class BaseGroupedMapperTest extends TestCase
 
     public function testEndException(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('No open tabs or groups, you cannot use end()');
 
         $this->baseGroupedMapper->end();

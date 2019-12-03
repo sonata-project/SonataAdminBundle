@@ -43,7 +43,7 @@ class ShowMapper extends BaseGroupedMapper
      * @param mixed $name
      * @param mixed $type
      *
-     * @throws \RuntimeException
+     * @throws \LogicException
      *
      * @return $this
      */
@@ -68,10 +68,10 @@ class ShowMapper extends BaseGroupedMapper
                     $fieldDescriptionOptions
                 );
             } else {
-                throw new \RuntimeException(sprintf('Duplicate field name "%s" in show mapper. Names should be unique.', $name));
+                throw new \LogicException(sprintf('Duplicate field name "%s" in show mapper. Names should be unique.', $name));
             }
         } else {
-            throw new \RuntimeException('invalid state');
+            throw new \LogicException('invalid state');
         }
 
         if (!$fieldDescription->getLabel() && false !== $fieldDescription->getOption('label')) {

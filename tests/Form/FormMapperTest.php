@@ -300,7 +300,7 @@ class FormMapperTest extends TestCase
 
     public function testIfTrueNested(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
 
         $this->formMapper->ifTrue(true);
@@ -309,7 +309,7 @@ class FormMapperTest extends TestCase
 
     public function testIfFalseNested(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
 
         $this->formMapper->ifFalse(false);
@@ -318,7 +318,7 @@ class FormMapperTest extends TestCase
 
     public function testIfCombinationNested(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
 
         $this->formMapper->ifTrue(true);
@@ -327,7 +327,7 @@ class FormMapperTest extends TestCase
 
     public function testIfFalseCombinationNested2(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
 
         $this->formMapper->ifFalse(false);
@@ -336,7 +336,7 @@ class FormMapperTest extends TestCase
 
     public function testIfFalseCombinationNested3(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
 
         $this->formMapper->ifFalse(true);
@@ -345,7 +345,7 @@ class FormMapperTest extends TestCase
 
     public function testIfFalseCombinationNested4(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
 
         $this->formMapper->ifTrue(false);
