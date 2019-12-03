@@ -40,14 +40,15 @@ file that was distributed with this source code.
                     {% set result = result ~ delimiter %}
                 {% endif %}
 
-                {% if field_description.options.choices[val] is defined %}
-                    {% if field_description.options.catalogue is not defined %}
-                        {% set result = result ~ field_description.options.choices[val] %}
-                    {% else %}
-                        {% set result = result ~ field_description.options.choices[val]|trans({}, field_description.options.catalogue) %}
-                    {% endif %}
+                {% if val in field_description.options.choices|keys %}
+                    {% set choice = field_description.options.choices[val] %}
                 {% else %}
-                    {% set result = result ~ val %}
+                    {% set choice = val %}
+                {% endif %}
+                {% if field_description.options.catalogue is not defined %}
+                    {% set result = result ~ choice %}
+                {% else %}
+                    {% set result = result ~ choice|trans({}, field_description.options.catalogue) %}
                 {% endif %}
             {% endfor %}
 
