@@ -62,8 +62,8 @@ class GenerateObjectAclCommand extends QuestionableCommand
     {
         $this->pool = $pool;
         $this->aclObjectManipulators = $aclObjectManipulators;
-        if (!(method_exists($registry, 'getAliasNamespace') || method_exists($registry, 'getEntityNamespace'))) {
-            throw new \InvalidArgumentException('$registy need to be either Symfony\Bridge\Doctrine\RegistryInterface or Doctrine\Common\Persistence\ManagerRegistry');
+        if (null !== $registry && (!$registry instanceof RegistryInterface || !$registry instanceof ManagerRegistry)) {
+            throw new \TypeError(sprintf('Argument 3 need to be either an instance of %s or %s, instance of %s given', RegistryInterface::class, ManagerRegistry::class, \get_class($registry)));
         }
         $this->registry = $registry;
 
@@ -169,10 +169,10 @@ class GenerateObjectAclCommand extends QuestionableCommand
                 list($userBundle, $userEntity) = $this->askAndValidate($input, $output, 'Please enter the User Entity shortcut name: ', '', 'Sonata\AdminBundle\Command\Validators::validateEntityName');
             }
             // Entity exists?
-            if (method_exists($this->registry, 'getAliasNamespace')) {
-                $this->userEntityClass = $this->registry->getAliasNamespace($userBundle).'\\'.$userEntity;
-            } else {
+            if ($this->registry instanceof RegistryInterface) {
                 $this->userEntityClass = $this->registry->getEntityNamespace($userBundle).'\\'.$userEntity;
+            } else {
+                $this->userEntityClass = $this->registry->getAliasNamespace($userBundle).'\\'.$userEntity;
             }
         }
 
