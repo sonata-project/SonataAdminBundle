@@ -58,7 +58,7 @@ class FormMapper extends BaseGroupedMapper
      */
     public function add($name, $type = null, array $options = [], array $fieldDescriptionOptions = [])
     {
-        if (null !== $this->apply && !$this->apply) {
+        if (!$this->shouldApply()) {
             return $this;
         }
 

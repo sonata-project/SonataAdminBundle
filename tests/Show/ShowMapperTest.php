@@ -299,56 +299,80 @@ class ShowMapperTest extends TestCase
 
     public function testIfTrueNested(): void
     {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+        $this->showMapper
+            ->ifTrue(true)
+                ->ifTrue(true)
+                    ->add('fooName')
+                ->ifEnd()
+            ->ifEnd()
+        ;
 
-        $this->showMapper->ifTrue(true);
-        $this->showMapper->ifTrue(true);
+        $this->assertTrue($this->showMapper->has('fooName'));
     }
 
     public function testIfFalseNested(): void
     {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+        $this->showMapper
+            ->ifFalse(false)
+                ->ifFalse(false)
+                    ->add('fooName')
+                ->ifEnd()
+            ->ifEnd()
+        ;
 
-        $this->showMapper->ifFalse(false);
-        $this->showMapper->ifFalse(false);
+        $this->assertTrue($this->showMapper->has('fooName'));
     }
 
     public function testIfCombinationNested(): void
     {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+        $this->showMapper
+            ->ifTrue(true)
+                ->ifFalse(false)
+                    ->add('fooName')
+                ->ifEnd()
+            ->ifEnd()
+        ;
 
-        $this->showMapper->ifTrue(true);
-        $this->showMapper->ifFalse(false);
+        $this->assertTrue($this->showMapper->has('fooName'));
     }
 
     public function testIfFalseCombinationNested2(): void
     {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+        $this->showMapper
+            ->ifFalse(false)
+                ->ifTrue(true)
+                    ->add('fooName')
+                ->ifEnd()
+            ->ifEnd()
+        ;
 
-        $this->showMapper->ifFalse(false);
-        $this->showMapper->ifTrue(true);
+        $this->assertTrue($this->showMapper->has('fooName'));
     }
 
     public function testIfFalseCombinationNested3(): void
     {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+        $this->showMapper
+            ->ifFalse(true)
+                ->ifTrue(false)
+                    ->add('fooName')
+                ->ifEnd()
+            ->ifEnd()
+        ;
 
-        $this->showMapper->ifFalse(true);
-        $this->showMapper->ifTrue(false);
+        $this->assertFalse($this->showMapper->has('fooName'));
     }
 
     public function testIfFalseCombinationNested4(): void
     {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+        $this->showMapper
+            ->ifTrue(false)
+                ->ifFalse(true)
+                    ->add('fooName')
+                ->ifEnd()
+            ->ifEnd()
+        ;
 
-        $this->showMapper->ifTrue(false);
-        $this->showMapper->ifFalse(true);
+        $this->assertFalse($this->showMapper->has('fooName'));
     }
 
     public function testAddRemove(): void

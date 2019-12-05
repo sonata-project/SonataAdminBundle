@@ -33,9 +33,9 @@ abstract class BaseGroupedMapper extends BaseMapper
     protected $currentTab;
 
     /**
-     * @var bool|null
+     * @var array
      */
-    protected $apply;
+    protected $apply = [];
 
     /**
      * Add new group or tab (if parameter "tab=true" is available in options).
@@ -48,7 +48,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function with($name, array $options = [])
     {
-        if (null !== $this->apply && !$this->apply) {
+        if (!$this->shouldApply()) {
             return $this;
         }
 
@@ -163,17 +163,11 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @param bool $bool
      *
-     * @throws \LogicException
-     *
      * @return $this
      */
     public function ifTrue($bool)
     {
-        if (null !== $this->apply) {
-            throw new \LogicException('Cannot nest ifTrue or ifFalse call');
-        }
-
-        $this->apply = (true === $bool);
+        $this->apply[] = true === $bool;
 
         return $this;
     }
@@ -183,17 +177,11 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @param bool $bool
      *
-     * @throws \LogicException
-     *
      * @return $this
      */
     public function ifFalse($bool)
     {
-        if (null !== $this->apply) {
-            throw new \LogicException('Cannot nest ifTrue or ifFalse call');
-        }
-
-        $this->apply = (false === $bool);
+        $this->apply[] = false === $bool;
 
         return $this;
     }
@@ -203,7 +191,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function ifEnd()
     {
-        $this->apply = null;
+        array_pop($this->apply);
 
         return $this;
     }
@@ -229,7 +217,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function end()
     {
-        if (null !== $this->apply && !$this->apply) {
+        if (!$this->shouldApply()) {
             return $this;
         }
 
@@ -313,5 +301,19 @@ abstract class BaseGroupedMapper extends BaseMapper
         }
 
         return $this->currentGroup;
+    }
+
+    /**
+     * Check if all apply conditions are respected.
+     */
+    protected function shouldApply(): bool
+    {
+        foreach ($this->apply as $condition) {
+            if (!$condition) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
