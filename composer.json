@@ -56,7 +56,7 @@
         "twig/twig": "^2.10"
     },
     "conflict": {
-        "doctrine/doctrine-bundle": ">=2",
+        "doctrine/doctrine-bundle": ">=3",
         "jms/di-extra-bundle": "<1.9",
         "sonata-project/media-bundle": "<3.7",
         "sonata-project/user-bundle": "<3.3"
