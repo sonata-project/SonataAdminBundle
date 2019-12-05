@@ -171,6 +171,30 @@ class BaseGroupedMapperTest extends TestCase
         $this->assertFalse($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns false when all tabs are closed');
     }
 
+    public function testIfTrueApply(): void
+    {
+        $this->baseGroupedMapper->ifTrue(true)->tab('fooTab')->ifEnd();
+        $this->assertTrue($this->baseGroupedMapper->hasOpenTab());
+    }
+
+    public function testIfTrueNotApply(): void
+    {
+        $this->baseGroupedMapper->ifTrue(false)->tab('fooTab')->ifEnd();
+        $this->assertFalse($this->baseGroupedMapper->hasOpenTab());
+    }
+
+    public function testIfFalseApply(): void
+    {
+        $this->baseGroupedMapper->ifFalse(false)->tab('fooTab')->ifEnd();
+        $this->assertTrue($this->baseGroupedMapper->hasOpenTab());
+    }
+
+    public function testIfFalseNotApply(): void
+    {
+        $this->baseGroupedMapper->ifFalse(true)->tab('fooTab')->ifEnd();
+        $this->assertFalse($this->baseGroupedMapper->hasOpenTab());
+    }
+
     public function testEndException(): void
     {
         $this->expectException(\LogicException::class);

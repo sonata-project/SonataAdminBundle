@@ -187,10 +187,33 @@ class ShowMapperTest extends TestCase
         $this->assertSame('fooName', $fieldDescription->getOption('label'));
     }
 
+    public function testIfTrueApplyWithTab(): void
+    {
+        $this->showMapper->ifTrue(true);
+        $this->showMapper->tab('fooTab')->add('fooName')->end();
+        $this->showMapper->ifEnd();
+
+        $this->assertTrue($this->showMapper->has('fooName'));
+        $fieldDescription = $this->showMapper->get('fooName');
+
+        $this->assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
+        $this->assertSame('fooName', $fieldDescription->getName());
+        $this->assertSame('fooName', $fieldDescription->getOption('label'));
+    }
+
     public function testIfTrueNotApply(): void
     {
         $this->showMapper->ifTrue(false);
         $this->showMapper->add('fooName');
+        $this->showMapper->ifEnd();
+
+        $this->assertFalse($this->showMapper->has('fooName'));
+    }
+
+    public function testIfTrueNotApplyWithTab(): void
+    {
+        $this->showMapper->ifTrue(false);
+        $this->showMapper->tab('fooTab')->add('fooName')->end();
         $this->showMapper->ifEnd();
 
         $this->assertFalse($this->showMapper->has('fooName'));
@@ -226,10 +249,33 @@ class ShowMapperTest extends TestCase
         $this->assertSame('fooName', $fieldDescription->getOption('label'));
     }
 
+    public function testIfFalseApplyWithTab(): void
+    {
+        $this->showMapper->ifFalse(false);
+        $this->showMapper->tab('fooTab')->add('fooName')->end();
+        $this->showMapper->ifEnd();
+
+        $this->assertTrue($this->showMapper->has('fooName'));
+        $fieldDescription = $this->showMapper->get('fooName');
+
+        $this->assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
+        $this->assertSame('fooName', $fieldDescription->getName());
+        $this->assertSame('fooName', $fieldDescription->getOption('label'));
+    }
+
     public function testIfFalseNotApply(): void
     {
         $this->showMapper->ifFalse(true);
         $this->showMapper->add('fooName');
+        $this->showMapper->ifEnd();
+
+        $this->assertFalse($this->showMapper->has('fooName'));
+    }
+
+    public function testIfFalseNotApplyWithTab(): void
+    {
+        $this->showMapper->ifFalse(true);
+        $this->showMapper->tab('fooTab')->add('fooName')->end();
         $this->showMapper->ifEnd();
 
         $this->assertFalse($this->showMapper->has('fooName'));

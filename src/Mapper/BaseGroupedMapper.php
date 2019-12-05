@@ -48,6 +48,10 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function with($name, array $options = [])
     {
+        if (null !== $this->apply && !$this->apply) {
+            return $this;
+        }
+
         /*
          * The current implementation should work with the following workflow:
          *
@@ -225,6 +229,10 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function end()
     {
+        if (null !== $this->apply && !$this->apply) {
+            return $this;
+        }
+
         if (null !== $this->currentGroup) {
             $this->currentGroup = null;
         } elseif (null !== $this->currentTab) {
