@@ -289,7 +289,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
     /**
      * NEXT_MAJOR: remove this property.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x
+     * @deprecated since sonata-project/admin-bundle 3.56
      */
     public function configureClassesToCompile()
     {

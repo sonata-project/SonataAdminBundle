@@ -65,7 +65,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
         if (null !== $registry && (!$registry instanceof RegistryInterface && !$registry instanceof ManagerRegistry)) {
             if (!$registry instanceof ManagerRegistry) {
                 @trigger_error(sprintf(
-                    "Passing an object that doesn't implement %s as argument 3 to %s() is deprecated since sonata-project/admin-bundle 3.x.",
+                    "Passing an object that doesn't implement %s as argument 3 to %s() is deprecated since sonata-project/admin-bundle 3.56.",
                     ManagerRegistry::class,
                     __METHOD__
                 ), E_USER_DEPRECATED);
