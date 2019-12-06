@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.56.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.55.0...3.56.0) - 2019-12-05
+### Fixed
+-  compatibility with `doctrine/doctrine-bundle` 2
+
+### Removed
+- Support for Symfony < 3.4
+- Support for Symfony >= 4, < 4.2
+
 ## [3.55.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.54.1...3.55.0) - 2019-11-25
 ### Fixed
 - crash when using the command that generates ACLs
