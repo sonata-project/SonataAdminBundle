@@ -71,7 +71,9 @@ class AddFilterTypeCompilerPassTest extends TestCase
         $this->filterFactory->expects($this->once())
             ->method('replaceArgument')
             ->with(1, $this->equalTo([
+                'foo_filter_alias' => 'acme.demo.foo_filter',
                 'Acme\Filter\FooFilter' => 'acme.demo.foo_filter',
+                'bar_filter_alias' => 'acme.demo.bar_filter',
                 'Acme\Filter\BarFilter' => 'acme.demo.bar_filter',
             ]));
 
