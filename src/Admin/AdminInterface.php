@@ -713,7 +713,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @param object $object
      */
-    public function getSearchResultLink($object): string;
+    public function getSearchResultLink($object): ?string;
 
     /**
      * Setting to true will enable mosaic button for the admin screen.

@@ -2558,13 +2558,15 @@ EOT;
     /**
      * @param object $object
      */
-    final public function getSearchResultLink($object): string
+    final public function getSearchResultLink($object): ?string
     {
         foreach ($this->searchResultActions as $action) {
             if ($this->hasRoute($action) && $this->hasAccess($action, $object)) {
                 return $this->generateObjectUrl($action, $object);
             }
         }
+
+        return null;
     }
 
     /**
