@@ -243,7 +243,7 @@ class CRUDControllerTest extends TestCase
         $this->csrfProvider
             ->method('isTokenValid')
             ->willReturnCallback(static function (CsrfToken $token) {
-                return $token->getValue() === 'csrf-token-123_' . $token->getId();
+                return $token->getValue() === 'csrf-token-123_'.$token->getId();
             });
 
         $this->logger = $this->createMock(LoggerInterface::class);

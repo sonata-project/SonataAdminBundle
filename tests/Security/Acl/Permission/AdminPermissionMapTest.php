@@ -33,10 +33,10 @@ class AdminPermissionMapTest extends TestCase
                 new \stdClass()
             );
 
-            $this->assertInternalType('array', $masks);
+            $this->assertIsArray($masks);
 
             foreach ($masks as $mask) {
-                $this->assertInternalType('string', MaskBuilder::getCode($mask));
+                $this->assertIsString(MaskBuilder::getCode($mask));
             }
         }
     }

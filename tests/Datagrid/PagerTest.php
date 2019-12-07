@@ -263,7 +263,7 @@ class PagerTest extends TestCase
 
     public function testIterator(): void
     {
-        $this->assertInstanceOf(Iterator::class, $this->pager);
+        $this->assertInstanceOf(\Iterator::class, $this->pager);
 
         $object1 = new \stdClass();
         $object1->foo = 'bar1';

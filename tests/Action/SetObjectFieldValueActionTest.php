@@ -32,7 +32,6 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
-use Twig\Template;
 
 final class SetObjectFieldValueActionTest extends TestCase
 {

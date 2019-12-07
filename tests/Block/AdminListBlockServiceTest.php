@@ -17,12 +17,12 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminListBlockService;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Block\FakeBlockService;
-use Sonata\BlockBundle\Test\AbstractBlockServiceTestCase;
+use Sonata\BlockBundle\Test\BlockServiceTestCase;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class AdminListBlockServiceTest extends AbstractBlockServiceTestCase
+class AdminListBlockServiceTest extends BlockServiceTestCase
 {
     /**
      * @var Pool

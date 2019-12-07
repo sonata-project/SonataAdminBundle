@@ -27,7 +27,6 @@ use Sonata\BlockBundle\DependencyInjection\SonataBlockExtension;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Bundle\FrameworkBundle\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -70,7 +69,7 @@ class ExtensionCompilerPassTest extends TestCase
         $this->extension->load([], $container = $this->getContainer());
 
         $this->assertTrue($container->hasParameter($this->root.'.extension.map'));
-        $this->assertInternalType('array', $extensionMap = $container->getParameter($this->root.'.extension.map'));
+        $this->assertIsArray($extensionMap = $container->getParameter($this->root.'.extension.map'));
 
         $this->assertArrayHasKey('admins', $extensionMap);
         $this->assertArrayHasKey('excludes', $extensionMap);

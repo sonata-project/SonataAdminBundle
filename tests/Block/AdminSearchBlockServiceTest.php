@@ -17,13 +17,13 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminSearchBlockService;
 use Sonata\AdminBundle\Search\SearchHandler;
-use Sonata\BlockBundle\Test\AbstractBlockServiceTestCase;
+use Sonata\BlockBundle\Test\BlockServiceTestCase;
 use Sonata\BlockBundle\Test\FakeTemplating;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
+class AdminSearchBlockServiceTest extends BlockServiceTestCase
 {
     /**
      * @var Pool
