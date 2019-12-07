@@ -2316,8 +2316,8 @@ class AdminTest extends TestCase
 
     public function testCircularChildAdmin(): void
     {
-        $this->expectException(
-            \RuntimeException::class,
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
             'Circular reference detected! The child admin `sonata.post.admin.post` is already in the parent tree of the `sonata.post.admin.comment` admin.'
         );
 
@@ -2337,8 +2337,8 @@ class AdminTest extends TestCase
 
     public function testCircularChildAdminTripleLevel(): void
     {
-        $this->expectException(
-            \RuntimeException::class,
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
             'Circular reference detected! The child admin `sonata.post.admin.post` is already in the parent tree of the `sonata.post.admin.comment_vote` admin.'
         );
 
@@ -2364,8 +2364,8 @@ class AdminTest extends TestCase
 
     public function testCircularChildAdminWithItself(): void
     {
-        $this->expectException(
-            \RuntimeException::class,
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
             'Circular reference detected! The child admin `sonata.post.admin.post` is already in the parent tree of the `sonata.post.admin.post` admin.'
         );
 

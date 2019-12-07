@@ -93,7 +93,8 @@ class RouteCollectionTest extends TestCase
 
     public function testGetWithException(): void
     {
-        $this->expectException(\InvalidArgumentException::class, 'Element "foo" does not exist.');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Element "foo" does not exist.');
 
         $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerName');
         $routeCollection->get('foo');

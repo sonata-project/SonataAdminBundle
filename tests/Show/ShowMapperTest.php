@@ -320,7 +320,8 @@ class ShowMapperTest extends TestCase
 
     public function testAddException(): void
     {
-        $this->expectException(\RuntimeException::class, 'invalid state');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('invalid state');
 
         $this->showMapper->add(12345);
     }
@@ -328,7 +329,10 @@ class ShowMapperTest extends TestCase
     public function testAddDuplicateFieldNameException(): void
     {
         $name = 'name';
-        $this->expectException(\RuntimeException::class, sprintf('Duplicate field %s "name" in show mapper. Names should be unique.', $name));
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            sprintf('Duplicate field %s "name" in show mapper. Names should be unique.', $name)
+        );
 
         $this->showMapper->add($name);
         $this->showMapper->add($name);

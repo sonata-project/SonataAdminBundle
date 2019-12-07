@@ -98,7 +98,8 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
     public function testReverseTransformWithException1(): void
     {
-        $this->expectException(UnexpectedTypeException::class, 'Expected argument of type "\ArrayAccess", "NULL" given');
+        $this->expectException(UnexpectedTypeException::class);
+        $this->expectExceptionMessage('Expected argument of type "\ArrayAccess", "NULL" given');
 
         $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
@@ -111,7 +112,8 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
     public function testReverseTransformWithException2(): void
     {
-        $this->expectException(UnexpectedTypeException::class, 'Expected argument of type "array", "integer" given');
+        $this->expectException(UnexpectedTypeException::class);
+        $this->expectExceptionMessage('Expected argument of type "array", "integer" given');
 
         $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
@@ -179,7 +181,8 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
     public function testReverseTransformWithNonexistentEntityKey(): void
     {
-        $this->expectException(TransformationFailedException::class, 'The entities with keys "nonexistent" could not be found');
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('The entities with keys "nonexistent" could not be found');
 
         $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 

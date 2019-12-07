@@ -103,7 +103,8 @@ class DefaultRouteGeneratorTest extends TestCase
 
     public function testGenerateUrlWithException(): void
     {
-        $this->expectException(\RuntimeException::class, 'unable to find the route `base.Code.Route.foo`');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('unable to find the route `base.Code.Route.foo`');
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->any())->method('isChild')->willReturn(false);

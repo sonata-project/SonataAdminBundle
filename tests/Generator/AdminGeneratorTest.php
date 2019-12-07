@@ -66,7 +66,8 @@ class AdminGeneratorTest extends TestCase
         $this->assertSame('ModelAdmin.php', basename($file));
         $this->assertFileEquals(__DIR__.'/../Fixtures/Admin/ModelAdmin.php', $file);
 
-        $this->expectException(\RuntimeException::class, 'already exists');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('already exists');
 
         $this->adminGenerator->generate($this->bundleMock, 'ModelAdmin', 'Model');
     }

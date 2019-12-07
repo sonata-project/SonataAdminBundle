@@ -157,7 +157,8 @@ class AdminHelperTest extends TestCase
         $object->expects($this->atLeastOnce())->method('getPathToObject')->willReturn([$subObject]);
         $subObject->expects($this->atLeastOnce())->method('getMore')->willReturn('Value');
 
-        $this->expectException(\Exception::class, 'Could not get element id from '.$path.' Failing part: calls');
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Could not get element id from '.$path.' Failing part: calls');
 
         $this->helper->getElementAccessPath($path, $object);
     }
@@ -299,7 +300,8 @@ class AdminHelperTest extends TestCase
         $admin->expects($this->once())->method('getFormBuilder')->willReturn($formBuilder);
         $admin->expects($this->once())->method('getSubject')->willReturn($object);
 
-        $this->expectException(\Exception::class, 'unknown collection class');
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('unknown collection class');
 
         $this->helper->appendFormFieldElement($admin, $simpleObject, 'uniquePartOfId_sub_object_0_and_more_0_final_data');
     }

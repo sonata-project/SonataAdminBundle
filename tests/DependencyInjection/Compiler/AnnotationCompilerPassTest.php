@@ -30,8 +30,8 @@ class AnnotationCompilerPassTest extends TestCase
          * @Admin(class="Sonata\AdminBundle\Tests\Fixtures\Foo")
          */
 
-        $this->expectException(
-            \LogicException::class,
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage(
             'Unable to generate admin group and label for class Sonata\AdminBundle\Tests\Fixtures\Foo.'
         );
 

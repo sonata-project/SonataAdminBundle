@@ -197,7 +197,8 @@ class ConfigurationTest extends TestCase
 
     public function testDashboardGroupsWithBadItemsParams(): void
     {
-        $this->expectException(\InvalidArgumentException::class, 'Expected either parameters "route" and "label" for array items');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected either parameters "route" and "label" for array items');
 
         $this->process([[
             'dashboard' => [

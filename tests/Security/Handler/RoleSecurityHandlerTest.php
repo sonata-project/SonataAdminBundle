@@ -182,7 +182,8 @@ class RoleSecurityHandlerTest extends TestCase
 
     public function testIsGrantedWithException(): void
     {
-        $this->expectException(\RuntimeException::class, 'Something is wrong');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Something is wrong');
 
         $this->admin->expects($this->any())
             ->method('getCode')

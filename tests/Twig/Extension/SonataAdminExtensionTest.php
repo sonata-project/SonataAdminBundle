@@ -2063,7 +2063,8 @@ EOT
         $object = $this->createMock(\ArrayAccess::class);
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
 
-        $this->expectException(\RuntimeException::class, 'remove the loop requirement');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('remove the loop requirement');
 
         $this->assertSame(
             'anything',
@@ -2288,7 +2289,8 @@ EOT
             });
 
         $element = new \stdClass();
-        $this->expectException(\RuntimeException::class, 'You must define an `associated_property` option or create a `stdClass::__toString');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You must define an `associated_property` option or create a `stdClass::__toString');
 
         $this->twigExtension->renderRelationElement($element, $this->fieldDescription);
     }

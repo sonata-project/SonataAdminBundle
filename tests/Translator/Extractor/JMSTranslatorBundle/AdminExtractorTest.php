@@ -143,7 +143,8 @@ class AdminExtractorTest extends TestCase
 
     public function testExtractWithException(): void
     {
-        $this->expectException(\RuntimeException::class, 'Foo throws exception');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Foo throws exception');
 
         $this->fooAdmin->expects($this->any())
             ->method('getShow')

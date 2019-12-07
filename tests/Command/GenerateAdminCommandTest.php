@@ -187,7 +187,8 @@ class GenerateAdminCommandTest extends TestCase
         $generateAdminCommand = new GenerateAdminCommand(new Pool($this->container, '', ''), []);
         $application = $this->createApplication($this->kernel, $generateAdminCommand);
 
-        $this->expectException(\RuntimeException::class, 'There are no model managers registered.');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('There are no model managers registered.');
 
         $command = $application->find('sonata:admin:generate');
         $commandTester = new CommandTester($generateAdminCommand);

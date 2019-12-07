@@ -262,7 +262,8 @@ class ListMapperTest extends TestCase
                 return false;
             });
 
-        $this->expectException(\RuntimeException::class, 'Duplicate field name "fooName" in list mapper. Names should be unique.');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Duplicate field name "fooName" in list mapper. Names should be unique.');
 
         $this->listMapper->add('fooName');
         $this->listMapper->add('fooName');
@@ -270,7 +271,10 @@ class ListMapperTest extends TestCase
 
     public function testAddWrongTypeException(): void
     {
-        $this->expectException(\RuntimeException::class, 'Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.'
+        );
 
         $this->listMapper->add(12345);
     }
