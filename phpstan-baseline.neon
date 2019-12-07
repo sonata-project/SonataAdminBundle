@@ -11,26 +11,6 @@ parameters:
 			path: src/Admin/AdminHelper.php
 
 		-
-			message: "#^Constructor of class Sonata\\\\AdminBundle\\\\Form\\\\DataTransformer\\\\ModelsToArrayTransformer has an unused parameter \\$choiceList\\.$#"
-			count: 1
-			path: src/Form/DataTransformer/ModelsToArrayTransformer.php
-
-		-
-			message: "#^Constructor of class Sonata\\\\AdminBundle\\\\Form\\\\DataTransformer\\\\ModelsToArrayTransformer has an unused parameter \\$class\\.$#"
-			count: 1
-			path: src/Form/DataTransformer/ModelsToArrayTransformer.php
-
-		-
-			message: "#^Constructor of class Sonata\\\\AdminBundle\\\\Form\\\\DataTransformer\\\\ModelsToArrayTransformer has an unused parameter \\$modelManager\\.$#"
-			count: 1
-			path: src/Form/DataTransformer/ModelsToArrayTransformer.php
-
-		-
-			message: "#^Method Sonata\\\\AdminBundle\\\\Maker\\\\AdminMaker\\:\\:getAdminServiceId\\(\\) invoked with 2 parameters, 1 required\\.$#"
-			count: 1
-			path: src/Maker/AdminMaker.php
-
-		-
 			message: "#^Undefined variable\\: \\$namespace$#"
 			count: 1
 			path: src/Resources/skeleton/Admin.tpl.php
