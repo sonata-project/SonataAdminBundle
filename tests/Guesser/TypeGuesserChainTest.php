@@ -32,7 +32,7 @@ class TypeGuesserChainTest extends TestCase
     {
         $this->expectException(UnexpectedTypeException::class);
 
-        $typeGuesserChain = new TypeGuesserChain([new \stdClass()]);
+        new TypeGuesserChain([new \stdClass()]);
     }
 
     public function testGuessType(): void
