@@ -68,9 +68,7 @@ class AdminVoterTest extends AbstractVoterTest
         $requestStack = new RequestStack();
         $requestStack->push($request);
 
-        $voter = new AdminVoter($requestStack);
-
-        return $voter;
+        return new AdminVoter($requestStack);
     }
 
     /**

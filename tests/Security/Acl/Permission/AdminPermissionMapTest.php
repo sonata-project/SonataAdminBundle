@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Security\Permission;
+namespace Sonata\AdminBundle\Tests\Security\Acl\Permission;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;

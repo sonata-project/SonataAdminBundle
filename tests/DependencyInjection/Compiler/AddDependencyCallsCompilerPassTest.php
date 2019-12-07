@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection;
+namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
@@ -569,7 +569,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
      */
     protected function getConfig()
     {
-        $config = [
+        return [
             'dashboard' => [
                 'groups' => [
                     'sonata_group_one' => [
@@ -626,8 +626,6 @@ class AddDependencyCallsCompilerPassTest extends TestCase
                 ],
             ],
         ];
-
-        return $config;
     }
 
     private function getContainer(): ContainerBuilder

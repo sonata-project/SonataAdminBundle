@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection;
+namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use JMS\DiExtraBundle\Metadata\ClassMetadata;
 use PHPUnit\Framework\TestCase;
