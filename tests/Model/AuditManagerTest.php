@@ -32,7 +32,7 @@ class AuditManagerTest extends TestCase
         $fooReader = $this->getMockForAbstractClass(AuditReaderInterface::class);
         $barReader = $this->getMockForAbstractClass(AuditReaderInterface::class);
 
-        $container->expects($this->any())
+        $container
             ->method('get')
             ->willReturnCallback(static function ($id) use ($fooReader, $barReader) {
                 switch ($id) {

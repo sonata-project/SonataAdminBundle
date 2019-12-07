@@ -174,7 +174,6 @@ class AdminHelperTest extends TestCase
 
         $admin = $this->createMock(AdminInterface::class);
         $admin
-            ->expects($this->any())
             ->method('getClass')
             ->willReturn(Foo::class);
 
@@ -186,16 +185,14 @@ class AdminHelperTest extends TestCase
         ];
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->any())->method('getAssociationAdmin')->willReturn($admin);
-        $fieldDescription->expects($this->any())->method('getAssociationMapping')->willReturn($associationMapping);
+        $fieldDescription->method('getAssociationAdmin')->willReturn($admin);
+        $fieldDescription->method('getAssociationMapping')->willReturn($associationMapping);
 
         $admin
-            ->expects($this->any())
             ->method('getFormFieldDescription')
             ->willReturn($fieldDescription);
 
         $admin
-            ->expects($this->any())
             ->method('getFormFieldDescriptions')
             ->willReturn([
                 'bar' => $fieldDescription,
@@ -203,7 +200,6 @@ class AdminHelperTest extends TestCase
 
         $request = $this->createMock(Request::class);
         $request
-            ->expects($this->any())
             ->method('get')
             ->willReturn([
                 'bar' => [
@@ -219,7 +215,6 @@ class AdminHelperTest extends TestCase
         $request->request = new ParameterBag();
 
         $admin
-            ->expects($this->any())
             ->method('getRequest')
             ->will($this->onConsecutiveCalls($request, $request, $request, null, $request, $request, $request, $request, null, $request));
 
@@ -244,8 +239,8 @@ class AdminHelperTest extends TestCase
         $formBuilder->setDataMapper($dataMapper);
         $formBuilder->add($childFormBuilder);
 
-        $admin->expects($this->any())->method('getFormBuilder')->willReturn($formBuilder);
-        $admin->expects($this->any())->method('getSubject')->willReturn($foo);
+        $admin->method('getFormBuilder')->willReturn($formBuilder);
+        $admin->method('getSubject')->willReturn($foo);
 
         $finalForm = $helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
 

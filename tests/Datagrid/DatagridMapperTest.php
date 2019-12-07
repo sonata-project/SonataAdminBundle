@@ -60,14 +60,14 @@ class DatagridMapperTest extends TestCase
 
         $admin = $this->createMock(AdminInterface::class);
 
-        $datagridBuilder->expects($this->any())
+        $datagridBuilder
             ->method('addFilter')
             ->willReturnCallback(function ($datagrid, $type, $fieldDescription, $admin): void {
                 $fieldDescription->setType($type);
 
                 $filter = $this->getMockForAbstractClass(Filter::class);
 
-                $filter->expects($this->any())
+                $filter
                     ->method('getDefaultOptions')
                     ->willReturn(['foo_default_option' => 'bar_default']);
 
@@ -77,7 +77,7 @@ class DatagridMapperTest extends TestCase
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
-        $modelManager->expects($this->any())
+        $modelManager
             ->method('getNewFieldDescriptionInstance')
             ->willReturnCallback(function ($class, $name, array $options = []) {
                 $fieldDescription = $this->getFieldDescriptionMock();
@@ -87,11 +87,11 @@ class DatagridMapperTest extends TestCase
                 return $fieldDescription;
             });
 
-        $admin->expects($this->any())
+        $admin
             ->method('getModelManager')
             ->willReturn($modelManager);
 
-        $admin->expects($this->any())
+        $admin
             ->method('isGranted')
             ->willReturnCallback(static function (string $name, object $object = null): bool {
                 return self::DEFAULT_GRANTED_ROLE === $name;

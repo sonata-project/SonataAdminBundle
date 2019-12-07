@@ -66,7 +66,7 @@ class AdminExtractorTest extends TestCase
         $this->barAdmin = $this->getMockForAbstractClass(AdminInterface::class);
 
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $container->expects($this->any())
+        $container
             ->method('get')
             ->willReturnCallback(function ($id) {
                 switch ($id) {
@@ -82,13 +82,13 @@ class AdminExtractorTest extends TestCase
         $this->pool = $this->getMockBuilder(Pool::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->pool->expects($this->any())
+        $this->pool
             ->method('getAdminServiceIds')
             ->willReturn(['foo_admin', 'bar_admin']);
-        $this->pool->expects($this->any())
+        $this->pool
             ->method('getContainer')
             ->willReturn($container);
-        $this->pool->expects($this->any())
+        $this->pool
             ->method('getAdminGroups')
             ->willReturn(['group' => [
                 'label_catalogue' => 'admin_domain',
@@ -111,16 +111,16 @@ class AdminExtractorTest extends TestCase
 
     public function testExtract(): void
     {
-        $this->fooAdmin->expects($this->any())
+        $this->fooAdmin
             ->method('getShow')
             ->willReturnCallback(function (): void {
                 $this->assertSame('foo', $this->adminExtractor->trans('foo', [], 'foo_admin_domain'));
                 $this->assertSame('foo', $this->adminExtractor->transChoice('foo', 1, [], 'foo_admin_domain'));
             });
-        $this->fooAdmin->expects($this->any())
+        $this->fooAdmin
             ->method('getLabel')
             ->willReturn('foo_label');
-        $this->fooAdmin->expects($this->any())
+        $this->fooAdmin
             ->method('getTranslationDomain')
             ->willReturn('foo_admin_domain');
 
@@ -146,7 +146,7 @@ class AdminExtractorTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Foo throws exception');
 
-        $this->fooAdmin->expects($this->any())
+        $this->fooAdmin
             ->method('getShow')
             ->willReturnCallback(static function (): void {
                 throw new \RuntimeException('Foo throws exception');

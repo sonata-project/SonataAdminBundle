@@ -51,18 +51,18 @@ class ChildrenVoterTest extends AbstractVoterTest
         $childItems = [];
         foreach ($data as $childData) {
             $childItem = $this->getMockForAbstractClass(ItemInterface::class);
-            $childItem->expects($this->any())
+            $childItem
                 ->method('isCurrent')
                 ->willReturn($childData);
             $childItems[] = $childItem;
         }
 
         $item = $this->getMockForAbstractClass(ItemInterface::class);
-        $item->expects($this->any())
+        $item
             ->method('getChildren')
             ->willReturn($childItems);
 
-        $item->expects($this->any())
+        $item
              ->method('getExtra')
              ->with('sonata_admin')
              ->willReturn(true);

@@ -37,7 +37,7 @@ class AddFilterTypeCompilerPassTest extends TestCase
     {
         $containerBuilderMock = $this->createMock(ContainerBuilder::class);
 
-        $containerBuilderMock->expects($this->any())
+        $containerBuilderMock
             ->method('getDefinition')
             ->with($this->anything())
             ->willReturnMap([

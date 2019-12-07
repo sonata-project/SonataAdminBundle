@@ -45,7 +45,7 @@ class FormBuilderIteratorTest extends TestCase
         $this->dispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
         $this->factory = $this->getMockForAbstractClass(FormFactoryInterface::class);
         $this->builder = new TestFormBuilder('name', null, $this->dispatcher, $this->factory);
-        $this->factory->expects($this->any())->method('createNamedBuilder')->willReturn($this->builder);
+        $this->factory->method('createNamedBuilder')->willReturn($this->builder);
     }
 
     protected function tearDown(): void

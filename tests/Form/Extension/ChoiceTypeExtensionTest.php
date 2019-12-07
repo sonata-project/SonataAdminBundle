@@ -25,8 +25,8 @@ class ChoiceTypeExtensionTest extends TestCase
     protected function setup(): void
     {
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $container->expects($this->any())->method('has')->willReturn(true);
-        $container->expects($this->any())->method('get')
+        $container->method('has')->willReturn(true);
+        $container->method('get')
             ->with($this->equalTo('sonata.admin.form.choice_extension'))
             ->willReturn(new ChoiceTypeExtension());
 

@@ -169,8 +169,8 @@ class AdminObjectAclDataTest extends TestCase
             $this->assertInternalType('string', $permission);
         }
 
-        $this->assertTrue(false !== array_search('OWNER', $adminObjectAclDataOwner->getUserPermissions(), true));
-        $this->assertTrue(false !== array_search('MASTER', $adminObjectAclDataOwner->getUserPermissions(), true));
+        $this->assertContains('OWNER', $adminObjectAclDataOwner->getUserPermissions());
+        $this->assertContains('MASTER', $adminObjectAclDataOwner->getUserPermissions());
 
         $adminObjectAclData = $this->createAdminObjectAclData(false);
         $this->assertInternalType('array', $adminObjectAclData->getUserPermissions());
@@ -225,12 +225,12 @@ class AdminObjectAclDataTest extends TestCase
     {
         $securityHandler = $this->getMockForAbstractClass(AclSecurityHandlerInterface::class);
 
-        $securityHandler->expects($this->any())
+        $securityHandler
             ->method('getObjectPermissions')
             ->willReturn(['VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER'])
         ;
 
-        $securityHandler->expects($this->any())
+        $securityHandler
             ->method('buildSecurityInformation')
             ->with($this->isInstanceOf(AdminInterface::class))
             ->willReturn([])
@@ -238,12 +238,12 @@ class AdminObjectAclDataTest extends TestCase
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
 
-        $admin->expects($this->any())
+        $admin
             ->method('isGranted')
             ->willReturn($isOwner)
         ;
 
-        $admin->expects($this->any())
+        $admin
             ->method('getSecurityHandler')
             ->willReturn($securityHandler)
         ;

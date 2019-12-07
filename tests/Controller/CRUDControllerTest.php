@@ -172,7 +172,7 @@ class CRUDControllerTest extends TestCase
         $this->template = '';
 
         $this->formBuilder = $this->createMock(FormBuilderInterface::class);
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getFormBuilder')
             ->willReturn($this->formBuilder);
 
@@ -198,7 +198,7 @@ class CRUDControllerTest extends TestCase
             return $response;
         });
 
-        $templating->expects($this->any())
+        $templating
             ->method('render')
             ->will($templatingRenderReturnCallback);
 
@@ -208,7 +208,7 @@ class CRUDControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $twig->expects($this->any())
+        $twig
             ->method('getRuntime')
             ->willReturn($this->createMock(FormRenderer::class));
 
@@ -218,7 +218,7 @@ class CRUDControllerTest extends TestCase
         } else {
             $exporter = $this->createMock(SonataExporter::class);
 
-            $exporter->expects($this->any())
+            $exporter
                 ->method('getResponse')
                 ->willReturn(new StreamedResponse());
         }
@@ -234,20 +234,16 @@ class CRUDControllerTest extends TestCase
         $this->csrfProvider = $this->getMockBuilder(CsrfTokenManagerInterface::class)
             ->getMock();
 
-        $this->csrfProvider->expects($this->any())
+        $this->csrfProvider
             ->method('getToken')
             ->willReturnCallback(static function ($intention) {
                 return new CsrfToken($intention, 'csrf-token-123_'.$intention);
             });
 
-        $this->csrfProvider->expects($this->any())
+        $this->csrfProvider
             ->method('isTokenValid')
             ->willReturnCallback(static function (CsrfToken $token) {
-                if ($token->getValue() === 'csrf-token-123_'.$token->getId()) {
-                    return true;
-                }
-
-                return false;
+                return $token->getValue() === 'csrf-token-123_' . $token->getId();
             });
 
         $this->logger = $this->createMock(LoggerInterface::class);
@@ -257,7 +253,7 @@ class CRUDControllerTest extends TestCase
 
         $this->kernel = $this->createMock(KernelInterface::class);
 
-        $this->container->expects($this->any())
+        $this->container
             ->method('get')
             ->willReturnCallback(function ($id) use (
                 $templating,
@@ -297,7 +293,7 @@ class CRUDControllerTest extends TestCase
                 }
             });
 
-        $this->container->expects($this->any())
+        $this->container
             ->method('has')
             ->willReturnCallback(function ($id) {
                 if ('security.csrf.token_manager' === $id && null !== $this->getCsrfProvider()) {
@@ -323,7 +319,7 @@ class CRUDControllerTest extends TestCase
                 return false;
             });
 
-        $this->container->expects($this->any())
+        $this->container
             ->method('getParameter')
             ->willReturnCallback(static function ($name) {
                 switch ($name) {
@@ -365,15 +361,15 @@ class CRUDControllerTest extends TestCase
             ['batch_confirmation', '@SonataAdmin/CRUD/batch_confirmation.html.twig'],
         ]);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getIdParameter')
             ->willReturn('id');
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getAccessMapping')
             ->willReturn([]);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('generateUrl')
             ->willReturnCallback(
 
@@ -388,7 +384,7 @@ class CRUDControllerTest extends TestCase
 
             );
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('generateObjectUrl')
             ->willReturnCallback(
 
@@ -403,7 +399,7 @@ class CRUDControllerTest extends TestCase
 
             );
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getCode')
             ->willReturn('foo.admin');
 
@@ -589,7 +585,7 @@ class CRUDControllerTest extends TestCase
     public function testRenderWithResponse(): void
     {
         $this->parameters = [];
-        $response = $response = new Response();
+        $response = new Response();
         $response->headers->set('X-foo', 'bar');
         $responseResult = $this->controller->renderWithExtraParams('@FooAdmin/foo.html.twig', [], $response);
 
@@ -652,7 +648,7 @@ class CRUDControllerTest extends TestCase
 
     public function testPreList(): void
     {
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('hasRoute')
             ->with($this->equalTo('list'))
             ->willReturn(true);
@@ -674,7 +670,7 @@ class CRUDControllerTest extends TestCase
     {
         $datagrid = $this->createMock(DatagridInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('hasRoute')
             ->with($this->equalTo('list'))
             ->willReturn(true);
@@ -922,7 +918,7 @@ class CRUDControllerTest extends TestCase
      */
     public function testRedirectTo($expected, $route, $queryParams, $requestParams, $hasActiveSubclass): void
     {
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('hasActiveSubclass')
             ->willReturn($hasActiveSubclass);
 
@@ -936,12 +932,12 @@ class CRUDControllerTest extends TestCase
             $this->request->request->set($key, $value);
         }
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('hasRoute')
             ->with($this->equalTo($route))
             ->willReturn(true);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('hasAccess')
             ->with($this->equalTo($route))
             ->willReturn(true);
@@ -953,7 +949,7 @@ class CRUDControllerTest extends TestCase
 
     public function testRedirectToWithObject(): void
     {
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('hasActiveSubclass')
             ->willReturn(false);
 
@@ -964,7 +960,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->willReturn(true);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('hasAccess')
             ->with($this->equalTo('edit'), $object)
             ->willReturn(false);
@@ -1221,7 +1217,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('delete'))
             ->willReturn(true);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('stdClass');
 
@@ -1628,7 +1624,7 @@ class CRUDControllerTest extends TestCase
 
         $formView = $this->createMock(FormView::class);
 
-        $form->expects($this->any())
+        $form
             ->method('createView')
             ->willReturn($formView);
 
@@ -1761,7 +1757,7 @@ class CRUDControllerTest extends TestCase
 
         $formView = $this->createMock(FormView::class);
 
-        $form->expects($this->any())
+        $form
             ->method('createView')
             ->willReturn($formView);
 
@@ -1956,7 +1952,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->willReturn(true);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('stdClass');
 
@@ -1992,7 +1988,7 @@ class CRUDControllerTest extends TestCase
 
         $formView = $this->createMock(FormView::class);
 
-        $form->expects($this->any())
+        $form
             ->method('createView')
             ->willReturn($formView);
 
@@ -2036,7 +2032,7 @@ class CRUDControllerTest extends TestCase
 
         $formView = $this->createMock(FormView::class);
 
-        $form->expects($this->any())
+        $form
             ->method('createView')
             ->willReturn($formView);
 
@@ -2074,22 +2070,22 @@ class CRUDControllerTest extends TestCase
         $object = new \stdClass();
         $class = \get_class($object);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('checkAccess')
             ->with($this->equalTo('edit'))
             ->willReturn(true);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn($class);
 
         $form = $this->createMock(Form::class);
 
-        $form->expects($this->any())
+        $form
             ->method('isValid')
             ->willReturn(true);
 
@@ -2101,27 +2097,27 @@ class CRUDControllerTest extends TestCase
             ->method('all')
             ->willReturn(['field' => 'fielddata']);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getForm')
             ->willReturn($form);
 
-        $form->expects($this->any())
+        $form
             ->method('isSubmitted')
             ->willReturn(true);
         $this->request->setMethod('POST');
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('update')
             ->will($this->throwException(new LockException()));
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('toString')
             ->with($this->equalTo($object))
             ->willReturn($class);
 
         $formView = $this->createMock(FormView::class);
 
-        $form->expects($this->any())
+        $form
             ->method('createView')
             ->willReturn($formView);
 
@@ -2155,7 +2151,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('create'))
             ->willReturn(true);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('stdClass');
 
@@ -2186,7 +2182,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('create'))
             ->willReturn(true);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('stdClass');
 
@@ -2211,7 +2207,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('stdClass');
 
@@ -2231,7 +2227,7 @@ class CRUDControllerTest extends TestCase
 
         $formView = $this->createMock(FormView::class);
 
-        $form->expects($this->any())
+        $form
             ->method('createView')
             ->willReturn($formView);
 
@@ -2294,7 +2290,7 @@ class CRUDControllerTest extends TestCase
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('stdClass');
 
@@ -2340,7 +2336,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('checkAccess')
             ->willReturnCallback(static function ($name, $object = null) {
                 if ('create' !== $name) {
@@ -2359,7 +2355,7 @@ class CRUDControllerTest extends TestCase
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('stdClass');
 
@@ -2400,7 +2396,7 @@ class CRUDControllerTest extends TestCase
 
         $object = new \stdClass();
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('stdClass');
 
@@ -2437,7 +2433,7 @@ class CRUDControllerTest extends TestCase
 
         $formView = $this->createMock(FormView::class);
 
-        $form->expects($this->any())
+        $form
             ->method('createView')
             ->willReturn($formView);
 
@@ -2465,7 +2461,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('create'))
             ->willReturn(true);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('stdClass');
 
@@ -2508,7 +2504,7 @@ class CRUDControllerTest extends TestCase
 
         $formView = $this->createMock(FormView::class);
 
-        $form->expects($this->any())
+        $form
             ->method('createView')
             ->willReturn($formView);
 
@@ -2576,7 +2572,7 @@ class CRUDControllerTest extends TestCase
             ->method('getData')
             ->willReturn($object);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('stdClass');
 
@@ -2614,7 +2610,7 @@ class CRUDControllerTest extends TestCase
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('stdClass');
 
@@ -2671,7 +2667,7 @@ class CRUDControllerTest extends TestCase
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('stdClass');
 
@@ -2725,7 +2721,7 @@ class CRUDControllerTest extends TestCase
 
         $form = $this->createMock(Form::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('stdClass');
 
@@ -2743,7 +2739,7 @@ class CRUDControllerTest extends TestCase
 
         $formView = $this->createMock(FormView::class);
 
-        $form->expects($this->any())
+        $form
             ->method('createView')
             ->willReturn($formView);
 
@@ -2800,7 +2796,7 @@ class CRUDControllerTest extends TestCase
             ->method('getExportFormats')
             ->willReturn(['json']);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('Foo');
 
@@ -2838,7 +2834,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->expectException(AccessDeniedException::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getObject')
             ->willReturn(new \stdClass());
 
@@ -2879,7 +2875,7 @@ class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('Foo');
 
@@ -2906,7 +2902,7 @@ class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('Foo');
 
@@ -3000,11 +2996,11 @@ class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('checkAccess')
             ->willReturn(true);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getSecurityInformation')
             ->willReturn([]);
 
@@ -3042,11 +3038,11 @@ class CRUDControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $aclSecurityHandler->expects($this->any())
+        $aclSecurityHandler
             ->method('getObjectPermissions')
             ->willReturn([]);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getSecurityHandler')
             ->willReturn($aclSecurityHandler);
 
@@ -3083,11 +3079,11 @@ class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('checkAccess')
             ->willReturn(true);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getSecurityInformation')
             ->willReturn([]);
 
@@ -3129,11 +3125,11 @@ class CRUDControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $aclSecurityHandler->expects($this->any())
+        $aclSecurityHandler
             ->method('getObjectPermissions')
             ->willReturn([]);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getSecurityHandler')
             ->willReturn($aclSecurityHandler);
 
@@ -3172,11 +3168,11 @@ class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('checkAccess')
             ->willReturn(true);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getSecurityInformation')
             ->willReturn([]);
 
@@ -3188,7 +3184,7 @@ class CRUDControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $aclUsersForm->expects($this->any())
+        $aclUsersForm
             ->method('createView')
             ->willReturn($this->createMock(FormView::class));
 
@@ -3196,7 +3192,7 @@ class CRUDControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $aclRolesForm->expects($this->any())
+        $aclRolesForm
             ->method('createView')
             ->willReturn($this->createMock(FormView::class));
 
@@ -3218,11 +3214,11 @@ class CRUDControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $aclSecurityHandler->expects($this->any())
+        $aclSecurityHandler
             ->method('getObjectPermissions')
             ->willReturn([]);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getSecurityHandler')
             ->willReturn($aclSecurityHandler);
 
@@ -3242,7 +3238,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->expectException(AccessDeniedException::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getObject')
             ->willReturn(new \stdClass());
 
@@ -3286,7 +3282,7 @@ class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('Foo');
 
@@ -3318,7 +3314,7 @@ class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('Foo');
 
@@ -3357,7 +3353,7 @@ class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('Foo');
 
@@ -3454,7 +3450,7 @@ class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('Foo');
 
@@ -3486,7 +3482,7 @@ class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('Foo');
 
@@ -3531,7 +3527,7 @@ class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('Foo');
 
@@ -3579,7 +3575,7 @@ class CRUDControllerTest extends TestCase
             ->method('getObject')
             ->willReturn($object);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('Foo');
 
@@ -3795,11 +3791,11 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('batchDelete'))
             ->willReturn(true);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getModelManager')
             ->willReturn($modelManager);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('Foo');
 
@@ -3857,11 +3853,11 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('batchDelete'))
             ->willReturn(true);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getModelManager')
             ->willReturn($modelManager);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('Foo');
 
@@ -4137,11 +4133,11 @@ class CRUDControllerTest extends TestCase
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getModelManager')
             ->willReturn($modelManager);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('Foo');
 
@@ -4193,11 +4189,11 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('batchDelete'))
             ->willReturn(true);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getModelManager')
             ->willReturn($modelManager);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('Foo');
 

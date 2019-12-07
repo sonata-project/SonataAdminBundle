@@ -46,7 +46,7 @@ class ActiveVoterTest extends AbstractVoterTest
     protected function createItem($data)
     {
         $item = $this->getMockForAbstractClass(ItemInterface::class);
-        $item->expects($this->any())
+        $item
              ->method('getExtra')
              ->with($this->logicalOr(
                 $this->equalTo('active'),

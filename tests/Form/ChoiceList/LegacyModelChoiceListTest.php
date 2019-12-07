@@ -31,7 +31,7 @@ class LegacyModelChoiceListTest extends TestCase
 
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
 
-        $this->modelManager->expects($this->any())
+        $this->modelManager
             ->method('getIdentifierFieldNames')
             ->willReturn(['foo', 'bar']);
     }
@@ -64,7 +64,7 @@ class LegacyModelChoiceListTest extends TestCase
         // Get choices From Custom Query, count($this->identifier) > 1
         $result = [1, 2];
 
-        $this->modelManager->expects($this->any())
+        $this->modelManager
             ->method('executeQuery')
             ->willReturn($result);
 

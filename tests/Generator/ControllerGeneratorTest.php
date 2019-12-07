@@ -75,12 +75,10 @@ class ControllerGeneratorTest extends TestCase
     {
         $bundleMock = $this->getMockForAbstractClass(BundleInterface::class);
         $bundleMock
-            ->expects($this->any())
             ->method('getNamespace')
             ->willReturn('Sonata\AdminBundle\Tests\Fixtures')
         ;
         $bundleMock
-            ->expects($this->any())
             ->method('getPath')
             ->willReturn(sprintf('%s/%s', sys_get_temp_dir(), lcg_value()))
         ;

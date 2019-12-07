@@ -39,19 +39,19 @@ class TypeGuesserChainTest extends TestCase
     {
         $typeGuess1 = new TypeGuess('foo1', [], Guess::MEDIUM_CONFIDENCE);
         $guesser1 = $this->getMockForAbstractClass(TypeGuesserInterface::class);
-        $guesser1->expects($this->any())
+        $guesser1
                 ->method('guessType')
                 ->willReturn($typeGuess1);
 
         $typeGuess2 = new TypeGuess('foo2', [], Guess::HIGH_CONFIDENCE);
         $guesser2 = $this->getMockForAbstractClass(TypeGuesserInterface::class);
-        $guesser2->expects($this->any())
+        $guesser2
                 ->method('guessType')
                 ->willReturn($typeGuess2);
 
         $typeGuess3 = new TypeGuess('foo3', [], Guess::LOW_CONFIDENCE);
         $guesser3 = $this->getMockForAbstractClass(TypeGuesserInterface::class);
-        $guesser3->expects($this->any())
+        $guesser3
                 ->method('guessType')
                 ->willReturn($typeGuess3);
 
@@ -65,7 +65,7 @@ class TypeGuesserChainTest extends TestCase
 
         $typeGuess4 = new TypeGuess('foo4', [], Guess::LOW_CONFIDENCE);
         $guesser4 = $this->getMockForAbstractClass(TypeGuesserInterface::class);
-        $guesser4->expects($this->any())
+        $guesser4
                 ->method('guessType')
                 ->willReturn($typeGuess4);
 
