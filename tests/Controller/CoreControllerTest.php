@@ -118,7 +118,7 @@ class CoreControllerTest extends TestCase
         $controller = new CoreController();
         $controller->setContainer($container);
 
-        $response = $controller->dashboardAction($request);
+        $response = $controller->dashboardAction();
 
         $this->assertInstanceOf(Response::class, $response);
     }

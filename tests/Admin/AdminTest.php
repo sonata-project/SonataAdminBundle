@@ -1627,7 +1627,7 @@ class AdminTest extends TestCase
         $modelAdmin->setModelManager($modelManager);
 
         // a Admin class to test that preValidate is called
-        $testAdminPreValidate = $this->createMock(AbstractAdmin::class, ['preValidate']);
+        $testAdminPreValidate = $this->createMock(AbstractAdmin::class);
         $testAdminPreValidate->expects($this->once())
                 ->method('preValidate')
                 ->with($this->identicalTo($object));
@@ -1637,7 +1637,7 @@ class AdminTest extends TestCase
                 ->method('getData')
                 ->willReturn($object);
 
-        $formBuild = $this->createMock(FormBuilder::class, ['addEventListener']);
+        $formBuild = $this->createMock(FormBuilder::class);
         $formBuild->expects($this->once())
                 ->method('addEventListener')
                 ->with($this->identicalTo(FormEvents::POST_SUBMIT),
@@ -1654,7 +1654,7 @@ class AdminTest extends TestCase
                         $this->greaterThan(0)
                     );
 
-        $formContractor = $this->createMock(FormContractorInterface::class, ['getDefaultOptions', 'getFormBuilder']);
+        $formContractor = $this->createMock(FormContractorInterface::class);
         $formContractor->expects($this->any())
                 ->method('getDefaultOptions')
                 ->willReturn([]);
@@ -1704,8 +1704,8 @@ class AdminTest extends TestCase
         $commentAdmin->setParentAssociationMapping('post.author');
         $commentAdmin->setParent($postAdmin);
 
-        $request = $this->createMock(Request::class, ['get']);
-        $query = $this->createMock(ParameterBag::class, ['get']);
+        $request = $this->createMock(Request::class);
+        $query = $this->createMock(ParameterBag::class);
         $query->expects($this->any())
             ->method('get')
             ->willReturn([
@@ -2120,8 +2120,8 @@ class AdminTest extends TestCase
 
         $subjectId = uniqid();
 
-        $request = $this->createMock(Request::class, ['get']);
-        $query = $this->createMock(ParameterBag::class, ['set', 'get']);
+        $request = $this->createMock(Request::class);
+        $query = $this->createMock(ParameterBag::class);
         $query->expects($this->any())
             ->method('get')
             ->with($this->equalTo('filter'))
