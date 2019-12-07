@@ -557,6 +557,6 @@ class BreadcrumbsBuilderTest extends TestCase
             ],
         ])->willReturn($menu);
 
-        $breadcrumbsBuilder->buildBreadCrumbs($admin->reveal(), $action);
+        $breadcrumbsBuilder->buildBreadcrumbs($admin->reveal(), $action);
     }
 }

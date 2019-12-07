@@ -2839,7 +2839,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('getObject')
-            ->willReturn(new \StdClass());
+            ->willReturn(new \stdClass());
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -3241,7 +3241,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->any())
             ->method('getObject')
-            ->willReturn(new \StdClass());
+            ->willReturn(new \stdClass());
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
