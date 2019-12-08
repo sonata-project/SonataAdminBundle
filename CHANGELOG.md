@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.56.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.56.0...3.56.1) - 2019-12-07
+### Fixed
+- Ability of using string names and FQCNs to define filter types
+
 ## [3.56.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.55.0...3.56.0) - 2019-12-05
 ### Fixed
 -  compatibility with `doctrine/doctrine-bundle` 2

@@ -35,6 +35,11 @@ final class AddFilterTypeCompilerPass implements CompilerPassInterface
             $serviceDefinition->setPublic(true); // Temporary fix until we can support service locators
 
             $types[$serviceDefinition->getClass()] = $id;
+
+            // NEXT_MAJOR: Remove this loop, only FQCN will be supported
+            foreach ($attributes as $eachTag) {
+                $types[$eachTag['alias']] = $id;
+            }
         }
 
         $definition->replaceArgument(1, $types);
