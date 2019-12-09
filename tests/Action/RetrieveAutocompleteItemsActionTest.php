@@ -237,7 +237,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $datagrid->setValue('_per_page', null, 10)->shouldBeCalled();
         $datagrid->setValue('_page', null, 1)->shouldBeCalled();
-        $datagrid->buildPager()->willReturn(null);
+        $datagrid->buildPager()->shouldBeCalled();
         $datagrid->getPager()->willReturn($pager->reveal());
         $pager->getResults()->willReturn([$entity]);
         $pager->isLastPage()->willReturn(true);

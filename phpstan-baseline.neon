@@ -36,11 +36,6 @@ parameters:
 			path: src/Resources/skeleton/AdminController.tpl.php
 
 		-
-			message: "#^Class Mopa\\\\Bundle\\\\BootstrapBundle\\\\Form\\\\Type\\\\TabType not found\\.$#"
-			count: 1
-			path: src/SonataAdminBundle.php
-
-		-
 			message: "#^Caught class Sonata\\\\AdminBundle\\\\Twig\\\\Extension\\\\LoaderError not found\\.$#"
 			count: 1
 			path: src/Twig/Extension/SonataAdminExtension.php

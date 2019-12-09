@@ -10,7 +10,7 @@ empty ``validate`` method. This is automatically called, so you can override
 it in your own admin class::
 
     // add this to your existing use statements
-    use Sonata\CoreBundle\Validator\ErrorElement;
+    use Sonata\Form\Validator\ErrorElement;
 
     final class MyAdmin extends AbstractAdmin
     {
