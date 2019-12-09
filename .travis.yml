@@ -10,9 +10,8 @@ branches:
 language: php
 
 php:
-  - '7.2'
   - '7.3'
-  - '7.4snapshot'
+  - '7.4'
   - nightly
 
 dist: xenial
@@ -42,7 +41,7 @@ matrix:
       env: TARGET=docs
     - php: '7.3'
       env: TARGET=lint
-    - php: '7.2'
+    - php: '7.3'
       env: COMPOSER_FLAGS="--prefer-lowest"
     - php: '7.3'
       env: SYMFONY=3.4.*
