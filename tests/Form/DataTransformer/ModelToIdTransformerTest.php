@@ -57,7 +57,7 @@ class ModelToIdTransformerTest extends TestCase
     {
         $transformer = new ModelToIdTransformer($this->modelManager, 'TEST2');
 
-        $this->modelManager->expects($this->any())->method('find');
+        $this->modelManager->method('find');
 
         $this->assertSame($expected, $transformer->reverseTransform($value));
     }

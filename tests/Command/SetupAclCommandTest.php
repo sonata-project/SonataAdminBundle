@@ -37,7 +37,7 @@ class SetupAclCommandTest extends TestCase
         $this->container = $this->createMock(ContainerInterface::class);
         $admin = $this->createMock(AdminInterface::class);
 
-        $this->container->expects($this->any())
+        $this->container
             ->method('get')
             ->willReturnCallback(static function (string $id) use ($admin): AdminInterface {
                 switch ($id) {
@@ -66,7 +66,7 @@ class SetupAclCommandTest extends TestCase
 
     public function testExecuteWithException1(): void
     {
-        $this->container->expects($this->any())
+        $this->container
             ->method('get')
             ->willReturnCallback(static function (string $id) {
                 throw new \Exception('Foo Exception');

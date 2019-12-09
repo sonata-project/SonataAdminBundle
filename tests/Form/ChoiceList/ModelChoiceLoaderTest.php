@@ -41,7 +41,7 @@ class ModelChoiceLoaderTest extends TestCase
             ->method('findBy')
             ->willReturn([$fooA, $fooB]);
 
-        $this->modelManager->expects($this->any())
+        $this->modelManager
             ->method('getIdentifierValues')
             ->willReturnCallback(static function (Foo $foo) {
                 return [$foo->getBar()];

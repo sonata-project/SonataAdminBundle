@@ -43,7 +43,7 @@ class GenerateObjectAclCommandTest extends TestCase
 
         $this->container = $this->createMock(ContainerInterface::class);
 
-        $this->container->expects($this->any())
+        $this->container
             ->method('has')
             ->willReturnCallback(static function (string $id): bool {
                 switch ($id) {

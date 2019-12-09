@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Util;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -44,7 +45,7 @@ class FormBuilderIteratorTest extends TestCase
         $this->dispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
         $this->factory = $this->getMockForAbstractClass(FormFactoryInterface::class);
         $this->builder = new TestFormBuilder('name', null, $this->dispatcher, $this->factory);
-        $this->factory->expects($this->any())->method('createNamedBuilder')->willReturn($this->builder);
+        $this->factory->method('createNamedBuilder')->willReturn($this->builder);
     }
 
     protected function tearDown(): void
@@ -56,14 +57,14 @@ class FormBuilderIteratorTest extends TestCase
 
     public function testGetChildren(): void
     {
-        $this->builder->add('name', 'text');
+        $this->builder->add('name', TextType::class);
         $iterator = new FormBuilderIterator($this->builder);
         $this->assertInstanceOf(\get_class($iterator), $iterator->getChildren());
     }
 
     public function testHasChildren(): void
     {
-        $this->builder->add('name', 'text');
+        $this->builder->add('name', TextType::class);
         $iterator = new FormBuilderIterator($this->builder);
         $this->assertTrue($iterator->hasChildren());
     }

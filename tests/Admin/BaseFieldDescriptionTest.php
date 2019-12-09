@@ -144,7 +144,7 @@ class BaseFieldDescriptionTest extends TestCase
             ->setMethods(['getWithTwoParameters'])
             ->getMock();
         $returnValue2 = $arg1 + $arg2;
-        $mock2->expects($this->any())->method('getWithTwoParameters')->with($this->equalTo($arg1), $this->equalTo($arg2))->willReturn($returnValue2);
+        $mock2->method('getWithTwoParameters')->with($this->equalTo($arg1), $this->equalTo($arg2))->willReturn($returnValue2);
         $this->assertSame(42, $description2->getFieldValue($mock2, 'fake'));
 
         /*

@@ -33,16 +33,16 @@ class ListAdminCommandTest extends TestCase
         $container = $this->createMock(ContainerInterface::class);
 
         $admin1 = $this->createMock(AdminInterface::class);
-        $admin1->expects($this->any())
+        $admin1
             ->method('getClass')
             ->willReturn('Acme\Entity\Foo');
 
         $admin2 = $this->createMock(AdminInterface::class);
-        $admin2->expects($this->any())
+        $admin2
             ->method('getClass')
             ->willReturn('Acme\Entity\Bar');
 
-        $container->expects($this->any())
+        $container
             ->method('get')
             ->willReturnCallback(static function (string $id) use ($admin1, $admin2): AdminInterface {
                 switch ($id) {

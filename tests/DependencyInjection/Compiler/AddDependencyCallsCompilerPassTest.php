@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection;
+namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
@@ -62,8 +62,9 @@ class AddDependencyCallsCompilerPassTest extends TestCase
 
     public function testTranslatorDisabled(): void
     {
-        $this->expectException(
-            \RuntimeException::class, 'The "translator" service is not yet enabled.
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'The "translator" service is not yet enabled.
                 It\'s required by SonataAdmin to display all labels properly.
 
                 To learn how to enable the translator service please visit:
@@ -185,7 +186,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertContains('sonata_post_admin', $adminGroups['sonata_group_one']['items'][0]['admin']);
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['items']);
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['item_adds']);
-        $this->assertFalse(\in_array('sonata_article_admin', $adminGroups['sonata_group_one']['items'], true));
+        $this->assertNotContains('sonata_article_admin', $adminGroups['sonata_group_one']['items']);
         $this->assertContains('ROLE_ONE', $adminGroups['sonata_group_one']['roles']);
 
         $this->assertArrayHasKey('sonata_group_two', $adminGroups);
@@ -386,7 +387,8 @@ class AddDependencyCallsCompilerPassTest extends TestCase
 
         $compilerPass = new AddDependencyCallsCompilerPass();
 
-        $this->expectException(\RuntimeException::class, 'You can\'t use "on_top" option with multiple same name groups.');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You can\'t use "on_top" option with multiple same name groups.');
 
         $compilerPass->process($container);
     }
@@ -422,7 +424,8 @@ class AddDependencyCallsCompilerPassTest extends TestCase
 
         $compilerPass = new AddDependencyCallsCompilerPass();
 
-        $this->expectException(\RuntimeException::class, 'You can\'t use "on_top" option with multiple same name groups.');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You can\'t use "on_top" option with multiple same name groups.');
 
         $compilerPass->process($container);
     }
@@ -443,7 +446,8 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             ->setArguments(['', ReportOne::class, CRUDController::class])
             ->addTag('sonata.admin', ['group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true]);
 
-        $this->expectException(\RuntimeException::class, 'You can\'t use "on_top" option with multiple same name groups.');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You can\'t use "on_top" option with multiple same name groups.');
 
         $compilerPass->process($container);
     }
@@ -464,7 +468,8 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             ->setArguments(['', ReportOne::class, CRUDController::class])
             ->addTag('sonata.admin', ['group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => false]);
 
-        $this->expectException(\RuntimeException::class, 'You can\'t use "on_top" option with multiple same name groups.');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You can\'t use "on_top" option with multiple same name groups.');
 
         $compilerPass->process($container);
     }
@@ -564,7 +569,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
      */
     protected function getConfig()
     {
-        $config = [
+        return [
             'dashboard' => [
                 'groups' => [
                     'sonata_group_one' => [
@@ -621,8 +626,6 @@ class AddDependencyCallsCompilerPassTest extends TestCase
                 ],
             ],
         ];
-
-        return $config;
     }
 
     private function getContainer(): ContainerBuilder

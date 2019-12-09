@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection;
+namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use JMS\DiExtraBundle\Metadata\ClassMetadata;
 use PHPUnit\Framework\TestCase;
@@ -30,8 +30,8 @@ class AnnotationCompilerPassTest extends TestCase
          * @Admin(class="Sonata\AdminBundle\Tests\Fixtures\Foo")
          */
 
-        $this->expectException(
-            \LogicException::class,
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage(
             'Unable to generate admin group and label for class Sonata\AdminBundle\Tests\Fixtures\Foo.'
         );
 

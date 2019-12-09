@@ -75,19 +75,19 @@ class GenerateAdminCommandTest extends TestCase
         $bundle->setPath($this->tempDirectory);
 
         $this->kernel = $this->createMock(KernelInterface::class);
-        $this->kernel->expects($this->any())
+        $this->kernel
             ->method('getBundles')
             ->willReturn([$bundle]);
 
         $parameterBag = new ParameterBag();
         $this->container = new Container($parameterBag);
 
-        $this->kernel->expects($this->any())
+        $this->kernel
             ->method('getBundle')
             ->with($this->equalTo('AcmeDemoBundle'))
             ->willReturn($bundle);
 
-        $this->kernel->expects($this->any())
+        $this->kernel
             ->method('getContainer')
             ->willReturn($this->container);
 
@@ -187,7 +187,8 @@ class GenerateAdminCommandTest extends TestCase
         $generateAdminCommand = new GenerateAdminCommand(new Pool($this->container, '', ''), []);
         $application = $this->createApplication($this->kernel, $generateAdminCommand);
 
-        $this->expectException(\RuntimeException::class, 'There are no model managers registered.');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('There are no model managers registered.');
 
         $command = $application->find('sonata:admin:generate');
         $commandTester = new CommandTester($generateAdminCommand);
@@ -216,7 +217,7 @@ class GenerateAdminCommandTest extends TestCase
             ->setMethods(['ask'])
             ->getMock();
 
-        $questionHelper->expects($this->any())
+        $questionHelper
             ->method('ask')
             ->willReturnCallback(static function (InputInterface $input, OutputInterface $output, Question $question) use ($modelEntity) {
                 $questionClean = substr($question->getQuestion(), 6, strpos($question->getQuestion(), '</info>') - 6);
@@ -374,7 +375,7 @@ class GenerateAdminCommandTest extends TestCase
             ->setMethods(['ask'])
             ->getMock();
 
-        $questionHelper->expects($this->any())
+        $questionHelper
             ->method('ask')
             ->willReturnCallback(static function (InputInterface $input, OutputInterface $output, Question $question) use ($modelEntity) {
                 $questionClean = substr($question->getQuestion(), 6, strpos($question->getQuestion(), '</info>') - 6);

@@ -64,7 +64,6 @@ class FormMapperTest extends TestCase
         $this->admin = new CleanAdmin('code', 'class', 'controller');
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
-            ->expects($this->any())
             ->method('isGranted')
             ->willReturnCallback(static function (AdminInterface $admin, $attributes, $object = null): bool {
                 return self::DEFAULT_GRANTED_ROLE === $attributes;
@@ -74,7 +73,7 @@ class FormMapperTest extends TestCase
 
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
 
-        $this->modelManager->expects($this->any())
+        $this->modelManager
             ->method('getNewFieldDescriptionInstance')
             ->willReturnCallback(function ($class, $name, array $options = []) {
                 $fieldDescription = $this->getFieldDescriptionMock();
@@ -360,7 +359,7 @@ class FormMapperTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $formBuilder->expects($this->any())
+        $formBuilder
             ->method('getName')
             ->willReturn('foo');
 
@@ -391,7 +390,7 @@ class FormMapperTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $formBuilder->expects($this->any())
+        $formBuilder
             ->method('getName')
             ->willReturn('foo');
 
@@ -442,7 +441,7 @@ class FormMapperTest extends TestCase
 
     public function testKeys(): void
     {
-        $this->contractor->expects($this->any())
+        $this->contractor
             ->method('getDefaultOptions')
             ->willReturn([]);
 
@@ -456,7 +455,7 @@ class FormMapperTest extends TestCase
 
     public function testFieldNameIsSanitized(): void
     {
-        $this->contractor->expects($this->any())
+        $this->contractor
             ->method('getDefaultOptions')
             ->willReturn([]);
 

@@ -68,7 +68,7 @@ class PoolTest extends TestCase
 
         $container = $this->createMock(ContainerInterface::class);
 
-        $container->expects($this->any())->method('get')->will($this->onConsecutiveCalls(
+        $container->method('get')->will($this->onConsecutiveCalls(
             $admin_group1, $admin_group2, $admin_group3
         ));
 
@@ -205,7 +205,7 @@ class PoolTest extends TestCase
     public function testGetAdminByAdminCodeForChildClass(): void
     {
         $adminMock = $this->createMock(AdminInterface::class);
-        $adminMock->expects($this->any())
+        $adminMock
             ->method('hasChild')
             ->willReturn(true);
 
@@ -217,7 +217,7 @@ class PoolTest extends TestCase
             ->willReturn($childAdmin);
 
         $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->expects($this->any())
+        $containerMock
             ->method('get')
             ->willReturn($adminMock);
 
@@ -235,12 +235,12 @@ class PoolTest extends TestCase
     public function testGetAdminByAdminCodeWithInvalidCode(): void
     {
         $adminMock = $this->createMock(AdminInterface::class);
-        $adminMock->expects($this->any())
+        $adminMock
             ->method('hasChild')
             ->willReturn(false);
 
         $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->expects($this->any())
+        $containerMock
             ->method('get')
             ->willReturn($adminMock);
 
@@ -285,12 +285,12 @@ class PoolTest extends TestCase
     public function testGetAdminByAdminCodeWithCodeNotChild(): void
     {
         $adminMock = $this->createMock(AdminInterface::class);
-        $adminMock->expects($this->any())
+        $adminMock
             ->method('hasChild')
             ->willReturn(false);
 
         $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->expects($this->any())
+        $containerMock
             ->method('get')
             ->willReturn($adminMock);
 
@@ -351,7 +351,7 @@ class PoolTest extends TestCase
     public function testGetAdminByAdminCodeWithInvalidChildCode(string $adminId): void
     {
         $adminMock = $this->createMock(AdminInterface::class);
-        $adminMock->expects($this->any())
+        $adminMock
             ->method('hasChild')
             ->willReturn(false);
         $adminMock->expects($this->never())
@@ -367,7 +367,7 @@ class PoolTest extends TestCase
             ->disableOriginalClone()
             ->setMethodsExcept(['getAdminByAdminCode'])
             ->getMock();
-        $poolMock->expects($this->any())
+        $poolMock
             ->method('getInstance')
             ->willReturn($adminMock);
 
@@ -394,7 +394,7 @@ class PoolTest extends TestCase
 
         if (false !== strpos($adminId, '|')) {
             $childAdminMock = $this->createMock(AdminInterface::class);
-            $adminMock->expects($this->any())
+            $adminMock
                 ->method('hasChild')
                 ->willReturn(true);
             $adminMock->expects($this->once())
@@ -409,7 +409,7 @@ class PoolTest extends TestCase
         }
 
         $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->expects($this->any())
+        $containerMock
             ->method('get')
             ->willReturn($adminMock);
 
@@ -442,7 +442,7 @@ class PoolTest extends TestCase
     public function testHasAdminByAdminCodeWithInvalidCodes(string $adminId): void
     {
         $adminMock = $this->createMock(AdminInterface::class);
-        $adminMock->expects($this->any())
+        $adminMock
             ->method('hasChild')
             ->willReturn(false);
         $adminMock->expects($this->never())
@@ -487,7 +487,7 @@ class PoolTest extends TestCase
     public function testHasAdminByAdminCodeWithInvalidChildCodes(string $adminId): void
     {
         $adminMock = $this->createMock(AdminInterface::class);
-        $adminMock->expects($this->any())
+        $adminMock
             ->method('hasChild')
             ->willReturn(false);
         $adminMock->expects($this->never())
@@ -600,7 +600,7 @@ class PoolTest extends TestCase
     private function getContainer(): ContainerInterface
     {
         $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->expects($this->any())
+        $containerMock
             ->method('get')
             ->willReturnCallback(function () {
                 return $this->createMock(AdminInterface::class);

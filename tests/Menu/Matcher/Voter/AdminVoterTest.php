@@ -68,9 +68,7 @@ class AdminVoterTest extends AbstractVoterTest
         $requestStack = new RequestStack();
         $requestStack->push($request);
 
-        $voter = new AdminVoter($requestStack);
-
-        return $voter;
+        return new AdminVoter($requestStack);
     }
 
     /**
@@ -79,7 +77,7 @@ class AdminVoterTest extends AbstractVoterTest
     protected function createItem($data)
     {
         $item = $this->getMockForAbstractClass(ItemInterface::class);
-        $item->expects($this->any())
+        $item
              ->method('getExtra')
              ->with($this->logicalOr(
                 $this->equalTo('admin'),
@@ -98,24 +96,20 @@ class AdminVoterTest extends AbstractVoterTest
     {
         $admin = $this->createMock(AbstractAdmin::class);
         $admin
-            ->expects($this->any())
             ->method('hasRoute')
             ->with('list')
             ->willReturn($list)
         ;
         $admin
-            ->expects($this->any())
             ->method('hasAccess')
             ->with('list')
             ->willReturn($granted)
         ;
         $admin
-            ->expects($this->any())
             ->method('getCode')
             ->willReturn($code)
         ;
         $admin
-            ->expects($this->any())
             ->method('getChildren')
             ->willReturn([])
         ;
@@ -134,32 +128,27 @@ class AdminVoterTest extends AbstractVoterTest
     ): AbstractAdmin {
         $parentAdmin = $this->createMock(AbstractAdmin::class);
         $parentAdmin
-            ->expects($this->any())
             ->method('hasRoute')
             ->with('list')
             ->willReturn($list)
         ;
         $parentAdmin
-            ->expects($this->any())
             ->method('hasAccess')
             ->with('list')
             ->willReturn($granted)
         ;
         $parentAdmin
-            ->expects($this->any())
             ->method('getCode')
             ->willReturn($parentCode)
         ;
 
         $childAdmin = $this->createMock(AbstractAdmin::class);
         $childAdmin
-            ->expects($this->any())
             ->method('getBaseCodeRoute')
             ->willReturn($parentCode.'|'.$childCode)
         ;
 
         $parentAdmin
-            ->expects($this->any())
             ->method('getChildren')
             ->willReturn([$childAdmin])
         ;

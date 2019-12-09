@@ -74,11 +74,11 @@ class AdminObjectAclDataTest extends TestCase
     public function testGetMasks(): void
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->assertInternalType('array', $adminObjectAclData->getMasks());
+        $this->assertIsArray($adminObjectAclData->getMasks());
 
         foreach ($adminObjectAclData->getMasks() as $key => $mask) {
-            $this->assertInternalType('string', $key);
-            $this->assertInternalType('int', $mask);
+            $this->assertIsString($key);
+            $this->assertIsInt($mask);
         }
     }
 
@@ -153,30 +153,30 @@ class AdminObjectAclDataTest extends TestCase
     public function testGetPermissions(): void
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->assertInternalType('array', $adminObjectAclData->getPermissions());
+        $this->assertIsArray($adminObjectAclData->getPermissions());
 
         foreach ($adminObjectAclData->getPermissions() as $permission) {
-            $this->assertInternalType('string', $permission);
+            $this->assertIsString($permission);
         }
     }
 
     public function testGetUserPermissions(): void
     {
         $adminObjectAclDataOwner = $this->createAdminObjectAclData();
-        $this->assertInternalType('array', $adminObjectAclDataOwner->getUserPermissions());
+        $this->assertIsArray($adminObjectAclDataOwner->getUserPermissions());
 
         foreach ($adminObjectAclDataOwner->getUserPermissions() as $permission) {
-            $this->assertInternalType('string', $permission);
+            $this->assertIsString($permission);
         }
 
-        $this->assertTrue(false !== array_search('OWNER', $adminObjectAclDataOwner->getUserPermissions(), true));
-        $this->assertTrue(false !== array_search('MASTER', $adminObjectAclDataOwner->getUserPermissions(), true));
+        $this->assertContains('OWNER', $adminObjectAclDataOwner->getUserPermissions());
+        $this->assertContains('MASTER', $adminObjectAclDataOwner->getUserPermissions());
 
         $adminObjectAclData = $this->createAdminObjectAclData(false);
-        $this->assertInternalType('array', $adminObjectAclData->getUserPermissions());
+        $this->assertIsArray($adminObjectAclData->getUserPermissions());
 
         foreach ($adminObjectAclData->getUserPermissions() as $permission) {
-            $this->assertInternalType('string', $permission);
+            $this->assertIsString($permission);
         }
 
         $this->assertFalse(array_search('OWNER', $adminObjectAclData->getUserPermissions(), true));
@@ -225,12 +225,12 @@ class AdminObjectAclDataTest extends TestCase
     {
         $securityHandler = $this->getMockForAbstractClass(AclSecurityHandlerInterface::class);
 
-        $securityHandler->expects($this->any())
+        $securityHandler
             ->method('getObjectPermissions')
             ->willReturn(['VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER'])
         ;
 
-        $securityHandler->expects($this->any())
+        $securityHandler
             ->method('buildSecurityInformation')
             ->with($this->isInstanceOf(AdminInterface::class))
             ->willReturn([])
@@ -238,12 +238,12 @@ class AdminObjectAclDataTest extends TestCase
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
 
-        $admin->expects($this->any())
+        $admin
             ->method('isGranted')
             ->willReturn($isOwner)
         ;
 
-        $admin->expects($this->any())
+        $admin
             ->method('getSecurityHandler')
             ->willReturn($securityHandler)
         ;

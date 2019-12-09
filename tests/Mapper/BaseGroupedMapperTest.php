@@ -44,20 +44,20 @@ class BaseGroupedMapperTest extends TestCase
             ->getMock();
 
         $labelStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
-        $labelStrategy->expects($this->any())
+        $labelStrategy
             ->method('getLabel')
             ->willReturnCallback(static function ($label) {
                 return 'label_'.strtolower($label);
             });
 
-        $admin->expects($this->any())
+        $admin
             ->method('getLabelTranslatorStrategy')
             ->willReturn($labelStrategy);
 
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $configurationPool = new Pool($container, 'myTitle', 'myLogoTitle');
 
-        $admin->expects($this->any())
+        $admin
             ->method('getConfigurationPool')
             ->willReturn($configurationPool);
 
@@ -71,25 +71,25 @@ class BaseGroupedMapperTest extends TestCase
         $this->tabs = [];
         $this->groups = [];
 
-        $this->baseGroupedMapper->expects($this->any())
+        $this->baseGroupedMapper
             ->method('getTabs')
             ->willReturnCallback(function () {
                 return $this->getTabs();
             });
 
-        $this->baseGroupedMapper->expects($this->any())
+        $this->baseGroupedMapper
             ->method('setTabs')
             ->willReturnCallback(function (array $tabs): void {
                 $this->setTabs($tabs);
             });
 
-        $this->baseGroupedMapper->expects($this->any())
+        $this->baseGroupedMapper
             ->method('getGroups')
             ->willReturnCallback(function () {
                 return $this->getTestGroups();
             });
 
-        $this->baseGroupedMapper->expects($this->any())
+        $this->baseGroupedMapper
             ->method('setGroups')
             ->willReturnCallback(function (array $groups): void {
                 $this->setTestGroups($groups);
@@ -199,7 +199,7 @@ class BaseGroupedMapperTest extends TestCase
             ->getConfigurationPool()
             ->getContainer();
 
-        $container->expects($this->any())
+        $container
             ->method('getParameter')
             ->willReturn($translated);
 
