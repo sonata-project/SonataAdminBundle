@@ -271,7 +271,7 @@ class ListMapperTest extends TestCase
 
     public function testAddWrongTypeException(): void
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(
             'Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.'
         );

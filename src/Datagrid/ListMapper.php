@@ -65,8 +65,8 @@ class ListMapper extends BaseMapper
     }
 
     /**
-     * @param string      $name
-     * @param string|null $type
+     * @param FieldDescriptionInterface|string $name
+     * @param string|null                      $type
      *
      * @throws \LogicException
      *
@@ -122,7 +122,7 @@ class ListMapper extends BaseMapper
                 $fieldDescriptionOptions
             );
         } else {
-            throw new \LogicException(
+            throw new \TypeError(
                 'Unknown field name in list mapper. '
                 .'Field name should be either of FieldDescriptionInterface interface or string.'
             );

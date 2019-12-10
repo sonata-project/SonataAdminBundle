@@ -320,8 +320,8 @@ class ShowMapperTest extends TestCase
 
     public function testAddException(): void
     {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('invalid state');
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Unknown field name in show mapper. Field name should be either of FieldDescriptionInterface interface or string.');
 
         $this->showMapper->add(12345);
     }

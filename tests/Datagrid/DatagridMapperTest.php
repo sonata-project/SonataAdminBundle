@@ -205,7 +205,7 @@ class DatagridMapperTest extends TestCase
 
     public function testAddException(): void
     {
-        $this->expectException(\LogicException::class);
+        $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(
             'Unknown field name in datagrid mapper. Field name should be either of FieldDescriptionInterface interface or string'
         );

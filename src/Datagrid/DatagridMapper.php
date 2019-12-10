@@ -42,10 +42,10 @@ class DatagridMapper extends BaseMapper
     }
 
     /**
-     * @param string $name
-     * @param string $type
-     * @param string $fieldType
-     * @param array  $fieldOptions
+     * @param FieldDescriptionInterface|string $name
+     * @param string|null                      $type
+     * @param string|null                      $fieldType
+     * @param array|null                       $fieldOptions
      *
      * @throws \LogicException
      *
@@ -85,7 +85,7 @@ class DatagridMapper extends BaseMapper
                 array_merge($filterOptions, $fieldDescriptionOptions)
             );
         } else {
-            throw new \LogicException(
+            throw new \TypeError(
                 'Unknown field name in datagrid mapper.'
                 .' Field name should be either of FieldDescriptionInterface interface or string.'
             );
