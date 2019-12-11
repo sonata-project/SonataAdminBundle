@@ -40,10 +40,10 @@ class ShowMapper extends BaseGroupedMapper
     }
 
     /**
-     * @param mixed $name
-     * @param mixed $type
+     * @param FieldDescriptionInterface|string $name
+     * @param string|null                      $type
      *
-     * @throws \RuntimeException
+     * @throws \LogicException
      *
      * @return $this
      */
@@ -68,10 +68,13 @@ class ShowMapper extends BaseGroupedMapper
                     $fieldDescriptionOptions
                 );
             } else {
-                throw new \RuntimeException(sprintf('Duplicate field name "%s" in show mapper. Names should be unique.', $name));
+                throw new \LogicException(sprintf('Duplicate field name "%s" in show mapper. Names should be unique.', $name));
             }
         } else {
-            throw new \RuntimeException('invalid state');
+            throw new \TypeError(
+                'Unknown field name in show mapper. '
+                .'Field name should be either of FieldDescriptionInterface interface or string.'
+            );
         }
 
         if (!$fieldDescription->getLabel() && false !== $fieldDescription->getOption('label')) {

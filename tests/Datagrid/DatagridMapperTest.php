@@ -205,7 +205,7 @@ class DatagridMapperTest extends TestCase
 
     public function testAddException(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(
             'Unknown field name in datagrid mapper. Field name should be either of FieldDescriptionInterface interface or string'
         );
@@ -228,7 +228,7 @@ class DatagridMapperTest extends TestCase
                 return false;
             });
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Duplicate field name "fooName" in datagrid mapper. Names should be unique.');
 
         $this->datagridMapper->add('fooName');

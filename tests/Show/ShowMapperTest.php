@@ -253,7 +253,7 @@ class ShowMapperTest extends TestCase
 
     public function testIfTrueNested(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
 
         $this->showMapper->ifTrue(true);
@@ -262,7 +262,7 @@ class ShowMapperTest extends TestCase
 
     public function testIfFalseNested(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
 
         $this->showMapper->ifFalse(false);
@@ -271,7 +271,7 @@ class ShowMapperTest extends TestCase
 
     public function testIfCombinationNested(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
 
         $this->showMapper->ifTrue(true);
@@ -280,7 +280,7 @@ class ShowMapperTest extends TestCase
 
     public function testIfFalseCombinationNested2(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
 
         $this->showMapper->ifFalse(false);
@@ -289,7 +289,7 @@ class ShowMapperTest extends TestCase
 
     public function testIfFalseCombinationNested3(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
 
         $this->showMapper->ifFalse(true);
@@ -298,7 +298,7 @@ class ShowMapperTest extends TestCase
 
     public function testIfFalseCombinationNested4(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
 
         $this->showMapper->ifTrue(false);
@@ -320,8 +320,8 @@ class ShowMapperTest extends TestCase
 
     public function testAddException(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('invalid state');
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Unknown field name in show mapper. Field name should be either of FieldDescriptionInterface interface or string.');
 
         $this->showMapper->add(12345);
     }
@@ -329,7 +329,7 @@ class ShowMapperTest extends TestCase
     public function testAddDuplicateFieldNameException(): void
     {
         $name = 'name';
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage(
             sprintf('Duplicate field %s "name" in show mapper. Names should be unique.', $name)
         );
