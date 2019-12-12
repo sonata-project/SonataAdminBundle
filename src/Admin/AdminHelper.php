@@ -81,20 +81,6 @@ class AdminHelper
     }
 
     /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated
-     *
-     * @param string $code
-     *
-     * @return AdminInterface
-     */
-    public function getAdmin($code)
-    {
-        return $this->pool->getInstance($code);
-    }
-
-    /**
      * Note:
      *   This code is ugly, but there is no better way of doing it.
      *   For now the append form element action used to add a new row works

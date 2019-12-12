@@ -22,7 +22,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * This type defines a standard text field with autocomplete feature.
@@ -94,16 +93,6 @@ class ModelAutocompleteType extends AbstractType
         }
     }
 
-    /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver): void
-    {
-        $this->configureOptions($resolver);
-    }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $compound = static function (Options $options) {
@@ -130,8 +119,7 @@ class ModelAutocompleteType extends AbstractType
             'to_string_callback' => null,
 
             // add button
-            // NEXT_MAJOR: Set this value to 'link_add' to display button by default
-            'btn_add' => false,
+            'btn_add' => 'link_add',
             'btn_catalogue' => 'SonataAdminBundle',
 
             // ajax parameters
@@ -164,15 +152,5 @@ class ModelAutocompleteType extends AbstractType
     public function getBlockPrefix()
     {
         return 'sonata_type_model_autocomplete';
-    }
-
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 }

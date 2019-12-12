@@ -18,7 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @final since sonata-project/admin-bundle 3.52
@@ -49,16 +48,6 @@ class ChoiceFieldMaskType extends AbstractType
         parent::buildView($view, $form, $options);
     }
 
-    /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver): void
-    {
-        $this->configureOptions($resolver);
-    }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -73,16 +62,6 @@ class ChoiceFieldMaskType extends AbstractType
     public function getParent()
     {
         return ChoiceType::class;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     public function getBlockPrefix()

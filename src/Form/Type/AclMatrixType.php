@@ -18,7 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -45,31 +44,11 @@ class AclMatrixType extends AbstractType
         }
     }
 
-    /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver): void
-    {
-        $this->configureOptions($resolver);
-    }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['permissions', 'acl_value']);
         $resolver->setAllowedTypes('permissions', 'array');
         $resolver->setAllowedTypes('acl_value', ['string', UserInterface::class]);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     public function getBlockPrefix()

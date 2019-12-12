@@ -35,12 +35,7 @@ class SearchHandler
      */
     private $caseSensitive;
 
-    /**
-     * NEXT_MAJOR: remove default true value for $caseSensitive and add bool type hint.
-     *
-     * @param bool $caseSensitive
-     */
-    public function __construct(Pool $pool, $caseSensitive = true)
+    public function __construct(Pool $pool, bool $caseSensitive)
     {
         $this->pool = $pool;
         $this->caseSensitive = $caseSensitive;

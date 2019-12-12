@@ -722,10 +722,6 @@ class AdminTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
-     * @expectedDeprecation Calling Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubclassCode() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. Use Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass() to know if there is an active subclass.
-     *
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getSubClasses
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getSubClass
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::setSubClasses
@@ -737,7 +733,6 @@ class AdminTest extends TestCase
      */
     public function testSubClass(): void
     {
-        // NEXT_MAJOR: Remove the "@group" and "@expectedDeprecation" annotations
         $admin = new PostAdmin(
             'sonata.post.admin.post',
             Post::class,
@@ -763,9 +758,6 @@ class AdminTest extends TestCase
         $this->assertTrue($admin->hasSubClass('extended1'));
         $this->assertFalse($admin->hasActiveSubClass());
         $this->assertCount(2, $admin->getSubClasses());
-        // NEXT_MAJOR: remove the following 2 `assertNull()` assertions
-        $this->assertNull($admin->getActiveSubClass());
-        $this->assertNull($admin->getActiveSubclassCode());
         $this->assertSame(
             BlogPost::class,
             $admin->getClass(),
@@ -792,20 +784,12 @@ class AdminTest extends TestCase
 
         $request->query->set('subclass', 'inject');
 
-        $this->assertNull($admin->getActiveSubclassCode());
-        // NEXT_MAJOR: remove the previous `assertNull()` assertion and uncomment the following lines
-        // $this->expectException(\LogicException::class);
-        // $this->expectExceptionMessage(sprintf('Admin "%s" has no active subclass.', PostAdmin::class));
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage(sprintf('Admin "%s" has no active subclass.', PostAdmin::class));
     }
 
-    /**
-     * @group legacy
-     *
-     * @expectedDeprecation Calling Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubclassCode() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. Use Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass() to know if there is an active subclass.
-     */
     public function testNonExistantSubclass(): void
     {
-        // NEXT_MAJOR: Remove the "@group" and "@expectedDeprecation" annotations
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
         $admin->setModelManager($this->getMockForAbstractClass(ModelManagerInterface::class));
 
@@ -2153,26 +2137,6 @@ class AdminTest extends TestCase
         $this->assertTrue($admin->isDefaultFilter('foo'));
         $this->assertFalse($admin->isDefaultFilter('bar'));
         $this->assertFalse($admin->isDefaultFilter('a'));
-    }
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @group legacy
-     */
-    public function testCreateQueryLegacyCallWorks(): void
-    {
-        $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
-            'admin.my_code', 'My\Class', 'MyBundle:ClassAdmin',
-        ]);
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-        $modelManager->expects($this->once())
-            ->method('createQuery')
-            ->with('My\Class')
-            ->willReturn('a query');
-
-        $admin->setModelManager($modelManager);
-        $this->assertSame('a query', $admin->createQuery('list'));
     }
 
     public function testGetDataSourceIterator(): void

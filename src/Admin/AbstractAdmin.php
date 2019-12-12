@@ -51,7 +51,6 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -197,17 +196,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $label;
 
     /**
-     * Whether or not to persist the filters in the session.
-     *
-     * NEXT_MAJOR: remove this property
-     *
-     * @var bool
-     *
-     * @deprecated since 3.34, to be removed in 4.0.
-     */
-    protected $persistFilters = false;
-
-    /**
      * Array of routes related to this admin.
      *
      * @var RouteCollection
@@ -234,25 +222,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @var AdminInterface|null
      */
     protected $parent = null;
-
-    /**
-     * The related parent association, ie if OrderElement has a parent property named order,
-     * then the $parentAssociationMapping must be a string named `order`.
-     *
-     * NEXT_MAJOR: remove this attribute.
-     *
-     * @deprecated This attribute is deprecated since 3.24 and will be removed in 4.0
-     *
-     * @var string
-     */
-    protected $baseCodeRoute = '';
-
-    /**
-     * NEXT_MAJOR: should be default array and private.
-     *
-     * @var string|array
-     */
-    protected $parentAssociationMapping = null;
 
     /**
      * Reference the parent FieldDescription related to this admin
@@ -290,17 +259,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @var Request|null
      */
     protected $request;
-
-    /**
-     * The translator component.
-     *
-     * NEXT_MAJOR: remove this property
-     *
-     * @var \Symfony\Component\Translation\TranslatorInterface
-     *
-     * @deprecated since 3.9, to be removed with 4.0
-     */
-    protected $translator;
 
     /**
      * The related form contractor.
@@ -397,13 +355,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $filterTheme = [];
 
     /**
-     * @var array<string, string>
-     *
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
-     */
-    protected $templates = [];
-
-    /**
      * @var AdminExtensionInterface[]
      */
     protected $extensions = [];
@@ -453,6 +404,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @var array [action1 => requiredRole1, action2 => [requiredRole2, requiredRole3]]
      */
     protected $accessMapping = [];
+
+    /**
+     * @var string|array
+     */
+    private $parentAssociationMapping = [];
 
     /**
      * @var MutableTemplateRegistryInterface
@@ -568,14 +524,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     /**
      * {@inheritdoc}
-     *
-     * NEXT_MAJOR: return null to indicate no override
      */
     public function getExportFormats()
     {
-        return [
-            'json', 'xml', 'csv', 'xls',
-        ];
+        return null;
     }
 
     /**
@@ -603,15 +555,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         foreach ($this->getExportFields() as $key => $field) {
             $label = $this->getTranslationLabel($field, 'export', 'label');
-            $transLabel = $this->trans($label);
 
-            // NEXT_MAJOR: Remove this hack, because all field labels will be translated with the major release
-            // No translation key exists
-            if ($transLabel === $label) {
-                $fields[$key] = $field;
-            } else {
-                $fields[$transLabel] = $field;
-            }
+            $fields[$label] = $field;
         }
 
         return $this->getModelManager()->getDataSourceIterator($datagrid, $fields);
@@ -627,11 +572,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function initialize(): void
     {
         if (!$this->classnameLabel) {
-            /* NEXT_MAJOR: remove cast to string, null is not supposed to be
-            supported but was documented as such */
             $this->classnameLabel = substr(
-                (string) $this->getClass(),
-                strrpos((string) $this->getClass(), '\\') + 1
+                $this->getClass(),
+                strrpos($this->getClass(), '\\') + 1
             );
         }
 
@@ -748,8 +691,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             }
 
             // if filter persistence is configured
-            // NEXT_MAJOR: remove `$this->persistFilters !== false` from the condition
-            if (false !== $this->persistFilters && null !== $this->filterPersister) {
+            if (null !== $this->filterPersister) {
                 // if reset filters is asked, remove from storage
                 if ('reset' === $this->request->query->get('filters')) {
                     $this->filterPersister->reset($this->getCode());
@@ -795,23 +737,17 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function getParentAssociationMapping()
     {
-        // NEXT_MAJOR: remove array check
-        if (\is_array($this->parentAssociationMapping) && $this->getParent()) {
-            $parent = $this->getParent()->getCode();
+        $parent = $this->getParent()->getCode();
 
-            if (\array_key_exists($parent, $this->parentAssociationMapping)) {
-                return $this->parentAssociationMapping[$parent];
-            }
+        if (\array_key_exists($parent, $this->parentAssociationMapping)) {
+            return $this->parentAssociationMapping[$parent];
+        }
 
-            throw new \InvalidArgumentException(sprintf(
+        throw new \InvalidArgumentException(sprintf(
                 "There's no association between %s and %s.",
                 $this->getCode(),
                 $this->getParent()->getCode()
             ));
-        }
-
-        // NEXT_MAJOR: remove this line
-        return $this->parentAssociationMapping;
     }
 
     /**
@@ -950,21 +886,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->subClasses;
     }
 
-    /**
-     * NEXT_MAJOR: remove this method.
-     */
-    public function addSubClass($subClass): void
-    {
-        @trigger_error(sprintf(
-            'Method "%s" is deprecated since 3.30 and will be removed in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        if (!\in_array($subClass, $this->subClasses, true)) {
-            $this->subClasses[] = $subClass;
-        }
-    }
-
     public function setSubClasses(array $subClasses): void
     {
         $this->subClasses = $subClasses;
@@ -987,19 +908,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function getActiveSubClass()
     {
         if (!$this->hasActiveSubClass()) {
-            @trigger_error(sprintf(
-                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
-                'Use %s::hasActiveSubClass() to know if there is an active subclass.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare string as return type
-            // throw new \LogicException(sprintf(
-            //    'Admin "%s" has no active subclass.',
-            //    static::class
-            // ));
-
-            return null;
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no active subclass.',
+                static::class
+             ));
         }
 
         return $this->getSubClass($this->getActiveSubclassCode());
@@ -1008,37 +920,19 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function getActiveSubclassCode()
     {
         if (!$this->hasActiveSubClass()) {
-            @trigger_error(sprintf(
-                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
-                'Use %s::hasActiveSubClass() to know if there is an active subclass.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare string as return type
-            // throw new \LogicException(sprintf(
-            //    'Admin "%s" has no active subclass.',
-            //    static::class
-            // ));
-
-            return null;
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no active subclass.',
+                static::class
+             ));
         }
 
         $subClass = $this->getRequest()->query->get('subclass');
 
         if (!$this->hasSubClass($subClass)) {
-            @trigger_error(sprintf(
-                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
-                'Use %s::hasActiveSubClass() to know if there is an active subclass.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare string as return type
-            // throw new \LogicException(sprintf(
-            //    'Admin "%s" has no active subclass.',
-            //    static::class
-            // ));
-
-            return null;
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no active subclass.',
+                static::class
+             ));
         }
 
         return $subClass;
@@ -1156,9 +1050,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function setTemplates(array $templates): void
     {
-        // NEXT_MAJOR: Remove this line
-        $this->templates = $templates;
-
         $this->getTemplateRegistry()->setTemplates($templates);
     }
 
@@ -1167,32 +1058,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function setTemplate($name, $template): void
     {
-        // NEXT_MAJOR: Remove this line
-        $this->templates[$name] = $template;
-
         $this->getTemplateRegistry()->setTemplate($name, $template);
-    }
-
-    /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
-     *
-     * @return array<string, string>
-     */
-    public function getTemplates(): array
-    {
-        return $this->getTemplateRegistry()->getTemplates();
-    }
-
-    /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
-     *
-     * @param string $name
-     *
-     * @return string|null
-     */
-    public function getTemplate($name)
-    {
-        return $this->getTemplateRegistry()->getTemplate($name);
     }
 
     public function getNewInstance()
@@ -1283,18 +1149,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->list;
     }
 
-    public function createQuery($context = 'list')
+    public function createQuery()
     {
-        if (\func_num_args() > 0) {
-            @trigger_error(
-                'The $context argument of '.__METHOD__.' is deprecated since 3.3, to be removed in 4.0.',
-                E_USER_DEPRECATED
-            );
-        }
         $query = $this->getModelManager()->createQuery($this->getClass());
 
         foreach ($this->extensions as $extension) {
-            $extension->configureQuery($this, $query, $context);
+            $extension->configureQuery($this, $query);
         }
 
         return $query;
@@ -1400,28 +1260,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->label;
     }
 
-    /**
-     * @param bool $persist
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @deprecated since 3.34, to be removed in 4.0.
-     */
-    public function setPersistFilters($persist): void
-    {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.34 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
-
-        $this->persistFilters = $persist;
-    }
-
     public function setFilterPersister(FilterPersisterInterface $filterPersister = null): void
     {
         $this->filterPersister = $filterPersister;
-        // NEXT_MAJOR remove the deprecated property will be removed. Needed for persisted filter condition.
-        $this->persistFilters = true;
     }
 
     /**
@@ -1711,7 +1552,7 @@ EOT;
         return $this->filterFieldDescriptions;
     }
 
-    public function addChild(AdminInterface $child): void
+    public function addChild(AdminInterface $child, string $value): void
     {
         for ($parentAdmin = $this; null !== $parentAdmin; $parentAdmin = $parentAdmin->getParent()) {
             if ($parentAdmin->getCode() !== $child->getCode()) {
@@ -1728,19 +1569,7 @@ EOT;
 
         $child->setParent($this);
 
-        // NEXT_MAJOR: remove $args and add $field parameter to this function on next Major
-
-        $args = \func_get_args();
-
-        if (isset($args[1])) {
-            $child->addParentAssociationMapping($this->getCode(), $args[1]);
-        } else {
-            @trigger_error(
-                'Calling "addChild" without second argument is deprecated since 3.35'
-                .' and will not be allowed in 4.0.',
-                E_USER_DEPRECATED
-            );
-        }
+        $child->addParentAssociationMapping($this->getCode(), $value);
     }
 
     public function hasChild($code)
@@ -1895,44 +1724,6 @@ EOT;
         }
     }
 
-    public function trans($id, array $parameters = [], $domain = null, $locale = null)
-    {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
-
-        $domain = $domain ?: $this->getTranslationDomain();
-
-        return $this->translator->trans($id, $parameters, $domain, $locale);
-    }
-
-    /**
-     * Translate a message id.
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @param string      $id
-     * @param int         $count
-     * @param string|null $domain
-     * @param string|null $locale
-     *
-     * @return string the translated string
-     *
-     * @deprecated since 3.9, to be removed with 4.0
-     */
-    public function transChoice($id, $count, array $parameters = [], $domain = null, $locale = null)
-    {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
-
-        $domain = $domain ?: $this->getTranslationDomain();
-
-        return $this->translator->transChoice($id, $count, $parameters, $domain, $locale);
-    }
-
     public function setTranslationDomain($translationDomain): void
     {
         $this->translationDomain = $translationDomain;
@@ -1941,43 +1732,6 @@ EOT;
     public function getTranslationDomain()
     {
         return $this->translationDomain;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @deprecated since 3.9, to be removed with 4.0
-     */
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $args = \func_get_args();
-        if (isset($args[1]) && $args[1]) {
-            @trigger_error(
-                'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        $this->translator = $translator;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @deprecated since 3.9, to be removed with 4.0
-     */
-    public function getTranslator()
-    {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
-
-        return $this->translator;
     }
 
     public function getTranslationLabel($label, $context = '', $type = '')
@@ -2203,15 +1957,8 @@ EOT;
         return $this->getNormalizedIdentifier($entity);
     }
 
-    public function setValidator($validator): void
+    public function setValidator(ValidatorInterface $validator): void
     {
-        // NEXT_MAJOR: Move ValidatorInterface check to method signature
-        if (!$validator instanceof ValidatorInterface) {
-            throw new \InvalidArgumentException(
-                'Argument 1 must be an instance of Symfony\Component\Validator\Validator\ValidatorInterface'
-            );
-        }
-
         $this->validator = $validator;
     }
 
@@ -2523,9 +2270,7 @@ EOT;
             $actions['create'] = [
                 'label' => 'link_add',
                 'translation_domain' => 'SonataAdminBundle',
-                // NEXT_MAJOR: Remove this line and use commented line below it instead
-                'template' => $this->getTemplate('action_create'),
-                // 'template' => $this->getTemplateRegistry()->getTemplate('action_create'),
+                 'template' => $this->getTemplateRegistry()->getTemplate('action_create'),
                 'url' => $this->generateUrl('create'),
                 'icon' => 'plus-circle',
             ];
@@ -2634,10 +2379,7 @@ EOT;
         $this->configureDefaultFilterValues($defaultFilterValues);
 
         foreach ($this->getExtensions() as $extension) {
-            // NEXT_MAJOR: remove method check in next major release
-            if (method_exists($extension, 'configureDefaultFilterValues')) {
-                $extension->configureDefaultFilterValues($this, $defaultFilterValues);
-            }
+            $extension->configureDefaultFilterValues($this, $defaultFilterValues);
         }
 
         return $defaultFilterValues;
@@ -2681,24 +2423,12 @@ EOT;
     }
 
     /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated Use configureTabMenu instead
-     */
-    protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
-    {
-    }
-
-    /**
      * Configures the tab menu in your admin.
      *
      * @param string $action
      */
     protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
-        // Use configureSideMenu not to mess with previous overrides
-        // TODO remove once deprecation period is over
-        $this->configureSideMenu($menu, $action, $childAdmin);
     }
 
     /**
@@ -2746,9 +2476,7 @@ EOT;
             );
 
             $fieldDescription->setAdmin($this);
-            // NEXT_MAJOR: Remove this line and use commented line below it instead
-            $fieldDescription->setTemplate($this->getTemplate('batch'));
-            // $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('batch'));
+            $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('batch'));
 
             $mapper->add($fieldDescription, 'batch');
         }
@@ -2772,9 +2500,7 @@ EOT;
             );
 
             $fieldDescription->setAdmin($this);
-            // NEXT_MAJOR: Remove this line and use commented line below it instead
-            $fieldDescription->setTemplate($this->getTemplate('select'));
-            // $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('select'));
+            $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('select'));
 
             $mapper->add($fieldDescription, 'select');
         }

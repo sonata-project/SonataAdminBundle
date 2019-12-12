@@ -212,18 +212,10 @@ class Datagrid implements DatagridInterface
     public function getFilter($name)
     {
         if (!$this->hasFilter($name)) {
-            @trigger_error(sprintf(
-                'Passing a nonexistent filter name as argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare FilterInterface as return type
-            // throw new \InvalidArgumentException(sprintf(
-            //    'Filter named "%s" doesn\'t exist.',
-            //    $name
-            // ));
-
-            return null;
+            throw new \InvalidArgumentException(sprintf(
+                'Filter named "%s" doesn\'t exist.',
+                $name
+             ));
         }
 
         return $this->filters[$name];

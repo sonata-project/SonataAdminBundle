@@ -40,14 +40,3 @@ parameters:
 			count: 1
 			path: src/SonataAdminBundle.php
 
-		-
-			message: "#^Caught class Sonata\\\\AdminBundle\\\\Twig\\\\Extension\\\\LoaderError not found\\.$#"
-			count: 1
-			path: src/Twig/Extension/SonataAdminExtension.php
-
-		-
-			message: "#^Class Sonata\\\\AdminBundle\\\\Twig\\\\Extension\\\\LoaderError not found\\.$#"
-			count: 1
-			path: src/Twig/Extension/SonataAdminExtension.php
-
-

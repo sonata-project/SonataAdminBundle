@@ -38,30 +38,9 @@ class AdminVoter implements VoterInterface
      */
     private $request = null;
 
-    public function __construct(RequestStack $requestStack = null)
+    public function __construct(RequestStack $requestStack)
     {
         $this->requestStack = $requestStack;
-    }
-
-    /**
-     * @deprecated since version 3.31. Pass a RequestStack to the constructor instead.
-     *
-     * @return $this
-     */
-    public function setRequest($request)
-    {
-        @trigger_error(
-            sprintf(
-                'The %s() method is deprecated since version 3.31.
-                Pass a Symfony\Component\HttpFoundation\RequestStack
-                in the constructor instead.',
-            __METHOD__),
-            E_USER_DEPRECATED
-        );
-
-        $this->request = $request;
-
-        return $this;
     }
 
     public function matchItem(ItemInterface $item)

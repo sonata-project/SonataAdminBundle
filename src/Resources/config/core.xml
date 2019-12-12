@@ -50,10 +50,8 @@
         <service id="sonata.admin.translator.extractor.jms_translator_bundle" class="Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor" public="true">
             <tag name="jms_translation.extractor" alias="sonata_admin"/>
             <argument type="service" id="sonata.admin.pool"/>
+            <argument type="service" id="sonata.admin.breadcrumbs_builder"/>
             <argument type="service" id="logger" on-invalid="ignore"/>
-            <call method="setBreadcrumbsBuilder">
-                <argument type="service" id="sonata.admin.breadcrumbs_builder"/>
-            </call>
         </service>
         <!-- controller as services -->
         <service id="sonata.admin.controller.admin" class="Sonata\AdminBundle\Controller\HelperController" public="true">
@@ -69,10 +67,6 @@
         </service>
         <service id="Sonata\AdminBundle\Model\AuditManager" alias="sonata.admin.audit.manager"/>
         <service id="Sonata\AdminBundle\Model\AuditManagerInterface" alias="sonata.admin.audit.manager"/>
-        <!-- NEXT_MAJOR : remove this service -->
-        <service id="sonata.admin.exporter" class="Sonata\AdminBundle\Export\Exporter" public="true">
-            <deprecated>The service "%service_id%" is deprecated in favor of the "sonata.exporter.exporter" service since version 3.14 and will be removed in 4.0.</deprecated>
-        </service>
         <service id="sonata.admin.search.handler" class="Sonata\AdminBundle\Search\SearchHandler" public="true">
             <argument type="service" id="sonata.admin.pool"/>
             <argument>%sonata.admin.configuration.global_search.case_sensitive%</argument>

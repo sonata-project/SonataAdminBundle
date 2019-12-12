@@ -273,12 +273,6 @@ class SonataAdminExtensionTest extends TestCase
             ->method('hasAccess')
             ->willReturn(true);
 
-        // NEXT_MAJOR: Remove this line
-        $this->admin->expects($this->any())
-            ->method('getTemplate')
-            ->with('base_list_field')
-            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
-
         $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription->expects($this->any())

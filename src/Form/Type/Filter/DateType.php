@@ -18,8 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType as FormDateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @final since sonata-project/admin-bundle 3.52
@@ -41,30 +39,6 @@ class DateType extends AbstractType
     public const TYPE_NULL = 6;
 
     public const TYPE_NOT_NULL = 7;
-
-    /**
-     * NEXT_MAJOR: remove this property.
-     *
-     * @deprecated since 3.5, to be removed with 4.0
-     *
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
 
     public function getBlockPrefix()
     {
@@ -94,16 +68,6 @@ class DateType extends AbstractType
             ->add('type', FormChoiceType::class, $choiceOptions)
             ->add('value', $options['field_type'], array_merge(['required' => false], $options['field_options']))
         ;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver): void
-    {
-        $this->configureOptions($resolver);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

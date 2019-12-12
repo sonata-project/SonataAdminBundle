@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <!-- NEXT_MAJOR: remove the "class" and "public" attributes -->
-        <service id="Sonata\AdminBundle\Action\DashboardAction" class="Sonata\AdminBundle\Action\DashboardAction" public="true">
+        <service id="Sonata\AdminBundle\Action\DashboardAction">
             <argument>%sonata.admin.configuration.dashboard_blocks%</argument>
             <argument type="service" id="sonata.admin.breadcrumbs_builder"/>
             <argument type="service" id="sonata.admin.global_template_registry"/>

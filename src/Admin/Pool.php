@@ -47,13 +47,6 @@ class Pool
     protected $adminClasses = [];
 
     /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
-     *
-     * @var array
-     */
-    protected $templates = [];
-
-    /**
      * @var array
      */
     protected $assets = [];
@@ -383,39 +376,6 @@ class Pool
     final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
     {
         $this->templateRegistry = $templateRegistry;
-    }
-
-    /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
-     */
-    public function setTemplates(array $templates): void
-    {
-        // NEXT MAJOR: Remove this line
-        $this->templates = $templates;
-
-        $this->templateRegistry->setTemplates($templates);
-    }
-
-    /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
-     *
-     * @return array
-     */
-    public function getTemplates()
-    {
-        return $this->templateRegistry->getTemplates();
-    }
-
-    /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
-     *
-     * @param string $name
-     *
-     * @return string|null
-     */
-    public function getTemplate($name)
-    {
-        return $this->templateRegistry->getTemplate($name);
     }
 
     /**

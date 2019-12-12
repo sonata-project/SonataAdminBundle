@@ -18,7 +18,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * This type define a standard hidden field, that stored id to a object.
@@ -36,16 +35,6 @@ class ModelHiddenType extends AbstractType
         ;
     }
 
-    /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver): void
-    {
-        $this->configureOptions($resolver);
-    }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -60,16 +49,6 @@ class ModelHiddenType extends AbstractType
     public function getParent()
     {
         return HiddenType::class;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     public function getBlockPrefix()

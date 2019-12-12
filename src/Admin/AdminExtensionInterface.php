@@ -38,22 +38,6 @@ interface AdminExtensionInterface
     public function configureRoutes(AdminInterface $admin, RouteCollection $collection);
 
     /**
-     * DEPRECATED: Use configureTabMenu instead.
-     *
-     * NEXT_MAJOR: remove this method.
-     *
-     * @param string $action
-     *
-     * @deprecated
-     */
-    public function configureSideMenu(
-        AdminInterface $admin,
-        MenuItemInterface $menu,
-        $action,
-        AdminInterface $childAdmin = null
-    );
-
-    /**
      * Builds the tab menu.
      *
      * @param string $action

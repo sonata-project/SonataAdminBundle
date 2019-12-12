@@ -23,7 +23,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchIndexException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -89,16 +88,6 @@ class AdminType extends AbstractType
         $view->vars['btn_catalogue'] = $options['btn_catalogue'];
     }
 
-    /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver): void
-    {
-        $this->configureOptions($resolver);
-    }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -118,16 +107,6 @@ class AdminType extends AbstractType
             'btn_delete' => 'link_delete',
             'btn_catalogue' => 'SonataAdminBundle',
         ]);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     public function getBlockPrefix()

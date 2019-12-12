@@ -69,26 +69,15 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     protected $maskBuilderClass;
 
     /**
-     * @param TokenStorageInterface         $tokenStorage
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param string                        $maskBuilderClass
+     * @param string $maskBuilderClass
      */
     public function __construct(
-        $tokenStorage,
-        $authorizationChecker,
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker,
         MutableAclProviderInterface $aclProvider,
         $maskBuilderClass,
         array $superAdminRoles
     ) {
-        // NEXT_MAJOR: Move TokenStorageInterface check to method signature
-        if (!$tokenStorage instanceof TokenStorageInterface) {
-            throw new \InvalidArgumentException('Argument 1 should be an instance of Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
-        }
-        // NEXT_MAJOR: Move AuthorizationCheckerInterface check to method signature
-        if (!$authorizationChecker instanceof AuthorizationCheckerInterface) {
-            throw new \InvalidArgumentException('Argument 2 should be an instance of Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
-        }
-
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
         $this->aclProvider = $aclProvider;

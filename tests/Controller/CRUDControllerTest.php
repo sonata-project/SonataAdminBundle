@@ -23,7 +23,6 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
-use Sonata\AdminBundle\Export\Exporter as SonataExporter;
 use Sonata\AdminBundle\Model\AuditManager;
 use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -34,10 +33,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
-use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Source\SourceIteratorInterface;
-use Sonata\Exporter\Writer\JsonWriter;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
@@ -211,16 +207,11 @@ class CRUDControllerTest extends TestCase
             ->method('getRuntime')
             ->willReturn($this->createMock(FormRenderer::class));
 
-        // NEXT_MAJOR : require sonata/exporter ^1.7 and remove conditional
-        if (class_exists(Exporter::class)) {
-            $exporter = new Exporter([new JsonWriter('/tmp/sonataadmin/export.json')]);
-        } else {
-            $exporter = $this->createMock(SonataExporter::class);
+        $exporter = $this->createMock(\Sonata\AdminBundle\Export\Exporter::class);
 
-            $exporter->expects($this->any())
+        $exporter->expects($this->any())
                 ->method('getResponse')
                 ->willReturn(new StreamedResponse());
-        }
 
         $this->auditManager = $this->getMockBuilder(AuditManager::class)
             ->disableOriginalConstructor()
@@ -346,24 +337,6 @@ class CRUDControllerTest extends TestCase
         $this->templateRegistry->getTemplate('batch')->willReturn('@SonataAdmin/CRUD/list__batch.html.twig');
         $this->templateRegistry->getTemplate('batch_confirmation')->willReturn('@SonataAdmin/CRUD/batch_confirmation.html.twig');
 
-        // NEXT_MAJOR: Remove this call
-        $this->admin->method('getTemplate')->willReturnMap([
-            ['ajax', '@SonataAdmin/ajax_layout.html.twig'],
-            ['layout', '@SonataAdmin/standard_layout.html.twig'],
-            ['show', '@SonataAdmin/CRUD/show.html.twig'],
-            ['show_compare', '@SonataAdmin/CRUD/show_compare.html.twig'],
-            ['edit', '@SonataAdmin/CRUD/edit.html.twig'],
-            ['dashboard', '@SonataAdmin/Core/dashboard.html.twig'],
-            ['search', '@SonataAdmin/Core/search.html.twig'],
-            ['list', '@SonataAdmin/CRUD/list.html.twig'],
-            ['preview', '@SonataAdmin/CRUD/preview.html.twig'],
-            ['history', '@SonataAdmin/CRUD/history.html.twig'],
-            ['acl', '@SonataAdmin/CRUD/acl.html.twig'],
-            ['delete', '@SonataAdmin/CRUD/delete.html.twig'],
-            ['batch', '@SonataAdmin/CRUD/list__batch.html.twig'],
-            ['batch_confirmation', '@SonataAdmin/CRUD/batch_confirmation.html.twig'],
-        ]);
-
         $this->admin->expects($this->any())
             ->method('getIdParameter')
             ->willReturn('id');
@@ -419,12 +392,7 @@ class CRUDControllerTest extends TestCase
             'addFlash',
         ];
         foreach ($testedMethods as $testedMethod) {
-            // NEXT_MAJOR: Remove this check and only use CRUDController
-            if (method_exists(CRUDController::class, $testedMethod)) {
-                $method = new \ReflectionMethod(CRUDController::class, $testedMethod);
-            } else {
-                $method = new \ReflectionMethod(Controller::class, $testedMethod);
-            }
+            $method = new \ReflectionMethod(CRUDController::class, $testedMethod);
 
             $method->setAccessible(true);
             $this->protectedTestedMethods[$testedMethod] = $method;

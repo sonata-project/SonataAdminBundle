@@ -81,17 +81,10 @@ final class SonataAdminExtension extends AbstractExtension
     public function __construct(
         Pool $pool,
         LoggerInterface $logger = null,
-        TranslatorInterface $translator = null,
+        TranslatorInterface $translator,
         ContainerInterface $templateRegistries = null,
         AuthorizationCheckerInterface $securityChecker = null
     ) {
-        // NEXT_MAJOR: make the translator parameter required
-        if (null === $translator) {
-            @trigger_error(
-                'The $translator parameter will be required fields with the 4.0 release.',
-                E_USER_DEPRECATED
-            );
-        }
         $this->pool = $pool;
         $this->logger = $logger;
         $this->translator = $translator;
@@ -175,9 +168,7 @@ final class SonataAdminExtension extends AbstractExtension
     ) {
         $template = $this->getTemplate(
             $fieldDescription,
-            // NEXT_MAJOR: Remove this line and use commented line below instead
-            $fieldDescription->getAdmin()->getTemplate('base_list_field'),
-            //$this->getTemplateRegistry($fieldDescription->getAdmin()->getCode())->getTemplate('base_list_field'),
+            $this->getTemplateRegistry($fieldDescription->getAdmin()->getCode())->getTemplate('base_list_field'),
             $environment
         );
 
@@ -380,13 +371,8 @@ final class SonataAdminExtension extends AbstractExtension
                 $xEditableChoices = $choices;
             } else {
                 foreach ($choices as $value => $text) {
-                    if ($catalogue) {
-                        if (null !== $this->translator) {
-                            $text = $this->translator->trans($text, [], $catalogue);
-                        // NEXT_MAJOR: Remove this check
-                        } elseif (method_exists($fieldDescription->getAdmin(), 'trans')) {
-                            $text = $fieldDescription->getAdmin()->trans($text, [], $catalogue);
-                        }
+                    if ($catalogue && null !== $this->translator) {
+                        $text = $this->translator->trans($text, [], $catalogue);
                     }
 
                     $xEditableChoices[] = [
@@ -547,32 +533,7 @@ final class SonataAdminExtension extends AbstractExtension
     ) {
         $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
 
-        try {
-            $template = $environment->load($templateName);
-        } catch (LoaderError $e) {
-            @trigger_error(
-                sprintf(
-                    'Relying on default template loading on field template loading exception '.
-                    'is deprecated since 3.1 and will be removed in 4.0. '.
-                    'A %s exception will be thrown instead',
-                    LoaderError::class
-                ),
-                E_USER_DEPRECATED
-            );
-            $template = $environment->load($defaultTemplate);
-
-            if (null !== $this->logger) {
-                $this->logger->warning(sprintf(
-                    'An error occured trying to load the template "%s" for the field "%s", '.
-                    'the default template "%s" was used instead.',
-                    $templateName,
-                    $fieldDescription->getFieldName(),
-                    $defaultTemplate
-                ), ['exception' => $e]);
-            }
-        }
-
-        return $template;
+        return $environment->load($templateName);
     }
 
     private function render(

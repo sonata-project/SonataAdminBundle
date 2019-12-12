@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Twig;
 
 use Sonata\AdminBundle\Admin\Pool;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -25,14 +24,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class GlobalVariables
 {
     /**
-     * @var ContainerInterface
-     *
-     * @deprecated Since version 3.5, will be removed in 4.0.
-     * NEXT_MAJOR : remove this property
-     */
-    protected $container;
-
-    /**
      * @var Pool
      */
     protected $adminPool;
@@ -42,31 +33,10 @@ class GlobalVariables
      */
     private $mosaicBackground;
 
-    /**
-     * @param ContainerInterface|Pool $adminPool
-     */
-    public function __construct($adminPool, ?string $mosaicBackground = null)
+    public function __construct(Pool $adminPool, ?string $mosaicBackground = null)
     {
         $this->mosaicBackground = $mosaicBackground;
-
-        // NEXT_MAJOR : remove this block and set adminPool from parameter.
-        if ($adminPool instanceof ContainerInterface) {
-            @trigger_error(
-                'Using an instance of Symfony\Component\DependencyInjection\ContainerInterface is deprecated since
-                version 3.5 and will be removed in 4.0. Use Sonata\AdminBundle\Admin\Pool instead.',
-                E_USER_DEPRECATED
-            );
-
-            $adminPool = $adminPool->get('sonata.admin.pool');
-        }
-        if ($adminPool instanceof Pool) {
-            $this->adminPool = $adminPool;
-
-            return;
-        }
-        throw new \InvalidArgumentException(
-            '$adminPool should be an instance of Sonata\AdminBundle\Admin\Pool'
-        );
+        $this->adminPool = $adminPool;
     }
 
     /**

@@ -113,13 +113,6 @@ class ListMapper extends BaseMapper
             );
         }
 
-        if (isset($fieldDescriptionOptions['header_style'])) {
-            @trigger_error(
-                'The "header_style" option is deprecated, please, use "header_class" option instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
         if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
             // add the field with the FormBuilder
             $this->builder->addField($this->list, $type, $fieldDescription, $this->admin);

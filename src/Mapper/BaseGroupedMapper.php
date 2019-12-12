@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Mapper;
 
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-
 /**
  * This class is used to simulate the Form API.
  *
@@ -72,19 +70,11 @@ abstract class BaseGroupedMapper extends BaseMapper
             'collapsed' => false,
             'class' => false,
             'description' => false,
-            'label' => $name, // NEXT_MAJOR: Remove this line and uncomment the next one
-//            'label' => $this->admin->getLabelTranslatorStrategy()->getLabel($name, $this->getName(), 'group'),
+            'label' => $this->admin->getLabelTranslatorStrategy()->getLabel($name, $this->getName(), 'group'),
             'translation_domain' => null,
             'name' => $name,
             'box_class' => 'box box-primary',
         ];
-
-        // NEXT_MAJOR: remove this code
-        if ($this->admin instanceof AbstractAdmin && $pool = $this->admin->getConfigurationPool()) {
-            if ($pool->getContainer()->getParameter('sonata.admin.configuration.translate_group_label')) {
-                $defaultOptions['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($name, $this->getName(), 'group');
-            }
-        }
 
         $code = $name;
 
@@ -261,16 +251,9 @@ abstract class BaseGroupedMapper extends BaseMapper
     abstract protected function setTabs(array $tabs);
 
     /**
-     * NEXT_MAJOR: make this method abstract.
-     *
      * @return string
      */
-    protected function getName()
-    {
-        @trigger_error(__METHOD__.' should be implemented and will be abstract in 4.0.', E_USER_DEPRECATED);
-
-        return 'default';
-    }
+    abstract protected function getName();
 
     /**
      * Add the field name to the current group.

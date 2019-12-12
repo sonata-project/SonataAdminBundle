@@ -232,15 +232,6 @@ var Admin = {
         }
     },
 
-    /**
-     * NEXT_MAJOR: remove this function.
-     *
-     * @deprecated in version 3.0
-     */
-    add_pretty_errors: function() {
-        console.warn('Admin.add_pretty_errors() was deprecated in version 3.0');
-    },
-
     stopEvent: function(event) {
         event.preventDefault();
 

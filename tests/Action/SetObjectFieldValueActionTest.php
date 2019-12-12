@@ -103,8 +103,6 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->hasAccess('edit', $object)->willReturn(true);
         $this->admin->getListFieldDescription('enabled')->willReturn($fieldDescription->reveal());
         $this->admin->update($object)->shouldBeCalled();
-        // NEXT_MAJOR: Remove this line
-        $this->admin->getTemplate('base_list_field')->willReturn('admin_template');
         $templateRegistry->getTemplate('base_list_field')->willReturn('admin_template');
         $container->get('sonata.post.admin.template_registry')->willReturn($templateRegistry->reveal());
         $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
@@ -154,8 +152,6 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->getClass()->willReturn(\get_class($object));
         $this->admin->update($object)->shouldBeCalled();
         $container->get('sonata.post.admin.template_registry')->willReturn($templateRegistry->reveal());
-        // NEXT_MAJOR: Remove this line
-        $this->admin->getTemplate('base_list_field')->willReturn('admin_template');
         $templateRegistry->getTemplate('base_list_field')->willReturn('admin_template');
         $this->admin->getModelManager()->willReturn($modelManager->reveal());
         $this->twig->addExtension(new SonataAdminExtension(

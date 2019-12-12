@@ -23,7 +23,6 @@ use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
-use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,13 +61,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @return DatagridBuilderInterface
      */
     public function getDatagridBuilder();
-
-    public function setTranslator(TranslatorInterface $translator);
-
-    /**
-     * @return TranslatorInterface
-     */
-    public function getTranslator();
 
     public function setRequest(Request $request);
 
@@ -119,13 +111,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function setTemplate($name, $template);
 
     /**
-     * Get all templates.
-     *
-     * @return array
-     */
-    public function getTemplates();
-
-    /**
      * @return \Sonata\AdminBundle\Model\ModelManagerInterface
      */
     public function getModelManager();
@@ -136,11 +121,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getManagerType();
 
     /**
-     * @param string $context NEXT_MAJOR: remove this argument
-     *
      * @return ProxyQueryInterface
      */
-    public function createQuery($context = 'list');
+    public function createQuery();
 
     /**
      * @return FormBuilderInterface the form builder
@@ -204,21 +187,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function hasParentFieldDescription();
 
     /**
-     * translate a message id.
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @param string      $id
-     * @param string|null $domain
-     * @param string|null $locale
-     *
-     * @return string the translated string
-     *
-     * @deprecated since 3.9, to be removed in 4.0
-     */
-    public function trans($id, array $parameters = [], $domain = null, $locale = null);
-
-    /**
      * Returns the parameter representing request id, ie: id or childId.
      *
      * @return string
@@ -265,10 +233,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function id($entity);
 
-    /**
-     * @param ValidatorInterface $validator
-     */
-    public function setValidator($validator);
+    public function setValidator(ValidatorInterface $validator);
 
     /**
      * @return ValidatorInterface
@@ -441,16 +406,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function hasSubject();
 
     /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @param object $object
-     *
-     * @deprecated this feature cannot be stable, use a custom validator,
-     *             the feature will be removed with Symfony 2.2
-     */
-    public function validate(ErrorElement $errorElement, $object);
-
-    /**
      * @param string $context
      *
      * @return bool
@@ -477,17 +432,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @return bool
      */
     public function isChild();
-
-    /**
-     * Returns template.
-     *
-     * @deprecated since 3.35. To be removed in 4.0. Use TemplateRegistry services instead
-     *
-     * @param string $name
-     *
-     * @return string|null
-     */
-    public function getTemplate($name);
 
     /**
      * Set the translation domain.
@@ -574,13 +518,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Returns list of supported sub classes.
      */
     public function getSubClasses(): array;
-
-    /**
-     * Adds a new class to a list of supported sub classes.
-     *
-     * @param $subClass
-     */
-    public function addSubClass($subClass);
 
     /**
      * Sets the list of supported sub classes.

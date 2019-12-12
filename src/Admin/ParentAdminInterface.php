@@ -25,7 +25,7 @@ interface ParentAdminInterface
     /**
      * add an Admin child to the current one.
      */
-    public function addChild(AdminInterface $child);
+    public function addChild(AdminInterface $child, string $value);
 
     /**
      * Returns true or false if an Admin child exists for the given $code.

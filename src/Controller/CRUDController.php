@@ -77,28 +77,6 @@ class CRUDController extends Controller
     }
 
     /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @see renderWithExtraParams()
-     *
-     * @param string $view       The view name
-     * @param array  $parameters An array of parameters to pass to the view
-     *
-     * @return Response A Response instance
-     *
-     * @deprecated since version 3.27, to be removed in 4.0. Use Sonata\AdminBundle\Controller\CRUDController::renderWithExtraParams() instead.
-     */
-    public function render($view, array $parameters = [], Response $response = null)
-    {
-        @trigger_error(
-            'Method '.__CLASS__.'::render has been renamed to '.__CLASS__.'::renderWithExtraParams.',
-            E_USER_DEPRECATED
-        );
-
-        return $this->renderWithExtraParams($view, $parameters, $response);
-    }
-
-    /**
      * Renders a view while passing mandatory parameters on to the template.
      *
      * @param string $view The view name
@@ -149,9 +127,7 @@ class CRUDController extends Controller
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-        // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate('list');
-        // $template = $this->templateRegistry->getTemplate('list');
+        $template = $this->templateRegistry->getTemplate('list');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'list',
@@ -264,9 +240,7 @@ class CRUDController extends Controller
             return $this->redirectTo($object);
         }
 
-        // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate('delete');
-        // $template = $this->templateRegistry->getTemplate('delete');
+        $template = $this->templateRegistry->getTemplate('delete');
 
         return $this->renderWithExtraParams($template, [
             'object' => $object,
@@ -386,9 +360,7 @@ class CRUDController extends Controller
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFormTheme());
 
-        // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate($templateKey);
-        // $template = $this->templateRegistry->getTemplate($templateKey);
+        $template = $this->templateRegistry->getTemplate($templateKey);
 
         return $this->renderWithExtraParams($template, [
             'action' => 'edit',
@@ -478,13 +450,9 @@ class CRUDController extends Controller
             $formView = $datagrid->getForm()->createView();
             $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-            // NEXT_MAJOR: Remove these lines and use commented lines below them instead
             $template = !empty($batchActions[$action]['template']) ?
-                $batchActions[$action]['template'] :
-                $this->admin->getTemplate('batch_confirmation');
-            // $template = !empty($batchActions[$action]['template']) ?
-            //     $batchActions[$action]['template'] :
-            //     $this->templateRegistry->getTemplate('batch_confirmation');
+                 $batchActions[$action]['template'] :
+                 $this->templateRegistry->getTemplate('batch_confirmation');
 
             return $this->renderWithExtraParams($template, [
                 'action' => 'list',
@@ -633,9 +601,7 @@ class CRUDController extends Controller
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFormTheme());
 
-        // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate($templateKey);
-        // $template = $this->templateRegistry->getTemplate($templateKey);
+        $template = $this->templateRegistry->getTemplate($templateKey);
 
         return $this->renderWithExtraParams($template, [
             'action' => 'create',
@@ -690,9 +656,7 @@ class CRUDController extends Controller
             );
         }
 
-        // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate('show');
-        //$template = $this->templateRegistry->getTemplate('show');
+        $template = $this->templateRegistry->getTemplate('show');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'show',
@@ -739,9 +703,7 @@ class CRUDController extends Controller
 
         $revisions = $reader->findRevisions($this->admin->getClass(), $id);
 
-        // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate('history');
-        // $template = $this->templateRegistry->getTemplate('history');
+        $template = $this->templateRegistry->getTemplate('history');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'history',
@@ -804,9 +766,7 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($object);
 
-        // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate('show');
-        // $template = $this->templateRegistry->getTemplate('show');
+        $template = $this->templateRegistry->getTemplate('show');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'show',
@@ -882,9 +842,7 @@ class CRUDController extends Controller
 
         $this->admin->setSubject($base_object);
 
-        // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate('show_compare');
-        // $template = $this->templateRegistry->getTemplate('show_compare');
+        $template = $this->templateRegistry->getTemplate('show_compare');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'show',
@@ -908,29 +866,10 @@ class CRUDController extends Controller
 
         $format = $request->get('format');
 
-        // NEXT_MAJOR: remove the check
-        if (!$this->has('sonata.admin.admin_exporter')) {
-            @trigger_error(
-                'Not registering the exporter bundle is deprecated since version 3.14.'
-                .' You must register it to be able to use the export action in 4.0.',
-                E_USER_DEPRECATED
-            );
-            $allowedExportFormats = (array) $this->admin->getExportFormats();
-
-            $class = (string) $this->admin->getClass();
-            $filename = sprintf(
-                'export_%s_%s.%s',
-                strtolower((string) substr($class, strripos($class, '\\') + 1)),
-                date('Y_m_d_H_i_s', strtotime('now')),
-                $format
-            );
-            $exporter = $this->get('sonata.admin.exporter');
-        } else {
-            $adminExporter = $this->get('sonata.admin.admin_exporter');
-            $allowedExportFormats = $adminExporter->getAvailableFormats($this->admin);
-            $filename = $adminExporter->getExportFilename($this->admin, $format);
-            $exporter = $this->get('sonata.exporter.exporter');
-        }
+        $adminExporter = $this->get('sonata.admin.admin_exporter');
+        $allowedExportFormats = $adminExporter->getAvailableFormats($this->admin);
+        $filename = $adminExporter->getExportFilename($this->admin, $format);
+        $exporter = $this->get('sonata.exporter.exporter');
 
         if (!\in_array($format, $allowedExportFormats, true)) {
             throw new \RuntimeException(
@@ -1018,9 +957,7 @@ class CRUDController extends Controller
             }
         }
 
-        // NEXT_MAJOR: Remove this line and use commented line below it instead
-        $template = $this->admin->getTemplate('acl');
-        // $template = $this->templateRegistry->getTemplate('acl');
+        $template = $this->templateRegistry->getTemplate('acl');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'acl',
@@ -1172,14 +1109,10 @@ class CRUDController extends Controller
     protected function getBaseTemplate()
     {
         if ($this->isXmlHttpRequest()) {
-            // NEXT_MAJOR: Remove this line and use commented line below it instead
-            return $this->admin->getTemplate('ajax');
-            // return $this->templateRegistry->getTemplate('ajax');
+            return $this->templateRegistry->getTemplate('ajax');
         }
 
-        // NEXT_MAJOR: Remove this line and use commented line below it instead
-        return $this->admin->getTemplate('layout');
-        // return $this->templateRegistry->getTemplate('layout');
+        return $this->templateRegistry->getTemplate('layout');
     }
 
     /**
@@ -1517,11 +1450,6 @@ class CRUDController extends Controller
     private function checkParentChildAssociation(Request $request, $object): void
     {
         if (!($parentAdmin = $this->admin->getParent())) {
-            return;
-        }
-
-        // NEXT_MAJOR: remove this check
-        if (!$this->admin->getParentAssociationMapping()) {
             return;
         }
 
