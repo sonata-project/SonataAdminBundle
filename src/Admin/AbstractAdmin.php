@@ -698,10 +698,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
     }
 
-    /**
-     * @param object $object
-     */
-    public function preValidate($object): void
+    public function preValidate(object $object): void
     {
     }
 
@@ -1351,22 +1348,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->menu;
     }
 
-    /**
-     * Returns the root code.
-     *
-     * @return string the root code
-     */
-    public function getRootCode()
+    public function getRootCode(): string
     {
         return $this->getRoot()->getCode();
     }
 
-    /**
-     * Returns the master admin.
-     *
-     * @return AbstractAdmin the root admin class
-     */
-    public function getRoot()
+    public function getRoot(): AdminInterface
     {
         $parentFieldDescription = $this->getParentFieldDescription();
 
@@ -2419,7 +2406,7 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function hasAccess(string $action, $object = null): bool
+    public function hasAccess(string $action, ?object $object = null): bool
     {
         $access = $this->getAccess();
 
@@ -2584,17 +2571,14 @@ EOT;
         return $filter[$name] === $default[$name];
     }
 
-    /**
-     * Check object existence and access, without throw Exception.
-     *
-     * @param string $action
-     * @param object $object
-     *
-     * @return bool
-     */
-    public function canAccessObject($action, $object)
+    public function canAccessObject(string $action, object $object): bool
     {
         return $object && $this->id($object) && $this->hasAccess($action, $object);
+    }
+
+    public function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
+    {
+        return $buttonList;
     }
 
     /**
@@ -2661,11 +2645,6 @@ EOT;
 
     protected function configureRoutes(RouteCollection $collection): void
     {
-    }
-
-    protected function configureActionButtons($buttonList, $action, $object = null)
-    {
-        return $buttonList;
     }
 
     /**

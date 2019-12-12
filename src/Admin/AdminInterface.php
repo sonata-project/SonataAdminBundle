@@ -32,11 +32,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * @method array          configureActionButtons(string $action, ?object $object = null)
- * @method bool           canAccessObject(string $action, object $object)
- * @method AdminInterface getRoot()
- * @method string         getRootCode()
  */
 interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
@@ -725,6 +720,23 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Checks if a filter type is set to a default value.
      */
     public function isDefaultFilter(string $name): bool;
+
+    public function configureActionButtons(array $buttonList, string $action, ?object $object = null): array;
+
+    /**
+     * Check object existence and access, without throw Exception.
+     */
+    public function canAccessObject(string $action, object $object): bool;
+
+    /**
+     * Returns the master admin.
+     */
+    public function getRoot(): self;
+
+    /**
+     * Returns the root code.
+     */
+    public function getRootCode(): string;
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);
