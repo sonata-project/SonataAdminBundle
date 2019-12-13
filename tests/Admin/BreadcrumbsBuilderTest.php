@@ -32,6 +32,8 @@ class BreadcrumbsBuilderTest extends TestCase
 {
     public function testChildGetBreadCrumbs(): void
     {
+        $subject = new \stdClass();
+
         $menu = $this->prophesize(ItemInterface::class);
         $menu->getParent()->willReturn(null);
 
@@ -97,10 +99,10 @@ class BreadcrumbsBuilderTest extends TestCase
         $childAdmin->generateUrl('list')->willReturn('/myadmin/my-object/mychildadmin/list');
         $childAdmin->getCurrentChildAdmin()->willReturn(null);
         $childAdmin->hasSubject()->willReturn(true);
-        $childAdmin->getSubject()->willReturn('my subject');
-        $childAdmin->toString('my subject')->willReturn('My subject');
+        $childAdmin->getSubject()->willReturn($subject);
+        $childAdmin->toString($subject)->willReturn('My subject');
 
-        $admin->hasAccess('show', 'my subject')->willReturn(true)->shouldBeCalled();
+        $admin->hasAccess('show', $subject)->willReturn(true)->shouldBeCalled();
         $admin->hasRoute('show')->willReturn(true);
         $admin->generateUrl('show', ['id' => 'my-object'])->willReturn('/myadmin/my-object');
 
@@ -118,8 +120,8 @@ class BreadcrumbsBuilderTest extends TestCase
         $admin->generateUrl('edit', ['id' => 'my-object'])->willReturn('/myadmin/my-object');
         $admin->getRequest()->willReturn($request->reveal());
         $admin->hasSubject()->willReturn(true);
-        $admin->getSubject()->willReturn('my subject');
-        $admin->toString('my subject')->willReturn('My subject');
+        $admin->getSubject()->willReturn($subject);
+        $admin->toString($subject)->willReturn('My subject');
         $admin->getTranslationDomain()->willReturn('FooBundle');
         $admin->getLabelTranslatorStrategy()->willReturn(
             $labelTranslatorStrategy->reveal()
@@ -173,6 +175,8 @@ class BreadcrumbsBuilderTest extends TestCase
      */
     public function testBuildBreadcrumbs($action): void
     {
+        $subject = new \stdClass();
+
         $breadcrumbsBuilder = new BreadcrumbsBuilder();
 
         $menu = $this->prophesize(ItemInterface::class);
@@ -247,8 +251,8 @@ class BreadcrumbsBuilderTest extends TestCase
         $admin->hasRoute('edit')->willReturn(false);
         $admin->getRequest()->willReturn($request->reveal());
         $admin->hasSubject()->willReturn(true);
-        $admin->getSubject()->willReturn('my subject');
-        $admin->toString('my subject')->willReturn('My subject');
+        $admin->getSubject()->willReturn($subject);
+        $admin->toString($subject)->willReturn('My subject');
         $admin->getTranslationDomain()->willReturn('FooBundle');
         $admin->getLabelTranslatorStrategy()->willReturn(
             $labelTranslatorStrategy->reveal()
