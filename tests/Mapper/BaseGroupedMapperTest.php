@@ -44,20 +44,20 @@ class BaseGroupedMapperTest extends TestCase
             ->getMock();
 
         $labelStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
-        $labelStrategy->expects($this->any())
+        $labelStrategy
             ->method('getLabel')
             ->willReturnCallback(static function ($label) {
                 return 'label_'.strtolower($label);
             });
 
-        $admin->expects($this->any())
+        $admin
             ->method('getLabelTranslatorStrategy')
             ->willReturn($labelStrategy);
 
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $configurationPool = new Pool($container, 'myTitle', 'myLogoTitle');
 
-        $admin->expects($this->any())
+        $admin
             ->method('getConfigurationPool')
             ->willReturn($configurationPool);
 
@@ -71,25 +71,25 @@ class BaseGroupedMapperTest extends TestCase
         $this->tabs = [];
         $this->groups = [];
 
-        $this->baseGroupedMapper->expects($this->any())
+        $this->baseGroupedMapper
             ->method('getTabs')
             ->willReturnCallback(function () {
                 return $this->getTabs();
             });
 
-        $this->baseGroupedMapper->expects($this->any())
+        $this->baseGroupedMapper
             ->method('setTabs')
             ->willReturnCallback(function (array $tabs): void {
                 $this->setTabs($tabs);
             });
 
-        $this->baseGroupedMapper->expects($this->any())
+        $this->baseGroupedMapper
             ->method('getGroups')
             ->willReturnCallback(function () {
                 return $this->getTestGroups();
             });
 
-        $this->baseGroupedMapper->expects($this->any())
+        $this->baseGroupedMapper
             ->method('setGroups')
             ->willReturnCallback(function (array $groups): void {
                 $this->setTestGroups($groups);
@@ -135,7 +135,7 @@ class BaseGroupedMapperTest extends TestCase
 
     public function testGroupNotClosedException(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('You should close previous group "fooGroup1" with end() before adding new tab "fooGroup2".');
 
         $this->baseGroupedMapper->with('fooGroup1');
@@ -144,7 +144,7 @@ class BaseGroupedMapperTest extends TestCase
 
     public function testGroupInTabException(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields.');
 
         $this->baseGroupedMapper->with('fooGroup');
@@ -153,7 +153,7 @@ class BaseGroupedMapperTest extends TestCase
 
     public function testTabInTabException(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('You should close previous tab "fooTab" with end() before adding new tab "barTab".');
 
         $this->baseGroupedMapper->tab('fooTab');
@@ -173,7 +173,7 @@ class BaseGroupedMapperTest extends TestCase
 
     public function testEndException(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('No open tabs or groups, you cannot use end()');
 
         $this->baseGroupedMapper->end();
@@ -199,7 +199,7 @@ class BaseGroupedMapperTest extends TestCase
             ->getConfigurationPool()
             ->getContainer();
 
-        $container->expects($this->any())
+        $container
             ->method('getParameter')
             ->willReturn($translated);
 

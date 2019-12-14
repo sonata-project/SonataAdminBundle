@@ -52,7 +52,7 @@ class ListMapperTest extends TestCase
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
         $this->admin = $this->createMock(AbstractAdmin::class);
 
-        $listBuilder->expects($this->any())
+        $listBuilder
             ->method('addField')
             ->willReturnCallback(static function ($list, $type, $fieldDescription, $admin): void {
                 $list->add($fieldDescription);
@@ -60,7 +60,7 @@ class ListMapperTest extends TestCase
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
-        $modelManager->expects($this->any())
+        $modelManager
             ->method('getNewFieldDescriptionInstance')
             ->willReturnCallback(function ($class, $name, array $options = []) {
                 $fieldDescription = $this->getFieldDescriptionMock();
@@ -70,17 +70,17 @@ class ListMapperTest extends TestCase
                 return $fieldDescription;
             });
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getModelManager')
             ->willReturn($modelManager);
 
         $labelTranslatorStrategy = new NoopLabelTranslatorStrategy();
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getLabelTranslatorStrategy')
             ->willReturn($labelTranslatorStrategy);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('isGranted')
             ->willReturnCallback(static function (string $name, object $object = null): bool {
                 return self::DEFAULT_GRANTED_ROLE === $name;
@@ -215,7 +215,7 @@ class ListMapperTest extends TestCase
     public function testAddDuplicateNameException(): void
     {
         $tmpNames = [];
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('hasListFieldDescription')
             ->willReturnCallback(static function ($name) use (&$tmpNames) {
                 if (isset($tmpNames[$name])) {
@@ -226,7 +226,8 @@ class ListMapperTest extends TestCase
                 return false;
             });
 
-        $this->expectException(\RuntimeException::class, 'Duplicate field name "fooName" in list mapper. Names should be unique.');
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Duplicate field name "fooName" in list mapper. Names should be unique.');
 
         $this->listMapper->add('fooName');
         $this->listMapper->add('fooName');
@@ -234,7 +235,10 @@ class ListMapperTest extends TestCase
 
     public function testAddWrongTypeException(): void
     {
-        $this->expectException(\RuntimeException::class, 'Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.');
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(
+            'Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.'
+        );
 
         $this->listMapper->add(12345);
     }

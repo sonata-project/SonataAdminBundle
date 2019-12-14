@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection;
+namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
@@ -37,7 +37,7 @@ class AddFilterTypeCompilerPassTest extends TestCase
     {
         $containerBuilderMock = $this->createMock(ContainerBuilder::class);
 
-        $containerBuilderMock->expects($this->any())
+        $containerBuilderMock
             ->method('getDefinition')
             ->with($this->anything())
             ->willReturnMap([

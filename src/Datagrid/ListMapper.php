@@ -65,10 +65,10 @@ class ListMapper extends BaseMapper
     }
 
     /**
-     * @param string      $name
-     * @param string|null $type
+     * @param FieldDescriptionInterface|string $name
+     * @param string|null                      $type
      *
-     * @throws \RuntimeException
+     * @throws \LogicException
      *
      * @return $this
      */
@@ -88,7 +88,7 @@ class ListMapper extends BaseMapper
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
         } elseif (\is_string($name)) {
             if ($this->admin->hasListFieldDescription($name)) {
-                throw new \RuntimeException(sprintf(
+                throw new \LogicException(sprintf(
                     'Duplicate field name "%s" in list mapper. Names should be unique.',
                     $name
                 ));
@@ -100,7 +100,7 @@ class ListMapper extends BaseMapper
                 $fieldDescriptionOptions
             );
         } else {
-            throw new \RuntimeException(
+            throw new \TypeError(
                 'Unknown field name in list mapper. '
                 .'Field name should be either of FieldDescriptionInterface interface or string.'
             );

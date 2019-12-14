@@ -52,7 +52,7 @@ class FormMapper extends BaseGroupedMapper
 
     /**
      * @param FormBuilderInterface|string $name
-     * @param string                      $type
+     * @param string|null                 $type
      *
      * @return $this
      */

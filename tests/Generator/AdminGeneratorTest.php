@@ -66,7 +66,8 @@ class AdminGeneratorTest extends TestCase
         $this->assertSame('ModelAdmin.php', basename($file));
         $this->assertFileEquals(__DIR__.'/../Fixtures/Admin/ModelAdmin.php', $file);
 
-        $this->expectException(\RuntimeException::class, 'already exists');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('already exists');
 
         $this->adminGenerator->generate($this->bundleMock, 'ModelAdmin', 'Model');
     }
@@ -75,7 +76,6 @@ class AdminGeneratorTest extends TestCase
     {
         $modelManagerMock = $this->getMockForAbstractClass(ModelManagerInterface::class);
         $modelManagerMock
-            ->expects($this->any())
             ->method('getExportFields')
             ->with('Model')
             ->willReturn(['foo', 'bar', 'baz'])
@@ -88,12 +88,10 @@ class AdminGeneratorTest extends TestCase
     {
         $bundleMock = $this->getMockForAbstractClass(BundleInterface::class);
         $bundleMock
-            ->expects($this->any())
             ->method('getNamespace')
             ->willReturn('Sonata\AdminBundle\Tests\Fixtures')
         ;
         $bundleMock
-            ->expects($this->any())
             ->method('getPath')
             ->willReturn(sprintf('%s/%s', sys_get_temp_dir(), lcg_value()))
         ;

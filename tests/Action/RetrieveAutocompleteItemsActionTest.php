@@ -133,18 +133,11 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
     public function testRetrieveAutocompleteItems(): void
     {
-        $entity = new \stdClass();
         $request = new Request([
             'admin_code' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
         ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
-
-        $targetAdmin = $this->prophesize(AbstractAdmin::class);
-        $datagrid = $this->prophesize(DatagridInterface::class);
-        $metadata = $this->prophesize(MetadataInterface::class);
-        $pager = $this->prophesize(Pager::class);
-        $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
 
         $this->configureFormConfig('barField');
 

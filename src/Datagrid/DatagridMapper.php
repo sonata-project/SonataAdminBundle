@@ -42,12 +42,12 @@ class DatagridMapper extends BaseMapper
     }
 
     /**
-     * @param string $name
-     * @param string $type
-     * @param string $fieldType
-     * @param array  $fieldOptions
+     * @param FieldDescriptionInterface|string $name
+     * @param string|null                      $type
+     * @param string|null                      $fieldType
+     * @param array|null                       $fieldOptions
      *
-     * @throws \RuntimeException
+     * @throws \LogicException
      *
      * @return DatagridMapper
      */
@@ -72,7 +72,7 @@ class DatagridMapper extends BaseMapper
             $fieldDescription->mergeOptions($filterOptions);
         } elseif (\is_string($name)) {
             if ($this->admin->hasFilterFieldDescription($name)) {
-                throw new \RuntimeException(sprintf('Duplicate field name "%s" in datagrid mapper. Names should be unique.', $name));
+                throw new \LogicException(sprintf('Duplicate field name "%s" in datagrid mapper. Names should be unique.', $name));
             }
 
             if (!isset($filterOptions['field_name'])) {
@@ -85,7 +85,7 @@ class DatagridMapper extends BaseMapper
                 array_merge($filterOptions, $fieldDescriptionOptions)
             );
         } else {
-            throw new \RuntimeException(
+            throw new \TypeError(
                 'Unknown field name in datagrid mapper.'
                 .' Field name should be either of FieldDescriptionInterface interface or string.'
             );

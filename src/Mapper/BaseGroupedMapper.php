@@ -42,7 +42,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @param string $name
      *
-     * @throws \RuntimeException
+     * @throws \LogicException
      *
      * @return $this
      */
@@ -94,12 +94,12 @@ abstract class BaseGroupedMapper extends BaseMapper
 
             if ($this->currentTab) {
                 if (isset($tabs[$this->currentTab]['auto_created']) && true === $tabs[$this->currentTab]['auto_created']) {
-                    throw new \RuntimeException('New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields.');
+                    throw new \LogicException('New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields.');
                 }
 
-                throw new \RuntimeException(sprintf('You should close previous tab "%s" with end() before adding new tab "%s".', $this->currentTab, $name));
+                throw new \LogicException(sprintf('You should close previous tab "%s" with end() before adding new tab "%s".', $this->currentTab, $name));
             } elseif ($this->currentGroup) {
-                throw new \RuntimeException(sprintf('You should open tab before adding new group "%s".', $name));
+                throw new \LogicException(sprintf('You should open tab before adding new group "%s".', $name));
             }
 
             if (!isset($tabs[$name])) {
@@ -114,7 +114,7 @@ abstract class BaseGroupedMapper extends BaseMapper
             $this->currentTab = $code;
         } else {
             if ($this->currentGroup) {
-                throw new \RuntimeException(sprintf('You should close previous group "%s" with end() before adding new tab "%s".', $this->currentGroup, $name));
+                throw new \LogicException(sprintf('You should close previous group "%s" with end() before adding new tab "%s".', $this->currentGroup, $name));
             }
 
             if (!$this->currentTab) {
@@ -159,14 +159,14 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @param bool $bool
      *
-     * @throws \RuntimeException
+     * @throws \LogicException
      *
      * @return $this
      */
     public function ifTrue($bool)
     {
         if (null !== $this->apply) {
-            throw new \RuntimeException('Cannot nest ifTrue or ifFalse call');
+            throw new \LogicException('Cannot nest ifTrue or ifFalse call');
         }
 
         $this->apply = (true === $bool);
@@ -179,14 +179,14 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @param bool $bool
      *
-     * @throws \RuntimeException
+     * @throws \LogicException
      *
      * @return $this
      */
     public function ifFalse($bool)
     {
         if (null !== $this->apply) {
-            throw new \RuntimeException('Cannot nest ifTrue or ifFalse call');
+            throw new \LogicException('Cannot nest ifTrue or ifFalse call');
         }
 
         $this->apply = (false === $bool);
@@ -219,7 +219,7 @@ abstract class BaseGroupedMapper extends BaseMapper
     /**
      * Close the current group or tab.
      *
-     * @throws \RuntimeException
+     * @throws \LogicException
      *
      * @return $this
      */
@@ -230,7 +230,7 @@ abstract class BaseGroupedMapper extends BaseMapper
         } elseif (null !== $this->currentTab) {
             $this->currentTab = null;
         } else {
-            throw new \RuntimeException('No open tabs or groups, you cannot use end()');
+            throw new \LogicException('No open tabs or groups, you cannot use end()');
         }
 
         return $this;

@@ -50,7 +50,7 @@ class ModelReferenceTypeTest extends TypeTestCase
     {
         return [
             new PreloadedExtension([
-                new ModelReferenceType($this->modelManager->reveal()),
+                new ModelReferenceType(),
             ], []),
         ];
     }

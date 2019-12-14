@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests;
+namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\DependencyInjection\Configuration;
@@ -197,7 +197,8 @@ class ConfigurationTest extends TestCase
 
     public function testDashboardGroupsWithBadItemsParams(): void
     {
-        $this->expectException(\InvalidArgumentException::class, 'Expected either parameters "route" and "label" for array items');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected either parameters "route" and "label" for array items');
 
         $this->process([[
             'dashboard' => [

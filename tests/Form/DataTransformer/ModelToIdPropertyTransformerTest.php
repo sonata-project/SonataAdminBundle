@@ -37,7 +37,6 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $entity->setBar('example');
 
         $this->modelManager
-            ->expects($this->any())
             ->method('find')
             ->willReturnCallback(static function ($class, $id) use ($entity) {
                 if (Foo::class === $class && 123 === $id) {
@@ -62,7 +61,6 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
         $this->modelManager
-            ->expects($this->any())
             ->method('find')
             ->willReturnCallback(static function ($className, $value) use ($entity1, $entity2, $entity3) {
                 if (Foo::class !== $className) {
@@ -84,7 +82,6 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $collection = new ArrayCollection();
         $this->modelManager
-            ->expects($this->any())
             ->method('getModelCollectionInstance')
             ->with($this->equalTo(Foo::class))
             ->willReturn($collection);
@@ -130,7 +127,6 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $collection = new ArrayCollection();
         $this->modelManager
-            ->expects($this->any())
             ->method('getModelCollectionInstance')
             ->with($this->equalTo(Foo::class))
             ->willReturn($collection);

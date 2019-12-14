@@ -31,7 +31,7 @@ class QueryStringBuilderTest extends TestCase
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->once())->method('getParent')->willReturn($getParent);
-        $admin->expects($this->any())->method('getChildren')->willReturn([]);
+        $admin->method('getChildren')->willReturn([]);
         $admin->expects($this->once())->method('isAclEnabled')->willReturn($aclEnabled);
 
         $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerName');

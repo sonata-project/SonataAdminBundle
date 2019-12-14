@@ -73,11 +73,11 @@ class RoleSecurityHandlerTest extends TestCase
     {
         $handler = $this->getRoleSecurityHandler($superAdminRoles);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getCode')
             ->willReturn($adminCode);
 
-        $this->authorizationChecker->expects($this->any())
+        $this->authorizationChecker
             ->method('isGranted')
             ->willReturnCallback(static function (array $attributes, $object) {
                 if (\in_array('ROLE_BATMAN', $attributes, true)) {
@@ -182,13 +182,14 @@ class RoleSecurityHandlerTest extends TestCase
 
     public function testIsGrantedWithException(): void
     {
-        $this->expectException(\RuntimeException::class, 'Something is wrong');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Something is wrong');
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getCode')
             ->willReturn('foo.bar');
 
-        $this->authorizationChecker->expects($this->any())
+        $this->authorizationChecker
             ->method('isGranted')
             ->willReturnCallback(static function (array $attributes, $object): void {
                 throw new \RuntimeException('Something is wrong');
