@@ -68,7 +68,7 @@ class SetupAclCommandTest extends TestCase
     {
         $this->container
             ->method('get')
-            ->willReturnCallback(static function (string $id) {
+            ->willReturnCallback(static function (string $id): void {
                 throw new \Exception('Foo Exception');
             });
 

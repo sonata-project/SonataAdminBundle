@@ -266,7 +266,7 @@ class PoolTest extends TestCase
         $this->assertFalse($this->pool->getAdminByAdminCode($adminId));
     }
 
-    public function getNonStringAdminServiceNames()
+    public function getNonStringAdminServiceNames(): array
     {
         return [
             [null],
@@ -609,7 +609,7 @@ class PoolTest extends TestCase
         return $containerMock;
     }
 
-    private function getItemArray($serviceId): array
+    private function getItemArray(string $serviceId): array
     {
         return [
             'admin' => $serviceId,

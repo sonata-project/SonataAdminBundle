@@ -235,7 +235,7 @@ class SonataAdminExtensionTest extends TestCase
 
         $container
             ->method('get')
-            ->willReturnCallback(function ($id) {
+            ->willReturnCallback(function (string $id) {
                 if ('sonata_admin_foo_service' === $id) {
                     return $this->admin;
                 }
@@ -266,7 +266,7 @@ class SonataAdminExtensionTest extends TestCase
      * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
      * @dataProvider getRenderListElementTests
      */
-    public function testRenderListElement($expected, $type, $value, array $options): void
+    public function testRenderListElement(string $expected, string $type, $value, array $options): void
     {
         $this->admin
             ->method('getPersistentParameters')
@@ -354,7 +354,7 @@ class SonataAdminExtensionTest extends TestCase
      * @dataProvider getDeprecatedRenderListElementTests
      * @group legacy
      */
-    public function testDeprecatedRenderListElement($expected, $value, array $options): void
+    public function testDeprecatedRenderListElement(string $expected, ?string $value, array $options): void
     {
         $this->admin
             ->method('hasAccess')
@@ -1421,7 +1421,7 @@ EOT
     /**
      * @dataProvider getRenderViewElementTests
      */
-    public function testRenderViewElement($expected, $type, $value, array $options): void
+    public function testRenderViewElement(string $expected, string $type, $value, array $options): void
     {
         $this->admin
             ->method('getTemplate')
@@ -2321,7 +2321,7 @@ EOT
 
             ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
-                    return static function ($element) {
+                    return static function ($element): string {
                         return 'closure '.$element->foo;
                     };
                 }
@@ -2447,7 +2447,7 @@ EOT
     /**
      * @dataProvider xEditablechoicesProvider
      */
-    public function testGetXEditableChoicesIsIdempotent(array $options, $expectedChoices): void
+    public function testGetXEditableChoicesIsIdempotent(array $options, array $expectedChoices): void
     {
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
         $fieldDescription
@@ -2525,12 +2525,12 @@ EOT
     /**
      * @dataProvider select2LocalesProvider
      */
-    public function testCanonicalizedLocaleForSelect2($expected, $original): void
+    public function testCanonicalizedLocaleForSelect2(?string $expected, string $original): void
     {
         $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForSelect2($this->mockExtensionContext($original)));
     }
 
-    public function momentLocalesProvider()
+    public function momentLocalesProvider(): array
     {
         return [
             ['af', 'af'],
@@ -2654,7 +2654,7 @@ EOT
     /**
      * @dataProvider momentLocalesProvider
      */
-    public function testCanonicalizedLocaleForMoment($expected, $original): void
+    public function testCanonicalizedLocaleForMoment(?string $expected, string $original): void
     {
         $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForMoment($this->mockExtensionContext($original)));
     }
@@ -2676,7 +2676,7 @@ EOT
         return htmlspecialchars(http_build_query($url, '', '&', PHP_QUERY_RFC3986));
     }
 
-    private function removeExtraWhitespace($string): string
+    private function removeExtraWhitespace(string $string): string
     {
         return trim(preg_replace(
             '/\s+/',
@@ -2685,7 +2685,7 @@ EOT
         ));
     }
 
-    private function mockExtensionContext($locale): array
+    private function mockExtensionContext(string $locale): array
     {
         $request = $this->createMock(Request::class);
         $request->method('getLocale')->willReturn($locale);

@@ -250,7 +250,7 @@ class ConfigurationTest extends TestCase
      *
      * @return array A normalized array
      */
-    protected function process($configs)
+    protected function process($configs): array
     {
         $processor = new Processor();
 

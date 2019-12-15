@@ -46,7 +46,7 @@ class BaseGroupedMapperTest extends TestCase
         $labelStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $labelStrategy
             ->method('getLabel')
-            ->willReturnCallback(static function ($label) {
+            ->willReturnCallback(static function (string $label): string {
                 return 'label_'.strtolower($label);
             });
 
@@ -192,7 +192,7 @@ class BaseGroupedMapperTest extends TestCase
     /**
      * @dataProvider labelDataProvider
      */
-    public function testLabel($translated, $name, $label, $expectedLabel): void
+    public function testLabel(string $translated, string $name, ?string $label, string $expectedLabel): void
     {
         $container = $this->baseGroupedMapper
             ->getAdmin()
@@ -215,22 +215,22 @@ class BaseGroupedMapperTest extends TestCase
         $this->assertSame($expectedLabel, $this->groups[$name]['label']);
     }
 
-    public function getTabs()
+    public function getTabs(): array
     {
         return $this->tabs;
     }
 
-    public function setTabs($tabs): void
+    public function setTabs(array $tabs): void
     {
         $this->tabs = $tabs;
     }
 
-    public function getTestGroups()
+    public function getTestGroups(): array
     {
         return $this->groups;
     }
 
-    public function setTestGroups($groups): void
+    public function setTestGroups(array $groups): void
     {
         $this->groups = $groups;
     }

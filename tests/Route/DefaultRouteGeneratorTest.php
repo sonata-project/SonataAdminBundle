@@ -49,7 +49,7 @@ class DefaultRouteGeneratorTest extends TestCase
     /**
      * @dataProvider getGenerateUrlTests
      */
-    public function testGenerateUrl($expected, $name, array $parameters): void
+    public function testGenerateUrl(string $expected, string $name, array $parameters): void
     {
         $childCollection = new RouteCollection('base.Code.Foo|base.Code.Bar', 'admin_acme_child', '/foo/', 'BundleName:ControllerName');
         $childCollection->add('bar');
@@ -72,7 +72,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->once())
             ->method('generate')
-            ->willReturnCallback(static function ($name, array $parameters = []) {
+            ->willReturnCallback(static function (string $name, array $parameters = []): string {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -93,7 +93,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $this->assertSame($expected, $generator->generateUrl($admin, $name, $parameters));
     }
 
-    public function getGenerateUrlTests()
+    public function getGenerateUrlTests(): array
     {
         return [
             ['/foo?abc=a123&efg=e456&default_param=default_val', 'foo', ['default_param' => 'default_val']],
@@ -126,7 +126,7 @@ class DefaultRouteGeneratorTest extends TestCase
     /**
      * @dataProvider getGenerateUrlChildTests
      */
-    public function testGenerateUrlChild($type, $expected, $name, array $parameters): void
+    public function testGenerateUrlChild(string $type, string $expected, string $name, array $parameters): void
     {
         $childCollection = new RouteCollection('base.Code.Parent|base.Code.Child', 'admin_acme_child', '/foo/', 'BundleName:ControllerName');
         $childCollection->add('bar');
@@ -162,7 +162,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $request->attributes->method('has')->willReturn(true);
         $request->attributes
             ->method('get')
-            ->willReturnCallback(static function ($key) {
+            ->willReturnCallback(static function (string $key): string {
                 if ('childId' === $key) {
                     return '987654';
                 }
@@ -174,7 +174,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->once())
             ->method('generate')
-            ->willReturnCallback(static function ($name, array $parameters = []) {
+            ->willReturnCallback(static function (string $name, array $parameters = []) {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -195,7 +195,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $this->assertSame($expected, $generator->generateUrl('child' === $type ? $admin : $parentAdmin, $name, $parameters));
     }
 
-    public function getGenerateUrlChildTests()
+    public function getGenerateUrlChildTests(): array
     {
         return [
             ['parent', '/foo?id=123&default_param=default_val', 'foo', ['id' => 123, 'default_param' => 'default_val']],
@@ -207,7 +207,7 @@ class DefaultRouteGeneratorTest extends TestCase
     /**
      * @dataProvider getGenerateUrlParentFieldDescriptionTests
      */
-    public function testGenerateUrlParentFieldDescription($expected, $name, array $parameters): void
+    public function testGenerateUrlParentFieldDescription(string $expected, string $name, array $parameters): void
     {
         $childCollection = new RouteCollection('base.Code.Parent|base.Code.Child', 'admin_acme_child', '/foo/', 'BundleName:ControllerName');
         $childCollection->add('bar');
@@ -231,7 +231,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->once())
             ->method('generate')
-            ->willReturnCallback(static function ($name, array $parameters = []) {
+            ->willReturnCallback(static function (string $name, array $parameters = []): string {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -263,7 +263,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $this->assertSame($expected, $generator->generateUrl($admin, $name, $parameters));
     }
 
-    public function getGenerateUrlParentFieldDescriptionTests()
+    public function getGenerateUrlParentFieldDescriptionTests(): array
     {
         return [
             ['/foo?abc=a123&efg=e456&default_param=default_val&uniqid=foo_uniqueid&code=base.Code.Parent&pcode=parent_foo_code&puniqid=parent_foo_uniqueid', 'foo', ['default_param' => 'default_val']],
@@ -275,7 +275,7 @@ class DefaultRouteGeneratorTest extends TestCase
     /**
      * @dataProvider getGenerateUrlLoadCacheTests
      */
-    public function testGenerateUrlLoadCache($expected, $name, array $parameters): void
+    public function testGenerateUrlLoadCache(string $expected, string $name, array $parameters): void
     {
         $childCollection = new RouteCollection('base.Code.Parent|base.Code.Child', 'admin_acme_child', '/foo', 'BundleName:ControllerName');
         $childCollection->add('bar');
@@ -313,7 +313,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $request->attributes->method('has')->willReturn(true);
         $request->attributes
             ->method('get')
-            ->willReturnCallback(static function ($key) {
+            ->willReturnCallback(static function (string $key): string {
                 if ('childId' === $key) {
                     return '987654';
                 }
@@ -335,7 +335,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->exactly(2))
             ->method('generate')
-            ->willReturnCallback(static function ($name, array $parameters = []) {
+            ->willReturnCallback(static function (string $name, array $parameters = []): string {
                 $params = '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
@@ -358,7 +358,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $this->assertSame($expected, $generator->generateUrl($standaloneAdmin, $name, $parameters));
     }
 
-    public function getGenerateUrlLoadCacheTests()
+    public function getGenerateUrlLoadCacheTests(): array
     {
         return [
             ['/bar?abc=a123&efg=e456&id=123&default_param=default_val', 'bar', ['id' => 123, 'default_param' => 'default_val']],

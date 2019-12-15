@@ -22,7 +22,7 @@ class TabMenuTest extends BaseMenuTest
 {
     protected $translator;
 
-    public function getTranslator()
+    public function getTranslator(): TranslatorInterface
     {
         if (isset($this->translator)) {
             return $this->translator;

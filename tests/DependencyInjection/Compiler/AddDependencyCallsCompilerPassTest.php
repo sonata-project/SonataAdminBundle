@@ -204,7 +204,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertContains('sonata_news_admin', $adminClasses[News::class]);
         $newsRouteBuilderMethodCall = current(array_filter(
             $container->getDefinition('sonata_news_admin')->getMethodCalls(),
-            static function ($element) {
+            static function (array $element): bool {
                 return 'setRouteBuilder' === $element[0];
             }
         ));
@@ -215,7 +215,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         );
         $articleRouteBuilderMethodCall = current(array_filter(
             $container->getDefinition('sonata_article_admin')->getMethodCalls(),
-            static function ($element) {
+            static function (array $element): bool {
                 return 'setRouteBuilder' === $element[0];
             }
         ));

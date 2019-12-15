@@ -58,7 +58,7 @@ class BreadcrumbsBuilderTest extends TestCase
 
         $menu
             ->method('addChild')
-            ->willReturnCallback(static function () use ($menu) {
+            ->willReturnCallback(static function () use ($menu): ItemInterface {
                 return $menu;
             });
 
@@ -97,7 +97,7 @@ class BreadcrumbsBuilderTest extends TestCase
 
         $modelManager
             ->method('find')
-            ->willReturnCallback(static function ($class, $id) use ($postAdminSubjectId, $commentAdminSubjectId) {
+            ->willReturnCallback(static function (string $class, int $id) use ($postAdminSubjectId, $commentAdminSubjectId) {
                 if (DummySubject::class === $class && $postAdminSubjectId === $id) {
                     return new DummySubject();
                 }
@@ -430,7 +430,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $this->assertCount(5, $breadcrumbs);
     }
 
-    public function actionProvider()
+    public function actionProvider(): array
     {
         return [
             ['my_action'],
@@ -443,7 +443,7 @@ class BreadcrumbsBuilderTest extends TestCase
     /**
      * @dataProvider actionProvider
      */
-    public function testUnitBuildBreadcrumbs($action): void
+    public function testUnitBuildBreadcrumbs(string $action): void
     {
         $breadcrumbsBuilder = new BreadcrumbsBuilder();
 
