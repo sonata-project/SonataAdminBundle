@@ -166,7 +166,7 @@ class Admin implements MetadataProcessorInterface
     /**
      * Set group and label from class name it not set.
      */
-    private function generateFallback($name): void
+    private function generateFallback(string $name): void
     {
         if (empty($name)) {
             return;

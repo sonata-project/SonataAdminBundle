@@ -1526,7 +1526,7 @@ class CRUDController implements ContainerAwareInterface
         return $this->get('translator')->trans($id, $parameters, $domain, $locale);
     }
 
-    private function getSelectedTab(Request $request)
+    private function getSelectedTab(Request $request): array
     {
         return array_filter(['_tab' => $request->request->get('_tab')]);
     }
