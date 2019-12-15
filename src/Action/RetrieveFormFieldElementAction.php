@@ -92,10 +92,7 @@ final class RetrieveFormFieldElementAction
         return new Response($renderer->searchAndRenderBlock($view, 'widget'));
     }
 
-    /**
-     * @return FormRenderer
-     */
-    private function getFormRenderer()
+    private function getFormRenderer(): FormRenderer
     {
         return $this->twig->getRuntime(FormRenderer::class);
     }

@@ -467,7 +467,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $object->{$fieldName};
     }
 
-    private function cacheFieldGetter($object, ?string $fieldName, string $method, ?string $getter = null)
+    private function cacheFieldGetter($object, ?string $fieldName, string $method, ?string $getter = null): void
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
         if (null !== $getterKey) {

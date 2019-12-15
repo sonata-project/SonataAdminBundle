@@ -300,7 +300,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         return 'https://sonata-project.org/schema/dic/admin';
     }
 
-    private function buildStylesheets($config): array
+    private function buildStylesheets(array $config): array
     {
         return $this->mergeArray(
             $config['assets']['stylesheets'],
@@ -309,7 +309,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         );
     }
 
-    private function buildJavascripts($config): array
+    private function buildJavascripts(array $config): array
     {
         return $this->mergeArray(
             $config['assets']['javascripts'],

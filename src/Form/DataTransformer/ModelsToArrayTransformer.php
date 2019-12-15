@@ -169,7 +169,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
      *
      * @throws RuntimeException
      */
-    private function legacyConstructor(array $args)
+    private function legacyConstructor(array $args): void
     {
         $choiceList = $args[0];
 

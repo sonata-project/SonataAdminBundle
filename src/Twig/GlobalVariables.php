@@ -113,7 +113,7 @@ class GlobalVariables
         return $this->mosaicBackground;
     }
 
-    private function getCodeAction($code, $action): array
+    private function getCodeAction(string $code, string $action): array
     {
         if ($pipe = strpos($code, '|')) {
             // convert code=sonata.page.admin.page|sonata.page.admin.snapshot, action=list
