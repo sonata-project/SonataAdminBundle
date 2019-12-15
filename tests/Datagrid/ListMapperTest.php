@@ -54,7 +54,12 @@ class ListMapperTest extends TestCase
 
         $listBuilder
             ->method('addField')
-            ->willReturnCallback(static function ($list, $type, $fieldDescription, $admin): void {
+            ->willReturnCallback(static function (
+                FieldDescriptionCollection $list,
+                ?string $type,
+                BaseFieldDescription $fieldDescription,
+                AbstractAdmin $admin
+            ): void {
                 $list->add($fieldDescription);
             });
 
@@ -62,7 +67,7 @@ class ListMapperTest extends TestCase
 
         $modelManager
             ->method('getNewFieldDescriptionInstance')
-            ->willReturnCallback(function ($class, $name, array $options = []) {
+            ->willReturnCallback(function (?string $class, string $name, array $options = []): BaseFieldDescription {
                 $fieldDescription = $this->getFieldDescriptionMock();
                 $fieldDescription->setName($name);
                 $fieldDescription->setOptions($options);
@@ -253,7 +258,7 @@ class ListMapperTest extends TestCase
         $tmpNames = [];
         $this->admin
             ->method('hasListFieldDescription')
-            ->willReturnCallback(static function ($name) use (&$tmpNames) {
+            ->willReturnCallback(static function (string $name) use (&$tmpNames): bool {
                 if (isset($tmpNames[$name])) {
                     return true;
                 }

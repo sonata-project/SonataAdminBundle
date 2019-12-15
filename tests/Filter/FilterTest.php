@@ -117,7 +117,7 @@ class FilterTest extends TestCase
      * @param $expected
      * @param $value
      */
-    public function testIsActive($expected, $value): void
+    public function testIsActive(bool $expected, array $value): void
     {
         $filter = new FooFilter();
         $filter->setValue($value);
@@ -125,7 +125,7 @@ class FilterTest extends TestCase
         $this->assertSame($expected, $filter->isActive());
     }
 
-    public function isActiveData()
+    public function isActiveData(): array
     {
         return [
             [false, []],

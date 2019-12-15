@@ -50,7 +50,7 @@ class AdminObjectAclDataTest extends TestCase
         $this->assertInstanceOf(\ArrayIterator::class, $adminObjectAclData->getAclRoles());
     }
 
-    public function testSetAcl()
+    public function testSetAcl(): AdminObjectAclData
     {
         $acl = $this->getMockBuilder(Acl::class)
             ->disableOriginalConstructor()
@@ -66,7 +66,7 @@ class AdminObjectAclDataTest extends TestCase
     /**
      * @depends testSetAcl
      */
-    public function testGetAcl($adminObjectAclData): void
+    public function testGetAcl(AdminObjectAclData $adminObjectAclData): void
     {
         $this->assertInstanceOf(Acl::class, $adminObjectAclData->getAcl());
     }
@@ -103,7 +103,7 @@ class AdminObjectAclDataTest extends TestCase
      *
      * @group legacy
      */
-    public function testGetForm($adminObjectAclData): void
+    public function testGetForm(AdminObjectAclData $adminObjectAclData): void
     {
         $this->assertInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
     }
@@ -124,7 +124,7 @@ class AdminObjectAclDataTest extends TestCase
     /**
      * @depends testSetAclUsersForm
      */
-    public function testGetAclUsersForm($adminObjectAclData): void
+    public function testGetAclUsersForm(AdminObjectAclData $adminObjectAclData): void
     {
         $this->assertInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
     }
@@ -145,7 +145,7 @@ class AdminObjectAclDataTest extends TestCase
     /**
      * @depends testSetAclRolesForm
      */
-    public function testGetAclRolesForm($adminObjectAclData): void
+    public function testGetAclRolesForm(AdminObjectAclData $adminObjectAclData): void
     {
         $this->assertInstanceOf(Form::class, $adminObjectAclData->getAclRolesForm());
     }
@@ -216,12 +216,18 @@ class AdminObjectAclDataTest extends TestCase
         return new \ArrayIterator();
     }
 
-    protected function createAdminObjectAclData($isOwner = true)
+    protected function createAdminObjectAclData(bool $isOwner = true)
     {
-        return new AdminObjectAclData($this->createAdmin($isOwner), new \stdClass(), self::createAclUsers(), MaskBuilder::class, self::createAclRoles());
+        return new AdminObjectAclData(
+            $this->createAdmin($isOwner),
+            new \stdClass(),
+            self::createAclUsers(),
+            MaskBuilder::class,
+            self::createAclRoles()
+        );
     }
 
-    protected function createAdmin($isOwner = true)
+    protected function createAdmin(bool $isOwner = true): AdminInterface
     {
         $securityHandler = $this->getMockForAbstractClass(AclSecurityHandlerInterface::class);
 

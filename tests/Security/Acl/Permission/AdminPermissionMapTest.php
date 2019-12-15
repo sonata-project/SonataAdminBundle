@@ -49,7 +49,7 @@ class AdminPermissionMapTest extends TestCase
         ));
     }
 
-    public function permissionProvider()
+    public function permissionProvider(): array
     {
         $dataSet = [];
         $reflection = new \ReflectionClass(AdminPermissionMap::class);
@@ -66,7 +66,7 @@ class AdminPermissionMapTest extends TestCase
     /**
      * @dataProvider permissionProvider
      */
-    public function testContainsReturnsABoolean($expectedResult, $permission): void
+    public function testContainsReturnsABoolean(bool $expectedResult, string $permission): void
     {
         $this->assertSame($expectedResult, $this->permissionMap->contains($permission));
     }

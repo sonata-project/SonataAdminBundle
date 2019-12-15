@@ -56,7 +56,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
     /**
      * @dataProvider getTransformTests
      */
-    public function testTransform($expected, $collection, $identifiers): void
+    public function testTransform(array $expected, ?array $collection, array $identifiers): void
     {
         $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
@@ -127,7 +127,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
     /**
      * @dataProvider getReverseTransformEmptyTests
      */
-    public function testReverseTransformEmpty($keys): void
+    public function testReverseTransformEmpty(?string $keys): void
     {
         $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
@@ -160,7 +160,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
         $this->choiceList
             ->method('getEntity')
-            ->willReturnCallback(static function ($key) use ($entity1, $entity2, $entity3) {
+            ->willReturnCallback(static function (string $key) use ($entity1, $entity2, $entity3) {
                 switch ($key) {
                     case 'foo':
                         return $entity1;

@@ -65,7 +65,7 @@ class FormMapperTest extends TestCase
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $admin, $attributes, $object = null): bool {
+            ->willReturnCallback(static function (AdminInterface $admin, string $attributes, $object = null): bool {
                 return self::DEFAULT_GRANTED_ROLE === $attributes;
             });
 
@@ -75,7 +75,7 @@ class FormMapperTest extends TestCase
 
         $this->modelManager
             ->method('getNewFieldDescriptionInstance')
-            ->willReturnCallback(function ($class, $name, array $options = []) {
+            ->willReturnCallback(function (string $class, string $name, array $options = []): BaseFieldDescription {
                 $fieldDescription = $this->getFieldDescriptionMock();
                 $fieldDescription->setName($name);
                 $fieldDescription->setOptions($options);

@@ -24,7 +24,7 @@ class QueryStringBuilderTest extends TestCase
     /**
      * @dataProvider getBuildTests
      */
-    public function testBuild(array $expectedRoutes, $hasReader, $aclEnabled, $getParent): void
+    public function testBuild(array $expectedRoutes, bool $hasReader, bool $aclEnabled, ?AdminInterface $getParent): void
     {
         $audit = $this->getMockForAbstractClass(AuditManagerInterface::class);
         $audit->expects($this->once())->method('hasReader')->willReturn($hasReader);
@@ -47,7 +47,7 @@ class QueryStringBuilderTest extends TestCase
         }
     }
 
-    public function getBuildTests()
+    public function getBuildTests(): array
     {
         return [
             [['list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'history_compare_revisions', 'acl'], true, true, null],

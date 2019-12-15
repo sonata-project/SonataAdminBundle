@@ -45,14 +45,9 @@ class AdminEventExtensionTest extends TestCase
         return $mapper;
     }
 
-    /**
-     * @param $type
-     *
-     * @return callable
-     */
-    public function getConfigureEventClosure($type)
+    public function getConfigureEventClosure(string $type): callable
     {
-        return static function ($event) use ($type) {
+        return static function ($event) use ($type): bool {
             if (!$event instanceof ConfigureEvent) {
                 return false;
             }
@@ -65,14 +60,9 @@ class AdminEventExtensionTest extends TestCase
         };
     }
 
-    /**
-     * @param $type
-     *
-     * @return callable
-     */
-    public function getConfigurePersistenceClosure($type)
+    public function getConfigurePersistenceClosure(string $type): callable
     {
-        return static function ($event) use ($type) {
+        return static function ($event) use ($type): bool {
             if (!$event instanceof PersistenceEvent) {
                 return false;
             }

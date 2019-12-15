@@ -145,12 +145,7 @@ class GroupMenuProviderTest extends TestCase
         $this->assertSame($extras['label_catalogue'], 'SonataAdminBundle');
     }
 
-    /**
-     * @param array $args
-     *
-     * @return bool
-     */
-    public function unanimousGrantCheckerMock($args)
+    public function unanimousGrantCheckerMock(array $args): bool
     {
         if ($args === ['foo', 'bar']) {
             return false;
@@ -163,12 +158,7 @@ class GroupMenuProviderTest extends TestCase
         return false;
     }
 
-    /**
-     * @param array $args
-     *
-     * @return bool
-     */
-    public function unanimousGrantCheckerNoBazMock($args)
+    public function unanimousGrantCheckerNoBazMock(array $args): bool
     {
         if ($args === ['foo', 'bar'] || $args === ['baz']) {
             return false;

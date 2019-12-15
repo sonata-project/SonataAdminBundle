@@ -143,7 +143,7 @@ class MenuBuilderTest extends TestCase
         $this->builder->createSidebarMenu();
     }
 
-    private function preparePool(array $adminGroups, ?AdminInterface $admin = null)
+    private function preparePool(array $adminGroups, ?AdminInterface $admin = null): void
     {
         $this->pool->expects($this->once())
             ->method('getAdminGroups')

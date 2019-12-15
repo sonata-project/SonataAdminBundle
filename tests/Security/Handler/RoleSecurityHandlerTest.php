@@ -45,7 +45,7 @@ class RoleSecurityHandlerTest extends TestCase
     /**
      * @dataProvider getBaseRoleTests
      */
-    public function testGetBaseRole($expected, $code): void
+    public function testGetBaseRole(string $expected, string $code): void
     {
         $handler = new RoleSecurityHandler($this->authorizationChecker, ['ROLE_BATMAN', 'ROLE_IRONMAN']);
 
@@ -69,7 +69,7 @@ class RoleSecurityHandlerTest extends TestCase
     /**
      * @dataProvider getIsGrantedTests
      */
-    public function testIsGranted($expected, array $superAdminRoles, $adminCode, $operation, $object = null): void
+    public function testIsGranted(bool $expected, array $superAdminRoles, string $adminCode, $operation, $object = null): void
     {
         $handler = $this->getRoleSecurityHandler($superAdminRoles);
 

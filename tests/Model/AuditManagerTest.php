@@ -34,7 +34,7 @@ class AuditManagerTest extends TestCase
 
         $container
             ->method('get')
-            ->willReturnCallback(static function ($id) use ($fooReader, $barReader) {
+            ->willReturnCallback(static function (string $id) use ($fooReader, $barReader): AuditReaderInterface {
                 switch ($id) {
                     case 'foo_reader':
                         return $fooReader;

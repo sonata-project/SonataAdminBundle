@@ -35,7 +35,7 @@ class PagerTest extends TestCase
     /**
      * @dataProvider getGetMaxPerPage1Tests
      */
-    public function testGetMaxPerPage1($expectedMaxPerPage, $expectedPage, $maxPerPage, $page): void
+    public function testGetMaxPerPage1(int $expectedMaxPerPage, int $expectedPage, int $maxPerPage, ?int $page): void
     {
         $this->assertSame(10, $this->pager->getMaxPerPage());
         $this->assertSame(1, $this->pager->getPage());
@@ -50,7 +50,7 @@ class PagerTest extends TestCase
         $this->assertSame($expectedMaxPerPage, $this->pager->getMaxPerPage());
     }
 
-    public function getGetMaxPerPage1Tests()
+    public function getGetMaxPerPage1Tests(): array
     {
         return [
             [123, 1, 123, 1],
@@ -380,7 +380,7 @@ class PagerTest extends TestCase
         $id = 0;
         $query
             ->method('execute')
-            ->willReturnCallback(static function () use (&$id, $object1, $object2, $object3) {
+            ->willReturnCallback(static function () use (&$id, $object1, $object2, $object3): ?array {
                 switch ($id) {
                     case 0:
                         return [$object1];
@@ -391,6 +391,8 @@ class PagerTest extends TestCase
                     case 2:
                         return [$object3];
                 }
+
+                return null;
             });
 
         $this->pager->setQuery($query);
@@ -506,7 +508,7 @@ class PagerTest extends TestCase
         $id = 0;
         $query
             ->method('execute')
-            ->willReturnCallback(static function () use (&$id, $object1, $object2, $object3) {
+            ->willReturnCallback(static function () use (&$id, $object1, $object2, $object3): ?array {
                 switch ($id) {
                     case 0:
                         return [$object1];
@@ -517,6 +519,8 @@ class PagerTest extends TestCase
                     case 2:
                         return [$object3];
                 }
+
+                return null;
             });
 
         $this->pager->setQuery($query);
@@ -562,7 +566,7 @@ class PagerTest extends TestCase
         $id = 2;
         $query
             ->method('execute')
-            ->willReturnCallback(static function () use (&$id, $object1, $object2, $object3) {
+            ->willReturnCallback(static function () use (&$id, $object1, $object2, $object3): ?array {
                 switch ($id) {
                     case 0:
                         return [$object1];
@@ -573,6 +577,8 @@ class PagerTest extends TestCase
                     case 2:
                         return [$object3];
                 }
+
+                return null;
             });
 
         $this->pager->setQuery($query);
@@ -641,7 +647,7 @@ class PagerTest extends TestCase
         $this->assertNull($this->pager->getQuery());
     }
 
-    protected function callMethod($obj, $name, array $args = [])
+    protected function callMethod($obj, string $name, array $args = [])
     {
         $class = new \ReflectionClass($obj);
         $method = $class->getMethod($name);
