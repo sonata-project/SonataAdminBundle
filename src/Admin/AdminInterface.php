@@ -724,7 +724,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function configureActionButtons(array $buttonList, string $action, ?object $object = null): array;
 
     /**
-     * Check object existence and access, without throw Exception.
+     * Check object existence and access, without throwing Exception.
      */
     public function canAccessObject(string $action, object $object): bool;
 
