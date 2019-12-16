@@ -17,7 +17,6 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -56,10 +55,8 @@ final class SetObjectFieldValueAction
 
     /**
      * @throws NotFoundHttpException
-     *
-     * @return Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
         $field = $request->get('field');
         $code = $request->get('code');

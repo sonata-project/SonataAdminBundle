@@ -39,7 +39,7 @@ final class TemplateRegistryExtension extends AbstractExtension
         $this->container = $container;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('get_admin_template', [$this, 'getAdminTemplate']),
@@ -56,10 +56,8 @@ final class TemplateRegistryExtension extends AbstractExtension
      *
      * @throws ServiceNotFoundException
      * @throws ServiceCircularReferenceException
-     *
-     * @return string|null
      */
-    public function getAdminTemplate($name, $adminCode)
+    public function getAdminTemplate($name, $adminCode): ?string
     {
         // NEXT_MAJOR: Remove this line and use commented line below it instead
         return $this->getAdmin($adminCode)->getTemplate($name);
@@ -70,20 +68,16 @@ final class TemplateRegistryExtension extends AbstractExtension
      * @deprecated Sinds 3.34, to be removed in 4.0. Use getGlobalTemplate instead.
      *
      * @param string $name
-     *
-     * @return string|null
      */
-    public function getPoolTemplate($name)
+    public function getPoolTemplate($name): ?string
     {
         return $this->getGlobalTemplate($name);
     }
 
     /**
      * @param string $name
-     *
-     * @return string|null
      */
-    public function getGlobalTemplate($name)
+    public function getGlobalTemplate($name): ?string
     {
         return $this->globalTemplateRegistry->getTemplate($name);
     }
