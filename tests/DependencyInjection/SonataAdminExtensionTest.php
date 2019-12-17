@@ -105,19 +105,6 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    /**
-     * @doesNotPerformAssertions
-     * @group legacy
-     */
-    public function testContainerCompileWithJMSDiExtraBundle(): void
-    {
-        $this->container->setParameter('kernel.bundles', [
-            'JMSDiExtraBundle' => true,
-        ]);
-
-        $this->container->compile();
-    }
-
     public function testHasServiceDefinitionForLockExtension(): void
     {
         $this->container->setParameter('kernel.bundles', []);
