@@ -17,8 +17,6 @@ namespace Sonata\AdminBundle\Admin;
  * Tells if the current user has access to a given action.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * @method bool hasAccess(string $action, ?object $object = null)
  */
 interface AccessRegistryInterface
 {
@@ -37,10 +35,8 @@ interface AccessRegistryInterface
      */
     public function checkAccess($action, $object = null);
 
-    /*
+    /**
      * Hook to handle access authorization, without throwing an exception.
-     *
-     * @param object|null $object
      */
-    public function hasAccess(string $action, $object = null): bool;
+    public function hasAccess(string $action, ?object $object = null): bool;
 }
