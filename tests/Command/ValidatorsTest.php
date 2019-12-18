@@ -256,7 +256,7 @@ class ValidatorsTest extends TestCase
         Validators::validateServiceId($value);
     }
 
-    public function getValidateServiceIdWithExceptionTests(): string
+    public function getValidateServiceIdWithExceptionTests(): array
     {
         return [
             [' foobar '],
