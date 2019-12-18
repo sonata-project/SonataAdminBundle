@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
-use Sonata\AdminBundle\Command\GenerateAdminCommand;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -44,8 +43,5 @@ final class ModelManagerCompilerPass implements CompilerPassInterface
             $adminMakerDefinition = $container->getDefinition('sonata.admin.maker');
             $adminMakerDefinition->replaceArgument(1, $availableManagers);
         }
-
-        $generateAdminCommandDefinition = $container->getDefinition(GenerateAdminCommand::class);
-        $generateAdminCommandDefinition->replaceArgument(1, $availableManagers);
     }
 }

@@ -88,7 +88,7 @@ class CRUDController extends Controller
      *
      * @deprecated since version 3.27, to be removed in 4.0. Use Sonata\AdminBundle\Controller\CRUDController::renderWithExtraParams() instead.
      */
-    public function render($view, array $parameters = [], Response $response = null)
+    public function render(string $view, array $parameters = [], ?Response $response = null): Response
     {
         @trigger_error(
             'Method '.__CLASS__.'::render has been renamed to '.__CLASS__.'::renderWithExtraParams.',
