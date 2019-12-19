@@ -51,6 +51,14 @@ class FilterFactory implements FilterFactoryInterface
 
         if ($id) {
             $filter = $this->container->get($id);
+
+            if ($filter && !class_exists($type)) {
+                @trigger_error(
+                    'Referencing a filter by name ('.$type.') is deprecated since version 3.x and will be removed in 4.0.'
+                    .' Use the fully-qualified type class name instead ('.\get_class($filter).')',
+                    E_USER_DEPRECATED
+                );
+            }
         } elseif (class_exists($type)) {
             $filter = new $type();
         } else {
