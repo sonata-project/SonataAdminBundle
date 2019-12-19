@@ -218,6 +218,6 @@ entity and learn more about this class.
 .. note::
 
     If you're not seeing the nice labels, but instead something like
-    "link_add", you should make sure that you've `enabled the translator`_.
+    "link_add", you should make sure that you've `enabled the translator`_ and cleared your app's cache.
 
 .. _`enabled the translator`: http://symfony.com/doc/current/book/translation.html#configuration
