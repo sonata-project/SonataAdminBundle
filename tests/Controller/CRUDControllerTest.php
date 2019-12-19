@@ -4149,14 +4149,6 @@ class CRUDControllerTest extends TestCase
         $this->controller->doesNotExist();
     }
 
-    /**
-     * @expectedDeprecation Method Sonata\AdminBundle\Controller\CRUDController::render has been renamed to Sonata\AdminBundle\Controller\CRUDController::renderWithExtraParams.
-     */
-    public function testRenderIsDeprecated(): void
-    {
-        $this->controller->render('toto.html.twig');
-    }
-
     public function getCsrfProvider()
     {
         return $this->csrfProvider;
