@@ -68,7 +68,7 @@ class AdminExtractorTest extends TestCase
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $container
             ->method('get')
-            ->willReturnCallback(function ($id) {
+            ->willReturnCallback(function (string $id): AdminInterface {
                 switch ($id) {
                     case 'foo_admin':
                         return $this->fooAdmin;

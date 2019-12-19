@@ -20,6 +20,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Tests\Extension\Fixtures\StubFilesystemLoader;
 use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslator;
+use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
 
 /**
@@ -45,7 +46,7 @@ abstract class BaseMenuTest extends TestCase
 
     abstract protected function getTemplate();
 
-    protected function getTranslator()
+    protected function getTranslator(): TranslatorInterface
     {
         return new StubTranslator();
     }
@@ -64,12 +65,8 @@ abstract class BaseMenuTest extends TestCase
 
     /**
      * Helper method to strip newline and space characters from html string to make comparing easier.
-     *
-     * @param string $html
-     *
-     * @return string
      */
-    protected function cleanHtmlWhitespace($html)
+    protected function cleanHtmlWhitespace(string $html): string
     {
         $html = preg_replace_callback('/>([^<]+)</', static function ($value) {
             return '>'.trim($value[1]).'<';

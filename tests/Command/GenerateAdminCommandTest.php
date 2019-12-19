@@ -206,7 +206,7 @@ class GenerateAdminCommandTest extends TestCase
     /**
      * @dataProvider getExecuteInteractiveTests
      */
-    public function testExecuteInteractive($modelEntity): void
+    public function testExecuteInteractive(string $modelEntity): void
     {
         $this->container->set('sonata.admin.manager.foo', $this->createMock(ModelManagerInterface::class));
         $this->container->set('sonata.admin.manager.bar', $this->createMock(ModelManagerInterface::class));
@@ -308,7 +308,7 @@ class GenerateAdminCommandTest extends TestCase
     /**
      * @dataProvider getValidateManagerTypeTests
      */
-    public function testValidateManagerType($expected, $managerType): void
+    public function testValidateManagerType(string $expected, string $managerType): void
     {
         $modelManagers = [
             'sonata.admin.manager.foo' => $this->createMock(ModelManagerInterface::class),

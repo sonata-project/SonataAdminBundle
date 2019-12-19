@@ -235,13 +235,13 @@ class CRUDControllerTest extends TestCase
 
         $this->csrfProvider
             ->method('getToken')
-            ->willReturnCallback(static function ($intention) {
+            ->willReturnCallback(static function (string $intention): CsrfToken {
                 return new CsrfToken($intention, 'csrf-token-123_'.$intention);
             });
 
         $this->csrfProvider
             ->method('isTokenValid')
-            ->willReturnCallback(static function (CsrfToken $token) {
+            ->willReturnCallback(static function (CsrfToken $token): bool {
                 return $token->getValue() === 'csrf-token-123_'.$token->getId();
             });
 
@@ -254,7 +254,7 @@ class CRUDControllerTest extends TestCase
 
         $this->container
             ->method('get')
-            ->willReturnCallback(function ($id) use (
+            ->willReturnCallback(function (string $id) use (
                 $templating,
                 $twig,
                 $exporter,
@@ -294,7 +294,7 @@ class CRUDControllerTest extends TestCase
 
         $this->container
             ->method('has')
-            ->willReturnCallback(function ($id) {
+            ->willReturnCallback(function (string $id): bool {
                 if ('security.csrf.token_manager' === $id && null !== $this->getCsrfProvider()) {
                     return true;
                 }
@@ -320,10 +320,12 @@ class CRUDControllerTest extends TestCase
 
         $this->container
             ->method('getParameter')
-            ->willReturnCallback(static function ($name) {
+            ->willReturnCallback(static function (string $name): ?array {
                 switch ($name) {
                     case 'security.role_hierarchy.roles':
                        return ['ROLE_SUPER_ADMIN' => ['ROLE_USER', 'ROLE_SONATA_ADMIN', 'ROLE_ADMIN']];
+                    default:
+                       return null;
                 }
             });
 
@@ -387,7 +389,7 @@ class CRUDControllerTest extends TestCase
             ->method('generateObjectUrl')
             ->willReturnCallback(
 
-                    static function ($name, $object, array $parameters = [], $absolute = false) {
+                    static function (string $name, $object, array $parameters = [], bool $absolute = false): string {
                         $result = \get_class($object).'_'.$name;
                         if (!empty($parameters)) {
                             $result .= '?'.http_build_query($parameters);
@@ -482,7 +484,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('setUniqid')
-            ->willReturnCallback(static function ($uniqid) use (&$uniqueId): void {
+            ->willReturnCallback(static function (int $uniqid) use (&$uniqueId): void {
                 $uniqueId = $uniqid;
             });
 
@@ -915,8 +917,13 @@ class CRUDControllerTest extends TestCase
     /**
      * @dataProvider getRedirectToTests
      */
-    public function testRedirectTo($expected, $route, $queryParams, $requestParams, $hasActiveSubclass): void
-    {
+    public function testRedirectTo(
+        string $expected,
+        string $route,
+        array $queryParams,
+        array $requestParams,
+        bool $hasActiveSubclass
+    ): void {
         $this->admin
             ->method('hasActiveSubclass')
             ->willReturn($hasActiveSubclass);
@@ -1222,7 +1229,7 @@ class CRUDControllerTest extends TestCase
     /**
      * @dataProvider getToStringValues
      */
-    public function testDeleteActionSuccess1($expectedToStringValue, $toStringValue): void
+    public function testDeleteActionSuccess1(string $expectedToStringValue, string $toStringValue): void
     {
         $object = new \stdClass();
 
@@ -1261,7 +1268,7 @@ class CRUDControllerTest extends TestCase
     /**
      * @dataProvider getToStringValues
      */
-    public function testDeleteActionSuccess2($expectedToStringValue, $toStringValue): void
+    public function testDeleteActionSuccess2(string $expectedToStringValue, string $toStringValue): void
     {
         $object = new \stdClass();
 
@@ -1301,7 +1308,7 @@ class CRUDControllerTest extends TestCase
     /**
      * @dataProvider getToStringValues
      */
-    public function testDeleteActionSuccessNoCsrfTokenProvider($expectedToStringValue, $toStringValue): void
+    public function testDeleteActionSuccessNoCsrfTokenProvider(string $expectedToStringValue, string $toStringValue): void
     {
         $this->csrfProvider = null;
 
@@ -1371,7 +1378,7 @@ class CRUDControllerTest extends TestCase
     /**
      * @dataProvider getToStringValues
      */
-    public function testDeleteActionError($expectedToStringValue, $toStringValue): void
+    public function testDeleteActionError(string $expectedToStringValue, string $toStringValue): void
     {
         $object = new \stdClass();
 
@@ -1591,7 +1598,7 @@ class CRUDControllerTest extends TestCase
     /**
      * @dataProvider getToStringValues
      */
-    public function testEditActionSuccess($expectedToStringValue, $toStringValue): void
+    public function testEditActionSuccess(string $expectedToStringValue, string $toStringValue): void
     {
         $object = new \stdClass();
 
@@ -1658,7 +1665,7 @@ class CRUDControllerTest extends TestCase
     /**
      * @dataProvider getToStringValues
      */
-    public function testEditActionError($expectedToStringValue, $toStringValue): void
+    public function testEditActionError(string $expectedToStringValue, string $toStringValue): void
     {
         $object = new \stdClass();
 
@@ -1882,7 +1889,7 @@ class CRUDControllerTest extends TestCase
     /**
      * @dataProvider getToStringValues
      */
-    public function testEditActionWithModelManagerException($expectedToStringValue, $toStringValue): void
+    public function testEditActionWithModelManagerException(string $expectedToStringValue, string $toStringValue): void
     {
         $object = new \stdClass();
 
@@ -2191,13 +2198,13 @@ class CRUDControllerTest extends TestCase
     /**
      * @dataProvider getToStringValues
      */
-    public function testCreateActionSuccess($expectedToStringValue, $toStringValue): void
+    public function testCreateActionSuccess(string $expectedToStringValue, string $toStringValue): void
     {
         $object = new \stdClass();
 
         $this->admin->expects($this->exactly(2))
             ->method('checkAccess')
-            ->willReturnCallback(static function ($name, $objectIn = null) use ($object) {
+            ->willReturnCallback(static function (string $name, $objectIn = null) use ($object): bool {
                 if ('edit' === $name) {
                     return true;
                 }
@@ -2281,7 +2288,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('checkAccess')
-            ->willReturnCallback(static function ($name, $object = null) {
+            ->willReturnCallback(static function (string $name, $object = null): bool {
                 if ('create' !== $name) {
                     throw new AccessDeniedException();
                 }
@@ -2330,7 +2337,7 @@ class CRUDControllerTest extends TestCase
     /**
      * @dataProvider getToStringValues
      */
-    public function testCreateActionError($expectedToStringValue, $toStringValue): void
+    public function testCreateActionError(string $expectedToStringValue, string $toStringValue): void
     {
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -2397,7 +2404,7 @@ class CRUDControllerTest extends TestCase
     /**
      * @dataProvider getToStringValues
      */
-    public function testCreateActionWithModelManagerException($expectedToStringValue, $toStringValue): void
+    public function testCreateActionWithModelManagerException(string $expectedToStringValue, string $toStringValue): void
     {
         $this->admin->expects($this->exactly(2))
             ->method('checkAccess')
@@ -2473,7 +2480,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->exactly(2))
             ->method('checkAccess')
-            ->willReturnCallback(static function ($name, $objectIn = null) use ($object) {
+            ->willReturnCallback(static function (string $name, $objectIn = null) use ($object): bool {
                 if ('create' !== $name) {
                     return false;
                 }

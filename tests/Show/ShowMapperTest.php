@@ -89,13 +89,13 @@ class ShowMapperTest extends TestCase
 
         $this->admin
             ->method('setShowGroups')
-            ->willReturnCallback(function ($showGroups): void {
+            ->willReturnCallback(function (array $showGroups): void {
                 $this->groups = $showGroups;
             });
 
         $this->admin
             ->method('reorderShowGroup')
-            ->willReturnCallback(function ($group, $keys): void {
+            ->willReturnCallback(function (string $group, array $keys): void {
                 $this->groups[$group]['fields'] = array_merge(array_flip($keys), $this->groups[$group]['fields']);
             });
 
@@ -103,7 +103,7 @@ class ShowMapperTest extends TestCase
 
         $modelManager
             ->method('getNewFieldDescriptionInstance')
-            ->willReturnCallback(function ($class, $name, array $options = []) {
+            ->willReturnCallback(function (?string $class, string $name, array $options = []) {
                 $fieldDescription = $this->getFieldDescriptionMock();
                 $fieldDescription->setName($name);
                 $fieldDescription->setOptions($options);
@@ -123,7 +123,7 @@ class ShowMapperTest extends TestCase
 
         $this->admin
             ->method('hasShowFieldDescription')
-            ->willReturnCallback(function ($name) {
+            ->willReturnCallback(function (string $name): bool {
                 if (isset($this->listShowFields[$name])) {
                     return true;
                 }
@@ -134,7 +134,12 @@ class ShowMapperTest extends TestCase
 
         $this->showBuilder
             ->method('addField')
-            ->willReturnCallback(static function ($list, $type, $fieldDescription, $admin): void {
+            ->willReturnCallback(static function (
+                FieldDescriptionCollection $list,
+                ?string $type,
+                FieldDescriptionInterface $fieldDescription,
+                AdminInterface $admin
+            ): void {
                 $list->add($fieldDescription);
             });
 
@@ -480,7 +485,7 @@ class ShowMapperTest extends TestCase
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $admin, $attributes, $object = null): bool {
+            ->willReturnCallback(static function (AdminInterface $admin, string $attributes, $object = null): bool {
                 return self::DEFAULT_GRANTED_ROLE === $attributes;
             });
 

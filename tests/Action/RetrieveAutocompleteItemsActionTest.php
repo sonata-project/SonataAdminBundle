@@ -286,7 +286,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $formConfig->getAttribute('target_admin_access_action')->willReturn('list');
     }
 
-    private function configureFormConfigComplexPropertyArray($field): void
+    private function configureFormConfigComplexPropertyArray(string $field): void
     {
         $form = $this->prophesize(Form::class);
         $formType = $this->prophesize(Form::class);

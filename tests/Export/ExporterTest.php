@@ -39,7 +39,7 @@ class ExporterTest extends TestCase
     /**
      * @dataProvider getGetResponseTests
      */
-    public function testGetResponse($format, $filename, $contentType): void
+    public function testGetResponse(string $format, string $filename, string $contentType): void
     {
         $source = new ArraySourceIterator([
             ['foo' => 'bar'],

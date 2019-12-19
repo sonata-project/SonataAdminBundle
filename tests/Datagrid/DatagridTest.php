@@ -75,7 +75,7 @@ class DatagridTest extends TestCase
 
         $this->formBuilder
             ->method('get')
-            ->willReturnCallback(function ($name) {
+            ->willReturnCallback(function (string $name): FormBuilder {
                 if (isset($this->formTypes[$name])) {
                     return $this->formTypes[$name];
                 }
@@ -83,7 +83,7 @@ class DatagridTest extends TestCase
 
         $this->formBuilder
             ->method('add')
-            ->willReturnCallback(function ($name, $type, $options): void {
+            ->willReturnCallback(function (?string $name, string $type, array $options): void {
                 $this->formTypes[$name] = new FormBuilder(
                     $name,
                     TestEntity::class,
@@ -508,7 +508,7 @@ class DatagridTest extends TestCase
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_per_page'));
     }
 
-    public function getBuildPagerWithPageTests()
+    public function getBuildPagerWithPageTests(): array
     {
         // tests for php 5.3, because isset functionality was changed since php 5.4
         return [
@@ -552,7 +552,7 @@ class DatagridTest extends TestCase
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_per_page'));
     }
 
-    public function getBuildPagerWithPage2Tests()
+    public function getBuildPagerWithPage2Tests(): array
     {
         // tests for php 5.3, because isset functionality was changed since php 5.4
         return [

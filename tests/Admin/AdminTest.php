@@ -373,7 +373,7 @@ class AdminTest extends TestCase
     /**
      * @dataProvider provideGetBaseRoutePattern
      */
-    public function testGetBaseRoutePattern($objFqn, $expected): void
+    public function testGetBaseRoutePattern(string $objFqn, string $expected): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', $objFqn, 'SonataNewsBundle:PostAdmin');
         $this->assertSame($expected, $admin->getBaseRoutePattern());
@@ -382,7 +382,7 @@ class AdminTest extends TestCase
     /**
      * @dataProvider provideGetBaseRoutePattern
      */
-    public function testGetBaseRoutePatternWithChildAdmin($objFqn, $expected): void
+    public function testGetBaseRoutePatternWithChildAdmin(string $objFqn, string $expected): void
     {
         $postAdmin = new PostAdmin('sonata.post.admin.post', $objFqn, 'SonataNewsBundle:PostAdmin');
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
@@ -394,7 +394,7 @@ class AdminTest extends TestCase
     /**
      * @dataProvider provideGetBaseRoutePattern
      */
-    public function testGetBaseRoutePatternWithTwoNestedChildAdmin($objFqn, $expected): void
+    public function testGetBaseRoutePatternWithTwoNestedChildAdmin(string $objFqn, string $expected): void
     {
         $postAdmin = new PostAdmin('sonata.post.admin.post', $objFqn, 'SonataNewsBundle:PostAdmin');
         $commentAdmin = new CommentAdmin(
@@ -506,7 +506,7 @@ class AdminTest extends TestCase
     /**
      * @dataProvider provideGetBaseRouteName
      */
-    public function testGetBaseRouteName($objFqn, $expected): void
+    public function testGetBaseRouteName(string $objFqn, string $expected): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', $objFqn, 'SonataNewsBundle:PostAdmin');
 
@@ -518,7 +518,7 @@ class AdminTest extends TestCase
      * @expectedDeprecation Calling "addChild" without second argument is deprecated since 3.35 and will not be allowed in 4.0.
      * @dataProvider provideGetBaseRouteName
      */
-    public function testGetBaseRouteNameWithChildAdmin($objFqn, $expected): void
+    public function testGetBaseRouteNameWithChildAdmin(string $objFqn, string $expected): void
     {
         $routeGenerator = new DefaultRouteGenerator(
             $this->createMock(RouterInterface::class),
@@ -1305,7 +1305,14 @@ class AdminTest extends TestCase
         $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $adminIn, $attributes, $object = null) use ($admin, $entity) {
+            ->willReturnCallback(static function (
+                AdminInterface $adminIn,
+                string $attributes,
+                $object = null
+            ) use (
+                $admin,
+                $entity
+            ): bool {
                 if ($admin === $adminIn && 'FOO' === $attributes) {
                     if (($object === $admin) || ($object === $entity)) {
                         return true;
@@ -1346,7 +1353,7 @@ class AdminTest extends TestCase
         $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
+            ->willReturnCallback(static function (AdminInterface $adminIn, array $attributes, $object = null) use ($admin): bool {
                 return $admin === $adminIn && $attributes === ['LIST'];
             });
 
@@ -1618,7 +1625,7 @@ class AdminTest extends TestCase
         $formBuild->expects($this->once())
                 ->method('addEventListener')
                 ->with($this->identicalTo(FormEvents::POST_SUBMIT),
-                        $this->callback(static function ($callback) use ($testAdminPreValidate, $event) {
+                        $this->callback(static function ($callback) use ($testAdminPreValidate, $event): bool {
                             if (\is_callable($callback)) {
                                 $closure = $callback->bindTo($testAdminPreValidate);
                                 $closure($event);
@@ -1723,7 +1730,7 @@ class AdminTest extends TestCase
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager->expects($this->exactly(3))
             ->method('getNewFieldDescriptionInstance')
-            ->willReturnCallback(static function ($adminClass, $name, $filterOptions) use ($fooFieldDescription, $barFieldDescription, $bazFieldDescription) {
+            ->willReturnCallback(static function ($adminClass, string $name, $filterOptions) use ($fooFieldDescription, $barFieldDescription, $bazFieldDescription) {
                 switch ($name) {
                     case 'foo':
                         $fieldDescription = $fooFieldDescription;
@@ -1991,7 +1998,7 @@ class AdminTest extends TestCase
         $labelTranslatorStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $labelTranslatorStrategy
             ->method('getLabel')
-            ->willReturnCallback(static function ($label, $context = '', $type = '') {
+            ->willReturnCallback(static function (string $label, string $context = '', string $type = ''): string {
                 return $context.'.'.$type.'_'.$label;
             });
 
@@ -2011,7 +2018,7 @@ class AdminTest extends TestCase
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
+            ->willReturnCallback(static function (AdminInterface $adminIn, string $attributes, $object = null) use ($admin): bool {
                 return $admin === $adminIn && 'DELETE' === $attributes;
             });
         $admin->setSecurityHandler($securityHandler);
@@ -2050,7 +2057,7 @@ class AdminTest extends TestCase
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getDashboardActions
      * @dataProvider provideGetBaseRouteName
      */
-    public function testDefaultDashboardActionsArePresent($objFqn, $expected): void
+    public function testDefaultDashboardActionsArePresent(string $objFqn, string $expected): void
     {
         $pathInfo = new PathInfoBuilder($this->createMock(AuditManagerInterface::class));
 
@@ -2072,7 +2079,7 @@ class AdminTest extends TestCase
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $adminIn, $attributes, $object = null) use ($admin) {
+            ->willReturnCallback(static function (AdminInterface $adminIn, string $attributes, $object = null) use ($admin): bool {
                 return $admin === $adminIn && ('CREATE' === $attributes || 'LIST' === $attributes);
             });
 
@@ -2189,12 +2196,12 @@ class AdminTest extends TestCase
 
         $admin
             ->method('getTranslationLabel')
-            ->willReturnCallback(static function ($label, $context = '', $type = '') {
+            ->willReturnCallback(static function (string $label, string $context = '', string $type = ''): string {
                 return $context.'.'.$type.'_'.$label;
             });
         $admin
             ->method('trans')
-            ->willReturnCallback(static function ($label) {
+            ->willReturnCallback(static function (string $label): string {
                 if ('export.label_field' === $label) {
                     return 'Feld';
                 }

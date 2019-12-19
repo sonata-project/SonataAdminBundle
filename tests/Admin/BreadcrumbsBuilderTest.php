@@ -160,7 +160,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $this->assertCount(5, $breadcrumbs);
     }
 
-    public function actionProvider()
+    public function actionProvider(): array
     {
         return [
             ['my_action'],
@@ -173,7 +173,7 @@ class BreadcrumbsBuilderTest extends TestCase
     /**
      * @dataProvider actionProvider
      */
-    public function testBuildBreadcrumbs($action): void
+    public function testBuildBreadcrumbs(string $action): void
     {
         $subject = new \stdClass();
 

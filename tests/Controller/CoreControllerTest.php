@@ -61,13 +61,13 @@ class CoreControllerTest extends TestCase
             'request_stack' => $requestStack,
         ];
 
-        $container->method('get')->willReturnCallback(static function ($id) use ($values) {
+        $container->method('get')->willReturnCallback(static function (string $id) use ($values) {
             return $values[$id];
         });
 
         $container
             ->method('has')
-            ->willReturnCallback(static function ($id) {
+            ->willReturnCallback(static function (string $id): bool {
                 return 'templating' === $id;
             });
 
