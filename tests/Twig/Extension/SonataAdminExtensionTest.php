@@ -27,7 +27,6 @@ use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
-use Symfony\Bridge\Twig\Tests\Extension\Fixtures\StubFilesystemLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,6 +39,7 @@ use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Extensions\TextExtension;
+use Twig\Loader\FilesystemLoader;
 
 /**
  * Test for SonataAdminExtension.
@@ -169,7 +169,7 @@ class SonataAdminExtensionTest extends TestCase
         $request = $this->createMock(Request::class);
         $request->method('get')->with('_sonata_admin')->willReturn('sonata_admin_foo_service');
 
-        $loader = new StubFilesystemLoader([
+        $loader = new FilesystemLoader([
             __DIR__.'/../../../src/Resources/views/CRUD',
         ]);
         $loader->addPath(__DIR__.'/../../../src/Resources/views/', 'SonataAdmin');

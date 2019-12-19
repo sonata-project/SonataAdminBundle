@@ -1469,11 +1469,15 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('toString')
             ->with($object)
-            ->willReturn(\stdClass::class);
+            ->willReturn('some class');
 
         $this->admin->expects($this->once())
             ->method('delete')
             ->with($object);
+
+        $this->expectTranslate('flash_delete_success', [
+            '%name%' => 'some class',
+        ], 'SonataAdminBundle');
 
         $this->controller->deleteAction(1);
     }
@@ -1875,6 +1879,10 @@ class CRUDControllerTest extends TestCase
             ->method('createView')
             ->willReturn($formView);
 
+        $this->expectTranslate('flash_edit_error', [
+            '%name%' => '',
+        ], 'SonataAdminBundle');
+
         $this->assertInstanceOf(Response::class, $response = $this->controller->editAction(null));
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
@@ -1882,7 +1890,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('edit', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
         $this->assertSame($object, $this->parameters['object']);
-        $this->assertSame(['sonata_flash_error' => [0 => null]], $this->session->getFlashBag()->all());
+        $this->assertSame(['sonata_flash_error' => [0 => 'flash_edit_error']], $this->session->getFlashBag()->all());
         $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
@@ -2645,6 +2653,10 @@ class CRUDControllerTest extends TestCase
             ->method('createView')
             ->willReturn($formView);
 
+        $this->expectTranslate('flash_create_error', [
+            '%name%' => '',
+        ], 'SonataAdminBundle');
+
         $this->assertInstanceOf(Response::class, $response = $this->controller->createAction());
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
@@ -2652,7 +2664,7 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('create', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
         $this->assertSame($object, $this->parameters['object']);
-        $this->assertSame(['sonata_flash_error' => [0 => null]], $this->session->getFlashBag()->all());
+        $this->assertSame(['sonata_flash_error' => [0 => 'flash_create_error']], $this->session->getFlashBag()->all());
         $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
@@ -3966,7 +3978,7 @@ class CRUDControllerTest extends TestCase
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
-        $this->expectTranslate('flash_foo_error', [], 'SonataAdminBundle');
+        $this->expectTranslate('flash_batch_empty', [], 'SonataAdminBundle');
 
         $this->request->setMethod('POST');
         $this->request->request->set('action', 'foo');
@@ -3981,7 +3993,7 @@ class CRUDControllerTest extends TestCase
         $result = $controller->batchAction();
 
         $this->assertInstanceOf(RedirectResponse::class, $result);
-        $this->assertSame(['flash_foo_error'], $this->session->getFlashBag()->get('sonata_flash_info'));
+        $this->assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sonata_flash_info'));
         $this->assertSame('list', $result->getTargetUrl());
     }
 

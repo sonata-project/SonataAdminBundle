@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\Widget;
 
 use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
+use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as SymfonyChoiceType;
 use Symfony\Component\Form\FormTypeGuesserInterface;
-use Symfony\Component\Form\Tests\Fixtures\TestExtension;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
