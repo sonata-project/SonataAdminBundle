@@ -203,6 +203,14 @@ http://localhost:8000/admin
    :alt: Sonata Dashboard with Category
    :width: 700px
 
+.. note::
+
+    If you get an error which says that the service “admin.category” has a dependency on a non-existent service “sonata.admin.manager.orm” then run the following command:
+
+.. code-block:: bash
+
+    composer require sonata-project/doctrine-orm-admin-bundle
+    
 Feel free to play around and add some categories, like "Symfony" and "Sonata
 Project". In the next chapters, you'll create an admin for the ``BlogPost``
 entity and learn more about this class.
