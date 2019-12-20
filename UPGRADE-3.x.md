@@ -1,6 +1,24 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated the use of string names to reference filters in favor of the FQCN of the filter.
+
+Before:
+```php
+$datagridMapper
+    ->add('field', 'filter_type')
+;
+```
+
+After:
+```php
+use App\Filter\FilterType;
+
+$datagridMapper
+    ->add('field', FilterType::class)
+;
+```
+
 UPGRADE FROM 3.51 to 3.52
 =========================
 
