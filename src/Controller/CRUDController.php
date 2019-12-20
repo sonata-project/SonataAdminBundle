@@ -77,28 +77,6 @@ class CRUDController extends Controller
     }
 
     /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @see renderWithExtraParams()
-     *
-     * @param string $view       The view name
-     * @param array  $parameters An array of parameters to pass to the view
-     *
-     * @return Response A Response instance
-     *
-     * @deprecated since version 3.27, to be removed in 4.0. Use Sonata\AdminBundle\Controller\CRUDController::renderWithExtraParams() instead.
-     */
-    public function render($view, array $parameters = [], Response $response = null)
-    {
-        @trigger_error(
-            'Method '.__CLASS__.'::render has been renamed to '.__CLASS__.'::renderWithExtraParams.',
-            E_USER_DEPRECATED
-        );
-
-        return $this->renderWithExtraParams($view, $parameters, $response);
-    }
-
-    /**
      * Renders a view while passing mandatory parameters on to the template.
      *
      * @param string $view The view name

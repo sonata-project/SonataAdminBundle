@@ -39,8 +39,6 @@ class FieldDescription extends BaseFieldDescription
 
     /**
      * set the parent association mappings information.
-     *
-     * @param array $parentAssociationMappings
      */
     public function setParentAssociationMappings(array $parentAssociationMappings): void
     {
