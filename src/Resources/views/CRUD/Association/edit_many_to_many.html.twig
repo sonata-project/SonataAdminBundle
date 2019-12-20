@@ -126,13 +126,11 @@ file that was distributed with this source code.
                             <i class="fa fa-plus-circle"></i>
                             {{ btn_add|trans({}, btn_catalogue) }}
                         </a>
+                        {% include '@SonataAdmin/CRUD/Association/edit_modal.html.twig' %}
+                        {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
                     {% endif %}
                 </span>
-
-                {% include '@SonataAdmin/CRUD/Association/edit_modal.html.twig' %}
             </div>
-
-            {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
         {% endif %}
     </div>
 {% endif %}
