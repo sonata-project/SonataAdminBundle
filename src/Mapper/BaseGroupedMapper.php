@@ -33,7 +33,7 @@ abstract class BaseGroupedMapper extends BaseMapper
     protected $currentTab;
 
     /**
-     * @var array
+     * @var bool[]
      */
     protected $apply = [];
 
@@ -306,14 +306,8 @@ abstract class BaseGroupedMapper extends BaseMapper
     /**
      * Check if all apply conditions are respected.
      */
-    protected function shouldApply(): bool
+    final protected function shouldApply(): bool
     {
-        foreach ($this->apply as $condition) {
-            if (!$condition) {
-                return false;
-            }
-        }
-
-        return true;
+        return !\in_array(false, $this->apply, true);
     }
 }
