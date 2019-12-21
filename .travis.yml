@@ -46,9 +46,7 @@ matrix:
     - php: '7.3'
       env: SYMFONY=4.2.*
     - php: '7.3'
-      env: SONATA_BLOCK=3.*
-    - php: '7.3'
-      env: SONATA_BLOCK='dev-master as 3.x-dev'
+      env: SONATA_BLOCK=4.*
     - php: '7.3'
       env: SYMFONY_MAKER=1.7.*
     - php: '7.3'
