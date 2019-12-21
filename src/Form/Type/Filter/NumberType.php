@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Type\Filter;
 
+use Sonata\AdminBundle\Form\Type\Operator\NumberOperatorType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType as FormNumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,14 +28,29 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class NumberType extends AbstractType
 {
+    /**
+     * @deprecated since 3.x, to be removed with 4.0: Use NumberOperatorType const instead
+     */
     public const TYPE_GREATER_EQUAL = 1;
 
+    /**
+     * @deprecated since 3.x, to be removed with 4.0: Use NumberOperatorType const instead
+     */
     public const TYPE_GREATER_THAN = 2;
 
+    /**
+     * @deprecated since 3.x, to be removed with 4.0: Use NumberOperatorType const instead
+     */
     public const TYPE_EQUAL = 3;
 
+    /**
+     * @deprecated since 3.x, to be removed with 4.0: Use NumberOperatorType const instead
+     */
     public const TYPE_LESS_EQUAL = 4;
 
+    /**
+     * @deprecated since 3.x, to be removed with 4.0: Use NumberOperatorType const instead
+     */
     public const TYPE_LESS_THAN = 5;
 
     /**
@@ -69,23 +84,8 @@ class NumberType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $choices = [
-            'label_type_equal' => self::TYPE_EQUAL,
-            'label_type_greater_equal' => self::TYPE_GREATER_EQUAL,
-            'label_type_greater_than' => self::TYPE_GREATER_THAN,
-            'label_type_less_equal' => self::TYPE_LESS_EQUAL,
-            'label_type_less_than' => self::TYPE_LESS_THAN,
-        ];
-        $choiceOptions = [
-            'required' => false,
-        ];
-
-        $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
-
-        $choiceOptions['choices'] = $choices;
-
         $builder
-            ->add('type', FormChoiceType::class, $choiceOptions)
+            ->add('type', NumberOperatorType::class, ['required' => false])
             ->add('value', $options['field_type'], array_merge(['required' => false], $options['field_options']))
         ;
     }

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Type\Filter;
 
+use Sonata\AdminBundle\Form\Type\Operator\DateOperatorType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType as FormDateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,18 +28,39 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class DateTimeType extends AbstractType
 {
+    /**
+     * @deprecated since 3.x, to be removed with 4.0: Use DateOperatorType const instead
+     */
     public const TYPE_GREATER_EQUAL = 1;
 
+    /**
+     * @deprecated since 3.x, to be removed with 4.0: Use DateOperatorType const instead
+     */
     public const TYPE_GREATER_THAN = 2;
 
+    /**
+     * @deprecated since 3.x, to be removed with 4.0: Use DateOperatorType const instead
+     */
     public const TYPE_EQUAL = 3;
 
+    /**
+     * @deprecated since 3.x, to be removed with 4.0: Use DateOperatorType const instead
+     */
     public const TYPE_LESS_EQUAL = 4;
 
+    /**
+     * @deprecated since 3.x, to be removed with 4.0: Use DateOperatorType const instead
+     */
     public const TYPE_LESS_THAN = 5;
 
+    /**
+     * @deprecated since 3.x, to be removed with 4.0: Use DateOperatorType const instead
+     */
     public const TYPE_NULL = 6;
 
+    /**
+     * @deprecated since 3.x, to be removed with 4.0: Use DateOperatorType const instead
+     */
     public const TYPE_NOT_NULL = 7;
 
     /**
@@ -73,25 +94,8 @@ class DateTimeType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $choices = [
-            'label_date_type_equal' => self::TYPE_EQUAL,
-            'label_date_type_greater_equal' => self::TYPE_GREATER_EQUAL,
-            'label_date_type_greater_than' => self::TYPE_GREATER_THAN,
-            'label_date_type_less_equal' => self::TYPE_LESS_EQUAL,
-            'label_date_type_less_than' => self::TYPE_LESS_THAN,
-            'label_date_type_null' => self::TYPE_NULL,
-            'label_date_type_not_null' => self::TYPE_NOT_NULL,
-        ];
-        $choiceOptions = [
-            'required' => false,
-        ];
-
-        $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
-
-        $choiceOptions['choices'] = $choices;
-
         $builder
-            ->add('type', FormChoiceType::class, $choiceOptions)
+            ->add('type', DateOperatorType::class, ['required' => false])
             ->add('value', $options['field_type'], array_merge(['required' => false], $options['field_options']))
         ;
     }
