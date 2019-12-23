@@ -18,7 +18,11 @@ use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 
 /**
+ * NEXT_MAJOR: remove this class.
+ *
  * @final since sonata-project/admin-bundle 3.52
+ *
+ * @deprecated since 3.x, to be removed with 4.0
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
