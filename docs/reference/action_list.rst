@@ -155,8 +155,12 @@ Available types and associated options
 | currency  | currency (m)   | A currency string (EUR or USD for instance).                          |
 +-----------+----------------+-----------------------------------------------------------------------+
 | date      | format         | A format understandable by Twig's ``date`` function.                  |
++           +----------------+                                                                       +
+|           | timezone       |                                                                       |
 +-----------+----------------+-----------------------------------------------------------------------+
 | datetime  | format         | A format understandable by Twig's ``date`` function.                  |
++           +----------------+                                                                       +
+|           | timezone       |                                                                       |
 +-----------+----------------+-----------------------------------------------------------------------+
 | email     | as_string      | Renders the email as string, without any link.                        |
 +           +----------------+-----------------------------------------------------------------------+
