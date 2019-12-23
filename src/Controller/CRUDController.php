@@ -205,6 +205,8 @@ class CRUDController implements ContainerAwareInterface
     public function deleteAction($id)
     {
         $request = $this->getRequest();
+
+        // NEXT_MAJOR: remove the next line and use the $id parameter of the function
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
@@ -284,12 +286,13 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return Response|RedirectResponse
      */
-    public function editAction($id = null)
+    public function editAction($id = null) // NEXT_MAJOR: Remove the $id default value
     {
         $request = $this->getRequest();
         // the key used to lookup the template
         $templateKey = 'edit';
 
+        // NEXT_MAJOR: remove the next line and use the $id parameter of the function
         $id = $request->get($this->admin->getIdParameter());
         $existingObject = $this->admin->getObject($id);
 
@@ -664,11 +667,12 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return Response
      */
-    public function showAction($id = null)
+    public function showAction($id = null) // NEXT_MAJOR: Remove the $id default value
     {
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
 
+        // NEXT_MAJOR: remove the next line and use the $id parameter of the function
+        $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
         if (!$object) {
@@ -720,11 +724,12 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return Response
      */
-    public function historyAction($id = null)
+    public function historyAction($id = null) // NEXT_MAJOR: Remove the $id default value
     {
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
 
+        // NEXT_MAJOR: remove the next line and use the $id parameter of the function
+        $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
         if (!$object) {
@@ -771,11 +776,12 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return Response
      */
-    public function historyViewRevisionAction($id = null, $revision = null)
+    public function historyViewRevisionAction($id = null, $revision = null) // NEXT_MAJOR: Remove the $id default value
     {
         $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
 
+        // NEXT_MAJOR: remove the next line and use the $id parameter of the function
+        $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
         if (!$object) {
@@ -836,14 +842,14 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return Response
      */
-    public function historyCompareRevisionsAction($id = null, $base_revision = null, $compare_revision = null)
+    public function historyCompareRevisionsAction($id = null, $base_revision = null, $compare_revision = null) // NEXT_MAJOR: Remove the $id default value
     {
         $request = $this->getRequest();
 
         $this->admin->checkAccess('historyCompareRevisions');
 
+        // NEXT_MAJOR: remove the next line and use the $id parameter of the function
         $id = $request->get($this->admin->getIdParameter());
-
         $object = $this->admin->getObject($id);
 
         if (!$object) {
@@ -969,7 +975,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return Response|RedirectResponse
      */
-    public function aclAction($id = null)
+    public function aclAction($id = null) // NEXT_MAJOR: Remove the $id default value
     {
         $request = $this->getRequest();
 
@@ -977,8 +983,8 @@ class CRUDController implements ContainerAwareInterface
             throw $this->createNotFoundException('ACL are not enabled for this admin');
         }
 
+        // NEXT_MAJOR: remove the next line and use the $id parameter of the function
         $id = $request->get($this->admin->getIdParameter());
-
         $object = $this->admin->getObject($id);
 
         if (!$object) {
