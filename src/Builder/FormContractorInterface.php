@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Builder;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
@@ -29,7 +29,7 @@ interface FormContractorInterface extends BuilderInterface
     /**
      * @param string $name
      *
-     * @return FormBuilder
+     * @return FormBuilderInterface
      */
     public function getFormBuilder($name, array $options = []);
 

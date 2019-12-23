@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Functional\Controller;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Tests\Functional\AppKernel;
+use Sonata\AdminBundle\Tests\App\AppKernel;
 use Symfony\Bundle\FrameworkBundle\Client;
 
 final class DashboardActionTest extends TestCase
@@ -22,7 +22,7 @@ final class DashboardActionTest extends TestCase
     public function testDashboard(): void
     {
         $client = new Client(new AppKernel());
-        $client->request('GET', '/dashboard');
+        $client->request('GET', '/admin/dashboard');
 
         $this->assertSame(200, $client->getResponse()->getStatusCode());
     }
