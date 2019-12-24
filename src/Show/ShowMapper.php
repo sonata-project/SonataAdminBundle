@@ -49,7 +49,7 @@ class ShowMapper extends BaseGroupedMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = [])
     {
-        if (null !== $this->apply && !$this->apply) {
+        if (!$this->shouldApply()) {
             return $this;
         }
 

@@ -33,9 +33,9 @@ abstract class BaseGroupedMapper extends BaseMapper
     protected $currentTab;
 
     /**
-     * @var bool|null
+     * @var bool[]
      */
-    protected $apply;
+    protected $apply = [];
 
     /**
      * Add new group or tab (if parameter "tab=true" is available in options).
@@ -48,6 +48,10 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function with($name, array $options = [])
     {
+        if (!$this->shouldApply()) {
+            return $this;
+        }
+
         /*
          * The current implementation should work with the following workflow:
          *
@@ -159,17 +163,11 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @param bool $bool
      *
-     * @throws \LogicException
-     *
      * @return $this
      */
     public function ifTrue($bool)
     {
-        if (null !== $this->apply) {
-            throw new \LogicException('Cannot nest ifTrue or ifFalse call');
-        }
-
-        $this->apply = (true === $bool);
+        $this->apply[] = true === $bool;
 
         return $this;
     }
@@ -179,17 +177,11 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * @param bool $bool
      *
-     * @throws \LogicException
-     *
      * @return $this
      */
     public function ifFalse($bool)
     {
-        if (null !== $this->apply) {
-            throw new \LogicException('Cannot nest ifTrue or ifFalse call');
-        }
-
-        $this->apply = (false === $bool);
+        $this->apply[] = false === $bool;
 
         return $this;
     }
@@ -199,7 +191,7 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function ifEnd()
     {
-        $this->apply = null;
+        array_pop($this->apply);
 
         return $this;
     }
@@ -225,6 +217,10 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     public function end()
     {
+        if (!$this->shouldApply()) {
+            return $this;
+        }
+
         if (null !== $this->currentGroup) {
             $this->currentGroup = null;
         } elseif (null !== $this->currentTab) {
@@ -305,5 +301,13 @@ abstract class BaseGroupedMapper extends BaseMapper
         }
 
         return $this->currentGroup;
+    }
+
+    /**
+     * Check if all apply conditions are respected.
+     */
+    final protected function shouldApply(): bool
+    {
+        return !\in_array(false, $this->apply, true);
     }
 }
