@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
+use JMS\DiExtraBundle\JMSDiExtraBundle;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
@@ -111,6 +112,10 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
      */
     public function testContainerCompileWithJMSDiExtraBundle(): void
     {
+        if (!class_exists(JMSDiExtraBundle::class)) {
+            $this->markTestSkipped('JMS DiExtraBundle does not exist');
+        }
+
         $this->container->setParameter('kernel.bundles', [
             'JMSDiExtraBundle' => true,
         ]);

@@ -14,11 +14,19 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use JMS\DiExtraBundle\Metadata\ClassMetadata;
+use JMS\DiExtraBundle\JMSDiExtraBundle;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Annotation\Admin;
 
 class AnnotationCompilerPassTest extends TestCase
 {
+    public function setUp(): void
+    {
+        if (!class_exists(JMSDiExtraBundle::class)) {
+            $this->markTestSkipped('JMS DiExtraBundle does not exist');
+        }
+    }
+
     /**
      * @group legacy
      *
