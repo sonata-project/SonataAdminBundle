@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Command;
 
 use PHPUnit\Framework\TestCase;
 use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
+use Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\GenerateAdminCommand;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -63,6 +64,10 @@ class GenerateAdminCommandTest extends TestCase
 
     protected function setUp(): void
     {
+        if (!class_exists(SensioGeneratorBundle::class)) {
+            $this->markTestSkipped('Sensio Generator Bundle does not exist');
+        }
+
         // create temp dir
         $tempfile = tempnam(sys_get_temp_dir(), 'sonata_admin');
         if (file_exists($tempfile)) {

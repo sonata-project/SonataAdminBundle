@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Generator;
 
 use PHPUnit\Framework\TestCase;
+use Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle;
 use Sonata\AdminBundle\Generator\AdminGenerator;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\ModelAdmin;
@@ -41,6 +42,10 @@ class AdminGeneratorTest extends TestCase
      */
     protected function setUp(): void
     {
+        if (!class_exists(SensioGeneratorBundle::class)) {
+            $this->markTestSkipped('Sensio Generator Bundle does not exist');
+        }
+
         $this->adminGenerator = new AdminGenerator(
             $this->createModelManagerMock(),
             __DIR__.'/../../src/Resources/skeleton'

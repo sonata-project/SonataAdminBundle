@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
-use JMS\DiExtraBundle\Metadata\ClassMetadata;
 use JMS\DiExtraBundle\JMSDiExtraBundle;
+use JMS\DiExtraBundle\Metadata\ClassMetadata;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Annotation\Admin;
 

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Generator;
 
 use PHPUnit\Framework\TestCase;
+use Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle;
 use Sonata\AdminBundle\Generator\ControllerGenerator;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\ModelAdminController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -40,6 +41,10 @@ class ControllerGeneratorTest extends TestCase
      */
     protected function setUp(): void
     {
+        if (!class_exists(SensioGeneratorBundle::class)) {
+            $this->markTestSkipped('Sensio Generator Bundle does not exist');
+        }
+
         $this->controllerGenerator = new ControllerGenerator(__DIR__.'/../../src/Resources/skeleton');
         $this->bundleMock = $this->createBundleMock();
         $this->bundlePath = $this->bundleMock->getPath();
