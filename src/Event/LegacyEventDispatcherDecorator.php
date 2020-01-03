@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Event;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as ContractsEventDispatcherInterface;
 
 /**
@@ -25,7 +26,12 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as ContractsEvent
  */
 final class LegacyEventDispatcherDecorator
 {
-    public static function decorate(?ContractsEventDispatcherInterface $dispatcher): ?ContractsEventDispatcherInterface
+    /**
+     * @param ContractsEventDispatcherInterface|EventDispatcherInterface|null $dispatcher
+     *
+     * @return ContractsEventDispatcherInterface|EventDispatcherInterface|null
+     */
+    public static function decorate($dispatcher)
     {
         if (null === $dispatcher) {
             return null;

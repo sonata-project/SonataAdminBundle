@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Event;
 
 use Psr\EventDispatcher\StoppableEventInterface;
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\EventDispatcher\Event as ContractsEvent;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as ContractsEventDispatcherInterface;
 
 /**
@@ -28,6 +30,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as ContractsEvent
  */
 final class LegacyEventDispatcherProxy implements ContractsEventDispatcherInterface
 {
+    /**
+     * @var EventDispatcherInterface
+     */
     public $dispatcher;
 
     /**
@@ -40,8 +45,6 @@ final class LegacyEventDispatcherProxy implements ContractsEventDispatcherInterf
 
     /**
      * {@inheritdoc}
-     *
-     * @param string|null $eventName
      */
     public function dispatch($event/*, string $eventName = null*/)
     {
@@ -55,13 +58,19 @@ final class LegacyEventDispatcherProxy implements ContractsEventDispatcherInterf
             $event = $eventName ?? new Event();
             $eventName = $swap;
 
-            if (!$event instanceof Event) {
+            if (!$event instanceof Event && !$event instanceof ContractsEvent) {
                 throw new \TypeError(sprintf('Argument 1 passed to "%s::dispatch()" must be an instance of %s, %s given.', ContractsEventDispatcherInterface::class, Event::class, \is_object($event) ? \get_class($event) : \gettype($event)));
             }
         }
 
         $listeners = $this->getListeners($eventName);
         $stoppable = $event instanceof Event || $event instanceof ContractsEvent || $event instanceof StoppableEventInterface;
+
+        if (null === $listeners) {
+            $this->dispatcher->dispatch($eventName, $event);
+
+            return $event;
+        }
 
         foreach ($listeners as $listener) {
             if ($stoppable && $event->isPropagationStopped()) {

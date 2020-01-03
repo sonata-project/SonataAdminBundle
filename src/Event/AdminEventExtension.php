@@ -33,7 +33,7 @@ class AdminEventExtension extends AbstractAdminExtension
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
-        $this->eventDispatcher = $eventDispatcher;
+        $this->eventDispatcher = LegacyEventDispatcherDecorator::decorate($eventDispatcher);
     }
 
     public function configureFormFields(FormMapper $form)
