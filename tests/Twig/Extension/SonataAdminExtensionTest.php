@@ -1283,6 +1283,38 @@ EOT
                     ],
                 ],
             ],
+            [
+                <<<'EOT'
+<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+    <span
+        class="x-editable"
+        data-type="checklist"
+        data-value="[&quot;Status1&quot;,&quot;Status2&quot;]"
+        data-title="Data"
+        data-pk="12345"
+        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
+        data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
+         Delete, Alias2
+    </span>
+</td>
+EOT
+                ,
+                'choice',
+                [
+                    'Status1',
+                    'Status2',
+                ],
+                [
+                    'editable' => true,
+                    'multiple' => true,
+                    'catalogue' => 'SonataAdminBundle',
+                    'choices' => [
+                        'Status1' => 'action_delete',
+                        'Status2' => 'Alias2',
+                        'Status3' => 'Alias3',
+                    ],
+                ],
+            ],
         ];
     }
 

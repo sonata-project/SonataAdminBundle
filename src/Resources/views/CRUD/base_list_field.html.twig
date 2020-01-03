@@ -35,7 +35,13 @@ file that was distributed with this source code.
         </a>
     {% else %}
         {% set isEditable = field_description.options.editable is defined and field_description.options.editable and admin.hasAccess('edit', object) %}
-        {% set xEditableType = field_description.type|sonata_xeditable_type %}
+        {% if isEditable and field_description.options.multiple is defined and field_description.options.multiple and value is iterable %}
+            {# multiple editable field should be real multiple #}
+            {# https://vitalets.github.io/x-editable/docs.html#checklist #}
+            {% set xEditableType = 'checklist' %}
+        {% else %}
+            {% set xEditableType = field_description.type|sonata_xeditable_type %}
+        {% endif %}
 
         {% if isEditable and xEditableType %}
             {% set url = path(
@@ -52,6 +58,8 @@ file that was distributed with this source code.
                 {% set data_value = value.format('Y-m-d') %}
             {% elseif field_description.type == 'boolean' and value is empty %}
                 {% set data_value = 0 %}
+            {% elseif value is iterable %}
+                {% set data_value = value|json_encode %}
             {% else %}
                 {% set data_value = value %}
             {% endif %}
