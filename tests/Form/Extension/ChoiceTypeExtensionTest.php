@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Tests\Form\Extension;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Forms;
 
@@ -25,13 +24,8 @@ class ChoiceTypeExtensionTest extends TestCase
 
     protected function setup(): void
     {
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $container->method('has')->willReturn(true);
-        $container->method('get')
-            ->with($this->equalTo('sonata.admin.form.choice_extension'))
-            ->willReturn(new ChoiceTypeExtension());
-
         $this->factory = Forms::createFormFactoryBuilder()
+            ->addTypeExtensions([new ChoiceTypeExtension()])
             ->getFormFactory();
     }
 
