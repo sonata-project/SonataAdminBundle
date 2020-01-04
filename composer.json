@@ -31,7 +31,7 @@
         "sonata-project/doctrine-extensions": "^1.4",
         "sonata-project/exporter": "^1.11.0 || ^2.0",
         "sonata-project/form-extensions": "^1.1.2",
-        "sonata-project/twig-extensions": "^1.1",
+        "sonata-project/twig-extensions": "^1.1.1",
         "symfony/asset": "^3.4.30 || ^4.2",
         "symfony/config": "^3.4.30 || ^4.2",
         "symfony/console": "^3.4.30 || ^4.2",

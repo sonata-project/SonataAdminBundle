@@ -17,14 +17,17 @@ use Knp\Bundle\MenuBundle\KnpMenuBundle;
 use Sonata\AdminBundle\SonataAdminBundle;
 use Sonata\BlockBundle\SonataBlockBundle;
 use Sonata\Doctrine\Bridge\Symfony\Bundle\SonataDoctrineBundle;
+use Sonata\Twig\Bridge\Symfony\SonataTwigBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use Twig\Extensions\TextExtension;
 
 final class AppKernel extends Kernel
 {
@@ -44,6 +47,7 @@ final class AppKernel extends Kernel
             new KnpMenuBundle(),
             new SonataBlockBundle(),
             new SonataDoctrineBundle(),
+            new SonataTwigBundle(),
             new SonataAdminBundle(),
         ];
     }
@@ -67,7 +71,6 @@ final class AppKernel extends Kernel
     {
         $containerBuilder->loadFromExtension('framework', [
             'secret' => 'MySecret',
-            'fragments' => ['enabled' => true],
             'form' => ['enabled' => true],
             'session' => ['handler_id' => null, 'storage_id' => 'session.storage.mock_file', 'name' => 'MOCKSESSID'],
             'templating' => ['engine' => ['twig']],
@@ -77,6 +80,11 @@ final class AppKernel extends Kernel
             'firewalls' => ['main' => ['anonymous' => true]],
             'providers' => ['in_memory' => ['memory' => null]],
         ]);
+
+        $twigStringFilter = new Definition(TextExtension::class);
+        $twigStringFilter->addTag('twig.extension');
+
+        $containerBuilder->addDefinitions([$twigStringFilter]);
     }
 
     private function getBaseDir(): string
