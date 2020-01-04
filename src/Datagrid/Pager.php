@@ -619,7 +619,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @param int $offset
      *
-     * @return object
+     * @return null|object
      */
     protected function retrieveObject($offset)
     {
@@ -630,6 +630,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
         $results = $queryForRetrieve->execute();
 
-        return $results[0];
+        return $results[0] ?? null;
     }
 }
