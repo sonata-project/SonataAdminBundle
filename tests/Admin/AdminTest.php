@@ -1451,10 +1451,13 @@ class AdminTest extends TestCase
 
         $filterPersister = $this->createMock('Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface');
 
-        $this->assertAttributeSame(null, 'filterPersister', $admin);
+        $reflector = new \ReflectionObject($admin);
+
+        $persistFiltersAttribute = $reflector->getProperty('persistFilters');
+        $persistFiltersAttribute->setAccessible(true);
+        $this->assertFalse($persistFiltersAttribute->getValue($admin));
         $admin->setFilterPersister($filterPersister);
-        $this->assertAttributeSame($filterPersister, 'filterPersister', $admin);
-        $this->assertAttributeSame(true, 'persistFilters', $admin);
+        $this->assertTrue($persistFiltersAttribute->getValue($admin));
     }
 
     public function testGetRootCode(): void
@@ -1585,7 +1588,7 @@ class AdminTest extends TestCase
 
         $tagAdmin->getForm();
 
-        $this->assertInternalType('array', $tag->getPosts());
+        $this->assertIsArray($tag->getPosts());
         $this->assertCount(2, $tag->getPosts());
         $this->assertContains($post, $tag->getPosts());
     }

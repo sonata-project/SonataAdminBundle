@@ -57,6 +57,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -389,7 +390,7 @@ class CRUDControllerTest extends TestCase
             ->method('generateObjectUrl')
             ->willReturnCallback(
 
-                    static function (string $name, $object, array $parameters = [], bool $absolute = false): string {
+                    static function (string $name, $object, array $parameters = [], int $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): string {
                         $result = \get_class($object).'_'.$name;
                         if (!empty($parameters)) {
                             $result .= '?'.http_build_query($parameters);
@@ -492,7 +493,12 @@ class CRUDControllerTest extends TestCase
         $this->protectedTestedMethods['configure']->invoke($this->controller);
 
         $this->assertSame(123456, $uniqueId);
-        $this->assertAttributeSame($this->admin, 'admin', $this->controller);
+
+        $reflector = new \ReflectionObject($this->controller);
+        $attribute = $reflector->getProperty('admin');
+        $attribute->setAccessible(true);
+
+        $this->assertSame($this->admin, $attribute->getValue($this->controller));
     }
 
     public function testConfigureChild(): void
@@ -520,7 +526,12 @@ class CRUDControllerTest extends TestCase
         $this->protectedTestedMethods['configure']->invoke($this->controller);
 
         $this->assertSame(123456, $uniqueId);
-        $this->assertAttributeInstanceOf(\get_class($adminParent), 'admin', $this->controller);
+
+        $reflector = new \ReflectionObject($this->controller);
+        $attribute = $reflector->getProperty('admin');
+        $attribute->setAccessible(true);
+
+        $this->assertInstanceOf(\get_class($adminParent), $attribute->getValue($this->controller));
     }
 
     public function testConfigureWithException(): void
