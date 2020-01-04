@@ -152,7 +152,7 @@ class FilterTest extends TestCase
         try {
             $filter->getFieldMapping();
         } catch (\RuntimeException $e) {
-            $this->assertContains('The option `field_mapping` must be set for field: `foo`', $e->getMessage());
+            $this->assertStringContainsString('The option `field_mapping` must be set for field: `foo`', $e->getMessage());
 
             return;
         }
@@ -207,7 +207,7 @@ class FilterTest extends TestCase
         try {
             $filter->getAssociationMapping();
         } catch (\RuntimeException $e) {
-            $this->assertContains('The option `association_mapping` must be set for field: `foo`', $e->getMessage());
+            $this->assertStringContainsString('The option `association_mapping` must be set for field: `foo`', $e->getMessage());
 
             return;
         }

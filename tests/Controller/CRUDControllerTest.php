@@ -492,7 +492,12 @@ class CRUDControllerTest extends TestCase
         $this->protectedTestedMethods['configure']->invoke($this->controller);
 
         $this->assertSame(123456, $uniqueId);
-        $this->assertAttributeSame($this->admin, 'admin', $this->controller);
+
+        $reflector = new \ReflectionObject($this->controller);
+        $attribute = $reflector->getProperty('admin');
+        $attribute->setAccessible(true);
+
+        $this->assertSame($this->admin, $attribute->getValue($this->controller));
     }
 
     public function testConfigureChild(): void
@@ -520,7 +525,12 @@ class CRUDControllerTest extends TestCase
         $this->protectedTestedMethods['configure']->invoke($this->controller);
 
         $this->assertSame(123456, $uniqueId);
-        $this->assertAttributeInstanceOf(\get_class($adminParent), 'admin', $this->controller);
+
+        $reflector = new \ReflectionObject($this->controller);
+        $attribute = $reflector->getProperty('admin');
+        $attribute->setAccessible(true);
+
+        $this->assertInstanceOf(\get_class($adminParent), $attribute->getValue($this->controller));
     }
 
     public function testConfigureWithException(): void
