@@ -45,7 +45,7 @@ class AdminListBlockServiceTest extends BlockServiceTestCase
 
     public function testDefaultSettings(): void
     {
-        $blockService = new AdminListBlockService('foo', $this->templating, $this->pool, $this->templateRegistry->reveal());
+        $blockService = new AdminListBlockService($this->twig, $this->pool, $this->templateRegistry->reveal());
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([
@@ -58,7 +58,7 @@ class AdminListBlockServiceTest extends BlockServiceTestCase
      */
     public function testOverriddenDefaultSettings(): void
     {
-        $blockService = new FakeBlockService('foo', $this->templating, $this->pool, $this->templateRegistry->reveal());
+        $blockService = new FakeBlockService($this->twig, $this->pool, $this->templateRegistry->reveal());
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([
