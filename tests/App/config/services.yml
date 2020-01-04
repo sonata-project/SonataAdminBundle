@@ -1,4 +1,8 @@
 services:
+    Twig\Extensions\TextExtension:
+        tags:
+            - {name: twig.extension}
+
     Sonata\AdminBundle\Tests\App\Model\FooRepository: ~
 
     sonata.admin.manager.test:
