@@ -72,7 +72,7 @@
         "symfony/css-selector": "^3.4 || ^4.3",
         "symfony/filesystem": "^3.4.30 || ^4.2",
         "symfony/maker-bundle": "^1.14",
-        "symfony/phpunit-bridge": "^4.3",
+        "symfony/phpunit-bridge": "^5.0",
         "symfony/yaml": "^3.4.30 || ^4.2"
     },
     "suggest": {
