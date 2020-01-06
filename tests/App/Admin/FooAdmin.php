@@ -21,17 +21,17 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 final class FooAdmin extends AbstractAdmin
 {
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         $list->add('name', 'string');
     }
 
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         $form->add('name', TextType::class);
     }
 
-    protected function configureShowFields(ShowMapper $show)
+    protected function configureShowFields(ShowMapper $show): void
     {
         $show->add('name', 'string');
     }
