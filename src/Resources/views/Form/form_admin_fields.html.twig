@@ -148,9 +148,9 @@ file that was distributed with this source code.
             {% if translation_domain is same as(false) %}
                 {{- label -}}
             {% elseif not sonata_admin.admin %}
-                {{- label|trans({}, translation_domain) -}}
+                {{- label|trans(label_translation_parameters|default({}), translation_domain) -}}
             {% else %}
-                {{ label|trans({}, sonata_admin.field_description.translationDomain ?: admin.translationDomain) }}
+                {{ label|trans(label_translation_parameters|default({}), sonata_admin.field_description.translationDomain ?: admin.translationDomain) }}
             {% endif %}
         </label>
     {% endif %}
@@ -187,7 +187,7 @@ file that was distributed with this source code.
                     {% if translation_domain is same as(false) %}
                         {{- label -}}
                     {% else %}
-                        {{- label|trans({}, translation_domain) -}}
+                        {{- label|trans(label_translation_parameters|default({}), translation_domain) -}}
                     {%- endif -%}
                 </span>
             {%- endif -%}
