@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Functional;
+namespace Sonata\AdminBundle\Tests\App;
 
 use Knp\Bundle\MenuBundle\KnpMenuBundle;
 use Sonata\AdminBundle\SonataAdminBundle;
@@ -60,9 +60,14 @@ final class AppKernel extends Kernel
         return $this->getBaseDir().'log';
     }
 
+    public function getProjectDir()
+    {
+        return __DIR__;
+    }
+
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
-        $routes->import(__DIR__.'/../../src/Resources/config/routing/sonata_admin.xml');
+        $routes->import($this->getProjectDir().'/config/routes.yml');
     }
 
     protected function configureContainer(ContainerBuilder $containerBuilder, LoaderInterface $loader)
@@ -73,12 +78,15 @@ final class AppKernel extends Kernel
             'form' => ['enabled' => true],
             'session' => ['handler_id' => null, 'storage_id' => 'session.storage.mock_file', 'name' => 'MOCKSESSID'],
             'templating' => ['engine' => ['twig']],
+            'test' => true,
         ]);
 
         $containerBuilder->loadFromExtension('security', [
             'firewalls' => ['main' => ['anonymous' => true]],
             'providers' => ['in_memory' => ['memory' => null]],
         ]);
+
+        $loader->load($this->getProjectDir().'/config/services.yml');
     }
 
     private function getBaseDir(): string
