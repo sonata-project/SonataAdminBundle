@@ -29,12 +29,12 @@ use Symfony\Component\Translation\TranslatorInterface;
 class DateRangeType extends AbstractType
 {
     /**
-     * @deprecated since 3.x, to be removed with 4.0: Use DateRangeOperatorType const instead
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use DateRangeOperatorType::TYPE_BETWEEN instead
      */
     public const TYPE_BETWEEN = 1;
 
     /**
-     * @deprecated since 3.x, to be removed with 4.0: Use DateRangeOperatorType const instead
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use DateRangeOperatorType::TYPE_NOT_BETWEEN instead
      */
     public const TYPE_NOT_BETWEEN = 2;
 

@@ -29,27 +29,27 @@ use Symfony\Component\Translation\TranslatorInterface;
 class NumberType extends AbstractType
 {
     /**
-     * @deprecated since 3.x, to be removed with 4.0: Use NumberOperatorType const instead
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use NumberOperatorType::TYPE_GREATER_EQUAL instead
      */
     public const TYPE_GREATER_EQUAL = 1;
 
     /**
-     * @deprecated since 3.x, to be removed with 4.0: Use NumberOperatorType const instead
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use NumberOperatorType::TYPE_GREATER_THAN instead
      */
     public const TYPE_GREATER_THAN = 2;
 
     /**
-     * @deprecated since 3.x, to be removed with 4.0: Use NumberOperatorType const instead
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use NumberOperatorType::TYPE_EQUAL instead
      */
     public const TYPE_EQUAL = 3;
 
     /**
-     * @deprecated since 3.x, to be removed with 4.0: Use NumberOperatorType const instead
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use NumberOperatorType::TYPE_LESS_EQUAL instead
      */
     public const TYPE_LESS_EQUAL = 4;
 
     /**
-     * @deprecated since 3.x, to be removed with 4.0: Use NumberOperatorType const instead
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use NumberOperatorType::TYPE_LESS_THAN instead
      */
     public const TYPE_LESS_THAN = 5;
 
