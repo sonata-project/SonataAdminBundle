@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Type\Filter;
 
+use Sonata\AdminBundle\Form\Type\Operator\ContainsOperatorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -28,10 +28,19 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class ChoiceType extends AbstractType
 {
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use ContainsOperatorType::TYPE_CONTAINS instead
+     */
     public const TYPE_CONTAINS = 1;
 
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use ContainsOperatorType::TYPE_NOT_CONTAINS instead
+     */
     public const TYPE_NOT_CONTAINS = 2;
 
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use ContainsOperatorType::TYPE_EQUAL instead
+     */
     public const TYPE_EQUAL = 3;
 
     /**
@@ -65,21 +74,8 @@ class ChoiceType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $choices = [
-            'label_type_contains' => self::TYPE_CONTAINS,
-            'label_type_not_contains' => self::TYPE_NOT_CONTAINS,
-            'label_type_equals' => self::TYPE_EQUAL,
-        ];
-        $operatorChoices = [];
-
-        if (HiddenType::class !== $options['operator_type']) {
-            $operatorChoices['choice_translation_domain'] = 'SonataAdminBundle';
-
-            $operatorChoices['choices'] = $choices;
-        }
-
         $builder
-            ->add('type', $options['operator_type'], array_merge(['required' => false], $options['operator_options'], $operatorChoices))
+            ->add('type', $options['operator_type'], array_merge(['required' => false], $options['operator_options']))
             ->add('value', $options['field_type'], array_merge(['required' => false], $options['field_options']))
         ;
     }
@@ -99,7 +95,7 @@ class ChoiceType extends AbstractType
         $resolver->setDefaults([
             'field_type' => FormChoiceType::class,
             'field_options' => [],
-            'operator_type' => FormChoiceType::class,
+            'operator_type' => ContainsOperatorType::class,
             'operator_options' => [],
         ]);
     }
