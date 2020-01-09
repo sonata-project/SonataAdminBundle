@@ -192,7 +192,7 @@ class SonataAdminExtension extends AbstractExtension
     }
 
     /**
-     * @deprecated since 3.33, to be removed in 4.0. Use render instead
+     * @deprecated since sonata-project/admin-bundle 3.33, to be removed in 4.0. Use render instead
      *
      * @return string
      */

@@ -66,7 +66,7 @@ class DateType extends AbstractType
     /**
      * NEXT_MAJOR: remove this property.
      *
-     * @deprecated since 3.5, to be removed with 4.0
+     * @deprecated since sonata-project/admin-bundle 3.5, to be removed with 4.0
      *
      * @var TranslatorInterface
      */

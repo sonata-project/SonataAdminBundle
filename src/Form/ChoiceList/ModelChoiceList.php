@@ -33,7 +33,7 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 /**
  * NEXT_MAJOR: Remove this class.
  *
- * @deprecated Since 3.24, to be removed in 4.0. Use Sonata\AdminBundle\ModelChoiceLoader instead
+ * @deprecated since sonata-project/admin-bundle 3.24, to be removed in 4.0. Use Sonata\AdminBundle\ModelChoiceLoader instead
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */

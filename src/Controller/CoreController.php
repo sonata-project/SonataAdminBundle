@@ -68,7 +68,7 @@ class CoreController extends Controller
      *
      * NEXT_MAJOR: remove this method.
      *
-     * @deprecated since 3.0, to be removed in 4.0 and action methods will be adjusted.
+     * @deprecated since sonata-project/admin-bundle 3.0, to be removed in 4.0 and action methods will be adjusted.
      *             Use Symfony\Component\HttpFoundation\Request as an action argument
      *
      * @return Request

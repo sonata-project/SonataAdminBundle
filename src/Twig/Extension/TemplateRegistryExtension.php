@@ -65,7 +65,7 @@ final class TemplateRegistryExtension extends AbstractExtension
     }
 
     /**
-     * @deprecated Sinds 3.34, to be removed in 4.0. Use getGlobalTemplate instead.
+     * @deprecated since sonata-project/admin-bundle 3.34, to be removed in 4.0. Use getGlobalTemplate instead.
      *
      * @param string $name
      */
@@ -98,7 +98,7 @@ final class TemplateRegistryExtension extends AbstractExtension
     }
 
     /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      *
      * @throws ServiceNotFoundException
      * @throws ServiceCircularReferenceException

@@ -44,7 +44,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * @var ModelChoiceList
      *
-     * @deprecated since 3.12, to be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.12, to be removed in 4.0
      * NEXT_MAJOR: remove this property
      */
     protected $choiceList;
