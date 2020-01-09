@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Type\Filter;
 
+use Sonata\AdminBundle\Form\Type\Operator\DateRangeOperatorType;
 use Sonata\CoreBundle\Form\Type\DateRangeType as FormDateRangeType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -28,7 +28,14 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class DateRangeType extends AbstractType
 {
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use DateRangeOperatorType::TYPE_BETWEEN instead
+     */
     public const TYPE_BETWEEN = 1;
+
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use DateRangeOperatorType::TYPE_NOT_BETWEEN instead
+     */
     public const TYPE_NOT_BETWEEN = 2;
 
     /**
@@ -62,20 +69,8 @@ class DateRangeType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $choices = [
-            'label_date_type_between' => self::TYPE_BETWEEN,
-            'label_date_type_not_between' => self::TYPE_NOT_BETWEEN,
-        ];
-        $choiceOptions = [
-            'required' => false,
-        ];
-
-        $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
-
-        $choiceOptions['choices'] = $choices;
-
         $builder
-            ->add('type', FormChoiceType::class, $choiceOptions)
+            ->add('type', DateRangeOperatorType::class, ['required' => false])
             ->add('value', $options['field_type'], $options['field_options'])
         ;
     }
