@@ -44,7 +44,7 @@ class AdminVoter implements VoterInterface
     }
 
     /**
-     * @deprecated since version 3.31. Pass a RequestStack to the constructor instead.
+     * @deprecated since sonata-project/admin-bundle 3.31. Pass a RequestStack to the constructor instead.
      *
      * @return $this
      */

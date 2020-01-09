@@ -47,7 +47,7 @@ class Pool
     protected $adminClasses = [];
 
     /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
      *
      * @var array
      */
@@ -412,7 +412,7 @@ class Pool
     }
 
     /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
      */
     public function setTemplates(array $templates)
     {
@@ -423,7 +423,7 @@ class Pool
     }
 
     /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
      *
      * @return array
      */
@@ -433,7 +433,7 @@ class Pool
     }
 
     /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
      *
      * @param string $name
      *

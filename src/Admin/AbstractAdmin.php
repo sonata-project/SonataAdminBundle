@@ -203,7 +203,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @var bool
      *
-     * @deprecated since 3.34, to be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.34, to be removed in 4.0.
      */
     protected $persistFilters = false;
 
@@ -240,7 +240,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * NEXT_MAJOR: remove this attribute.
      *
-     * @deprecated This attribute is deprecated since 3.24 and will be removed in 4.0
+     * @deprecated This attribute is deprecated since sonata-project/admin-bundle 3.24 and will be removed in 4.0
      *
      * @var string
      */
@@ -297,7 +297,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @var \Symfony\Component\Translation\TranslatorInterface
      *
-     * @deprecated since 3.9, to be removed with 4.0
+     * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
      */
     protected $translator;
 
@@ -407,7 +407,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * @var array<string, string>
      *
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      */
     protected $templates = [];
 
@@ -1044,7 +1044,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function addSubClass($subClass)
     {
         @trigger_error(sprintf(
-            'Method "%s" is deprecated since 3.30 and will be removed in 4.0.',
+            'Method "%s" is deprecated since sonata-project/admin-bundle 3.30 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -1272,7 +1272,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      *
      * @return array<string, string>
      */
@@ -1282,7 +1282,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      *
      * @param string $name
      *
@@ -1508,7 +1508,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * NEXT_MAJOR: remove this method
      *
-     * @deprecated since 3.34, to be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.34, to be removed in 4.0.
      */
     public function setPersistFilters($persist)
     {
@@ -1839,8 +1839,8 @@ EOT;
             $child->addParentAssociationMapping($this->getCode(), $args[1]);
         } else {
             @trigger_error(
-                'Calling "addChild" without second argument is deprecated since 3.35'
-                .' and will not be allowed in 4.0.',
+                'Calling "addChild" without second argument is deprecated since'
+                .' sonata-project/admin-bundle 3.35 and will not be allowed in 4.0.',
                 E_USER_DEPRECATED
             );
         }
@@ -2099,7 +2099,7 @@ EOT;
      *
      * @return string the translated string
      *
-     * @deprecated since 3.9, to be removed with 4.0
+     * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
      */
     public function transChoice($id, $count, array $parameters = [], $domain = null, $locale = null)
     {
@@ -2128,7 +2128,7 @@ EOT;
      *
      * NEXT_MAJOR: remove this method
      *
-     * @deprecated since 3.9, to be removed with 4.0
+     * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
      */
     public function setTranslator(TranslatorInterface $translator)
     {
@@ -2148,7 +2148,7 @@ EOT;
      *
      * NEXT_MAJOR: remove this method
      *
-     * @deprecated since 3.9, to be removed with 4.0
+     * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
      */
     public function getTranslator()
     {
@@ -2268,7 +2268,7 @@ EOT;
     /**
      * NEXT_MAJOR: Remove this function.
      *
-     * @deprecated This method is deprecated since 3.24 and will be removed in 4.0
+     * @deprecated This method is deprecated since sonata-project/admin-bundle 3.24 and will be removed in 4.0
      *
      * @param string $baseCodeRoute
      */

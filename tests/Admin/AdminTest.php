@@ -518,7 +518,7 @@ class AdminTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Calling "addChild" without second argument is deprecated since 3.35 and will not be allowed in 4.0.
+     * @expectedDeprecation Calling "addChild" without second argument is deprecated since sonata-project/admin-bundle 3.35 and will not be allowed in 4.0.
      * @dataProvider provideGetBaseRouteName
      */
     public function testGetBaseRouteNameWithChildAdmin(string $objFqn, string $expected): void
@@ -837,7 +837,7 @@ class AdminTest extends TestCase
 
     /**
      * @group legacy
-     * @expectedDeprecation Method "Sonata\AdminBundle\Admin\AbstractAdmin::addSubClass" is deprecated since 3.30 and will be removed in 4.0.
+     * @expectedDeprecation Method "Sonata\AdminBundle\Admin\AbstractAdmin::addSubClass" is deprecated since sonata-project/admin-bundle 3.30 and will be removed in 4.0.
      */
     public function testAddSubClassIsDeprecated(): void
     {

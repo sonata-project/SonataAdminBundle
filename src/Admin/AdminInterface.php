@@ -202,7 +202,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @return string the translated string
      *
-     * @deprecated since 3.9, to be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.9, to be removed in 4.0
      */
     public function trans($id, array $parameters = [], $domain = null, $locale = null);
 
@@ -459,7 +459,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns template.
      *
-     * @deprecated since 3.35. To be removed in 4.0. Use TemplateRegistry services instead
+     * @deprecated since sonata-project/admin-bundle 3.35. To be removed in 4.0. Use TemplateRegistry services instead
      *
      * @param string $name
      *

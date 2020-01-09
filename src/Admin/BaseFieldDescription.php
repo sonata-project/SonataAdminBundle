@@ -365,7 +365,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      *
      * @return string
      *
-     * @deprecated Deprecated since version 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead
+     * @deprecated since sonata-project/admin-bundle 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead
      */
     public static function camelize($property)
     {

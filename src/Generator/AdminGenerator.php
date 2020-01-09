@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 /**
  * @final since sonata-project/admin-bundle 3.52
  *
- * @deprecated Since 3.56, to be removed when dropping Symfony < 4.2 support. Use Maker Bundle instead.
+ * @deprecated since sonata-project/admin-bundle 3.56, to be removed when dropping Symfony < 4.2 support. Use Maker Bundle instead.
  *
  * @author Marek Stipek <mario.dweller@seznam.cz>
  * @author Simon Cosandey <simon.cosandey@simseo.ch>
