@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Block\AdminSearchBlockService;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
 use Sonata\BlockBundle\Test\FakeTemplating;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -76,6 +77,6 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
         $response = $blockService->execute($blockContext);
 
         static::assertSame('', $response->getContent());
-        static::assertSame(204, $response->getStatusCode());
+        static::assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 }

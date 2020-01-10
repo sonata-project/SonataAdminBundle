@@ -65,7 +65,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $request = new Request([
             'admin_code' => 'foo.admin',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $this->admin->hasAccess('create')->willReturn(false);
         $this->admin->hasAccess('edit')->willReturn(false);
@@ -82,7 +82,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $request = new Request([
             'admin_code' => 'foo.admin',
             'field' => 'barField',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
 
@@ -107,7 +107,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
             'admin_code' => 'foo.admin',
             'field' => 'barField',
             'q' => 'so',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $targetAdmin = $this->prophesize(AbstractAdmin::class);
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
@@ -137,7 +137,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
             'admin_code' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $this->configureFormConfig('barField');
 
@@ -162,7 +162,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
             'admin_code' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $this->configureFormConfigComplexPropertyArray('barField');
         $datagrid = $this->configureAutocompleteItemsDatagrid();
@@ -194,7 +194,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
             'admin_code' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $this->configureFormConfigComplexProperty('barField');
         $datagrid = $this->configureAutocompleteItemsDatagrid();
