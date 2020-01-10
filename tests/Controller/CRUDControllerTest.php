@@ -3642,7 +3642,7 @@ class CRUDControllerTest extends TestCase
     public function testBatchActionWrongMethod(): void
     {
         $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage('Invalid request type "GET", POST expected');
+        $this->expectExceptionMessage('Invalid request method given "GET", POST expected');
 
         $this->controller->batchAction();
     }
