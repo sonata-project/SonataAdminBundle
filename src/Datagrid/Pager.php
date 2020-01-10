@@ -261,7 +261,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @deprecated since 3.11, will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.11, will be removed in 4.0
      */
     public function getFirstIndice()
     {
@@ -294,7 +294,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @deprecated since 3.11, will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.11, will be removed in 4.0
      */
     public function getLastIndice()
     {

@@ -37,7 +37,7 @@ use Twig\Environment;
 /**
  * NEXT_MAJOR: remove this class.
  *
- * @deprecated since version 3.38.0, to be removed in 4.0. Use actions inside Sonata\AdminBundle\Action instead.
+ * @deprecated since sonata-project/admin-bundle 3.38.0, to be removed in 4.0. Use actions inside Sonata\AdminBundle\Action instead.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */

@@ -176,7 +176,7 @@ class AdminObjectAclData
      *
      * @return AdminObjectAclData
      *
-     * @deprecated Deprecated since version 3.0. Use setAclUsersForm() instead
+     * @deprecated since sonata-project/admin-bundle 3.0. Use setAclUsersForm() instead
      */
     public function setForm(Form $form)
     {
@@ -196,7 +196,7 @@ class AdminObjectAclData
      *
      * @return Form
      *
-     * @deprecated Deprecated since version 3.0. Use getAclUsersForm() instead
+     * @deprecated since sonata-project/admin-bundle version 3.0. Use getAclUsersForm() instead
      */
     public function getForm()
     {

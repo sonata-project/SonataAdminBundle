@@ -662,7 +662,7 @@ class CRUDController extends Controller
         if (!\is_array($fields->getElements()) || 0 === $fields->count()) {
             @trigger_error(
                 'Calling this method without implementing "configureShowFields"'
-                .' is not supported since 3.40.0'
+                .' is not supported since sonata-project/admin-bundle 3.40.0'
                 .' and will no longer be possible in 4.0',
                 E_USER_DEPRECATED
             );
@@ -1510,8 +1510,8 @@ class CRUDController extends Controller
 
         if ($parentAdmin->getObject($parentId) !== $propertyAccessor->getValue($object, $propertyPath)) {
             // NEXT_MAJOR: make this exception
-            @trigger_error("Accessing a child that isn't connected to a given parent is deprecated since 3.34"
-                ." and won't be allowed in 4.0.",
+            @trigger_error("Accessing a child that isn't connected to a given parent is"
+                ." deprecated since sonata-project/admin-bundle 3.34 and won't be allowed in 4.0.",
                 E_USER_DEPRECATED
             );
         }

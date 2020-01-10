@@ -27,7 +27,7 @@ class GlobalVariables
     /**
      * @var ContainerInterface
      *
-     * @deprecated Since version 3.5, will be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.5, will be removed in 4.0.
      * NEXT_MAJOR : remove this property
      */
     protected $container;
