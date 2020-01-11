@@ -190,7 +190,7 @@ class HelperControllerTest extends TestCase
             'field' => 'enabled',
             'value' => 1,
             'context' => 'list',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
         $pool = $this->prophesize(Pool::class);
@@ -225,7 +225,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->setObjectFieldValueAction($request);
 
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function testSetObjectFieldValueActionOnARelationField(): void
@@ -238,7 +238,7 @@ class HelperControllerTest extends TestCase
             'field' => 'bar',
             'value' => 1,
             'context' => 'list',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
         $modelManager = $this->prophesize(ModelManagerInterface::class);
@@ -278,7 +278,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->setObjectFieldValueAction($request);
 
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function testAppendFormFieldElementAction(): void
@@ -290,7 +290,7 @@ class HelperControllerTest extends TestCase
             'field' => 'enabled',
             'value' => 1,
             'context' => 'list',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'POST']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST]);
 
         $modelManager = $this->prophesize(ModelManagerInterface::class);
         $formView = new FormView();
@@ -369,7 +369,7 @@ class HelperControllerTest extends TestCase
             'field' => 'bar.enabled',
             'value' => 1,
             'context' => 'list',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
         $propertyAccessor = new PropertyAccessor();
@@ -387,7 +387,7 @@ class HelperControllerTest extends TestCase
 
         $response = $this->controller->setObjectFieldValueAction($request);
 
-        $this->assertSame(400, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertSame(json_encode("error1\nerror2"), $response->getContent());
     }
 
@@ -397,7 +397,7 @@ class HelperControllerTest extends TestCase
 
         $request = new Request([
             'admin_code' => 'foo.admin',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $this->admin->hasAccess('create')->willReturn(false);
         $this->admin->hasAccess('edit')->willReturn(false);
@@ -414,7 +414,7 @@ class HelperControllerTest extends TestCase
         $request = new Request([
             'admin_code' => 'foo.admin',
             'field' => 'barField',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
 
@@ -439,7 +439,7 @@ class HelperControllerTest extends TestCase
             'admin_code' => 'foo.admin',
             'field' => 'barField',
             'q' => 'so',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $targetAdmin = $this->prophesize(AbstractAdmin::class);
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
@@ -469,7 +469,7 @@ class HelperControllerTest extends TestCase
             'admin_code' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $this->configureFormConfig('barField');
 
@@ -494,7 +494,7 @@ class HelperControllerTest extends TestCase
             'admin_code' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $this->configureFormConfigComplexPropertyArray('barField');
         $datagrid = $this->configureAutocompleteItemsDatagrid();
@@ -526,7 +526,7 @@ class HelperControllerTest extends TestCase
             'admin_code' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $this->configureFormConfigComplexProperty('barField');
         $datagrid = $this->configureAutocompleteItemsDatagrid();

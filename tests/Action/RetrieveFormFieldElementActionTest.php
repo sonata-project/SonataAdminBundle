@@ -80,7 +80,7 @@ final class RetrieveFormFieldElementActionTest extends TestCase
             'field' => 'enabled',
             'value' => 1,
             'context' => 'list',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'POST']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST]);
 
         $modelManager = $this->prophesize(ModelManagerInterface::class);
         $formView = new FormView();
