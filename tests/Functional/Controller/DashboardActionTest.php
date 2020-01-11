@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Functional\Controller;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Tests\App\AppKernel;
 use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class DashboardActionTest extends TestCase
