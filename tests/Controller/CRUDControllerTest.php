@@ -1111,7 +1111,7 @@ class CRUDControllerTest extends TestCase
             ->with('csrf_protection')
             ->willReturn(true);
 
-        $this->request->setMethod('DELETE');
+        $this->request->setMethod(Request::METHOD_DELETE);
 
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
@@ -1141,8 +1141,8 @@ class CRUDControllerTest extends TestCase
             ->with('csrf_protection')
             ->willReturn(true);
 
-        $this->request->setMethod('POST');
-        $this->request->request->set('_method', 'DELETE');
+        $this->request->setMethod(Request::METHOD_POST);
+        $this->request->request->set('_method', Request::METHOD_DELETE);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
 
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
@@ -1178,7 +1178,7 @@ class CRUDControllerTest extends TestCase
 
         $this->assertLoggerLogsModelManagerException($this->admin, 'delete');
 
-        $this->request->setMethod('DELETE');
+        $this->request->setMethod(Request::METHOD_DELETE);
 
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
@@ -1220,7 +1220,7 @@ class CRUDControllerTest extends TestCase
             ->method('isDebug')
             ->willReturn(true);
 
-        $this->request->setMethod('DELETE');
+        $this->request->setMethod(Request::METHOD_DELETE);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
 
         $this->controller->deleteAction(1);
@@ -1254,7 +1254,7 @@ class CRUDControllerTest extends TestCase
             ->with('csrf_protection')
             ->willReturn(true);
 
-        $this->request->setMethod('DELETE');
+        $this->request->setMethod(Request::METHOD_DELETE);
 
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
 
@@ -1288,8 +1288,8 @@ class CRUDControllerTest extends TestCase
 
         $this->expectTranslate('flash_delete_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
 
-        $this->request->setMethod('POST');
-        $this->request->request->set('_method', 'DELETE');
+        $this->request->setMethod(Request::METHOD_POST);
+        $this->request->request->set('_method', Request::METHOD_DELETE);
 
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
 
@@ -1330,8 +1330,8 @@ class CRUDControllerTest extends TestCase
 
         $this->expectTranslate('flash_delete_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
 
-        $this->request->setMethod('POST');
-        $this->request->request->set('_method', 'DELETE');
+        $this->request->setMethod(Request::METHOD_POST);
+        $this->request->request->set('_method', Request::METHOD_DELETE);
 
         $this->formBuilder->expects($this->once())
             ->method('getOption')
@@ -1359,7 +1359,7 @@ class CRUDControllerTest extends TestCase
             ->willReturn(true);
 
         //without POST request parameter "_method" should not be used as real REST method
-        $this->request->query->set('_method', 'DELETE');
+        $this->request->query->set('_method', Request::METHOD_DELETE);
 
         $this->assertInstanceOf(Response::class, $this->controller->deleteAction(1));
 
@@ -1400,7 +1400,7 @@ class CRUDControllerTest extends TestCase
 
         $this->assertLoggerLogsModelManagerException($this->admin, 'delete');
 
-        $this->request->setMethod('DELETE');
+        $this->request->setMethod(Request::METHOD_DELETE);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
 
         $this->formBuilder->expects($this->once())
@@ -1428,8 +1428,8 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('delete'))
             ->willReturn(true);
 
-        $this->request->setMethod('POST');
-        $this->request->request->set('_method', 'DELETE');
+        $this->request->setMethod(Request::METHOD_POST);
+        $this->request->request->set('_method', Request::METHOD_DELETE);
         $this->request->request->set('_sonata_csrf_token', 'CSRF-INVALID');
 
         $this->formBuilder->expects($this->once())
@@ -1458,8 +1458,8 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('delete'))
             ->willReturn(true);
 
-        $this->request->setMethod('POST');
-        $this->request->request->set('_method', 'DELETE');
+        $this->request->setMethod(Request::METHOD_POST);
+        $this->request->request->set('_method', Request::METHOD_DELETE);
 
         $this->formBuilder->expects($this->once())
             ->method('getOption')
@@ -1657,7 +1657,7 @@ class CRUDControllerTest extends TestCase
 
         $this->expectTranslate('flash_edit_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
 
         $response = $this->controller->editAction(null);
 
@@ -1707,7 +1707,7 @@ class CRUDControllerTest extends TestCase
 
         $this->expectTranslate('flash_edit_error', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
 
         $formView = $this->createMock(FormView::class);
 
@@ -1777,7 +1777,7 @@ class CRUDControllerTest extends TestCase
             ->method('toString')
             ->willReturn('foo');
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $response = $this->controller->editAction(null);
@@ -1828,7 +1828,7 @@ class CRUDControllerTest extends TestCase
             ->with(true)
             ->willReturn([$formError]);
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
         $this->request->headers->set('Accept', 'application/json');
 
@@ -1871,7 +1871,7 @@ class CRUDControllerTest extends TestCase
             ->method('all')
             ->willReturn(['field' => 'fielddata']);
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $formView = $this->createMock(FormView::class);
@@ -1942,7 +1942,7 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('isSubmitted')
             ->willReturn(true);
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
 
         $formView = $this->createMock(FormView::class);
 
@@ -2006,7 +2006,7 @@ class CRUDControllerTest extends TestCase
             ->method('all')
             ->willReturn(['field' => 'fielddata']);
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('btn_preview', 'Preview');
 
         $this->assertInstanceOf(Response::class, $this->controller->editAction(null));
@@ -2062,7 +2062,7 @@ class CRUDControllerTest extends TestCase
         $form
             ->method('isSubmitted')
             ->willReturn(true);
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
 
         $this->admin
             ->method('update')
@@ -2279,7 +2279,7 @@ class CRUDControllerTest extends TestCase
 
         $this->expectTranslate('flash_create_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
 
         $response = $this->controller->createAction();
 
@@ -2337,7 +2337,7 @@ class CRUDControllerTest extends TestCase
             ->method('isValid')
             ->willReturn(true);
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
 
         $this->controller->createAction();
     }
@@ -2387,7 +2387,7 @@ class CRUDControllerTest extends TestCase
 
         $this->expectTranslate('flash_create_error', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
 
         $formView = $this->createMock(FormView::class);
 
@@ -2458,7 +2458,7 @@ class CRUDControllerTest extends TestCase
             ->method('getData')
             ->willReturn($object);
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
 
         $formView = $this->createMock(FormView::class);
 
@@ -2543,7 +2543,7 @@ class CRUDControllerTest extends TestCase
             ->method('toString')
             ->willReturn('foo');
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $response = $this->controller->createAction();
@@ -2598,7 +2598,7 @@ class CRUDControllerTest extends TestCase
             ->with(true)
             ->willReturn([$formError]);
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
         $this->request->headers->set('Accept', 'application/json');
 
@@ -2645,7 +2645,7 @@ class CRUDControllerTest extends TestCase
             ->method('isValid')
             ->willReturn(false);
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $formView = $this->createMock(FormView::class);
@@ -2713,7 +2713,7 @@ class CRUDControllerTest extends TestCase
             ->method('isValid')
             ->willReturn(true);
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('btn_preview', 'Preview');
 
         $this->assertInstanceOf(Response::class, $this->controller->createAction());
@@ -2792,7 +2792,7 @@ class CRUDControllerTest extends TestCase
 
         $response = $this->controller->exportAction($this->request);
         $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertSame([], $this->session->getFlashBag()->all());
     }
 
@@ -3099,7 +3099,7 @@ class CRUDControllerTest extends TestCase
             ->method('getSecurityHandler')
             ->willReturn($aclSecurityHandler);
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
 
         $this->assertInstanceOf(Response::class, $this->controller->aclAction(null));
 
@@ -3190,7 +3190,7 @@ class CRUDControllerTest extends TestCase
 
         $this->expectTranslate('flash_acl_edit_success', [], 'SonataAdminBundle');
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
 
         $response = $this->controller->aclAction(null);
 
@@ -3601,7 +3601,7 @@ class CRUDControllerTest extends TestCase
     public function testBatchActionWrongMethod(): void
     {
         $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage('Invalid request type "GET", POST expected');
+        $this->expectExceptionMessage('Invalid request method given "GET", POST expected');
 
         $this->controller->batchAction();
     }
@@ -3617,7 +3617,7 @@ class CRUDControllerTest extends TestCase
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
@@ -3631,7 +3631,7 @@ class CRUDControllerTest extends TestCase
 
     public function testBatchActionActionInvalidCsrfToken(): void
     {
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('_sonata_csrf_token', 'CSRF-INVALID');
 
@@ -3650,7 +3650,7 @@ class CRUDControllerTest extends TestCase
 
     public function testBatchActionActionWithDisabledCsrfProtection(): void
     {
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
 
         $this->formBuilder->expects($this->once())
@@ -3704,7 +3704,7 @@ class CRUDControllerTest extends TestCase
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
@@ -3757,7 +3757,7 @@ class CRUDControllerTest extends TestCase
 
         $this->expectTranslate('flash_batch_delete_success', [], 'SonataAdminBundle');
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
@@ -3814,7 +3814,7 @@ class CRUDControllerTest extends TestCase
 
         $this->expectTranslate('flash_batch_delete_success', [], 'SonataAdminBundle');
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('action', 'delete');
         $this->request->request->set('idx', ['123', '456']);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
@@ -3841,7 +3841,7 @@ class CRUDControllerTest extends TestCase
 
         $data = ['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false];
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode($data));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
@@ -3904,7 +3904,7 @@ class CRUDControllerTest extends TestCase
 
         $this->expectTranslate('flash_batch_empty', [], 'SonataAdminBundle');
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('action', 'foo');
         $this->request->request->set('idx', ['789']);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
@@ -3931,7 +3931,7 @@ class CRUDControllerTest extends TestCase
 
         $data = ['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false];
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode($data));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
@@ -3980,7 +3980,7 @@ class CRUDControllerTest extends TestCase
 
         $this->expectTranslate('flash_batch_empty', [], 'SonataAdminBundle');
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('action', 'foo');
         $this->request->request->set('idx', ['999']);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
@@ -4013,7 +4013,7 @@ class CRUDControllerTest extends TestCase
 
         $this->expectTranslate('flash_batch_empty', [], 'SonataAdminBundle');
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('action', 'delete');
         $this->request->request->set('idx', []);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
@@ -4067,7 +4067,7 @@ class CRUDControllerTest extends TestCase
             ->with('csrf_protection')
             ->willReturn(true);
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('action', 'bar');
         $this->request->request->set('idx', []);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
@@ -4120,7 +4120,7 @@ class CRUDControllerTest extends TestCase
 
         $this->expectTranslate('flash_batch_delete_success', [], 'SonataAdminBundle');
 
-        $this->request->setMethod('POST');
+        $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('foo', 'bar');
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');

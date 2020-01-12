@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Route;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
 class RouteCollectionTest extends TestCase
@@ -155,8 +156,8 @@ class RouteCollectionTest extends TestCase
             'https',
         ];
         $methods = [
-            'GET',
-            'POST',
+            Request::METHOD_GET,
+            Request::METHOD_POST,
         ];
         $condition = "context.getMethod() in ['GET', 'HEAD'] and request.headers.get('User-Agent') matches '/firefox/i'";
 

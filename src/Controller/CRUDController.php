@@ -201,7 +201,7 @@ class CRUDController extends Controller
             return $preResponse;
         }
 
-        if ('DELETE' === $this->getRestMethod()) {
+        if (Request::METHOD_DELETE === $this->getRestMethod()) {
             // check the csrf token
             $this->validateCsrfToken('sonata.delete');
 
@@ -211,7 +211,7 @@ class CRUDController extends Controller
                 $this->admin->delete($object);
 
                 if ($this->isXmlHttpRequest()) {
-                    return $this->renderJson(['result' => 'ok'], 200, []);
+                    return $this->renderJson(['result' => 'ok'], Response::HTTP_OK, []);
                 }
 
                 $this->addFlash(
@@ -226,7 +226,7 @@ class CRUDController extends Controller
                 $this->handleModelManagerException($e);
 
                 if ($this->isXmlHttpRequest()) {
-                    return $this->renderJson(['result' => 'error'], 200, []);
+                    return $this->renderJson(['result' => 'error'], Response::HTTP_OK, []);
                 }
 
                 $this->addFlash(
@@ -389,8 +389,8 @@ class CRUDController extends Controller
         $request = $this->getRequest();
         $restMethod = $this->getRestMethod();
 
-        if ('POST' !== $restMethod) {
-            throw $this->createNotFoundException(sprintf('Invalid request type "%s", POST expected', $restMethod));
+        if (Request::METHOD_POST !== $restMethod) {
+            throw $this->createNotFoundException(sprintf('Invalid request method given "%s", %s expected', $restMethod, Request::METHOD_POST));
         }
 
         // check the csrf token
@@ -972,7 +972,7 @@ class CRUDController extends Controller
         $aclUsersForm = $adminObjectAclManipulator->createAclUsersForm($adminObjectAclData);
         $aclRolesForm = $adminObjectAclManipulator->createAclRolesForm($adminObjectAclData);
 
-        if ('POST' === $request->getMethod()) {
+        if (Request::METHOD_POST === $request->getMethod()) {
             if ($request->request->has(AdminObjectAclManipulator::ACL_USERS_FORM_NAME)) {
                 $form = $aclUsersForm;
                 $updateMethod = 'updateAclUsers';
@@ -1040,7 +1040,7 @@ class CRUDController extends Controller
      *
      * @return JsonResponse with json encoded data
      */
-    protected function renderJson($data, $status = 200, $headers = [])
+    protected function renderJson($data, $status = Response::HTTP_OK, $headers = [])
     {
         return new JsonResponse($data, $status, $headers);
     }
@@ -1376,7 +1376,7 @@ class CRUDController extends Controller
         }
 
         if (!$valid) {
-            throw new HttpException(400, 'The csrf token is not valid, CSRF attack?');
+            throw new HttpException(Response::HTTP_BAD_REQUEST, 'The csrf token is not valid, CSRF attack?');
         }
     }
 
@@ -1543,7 +1543,7 @@ class CRUDController extends Controller
         return $this->renderJson([
             'result' => 'error',
             'errors' => $errors,
-        ], 400);
+        ], Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -1559,6 +1559,6 @@ class CRUDController extends Controller
             'result' => 'ok',
             'objectId' => $this->admin->getNormalizedIdentifier($object),
             'objectName' => $this->escapeHtml($this->admin->toString($object)),
-        ], 200);
+        ], Response::HTTP_OK);
     }
 }

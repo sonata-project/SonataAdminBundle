@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -69,36 +70,36 @@ final class SetObjectFieldValueAction
 
         // alter should be done by using a post method
         if (!$request->isXmlHttpRequest()) {
-            return new JsonResponse('Expected an XmlHttpRequest request header', 405);
+            return new JsonResponse('Expected an XmlHttpRequest request header', Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
-        if ('POST' !== $request->getMethod()) {
-            return new JsonResponse('Expected a POST Request', 405);
+        if (Request::METHOD_POST !== $request->getMethod()) {
+            return new JsonResponse(sprintf('Invalid request method given "%s", %s expected', $request->getMethod(), Request::METHOD_POST), Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
         $rootObject = $object = $admin->getObject($objectId);
 
         if (!$object) {
-            return new JsonResponse('Object does not exist', 404);
+            return new JsonResponse('Object does not exist', Response::HTTP_NOT_FOUND);
         }
 
         // check user permission
         if (false === $admin->hasAccess('edit', $object)) {
-            return new JsonResponse('Invalid permissions', 403);
+            return new JsonResponse('Invalid permissions', Response::HTTP_FORBIDDEN);
         }
 
         if ('list' === $context) {
             $fieldDescription = $admin->getListFieldDescription($field);
         } else {
-            return new JsonResponse('Invalid context', 400);
+            return new JsonResponse('Invalid context', Response::HTTP_BAD_REQUEST);
         }
 
         if (!$fieldDescription) {
-            return new JsonResponse('The field does not exist', 400);
+            return new JsonResponse('The field does not exist', Response::HTTP_BAD_REQUEST);
         }
 
         if (!$fieldDescription->getOption('editable')) {
-            return new JsonResponse('The field cannot be edited, editable option must be set to true', 400);
+            return new JsonResponse('The field cannot be edited, editable option must be set to true', Response::HTTP_BAD_REQUEST);
         }
 
         $propertyPath = new PropertyPath($field);
@@ -135,7 +136,7 @@ final class SetObjectFieldValueAction
                     'Edit failed, object with id: %s not found in association: %s.',
                     $originalValue,
                     $field
-                ), 404);
+                ), Response::HTTP_NOT_FOUND);
             }
         }
 
@@ -150,7 +151,7 @@ final class SetObjectFieldValueAction
                 $messages[] = $violation->getMessage();
             }
 
-            return new JsonResponse(implode("\n", $messages), 400);
+            return new JsonResponse(implode("\n", $messages), Response::HTTP_BAD_REQUEST);
         }
 
         $admin->update($object);
@@ -161,6 +162,6 @@ final class SetObjectFieldValueAction
 
         $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription);
 
-        return new JsonResponse($content, 200);
+        return new JsonResponse($content, Response::HTTP_OK);
     }
 }

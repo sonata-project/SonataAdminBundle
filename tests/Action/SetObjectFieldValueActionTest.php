@@ -25,6 +25,7 @@ use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -87,7 +88,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             'field' => 'enabled',
             'value' => 1,
             'context' => 'list',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
         $pool = $this->prophesize(Pool::class);
@@ -122,7 +123,7 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function testSetObjectFieldValueActionOnARelationField(): void
@@ -135,7 +136,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             'field' => 'bar',
             'value' => 1,
             'context' => 'list',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
         $modelManager = $this->prophesize(ModelManagerInterface::class);
@@ -175,7 +176,7 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function testSetObjectFieldValueActionWithViolations(): void
@@ -189,7 +190,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             'field' => 'bar.enabled',
             'value' => 1,
             'context' => 'list',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
         $propertyAccessor = new PropertyAccessor();
@@ -207,7 +208,7 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertSame(400, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertSame(json_encode("error1\nerror2"), $response->getContent());
     }
 
@@ -220,7 +221,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             'field' => 'status',
             'value' => [1, 2],
             'context' => 'list',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
         $pool = $this->prophesize(Pool::class);
@@ -257,6 +258,6 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         $response = ($this->action)($request);
 
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 }
