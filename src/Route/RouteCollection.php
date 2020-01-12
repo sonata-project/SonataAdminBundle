@@ -162,12 +162,7 @@ class RouteCollection
         return \array_key_exists($this->getCode($name), $this->elements);
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function hasCached($name)
+    final public function hasCached(string $name): bool
     {
         return \array_key_exists($this->getCode($name), $this->cachedElements);
     }
@@ -204,13 +199,9 @@ class RouteCollection
     }
 
     /**
-     * @param string $name
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return RouteCollection
      */
-    public function restore($name)
+    final public function restore(string $name): self
     {
         if ($this->hasCached($name)) {
             $code = $this->getCode($name);
@@ -317,27 +308,20 @@ class RouteCollection
     }
 
     /**
-     * @param string         $code
      * @param Route|callable $element
      */
-    protected function addElement($code, $element)
+    final protected function addElement(string $code, $element): void
     {
         $this->elements[$code] = $element;
         $this->updateCachedElement($code);
     }
 
-    /**
-     * @param string $code
-     */
-    protected function updateCachedElement($code)
+    final protected function updateCachedElement(string $code): void
     {
         $this->cachedElements[$code] = $this->elements[$code];
     }
 
-    /**
-     * @param string $code
-     */
-    private function resolveElement($code)
+    private function resolveElement(string $code): void
     {
         $element = $this->elements[$code];
 
