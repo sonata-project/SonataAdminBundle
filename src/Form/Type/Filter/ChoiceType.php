@@ -29,17 +29,17 @@ use Symfony\Component\Translation\TranslatorInterface;
 class ChoiceType extends AbstractType
 {
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use ContainsOperatorType::TYPE_CONTAINS instead
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use ContainsOperatorType::TYPE_CONTAINS instead
      */
     public const TYPE_CONTAINS = 1;
 
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use ContainsOperatorType::TYPE_NOT_CONTAINS instead
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use ContainsOperatorType::TYPE_NOT_CONTAINS instead
      */
     public const TYPE_NOT_CONTAINS = 2;
 
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use ContainsOperatorType::TYPE_EQUAL instead
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use ContainsOperatorType::TYPE_EQUAL instead
      */
     public const TYPE_EQUAL = 3;
 
