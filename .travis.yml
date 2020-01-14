@@ -33,7 +33,7 @@ env:
     - SYMFONY_DEPRECATIONS_HELPER=max[self]=0
     - TARGET=test
     - UPSTREAM_URL=https://github.com/sonata-project/SonataAdminBundle.git
-    - PHPUNIT_VERSION=7
+    - PHPUNIT_VERSION=8
 
 matrix:
   fast_finish: true
@@ -45,24 +45,18 @@ matrix:
     - php: '7.2'
       env: COMPOSER_FLAGS="--prefer-lowest"
     - php: '7.3'
-      env: SYMFONY=3.4.*
+      env: SYMFONY=4.4.*
     - php: '7.3'
-      env: SYMFONY='dev-master as 3.4.x-dev'
+      env: SYMFONY=5.0.*
     - php: '7.3'
-      env: SONATA_CORE='dev-master as 3.x-dev'
-    - php: '7.3'
-      env: SONATA_BLOCK=3.*
-    - php: '7.3'
-      env: SONATA_BLOCK='dev-master as 3.x-dev'
+      env: SYMFONY='dev-master as 5.0.x-dev'
     - php: '7.3'
       env: SYMFONY_DEPRECATIONS_HELPER=0
   allow_failures:
     - php: 7.4snapshot
     - php: nightly
     - env: SYMFONY_DEPRECATIONS_HELPER=0
-    - env: SYMFONY='dev-master as 3.4.x-dev'
-    - env: SONATA_CORE='dev-master as 3.x-dev'
-    - env: SONATA_BLOCK='dev-master as 3.x-dev'
+    - env: SYMFONY='dev-master as 5.0.x-dev'
 
 before_install:
   - git remote add upstream ${UPSTREAM_URL} && git fetch --all
