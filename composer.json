@@ -64,7 +64,7 @@
     },
     "require-dev": {
         "jms/translation-bundle": "^1.4",
-        "matthiasnoback/symfony-dependency-injection-test": "^3.1",
+        "matthiasnoback/symfony-dependency-injection-test": "^4.0",
         "sonata-project/intl-bundle": "^2.4",
         "symfony/browser-kit": "^3.4 || ^4.2",
         "symfony/css-selector": "^3.4 || ^4.3",
