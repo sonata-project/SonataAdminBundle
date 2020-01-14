@@ -29,37 +29,37 @@ use Symfony\Component\Translation\TranslatorInterface;
 class DateType extends AbstractType
 {
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use DateOperatorType::TYPE_GREATER_EQUAL instead
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateOperatorType::TYPE_GREATER_EQUAL instead
      */
     public const TYPE_GREATER_EQUAL = 1;
 
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use DateOperatorType::TYPE_GREATER_THAN instead
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateOperatorType::TYPE_GREATER_THAN instead
      */
     public const TYPE_GREATER_THAN = 2;
 
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use DateOperatorType::TYPE_EQUAL instead
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateOperatorType::TYPE_EQUAL instead
      */
     public const TYPE_EQUAL = 3;
 
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use DateOperatorType::TYPE_LESS_EQUAL instead
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateOperatorType::TYPE_LESS_EQUAL instead
      */
     public const TYPE_LESS_EQUAL = 4;
 
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use DateOperatorType::TYPE_LESS_THAN instead
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateOperatorType::TYPE_LESS_THAN instead
      */
     public const TYPE_LESS_THAN = 5;
 
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use DateOperatorType::TYPE_NULL instead
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateOperatorType::TYPE_NULL instead
      */
     public const TYPE_NULL = 6;
 
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use DateOperatorType::TYPE_NOT_NULL instead
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateOperatorType::TYPE_NOT_NULL instead
      */
     public const TYPE_NOT_NULL = 7;
 

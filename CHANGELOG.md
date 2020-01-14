@@ -2,6 +2,27 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.57.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.56.1...3.57.0) - 2020-01-13
+### Added
+- Added OperatorType usable in CallbackFilter
+- Multiple editable fields now is a real multiple.
+- Toggle edit button `sonata_type_model_list_widget` after operations
+  add/list/remove
+
+## Fixed
+- php 7.4 compatibility
+- Fixed help messages not showing up in one to many inline tables.
+
+### Changed
+- Include the `edit_modal` and `edit_many_script` templates only if there is at
+  least one displayed button that need them (instead of always include them).
+- `IfTrue` and `IfFalse` apply correctly to tab and with functions. Nested
+  `IfTrue` and `IfFalse` work as expected and do not throws exception anymore
+- Mapper methods now throw `LogicException` instead of `RuntimeException`
+
+### Deprecated
+- The use of string names to reference filters
+
 ## [3.56.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.56.0...3.56.1) - 2019-12-07
 ### Fixed
 - Ability of using string names and FQCNs to define filter types
