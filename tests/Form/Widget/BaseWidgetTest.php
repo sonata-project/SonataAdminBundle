@@ -92,8 +92,11 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
      */
     protected function getTemplatePaths(): array
     {
-        return array_merge(parent::getTemplatePaths(), [
+        $twigPaths = array_filter([
+            __DIR__.'/../../../vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form',
             __DIR__.'/../../../src/Resources/views/Form',
-        ]);
+        ], 'is_dir');
+
+        return array_merge(parent::getTemplatePaths(), $twigPaths);
     }
 }
