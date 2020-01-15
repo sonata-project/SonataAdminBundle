@@ -29,10 +29,11 @@ src/Resources/public/vendor/iCheck/icheck.js
 src/Resources/public/vendor/slimScroll/examples
 src/Resources/public/vendor/slimScroll/jquery.slimscroll.js
 
-src/Resources/public/vendor/bootstrap/grunt
-src/Resources/public/vendor/bootstrap/less
-src/Resources/public/vendor/bootstrap/test-infra
-src/Resources/public/vendor/bootstrap/Gruntfile.js
+!src/Resources/public/vendor/bootstrap/dist
+src/Resources/public/vendor/bootstrap/
+
+!src/Resources/public/vendor/eonasdan-bootstrap-datetimepicker/build
+src/Resources/public/vendor/eonasdan-bootstrap-datetimepicker/
 
 src/Resources/public/vendor/jqueryui/themes/black-tie
 src/Resources/public/vendor/jqueryui/themes/blitzer
@@ -62,3 +63,10 @@ src/Resources/public/vendor/jquery/src
 
 src/Resources/public/vendor/jquery.scrollTo/demo
 src/Resources/public/vendor/jquery.scrollTo/tests
+
+src/Resources/public/vendor/moment/src
+
+src/Resources/public/vendor/ionicons/png
+
+src/Resources/public/vendor/select2-bootstrap-css/*
+!src/Resources/public/vendor/select2-bootstrap-css/select2-bootstrap.min.css
