@@ -18,7 +18,6 @@ use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
@@ -40,24 +39,18 @@ class AdminListBlockService extends AbstractBlockService
      */
     private $templateRegistry;
 
-    /**
-     * NEXT_MAJOR: Remove `$templating` argument.
-     *
-     * @param Environment|string $twigOrName
-     */
     public function __construct(
-        $twigOrName,
-        ?EngineInterface $templating,
+        Environment $twig,
         Pool $pool,
         TemplateRegistryInterface $templateRegistry = null
     ) {
-        parent::__construct($twigOrName, $templating);
+        parent::__construct($twig);
 
         $this->pool = $pool;
         $this->templateRegistry = $templateRegistry ?: new TemplateRegistry();
     }
 
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
     {
         $dashboardGroups = $this->pool->getDashboardGroups();
 
@@ -76,11 +69,6 @@ class AdminListBlockService extends AbstractBlockService
             'admin_pool' => $this->pool,
             'groups' => $visibleGroups,
         ], $response);
-    }
-
-    public function getName()
-    {
-        return 'Admin List';
     }
 
     public function configureSettings(OptionsResolver $resolver): void

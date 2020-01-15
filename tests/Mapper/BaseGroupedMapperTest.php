@@ -203,20 +203,20 @@ class BaseGroupedMapperTest extends TestCase
         $this->baseGroupedMapper->end();
     }
 
-    public function labelDataProvider()
+    public function labelDataProvider(): array
     {
         return [
-            'nominal use case not translated' => [false, 'fooGroup1', null, 'fooGroup1'],
-            'nominal use case translated' => [true, 'fooGroup1', null, 'label_foogroup1'],
-            'custom label not translated' => [false, 'fooGroup1', 'custom_label', 'custom_label'],
-            'custom label translated' => [true, 'fooGroup1', 'custom_label', 'custom_label'],
+            'nominal use case not translated' => [false, 'default', 'fooGroup1', null, 'fooGroup1'],
+            'nominal use case translated' => [true, 'label_default', 'fooGroup1', null, 'label_foogroup1'],
+            'custom label not translated' => [false, 'default', 'fooGroup1', 'custom_label', 'custom_label'],
+            'custom label translated' => [true, 'label_default', 'fooGroup1', 'custom_label', 'custom_label'],
         ];
     }
 
     /**
      * @dataProvider labelDataProvider
      */
-    public function testLabel(string $translated, string $name, ?string $label, string $expectedLabel): void
+    public function testLabel(bool $parameter, string $translated, string $name, ?string $label, string $expectedLabel): void
     {
         $container = $this->baseGroupedMapper
             ->getAdmin()
@@ -225,7 +225,7 @@ class BaseGroupedMapperTest extends TestCase
 
         $container
             ->method('getParameter')
-            ->willReturn($translated);
+            ->willReturn($parameter);
 
         $options = [];
 
@@ -235,7 +235,7 @@ class BaseGroupedMapperTest extends TestCase
 
         $this->baseGroupedMapper->with($name, $options);
 
-        $this->assertSame($translated ? 'label_default' : 'default', $this->tabs['default']['label']);
+        $this->assertSame($translated, $this->tabs['default']['label']);
         $this->assertSame($expectedLabel, $this->groups[$name]['label']);
     }
 

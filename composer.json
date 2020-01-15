@@ -22,13 +22,15 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.3",
         "doctrine/common": "^2.7",
         "doctrine/inflector": "^1.1",
         "knplabs/knp-menu-bundle": "^2.2.2",
-        "sonata-project/block-bundle": "^3.18 || ^4.0@dev",
-        "sonata-project/core-bundle": "^3.17.0",
+        "sonata-project/block-bundle": "^4.0",
+        "sonata-project/doctrine-extensions": "^1.4",
         "sonata-project/exporter": "^1.11.0 || ^2.0",
+        "sonata-project/form-extensions": "^1.1.2",
+        "sonata-project/twig-extensions": "^1.1.1",
         "symfony/asset": "^3.4.30 || ^4.2",
         "symfony/config": "^3.4.30 || ^4.2",
         "symfony/console": "^3.4.30 || ^4.2",
@@ -53,7 +55,7 @@
         "symfony/twig-bundle": "^3.4.30 || ^4.2",
         "symfony/validator": "^3.4.30 || ^4.2",
         "twig/extensions": "^1.5",
-        "twig/twig": "^2.10"
+        "twig/twig": "^2.12"
     },
     "conflict": {
         "doctrine/doctrine-bundle": ">=3",
@@ -64,7 +66,7 @@
     },
     "require-dev": {
         "jms/translation-bundle": "^1.4",
-        "matthiasnoback/symfony-dependency-injection-test": "^3.1",
+        "matthiasnoback/symfony-dependency-injection-test": "^4.1",
         "sonata-project/intl-bundle": "^2.4",
         "symfony/browser-kit": "^3.4 || ^4.2",
         "symfony/css-selector": "^3.4 || ^4.3",

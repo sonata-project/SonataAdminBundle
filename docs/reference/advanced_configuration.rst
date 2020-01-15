@@ -358,7 +358,6 @@ You can add or override filter parameters to the Tab Menu::
         }
     }
 
-The `Delivery` class is based on the `sonata_type_translatable_choice` example inside the `Core's documentation`_.
 
 Actions Menu
 ------------
@@ -450,4 +449,3 @@ by overriding ``checkAccess`` function::
         }
     }
 
-.. _`Core's documentation`: http://sonata-project.org/bundles/core/master/doc/reference/form_types.html#sonata-type-translatable-choice
