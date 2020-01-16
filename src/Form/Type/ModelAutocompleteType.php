@@ -51,6 +51,7 @@ class ModelAutocompleteType extends AbstractType
         );
         $builder->setAttribute('to_string_callback', $options['to_string_callback']);
         $builder->setAttribute('target_admin_access_action', $options['target_admin_access_action']);
+        $builder->setAttribute('response_item_callback', $options['response_item_callback']);
 
         if ($options['multiple']) {
             $resizeListener = new ResizeFormListener(HiddenType::class, [], true, true, true);
@@ -108,10 +109,12 @@ class ModelAutocompleteType extends AbstractType
         $resolver->setDefaults([
             'attr' => [],
             'compound' => $compound,
+            'error_bubbling' => false,
             'model_manager' => null,
             'class' => null,
             'admin_code' => null,
             'callback' => null,
+            'response_item_callback' => null,
             'multiple' => false,
             'width' => '',
             'context' => '',
