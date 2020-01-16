@@ -23,7 +23,13 @@ file that was distributed with this source code.
 {% set _list_filters_actions = block('list_filters_actions') is defined ? block('list_filters_actions')|trim : null -%}
 
 <!DOCTYPE html>
-<html {% block html_attributes %}class="no-js"{% endblock %} lang="en">
+<html {% block html_attributes %}
+        class="no-js"
+      {% endblock %}
+      momentLocale="{{ canonicalize_locale_for_moment() }}"
+      select2Locale="{{ canonicalize_locale_for_select2() }}"
+      lang="en"
+>
     <head>
         {% block meta_tags %}
             <meta http-equiv="X-UA-Compatible" content="IE=edge">

@@ -23,21 +23,22 @@ import "waypoints/lib/shortcuts/sticky.min"
 import "select2"
 
 // Loading langugage files for select2
-let language = window.navigator.userLanguage || window.navigator.language;
-language = language.split("-")[0];
+let fallbackLocale = window.navigator.language;
+let languageSelect2 = document.documentElement.getAttribute('select2Locale') || fallbackLocale
+let languageMoment = document.documentElement.getAttribute('momentLocale') || fallbackLocale
 
-import(`select2/select2_locale_${language}.js`).then(() => {
+import(`select2/select2_locale_${languageSelect2}.js`).then(() => {
     // set <html lang="{{language}}">
-    document.documentElement.setAttribute('lang', language)
+    document.documentElement.setAttribute('lang', languageSelect2)
 }).catch('failed to import select2 locale')
 
 // Configure momentJS locale
 import("moment").then(moment => {
-    moment.locale(language)
+    moment.locale(languageMoment)
 }).catch('failed to configure momentJS locale')
 
 // Load momentJS locale component
-import("moment/locale/" + language + '.js')
+import("moment/locale/" + languageMoment + '.js')
     .catch('failed to load language component for momentJS')
 
 import "readmore-js"
