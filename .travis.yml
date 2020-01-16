@@ -46,6 +46,8 @@ matrix:
     - php: '7.3'
       env: SYMFONY=4.4.*
     - php: '7.3'
+      env: SYMFONY=5.0.*
+    - php: '7.3'
       env: SYMFONY='dev-master as 5.0.x-dev'
     - php: '7.3'
       env: SYMFONY_DEPRECATIONS_HELPER=0
