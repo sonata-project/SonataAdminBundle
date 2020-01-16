@@ -562,7 +562,11 @@ file that was distributed with this source code.
 
     <script>
         jQuery(document).ready(function() {
-            Admin.setup_sortable_select2(jQuery('#{{ id }}'), {{ form.vars.choices|json_encode|raw }});
+            var options = {};
+
+            {% block sonata_type_model_autocomplete_select2_options_js %}{% endblock %}
+
+            Admin.setup_sortable_select2(jQuery('#{{ id }}'), {{ form.vars.choices|json_encode|raw }}, options);
         });
     </script>
 {% endblock %}
