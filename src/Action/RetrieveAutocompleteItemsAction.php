@@ -16,8 +16,8 @@ namespace Sonata\AdminBundle\Action;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,6 +68,7 @@ final class RetrieveAutocompleteItemsAction
             $reqParamPageNumber = $filterAutocomplete->getFieldOption('req_param_name_page_number', '_page');
             $toStringCallback = $filterAutocomplete->getFieldOption('to_string_callback');
             $targetAdminAccessAction = $filterAutocomplete->getFieldOption('target_admin_access_action', 'list');
+            $resultItemCallback = $filterAutocomplete->getFieldOption('response_item_callback');
         } else {
             // create/edit form
             $fieldDescription = $this->retrieveFormFieldDescription($admin, $request->get('field'));
@@ -87,6 +88,7 @@ final class RetrieveAutocompleteItemsAction
             $reqParamPageNumber = $formAutocompleteConfig->getAttribute('req_param_name_page_number');
             $toStringCallback = $formAutocompleteConfig->getAttribute('to_string_callback');
             $targetAdminAccessAction = $formAutocompleteConfig->getAttribute('target_admin_access_action');
+            $resultItemCallback = $formAutocompleteConfig->getAttribute('response_item_callback');
         }
 
         $searchText = $request->get('q');
@@ -102,6 +104,7 @@ final class RetrieveAutocompleteItemsAction
 
         $targetAdmin->setFilterPersister(null);
         $datagrid = $targetAdmin->getDatagrid();
+        $this->clearDatagridFilters($datagrid);
 
         if (null !== $callback) {
             if (!\is_callable($callback)) {
@@ -161,10 +164,16 @@ final class RetrieveAutocompleteItemsAction
                 $label = $resultMetadata->getTitle();
             }
 
-            $items[] = [
-                'id' => $admin->id($entity),
+            $item = [
+                'id'    => $admin->id($entity),
                 'label' => $label,
             ];
+
+            if (is_callable($resultItemCallback)) {
+                call_user_func($resultItemCallback, $admin, $entity, $item);
+            }
+
+            $items[] = $item;
         }
 
         return new JsonResponse([
@@ -220,5 +229,15 @@ final class RetrieveAutocompleteItemsAction
         }
 
         return $fieldDescription;
+    }
+
+    /**
+     * @param DatagridInterface $datagrid
+     */
+    private function clearDatagridFilters(DatagridInterface $datagrid)
+    {
+        foreach ($datagrid->getFilters() as $filter) {
+            $datagrid->setValue($filter->getName(), null, null);
+        }
     }
 }
