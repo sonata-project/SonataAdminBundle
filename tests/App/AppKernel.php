@@ -26,6 +26,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use Symfony\WebpackEncoreBundle\WebpackEncoreBundle;
 
 final class AppKernel extends Kernel
 {
@@ -47,6 +48,7 @@ final class AppKernel extends Kernel
             new SonataDoctrineBundle(),
             new SonataTwigBundle(),
             new SonataAdminBundle(),
+            new WebpackEncoreBundle(),
         ];
     }
 
@@ -84,6 +86,13 @@ final class AppKernel extends Kernel
         $containerBuilder->loadFromExtension('security', [
             'firewalls' => ['main' => ['anonymous' => true]],
             'providers' => ['in_memory' => ['memory' => null]],
+        ]);
+
+        $containerBuilder->loadFromExtension('webpack_encore', [
+            'output_path' => '%kernel.project_dir%/public/build',
+            'builds' => [
+                'sonata_admin' => '%kernel.project_dir%/public/bundles/sonataadmin/dist',
+            ],
         ]);
 
         $loader->load($this->getProjectDir().'/config/services.yml');
