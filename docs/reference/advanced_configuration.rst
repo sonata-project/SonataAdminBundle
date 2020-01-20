@@ -366,7 +366,7 @@ Actions Menu
 You can add custom items to the actions menu for a specific action by
 overriding the following method::
 
-    public function configureActionButtons(AdminInterface $admin, $list, array $action, $object)
+    public function configureActionButtons(AdminInterface $admin, $list, $action, $object)
     {
         if (in_array($action, ['show', 'edit', 'acl']) && $object) {
             $list['custom'] = [

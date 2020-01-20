@@ -28,7 +28,7 @@ use Sonata\Form\Validator\ErrorElement;
  * @method array getAccessMapping(AdminInterface $admin)
  * @method array configureBatchActions(AdminInterface $admin, array $actions)
  * @method array configureExportFields(AdminInterface $admin, array $fields)
- * @method array configureActionButtons(AdminInterface $admin, array $list, array $action, object $object)
+ * @method array configureActionButtons(AdminInterface $admin, array $list, $action, object $object)
  * @method void  configureDefaultFilterValues(AdminInterface $admin, array &$filterValues)
  */
 interface AdminExtensionInterface
@@ -156,7 +156,7 @@ interface AdminExtensionInterface
      * Get all action buttons for an action
      */
     // TODO: Uncomment in next major release
-    // public function configureActionButtons(AdminInterface $admin, array $list, array $action, object $object): array;
+    // public function configureActionButtons(AdminInterface $admin, array $list, $action, object $object): array;
 
     /*
      * NEXT_MAJOR: Uncomment in next major release

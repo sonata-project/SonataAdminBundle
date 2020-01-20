@@ -265,9 +265,9 @@ Now, instead of adding the action to the form mapper, we can add it next to
 the add button. In your admin class, overwrite the ``configureActionButtons``
 method::
 
-    public function configureActionButtons(array $action, $object = null)
+    public function configureActionButtons($action, $object = null)
     {
-        $list = parent::configureActionButtons(array $action, $object);
+        $list = parent::configureActionButtons($action, $object);
 
         $list['import']['template'] = 'import_button.html.twig';
 

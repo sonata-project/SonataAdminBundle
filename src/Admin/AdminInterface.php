@@ -676,7 +676,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /*
      * Configure buttons for an action
      */
-    // public function configureActionButtons(array $action, ?object $object = null): array;
+    // public function configureActionButtons($action, ?object $object = null): array;
 
     //TODO: uncomment this method for 4.0
     /*

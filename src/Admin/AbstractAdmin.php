@@ -2657,12 +2657,12 @@ EOT;
     }
 
     /**
-     * @param array      $action
+     * @param mixed      $action
      * @param object|null $object
      *
      * @return array
      */
-    public function configureActionButtons(array $action, $object = null)
+    public function configureActionButtons($action, $object = null)
     {
         $list = [];
 
@@ -2738,12 +2738,12 @@ EOT;
     }
 
     /**
-     * @param array $action
+     * @param mixed $action
      * @param object $object
      *
      * @return array
      */
-    public function getActionButtons(array $action, $object = null)
+    public function getActionButtons($action, $object = null)
     {
         $list = $this->configureActionButtons($action, $object);
 
