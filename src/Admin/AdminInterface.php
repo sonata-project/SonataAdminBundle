@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @method array  configureActionButtons(array $action, ?object $object = null)
+ * @method array  configureActionButtons($action, ?object $object = null)
  * @method string getSearchResultLink(object $object)
  * @method void   showMosaicButton(bool $isShown)
  * @method bool   isDefaultFilter(string $name)
@@ -44,7 +44,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @method array            getSubClasses
  * @method AdminInterface   getRoot
  * @method string           getRootCode
- * @method array getActionButtons(array $action, ?object $object)
+ * @method array getActionButtons($action, ?object $object)
  */
 interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
