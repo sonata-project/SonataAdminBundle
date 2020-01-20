@@ -1966,7 +1966,7 @@ class AdminTest extends TestCase
             ->willReturn(true);
         $admin->setRouteGenerator($routeGenerator);
 
-        $this->assertSame($expected, $admin->getActionButtons('list', null));
+        $this->assertSame($expected, $admin->getActionButtons(['list'], null));
     }
 
     /**
@@ -1984,7 +1984,7 @@ class AdminTest extends TestCase
             ->willReturn(false);
         $admin->setSecurityHandler($securityHandler);
 
-        $this->assertSame([], $admin->getActionButtons('list', null));
+        $this->assertSame([], $admin->getActionButtons(['list'], null));
     }
 
     /**
