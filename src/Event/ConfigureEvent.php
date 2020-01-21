@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Event;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Mapper\BaseMapper;
-use Symfony\Component\EventDispatcher\Event;
 
 /**
  * This event is sent by hook:
@@ -32,7 +31,7 @@ use Symfony\Component\EventDispatcher\Event;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ConfigureEvent extends Event
+class ConfigureEvent extends AbstractEvent
 {
     public const TYPE_SHOW = 'show';
     public const TYPE_DATAGRID = 'datagrid';

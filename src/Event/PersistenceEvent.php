@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Event;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Symfony\Component\EventDispatcher\Event;
 
 /**
  * This event is sent by hook:
@@ -30,7 +29,7 @@ use Symfony\Component\EventDispatcher\Event;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class PersistenceEvent extends Event
+class PersistenceEvent extends AbstractEvent
 {
     public const TYPE_PRE_UPDATE = 'pre_update';
     public const TYPE_POST_UPDATE = 'post_update';

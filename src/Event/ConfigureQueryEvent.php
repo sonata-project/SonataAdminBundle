@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Event;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Symfony\Component\EventDispatcher\Event;
 
 /**
  * This event is sent by hook:
@@ -29,7 +28,7 @@ use Symfony\Component\EventDispatcher\Event;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ConfigureQueryEvent extends Event
+class ConfigureQueryEvent extends AbstractEvent
 {
     /**
      * @var AdminInterface

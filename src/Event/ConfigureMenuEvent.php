@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Event;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Menu builder event. Used for extending the menus.
@@ -24,7 +23,7 @@ use Symfony\Component\EventDispatcher\Event;
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */
-class ConfigureMenuEvent extends Event
+class ConfigureMenuEvent extends AbstractEvent
 {
     public const SIDEBAR = 'sonata.admin.event.configure.menu.sidebar';
 

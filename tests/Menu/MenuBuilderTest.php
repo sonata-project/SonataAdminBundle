@@ -22,6 +22,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Event\ConfigureMenuEvent;
 use Sonata\AdminBundle\Menu\MenuBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 
 class MenuBuilderTest extends TestCase
 {
@@ -132,13 +133,20 @@ class MenuBuilderTest extends TestCase
 
         $this->preparePool($adminGroups);
 
+        $args = [
+            $this->equalTo('sonata.admin.event.configure.menu.sidebar'),
+            $this->isInstanceOf(ConfigureMenuEvent::class),
+        ];
+
+        if (class_exists(LegacyEventDispatcherProxy::class)) {
+            $args = array_reverse($args);
+        }
+
         $this->eventDispatcher
             ->expects($this->once())
             ->method('dispatch')
-            ->with(
-                $this->equalTo('sonata.admin.event.configure.menu.sidebar'),
-                $this->isInstanceOf(ConfigureMenuEvent::class)
-            );
+            ->with(...$args)
+        ;
 
         $this->builder->createSidebarMenu();
     }

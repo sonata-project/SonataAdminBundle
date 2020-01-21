@@ -18,6 +18,7 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Event\ConfigureMenuEvent;
+use Sonata\AdminBundle\Event\EventDispatcherHelper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -93,7 +94,7 @@ class MenuBuilder
         }
 
         $event = new ConfigureMenuEvent($this->factory, $menu);
-        $this->eventDispatcher->dispatch(ConfigureMenuEvent::SIDEBAR, $event);
+        EventDispatcherHelper::dispatch($this->eventDispatcher, $event, ConfigureMenuEvent::SIDEBAR);
 
         return $event->getMenu();
     }

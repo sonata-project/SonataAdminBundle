@@ -21,10 +21,12 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Event\AdminEventExtension;
 use Sonata\AdminBundle\Event\ConfigureEvent;
+use Sonata\AdminBundle\Event\ConfigureQueryEvent;
 use Sonata\AdminBundle\Event\PersistenceEvent;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 
 class AdminEventExtensionTest extends TestCase
 {
@@ -32,6 +34,11 @@ class AdminEventExtensionTest extends TestCase
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $stub = $eventDispatcher->expects($this->once())->method('dispatch');
+
+        if (class_exists(LegacyEventDispatcherProxy::class)) {
+            $args = array_reverse($args);
+        }
+
         $stub->with(...$args);
 
         return new AdminEventExtension($eventDispatcher);
@@ -127,6 +134,7 @@ class AdminEventExtensionTest extends TestCase
     {
         $this->getExtension([
             $this->equalTo('sonata.admin.event.configure.query'),
+            $this->isInstanceOf(ConfigureQueryEvent::class),
         ])->configureQuery($this->createMock(AdminInterface::class), $this->createMock(ProxyQueryInterface::class));
     }
 
