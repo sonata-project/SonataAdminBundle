@@ -665,33 +665,6 @@ class AdminTest extends TestCase
         $this->assertSame($uniqid, $admin->getUniqid());
     }
 
-    public function testUniqidConsistency(): void
-    {
-        $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
-            'sonata.abstract.admin',
-            'AbstractBundle\Entity\Foo',
-            'SonataAbstractBundle:FooAdmin',
-        ]);
-        $admin->initialize();
-
-        $uniqid = $admin->getUniqid();
-        $admin->setUniqid(null);
-
-        $this->assertSame($uniqid, $admin->getUniqid());
-
-        $parentAdmin = $this->getMockForAbstractClass(AbstractAdmin::class, [
-            'sonata.abstract.parent.admin',
-            'AbstractBundle\Entity\Bar',
-            'SonataAbstractBundle:BarAdmin',
-        ]);
-        $parentAdmin->initialize();
-
-        $admin->setParent($parentAdmin);
-        $admin->setUniqid(null);
-
-        $this->assertNotSame($uniqid, $admin->getUniqid());
-    }
-
     public function testToString(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
