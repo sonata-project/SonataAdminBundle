@@ -26,6 +26,7 @@ class AnnotationCompilerPassTest extends TestCase
      */
     public function testInvalidAdminAnnotation(): void
     {
+        $this->markTestSkipped();
         /*
          * @Admin(class="Sonata\AdminBundle\Tests\Fixtures\Foo")
          */
@@ -45,6 +46,7 @@ class AnnotationCompilerPassTest extends TestCase
 
     public function testEmbeddedAdmin(): void
     {
+        $this->markTestSkipped();
         /*
          * @Admin(
          *   class="Sonata\Admin\Entity\Tests\Fixtures\Foo",
@@ -74,6 +76,7 @@ class AnnotationCompilerPassTest extends TestCase
 
     public function testMinimalAdmin(): void
     {
+        $this->markTestSkipped();
         /*
          * @Admin(class="Sonata\AdminBundle\Entity\Foo")
          */
@@ -99,6 +102,7 @@ class AnnotationCompilerPassTest extends TestCase
 
     public function testIdForAdmin(): void
     {
+        $this->markTestSkipped();
         /*
          * @Admin(class="Sonata\AdminBundle\Entity\Foo", id="my.id")
          */
@@ -115,6 +119,7 @@ class AnnotationCompilerPassTest extends TestCase
 
     public function testAdmin(): void
     {
+        $this->markTestSkipped();
         /*
          * @Admin(
          *      class="Sonata\AdminBundle\Entity\Foo",

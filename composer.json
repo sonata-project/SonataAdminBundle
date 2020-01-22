@@ -63,7 +63,6 @@
         "sonata-project/user-bundle": "<3.3"
     },
     "require-dev": {
-        "jms/di-extra-bundle": "^1.9",
         "jms/translation-bundle": "^1.4",
         "matthiasnoback/symfony-dependency-injection-test": "^3.1",
         "sonata-project/intl-bundle": "^2.4",
