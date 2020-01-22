@@ -1528,6 +1528,10 @@ class CRUDControllerTest extends TestCase
             ->with($object)
             ->willReturn(\stdClass::class);
 
+        $this->translator->expects($this->once())
+            ->method('trans')
+            ->willReturn('flash message');
+
         $this->admin->expects($this->once())
             ->method('delete')
             ->with($object);
@@ -1932,6 +1936,10 @@ class CRUDControllerTest extends TestCase
             ->method('createView')
             ->willReturn($formView);
 
+        $this->translator->expects($this->once())
+            ->method('trans')
+            ->willReturn('flash message');
+
         $this->assertInstanceOf(Response::class, $response = $this->controller->editAction(null));
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
@@ -1939,7 +1947,9 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('edit', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
         $this->assertSame($object, $this->parameters['object']);
-        $this->assertSame(['sonata_flash_error' => [0 => null]], $this->session->getFlashBag()->all());
+        $this->assertSame([
+            'sonata_flash_error' => [0 => 'flash message'],
+        ], $this->session->getFlashBag()->all());
         $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
@@ -2702,6 +2712,10 @@ class CRUDControllerTest extends TestCase
             ->method('createView')
             ->willReturn($formView);
 
+        $this->translator->expects($this->once())
+            ->method('trans')
+            ->willReturn('flash message');
+
         $this->assertInstanceOf(Response::class, $response = $this->controller->createAction());
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
@@ -2709,7 +2723,9 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('create', $this->parameters['action']);
         $this->assertInstanceOf(FormView::class, $this->parameters['form']);
         $this->assertSame($object, $this->parameters['object']);
-        $this->assertSame(['sonata_flash_error' => [0 => null]], $this->session->getFlashBag()->all());
+        $this->assertSame([
+            'sonata_flash_error' => [0 => 'flash message'],
+        ], $this->session->getFlashBag()->all());
         $this->assertSame('@SonataAdmin/CRUD/edit.html.twig', $this->template);
     }
 
