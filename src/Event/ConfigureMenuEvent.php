@@ -15,7 +15,7 @@ namespace Sonata\AdminBundle\Event;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Menu builder event. Used for extending the menus.
