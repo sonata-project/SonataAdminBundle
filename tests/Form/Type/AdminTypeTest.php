@@ -21,9 +21,9 @@ use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
 use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
+use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
-use Symfony\Component\Form\Tests\Fixtures\TestExtension;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
