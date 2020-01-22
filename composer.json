@@ -66,7 +66,6 @@
         "jms/di-extra-bundle": "^1.9",
         "jms/translation-bundle": "^1.4",
         "matthiasnoback/symfony-dependency-injection-test": "^3.1",
-        "sensio/generator-bundle": "^3.1",
         "sonata-project/intl-bundle": "^2.4",
         "symfony/browser-kit": "^4.3",
         "symfony/css-selector": "^4.3",
