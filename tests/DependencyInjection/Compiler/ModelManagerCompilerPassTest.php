@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Sonata\AdminBundle\Command\GenerateAdminCommand;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\Maker\AdminMaker;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -30,16 +29,12 @@ class ModelManagerCompilerPassTest extends TestCase
      * @var AdminMaker
      */
     private $adminMaker;
-    private $generateAdminCommand;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->adminMaker = $this->prophesize(Definition::class);
         $this->adminMaker->replaceArgument(Argument::type('integer'), Argument::any())->shouldBeCalledTimes(1);
-
-        $this->generateAdminCommand = $this->prophesize(Definition::class);
-        $this->generateAdminCommand->replaceArgument(Argument::type('integer'), Argument::any())->shouldBeCalledTimes(1);
     }
 
     public function testProcess(): void
@@ -61,9 +56,6 @@ class ModelManagerCompilerPassTest extends TestCase
             ->willReturn(null);
         $containerBuilderMock->getParameter(Argument::containingString('kernel.project_dir'))
             ->willReturn(null);
-
-        $containerBuilderMock->getDefinition(Argument::exact(GenerateAdminCommand::class))
-            ->willReturn($this->generateAdminCommand->reveal());
 
         $compilerPass = new ModelManagerCompilerPass();
         $compilerPass->process($containerBuilderMock->reveal());

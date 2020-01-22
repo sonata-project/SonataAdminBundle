@@ -135,6 +135,15 @@ There is no replacement for this method.
 You can still use the `AbstractAdmin::setCode()` method to set the code
 of an admin.
 
+UPGRADE FROM 3.57 to 3.58
+=========================
+
+## Dropped generator commands
+
+`sonata:admin:generate` was based on the SensioGeneratorBundle, which is
+incompatible with Symfony 4 and is no longer maintained. Please use
+`make:sonata:admin` instead.
+
 UPGRADE FROM 3.20 to 3.21
 =========================
 
