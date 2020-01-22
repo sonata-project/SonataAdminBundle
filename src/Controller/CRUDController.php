@@ -66,16 +66,6 @@ class CRUDController implements ContainerAwareInterface
      */
     private $templateRegistry;
 
-    // BC for Symfony 3.3 where ControllerTrait exists but does not contain get() and has() methods.
-    public function __call($method, $arguments)
-    {
-        if (\in_array($method, ['get', 'has'], true)) {
-            return $this->container->{$method}(...$arguments);
-        }
-
-        throw new \LogicException('Call to undefined method '.__CLASS__.'::'.$method);
-    }
-
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;

@@ -143,17 +143,10 @@ class MenuBuilderTest extends TestCase
         $this->builder->createSidebarMenu();
     }
 
-    private function preparePool(array $adminGroups, ?AdminInterface $admin = null): void
+    private function preparePool(array $adminGroups): void
     {
         $this->pool->expects($this->once())
             ->method('getAdminGroups')
             ->willReturn($adminGroups);
-
-        if (null !== $admin) {
-            $this->pool->expects($this->once())
-                ->method('getInstance')
-                ->with($this->equalTo('sonata_admin_foo_service'))
-                ->willReturn($admin);
-        }
     }
 }

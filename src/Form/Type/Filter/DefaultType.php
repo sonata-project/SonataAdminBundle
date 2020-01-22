@@ -27,16 +27,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class DefaultType extends AbstractType
 {
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
     public function getBlockPrefix()
     {
         return 'sonata_type_filter_default';

@@ -52,16 +52,6 @@ class DateTimeRangeType extends AbstractType
         $this->translator = $translator;
     }
 
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
     public function getBlockPrefix()
     {
         return 'sonata_type_filter_datetime_range';
