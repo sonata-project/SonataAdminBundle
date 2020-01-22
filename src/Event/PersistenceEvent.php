@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Event;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * This event is sent by hook:
