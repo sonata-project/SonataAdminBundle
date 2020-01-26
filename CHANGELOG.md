@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.58.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.57.0...3.58.0) - 2020-01-26
+### Fixed
+- Revert to trully unique uniqid for admins
+- Deprecations for event dispatching
+
+### Removed
+- Support for Symfony < 4.3
+
 ## [3.57.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.56.1...3.57.0) - 2020-01-13
 ### Added
 - Added OperatorType usable in CallbackFilter
