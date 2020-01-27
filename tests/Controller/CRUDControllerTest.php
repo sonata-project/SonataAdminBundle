@@ -1482,6 +1482,10 @@ class CRUDControllerTest extends TestCase
             ->with($object)
             ->willReturn('some class');
 
+        $this->translator->expects($this->once())
+            ->method('trans')
+            ->willReturn('flash message');
+
         $this->admin->expects($this->once())
             ->method('delete')
             ->with($object);

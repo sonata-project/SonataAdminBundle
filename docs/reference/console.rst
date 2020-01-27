@@ -106,5 +106,4 @@ of the command for more information.
 
     bin/console sonata:admin:generate-object-acl
 
-.. _SensioGeneratorBundle: http://symfony.com/doc/current/bundles/SensioGeneratorBundle/index.html
 .. _`Symfony Maker Bundle`: https://symfony.com/doc/current/bundles/SymfonyMakerBundle/index.html

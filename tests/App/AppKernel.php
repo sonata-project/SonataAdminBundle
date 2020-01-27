@@ -74,6 +74,7 @@ final class AppKernel extends Kernel
     {
         $containerBuilder->loadFromExtension('framework', [
             'secret' => 'MySecret',
+            'fragments' => ['enabled' => true],
             'form' => ['enabled' => true],
             'session' => ['handler_id' => null, 'storage_id' => 'session.storage.mock_file', 'name' => 'MOCKSESSID'],
             'templating' => ['engine' => ['twig']],

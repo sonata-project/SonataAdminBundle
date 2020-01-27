@@ -95,38 +95,7 @@ final class SonataAdminExtension extends Extension
 
         $container->setParameter('sonata.admin.configuration.global_search.empty_boxes', $config['global_search']['empty_boxes']);
         $container->setParameter('sonata.admin.configuration.global_search.case_sensitive', $config['global_search']['case_sensitive']);
-        $container->setParameter('sonata.admin.configuration.templates', $config['templates'] + [
-            'user_block' => '@SonataAdmin/Core/user_block.html.twig',
-            'add_block' => '@SonataAdmin/Core/add_block.html.twig',
-            'layout' => '@SonataAdmin/standard_layout.html.twig',
-            'ajax' => '@SonataAdmin/ajax_layout.html.twig',
-            'dashboard' => '@SonataAdmin/Core/dashboard.html.twig',
-            'list' => '@SonataAdmin/CRUD/list.html.twig',
-            'filter' => '@SonataAdmin/Form/filter_admin_fields.html.twig',
-            'show' => '@SonataAdmin/CRUD/show.html.twig',
-            'show_compare' => '@SonataAdmin/CRUD/show_compare.html.twig',
-            'edit' => '@SonataAdmin/CRUD/edit.html.twig',
-            'history' => '@SonataAdmin/CRUD/history.html.twig',
-            'history_revision_timestamp' => '@SonataAdmin/CRUD/history_revision_timestamp.html.twig',
-            'acl' => '@SonataAdmin/CRUD/acl.html.twig',
-            'action' => '@SonataAdmin/CRUD/action.html.twig',
-            'short_object_description' => '@SonataAdmin/Helper/short-object-description.html.twig',
-            'preview' => '@SonataAdmin/CRUD/preview.html.twig',
-            'list_block' => '@SonataAdmin/Block/block_admin_list.html.twig',
-            'delete' => '@SonataAdmin/CRUD/delete.html.twig',
-            'batch' => '@SonataAdmin/CRUD/list__batch.html.twig',
-            'select' => '@SonataAdmin/CRUD/list__select.html.twig',
-            'batch_confirmation' => '@SonataAdmin/CRUD/batch_confirmation.html.twig',
-            'inner_list_row' => '@SonataAdmin/CRUD/list_inner_row.html.twig',
-            'base_list_field' => '@SonataAdmin/CRUD/base_list_field.html.twig',
-            'pager_links' => '@SonataAdmin/Pager/links.html.twig',
-            'pager_results' => '@SonataAdmin/Pager/results.html.twig',
-            'tab_menu_template' => '@SonataAdmin/Core/tab_menu_template.html.twig',
-            'knp_menu_template' => '@SonataAdmin/Menu/sonata_menu.html.twig',
-            'outer_list_rows_mosaic' => '@SonataAdmin/CRUD/list_outer_rows_mosaic.html.twig',
-            'outer_list_rows_list' => '@SonataAdmin/CRUD/list_outer_rows_list.html.twig',
-            'outer_list_rows_tree' => '@SonataAdmin/CRUD/list_outer_rows_tree.html.twig',
-        ]);
+        $container->setParameter('sonata.admin.configuration.templates', $config['templates']);
         $container->setParameter('sonata.admin.configuration.admin_services', $config['admin_services']);
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
         $container->setParameter('sonata.admin.configuration.dashboard_blocks', $config['dashboard']['blocks']);

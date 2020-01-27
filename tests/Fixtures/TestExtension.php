@@ -50,6 +50,7 @@ class TestExtension implements FormExtensionInterface
             if (!isset($this->extensions[$type])) {
                 $this->extensions[$type] = [];
             }
+
             $this->extensions[$type][] = $extension;
         }
     }
