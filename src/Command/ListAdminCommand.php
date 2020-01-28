@@ -54,5 +54,7 @@ class ListAdminCommand extends Command
                 $instance->getClass()
             ));
         }
+
+        return 0;
     }
 }
