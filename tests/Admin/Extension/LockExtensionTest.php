@@ -89,7 +89,7 @@ class LockExtensionTest extends TestCase
         )->shouldBeCalled();
 
         $this->lockExtension->configureFormFields($formMapper);
-        $this->eventDispatcher->dispatch(FormEvents::PRE_SET_DATA, $event);
+        $this->eventDispatcher->dispatch($event, FormEvents::PRE_SET_DATA);
     }
 
     public function testConfigureFormFieldsWhenModelManagerIsNotImplementingLockerInterface(): void
@@ -103,7 +103,7 @@ class LockExtensionTest extends TestCase
         $form->add()->shouldNotBeCalled();
 
         $this->lockExtension->configureFormFields($formMapper);
-        $this->eventDispatcher->dispatch(FormEvents::PRE_SET_DATA, $event);
+        $this->eventDispatcher->dispatch($event, FormEvents::PRE_SET_DATA);
     }
 
     public function testConfigureFormFieldsWhenFormEventHasNoData(): void
@@ -115,7 +115,7 @@ class LockExtensionTest extends TestCase
         $form->add()->shouldNotBeCalled();
 
         $this->lockExtension->configureFormFields($formMapper);
-        $this->eventDispatcher->dispatch(FormEvents::PRE_SET_DATA, $event);
+        $this->eventDispatcher->dispatch($event, FormEvents::PRE_SET_DATA);
     }
 
     public function testConfigureFormFieldsWhenFormHasParent(): void
@@ -128,7 +128,7 @@ class LockExtensionTest extends TestCase
         $form->add()->shouldNotBeCalled();
 
         $this->lockExtension->configureFormFields($formMapper);
-        $this->eventDispatcher->dispatch(FormEvents::PRE_SET_DATA, $event);
+        $this->eventDispatcher->dispatch($event, FormEvents::PRE_SET_DATA);
     }
 
     public function testConfigureFormFieldsWhenModelManagerHasNoLockedVersion(): void
@@ -142,7 +142,7 @@ class LockExtensionTest extends TestCase
         $form->add()->shouldNotBeCalled();
 
         $this->lockExtension->configureFormFields($formMapper);
-        $this->eventDispatcher->dispatch(FormEvents::PRE_SET_DATA, $event);
+        $this->eventDispatcher->dispatch($event, FormEvents::PRE_SET_DATA);
     }
 
     public function testPreUpdateIfAdminHasNoRequest(): void
