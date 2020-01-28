@@ -32,7 +32,7 @@ class AdminStatsBlockServiceTest extends BlockServiceTestCase
     {
         parent::setUp();
 
-        $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
+        $this->pool = $this->createMock(Pool::class);
     }
 
     public function testDefaultSettings(): void
