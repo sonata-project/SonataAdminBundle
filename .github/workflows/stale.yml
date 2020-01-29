@@ -1,0 +1,24 @@
+# https://github.com/actions/stale
+
+name: "Stale"
+
+on:
+  schedule:
+    - cron: "0 12 * * *"
+
+jobs:
+  stale:
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "Close stale issues and pull requests"
+        uses: "actions/stale@v1.1.0"
+        with:
+          days-before-close: 7
+          days-before-stale: 180
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          stale-issue-label: "pending author"
+          stale-issue-message: >
+            This issue has been automatically marked as stale because it has not had
+            recent activity. It will be closed if no further activity occurs. Thank you
+            for your contributions.
