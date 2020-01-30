@@ -51,15 +51,6 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             ]);
         }
 
-        if (isset($bundles['SonataIntlBundle'])) {
-            // integrate the SonataUserBundle if the bundle exists
-            array_unshift($configs, [
-                'templates' => [
-                    'history_revision_timestamp' => '@SonataIntl/CRUD/history_revision_timestamp.html.twig',
-                ],
-            ]);
-        }
-
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('twig.xml');
         $loader->load('core.xml');
@@ -95,6 +86,16 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
         if (false === $config['options']['lock_protection']) {
             $container->removeDefinition('sonata.admin.lock.extension');
+        }
+
+        $useIntlTemplates = $config['use_intl_templates'] || isset($bundles['SonataIntlBundle']);
+
+        $container->setParameter('sonata.admin.configuration.use_intl_templates', $useIntlTemplates);
+
+        if ($useIntlTemplates) {
+            if ('@SonataAdmin/CRUD/history_revision_timestamp.html.twig' === $config['templates']['history_revision_timestamp']) {
+                $config['templates']['history_revision_timestamp'] = '@SonataAdmin/CRUD/Intl/history_revision_timestamp.html.twig';
+            }
         }
 
         $container->setParameter('sonata.admin.configuration.global_search.empty_boxes', $config['global_search']['empty_boxes']);

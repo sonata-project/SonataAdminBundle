@@ -248,3 +248,6 @@ Full Configuration Options
             global_search:
                 show_empty_boxes: show
                 case_sensitive: true
+
+            # show localized information
+            use_intl_templates: false

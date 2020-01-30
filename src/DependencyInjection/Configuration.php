@@ -514,6 +514,11 @@ CASESENSITIVE;
                     ->info('Translate group label')
                 ->end()
 
+                ->booleanNode('use_intl_templates')
+                    ->defaultFalse()
+                    ->info('Whether localized information should be shown, it will replace some default templates')
+                ->end()
+
             ->end()
         ->end();
 
