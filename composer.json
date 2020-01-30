@@ -27,7 +27,7 @@
         "doctrine/inflector": "^1.1",
         "knplabs/knp-menu-bundle": "^2.2.2",
         "sonata-project/block-bundle": "^3.18",
-        "sonata-project/core-bundle": "^3.17.0",
+        "sonata-project/core-bundle": "^3.18.0",
         "sonata-project/exporter": "^1.11.0 || ^2.0",
         "symfony/asset": "^4.3",
         "symfony/config": "^4.3",
@@ -64,7 +64,7 @@
     },
     "require-dev": {
         "jms/translation-bundle": "^1.4",
-        "matthiasnoback/symfony-dependency-injection-test": "^3.1",
+        "matthiasnoback/symfony-dependency-injection-test": "^4.1",
         "sonata-project/intl-bundle": "^2.4",
         "symfony/browser-kit": "^4.3",
         "symfony/css-selector": "^4.3",
