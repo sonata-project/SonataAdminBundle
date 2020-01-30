@@ -20,9 +20,7 @@ file that was distributed with this source code.
             <h3>{{ pager.count() }}</h3>
             <p>
                 {% if translation_domain %}
-                    {{ settings.text|transchoice(pager.count(), {}, translation_domain) }}
-                    {# NEXT_MAJOR: bump "symfony/translation" to ^4.2 and replace the previous line with the following #}
-                    {# {{ settings.text|trans({'%count%': pager.count()}, translation_domain) }} #}
+                    {{ settings.text|trans({'%count%': pager.count()}, translation_domain) }}
                 {% else %}
                     {{ settings.text }}
                 {% endif %}
