@@ -54,7 +54,9 @@
         "symfony/twig-bundle": "^4.3",
         "symfony/validator": "^4.3",
         "twig/extensions": "^1.5",
-        "twig/twig": "^2.10"
+        "twig/extra-bundle": "^3.0",
+        "twig/intl-extra": "^3.0",
+        "twig/twig": "^2.12"
     },
     "conflict": {
         "doctrine/doctrine-bundle": ">=3",
@@ -66,7 +68,6 @@
     "require-dev": {
         "jms/translation-bundle": "^1.4",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
-        "sonata-project/intl-bundle": "^2.4",
         "symfony/browser-kit": "^4.3",
         "symfony/css-selector": "^4.3",
         "symfony/filesystem": "^4.3",

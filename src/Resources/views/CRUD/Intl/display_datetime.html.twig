@@ -1,0 +1,27 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{%- apply spaceless %}
+    {%- if value is empty -%}
+        &nbsp;
+    {%- else -%}
+        {% set pattern = field_description.options.pattern|default('') %}
+        {% set calendar = field_description.options.calendar|default('') %}
+        {% set locale = field_description.options.locale|default(null) %}
+        {% set timezone = field_description.options.timezone|default(null) %}
+        {% set dateType = field_description.options.dateType|default(null) %}
+        {% set timeType = field_description.options.timeType|default(null) %}
+
+        <time datetime="{{ value|date('c', 'UTC') }}" title="{{ value|date('c', 'UTC') }}">
+            {{ value|format_datetime(dateType, timeType, pattern, timezone, calendar, locale) }}
+        </time>
+    {%- endif -%}
+{% endapply -%}
