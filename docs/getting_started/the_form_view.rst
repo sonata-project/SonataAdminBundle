@@ -233,13 +233,7 @@ While it's very friendly of the SonataAdminBundle to notify the admin of a
 successful creation, the classname and some sort of hash aren't really nice to
 read. This is the default string representation of an object in the
 SonataAdminBundle. You can change it by defining a ``toString()`` method in the
-Admin class. This receives the object to transform to a string as the first parameter:
-
-.. note::
-
-    No underscore prefix! ``toString()`` is correct!
-
-.. code-block:: php
+Admin class. This receives the object to transform to a string as the first parameter::
 
     // src/Admin/BlogPostAdmin.php
 
@@ -254,6 +248,10 @@ Admin class. This receives the object to transform to a string as the first para
                 : 'Blog Post'; // shown in the breadcrumb on the create view
         }
     }
+
+.. note::
+
+    No underscore prefix! ``toString()`` is correct!
 
 Round Up
 --------
