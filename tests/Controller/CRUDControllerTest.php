@@ -58,6 +58,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -375,7 +376,7 @@ class CRUDControllerTest extends TestCase
             ->method('generateUrl')
             ->willReturnCallback(
 
-                    static function ($name, array $parameters = [], $absolute = false) {
+                    static function ($name, array $parameters = []) {
                         $result = $name;
                         if (!empty($parameters)) {
                             $result .= '?'.http_build_query($parameters);
@@ -390,7 +391,7 @@ class CRUDControllerTest extends TestCase
             ->method('generateObjectUrl')
             ->willReturnCallback(
 
-                    static function (string $name, $object, array $parameters = [], bool $absolute = false): string {
+                    static function (string $name, $object, array $parameters = []): string {
                         $result = \get_class($object).'_'.$name;
                         if (!empty($parameters)) {
                             $result .= '?'.http_build_query($parameters);
