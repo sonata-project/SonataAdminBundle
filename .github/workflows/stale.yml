@@ -4,7 +4,7 @@ name: "Stale"
 
 on:
   schedule:
-    - cron: "0 12 * * *"
+    - cron: "0 9-18 * * *"
 
 jobs:
   stale:
