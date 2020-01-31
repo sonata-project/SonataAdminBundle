@@ -60,6 +60,7 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -80,8 +81,8 @@ class AdminTest extends TestCase
     public function setUp(): void
     {
         $this->cacheTempFolder = sys_get_temp_dir().'/sonata_test_route';
-
-        exec('rm -rf '.$this->cacheTempFolder);
+        $filesystem = new Filesystem();
+        $filesystem->remove($this->cacheTempFolder);
     }
 
     /**
