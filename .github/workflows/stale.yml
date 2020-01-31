@@ -4,7 +4,7 @@ name: "Stale"
 
 on:
   schedule:
-    - cron: "0 12 * * *"
+    - cron: "0 9-18 * * *"
 
 jobs:
   stale:
@@ -17,8 +17,14 @@ jobs:
           days-before-close: 7
           days-before-stale: 180
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          exempt-issue-label: "keep"
           stale-issue-label: "pending author"
           stale-issue-message: >
             This issue has been automatically marked as stale because it has not had
+            recent activity. It will be closed if no further activity occurs. Thank you
+            for your contributions.
+          stale-pr-label: "pending author"
+          stale-pr-message: >
+            This PR has been automatically marked as stale because it has not had
             recent activity. It will be closed if no further activity occurs. Thank you
             for your contributions.
