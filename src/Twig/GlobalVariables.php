@@ -28,12 +28,12 @@ final class GlobalVariables
      * @deprecated since sonata-project/admin-bundle 3.5, will be removed in 4.0.
      * NEXT_MAJOR : remove this property
      */
-    protected $container;
+    private $container;
 
     /**
      * @var Pool
      */
-    protected $adminPool;
+    private $adminPool;
 
     /**
      * @var string|null

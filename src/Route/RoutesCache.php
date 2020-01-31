@@ -25,12 +25,12 @@ final class RoutesCache
     /**
      * @var string
      */
-    protected $cacheFolder;
+    private $cacheFolder;
 
     /**
      * @var bool
      */
-    protected $debug;
+    private $debug;
 
     /**
      * @param string $cacheFolder

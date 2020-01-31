@@ -50,7 +50,7 @@ final class SonataAdminExtension extends AbstractExtension
     /**
      * @var TranslatorInterface|null
      */
-    protected $translator;
+    private $translator;
     /**
      * @var Pool
      */

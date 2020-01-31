@@ -30,52 +30,52 @@ class AdminObjectAclData
     /**
      * @var array Permissions managed only by a OWNER
      */
-    protected static $ownerPermissions = ['MASTER', 'OWNER'];
+    private static $ownerPermissions = ['MASTER', 'OWNER'];
 
     /**
      * @var AdminInterface
      */
-    protected $admin;
+    private $admin;
 
     /**
      * @var object
      */
-    protected $object;
+    private $object;
 
     /**
      * @var \Traversable Users to set ACL for
      */
-    protected $aclUsers;
+    private $aclUsers;
 
     /**
      * @var \Traversable Roles to set ACL for
      */
-    protected $aclRoles;
+    private $aclRoles;
 
     /**
      * @var array Cache of masks
      */
-    protected $masks;
+    private $masks;
 
     /**
      * @var Form
      */
-    protected $aclUsersForm;
+    private $aclUsersForm;
 
     /**
      * @var Form
      */
-    protected $aclRolesForm;
+    private $aclRolesForm;
 
     /**
      * @var Acl
      */
-    protected $acl;
+    private $acl;
 
     /**
      * @var string
      */
-    protected $maskBuilderClass;
+    private $maskBuilderClass;
 
     /**
      * @param object $object
@@ -321,7 +321,7 @@ class AdminObjectAclData
     /**
      * Cache masks.
      */
-    protected function updateMasks(): void
+    private function updateMasks(): void
     {
         $permissions = $this->getPermissions();
 

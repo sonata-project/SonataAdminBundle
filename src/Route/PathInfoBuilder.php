@@ -25,7 +25,7 @@ final class PathInfoBuilder implements RouteBuilderInterface
     /**
      * @var AuditManagerInterface
      */
-    protected $manager;
+    private $manager;
 
     public function __construct(AuditManagerInterface $manager)
     {

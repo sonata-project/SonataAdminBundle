@@ -40,17 +40,17 @@ final class ConfigureEvent extends Event
     /**
      * @var AdminInterface
      */
-    protected $admin;
+    private $admin;
 
     /**
      * @var BaseMapper
      */
-    protected $mapper;
+    private $mapper;
 
     /**
      * @var string
      */
-    protected $type;
+    private $type;
 
     /**
      * @param string $type

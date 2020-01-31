@@ -24,12 +24,12 @@ final class RoutesCacheWarmUp implements CacheWarmerInterface
     /**
      * @var RoutesCache
      */
-    protected $cache;
+    private $cache;
 
     /**
      * @var Pool
      */
-    protected $pool;
+    private $pool;
 
     public function __construct(RoutesCache $cache, Pool $pool)
     {

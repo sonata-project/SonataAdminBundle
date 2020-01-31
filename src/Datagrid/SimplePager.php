@@ -24,19 +24,19 @@ final class SimplePager extends Pager
     /**
      * @var bool
      */
-    protected $haveToPaginate;
+    private $haveToPaginate;
 
     /**
      * How many pages to look forward to create links to next pages.
      *
      * @var int
      */
-    protected $threshold;
+    private $threshold;
 
     /**
      * @var int
      */
-    protected $thresholdCount;
+    private $thresholdCount;
 
     /**
      * The threshold parameter can be used to determine how far ahead the pager

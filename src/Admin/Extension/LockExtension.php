@@ -29,7 +29,7 @@ final class LockExtension extends AbstractAdminExtension
     /**
      * @var string
      */
-    protected $fieldName = '_lock_version';
+    private $fieldName = '_lock_version';
 
     public function configureFormFields(FormMapper $form): void
     {

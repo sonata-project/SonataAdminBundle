@@ -29,17 +29,17 @@ final class AdminPoolLoader extends Loader
     /**
      * @var Pool
      */
-    protected $pool;
+    private $pool;
 
     /**
      * @var array
      */
-    protected $adminServiceIds = [];
+    private $adminServiceIds = [];
 
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    private $container;
 
     public function __construct(Pool $pool, array $adminServiceIds, ContainerInterface $container)
     {

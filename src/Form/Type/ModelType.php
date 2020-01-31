@@ -36,7 +36,7 @@ final class ModelType extends AbstractType
     /**
      * @var PropertyAccessorInterface
      */
-    protected $propertyAccessor;
+    private $propertyAccessor;
 
     public function __construct(PropertyAccessorInterface $propertyAccessor)
     {

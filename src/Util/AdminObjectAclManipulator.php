@@ -40,11 +40,11 @@ class AdminObjectAclManipulator
     /**
      * @var FormFactoryInterface
      */
-    protected $formFactory;
+    private $formFactory;
     /**
      * @var string
      */
-    protected $maskBuilderClass;
+    private $maskBuilderClass;
 
     /**
      * @param string $maskBuilderClass
@@ -158,7 +158,7 @@ class AdminObjectAclManipulator
     /**
      * Builds ACL.
      */
-    protected function buildAcl(AdminObjectAclData $data, Form $form, \Traversable $aclValues): void
+    private function buildAcl(AdminObjectAclData $data, Form $form, \Traversable $aclValues): void
     {
         $masks = $data->getMasks();
         $acl = $data->getAcl();
@@ -227,7 +227,7 @@ class AdminObjectAclManipulator
      *
      * @return Form
      */
-    protected function buildForm(AdminObjectAclData $data, FormBuilderInterface $formBuilder, \Traversable $aclValues)
+    private function buildForm(AdminObjectAclData $data, FormBuilderInterface $formBuilder, \Traversable $aclValues)
     {
         // Retrieve object identity
         $objectIdentity = ObjectIdentity::fromDomainObject($data->getObject());
@@ -286,7 +286,7 @@ class AdminObjectAclManipulator
      *
      * @return RoleSecurityIdentity|UserSecurityIdentity
      */
-    protected function getSecurityIdentity($aclValue)
+    private function getSecurityIdentity($aclValue)
     {
         return ($aclValue instanceof UserInterface)
             ? UserSecurityIdentity::fromAccount($aclValue)

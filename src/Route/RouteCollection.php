@@ -23,27 +23,27 @@ final class RouteCollection
     /**
      * @var Route[]
      */
-    protected $elements = [];
+    private $elements = [];
 
     /**
      * @var string
      */
-    protected $baseCodeRoute;
+    private $baseCodeRoute;
 
     /**
      * @var string
      */
-    protected $baseRouteName;
+    private $baseRouteName;
 
     /**
      * @var string
      */
-    protected $baseControllerName;
+    private $baseControllerName;
 
     /**
      * @var string
      */
-    protected $baseRoutePattern;
+    private $baseRoutePattern;
 
     /**
      * @var Route[]

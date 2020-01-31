@@ -27,27 +27,27 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
     /**
      * @var ModelManagerInterface
      */
-    protected $modelManager;
+    private $modelManager;
 
     /**
      * @var string
      */
-    protected $className;
+    private $className;
 
     /**
      * @var string
      */
-    protected $property;
+    private $property;
 
     /**
      * @var bool
      */
-    protected $multiple;
+    private $multiple;
 
     /**
      * @var callable|null
      */
-    protected $toStringCallback;
+    private $toStringCallback;
 
     /**
      * @param string        $className

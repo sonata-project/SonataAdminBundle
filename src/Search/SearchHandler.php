@@ -28,7 +28,7 @@ class SearchHandler
     /**
      * @var Pool
      */
-    protected $pool;
+    private $pool;
 
     /**
      * @var bool

@@ -40,17 +40,17 @@ final class PersistenceEvent extends Event
     /**
      * @var AdminInterface
      */
-    protected $admin;
+    private $admin;
 
     /**
      * @var object
      */
-    protected $object;
+    private $object;
 
     /**
      * @var string
      */
-    protected $type;
+    private $type;
 
     /**
      * @param object $object

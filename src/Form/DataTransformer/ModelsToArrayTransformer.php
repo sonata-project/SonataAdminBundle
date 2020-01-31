@@ -31,12 +31,12 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * @var ModelManagerInterface
      */
-    protected $modelManager;
+    private $modelManager;
 
     /**
      * @var string
      */
-    protected $class;
+    private $class;
 
     /**
      * ModelsToArrayTransformer constructor.

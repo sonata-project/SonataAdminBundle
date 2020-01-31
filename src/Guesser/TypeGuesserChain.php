@@ -28,7 +28,7 @@ final class TypeGuesserChain implements TypeGuesserInterface
     /**
      * @var array
      */
-    protected $guessers = [];
+    private $guessers = [];
 
     public function __construct(array $guessers)
     {

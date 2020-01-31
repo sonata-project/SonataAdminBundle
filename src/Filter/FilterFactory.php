@@ -23,12 +23,12 @@ final class FilterFactory implements FilterFactoryInterface
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    private $container;
 
     /**
      * @var string[]
      */
-    protected $types;
+    private $types;
 
     /**
      * @param string[] $types

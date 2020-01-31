@@ -25,12 +25,12 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
     /**
      * @var AuthorizationCheckerInterface
      */
-    protected $authorizationChecker;
+    private $authorizationChecker;
 
     /**
      * @var array
      */
-    protected $superAdminRoles;
+    private $superAdminRoles;
 
     /**
      * @param AuthorizationCheckerInterface $authorizationChecker

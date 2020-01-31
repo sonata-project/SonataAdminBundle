@@ -23,7 +23,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
     /**
      * @var FieldDescriptionInterface[]
      */
-    protected $elements = [];
+    private $elements = [];
 
     public function add(FieldDescriptionInterface $fieldDescription): void
     {

@@ -30,7 +30,7 @@ final class AdminListBlockService extends AbstractBlockService
     /**
      * @var Pool
      */
-    protected $pool;
+    private $pool;
 
     /**
      * @var TemplateRegistryInterface

@@ -28,7 +28,7 @@ final class AdminStatsBlockService extends AbstractBlockService
     /**
      * @var Pool
      */
-    protected $pool;
+    private $pool;
 
     public function __construct(Environment $twig, Pool $pool)
     {

@@ -28,7 +28,7 @@ use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
  */
 final class AdminEventExtension extends AbstractAdminExtension
 {
-    protected $eventDispatcher;
+    private $eventDispatcher;
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {

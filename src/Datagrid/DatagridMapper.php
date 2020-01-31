@@ -30,7 +30,7 @@ class DatagridMapper extends BaseMapper
     /**
      * @var DatagridInterface
      */
-    protected $datagrid;
+    private $datagrid;
 
     public function __construct(
         DatagridBuilderInterface $datagridBuilder,

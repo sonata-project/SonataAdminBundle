@@ -31,12 +31,12 @@ final class AdminSearchBlockService extends AbstractBlockService
     /**
      * @var Pool
      */
-    protected $pool;
+    private $pool;
 
     /**
      * @var SearchHandler
      */
-    protected $searchHandler;
+    private $searchHandler;
 
     public function __construct(Environment $twig, Pool $pool, SearchHandler $searchHandler)
     {

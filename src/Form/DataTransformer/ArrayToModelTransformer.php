@@ -24,12 +24,12 @@ final class ArrayToModelTransformer implements DataTransformerInterface
     /**
      * @var ModelManagerInterface
      */
-    protected $modelManager;
+    private $modelManager;
 
     /**
      * @var string
      */
-    protected $className;
+    private $className;
 
     /**
      * @param string $className

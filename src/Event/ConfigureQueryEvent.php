@@ -32,17 +32,17 @@ final class ConfigureQueryEvent extends Event
     /**
      * @var AdminInterface
      */
-    protected $admin;
+    private $admin;
 
     /**
      * @var ProxyQueryInterface
      */
-    protected $proxyQuery;
+    private $proxyQuery;
 
     /**
      * @var string
      */
-    protected $context;
+    private $context;
 
     /**
      * @param string $context

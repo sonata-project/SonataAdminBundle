@@ -29,54 +29,54 @@ class Pool
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    private $container;
 
     /**
      * @var string[]
      */
-    protected $adminServiceIds = [];
+    private $adminServiceIds = [];
 
     /**
      * @var array
      */
-    protected $adminGroups = [];
+    private $adminGroups = [];
 
     /**
      * @var array
      */
-    protected $adminClasses = [];
+    private $adminClasses = [];
 
     /**
      * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
      *
      * @var array
      */
-    protected $templates = [];
+    private $templates = [];
 
     /**
      * @var array
      */
-    protected $assets = [];
+    private $assets = [];
 
     /**
      * @var string
      */
-    protected $title;
+    private $title;
 
     /**
      * @var string
      */
-    protected $titleLogo;
+    private $titleLogo;
 
     /**
      * @var array
      */
-    protected $options;
+    private $options;
 
     /**
      * @var PropertyAccessorInterface
      */
-    protected $propertyAccessor;
+    private $propertyAccessor;
 
     /**
      * @var MutableTemplateRegistryInterface

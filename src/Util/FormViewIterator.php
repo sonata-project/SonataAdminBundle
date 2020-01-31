@@ -23,7 +23,7 @@ final class FormViewIterator implements \RecursiveIterator
     /**
      * @var \ArrayIterator
      */
-    protected $iterator;
+    private $iterator;
 
     public function __construct(FormView $formView)
     {

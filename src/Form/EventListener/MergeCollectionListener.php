@@ -26,7 +26,7 @@ final class MergeCollectionListener implements EventSubscriberInterface
     /**
      * @var ModelManagerInterface
      */
-    protected $modelManager;
+    private $modelManager;
 
     public function __construct(ModelManagerInterface $modelManager)
     {

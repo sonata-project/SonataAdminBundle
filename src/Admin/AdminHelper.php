@@ -39,7 +39,7 @@ class AdminHelper
     /**
      * @var Pool
      */
-    protected $pool;
+    private $pool;
 
     public function __construct(Pool $pool)
     {
@@ -299,7 +299,7 @@ class AdminHelper
      *
      * @return string
      */
-    protected function getEntityClassName(AdminInterface $admin, $elements)
+    private function getEntityClassName(AdminInterface $admin, $elements)
     {
         $element = array_shift($elements);
         $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();

@@ -26,7 +26,7 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
  */
 final class ShowMapper extends BaseGroupedMapper
 {
-    protected $list;
+    private $list;
 
     public function __construct(
         ShowBuilderInterface $showBuilder,

@@ -42,7 +42,7 @@ final class DateRangeType extends AbstractType
      *
      * @var TranslatorInterface
      */
-    protected $translator;
+    private $translator;
 
     public function __construct(TranslatorInterface $translator)
     {

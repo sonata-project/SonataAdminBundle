@@ -23,27 +23,27 @@ final class FormBuilderIterator extends \RecursiveArrayIterator
     /**
      * @var \ReflectionProperty
      */
-    protected static $reflection;
+    private static $reflection;
 
     /**
      * @var FormBuilderInterface
      */
-    protected $formBuilder;
+    private $formBuilder;
 
     /**
      * @var array
      */
-    protected $keys = [];
+    private $keys = [];
 
     /**
      * @var bool|string
      */
-    protected $prefix;
+    private $prefix;
 
     /**
      * @var \ArrayIterator
      */
-    protected $iterator;
+    private $iterator;
 
     /**
      * @param bool $prefix

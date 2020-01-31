@@ -30,7 +30,7 @@ final class FormMapper extends BaseGroupedMapper
     /**
      * @var FormBuilderInterface
      */
-    protected $formBuilder;
+    private $formBuilder;
 
     public function __construct(
         FormContractorInterface $formContractor,
@@ -262,21 +262,6 @@ final class FormMapper extends BaseGroupedMapper
         return $this;
     }
 
-    /**
-     * Symfony default form class sadly can't handle
-     * form element with dots in its name (when data
-     * get bound, the default dataMapper is a PropertyPathMapper).
-     * So use this trick to avoid any issue.
-     *
-     * @param string $fieldName
-     *
-     * @return string
-     */
-    protected function sanitizeFieldName($fieldName)
-    {
-        return str_replace(['__', '.'], ['____', '__'], $fieldName);
-    }
-
     protected function getGroups()
     {
         return $this->admin->getFormGroups();
@@ -300,5 +285,20 @@ final class FormMapper extends BaseGroupedMapper
     protected function getName()
     {
         return 'form';
+    }
+
+    /**
+     * Symfony default form class sadly can't handle
+     * form element with dots in its name (when data
+     * get bound, the default dataMapper is a PropertyPathMapper).
+     * So use this trick to avoid any issue.
+     *
+     * @param string $fieldName
+     *
+     * @return string
+     */
+    private function sanitizeFieldName($fieldName)
+    {
+        return str_replace(['__', '.'], ['____', '__'], $fieldName);
     }
 }

@@ -28,7 +28,7 @@ final class AdminAclManipulator implements AdminAclManipulatorInterface
     /**
      * @var string
      */
-    protected $maskBuilderClass;
+    private $maskBuilderClass;
 
     /**
      * @param string $maskBuilderClass

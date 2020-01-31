@@ -34,7 +34,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
     /**
      * @var string
      */
-    protected $userEntityClass = '';
+    private $userEntityClass = '';
 
     /**
      * @var Pool
@@ -172,7 +172,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
     /**
      * @return string
      */
-    protected function getUserEntityClass(InputInterface $input, OutputInterface $output)
+    private function getUserEntityClass(InputInterface $input, OutputInterface $output)
     {
         if ('' === $this->userEntityClass) {
             if ($input->getOption('user_entity')) {

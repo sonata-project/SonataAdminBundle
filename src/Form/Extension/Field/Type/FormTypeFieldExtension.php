@@ -30,12 +30,12 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
     /**
      * @var array
      */
-    protected $defaultClasses = [];
+    private $defaultClasses = [];
 
     /**
      * @var array
      */
-    protected $options;
+    private $options;
 
     public function __construct(array $defaultClasses, array $options)
     {
@@ -203,7 +203,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
     /**
      * @return string
      */
-    protected function getClass(FormBuilderInterface $formBuilder)
+    private function getClass(FormBuilderInterface $formBuilder)
     {
         foreach ($this->getTypes($formBuilder) as $type) {
             $name = \get_class($type);
@@ -219,7 +219,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
     /**
      * @return array
      */
-    protected function getTypes(FormBuilderInterface $formBuilder)
+    private function getTypes(FormBuilderInterface $formBuilder)
     {
         $types = [];
 

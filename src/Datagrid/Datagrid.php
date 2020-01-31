@@ -33,47 +33,47 @@ final class Datagrid implements DatagridInterface
      *
      * @var array
      */
-    protected $filters = [];
+    private $filters = [];
 
     /**
      * @var array
      */
-    protected $values;
+    private $values;
 
     /**
      * @var FieldDescriptionCollection
      */
-    protected $columns;
+    private $columns;
 
     /**
      * @var PagerInterface
      */
-    protected $pager;
+    private $pager;
 
     /**
      * @var bool
      */
-    protected $bound = false;
+    private $bound = false;
 
     /**
      * @var ProxyQueryInterface
      */
-    protected $query;
+    private $query;
 
     /**
      * @var FormBuilderInterface
      */
-    protected $formBuilder;
+    private $formBuilder;
 
     /**
      * @var FormInterface
      */
-    protected $form;
+    private $form;
 
     /**
      * @var array
      */
-    protected $results;
+    private $results;
 
     public function __construct(
         ProxyQueryInterface $query,
