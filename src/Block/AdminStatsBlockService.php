@@ -21,11 +21,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AdminStatsBlockService extends AbstractBlockService
+final class AdminStatsBlockService extends AbstractBlockService
 {
     /**
      * @var Pool

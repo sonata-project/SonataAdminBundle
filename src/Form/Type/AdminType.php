@@ -27,11 +27,9 @@ use Symfony\Component\PropertyAccess\Exception\NoSuchIndexException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AdminType extends AbstractType
+final class AdminType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

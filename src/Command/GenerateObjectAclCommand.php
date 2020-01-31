@@ -25,11 +25,9 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class GenerateObjectAclCommand extends QuestionableCommand
+final class GenerateObjectAclCommand extends QuestionableCommand
 {
     protected static $defaultName = 'sonata:admin:generate-object-acl';
 

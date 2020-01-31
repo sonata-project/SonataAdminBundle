@@ -22,11 +22,9 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 /**
  * Menu provider based on group options.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Alexandru Furculita <alex@furculita.net>
  */
-class GroupMenuProvider implements MenuProviderInterface
+final class GroupMenuProvider implements MenuProviderInterface
 {
     /**
      * @var FactoryInterface

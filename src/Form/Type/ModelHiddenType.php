@@ -22,11 +22,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * This type define a standard hidden field, that stored id to a object.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class ModelHiddenType extends AbstractType
+final class ModelHiddenType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

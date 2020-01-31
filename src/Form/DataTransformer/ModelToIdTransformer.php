@@ -17,11 +17,9 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ModelToIdTransformer implements DataTransformerInterface
+final class ModelToIdTransformer implements DataTransformerInterface
 {
     /**
      * @var ModelManagerInterface

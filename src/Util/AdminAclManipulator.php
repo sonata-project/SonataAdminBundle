@@ -21,11 +21,9 @@ use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AdminAclManipulator implements AdminAclManipulatorInterface
+final class AdminAclManipulator implements AdminAclManipulatorInterface
 {
     /**
      * @var string

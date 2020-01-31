@@ -23,11 +23,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 /**
  * This class is use to simulate the Form API.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class FormMapper extends BaseGroupedMapper
+final class FormMapper extends BaseGroupedMapper
 {
     /**
      * @var FormBuilderInterface
@@ -165,7 +163,7 @@ class FormMapper extends BaseGroupedMapper
         return $this->formBuilder->has($key);
     }
 
-    final public function keys()
+    public function keys()
     {
         return array_keys($this->formBuilder->all());
     }

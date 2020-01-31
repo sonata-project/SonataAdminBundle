@@ -21,11 +21,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ChoiceType extends AbstractType
+final class ChoiceType extends AbstractType
 {
     /**
      * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use ContainsOperatorType::TYPE_CONTAINS instead

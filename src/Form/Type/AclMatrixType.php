@@ -23,12 +23,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * This type define an ACL matrix.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Samuel Roze <samuel@sroze.io>
  * @author Baptiste Meyer <baptiste@les-tilleuls.coop>
  */
-class AclMatrixType extends AbstractType
+final class AclMatrixType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

@@ -21,11 +21,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class DateType extends AbstractType
+final class DateType extends AbstractType
 {
     /**
      * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateOperatorType::TYPE_GREATER_EQUAL instead

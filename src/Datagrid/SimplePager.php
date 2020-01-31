@@ -16,12 +16,10 @@ namespace Sonata\AdminBundle\Datagrid;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Sjoerd Peters <sjoerd.peters@gmail.com>
  */
-class SimplePager extends Pager
+final class SimplePager extends Pager
 {
     /**
      * @var bool

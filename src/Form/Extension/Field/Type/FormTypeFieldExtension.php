@@ -23,11 +23,9 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class FormTypeFieldExtension extends AbstractTypeExtension
+final class FormTypeFieldExtension extends AbstractTypeExtension
 {
     /**
      * @var array

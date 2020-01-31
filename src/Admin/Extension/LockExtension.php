@@ -22,11 +22,9 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
  */
-class LockExtension extends AbstractAdminExtension
+final class LockExtension extends AbstractAdminExtension
 {
     /**
      * @var string

@@ -18,10 +18,8 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilder as BaseMaskBuilder;
 /**
  * {@inheritdoc}
  * - LIST: the SID is allowed to view a list of the domain objects / fields.
- *
- * @final since sonata-project/admin-bundle 3.52
  */
-class MaskBuilder extends BaseMaskBuilder
+final class MaskBuilder extends BaseMaskBuilder
 {
     public const MASK_LIST = 4096;       // 1 << 12
     public const MASK_EXPORT = 8192;       // 1 << 13

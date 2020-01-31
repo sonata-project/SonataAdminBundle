@@ -18,11 +18,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class GlobalVariables
+final class GlobalVariables
 {
     /**
      * @var ContainerInterface

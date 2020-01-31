@@ -22,11 +22,9 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 /**
  * This class is used to simulate the Form API.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ShowMapper extends BaseGroupedMapper
+final class ShowMapper extends BaseGroupedMapper
 {
     protected $list;
 
@@ -151,7 +149,7 @@ class ShowMapper extends BaseGroupedMapper
         return $this;
     }
 
-    final public function keys()
+    public function keys()
     {
         return array_keys($this->list->getElements());
     }

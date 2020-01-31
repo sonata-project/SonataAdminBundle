@@ -22,10 +22,7 @@ use Sonata\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompiler
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * @final since sonata-project/admin-bundle 3.52
- */
-class SonataAdminBundle extends Bundle
+final class SonataAdminBundle extends Bundle
 {
     public function build(ContainerBuilder $container): void
     {

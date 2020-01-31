@@ -20,11 +20,9 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ChoiceFieldMaskType extends AbstractType
+final class ChoiceFieldMaskType extends AbstractType
 {
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
