@@ -48,7 +48,7 @@ Options           Description
 
 .. code-block:: bash
 
-    $ bin/console make:sonata:admin App/Entity/Foo
+     bin/console make:sonata:admin App/Entity/Foo
 
 sonata:admin:list
 -----------------
