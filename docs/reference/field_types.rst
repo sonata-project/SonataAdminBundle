@@ -91,9 +91,7 @@ Parameter                               Description
         ;
     }
 
-The ``choice`` field type also supports multiple values that can be separated by a ``delimiter``.
-
-.. code-block:: php
+The ``choice`` field type also supports multiple values that can be separated by a ``delimiter``::
 
     protected function configureListFields(ListMapper $listMapper)
     {

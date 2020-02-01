@@ -375,7 +375,7 @@ class CRUDControllerTest extends TestCase
             ->method('generateUrl')
             ->willReturnCallback(
 
-                    static function ($name, array $parameters = [], $absolute = false) {
+                    static function ($name, array $parameters = []) {
                         $result = $name;
                         if (!empty($parameters)) {
                             $result .= '?'.http_build_query($parameters);

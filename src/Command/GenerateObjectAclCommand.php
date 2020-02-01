@@ -94,7 +94,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
         ;
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): void
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Welcome to the AdminBundle object ACL generator');
         $output->writeln([
@@ -118,14 +118,14 @@ class GenerateObjectAclCommand extends QuestionableCommand
             } catch (\Exception $e) {
                 $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
-                return;
+                return 1;
             }
         }
 
         if (!$this->aclObjectManipulators) {
             $output->writeln('No manipulators are implemented : <info>ignoring</info>');
 
-            return;
+            return 1;
         }
 
         foreach ($this->pool->getAdminServiceIds() as $id) {
@@ -167,6 +167,8 @@ class GenerateObjectAclCommand extends QuestionableCommand
             \assert($admin instanceof AdminInterface);
             $manipulator->batchConfigureAcls($output, $admin, $securityIdentity);
         }
+
+        return 0;
     }
 
     /**

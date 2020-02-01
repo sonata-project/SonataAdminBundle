@@ -52,7 +52,7 @@ class SetupAclCommand extends Command
         $this->setDescription('Install ACL for Admin Classes');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): void
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Starting ACL AdminBundle configuration');
 
@@ -69,5 +69,7 @@ class SetupAclCommand extends Command
             \assert($admin instanceof AdminInterface);
             $this->aclManipulator->configureAcls($output, $admin);
         }
+
+        return 0;
     }
 }

@@ -54,7 +54,7 @@ class ExplainAdminCommand extends Command
         $this->addArgument('admin', InputArgument::REQUIRED, 'The admin service id');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): void
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $admin = $this->pool->getInstance($input->getArgument('admin'));
 
@@ -160,5 +160,7 @@ class ExplainAdminCommand extends Command
 
         $output->writeln('');
         $output->writeln('<info>done!</info>');
+
+        return 0;
     }
 }

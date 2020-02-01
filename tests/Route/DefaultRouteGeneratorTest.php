@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Route\DefaultRouteGenerator;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RoutesCache;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
@@ -31,7 +32,8 @@ class DefaultRouteGeneratorTest extends TestCase
     {
         $this->cacheTempFolder = sys_get_temp_dir().'/sonata_test_route';
 
-        exec('rm -rf '.$this->cacheTempFolder);
+        $filesystem = new Filesystem();
+        $filesystem->remove($this->cacheTempFolder);
     }
 
     public function testGenerate(): void
