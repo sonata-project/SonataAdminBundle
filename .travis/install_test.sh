@@ -11,3 +11,7 @@ wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coverall
 chmod u+x "${HOME}/bin/coveralls"
 
 composer update --prefer-dist --no-interaction --prefer-stable ${COMPOSER_FLAGS}
+
+make yarn-build
+ls -al
+~/build/sonata-project/SonataAdminBundle/tests/App/bin/console assets:install --relative --symlink
