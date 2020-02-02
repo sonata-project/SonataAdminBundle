@@ -41,6 +41,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Extensions\TextExtension;
+use Twig\Extra\String\StringExtension;
 
 /**
  * Test for SonataAdminExtension.
@@ -184,6 +185,7 @@ class SonataAdminExtensionTest extends TestCase
         $this->environment->addExtension($this->twigExtension);
         $this->environment->addExtension(new TranslationExtension($translator));
         $this->environment->addExtension(new FakeTemplateRegistryExtension());
+        $this->environment->addExtension(new StringExtension());
 
         // routing extension
         $xmlFileLoader = new XmlFileLoader(new FileLocator([__DIR__.'/../../../src/Resources/config/routing']));

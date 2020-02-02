@@ -9,7 +9,7 @@
             {% set length = truncate.length|default(30) %}
             {% set preserve = truncate.preserve|default(false) %}
             {% set separator = truncate.separator|default('...') %}
-            {{ value|striptags|truncate(length, preserve, separator)|raw }}
+            {{ value|striptags|u.truncate(length, preserve, separator)|raw }}
         {%- else -%}
             {%- if field_description.options.strip is defined -%}
                 {% set value = value|striptags %}
