@@ -157,7 +157,7 @@ class CRUDControllerTest extends TestCase
     private $formBuilder;
 
     /**
-     * @var LoggerInterface|MockObject
+     * @var LoggerInterface&MockObject
      */
     private $logger;
 
