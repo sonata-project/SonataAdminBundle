@@ -45,7 +45,7 @@ file that was distributed with this source code.
                 {% else %}
                     {% set choice = val %}
                 {% endif %}
-                {% if field_description.options.catalogue is not defined %}
+                {% if field_description.options.catalogue is defined %}
                     {% set result = result ~ choice %}
                 {% else %}
                     {% set result = result ~ choice|trans({}, field_description.options.catalogue) %}
