@@ -985,8 +985,6 @@ class CRUDController implements ContainerAwareInterface
             throw $this->createNotFoundException('ACL are not enabled for this admin');
         }
 
-       // $id = $request->get($this->admin->getIdParameter());
-
         $object = $this->admin->getObject($id);
 
         if (!$object) {
@@ -1343,7 +1341,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return \Traversable
      */
-    protected function getAclUsers($id)
+    protected function getAclUsers($id = null)
     {
         $aclUsers = [];
 
@@ -1352,7 +1350,7 @@ class CRUDController implements ContainerAwareInterface
             $userManager = $this->get($userManagerServiceName);
 
             if (method_exists($userManager, 'findUsers')) {
-                if ($id){
+                if ($id != null){
                     $aclUsers = array($userManager->findUserBy(['_id'=>$id]));
                 } else {
                     $aclUsers = $userManager->findUsers();
