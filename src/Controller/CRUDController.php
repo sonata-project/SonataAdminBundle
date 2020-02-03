@@ -985,7 +985,7 @@ class CRUDController implements ContainerAwareInterface
             throw $this->createNotFoundException('ACL are not enabled for this admin');
         }
 
-        $id = $request->get($this->admin->getIdParameter());
+       // $id = $request->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
 
@@ -996,7 +996,7 @@ class CRUDController implements ContainerAwareInterface
         $this->admin->checkAccess('acl', $object);
 
         $this->admin->setSubject($object);
-        $aclUsers = $this->getAclUsers();
+        $aclUsers = $this->getAclUsers($id);
         $aclRoles = $this->getAclRoles();
 
         $adminObjectAclManipulator = $this->get('sonata.admin.object.manipulator.acl.admin');
@@ -1337,11 +1337,13 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
-     * Gets ACL users.
+     * Gets ACL users, or selected user if $id is provided
+     *
+     * @param string $id|null   User id
      *
      * @return \Traversable
      */
-    protected function getAclUsers()
+    protected function getAclUsers($id)
     {
         $aclUsers = [];
 
@@ -1350,7 +1352,11 @@ class CRUDController implements ContainerAwareInterface
             $userManager = $this->get($userManagerServiceName);
 
             if (method_exists($userManager, 'findUsers')) {
-                $aclUsers = $userManager->findUsers();
+                if ($id){
+                    $aclUsers = array($userManager->findUserBy(['_id'=>$id]));
+                } else {
+                    $aclUsers = $userManager->findUsers();
+                }
             }
         }
 
