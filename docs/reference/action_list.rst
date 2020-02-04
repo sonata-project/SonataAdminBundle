@@ -1,12 +1,6 @@
 The List View
 =============
 
-.. note::
-
-    This document is a stub representing a new work in progress. If you're reading
-    this you can help contribute, **no matter what your experience level with Sonata
-    is**. Check out the `issues on GitHub`_ for more information about how to get involved.
-
 This document will cover the List view which you use to browse the objects in your
 system. It will cover configuration of the list itself and the filters you can use
 to control what's visible.
@@ -17,6 +11,8 @@ Basic configuration
 SonataAdmin Options that may affect the list view:
 
 .. code-block:: yaml
+
+    # config/packages/sonata_admin.yaml
 
     sonata_admin:
         templates:
@@ -31,7 +27,6 @@ SonataAdmin Options that may affect the list view:
             pager_links:                '@SonataAdmin/Pager/links.html.twig'
             pager_results:              '@SonataAdmin/Pager/results.html.twig'
 
-
 .. note::
 
     **TODO**:
@@ -42,11 +37,8 @@ Customizing the fields displayed on the list page
 -------------------------------------------------
 
 You can customize the columns displayed on the list through the ``configureListFields`` method.
-Here is an example:
+Here is an example::
 
-.. code-block:: php
-
-    <?php
     // ...
 
     protected function configureListFields(ListMapper $listMapper)
@@ -74,6 +66,17 @@ Here is an example:
                     1 => 'Active',
                     2 => 'Inactive',
                     3 => 'Draft',
+                ],
+            ])
+
+            // editable multiple field
+            ->add('winner', 'choice', [
+                'editable' => true,
+                'multiple' => true,
+                'choices' => [
+                    'jury' => 'Jury',
+                    'voting' => 'Voting',
+                    'encouraging' => 'Encouraging',
                 ],
             ])
 
@@ -119,7 +122,7 @@ Options
   when the ``Admin::generateUrl`` is called
 - ``code`` (o): the method name to retrieve the related value (for example,
   if you have an `array` type field, you would like to show info prettier
-  than `[0] => 'Value'`; useful when simple getter is not enough).
+  than `[0] => 'Value'`; useful when a getter is not enough).
   Notice: works with string-like types (string, text, html)
 - ``associated_property`` (o): property path to retrieve the "string"
   representation of the collection element, or a closure with the element
@@ -163,8 +166,12 @@ Available types and associated options
 | currency  | currency (m)   | A currency string (EUR or USD for instance).                          |
 +-----------+----------------+-----------------------------------------------------------------------+
 | date      | format         | A format understandable by Twig's ``date`` function.                  |
++           +----------------+-----------------------------------------------------------------------+
+|           | timezone       | Second argument for Twig's ``date`` function                          |
 +-----------+----------------+-----------------------------------------------------------------------+
 | datetime  | format         | A format understandable by Twig's ``date`` function.                  |
++           +----------------+-----------------------------------------------------------------------+
+|           | timezone       | Second argument for Twig's ``date`` function                          |
 +-----------+----------------+-----------------------------------------------------------------------+
 | email     | as_string      | Renders the email as string, without any link.                        |
 +           +----------------+-----------------------------------------------------------------------+
@@ -174,7 +181,7 @@ Available types and associated options
 +-----------+----------------+-----------------------------------------------------------------------+
 | percent   |                | Renders value as a percentage.                                        |
 +-----------+----------------+-----------------------------------------------------------------------+
-| string    |                | Renders a simple string.                                              |
+| string    |                | Renders a string.                                                     |
 +-----------+----------------+-----------------------------------------------------------------------+
 | text      |                | See 'string'                                                          |
 +-----------+----------------+-----------------------------------------------------------------------+
@@ -199,6 +206,7 @@ If you have the SonataDoctrineORMAdminBundle installed, you have access
 to more field types, see `SonataDoctrineORMAdminBundle Documentation`_.
 
 .. note::
+
     It is better to prefer non negative notions when possible for boolean
     values so use the ``inverse`` option if you really cannot find a good enough
     antonym for the name you have.
@@ -206,11 +214,7 @@ to more field types, see `SonataDoctrineORMAdminBundle Documentation`_.
 Customizing the query used to generate the list
 -----------------------------------------------
 
-You can customize the list query thanks to the ``createQuery`` method.
-
-.. code-block:: php
-
-    <?php
+You can customize the list query thanks to the ``createQuery`` method::
 
     public function createQuery($context = 'list')
     {
@@ -222,25 +226,21 @@ You can customize the list query thanks to the ``createQuery`` method.
         return $query;
     }
 
-
 Customizing the sort order
 --------------------------
 
 Configure the default ordering in the list view
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Configuring the default ordering column can simply be achieved by overriding
-the ``datagridValues`` array property. All three keys ``_page``, ``_sort_order`` and
-``_sort_by`` can be omitted.
+Configuring the default ordering column can be achieved by overriding the
+``datagridValues`` array property. All three keys ``_page``, ``_sort_order`` and
+``_sort_by`` can be omitted::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/PostAdmin.php
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         // ...
 
@@ -270,18 +270,14 @@ the ``datagridValues`` array property. All three keys ``_page``, ``_sort_order``
 Filters
 -------
 
-You can add filters to let user control which data will be displayed.
+You can add filters to let user control which data will be displayed::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/PostAdmin.php
 
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
-    class ClientAdmin extends AbstractAdmin
+    final class ClientAdmin extends AbstractAdmin
     {
-
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
             $datagridMapper
@@ -297,11 +293,7 @@ All filters are hidden by default for space-saving. User has to check which
 filter he wants to use.
 
 To make the filter always visible (even when it is inactive), set the parameter
-``show_filter`` to ``true``.
-
-.. code-block:: php
-
-    <?php
+``show_filter`` to ``true``::
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
@@ -316,9 +308,7 @@ To make the filter always visible (even when it is inactive), set the parameter
     }
 
 By default the template generates an ``operator`` for a filter which defaults to ``sonata_type_equal``.
-Though this ``operator_type`` is automatically detected it can be changed or even be hidden:
-
-.. code-block:: php
+Though this ``operator_type`` is automatically detected it can be changed or even be hidden::
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
@@ -336,9 +326,7 @@ Though this ``operator_type`` is automatically detected it can be changed or eve
 
 If you don't need the advanced filters, or all your ``operator_type``
 are hidden, you can disable them by setting ``advanced_filter`` to ``false``.
-You need to disable all advanced filters to make the button disappear.
-
-.. code-block:: php
+You need to disable all advanced filters to make the button disappear::
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
@@ -357,9 +345,7 @@ Default filters
 
 Default filters can be added to the datagrid values by using the ``configureDefaultFilterValues`` method.
 A filter has a ``value`` and an optional ``type``. If no ``type`` is
-given the default type ``is equal`` is used.
-
-.. code-block:: php
+given the default type ``is equal`` is used::
 
     protected function configureDefaultFilterValues(array &$filterValues)
     {
@@ -374,10 +360,7 @@ Available types are represented through classes which can be found `here`_.
 Types like ``equal`` and ``boolean`` use constants to assign a choice of
 ``type`` to an ``integer`` for its ``value``::
 
-    <?php
-    // SonataCoreBundle/Form/Type/EqualType.php
-
-    namespace Sonata\CoreBundle\Form\Type;
+    namespace Sonata\Form\Type;
 
     class EqualType extends AbstractType
     {
@@ -390,11 +373,10 @@ The integers are then passed in the URL of the list action e.g.:
 
 This is an example using these constants for an ``boolean`` type::
 
-    use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
-    use Sonata\CoreBundle\Form\Type\EqualType;
-    use Sonata\CoreBundle\Form\Type\BooleanType;
+    use Sonata\Form\Type\EqualType;
+    use Sonata\Form\Type\BooleanType;
 
-    class UserAdmin extends SonataUserAdmin
+    class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
         protected $datagridValues = [
             'enabled' => [
@@ -408,10 +390,7 @@ Please note that setting a ``false`` value on a the ``boolean`` type
 will not work since the type expects an integer of  ``2`` as ``value``
 as defined in the class constants::
 
-    <?php
-    // SonataCoreBundle/Form/Type/BooleanType.php
-
-    namespace Sonata\CoreBundle\Form\Type;
+    namespace Sonata\Form\Type;
 
     class BooleanType extends AbstractType
     {
@@ -420,14 +399,12 @@ as defined in the class constants::
     }
 
 Default filters can also be added to the datagrid values by overriding
-the ``getFilterParameters`` method.
+the ``getFilterParameters`` method::
 
-.. code-block:: php
+    use Sonata\Form\Type\EqualType;
+    use Sonata\Form\Type\BooleanType;
 
-    use Sonata\CoreBundle\Form\Type\EqualType;
-    use Sonata\CoreBundle\Form\Type\BooleanType;
-
-    class UserAdmin extends SonataUserAdmin
+    class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
         public function getFilterParameters()
         {
@@ -442,11 +419,9 @@ the ``getFilterParameters`` method.
         }
     }
 
-This approach is useful when you need to create dynamic filters.
+This approach is useful when you need to create dynamic filters::
 
-.. code-block:: php
-
-    class PostAdmin extends SonataUserAdmin
+    class PostAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
         public function getFilterParameters()
         {
@@ -466,19 +441,20 @@ This approach is useful when you need to create dynamic filters.
         }
     }
 
-Please note that this is not a secure approach to hide posts from others.
-It's just an example for setting filters on demand.
+.. note::
+
+    this is not a secure approach to hide posts from others.
+    It's only an example for setting filters on demand!
 
 Callback filter
 ^^^^^^^^^^^^^^^
 
 If you have the **SonataDoctrineORMAdminBundle** installed you can use the
-``doctrine_orm_callback`` filter type e.g. for creating a full text filter::
+``CallbackFilter`` filter type e.g. for creating a full text filter::
 
-    use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
-    class UserAdmin extends SonataUserAdmin
+    final class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
@@ -486,10 +462,7 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the
                 ->add('full_text', CallbackFilter::class, [
                     'callback' => [$this, 'getFullTextFilter'],
                     'field_type' => 'text'
-                ])
-
-                // ...
-            ;
+                ]);
         }
 
         public function getFullTextFilter($queryBuilder, $alias, $field, $value)
@@ -512,9 +485,9 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the
 You can also get the filter type which can be helpful to change the operator
 type of your condition(s)::
 
-    use Sonata\CoreBundle\Form\Type\EqualType;
+    use Sonata\Form\Type\EqualType;
 
-    class UserAdmin extends SonataUserAdmin
+    final class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
         public function getFullTextFilter($queryBuilder, $alias, $field, $value)
         {
@@ -546,7 +519,7 @@ Visual configuration
 You have the possibility to configure your List View to customize the
 render without overriding to whole template.
 
-You can:
+The following options are available:
 
 - `header_style`: Customize the style of header (width, color, background, align...)
 - `header_class`: Customize the class of the header
@@ -554,9 +527,7 @@ You can:
 - `row_align`: Customize the alignment of the rendered inner cells
 - `label_icon`: Add an icon before label
 
-.. code-block:: php
-
-    <?php
+Example::
 
     protected function configureListFields(ListMapper $list)
     {
@@ -579,37 +550,32 @@ You can:
                 'header_class' => 'customActions',
                 'row_align' => 'right'
             ])
-
-            // ...
         ;
     }
 
 If you want to customise the `collapse` option, you can also give an array
-to override the default parameters.
+to override the default parameters::
 
-.. code-block:: php
-
-            // ...
             ->add('description', TextType::class, [
                 'header_style' => 'width: 35%',
                 'collapse' => [
-                    'height' => 40, // height in px
-                    'more' => 'I want to see the full description', // content of the "read more" link
-                    'less' => 'This text is too long, reduce the size' // content of the "read less" link
+                    // height in px
+                    'height' => 40,
+
+                    // content of the "read more" link
+                    'more' => 'I want to see the full description',
+
+                     // content of the "read less" link
+                    'less' => 'This text is too long, reduce the size',
                 ]
             ])
-            // ...
 
 If you want to show only the `label_icon`::
 
-            // ...
             ->add('upvotes', null, [
                 'label' => false,
-                'label_icon' => 'fa fa-thumbs-o-up'
+                'label_icon' => 'fa fa-thumbs-o-up',
             ])
-            // ...
-
-`issues on GitHub`_
 
 Mosaic view button
 ------------------
@@ -618,14 +584,18 @@ You have the possibility to show/hide mosaic view button.
 
 .. code-block:: yaml
 
+    # config/packages/sonata_admin.yaml
+
     sonata_admin:
         # for hide mosaic view button on all screen using `false`
-        show_mosaic_button:   true
+        show_mosaic_button: true
 
 You can show/hide mosaic view button using admin service configuration.
 You need to add option ``show_mosaic_button`` in your admin services:
 
 .. code-block:: yaml
+
+    # config/services.yaml
 
     sonata_admin.admin.post:
         class: Sonata\AdminBundle\Admin\PostAdmin
@@ -643,9 +613,9 @@ Checkbox range selection
 ------------------------
 
 .. tip::
+
     You can check / uncheck a range of checkboxes by clicking a first one,
     then a second one with shift + click.
 
-.. _`issues on GitHub`: https://github.com/sonata-project/SonataAdminBundle/issues/1519
 .. _`SonataDoctrineORMAdminBundle Documentation`: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html
 .. _`here`: https://github.com/sonata-project/SonataCoreBundle/tree/3.x/src/Form/Type

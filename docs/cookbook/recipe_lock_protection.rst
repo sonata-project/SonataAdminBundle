@@ -3,11 +3,6 @@ Lock Protection
 
 Lock protection will prevent data corruption when multiple users edit an object at the same time.
 
-.. note::
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 Example
 -------
 
@@ -34,28 +29,28 @@ You can enable it in your ``sonata_admin`` configuration:
         sonata_admin:
             options:
                 lock_protection: true
-                
+
 You must also configure each entity that you want to support by adding a
 field called ``$version`` on which the Doctrine ``Version`` feature is activated.
 
 Using Annotations::
 
-    <?php
     // src/Entity/Car.php
+
     namespace App\Entity\Car;
-    
+
     use Doctrine\ORM\Mapping as ORM;
 
     class Car
     {
         // ...
-        
+
         /**
          * @ORM\Column(type="integer")
          * @ORM\Version
          */
         protected $version;
-        
+
         // ...
     }
 
@@ -63,18 +58,17 @@ Using XML:
 
 .. code-block:: xml
 
-    <?xml version="1.0" encoding="utf-8"?>
+    <?xml version="1.0" encoding="UTF-8"?>
     <!-- src/Resources/orm/Car.orm.xml -->
     <doctrine-mapping>
         <entity name="App\Entity\Car">
             <!-- ... -->
-    
-            <field name="version" type="integer" version="true" />
-    
+
+            <field name="version" type="integer" version="true"/>
+
             <!-- ... -->
         </entity>
     </doctrine-mapping>
-    
 
 For more information about this visit the `Doctrine docs <http://doctrine-orm.readthedocs.org/en/latest/reference/transactions-and-concurrency.html?highlight=optimistic#optimistic-locking>`_
 

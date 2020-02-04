@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -18,11 +20,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminPoolLoader extends Loader
 {
-    const ROUTE_TYPE_NAME = 'sonata_admin';
+    public const ROUTE_TYPE_NAME = 'sonata_admin';
 
     /**
      * @var Pool

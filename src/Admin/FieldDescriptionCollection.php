@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -12,6 +14,8 @@
 namespace Sonata\AdminBundle\Admin;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class FieldDescriptionCollection implements \ArrayAccess, \Countable
@@ -41,7 +45,7 @@ class FieldDescriptionCollection implements \ArrayAccess, \Countable
      */
     public function has($name)
     {
-        return array_key_exists($name, $this->elements);
+        return \array_key_exists($name, $this->elements);
     }
 
     /**

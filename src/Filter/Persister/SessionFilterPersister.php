@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -26,46 +28,30 @@ final class SessionFilterPersister implements FilterPersisterInterface
      */
     private $session;
 
-    /**
-     * @param SessionInterface $session
-     */
     public function __construct(SessionInterface $session)
     {
         $this->session = $session;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get($adminCode)
+    public function get($adminCode): array
     {
         return $this->session->get($this->buildStorageKey($adminCode), []);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function set($adminCode, array $filters)
+    public function set($adminCode, array $filters): void
     {
         $this->session->set($this->buildStorageKey($adminCode), $filters);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function reset($adminCode)
+    public function reset($adminCode): void
     {
         $this->session->remove($this->buildStorageKey($adminCode));
     }
 
     /**
      * Build the session key, under which the filter should be stored for given admin code.
-     *
-     * @param string $adminCode The admin code
-     *
-     * @return string The storage key
      */
-    private function buildStorageKey($adminCode)
+    private function buildStorageKey(string $adminCode): string
     {
         return $adminCode.'.filter.parameters';
     }

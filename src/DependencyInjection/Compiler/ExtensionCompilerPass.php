@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -17,6 +19,8 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ExtensionCompilerPass implements CompilerPassInterface
@@ -99,8 +103,8 @@ class ExtensionCompilerPass implements CompilerPassInterface
 
         foreach ($extensionMap as $type => $subjects) {
             foreach ($subjects as $subject => $extensionList) {
-                if ('admins' == $type) {
-                    if ($id == $subject) {
+                if ('admins' === $type) {
+                    if ($id === $subject) {
                         $extensions = array_merge($extensions, $extensionList);
                     }
                 } else {
@@ -112,25 +116,25 @@ class ExtensionCompilerPass implements CompilerPassInterface
                     $subjectReflection = new \ReflectionClass($subject);
                 }
 
-                if ('instanceof' == $type) {
-                    if ($subjectReflection->getName() == $classReflection->getName() || $classReflection->isSubclassOf($subject)) {
+                if ('instanceof' === $type) {
+                    if ($subjectReflection->getName() === $classReflection->getName() || $classReflection->isSubclassOf($subject)) {
                         $extensions = array_merge($extensions, $extensionList);
                     }
                 }
 
-                if ('implements' == $type) {
+                if ('implements' === $type) {
                     if ($classReflection->implementsInterface($subject)) {
                         $extensions = array_merge($extensions, $extensionList);
                     }
                 }
 
-                if ('extends' == $type) {
+                if ('extends' === $type) {
                     if ($classReflection->isSubclassOf($subject)) {
                         $extensions = array_merge($extensions, $extensionList);
                     }
                 }
 
-                if ('uses' == $type) {
+                if ('uses' === $type) {
                     if ($this->hasTrait($classReflection, $subject)) {
                         $extensions = array_merge($extensions, $extensionList);
                     }
@@ -199,7 +203,7 @@ class ExtensionCompilerPass implements CompilerPassInterface
      */
     protected function hasTrait(\ReflectionClass $class, $traitName)
     {
-        if (\in_array($traitName, $class->getTraitNames())) {
+        if (\in_array($traitName, $class->getTraitNames(), true)) {
             return true;
         }
 
@@ -212,17 +216,18 @@ class ExtensionCompilerPass implements CompilerPassInterface
 
     /**
      * Add extension configuration to the targets array.
-     *
-     * @param string $target
-     * @param string $extension
      */
-    private function addExtension(array &$targets, $target, $extension, array $attributes)
-    {
+    private function addExtension(
+        array &$targets,
+        string $target,
+        string $extension,
+        array $attributes
+    ): void {
         if (!isset($targets[$target])) {
             $targets[$target] = new \SplPriorityQueue();
         }
 
-        $priority = isset($attributes['priority']) ? $attributes['priority'] : 0;
+        $priority = $attributes['priority'] ?? 0;
         $targets[$target]->insert(new Reference($extension), $priority);
     }
 }

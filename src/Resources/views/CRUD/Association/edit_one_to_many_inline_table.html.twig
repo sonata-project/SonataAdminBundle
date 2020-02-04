@@ -16,10 +16,10 @@ file that was distributed with this source code.
                     <th>{{ 'action_delete'|trans({}, 'SonataAdminBundle') }}</th>
                 {% else %}
                     <th
-                        {% if nested_field.vars['required'] %}
+                        {% if nested_field.vars['required']|default(false) %}
                             class="required"
                         {% endif %}
-                        {% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %}
+                        {% if nested_field.vars['attr']['hidden']|default(false) %}
                             style="display:none;"
                         {% endif %}
                     >
@@ -36,16 +36,24 @@ file that was distributed with this source code.
             <tr>
                 {% for field_name, nested_field in nested_group_field.children %}
                     <td class="
-                        sonata-ba-td-{{ id }}-{{ field_name  }}
+                        sonata-ba-td-{{ id }}-{{ field_name }}
                         control-group
-                        {% if nested_field.vars.errors|length > 0 %} error sonata-ba-field-error{% endif %}
+                        {% if nested_field.vars.errors|default(false) %} error sonata-ba-field-error{% endif %}
                         "
-                        {% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %}
+                        {% if nested_field.vars['attr']['hidden']|default(false) %}
                             style="display:none;"
                         {% endif %}
                     >
                         {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
                             {{ form_widget(nested_field) }}
+
+                            {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name].help %}
+                                <span class="help-block">
+                                    {%- block help %}
+                                        {{- sonata_admin.field_description.associationadmin.formfielddescriptions[field_name].help|raw -}}
+                                    {% endblock -%}
+                                </span>
+                            {% endif %}
 
                             {% set dummy = nested_group_field.setrendered %}
                         {% else %}
@@ -55,7 +63,7 @@ file that was distributed with this source code.
                                 {{ form_widget(nested_field) }}
                             {% endif %}
                         {% endif %}
-                        {% if nested_field.vars.errors|length > 0 %}
+                        {% if nested_field.vars.errors|default(false) %}
                             <div class="help-inline sonata-ba-field-error-messages">
                                 {{ form_errors(nested_field) }}
                             </div>

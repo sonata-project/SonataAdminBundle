@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -22,6 +24,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class FormTypeFieldExtension extends AbstractTypeExtension
@@ -78,7 +82,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $sonataAdmin = $form->getConfig()->getAttribute('sonata_admin');
-        $sonataAdminHelp = isset($options['sonata_help']) ? $options['sonata_help'] : null;
+        $sonataAdminHelp = $options['sonata_help'] ?? null;
 
         /*
          * We have a child, so we need to upgrade block prefix
@@ -155,6 +159,11 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         return FormType::class;
     }
 
+    public static function getExtendedTypes()
+    {
+        return [FormType::class];
+    }
+
     /**
      * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
      *
@@ -210,12 +219,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     protected function getClass(FormBuilderInterface $formBuilder)
     {
         foreach ($this->getTypes($formBuilder) as $type) {
-            // NEXT_MAJOR: Remove the else part when dropping support for SF 2.8
-            if (!method_exists($type, 'getName')) {
-                $name = \get_class($type);
-            } else {
-                $name = $type->getName();
-            }
+            $name = \get_class($type);
 
             if (isset($this->defaultClasses[$name])) {
                 return $this->defaultClasses[$name];

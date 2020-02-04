@@ -10,14 +10,12 @@ branches:
 language: php
 
 php:
-  - '5.6'
-  - '7.0'
-  - '7.1'
   - '7.2'
+  - '7.3'
+  - '7.4'
   - nightly
 
-sudo: false
-dist: trusty
+dist: xenial
 
 addons:
   apt:
@@ -32,48 +30,41 @@ cache:
 env:
   global:
     - PATH="$HOME/.local/bin:$PATH"
-    - SYMFONY_DEPRECATIONS_HELPER=weak_vendors
+    - SYMFONY_DEPRECATIONS_HELPER=max[self]=0
     - TARGET=test
     - UPSTREAM_URL=https://github.com/sonata-project/SonataAdminBundle.git
+    - PHPUNIT_VERSION=8
 
 matrix:
   fast_finish: true
   include:
-    - php: '7.2'
+    - php: '7.3'
       env: TARGET=docs
-    - php: '7.2'
+    - php: '7.3'
       env: TARGET=lint
-    - php: '5.6'
+    - php: '7.2'
       env: COMPOSER_FLAGS="--prefer-lowest"
-    - php: '7.2'
-      env: SYMFONY=2.8.*
-    - php: '7.2'
-      env: SYMFONY=3.3.*
-    - php: '7.2'
-      env: SYMFONY=3.4.*
-    - php: '7.2'
-      env: SYMFONY='dev-master as 3.4.x-dev'
-    - php: '7.2'
+    - php: '7.3'
+      env: SYMFONY=4.4.*
+    - php: '7.3'
+      env: SYMFONY='dev-master as 4.4.x-dev'
+    - php: '7.3'
       env: SONATA_CORE=3.*
-    - php: '7.2'
+    - php: '7.3'
       env: SONATA_CORE='dev-master as 3.x-dev'
-    - php: '7.2'
+    - php: '7.3'
       env: SONATA_BLOCK=3.*
-    - php: '7.2'
+    - php: '7.3'
       env: SONATA_BLOCK='dev-master as 3.x-dev'
-    - php: '7.2'
-      env: SYMFONY_MAKER=1.7.*
-    - php: '7.2'
-      env: SYMFONY_MAKER='dev-master as 1.7.x-dev'
-    - php: '7.2'
+    - php: '7.3'
       env: SYMFONY_DEPRECATIONS_HELPER=0
   allow_failures:
+    - php: 7.4snapshot
     - php: nightly
     - env: SYMFONY_DEPRECATIONS_HELPER=0
-    - env: SYMFONY='dev-master as 3.4.x-dev'
+    - env: SYMFONY='dev-master as 4.4.x-dev'
     - env: SONATA_CORE='dev-master as 3.x-dev'
     - env: SONATA_BLOCK='dev-master as 3.x-dev'
-    - env: SYMFONY_MAKER='dev-master as 1.7.x-dev'
 
 before_install:
   - git remote add upstream ${UPSTREAM_URL} && git fetch --all

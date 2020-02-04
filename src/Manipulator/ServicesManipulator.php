@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -14,6 +16,8 @@ namespace Sonata\AdminBundle\Manipulator;
 use Symfony\Component\Yaml\Yaml;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Marek Stipek <mario.dweller@seznam.cz>
  * @author Simon Cosandey <simon.cosandey@simseo.ch>
  */
@@ -64,8 +68,8 @@ class ServicesManipulator
                 $code .= "\n";
             }
 
-            if (array_key_exists('services', $data)) {
-                if (array_key_exists($serviceId, (array) $data['services'])) {
+            if (\array_key_exists('services', $data)) {
+                if (\array_key_exists($serviceId, (array) $data['services'])) {
                     throw new \RuntimeException(sprintf(
                         'The service "%s" is already defined in the file "%s".',
                         $serviceId,

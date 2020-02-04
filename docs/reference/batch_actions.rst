@@ -5,11 +5,6 @@ Batch actions are actions triggered on a set of selected objects. By default,
 Admins have a ``delete`` action which allows you to remove several entries
 at once.
 
-.. note::
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 Defining new actions
 --------------------
 
@@ -25,17 +20,14 @@ Each key represent a batch action and could contain these settings:
   (default: the translation domain of the admin)
 - **ask_confirmation**: defaults to true and means that the user will be asked
   for confirmation before the batch action is processed
+- **template**: Override ``ask_confirmation`` template for this specific action. This allows you
+  to specify different templates for each batch action that requires confirmation.
 
 For example, lets define a new ``merge`` action which takes a number of source items and
 merges them onto a single target item. It should only be available when two conditions are met:
 
 - the EDIT and DELETE routes exist for this Admin (have not been disabled)
-- the logged in administrator has EDIT and DELETE permissions
-
-.. code-block:: php
-
-    <?php
-    // in your Admin class
+- the logged in administrator has EDIT and DELETE permissions::
 
     protected function configureBatchActions($actions)
     {
@@ -46,7 +38,6 @@ merges them onto a single target item. It should only be available when two cond
             $actions['merge'] = [
                 'ask_confirmation' => true
             ];
-
         }
 
         return $actions;
@@ -59,15 +50,8 @@ The method ``batchAction<MyAction>`` will be executed to process your batch in y
 objects are passed to this method through a query argument which can be used to retrieve them.
 If for some reason it makes sense to perform your batch action without the default selection
 method (for example you defined another way, at template level, to select model at a lower
-granularity), the passed query is ``null``.
+granularity), the passed query is ``null``::
 
-.. note::
-
-    You can check how to declare your own ``CRUDController`` class in the Architecture section.
-
-.. code-block:: php
-
-    <?php
     // src/Controller/CRUDController.php
 
     namespace App\Controller;
@@ -137,6 +121,9 @@ granularity), the passed query is ``null``.
         // ...
     }
 
+.. note::
+
+    You can check how to declare your own ``CRUDController`` class in the Architecture section.
 
 (Optional) Overriding the batch selection template
 --------------------------------------------------
@@ -150,15 +137,16 @@ a radio button to choose the target object.
 .. code-block:: html+jinja
 
     {# templates/bundles/SonataAdminBundle/CRUD/list__batch.html.twig #}
+
     {# see @SonataAdmin/CRUD/list__batch.html.twig for the current default template #}
 
     {% extends get_admin_template('base_list_field', admin.code) %}
 
     {% block field %}
-        <input type="checkbox" name="idx[]" value="{{ admin.id(object) }}" />
+        <input type="checkbox" name="idx[]" value="{{ admin.id(object) }}"/>
 
         {# the new radio button #}
-        <input type="radio" name="targetId" value="{{ admin.id(object) }}" />
+        <input type="radio" name="targetId" value="{{ admin.id(object) }}"/>
     {% endblock %}
 
 (Optional) Overriding the default relevancy check function
@@ -167,7 +155,7 @@ a radio button to choose the target object.
 By default, batch actions are not executed if no object was selected, and
 the user is notified of this lack of selection. If your custom batch action
 needs more complex logic to determine if an action can be performed or not,
-just define a ``batchAction<MyAction>IsRelevant`` method (e.g. ``batchActionMergeIsRelevant``)
+define a ``batchAction<MyAction>IsRelevant`` method (e.g. ``batchActionMergeIsRelevant``)
 in your ``CRUDController`` class. This check is performed before the user is asked for confirmation,
 to make sure there is actually something to confirm.
 
@@ -177,11 +165,8 @@ This method may return three different values:
  - ``false``: Same as above, with the default "action aborted, no model selected" notification message.
  - ``string``: The batch action is not relevant given the current request parameters
    (for example the ``target`` is missing for a ``merge`` action).
-   The returned string is a message displayed to the user.
+   The returned string is a message displayed to the user::
 
-.. code-block:: php
-
-    <?php
     // src/Controller/CRUDController.php
 
     namespace App\Controller;
@@ -219,8 +204,6 @@ This method may return three different values:
             // if at least one but not the target model is selected, a merge can be done.
             return count($selectedIds) > 0;
         }
-
-        // ...
     }
 
 (Optional) Executing a pre batch hook
@@ -228,12 +211,7 @@ This method may return three different values:
 
 In your admin class you can create a ``preBatchAction`` method to execute
 something before doing the batch action. The main purpose of this method
-is to alter the query or the list of selected ids.
-
-.. code-block:: php
-
-    <?php
-    // in your Admin class
+is to alter the query or the list of selected IDs::
 
     public function preBatchAction($actionName, ProxyQueryInterface $query, array & $idx, $allElements)
     {

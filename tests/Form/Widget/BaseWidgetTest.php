@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -11,10 +13,11 @@
 
 namespace Sonata\AdminBundle\Tests\Form\Widget;
 
-use Sonata\CoreBundle\Test\AbstractWidgetTestCase;
+use Sonata\Form\Test\AbstractWidgetTestCase;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
 use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslator;
+use Twig\Environment;
 
 /**
  * Base class for tests checking rendering of form widgets with form_admin_fields.html.twig and
@@ -64,9 +67,9 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getRenderingEngine(\Twig_Environment $environment = null)
+    protected function getRenderingEngine(Environment $environment = null)
     {
-        if (!\in_array($this->type, ['form', 'filter'])) {
+        if (!\in_array($this->type, ['form', 'filter'], true)) {
             throw new \Exception('Please override $this->type in your test class specifying template to use (either form or filter)');
         }
 

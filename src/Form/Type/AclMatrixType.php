@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -21,6 +23,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * This type define an ACL matrix.
+ *
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Samuel Roze <samuel@sroze.io>
  * @author Baptiste Meyer <baptiste@les-tilleuls.coop>

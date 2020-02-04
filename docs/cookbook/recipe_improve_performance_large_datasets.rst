@@ -1,4 +1,4 @@
-Improve performance of large datasets
+Improve Performance of Large Datasets
 =====================================
 
 If your database table contains thousands of records, the database queries generated
@@ -7,26 +7,15 @@ by SonataAdmin may become very slow. Here are tips how to improve the performanc
 Change default Pager to SimplePager
 -----------------------------------
 
-Default `Pager` is counting all rows in the table, so user can easily navigate
+Default `Pager` is counting all rows in the table, so the user can navigate
 to any page in the Datagrid. But counting thousands or millions of records
 can be slow operation. If you don't need to know the number of all records,
 you can use `SimplePager` instead. It doesn't count all rows, but gives user only
 information if there is next page or not.
 
-To use `SimplePager` in your admin just define ``pager_type`` inside the service definition:
+To use `SimplePager` in your admin,  define ``pager_type`` in the service definition:
 
 .. configuration-block::
-
-    .. code-block:: xml
-
-        <!-- src/Resources/config/admin.xml -->
-
-        <service id="app.admin.post" class="App\Admin\PostAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" pager_type="simple" />
-            <argument />
-            <argument>App\Entity\Post</argument>
-            <argument />
-        </service>
 
     .. code-block:: yaml
 
@@ -35,14 +24,25 @@ To use `SimplePager` in your admin just define ``pager_type`` inside the service
         services:
             app.admin.post:
                 class: App\Admin\PostAdmin
-                tags:
-                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "Post", pager_type: "simple" }
                 arguments:
                     - ~
                     - App\Entity\Post
                     - ~
-                public: true
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: 'Content', label: 'Post', pager_type: 'simple' }
+
+    .. code-block:: xml
+
+        <!-- config/services.xml -->
+
+        <service id="app.admin.post" class="App\Admin\PostAdmin">
+            <argument/>
+            <argument>App\Entity\Post</argument>
+            <argument/>
+            <tag name="sonata.admin" manager_type="orm" group="Content" label="Post" pager_type="simple"/>
+        </service>
 
 .. note::
 
-    The ``pager_results`` template is automatically changed to ``@SonataAdmin/Pager/simple_pager_results.html.twig`` if it's not already overloaded.
+    The ``pager_results`` template is automatically changed to
+    ``@SonataAdmin/Pager/simple_pager_results.html.twig`` if it's not already overloaded.

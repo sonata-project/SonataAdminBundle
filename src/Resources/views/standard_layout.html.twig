@@ -37,6 +37,7 @@ file that was distributed with this source code.
                 USE_SELECT2: sonata_admin.adminPool.getOption('use_select2'),
                 USE_ICHECK: sonata_admin.adminPool.getOption('use_icheck'),
                 USE_STICKYFORMS: sonata_admin.adminPool.getOption('use_stickyforms'),
+                DEBUG: sonata_admin.adminPool.getOption('js_debug'),
             },
             translations: {
                 CONFIRM_EXIT: 'confirm_exit'|trans({}, 'SonataAdminBundle'),
@@ -129,7 +130,7 @@ file that was distributed with this source code.
                     </noscript>
                 {% endblock %}
                 {% block logo %}
-                    {% spaceless %}
+                    {% apply spaceless %}
                         <a class="logo" href="{{ path('sonata_admin_dashboard') }}">
                             {% if 'single_image' == sonata_admin.adminPool.getOption('title_mode') or 'both' == sonata_admin.adminPool.getOption('title_mode') %}
                                 <img src="{{ asset(sonata_admin.adminPool.titlelogo) }}" alt="{{ sonata_admin.adminPool.title }}">
@@ -138,11 +139,11 @@ file that was distributed with this source code.
                                 <span>{{ sonata_admin.adminPool.title }}</span>
                             {% endif %}
                         </a>
-                    {% endspaceless %}
+                    {% endapply %}
                 {% endblock %}
                 {% block sonata_nav %}
                     <nav class="navbar navbar-static-top" role="navigation">
-                        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" 
+                        <a href="#" class="sidebar-toggle" data-toggle="offcanvas"
                            role="button" title="{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}">
                             <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
                         </a>
@@ -168,15 +169,15 @@ file that was distributed with this source code.
                                                                         {% if menu.extra('safe_label', true) %}
                                                                             {{- label|raw -}}
                                                                         {% else %}
-                                                                            {{- label -}}
+                                                                            {{- label|truncate(100) -}}
                                                                         {% endif %}
                                                                     </a>
                                                                 {% else %}
-                                                                    <span>{{ label }}</span>
+                                                                    <span>{{ label|truncate(100) }}</span>
                                                                 {% endif %}
                                                             </li>
                                                         {% else %}
-                                                            <li class="active"><span>{{ label }}</span></li>
+                                                            <li class="active"><span>{{ label|truncate(100) }}</span></li>
                                                         {% endif %}
                                                     {% endfor %}
                                                 {% endif %}

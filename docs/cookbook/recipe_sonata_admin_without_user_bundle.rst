@@ -7,9 +7,6 @@ of using FOSUserBundle or SonataUserBundle.
 Code used in this short guide can be found `here <https://github.com/kunicmarko20/guard-talk-example>`__
 with support for different Symfony versions.
 
-.. note::
-    This article assumes you are using Symfony 4.
-
 The recipe
 ----------
 
@@ -23,15 +20,11 @@ Things we will need to setup:
 - `Setup firewall in security.yaml <#setup-firewall-in-security-yaml>`__
 - `Login template resembling Sonata style <#login-template-resembling-sonata-style>`__
 
-
 User Entity
 ^^^^^^^^^^^
 
-This represents your security user, you can read more about it `here <http://symfony.com/doc/current/security/entity_provider.html#create-your-user-entity>`__.
-
-.. code-block:: php
-
-    <?php
+This represents your security user, you can read more about it
+`here <http://symfony.com/doc/current/security/entity_provider.html#create-your-user-entity>`__::
 
     namespace App\Entity;
 
@@ -64,19 +57,13 @@ This represents your security user, you can read more about it `here <http://sym
          * @ORM\Column(name="roles", type="json_array")
          */
         private $roles;
-
-        //...
     }
 
 UserProvider
 ^^^^^^^^^^^^
 
 This represents your user provider, it will be used to load your security users, read
-more about it `here <http://symfony.com/doc/current/security/custom_provider.html#create-a-user-provider>`__.
-
-.. code-block:: php
-
-    <?php
+more about it `here <http://symfony.com/doc/current/security/custom_provider.html#create-a-user-provider>`__::
 
     namespace App\Security;
 
@@ -86,7 +73,7 @@ more about it `here <http://symfony.com/doc/current/security/custom_provider.htm
     use Symfony\Component\Security\Core\User\UserProviderInterface;
     use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
-    class UserProvider implements UserProviderInterface
+    final class UserProvider implements UserProviderInterface
     {
         /**
          * @var EntityManagerInterface
@@ -144,11 +131,7 @@ more about it `here <http://symfony.com/doc/current/security/custom_provider.htm
 AdminLoginForm
 ^^^^^^^^^^^^^^
 
-A small login form that will basically just validate our data:
-
-.. code-block:: php
-
-    <?php
+A small login form that will validate our data::
 
     namespace App\Form;
 
@@ -157,7 +140,7 @@ A small login form that will basically just validate our data:
     use Symfony\Component\Form\FormBuilderInterface;
     use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
-    class AdminLoginForm extends AbstractType
+    final class AdminLoginForm extends AbstractType
     {
         public function buildForm(FormBuilderInterface $builder, array $options): void
         {
@@ -171,11 +154,7 @@ AdminLoginAuthenticator
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 This represents your custom authentication system, read
-more about it `here <https://symfony.com/doc/current/security/guard_authentication.html#step-1-create-the-authenticator-class>`__.
-
-.. code-block:: php
-
-    <?php
+more about it `here <https://symfony.com/doc/current/security/guard_authentication.html#step-1-create-the-authenticator-class>`__::
 
     namespace App\Security;
 
@@ -189,14 +168,13 @@ more about it `here <https://symfony.com/doc/current/security/guard_authenticati
     use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
     use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
     use Symfony\Component\Security\Core\Exception\AuthenticationException;
-    use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
     use Symfony\Component\Security\Core\Security;
     use Symfony\Component\Security\Core\User\UserInterface;
     use Symfony\Component\Security\Core\User\UserProviderInterface;
     use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
     use Symfony\Component\Security\Guard\AuthenticatorInterface;
 
-    class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator implements AuthenticatorInterface
+    final class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator implements AuthenticatorInterface
     {
         /**
          * @var FormFactoryInterface
@@ -253,15 +231,7 @@ more about it `here <https://symfony.com/doc/current/security/guard_authenticati
 
         public function checkCredentials($credentials, UserInterface $user): bool
         {
-            if (!$this->passwordEncoder->isPasswordValid($user, $credentials['password'])) {
-                return false;
-            }
-
-            if (!$user->hasRole('ROLE_ADMIN')) {
-                throw new CustomUserMessageAuthenticationException("You don't have permission to access that page.");
-            }
-
-            return true;
+            return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
         }
 
         public function onAuthenticationFailure(Request $request, AuthenticationException $exception): RedirectResponse
@@ -286,11 +256,7 @@ AdminLoginController
 ^^^^^^^^^^^^^^^^^^^^
 
 A Controller, used to render login form. Logout is left empty intentionally because
-this will be handled by Symfony, but we still need to register that route.
-
-.. code-block:: php
-
-    <?php
+this will be handled by Symfony, but we still need to register that route::
 
     namespace App\Controller;
 
@@ -300,7 +266,7 @@ this will be handled by Symfony, but we still need to register that route.
     use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
     use Symfony\Component\HttpFoundation\Response;
 
-    class AdminLoginController extends Controller
+    final class AdminLoginController extends Controller
     {
         /**
          * @var AuthenticationUtils
@@ -352,7 +318,7 @@ Setup firewall in `security.yaml`
                 - ROLE_SONATA_PAGE_ADMIN_PAGE_EDIT
 
         encoders:
-            App\Entity\User: bcrypt
+            App\Entity\User: auto # use bcrypt if you are using "symfony/security-bundle" < 4.3
 
         providers:
             users:

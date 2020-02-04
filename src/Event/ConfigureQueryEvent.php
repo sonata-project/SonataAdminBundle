@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -13,7 +15,7 @@ namespace Sonata\AdminBundle\Event;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * This event is sent by hook:
@@ -22,6 +24,8 @@ use Symfony\Component\EventDispatcher\Event;
  * You can register the listener to the event dispatcher by using:
  *   - sonata.admin.event.configure.query
  *   - sonata.admin.event.configure.[admin_code].query  (not implemented yet)
+ *
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */

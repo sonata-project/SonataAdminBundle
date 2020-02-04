@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -34,7 +36,7 @@ class RoleSecurityHandlerTest extends TestCase
      */
     private $authorizationChecker;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->authorizationChecker = $this->getMockForAbstractClass(AuthorizationCheckerInterface::class);
         $this->admin = $this->getMockForAbstractClass(AdminInterface::class);
@@ -43,13 +45,13 @@ class RoleSecurityHandlerTest extends TestCase
     /**
      * @dataProvider getBaseRoleTests
      */
-    public function testGetBaseRole($expected, $code)
+    public function testGetBaseRole(string $expected, string $code): void
     {
         $handler = new RoleSecurityHandler($this->authorizationChecker, ['ROLE_BATMAN', 'ROLE_IRONMAN']);
 
         $this->admin->expects($this->once())
             ->method('getCode')
-            ->will($this->returnValue($code));
+            ->willReturn($code);
 
         $this->assertSame($expected, $handler->getBaseRole($this->admin));
     }
@@ -67,43 +69,43 @@ class RoleSecurityHandlerTest extends TestCase
     /**
      * @dataProvider getIsGrantedTests
      */
-    public function testIsGranted($expected, array $superAdminRoles, $adminCode, $operation, $object = null)
+    public function testIsGranted(bool $expected, array $superAdminRoles, string $adminCode, $operation, $object = null): void
     {
         $handler = $this->getRoleSecurityHandler($superAdminRoles);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getCode')
-            ->will($this->returnValue($adminCode));
+            ->willReturn($adminCode);
 
-        $this->authorizationChecker->expects($this->any())
+        $this->authorizationChecker
             ->method('isGranted')
-            ->will($this->returnCallback(function (array $attributes, $object) {
-                if (\in_array('ROLE_BATMAN', $attributes)) {
+            ->willReturnCallback(static function (array $attributes, $object) {
+                if (\in_array('ROLE_BATMAN', $attributes, true)) {
                     return true;
                 }
 
-                if (\in_array('ROLE_IRONMAN', $attributes)) {
+                if (\in_array('ROLE_IRONMAN', $attributes, true)) {
                     return true;
                 }
 
-                if (\in_array('ROLE_AUTH_EXCEPTION', $attributes)) {
+                if (\in_array('ROLE_AUTH_EXCEPTION', $attributes, true)) {
                     throw new AuthenticationCredentialsNotFoundException();
                 }
 
-                if (\in_array('ROLE_FOO_BAR_ABC', $attributes)) {
+                if (\in_array('ROLE_FOO_BAR_ABC', $attributes, true)) {
                     return true;
                 }
 
-                if (\in_array('ROLE_FOO_BAR_DEF', $attributes) && is_a($object, 'stdClass')) {
+                if (\in_array('ROLE_FOO_BAR_DEF', $attributes, true) && is_a($object, 'stdClass')) {
                     return true;
                 }
 
-                if (\in_array('ROLE_FOO_BAR_BAZ_ALL', $attributes)) {
+                if (\in_array('ROLE_FOO_BAR_BAZ_ALL', $attributes, true)) {
                     return true;
                 }
 
                 return false;
-            }));
+            });
 
         $this->assertSame($expected, $handler->isGranted($this->admin, $operation, $object));
     }
@@ -178,54 +180,49 @@ class RoleSecurityHandlerTest extends TestCase
         ];
     }
 
-    public function testIsGrantedWithException()
+    public function testIsGrantedWithException(): void
     {
-        $this->expectException(\RuntimeException::class, 'Something is wrong');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Something is wrong');
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getCode')
-            ->will($this->returnValue('foo.bar'));
+            ->willReturn('foo.bar');
 
-        $this->authorizationChecker->expects($this->any())
+        $this->authorizationChecker
             ->method('isGranted')
-            ->will($this->returnCallback(function (array $attributes, $object) {
+            ->willReturnCallback(static function (array $attributes, $object): void {
                 throw new \RuntimeException('Something is wrong');
-            }));
+            });
 
         $handler = $this->getRoleSecurityHandler(['ROLE_BATMAN']);
         $handler->isGranted($this->admin, 'BAZ');
     }
 
-    public function testCreateObjectSecurity()
+    public function testCreateObjectSecurity(): void
     {
         $handler = $this->getRoleSecurityHandler(['ROLE_FOO']);
         $this->assertNull($handler->createObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
     }
 
-    public function testDeleteObjectSecurity()
+    public function testDeleteObjectSecurity(): void
     {
         $handler = $this->getRoleSecurityHandler(['ROLE_FOO']);
         $this->assertNull($handler->deleteObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
     }
 
-    public function testBuildSecurityInformation()
+    public function testBuildSecurityInformation(): void
     {
         $handler = $this->getRoleSecurityHandler(['ROLE_FOO']);
         $this->assertSame([], $handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
-    /**
-     * @return RoleSecurityHandler
-     */
-    private function getRoleSecurityHandler(array $superAdminRoles)
+    private function getRoleSecurityHandler(array $superAdminRoles): RoleSecurityHandler
     {
         return new RoleSecurityHandler($this->authorizationChecker, $superAdminRoles);
     }
 
-    /**
-     * @return AdminInterface
-     */
-    private function getSonataAdminObject()
+    private function getSonataAdminObject(): AdminInterface
     {
         return $this->getMockForAbstractClass(AdminInterface::class);
     }

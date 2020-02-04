@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -16,11 +18,11 @@ use Sonata\AdminBundle\Filter\Filter;
 
 class FooFilter extends Filter
 {
-    public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value)
+    public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value): void
     {
     }
 
-    public function apply($query, $value)
+    public function apply($query, $value): void
     {
     }
 
@@ -31,7 +33,7 @@ class FooFilter extends Filter
         ];
     }
 
-    public function getRenderSettings()
+    public function getRenderSettings(): void
     {
     }
 }

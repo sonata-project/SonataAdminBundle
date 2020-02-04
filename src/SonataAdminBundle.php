@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -14,9 +16,10 @@ namespace Sonata\AdminBundle;
 use Mopa\Bundle\BootstrapBundle\Form\Type\TabType;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompilerPass;
 use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
 use Sonata\AdminBundle\Form\Type\CollectionType;
@@ -36,6 +39,9 @@ use Sonata\CoreBundle\Form\FormHelper;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * @final since sonata-project/admin-bundle 3.52
+ */
 class SonataAdminBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
@@ -44,11 +50,8 @@ class SonataAdminBundle extends Bundle
         $container->addCompilerPass(new AddFilterTypeCompilerPass());
         $container->addCompilerPass(new ExtensionCompilerPass());
         $container->addCompilerPass(new GlobalVariablesCompilerPass());
-
-        $bundles = $container->getParameter('kernel.bundles');
-        if (isset($bundles['MakerBundle'])) {
-            $container->addCompilerPass(new AdminMakerCompilerPass());
-        }
+        $container->addCompilerPass(new ModelManagerCompilerPass());
+        $container->addCompilerPass(new ObjectAclManipulatorCompilerPass());
 
         $this->registerFormMapping();
     }

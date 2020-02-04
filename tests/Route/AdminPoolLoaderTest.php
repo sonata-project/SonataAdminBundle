@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -25,7 +27,7 @@ use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
  */
 class AdminPoolLoaderTest extends TestCase
 {
-    public function testSupports()
+    public function testSupports(): void
     {
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $pool = $this->getMockBuilder(Pool::class)
@@ -39,7 +41,7 @@ class AdminPoolLoaderTest extends TestCase
         $this->assertFalse($adminPoolLoader->supports('foo', 'bar'));
     }
 
-    public function testLoad()
+    public function testLoad(): void
     {
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $pool = $this->getMockBuilder(Pool::class)
@@ -59,23 +61,23 @@ class AdminPoolLoaderTest extends TestCase
         $admin1 = $this->getMockForAbstractClass(AdminInterface::class);
         $admin1->expects($this->once())
             ->method('getRoutes')
-            ->will($this->returnValue($routeCollection1));
+            ->willReturn($routeCollection1);
 
         $admin2 = $this->getMockForAbstractClass(AdminInterface::class);
         $admin2->expects($this->once())
             ->method('getRoutes')
-            ->will($this->returnValue($routeCollection2));
+            ->willReturn($routeCollection2);
 
-        $pool->expects($this->any())
+        $pool
             ->method('getInstance')
-            ->will($this->returnCallback(function ($id) use ($admin1, $admin2) {
+            ->willReturnCallback(static function (string $id) use ($admin1, $admin2): AdminInterface {
                 switch ($id) {
                     case 'foo_admin':
                         return $admin1;
                     case 'bar_admin':
                         return $admin2;
                 }
-            }));
+            });
 
         $collection = $adminPoolLoader->load('foo', 'sonata_admin');
 

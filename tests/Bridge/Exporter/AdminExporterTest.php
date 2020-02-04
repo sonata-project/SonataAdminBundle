@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -11,11 +13,11 @@
 
 namespace Sonata\AdminBundle\Tests\Bridge\Exporter;
 
-use Exporter\Exporter;
-use Exporter\Writer\TypedWriterInterface;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
+use Sonata\Exporter\Exporter;
+use Sonata\Exporter\Writer\TypedWriterInterface;
 
 class AdminExporterTest extends TestCase
 {
@@ -30,14 +32,14 @@ class AdminExporterTest extends TestCase
     /**
      * @dataProvider provideExportFormats
      */
-    public function testAdminHasPriorityOverGlobalSettings(array $expectedFormats, array $adminFormats, array $globalFormats)
+    public function testAdminHasPriorityOverGlobalSettings(array $expectedFormats, array $adminFormats, array $globalFormats): void
     {
         $writers = [];
         foreach ($globalFormats as $exportFormat) {
             $writer = $this->createMock(TypedWriterInterface::class);
             $writer->expects($this->once())
                 ->method('getFormat')
-                ->will($this->returnValue($exportFormat));
+                ->willReturn($exportFormat);
             $writers[] = $writer;
         }
 
@@ -45,19 +47,19 @@ class AdminExporterTest extends TestCase
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())
             ->method('getExportFormats')
-            ->will($this->returnValue($adminFormats));
+            ->willReturn($adminFormats);
         $adminExporter = new AdminExporter($exporter);
         $this->assertSame($expectedFormats, $adminExporter->getAvailableFormats($admin));
     }
 
-    public function testGetExportFilename()
+    public function testGetExportFilename(): void
     {
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects($this->once())
             ->method('getClass')
-            ->will($this->returnValue('MyProject\AppBundle\Model\MyClass'));
+            ->willReturn('MyProject\AppBundle\Model\MyClass');
         $adminExporter = new AdminExporter(new Exporter());
-        $this->assertRegexp(
+        $this->assertRegExp(
             '#export_myclass_\d{4}_\d{2}_\d{2}_\d{2}_\d{2}_\d{2}.csv#',
             $adminExporter->getExportFilename($admin, 'csv')
         );

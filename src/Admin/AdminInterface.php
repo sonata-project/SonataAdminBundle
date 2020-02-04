@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -17,18 +19,32 @@ use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Sonata\CoreBundle\Model\Metadata;
-use Sonata\CoreBundle\Validator\ErrorElement;
-use Symfony\Component\Form\Form;
+use Sonata\Exporter\Source\SourceIteratorInterface;
+use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @method array  configureActionButtons(string $action, ?object $object = null)
+ * @method string getSearchResultLink(object $object)
+ * @method void   showMosaicButton(bool $isShown)
+ * @method bool   isDefaultFilter(string $name)
+ * @method bool   isCurrentRoute(string $name, ?string $adminCode)
+ * @method bool   canAccessObject(string $action, object $object)
+ * @method mixed  getPersistentParameter(string $name)
+ * @method array            getExportFields
+ * @method array            getSubClasses
+ * @method AdminInterface   getRoot
+ * @method string           getRootCode
+ * @method array getActionButtons(string $action, ?object $object)
  */
 interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
@@ -122,7 +138,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns a form depend on the given $object.
      *
-     * @return Form
+     * @return FormInterface
      */
     public function getForm();
 
@@ -186,7 +202,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @return string the translated string
      *
-     * @deprecated since 3.9, to be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.9, to be removed in 4.0
      */
     public function trans($id, array $parameters = [], $domain = null, $locale = null);
 
@@ -205,23 +221,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @return bool
      */
     public function hasRoute($name);
-
-    /**
-     * Check the current request is given route or not.
-     *
-     * TODO: uncomment this method before releasing 4.0
-     *
-     * ```
-     * $this->isCurrentRoute('create'); // is create page?
-     * $this->isCurrentRoute('edit', 'some.admin.code'); // is some.admin.code admin's edit page?
-     * ```
-     *
-     * @param string $name
-     * @param string $adminCode
-     *
-     * @return bool
-     */
-    // public function isCurrentRoute($name, $adminCode = null);
 
     public function setSecurityHandler(SecurityHandlerInterface $securityHandler);
 
@@ -300,7 +299,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getRouteBuilder();
 
     /**
-     * @param mixed $object
+     * @param object $object
      *
      * @return string
      */
@@ -323,7 +322,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function supportsPreviewMode();
 
     /**
-     * @return mixed a new object instance
+     * @return object a new object instance
      */
     public function getNewInstance();
 
@@ -342,17 +341,17 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * @param mixed $id
      *
-     * @return mixed
+     * @return object|null
      */
     public function getObject($id);
 
     /**
-     * @param object $subject
+     * @param object|null $subject
      */
     public function setSubject($subject);
 
     /**
-     * @return mixed
+     * @return object|null
      */
     public function getSubject();
 
@@ -391,7 +390,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns SourceIterator.
      *
-     * @return \Exporter\Source\SourceIteratorInterface
+     * @return SourceIteratorInterface
      */
     public function getDataSourceIterator();
 
@@ -401,7 +400,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Call before the batch action, allow you to alter the query and the idx.
      *
      * @param string $actionName
-     * @param array  $idx
      * @param bool   $allElements
      */
     public function preBatchAction($actionName, ProxyQueryInterface $query, array &$idx, $allElements);
@@ -423,7 +421,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @deprecated this feature cannot be stable, use a custom validator,
      *             the feature will be removed with Symfony 2.2
@@ -440,7 +438,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Add object security, fe. make the current user owner of the object.
      *
-     * @param mixed $object
+     * @param object $object
      */
     public function createObjectSecurity($object);
 
@@ -461,11 +459,11 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns template.
      *
-     * @deprecated since 3.35. To be removed in 4.0. Use TemplateRegistry services instead
+     * @deprecated since sonata-project/admin-bundle 3.35. To be removed in 4.0. Use TemplateRegistry services instead
      *
      * @param string $name
      *
-     * @return null|string
+     * @return string|null
      */
     public function getTemplate($name);
 
@@ -612,7 +610,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @param string $action
      *
-     * @return mixed array|Traversable
+     * @return iterable
      */
     public function getBreadcrumbs($action);
 
@@ -642,7 +640,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getTranslationLabel($label, $context = '', $type = '');
 
     /**
-     * @return Metadata
+     * @param object $object
+     *
+     * @return MetadataInterface
      */
     public function getObjectMetadata($object);
 
@@ -652,52 +652,50 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getListModes();
 
     /**
+     * Check the current request is given route or not.
+     *
+     * TODO: uncomment this method before releasing 4.0
+     *
+     * ```
+     * $this->isCurrentRoute('create'); // is create page?
+     * $this->isCurrentRoute('edit', 'some.admin.code'); // is some.admin.code admin's edit page?
+     * ```
+     */
+    // public function isCurrentRoute(string $name, ?string $adminCode = null): bool;
+
+    /**
      * @param string $mode
      */
     public function setListMode($mode);
 
     /**
-     * return the list mode.
-     *
      * @return string
      */
     public function getListMode();
 
     /*
      * Configure buttons for an action
-     *
-     * @param string $action
-     * @param object $object
-     *
      */
-    // public function configureActionButtons($action, $object = null);
+    // public function configureActionButtons(string $action, ?object $object = null): array;
 
     //TODO: uncomment this method for 4.0
     /*
      * Returns the result link for an object.
-     *
-     * @param mixed $object
-     *
-     * @return string|null
      */
-    //public function getSearchResultLink($object)
+    //public function getSearchResultLink(object $object): ?string
 
 //    TODO: uncomment this method in 4.0
 //    /**
 //     * Setting to true will enable mosaic button for the admin screen.
 //     * Setting to false will hide mosaic button for the admin screen.
-//     *
-//     * @param bool $isShown
 //     */
-//    public function showMosaicButton($isShown);
+//    public function showMosaicButton(bool $isShown): void;
 
     /*
      * Checks if a filter type is set to a default value
-     *
-     * @param string $name
-     *
-     * @return bool
      */
 //    NEXT_MAJOR: uncomment this method in 4.0
-    // public function isDefaultFilter($name);
+    // public function isDefaultFilter(string $name): bool;
 }
+
+class_exists(\Sonata\Form\Validator\ErrorElement::class);

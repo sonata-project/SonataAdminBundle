@@ -5,19 +5,12 @@ The admin comes with `KnpMenu`_ integration.
 It integrates a menu with the KnpMenu library. This menu can be a SonataAdmin
 service, a menu created with a Knp menu provider or a route of a custom controller.
 
-.. note::
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 Add a custom controller entry in the menu
 -----------------------------------------
 
 To add a custom controller entry in the admin menu:
 
 Create your controller::
-
-    <?php
 
     class BlogController
     {
@@ -37,7 +30,6 @@ Create your controller::
             // ...
         }
     }
-
 
 Add the controller route as an item of the menu:
 
@@ -80,11 +72,11 @@ group roles will be checked.
                             - sonata.news.admin.post
                             - route:        blog_home
                               label:        Blog
-                              roles:        [ ROLE_FOO, ROLE_BAR ]
+                              roles:        ['ROLE_FOO', 'ROLE_BAR']
                             - route:        blog_article
                               route_params: { articleId: 3 }
                               label:        Article
-                        roles: [ ROLE_ADMIN, ROLE_SONATA_ADMIN]
+                        roles: ['ROLE_ADMIN', 'ROLE_SONATA_ADMIN']
 
 You can also override the template of knp_menu used by sonata. The default
 one is `@SonataAdmin/Menu/sonata_menu.html.twig`:
@@ -97,9 +89,9 @@ one is `@SonataAdmin/Menu/sonata_menu.html.twig`:
 
         sonata_admin:
             templates:
-                knp_menu_template:           "@ApplicationAdmin/Menu/custom_knp_menu.html.twig"
+                knp_menu_template: '@ApplicationAdmin/Menu/custom_knp_menu.html.twig'
 
-And voilà, now you have a menu group which contains a link to a sonata admin via its id, to your blog and to a specific article.
+Now you have a menu group which contains a link to a sonata admin via its id, to your blog and to a specific article.
 
 Using a menu provider
 ---------------------
@@ -140,7 +132,7 @@ the menu alias to the provider config key:
     .. code-block:: xml
 
         <service id="my_menu_provider" class="MyBundle/MyDirectory/MyMenuProvider">
-            <tag name="knp_menu.menu" alias="my_menu_alias" />
+            <tag name="knp_menu.menu" alias="my_menu_alias"/>
         </service>
 
 Please note that when using the provider option, you can't set the menu
@@ -149,10 +141,10 @@ label via the configuration. It is done in your custom menu.
 Extending the menu
 ------------------
 
-You can modify the menu via events easily. You can register as many
-listeners as you want for the event with name ``sonata.admin.event.configure.menu.sidebar``::
+You can modify the menu via events.
+You can register as many listeners as you want for the event with
+name ``sonata.admin.event.configure.menu.sidebar``::
 
-    <?php
     // src/EventListener/MenuBuilderListener.php
 
     namespace App\EventListener;
@@ -192,16 +184,17 @@ Hiding menu items
 -----------------
 
 You can modify the menu to hide some menu items. You need to add the ``show_in_dashboard`` option in
-your admin services or simply remove menu items from the ``sonata_admin`` dashboard group configuration:
+your admin services or remove menu items from the ``sonata_admin`` dashboard group configuration:
 
 .. code-block:: yaml
+
+    # config/services.yaml
 
     sonata_admin.admin.post:
         class: Sonata\AdminBundle\Admin\PostAdmin
         arguments: [~, Sonata\AdminBundle\Entity\Post, Sonata\AdminBundle\Controller\CRUDController]
         tags:
-            - {name: sonata.admin, manager_type: orm, group: admin, label: Post, show_in_dashboard: false}
-        public: true
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Post, show_in_dashboard: false }
 
 .. code-block:: yaml
 
@@ -214,7 +207,7 @@ your admin services or simply remove menu items from the ``sonata_admin`` dashbo
                     label:                ~
                     label_catalogue:      ~
                     items:
-                      # just comment or remove the sonata.news.admin.post declaration to hide it from the menu.
+                      # comment or remove the sonata.news.admin.post declaration to hide it from the menu.
                       #  - sonata.news.admin.post
                         - route:        blog_home
                           label:        Blog
@@ -234,10 +227,10 @@ open and ignore open/close effects:
         dashboard:
             groups:
                 sonata.admin.group.content:
-                    keep_open:            true
-                    label:                sonata_media
-                    label_catalogue:      SonataMediaBundle
-                    icon:                 '<i class="fa fa-image"></i>'
+                    keep_open:       true
+                    label:           sonata_media
+                    label_catalogue: SonataMediaBundle
+                    icon:            '<i class="fa fa-image"></i>'
                     items:
                         - sonata.media.admin.media
                         - sonata.media.admin.gallery
@@ -254,12 +247,13 @@ or in sonata_admin dashboard group configuration:
 
 .. code-block:: yaml
 
+    # config/services.yaml
+
     sonata_admin.admin.post:
         class: Sonata\AdminBundle\Admin\PostAdmin
         arguments: [~, Sonata\AdminBundle\Entity\Post, Sonata\AdminBundle\Controller\CRUDController]
         tags:
-            - {name: sonata.admin, manager_type: orm, group: admin, label: Post, on_top: true}
-        public: true
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Post, on_top: true }
 
 .. code-block:: yaml
 
@@ -269,9 +263,9 @@ or in sonata_admin dashboard group configuration:
         dashboard:
             groups:
                 news:
-                    on_top:               true
-                    label:                ~
-                    label_catalogue:      ~
+                    on_top:          true
+                    label:           ~
+                    label_catalogue: ~
                     items:
                         - sonata.news.admin.post
 
@@ -282,7 +276,7 @@ or in sonata_admin dashboard group configuration:
 
 In this screenshot, we add ``on_top`` option to ``Tag`` and ``Blog Post`` admin services.
 
-Your can't use this option for two or more items in the same time, for example:
+Your can't use this option for two or more items at the same time:
 
 .. code-block:: yaml
 
@@ -292,9 +286,9 @@ Your can't use this option for two or more items in the same time, for example:
         dashboard:
             groups:
                 news:
-                    on_top:               true
-                    label:                ~
-                    label_catalogue:      ~
+                    on_top:          true
+                    label:           ~
+                    label_catalogue: ~
                     items:
                         - sonata.news.admin.post
                         - route:        blog_home

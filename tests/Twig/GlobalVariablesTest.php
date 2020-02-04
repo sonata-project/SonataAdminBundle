@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -28,7 +30,7 @@ class GlobalVariablesTest extends TestCase
     private $admin;
     private $pool;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->code = 'sonata.page.admin.page|sonata.page.admin.snapshot';
         $this->action = 'list';
@@ -36,7 +38,7 @@ class GlobalVariablesTest extends TestCase
         $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
     }
 
-    public function testUrl()
+    public function testUrl(): void
     {
         $this->admin->expects($this->once())
             ->method('generateUrl')
@@ -53,7 +55,7 @@ class GlobalVariablesTest extends TestCase
         $globalVariables->url($this->code, $this->action, ['foo']);
     }
 
-    public function testObjectUrl()
+    public function testObjectUrl(): void
     {
         $this->admin->expects($this->once())
             ->method('generateObjectUrl')
@@ -74,7 +76,7 @@ class GlobalVariablesTest extends TestCase
      * @group legacy
      * NEXT_MAJOR: remove this method
      */
-    public function testWithContainer()
+    public function testWithContainer(): void
     {
         $this->admin->expects($this->once())
             ->method('generateUrl')
@@ -100,13 +102,26 @@ class GlobalVariablesTest extends TestCase
     /**
      * NEXT_MAJOR: remove this method.
      */
-    public function testInvalidArgumentException()
+    public function testInvalidArgumentException(): void
     {
-        $this->expectException(
-            \InvalidArgumentException::class,
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
             '$adminPool should be an instance of Sonata\AdminBundle\Admin\Pool'
         );
 
         new GlobalVariables('foo');
+    }
+
+    public function testGetMosaicBackground(): void
+    {
+        $this->assertSame(
+            'image.png',
+            (new GlobalVariables($this->pool, 'image.png'))->getMosaicBackground()
+        );
+    }
+
+    public function testGetMosaicBackgroundNull(): void
+    {
+        $this->assertNull((new GlobalVariables($this->pool))->getMosaicBackground());
     }
 }

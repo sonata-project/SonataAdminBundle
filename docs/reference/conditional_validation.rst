@@ -12,7 +12,7 @@ it in your own admin class::
     // add this to your existing use statements
     use Sonata\CoreBundle\Validator\ErrorElement;
 
-    class MyAdmin extends AbstractAdmin
+    final class MyAdmin extends AbstractAdmin
     {
         // add this method
         public function validate(ErrorElement $errorElement, $object)
@@ -41,4 +41,12 @@ entry, the whole $formOptions property or set validation_groups to an empty arra
 
     protected $formOptions = [
         'validation_groups' => []
+    ];
+
+If there are some validation groups already configured you want to keep, for
+example if you use ``UserAdmin`` from SonataUserBundle, you can add the
+``'Default'`` entry::
+
+    protected $formOptions = [
+        'validation_groups' => ['ExistingGroup', 'Default']
     ];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -33,19 +35,22 @@ interface SecurityHandlerInterface
      */
     public function getBaseRole(AdminInterface $admin);
 
+    /**
+     * @return array<string, mixed>
+     */
     public function buildSecurityInformation(AdminInterface $admin);
 
     /**
      * Create object security, fe. make the current user owner of the object.
      *
-     * @param mixed $object
+     * @param object $object
      */
     public function createObjectSecurity(AdminInterface $admin, $object);
 
     /**
      * Remove object security.
      *
-     * @param mixed $object
+     * @param object $object
      */
     public function deleteObjectSecurity(AdminInterface $admin, $object);
 }

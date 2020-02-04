@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,11 +11,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection;
+namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\Maker\AdminMaker;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -21,30 +23,32 @@ use Symfony\Component\DependencyInjection\Definition;
 /**
  * @author Gaurav Singh Faujdar <faujdar@gmail.com>
  */
-class AdminMakerCompilerPassTest extends TestCase
+class ModelManagerCompilerPassTest extends TestCase
 {
     /**
      * @var AdminMaker
      */
     private $adminMaker;
 
-    public function setUp()
+    public function setUp(): void
     {
-        if (5 == PHP_MAJOR_VERSION || !class_exists('Symfony\Component\Console\CommandLoader\CommandLoaderInterface')) {
-            $this->markTestSkipped('Test only available for PHP 7 and SF 3.4');
-        }
-
         parent::setUp();
         $this->adminMaker = $this->prophesize(Definition::class);
-        $this->adminMaker->replaceArgument(Argument::type('integer'), Argument::any())->shouldBeCalledTimes(2);
+        $this->adminMaker->replaceArgument(Argument::type('integer'), Argument::any())->shouldBeCalledTimes(1);
     }
 
-    public function testProcess()
+    public function testProcess(): void
     {
         $containerBuilderMock = $this->prophesize(ContainerBuilder::class);
 
+        $containerBuilderMock->getServiceIds()
+            ->willReturn([]);
+
+        $containerBuilderMock->getParameter(Argument::exact('kernel.bundles'))
+            ->willReturn(['MakerBundle' => 'MakerBundle']);
+
         $containerBuilderMock->getDefinition(Argument::exact('sonata.admin.maker'))
-            ->willReturn($this->adminMaker);
+            ->willReturn($this->adminMaker->reveal());
 
         $containerBuilderMock->hasDefinition(Argument::containingString('sonata.admin.manager'))
             ->willReturn(null);
@@ -53,9 +57,7 @@ class AdminMakerCompilerPassTest extends TestCase
         $containerBuilderMock->getParameter(Argument::containingString('kernel.project_dir'))
             ->willReturn(null);
 
-        $compilerPass = new AdminMakerCompilerPass();
+        $compilerPass = new ModelManagerCompilerPass();
         $compilerPass->process($containerBuilderMock->reveal());
-
-        $this->verifyMockObjects();
     }
 }

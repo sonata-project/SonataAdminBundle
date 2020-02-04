@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -19,6 +21,8 @@ use Symfony\Component\Security\Acl\Domain\Acl;
 /**
  * AdminObjectAclData holds data manipulated by {@link AdminObjectAclManipulator}.
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
 class AdminObjectAclData
@@ -34,7 +38,7 @@ class AdminObjectAclData
     protected $admin;
 
     /**
-     * @var mixed
+     * @var object
      */
     protected $object;
 
@@ -74,7 +78,7 @@ class AdminObjectAclData
     protected $maskBuilderClass;
 
     /**
-     * @param mixed  $object
+     * @param object $object
      * @param string $maskBuilderClass
      */
     public function __construct(
@@ -106,7 +110,7 @@ class AdminObjectAclData
     /**
      * Gets object.
      *
-     * @return mixed
+     * @return object
      */
     public function getObject()
     {
@@ -172,7 +176,7 @@ class AdminObjectAclData
      *
      * @return AdminObjectAclData
      *
-     * @deprecated Deprecated since version 3.0. Use setAclUsersForm() instead
+     * @deprecated since sonata-project/admin-bundle 3.0. Use setAclUsersForm() instead
      */
     public function setForm(Form $form)
     {
@@ -192,7 +196,7 @@ class AdminObjectAclData
      *
      * @return Form
      *
-     * @deprecated Deprecated since version 3.0. Use getAclUsersForm() instead
+     * @deprecated since sonata-project/admin-bundle version 3.0. Use getAclUsersForm() instead
      */
     public function getForm()
     {
@@ -270,7 +274,7 @@ class AdminObjectAclData
 
         if (!$this->isOwner()) {
             foreach (self::$ownerPermissions as $permission) {
-                $key = array_search($permission, $permissions);
+                $key = array_search($permission, $permissions, true);
                 if (false !== $key) {
                     unset($permissions[$key]);
                 }

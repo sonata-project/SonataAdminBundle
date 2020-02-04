@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -17,20 +19,16 @@ use PHPUnit\Framework\TestCase;
 
 abstract class AbstractVoterTest extends TestCase
 {
-    /**
-     * @return array
-     */
-    abstract public function provideData();
+    abstract public function provideData(): array;
 
     /**
-     * @param mixed     $itemData
-     * @param mixed     $voterData
-     * @param mixed     $route
-     * @param bool|null $expected
+     * @param mixed $itemData
+     * @param mixed $voterData
+     * @param mixed $route
      *
      * @dataProvider provideData
      */
-    public function testMatching($itemData, $voterData, $route, $expected)
+    public function testMatching($itemData, $voterData, $route, ?bool $expected): void
     {
         $item = $this->createItem($itemData);
         $voter = $this->createVoter($voterData, $route);
@@ -41,15 +39,11 @@ abstract class AbstractVoterTest extends TestCase
     /**
      * @param mixed $dataVoter
      * @param mixed $route
-     *
-     * @return VoterInterface
      */
-    abstract protected function createVoter($dataVoter, $route);
+    abstract protected function createVoter($dataVoter, $route): VoterInterface;
 
     /**
      * @param mixed $data
-     *
-     * @return ItemInterface
      */
-    abstract protected function createItem($data);
+    abstract protected function createItem($data): ItemInterface;
 }

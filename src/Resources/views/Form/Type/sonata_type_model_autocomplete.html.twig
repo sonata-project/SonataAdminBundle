@@ -8,28 +8,26 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 
 #}
-{% spaceless %}
+{% apply spaceless %}
 
     <input type="text" id="{{ id }}_autocomplete_input" value=""
-        {%- for attribute,value in attr %} {{attribute}}="{{value}}" {% endfor -%}
+        {%- for attribute,value in attr %} {{ attribute }}="{{ value }}" {% endfor -%}
         {%- if read_only|default(false) %} readonly="readonly"{% endif -%}    {# NEXT_MAJOR: remove #}
-        {%- if disabled %} disabled="disabled"{% endif -%}
-        {%- if required %} required="required"{% endif %}
+        {%- if disabled %} disabled="disabled"{% endif %}
     />
 
     <select id="{{ id }}_autocomplete_input_v4" data-sonata-select2="false"
         {%- if read_only|default(false) %} readonly="readonly"{% endif -%}
-        {%- if disabled %} disabled="disabled"{% endif -%}
-        {%- if required %} required="required"{% endif %}
+        {%- if disabled %} disabled="disabled"{% endif %}
     >
-        {%- for idx, val  in value if idx~'' != '_labels' -%}
+        {%- for idx, val  in value|filter((val, idx) => idx~'' != '_labels') -%}
             <option value="{{ val }}" selected>{{ value['_labels'][idx] }}</option>
         {%- endfor -%}
     </select>
 
     <div id="{{ id }}_hidden_inputs_wrap">
         {% if multiple -%}
-            {%- for idx, val in value if idx~'' != '_labels' -%}
+            {%- for idx, val  in value|filter((val, idx) => idx~'' != '_labels') -%}
                 <input type="hidden" name="{{ full_name }}[]" {%- if disabled %} disabled="disabled"{% endif %} value="{{ val }}">
             {%- endfor -%}
         {% else -%}
@@ -39,11 +37,11 @@ file that was distributed with this source code.
 
     {% if sonata_admin.field_description and sonata_admin.field_description.hasAssociationAdmin %}
         <div id="field_actions_{{ id }}" class="field-actions">
-            {% set display_btn_add = sonata_admin.edit != 'admin' and sonata_admin.field_description.associationadmin.hasRoute('create') 
+            {% set display_btn_add = sonata_admin.edit != 'admin' and sonata_admin.field_description.associationadmin.hasRoute('create')
                                      and sonata_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
             {% if display_btn_add %}
                 <a  href="{{ sonata_admin.field_description.associationadmin.generateUrl('create',
-                             sonata_admin.field_description.getOption('link_parameters', {})) 
+                             sonata_admin.field_description.getOption('link_parameters', {}))
                           }}"
                     onclick="return start_field_dialog_form_add_{{ id }}(this);"
                     class="btn btn-success btn-sm sonata-ba-action"
@@ -52,9 +50,9 @@ file that was distributed with this source code.
                     <i class="fa fa-plus-circle"></i>
                     {{ btn_add|trans({}, btn_catalogue) }}
                 </a>
+                {% include '@SonataAdmin/CRUD/Association/edit_modal.html.twig' %}
+                {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
             {% endif %}
-            {% include '@SonataAdmin/CRUD/Association/edit_modal.html.twig' %}
-            {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
         </div>
     {% endif %}
 
@@ -254,7 +252,7 @@ file that was distributed with this source code.
 
             {%- if value is not empty -%}
                 data = {%- if multiple -%}[ {%- endif -%}
-                {%- for idx, val  in value if idx~'' != '_labels' -%}
+                {%- for idx, val  in value|filter((val, idx) => idx~'' != '_labels') -%}
                     {%- if not loop.first -%}, {% endif -%}
                     {id: '{{ val }}', label:'{{ value['_labels'][idx] }}'}
                 {%- endfor -%}
@@ -273,7 +271,53 @@ file that was distributed with this source code.
                 $(usedInputRef).remove();
                 return true;
             });
+
+            // Automatically select the created record after closing the popup window
+            {% if sonata_admin.field_description
+                and sonata_admin.field_description.hasAssociationAdmin
+                and btn_add
+                and sonata_admin.field_description.associationadmin.hasRoute('create')
+                and sonata_admin.field_description.associationadmin.hasAccess('create') %}
+
+                {% set create_url = sonata_admin.field_description.associationadmin.generateUrl('create', sonata_admin.field_description.getOption('link_parameters', {})) %}
+
+                $(document).ajaxSuccess(function(event, xhr, settings) {
+                  if(typeof xhr.responseJSON != 'undefined') {
+                      if ('{{ create_url }}'.indexOf(settings.url) !== -1 && typeof xhr.responseJSON != 'string' && xhr.responseJSON.result == 'ok') {
+                        var item = new Option(
+                          new DOMParser().parseFromString(xhr.responseJSON.objectName, "text/html").documentElement.textContent,
+                          xhr.responseJSON.objectId,
+                          true, true
+                          );
+
+                        {%- if multiple -%}
+                          var data = autocompleteInput.select2('data');
+                          data.push(item);
+                        {%- else -%}
+                          var data = item;
+                        {%- endif -%}
+
+                        {% if multiple %}
+                          $('#{{ id }}_hidden_inputs_wrap').append('<input type="hidden" name="{{ full_name }}[]" value="'+xhr.responseJSON.objectId+'" />');
+                        {% else %}
+                          $('#{{ id }}_hidden_inputs_wrap').html('<input type="hidden" name="{{ full_name }}" value="'+xhr.responseJSON.objectId+'" />');
+                        {% endif %}
+
+                        // append to Select2
+                        autocompleteInput.select2('data', data).append(data).trigger('change');
+
+                        // manually trigger the `select2:select` event
+                        autocompleteInput.select2('data', data).trigger({
+                            type: 'select2:select',
+                            params: {
+                                data: data
+                            }
+                        });
+                      }
+                  }
+                });
+            {% endif %}
         });
         {% endautoescape %}
     </script>
-{% endspaceless %}
+{% endapply %}

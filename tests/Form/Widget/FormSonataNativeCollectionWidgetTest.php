@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -13,14 +15,14 @@ namespace Sonata\AdminBundle\Tests\Form\Widget;
 
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
 use Sonata\AdminBundle\Form\Type\CollectionType;
+use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
 use Symfony\Component\Form\FormTypeGuesserInterface;
-use Symfony\Component\Form\Tests\Fixtures\TestExtension;
 
 class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
 {
     protected $type = 'form';
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
@@ -36,7 +38,7 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
     /**
      * @dataProvider prototypeRenderingProvider
      */
-    public function testPrototypeIsDeletableNoMatterTheShrinkability(array $options)
+    public function testPrototypeIsDeletableNoMatterTheShrinkability(array $options): void
     {
         $choice = $this->factory->create(
             $this->getChoiceClass(),

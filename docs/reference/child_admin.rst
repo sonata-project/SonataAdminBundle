@@ -1,11 +1,6 @@
 Create child admins
 -------------------
 
-.. note::
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 Let us say you have a ``PlaylistAdmin`` and a ``VideoAdmin``. You can
 optionally declare the ``VideoAdmin`` to be a child of the ``PlaylistAdmin``.
 This will create new routes like, for example, ``/playlist/{id}/video/list``,
@@ -20,19 +15,28 @@ its parent:
 
     .. code-block:: yaml
 
-        # app/config/services.yml
+        # config/services.yaml
+
+        App\Admin\VideoAdmin:
+            # tags, calls, etc
+
         App\Admin\PlaylistAdmin:
             calls:
-                - [ addChild, ['@App\Admin\VideoAdmin', 'playlist']]
+                - [addChild, ['@App\Admin\VideoAdmin', 'playlist']]
 
     .. code-block:: xml
 
-        <!-- app/config/services.xml -->
+        <!-- config/services.xml -->
+
+        <service id="App\Admin\VideoAdmin">
+            <!-- tags, calls, etc -->
+        </service>
+
         <service id="App\Admin\PlaylistAdmin">
             <!-- ... -->
 
             <call method="addChild">
-                <argument type="service" id="App\Admin\PlaylistAdmin" />
+                <argument type="service" id="App\Admin\VideoAdmin"/>
                 <argument>playlist</argument>
             </call>
         </service>
@@ -40,18 +44,14 @@ its parent:
 To display the ``VideoAdmin`` extend the menu in your ``PlaylistAdmin``
 class::
 
-    <?php
-
     namespace App\Admin;
 
     use Knp\Menu\ItemInterface as MenuItemInterface;
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Admin\AdminInterface;
 
-    class PlaylistAdmin extends AbstractAdmin
+    final class PlaylistAdmin extends AbstractAdmin
     {
-        // ...
-
         protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
         {
             if (!$childAdmin && !in_array($action, ['edit', 'show'])) {
@@ -73,7 +73,7 @@ class::
 
             if ($this->isGranted('LIST')) {
                 $menu->addChild('Manage Videos', [
-                    'uri' => $admin->generateUrl('sonata.admin.video.list', ['id' => $id])
+                    'uri' => $admin->generateUrl('App\Admin\VideoAdmin.list', ['id' => $id])
                 ]);
             }
         }
@@ -86,17 +86,13 @@ Be wary that being a child admin is optional, which means that regular
 routes will be created regardless of whether you actually need them
 or not. To get rid of them, you may override the ``configureRoutes`` method::
 
-    <?php
-
     namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class VideoAdmin extends AbstractAdmin
+    final class VideoAdmin extends AbstractAdmin
     {
-        // ...
-
         protected function configureRoutes(RouteCollection $collection)
         {
             if ($this->isChild()) {

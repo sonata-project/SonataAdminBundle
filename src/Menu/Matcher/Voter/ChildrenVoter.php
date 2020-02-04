@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -25,7 +27,7 @@ use Knp\Menu\Matcher\Voter\VoterInterface;
  *
  * @author Samusev Andrey <andrey.simfi@ya.ru>
  *
- * @deprecated since 3.28, will be removed in 4.0.
+ * @deprecated since sonata-project/admin-bundle 3.28, will be removed in 4.0.
  */
 class ChildrenVoter implements VoterInterface
 {
@@ -36,8 +38,6 @@ class ChildrenVoter implements VoterInterface
 
     /**
      * ChildrenVoter constructor.
-     *
-     * @param MatcherInterface $matcher
      */
     public function __construct(MatcherInterface $matcher)
     {
@@ -47,7 +47,7 @@ class ChildrenVoter implements VoterInterface
     public function matchItem(ItemInterface $item)
     {
         if (!$item->getExtra('sonata_admin', false)) {
-            return;
+            return null;
         }
 
         $children = $item->getChildren();

@@ -1,11 +1,6 @@
 Routing
 =======
 
-.. note::
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 The default routes used in the CRUD controller are accessible through the
 ``Admin`` class.
 
@@ -22,18 +17,11 @@ Route names
 
 You can set a ``baseRouteName`` property inside your ``Admin`` class. This
 represents the route prefix, to which an underscore and the action name will
-be added to generate the actual route names.
+be added to generate the actual route names::
 
-.. note::
-
-    This is the internal *name* given to a route (it has nothing to do with the route's visible *URL*).
-
-.. code-block:: php
-
-    <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected $baseRouteName = 'sonata_post';
         // will result in routes named:
@@ -43,6 +31,10 @@ be added to generate the actual route names.
 
         // ...
     }
+
+.. note::
+
+    This is the internal *name* given to a route (it has nothing to do with the route's visible *URL*).
 
 If no ``baseRouteName`` is defined then the Admin will generate one for you,
 based on the following format: 'admin_vendor_bundlename_entityname' so you will have
@@ -54,16 +46,20 @@ will be thrown with a related message.
 If the admin class is a child of another admin class the route name will
 be prefixed by the parent route name, example::
 
-    <?php
+    // src/Admin/PostAdmin.php
+
     // The parent admin class
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected $baseRouteName = 'sonata_post';
-        // ...
     }
 
+.. code-block:: php
+
+    // src/Admin/CommentAdmin.php
+
     // The child admin class
-    class CommentAdmin extends AbstractAdmin
+    final class CommentAdmin extends AbstractAdmin
     {
         protected $baseRouteName = 'comment'
         // will result in routes named :
@@ -83,10 +79,9 @@ For example, to use ``http://yourdomain.com/admin/foo`` as the base URL for
 the ``FooAdmin`` class (instead of the default of ``http://yourdomain.com/admin/vendor/bundle/foo``)
 use the following code::
 
-    <?php
     // src/Admin/FooAdmin.php
 
-    class FooAdmin extends AbstractAdmin
+    final class FooAdmin extends AbstractAdmin
     {
         protected $baseRoutePattern = 'foo';
     }
@@ -97,16 +92,21 @@ You will then have route URLs like ``http://yourdomain.com/admin/foo/list`` and
 If the admin class is a child of another admin class the route pattern will
 be prefixed by the parent route pattern, example::
 
-    <?php
+    // src/Admin/PostAdmin.php
+
     // The parent admin class
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected $baseRoutePattern = 'post';
         // ...
     }
 
+.. code-block:: php
+
+    // src/Admin/CommentAdmin.php
+
     // The child admin class
-    class CommentAdmin extends AbstractAdmin
+    final class CommentAdmin extends AbstractAdmin
     {
         protected $baseRoutePattern = 'comment'
         // ...
@@ -125,18 +125,19 @@ the admin variable's ``generateUrl()`` command:
 
     <a href="{{ admin.generateUrl('list') }}">List</a>
 
-    <a href="{{ admin.generateUrl('list', params|merge('page': 1)) }}">List</a>
+.. code-block:: html+jinja
+
+    <a href="{{ admin.generateUrl('list', params|merge({'page': 1})) }}">List</a>
 
 Note that you do not need to provide the Admin's route prefix (``baseRouteName``) to
-generate a URL for the current Admin, just the action name.
+generate a URL for the current Admin, only the action name is needed.
 
-To generate a URL for a different Admin you just use the Route Name with the usual
-Twig helpers:
+To generate a URL to a different Admin, call the Symfony Twig function ``path``
+with the Route Name:
 
 .. code-block:: html+jinja
 
     <a href="{{ path('admin_app_post_list') }}">Post List</a>
-
 
 Create a route
 --------------
@@ -147,16 +148,13 @@ routes should be registered this way.
 The routes you define in this way are generated within your Admin's context, and
 the only required parameter to ``add()`` is the action name. The second parameter
 can be used to define the URL format to append to ``baseRoutePattern``, if not set
-explicitly this defaults to the action name.
+explicitly this defaults to the action name::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/MediaAdmin.php
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class MediaAdmin extends AbstractAdmin
+    final class MediaAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -169,20 +167,26 @@ Make use of all route parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As the ``add`` method create a Symfony ``Route``, you can use all constructor arguments of the ``Route`` as parameters
-in the ``add`` method to set additional settings like this:
+in the ``add`` method to set additional settings like this::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/MediaAdmin.php
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class MediaAdmin extends AbstractAdmin
+    final class MediaAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
-            $collection->add('custom_action', $this->getRouterIdParameter().'/custom-action', [], [], [], '', ['https'], ['GET', 'POST']);
+            $collection->add(
+                'custom_action',
+                $this->getRouterIdParameter().'/custom-action',
+                [],
+                [],
+                [],
+                '',
+                ['https'],
+                ['GET', 'POST']
+            );
         }
     }
 
@@ -191,8 +195,7 @@ Other steps needed to create your new action
 
 In addition to defining the route for your new action you also need to create a
 handler for it in your Controller. By default Admin classes use ``Sonata\AdminBundle\Controller\CRUDController``
-as their controller, but this can be changed by altering the third argument when defining
-your Admin service (in your admin.yml file).
+as their controller, but this can be changed by altering the third argument when defining your Admin service.
 
 For example, lets change the Controller for our MediaAdmin class to ``App\Controller\MediaCRUDController``:
 
@@ -200,22 +203,20 @@ For example, lets change the Controller for our MediaAdmin class to ``App\Contro
 
     .. code-block:: yaml
 
-        # src/Resources/config/admin.yml
+        # config/services.yaml
 
         app.admin.media:
             class: App\Admin\MediaAdmin
-            tags:
-                - { name: sonata.admin, manager_type: orm, label: "Media" }
             arguments:
                 - ~
                 - App\Entity\Page
                 - App\Controller\MediaCRUDController # define the new controller via the third argument
-            public: true
+            tags:
+                - { name: sonata.admin, manager_type: orm, label: 'Media' }
 
 We now need to create our Controller, the easiest way is to extend the
 basic Sonata CRUD controller::
 
-    <?php
     // src/Controller/MediaCRUDController.php
 
     namespace App\Controller;
@@ -248,13 +249,13 @@ You can view all of the current routes defined for an Admin class by using the c
 
 .. code-block:: bash
 
- $ bin/console sonata:admin:explain <<admin.service.name>>
+ bin/console sonata:admin:explain <<admin.service.name>>
 
 for example if your Admin is called sonata.admin.foo you would run
 
 .. code-block:: bash
 
-    $ bin/console sonata:admin:explain app.admin.foo
+    bin/console sonata:admin:explain app.admin.foo
 
 Sonata internally checks for the existence of a route before linking to it. As a result, removing a
 route will prevent links to that action from appearing in the administrative interface. For example,
@@ -263,14 +264,13 @@ removing the 'create' route will prevent any links to "Add new" from appearing.
 Removing a single route
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Any single registered route can be easily removed by name::
+Any single registered route can be removed by name::
 
-    <?php
     // src/Admin/MediaAdmin.php
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class MediaAdmin extends AbstractAdmin
+    final class MediaAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -278,26 +278,23 @@ Any single registered route can be easily removed by name::
         }
     }
 
-
 Removing all routes except named ones
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you want to disable all default Sonata routes except few whitelisted ones, you can use
-the ``clearExcept()`` method. This method accepts an array of routes you want to keep active.
+the ``clearExcept()`` method. This method accepts an array of routes you want to keep active::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/MediaAdmin.php
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class MediaAdmin extends AbstractAdmin
+    final class MediaAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
             // Only `list` and `edit` route will be active
             $collection->clearExcept(['list', 'edit']);
+
             // You can also pass a single string argument
             $collection->clearExcept('list');
         }
@@ -306,16 +303,13 @@ the ``clearExcept()`` method. This method accepts an array of routes you want to
 Removing all routes
 ^^^^^^^^^^^^^^^^^^^
 
-If you want to remove all default routes, you can use ``clear()`` method.
+If you want to remove all default routes, you can use ``clear()`` method::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/MediaAdmin.php
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class MediaAdmin extends AbstractAdmin
+    final class MediaAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -329,16 +323,13 @@ Removing routes only when an Admin is embedded
 
 To prevent some routes from being available when one Admin is embedded inside another one
 (e.g. to remove the "add new" option when you embed ``TagAdmin`` within ``PostAdmin``) you
-can use ``hasParentFieldDescription()`` to detect this case and remove the routes.
+can use ``hasParentFieldDescription()`` to detect this case and remove the routes::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/TagAdmin.php
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class TagAdmin extends AbstractAdmin
+    final class TagAdmin extends AbstractAdmin
     {
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -349,20 +340,35 @@ can use ``hasParentFieldDescription()`` to detect this case and remove the route
         }
     }
 
+Restoring a single route
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Any previously removed route can be restored by name::
+
+    // src/Admin/DeletableMediaAdmin.php
+
+    use Sonata\AdminBundle\Route\RouteCollection;
+
+    final class DeletableMediaAdmin extends MediaAdmin
+    {
+        protected function configureRoutes(RouteCollection $collection)
+        {
+            $collection->restore('delete');
+        }
+    }
+
+
 Persistent parameters
 ---------------------
 
 In some cases, the interface might be required to pass the same parameters
 across the different ``Admin``'s actions. Instead of setting them in the
 template or doing other weird hacks, you can define a ``getPersistentParameters``
-method. This method will be used when a link is being generated.
+method. This method will be used when a link is being generated::
 
-.. code-block:: php
-
-    <?php
     // src/Admin/MediaAdmin.php
 
-    class MediaAdmin extends AbstractAdmin
+    final class MediaAdmin extends AbstractAdmin
     {
         public function getPersistentParameters()
         {
@@ -387,10 +393,9 @@ Usually the identifier column of a list action links to the edit screen. To chan
 list action's links to point to a different action, set the ``route`` option in your call to
 ``ListMapper::addIdentifier()``. For example, to link to show instead of edit::
 
-    <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected function configureListFields(ListMapper $listMapper)
         {

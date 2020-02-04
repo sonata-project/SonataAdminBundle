@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -16,6 +18,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class GlobalVariables
@@ -23,7 +27,7 @@ class GlobalVariables
     /**
      * @var ContainerInterface
      *
-     * @deprecated Since version 3.5, will be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.5, will be removed in 4.0.
      * NEXT_MAJOR : remove this property
      */
     protected $container;
@@ -34,10 +38,17 @@ class GlobalVariables
     protected $adminPool;
 
     /**
+     * @var string|null
+     */
+    private $mosaicBackground;
+
+    /**
      * @param ContainerInterface|Pool $adminPool
      */
-    public function __construct($adminPool)
+    public function __construct($adminPool, ?string $mosaicBackground = null)
     {
+        $this->mosaicBackground = $mosaicBackground;
+
         // NEXT_MAJOR : remove this block and set adminPool from parameter.
         if ($adminPool instanceof ContainerInterface) {
             @trigger_error(
@@ -84,7 +95,7 @@ class GlobalVariables
     /**
      * @param string $code
      * @param string $action
-     * @param mixed  $object
+     * @param object $object
      * @param array  $parameters
      * @param int    $absolute
      *
@@ -97,10 +108,12 @@ class GlobalVariables
         return $this->getAdminPool()->getAdminByAdminCode($code)->generateObjectUrl($action, $object, $parameters, $absolute);
     }
 
-    /**
-     * @return array
-     */
-    private function getCodeAction($code, $action)
+    public function getMosaicBackground(): ?string
+    {
+        return $this->mosaicBackground;
+    }
+
+    private function getCodeAction(string $code, string $action): array
     {
         if ($pipe = strpos($code, '|')) {
             // convert code=sonata.page.admin.page|sonata.page.admin.snapshot, action=list

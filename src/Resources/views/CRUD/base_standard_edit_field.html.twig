@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-<div class="form-group{% if field_element.var.errors|length > 0%} has-error{%endif%}" id="sonata-ba-field-container-{{ field_element.vars.id }}">
+<div class="form-group{% if field_element.var.errors|length > 0 %} has-error{% endif %}" id="sonata-ba-field-container-{{ field_element.vars.id }}">
     {% block label %}
         {% if field_description.options.name is defined %}
             {{ form_label(field_element, field_description.options.name) }}
@@ -18,7 +18,7 @@ file that was distributed with this source code.
         {% endif %}
     {% endblock %}
 
-    <div class="col-sm-10 col-md-5 sonata-ba-field sonata-ba-field-{{ edit }}-{{ inline }} {% if field_element.vars.errors|length > 0 %}sonata-ba-field-error{% endif %}">
+    <div class="col-sm-10 col-md-5 sonata-ba-field sonata-ba-field-{{ edit }}-{{ inline }}{% if field_element.vars.errors|length > 0 %} sonata-ba-field-error{% endif %}">
 
         {% block field %}{{ form_widget(field_element) }}{% endblock %}
 

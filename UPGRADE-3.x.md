@@ -1,10 +1,36 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated the use of string names to reference filters in favor of the FQCN of the filter.
+
+Before:
+```php
+$datagridMapper
+    ->add('field', 'filter_type')
+;
+```
+
+After:
+```php
+use App\Filter\FilterType;
+
+$datagridMapper
+    ->add('field', FilterType::class)
+;
+```
+
+UPGRADE FROM 3.51 to 3.52
+=========================
+
 ## Deprecated `SonataAdminBundle\Controller\HelperController` in favor of actions
 
 If you extended that controller, you should split your extended controller and
 extend the corresponding classes in `SonataAdminBundle\Action\`.
+
+## Deprecated `header_style` option
+
+If you need to style headers prefer to use CSS classes and not in the html DOM.
+In this case please use `header_class` option.
 
 UPGRADE FROM 3.34 to 3.35
 =========================
@@ -108,6 +134,15 @@ The `AbstractAdmin::setBaseCodeRoute()` method is no longer supported.
 There is no replacement for this method.
 You can still use the `AbstractAdmin::setCode()` method to set the code
 of an admin.
+
+UPGRADE FROM 3.57 to 3.58
+=========================
+
+## Dropped generator commands
+
+`sonata:admin:generate` was based on the SensioGeneratorBundle, which is
+incompatible with Symfony 4 and is no longer maintained. Please use
+`make:sonata:admin` instead.
 
 UPGRADE FROM 3.20 to 3.21
 =========================

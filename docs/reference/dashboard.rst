@@ -1,11 +1,6 @@
 Dashboard
 =========
 
-.. note::
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 The Dashboard is the main landing page. By default it lists your mapped models,
 as defined by your ``Admin`` services. This is useful to help you start using
 ``SonataAdminBundle`` right away, but there is much more that you can do to take
@@ -48,8 +43,8 @@ The ``Admin`` list is defined by the ``sonata.admin.block.admin_list`` service, 
 implemented by the ``Block\AdminListBlockService`` class. It is then rendered using the
 ``@SonataAdmin/Block/block_admin_list.html.twig`` template file.
 
-Feel free to take a look at these files. You'll find the code rather short and easy to
-understand, and it will be a great help when implementing your own blocks.
+Feel free to take a look at these files. The code will be a great help when
+implementing your own blocks.
 
 Configuring the ``Admin`` list
 ------------------------------
@@ -68,64 +63,70 @@ services:
 
 .. configuration-block::
 
-    .. code-block:: xml
-
-        <service id="app.admin.post" class="App\Admin\PostAdmin">
-              <tag name="sonata.admin" manager_type="orm"
-                  group="Content"
-                  label="Post" />
-              <argument />
-              <argument>App\Entity\Post</argument>
-              <argument />
-          </service>
-
     .. code-block:: yaml
+
+        # config/services.yaml
 
         services:
             app.admin.post:
                 class: App\Admin\PostAdmin
-                tags:
-                    - name: sonata.admin
-                      manager_type: orm
-                      group: "Content"
-                      label: "Post"
                 arguments:
                     - ~
                     - App\Entity\Post
                     - ~
-                public: true
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: 'Content', label: 'Post' }
+
+    .. code-block:: xml
+
+        <!-- config/services.xml -->
+
+        <service id="app.admin.post" class="App\Admin\PostAdmin">
+              <argument/>
+              <argument>App\Entity\Post</argument>
+              <argument/>
+              <tag name="sonata.admin" manager_type="orm" group="Content" label="Post"/>
+          </service>
 
 In these examples, notice the ``group`` tag, stating that this particular ``Admin``
 service belongs to the ``Content`` group.
 
 .. configuration-block::
 
-    .. code-block:: xml
-
-        <service id="app.admin.post" class="App\Admin\PostAdmin">
-              <tag name="sonata.admin" manager_type="orm"
-                  group="app.admin.group.content"
-                  label="app.admin.model.post" label_catalogue="App" />
-              <argument />
-              <argument>App\Entity\Post</argument>
-              <argument />
-          </service>
-
     .. code-block:: yaml
+
+        # config/services.yaml
 
         services:
             app.admin.post:
                 class: App\Admin\PostAdmin
-                tags:
-                    - name: sonata.admin
-                      manager_type: orm
-                      group: "app.admin.group.content"
-                      label: "app.admin.model.post"
-                      label_catalogue: "App"
                 arguments:
                     - ~
                     - App\Entity\Post
                     - ~
+                tags:
+                    - name: sonata.admin
+                      manager_type: orm
+                      group: 'app.admin.group.content'
+                      label: 'app.admin.model.post'
+                      label_catalogue: 'App'
+
+    .. code-block:: xml
+
+        <!-- config/services.xml -->
+
+        <service id="app.admin.post" class="App\Admin\PostAdmin">
+              <argument/>
+              <argument>App\Entity\Post</argument>
+              <argument/>
+              <tag
+                  name="sonata.admin"
+                  manager_type="orm"
+                  group="app.admin.group.content"
+                  label="app.admin.model.post"
+                  label_catalogue="App"
+                  />
+          </service>
 
 In this example, the labels are translated by ``App``, using the given
 ``label_catalogue``. So, you can use the above examples to support multiple languages
@@ -136,10 +137,10 @@ in your project.
     You can use parameters (e.g. ``%app_admin.group_post%``) for the group names
     in either scenario.
 
-Using the ``config.yml``
-^^^^^^^^^^^^^^^^^^^^^^^^
+Using the ``sonata_admin.yaml`` config file
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can also configure the ``Admin`` list in your ``config.yml`` file. This
+You can also configure the ``Admin`` list in your ``sonata_admin.yaml`` config file. This
 configuration method overrides any settings defined in the Admin service
 declarations.
 
@@ -162,7 +163,7 @@ declarations.
                         items: ~
                         item_adds:
                             - sonata.admin.page
-                        roles: [ ROLE_ONE, ROLE_TWO ]
+                        roles: ['ROLE_ONE', 'ROLE_TWO']
 
                     app.admin.group.misc: ~
 
@@ -177,7 +178,7 @@ This configuration specifies that the ``app.admin.group.content`` group uses the
 translation catalogue (the same label and translation configuration that we declared
 previously, in the service definition example).
 
-It also states that the ``app.admin.group.content`` group contains just the
+It also states that the ``app.admin.group.content`` group contains only the
 ``app.admin.post`` ``Admin`` mapping, meaning that any other ``Admin`` services
 declared as belonging to this group will not be displayed here.
 
@@ -193,7 +194,6 @@ by this configuration option.
 
 The third group, ``app.admin.group.misc``, is set up as a group which uses all its
 default values, as declared in the service declarations.
-
 
 Adding more Blocks
 ------------------
@@ -229,7 +229,7 @@ a text block and RSS feed block on the right. The configuration for this scenari
                                 <h2>Welcome to the Sonata Admin</h2>
                                 <p>This is a <code>sonata.block.service.text</code> from the Block
                                 Bundle, you can create and add new block in these area by configuring
-                                the <code>sonata_admin</code> section.</p> <br /> For instance, here
+                                the <code>sonata_admin</code> section.</p> <br/> For instance, here
                                 a RSS feed parser (<code>sonata.block.service.rss</code>):
                     -
                         position: right
@@ -293,10 +293,9 @@ suit this scenario.
                             - sonata.page.admin.myitem4
 
 In this example, you would have two ``admin_list`` blocks on your dashboard, each
-of them containing just the respectively configured groups.
+of them containing the respectively configured groups.
 
 .. _`SonataBlock documentation page`:  https://sonata-project.org/bundles/block/master/doc/index.html
-
 
 Statistic Block
 ~~~~~~~~~~~~~~~
@@ -308,6 +307,8 @@ counter is related to the filters from one admin
 
     .. code-block:: yaml
 
+        # config/packages/sonata_admin.yaml
+
         sonata_admin:
             dashboard:
                 blocks:
@@ -318,10 +319,33 @@ counter is related to the filters from one admin
                         settings:
                             code:  sonata.page.admin.page    # admin code - service id
                             icon:  fa-magic                  # font awesome icon
-                            text:  Edited Pages
+                            text:  app.page.stats            # static text or translation message
                             color: bg-yellow                 # colors: bg-green, bg-red and bg-aqua
                             filters:                         # filter values
                                 edited: { value: 1 }
+
+The block configuration for ``settings.text`` accepts static text or a translation message,
+which could also have a pluralized translation target:
+
+.. code-block:: xml
+
+    <!-- messages.en.xlf -->
+
+    <trans-unit id="app.page.stats">
+        <source>app.page.stats</source>
+        <target>{0} results|{1} result|]1,Inf] results</target>
+    </trans-unit>
+
+**If you're using ``symfony/translation`` >= 4.2, you can also opt in for the ICU Message Format**
+
+.. code-block:: xml
+
+    <!-- messages+intl-icu.en.xlf -->
+
+    <trans-unit id="app.page.stats">
+        <source>app.page.stats</source>
+        <target>{count, plural, =0 {results} one {result} other {results}}</target>
+    </trans-unit>
 
 Dashboard Layout
 ~~~~~~~~~~~~~~~~
@@ -372,13 +396,10 @@ dashboard. If you created a custom action and want to display it along the
 other two on the dashboard, you can do so by overriding the
 ``getDashboardActions()`` method of your admin class::
 
-    <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
-        // ...
-
         public function getDashboardActions()
         {
             $actions = parent::getDashboardActions();
@@ -398,13 +419,10 @@ other two on the dashboard, you can do so by overriding the
 
 You can also hide an action from the dashboard by unsetting it::
 
-    <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
-        // ...
-
         public function getDashboardActions()
         {
             $actions = parent::getDashboardActions();

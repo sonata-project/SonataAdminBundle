@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -20,13 +22,13 @@ use Symfony\Component\Form\Forms;
 
 class ChoiceTypeExtensionTest extends TestCase
 {
-    protected function setup()
+    protected function setup(): void
     {
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $container->expects($this->any())->method('has')->will($this->returnValue(true));
-        $container->expects($this->any())->method('get')
+        $container->method('has')->willReturn(true);
+        $container->method('get')
             ->with($this->equalTo('sonata.admin.form.choice_extension'))
-            ->will($this->returnValue(new ChoiceTypeExtension()));
+            ->willReturn(new ChoiceTypeExtension());
 
         $typeServiceIds = [];
         $typeExtensionServiceIds = [];
@@ -54,7 +56,7 @@ class ChoiceTypeExtensionTest extends TestCase
             ->getFormFactory();
     }
 
-    public function testExtendedType()
+    public function testExtendedType(): void
     {
         $extension = new ChoiceTypeExtension();
 
@@ -62,9 +64,14 @@ class ChoiceTypeExtensionTest extends TestCase
             ChoiceType::class,
             $extension->getExtendedType()
         );
+
+        $this->assertSame(
+            [ChoiceType::class],
+            ChoiceTypeExtension::getExtendedTypes()
+        );
     }
 
-    public function testDefaultOptionsWithSortable()
+    public function testDefaultOptionsWithSortable(): void
     {
         $view = $this->factory
             ->create(ChoiceType::class, null, [
@@ -76,7 +83,7 @@ class ChoiceTypeExtensionTest extends TestCase
         $this->assertTrue($view->vars['sortable']);
     }
 
-    public function testDefaultOptionsWithoutSortable()
+    public function testDefaultOptionsWithoutSortable(): void
     {
         $view = $this->factory
             ->create(ChoiceType::class, null, [])

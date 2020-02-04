@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -11,20 +13,42 @@
 
 namespace Sonata\AdminBundle\Command;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ExplainAdminCommand extends ContainerAwareCommand
+class ExplainAdminCommand extends Command
 {
+    protected static $defaultName = 'sonata:admin:explain';
+
+    /**
+     * @var Pool
+     */
+    private $pool;
+
+    /**
+     * @var MetadataFactoryInterface
+     */
+    private $validator;
+
+    public function __construct(Pool $pool, MetadataFactoryInterface $validator)
+    {
+        $this->pool = $pool;
+        $this->validator = $validator;
+
+        parent::__construct();
+    }
+
     public function configure()
     {
-        $this->setName('sonata:admin:explain');
         $this->setDescription('Explain an admin service');
 
         $this->addArgument('admin', InputArgument::REQUIRED, 'The admin service id');
@@ -32,11 +56,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $admin = $this->getContainer()->get($input->getArgument('admin'));
-
-        if (!$admin instanceof AdminInterface) {
-            throw new \RuntimeException(sprintf('Service "%s" is not an admin class', $input->getArgument('admin')));
-        }
+        $admin = $this->pool->getInstance($input->getArgument('admin'));
 
         $output->writeln('<comment>AdminBundle Information</comment>');
         $output->writeln(sprintf('<info>% -20s</info> : %s', 'id', $admin->getCode()));
@@ -97,13 +117,13 @@ class ExplainAdminCommand extends ContainerAwareCommand
             ));
         }
 
-        $metadata = $this->getContainer()->get('validator')->getMetadataFor($admin->getClass());
+        $metadata = $this->validator->getMetadataFor($admin->getClass());
 
         $output->writeln('');
         $output->writeln('<comment>Validation Framework</comment> - http://symfony.com/doc/3.0/book/validation.html');
         $output->writeln('<info>Properties constraints</info>');
 
-        if (0 == \count($metadata->properties)) {
+        if (0 === \count($metadata->properties)) {
             $output->writeln('    <error>no property constraints defined !!</error>');
         } else {
             foreach ($metadata->properties as $name => $property) {
@@ -122,7 +142,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
         $output->writeln('');
         $output->writeln('<info>Getters constraints</info>');
 
-        if (0 == \count($metadata->getters)) {
+        if (0 === \count($metadata->getters)) {
             $output->writeln('    <error>no getter constraints defined !!</error>');
         } else {
             foreach ($metadata->getters as $name => $property) {
@@ -140,5 +160,7 @@ class ExplainAdminCommand extends ContainerAwareCommand
 
         $output->writeln('');
         $output->writeln('<info>done!</info>');
+
+        return 0;
     }
 }

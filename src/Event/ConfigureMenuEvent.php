@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -13,16 +15,18 @@ namespace Sonata\AdminBundle\Event;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Menu builder event. Used for extending the menus.
+ *
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Martin Hasoň <martin.hason@gmail.com>
  */
 class ConfigureMenuEvent extends Event
 {
-    const SIDEBAR = 'sonata.admin.event.configure.menu.sidebar';
+    public const SIDEBAR = 'sonata.admin.event.configure.menu.sidebar';
 
     /**
      * @var FactoryInterface

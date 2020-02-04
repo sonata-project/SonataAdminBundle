@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -19,14 +21,14 @@ class NativeLabelTranslatorStrategyTest extends TestCase
     /**
      * @dataProvider getLabelTests
      */
-    public function testLabel($expectedLabel, $label)
+    public function testLabel(string $expectedLabel, string $label): void
     {
         $strategy = new NativeLabelTranslatorStrategy();
 
         $this->assertSame($expectedLabel, $strategy->getLabel($label, 'form', 'label'));
     }
 
-    public function getLabelTests()
+    public function getLabelTests(): array
     {
         return [
             ['Is Valid', 'isValid'],

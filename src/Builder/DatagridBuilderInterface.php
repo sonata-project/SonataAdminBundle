@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -21,8 +23,6 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 interface DatagridBuilderInterface extends BuilderInterface
 {
     /**
-     * @abstract
-     *
      * @param string $type
      */
     public function addFilter(
@@ -33,9 +33,6 @@ interface DatagridBuilderInterface extends BuilderInterface
     );
 
     /**
-     * @param AdminInterface $admin
-     * @param array          $values
-     *
      * @return DatagridInterface
      */
     public function getBaseDatagrid(AdminInterface $admin, array $values = []);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -45,7 +47,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
      */
     private $admin;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->twig = new Environment(new ArrayLoader(['template' => 'renderedTemplate']));
         $this->pool = $this->prophesize(Pool::class);
@@ -58,7 +60,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         );
     }
 
-    public function testGetShortObjectDescriptionActionInvalidAdmin()
+    public function testGetShortObjectDescriptionActionInvalidAdmin(): void
     {
         $this->expectException(NotFoundHttpException::class);
 
@@ -71,11 +73,10 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->pool->getInstance('sonata.post.admin')->willReturn(null);
         $this->admin->setRequest(Argument::type(Request::class))->shouldNotBeCalled();
 
-        $action = $this->action;
-        $action($request);
+        ($this->action)($request);
     }
 
-    public function testGetShortObjectDescriptionActionObjectDoesNotExist()
+    public function testGetShortObjectDescriptionActionObjectDoesNotExist(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Invalid format');
@@ -89,11 +90,10 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->setUniqid('asdasd123')->shouldBeCalled();
         $this->admin->getObject(42)->willReturn(false);
 
-        $action = $this->action;
-        $action($request);
+        ($this->action)($request);
     }
 
-    public function testGetShortObjectDescriptionActionEmptyObjectId()
+    public function testGetShortObjectDescriptionActionEmptyObjectId(): void
     {
         $request = new Request([
             'code' => 'sonata.post.admin',
@@ -105,13 +105,10 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->setUniqid('asdasd123')->shouldBeCalled();
         $this->admin->getObject(null)->willReturn(false);
 
-        $action = $this->action;
-        $response = $action($request);
-
-        $this->assertInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, ($this->action)($request));
     }
 
-    public function testGetShortObjectDescriptionActionObject()
+    public function testGetShortObjectDescriptionActionObject(): void
     {
         $request = new Request([
             'code' => 'sonata.post.admin',
@@ -126,13 +123,12 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->getTemplate('short_object_description')->willReturn('template');
         $this->admin->toString($object)->willReturn('bar');
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
         $this->assertSame('renderedTemplate', $response->getContent());
     }
 
-    public function testGetShortObjectDescriptionActionEmptyObjectIdAsJson()
+    public function testGetShortObjectDescriptionActionEmptyObjectIdAsJson(): void
     {
         $request = new Request([
             'code' => 'sonata.post.admin',
@@ -146,14 +142,13 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->id(false)->willReturn('');
         $this->admin->toString(false)->willReturn('');
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertSame('{"result":{"id":"","label":""}}', $response->getContent());
     }
 
-    public function testGetShortObjectDescriptionActionObjectAsJson()
+    public function testGetShortObjectDescriptionActionObjectAsJson(): void
     {
         $request = new Request([
             'code' => 'sonata.post.admin',
@@ -169,8 +164,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->getTemplate('short_object_description')->willReturn('template');
         $this->admin->toString($object)->willReturn('bar');
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
         $this->assertSame('{"result":{"id":42,"label":"bar"}}', $response->getContent());
     }

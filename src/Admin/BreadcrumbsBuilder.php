@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -37,14 +39,14 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         $this->config = $resolver->resolve($config);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'child_admin_route' => 'edit',
         ]);
     }
 
-    public function getBreadcrumbs(AdminInterface $admin, $action)
+    public function getBreadcrumbs(AdminInterface $admin, $action): array
     {
         $breadcrumbs = [];
         if ($admin->isChild()) {
@@ -67,8 +69,11 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
      * {@inheritdoc}
      * NEXT_MAJOR : make this method private.
      */
-    public function buildBreadcrumbs(AdminInterface $admin, $action, ItemInterface $menu = null)
-    {
+    public function buildBreadcrumbs(
+        AdminInterface $admin,
+        $action,
+        ItemInterface $menu = null
+    ): ItemInterface {
         if (!$menu) {
             $menu = $admin->getMenuFactory()->createItem('root');
 
@@ -145,16 +150,14 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
      * @param string         $name              the source of the final label
      * @param string         $translationDomain for label translation
      * @param array          $options           menu item options
-     *
-     * @return ItemInterface
      */
     private function createMenuItem(
         AdminInterface $admin,
         ItemInterface $menu,
-        $name,
-        $translationDomain = null,
-        $options = []
-    ) {
+        string $name,
+        ?string $translationDomain = null,
+        array $options = []
+    ): ItemInterface {
         $options = array_merge([
             'extras' => [
                 'translation_domain' => $translationDomain,

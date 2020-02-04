@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Generator;
+namespace Sonata\AdminBundle\Tests\Manipulator;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Manipulator\ServicesManipulator;
@@ -28,7 +30,7 @@ class ServicesManipulatorTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->file = sprintf('%s/%s.yml', sys_get_temp_dir(), lcg_value());
         $this->servicesManipulator = new ServicesManipulator($this->file);
@@ -37,12 +39,12 @@ class ServicesManipulatorTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         @unlink($this->file);
     }
 
-    public function testAddResource()
+    public function testAddResource(): void
     {
         $this->servicesManipulator->addResource(
             'service_id',
@@ -87,7 +89,7 @@ class ServicesManipulatorTest extends TestCase
         );
     }
 
-    public function testAddResourceShouldThrowException()
+    public function testAddResourceShouldThrowException(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('The service "service_id" is already defined');
@@ -108,7 +110,7 @@ class ServicesManipulatorTest extends TestCase
         );
     }
 
-    public function testAddResourceWithEmptyServices()
+    public function testAddResourceWithEmptyServices(): void
     {
         file_put_contents($this->file, 'services:');
         $this->servicesManipulator->addResource(

@@ -5,16 +5,11 @@ You've been able to get the admin interface working in :doc:`the previous
 chapter <installation>`. In this tutorial, you'll learn how to tell SonataAdmin
 how an admin can manage your models.
 
-.. note::
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 Step 0: Create a Model
 ----------------------
 
 For the rest of the tutorial, you'll need some sort of model. In this tutorial,
-two very simple ``Post`` and ``Tag`` entities will be used::
+``BlogPost`` and ``Category`` will be used::
 
     // src/Entity/BlogPost.php
 
@@ -54,9 +49,7 @@ two very simple ``Post`` and ``Tag`` entities will be used::
 
     // src/Entity/Category.php
 
-    // ...
     use Doctrine\Common\Collections\ArrayCollection;
-    // ...
 
     class Category
     {
@@ -70,8 +63,8 @@ two very simple ``Post`` and ``Tag`` entities will be used::
         private $name;
 
         /**
-        * @ORM\OneToMany(targetEntity="BlogPost", mappedBy="category")
-        */
+         * @ORM\OneToMany(targetEntity="BlogPost", mappedBy="category")
+         */
         private $blogPosts;
 
         public function __construct()
@@ -83,17 +76,16 @@ two very simple ``Post`` and ``Tag`` entities will be used::
         {
             return $this->blogPosts;
         }
-
-        // ...
     }
 
 After this, create the schema for these entities:
 
 .. code-block:: bash
 
-    $ bin/console doctrine:schema:create
+    bin/console doctrine:schema:create
 
 .. note::
+
     This article assumes you have basic knowledge of the Doctrine2 ORM and
     you've set up a database correctly.
 
@@ -110,11 +102,10 @@ to find entries and how the create form will look like. Each model will have
 its own Admin class.
 
 Knowing this, let's create an Admin class for the ``Category`` entity. The
-easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin``.
-
-.. code-block:: php
+easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin``::
 
     // src/Admin/CategoryAdmin.php
+
     namespace App\Admin;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -123,7 +114,7 @@ easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin`
     use Sonata\AdminBundle\Form\FormMapper;
     use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-    class CategoryAdmin extends AbstractAdmin
+    final class CategoryAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -143,12 +134,12 @@ easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin`
 
 So, what does this code do?
 
-* **Line 11-14**: These lines configure which fields are displayed on the edit
+* **configureFormFields()**: This method configures which fields are displayed on the edit
   and create actions. The ``FormMapper`` behaves similar to the ``FormBuilder``
   of the Symfony Form component;
-* **Line 16-19**: This method configures the filters, used to filter and sort
+* **configureDatagridFilters()**: This method configures the filters, used to filter and sort
   the list of models;
-* **Line 21-24**: Here you specify which fields are shown when all models are
+* **configureListFields()**: Here you specify which fields are shown when all models are
   listed (the ``addIdentifier()`` method means that this field will link to the
   show/edit page of this particular model).
 
@@ -176,7 +167,6 @@ service and tag it with the ``sonata.admin`` tag:
                 arguments: [~, App\Entity\Category, ~]
                 tags:
                     - { name: sonata.admin, manager_type: orm, label: Category }
-                public: true
 
 The constructor of the base Admin class has many arguments. SonataAdminBundle
 provides a compiler pass which takes care of configuring it correctly for you.
@@ -218,6 +208,7 @@ Project". In the next chapters, you'll create an admin for the ``BlogPost``
 entity and learn more about this class.
 
 .. note::
+
     If you're not seeing the nice labels, but instead something like
     "link_add", you should make sure that you've `enabled the translator`_.
 

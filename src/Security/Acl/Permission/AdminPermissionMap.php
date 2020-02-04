@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -17,21 +19,23 @@ use Symfony\Component\Security\Acl\Permission\PermissionMapInterface;
  * This is basic permission map complements the masks which have been defined
  * on the standard implementation of the MaskBuilder.
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  * @author Thomas Rabaix <thomas.rabaix@gmail.com>
  */
 class AdminPermissionMap implements PermissionMapInterface
 {
-    const PERMISSION_VIEW = 'VIEW';
-    const PERMISSION_EDIT = 'EDIT';
-    const PERMISSION_CREATE = 'CREATE';
-    const PERMISSION_DELETE = 'DELETE';
-    const PERMISSION_UNDELETE = 'UNDELETE';
-    const PERMISSION_LIST = 'LIST';
-    const PERMISSION_EXPORT = 'EXPORT';
-    const PERMISSION_OPERATOR = 'OPERATOR';
-    const PERMISSION_MASTER = 'MASTER';
-    const PERMISSION_OWNER = 'OWNER';
+    public const PERMISSION_VIEW = 'VIEW';
+    public const PERMISSION_EDIT = 'EDIT';
+    public const PERMISSION_CREATE = 'CREATE';
+    public const PERMISSION_DELETE = 'DELETE';
+    public const PERMISSION_UNDELETE = 'UNDELETE';
+    public const PERMISSION_LIST = 'LIST';
+    public const PERMISSION_EXPORT = 'EXPORT';
+    public const PERMISSION_OPERATOR = 'OPERATOR';
+    public const PERMISSION_MASTER = 'MASTER';
+    public const PERMISSION_OWNER = 'OWNER';
 
     /**
      * Map each permission to the permissions it should grant access for
@@ -110,7 +114,7 @@ class AdminPermissionMap implements PermissionMapInterface
     public function getMasks($permission, $object)
     {
         if (!isset($this->map[$permission])) {
-            return;
+            return null;
         }
 
         return $this->map[$permission];

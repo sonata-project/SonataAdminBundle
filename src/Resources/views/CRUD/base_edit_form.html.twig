@@ -1,11 +1,10 @@
 {% block form %}
-    {% import "@SonataAdmin/CRUD/base_edit_form_macro.html.twig" as form_helper %}
     {{ sonata_block_render_event('sonata.admin.edit.form.top', { 'admin': admin, 'object': object }) }}
 
     {# NEXT_MAJOR: remove default filter #}
     {% set url = objectId|default(admin.id(object)) is not null ? 'edit' : 'create' %}
 
-    {% if not admin.hasRoute(url)%}
+    {% if not admin.hasRoute(url) %}
         <div>
             {{ "form_not_available"|trans({}, "SonataAdminBundle") }}
         </div>
@@ -28,15 +27,18 @@
             {% endblock %}
 
             {% block sonata_tab_content %}
+                {% import "@SonataAdmin/CRUD/base_edit_form_macro.html.twig" as form_helper %}
                 {% set has_tab = ((admin.formtabs|length == 1 and admin.formtabs|keys[0] != 'default') or admin.formtabs|length > 1 ) %}
 
                 <div class="col-md-12">
                     {% if has_tab %}
+                        {% set tab_prefix = 'tab_' ~ admin.uniqid ~ '_' ~ random() %}
+                        {% set tab_query_index = app.request.query.get('_tab', 0)|split("_")|last %}
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs" role="tablist">
                                 {% for name, form_tab in admin.formtabs %}
-                                    {% set _tab_name = 'tab_'~admin.uniqid~'_'~loop.index %}
-                                    <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (app.request.query.get('_tab') == _tab_name) %} class="active"{% endif %}>
+                                    {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
+                                    <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %} class="active"{% endif %}>
                                         <a href="#{{ _tab_name }}" class="changer-tab" aria-controls="{{ _tab_name }}" data-toggle="tab">
                                             <i class="fa fa-exclamation-circle has-errors hide" aria-hidden="true"></i> {{ form_tab.label|trans({}, form_tab.translation_domain ?: admin.translationDomain) }}
                                         </a>
@@ -45,13 +47,16 @@
                             </ul>
                             <div class="tab-content">
                                 {% for code, form_tab in admin.formtabs %}
-                                    {% set _tab_name = 'tab_'~admin.uniqid~'_'~loop.index %}
-                                    <div class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (app.request.query.get('_tab') == _tab_name) %} in active{% endif %}" id="{{ _tab_name }}">
+                                    {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
+                                    <div
+                                        class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (tab_query_index == loop.index) %} in active{% endif %}"
+                                        id="{{ _tab_name }}"
+                                    >
                                         <div class="box-body  container-fluid">
                                             <div class="sonata-ba-collapsed-fields">
                                                 {% if form_tab.description != false %}
                                                     <p>
-                                                        {{ form_tab.description|trans({}, form_tab.translation_domain ?: admin.translationDomain) }}
+                                                        {{ form_tab.description|trans({}, form_tab.translation_domain ?: admin.translationDomain)|raw }}
                                                     </p>
                                                 {% endif %}
 
@@ -61,6 +66,7 @@
                                     </div>
                                 {% endfor %}
                             </div>
+                            <input type="hidden" name="_tab" value="{{ app.request.query.get('_tab') }}">
                         </div>
                     {% else %}
                         {{ form_helper.render_groups(admin, form, admin.formtabs['default'].groups, has_tab) }}
@@ -127,7 +133,7 @@
                 </div>
             {% endblock formactions %}
         </form>
-    {% endif%}
+    {% endif %}
 
     {{ sonata_block_render_event('sonata.admin.edit.form.bottom', { 'admin': admin, 'object': object }) }}
 

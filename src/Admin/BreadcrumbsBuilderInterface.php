@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -28,7 +30,7 @@ interface BreadcrumbsBuilderInterface
      * @param string $action the name of the action we want to get a
      *                       breadcrumbs for
      *
-     * @return mixed array|Traversable the breadcrumbs
+     * @return iterable the breadcrumbs
      */
     public function getBreadcrumbs(AdminInterface $admin, $action);
 

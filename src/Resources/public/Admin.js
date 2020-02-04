@@ -22,9 +22,9 @@ var Admin = {
      * @param subject
      */
     shared_setup: function(subject) {
+        Admin.read_config();
         Admin.log("[core|shared_setup] Register services on", subject);
         Admin.setup_ie10_polyfill();
-        Admin.read_config();
         Admin.set_object_field_value(subject);
         Admin.add_filters(subject);
         Admin.setup_select2(subject);
@@ -97,9 +97,11 @@ var Admin = {
             Admin.log('[core|setup_select2] configure Select2 on', subject);
 
             jQuery('select:not([data-sonata-select2="false"])', subject).each(function() {
-                var select            = jQuery(this);
-                var allowClearEnabled = false;
-                var popover           = select.data('popover');
+                var select                  = jQuery(this);
+                var allowClearEnabled       = false;
+                var popover                 = select.data('popover');
+                var maximumSelectionSize    = null;
+                var minimumResultsForSearch = 10;
 
                 select.removeClass('form-control');
 
@@ -109,6 +111,14 @@ var Admin = {
                     allowClearEnabled = false;
                 }
 
+                if (select.attr('data-sonata-select2-maximumSelectionSize')) {
+                    maximumSelectionSize = select.attr('data-sonata-select2-maximumSelectionSize');
+                }
+
+                if (select.attr('data-sonata-select2-minimumResultsForSearch')) {
+                    minimumResultsForSearch = select.attr('data-sonata-select2-minimumResultsForSearch');
+                }
+
                 select.select2({
                     width: function(){
                         // Select2 v3 and v4 BC. If window.Select2 is defined, then the v3 is installed.
@@ -116,8 +126,9 @@ var Admin = {
                         return Admin.get_select2_width(window.Select2 ? this.element : select);
                     },
                     dropdownAutoWidth: true,
-                    minimumResultsForSearch: 10,
-                    allowClear: allowClearEnabled
+                    minimumResultsForSearch: minimumResultsForSearch,
+                    allowClear: allowClearEnabled,
+                    maximumSelectionSize: maximumSelectionSize
                 });
 
                 if (undefined !== popover) {
@@ -133,16 +144,16 @@ var Admin = {
         if (Admin.get_config('USE_ICHECK')) {
             Admin.log('[core|setup_icheck] configure iCheck on', subject);
 
-            jQuery("input[type='checkbox']:not('label.btn>input'), input[type='radio']:not('label.btn>input')", subject)
-                .iCheck({
-                    checkboxClass: 'icheckbox_square-blue',
-                    radioClass: 'iradio_square-blue'
-                })
-                // See https://github.com/fronteed/iCheck/issues/244
-                .on('ifToggled', function (e) {
-                    $(e.target).trigger('change');
-                })
-            ;
+            jQuery('input[type="checkbox"]:not(label.btn > input, [data-sonata-icheck="false"]), input[type="radio"]:not(label.btn > input, [data-sonata-icheck="false"])', subject)
+              .iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue'
+              })
+              // See https://github.com/fronteed/iCheck/issues/244
+              .on('ifToggled', function (e) {
+                  $(e.target).trigger('change');
+              });
+
         }
     },
     /**
@@ -220,6 +231,10 @@ var Admin = {
      * @param mixed
      */
     log: function() {
+        if (!Admin.get_config('DEBUG')) {
+          return;
+        }
+
         var msg = '[Sonata.Admin] ' + Array.prototype.join.call(arguments,', ');
         if (window.console && window.console.log) {
             window.console.log(msg);
@@ -231,10 +246,10 @@ var Admin = {
     /**
      * NEXT_MAJOR: remove this function.
      *
-     * @deprecated in version 3.0
+     * @deprecated since sonata-project/admin-bundle 3.0
      */
     add_pretty_errors: function() {
-        console.warn('Admin.add_pretty_errors() was deprecated in version 3.0');
+        console.warn('Admin.add_pretty_errors() is deprecated since sonata-project/admin-bundle 3.0');
     },
 
     stopEvent: function(event) {
@@ -632,7 +647,7 @@ var Admin = {
 
         jQuery(window).scroll(
             Admin.debounce(function() {
-                if (footer.length && jQuery(window).scrollTop() + jQuery(window).height() == jQuery(document).height()) {
+                if (footer.length && Math.round(jQuery(window).scrollTop() + jQuery(window).height()) >= jQuery(document).height()) {
                     jQuery(footer).removeClass('stuck');
                 }
 
@@ -725,13 +740,19 @@ var Admin = {
             setTimeout(function() {
                 form.find('button').prop('disabled', true);
             }, 1);
+
+            var tabSelected = form.find('.nav-tabs li.active .changer-tab');
+
+            if (tabSelected.length > 0) {
+                form.find('input[name="_tab"]').val(tabSelected.attr('aria-controls'));
+            }
         });
     },
     /**
      * Remember open tab after refreshing page.
      */
     setup_view_tabs_changer: function () {
-        jQuery('.changer-tab').on('click', function () {
+          jQuery('.changer-tab').on('click', function () {
             var tab = jQuery(this).attr('aria-controls'),
                 search = location.search.substring(1);
 

@@ -30,14 +30,12 @@ Two template keys need to be set:
 
     .. code-block:: xml
 
+        <!-- config/services.xml -->
+
         <service id="sonata.admin.comment" class="%sonata.admin.comment.class%">
-            <tag name="sonata.admin" manager_type="orm" group="sonata_blog" label="comments"
-                label_catalogue="%sonata.admin.comment.translation_domain%"
-                label_translator_strategy="sonata.admin.label.strategy.underscore" />
-            <argument />
+            <argument/>
             <argument>%sonata.admin.comment.entity%</argument>
             <argument>%sonata.admin.comment.controller%</argument>
-
             <call method="setTemplates">
                 <argument type="collection">
                     <argument key="inner_list_row">
@@ -48,6 +46,14 @@ Two template keys need to be set:
                     </argument>
                 </argument>
             </call>
+            <tag
+                name="sonata.admin"
+                manager_type="orm"
+                group="sonata_blog"
+                label="comments"
+                label_catalogue="%sonata.admin.comment.translation_domain%"
+                label_translator_strategy="sonata.admin.label.strategy.underscore"
+                />
         </service>
 
 Create your customized template
@@ -69,7 +75,7 @@ Once the templates are defined, create the template to render the row:
 
         {{ object|render_list_element(admin.list['name']) }} -
         {{ object|render_list_element(admin.list['url']) }} -
-        {{ object|render_list_element(admin.list['email']) }} <br />
+        {{ object|render_list_element(admin.list['email']) }} <br/>
 
         <small>
             {# or you can use the object variable to render a property #}
@@ -78,7 +84,7 @@ Once the templates are defined, create the template to render the row:
 
     {% endblock %}
 
-While this feature is nice to generate a rich list, it is also very easy to
-break the layout and admin features such as batch and object actions. It is
-best to familiarise yourself with the default templates and extend them where
-possible, only changing what you need to customize.
+While this feature is nice to generate a rich list, you can break the layout and
+admin features such as batch and object actions. It is best to familiarise yourself
+with the default templates and extend them where possible, only changing what you
+need to customize.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -22,7 +24,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\FooCall;
 
 class BaseFieldDescriptionTest extends TestCase
 {
-    public function testSetName()
+    public function testSetName(): void
     {
         $description = new FieldDescription();
         $description->setName('foo');
@@ -31,7 +33,7 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertSame('foo', $description->getName());
     }
 
-    public function testOptions()
+    public function testOptions(): void
     {
         $description = new FieldDescription();
         $description->setOption('foo', 'bar');
@@ -79,13 +81,13 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertTrue($description->isSortable());
     }
 
-    public function testAdmin()
+    public function testAdmin(): void
     {
         $description = new FieldDescription();
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $description->setAdmin($admin);
-        $this->isInstanceOf(AdminInterface::class, $description->getAdmin());
+        $this->assertInstanceOf(AdminInterface::class, $description->getAdmin());
 
         $associationAdmin = $this->getMockForAbstractClass(AdminInterface::class);
         $associationAdmin->expects($this->once())->method('setParentFieldDescription');
@@ -93,14 +95,14 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertFalse($description->hasAssociationAdmin());
         $description->setAssociationAdmin($associationAdmin);
         $this->assertTrue($description->hasAssociationAdmin());
-        $this->isInstanceOf(AdminInterface::class, $description->getAssociationAdmin());
+        $this->assertInstanceOf(AdminInterface::class, $description->getAssociationAdmin());
 
         $parent = $this->getMockForAbstractClass(AdminInterface::class);
         $description->setParent($parent);
-        $this->isInstanceOf(AdminInterface::class, $description->getParent());
+        $this->assertInstanceOf(AdminInterface::class, $description->getParent());
     }
 
-    public function testGetValue()
+    public function testGetValue(): void
     {
         $description = new FieldDescription();
         $description->setOption('code', 'getFoo');
@@ -108,7 +110,7 @@ class BaseFieldDescriptionTest extends TestCase
         $mock = $this->getMockBuilder('stdClass')
             ->setMethods(['getFoo'])
             ->getMock();
-        $mock->expects($this->once())->method('getFoo')->will($this->returnValue(42));
+        $mock->expects($this->once())->method('getFoo')->willReturn(42);
 
         $this->assertSame(42, $description->getFieldValue($mock, 'fake'));
 
@@ -125,7 +127,7 @@ class BaseFieldDescriptionTest extends TestCase
             ->setMethods(['getWithOneParameter'])
             ->getMock();
         $returnValue1 = $arg1 + 2;
-        $mock1->expects($this->once())->method('getWithOneParameter')->with($this->equalTo($arg1))->will($this->returnValue($returnValue1));
+        $mock1->expects($this->once())->method('getWithOneParameter')->with($this->equalTo($arg1))->willReturn($returnValue1);
 
         $this->assertSame(40, $description1->getFieldValue($mock1, 'fake'));
 
@@ -142,7 +144,7 @@ class BaseFieldDescriptionTest extends TestCase
             ->setMethods(['getWithTwoParameters'])
             ->getMock();
         $returnValue2 = $arg1 + $arg2;
-        $mock2->expects($this->any())->method('getWithTwoParameters')->with($this->equalTo($arg1), $this->equalTo($arg2))->will($this->returnValue($returnValue2));
+        $mock2->method('getWithTwoParameters')->with($this->equalTo($arg1), $this->equalTo($arg2))->willReturn($returnValue2);
         $this->assertSame(42, $description2->getFieldValue($mock2, 'fake'));
 
         /*
@@ -154,7 +156,7 @@ class BaseFieldDescriptionTest extends TestCase
                 ->setMethods([$method])
                 ->getMock();
 
-            $mock3->expects($this->once())->method($method)->will($this->returnValue(42));
+            $mock3->expects($this->once())->method($method)->willReturn(42);
             $this->assertSame(42, $description3->getFieldValue($mock3, '_fake'));
         }
 
@@ -163,15 +165,15 @@ class BaseFieldDescriptionTest extends TestCase
             ->getMock();
         $mock4->expects($this->once())
             ->method('myMethod')
-            ->will($this->returnValue('myMethodValue'));
+            ->willReturn('myMethodValue');
 
         $description4 = new FieldDescription();
         $description4->setOption('code', 'myMethod');
 
-        $this->assertEquals($description4->getFieldValue($mock4, null), 'myMethodValue');
+        $this->assertSame($description4->getFieldValue($mock4, null), 'myMethodValue');
     }
 
-    public function testGetValueNoValueException()
+    public function testGetValueNoValueException(): void
     {
         $this->expectException(\Sonata\AdminBundle\Exception\NoValueException::class);
 
@@ -183,7 +185,10 @@ class BaseFieldDescriptionTest extends TestCase
         $description->getFieldValue($mock, 'fake');
     }
 
-    public function testGetVirtualValue()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testGetVirtualValue(): void
     {
         $description = new FieldDescription();
         $mock = $this->getMockBuilder('stdClass')
@@ -194,7 +199,7 @@ class BaseFieldDescriptionTest extends TestCase
         $description->getFieldValue($mock, 'fake');
     }
 
-    public function testExceptionOnNonArrayOption()
+    public function testExceptionOnNonArrayOption(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -203,7 +208,7 @@ class BaseFieldDescriptionTest extends TestCase
         $description->mergeOption('bar', ['exception']);
     }
 
-    public function testGetTranslationDomain()
+    public function testGetTranslationDomain(): void
     {
         $description = new FieldDescription();
 
@@ -212,7 +217,7 @@ class BaseFieldDescriptionTest extends TestCase
 
         $admin->expects($this->once())
             ->method('getTranslationDomain')
-            ->will($this->returnValue('AdminDomain'));
+            ->willReturn('AdminDomain');
 
         $this->assertSame('AdminDomain', $description->getTranslationDomain());
 
@@ -225,14 +230,14 @@ class BaseFieldDescriptionTest extends TestCase
     /**
      * @group legacy
      */
-    public function testCamelize()
+    public function testCamelize(): void
     {
         $this->assertSame('FooBar', BaseFieldDescription::camelize('foo_bar'));
         $this->assertSame('FooBar', BaseFieldDescription::camelize('foo bar'));
         $this->assertSame('FOoBar', BaseFieldDescription::camelize('fOo bar'));
     }
 
-    public function testGetInaccessibleValue()
+    public function testGetInaccessibleValue(): void
     {
         $quux = 'quuX';
         $foo = new Foo();
@@ -248,7 +253,7 @@ class BaseFieldDescriptionTest extends TestCase
         $description->getFieldValue($foo, 'quux');
     }
 
-    public function testGetFieldValue()
+    public function testGetFieldValue(): void
     {
         $foo = new Foo();
         $foo->setBar('Bar');
@@ -275,7 +280,7 @@ class BaseFieldDescriptionTest extends TestCase
         $description->getFieldValue($foo, 'inexistantMethod');
     }
 
-    public function testGetFieldValueWithCodeOption()
+    public function testGetFieldValueWithCodeOption(): void
     {
         $foo = new Foo();
         $foo->setBaz('Baz');
@@ -290,7 +295,7 @@ class BaseFieldDescriptionTest extends TestCase
         $description->getFieldValue($foo, 'inexistantMethod');
     }
 
-    public function testGetFieldValueMagicCall()
+    public function testGetFieldValueMagicCall(): void
     {
         $parameters = ['foo', 'bar'];
         $foo = new FooCall();
@@ -303,7 +308,7 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertSame(['inexistantMethod', $parameters], $description->getFieldValue($foo, 'inexistantMethod'));
     }
 
-    public function testGetFieldValueWithNullObject()
+    public function testGetFieldValueWithNullObject(): void
     {
         $foo = null;
         $description = new FieldDescription();

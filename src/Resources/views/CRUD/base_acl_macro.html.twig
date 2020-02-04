@@ -29,7 +29,7 @@ file that was distributed with this source code.
                         {% endfor %}
                     </colgroup>
 
-                    {% for child in form.children if child.vars.name != '_token' %}
+                    {% for child in form.children|filter(child => child.vars.name != '_token') %}
                         {% if loop.index0 == 0 or loop.index0 % 10 == 0 %}
                             <tr>
                                 <th>{{ td_type|trans({}, 'SonataAdminBundle') }}</th>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -21,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ChoiceFieldMaskTypeTest extends TypeTestCase
 {
-    public function testGetDefaultOptions()
+    public function testGetDefaultOptions(): void
     {
         $options = $this->resolveOptions([
             'map' => [
@@ -33,14 +35,14 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
         $this->assertSame(['foo' => ['field1', 'field2'], 'bar' => ['field3']], $options['map']);
     }
 
-    public function testGetDefaultOptions2()
+    public function testGetDefaultOptions2(): void
     {
         $options = $this->resolveOptions([]);
 
         $this->assertSame(['map' => []], $options);
     }
 
-    public function setAllowedTypesProvider()
+    public function setAllowedTypesProvider(): array
     {
         return [
             'null' => [null],
@@ -54,7 +56,7 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
     /**
      * @dataProvider setAllowedTypesProvider
      */
-    public function testSetAllowedTypes($map)
+    public function testSetAllowedTypes($map): void
     {
         $this->expectException(InvalidOptionsException::class);
         $this->expectExceptionMessageRegExp('/The option "map" with value .* is expected to be of type "array", but is of type ".*"/');
@@ -62,19 +64,19 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
         $this->resolveOptions(['map' => $map]);
     }
 
-    public function testGetBlockPrefix()
+    public function testGetBlockPrefix(): void
     {
         $type = new ChoiceFieldMaskType();
         $this->assertSame('sonata_type_choice_field_mask', $type->getBlockPrefix());
     }
 
-    public function testGetParent()
+    public function testGetParent(): void
     {
         $type = new ChoiceFieldMaskType();
         $this->assertSame(ChoiceType::class, $type->getParent());
     }
 
-    public function testBuildView()
+    public function testBuildView(): void
     {
         $choiceFieldMaskType = new ChoiceFieldMaskType();
 
@@ -121,7 +123,7 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
         $this->assertSame($expectedMap, $view->reveal()->vars['map'], '"map" is not as expected');
     }
 
-    public function testBuildViewWithFaultyMapValues()
+    public function testBuildViewWithFaultyMapValues(): void
     {
         $options = ['map' => [
             'int' => 1,
@@ -152,10 +154,7 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
         $this->assertSame($expectedMap, $view->reveal()->vars['map'], '"map" is not as expected');
     }
 
-    /**
-     * @return array
-     */
-    private function resolveOptions(array $options)
+    private function resolveOptions(array $options): array
     {
         $type = new ChoiceFieldMaskType();
         $optionResolver = new OptionsResolver();

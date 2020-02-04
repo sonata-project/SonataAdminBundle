@@ -9,30 +9,21 @@ about the list view.
 If you have created some posts and go to
 http://localhost:8000/admin/app/blogpost/list, you'll see an empty list page.
 That's not because there is no content, but because you didn't configure your
-Admin's list view. As Sonata doesn't know which fields to show, it just shows
-empty rows.
-
-.. note::
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
+Admin's list view. As Sonata doesn't know which fields to show, it shows empty
+rows instead.
 
 Configuring the List Mapper
 ---------------------------
 
-Fixing the above problem is easy: Just add the fields you want to show on the
-list page to the list view:
-
-.. code-block:: php
+Fixing the above problem is not that complex: Add the fields you want to show
+on the list page to the list view::
 
     // src/Admin/BlogPostAdmin.php
+
     namespace App\Admin;
 
-    // ...
-    class BlogPostAdmin extends AbstractAdmin
+    final class BlogPostAdmin extends AbstractAdmin
     {
-        // ...
-
         protected function configureListFields(ListMapper $listMapper)
         {
             $listMapper
@@ -64,18 +55,14 @@ Defining the Identifier Field(s)
 The fields which contain a link to the edit pages are called identifier fields.
 It makes sense to make the title field link to the edit page, so you can add it
 as an identifier field. This is done by using ``ListMapper#addIdentifier()``
-instead of ``ListMapper#add()``:
-
-.. code-block:: php
+instead of ``ListMapper#add()``::
 
     // src/Admin/BlogPostAdmin.php
+
     namespace App\Admin;
 
-    // ...
-    class BlogPostAdmin extends AbstractAdmin
+    final class BlogPostAdmin extends AbstractAdmin
     {
-        // ...
-
         protected function configureListFields(ListMapper $listMapper)
         {
             $listMapper
@@ -97,21 +84,17 @@ mapper, as it will then try to show the entity as a string. As you've learned
 in the previous chapter, adding ``__toString`` to the entity is not recommended
 as well.
 
-Fortunately, there is an easy way to reference other models by using the dot
-notation. Using this notation, you can specify which fields you want to show.
-For instance, ``category.name`` will show the ``name`` property of the
-category.
-
-.. code-block:: php
+Fortunately, there is a straightforward way to reference other models by using
+the dot notation. Using this notation, you can specify which fields you want to
+show. For instance, ``category.name`` will show the ``name`` property of the
+category::
 
     // src/Admin/BlogPostAdmin.php
+
     namespace App\Admin;
 
-    // ...
-    class BlogPostAdmin extends AbstractAdmin
+    final class BlogPostAdmin extends AbstractAdmin
     {
-        // ...
-
         protected function configureListFields(ListMapper $listMapper)
         {
             $listMapper
@@ -133,17 +116,15 @@ for it!
 It does this by allowing you to configure datagrid filters in the
 ``Admin#configureDatagridFilters()`` method. For instance, to allow the admin
 to search blog posts by title (and also order them by alphabet in the list), you
-would do something like:
-
-.. code-block:: php
+would do something like::
 
     // src/Admin/BlogPostAdmin.php
+
     namespace App\Admin;
 
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
 
-    // ...
-    class BlogPostAdmin extends AbstractAdmin
+    final class BlogPostAdmin extends AbstractAdmin
     {
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
@@ -158,9 +139,7 @@ Filtering by Category
 ~~~~~~~~~~~~~~~~~~~~~
 
 Filtering by another model's properties is a little bit more difficult. The add
-field has 5 arguments:
-
-.. code-block:: php
+field has 5 arguments::
 
     public function add(
         $name,
@@ -177,26 +156,24 @@ field has 5 arguments:
 As you can see, you can both customize the type used to filter and the type
 used to display the search field. You can rely on the type guessing mechanism
 of Sonata to pick the correct field types. However, you still need to configure
-the search field to use the ``name`` property of the Category:
-
-.. code-block:: php
+the search field to use the ``name`` property of the Category::
 
     // src/Admin/BlogPostAdmin.php
+
     namespace App\Admin;
 
     use App\Entity\Category;
     use Sonata\AdminBundle\Datagrid\DatagridMapper;
     use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-    // ...
-    class BlogPostAdmin extends AbstractAdmin
+    final class BlogPostAdmin extends AbstractAdmin
     {
         protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
             $datagridMapper
                 ->add('title')
                 ->add('category', null, [], EntityType::class, [
-                    'class'    => Category::class,
+                    'class' => Category::class,
                     'choice_label' => 'name',
                 ])
             ;
@@ -204,7 +181,7 @@ the search field to use the ``name`` property of the Category:
     }
 
 With this code, a dropdown will be shown including all available categories.
-This will make it easy to filter by category.
+This way you can filter by a selected category.
 
 .. image:: ../images/getting_started_filter_category.png
    :align: center
@@ -214,9 +191,9 @@ This will make it easy to filter by category.
 Round Up
 --------
 
-This time, you've learned how to make it easy to find posts to edit. You've
-learned how to create a nice list view and how to add options to search, order
-and filter this list.
+This time, you've learned how to find posts to edit. You've learned how to
+create a nice list view and how to add options to search, order and filter
+this list.
 
 There might have been some very difficult things, but imagine the difficulty
 writing everything yourself! As you're now already quite good with the basics,
