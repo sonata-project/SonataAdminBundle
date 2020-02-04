@@ -1351,7 +1351,7 @@ class CRUDController implements ContainerAwareInterface
 
             if (method_exists($userManager, 'findUsers')) {
                 if ($id != null){
-                    $aclUsers = array($userManager->findUserBy(['_id'=>$id]));
+                    $aclUsers = [$userManager->findUserBy(['_id'=>$id])];
                 } else {
                     $aclUsers = $userManager->findUsers();
                 }
