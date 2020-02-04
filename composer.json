@@ -77,9 +77,7 @@
     },
     "suggest": {
         "jms/translation-bundle": "Extract message keys from Admins",
-        "kunicmarko/sonata-auto-configure-bundle": "Auto configures Admin classes",
-        "sensio/generator-bundle": "Add sonata:admin:generate command",
-        "sonata-project/intl-bundle": "Add localized date and number into the list"
+        "kunicmarko/sonata-auto-configure-bundle": "Auto configures Admin classes"
     },
     "config": {
         "sort-packages": true
