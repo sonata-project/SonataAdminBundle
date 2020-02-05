@@ -17,15 +17,12 @@ use Sonata\AdminBundle\Form\Type\Filter\DateTimeRangeType;
 use Sonata\Form\Type\DateTimeRangeType as FormDateTimeRangeType;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class DateTimeRangeTypeTest extends TypeTestCase
 {
     public function testGetDefaultOptions(): void
     {
-        $stub = $this->getMockForAbstractClass(TranslatorInterface::class);
-
-        $type = new DateTimeRangeType($stub);
+        $type = new DateTimeRangeType();
 
         $optionResolver = new OptionsResolver();
 

@@ -154,14 +154,4 @@ class ModelAutocompleteType extends AbstractType
     {
         return 'sonata_type_model_autocomplete';
     }
-
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
 }

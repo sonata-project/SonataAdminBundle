@@ -64,16 +64,6 @@ class ChoiceFieldMaskType extends AbstractType
         return ChoiceType::class;
     }
 
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
     public function getBlockPrefix()
     {
         return 'sonata_type_choice_field_mask';
