@@ -18,7 +18,6 @@ use Sonata\Form\Type\DateTimeRangeType as FormDateTimeRangeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @final since sonata-project/admin-bundle 3.52
@@ -27,40 +26,6 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class DateTimeRangeType extends AbstractType
 {
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateRangeOperatorType::TYPE_BETWEEN instead
-     */
-    public const TYPE_BETWEEN = 1;
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use DateRangeOperatorType::TYPE_NOT_BETWEEN instead
-     */
-    public const TYPE_NOT_BETWEEN = 2;
-
-    /**
-     * NEXT_MAJOR: remove this property.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.5, to be removed with 4.0
-     *
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
     public function getBlockPrefix()
     {
         return 'sonata_type_filter_datetime_range';
