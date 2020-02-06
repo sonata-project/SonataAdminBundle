@@ -43,32 +43,10 @@ class GroupMenuProvider implements MenuProviderInterface
      */
     private $checker;
 
-    /**
-     * NEXT_MAJOR: Remove default value null of $checker.
-     *
-     * @param AuthorizationCheckerInterface|null $checker
-     */
-    public function __construct(FactoryInterface $menuFactory, Pool $pool, $checker = null)
+    public function __construct(FactoryInterface $menuFactory, Pool $pool, AuthorizationCheckerInterface $checker)
     {
         $this->menuFactory = $menuFactory;
         $this->pool = $pool;
-
-        /*
-         * NEXT_MAJOR: Remove this if blocks.
-         * NEXT_MAJOR: Move AuthorizationCheckerInterface check to method signature.
-         */
-        if (null === $checker) {
-            @trigger_error(
-                'Passing no 3rd argument is deprecated since version 3.10 and will be mandatory in 4.0.
-                Pass Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as 3rd argument.',
-                E_USER_DEPRECATED
-            );
-        } elseif (!$checker instanceof AuthorizationCheckerInterface) {
-            throw new \InvalidArgumentException(
-                'Argument 3 must be an instance of \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'
-            );
-        }
-
         $this->checker = $checker;
     }
 
@@ -132,11 +110,6 @@ class GroupMenuProvider implements MenuProviderInterface
 
             // skip menu item if no `list` url is available or user doesn't have the LIST access rights
             return $admin->hasRoute('list') && $admin->hasAccess('list');
-        }
-
-        //NEXT_MAJOR: Remove if statement of null checker.
-        if (null === $this->checker) {
-            return true;
         }
 
         // Making the checker behave affirmatively even if it's globally unanimous

@@ -40,15 +40,8 @@ final class SetObjectFieldValueAction
      */
     private $validator;
 
-    public function __construct(Environment $twig, Pool $pool, $validator)
+    public function __construct(Environment $twig, Pool $pool, ValidatorInterface $validator)
     {
-        // NEXT_MAJOR: Move ValidatorInterface check to method signature
-        if (!($validator instanceof ValidatorInterface)) {
-            throw new \InvalidArgumentException(
-                'Argument 3 is an instance of '.\get_class($validator).', expecting an instance of'
-                .' \Symfony\Component\Validator\Validator\ValidatorInterface'
-            );
-        }
         $this->pool = $pool;
         $this->twig = $twig;
         $this->validator = $validator;

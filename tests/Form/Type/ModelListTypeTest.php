@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Form\Type;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ModelListTypeTest extends TypeTestCase
 {
@@ -26,6 +27,25 @@ class ModelListTypeTest extends TypeTestCase
         $this->modelManager = $this->prophesize(ModelManagerInterface::class);
 
         parent::setUp();
+    }
+
+    public function testGetDefaultOptions(): void
+    {
+        $type = new ModelListType();
+
+        $optionResolver = new OptionsResolver();
+
+        $type->configureOptions($optionResolver);
+
+        $options = $optionResolver->resolve();
+
+        $this->assertNull($options['model_manager']);
+        $this->assertNull($options['class']);
+        $this->assertSame('link_add', $options['btn_add']);
+        $this->assertSame('link_edit', $options['btn_edit']);
+        $this->assertSame('link_list', $options['btn_list']);
+        $this->assertSame('link_delete', $options['btn_delete']);
+        $this->assertSame('SonataAdminBundle', $options['btn_catalogue']);
     }
 
     public function testSubmitValidData(): void
