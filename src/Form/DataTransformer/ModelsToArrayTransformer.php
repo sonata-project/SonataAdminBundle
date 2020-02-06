@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
 use Doctrine\Common\Util\ClassUtils;
-use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\Doctrine\Adapter\AdapterInterface;
-use Symfony\Component\Form\ChoiceList\LazyChoiceList;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -41,77 +39,12 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     protected $class;
 
     /**
-     * ModelsToArrayTransformer constructor.
-     *
-     * @param LazyChoiceList|ModelChoiceLoader $choiceList
-     * @param ModelManagerInterface            $modelManager
-     * @param $class
-     *
      * @throws RuntimeException
      */
-    public function __construct($choiceList, $modelManager, $class = null)
+    public function __construct(ModelManagerInterface $modelManager, string $class)
     {
-        /*
-        NEXT_MAJOR: Remove condition , magic methods, legacyConstructor() method, $choiceList property and argument
-        __construct() signature should be : public function __construct(ModelManager $modelManager, $class)
-         */
-
-        $args = \func_get_args();
-
-        if (3 === \func_num_args()) {
-            $this->legacyConstructor($args);
-        } else {
-            $this->modelManager = $args[0];
-            $this->class = $args[1];
-        }
-    }
-
-    /**
-     * @internal
-     */
-    public function __get($name)
-    {
-        if ('choiceList' === $name) {
-            $this->triggerDeprecation();
-        }
-
-        return $this->$name;
-    }
-
-    /**
-     * @internal
-     */
-    public function __set($name, $value): void
-    {
-        if ('choiceList' === $name) {
-            $this->triggerDeprecation();
-        }
-
-        $this->$name = $value;
-    }
-
-    /**
-     * @internal
-     */
-    public function __isset($name)
-    {
-        if ('choiceList' === $name) {
-            $this->triggerDeprecation();
-        }
-
-        return isset($this->$name);
-    }
-
-    /**
-     * @internal
-     */
-    public function __unset($name): void
-    {
-        if ('choiceList' === $name) {
-            $this->triggerDeprecation();
-        }
-
-        unset($this->$name);
+        $this->modelManager = $modelManager;
+        $this->class = $class;
     }
 
     public function transform($collection)
@@ -156,26 +89,6 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     }
 
     /**
-     * Simulates the old constructor for BC.
-     *
-     * @throws RuntimeException
-     */
-    private function legacyConstructor(array $args): void
-    {
-        $choiceList = $args[0];
-
-        if (!$choiceList instanceof ModelChoiceLoader
-            && !$choiceList instanceof LazyChoiceList) {
-            throw new RuntimeException('First param passed to ModelsToArrayTransformer should be instance of
-                ModelChoiceLoader or LazyChoiceList');
-        }
-
-        $this->choiceList = $choiceList;
-        $this->modelManager = $args[1];
-        $this->class = $args[2];
-    }
-
-    /**
      * @param object $entity
      */
     private function getIdentifierValues($entity): array
@@ -185,16 +98,5 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         } catch (\Exception $e) {
             throw new \InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($entity)), 0, $e);
         }
-    }
-
-    /**
-     * @internal
-     */
-    private function triggerDeprecation(): void
-    {
-        @trigger_error(sprintf(
-            'Using the "%s::$choiceList" property is deprecated since version 3.12 and will be removed in 4.0.',
-            __CLASS__
-        ), E_USER_DEPRECATED);
     }
 }

@@ -2190,15 +2190,8 @@ EOT;
         return $this->getNormalizedIdentifier($entity);
     }
 
-    public function setValidator($validator): void
+    public function setValidator(ValidatorInterface $validator): void
     {
-        // NEXT_MAJOR: Move ValidatorInterface check to method signature
-        if (!$validator instanceof ValidatorInterface) {
-            throw new \InvalidArgumentException(
-                'Argument 1 must be an instance of Symfony\Component\Validator\Validator\ValidatorInterface'
-            );
-        }
-
         $this->validator = $validator;
     }
 

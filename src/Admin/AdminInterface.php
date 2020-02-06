@@ -260,10 +260,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function id($entity);
 
-    /**
-     * @param ValidatorInterface $validator
-     */
-    public function setValidator($validator);
+    public function setValidator(ValidatorInterface $validator);
 
     /**
      * @return ValidatorInterface
