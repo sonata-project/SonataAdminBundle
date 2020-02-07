@@ -17,7 +17,6 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -180,8 +179,8 @@ final class RetrieveAutocompleteItemsAction
                 'label' => $label,
             ];
 
-            if (is_callable($resultItemCallback)) {
-                call_user_func($resultItemCallback, $admin, $entity, $item);
+            if (\is_callable($resultItemCallback)) {
+                \call_user_func($resultItemCallback, $admin, $entity, $item);
             }
 
             $items[] = $item;
