@@ -164,12 +164,12 @@ final class RetrieveAutocompleteItemsAction
             }
 
             $item = [
-                'id'    => $admin->id($entity),
+                'id' => $admin->id($entity),
                 'label' => $label,
             ];
 
-            if (is_callable($resultItemCallback)) {
-                call_user_func($resultItemCallback, $admin, $entity, $item);
+            if (\is_callable($resultItemCallback)) {
+                \call_user_func($resultItemCallback, $admin, $entity, $item);
             }
 
             $items[] = $item;
