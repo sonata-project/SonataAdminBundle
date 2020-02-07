@@ -104,7 +104,6 @@ final class RetrieveAutocompleteItemsAction
 
         $targetAdmin->setFilterPersister(null);
         $datagrid = $targetAdmin->getDatagrid();
-        $this->clearDatagridFilters($datagrid);
 
         if (null !== $callback) {
             if (!\is_callable($callback)) {
@@ -229,15 +228,5 @@ final class RetrieveAutocompleteItemsAction
         }
 
         return $fieldDescription;
-    }
-
-    /**
-     * @param DatagridInterface $datagrid
-     */
-    private function clearDatagridFilters(DatagridInterface $datagrid)
-    {
-        foreach ($datagrid->getFilters() as $filter) {
-            $datagrid->setValue($filter->getName(), null, null);
-        }
     }
 }
