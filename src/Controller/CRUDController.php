@@ -985,6 +985,9 @@ class CRUDController implements ContainerAwareInterface
             throw $this->createNotFoundException('ACL are not enabled for this admin');
         }
 
+        $isGroup = explode('/',$request->getPathInfo())[3] == 'group'? true : false;
+
+
         $object = $this->admin->getObject($id);
 
         if (!$object) {
@@ -1006,11 +1009,15 @@ class CRUDController implements ContainerAwareInterface
             $aclRoles
         );
 
-        $aclUsersForm = $adminObjectAclManipulator->createAclUsersForm($adminObjectAclData);
+        if (!$isGroup) {
+            $aclUsersForm = $adminObjectAclManipulator->createAclUsersForm($adminObjectAclData, $id);
+        }
+
         $aclRolesForm = $adminObjectAclManipulator->createAclRolesForm($adminObjectAclData);
 
         if (Request::METHOD_POST === $request->getMethod()) {
-            if ($request->request->has(AdminObjectAclManipulator::ACL_USERS_FORM_NAME)) {
+
+            if ($request->request->has(AdminObjectAclManipulator::ACL_USERS_FORM_NAME) && !$isGroup) {
                 $form = $aclUsersForm;
                 $updateMethod = 'updateAclUsers';
             } elseif ($request->request->has(AdminObjectAclManipulator::ACL_ROLES_FORM_NAME)) {
@@ -1037,13 +1044,18 @@ class CRUDController implements ContainerAwareInterface
         $template = $this->admin->getTemplate('acl');
         // $template = $this->templateRegistry->getTemplate('acl');
 
+        if (!$isGroup){
+            $aclUsersFormView = $aclUsersForm->createView();
+        } else {
+            $aclUsersFormView = false;
+        }
         return $this->renderWithExtraParams($template, [
             'action' => 'acl',
             'permissions' => $adminObjectAclData->getUserPermissions(),
             'object' => $object,
             'users' => $aclUsers,
             'roles' => $aclRoles,
-            'aclUsersForm' => $aclUsersForm->createView(),
+            'aclUsersForm' => $aclUsersFormView,
             'aclRolesForm' => $aclRolesForm->createView(),
         ], null);
     }
@@ -1349,15 +1361,17 @@ class CRUDController implements ContainerAwareInterface
         if (null !== $userManagerServiceName && $this->has($userManagerServiceName)) {
             $userManager = $this->get($userManagerServiceName);
 
-            if (method_exists($userManager, 'findUsers')) {
-                if ($id != null){
-                    $aclUsers = [$userManager->findUserBy(['_id'=>$id])];
-                } else {
+            if ($id != null)
+            {
+                if (method_exists($userManager, 'findUserBy')) {
+                    $aclUsers = array($userManager->findUserBy(['_id'=>$id]));
+                }
+            }  else {
+                if (method_exists($userManager, 'findUsers')) {
                     $aclUsers = $userManager->findUsers();
                 }
             }
         }
-
         return \is_array($aclUsers) ? new \ArrayIterator($aclUsers) : $aclUsers;
     }
 
