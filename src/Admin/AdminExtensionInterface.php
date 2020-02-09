@@ -24,12 +24,6 @@ use Sonata\Form\Validator\ErrorElement;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * @method array getAccessMapping(AdminInterface $admin)
- * @method array configureBatchActions(AdminInterface $admin, array $actions)
- * @method array configureExportFields(AdminInterface $admin, array $fields)
- * @method array configureActionButtons(AdminInterface $admin, array $list, string $action, object $object)
- * @method void  configureDefaultFilterValues(AdminInterface $admin, array &$filterValues)
  */
 interface AdminExtensionInterface
 {
@@ -105,22 +99,19 @@ interface AdminExtensionInterface
     /**
      * Return the controller access mapping.
      */
-    // TODO: Uncomment in next major release
-    // public function getAccessMapping(AdminInterface $admin): array;
+    public function getAccessMapping(AdminInterface $admin): array;
 
     /**
      * Returns the list of batch actions.
      */
-    // TODO: Uncomment in next major release
-    // public function configureBatchActions(AdminInterface $admin, array $actions): array;
+    public function configureBatchActions(AdminInterface $admin, array $actions): array;
 
     /**
      * Get a chance to modify export fields.
      *
      * @return string[]
      */
-    // TODO: Uncomment in next major release
-    // public function configureExportFields(AdminInterface $admin, array $fields): array;
+    public function configureExportFields(AdminInterface $admin, array $fields): array;
 
     /**
      * @param object $object
@@ -152,18 +143,22 @@ interface AdminExtensionInterface
      */
     public function postRemove(AdminInterface $admin, $object);
 
-    /*
-     * Get all action buttons for an action
-     */
-    // TODO: Uncomment in next major release
-    // public function configureActionButtons(AdminInterface $admin, array $list, string $action, object $object): array;
-
-    /*
-     * NEXT_MAJOR: Uncomment in next major release
+    /**
+     * Get all action buttons for an action.
      *
-     * Returns a list of default filters
+     * @param object $object
      */
-    // public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void;
+    public function configureActionButtons(
+        AdminInterface $admin,
+        array $list,
+        string $action,
+        $object
+    ): array;
+
+    /**
+     * Returns a list of default filters.
+     */
+    public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void;
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);

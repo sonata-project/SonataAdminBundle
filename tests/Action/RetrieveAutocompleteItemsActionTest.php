@@ -21,10 +21,10 @@ use Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
-use Sonata\DatagridBundle\Datagrid\DatagridInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -119,7 +119,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->admin->hasAccess('create')->willReturn(true);
         $this->admin->getFormFieldDescription('barField')->willReturn($fieldDescription->reveal());
         $this->admin->getFormFieldDescriptions()->willReturn(null);
-        $targetAdmin->checkAccess('list')->willReturn(null);
+        $targetAdmin->checkAccess('list')->shouldBeCalled();
         $fieldDescription->getTargetEntity()->willReturn(Foo::class);
         $fieldDescription->getName()->willReturn('barField');
         $fieldDescription->getAssociationAdmin()->willReturn($targetAdmin->reveal());
@@ -237,7 +237,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $datagrid->setValue('_per_page', null, 10)->shouldBeCalled();
         $datagrid->setValue('_page', null, 1)->shouldBeCalled();
-        $datagrid->buildPager()->willReturn(null);
+        $datagrid->buildPager()->shouldBeCalled();
         $datagrid->getPager()->willReturn($pager->reveal());
         $pager->getResults()->willReturn([$entity]);
         $pager->isLastPage()->willReturn(true);

@@ -321,7 +321,7 @@ class AdminObjectAclData
     /**
      * Cache masks.
      */
-    protected function updateMasks()
+    protected function updateMasks(): void
     {
         $permissions = $this->getPermissions();
 

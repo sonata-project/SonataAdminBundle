@@ -306,8 +306,6 @@ Button:
   CRUD actions
 CRUD:
   Base views for every CRUD action, plus several field views for each field type
-Core:
-  Dashboard view, together with deprecated and stub twig files.
 Form:
   Views related to form rendering
 Helper:

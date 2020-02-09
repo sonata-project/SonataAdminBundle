@@ -1,0 +1,48 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Class Doctrine\\\\ODM\\\\MongoDB\\\\PersistentCollection not found\\.$#"
+			count: 1
+			path: src/Admin/AdminHelper.php
+
+		-
+			message: "#^Class Doctrine\\\\ORM\\\\PersistentCollection not found\\.$#"
+			count: 1
+			path: src/Admin/AdminHelper.php
+
+		-
+			message: "#^Undefined variable\\: \\$namespace$#"
+			count: 1
+			path: src/Resources/skeleton/Admin.tpl.php
+
+		-
+			message: "#^Undefined variable\\: \\$class_name$#"
+			count: 1
+			path: src/Resources/skeleton/Admin.tpl.php
+
+		-
+			message: "#^Undefined variable\\: \\$fields$#"
+			count: 4
+			path: src/Resources/skeleton/Admin.tpl.php
+
+		-
+			message: "#^Undefined variable\\: \\$namespace$#"
+			count: 1
+			path: src/Resources/skeleton/AdminController.tpl.php
+
+		-
+			message: "#^Undefined variable\\: \\$class_name$#"
+			count: 1
+			path: src/Resources/skeleton/AdminController.tpl.php
+
+		-
+			message: "#^Caught class Sonata\\\\AdminBundle\\\\Twig\\\\Extension\\\\LoaderError not found\\.$#"
+			count: 1
+			path: src/Twig/Extension/SonataAdminExtension.php
+
+		-
+			message: "#^Class Sonata\\\\AdminBundle\\\\Twig\\\\Extension\\\\LoaderError not found\\.$#"
+			count: 1
+			path: src/Twig/Extension/SonataAdminExtension.php
+
+

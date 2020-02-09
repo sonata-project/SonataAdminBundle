@@ -33,6 +33,7 @@ class ModelManagerCompilerPassTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+
         $this->adminMaker = $this->prophesize(Definition::class);
         $this->adminMaker->replaceArgument(Argument::type('integer'), Argument::any())->shouldBeCalledTimes(1);
     }

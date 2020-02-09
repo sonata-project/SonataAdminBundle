@@ -66,8 +66,11 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
     }
 
     /**
-     * {@inheritdoc}
-     * NEXT_MAJOR : make this method private.
+     * Builds breadcrumbs for $action, starting from $menu.
+     *
+     * Note: the method will be called by the top admin instance (parent => child)
+     *
+     * @param string $action
      */
     public function buildBreadcrumbs(
         AdminInterface $admin,

@@ -22,13 +22,15 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.3",
         "doctrine/common": "^2.7",
         "doctrine/inflector": "^1.1",
         "knplabs/knp-menu-bundle": "^2.2.2",
-        "sonata-project/block-bundle": "^3.18",
-        "sonata-project/core-bundle": "^3.18.0",
+        "sonata-project/block-bundle": "^4.0",
+        "sonata-project/doctrine-extensions": "^1.4",
         "sonata-project/exporter": "^1.11.0 || ^2.0",
+        "sonata-project/form-extensions": "^1.1.2",
+        "sonata-project/twig-extensions": "^1.1.1",
         "symfony/asset": "^4.3",
         "symfony/config": "^4.3",
         "symfony/console": "^4.3",
@@ -37,7 +39,7 @@
         "symfony/event-dispatcher": "^4.3",
         "symfony/event-dispatcher-contracts": "^1.1",
         "symfony/expression-language": "^4.3",
-        "symfony/form": "^4.0",
+        "symfony/form": "^4.3",
         "symfony/framework-bundle": "^4.3",
         "symfony/http-foundation": "^4.3",
         "symfony/http-kernel": "^4.3",
@@ -54,7 +56,7 @@
         "symfony/twig-bundle": "^4.3",
         "symfony/validator": "^4.3",
         "twig/extensions": "^1.5",
-        "twig/twig": "^2.10"
+        "twig/twig": "^2.12"
     },
     "conflict": {
         "doctrine/doctrine-bundle": ">=3",
@@ -77,7 +79,6 @@
     "suggest": {
         "jms/translation-bundle": "Extract message keys from Admins",
         "kunicmarko/sonata-auto-configure-bundle": "Auto configures Admin classes",
-        "sensio/generator-bundle": "Add sonata:admin:generate command",
         "sonata-project/intl-bundle": "Add localized date and number into the list"
     },
     "config": {
@@ -85,7 +86,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.x-dev"
+            "dev-master": "4.x-dev"
         }
     },
     "autoload": {

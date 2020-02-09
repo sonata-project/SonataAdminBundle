@@ -284,7 +284,7 @@ class FormMapper extends BaseGroupedMapper
         return $this->admin->getFormGroups();
     }
 
-    protected function setGroups(array $groups)
+    protected function setGroups(array $groups): void
     {
         $this->admin->setFormGroups($groups);
     }
@@ -294,7 +294,7 @@ class FormMapper extends BaseGroupedMapper
         return $this->admin->getFormTabs();
     }
 
-    protected function setTabs(array $tabs)
+    protected function setTabs(array $tabs): void
     {
         $this->admin->setFormTabs($tabs);
     }

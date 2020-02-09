@@ -618,4 +618,4 @@ Checkbox range selection
     then a second one with shift + click.
 
 .. _`SonataDoctrineORMAdminBundle Documentation`: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html
-.. _`here`: https://github.com/sonata-project/SonataCoreBundle/tree/3.x/src/Form/Type
+.. _`here`: https://github.com/sonata-project/SonataAdminBundle/tree/master/src/Form/Type

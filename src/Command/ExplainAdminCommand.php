@@ -47,14 +47,14 @@ class ExplainAdminCommand extends Command
         parent::__construct();
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this->setDescription('Explain an admin service');
 
         $this->addArgument('admin', InputArgument::REQUIRED, 'The admin service id');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $admin = $this->pool->getInstance($input->getArgument('admin'));
 

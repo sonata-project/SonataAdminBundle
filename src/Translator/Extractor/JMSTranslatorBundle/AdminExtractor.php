@@ -25,10 +25,7 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-/**
- * @final since sonata-project/admin-bundle 3.52
- */
-class AdminExtractor implements ExtractorInterface, TranslatorInterface, SecurityHandlerInterface, LabelTranslatorStrategyInterface
+final class AdminExtractor implements ExtractorInterface, TranslatorInterface, SecurityHandlerInterface, LabelTranslatorStrategyInterface
 {
     /**
      * @var LoggerInterface|null
@@ -77,7 +74,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         $this->domain = false;
     }
 
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
     }
@@ -85,7 +82,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     /**
      * NEXT_MAJOR : use a constructor argument instead.
      */
-    final public function setBreadcrumbsBuilder(BreadcrumbsBuilderInterface $breadcrumbsBuilder)
+    public function setBreadcrumbsBuilder(BreadcrumbsBuilderInterface $breadcrumbsBuilder): void
     {
         $this->breadcrumbsBuilder = $breadcrumbsBuilder;
     }
@@ -125,10 +122,6 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
             $admin->setSecurityHandler($this);
             $admin->setLabelTranslatorStrategy($this);
 
-            //            foreach ($admin->getChildren() as $child) {
-            //                $child->setTranslator($this);
-            //            }
-
             // call the different public method
             $methods = [
                 'getShow',
@@ -147,7 +140,11 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
             ];
 
             if ($this->logger) {
-                $this->logger->info(sprintf('Retrieving message from admin:%s - class: %s', $admin->getCode(), \get_class($admin)));
+                $this->logger->info(sprintf(
+                    'Retrieving message from admin:%s - class: %s',
+                    $admin->getCode(),
+                    \get_class($admin)
+                ));
             }
 
             foreach ($methods as $method) {
@@ -155,7 +152,11 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
                     $admin->$method();
                 } catch (\Exception $e) {
                     if ($this->logger) {
-                        $this->logger->error(sprintf('ERROR : admin:%s - Raise an exception : %s', $admin->getCode(), $e->getMessage()));
+                        $this->logger->error(sprintf(
+                            'ERROR : admin:%s - Raise an exception : %s',
+                            $admin->getCode(),
+                            $e->getMessage()
+                        ));
                     }
 
                     throw $e;
@@ -202,7 +203,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         return $id;
     }
 
-    public function setLocale($locale)
+    public function setLocale($locale): void
     {
         $this->translator->setLocale($locale);
     }
@@ -217,19 +218,19 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         return true;
     }
 
-    public function buildSecurityInformation(AdminInterface $admin)
+    public function buildSecurityInformation(AdminInterface $admin): void
     {
     }
 
-    public function createObjectSecurity(AdminInterface $admin, $object)
+    public function createObjectSecurity(AdminInterface $admin, $object): void
     {
     }
 
-    public function deleteObjectSecurity(AdminInterface $admin, $object)
+    public function deleteObjectSecurity(AdminInterface $admin, $object): void
     {
     }
 
-    public function getBaseRole(AdminInterface $admin)
+    public function getBaseRole(AdminInterface $admin): void
     {
     }
 
@@ -253,8 +254,6 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
     private function addMessage(string $id, string $domain): void
     {
         $message = new Message($id, $domain);
-
-        //        $this->logger->debug(sprintf('extract: %s - domain:%s', $id, $domain));
 
         $trace = debug_backtrace(0);
         if (isset($trace[1]['file'])) {

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
 use Doctrine\Common\Util\ClassUtils;
-use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\Doctrine\Adapter\AdapterInterface;
@@ -42,18 +41,10 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     protected $class;
 
     /**
-     * @var ModelChoiceList
-     *
-     * @deprecated since sonata-project/admin-bundle 3.12, to be removed in 4.0
-     * NEXT_MAJOR: remove this property
-     */
-    protected $choiceList;
-
-    /**
      * ModelsToArrayTransformer constructor.
      *
-     * @param ModelChoiceList|LazyChoiceList|ModelChoiceLoader $choiceList
-     * @param ModelManagerInterface                            $modelManager
+     * @param LazyChoiceList|ModelChoiceLoader $choiceList
+     * @param ModelManagerInterface            $modelManager
      * @param $class
      *
      * @throws RuntimeException
@@ -90,7 +81,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * @internal
      */
-    public function __set($name, $value)
+    public function __set($name, $value): void
     {
         if ('choiceList' === $name) {
             $this->triggerDeprecation();
@@ -114,7 +105,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * @internal
      */
-    public function __unset($name)
+    public function __unset($name): void
     {
         if ('choiceList' === $name) {
             $this->triggerDeprecation();
@@ -173,11 +164,10 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     {
         $choiceList = $args[0];
 
-        if (!$choiceList instanceof ModelChoiceList
-            && !$choiceList instanceof ModelChoiceLoader
+        if (!$choiceList instanceof ModelChoiceLoader
             && !$choiceList instanceof LazyChoiceList) {
             throw new RuntimeException('First param passed to ModelsToArrayTransformer should be instance of
-                ModelChoiceLoader or ModelChoiceList or LazyChoiceList');
+                ModelChoiceLoader or LazyChoiceList');
         }
 
         $this->choiceList = $choiceList;

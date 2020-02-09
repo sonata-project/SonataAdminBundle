@@ -37,7 +37,7 @@ class AdminEventExtension extends AbstractAdminExtension
         $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
     }
 
-    public function configureFormFields(FormMapper $form)
+    public function configureFormFields(FormMapper $form): void
     {
         $this->eventDispatcher->dispatch(
             new ConfigureEvent($form->getAdmin(), $form, ConfigureEvent::TYPE_FORM),
@@ -45,7 +45,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function configureListFields(ListMapper $list)
+    public function configureListFields(ListMapper $list): void
     {
         $this->eventDispatcher->dispatch(
             new ConfigureEvent($list->getAdmin(), $list, ConfigureEvent::TYPE_LIST),
@@ -53,7 +53,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function configureDatagridFilters(DatagridMapper $filter)
+    public function configureDatagridFilters(DatagridMapper $filter): void
     {
         $this->eventDispatcher->dispatch(
             new ConfigureEvent($filter->getAdmin(), $filter, ConfigureEvent::TYPE_DATAGRID),
@@ -61,7 +61,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function configureShowFields(ShowMapper $show)
+    public function configureShowFields(ShowMapper $show): void
     {
         $this->eventDispatcher->dispatch(
             new ConfigureEvent($show->getAdmin(), $show, ConfigureEvent::TYPE_SHOW),
@@ -69,7 +69,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list')
+    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list'): void
     {
         $this->eventDispatcher->dispatch(
             new ConfigureQueryEvent($admin, $query, $context),
@@ -77,7 +77,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function preUpdate(AdminInterface $admin, $object)
+    public function preUpdate(AdminInterface $admin, $object): void
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_PRE_UPDATE),
@@ -85,7 +85,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function postUpdate(AdminInterface $admin, $object)
+    public function postUpdate(AdminInterface $admin, $object): void
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_POST_UPDATE),
@@ -93,7 +93,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function prePersist(AdminInterface $admin, $object)
+    public function prePersist(AdminInterface $admin, $object): void
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_PRE_PERSIST),
@@ -101,7 +101,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function postPersist(AdminInterface $admin, $object)
+    public function postPersist(AdminInterface $admin, $object): void
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_POST_PERSIST),
@@ -109,7 +109,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function preRemove(AdminInterface $admin, $object)
+    public function preRemove(AdminInterface $admin, $object): void
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_PRE_REMOVE),
@@ -117,7 +117,7 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function postRemove(AdminInterface $admin, $object)
+    public function postRemove(AdminInterface $admin, $object): void
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_POST_REMOVE),

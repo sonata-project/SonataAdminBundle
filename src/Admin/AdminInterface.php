@@ -32,19 +32,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * @method array  configureActionButtons(string $action, ?object $object = null)
- * @method string getSearchResultLink(object $object)
- * @method void   showMosaicButton(bool $isShown)
- * @method bool   isDefaultFilter(string $name)
- * @method bool   isCurrentRoute(string $name, ?string $adminCode)
- * @method bool   canAccessObject(string $action, object $object)
- * @method mixed  getPersistentParameter(string $name)
- * @method array            getExportFields
- * @method array            getSubClasses
- * @method AdminInterface   getRoot
- * @method string           getRootCode
- * @method array getActionButtons(string $action, ?object $object)
  */
 interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
@@ -112,6 +99,26 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @return string
      */
     public function getBaseControllerName();
+
+    /**
+     * Sets a list of templates.
+     */
+    public function setTemplates(array $templates);
+
+    /**
+     * Sets a specific template.
+     *
+     * @param string $name
+     * @param string $template
+     */
+    public function setTemplate($name, $template);
+
+    /**
+     * Get all templates.
+     *
+     * @return array
+     */
+    public function getTemplates();
 
     /**
      * @return \Sonata\AdminBundle\Model\ModelManagerInterface
@@ -339,6 +346,13 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getUniqid();
 
     /**
+     * Returns the classname label.
+     *
+     * @return string the classname label
+     */
+    public function getClassnameLabel();
+
+    /**
      * @param mixed $id
      *
      * @return object|null
@@ -388,13 +402,16 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getExportFormats();
 
     /**
+     * Retuns a list of exported fields.
+     */
+    public function getExportFields(): array;
+
+    /**
      * Returns SourceIterator.
      *
      * @return SourceIteratorInterface
      */
     public function getDataSourceIterator();
-
-    public function configure();
 
     /**
      * Call before the batch action, allow you to alter the query and the idx.
@@ -549,6 +566,18 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function isAclEnabled();
 
     /**
+     * Returns list of supported sub classes.
+     */
+    public function getSubClasses(): array;
+
+    /**
+     * Adds a new class to a list of supported sub classes.
+     *
+     * @param $subClass
+     */
+    public function addSubClass($subClass);
+
+    /**
      * Sets the list of supported sub classes.
      */
     public function setSubClasses(array $subClasses);
@@ -604,15 +633,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getPersistentParameters();
 
-    /**
-     * NEXT_MAJOR: remove this signature
-     * Get breadcrumbs for $action.
-     *
-     * @param string $action
-     *
-     * @return iterable
-     */
-    public function getBreadcrumbs($action);
+    public function getPersistentParameter(string $name);
 
     /**
      * Set the current child status.
@@ -652,50 +673,70 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getListModes();
 
     /**
-     * Check the current request is given route or not.
-     *
-     * TODO: uncomment this method before releasing 4.0
-     *
-     * ```
-     * $this->isCurrentRoute('create'); // is create page?
-     * $this->isCurrentRoute('edit', 'some.admin.code'); // is some.admin.code admin's edit page?
-     * ```
-     */
-    // public function isCurrentRoute(string $name, ?string $adminCode = null): bool;
-
-    /**
      * @param string $mode
      */
     public function setListMode($mode);
 
     /**
+     * return the list mode.
+     *
      * @return string
      */
     public function getListMode();
 
     /*
      * Configure buttons for an action
+     *
+     * @param object|null $object
      */
-    // public function configureActionButtons(string $action, ?object $object = null): array;
+    public function getActionButtons(string $action, $object = null): array;
 
-    //TODO: uncomment this method for 4.0
-    /*
+    /**
+     * Get the list of actions that can be accessed directly from the dashboard.
+     *
+     * @return array
+     */
+    public function getDashboardActions();
+
+    /**
+     * Check the current request is given route or not.
+     */
+    public function isCurrentRoute(string $name, ?string $adminCode = null): bool;
+
+    /**
      * Returns the result link for an object.
+     *
+     * @param object $object
      */
-    //public function getSearchResultLink(object $object): ?string
+    public function getSearchResultLink($object): ?string;
 
-//    TODO: uncomment this method in 4.0
-//    /**
-//     * Setting to true will enable mosaic button for the admin screen.
-//     * Setting to false will hide mosaic button for the admin screen.
-//     */
-//    public function showMosaicButton(bool $isShown): void;
-
-    /*
-     * Checks if a filter type is set to a default value
+    /**
+     * Setting to true will enable mosaic button for the admin screen.
+     * Setting to false will hide mosaic button for the admin screen.
      */
-//    NEXT_MAJOR: uncomment this method in 4.0
-    // public function isDefaultFilter(string $name): bool;
+    public function showMosaicButton(bool $isShown): void;
+
+    /**
+     * Checks if a filter type is set to a default value.
+     */
+    public function isDefaultFilter(string $name): bool;
+
+    public function configureActionButtons(array $buttonList, string $action, ?object $object = null): array;
+
+    /**
+     * Check object existence and access, without throwing Exception.
+     */
+    public function canAccessObject(string $action, object $object): bool;
+
+    /**
+     * Returns the master admin.
+     */
+    public function getRoot(): self;
+
+    /**
+     * Returns the root code.
+     */
+    public function getRootCode(): string;
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);

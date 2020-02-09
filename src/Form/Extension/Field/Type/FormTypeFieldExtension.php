@@ -21,7 +21,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @final since sonata-project/admin-bundle 3.52
@@ -46,7 +45,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         $this->options = $options;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $sonataAdmin = [
             'name' => null,
@@ -79,7 +78,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         $builder->setAttribute('sonata_admin', $sonataAdmin);
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $sonataAdmin = $form->getConfig()->getAttribute('sonata_admin');
         $sonataAdminHelp = $options['sonata_help'] ?? null;
@@ -164,17 +163,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         return [FormType::class];
     }
 
-    /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'sonata_admin' => null,

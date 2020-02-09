@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\Widget;
 
+use Sonata\AdminBundle\Tests\Fixtures\StubTranslator;
 use Sonata\Form\Test\AbstractWidgetTestCase;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
-use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslator;
 use Twig\Environment;
 
 /**
@@ -53,7 +53,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getEnvironment()
+    protected function getEnvironment(): Environment
     {
         $environment = parent::getEnvironment();
         $environment->addGlobal('sonata_admin', $this->getSonataAdmin());
@@ -67,7 +67,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getRenderingEngine(Environment $environment = null)
+    protected function getRenderingEngine(Environment $environment = null): TwigRendererEngine
     {
         if (!\in_array($this->type, ['form', 'filter'], true)) {
             throw new \Exception('Please override $this->type in your test class specifying template to use (either form or filter)');
@@ -90,10 +90,13 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getTemplatePaths()
+    protected function getTemplatePaths(): array
     {
-        return array_merge(parent::getTemplatePaths(), [
+        $twigPaths = array_filter([
+            __DIR__.'/../../../vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form',
             __DIR__.'/../../../src/Resources/views/Form',
-        ]);
+        ], 'is_dir');
+
+        return array_merge(parent::getTemplatePaths(), $twigPaths);
     }
 }

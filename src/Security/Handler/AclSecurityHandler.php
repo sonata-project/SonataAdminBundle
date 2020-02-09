@@ -96,7 +96,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         $this->superAdminRoles = $superAdminRoles;
     }
 
-    public function setAdminPermissions(array $permissions)
+    public function setAdminPermissions(array $permissions): void
     {
         $this->adminPermissions = $permissions;
     }
@@ -106,7 +106,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         return $this->adminPermissions;
     }
 
-    public function setObjectPermissions(array $permissions)
+    public function setObjectPermissions(array $permissions): void
     {
         $this->objectPermissions = $permissions;
     }
@@ -146,7 +146,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         return $results;
     }
 
-    public function createObjectSecurity(AdminInterface $admin, $object)
+    public function createObjectSecurity(AdminInterface $admin, $object): void
     {
         // retrieving the ACL for the object identity
         $objectIdentity = ObjectIdentity::fromDomainObject($object);
@@ -164,7 +164,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         $this->updateAcl($acl);
     }
 
-    public function deleteObjectSecurity(AdminInterface $admin, $object)
+    public function deleteObjectSecurity(AdminInterface $admin, $object): void
     {
         $objectIdentity = ObjectIdentity::fromDomainObject($object);
         $this->deleteAcl($objectIdentity);
@@ -194,7 +194,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         return $acls;
     }
 
-    public function addObjectOwner(AclInterface $acl, UserSecurityIdentity $securityIdentity = null)
+    public function addObjectOwner(AclInterface $acl, UserSecurityIdentity $securityIdentity = null): void
     {
         if (false === $this->findClassAceIndexByUsername($acl, $securityIdentity->getUsername())) {
             // only add if not already exists
@@ -202,7 +202,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         }
     }
 
-    public function addObjectClassAces(AclInterface $acl, array $roleInformation = [])
+    public function addObjectClassAces(AclInterface $acl, array $roleInformation = []): void
     {
         $builder = new $this->maskBuilderClass();
 
@@ -237,12 +237,12 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         return $this->aclProvider->createAcl($objectIdentity);
     }
 
-    public function updateAcl(AclInterface $acl)
+    public function updateAcl(AclInterface $acl): void
     {
         $this->aclProvider->updateAcl($acl);
     }
 
-    public function deleteAcl(ObjectIdentityInterface $objectIdentity)
+    public function deleteAcl(ObjectIdentityInterface $objectIdentity): void
     {
         $this->aclProvider->deleteAcl($objectIdentity);
     }

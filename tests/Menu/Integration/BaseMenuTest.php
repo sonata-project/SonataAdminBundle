@@ -17,11 +17,11 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Renderer\TwigRenderer;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
+use Sonata\AdminBundle\Tests\Fixtures\StubTranslator;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
-use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslator;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 /**
  * Base class for tests checking rendering of twig templates.
@@ -40,7 +40,7 @@ abstract class BaseMenuTest extends TestCase
             __DIR__.'/../../../src/Resources/views',
         ], 'is_dir');
 
-        $loader = new StubFilesystemLoader($twigPaths);
+        $loader = new FilesystemLoader($twigPaths);
         $this->environment = new Environment($loader, ['strict_variables' => true]);
     }
 

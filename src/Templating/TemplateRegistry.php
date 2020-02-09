@@ -42,7 +42,7 @@ final class TemplateRegistry implements MutableTemplateRegistryInterface
     /**
      * @param string[] $templates
      */
-    public function setTemplates(array $templates)
+    public function setTemplates(array $templates): void
     {
         $this->templates = $templates;
     }
@@ -75,7 +75,7 @@ final class TemplateRegistry implements MutableTemplateRegistryInterface
         return null;
     }
 
-    public function setTemplate($name, $template)
+    public function setTemplate($name, $template): void
     {
         $this->templates[$name] = $template;
     }

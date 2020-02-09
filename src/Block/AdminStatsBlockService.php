@@ -16,7 +16,6 @@ namespace Sonata\AdminBundle\Block;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
@@ -33,19 +32,14 @@ class AdminStatsBlockService extends AbstractBlockService
      */
     protected $pool;
 
-    /**
-     * NEXT_MAJOR: Remove `$templating` argument.
-     *
-     * @param Environment|string $twigOrName
-     */
-    public function __construct($twigOrName, ?EngineInterface $templating, Pool $pool)
+    public function __construct(Environment $twig, Pool $pool)
     {
-        parent::__construct($twigOrName, $templating);
+        parent::__construct($twig);
 
         $this->pool = $pool;
     }
 
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
     {
         $admin = $this->pool->getAdminByAdminCode($blockContext->getSetting('code'));
 
@@ -73,12 +67,7 @@ class AdminStatsBlockService extends AbstractBlockService
         ], $response);
     }
 
-    public function getName()
-    {
-        return 'Admin Stats';
-    }
-
-    public function configureSettings(OptionsResolver $resolver)
+    public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'icon' => 'fa-line-chart',

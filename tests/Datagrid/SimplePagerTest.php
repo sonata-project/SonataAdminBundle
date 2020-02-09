@@ -123,4 +123,19 @@ class SimplePagerTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->pager->init();
     }
+
+    public function testGetResultsAlwaysReturnsAnArray(): void
+    {
+        // phpcr odm returns ArrayCollection
+
+        $this->proxyQuery->expects($this->once())
+            ->method('execute')
+            ->with([], null)
+            ->willReturn(new ArrayCollection(range(0, 12)));
+
+        $this->pager->setQuery($this->proxyQuery);
+        $this->pager->setMaxPerPage(2);
+
+        $this->assertSame(range(0, 1), $this->pager->getResults());
+    }
 }

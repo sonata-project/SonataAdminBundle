@@ -18,7 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @final since sonata-project/admin-bundle 3.52
@@ -27,7 +26,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ChoiceFieldMaskType extends AbstractType
 {
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $sanitizedMap = [];
         $allFieldNames = [];
@@ -49,17 +48,7 @@ class ChoiceFieldMaskType extends AbstractType
         parent::buildView($view, $form, $options);
     }
 
-    /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 

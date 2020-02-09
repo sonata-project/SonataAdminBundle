@@ -403,6 +403,7 @@ attributes, allowing to view the UTC date with the default browser tooltip.
 ### Fixed
 - Fixed `AdminType` tabs ids when used in collections
 - the list mode view is now preserved when a sorting is applied
+
 ## [3.40.3](https://github.com/sonata-project/SonataAdminBundle/compare/3.40.2...3.40.3) - 2018-11-10
 ### Added
 - Added missing polish translation for `link_edit`

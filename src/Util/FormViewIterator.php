@@ -47,7 +47,7 @@ class FormViewIterator implements \RecursiveIterator
         return $this->iterator->current();
     }
 
-    public function next()
+    public function next(): void
     {
         $this->iterator->next();
     }
@@ -62,7 +62,7 @@ class FormViewIterator implements \RecursiveIterator
         return $this->iterator->valid();
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->iterator->rewind();
     }

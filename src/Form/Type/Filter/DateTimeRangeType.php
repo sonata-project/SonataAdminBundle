@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Form\Type\Filter;
 
 use Sonata\AdminBundle\Form\Type\Operator\DateRangeOperatorType;
-use Sonata\CoreBundle\Form\Type\DateTimeRangeType as FormDateTimeRangeType;
+use Sonata\Form\Type\DateTimeRangeType as FormDateTimeRangeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -67,7 +66,7 @@ class DateTimeRangeType extends AbstractType
         return 'sonata_type_filter_datetime_range';
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('type', DateRangeOperatorType::class, ['required' => false])
@@ -75,17 +74,7 @@ class DateTimeRangeType extends AbstractType
         ;
     }
 
-    /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'field_type' => FormDateTimeRangeType::class,

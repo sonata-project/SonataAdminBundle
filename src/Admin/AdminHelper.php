@@ -227,7 +227,7 @@ class AdminHelper
      *
      * @throws \RuntimeException
      */
-    public function addNewInstance($object, FieldDescriptionInterface $fieldDescription)
+    public function addNewInstance($object, FieldDescriptionInterface $fieldDescription): void
     {
         $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
         $mapping = $fieldDescription->getAssociationMapping();
@@ -249,33 +249,6 @@ class AdminHelper
         }
 
         $object->$method($instance);
-    }
-
-    /**
-     * Camelize a string.
-     *
-     * NEXT_MAJOR: remove this method.
-     *
-     * @static
-     *
-     * @param string $property
-     *
-     * @return string
-     *
-     * @deprecated since sonata-project/admin-bundle 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead
-     */
-    public function camelize($property)
-    {
-        @trigger_error(
-            sprintf(
-                'The %s method is deprecated since 3.1 and will be removed in 4.0. '.
-                'Use \Doctrine\Common\Inflector\Inflector::classify() instead.',
-                __METHOD__
-            ),
-            E_USER_DEPRECATED
-        );
-
-        return Inflector::classify($property);
     }
 
     /**
