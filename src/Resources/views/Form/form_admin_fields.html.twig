@@ -23,7 +23,9 @@ file that was distributed with this source code.
     {% endif %}
 {%- endblock form_errors %}
 
+{# NEXT_MAJOR: Remove this block and all the calls made to this block #}
 {% block sonata_help %}
+{% deprecated 'The "sonata_help" option is deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use "help" instead.' %}
 {% apply spaceless %}
 {% if sonata_help is defined and sonata_help %}
     <span class="help-block sonata-ba-field-widget-help">{{ sonata_help|raw }}</span>
