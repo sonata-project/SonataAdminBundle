@@ -39,8 +39,8 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
     {
         parent::setUp();
 
-        $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
-        $this->searchHandler = $this->getMockBuilder(SearchHandler::class)->disableOriginalConstructor()->getMock();
+        $this->pool = $this->createMock(Pool::class);
+        $this->searchHandler = $this->createMock(SearchHandler::class);
     }
 
     public function testDefaultSettings(): void
@@ -59,7 +59,7 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
 
     public function testGlobalSearchReturnsEmptyWhenFiltersAreDisabled(): void
     {
-        $admin = $this->getMockBuilder(AbstractAdmin::class)->disableOriginalConstructor()->getMock();
+        $admin = $this->createMock(AbstractAdmin::class);
 
         $blockService = new AdminSearchBlockService($this->twig, $this->pool, $this->searchHandler);
         $blockContext = $this->getBlockContext($blockService);
