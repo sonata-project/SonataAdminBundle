@@ -77,7 +77,7 @@ final class AppKernel extends Kernel
             'fragments' => ['enabled' => true],
             'form' => ['enabled' => true],
             'session' => ['handler_id' => null, 'storage_id' => 'session.storage.mock_file', 'name' => 'MOCKSESSID'],
-            'templating' => ['engine' => ['twig']],
+            'assets' => null,
             'test' => true,
         ]);
 
