@@ -1,6 +1,31 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated `sonata_help` option in form types
+
+You should use Symfony's [`help`](https://symfony.com/doc/4.4/reference/forms/types/form.html#help) option instead.
+
+Before:
+```php
+$formMapper
+    ->add('field', null, [
+        'sonata_help' => 'Help text',
+    ])
+;
+```
+
+After:
+```php
+$formMapper
+    ->add('field', null, [
+        'help' => 'Help text',
+    ])
+;
+```
+
+UPGRADE FROM 3.56 to 3.57
+=========================
+
 ## Deprecated the use of string names to reference filters in favor of the FQCN of the filter.
 
 Before:
