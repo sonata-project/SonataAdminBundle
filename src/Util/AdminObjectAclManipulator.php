@@ -27,6 +27,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * A manipulator for updating ACL related to an object.
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  * @author Baptiste Meyer <baptiste@les-tilleuls.coop>
  */
@@ -70,7 +72,7 @@ class AdminObjectAclManipulator
      *
      * @return Form
      *
-     * @deprecated Deprecated since version 3.0. Use createAclUsersForm() instead
+     * @deprecated since sonata-project/admin-bundle 3.0. Use createAclUsersForm() instead
      */
     public function createForm(AdminObjectAclData $data)
     {
@@ -140,7 +142,7 @@ class AdminObjectAclManipulator
      *
      * NEXT_MAJOR: remove this method.
      *
-     * @deprecated Deprecated since version 3.0. Use updateAclUsers() instead
+     * @deprecated since sonata-project/admin-bundle 3.0. Use updateAclUsers() instead
      */
     public function updateAcl(AdminObjectAclData $data)
     {

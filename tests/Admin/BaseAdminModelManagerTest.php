@@ -42,7 +42,7 @@ class BaseAdminModelManagerTest extends TestCase
     public function testObject(): void
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->once())->method('find')->will($this->returnCallback(function ($class, $id): void {
+        $modelManager->expects($this->once())->method('find')->willReturnCallback(static function (string $class, int $id): void {
             if ('class' !== $class) {
                 throw new \RuntimeException('Invalid class argument');
             }
@@ -50,7 +50,7 @@ class BaseAdminModelManagerTest extends TestCase
             if (10 !== $id) {
                 throw new \RuntimeException('Invalid id argument');
             }
-        }));
+        });
 
         $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);
@@ -60,11 +60,11 @@ class BaseAdminModelManagerTest extends TestCase
     public function testCreateQuery(): void
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->once())->method('createQuery')->will($this->returnCallback(function ($class): void {
+        $modelManager->expects($this->once())->method('createQuery')->willReturnCallback(static function (string $class): void {
             if ('class' !== $class) {
                 throw new \RuntimeException('Invalid class argument');
             }
-        }));
+        });
 
         $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);

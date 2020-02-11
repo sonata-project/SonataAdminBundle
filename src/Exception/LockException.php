@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Exception;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
  */
 class LockException extends \Exception

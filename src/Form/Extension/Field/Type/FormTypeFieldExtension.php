@@ -24,6 +24,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class FormTypeFieldExtension extends AbstractTypeExtension
@@ -58,6 +60,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         ];
 
         $builder->setAttribute('sonata_admin_enabled', false);
+        // NEXT_MAJOR: Remove this line
         $builder->setAttribute('sonata_help', false);
 
         if ($options['sonata_field_description'] instanceof FieldDescriptionInterface) {
@@ -80,6 +83,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $sonataAdmin = $form->getConfig()->getAttribute('sonata_admin');
+        // NEXT_MAJOR: Remove this line
         $sonataAdminHelp = $options['sonata_help'] ?? null;
 
         /*
@@ -108,6 +112,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
                 'class' => false,
                 'options' => $this->options,
             ];
+            // NEXT_MAJOR: Remove this line
             $view->vars['sonata_help'] = $sonataAdminHelp;
             $view->vars['sonata_admin_code'] = $view->parent->vars['sonata_admin_code'];
 
@@ -148,6 +153,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $view->vars['sonata_admin_enabled'] = false;
         }
 
+        // NEXT_MAJOR: Remove this line
         $view->vars['sonata_help'] = $sonataAdminHelp;
         $view->vars['sonata_admin'] = $sonataAdmin;
     }
@@ -174,14 +180,20 @@ class FormTypeFieldExtension extends AbstractTypeExtension
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver
+            ->setDefaults([
             'sonata_admin' => null,
             'sonata_field_description' => null,
 
             // be compatible with mopa if not installed, avoid generating an exception for invalid option
             'label_render' => true,
+            // NEXT_MAJOR: Remove this property and the deprecation message
             'sonata_help' => null,
-        ]);
+        ])
+            ->setDeprecated(
+                'sonata_help',
+                'The "sonata_help" option is deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use "help" instead.'
+            );
     }
 
     /**
@@ -217,12 +229,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     protected function getClass(FormBuilderInterface $formBuilder)
     {
         foreach ($this->getTypes($formBuilder) as $type) {
-            // NEXT_MAJOR: Remove the else part when dropping support for SF 2.8
-            if (!method_exists($type, 'getName')) {
-                $name = \get_class($type);
-            } else {
-                $name = $type->getName();
-            }
+            $name = \get_class($type);
 
             if (isset($this->defaultClasses[$name])) {
                 return $this->defaultClasses[$name];

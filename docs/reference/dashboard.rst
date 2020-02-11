@@ -319,10 +319,33 @@ counter is related to the filters from one admin
                         settings:
                             code:  sonata.page.admin.page    # admin code - service id
                             icon:  fa-magic                  # font awesome icon
-                            text:  Edited Pages
+                            text:  app.page.stats            # static text or translation message
                             color: bg-yellow                 # colors: bg-green, bg-red and bg-aqua
                             filters:                         # filter values
                                 edited: { value: 1 }
+
+The block configuration for ``settings.text`` accepts static text or a translation message,
+which could also have a pluralized translation target:
+
+.. code-block:: xml
+
+    <!-- messages.en.xlf -->
+
+    <trans-unit id="app.page.stats">
+        <source>app.page.stats</source>
+        <target>{0} results|{1} result|]1,Inf] results</target>
+    </trans-unit>
+
+**If you're using ``symfony/translation`` >= 4.2, you can also opt in for the ICU Message Format**
+
+.. code-block:: xml
+
+    <!-- messages+intl-icu.en.xlf -->
+
+    <trans-unit id="app.page.stats">
+        <source>app.page.stats</source>
+        <target>{count, plural, =0 {results} one {result} other {results}}</target>
+    </trans-unit>
 
 Dashboard Layout
 ~~~~~~~~~~~~~~~~

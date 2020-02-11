@@ -15,7 +15,7 @@ namespace Sonata\AdminBundle\Event;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Mapper\BaseMapper;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * This event is sent by hook:
@@ -27,6 +27,8 @@ use Symfony\Component\EventDispatcher\Event;
  * You can register the listener to the event dispatcher by using:
  *   - sonata.admin.event.configure.[form|list|datagrid|show]
  *   - sonata.admin.event.configure.[admin_code].[form|list|datagrid|show] (not implemented yet)
+ *
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
@@ -63,7 +65,7 @@ class ConfigureEvent extends Event
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getType()
     {

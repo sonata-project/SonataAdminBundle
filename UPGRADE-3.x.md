@@ -1,6 +1,52 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated `sonata_help` option in form types
+
+You should use Symfony's [`help`](https://symfony.com/doc/4.4/reference/forms/types/form.html#help) option instead.
+
+Before:
+```php
+$formMapper
+    ->add('field', null, [
+        'sonata_help' => 'Help text',
+    ])
+;
+```
+
+After:
+```php
+$formMapper
+    ->add('field', null, [
+        'help' => 'Help text',
+    ])
+;
+```
+
+UPGRADE FROM 3.56 to 3.57
+=========================
+
+## Deprecated the use of string names to reference filters in favor of the FQCN of the filter.
+
+Before:
+```php
+$datagridMapper
+    ->add('field', 'filter_type')
+;
+```
+
+After:
+```php
+use App\Filter\FilterType;
+
+$datagridMapper
+    ->add('field', FilterType::class)
+;
+```
+
+UPGRADE FROM 3.51 to 3.52
+=========================
+
 ## Deprecated `SonataAdminBundle\Controller\HelperController` in favor of actions
 
 If you extended that controller, you should split your extended controller and
@@ -113,6 +159,15 @@ The `AbstractAdmin::setBaseCodeRoute()` method is no longer supported.
 There is no replacement for this method.
 You can still use the `AbstractAdmin::setCode()` method to set the code
 of an admin.
+
+UPGRADE FROM 3.57 to 3.58
+=========================
+
+## Dropped generator commands
+
+`sonata:admin:generate` was based on the SensioGeneratorBundle, which is
+incompatible with Symfony 4 and is no longer maintained. Please use
+`make:sonata:admin` instead.
 
 UPGRADE FROM 3.20 to 3.21
 =========================

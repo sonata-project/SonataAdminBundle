@@ -19,16 +19,15 @@ use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\CoreController;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 class CoreControllerTest extends TestCase
 {
     /**
-     * @doesNotPerformAssertions
      * @group legacy
      */
     public function testdashboardActionStandardRequest(): void
@@ -43,7 +42,7 @@ class CoreControllerTest extends TestCase
         $pool = new Pool($container, 'title', 'logo.png');
         $pool->setTemplateRegistry($templateRegistry->reveal());
 
-        $templating = $this->createMock(EngineInterface::class);
+        $twig = $this->createMock(Environment::class);
         $request = new Request();
 
         $requestStack = new RequestStack();
@@ -56,31 +55,29 @@ class CoreControllerTest extends TestCase
                 [],
                 $breadcrumbsBuilder,
                 $templateRegistry->reveal(),
-                $pool
+                $pool,
+                $twig
             ),
-            'templating' => $templating,
             'request_stack' => $requestStack,
         ];
-        $dashboardAction->setContainer($container);
 
-        $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($values) {
+        $container->method('get')->willReturnCallback(static function (string $id) use ($values) {
             return $values[$id];
-        }));
+        });
 
-        $container->expects($this->any())
+        $container
             ->method('has')
-            ->will($this->returnCallback(function ($id) {
+            ->willReturnCallback(static function (string $id): bool {
                 return 'templating' === $id;
-            }));
+            });
 
         $controller = new CoreController();
         $controller->setContainer($container);
 
-        $this->isInstanceOf(Response::class, $controller->dashboardAction());
+        $this->assertInstanceOf(Response::class, $controller->dashboardAction());
     }
 
     /**
-     * @doesNotPerformAssertions
      * @group legacy
      */
     public function testdashboardActionAjaxLayout(): void
@@ -96,7 +93,7 @@ class CoreControllerTest extends TestCase
         $pool = new Pool($container, 'title', 'logo.png');
         $pool->setTemplateRegistry($templateRegistry->reveal());
 
-        $templating = $this->createMock(EngineInterface::class);
+        $twig = $this->createMock(Environment::class);
         $request = new Request();
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
@@ -108,28 +105,21 @@ class CoreControllerTest extends TestCase
                 [],
                 $breadcrumbsBuilder,
                 $templateRegistry->reveal(),
-                $pool
+                $pool,
+                $twig
             ),
-            'templating' => $templating,
             'request_stack' => $requestStack,
         ];
-        $dashboardAction->setContainer($container);
 
-        $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($values) {
+        $container->method('get')->willReturnCallback(static function ($id) use ($values) {
             return $values[$id];
-        }));
-
-        $container->expects($this->any())
-            ->method('has')
-            ->will($this->returnCallback(function ($id) {
-                return 'templating' === $id;
-            }));
+        });
 
         $controller = new CoreController();
         $controller->setContainer($container);
 
-        $response = $controller->dashboardAction($request);
+        $response = $controller->dashboardAction();
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
     }
 }

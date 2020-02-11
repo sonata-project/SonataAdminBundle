@@ -24,14 +24,11 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
-use Symfony\Bridge\Twig\AppVariable;
-use Symfony\Bridge\Twig\Command\DebugCommand;
-use Symfony\Bridge\Twig\Extension\FormExtension;
-use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -44,12 +41,6 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
-
-// BC for Symfony < 3.3 where this trait does not exist
-// NEXT_MAJOR: Remove the polyfill and inherit from \Symfony\Bundle\FrameworkBundle\Controller\Controller again
-if (!trait_exists(ControllerTrait::class)) {
-    require_once __DIR__.'/PolyfillControllerTrait.php';
-}
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -79,11 +70,7 @@ class CRUDController implements ContainerAwareInterface
     public function __call($method, $arguments)
     {
         if (\in_array($method, ['get', 'has'], true)) {
-            return \call_user_func_array([$this->container, $method], $arguments);
-        }
-
-        if (method_exists($this, 'proxyToControllerClass')) {
-            return $this->proxyToControllerClass($method, $arguments);
+            return $this->container->{$method}(...$arguments);
         }
 
         throw new \LogicException('Call to undefined method '.__CLASS__.'::'.$method);
@@ -106,7 +93,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return Response A Response instance
      *
-     * @deprecated since version 3.27, to be removed in 4.0. Use Sonata\AdminBundle\Controller\CRUDController::renderWithExtraParams() instead.
+     * @deprecated since sonata-project/admin-bundle 3.27, to be removed in 4.0. Use Sonata\AdminBundle\Controller\CRUDController::renderWithExtraParams() instead.
      */
     public function render($view, array $parameters = [], Response $response = null)
     {
@@ -244,7 +231,7 @@ class CRUDController implements ContainerAwareInterface
             return $preResponse;
         }
 
-        if ('DELETE' === $this->getRestMethod()) {
+        if (Request::METHOD_DELETE === $this->getRestMethod()) {
             // check the csrf token
             $this->validateCsrfToken('sonata.delete');
 
@@ -254,7 +241,7 @@ class CRUDController implements ContainerAwareInterface
                 $this->admin->delete($object);
 
                 if ($this->isXmlHttpRequest()) {
-                    return $this->renderJson(['result' => 'ok'], 200, []);
+                    return $this->renderJson(['result' => 'ok'], Response::HTTP_OK, []);
                 }
 
                 $this->addFlash(
@@ -269,7 +256,7 @@ class CRUDController implements ContainerAwareInterface
                 $this->handleModelManagerException($e);
 
                 if ($this->isXmlHttpRequest()) {
-                    return $this->renderJson(['result' => 'error'], 200, []);
+                    return $this->renderJson(['result' => 'error'], Response::HTTP_OK, []);
                 }
 
                 $this->addFlash(
@@ -355,11 +342,7 @@ class CRUDController implements ContainerAwareInterface
                     $existingObject = $this->admin->update($submittedObject);
 
                     if ($this->isXmlHttpRequest()) {
-                        return $this->renderJson([
-                            'result' => 'ok',
-                            'objectId' => $objectId,
-                            'objectName' => $this->escapeHtml($this->admin->toString($existingObject)),
-                        ], 200, []);
+                        return $this->handleXmlHttpRequestSuccessResponse($request, $existingObject);
                     }
 
                     $this->addFlash(
@@ -388,16 +371,18 @@ class CRUDController implements ContainerAwareInterface
 
             // show an error message if the form failed validation
             if (!$isFormValid) {
-                if (!$this->isXmlHttpRequest()) {
-                    $this->addFlash(
-                        'sonata_flash_error',
-                        $this->trans(
-                            'flash_edit_error',
-                            ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))],
-                            'SonataAdminBundle'
-                        )
-                    );
+                if ($this->isXmlHttpRequest() && null !== ($response = $this->handleXmlHttpRequestErrorResponse($request, $form))) {
+                    return $response;
                 }
+
+                $this->addFlash(
+                    'sonata_flash_error',
+                    $this->trans(
+                        'flash_edit_error',
+                        ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))],
+                        'SonataAdminBundle'
+                    )
+                );
             } elseif ($this->isPreviewRequested()) {
                 // enable the preview template if the form was valid and preview was requested
                 $templateKey = 'preview';
@@ -434,8 +419,8 @@ class CRUDController implements ContainerAwareInterface
         $request = $this->getRequest();
         $restMethod = $this->getRestMethod();
 
-        if ('POST' !== $restMethod) {
-            throw $this->createNotFoundException(sprintf('Invalid request type "%s", POST expected', $restMethod));
+        if (Request::METHOD_POST !== $restMethod) {
+            throw $this->createNotFoundException(sprintf('Invalid request method given "%s", %s expected', $restMethod, Request::METHOD_POST));
         }
 
         // check the csrf token
@@ -478,7 +463,7 @@ class CRUDController implements ContainerAwareInterface
         $isRelevantAction = sprintf('batchAction%sIsRelevant', $camelizedAction);
 
         if (method_exists($this, $isRelevantAction)) {
-            $nonRelevantMessage = \call_user_func([$this, $isRelevantAction], $idx, $allElements, $request);
+            $nonRelevantMessage = $this->{$isRelevantAction}($idx, $allElements, $request);
         } else {
             $nonRelevantMessage = 0 !== \count($idx) || $allElements; // at least one item is selected
         }
@@ -532,7 +517,7 @@ class CRUDController implements ContainerAwareInterface
         // execute the action, batchActionXxxxx
         $finalAction = sprintf('batchAction%s', $camelizedAction);
         if (!method_exists($this, $finalAction)) {
-            throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', \get_class($this), $finalAction));
+            throw new \RuntimeException(sprintf('A `%s::%s` method must be callable', static::class, $finalAction));
         }
 
         $query = $datagrid->getQuery();
@@ -553,7 +538,7 @@ class CRUDController implements ContainerAwareInterface
             return $this->redirectToList();
         }
 
-        return \call_user_func([$this, $finalAction], $query, $request);
+        return $this->{$finalAction}($query, $request);
     }
 
     /**
@@ -619,11 +604,7 @@ class CRUDController implements ContainerAwareInterface
                     $newObject = $this->admin->create($submittedObject);
 
                     if ($this->isXmlHttpRequest()) {
-                        return $this->renderJson([
-                            'result' => 'ok',
-                            'objectId' => $this->admin->getNormalizedIdentifier($newObject),
-                            'objectName' => $this->escapeHtml($this->admin->toString($newObject)),
-                        ], 200, []);
+                        return $this->handleXmlHttpRequestSuccessResponse($request, $newObject);
                     }
 
                     $this->addFlash(
@@ -646,16 +627,18 @@ class CRUDController implements ContainerAwareInterface
 
             // show an error message if the form failed validation
             if (!$isFormValid) {
-                if (!$this->isXmlHttpRequest()) {
-                    $this->addFlash(
-                        'sonata_flash_error',
-                        $this->trans(
-                            'flash_create_error',
-                            ['%name%' => $this->escapeHtml($this->admin->toString($newObject))],
-                            'SonataAdminBundle'
-                        )
-                    );
+                if ($this->isXmlHttpRequest() && null !== ($response = $this->handleXmlHttpRequestErrorResponse($request, $form))) {
+                    return $response;
                 }
+
+                $this->addFlash(
+                    'sonata_flash_error',
+                    $this->trans(
+                        'flash_create_error',
+                        ['%name%' => $this->escapeHtml($this->admin->toString($newObject))],
+                        'SonataAdminBundle'
+                    )
+                );
             } elseif ($this->isPreviewRequested()) {
                 // pick the preview template if the form was valid and preview was requested
                 $templateKey = 'preview';
@@ -718,7 +701,7 @@ class CRUDController implements ContainerAwareInterface
         if (!\is_array($fields->getElements()) || 0 === $fields->count()) {
             @trigger_error(
                 'Calling this method without implementing "configureShowFields"'
-                .' is not supported since 3.40.0'
+                .' is not supported since sonata-project/admin-bundle 3.40.0'
                 .' and will no longer be possible in 4.0',
                 E_USER_DEPRECATED
             );
@@ -1028,7 +1011,7 @@ class CRUDController implements ContainerAwareInterface
         $aclUsersForm = $adminObjectAclManipulator->createAclUsersForm($adminObjectAclData);
         $aclRolesForm = $adminObjectAclManipulator->createAclRolesForm($adminObjectAclData);
 
-        if ('POST' === $request->getMethod()) {
+        if (Request::METHOD_POST === $request->getMethod()) {
             if ($request->request->has(AdminObjectAclManipulator::ACL_USERS_FORM_NAME)) {
                 $form = $aclUsersForm;
                 $updateMethod = 'updateAclUsers';
@@ -1094,9 +1077,9 @@ class CRUDController implements ContainerAwareInterface
      * @param int   $status
      * @param array $headers
      *
-     * @return Response with json encoded data
+     * @return JsonResponse with json encoded data
      */
-    protected function renderJson($data, $status = 200, $headers = [])
+    protected function renderJson($data, $status = Response::HTTP_OK, $headers = [])
     {
         return new JsonResponse($data, $status, $headers);
     }
@@ -1144,7 +1127,7 @@ class CRUDController implements ContainerAwareInterface
         if (!$adminCode) {
             throw new \RuntimeException(sprintf(
                 'There is no `_sonata_admin` defined for the controller `%s` and the current route `%s`',
-                \get_class($this),
+                static::class,
                 $request->get('_route')
             ));
         }
@@ -1154,7 +1137,7 @@ class CRUDController implements ContainerAwareInterface
         if (!$this->admin) {
             throw new \RuntimeException(sprintf(
                 'Unable to find the admin class related to the current controller (%s)',
-                \get_class($this)
+                static::class
             ));
         }
 
@@ -1418,8 +1401,12 @@ class CRUDController implements ContainerAwareInterface
      */
     protected function validateCsrfToken($intention)
     {
+        if (false === $this->admin->getFormBuilder()->getOption('csrf_protection')) {
+            return;
+        }
+
         $request = $this->getRequest();
-        $token = $request->request->get('_sonata_csrf_token', false);
+        $token = $request->get('_sonata_csrf_token');
 
         if ($this->container->has('security.csrf.token_manager')) {
             $valid = $this->container->get('security.csrf.token_manager')->isTokenValid(new CsrfToken($intention, $token));
@@ -1428,7 +1415,7 @@ class CRUDController implements ContainerAwareInterface
         }
 
         if (!$valid) {
-            throw new HttpException(400, 'The csrf token is not valid, CSRF attack?');
+            throw new HttpException(Response::HTTP_BAD_REQUEST, 'The csrf token is not valid, CSRF attack?');
         }
     }
 
@@ -1464,48 +1451,52 @@ class CRUDController implements ContainerAwareInterface
      * This method can be overloaded in your custom CRUD controller.
      * It's called from createAction.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return Response|null
      */
     protected function preCreate(Request $request, $object)
     {
+        return null;
     }
 
     /**
      * This method can be overloaded in your custom CRUD controller.
      * It's called from editAction.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return Response|null
      */
     protected function preEdit(Request $request, $object)
     {
+        return null;
     }
 
     /**
      * This method can be overloaded in your custom CRUD controller.
      * It's called from deleteAction.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return Response|null
      */
     protected function preDelete(Request $request, $object)
     {
+        return null;
     }
 
     /**
      * This method can be overloaded in your custom CRUD controller.
      * It's called from showAction.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return Response|null
      */
     protected function preShow(Request $request, $object)
     {
+        return null;
     }
 
     /**
@@ -1516,6 +1507,7 @@ class CRUDController implements ContainerAwareInterface
      */
     protected function preList(Request $request)
     {
+        return null;
     }
 
     /**
@@ -1534,7 +1526,7 @@ class CRUDController implements ContainerAwareInterface
         return $this->get('translator')->trans($id, $parameters, $domain, $locale);
     }
 
-    private function getSelectedTab(Request $request)
+    private function getSelectedTab(Request $request): array
     {
         return array_filter(['_tab' => $request->request->get('_tab')]);
     }
@@ -1557,8 +1549,8 @@ class CRUDController implements ContainerAwareInterface
 
         if ($parentAdmin->getObject($parentId) !== $propertyAccessor->getValue($object, $propertyPath)) {
             // NEXT_MAJOR: make this exception
-            @trigger_error("Accessing a child that isn't connected to a given parent is deprecated since 3.34"
-                ." and won't be allowed in 4.0.",
+            @trigger_error("Accessing a child that isn't connected to a given parent is"
+                ." deprecated since sonata-project/admin-bundle 3.34 and won't be allowed in 4.0.",
                 E_USER_DEPRECATED
             );
         }
@@ -1571,20 +1563,41 @@ class CRUDController implements ContainerAwareInterface
     {
         $twig = $this->get('twig');
 
-        // BC for Symfony < 3.2 where this runtime does not exists
-        if (!method_exists(AppVariable::class, 'getToken')) {
-            $twig->getExtension(FormExtension::class)->renderer->setTheme($formView, $theme);
-
-            return;
-        }
-
-        // BC for Symfony < 3.4 where runtime should be TwigRenderer
-        if (!method_exists(DebugCommand::class, 'getLoaderPaths')) {
-            $twig->getRuntime(TwigRenderer::class)->setTheme($formView, $theme);
-
-            return;
-        }
-
         $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
+    }
+
+    private function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): ?JsonResponse
+    {
+        if ('application/json' !== $request->headers->get('Accept')) {
+            @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`', E_USER_DEPRECATED);
+
+            return null;
+        }
+
+        $errors = [];
+        foreach ($form->getErrors(true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        return $this->renderJson([
+            'result' => 'error',
+            'errors' => $errors,
+        ], Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @param object $object
+     */
+    private function handleXmlHttpRequestSuccessResponse(Request $request, $object): JsonResponse
+    {
+        if ('application/json' !== $request->headers->get('Accept')) {
+            @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`', E_USER_DEPRECATED);
+        }
+
+        return $this->renderJson([
+            'result' => 'ok',
+            'objectId' => $this->admin->getNormalizedIdentifier($object),
+            'objectName' => $this->escapeHtml($this->admin->toString($object)),
+        ], Response::HTTP_OK);
     }
 }

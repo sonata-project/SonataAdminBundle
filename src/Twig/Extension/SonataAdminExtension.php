@@ -36,12 +36,15 @@ use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class SonataAdminExtension extends AbstractExtension
 {
     // @todo: there are more locales which are not supported by moment and they need to be translated/normalized/canonicalized here
     public const MOMENT_UNSUPPORTED_LOCALES = [
+        'de' => ['de', 'de-at'],
         'es' => ['es', 'es-do'],
         'nl' => ['nl', 'nl-be'],
         'fr' => ['fr', 'fr-ca', 'fr-ch'],
@@ -161,8 +164,8 @@ class SonataAdminExtension extends AbstractExtension
     /**
      * render a list element from the FieldDescription.
      *
-     * @param mixed $object
-     * @param array $params
+     * @param object $object
+     * @param array  $params
      *
      * @return string
      */
@@ -189,7 +192,7 @@ class SonataAdminExtension extends AbstractExtension
     }
 
     /**
-     * @deprecated since 3.33, to be removed in 4.0. Use render instead
+     * @deprecated since sonata-project/admin-bundle 3.33, to be removed in 4.0. Use render instead
      *
      * @return string
      */
@@ -242,7 +245,7 @@ class SonataAdminExtension extends AbstractExtension
     /**
      * render a view element.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return string
      */
@@ -366,7 +369,7 @@ class SonataAdminExtension extends AbstractExtension
                 ));
             }
 
-            return \call_user_func([$element, $method]);
+            return $element->{$method}();
         }
 
         if (\is_callable($propertyPath)) {
@@ -569,9 +572,12 @@ class SonataAdminExtension extends AbstractExtension
             $template = $environment->load($templateName);
         } catch (LoaderError $e) {
             @trigger_error(
-                'Relying on default template loading on field template loading exception '.
-                'is deprecated since 3.1 and will be removed in 4.0. '.
-                'A \Twig_Error_Loader exception will be thrown instead',
+                sprintf(
+                    'Relying on default template loading on field template loading exception '.
+                    'is deprecated since 3.1 and will be removed in 4.0. '.
+                    'A %s exception will be thrown instead',
+                    LoaderError::class
+                ),
                 E_USER_DEPRECATED
             );
             $template = $environment->load($defaultTemplate);

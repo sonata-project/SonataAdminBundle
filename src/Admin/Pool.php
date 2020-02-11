@@ -20,6 +20,8 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class Pool
@@ -45,7 +47,7 @@ class Pool
     protected $adminClasses = [];
 
     /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
      *
      * @var array
      */
@@ -233,25 +235,56 @@ class Pool
      *
      * @param string $adminCode
      *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface|false
+     * @throws \InvalidArgumentException if the root admin code is an empty string
+     *
+     * @return AdminInterface|false
      */
     public function getAdminByAdminCode($adminCode)
     {
-        $codes = explode('|', $adminCode);
+        if (!\is_string($adminCode)) {
+            @trigger_error(sprintf(
+                'Passing a non string value as argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.51 and will cause a \TypeError in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
 
-        if (false === $codes) {
             return false;
+
+            // NEXT_MAJOR : remove this condition check and declare "string" as type without default value for argument 1
         }
 
-        $admin = $this->getInstance($codes[0]);
-        array_shift($codes);
+        $codes = explode('|', $adminCode);
+        $code = trim(array_shift($codes));
 
-        if (empty($codes)) {
-            return $admin;
+        if ('' === $code) {
+            throw new \InvalidArgumentException('Root admin code must contain a valid admin reference, empty string given.');
         }
+
+        $admin = $this->getInstance($code);
 
         foreach ($codes as $code) {
+            if (!\in_array($code, $this->adminServiceIds, true)) {
+                @trigger_error(sprintf(
+                    'Passing an invalid admin code as argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.50 and will throw an exception in 4.0.',
+                    __METHOD__
+                ), E_USER_DEPRECATED);
+
+                // NEXT_MAJOR : throw `\InvalidArgumentException` instead
+            }
+
             if (!$admin->hasChild($code)) {
+                @trigger_error(sprintf(
+                    'Passing an invalid admin hierarchy inside argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.',
+                    __METHOD__
+                ), E_USER_DEPRECATED);
+
+                // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
+                // throw new \InvalidArgumentException(sprintf(
+                //    'Argument 1 passed to %s() must contain a valid admin hierarchy, "%s" is not a valid child for "%s"',
+                //    __METHOD__,
+                //    $code,
+                //    $admin->getCode()
+                // ));
+
                 return false;
             }
 
@@ -259,6 +292,23 @@ class Pool
         }
 
         return $admin;
+    }
+
+    /**
+     * Checks if an admin with a certain admin code exists.
+     */
+    final public function hasAdminByAdminCode(string $adminCode): bool
+    {
+        try {
+            if (!$this->getAdminByAdminCode($adminCode) instanceof AdminInterface) {
+                // NEXT_MAJOR : remove `if (...instanceof...) { return false; }` as getAdminByAdminCode() will then always throw an \InvalidArgumentException when somethings wrong
+                return false;
+            }
+        } catch (\InvalidArgumentException $e) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -362,7 +412,7 @@ class Pool
     }
 
     /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
      */
     public function setTemplates(array $templates)
     {
@@ -373,7 +423,7 @@ class Pool
     }
 
     /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
      *
      * @return array
      */
@@ -383,7 +433,7 @@ class Pool
     }
 
     /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry "sonata.admin.global_template_registry" instead
      *
      * @param string $name
      *

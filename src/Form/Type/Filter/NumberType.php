@@ -13,34 +13,50 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Type\Filter;
 
+use Sonata\AdminBundle\Form\Type\Operator\NumberOperatorType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType as FormNumberType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class NumberType extends AbstractType
 {
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use NumberOperatorType::TYPE_GREATER_EQUAL instead
+     */
     public const TYPE_GREATER_EQUAL = 1;
 
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use NumberOperatorType::TYPE_GREATER_THAN instead
+     */
     public const TYPE_GREATER_THAN = 2;
 
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use NumberOperatorType::TYPE_EQUAL instead
+     */
     public const TYPE_EQUAL = 3;
 
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use NumberOperatorType::TYPE_LESS_EQUAL instead
+     */
     public const TYPE_LESS_EQUAL = 4;
 
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use NumberOperatorType::TYPE_LESS_THAN instead
+     */
     public const TYPE_LESS_THAN = 5;
 
     /**
      * NEXT_MAJOR: remove this property.
      *
-     * @deprecated since 3.5, to be removed with 4.0
+     * @deprecated since sonata-project/admin-bundle 3.5, to be removed with 4.0
      *
      * @var TranslatorInterface
      */
@@ -68,28 +84,8 @@ class NumberType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $choices = [
-            'label_type_equal' => self::TYPE_EQUAL,
-            'label_type_greater_equal' => self::TYPE_GREATER_EQUAL,
-            'label_type_greater_than' => self::TYPE_GREATER_THAN,
-            'label_type_less_equal' => self::TYPE_LESS_EQUAL,
-            'label_type_less_than' => self::TYPE_LESS_THAN,
-        ];
-        $choiceOptions = [
-            'required' => false,
-        ];
-
-        $choiceOptions['choice_translation_domain'] = 'SonataAdminBundle';
-
-        // NEXT_MAJOR: Remove (when requirement of Symfony is >= 3.0)
-        if (method_exists(FormTypeInterface::class, 'setDefaultOptions')) {
-            $choiceOptions['choices_as_values'] = true;
-        }
-
-        $choiceOptions['choices'] = $choices;
-
         $builder
-            ->add('type', FormChoiceType::class, $choiceOptions)
+            ->add('type', NumberOperatorType::class, ['required' => false])
             ->add('value', $options['field_type'], array_merge(['required' => false], $options['field_options']))
         ;
     }

@@ -13,30 +13,40 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Type\Filter;
 
+use Sonata\AdminBundle\Form\Type\Operator\ContainsOperatorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ChoiceType extends AbstractType
 {
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use ContainsOperatorType::TYPE_CONTAINS instead
+     */
     public const TYPE_CONTAINS = 1;
 
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use ContainsOperatorType::TYPE_NOT_CONTAINS instead
+     */
     public const TYPE_NOT_CONTAINS = 2;
 
+    /**
+     * @deprecated since sonata-project/admin-bundle 3.57, to be removed with 4.0: Use ContainsOperatorType::TYPE_EQUAL instead
+     */
     public const TYPE_EQUAL = 3;
 
     /**
      * NEXT_MAJOR: remove this property.
      *
-     * @deprecated since 3.5, to be removed with 4.0
+     * @deprecated since sonata-project/admin-bundle 3.5, to be removed with 4.0
      *
      * @var TranslatorInterface
      */
@@ -64,27 +74,8 @@ class ChoiceType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $choices = [
-            'label_type_contains' => self::TYPE_CONTAINS,
-            'label_type_not_contains' => self::TYPE_NOT_CONTAINS,
-            'label_type_equals' => self::TYPE_EQUAL,
-        ];
-        $operatorChoices = [];
-
-        // NEXT_MAJOR: Remove first check (when requirement of Symfony is >= 2.8)
-        if ('hidden' !== $options['operator_type'] && HiddenType::class !== $options['operator_type']) {
-            $operatorChoices['choice_translation_domain'] = 'SonataAdminBundle';
-
-            // NEXT_MAJOR: Remove (when requirement of Symfony is >= 3.0)
-            if (method_exists(FormTypeInterface::class, 'setDefaultOptions')) {
-                $operatorChoices['choices_as_values'] = true;
-            }
-
-            $operatorChoices['choices'] = $choices;
-        }
-
         $builder
-            ->add('type', $options['operator_type'], array_merge(['required' => false], $options['operator_options'], $operatorChoices))
+            ->add('type', $options['operator_type'], array_merge(['required' => false], $options['operator_options']))
             ->add('value', $options['field_type'], array_merge(['required' => false], $options['field_options']))
         ;
     }
@@ -104,7 +95,7 @@ class ChoiceType extends AbstractType
         $resolver->setDefaults([
             'field_type' => FormChoiceType::class,
             'field_options' => [],
-            'operator_type' => FormChoiceType::class,
+            'operator_type' => ContainsOperatorType::class,
             'operator_options' => [],
         ]);
     }

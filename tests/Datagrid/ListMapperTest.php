@@ -29,6 +29,8 @@ use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
  */
 class ListMapperTest extends TestCase
 {
+    private const DEFAULT_GRANTED_ROLE = 'ROLE_ADMIN_BAZ';
+
     /**
      * @var ListMapper
      */
@@ -44,39 +46,50 @@ class ListMapperTest extends TestCase
      */
     private $admin;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $listBuilder = $this->createMock(ListBuilderInterface::class);
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
         $this->admin = $this->createMock(AbstractAdmin::class);
 
-        $listBuilder->expects($this->any())
+        $listBuilder
             ->method('addField')
-            ->will($this->returnCallback(function ($list, $type, $fieldDescription, $admin): void {
+            ->willReturnCallback(static function (
+                FieldDescriptionCollection $list,
+                ?string $type,
+                BaseFieldDescription $fieldDescription,
+                AbstractAdmin $admin
+            ): void {
                 $list->add($fieldDescription);
-            }));
+            });
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
-        $modelManager->expects($this->any())
+        $modelManager
             ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnCallback(function ($class, $name, array $options = []) {
+            ->willReturnCallback(function (?string $class, string $name, array $options = []): BaseFieldDescription {
                 $fieldDescription = $this->getFieldDescriptionMock();
                 $fieldDescription->setName($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
-            }));
+            });
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getModelManager')
-            ->will($this->returnValue($modelManager));
+            ->willReturn($modelManager);
 
         $labelTranslatorStrategy = new NoopLabelTranslatorStrategy();
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getLabelTranslatorStrategy')
-            ->will($this->returnValue($labelTranslatorStrategy));
+            ->willReturn($labelTranslatorStrategy);
+
+        $this->admin
+            ->method('isGranted')
+            ->willReturnCallback(static function (string $name, object $object = null): bool {
+                return self::DEFAULT_GRANTED_ROLE === $name;
+            });
 
         $this->listMapper = new ListMapper($listBuilder, $this->fieldDescriptionCollection, $this->admin);
     }
@@ -108,6 +121,71 @@ class ListMapperTest extends TestCase
 
         $this->listMapper->addIdentifier($fieldDescription);
         $this->assertTrue($this->listMapper->has('fooName'));
+
+        $fieldDescription = $this->listMapper->get('fooName');
+        $this->assertTrue($fieldDescription->getOption('identifier'));
+    }
+
+    public function testAddOptionIdentifier(): void
+    {
+        $this->assertFalse($this->listMapper->has('fooName'));
+        $this->assertFalse($this->listMapper->has('barName'));
+        $this->assertFalse($this->listMapper->has('bazName'));
+
+        $this->listMapper->add('barName');
+        $this->assertNull($this->listMapper->get('barName')->getOption('identifier'));
+        $this->listMapper->add('fooName', null, ['identifier' => true]);
+        $this->assertTrue($this->listMapper->has('fooName'));
+        $this->assertTrue($this->listMapper->get('fooName')->getOption('identifier'));
+        $this->listMapper->add('bazName', null, ['identifier' => false]);
+        $this->assertTrue($this->listMapper->has('bazName'));
+        $this->assertFalse($this->listMapper->get('bazName')->getOption('identifier'));
+    }
+
+    /**
+     * @group legacy
+     *
+     * @expectedDeprecation Passing a non boolean value for the "identifier" option is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.
+     *
+     * @dataProvider getWrongIdentifierOptions
+     */
+    public function testAddOptionIdentifierWithDeprecatedValue(bool $expected, $value): void
+    {
+        $this->assertFalse($this->listMapper->has('fooName'));
+        $this->listMapper->add('fooName', null, ['identifier' => $value]);
+        $this->assertTrue($this->listMapper->has('fooName'));
+        $this->assertSame($expected, $this->listMapper->get('fooName')->getOption('identifier'));
+    }
+
+    /**
+     * @dataProvider getWrongIdentifierOptions
+     */
+    public function testAddOptionIdentifierWithWrongValue(bool $expected, $value): void
+    {
+        // NEXT_MAJOR: Remove the following `markTestSkipped()` call and the `testAddOptionIdentifierWithDeprecatedValue()` test
+        $this->markTestSkipped('This test must be run in 4.0');
+
+        $this->assertFalse($this->listMapper->has('fooName'));
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('{^Value for "identifier" option must be boolean, [^]+ given.$}');
+
+        $this->listMapper->add('fooName', null, ['identifier' => $value]);
+    }
+
+    public function getWrongIdentifierOptions(): iterable
+    {
+        return [
+            [true, 1],
+            [true, 'string'],
+            [true, new \stdClass()],
+            [true, [null]],
+            [false, 0],
+            [false, null],
+            [false, ''],
+            [false, '0'],
+            [false, []],
+        ];
     }
 
     public function testAdd(): void
@@ -178,18 +256,19 @@ class ListMapperTest extends TestCase
     public function testAddDuplicateNameException(): void
     {
         $tmpNames = [];
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('hasListFieldDescription')
-            ->will($this->returnCallback(function ($name) use (&$tmpNames) {
+            ->willReturnCallback(static function (string $name) use (&$tmpNames): bool {
                 if (isset($tmpNames[$name])) {
                     return true;
                 }
                 $tmpNames[$name] = $name;
 
                 return false;
-            }));
+            });
 
-        $this->expectException(\RuntimeException::class, 'Duplicate field name "fooName" in list mapper. Names should be unique.');
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Duplicate field name "fooName" in list mapper. Names should be unique.');
 
         $this->listMapper->add('fooName');
         $this->listMapper->add('fooName');
@@ -197,7 +276,10 @@ class ListMapperTest extends TestCase
 
     public function testAddWrongTypeException(): void
     {
-        $this->expectException(\RuntimeException::class, 'Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.');
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(
+            'Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.'
+        );
 
         $this->listMapper->add(12345);
     }
@@ -255,6 +337,27 @@ class ListMapperTest extends TestCase
             'fooName1' => $fieldDescription1,
             'fooName4' => $fieldDescription4,
         ], true), print_r($this->fieldDescriptionCollection->getElements(), true));
+    }
+
+    public function testAddOptionRole(): void
+    {
+        $this->listMapper->add('bar', 'bar');
+
+        $this->assertTrue($this->listMapper->has('bar'));
+
+        $this->listMapper->add('quux', 'bar', ['role' => 'ROLE_QUX']);
+
+        $this->assertTrue($this->listMapper->has('bar'));
+        $this->assertFalse($this->listMapper->has('quux'));
+
+        $this->listMapper
+            ->add('foobar', 'bar', ['role' => self::DEFAULT_GRANTED_ROLE])
+            ->add('foo', 'bar', ['role' => 'ROLE_QUX'])
+            ->add('baz', 'bar');
+
+        $this->assertTrue($this->listMapper->has('foobar'));
+        $this->assertFalse($this->listMapper->has('foo'));
+        $this->assertTrue($this->listMapper->has('baz'));
     }
 
     private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription

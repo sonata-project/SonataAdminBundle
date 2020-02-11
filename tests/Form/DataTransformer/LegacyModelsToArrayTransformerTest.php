@@ -46,41 +46,41 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
 
-        $this->choiceList->expects($this->any())
+        $this->choiceList
             ->method('getModelManager')
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 return $this->modelManager;
-            }));
+            });
     }
 
     /**
      * @dataProvider getTransformTests
      */
-    public function testTransform($expected, $collection, $identifiers): void
+    public function testTransform(array $expected, ?array $collection, array $identifiers): void
     {
         $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
-        $this->choiceList->expects($this->any())
+        $this->choiceList
             ->method('getIdentifierValues')
-            ->will($this->returnCallback(function ($entity) use ($identifiers) {
+            ->willReturnCallback(static function ($entity) use ($identifiers) {
                 if ($entity instanceof FooEntity) {
                     return $identifiers;
                 }
 
                 return [];
-            }));
+            });
 
-        $this->choiceList->expects($this->any())
+        $this->choiceList
             ->method('getIdentifier')
-            ->will($this->returnCallback(function () use ($identifiers) {
+            ->willReturnCallback(static function () use ($identifiers) {
                 return $identifiers;
-            }));
+            });
 
-        $this->choiceList->expects($this->any())
+        $this->choiceList
             ->method('getEntities')
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(static function () {
                 return ['bcd' => new FooEntity(['bcd']), 'efg' => new FooEntity(['efg']), 'abc' => new FooEntity(['abc'])];
-            }));
+            });
 
         $this->assertSame($expected, $transformer->transform($collection));
     }
@@ -98,26 +98,28 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
     public function testReverseTransformWithException1(): void
     {
-        $this->expectException(UnexpectedTypeException::class, 'Expected argument of type "\ArrayAccess", "NULL" given');
+        $this->expectException(UnexpectedTypeException::class);
+        $this->expectExceptionMessage('Expected argument of type "\ArrayAccess", "NULL" given');
 
         $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
-        $this->modelManager->expects($this->any())
+        $this->modelManager
             ->method('getModelCollectionInstance')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $transformer->reverseTransform([]);
     }
 
     public function testReverseTransformWithException2(): void
     {
-        $this->expectException(UnexpectedTypeException::class, 'Expected argument of type "array", "integer" given');
+        $this->expectException(UnexpectedTypeException::class);
+        $this->expectExceptionMessage('Expected argument of type "array", "integer" given');
 
         $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
-        $this->modelManager->expects($this->any())
+        $this->modelManager
             ->method('getModelCollectionInstance')
-            ->will($this->returnValue(new ArrayCollection()));
+            ->willReturn(new ArrayCollection());
 
         $transformer->reverseTransform(123);
     }
@@ -125,13 +127,13 @@ class LegacyModelsToArrayTransformerTest extends TestCase
     /**
      * @dataProvider getReverseTransformEmptyTests
      */
-    public function testReverseTransformEmpty($keys): void
+    public function testReverseTransformEmpty(?string $keys): void
     {
         $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
-        $this->modelManager->expects($this->any())
+        $this->modelManager
             ->method('getModelCollectionInstance')
-            ->will($this->returnValue(new ArrayCollection()));
+            ->willReturn(new ArrayCollection());
 
         $this->assertInstanceOf(ArrayCollection::class, $transformer->reverseTransform($keys));
     }
@@ -148,17 +150,17 @@ class LegacyModelsToArrayTransformerTest extends TestCase
     {
         $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
-        $this->modelManager->expects($this->any())
+        $this->modelManager
             ->method('getModelCollectionInstance')
-            ->will($this->returnValue(new ArrayCollection()));
+            ->willReturn(new ArrayCollection());
 
         $entity1 = new FooEntity(['foo']);
         $entity2 = new FooEntity(['bar']);
         $entity3 = new FooEntity(['baz']);
 
-        $this->choiceList->expects($this->any())
+        $this->choiceList
             ->method('getEntity')
-            ->will($this->returnCallback(function ($key) use ($entity1, $entity2, $entity3) {
+            ->willReturnCallback(static function (string $key) use ($entity1, $entity2, $entity3) {
                 switch ($key) {
                     case 'foo':
                         return $entity1;
@@ -169,7 +171,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
                     case 'baz':
                         return $entity3;
                 }
-            }));
+            });
 
         $collection = $transformer->reverseTransform(['foo', 'bar']);
         $this->assertInstanceOf(ArrayCollection::class, $collection);
@@ -179,17 +181,18 @@ class LegacyModelsToArrayTransformerTest extends TestCase
 
     public function testReverseTransformWithNonexistentEntityKey(): void
     {
-        $this->expectException(TransformationFailedException::class, 'The entities with keys "nonexistent" could not be found');
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('The entities with keys "nonexistent" could not be found');
 
         $transformer = new LegacyModelsToArrayTransformer($this->choiceList);
 
-        $this->modelManager->expects($this->any())
+        $this->modelManager
             ->method('getModelCollectionInstance')
-            ->will($this->returnValue(new ArrayCollection()));
+            ->willReturn(new ArrayCollection());
 
-        $this->choiceList->expects($this->any())
+        $this->choiceList
             ->method('getEntity')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $transformer->reverseTransform(['nonexistent']);
     }

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Filter;
+namespace Sonata\AdminBundle\Tests\Export;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Export\Exporter;
@@ -39,7 +39,7 @@ class ExporterTest extends TestCase
     /**
      * @dataProvider getGetResponseTests
      */
-    public function testGetResponse($format, $filename, $contentType): void
+    public function testGetResponse(string $format, string $filename, string $contentType): void
     {
         $source = new ArraySourceIterator([
             ['foo' => 'bar'],

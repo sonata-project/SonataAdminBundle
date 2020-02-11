@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Route;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
 class RouteCollectionTest extends TestCase
@@ -60,9 +61,15 @@ class RouteCollectionTest extends TestCase
 
         $routeCollection->add('view');
         $this->assertTrue($routeCollection->has('view'));
+        $this->assertTrue($routeCollection->hasCached('view'));
 
         $routeCollection->remove('view');
         $this->assertFalse($routeCollection->has('view'));
+        $this->assertTrue($routeCollection->hasCached('view'));
+
+        $routeCollection->restore('view');
+        $this->assertTrue($routeCollection->has('view'));
+        $this->assertTrue($routeCollection->hasCached('view'));
 
         $routeCollection->add('create');
         $route = $routeCollection->get('create');
@@ -93,7 +100,8 @@ class RouteCollectionTest extends TestCase
 
     public function testGetWithException(): void
     {
-        $this->expectException(\InvalidArgumentException::class, 'Element "foo" does not exist.');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Element "foo" does not exist.');
 
         $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerName');
         $routeCollection->get('foo');
@@ -154,8 +162,8 @@ class RouteCollectionTest extends TestCase
             'https',
         ];
         $methods = [
-            'GET',
-            'POST',
+            Request::METHOD_GET,
+            Request::METHOD_POST,
         ];
         $condition = "context.getMethod() in ['GET', 'HEAD'] and request.headers.get('User-Agent') matches '/firefox/i'";
 

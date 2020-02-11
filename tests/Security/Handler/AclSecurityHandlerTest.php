@@ -37,14 +37,14 @@ class AclSecurityHandlerTest extends TestCase
     public function testAcl(): void
     {
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->any())
+        $admin
             ->method('getCode')
-            ->will($this->returnValue('test'));
+            ->willReturn('test');
 
         $authorizationChecker = $this->getAuthorizationCheckerMock();
-        $authorizationChecker->expects($this->any())
+        $authorizationChecker
             ->method('isGranted')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $aclProvider = $this->getMockForAbstractClass(MutableAclProviderInterface::class);
 
@@ -54,9 +54,9 @@ class AclSecurityHandlerTest extends TestCase
         $this->assertTrue($handler->isGranted($admin, 'TOTO'));
 
         $authorizationChecker = $this->getAuthorizationCheckerMock();
-        $authorizationChecker->expects($this->any())
+        $authorizationChecker
             ->method('isGranted')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $handler = new AclSecurityHandler($this->getTokenStorageMock(), $authorizationChecker, $aclProvider, MaskBuilder::class, []);
 
@@ -74,11 +74,11 @@ class AclSecurityHandlerTest extends TestCase
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->once())
             ->method('getCode')
-            ->will($this->returnValue('test'));
+            ->willReturn('test');
 
         $admin->expects($this->once())
             ->method('getSecurityInformation')
-            ->will($this->returnValue($informations));
+            ->willReturn($informations);
 
         $aclProvider = $this->getMockForAbstractClass(MutableAclProviderInterface::class);
 
@@ -94,7 +94,7 @@ class AclSecurityHandlerTest extends TestCase
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
 
         $authorizationChecker = $this->getAuthorizationCheckerMock();
-        $authorizationChecker->expects($this->any())
+        $authorizationChecker
             ->method('isGranted')
             ->will($this->throwException(new AuthenticationCredentialsNotFoundException('FAIL')));
 
@@ -112,7 +112,7 @@ class AclSecurityHandlerTest extends TestCase
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
 
         $authorizationChecker = $this->getAuthorizationCheckerMock();
-        $authorizationChecker->expects($this->any())
+        $authorizationChecker
             ->method('isGranted')
             ->will($this->throwException(new \RuntimeException('FAIL')));
 

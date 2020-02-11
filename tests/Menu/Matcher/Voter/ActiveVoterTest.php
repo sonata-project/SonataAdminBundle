@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Menu\Matcher\Voter;
 
 use Knp\Menu\ItemInterface;
+use Knp\Menu\Matcher\Voter\VoterInterface;
 use Sonata\AdminBundle\Menu\Matcher\Voter\ActiveVoter;
 
 class ActiveVoterTest extends AbstractVoterTest
@@ -21,7 +22,7 @@ class ActiveVoterTest extends AbstractVoterTest
     /**
      * {@inheritdoc}
      */
-    public function createVoter($dataVoter, $route)
+    public function createVoter($dataVoter, $route): VoterInterface
     {
         return new ActiveVoter();
     }
@@ -29,7 +30,7 @@ class ActiveVoterTest extends AbstractVoterTest
     /**
      * {@inheritdoc}
      */
-    public function provideData()
+    public function provideData(): array
     {
         return [
             'active' => [true, null, true, true],
@@ -40,25 +41,23 @@ class ActiveVoterTest extends AbstractVoterTest
 
     /**
      * @param mixed $data
-     *
-     * @return ItemInterface
      */
-    protected function createItem($data)
+    protected function createItem($data): ItemInterface
     {
         $item = $this->getMockForAbstractClass(ItemInterface::class);
-        $item->expects($this->any())
-             ->method('getExtra')
-             ->with($this->logicalOr(
+        $item
+            ->method('getExtra')
+            ->with($this->logicalOr(
                 $this->equalTo('active'),
                 $this->equalTo('sonata_admin')
-             ))
-             ->will($this->returnCallback(function ($name) use ($data) {
-                 if ('active' === $name) {
-                     return $data;
-                 }
+            ))
+            ->willReturnCallback(static function (string $name) use ($data) {
+                if ('active' === $name) {
+                    return $data;
+                }
 
-                 return true;
-             }))
+                return true;
+            })
         ;
 
         return $item;

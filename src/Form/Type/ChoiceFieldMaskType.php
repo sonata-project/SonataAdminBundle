@@ -21,6 +21,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ChoiceFieldMaskType extends AbstractType
@@ -30,7 +32,7 @@ class ChoiceFieldMaskType extends AbstractType
         $sanitizedMap = [];
         $allFieldNames = [];
         foreach ($options['map'] as $value => $fieldNames) {
-            if (\is_array($fieldNames) || $fieldNames instanceof \Traversable) {
+            if (is_iterable($fieldNames)) {
                 foreach ($fieldNames as $fieldName) {
                     $sanitizedFieldName = str_replace(['__', '.'], ['____', '__'], $fieldName);
                     $sanitizedMap[$value][] = $sanitizedFieldName;

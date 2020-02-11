@@ -22,7 +22,7 @@ namespace Sonata\AdminBundle\Admin;
 /**
  * NEXT_MAJOR: remove this class.
  *
- * @deprecated since version 3.1, to be removed in 4.0. Use Sonata\AdminBundle\AbstractAdmin instead
+ * @deprecated since sonata-project/admin-bundle 3.1, to be removed in 4.0. Use Sonata\AdminBundle\AbstractAdmin instead
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */

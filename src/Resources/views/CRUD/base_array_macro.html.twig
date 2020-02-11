@@ -13,9 +13,9 @@ file that was distributed with this source code.
     {% for key, val in value %}
         {% if val is iterable %}
             [{{ key }} => {{ render_array(val, inline) }}]
-        {%  else %}
+        {% else %}
             [{{ key }} => {{ val }}]
-        {%  endif %}
+        {% endif %}
 
         {% if not loop.last and not inline %}
             <br>

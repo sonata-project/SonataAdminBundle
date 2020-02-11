@@ -266,7 +266,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public function getFieldValue($object, $fieldName)
     {
         if ($this->isVirtual() || null === $object) {
-            return;
+            return null;
         }
 
         $getters = [];
@@ -297,14 +297,14 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             if (method_exists($object, $getter) && \is_callable([$object, $getter])) {
                 $this->cacheFieldGetter($object, $fieldName, 'getter', $getter);
 
-                return \call_user_func_array([$object, $getter], $parameters);
+                return $object->{$getter}(...$parameters);
             }
         }
 
         if (method_exists($object, '__call')) {
             $this->cacheFieldGetter($object, $fieldName, 'call');
 
-            return \call_user_func_array([$object, '__call'], [$fieldName, $parameters]);
+            return $object->{$fieldName}(...$parameters);
         }
 
         if (isset($object->{$fieldName})) {
@@ -365,7 +365,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      *
      * @return string
      *
-     * @deprecated Deprecated since version 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead
+     * @deprecated since sonata-project/admin-bundle 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead
      */
     public static function camelize($property)
     {
@@ -459,21 +459,15 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
         if ('getter' === self::$fieldGetters[$getterKey]['method']) {
-            return \call_user_func_array(
-                [$object, self::$fieldGetters[$getterKey]['getter']],
-                $parameters
-            );
+            return $object->{self::$fieldGetters[$getterKey]['getter']}(...$parameters);
         } elseif ('call' === self::$fieldGetters[$getterKey]['method']) {
-            return \call_user_func_array(
-                [$object, '__call'],
-                [$fieldName, $parameters]
-            );
+            return $object->{$fieldName}(...$parameters);
         }
 
         return $object->{$fieldName};
     }
 
-    private function cacheFieldGetter($object, ?string $fieldName, string $method, ?string $getter = null)
+    private function cacheFieldGetter($object, ?string $fieldName, string $method, ?string $getter = null): void
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
         if (null !== $getterKey) {

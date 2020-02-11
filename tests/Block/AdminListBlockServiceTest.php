@@ -17,12 +17,13 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminListBlockService;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Block\FakeBlockService;
-use Sonata\BlockBundle\Test\AbstractBlockServiceTestCase;
+use Sonata\BlockBundle\Test\BlockServiceTestCase;
+use Twig\Environment;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class AdminListBlockServiceTest extends AbstractBlockServiceTestCase
+class AdminListBlockServiceTest extends BlockServiceTestCase
 {
     /**
      * @var Pool
@@ -38,14 +39,19 @@ class AdminListBlockServiceTest extends AbstractBlockServiceTestCase
     {
         parent::setUp();
 
-        $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
+        $this->pool = $this->createMock(Pool::class);
 
         $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
     }
 
     public function testDefaultSettings(): void
     {
-        $blockService = new AdminListBlockService('foo', $this->templating, $this->pool, $this->templateRegistry->reveal());
+        $blockService = new AdminListBlockService(
+            $this->createMock(Environment::class),
+            null,
+            $this->pool,
+            $this->templateRegistry->reveal()
+        );
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([
@@ -53,9 +59,17 @@ class AdminListBlockServiceTest extends AbstractBlockServiceTestCase
         ], $blockContext);
     }
 
+    /**
+     * @group legacy
+     */
     public function testOverriddenDefaultSettings(): void
     {
-        $blockService = new FakeBlockService('foo', $this->templating, $this->pool, $this->templateRegistry->reveal());
+        $blockService = new FakeBlockService(
+            $this->createMock(Environment::class),
+            null,
+            $this->pool,
+            $this->templateRegistry->reveal()
+        );
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([

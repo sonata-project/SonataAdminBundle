@@ -24,11 +24,11 @@ class FieldDescriptionCollectionTest extends TestCase
         $collection = new FieldDescriptionCollection();
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('title'));
+        $fieldDescription->expects($this->once())->method('getName')->willReturn('title');
         $collection->add($fieldDescription);
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('position'));
+        $fieldDescription->expects($this->once())->method('getName')->willReturn('position');
         $collection->add($fieldDescription);
 
         $this->assertFalse($collection->has('foo'));
@@ -39,8 +39,8 @@ class FieldDescriptionCollectionTest extends TestCase
         $this->assertCount(2, $collection->getElements());
         $this->assertCount(2, $collection);
 
-        $this->isInstanceOf(FieldDescriptionInterface::class, $collection['title']);
-        $this->isInstanceOf(FieldDescriptionInterface::class, $collection->get('title'));
+        $this->assertInstanceOf(FieldDescriptionInterface::class, $collection['title']);
+        $this->assertInstanceOf(FieldDescriptionInterface::class, $collection->get('title'));
 
         $collection->remove('title');
         $this->assertFalse($collection->has('title'));
@@ -75,11 +75,11 @@ class FieldDescriptionCollectionTest extends TestCase
         $collection = new FieldDescriptionCollection();
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('title'));
+        $fieldDescription->expects($this->once())->method('getName')->willReturn('title');
         $collection->add($fieldDescription);
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('position'));
+        $fieldDescription->expects($this->once())->method('getName')->willReturn('position');
         $collection->add($fieldDescription);
 
         $newOrder = ['position', 'title'];
@@ -94,15 +94,15 @@ class FieldDescriptionCollectionTest extends TestCase
         $collection = new FieldDescriptionCollection();
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('title'));
+        $fieldDescription->expects($this->once())->method('getName')->willReturn('title');
         $collection->add($fieldDescription);
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('position'));
+        $fieldDescription->expects($this->once())->method('getName')->willReturn('position');
         $collection->add($fieldDescription);
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('batch'));
+        $fieldDescription->expects($this->once())->method('getName')->willReturn('batch');
         $collection->add($fieldDescription);
 
         $newOrder = ['position', 'title'];

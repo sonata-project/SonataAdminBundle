@@ -20,6 +20,8 @@ use Symfony\Component\Form\Guess\Guess;
 /**
  * The code is based on Symfony2 Form Components.
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Bernhard Schussek <bernhard.schussek@symfony.com>
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
@@ -47,7 +49,7 @@ class TypeGuesserChain implements TypeGuesserInterface
 
     public function guessType($class, $property, ModelManagerInterface $modelManager)
     {
-        return $this->guess(function ($guesser) use ($class, $property, $modelManager) {
+        return $this->guess(static function ($guesser) use ($class, $property, $modelManager) {
             return $guesser->guessType($class, $property, $modelManager);
         });
     }

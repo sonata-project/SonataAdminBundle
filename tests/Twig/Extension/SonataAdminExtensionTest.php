@@ -23,11 +23,11 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
+use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
-use Symfony\Bridge\Twig\Tests\Extension\Fixtures\StubFilesystemLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,11 +35,12 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Translation\DependencyInjection\TranslationDumperPass;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
-use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\TranslatorInterface;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Extensions\TextExtension;
 
 /**
  * Test for SonataAdminExtension.
@@ -54,7 +55,7 @@ class SonataAdminExtensionTest extends TestCase
     private $twigExtension;
 
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $environment;
 
@@ -142,11 +143,7 @@ class SonataAdminExtensionTest extends TestCase
         ];
 
         // translation extension
-        $translator = new Translator(
-            'en',
-            // NEXT_MAJOR: simplify this when dropping symfony < 3.4
-            class_exists(TranslationDumperPass::class) ? null : new MessageSelector()
-        );
+        $translator = new Translator('en');
         $translator->addLoader('xlf', new XliffFileLoader());
         $translator->addResource(
             'xlf',
@@ -171,14 +168,14 @@ class SonataAdminExtensionTest extends TestCase
         $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
 
         $request = $this->createMock(Request::class);
-        $request->expects($this->any())->method('get')->with('_sonata_admin')->willReturn('sonata_admin_foo_service');
+        $request->method('get')->with('_sonata_admin')->willReturn('sonata_admin_foo_service');
 
         $loader = new StubFilesystemLoader([
             __DIR__.'/../../../src/Resources/views/CRUD',
         ]);
         $loader->addPath(__DIR__.'/../../../src/Resources/views/', 'SonataAdmin');
 
-        $this->environment = new \Twig_Environment($loader, [
+        $this->environment = new Environment($loader, [
             'strict_variables' => true,
             'cache' => false,
             'autoescape' => 'html',
@@ -199,7 +196,7 @@ class SonataAdminExtensionTest extends TestCase
         $requestContext = new RequestContext();
         $urlGenerator = new UrlGenerator($routeCollection, $requestContext);
         $this->environment->addExtension(new RoutingExtension($urlGenerator));
-        $this->environment->addExtension(new \Twig_Extensions_Extension_Text());
+        $this->environment->addExtension(new TextExtension());
 
         // initialize object
         $this->object = new \stdClass();
@@ -207,105 +204,107 @@ class SonataAdminExtensionTest extends TestCase
         // initialize admin
         $this->admin = $this->createMock(AbstractAdmin::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getCode')
-            ->will($this->returnValue('sonata_admin_foo_service'));
+            ->willReturn('sonata_admin_foo_service');
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('id')
             ->with($this->equalTo($this->object))
-            ->will($this->returnValue(12345));
+            ->willReturn(12345);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getNormalizedIdentifier')
             ->with($this->equalTo($this->object))
-            ->will($this->returnValue(12345));
+            ->willReturn(12345);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('trans')
-            ->will($this->returnCallback(function ($id, $parameters = [], $domain = null) use ($translator) {
+            ->willReturnCallback(static function ($id, $parameters = [], $domain = null) use ($translator) {
                 return $translator->trans($id, $parameters, $domain);
-            }));
+            });
 
         $this->adminBar = $this->createMock(AbstractAdmin::class);
-        $this->adminBar->expects($this->any())
+        $this->adminBar
             ->method('hasAccess')
-            ->will($this->returnValue(true));
-        $this->adminBar->expects($this->any())
+            ->willReturn(true);
+        $this->adminBar
             ->method('getNormalizedIdentifier')
             ->with($this->equalTo($this->object))
-            ->will($this->returnValue(12345));
+            ->willReturn(12345);
 
-        $container->expects($this->any())
+        $container
             ->method('get')
-            ->will($this->returnCallback(function ($id) {
+            ->willReturnCallback(function (string $id) {
                 if ('sonata_admin_foo_service' === $id) {
                     return $this->admin;
-                } elseif ('sonata_admin_bar_service' === $id) {
+                }
+
+                if ('sonata_admin_bar_service' === $id) {
                     return $this->adminBar;
                 }
-            }));
+            });
 
         // initialize field description
         $this->fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getName')
-            ->will($this->returnValue('fd_name'));
+            ->willReturn('fd_name');
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getAdmin')
-            ->will($this->returnValue($this->admin));
+            ->willReturn($this->admin);
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getLabel')
-            ->will($this->returnValue('Data'));
+            ->willReturn('Data');
     }
 
     /**
      * @group legacy
-     * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
+     * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
      * @dataProvider getRenderListElementTests
      */
-    public function testRenderListElement($expected, $type, $value, array $options): void
+    public function testRenderListElement(string $expected, string $type, $value, array $options): void
     {
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getPersistentParameters')
-            ->will($this->returnValue(['context' => 'foo']));
+            ->willReturn(['context' => 'foo']);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('hasAccess')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         // NEXT_MAJOR: Remove this line
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getTemplate')
             ->with('base_list_field')
             ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getValue')
-            ->will($this->returnValue($value));
+            ->willReturn($value);
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getType')
-            ->will($this->returnValue($type));
+            ->willReturn($type);
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getOptions')
-            ->will($this->returnValue($options));
+            ->willReturn($options);
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getOption')
-            ->will($this->returnCallback(function ($name, $default = null) use ($options) {
+            ->willReturnCallback(static function ($name, $default = null) use ($options) {
                 return $options[$name] ?? $default;
-            }));
+            });
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getTemplate')
-            ->will($this->returnCallback(function () use ($type) {
+            ->willReturnCallback(static function () use ($type) {
                 switch ($type) {
                     case 'string':
                         return '@SonataAdmin/CRUD/list_string.html.twig';
@@ -339,7 +338,7 @@ class SonataAdminExtensionTest extends TestCase
                     default:
                         return false;
                 }
-            }));
+            });
 
         $this->assertSame(
             $this->removeExtraWhitespace($expected),
@@ -355,41 +354,41 @@ class SonataAdminExtensionTest extends TestCase
      * @dataProvider getDeprecatedRenderListElementTests
      * @group legacy
      */
-    public function testDeprecatedRenderListElement($expected, $value, array $options): void
+    public function testDeprecatedRenderListElement(string $expected, ?string $value, array $options): void
     {
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('hasAccess')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         // NEXT_MAJOR: Remove this line
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getTemplate')
             ->with('base_list_field')
             ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
         $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getValue')
-            ->will($this->returnValue($value));
+            ->willReturn($value);
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getType')
-            ->will($this->returnValue('nonexistent'));
+            ->willReturn('nonexistent');
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getOptions')
-            ->will($this->returnValue($options));
+            ->willReturn($options);
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getOption')
-            ->will($this->returnCallback(function ($name, $default = null) use ($options) {
+            ->willReturnCallback(static function ($name, $default = null) use ($options) {
                 return $options[$name] ?? $default;
-            }));
+            });
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getTemplate')
-            ->will($this->returnValue('@SonataAdmin/CRUD/list_nonexistent_template.html.twig'));
+            ->willReturn('@SonataAdmin/CRUD/list_nonexistent_template.html.twig');
 
         $this->assertSame(
             $this->removeExtraWhitespace($expected),
@@ -1351,6 +1350,38 @@ EOT
                     ],
                 ],
             ],
+            [
+                <<<'EOT'
+<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+    <span
+        class="x-editable"
+        data-type="checklist"
+        data-value="[&quot;Status1&quot;,&quot;Status2&quot;]"
+        data-title="Data"
+        data-pk="12345"
+        data-url="/core/set-object-field-value?context=list&amp;field=fd_name&amp;objectId=12345&amp;code=sonata_admin_foo_service"
+        data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
+         Delete, Alias2
+    </span>
+</td>
+EOT
+                ,
+                'choice',
+                [
+                    'Status1',
+                    'Status2',
+                ],
+                [
+                    'editable' => true,
+                    'multiple' => true,
+                    'catalogue' => 'SonataAdminBundle',
+                    'choices' => [
+                        'Status1' => 'action_delete',
+                        'Status2' => 'Alias2',
+                        'Status3' => 'Alias3',
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -1368,19 +1399,19 @@ EOT
 
         $this->fieldDescription->expects($this->once())
             ->method('getValue')
-            ->will($this->returnValue('Foo'));
+            ->willReturn('Foo');
 
         $this->fieldDescription->expects($this->once())
             ->method('getFieldName')
-            ->will($this->returnValue('Foo_name'));
+            ->willReturn('Foo_name');
 
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getType')
-            ->will($this->returnValue('nonexistent'));
+            ->willReturn('nonexistent');
 
         $this->fieldDescription->expects($this->once())
             ->method('getTemplate')
-            ->will($this->returnValue('@SonataAdmin/CRUD/list_nonexistent_template.html.twig'));
+            ->willReturn('@SonataAdmin/CRUD/list_nonexistent_template.html.twig');
 
         $this->logger->expects($this->once())
             ->method('warning')
@@ -1400,7 +1431,7 @@ EOT
      */
     public function testRenderListElementErrorLoadingTemplate(): void
     {
-        $this->expectException(\Twig_Error_Loader::class);
+        $this->expectException(LoaderError::class);
         $this->expectExceptionMessage('Unable to find template "@SonataAdmin/CRUD/base_list_nonexistent_field.html.twig"');
 
         // NEXT_MAJOR: Remove this line
@@ -1412,7 +1443,7 @@ EOT
 
         $this->fieldDescription->expects($this->once())
             ->method('getTemplate')
-            ->will($this->returnValue('@SonataAdmin/CRUD/list_nonexistent_template.html.twig'));
+            ->willReturn('@SonataAdmin/CRUD/list_nonexistent_template.html.twig');
 
         $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription);
 
@@ -1422,33 +1453,33 @@ EOT
     /**
      * @dataProvider getRenderViewElementTests
      */
-    public function testRenderViewElement($expected, $type, $value, array $options): void
+    public function testRenderViewElement(string $expected, string $type, $value, array $options): void
     {
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getTemplate')
-            ->will($this->returnValue('@SonataAdmin/CRUD/base_show_field.html.twig'));
+            ->willReturn('@SonataAdmin/CRUD/base_show_field.html.twig');
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getValue')
-            ->will($this->returnCallback(function () use ($value) {
+            ->willReturnCallback(static function () use ($value) {
                 if ($value instanceof NoValueException) {
                     throw  $value;
                 }
 
                 return $value;
-            }));
+            });
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getType')
-            ->will($this->returnValue($type));
+            ->willReturn($type);
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getOptions')
-            ->will($this->returnValue($options));
+            ->willReturn($options);
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getTemplate')
-            ->will($this->returnCallback(function () use ($type) {
+            ->willReturnCallback(static function () use ($type) {
                 switch ($type) {
                     case 'boolean':
                         return '@SonataAdmin/CRUD/show_boolean.html.twig';
@@ -1477,7 +1508,7 @@ EOT
                     default:
                         return false;
                 }
-            }));
+            });
 
         $this->assertSame(
                 $this->removeExtraWhitespace($expected),
@@ -1579,6 +1610,12 @@ EOT
                 'trans',
                 'action_delete',
                 ['safe' => false, 'catalogue' => 'SonataAdminBundle'],
+            ],
+            [
+                '<th>Data</th> <td> Delete </td>',
+                'trans',
+                'delete',
+                ['safe' => false, 'catalogue' => 'SonataAdminBundle', 'format' => 'action_%s'],
             ],
             ['<th>Data</th> <td>Status1</td>', 'choice', 'Status1', ['safe' => false]],
             [
@@ -2048,9 +2085,9 @@ EOT
         $object = new \stdClass();
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
 
-        $fieldDescription->expects($this->any())
+        $fieldDescription
             ->method('getValue')
-            ->will($this->returnValue('test123'));
+            ->willReturn('test123');
 
         $this->assertSame('test123', $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
     }
@@ -2060,7 +2097,8 @@ EOT
         $object = $this->createMock(\ArrayAccess::class);
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
 
-        $this->expectException(\RuntimeException::class, 'remove the loop requirement');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('remove the loop requirement');
 
         $this->assertSame(
             'anything',
@@ -2073,15 +2111,15 @@ EOT
         $object = new \stdClass();
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
 
-        $fieldDescription->expects($this->any())
+        $fieldDescription
             ->method('getValue')
-            ->will($this->returnCallback(function (): void {
+            ->willReturnCallback(static function (): void {
                 throw new NoValueException();
-            }));
+            });
 
-        $fieldDescription->expects($this->any())
+        $fieldDescription
             ->method('getAssociationAdmin')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $this->assertNull($this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
     }
@@ -2091,19 +2129,19 @@ EOT
         $object = new \stdClass();
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
 
-        $fieldDescription->expects($this->any())
+        $fieldDescription
             ->method('getValue')
-            ->will($this->returnCallback(function (): void {
+            ->willReturnCallback(static function (): void {
                 throw new NoValueException();
-            }));
+            });
 
-        $fieldDescription->expects($this->any())
+        $fieldDescription
             ->method('getAssociationAdmin')
-            ->will($this->returnValue($this->admin));
+            ->willReturn($this->admin);
 
         $this->admin->expects($this->once())
             ->method('getNewInstance')
-            ->will($this->returnValue('foo'));
+            ->willReturn('foo');
 
         $this->assertSame('foo', $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
     }
@@ -2113,13 +2151,13 @@ EOT
      */
     public function testOutput(): void
     {
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getTemplate')
-            ->will($this->returnValue('@SonataAdmin/CRUD/base_list_field.html.twig'));
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getFieldName')
-            ->will($this->returnValue('fd_name'));
+            ->willReturn('fd_name');
 
         $this->environment->disableDebug();
 
@@ -2162,21 +2200,21 @@ EOT
 
     /**
      * @group legacy
-     * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
+     * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
      */
     public function testRenderWithDebug(): void
     {
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getTemplate')
-            ->will($this->returnValue('@SonataAdmin/CRUD/base_list_field.html.twig'));
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getFieldName')
-            ->will($this->returnValue('fd_name'));
+            ->willReturn('fd_name');
 
-        $this->fieldDescription->expects($this->any())
+        $this->fieldDescription
             ->method('getValue')
-            ->will($this->returnValue('foo'));
+            ->willReturn('foo');
 
         $parameters = [
             'admin' => $this->admin,
@@ -2213,11 +2251,11 @@ EOT
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
-            ->will($this->returnCallback(function ($value, $default = null) {
+            ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
                     return $default;
                 }
-            }));
+            });
 
         $element = new FooToString();
         $this->assertSame('salut', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
@@ -2230,11 +2268,11 @@ EOT
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
-            ->will($this->returnCallback(function ($value, $default = null) {
+            ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_tostring' === $value) {
                     return '__toString';
                 }
-            }));
+            });
 
         $element = new FooToString();
         $this->assertSame(
@@ -2250,7 +2288,7 @@ EOT
     {
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
-            ->will($this->returnCallback(function ($value, $default = null) {
+            ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
                     return $default;
                 }
@@ -2258,14 +2296,14 @@ EOT
                 if ('associated_tostring' === $value) {
                     return 'customToString';
                 }
-            }));
+            });
 
         $element = $this->getMockBuilder('stdClass')
             ->setMethods(['customToString'])
             ->getMock();
-        $element->expects($this->any())
+        $element
             ->method('customToString')
-            ->will($this->returnValue('fooBar'));
+            ->willReturn('fooBar');
 
         $this->assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
@@ -2278,28 +2316,29 @@ EOT
         $this->fieldDescription->expects($this->exactly(2))
             ->method('getOption')
 
-            ->will($this->returnCallback(function ($value, $default = null) {
+            ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_tostring' === $value) {
                     return 'nonExistedMethod';
                 }
-            }));
+            });
 
         $element = new \stdClass();
-        $this->expectException(\RuntimeException::class, 'You must define an `associated_property` option or create a `stdClass::__toString');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You must define an `associated_property` option or create a `stdClass::__toString');
 
         $this->twigExtension->renderRelationElement($element, $this->fieldDescription);
     }
 
     public function testRenderRelationElementWithPropertyPath(): void
     {
-        $this->fieldDescription->expects($this->exactly(1))
+        $this->fieldDescription->expects($this->once())
             ->method('getOption')
 
-            ->will($this->returnCallback(function ($value, $default = null) {
+            ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
                     return 'foo';
                 }
-            }));
+            });
 
         $element = new \stdClass();
         $element->foo = 'bar';
@@ -2309,16 +2348,16 @@ EOT
 
     public function testRenderRelationElementWithClosure(): void
     {
-        $this->fieldDescription->expects($this->exactly(1))
+        $this->fieldDescription->expects($this->once())
             ->method('getOption')
 
-            ->will($this->returnCallback(function ($value, $default = null) {
+            ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
-                    return function ($element) {
+                    return static function ($element): string {
                         return 'closure '.$element->foo;
                     };
                 }
-            }));
+            });
 
         $element = new \stdClass();
         $element->foo = 'bar';
@@ -2340,7 +2379,7 @@ EOT
         $this->admin->expects($this->once())
             ->method('getUrlsafeIdentifier')
             ->with($this->equalTo($entity))
-            ->will($this->returnValue(1234567));
+            ->willReturn(1234567);
 
         $this->assertSame(1234567, $this->twigExtension->getUrlsafeIdentifier($entity));
     }
@@ -2362,7 +2401,7 @@ EOT
         $this->admin->expects($this->once())
             ->method('getUrlsafeIdentifier')
             ->with($this->equalTo($entity))
-            ->will($this->returnValue(1234567));
+            ->willReturn(1234567);
 
         $this->adminBar->expects($this->never())
             ->method('getUrlsafeIdentifier');
@@ -2387,7 +2426,7 @@ EOT
         $this->adminBar->expects($this->once())
             ->method('getUrlsafeIdentifier')
             ->with($this->equalTo($entity))
-            ->will($this->returnValue(1234567));
+            ->willReturn(1234567);
 
         $this->assertSame(1234567, $this->twigExtension->getUrlsafeIdentifier($entity, $this->adminBar));
     }
@@ -2440,10 +2479,10 @@ EOT
     /**
      * @dataProvider xEditablechoicesProvider
      */
-    public function testGetXEditableChoicesIsIdempotent(array $options, $expectedChoices): void
+    public function testGetXEditableChoicesIsIdempotent(array $options, array $expectedChoices): void
     {
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->any())
+        $fieldDescription
             ->method('getOption')
             ->withConsecutive(
                 ['choices', []],
@@ -2518,12 +2557,12 @@ EOT
     /**
      * @dataProvider select2LocalesProvider
      */
-    public function testCanonicalizedLocaleForSelect2($expected, $original): void
+    public function testCanonicalizedLocaleForSelect2(?string $expected, string $original): void
     {
         $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForSelect2($this->mockExtensionContext($original)));
     }
 
-    public function momentLocalesProvider()
+    public function momentLocalesProvider(): array
     {
         return [
             ['af', 'af'],
@@ -2547,6 +2586,7 @@ EOT
             ['da', 'da'],
             ['de-at', 'de-at'],
             ['de', 'de'],
+            ['de', 'de-de'],
             ['dv', 'dv'],
             ['el', 'el'],
             [null, 'en'],
@@ -2646,7 +2686,7 @@ EOT
     /**
      * @dataProvider momentLocalesProvider
      */
-    public function testCanonicalizedLocaleForMoment($expected, $original): void
+    public function testCanonicalizedLocaleForMoment(?string $expected, string $original): void
     {
         $this->assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForMoment($this->mockExtensionContext($original)));
     }
@@ -2668,7 +2708,7 @@ EOT
         return htmlspecialchars(http_build_query($url, '', '&', PHP_QUERY_RFC3986));
     }
 
-    private function removeExtraWhitespace($string): string
+    private function removeExtraWhitespace(string $string): string
     {
         return trim(preg_replace(
             '/\s+/',
@@ -2677,7 +2717,7 @@ EOT
         ));
     }
 
-    private function mockExtensionContext($locale): array
+    private function mockExtensionContext(string $locale): array
     {
         $request = $this->createMock(Request::class);
         $request->method('getLocale')->willReturn($locale);

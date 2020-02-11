@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Menu\Matcher\Voter;
 
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Matcher;
+use Knp\Menu\Matcher\Voter\VoterInterface;
 use Sonata\AdminBundle\Menu\Matcher\Voter\ChildrenVoter;
 
 /**
@@ -26,7 +27,7 @@ class ChildrenVoterTest extends AbstractVoterTest
     /**
      * {@inheritdoc}
      */
-    public function provideData()
+    public function provideData(): array
     {
         return [
             'with no current' => [[false, false], null, new Matcher(), null],
@@ -38,7 +39,7 @@ class ChildrenVoterTest extends AbstractVoterTest
     /**
      * {@inheritdoc}
      */
-    protected function createVoter($dataVoter, $route)
+    protected function createVoter($dataVoter, $route): VoterInterface
     {
         return new ChildrenVoter($route);
     }
@@ -46,26 +47,26 @@ class ChildrenVoterTest extends AbstractVoterTest
     /**
      * {@inheritdoc}
      */
-    protected function createItem($data)
+    protected function createItem($data): ItemInterface
     {
         $childItems = [];
         foreach ($data as $childData) {
             $childItem = $this->getMockForAbstractClass(ItemInterface::class);
-            $childItem->expects($this->any())
+            $childItem
                 ->method('isCurrent')
                 ->willReturn($childData);
             $childItems[] = $childItem;
         }
 
         $item = $this->getMockForAbstractClass(ItemInterface::class);
-        $item->expects($this->any())
+        $item
             ->method('getChildren')
-            ->will($this->returnValue($childItems));
+            ->willReturn($childItems);
 
-        $item->expects($this->any())
+        $item
              ->method('getExtra')
              ->with('sonata_admin')
-             ->will($this->returnValue(true));
+             ->willReturn(true);
 
         return $item;
     }

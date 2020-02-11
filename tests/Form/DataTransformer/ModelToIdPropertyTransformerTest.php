@@ -37,13 +37,12 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $entity->setBar('example');
 
         $this->modelManager
-            ->expects($this->any())
             ->method('find')
-            ->will($this->returnCallback(function ($class, $id) use ($entity) {
+            ->willReturnCallback(static function (string $class, $id) use ($entity) {
                 if (Foo::class === $class && 123 === $id) {
                     return $entity;
                 }
-            }));
+            });
 
         $this->assertNull($transformer->reverseTransform(null));
         $this->assertNull($transformer->reverseTransform(false));
@@ -57,14 +56,13 @@ class ModelToIdPropertyTransformerTest extends TestCase
     /**
      * @dataProvider getReverseTransformMultipleTests
      */
-    public function testReverseTransformMultiple($expected, $params, $entity1, $entity2, $entity3): void
+    public function testReverseTransformMultiple(array $expected, $params, Foo $entity1, Foo $entity2, Foo $entity3): void
     {
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
         $this->modelManager
-            ->expects($this->any())
             ->method('find')
-            ->will($this->returnCallback(function ($className, $value) use ($entity1, $entity2, $entity3) {
+            ->willReturnCallback(static function (string $className, int $value) use ($entity1, $entity2, $entity3) {
                 if (Foo::class !== $className) {
                     return;
                 }
@@ -80,14 +78,13 @@ class ModelToIdPropertyTransformerTest extends TestCase
                 if (789 === $value) {
                     return $entity3;
                 }
-            }));
+            });
 
         $collection = new ArrayCollection();
         $this->modelManager
-            ->expects($this->any())
             ->method('getModelCollectionInstance')
             ->with($this->equalTo(Foo::class))
-            ->will($this->returnValue($collection));
+            ->willReturn($collection);
 
         $result = $transformer->reverseTransform($params);
         $this->assertInstanceOf(ArrayCollection::class, $result);
@@ -119,7 +116,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
     /**
      * @dataProvider getReverseTransformMultipleInvalidTypeTests
      */
-    public function testReverseTransformMultipleInvalidTypeTests($expected, $params, $type): void
+    public function testReverseTransformMultipleInvalidTypeTests(array $expected, $params, string $type): void
     {
         $this->expectException(
             \UnexpectedValueException::class);
@@ -130,17 +127,16 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $collection = new ArrayCollection();
         $this->modelManager
-            ->expects($this->any())
             ->method('getModelCollectionInstance')
             ->with($this->equalTo(Foo::class))
-            ->will($this->returnValue($collection));
+            ->willReturn($collection);
 
         $result = $transformer->reverseTransform($params);
         $this->assertInstanceOf(ArrayCollection::class, $result);
         $this->assertSame($expected, $result->getValues());
     }
 
-    public function getReverseTransformMultipleInvalidTypeTests()
+    public function getReverseTransformMultipleInvalidTypeTests(): array
     {
         return [
             [[], true, 'boolean'],
@@ -158,7 +154,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $this->modelManager->expects($this->once())
             ->method('getIdentifierValues')
-            ->will($this->returnValue([123]));
+            ->willReturn([123]);
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
 
@@ -178,7 +174,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $this->modelManager->expects($this->once())
             ->method('getIdentifierValues')
-            ->will($this->returnValue([123]));
+            ->willReturn([123]);
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, FooArrayAccess::class, 'bar', false);
 
@@ -193,9 +189,9 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $this->modelManager->expects($this->once())
             ->method('getIdentifierValues')
-            ->will($this->returnValue([123]));
+            ->willReturn([123]);
 
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, function ($entity) {
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, static function ($entity) {
             return $entity->getBaz();
         });
 
@@ -213,7 +209,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $this->modelManager->expects($this->once())
             ->method('getIdentifierValues')
-            ->will($this->returnValue([123]));
+            ->willReturn([123]);
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, '987654');
 
@@ -238,7 +234,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $this->modelManager->expects($this->exactly(3))
             ->method('getIdentifierValues')
-            ->will($this->returnCallback(function ($value) use ($entity1, $entity2, $entity3) {
+            ->willReturnCallback(static function (Foo $value) use ($entity1, $entity2, $entity3): array {
                 if ($value === $entity1) {
                     return [123];
                 }
@@ -252,7 +248,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
                 }
 
                 return [999];
-            }));
+            });
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 

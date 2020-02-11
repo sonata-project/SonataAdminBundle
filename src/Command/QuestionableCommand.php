@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Command;
 
-use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
-abstract class QuestionableCommand extends ContainerAwareCommand
+abstract class QuestionableCommand extends Command
 {
     /**
      * @param string   $questionText

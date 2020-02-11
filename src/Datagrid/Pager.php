@@ -197,7 +197,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @param int $pos
      *
-     * @return mixed
+     * @return object
      */
     public function getObjectByCursor($pos)
     {
@@ -209,7 +209,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Returns the current object.
      *
-     * @return mixed
+     * @return object
      */
     public function getCurrent()
     {
@@ -219,12 +219,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Returns the next object.
      *
-     * @return mixed|null
+     * @return object|null
      */
     public function getNext()
     {
         if ($this->cursor + 1 > $this->nbResults) {
-            return;
+            return null;
         }
 
         return $this->retrieveObject($this->cursor + 1);
@@ -238,7 +238,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function getPrevious()
     {
         if ($this->cursor - 1 < 1) {
-            return;
+            return null;
         }
 
         return $this->retrieveObject($this->cursor - 1);
@@ -261,7 +261,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @deprecated since 3.11, will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.11, will be removed in 4.0
      */
     public function getFirstIndice()
     {
@@ -294,7 +294,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @deprecated since 3.11, will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.11, will be removed in 4.0
      */
     public function getLastIndice()
     {
@@ -619,7 +619,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @param int $offset
      *
-     * @return object
+     * @return object|null
      */
     protected function retrieveObject($offset)
     {
@@ -630,6 +630,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
         $results = $queryForRetrieve->execute();
 
-        return $results[0];
+        return $results[0] ?? null;
     }
 }

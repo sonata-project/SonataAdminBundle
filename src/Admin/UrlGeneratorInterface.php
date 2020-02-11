@@ -44,7 +44,7 @@ interface UrlGeneratorInterface
      * Generates the object url with the given $name.
      *
      * @param string $name
-     * @param mixed  $object
+     * @param object $object
      * @param int    $absolute
      *
      * @return string return a complete url

@@ -61,7 +61,7 @@ class ModelTypeTest extends TypeTestCase
     /**
      * @dataProvider getCompoundOptionTests
      */
-    public function testCompoundOption($expectedCompound, $multiple, $expanded): void
+    public function testCompoundOption(bool $expectedCompound, bool $multiple, bool $expanded): void
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
         $optionResolver = new OptionsResolver();

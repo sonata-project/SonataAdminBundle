@@ -15,7 +15,7 @@ date            display a formatted date. Accepts an optional ``format`` paramet
 datetime        display a formatted date and time. Accepts an optional ``format`` and ``timezone`` parameter
 text            display a text
 textarea        display a textarea
-trans           translate the value with a provided ``catalogue`` option
+trans           translate the value with a provided ``catalogue`` (translation domain) and ``format`` (sprintf format) option
 string          display a text
 number          display a number
 currency        display a number with a provided ``currency`` option
@@ -91,9 +91,7 @@ Parameter                               Description
         ;
     }
 
-The ``choice`` field type also supports multiple values that can be separated by a ``delimiter``.
-
-.. code-block:: php
+The ``choice`` field type also supports multiple values that can be separated by a ``delimiter``::
 
     protected function configureListFields(ListMapper $listMapper)
     {

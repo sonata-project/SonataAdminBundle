@@ -44,11 +44,9 @@ class FormTypeFieldExtensionTest extends TestCase
 
         $this->assertArrayHasKey('sonata_admin', $options);
         $this->assertArrayHasKey('sonata_field_description', $options);
-        $this->assertArrayHasKey('sonata_help', $options);
 
         $this->assertNull($options['sonata_admin']);
         $this->assertNull($options['sonata_field_description']);
-        $this->assertNull($options['sonata_help']);
     }
 
     public function testbuildViewWithNoSonataAdminArray(): void
@@ -90,7 +88,7 @@ class FormTypeFieldExtensionTest extends TestCase
     public function testbuildViewWithWithSonataAdmin(): void
     {
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->exactly(2))->method('getCode')->will($this->returnValue('my.admin.reference'));
+        $admin->expects($this->exactly(2))->method('getCode')->willReturn('my.admin.reference');
 
         $eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
 
@@ -111,9 +109,7 @@ class FormTypeFieldExtensionTest extends TestCase
         $formView->vars['block_prefixes'] = ['form', 'field', 'text', '_s50b26aa76cb96_username'];
 
         $extension = new FormTypeFieldExtension([], []);
-        $extension->buildView($formView, $form, [
-            'sonata_help' => 'help text',
-        ]);
+        $extension->buildView($formView, $form, []);
 
         $this->assertArrayHasKey('block_prefixes', $formView->vars);
         $this->assertArrayHasKey('sonata_admin_enabled', $formView->vars);
@@ -131,7 +127,6 @@ class FormTypeFieldExtensionTest extends TestCase
 
         $this->assertSame($expected, $formView->vars['block_prefixes']);
         $this->assertTrue($formView->vars['sonata_admin_enabled']);
-        $this->assertSame('help text', $formView->vars['sonata_help']);
     }
 
     public function testbuildViewWithNestedForm(): void
@@ -155,9 +150,7 @@ class FormTypeFieldExtensionTest extends TestCase
         $formView->vars['block_prefixes'] = ['form', 'field', 'text', '_s50b26aa76cb96_settings_format'];
 
         $extension = new FormTypeFieldExtension([], []);
-        $extension->buildView($formView, $form, [
-            'sonata_help' => 'help text',
-        ]);
+        $extension->buildView($formView, $form, []);
 
         $this->assertArrayHasKey('block_prefixes', $formView->vars);
         $this->assertArrayHasKey('sonata_admin_enabled', $formView->vars);
@@ -187,7 +180,8 @@ class FormTypeFieldExtensionTest extends TestCase
                  'class' => false,
                  'options' => [],
             ],
-            'sonata_help' => 'help text',
+            // NEXT_MAJOR: Remove this line
+            'sonata_help' => null,
             'sonata_admin_code' => 'parent_code',
         ];
 
@@ -204,15 +198,14 @@ class FormTypeFieldExtensionTest extends TestCase
         $form = new Form($config);
 
         $extension = new FormTypeFieldExtension([], []);
-        $extension->buildView($formView, $form, [
-            'sonata_help' => 'help text',
-        ]);
+        $extension->buildView($formView, $form, []);
 
         $this->assertArrayNotHasKey('block_prefixes', $formView->vars);
         $this->assertArrayHasKey('sonata_admin_enabled', $formView->vars);
         $this->assertArrayHasKey('sonata_admin', $formView->vars);
     }
 
+  
     public function testbuildViewCollectionField(): void
     {
         $eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
@@ -289,5 +282,24 @@ class FormTypeFieldExtensionTest extends TestCase
         ];
 
         $this->assertSame($expected, $formView->vars['block_prefixes']);
+    }
+  
+    /**
+     * @group legacy
+     */
+    public function testSonataHelp(): void
+    {
+        $extension = new FormTypeFieldExtension([], []);
+        $optionResolver = new OptionsResolver();
+        $extension->configureOptions($optionResolver);
+
+        $defaultOptions = $optionResolver->resolve();
+
+        $this->assertArrayHasKey('sonata_help', $defaultOptions);
+        $this->assertNull($defaultOptions['sonata_help']);
+
+        $optionsWithSonataHelp = $optionResolver->resolve(['sonata_help' => 'Sonata help message']);
+
+        $this->assertSame('Sonata help message', $optionsWithSonataHelp['sonata_help']);
     }
 }

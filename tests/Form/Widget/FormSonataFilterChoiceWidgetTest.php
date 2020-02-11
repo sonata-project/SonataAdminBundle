@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\Widget;
 
 use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
+use Sonata\AdminBundle\Form\Type\Operator\ContainsOperatorType;
+use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as SymfonyChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\FormTypeGuesserInterface;
-use Symfony\Component\Form\Tests\Fixtures\TestExtension;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
@@ -32,7 +32,7 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
     public function testDefaultValueRendering(): void
     {
         $choice = $this->factory->create(
-            $this->getParentClass(),
+            $this->getChoiceClass(),
             null,
             $this->getDefaultOption()
         );
@@ -56,22 +56,9 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
         );
     }
 
-    protected function getParentClass()
-    {
-        if (class_exists(RangeType::class)) {
-            return ChoiceType::class;
-        }
-
-        return 'sonata_type_filter_choice';
-    }
-
     protected function getChoiceClass()
     {
-        if (class_exists(RangeType::class)) {
-            return SymfonyChoiceType::class;
-        }
-
-        return 'choice';
+        return ChoiceType::class;
     }
 
     protected function getExtensions()
@@ -79,9 +66,9 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
         $mock = $this->getMockBuilder(TranslatorInterface::class)->getMock();
 
         $mock->method('trans')
-            ->will($this->returnCallback(function ($arg) {
+            ->willReturnCallback(static function ($arg) {
                 return $arg;
-            })
+            }
         );
 
         $extensions = parent::getExtensions();
@@ -90,7 +77,7 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
         $type = new ChoiceType($mock);
         $extension->addType($type);
 
-        if (!$extension->hasType($this->getParentClass())) {
+        if (!$extension->hasType($this->getChoiceClass())) {
             $reflection = new \ReflectionClass($extension);
             $property = $reflection->getProperty('types');
             $property->setAccessible(true);
@@ -104,9 +91,9 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 
     protected function getDefaultOption()
     {
-        return ['field_type' => $this->getChoiceClass(),
+        return ['field_type' => SymfonyChoiceType::class,
              'field_options' => [],
-             'operator_type' => $this->getChoiceClass(),
+             'operator_type' => ContainsOperatorType::class,
              'operator_options' => [],
         ];
     }

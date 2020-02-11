@@ -52,7 +52,7 @@ Configure the Installed Bundles
 
 Now all needed bundles are downloaded and registered, you have to add some
 configuration. The admin interface is using SonataBlockBundle to put everything
-in blocks. You have to tell the block bundle about the existence of thea dmin block:
+in blocks. You have to tell the block bundle about the existence of the admin block:
 
 .. configuration-block::
 

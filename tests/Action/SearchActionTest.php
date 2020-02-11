@@ -20,18 +20,19 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 class SearchActionTest extends TestCase
 {
     private $container;
     private $pool;
+    private $searchHandler;
     private $action;
-    private $templating;
+    private $twig;
     private $breadcrumbsBuilder;
 
     protected function setUp(): void
@@ -46,39 +47,29 @@ class SearchActionTest extends TestCase
 
         $this->breadcrumbsBuilder = $this->createMock(BreadcrumbsBuilderInterface::class);
         $this->searchHandler = $this->createMock(SearchHandler::class);
+        $this->twig = $this->prophesize(Environment::class);
 
         $this->action = new SearchAction(
             $this->pool,
             $this->searchHandler,
             $templateRegistry,
-            $this->breadcrumbsBuilder
+            $this->breadcrumbsBuilder,
+            $this->twig->reveal()
         );
-        $this->action->setContainer($this->container);
-        $this->templating = $this->prophesize(EngineInterface::class);
-        $this->container->set('templating', $this->templating->reveal());
     }
 
     public function testGlobalPage(): void
     {
         $request = new Request(['q' => 'some search']);
-        $this->templating->render('search.html.twig', [
+        $this->twig->render('search.html.twig', [
             'base_template' => 'layout.html.twig',
             'breadcrumbs_builder' => $this->breadcrumbsBuilder,
             'admin_pool' => $this->pool,
             'query' => 'some search',
             'groups' => [],
         ])->willReturn(new Response());
-        $this->templating->renderResponse('search.html.twig', [
-            'base_template' => 'layout.html.twig',
-            'breadcrumbs_builder' => $this->breadcrumbsBuilder,
-            'admin_pool' => $this->pool,
-            'query' => 'some search',
-            'groups' => [],
-        ], null)->willReturn(new Response());
 
-        // NEXT_MAJOR: simplify this when dropping php 5
-        $action = $this->action;
-        $this->assertInstanceOf(Response::class, $action($request));
+        $this->assertInstanceOf(Response::class, ($this->action)($request));
     }
 
     public function testAjaxCall(): void
@@ -89,8 +80,6 @@ class SearchActionTest extends TestCase
         $request = new Request(['admin' => 'foo']);
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
-        // NEXT_MAJOR: simplify this when dropping php 5
-        $action = $this->action;
-        $this->assertInstanceOf(JsonResponse::class, $action($request));
+        $this->assertInstanceOf(JsonResponse::class, ($this->action)($request));
     }
 }

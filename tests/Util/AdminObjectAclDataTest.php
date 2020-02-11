@@ -50,7 +50,7 @@ class AdminObjectAclDataTest extends TestCase
         $this->assertInstanceOf(\ArrayIterator::class, $adminObjectAclData->getAclRoles());
     }
 
-    public function testSetAcl()
+    public function testSetAcl(): AdminObjectAclData
     {
         $acl = $this->getMockBuilder(Acl::class)
             ->disableOriginalConstructor()
@@ -66,7 +66,7 @@ class AdminObjectAclDataTest extends TestCase
     /**
      * @depends testSetAcl
      */
-    public function testGetAcl($adminObjectAclData): void
+    public function testGetAcl(AdminObjectAclData $adminObjectAclData): void
     {
         $this->assertInstanceOf(Acl::class, $adminObjectAclData->getAcl());
     }
@@ -74,11 +74,11 @@ class AdminObjectAclDataTest extends TestCase
     public function testGetMasks(): void
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->assertInternalType('array', $adminObjectAclData->getMasks());
+        $this->assertIsArray($adminObjectAclData->getMasks());
 
         foreach ($adminObjectAclData->getMasks() as $key => $mask) {
-            $this->assertInternalType('string', $key);
-            $this->assertInternalType('int', $mask);
+            $this->assertIsString($key);
+            $this->assertIsInt($mask);
         }
     }
 
@@ -103,7 +103,7 @@ class AdminObjectAclDataTest extends TestCase
      *
      * @group legacy
      */
-    public function testGetForm($adminObjectAclData): void
+    public function testGetForm(AdminObjectAclData $adminObjectAclData): void
     {
         $this->assertInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
     }
@@ -124,7 +124,7 @@ class AdminObjectAclDataTest extends TestCase
     /**
      * @depends testSetAclUsersForm
      */
-    public function testGetAclUsersForm($adminObjectAclData): void
+    public function testGetAclUsersForm(AdminObjectAclData $adminObjectAclData): void
     {
         $this->assertInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
     }
@@ -145,7 +145,7 @@ class AdminObjectAclDataTest extends TestCase
     /**
      * @depends testSetAclRolesForm
      */
-    public function testGetAclRolesForm($adminObjectAclData): void
+    public function testGetAclRolesForm(AdminObjectAclData $adminObjectAclData): void
     {
         $this->assertInstanceOf(Form::class, $adminObjectAclData->getAclRolesForm());
     }
@@ -153,30 +153,30 @@ class AdminObjectAclDataTest extends TestCase
     public function testGetPermissions(): void
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->assertInternalType('array', $adminObjectAclData->getPermissions());
+        $this->assertIsArray($adminObjectAclData->getPermissions());
 
         foreach ($adminObjectAclData->getPermissions() as $permission) {
-            $this->assertInternalType('string', $permission);
+            $this->assertIsString($permission);
         }
     }
 
     public function testGetUserPermissions(): void
     {
         $adminObjectAclDataOwner = $this->createAdminObjectAclData();
-        $this->assertInternalType('array', $adminObjectAclDataOwner->getUserPermissions());
+        $this->assertIsArray($adminObjectAclDataOwner->getUserPermissions());
 
         foreach ($adminObjectAclDataOwner->getUserPermissions() as $permission) {
-            $this->assertInternalType('string', $permission);
+            $this->assertIsString($permission);
         }
 
-        $this->assertTrue(false !== array_search('OWNER', $adminObjectAclDataOwner->getUserPermissions(), true));
-        $this->assertTrue(false !== array_search('MASTER', $adminObjectAclDataOwner->getUserPermissions(), true));
+        $this->assertContains('OWNER', $adminObjectAclDataOwner->getUserPermissions());
+        $this->assertContains('MASTER', $adminObjectAclDataOwner->getUserPermissions());
 
         $adminObjectAclData = $this->createAdminObjectAclData(false);
-        $this->assertInternalType('array', $adminObjectAclData->getUserPermissions());
+        $this->assertIsArray($adminObjectAclData->getUserPermissions());
 
         foreach ($adminObjectAclData->getUserPermissions() as $permission) {
-            $this->assertInternalType('string', $permission);
+            $this->assertIsString($permission);
         }
 
         $this->assertFalse(array_search('OWNER', $adminObjectAclData->getUserPermissions(), true));
@@ -216,36 +216,42 @@ class AdminObjectAclDataTest extends TestCase
         return new \ArrayIterator();
     }
 
-    protected function createAdminObjectAclData($isOwner = true)
+    protected function createAdminObjectAclData(bool $isOwner = true)
     {
-        return new AdminObjectAclData($this->createAdmin($isOwner), new \stdClass(), self::createAclUsers(), MaskBuilder::class, self::createAclRoles());
+        return new AdminObjectAclData(
+            $this->createAdmin($isOwner),
+            new \stdClass(),
+            self::createAclUsers(),
+            MaskBuilder::class,
+            self::createAclRoles()
+        );
     }
 
-    protected function createAdmin($isOwner = true)
+    protected function createAdmin(bool $isOwner = true): AdminInterface
     {
         $securityHandler = $this->getMockForAbstractClass(AclSecurityHandlerInterface::class);
 
-        $securityHandler->expects($this->any())
+        $securityHandler
             ->method('getObjectPermissions')
-            ->will($this->returnValue(['VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER']))
+            ->willReturn(['VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER'])
         ;
 
-        $securityHandler->expects($this->any())
+        $securityHandler
             ->method('buildSecurityInformation')
             ->with($this->isInstanceOf(AdminInterface::class))
-            ->will($this->returnValue([]))
+            ->willReturn([])
         ;
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
 
-        $admin->expects($this->any())
+        $admin
             ->method('isGranted')
-            ->will($this->returnValue($isOwner))
+            ->willReturn($isOwner)
         ;
 
-        $admin->expects($this->any())
+        $admin
             ->method('getSecurityHandler')
-            ->will($this->returnValue($securityHandler))
+            ->willReturn($securityHandler)
         ;
 
         return $admin;

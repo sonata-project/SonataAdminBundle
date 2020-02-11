@@ -36,7 +36,7 @@ file that was distributed with this source code.
             <tr>
                 {% for field_name, nested_field in nested_group_field.children %}
                     <td class="
-                        sonata-ba-td-{{ id }}-{{ field_name  }}
+                        sonata-ba-td-{{ id }}-{{ field_name }}
                         control-group
                         {% if nested_field.vars.errors|default(false) %} error sonata-ba-field-error{% endif %}
                         "
@@ -46,6 +46,14 @@ file that was distributed with this source code.
                     >
                         {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
                             {{ form_widget(nested_field) }}
+
+                            {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name].help %}
+                                <span class="help-block">
+                                    {%- block help %}
+                                        {{- sonata_admin.field_description.associationadmin.formfielddescriptions[field_name].help|raw -}}
+                                    {% endblock -%}
+                                </span>
+                            {% endif %}
 
                             {% set dummy = nested_group_field.setrendered %}
                         {% else %}

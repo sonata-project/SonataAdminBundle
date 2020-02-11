@@ -340,6 +340,24 @@ can use ``hasParentFieldDescription()`` to detect this case and remove the route
         }
     }
 
+Restoring a single route
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Any previously removed route can be restored by name::
+
+    // src/Admin/DeletableMediaAdmin.php
+
+    use Sonata\AdminBundle\Route\RouteCollection;
+
+    final class DeletableMediaAdmin extends MediaAdmin
+    {
+        protected function configureRoutes(RouteCollection $collection)
+        {
+            $collection->restore('delete');
+        }
+    }
+
+
 Persistent parameters
 ---------------------
 

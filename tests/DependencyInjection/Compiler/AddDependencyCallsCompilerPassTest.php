@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection;
+namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
@@ -26,13 +26,11 @@ use Sonata\DoctrinePHPCRAdminBundle\Route\PathInfoBuilderSlashes;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Bundle\FrameworkBundle\Translation\TranslatorInterface;
-use Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory;
 use Symfony\Bundle\FrameworkBundle\Validator\Validator;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -41,6 +39,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Validator\ContainerConstraintValidatorFactory;
 
 /**
  * @author Tiago Garcia
@@ -63,8 +62,9 @@ class AddDependencyCallsCompilerPassTest extends TestCase
 
     public function testTranslatorDisabled(): void
     {
-        $this->expectException(
-            \RuntimeException::class, 'The "translator" service is not yet enabled.
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'The "translator" service is not yet enabled.
                 It\'s required by SonataAdmin to display all labels properly.
 
                 To learn how to enable the translator service please visit:
@@ -186,7 +186,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertContains('sonata_post_admin', $adminGroups['sonata_group_one']['items'][0]['admin']);
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['items']);
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['item_adds']);
-        $this->assertFalse(\in_array('sonata_article_admin', $adminGroups['sonata_group_one']['items'], true));
+        $this->assertNotContains('sonata_article_admin', $adminGroups['sonata_group_one']['items']);
         $this->assertContains('ROLE_ONE', $adminGroups['sonata_group_one']['roles']);
 
         $this->assertArrayHasKey('sonata_group_two', $adminGroups);
@@ -204,7 +204,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertContains('sonata_news_admin', $adminClasses[News::class]);
         $newsRouteBuilderMethodCall = current(array_filter(
             $container->getDefinition('sonata_news_admin')->getMethodCalls(),
-            function ($element) {
+            static function (array $element): bool {
                 return 'setRouteBuilder' === $element[0];
             }
         ));
@@ -215,7 +215,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         );
         $articleRouteBuilderMethodCall = current(array_filter(
             $container->getDefinition('sonata_article_admin')->getMethodCalls(),
-            function ($element) {
+            static function (array $element): bool {
                 return 'setRouteBuilder' === $element[0];
             }
         ));
@@ -387,7 +387,8 @@ class AddDependencyCallsCompilerPassTest extends TestCase
 
         $compilerPass = new AddDependencyCallsCompilerPass();
 
-        $this->expectException(\RuntimeException::class, 'You can\'t use "on_top" option with multiple same name groups.');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You can\'t use "on_top" option with multiple same name groups.');
 
         $compilerPass->process($container);
     }
@@ -423,7 +424,8 @@ class AddDependencyCallsCompilerPassTest extends TestCase
 
         $compilerPass = new AddDependencyCallsCompilerPass();
 
-        $this->expectException(\RuntimeException::class, 'You can\'t use "on_top" option with multiple same name groups.');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You can\'t use "on_top" option with multiple same name groups.');
 
         $compilerPass->process($container);
     }
@@ -444,7 +446,8 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             ->setArguments(['', ReportOne::class, CRUDController::class])
             ->addTag('sonata.admin', ['group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true]);
 
-        $this->expectException(\RuntimeException::class, 'You can\'t use "on_top" option with multiple same name groups.');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You can\'t use "on_top" option with multiple same name groups.');
 
         $compilerPass->process($container);
     }
@@ -465,7 +468,8 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             ->setArguments(['', ReportOne::class, CRUDController::class])
             ->addTag('sonata.admin', ['group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => false]);
 
-        $this->expectException(\RuntimeException::class, 'You can\'t use "on_top" option with multiple same name groups.');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You can\'t use "on_top" option with multiple same name groups.');
 
         $compilerPass->process($container);
     }
@@ -516,20 +520,14 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             ->setArguments(['', Post::class, ''])
             ->setAbstract(true);
 
-        // NEXT_MAJOR: Simplify this when dropping sf < 3.3
-        $adminDefinition = class_exists(ChildDefinition::class) ?
-            new ChildDefinition('sonata_abstract_post_admin') :
-            new DefinitionDecorator('sonata_abstract_post_admin');
+        $adminDefinition = new ChildDefinition('sonata_abstract_post_admin');
         $adminDefinition
             ->setPublic(true)
             ->setClass(MockAbstractServiceAdmin::class)
             ->setArguments([0 => 'extra_argument_1'])
             ->addTag('sonata.admin', ['group' => 'sonata_post_one_group', 'manager_type' => 'orm']);
 
-        // NEXT_MAJOR: Simplify this when dropping sf < 3.3
-        $adminTwoDefinition = class_exists(ChildDefinition::class) ?
-            new ChildDefinition('sonata_abstract_post_admin') :
-            new DefinitionDecorator('sonata_abstract_post_admin');
+        $adminTwoDefinition = new ChildDefinition('sonata_abstract_post_admin');
         $adminTwoDefinition
             ->setPublic(true)
             ->setClass(MockAbstractServiceAdmin::class)
@@ -571,7 +569,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
      */
     protected function getConfig()
     {
-        $config = [
+        return [
             'dashboard' => [
                 'groups' => [
                     'sonata_group_one' => [
@@ -628,8 +626,6 @@ class AddDependencyCallsCompilerPassTest extends TestCase
                 ],
             ],
         ];
-
-        return $config;
     }
 
     private function getContainer(): ContainerBuilder
@@ -657,7 +653,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             ->setClass(Validator::class);
         $container
             ->register('validator.validator_factory')
-            ->setClass(ConstraintValidatorFactory::class);
+            ->setClass(ContainerConstraintValidatorFactory::class);
         $container
             ->register('router')
             ->setClass(RouterInterface::class);

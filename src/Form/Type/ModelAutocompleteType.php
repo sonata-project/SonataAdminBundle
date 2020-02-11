@@ -27,6 +27,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * This type defines a standard text field with autocomplete feature.
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  * @author Florent Denis <dflorent.pokap@gmail.com>
  */
@@ -44,8 +46,6 @@ class ModelAutocompleteType extends AbstractType
         $builder->setAttribute(
             'disabled',
             $options['disabled']
-            // NEXT_MAJOR: Remove this when bumping Symfony constraint to 2.8+
-            || (\array_key_exists('read_only', $options) && $options['read_only'])
         );
         $builder->setAttribute('to_string_callback', $options['to_string_callback']);
         $builder->setAttribute('target_admin_access_action', $options['target_admin_access_action']);
@@ -106,7 +106,7 @@ class ModelAutocompleteType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $compound = function (Options $options) {
+        $compound = static function (Options $options) {
             return $options['multiple'];
         };
 

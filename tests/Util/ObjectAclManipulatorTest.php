@@ -43,7 +43,7 @@ class ObjectAclManipulatorTest extends TestCase
     {
         $this->admin->getSecurityHandler()->shouldBeCalled();
         $this->admin->getCode()->shouldBeCalled()->willReturn('test');
-        $this->output->writeln(Argument::allof(
+        $this->output->writeln(Argument::allOf(
             Argument::containingString('ignoring'),
             Argument::containingString('test')
         ))->shouldBeCalled();
@@ -67,7 +67,7 @@ class ObjectAclManipulatorTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(false, true);
         $acl = $this->prophesize(AclInterface::class)->reveal();
-        $acls->offsetGet(Argument::Type(ObjectIdentityInterface::class))
+        $acls->offsetGet(Argument::type(ObjectIdentityInterface::class))
             ->shouldBeCalled()
             ->willReturn($acl);
         $securityHandler->findObjectAcls($this->oids)->shouldBeCalled()->willReturn($acls->reveal());
@@ -76,7 +76,7 @@ class ObjectAclManipulatorTest extends TestCase
         $securityHandler->buildSecurityInformation($this->admin)->shouldBeCalled()->willReturn([]);
         $securityHandler->addObjectClassAces($acl, [])->shouldBeCalled();
         $securityHandler->updateAcl($acl)->shouldBeCalled()->willThrow(new \Exception('test exception'));
-        $this->output->writeln(Argument::allof(
+        $this->output->writeln(Argument::allOf(
             Argument::containingString('ignoring'),
             Argument::containingString('test exception')
         ))->shouldBeCalled();

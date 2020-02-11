@@ -33,7 +33,7 @@ class ModelToIdTransformerTest extends TestCase
         $this->modelManager
                 ->expects($this->exactly(2))
                 ->method('find')
-                ->will($this->returnValue(true));
+                ->willReturn(true);
 
         $this->assertFalse(\in_array(false, ['0', 0], true));
 
@@ -57,7 +57,7 @@ class ModelToIdTransformerTest extends TestCase
     {
         $transformer = new ModelToIdTransformer($this->modelManager, 'TEST2');
 
-        $this->modelManager->expects($this->any())->method('find');
+        $this->modelManager->method('find');
 
         $this->assertSame($expected, $transformer->reverseTransform($value));
     }
@@ -76,7 +76,7 @@ class ModelToIdTransformerTest extends TestCase
     {
         $this->modelManager->expects($this->once())
             ->method('getNormalizedIdentifier')
-            ->will($this->returnValue(123));
+            ->willReturn(123);
 
         $transformer = new ModelToIdTransformer($this->modelManager, 'TEST');
 
