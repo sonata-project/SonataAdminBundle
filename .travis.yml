@@ -17,11 +17,6 @@ php:
 
 dist: xenial
 
-addons:
-  apt:
-    packages:
-      - libxml2-utils
-
 cache:
   pip: true
   directories:
@@ -38,8 +33,6 @@ env:
 matrix:
   fast_finish: true
   include:
-    - php: '7.3'
-      env: TARGET=lint
     - php: '7.2'
       env: COMPOSER_FLAGS="--prefer-lowest"
     - php: '7.3'
