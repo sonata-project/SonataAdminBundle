@@ -39,8 +39,6 @@ matrix:
   fast_finish: true
   include:
     - php: '7.3'
-      env: TARGET=docs
-    - php: '7.3'
       env: TARGET=lint
     - php: '7.2'
       env: COMPOSER_FLAGS="--prefer-lowest"
