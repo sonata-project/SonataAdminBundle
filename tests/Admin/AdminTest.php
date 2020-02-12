@@ -1617,19 +1617,20 @@ class AdminTest extends TestCase
         $formBuild = $this->createMock(FormBuilder::class);
         $formBuild->expects($this->once())
                 ->method('addEventListener')
-                ->with($this->identicalTo(FormEvents::POST_SUBMIT),
-                        $this->callback(static function ($callback) use ($testAdminPreValidate, $event): bool {
-                            if (\is_callable($callback)) {
-                                $closure = $callback->bindTo($testAdminPreValidate);
-                                $closure($event);
+                ->with(
+                    $this->identicalTo(FormEvents::POST_SUBMIT),
+                    $this->callback(static function ($callback) use ($testAdminPreValidate, $event): bool {
+                        if (\is_callable($callback)) {
+                            $closure = $callback->bindTo($testAdminPreValidate);
+                            $closure($event);
 
-                                return true;
-                            }
+                            return true;
+                        }
 
-                            return false;
-                        }),
-                        $this->greaterThan(0)
-                    );
+                        return false;
+                    }),
+                    $this->greaterThan(0)
+                );
 
         $formContractor = $this->createMock(FormContractorInterface::class);
         $formContractor
