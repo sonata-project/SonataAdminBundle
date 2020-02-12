@@ -205,7 +205,6 @@ class FormTypeFieldExtensionTest extends TestCase
         $this->assertArrayHasKey('sonata_admin', $formView->vars);
     }
 
-  
     public function testbuildViewCollectionField(): void
     {
         $eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
@@ -283,7 +282,7 @@ class FormTypeFieldExtensionTest extends TestCase
 
         $this->assertSame($expected, $formView->vars['block_prefixes']);
     }
-  
+
     /**
      * @group legacy
      */
