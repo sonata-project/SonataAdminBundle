@@ -1517,12 +1517,12 @@ EOT
         $this->assertSame(
             $this->removeExtraWhitespace($expected),
             $this->removeExtraWhitespace(
-                    $this->twigExtension->renderViewElement(
+                $this->twigExtension->renderViewElement(
                         $this->environment,
                         $this->fieldDescription,
                         $this->object
                     )
-                )
+            )
         );
     }
 
