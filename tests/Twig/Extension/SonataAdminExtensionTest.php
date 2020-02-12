@@ -1518,10 +1518,10 @@ EOT
             $this->removeExtraWhitespace($expected),
             $this->removeExtraWhitespace(
                 $this->twigExtension->renderViewElement(
-                        $this->environment,
-                        $this->fieldDescription,
-                        $this->object
-                    )
+                    $this->environment,
+                    $this->fieldDescription,
+                    $this->object
+                )
             )
         );
     }
