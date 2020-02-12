@@ -55,7 +55,8 @@ class AdminVoter implements VoterInterface
                 'The %s() method is deprecated since version 3.31.
                 Pass a Symfony\Component\HttpFoundation\RequestStack
                 in the constructor instead.',
-            __METHOD__),
+                __METHOD__
+            ),
             E_USER_DEPRECATED
         );
 

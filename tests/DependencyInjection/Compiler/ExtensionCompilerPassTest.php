@@ -88,7 +88,8 @@ class ExtensionCompilerPassTest extends TestCase
         $extensionMap = $container->getParameter($this->root.'.extension.map');
 
         $method = new \ReflectionMethod(
-            ExtensionCompilerPass::class, 'flattenExtensionConfiguration'
+            ExtensionCompilerPass::class,
+            'flattenExtensionConfiguration'
         );
 
         $method->setAccessible(true);
@@ -119,7 +120,8 @@ class ExtensionCompilerPassTest extends TestCase
         $extensionMap = $container->getParameter($this->root.'.extension.map');
 
         $method = new \ReflectionMethod(
-            ExtensionCompilerPass::class, 'flattenExtensionConfiguration'
+            ExtensionCompilerPass::class,
+            'flattenExtensionConfiguration'
         );
 
         $method->setAccessible(true);

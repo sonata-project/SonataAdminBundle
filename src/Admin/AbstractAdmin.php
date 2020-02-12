@@ -986,7 +986,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', static::class));
             }
 
-            $this->cachedBaseRouteName = sprintf('admin_%s%s_%s',
+            $this->cachedBaseRouteName = sprintf(
+                'admin_%s%s_%s',
                 empty($matches[1]) ? '' : $this->urlize($matches[1]).'_',
                 $this->urlize($matches[3]),
                 $this->urlize($matches[5])
@@ -1823,7 +1824,8 @@ EOT;
 
             throw new \RuntimeException(sprintf(
                 'Circular reference detected! The child admin `%s` is already in the parent tree of the `%s` admin.',
-                $child->getCode(), $this->getCode()
+                $child->getCode(),
+                $this->getCode()
             ));
         }
 
