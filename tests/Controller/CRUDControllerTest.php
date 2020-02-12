@@ -324,31 +324,27 @@ class CRUDControllerTest extends TestCase
         $this->admin
             ->method('generateUrl')
             ->willReturnCallback(
-
-                    static function ($name, array $parameters = []) {
-                        $result = $name;
-                        if (!empty($parameters)) {
-                            $result .= '?'.http_build_query($parameters);
-                        }
-
-                        return $result;
+                static function ($name, array $parameters = []) {
+                    $result = $name;
+                    if (!empty($parameters)) {
+                        $result .= '?'.http_build_query($parameters);
                     }
 
+                    return $result;
+                }
             );
 
         $this->admin
             ->method('generateObjectUrl')
             ->willReturnCallback(
-
-                    static function (string $name, $object, array $parameters = []): string {
-                        $result = \get_class($object).'_'.$name;
-                        if (!empty($parameters)) {
-                            $result .= '?'.http_build_query($parameters);
-                        }
-
-                        return $result;
+                static function (string $name, $object, array $parameters = []): string {
+                    $result = \get_class($object).'_'.$name;
+                    if (!empty($parameters)) {
+                        $result .= '?'.http_build_query($parameters);
                     }
 
+                    return $result;
+                }
             );
 
         $this->admin

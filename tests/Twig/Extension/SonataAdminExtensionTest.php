@@ -163,7 +163,11 @@ class SonataAdminExtensionTest extends TestCase
         $this->securityChecker->isGranted(Argument::type('string'), null)->willReturn(true);
 
         $this->twigExtension = new SonataAdminExtension(
-            $this->pool, $this->logger, $this->translator, $this->container->reveal(), $this->securityChecker->reveal()
+            $this->pool,
+            $this->logger,
+            $this->translator,
+            $this->container->reveal(),
+            $this->securityChecker->reveal()
         );
         $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
 
@@ -1511,15 +1515,15 @@ EOT
             });
 
         $this->assertSame(
-                $this->removeExtraWhitespace($expected),
-                $this->removeExtraWhitespace(
+            $this->removeExtraWhitespace($expected),
+            $this->removeExtraWhitespace(
                     $this->twigExtension->renderViewElement(
                         $this->environment,
                         $this->fieldDescription,
                         $this->object
                     )
                 )
-            );
+        );
     }
 
     public function getRenderViewElementTests()
@@ -2182,7 +2186,8 @@ EOT
 
         $this->environment->enableDebug();
         $this->assertSame(
-            $this->removeExtraWhitespace(<<<'EOT'
+            $this->removeExtraWhitespace(
+                <<<'EOT'
 <!-- START
     fieldName: fd_name
     template: @SonataAdmin/CRUD/base_list_field.html.twig
@@ -2226,7 +2231,8 @@ EOT
         $this->environment->enableDebug();
 
         $this->assertSame(
-            $this->removeExtraWhitespace(<<<'EOT'
+            $this->removeExtraWhitespace(
+                <<<'EOT'
 <!-- START
     fieldName: fd_name
     template: @SonataAdmin/CRUD/base_list_field.html.twig
