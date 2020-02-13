@@ -292,6 +292,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
             ['req_param_name_page_number', null, '_page'],
             ['to_string_callback', null, null],
             ['target_admin_access_action', null, 'list'],
+            ['response_string_callback', null, null],
         ]);
     }
 
@@ -312,6 +313,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
             ['items_per_page', null, 10],
             ['req_param_name_page_number', null, '_page'],
             ['target_admin_access_action', null, 'list'],
+            ['response_string_callback', null, null],
         ]);
     }
 
@@ -332,6 +334,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
             ['items_per_page', null, 10],
             ['req_param_name_page_number', null, '_page'],
             ['target_admin_access_action', null, 'list'],
+            ['response_string_callback', null, null],
         ]);
     }
 }
