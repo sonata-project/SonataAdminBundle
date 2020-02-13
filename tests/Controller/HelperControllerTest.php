@@ -597,6 +597,7 @@ class HelperControllerTest extends TestCase
         $formConfig->getAttribute('req_param_name_page_number')->willReturn('_page');
         $formConfig->getAttribute('to_string_callback')->willReturn(null);
         $formConfig->getAttribute('target_admin_access_action')->willReturn('list');
+        $formConfig->getAttribute('response_item_callback')->willReturn(null);
     }
 
     private function configureFormConfigComplexProperty(string $field): void
@@ -616,6 +617,7 @@ class HelperControllerTest extends TestCase
         $formConfig->getAttribute('req_param_name_page_number')->willReturn('_page');
         $formConfig->getAttribute('to_string_callback')->willReturn(null);
         $formConfig->getAttribute('target_admin_access_action')->willReturn('list');
+        $formConfig->getAttribute('response_item_callback')->willReturn(null);
     }
 
     private function configureFormConfigComplexPropertyArray(string $field): void
@@ -635,6 +637,7 @@ class HelperControllerTest extends TestCase
         $formConfig->getAttribute('req_param_name_page_number')->willReturn('_page');
         $formConfig->getAttribute('to_string_callback')->willReturn(null);
         $formConfig->getAttribute('target_admin_access_action')->willReturn('list');
+        $formConfig->getAttribute('response_item_callback')->willReturn(null);
     }
 
     private function configureFormRenderer()
