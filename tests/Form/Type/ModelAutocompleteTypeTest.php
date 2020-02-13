@@ -65,6 +65,7 @@ class ModelAutocompleteTypeTest extends TypeTestCase
         $this->assertSame('_per_page', $options['req_param_name_items_per_page']);
 
         $this->assertSame('list', $options['target_admin_access_action']);
+        $this->assertSame(null, $options['response_item_callback']);
 
         $this->assertSame('', $options['container_css_class']);
         $this->assertSame('', $options['dropdown_css_class']);
