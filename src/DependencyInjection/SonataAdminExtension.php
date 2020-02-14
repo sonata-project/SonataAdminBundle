@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\DependencyInjection;
 
 use JMS\DiExtraBundle\DependencyInjection\Configuration as JMSDiExtraBundleDependencyInjectionConfiguration;
+use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -179,7 +181,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             $container->removeDefinition('sonata.admin.translator.extractor.jms_translator_bundle');
         }
 
-        //remove non-Mopa compatibility layer
+        // remove non-Mopa compatibility layer
         if (isset($bundles['MopaBootstrapBundle'])) {
             $container->removeDefinition('sonata.admin.form.extension.field.mopa');
         }
@@ -193,6 +195,10 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $container->setParameter('sonata.admin.configuration.translate_group_label', $config['translate_group_label']);
 
         $this->replacePropertyAccessor($container);
+
+        $container
+            ->registerForAutoconfiguration(ModelManagerInterface::class)
+            ->addTag(ModelManagerCompilerPass::MANAGER_TAG);
     }
 
     /**
