@@ -76,7 +76,7 @@ final class AppKernel extends Kernel
             'secret' => 'MySecret',
             'fragments' => ['enabled' => true],
             'form' => ['enabled' => true],
-            'session' => ['handler_id' => null, 'storage_id' => 'session.storage.mock_file', 'name' => 'MOCKSESSID'],
+            'session' => ['handler_id' => 'session.handler.native_file', 'storage_id' => 'session.storage.mock_file', 'name' => 'MOCKSESSID'],
             'assets' => null,
             'test' => true,
         ]);
