@@ -26,7 +26,7 @@ file that was distributed with this source code.
                                                     class="required"
                                                 {% endif %}
                                             >
-                                                {{ nested_field.vars['sonata_admin'].admin.trans(nested_field.vars.label) }}
+                                                {{ nested_field.vars.label|trans({}, nested_field.vars['sonata_admin'].admin.translationDomain) }}
                                             </th>
                                         {% endif %}
                                     {% endfor %}
