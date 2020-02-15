@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
@@ -44,9 +43,6 @@ final class TemplateRegistryExtension extends AbstractExtension
         return [
             new TwigFunction('get_admin_template', [$this, 'getAdminTemplate']),
             new TwigFunction('get_global_template', [$this, 'getGlobalTemplate']),
-
-            // NEXT MAJOR: Remove this line
-            new TwigFunction('get_admin_pool_template', [$this, 'getPoolTemplate'], ['deprecated' => true]),
         ];
     }
 
@@ -59,19 +55,7 @@ final class TemplateRegistryExtension extends AbstractExtension
      */
     public function getAdminTemplate($name, $adminCode): ?string
     {
-        // NEXT_MAJOR: Remove this line and use commented line below it instead
-        return $this->getAdmin($adminCode)->getTemplate($name);
-        // return $this->getTemplateRegistry($adminCode)->getTemplate($name);
-    }
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.34, to be removed in 4.0. Use getGlobalTemplate instead.
-     *
-     * @param string $name
-     */
-    public function getPoolTemplate($name): ?string
-    {
-        return $this->getGlobalTemplate($name);
+        return $this->getTemplateRegistry($adminCode)->getTemplate($name);
     }
 
     /**
@@ -95,21 +79,5 @@ final class TemplateRegistryExtension extends AbstractExtension
         }
 
         throw new ServiceNotFoundException($serviceId);
-    }
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
-     *
-     * @throws ServiceNotFoundException
-     * @throws ServiceCircularReferenceException
-     */
-    private function getAdmin(string $adminCode): AdminInterface
-    {
-        $admin = $this->container->get($adminCode);
-        if ($admin instanceof AdminInterface) {
-            return $admin;
-        }
-
-        throw new ServiceNotFoundException($adminCode);
     }
 }

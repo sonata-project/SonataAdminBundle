@@ -18,6 +18,8 @@ use Prophecy\Argument;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Templating\TemplateRegistry;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,7 +51,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->twig = new Environment(new ArrayLoader(['template' => 'renderedTemplate']));
+        $this->twig = new Environment(new ArrayLoader(['short_object_description' => 'renderedTemplate']));
         $this->pool = $this->prophesize(Pool::class);
         $this->admin = $this->prophesize(AbstractAdmin::class);
         $this->pool->getInstance(Argument::any())->willReturn($this->admin->reveal());
@@ -110,6 +112,13 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
     public function testGetShortObjectDescriptionActionObject(): void
     {
+        $templateRegistry = new TemplateRegistry([
+            'short_object_description' => 'short_object_description',
+        ]);
+        $container = new Container();
+        $container->set('sonata.post.admin.template_registry', $templateRegistry);
+        $this->pool->getContainer()->willReturn($container);
+
         $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
@@ -120,8 +129,8 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
         $this->admin->setUniqid('asdasd123')->shouldBeCalled();
         $this->admin->getObject(42)->willReturn($object);
-        $this->admin->getTemplate('short_object_description')->willReturn('template');
         $this->admin->toString($object)->willReturn('bar');
+        $this->admin->getCode()->willReturn('sonata.post.admin');
 
         $response = ($this->action)($request);
 
@@ -161,7 +170,6 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->admin->setUniqid('asdasd123')->shouldBeCalled();
         $this->admin->id($object)->willReturn(42);
         $this->admin->getObject(42)->willReturn($object);
-        $this->admin->getTemplate('short_object_description')->willReturn('template');
         $this->admin->toString($object)->willReturn('bar');
 
         $response = ($this->action)($request);
