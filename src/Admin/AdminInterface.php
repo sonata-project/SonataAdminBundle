@@ -114,13 +114,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function setTemplate($name, $template);
 
     /**
-     * Get all templates.
-     *
-     * @return array
-     */
-    public function getTemplates();
-
-    /**
      * @return \Sonata\AdminBundle\Model\ModelManagerInterface
      */
     public function getModelManager();
@@ -469,17 +462,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @return bool
      */
     public function isChild();
-
-    /**
-     * Returns template.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.35. To be removed in 4.0. Use TemplateRegistry services instead
-     *
-     * @param string $name
-     *
-     * @return string|null
-     */
-    public function getTemplate($name);
 
     /**
      * Set the translation domain.

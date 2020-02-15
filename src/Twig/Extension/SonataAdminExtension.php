@@ -29,7 +29,6 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
-use Twig\Template;
 use Twig\TemplateWrapper;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -168,9 +167,7 @@ final class SonataAdminExtension extends AbstractExtension
     ) {
         $template = $this->getTemplate(
             $fieldDescription,
-            // NEXT_MAJOR: Remove this line and use commented line below instead
-            $fieldDescription->getAdmin()->getTemplate('base_list_field'),
-            //$this->getTemplateRegistry($fieldDescription->getAdmin()->getCode())->getTemplate('base_list_field'),
+            $this->getTemplateRegistry($fieldDescription->getAdmin()->getCode())->getTemplate('base_list_field'),
             $environment
         );
 

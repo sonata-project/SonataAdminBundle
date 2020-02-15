@@ -37,7 +37,6 @@ class DashboardActionTest extends TestCase
         $templateRegistry->getTemplate('layout')->willReturn('layout.html');
 
         $pool = new Pool($container, 'title', 'logo.png');
-        $pool->setTemplateRegistry($templateRegistry->reveal());
 
         $twig = $this->createMock(Environment::class);
 
