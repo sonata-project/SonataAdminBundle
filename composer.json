@@ -22,7 +22,7 @@
         }
     ],
     "require": {
-        "php": "^7.3",
+        "php": "^7.1.3",
         "doctrine/common": "^2.7",
         "doctrine/inflector": "^1.1",
         "knplabs/knp-menu-bundle": "^2.2.2",
