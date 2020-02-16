@@ -439,7 +439,6 @@ class CRUDControllerTest extends TestCase
         $this->protectedTestedMethods['configure']->invoke($this->controller);
 
         $this->assertSame(123456, $uniqueId);
-        $this->assertAttributeSame($this->admin, 'admin', $this->controller);
     }
 
     public function testConfigureChild(): void
@@ -467,7 +466,6 @@ class CRUDControllerTest extends TestCase
         $this->protectedTestedMethods['configure']->invoke($this->controller);
 
         $this->assertSame(123456, $uniqueId);
-        $this->assertAttributeInstanceOf(\get_class($adminParent), 'admin', $this->controller);
     }
 
     public function testConfigureWithException(): void

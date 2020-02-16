@@ -32,6 +32,7 @@ use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\DefaultRouteGenerator;
@@ -1440,14 +1441,17 @@ class AdminTest extends TestCase
 
     public function testSetFilterPersister(): void
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin = new class('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle\Controller\PostAdminController') extends PostAdmin {
+            public function persistFilters(): bool
+            {
+                return $this->persistFilters;
+            }
+        };
 
-        $filterPersister = $this->createMock('Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface');
+        $filterPersister = $this->createMock(FilterPersisterInterface::class);
 
-        $this->assertAttributeSame(null, 'filterPersister', $admin);
         $admin->setFilterPersister($filterPersister);
-        $this->assertAttributeSame($filterPersister, 'filterPersister', $admin);
-        $this->assertAttributeSame(true, 'persistFilters', $admin);
+        $this->assertTrue($admin->persistFilters());
     }
 
     public function testGetRootCode(): void
@@ -1578,7 +1582,7 @@ class AdminTest extends TestCase
 
         $tagAdmin->getForm();
 
-        $this->assertInternalType('array', $tag->getPosts());
+        $this->assertIsArray($tag->getPosts());
         $this->assertCount(2, $tag->getPosts());
         $this->assertContains($post, $tag->getPosts());
     }
