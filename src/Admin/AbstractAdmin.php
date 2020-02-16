@@ -1148,7 +1148,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $actions = $this->configureBatchActions($actions);
 
         foreach ($this->getExtensions() as $extension) {
-            // TODO: remove method check in next major release
+            // NEXT_MAJOR: remove method check
             if (method_exists($extension, 'configureBatchActions')) {
                 $actions = $extension->configureBatchActions($this, $actions);
             }
@@ -2750,7 +2750,7 @@ EOT;
         $list = $this->configureActionButtons($action, $object);
 
         foreach ($this->getExtensions() as $extension) {
-            // TODO: remove method check in next major release
+            // NEXT_MAJOR: remove method check
             if (method_exists($extension, 'configureActionButtons')) {
                 $list = $extension->configureActionButtons($this, $list, $action, $object);
             }
@@ -2871,7 +2871,7 @@ EOT;
         $this->configureDefaultFilterValues($defaultFilterValues);
 
         foreach ($this->getExtensions() as $extension) {
-            // NEXT_MAJOR: remove method check in next major release
+            // NEXT_MAJOR: remove method check
             if (method_exists($extension, 'configureDefaultFilterValues')) {
                 $extension->configureDefaultFilterValues($this, $defaultFilterValues);
             }
@@ -2929,7 +2929,7 @@ EOT;
     protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
         // Use configureSideMenu not to mess with previous overrides
-        // TODO remove once deprecation period is over
+        // NEXT_MAJOR: remove this line
         $this->configureSideMenu($menu, $action, $childAdmin);
     }
 
@@ -3132,7 +3132,7 @@ EOT;
         ], $this->getAccessMapping());
 
         foreach ($this->extensions as $extension) {
-            // TODO: remove method check in next major release
+            // NEXT_MAJOR: remove method check
             if (method_exists($extension, 'getAccessMapping')) {
                 $access = array_merge($access, $extension->getAccessMapping($this));
             }

@@ -654,7 +654,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Check the current request is given route or not.
      *
-     * TODO: uncomment this method before releasing 4.0
+     * NEXT_MAJOR: uncomment this method
      *
      * ```
      * $this->isCurrentRoute('create'); // is create page?
@@ -678,13 +678,13 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     // public function configureActionButtons(string $action, ?object $object = null): array;
 
-    //TODO: uncomment this method for 4.0
+    // NEXT_MAJOR: uncomment this method for 4.0
     /*
      * Returns the result link for an object.
      */
     //public function getSearchResultLink(object $object): ?string
 
-//    TODO: uncomment this method in 4.0
+//    NEXT_MAJOR: uncomment this method in 4.0
 //    /**
 //     * Setting to true will enable mosaic button for the admin screen.
 //     * Setting to false will hide mosaic button for the admin screen.

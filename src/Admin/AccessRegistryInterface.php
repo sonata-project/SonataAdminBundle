@@ -40,7 +40,7 @@ interface AccessRegistryInterface
     /*
      * Hook to handle access authorization, without throwing an exception.
      *
-     * TODO: uncomment this method for next major release
+     * NEXT_MAJOR: uncomment this method
      */
      // public function hasAccess(string $action, ?object $object = null): bool;
 }

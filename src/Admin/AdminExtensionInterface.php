@@ -105,13 +105,13 @@ interface AdminExtensionInterface
     /**
      * Return the controller access mapping.
      */
-    // TODO: Uncomment in next major release
+    // NEXT_MAJOR: Uncomment this method
     // public function getAccessMapping(AdminInterface $admin): array;
 
     /**
      * Returns the list of batch actions.
      */
-    // TODO: Uncomment in next major release
+    // NEXT_MAJOR: Uncomment this method
     // public function configureBatchActions(AdminInterface $admin, array $actions): array;
 
     /**
@@ -119,7 +119,7 @@ interface AdminExtensionInterface
      *
      * @return string[]
      */
-    // TODO: Uncomment in next major release
+    // NEXT_MAJOR: Uncomment this method
     // public function configureExportFields(AdminInterface $admin, array $fields): array;
 
     /**
@@ -155,11 +155,11 @@ interface AdminExtensionInterface
     /*
      * Get all action buttons for an action
      */
-    // TODO: Uncomment in next major release
+    // NEXT_MAJOR: Uncomment this method
     // public function configureActionButtons(AdminInterface $admin, array $list, string $action, object $object): array;
 
     /*
-     * NEXT_MAJOR: Uncomment in next major release
+     * NEXT_MAJOR: Uncomment this method
      *
      * Returns a list of default filters
      */
