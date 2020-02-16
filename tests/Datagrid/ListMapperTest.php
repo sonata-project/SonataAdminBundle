@@ -168,7 +168,7 @@ class ListMapperTest extends TestCase
         $this->assertFalse($this->listMapper->has('fooName'));
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('{^Value for "identifier" option must be boolean, [^]+ given.$}');
+        $this->expectExceptionMessageMatches('{^Value for "identifier" option must be boolean, [^]+ given.$}');
 
         $this->listMapper->add('fooName', null, ['identifier' => $value]);
     }
