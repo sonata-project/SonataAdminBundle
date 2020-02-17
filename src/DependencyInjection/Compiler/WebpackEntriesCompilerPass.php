@@ -34,7 +34,7 @@ final class WebpackEntriesCompilerPass implements CompilerPassInterface
             $entries = array_merge($entries, $config['builds']);
         }
 
-        if (!$entries) {
+        if (0 === count($entries)) {
             return;
         }
 
