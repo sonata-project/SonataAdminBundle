@@ -4189,17 +4189,6 @@ class CRUDControllerTest extends TestCase
         $this->assertSame('bar', $this->request->request->get('foo'));
     }
 
-    public function testItThrowsWhenCallingAnUndefinedMethod(): void
-    {
-        $this->expectException(
-            \LogicException::class
-        );
-        $this->expectExceptionMessage(
-            'Call to undefined method Sonata\AdminBundle\Controller\CRUDController::doesNotExist'
-        );
-        $this->controller->doesNotExist();
-    }
-
     /**
      * @expectedDeprecation Method Sonata\AdminBundle\Controller\CRUDController::render has been renamed to Sonata\AdminBundle\Controller\CRUDController::renderWithExtraParams.
      */
