@@ -56,7 +56,7 @@ final class ModelManagerCompilerPassTest extends TestCase
      *
      * @group legacy
      *
-     * @expectedDeprecation Not setting the "sonata.admin.manager" tag on the "sonata.admin.manager.test" service is deprecated since sonata-project/admin-bundle 3.x.
+     * @expectedDeprecation Not setting the "sonata.admin.manager" tag on the "sonata.admin.manager.test" service is deprecated since sonata-project/admin-bundle 3.60.
      */
     public function testProcessWithUntaggedManagerDefinition(): void
     {
