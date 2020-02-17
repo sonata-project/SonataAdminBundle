@@ -286,7 +286,7 @@ class CRUDController implements ContainerAwareInterface
     /**
      * Edit action.
      *
-     * @param int|string|null $id
+     * @param int|string|null $deprecatedId
      *
      * @throws NotFoundHttpException If the object does not exist
      * @throws \RuntimeException     If no editable field is defined
@@ -294,8 +294,15 @@ class CRUDController implements ContainerAwareInterface
      *
      * @return Response|RedirectResponse
      */
-    public function editAction($id = null) // NEXT_MAJOR: Remove the unused $id parameter
+    public function editAction($deprecatedId = null) // NEXT_MAJOR: Remove the unused $id parameter
     {
+        if (isset(\func_get_args()[0])) {
+            @trigger_error(
+                'The $id param will be remove in 4.0, use $this->admin->getIdParameter() instead',
+                E_USER_DEPRECATED
+            );
+        }
+
         // the key used to lookup the template
         $templateKey = 'edit';
 
@@ -665,15 +672,22 @@ class CRUDController implements ContainerAwareInterface
     /**
      * Show action.
      *
-     * @param int|string|null $id
+     * @param int|string|null $deprecatedId
      *
      * @throws NotFoundHttpException If the object does not exist
      * @throws AccessDeniedException If access is not granted
      *
      * @return Response
      */
-    public function showAction($id = null) // NEXT_MAJOR: Remove the unused $id parameter
+    public function showAction($deprecatedId = null) // NEXT_MAJOR: Remove the unused $id parameter
     {
+        if (isset(\func_get_args()[0])) {
+            @trigger_error(
+                'The $id param will be remove in 4.0, use $this->admin->getIdParameter() instead',
+                E_USER_DEPRECATED
+            );
+        }
+
         $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
@@ -720,15 +734,22 @@ class CRUDController implements ContainerAwareInterface
     /**
      * Show history revisions for object.
      *
-     * @param int|string|null $id
+     * @param int|string|null $deprecatedId
      *
      * @throws AccessDeniedException If access is not granted
      * @throws NotFoundHttpException If the object does not exist or the audit reader is not available
      *
      * @return Response
      */
-    public function historyAction($id = null) // NEXT_MAJOR: Remove the unused $id parameter
+    public function historyAction($deprecatedId = null) // NEXT_MAJOR: Remove the unused $id parameter
     {
+        if (isset(\func_get_args()[0])) {
+            @trigger_error(
+                'The $id param will be remove in 4.0, use $this->admin->getIdParameter() instead',
+                E_USER_DEPRECATED
+            );
+        }
+
         $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
@@ -965,15 +986,22 @@ class CRUDController implements ContainerAwareInterface
     /**
      * Returns the Response object associated to the acl action.
      *
-     * @param int|string|null $id
+     * @param int|string|null $deprecatedId
      *
      * @throws AccessDeniedException If access is not granted
      * @throws NotFoundHttpException If the object does not exist or the ACL is not enabled
      *
      * @return Response|RedirectResponse
      */
-    public function aclAction($id = null) // NEXT_MAJOR: Remove the unused $id parameter
+    public function aclAction($deprecatedId = null) // NEXT_MAJOR: Remove the unused $id parameter
     {
+        if (isset(\func_get_args()[0])) {
+            @trigger_error(
+                'The $id param will be remove in 4.0, use $this->admin->getIdParameter() instead',
+                E_USER_DEPRECATED
+            );
+        }
+
         if (!$this->admin->isAclEnabled()) {
             throw $this->createNotFoundException('ACL are not enabled for this admin');
         }
