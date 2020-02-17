@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Definition;
 /**
  * @group foo
  */
-class WebpackEntriesCompilerPassTest extends TestCase
+final class WebpackEntriesCompilerPassTest extends TestCase
 {
     private $container;
 
