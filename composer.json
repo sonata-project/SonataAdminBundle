@@ -50,7 +50,6 @@
         "symfony/security-bundle": "^4.3",
         "symfony/security-core": "^4.3",
         "symfony/security-csrf": "^4.3",
-        "symfony/templating": "^4.3",
         "symfony/translation": "^4.3",
         "symfony/twig-bridge": "^4.3",
         "symfony/twig-bundle": "^4.3",

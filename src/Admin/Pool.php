@@ -245,10 +245,10 @@ class Pool
 
             if (!$admin->hasChild($code)) {
                 throw new \InvalidArgumentException(sprintf(
-                   'Argument 1 passed to %s() must contain a valid admin hierarchy, "%s" is not a valid child for "%s"',
-                   __METHOD__,
-                   $code,
-                   $admin->getCode()
+                    'Argument 1 passed to %s() must contain a valid admin hierarchy, "%s" is not a valid child for "%s"',
+                    __METHOD__,
+                    $code,
+                    $admin->getCode()
                 ));
             }
 

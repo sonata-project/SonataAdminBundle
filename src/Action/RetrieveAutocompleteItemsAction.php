@@ -117,7 +117,8 @@ final class RetrieveAutocompleteItemsAction
                         throw new \RuntimeException(sprintf(
                             'To retrieve autocomplete items,'
                             .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
-                            $prop, \get_class($targetAdmin)
+                            $prop,
+                            \get_class($targetAdmin)
                         ));
                     }
 

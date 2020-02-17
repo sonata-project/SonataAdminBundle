@@ -23,12 +23,20 @@ file that was distributed with this source code.
     {% endif %}
 {%- endblock form_errors %}
 
+{# NEXT_MAJOR: Remove this block and all the calls made to this block #}
 {% block sonata_help %}
+{% deprecated 'The "sonata_help" option is deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use "help" instead.' %}
 {% apply spaceless %}
 {% if sonata_help is defined and sonata_help %}
     <span class="help-block sonata-ba-field-widget-help">{{ sonata_help|raw }}</span>
 {% endif %}
 {% endapply %}
+{% endblock %}
+
+{% block form_help %}
+    {% apply spaceless %}
+        <span class="help-block sonata-ba-field-widget-help">{{ parent() }}</span>
+    {% endapply %}
 {% endblock %}
 
 {% block form_widget -%}
@@ -395,6 +403,8 @@ file that was distributed with this source code.
             {% if sonata_admin is defined and sonata_admin_enabled and sonata_admin.field_description.help|default(false) %}
                 <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans({}, sonata_admin.field_description.translationDomain ?: admin.translationDomain)|raw }}</span>
             {% endif %}
+
+            {{ form_help(form) }}
         </div>
     </div>
 {% endblock form_row %}

@@ -2,6 +2,9 @@ services:
     Twig\Extensions\TextExtension:
         tags:
             - {name: twig.extension}
+    # Under real conditions, this service is registered by "doctrine/doctrine-bundle"
+    database_connection:
+        class: Sonata\AdminBundle\Tests\Fixtures\DoctrineBundle\Connection
 
     Sonata\AdminBundle\Tests\App\Model\FooRepository: ~
 
@@ -9,6 +12,8 @@ services:
         class: Sonata\AdminBundle\Tests\App\Model\ModelManager
         arguments:
             - '@Sonata\AdminBundle\Tests\App\Model\FooRepository'
+        tags:
+            - {name: sonata.admin.manager}
 
     sonata.admin.builder.test_form:
         class: Sonata\AdminBundle\Tests\App\Builder\FormContractor

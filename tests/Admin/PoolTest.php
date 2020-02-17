@@ -68,7 +68,9 @@ class PoolTest extends TestCase
         $container = $this->createMock(ContainerInterface::class);
 
         $container->method('get')->will($this->onConsecutiveCalls(
-            $admin_group1, $admin_group2, $admin_group3
+            $admin_group1,
+            $admin_group2,
+            $admin_group3
         ));
 
         $pool = new Pool($container, 'Sonata Admin', '/path/to/pic.png');

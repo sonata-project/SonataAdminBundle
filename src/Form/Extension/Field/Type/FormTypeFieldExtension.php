@@ -59,6 +59,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         ];
 
         $builder->setAttribute('sonata_admin_enabled', false);
+        // NEXT_MAJOR: Remove this line
         $builder->setAttribute('sonata_help', false);
 
         if ($options['sonata_field_description'] instanceof FieldDescriptionInterface) {
@@ -81,6 +82,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $sonataAdmin = $form->getConfig()->getAttribute('sonata_admin');
+        // NEXT_MAJOR: Remove this line
         $sonataAdminHelp = $options['sonata_help'] ?? null;
 
         /*
@@ -91,13 +93,13 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $baseName = str_replace('.', '_', $view->parent->vars['sonata_admin_code']);
 
             $baseType = $blockPrefixes[\count($blockPrefixes) - 2];
-            $blockSuffix = preg_replace('#^_([a-z0-9]{14})_(.++)$#', '$2', array_pop($blockPrefixes));
+            $blockSuffix = preg_replace('#^_([a-z0-9]{14})_(.++)$#', '$2', end($blockPrefixes));
 
             $blockPrefixes[] = sprintf('%s_%s', $baseName, $baseType);
             $blockPrefixes[] = sprintf('%s_%s_%s_%s', $baseName, $baseType, $view->parent->vars['name'], $view->vars['name']);
             $blockPrefixes[] = sprintf('%s_%s_%s_%s', $baseName, $baseType, $view->parent->vars['name'], $blockSuffix);
 
-            $view->vars['block_prefixes'] = $blockPrefixes;
+            $view->vars['block_prefixes'] = array_unique($blockPrefixes);
             $view->vars['sonata_admin_enabled'] = true;
             $view->vars['sonata_admin'] = [
                 'admin' => false,
@@ -109,6 +111,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
                 'class' => false,
                 'options' => $this->options,
             ];
+            // NEXT_MAJOR: Remove this line
             $view->vars['sonata_help'] = $sonataAdminHelp;
             $view->vars['sonata_admin_code'] = $view->parent->vars['sonata_admin_code'];
 
@@ -123,7 +126,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $blockPrefixes = $view->vars['block_prefixes'];
             $baseName = str_replace('.', '_', $sonataAdmin['admin']->getCode());
             $baseType = $blockPrefixes[\count($blockPrefixes) - 2];
-            $blockSuffix = preg_replace('#^_([a-z0-9]{14})_(.++)$#', '$2', array_pop($blockPrefixes));
+            $blockSuffix = preg_replace('#^_([a-z0-9]{14})_(.++)$#', '$2', end($blockPrefixes));
 
             $blockPrefixes[] = sprintf('%s_%s', $baseName, $baseType);
             $blockPrefixes[] = sprintf('%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType);
@@ -133,7 +136,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
                 $blockPrefixes[] = $sonataAdmin['block_name'];
             }
 
-            $view->vars['block_prefixes'] = $blockPrefixes;
+            $view->vars['block_prefixes'] = array_unique($blockPrefixes);
             $view->vars['sonata_admin_enabled'] = true;
             $view->vars['sonata_admin'] = $sonataAdmin;
             $view->vars['sonata_admin_code'] = $sonataAdmin['admin']->getCode();
@@ -149,6 +152,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $view->vars['sonata_admin_enabled'] = false;
         }
 
+        // NEXT_MAJOR: Remove this line
         $view->vars['sonata_help'] = $sonataAdminHelp;
         $view->vars['sonata_admin'] = $sonataAdmin;
     }
@@ -165,14 +169,20 @@ class FormTypeFieldExtension extends AbstractTypeExtension
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $resolver
+            ->setDefaults([
             'sonata_admin' => null,
             'sonata_field_description' => null,
 
             // be compatible with mopa if not installed, avoid generating an exception for invalid option
             'label_render' => true,
+            // NEXT_MAJOR: Remove this property and the deprecation message
             'sonata_help' => null,
-        ]);
+        ])
+            ->setDeprecated(
+                'sonata_help',
+                'The "sonata_help" option is deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use "help" instead.'
+            );
     }
 
     /**

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
+use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -177,7 +179,7 @@ final class SonataAdminExtension extends Extension
             $container->removeDefinition('sonata.admin.translator.extractor.jms_translator_bundle');
         }
 
-        //remove non-Mopa compatibility layer
+        // remove non-Mopa compatibility layer
         if (isset($bundles['MopaBootstrapBundle'])) {
             $container->removeDefinition('sonata.admin.form.extension.field.mopa');
         }
@@ -191,6 +193,10 @@ final class SonataAdminExtension extends Extension
         $container->setParameter('sonata.admin.configuration.translate_group_label', $config['translate_group_label']);
 
         $this->replacePropertyAccessor($container);
+
+        $container
+            ->registerForAutoconfiguration(ModelManagerInterface::class)
+            ->addTag(ModelManagerCompilerPass::MANAGER_TAG);
     }
 
     /**

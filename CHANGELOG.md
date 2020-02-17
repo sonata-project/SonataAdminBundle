@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.59.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.58.0...3.59.0) - 2020-02-10
+### Added
+- Add support for symfony form help
+
+### Fixed
+- Make filter alias optional
+- Fix error of using list ValueObject as editable field in list fields.
+
 ## [3.58.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.57.0...3.58.0) - 2020-01-26
 ### Fixed
 - Revert to trully unique uniqid for admins

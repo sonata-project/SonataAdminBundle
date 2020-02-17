@@ -901,7 +901,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', static::class));
             }
 
-            $this->cachedBaseRouteName = sprintf('admin_%s%s_%s',
+            $this->cachedBaseRouteName = sprintf(
+                'admin_%s%s_%s',
                 empty($matches[1]) ? '' : $this->urlize($matches[1]).'_',
                 $this->urlize($matches[3]),
                 $this->urlize($matches[5])
@@ -1672,7 +1673,8 @@ EOT;
 
             throw new \RuntimeException(sprintf(
                 'Circular reference detected! The child admin `%s` is already in the parent tree of the `%s` admin.',
-                $child->getCode(), $this->getCode()
+                $child->getCode(),
+                $this->getCode()
             ));
         }
 
@@ -2574,7 +2576,7 @@ EOT;
         $this->configureDefaultFilterValues($defaultFilterValues);
 
         foreach ($this->getExtensions() as $extension) {
-            // NEXT_MAJOR: remove method check in next major release
+            // NEXT_MAJOR: remove method check
             if (method_exists($extension, 'configureDefaultFilterValues')) {
                 $extension->configureDefaultFilterValues($this, $defaultFilterValues);
             }
@@ -2632,7 +2634,7 @@ EOT;
     protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
         // Use configureSideMenu not to mess with previous overrides
-        // TODO remove once deprecation period is over
+        // NEXT_MAJOR: remove this line
         $this->configureSideMenu($menu, $action, $childAdmin);
     }
 

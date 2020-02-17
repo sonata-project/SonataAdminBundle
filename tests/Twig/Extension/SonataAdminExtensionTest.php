@@ -162,7 +162,11 @@ class SonataAdminExtensionTest extends TestCase
         $this->securityChecker->isGranted(Argument::type('string'), null)->willReturn(true);
 
         $this->twigExtension = new SonataAdminExtension(
-            $this->pool, $this->logger, $this->translator, $this->container->reveal(), $this->securityChecker->reveal()
+            $this->pool,
+            $this->logger,
+            $this->translator,
+            $this->container->reveal(),
+            $this->securityChecker->reveal()
         );
         $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
 
@@ -1286,15 +1290,15 @@ EOT
             });
 
         $this->assertSame(
-                $this->removeExtraWhitespace($expected),
-                $this->removeExtraWhitespace(
-                    $this->twigExtension->renderViewElement(
-                        $this->environment,
-                        $this->fieldDescription,
-                        $this->object
-                    )
+            $this->removeExtraWhitespace($expected),
+            $this->removeExtraWhitespace(
+                $this->twigExtension->renderViewElement(
+                    $this->environment,
+                    $this->fieldDescription,
+                    $this->object
                 )
-            );
+            )
+        );
     }
 
     public function getRenderViewElementTests()
