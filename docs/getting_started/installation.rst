@@ -138,7 +138,7 @@ install the assets:
 Webpack Encore Integration
 --------------------------
 
-When the assets are installed add following to  your configuration:
+When the assets are installed add following to your configuration:
 
 .. code-block:: yaml
 
