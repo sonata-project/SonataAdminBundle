@@ -288,7 +288,10 @@ class CRUDController implements ContainerAwareInterface
     {
         if (isset(\func_get_args()[0])) {
             @trigger_error(
-                'The $id param will be remove in 4.0, use $this->admin->getIdParameter() instead',
+                sprintf(
+                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
+                    __METHOD__
+                ),
                 E_USER_DEPRECATED
             );
         }
@@ -675,7 +678,10 @@ class CRUDController implements ContainerAwareInterface
     {
         if (isset(\func_get_args()[0])) {
             @trigger_error(
-                'The $id param will be remove in 4.0, use $this->admin->getIdParameter() instead',
+                sprintf(
+                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
+                    __METHOD__
+                ),
                 E_USER_DEPRECATED
             );
         }
@@ -737,7 +743,10 @@ class CRUDController implements ContainerAwareInterface
     {
         if (isset(\func_get_args()[0])) {
             @trigger_error(
-                'The $id param will be remove in 4.0, use $this->admin->getIdParameter() instead',
+                sprintf(
+                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
+                    __METHOD__
+                ),
                 E_USER_DEPRECATED
             );
         }
@@ -989,7 +998,10 @@ class CRUDController implements ContainerAwareInterface
     {
         if (isset(\func_get_args()[0])) {
             @trigger_error(
-                'The $id param will be remove in 4.0, use $this->admin->getIdParameter() instead',
+                sprintf(
+                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
+                    __METHOD__
+                ),
                 E_USER_DEPRECATED
             );
         }
