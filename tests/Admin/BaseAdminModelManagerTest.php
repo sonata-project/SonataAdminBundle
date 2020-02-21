@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 
@@ -59,12 +60,13 @@ class BaseAdminModelManagerTest extends TestCase
 
     public function testCreateQuery(): void
     {
+        $query = $this->createMock(ProxyQueryInterface::class);
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->once())->method('createQuery')->willReturnCallback(static function (string $class): void {
-            if ('class' !== $class) {
-                throw new \RuntimeException('Invalid class argument');
-            }
-        });
+        $modelManager
+            ->expects($this->once())
+            ->method('createQuery')
+            ->with('class')
+            ->willReturn($query);
 
         $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);
