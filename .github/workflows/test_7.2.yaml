@@ -30,8 +30,8 @@ jobs:
             matrix:
                 php-version:
                     - "7.2"
-                variant:
-                    - "--prefer-lowest"
+                    - "7.3"
+                    - "7.4"
 
         steps:
             - name: "Checkout"
@@ -46,7 +46,7 @@ jobs:
                   ini-values: "${{ env.PHP_INI_VALUES }}"
 
             - name: "Install dependencies with composer"
-              run: composer update --prefer-dist --no-interaction --prefer-stable ${{ matrix.variant }}
+              run: composer update --prefer-dist --no-interaction --prefer-stable --no-progress --prefer-lowest
 
             - name: "Setup unit tests via phpunit"
               run: |
