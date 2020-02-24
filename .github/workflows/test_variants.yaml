@@ -54,8 +54,6 @@ jobs:
 
             - run: export ${{ matrix.variant }}
 
-            - run: echo ${{ GITHUB_SHA }}
-
             - run: sh .travis/before_install_test.sh
 
             - name: "Run tests via PHPUnit"
