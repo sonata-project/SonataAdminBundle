@@ -10,7 +10,7 @@ on:
             - develop
             - master
 
-name: CI
+name: Test
 
 env:
     SYMFONY_DEPRECATIONS_HELPER: max[self]=0
@@ -22,7 +22,7 @@ env:
 
 jobs:
     test:
-        name: Test
+        name: --prefer-lowest
 
         runs-on: ubuntu-16.04 # xenial
 
