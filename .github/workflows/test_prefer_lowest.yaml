@@ -49,9 +49,9 @@ jobs:
 
             - name: "Setup PHPUnit"
               run: |
-                  mkdir --parents "${HOME}/bin"
-                  wget "https://phar.phpunit.de/phpunit-${{ env.PHPUNIT_VERSION }}.phar" --output-document="${HOME}/bin/phpunit"
-                  chmod u+x "${HOME}/bin/phpunit"
+                  mkdir bin
+                  wget "https://phar.phpunit.de/phpunit-${{ env.PHPUNIT_VERSION }}.phar" --output-document="bin/phpunit"
+                  chmod u+x "bin/phpunit"
 
             - name: "Run tests via PHPUnit"
-              run: make test
+              run: bin/phpunit -c phpunit.xml.dist
