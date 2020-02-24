@@ -45,17 +45,6 @@ jobs:
                   php-version: "${{ matrix.php-version }}"
                   ini-values: "${{ env.PHP_INI_VALUES }}"
 
-            - name: "Determine composer cache directory"
-              id: "determine-composer-cache-directory"
-              run: "echo \"::set-output name=directory::$(composer config cache-dir)\""
-
-            - name: "Cache dependencies installed with composer"
-              uses: "actions/cache@v1.1.2"
-              with:
-                  path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
-                  key: "php-${{ matrix.php-version }}-${{ matrix.variant }}-composer-${{ hashFiles('**/composer.lock') }}-phpunit-${{ hashFiles('**/phpunit.xml.dist') }}"
-                  restore-keys: "php-${{ matrix.php-version }}-${{ matrix.variant }}-composer-"
-
             - name: "Install dependencies with composer"
               run: composer update --prefer-dist --no-interaction --prefer-stable ${{ matrix.variant }}
 
