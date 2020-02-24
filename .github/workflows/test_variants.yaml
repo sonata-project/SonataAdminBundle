@@ -22,16 +22,22 @@ env:
 
 jobs:
     test:
-        name: --prefer-lowest
+        name: PHP ${{ matrix.php-version }} + ${{ matrix.variant }}
 
         runs-on: ubuntu-16.04 # xenial
 
         strategy:
             matrix:
                 php-version:
-                    - "7.2"
                     - "7.3"
-                    - "7.4"
+                variant:
+                    - "SYMFONY=4.4.*"
+                    - "SYMFONY='dev-master as 4.4.x-dev'"
+                    - "SONATA_CORE=3.*"
+                    - "SONATA_CORE='dev-master as 3.x-dev'"
+                    - "SONATA_BLOCK=3.*"
+                    - "SONATA_BLOCK='dev-master as 3.x-dev'"
+                    - "SYMFONY_DEPRECATIONS_HELPER=0"
 
         steps:
             - name: "Checkout"
@@ -46,10 +52,17 @@ jobs:
                   ini-values: "${{ env.PHP_INI_VALUES }}"
 
             - name: "Install dependencies with composer"
-              run: composer update --prefer-dist --no-interaction --prefer-stable --no-progress --prefer-lowest
+              run: composer update --prefer-dist --no-interaction --prefer-stable --no-progress
 
-            - name: "Setup unit tests via phpunit"
+            - run: export ${{ matrix.variant }}
+
+            - run: sh ./travis/before_install_test.sh
+
+            - name: "Setup PHPunit"
               run: |
                   mkdir bin
                   wget "https://phar.phpunit.de/phpunit-${{ env.PHPUNIT_VERSION }}.phar" --output-document="bin/phpunit"
                   chmod u+x "bin/phpunit"
+
+            - name: "Run tests via PHPUnit"
+              run: make test
