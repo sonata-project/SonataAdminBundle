@@ -55,7 +55,7 @@ jobs:
 
             - run: export ${{ matrix.variant }}
 
-            - run: sh ./travis/before_install_test.sh
+            - run: sh travis/before_install_test.sh
 
             - name: "Setup PHPUnit"
               run: |
