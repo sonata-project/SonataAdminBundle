@@ -51,18 +51,17 @@ jobs:
                   php-version: "${{ matrix.php-version }}"
                   ini-values: "${{ env.PHP_INI_VALUES }}"
 
-            - name: "Install dependencies with composer"
-              run: composer update --prefer-dist --no-interaction --prefer-stable --no-progress
+            - run: composer update --prefer-dist --no-interaction --prefer-stable --no-progress
 
             - run: export ${{ matrix.variant }}
 
             - run: sh ./travis/before_install_test.sh
 
-            - name: "Setup PHPunit"
+            - name: "Setup PHPUnit"
               run: |
-                  mkdir bin
-                  wget "https://phar.phpunit.de/phpunit-${{ env.PHPUNIT_VERSION }}.phar" --output-document="bin/phpunit"
-                  chmod u+x "bin/phpunit"
+                  mkdir --parents "${HOME}/bin"
+                  wget "https://phar.phpunit.de/phpunit-${{ env.PHPUNIT_VERSION }}.phar" --output-document="${HOME}/bin/phpunit"
+                  chmod u+x "${HOME}/bin/phpunit"
 
             - name: "Run tests via PHPUnit"
               run: make test
