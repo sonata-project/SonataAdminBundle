@@ -33,7 +33,7 @@ jobs:
                     - "SYMFONY='dev-master as 4.4.x-dev'"
                     - "SONATA_CORE=3.*"
                     - "SONATA_CORE='dev-master as 3.x-dev'"
-                    - "SONATA_BLOCK=2.*"
+                    - "SONATA_BLOCK=3.*"
                     - "SONATA_BLOCK='dev-master as 3.x-dev'"
                     - "SYMFONY_DEPRECATIONS_HELPER=0"
 
