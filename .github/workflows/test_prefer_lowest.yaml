@@ -44,7 +44,7 @@ jobs:
                   extensions: "${{ env.PHP_EXTENSIONS }}"
                   php-version: "${{ matrix.php-version }}"
                   ini-values: "${{ env.PHP_INI_VALUES }}"
-                  tools: "phpunit:${{ env.PHPUNIT_VERSION }}"
+                  tools: phpunit:8.5.2
 
             - run: composer update --prefer-dist --no-interaction --prefer-stable --no-progress --prefer-lowest
 
