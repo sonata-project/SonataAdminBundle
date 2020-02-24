@@ -50,6 +50,7 @@ jobs:
                   extensions: "${{ env.PHP_EXTENSIONS }}"
                   php-version: "${{ matrix.php-version }}"
                   ini-values: "${{ env.PHP_INI_VALUES }}"
+                  tools: "phpunit:${{ env.PHPUNIT_VERSION }}"
 
             - run: composer update --prefer-dist --no-interaction --prefer-stable --no-progress
 
@@ -57,11 +58,5 @@ jobs:
 
             - run: sh travis/before_install_test.sh
 
-            - name: "Setup PHPUnit"
-              run: |
-                  mkdir bin
-                  wget "https://phar.phpunit.de/phpunit-${{ env.PHPUNIT_VERSION }}.phar" --output-document="bin/phpunit"
-                  chmod u+x "bin/phpunit"
-
             - name: "Run tests via PHPUnit"
-              run: bin/phpunit -c phpunit.xml.dist
+              run: phpunit -c phpunit.xml.dist
