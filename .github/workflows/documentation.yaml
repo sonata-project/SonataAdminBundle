@@ -30,6 +30,14 @@ jobs:
             - name: "Install Sphinx dependencies"
               run: sudo apt-get install python-dev build-essential
 
+            - name: "Cache pip"
+              uses: actions/cache@v1
+              with:
+                  path: ~/.cache/pip
+                  key: ${{ runner.os }}-pip-${{ hashFiles('docs/requirements.txt') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pip-
+
             - name: "Install custom requirements via pip"
               run: pip install -r docs/requirements.txt
 
