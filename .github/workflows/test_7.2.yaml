@@ -1,0 +1,66 @@
+on:
+    pull_request:
+        paths:
+            - 'src/**'
+            - 'tests/**'
+            - '.github/workflows/**'
+
+    push:
+        branches:
+            - develop
+            - master
+
+name: CI
+
+env:
+    SYMFONY_DEPRECATIONS_HELPER: max[self]=0
+    TARGET: test
+    UPSTREAM_URL: https://github.com/sonata-project/SonataAdminBundle.git
+    PHPUNIT_VERSION: 8
+    PHP_EXTENSIONS: "json" # just for testing now
+    PHP_INI_VALUES: "memory_limit=3072M"
+
+jobs:
+    test:
+        name: Test
+
+        runs-on: ubuntu-16.04 # xenial
+
+        strategy:
+            matrix:
+                php-version:
+                    - "7.2"
+                variant:
+                    - "--prefer-lowest"
+
+        steps:
+            - name: "Checkout"
+              uses: actions/checkout@v2.0.0
+
+            - name: "Install PHP with extensions"
+              uses: "shivammathur/setup-php@v1"
+              with:
+                  coverage: "none"
+                  extensions: "${{ env.PHP_EXTENSIONS }}"
+                  php-version: "${{ matrix.php-version }}"
+                  ini-values: "${{ env.PHP_INI_VALUES }}"
+
+            - name: "Determine composer cache directory"
+              id: "determine-composer-cache-directory"
+              run: "echo \"::set-output name=directory::$(composer config cache-dir)\""
+
+            - name: "Cache dependencies installed with composer"
+              uses: "actions/cache@v1.1.2"
+              with:
+                  path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
+                  key: "php-${{ matrix.php-version }}-${{ matrix.variant }}-composer-${{ hashFiles('**/composer.lock') }}-phpunit-${{ hashFiles('**/phpunit.xml.dist') }}"
+                  restore-keys: "php-${{ matrix.php-version }}-${{ matrix.variant }}-composer-"
+
+            - name: "Install dependencies with composer"
+              run: composer update --prefer-dist --no-interaction --prefer-stable ${{ matrix.variant }}
+
+            - name: "Setup unit tests via phpunit"
+              run: |
+                  mkdir bin
+                  wget "https://phar.phpunit.de/phpunit-${{ env.PHPUNIT_VERSION }}.phar" --output-document="bin/phpunit"
+                  chmod u+x "bin/phpunit"
