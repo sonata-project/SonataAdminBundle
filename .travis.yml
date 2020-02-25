@@ -49,7 +49,6 @@ matrix:
     - php: '7.3'
       env: SYMFONY_DEPRECATIONS_HELPER=0
   allow_failures:
-    - php: 7.4snapshot
     - php: nightly
     - env: SYMFONY_DEPRECATIONS_HELPER=0
     - env: SYMFONY='dev-master as 4.4.x-dev'
