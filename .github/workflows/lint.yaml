@@ -59,7 +59,7 @@ jobs:
             - name: "Checkout"
               uses: actions/checkout@v2
 
-            - run: sudo apt-get install libxml2-utils
+            - run: sudo apt-get update && sudo apt-get install libxml2-utils
 
             - name: "Linting..."
               run: make lint-xml
