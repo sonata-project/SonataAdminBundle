@@ -35,9 +35,7 @@ final class ModelManagerCompilerPass implements CompilerPassInterface
 
         // NEXT_MAJOR: Replace the `foreach()` clause with the following one.
         // foreach ($container->findTaggedServiceIds(self::MANAGER_TAG) as $id => $tags) {
-        foreach ($container->getServiceIds() as $id) {
-            $definition = $container->findDefinition($id);
-
+        foreach ($container->getDefinitions() as $id => $definition) {
             // NEXT_MAJOR: Remove this check.
             if (!$definition->hasTag(self::MANAGER_TAG) && 0 !== strpos($id, 'sonata.admin.manager.')) {
                 continue;
@@ -50,7 +48,7 @@ final class ModelManagerCompilerPass implements CompilerPassInterface
             // NEXT_MAJOR: Remove this check.
             if (!$definition->hasTag(self::MANAGER_TAG)) {
                 @trigger_error(sprintf(
-                    'Not setting the "%s" tag on the "%s" service is deprecated since sonata-project/admin-bundle 3.x.',
+                    'Not setting the "%s" tag on the "%s" service is deprecated since sonata-project/admin-bundle 3.60.',
                     self::MANAGER_TAG,
                     $id
                 ), E_USER_DEPRECATED);

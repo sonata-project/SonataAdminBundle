@@ -181,7 +181,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         ])
             ->setDeprecated(
                 'sonata_help',
-                'The "sonata_help" option is deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use "help" instead.'
+                'The "sonata_help" option is deprecated since sonata-project/admin-bundle 3.60, to be removed in 4.0. Use "help" instead.'
             );
     }
 

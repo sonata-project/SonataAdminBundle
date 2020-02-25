@@ -30,6 +30,7 @@ use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\DefaultRouteGenerator;
@@ -1389,17 +1390,17 @@ class AdminTest extends TestCase
 
     public function testSetFilterPersister(): void
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin = new class('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle\Controller\PostAdminController') extends PostAdmin {
+            public function persistFilters(): bool
+            {
+                return $this->persistFilters;
+            }
+        };
 
-        $filterPersister = $this->createMock('Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface');
+        $filterPersister = $this->createMock(FilterPersisterInterface::class);
 
-        $reflector = new \ReflectionObject($admin);
-
-        $persistFiltersAttribute = $reflector->getProperty('persistFilters');
-        $persistFiltersAttribute->setAccessible(true);
-        $this->assertFalse($persistFiltersAttribute->getValue($admin));
         $admin->setFilterPersister($filterPersister);
-        $this->assertTrue($persistFiltersAttribute->getValue($admin));
+        $this->assertTrue($admin->persistFilters());
     }
 
     public function testGetRootCode(): void

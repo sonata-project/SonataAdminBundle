@@ -187,10 +187,16 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
+     * @throws \LogicException
+     *
      * @return $this
      */
     public function ifEnd()
     {
+        if (empty($this->apply)) {
+            throw new \LogicException('No open ifTrue() or ifFalse(), you cannot use ifEnd()');
+        }
+
         array_pop($this->apply);
 
         return $this;

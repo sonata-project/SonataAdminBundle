@@ -203,6 +203,14 @@ class BaseGroupedMapperTest extends TestCase
         $this->baseGroupedMapper->end();
     }
 
+    public function testIfEndException(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('No open ifTrue() or ifFalse(), you cannot use ifEnd()');
+
+        $this->baseGroupedMapper->ifEnd();
+    }
+
     public function labelDataProvider(): array
     {
         return [

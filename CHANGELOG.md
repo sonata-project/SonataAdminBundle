@@ -2,6 +2,24 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.61.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.60.0...3.61.0) - 2020-02-18
+### Added
+- `ifEnd` throws `LogicException` if there is nothing to end.
+
+### Fixed
+- Calling `ContainerBuilder::getDefinition()` with ids which have no associated
+  definition.
+
+## [3.60.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.59.0...3.60.0) - 2020-02-17
+### Added
+- `sonata.admin.manager` tag to services implementing `ModelManagerInterface`.
+
+### Fixed
+- Wording of `EqualOperatorType`
+
+### Deprecated
+- The use of `sonata_help` in form types
+
 ## [3.59.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.58.0...3.59.0) - 2020-02-10
 ### Added
 - Add support for symfony form help

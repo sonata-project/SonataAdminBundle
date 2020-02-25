@@ -31,9 +31,14 @@ final class ModelManagerCompilerPassTest extends TestCase
     {
         $adminMaker = $this->prophesize(Definition::class);
         $adminMaker->replaceArgument(Argument::type('integer'), Argument::any())->shouldNotBeCalled();
+        $adminMaker->hasTag(Argument::exact(ModelManagerCompilerPass::MANAGER_TAG))
+            ->willReturn(false);
         $containerBuilderMock = $this->prophesize(ContainerBuilder::class);
 
         $containerBuilderMock->getServiceIds()
+            ->willReturn([]);
+
+        $containerBuilderMock->getDefinitions()
             ->willReturn([]);
 
         $containerBuilderMock->findTaggedServiceIds(Argument::exact(ModelManagerCompilerPass::MANAGER_TAG))
@@ -56,18 +61,26 @@ final class ModelManagerCompilerPassTest extends TestCase
      *
      * @group legacy
      *
-     * @expectedDeprecation Not setting the "sonata.admin.manager" tag on the "sonata.admin.manager.test" service is deprecated since sonata-project/admin-bundle 3.x.
+     * @expectedDeprecation Not setting the "sonata.admin.manager" tag on the "sonata.admin.manager.test" service is deprecated since sonata-project/admin-bundle 3.60.
      */
     public function testProcessWithUntaggedManagerDefinition(): void
     {
         $adminMaker = $this->prophesize(Definition::class);
         $adminMaker->replaceArgument(Argument::type('integer'), Argument::any())->shouldBeCalledTimes(1);
+        $adminMaker->hasTag(Argument::exact(ModelManagerCompilerPass::MANAGER_TAG))
+            ->willReturn(false);
         $containerBuilderMock = $this->prophesize(ContainerBuilder::class);
 
         $containerBuilderMock->getServiceIds()
             ->willReturn(['sonata.admin.manager.test']);
 
         $definitionMock = $this->prophesize(Definition::class);
+
+        $containerBuilderMock->getDefinitions()
+            ->willReturn([
+                'sonata.admin.maker' => $adminMaker->reveal(),
+                'sonata.admin.manager.test' => $definitionMock->reveal(),
+            ]);
 
         $definitionMock->getClass()
             ->willReturn(ModelManager::class);
@@ -101,12 +114,20 @@ final class ModelManagerCompilerPassTest extends TestCase
     {
         $adminMaker = $this->prophesize(Definition::class);
         $adminMaker->replaceArgument(Argument::type('integer'), Argument::any())->shouldBeCalledTimes(1);
+        $adminMaker->hasTag(Argument::exact(ModelManagerCompilerPass::MANAGER_TAG))
+            ->willReturn(false);
         $containerBuilderMock = $this->prophesize(ContainerBuilder::class);
 
         $containerBuilderMock->getServiceIds()
             ->willReturn(['sonata.admin.manager.test']);
 
         $definitionMock = $this->prophesize(Definition::class);
+
+        $containerBuilderMock->getDefinitions()
+            ->willReturn([
+                'sonata.admin.maker' => $adminMaker->reveal(),
+                'sonata.admin.manager.test' => $definitionMock->reveal(),
+            ]);
 
         $definitionMock->getClass()
             ->willReturn(ModelManager::class);
@@ -137,12 +158,20 @@ final class ModelManagerCompilerPassTest extends TestCase
     {
         $adminMaker = $this->prophesize(Definition::class);
         $adminMaker->replaceArgument(Argument::type('integer'), Argument::any())->shouldNotBeCalled();
+        $adminMaker->hasTag(Argument::exact(ModelManagerCompilerPass::MANAGER_TAG))
+            ->willReturn(false);
         $containerBuilderMock = $this->prophesize(ContainerBuilder::class);
 
         $containerBuilderMock->getServiceIds()
             ->willReturn(['sonata.admin.manager.test']);
 
         $definitionMock = $this->prophesize(Definition::class);
+
+        $containerBuilderMock->getDefinitions()
+            ->willReturn([
+                'sonata.admin.maker' => $adminMaker->reveal(),
+                'sonata.admin.manager.test' => $definitionMock->reveal(),
+            ]);
 
         $definitionMock->getClass()
             ->willReturn(\stdClass::class);

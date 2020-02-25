@@ -183,7 +183,10 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertFalse($adminGroups['sonata_group_one']['on_top']);
         $this->assertTrue($adminGroups['sonata_group_three']['on_top']);
         $this->assertFalse($adminGroups['sonata_group_one']['keep_open']);
-        $this->assertStringContainsString('sonata_post_admin', $adminGroups['sonata_group_one']['items'][0]['admin']);
+        $this->assertStringContainsString(
+            'sonata_post_admin',
+            $adminGroups['sonata_group_one']['items'][0]['admin']
+        );
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['items']);
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['item_adds']);
         $this->assertNotContains('sonata_article_admin', $adminGroups['sonata_group_one']['items']);

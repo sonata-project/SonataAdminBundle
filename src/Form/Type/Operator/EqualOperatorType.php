@@ -20,11 +20,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class EqualOperatorType extends AbstractType
 {
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use EqualOperatorType::TYPE_EQUAL instead
+     * @deprecated since sonata-project/admin-bundle 3.60, to be removed with 4.0: Use EqualOperatorType::TYPE_EQUAL instead
      */
     public const TYPE_YES = 1;
     /**
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0: Use EqualOperatorType::TYPE_NOT_EQUAL instead
+     * @deprecated since sonata-project/admin-bundle 3.60, to be removed with 4.0: Use EqualOperatorType::TYPE_NOT_EQUAL instead
      */
     public const TYPE_NO = 2;
 
