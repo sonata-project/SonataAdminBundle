@@ -7,28 +7,20 @@ using annotations instead of creating admin classes.
 Download the SonataAnnotationBundle
 -----------------------------------
 
-Open a command console, enter your project directory and execute the
-following command to download the latest stable version of this bundle:
-
 .. code-block:: bash
 
-    $ composer require kunicmarko/sonata-annotation-bundle
+    composer require kunicmarko/sonata-annotation-bundle
 
 How to use
 ----------
 
 Let's say we have a ``BlogPost`` entity that is connected to a ``Category`` entity
-like in the `getting started chapter`_:
-
-.. code-block:: php
-
-    <?php
+like in the `getting started chapter`_::
 
     namespace App\Entity;
 
     use Doctrine\ORM\Mapping as ORM;
     use KunicMarko\SonataAnnotationBundle\Annotation as Sonata;
-    // ...
 
     /**
      * @Sonata\Admin("BlogPost")
@@ -55,19 +47,14 @@ like in the `getting started chapter`_:
          * @ORM\ManyToOne(targetEntity="Category", inversedBy="blogPosts")
          */
         private $category;
-
-        // ...
     }
 
 .. code-block:: php
-
-    <?php
 
     namespace App\Entity;
 
     use Doctrine\ORM\Mapping as ORM;
     use KunicMarko\SonataAnnotationBundle\Annotation as Sonata;
-    // ...
 
     /**
      * @Sonata\Admin("Category")
@@ -88,18 +75,16 @@ like in the `getting started chapter`_:
         private $name;
 
         /**
-        * @ORM\OneToMany(targetEntity="BlogPost", mappedBy="category")
-        */
+         * @ORM\OneToMany(targetEntity="BlogPost", mappedBy="category")
+         */
         private $blogPosts;
-
-        // ...
     }
 
 Do not forget to clear your cache:
 
 .. code-block:: bash
 
-    $ bin/console cache:clear
+    bin/console cache:clear
 
 You are done and you probably want to know how this looks like in the admin
 interface. Well, let's find out by going to http://localhost:8000/admin

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -19,6 +21,8 @@ use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminAclManipulator implements AdminAclManipulatorInterface
@@ -79,7 +83,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
 
                 foreach ($permissions as $permission) {
                     // add only the admin permissions
-                    if (\in_array($permission, $securityHandler->getAdminPermissions())) {
+                    if (\in_array($permission, $securityHandler->getAdminPermissions(), true)) {
                         $builder->add($permission);
                         $roleAdminPermissions[] = $permission;
                     }

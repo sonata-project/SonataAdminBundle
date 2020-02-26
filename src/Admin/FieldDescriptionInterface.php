@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -115,7 +117,7 @@ interface FieldDescriptionInterface
     /**
      * return the parent Admin (only used in nested admin).
      *
-     * @return AdminInterface
+     * @return AdminInterface|null
      */
     public function getParent();
 
@@ -190,7 +192,7 @@ interface FieldDescriptionInterface
     /**
      * return the value linked to the description.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return bool|mixed
      */
@@ -208,7 +210,6 @@ interface FieldDescriptionInterface
 
     /**
      * merge option values related to the provided option name.
-     *
      *
      * @param string $name
      *

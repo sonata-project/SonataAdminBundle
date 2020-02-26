@@ -16,10 +16,10 @@ file that was distributed with this source code.
 
 {% if isEditable and xEditableType %}
     {% block field_span_attributes %}
-        {% spaceless %}
+        {% apply spaceless %}
             {{ parent() }}
             data-source="[{value: 0, text: '{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}'},{value: 1, text: '{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}'}]"
-        {% endspaceless %}
+        {% endapply %}
     {% endblock %}
 {% endif %}
 

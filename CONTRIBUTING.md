@@ -173,7 +173,7 @@ your work, please do another PR for that. In some rare cases, you might be
 forced to do it on the same PR. In this kind of situation, please add a comment
 on your PR explaining why you feel it is the case.
 
-#### The Change log
+#### The Changelog
 
 For each PR, a change log must be provided.
 
@@ -271,7 +271,7 @@ For class definitions, methods (or first level functions) and properties, use th
 
 ```php
 /**
- * @deprecated since 42.x, to be removed in 43.0. Use Shiny\New\ClassOfTheMonth instead.
+ * @deprecated since sonata-project/foo-lib 42.x, to be removed in 43.0. Use Shiny\New\ClassOfTheMonth instead.
  */
 final class IAmOldAndUseless
 {
@@ -280,12 +280,12 @@ final class IAmOldAndUseless
 final class StillUsedClass
 {
     /**
-     * @deprecated since 42.x, to be removed in 43.0.
+     * @deprecated since sonata-project/foo-lib 42.x, to be removed in 43.0.
      */
     public $butNotThisProperty;
 
     /**
-     * @deprecated since 42.x, to be removed in 43.0.
+     * @deprecated since sonata-project/foo-lib 42.x, to be removed in 43.0.
      */
     public function iAmBatman()
     {
@@ -299,7 +299,7 @@ If the deprecated thing is a service, you **MUST** specify it on the service def
 ```xml
 <service id="sonata.block.old" class="Sonata\Block\Old">
     <argument type="service" id="security.token_storage" />
-    <deprecated>The "%service_id%" service is deprecated since 42.x and will be removed in 43.0.</deprecated>
+    <deprecated>The "%service_id%" service is deprecated since sonata-project/bar-bundle 42.x and will be removed in 43.0.</deprecated>
  </service>
  ```
 
@@ -311,7 +311,7 @@ For everything else, not managed by the `@deprecated` tag, you **MUST** trigger 
 <?php
 if (/* some condition showing the user is using the legacy way */) {
     @trigger_error(
-        'The '.__METHOD__.' method is deprecated since 42.x, to be removed in 43.0. '.
+        'The '.__METHOD__.' method is deprecated since sonata-project/bar-bundle 42.x, to be removed in 43.0. '.
         'Use FooClass::barMethod() instead.',
         E_USER_DEPRECATED
     );
@@ -516,6 +516,24 @@ Thank them for contributing. Encourage them if you feel this is going to be long
 In short, try to make them want to contribute again. If they are stuck, try to provide them with
 code yourself, or ping someone who can help.
 
+## Manual merges
+
+Thanks to dev-kit, stable branches are regularly merged into master branches.
+It is great when it works, but often, there will be git conflicts and a human
+intervention will be needed. Let us assume we are working on a repository where
+the stable branch is 42.x. To do the merge manually, follow these steps:
+1. Fetch the latest commits: `git fetch --all`
+2. Checkout the master branch, and make sure it is up to date:
+   `git checkout -B master origin/master`
+3. Proceed with the merge: `git merge origin/42.x`
+4. Fix the conflicts (if you are doing this, it is because of conflicts,
+   right?) `git mergetool`
+5. Create a merge commit `git commit`
+6. Push the result to your fork: `git push fork 42.x`
+7. Create a pull request from `fork/42.x` to `origin/42.x`
+8. When the PR can be merged, do not merge it. Instead, use
+   `git push origin 42.x`.
+
 ## Releases
 
 ### Limitations and requests
@@ -533,7 +551,7 @@ but are encouraged to report release requests on the dedicated private Slack cha
 Releasing software is the last step to getting your bugfixes or new features to your user base,
 and should be done regularly, so that users are not tempted to use development branches.
 To know what you are going to release on branch 42.x, given that the last release on this branch is 42.3.1,
-go to `https://github.com/sonata-project/SonataCoreBundle/compare/42.3.1...42.x`.
+go to `https://github.com/sonata-project/SonataAdminBundle/compare/42.3.1...42.x`.
 You should see a list of commits, some of which should contain links to pull requests.
 
 #### Determining the next release number
@@ -665,7 +683,7 @@ Before releasing anything, it is best to reduce the gap between branches:
 
 Before abandoning it, the legacy branch MUST receive a last patch version.
 Likewise, the stable branch MUST receive a last version if that version is minor,
-it SHOULD receive one is that version is a patch version.
+it SHOULD receive one if that version is a patch version.
 
 #### Creating the new stable branch and files
 

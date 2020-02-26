@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -32,7 +34,7 @@ class PersistenceEventTest extends TestCase
      */
     private $object;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->admin = $this->getMockForAbstractClass(AdminInterface::class);
         $this->object = new \stdClass();
@@ -40,12 +42,12 @@ class PersistenceEventTest extends TestCase
         $this->event = new PersistenceEvent($this->admin, $this->object, 'Foo');
     }
 
-    public function testGetType()
+    public function testGetType(): void
     {
         $this->assertSame('Foo', $this->event->getType());
     }
 
-    public function testGetAdmin()
+    public function testGetAdmin(): void
     {
         $result = $this->event->getAdmin();
 
@@ -53,7 +55,7 @@ class PersistenceEventTest extends TestCase
         $this->assertSame($this->admin, $result);
     }
 
-    public function testGetObject()
+    public function testGetObject(): void
     {
         $this->assertSame($this->object, $this->event->getObject());
     }

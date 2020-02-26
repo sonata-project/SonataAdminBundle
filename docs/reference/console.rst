@@ -4,7 +4,7 @@ Console/Command-Line Commands
 SonataAdminBundle provides the following console commands:
 
 * ``cache:create-cache-class``
-* ``sonata:admin:generate``
+* ``make:sonata:admin``
 * ``sonata:admin:list``
 * ``sonata:admin:explain``
 * ``sonata:admin:setup-acl``
@@ -16,43 +16,39 @@ cache:create-cache-class
 The ``cache:create-cache-class`` command generates the cache class
 (``app/cache/...env.../classes.php``) from the classes.map file.
 
-Usage example:
-
 .. code-block:: bash
 
-    $ bin/console cache:create-cache-class
+    bin/console cache:create-cache-class
 
-sonata:admin:generate
----------------------
+make:sonata:admin
+-----------------
 
-The ``sonata:admin:generate`` command generates a new Admin class based on the given model
+The ``make:sonata:admin`` command generates a new Admin class based on the given model
 class, registers it as a service and potentially creates a new controller.
 As an argument you need to specify the fully qualified model class.
 All passed arguments and options are used as default values in interactive mode.
 You can disable the interactive mode with ``--no-interaction`` option.
 
-The command require the SensioGeneratorBundle_ to work. If you don't already have it, you can install it with :
+The command require the `Symfony Maker Bundle`_ to work. If you don't already have it, you can install it with :
 
 .. code-block:: bash
 
-    $ composer require --dev sensio/generator-bundle
+    composer require symfony/maker-bundle --dev
 
 ===============   ===============================================================================================================================
 Options           Description
 ===============   ===============================================================================================================================
- **bundle**       the bundle name (the default value is determined by the given model class, e.g. "App" or "YourNSFooBundle")
- **admin**        the admin class basename (by default this adds "Admin" to the model class name, e.g. "BarAdmin")
- **controller**   the controller class basename (by default this adds "AdminController" to the model class name, e.g. "BarAdminController")
+ **model**        The fully qualified model class, e.g. "App\Entity\Foo"
+ **admin**        the admin class basename (by default this adds "Admin" to the model class name, e.g. "FooAdmin")
+ **controller**   the controller class basename (by default this adds "AdminController" to the model class name, e.g. "FooAdminController")
  **manager**      the model manager type (by default this is the first registered model manager type, e.g. "orm")
- **services**     the services YAML file (the default value is "services.yml" or "admin.yml" if it already exist)
- **id**           the admin service ID (the default value is combination of the bundle name and admin class basename like "your_ns_foo.admin.bar")
+ **services**     the services YAML file (the default value is "services.yaml")
+ **id**           the admin service ID (the default value is combination of "admin" and admin class basename like "admin.foo_bar")
 ===============   ===============================================================================================================================
-
-Usage example:
 
 .. code-block:: bash
 
-    $ bin/console sonata:admin:generate App/Entity/Foo
+    bin/console sonata:admin:generate App/Entity/Foo
 
 sonata:admin:list
 -----------------
@@ -62,19 +58,14 @@ It prints all the admin service ids available in your application. This command
 gets the ids from the ``sonata.admin.pool`` service where all the available admin
 services are registered.
 
-Usage example:
-
 .. code-block:: bash
 
-    $ bin/console sonata:admin:list
-
+    bin/console sonata:admin:list
 
 .. figure:: ../images/console_admin_list.png
    :align: center
    :alt: List command
    :width: 700px
-
-   List command
 
 sonata:admin:explain
 --------------------
@@ -82,18 +73,14 @@ sonata:admin:explain
 The ``sonata:admin:explain`` command prints details about the admin of a model.
 As an argument you need to specify the admin service id of the Admin to explain.
 
-Usage example:
-
 .. code-block:: bash
 
-    $ bin/console sonata:admin:explain sonata.news.admin.post
+    bin/console sonata:admin:explain sonata.news.admin.post
 
 .. figure:: ../images/console_admin_explain.png
    :align: center
    :alt: Explain command
    :width: 700px
-
-   Explain command
 
 sonata:admin:setup-acl
 ----------------------
@@ -104,11 +91,9 @@ new ``Admin`` class, you can create its ACL by using the ``sonata:admin:setup-ac
 command. The ACL database will be automatically updated with the latest masks
 and roles.
 
-Usage example:
-
 .. code-block:: bash
 
-    $ bin/console sonata:admin:setup-acl
+    bin/console sonata:admin:setup-acl
 
 sonata:admin:generate-object-acl
 --------------------------------
@@ -117,4 +102,8 @@ The ``sonata:admin:generate-object-acl`` is an interactive command which helps
 you to generate ACL entities for the objects handled by your Admins. See the help
 of the command for more information.
 
-.. _SensioGeneratorBundle: http://symfony.com/doc/current/bundles/SensioGeneratorBundle/index.html
+.. code-block:: bash
+
+    bin/console sonata:admin:generate-object-acl
+
+.. _`Symfony Maker Bundle`: https://symfony.com/doc/current/bundles/SymfonyMakerBundle/index.html

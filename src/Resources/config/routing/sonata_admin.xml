@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <routes xmlns="http://symfony.com/schema/routing" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
     <route id="sonata_admin_redirect" path="/">
-        <default key="_controller">FrameworkBundle:Redirect:redirect</default>
+        <default key="_controller">Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction</default>
         <default key="route">sonata_admin_dashboard</default>
         <default key="permanent">true</default>
     </route>

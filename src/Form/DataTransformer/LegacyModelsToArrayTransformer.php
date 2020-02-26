@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -20,6 +22,8 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  * NEXT_MAJOR: remove this class when dropping Symfony < 2.7 support.
  *
  * This class should be used with Symfony <2.7 only and will be deprecated with 3.0.
+ *
+ * @deprecated since sonata-project/admin-bundle 3.11, to be removed in 4.0. Use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer instead.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
@@ -54,7 +58,7 @@ class LegacyModelsToArrayTransformer implements DataTransformerInterface
 
             foreach ($collection as $entity) {
                 // identify choices by their collection key
-                $key = array_search($entity, $availableEntities);
+                $key = array_search($entity, $availableEntities, true);
                 $array[] = $key;
             }
         } else {

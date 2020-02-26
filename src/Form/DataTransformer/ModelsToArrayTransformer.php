@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -15,7 +17,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\CoreBundle\Model\Adapter\AdapterInterface;
+use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\Form\ChoiceList\LazyChoiceList;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\RuntimeException;
@@ -23,6 +25,8 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ModelsToArrayTransformer implements DataTransformerInterface
@@ -40,7 +44,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * @var ModelChoiceList
      *
-     * @deprecated since 3.12, to be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.12, to be removed in 4.0
      * NEXT_MAJOR: remove this property
      */
     protected $choiceList;
@@ -63,7 +67,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
 
         $args = \func_get_args();
 
-        if (3 == \func_num_args()) {
+        if (3 === \func_num_args()) {
             $this->legacyConstructor($args);
         } else {
             $this->modelManager = $args[0];
@@ -163,11 +167,9 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * Simulates the old constructor for BC.
      *
-     * @param array $args
-     *
      * @throws RuntimeException
      */
-    private function legacyConstructor($args)
+    private function legacyConstructor(array $args): void
     {
         $choiceList = $args[0];
 
@@ -185,10 +187,8 @@ class ModelsToArrayTransformer implements DataTransformerInterface
 
     /**
      * @param object $entity
-     *
-     * @return array
      */
-    private function getIdentifierValues($entity)
+    private function getIdentifierValues($entity): array
     {
         try {
             return $this->modelManager->getIdentifierValues($entity);
@@ -200,12 +200,11 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * @internal
      */
-    private function triggerDeprecation()
+    private function triggerDeprecation(): void
     {
         @trigger_error(sprintf(
-                'Using the "%s::$choiceList" property is deprecated since version 3.12 and will be removed in 4.0.',
-                __CLASS__),
-            E_USER_DEPRECATED)
-        ;
+            'Using the "%s::$choiceList" property is deprecated since version 3.12 and will be removed in 4.0.',
+            __CLASS__
+        ), E_USER_DEPRECATED);
     }
 }

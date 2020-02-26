@@ -34,8 +34,7 @@ with the following templates:
                     view:
                         user_block:             mytemplate.twig.html
                     # form related theme templates => this feature need to be implemented by the Persistency layer of each Admin Bundle
-                    form:   [ 'MyTheme.twig.html', 'MySecondTheme.twig.html']
-                    filter: [ 'MyTheme.twig.html', 'MySecondTheme.twig.html']
-
+                    form:   ['MyTheme.twig.html', 'MySecondTheme.twig.html']
+                    filter: ['MyTheme.twig.html', 'MySecondTheme.twig.html']
 
 With these settings you will be able to change default services and templates used by the `id.of.admin.service`` admin instance.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -20,7 +22,7 @@ class TabMenuTest extends BaseMenuTest
 {
     protected $translator;
 
-    public function getTranslator()
+    public function getTranslator(): TranslatorInterface
     {
         if (isset($this->translator)) {
             return $this->translator;
@@ -29,7 +31,7 @@ class TabMenuTest extends BaseMenuTest
         return parent::getTranslator();
     }
 
-    public function testLabelTranslationNominalCase()
+    public function testLabelTranslationNominalCase(): void
     {
         $translatorProphecy = $this->prophesize(TranslatorInterface::class);
         $translatorProphecy
@@ -45,10 +47,10 @@ class TabMenuTest extends BaseMenuTest
         $factory = new MenuFactory();
         $menu = new MenuItem('test-menu', $factory);
         $menu->addChild('some-label', ['uri' => '/whatever']);
-        $this->assertContains('my-translation', $this->renderMenu($menu));
+        $this->assertStringContainsString('my-translation', $this->renderMenu($menu));
     }
 
-    public function testLabelTranslationWithParameters()
+    public function testLabelTranslationWithParameters(): void
     {
         $params = ['my' => 'param'];
         $translatorProphecy = $this->prophesize(TranslatorInterface::class);
@@ -67,10 +69,10 @@ class TabMenuTest extends BaseMenuTest
         $menu->addChild('some-label', ['uri' => '/whatever'])
             ->setExtra('translation_params', $params);
 
-        $this->assertContains('my-translation', $this->renderMenu($menu));
+        $this->assertStringContainsString('my-translation', $this->renderMenu($menu));
     }
 
-    public function testLabelTranslationDomainOverride()
+    public function testLabelTranslationDomainOverride(): void
     {
         $translatorProphecy = $this->prophesize(TranslatorInterface::class);
         $translatorProphecy
@@ -89,8 +91,8 @@ class TabMenuTest extends BaseMenuTest
         $menu->addChild('some-other-label', ['uri' => '/whatever']);
 
         $html = $this->renderMenu($menu);
-        $this->assertContains('my-translation', $html);
-        $this->assertContains('my-other-translation', $html);
+        $this->assertStringContainsString('my-translation', $html);
+        $this->assertStringContainsString('my-other-translation', $html);
     }
 
     protected function getTemplate()

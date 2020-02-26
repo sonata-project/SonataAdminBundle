@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -14,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Util;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -37,36 +40,31 @@ class FormBuilderIteratorTest extends TestCase
      */
     private $builder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->dispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
         $this->factory = $this->getMockForAbstractClass(FormFactoryInterface::class);
         $this->builder = new TestFormBuilder('name', null, $this->dispatcher, $this->factory);
-        $this->factory->expects($this->any())->method('createNamedBuilder')->willReturn($this->builder);
+        $this->factory->method('createNamedBuilder')->willReturn($this->builder);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->dispatcher = null;
         $this->factory = null;
         $this->builder = null;
     }
 
-    public function testConstructor()
+    public function testGetChildren(): void
     {
-        new FormBuilderIterator($this->builder);
-    }
-
-    public function testGetChildren()
-    {
-        $this->builder->add('name', 'text');
+        $this->builder->add('name', TextType::class);
         $iterator = new FormBuilderIterator($this->builder);
         $this->assertInstanceOf(\get_class($iterator), $iterator->getChildren());
     }
 
-    public function testHasChildren()
+    public function testHasChildren(): void
     {
-        $this->builder->add('name', 'text');
+        $this->builder->add('name', TextType::class);
         $iterator = new FormBuilderIterator($this->builder);
         $this->assertTrue($iterator->hasChildren());
     }

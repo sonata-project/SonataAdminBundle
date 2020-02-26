@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -19,7 +21,7 @@ class BarAdminController
     /**
      * Bar action.
      */
-    public function barAction()
+    public function barAction(): void
     {
     }
 }

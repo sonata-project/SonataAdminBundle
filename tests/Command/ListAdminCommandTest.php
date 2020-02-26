@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -24,42 +26,37 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class ListAdminCommandTest extends TestCase
 {
-    public function testExecute()
+    public function testExecute(): void
     {
         $application = new Application();
-        $command = new ListAdminCommand();
 
         $container = $this->createMock(ContainerInterface::class);
 
         $admin1 = $this->createMock(AdminInterface::class);
-        $admin1->expects($this->any())
+        $admin1
             ->method('getClass')
-            ->will($this->returnValue('Acme\Entity\Foo'));
+            ->willReturn('Acme\Entity\Foo');
 
         $admin2 = $this->createMock(AdminInterface::class);
-        $admin2->expects($this->any())
+        $admin2
             ->method('getClass')
-            ->will($this->returnValue('Acme\Entity\Bar'));
+            ->willReturn('Acme\Entity\Bar');
 
-        $container->expects($this->any())
+        $container
             ->method('get')
-            ->will($this->returnCallback(function ($id) use ($container, $admin1, $admin2) {
+            ->willReturnCallback(static function (string $id) use ($admin1, $admin2): AdminInterface {
                 switch ($id) {
-                    case 'sonata.admin.pool':
-                        $pool = new Pool($container, '', '');
-                        $pool->setAdminServiceIds(['acme.admin.foo', 'acme.admin.bar']);
-
-                        return $pool;
-
                     case 'acme.admin.foo':
                         return $admin1;
 
                     case 'acme.admin.bar':
                         return $admin2;
                 }
-            }));
+            });
 
-        $command->setContainer($container);
+        $pool = new Pool($container, '', '');
+        $pool->setAdminServiceIds(['acme.admin.foo', 'acme.admin.bar']);
+        $command = new ListAdminCommand($pool);
 
         $application->add($command);
 

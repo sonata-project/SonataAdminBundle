@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -18,12 +20,12 @@ class FormChoiceWidgetTest extends BaseWidgetTest
 {
     protected $type = 'form';
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
 
-    public function testLabelRendering()
+    public function testLabelRendering(): void
     {
         $choices = ['some', 'choices'];
         if (!method_exists(FormTypeInterface::class, 'setDefaultOptions')) {
@@ -41,13 +43,13 @@ class FormChoiceWidgetTest extends BaseWidgetTest
 
         $html = $this->renderWidget($choice->createView());
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<li><div class="checkbox"><label><input type="checkbox" id="choice_0" name="choice[]" value="0" /><span class="control-label__text">[trans]some[/trans]</span></label></div></li>',
             $this->cleanHtmlWhitespace($html)
         );
     }
 
-    public function testDefaultValueRendering()
+    public function testDefaultValueRendering(): void
     {
         $choice = $this->factory->create(
             $this->getChoiceClass(),
@@ -57,13 +59,13 @@ class FormChoiceWidgetTest extends BaseWidgetTest
 
         $html = $this->renderWidget($choice->createView());
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<option value="" selected="selected">[trans]Choose an option[/trans]</option>',
             $this->cleanHtmlWhitespace($html)
         );
     }
 
-    public function testRequiredIsDisabledForEmptyPlaceholder()
+    public function testRequiredIsDisabledForEmptyPlaceholder(): void
     {
         $choice = $this->factory->create(
             $this->getChoiceClass(),
@@ -73,13 +75,13 @@ class FormChoiceWidgetTest extends BaseWidgetTest
 
         $html = $this->renderWidget($choice->createView());
 
-        $this->assertNotContains(
+        $this->assertStringNotContainsString(
             'required="required"',
             $this->cleanHtmlWhitespace($html)
         );
     }
 
-    public function testRequiredIsEnabledIfPlaceholderIsSet()
+    public function testRequiredIsEnabledIfPlaceholderIsSet(): void
     {
         $choice = $this->factory->create(
             $this->getChoiceClass(),
@@ -89,7 +91,7 @@ class FormChoiceWidgetTest extends BaseWidgetTest
 
         $html = $this->renderWidget($choice->createView());
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'required="required"',
             $this->cleanHtmlWhitespace($html)
         );

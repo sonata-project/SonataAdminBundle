@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -15,6 +17,8 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AddFilterTypeCompilerPass implements CompilerPassInterface
@@ -32,9 +36,11 @@ class AddFilterTypeCompilerPass implements CompilerPassInterface
 
             $types[$serviceDefinition->getClass()] = $id;
 
-            // NEXT_MAJOR: Remove the alias when dropping support for symfony 2.x
+            // NEXT_MAJOR: Remove this loop, only FQCN will be supported
             foreach ($attributes as $eachTag) {
-                $types[$eachTag['alias']] = $id;
+                if (isset($eachTag['alias'])) {
+                    $types[$eachTag['alias']] = $id;
+                }
             }
         }
 

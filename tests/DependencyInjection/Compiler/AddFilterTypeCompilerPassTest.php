@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -9,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection;
+namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
@@ -24,30 +26,34 @@ class AddFilterTypeCompilerPassTest extends TestCase
 
     private $barFilter;
 
-    public function setUp()
+    private $bazFilter;
+
+    public function setUp(): void
     {
         $this->filterFactory = $this->createMock(Definition::class);
         $this->fooFilter = $this->createMock(Definition::class);
         $this->barFilter = $this->createMock(Definition::class);
+        $this->bazFilter = $this->createMock(Definition::class);
     }
 
-    public function testProcess()
+    public function testProcess(): void
     {
         $containerBuilderMock = $this->createMock(ContainerBuilder::class);
 
-        $containerBuilderMock->expects($this->any())
+        $containerBuilderMock
             ->method('getDefinition')
             ->with($this->anything())
-            ->will($this->returnValueMap([
+            ->willReturnMap([
                 ['sonata.admin.builder.filter.factory', $this->filterFactory],
                 ['acme.demo.foo_filter', $this->fooFilter],
                 ['acme.demo.bar_filter', $this->barFilter],
-            ]));
+                ['acme.demo.baz_filter', $this->bazFilter],
+            ]);
 
         $containerBuilderMock->expects($this->once())
             ->method('findTaggedServiceIds')
             ->with($this->equalTo('sonata.admin.filter.type'))
-            ->will($this->returnValue([
+            ->willReturn([
                 'acme.demo.foo_filter' => [
                     'tag1' => [
                         'alias' => 'foo_filter_alias',
@@ -58,13 +64,20 @@ class AddFilterTypeCompilerPassTest extends TestCase
                         'alias' => 'bar_filter_alias',
                     ],
                 ],
-            ]));
+                'acme.demo.baz_filter' => [
+                    'tag1' => [
+                    ],
+                ],
+            ]);
 
         $this->fooFilter->method('getClass')
-            ->will($this->returnValue('Acme\Filter\FooFilter'));
+            ->willReturn('Acme\Filter\FooFilter');
 
         $this->barFilter->method('getClass')
-            ->will($this->returnValue('Acme\Filter\BarFilter'));
+            ->willReturn('Acme\Filter\BarFilter');
+
+        $this->bazFilter->method('getClass')
+            ->willReturn('Acme\Filter\BazFilter');
 
         $this->filterFactory->expects($this->once())
             ->method('replaceArgument')
@@ -73,6 +86,7 @@ class AddFilterTypeCompilerPassTest extends TestCase
                 'Acme\Filter\FooFilter' => 'acme.demo.foo_filter',
                 'bar_filter_alias' => 'acme.demo.bar_filter',
                 'Acme\Filter\BarFilter' => 'acme.demo.bar_filter',
+                'Acme\Filter\BazFilter' => 'acme.demo.baz_filter',
             ]));
 
         $extensionsPass = new AddFilterTypeCompilerPass();

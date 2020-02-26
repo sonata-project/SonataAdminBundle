@@ -12,6 +12,8 @@
 var Admin = {
 
     collectionCounters: [],
+    config: null,
+    translations: null,
 
     /**
      * This function must be called when an ajax call is done, to ensure
@@ -20,7 +22,9 @@ var Admin = {
      * @param subject
      */
     shared_setup: function(subject) {
+        Admin.read_config();
         Admin.log("[core|shared_setup] Register services on", subject);
+        Admin.setup_ie10_polyfill();
         Admin.set_object_field_value(subject);
         Admin.add_filters(subject);
         Admin.setup_select2(subject);
@@ -36,6 +40,34 @@ var Admin = {
         Admin.setup_form_submit(subject);
 
 //        Admin.setup_list_modal(subject);
+    },
+    setup_ie10_polyfill: function() {
+      // http://getbootstrap.com/getting-started/#support-ie10-width
+      if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+          var msViewportStyle = document.createElement('style');
+          msViewportStyle.appendChild(document.createTextNode('@-ms-viewport{width:auto!important}'));
+          document.querySelector('head').appendChild(msViewportStyle);
+      }
+    },
+    read_config: function() {
+      var data = $('[data-sonata-admin]').data('sonata-admin');
+
+      this.config = data.config;
+      this.translations = data.translations;
+    },
+    get_config: function(key) {
+        if (this.config == null) {
+            this.read_config();
+        }
+
+        return this.config[key];
+    },
+    get_translations: function(key) {
+        if (this.translations == null) {
+          this.read_config();
+        }
+
+        return this.translations[key];
     },
     setup_list_modal: function(modal) {
         Admin.log('[core|setup_list_modal] configure modal on', modal);
@@ -61,13 +93,15 @@ var Admin = {
         jQuery(modal).trigger('sonata-admin-setup-list-modal');
     },
     setup_select2: function(subject) {
-        if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2) {
+        if (Admin.get_config('USE_SELECT2')) {
             Admin.log('[core|setup_select2] configure Select2 on', subject);
 
             jQuery('select:not([data-sonata-select2="false"])', subject).each(function() {
-                var select            = jQuery(this);
-                var allowClearEnabled = false;
-                var popover           = select.data('popover');
+                var select                  = jQuery(this);
+                var allowClearEnabled       = false;
+                var popover                 = select.data('popover');
+                var maximumSelectionSize    = null;
+                var minimumResultsForSearch = 10;
 
                 select.removeClass('form-control');
 
@@ -77,6 +111,14 @@ var Admin = {
                     allowClearEnabled = false;
                 }
 
+                if (select.attr('data-sonata-select2-maximumSelectionSize')) {
+                    maximumSelectionSize = select.attr('data-sonata-select2-maximumSelectionSize');
+                }
+
+                if (select.attr('data-sonata-select2-minimumResultsForSearch')) {
+                    minimumResultsForSearch = select.attr('data-sonata-select2-minimumResultsForSearch');
+                }
+
                 select.select2({
                     width: function(){
                         // Select2 v3 and v4 BC. If window.Select2 is defined, then the v3 is installed.
@@ -84,8 +126,9 @@ var Admin = {
                         return Admin.get_select2_width(window.Select2 ? this.element : select);
                     },
                     dropdownAutoWidth: true,
-                    minimumResultsForSearch: 10,
-                    allowClear: allowClearEnabled
+                    minimumResultsForSearch: minimumResultsForSearch,
+                    allowClear: allowClearEnabled,
+                    maximumSelectionSize: maximumSelectionSize
                 });
 
                 if (undefined !== popover) {
@@ -98,19 +141,19 @@ var Admin = {
         }
     },
     setup_icheck: function(subject) {
-        if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_ICHECK) {
+        if (Admin.get_config('USE_ICHECK')) {
             Admin.log('[core|setup_icheck] configure iCheck on', subject);
 
-            jQuery("input[type='checkbox']:not('label.btn>input'), input[type='radio']:not('label.btn>input')", subject)
-                .iCheck({
-                    checkboxClass: 'icheckbox_square-blue',
-                    radioClass: 'iradio_square-blue'
-                })
-                // See https://github.com/fronteed/iCheck/issues/244
-                .on('ifToggled', function (e) {
-                    $(e.target).trigger('change');
-                })
-            ;
+            jQuery('input[type="checkbox"]:not(label.btn > input, [data-sonata-icheck="false"]), input[type="radio"]:not(label.btn > input, [data-sonata-icheck="false"])', subject)
+              .iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue'
+              })
+              // See https://github.com/fronteed/iCheck/issues/244
+              .on('ifToggled', function (e) {
+                  $(e.target).trigger('change');
+              });
+
         }
     },
     /**
@@ -125,7 +168,7 @@ var Admin = {
         Admin.log('[core|setup_checkbox_range_selection] configure checkbox range selection on', subject);
 
         var previousIndex,
-            useICheck = window.SONATA_CONFIG && window.SONATA_CONFIG.USE_ICHECK
+            useICheck = Admin.get_config('USE_ICHECK')
         ;
 
         // When a checkbox or an iCheck helper is clicked
@@ -188,6 +231,10 @@ var Admin = {
      * @param mixed
      */
     log: function() {
+        if (!Admin.get_config('DEBUG')) {
+          return;
+        }
+
         var msg = '[Sonata.Admin] ' + Array.prototype.join.call(arguments,', ');
         if (window.console && window.console.log) {
             window.console.log(msg);
@@ -199,10 +246,10 @@ var Admin = {
     /**
      * NEXT_MAJOR: remove this function.
      *
-     * @deprecated in version 3.0
+     * @deprecated since sonata-project/admin-bundle 3.0
      */
     add_pretty_errors: function() {
-        console.warn('Admin.add_pretty_errors() was deprecated in version 3.0');
+        console.warn('Admin.add_pretty_errors() is deprecated since sonata-project/admin-bundle 3.0');
     },
 
     stopEvent: function(event) {
@@ -544,7 +591,7 @@ var Admin = {
     },
 
     setup_sticky_elements: function(subject) {
-        if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_STICKYFORMS) {
+        if (Admin.get_config('USE_STICKYFORMS')) {
             Admin.log('[core|setup_sticky_elements] setup sticky elements on', subject);
 
             var topNavbar = jQuery(subject).find('.navbar-static-top');
@@ -600,7 +647,7 @@ var Admin = {
 
         jQuery(window).scroll(
             Admin.debounce(function() {
-                if (footer.length && jQuery(window).scrollTop() + jQuery(window).height() == jQuery(document).height()) {
+                if (footer.length && Math.round(jQuery(window).scrollTop() + jQuery(window).height()) >= jQuery(document).height()) {
                     jQuery(footer).removeClass('stuck');
                 }
 
@@ -693,13 +740,19 @@ var Admin = {
             setTimeout(function() {
                 form.find('button').prop('disabled', true);
             }, 1);
+
+            var tabSelected = form.find('.nav-tabs li.active .changer-tab');
+
+            if (tabSelected.length > 0) {
+                form.find('input[name="_tab"]').val(tabSelected.attr('aria-controls'));
+            }
         });
     },
     /**
      * Remember open tab after refreshing page.
      */
     setup_view_tabs_changer: function () {
-        jQuery('.changer-tab').on('click', function () {
+          jQuery('.changer-tab').on('click', function () {
             var tab = jQuery(this).attr('aria-controls'),
                 search = location.search.substring(1);
 
@@ -726,6 +779,8 @@ var Admin = {
     }
 };
 
+window.Admin = Admin;
+
 jQuery(document).ready(function() {
     Admin.handle_top_navbar_height();
 });
@@ -736,7 +791,7 @@ jQuery(window).resize(function() {
 
 jQuery(document).ready(function() {
     jQuery('html').removeClass('no-js');
-    if (window.SONATA_CONFIG && window.SONATA_CONFIG.CONFIRM_EXIT) {
+    if (Admin.get_config('CONFIRM_EXIT')) {
         jQuery('.sonata-ba-form form').each(function () { jQuery(this).confirmExit(); });
     }
 

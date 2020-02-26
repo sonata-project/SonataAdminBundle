@@ -23,11 +23,7 @@ Create an admin class
 ^^^^^^^^^^^^^^^^^^^^^
 
 First we need to create an admin class and we will clear all routes except
-``list``.
-
-::
-
-    <?php
+``list``::
 
     // src/Admin/CustomViewAdmin.php
 
@@ -36,7 +32,7 @@ First we need to create an admin class and we will clear all routes except
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use Sonata\AdminBundle\Route\RouteCollection;
 
-    class CustomViewAdmin extends AbstractAdmin
+    final class CustomViewAdmin extends AbstractAdmin
     {
         protected $baseRoutePattern = 'custom_view';
         protected $baseRouteName = 'custom_view';
@@ -50,11 +46,7 @@ First we need to create an admin class and we will clear all routes except
 Extending the Admin Controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Create your own Controller extending the one from SonataAdmin.
-
-::
-
-    <?php
+Create your own Controller extending the one from SonataAdmin::
 
     // src/Controller/CustomViewCRUDController.php
 
@@ -86,17 +78,12 @@ that we do not specify the Entity, we leave it as ``null``.
     services:
         app.admin.custom_view:
             class: App\Admin\CustomViewAdmin
+            arguments:
+                - ~
+                - ~
+                - App\Controller\CustomViewCRUDController
             tags:
                 - { name: sonata.admin, manager_type: orm, group: Demo, label: Custom View }
-            arguments:
-                - null
-                - null
-                - App\Controller\CustomViewCRUDController
-            public: true
-
-.. note::
-    If you are not using Symfony Flex, this service should be registered
-    in ``app/config/services.yml``.
 
 For more information about service configuration please refer to Step 3
 of :doc:`../getting_started/creating_an_admin`

@@ -29,15 +29,12 @@ If you don't want to use select2 in your admin, you can disable it in configurat
 Disable select2 on some form elements
 -------------------------------------
 
-To disable select2 on some ``select`` form element, set data attribute ``data-sonata-select2 = "false"`` to this form element.
-
-.. code-block:: php
-
-    <?php
+To disable select2 on some ``select`` form element,
+set data attribute ``data-sonata-select2 = "false"`` to this form element::
 
     use Sonata\AdminBundle\Form\Type\ModelType;
 
-    public function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->add('category', ModelType::class, [
@@ -57,15 +54,11 @@ AllowClear
 
 Select2 parameter ``allowClear`` is handled automatically by admin. But if you want
 to overload the default functionality, you can set data attribute ``data-sonata-select2-allow-clear="true"``
-to enable ``allowClear`` or ``data-sonata-select2-allow-clear = "false"`` to disable the ``allowClear`` parameter.
-
-.. code-block:: php
-
-    <?php
+to enable ``allowClear`` or ``data-sonata-select2-allow-clear = "false"`` to disable the ``allowClear`` parameter::
 
     use Sonata\AdminBundle\Form\Type\ModelType;
 
-    public function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->add('category', ModelType::class, [

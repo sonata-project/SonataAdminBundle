@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -12,6 +14,8 @@
 namespace Sonata\AdminBundle\Exception;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
  */
 class LockException extends \Exception

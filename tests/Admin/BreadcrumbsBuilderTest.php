@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -39,7 +41,7 @@ class BreadcrumbsBuilderTest extends TestCase
     /**
      * @group legacy
      */
-    public function testGetBreadcrumbs()
+    public function testGetBreadcrumbs(): void
     {
         $postAdminSubjectId = 42;
         $commentAdminSubjectId = 100500;
@@ -54,9 +56,9 @@ class BreadcrumbsBuilderTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $menu->expects($this->any())
+        $menu
             ->method('addChild')
-            ->willReturnCallback(function () use ($menu) {
+            ->willReturnCallback(static function () use ($menu): ItemInterface {
                 return $menu;
             });
 
@@ -76,14 +78,14 @@ class BreadcrumbsBuilderTest extends TestCase
 
         $commentAdmin->setCurrentChild($subCommentAdmin);
 
-        $container->expects($this->any())
+        $container
             ->method('getParameter')
             ->with('sonata.admin.configuration.breadcrumbs')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
-        $pool->expects($this->any())
+        $pool
             ->method('getContainer')
-            ->will($this->returnValue($container));
+            ->willReturn($container);
 
         $postAdmin->setConfigurationPool($pool);
         $postAdmin->setMenuFactory($menuFactory);
@@ -93,9 +95,9 @@ class BreadcrumbsBuilderTest extends TestCase
         $commentAdmin->setLabelTranslatorStrategy($translatorStrategy);
         $commentAdmin->setRouteGenerator($routeGenerator);
 
-        $modelManager->expects($this->any())
+        $modelManager
             ->method('find')
-            ->willReturnCallback(function ($class, $id) use ($postAdminSubjectId, $commentAdminSubjectId) {
+            ->willReturnCallback(static function (string $class, int $id) use ($postAdminSubjectId, $commentAdminSubjectId) {
                 if (DummySubject::class === $class && $postAdminSubjectId === $id) {
                     return new DummySubject();
                 }
@@ -110,7 +112,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $menuFactory->expects($this->exactly(5))
             ->method('createItem')
             ->with('root')
-            ->will($this->returnValue($menu));
+            ->willReturn($menu);
 
         $menu->expects($this->once())
             ->method('setUri')
@@ -118,12 +120,12 @@ class BreadcrumbsBuilderTest extends TestCase
 
         $menu->expects($this->exactly(5))
             ->method('getParent')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $routeGenerator->expects($this->exactly(5))
             ->method('generate')
             ->with('sonata_admin_dashboard')
-            ->will($this->returnValue('http://somehost.com'));
+            ->willReturn('http://somehost.com');
 
         $translatorStrategy->expects($this->exactly(10))
             ->method('getLabel')
@@ -133,18 +135,14 @@ class BreadcrumbsBuilderTest extends TestCase
                 ['DummySubject_list'],
                 ['Comment_list'],
                 ['DummySubject_list'],
-
                 ['Comment_list'],
                 ['DummySubject_list'],
                 ['Comment_list'],
-
                 ['DummySubject_list'],
                 ['Comment_list'],
                 ['Comment_edit'],
-
                 ['DummySubject_list'],
                 ['Comment_list'],
-
                 ['DummySubject_list'],
                 ['Comment_list']
             )
@@ -152,18 +150,14 @@ class BreadcrumbsBuilderTest extends TestCase
                 'someOtherLabel',
                 'someInterestingLabel',
                 'someFancyLabel',
-
                 'someTipTopLabel',
                 'someFunkyLabel',
                 'someAwesomeLabel',
-
                 'someMildlyInterestingLabel',
                 'someWTFLabel',
                 'someBadLabel',
-
                 'someLongLabel',
                 'someEndlessLabel',
-
                 'someOriginalLabel',
                 'someOkayishLabel'
             ));
@@ -176,31 +170,27 @@ class BreadcrumbsBuilderTest extends TestCase
                 ['dummy subject representation'],
                 ['someInterestingLabel'],
                 ['this is a comment'],
-
                 ['link_breadcrumb_dashboard'],
                 ['someFancyLabel'],
                 ['dummy subject representation'],
                 ['someTipTopLabel'],
                 ['this is a comment'],
                 ['link_breadcrumb_dashboard'],
-
                 ['someFunkyLabel'],
                 ['dummy subject representation'],
                 ['someAwesomeLabel'],
                 ['this is a comment'],
                 ['link_breadcrumb_dashboard'],
-
                 ['someMildlyInterestingLabel'],
                 ['dummy subject representation'],
                 ['someWTFLabel'],
                 ['link_breadcrumb_dashboard'],
-
                 ['someBadLabel'],
                 ['dummy subject representation'],
                 ['someLongLabel'],
                 ['this is a comment']
             )
-            ->will($this->returnValue($menu));
+            ->willReturn($menu);
 
         $postAdmin->getBreadcrumbs('repost');
         $postAdmin->setSubject(new DummySubject());
@@ -217,7 +207,7 @@ class BreadcrumbsBuilderTest extends TestCase
     /**
      * @group legacy
      */
-    public function testGetBreadcrumbsWithNoCurrentAdmin()
+    public function testGetBreadcrumbsWithNoCurrentAdmin(): void
     {
         $postAdminSubjectId = 42;
         $commentAdminSubjectId = 100500;
@@ -250,47 +240,44 @@ class BreadcrumbsBuilderTest extends TestCase
         $postAdmin->setLabelTranslatorStrategy($translatorStrategy);
         $postAdmin->setRouteGenerator($routeGenerator);
 
-        $menuFactory->expects($this->any())
+        $menuFactory
             ->method('createItem')
             ->with('root')
-            ->will($this->returnValue($menu));
+            ->willReturn($menu);
 
-        $translatorStrategy->expects($this->any())
+        $translatorStrategy
             ->method('getLabel')
             ->withConsecutive(
                 ['DummySubject_list'],
                 ['DummySubject_repost'],
-
                 ['DummySubject_list']
             )
             ->will($this->onConsecutiveCalls(
                 'someOtherLabel',
                 'someInterestingLabel',
-
                 'someCoolLabel'
             ));
 
-        $menu->expects($this->any())
+        $menu
             ->method('addChild')
             ->withConsecutive(
                 ['link_breadcrumb_dashboard'],
                 ['someOtherLabel'],
                 ['someInterestingLabel'],
-
                 ['link_breadcrumb_dashboard'],
                 ['someCoolLabel'],
                 ['dummy subject representation']
             )
-            ->will($this->returnValue($menu));
+            ->willReturn($menu);
 
-        $container->expects($this->any())
+        $container
             ->method('getParameter')
             ->with('sonata.admin.configuration.breadcrumbs')
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
-        $pool->expects($this->any())
+        $pool
             ->method('getContainer')
-            ->will($this->returnValue($container));
+            ->willReturn($container);
 
         $postAdmin->setConfigurationPool($pool);
 
@@ -300,7 +287,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $this->assertSame($flagBreadcrumb, $postAdmin->getBreadcrumbs('flag'));
     }
 
-    public function testUnitChildGetBreadCrumbs()
+    public function testUnitChildGetBreadCrumbs(): void
     {
         $menu = $this->prophesize(ItemInterface::class);
         $menu->getParent()->willReturn(null);
@@ -428,7 +415,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $this->assertCount(5, $breadcrumbs);
     }
 
-    public function actionProvider()
+    public function actionProvider(): array
     {
         return [
             ['my_action'],
@@ -441,7 +428,7 @@ class BreadcrumbsBuilderTest extends TestCase
     /**
      * @dataProvider actionProvider
      */
-    public function testUnitBuildBreadcrumbs($action)
+    public function testUnitBuildBreadcrumbs(string $action): void
     {
         $breadcrumbsBuilder = new BreadcrumbsBuilder();
 
@@ -478,7 +465,7 @@ class BreadcrumbsBuilderTest extends TestCase
             'breadcrumb',
             'link'
         )->willReturn('My action');
-        if ('create' == $action) {
+        if ('create' === $action) {
             $labelTranslatorStrategy->getLabel(
                 'my_class_name_create',
                 'breadcrumb',
@@ -502,11 +489,13 @@ class BreadcrumbsBuilderTest extends TestCase
         $admin->hasAccess('list')->willReturn(true);
         $admin->generateUrl('list')->willReturn('/myadmin/list');
         $admin->getCurrentChildAdmin()->willReturn(
-            'my_action' == $action ? $childAdmin->reveal() : false
+            'my_action' === $action ? $childAdmin->reveal() : false
         );
-        if ('list' == $action) {
+        if ('list' === $action) {
             $admin->isChild()->willReturn(true);
             $menu->setUri(false)->shouldBeCalled();
+        } else {
+            $menu->setUri()->shouldNotBeCalled();
         }
         $request = $this->prophesize(Request::class);
         $request->get('slug')->willReturn('my-object');
@@ -553,6 +542,6 @@ class BreadcrumbsBuilderTest extends TestCase
             ],
         ])->willReturn($menu);
 
-        $breadcrumbsBuilder->buildBreadCrumbs($admin->reveal(), $action);
+        $breadcrumbsBuilder->buildBreadcrumbs($admin->reveal(), $action);
     }
 }

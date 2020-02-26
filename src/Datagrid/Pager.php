@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -17,8 +19,8 @@ namespace Sonata\AdminBundle\Datagrid;
  */
 abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInterface
 {
-    const TYPE_DEFAULT = 'default';
-    const TYPE_SIMPLE = 'simple';
+    public const TYPE_DEFAULT = 'default';
+    public const TYPE_SIMPLE = 'simple';
 
     /**
      * @var int
@@ -133,7 +135,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     public function getLinks($nbLinks = null)
     {
-        if (null == $nbLinks) {
+        if (null === $nbLinks) {
             $nbLinks = $this->getMaxPageLinks();
         }
         $links = [];
@@ -195,7 +197,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @param int $pos
      *
-     * @return mixed
+     * @return object
      */
     public function getObjectByCursor($pos)
     {
@@ -207,7 +209,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Returns the current object.
      *
-     * @return mixed
+     * @return object
      */
     public function getCurrent()
     {
@@ -217,12 +219,12 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * Returns the next object.
      *
-     * @return mixed|null
+     * @return object|null
      */
     public function getNext()
     {
         if ($this->cursor + 1 > $this->nbResults) {
-            return;
+            return null;
         }
 
         return $this->retrieveObject($this->cursor + 1);
@@ -236,7 +238,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     public function getPrevious()
     {
         if ($this->cursor - 1 < 1) {
-            return;
+            return null;
         }
 
         return $this->retrieveObject($this->cursor - 1);
@@ -249,7 +251,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     public function getFirstIndex()
     {
-        if (0 == $this->page) {
+        if (0 === $this->page) {
             return 1;
         }
 
@@ -259,7 +261,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @deprecated since 3.11, will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.11, will be removed in 4.0
      */
     public function getFirstIndice()
     {
@@ -279,7 +281,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     public function getLastIndex()
     {
-        if (0 == $this->page) {
+        if (0 === $this->page) {
             return $this->nbResults;
         }
         if ($this->page * $this->maxPerPage >= $this->nbResults) {
@@ -292,7 +294,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @deprecated since 3.11, will be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.11, will be removed in 4.0
      */
     public function getLastIndice()
     {
@@ -372,16 +374,16 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     {
         if ($max > 0) {
             $this->maxPerPage = $max;
-            if (0 == $this->page) {
+            if (0 === $this->page) {
                 $this->page = 1;
             }
         } else {
-            if (0 == $max) {
+            if (0 === $max) {
                 $this->maxPerPage = 0;
                 $this->page = 0;
             } else {
                 $this->maxPerPage = 1;
-                if (0 == $this->page) {
+                if (0 === $this->page) {
                     $this->page = 1;
                 }
             }
@@ -405,7 +407,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     public function isFirstPage()
     {
-        return 1 == $this->page;
+        return 1 === $this->page;
     }
 
     /**
@@ -415,7 +417,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     public function isLastPage()
     {
-        return $this->page == $this->lastPage;
+        return $this->page === $this->lastPage;
     }
 
     /**
@@ -617,7 +619,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      *
      * @param int $offset
      *
-     * @return object
+     * @return object|null
      */
     protected function retrieveObject($offset)
     {
@@ -628,6 +630,6 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
 
         $results = $queryForRetrieve->execute();
 
-        return $results[0];
+        return $results[0] ?? null;
     }
 }

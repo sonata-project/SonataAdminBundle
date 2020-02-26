@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -18,7 +20,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\CoreBundle\Validator\ErrorElement;
+use Sonata\Form\Validator\ErrorElement;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -52,7 +54,7 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
         // Use configureSideMenu not to mess with previous overrides
-        // TODO remove once deprecation period is over
+        // NEXT_MAJOR: remove this line
         $this->configureSideMenu($admin, $menu, $action, $childAdmin);
     }
 
@@ -116,6 +118,13 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
     }
 
+    /**
+     * @param array  $list
+     * @param string $action
+     * @param object $object
+     *
+     * @return array
+     */
     public function configureActionButtons(AdminInterface $admin, $list, $action, $object)
     {
         return $list;
@@ -128,3 +137,5 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
     }
 }
+
+class_exists(\Sonata\Form\Validator\ErrorElement::class);

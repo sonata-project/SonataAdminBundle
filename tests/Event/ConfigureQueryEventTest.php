@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -33,7 +35,7 @@ class ConfigureQueryEventTest extends TestCase
      */
     private $proxyQuery;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->admin = $this->getMockForAbstractClass(AdminInterface::class);
         $this->proxyQuery = $this->getMockForAbstractClass(ProxyQueryInterface::class);
@@ -41,12 +43,12 @@ class ConfigureQueryEventTest extends TestCase
         $this->event = new ConfigureQueryEvent($this->admin, $this->proxyQuery, 'Foo');
     }
 
-    public function testGetContext()
+    public function testGetContext(): void
     {
         $this->assertSame('Foo', $this->event->getContext());
     }
 
-    public function testGetAdmin()
+    public function testGetAdmin(): void
     {
         $result = $this->event->getAdmin();
 
@@ -54,7 +56,7 @@ class ConfigureQueryEventTest extends TestCase
         $this->assertSame($this->admin, $result);
     }
 
-    public function testGetProxyQuery()
+    public function testGetProxyQuery(): void
     {
         $result = $this->event->getProxyQuery();
 

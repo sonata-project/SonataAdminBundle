@@ -4,23 +4,13 @@ Preview Mode
 Preview Mode is an optional view of an object before it is persisted or updated.
 
 The preview step can be enabled for an admin entity by overriding the public property
-``$supportsPreviewMode`` and setting it to true.
+``$supportsPreviewMode`` and setting it to true::
 
-.. note::
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
-.. code-block:: php
-
-    <?php
     // src/AdminPostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         public $supportsPreviewMode = true;
-
-        / ..
     }
 
 This will show a new button during create/edit mode named preview.
@@ -37,7 +27,6 @@ Accepting the preview will store the entity as if the preview step was never the
 .. figure:: ../images/preview_show.png
    :align: center
    :alt: Preview Button
-
 
 Simulating front-end rendering
 ------------------------------
@@ -58,15 +47,12 @@ globally through the template configuration for the key 'preview':
 
         sonata_admin:
             templates:
-                preview:  "@App/CRUD/preview.html.twig"
+                preview: '@App/CRUD/preview.html.twig'
 
 Or per admin entity by overriding the ``getTemplate($name)`` and returning
 the appropriate template when the key matches 'preview'::
 
-    <?php
     // src/Admin/PostAdmin.php
-
-    // ...
 
     public function getTemplate($name)
     {
@@ -84,8 +70,8 @@ In either way the template should be extending your own layout, injecting the fo
 and finally overriding the action buttons to show the approve/decline buttons like the
 default preview.html.twig.
 
-The entity is passed to the view in a variable called **object**. If your original view expects
-a different object you can just set your own variables prior to calling parent().
+The entity is passed to the view in a variable called **object**. If your original view
+expects a different object you can set your own variables prior to calling ``parent()``.
 
 .. code-block:: jinja
 
@@ -106,7 +92,6 @@ a different object you can just set your own variables prior to calling parent()
         <div class="sonata-preview-form-container">
             {{ block('parentForm') }}
         </div>
-
     {% endblock %}
 
     {% block formactions %}

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -16,6 +18,12 @@ use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 
 /**
+ * NEXT_MAJOR: remove this class.
+ *
+ * @final since sonata-project/admin-bundle 3.52
+ *
+ * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class QueryStringBuilder implements RouteBuilderInterface

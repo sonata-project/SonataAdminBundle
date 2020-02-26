@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -14,6 +16,8 @@ namespace Sonata\AdminBundle\Model;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AuditManager implements AuditManagerInterface
@@ -46,7 +50,7 @@ class AuditManager implements AuditManagerInterface
     public function hasReader($class)
     {
         foreach ($this->readers as $classes) {
-            if (\in_array($class, $classes)) {
+            if (\in_array($class, $classes, true)) {
                 return true;
             }
         }
@@ -57,7 +61,7 @@ class AuditManager implements AuditManagerInterface
     public function getReader($class)
     {
         foreach ($this->readers as $readerId => $classes) {
-            if (\in_array($class, $classes)) {
+            if (\in_array($class, $classes, true)) {
                 return $this->container->get($readerId);
             }
         }

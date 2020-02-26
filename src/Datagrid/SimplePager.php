@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -14,6 +16,8 @@ namespace Sonata\AdminBundle\Datagrid;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Sjoerd Peters <sjoerd.peters@gmail.com>
  */
@@ -56,8 +60,8 @@ class SimplePager extends Pager
 
     public function getNbResults()
     {
-        $n = ceil(($this->getLastPage() - 1) * $this->getMaxPerPage());
-        if ($this->getLastPage() == $this->getPage()) {
+        $n = ($this->getLastPage() - 1) * $this->getMaxPerPage();
+        if ($this->getLastPage() === $this->getPage()) {
             return $n + $this->thresholdCount;
         }
 
@@ -104,7 +108,7 @@ class SimplePager extends Pager
         }
         $this->resetIterator();
 
-        if (0 == $this->getPage() || 0 == $this->getMaxPerPage()) {
+        if (0 === $this->getPage() || 0 === $this->getMaxPerPage()) {
             $this->setLastPage(0);
             $this->getQuery()->setFirstResult(0);
             $this->getQuery()->setMaxResults(0);
@@ -119,7 +123,7 @@ class SimplePager extends Pager
             $this->initializeIterator();
 
             $t = (int) ceil($this->thresholdCount / $this->getMaxPerPage()) + $this->getPage() - 1;
-            $this->setLastPage(\max(1, $t));
+            $this->setLastPage(max(1, $t));
         }
     }
 

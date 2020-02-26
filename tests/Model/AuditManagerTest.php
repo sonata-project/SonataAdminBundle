@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -23,16 +25,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class AuditManagerTest extends TestCase
 {
-    public function testGetReader()
+    public function testGetReader(): void
     {
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
 
         $fooReader = $this->getMockForAbstractClass(AuditReaderInterface::class);
         $barReader = $this->getMockForAbstractClass(AuditReaderInterface::class);
 
-        $container->expects($this->any())
+        $container
             ->method('get')
-            ->will($this->returnCallback(function ($id) use ($fooReader, $barReader) {
+            ->willReturnCallback(static function (string $id) use ($fooReader, $barReader): AuditReaderInterface {
                 switch ($id) {
                     case 'foo_reader':
                         return $fooReader;
@@ -40,7 +42,7 @@ class AuditManagerTest extends TestCase
                     case 'bar_reader':
                         return $barReader;
                 }
-            }));
+            });
 
         $auditManager = new AuditManager($container);
 
@@ -52,9 +54,10 @@ class AuditManagerTest extends TestCase
         $this->assertSame($fooReader, $auditManager->getReader('Foo\Foo1'));
     }
 
-    public function testGetReaderWithException()
+    public function testGetReaderWithException(): void
     {
-        $this->expectException(\RuntimeException::class, 'The class "Foo\Foo" does not have any reader manager');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The class "Foo\Foo" does not have any reader manager');
 
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $auditManager = new AuditManager($container);

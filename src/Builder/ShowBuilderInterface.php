@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -23,8 +25,6 @@ interface ShowBuilderInterface extends BuilderInterface
     public function getBaseList(array $options = []);
 
     /**
-     * @abstract
-     *
      * @param string|null $type
      */
     public function addField(

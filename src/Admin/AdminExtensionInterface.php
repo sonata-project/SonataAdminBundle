@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -18,10 +20,16 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\CoreBundle\Validator\ErrorElement;
+use Sonata\Form\Validator\ErrorElement;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @method array getAccessMapping(AdminInterface $admin)
+ * @method array configureBatchActions(AdminInterface $admin, array $actions)
+ * @method array configureExportFields(AdminInterface $admin, array $fields)
+ * @method array configureActionButtons(AdminInterface $admin, array $list, string $action, object $object)
+ * @method void  configureDefaultFilterValues(AdminInterface $admin, array &$filterValues)
  */
 interface AdminExtensionInterface
 {
@@ -64,7 +72,7 @@ interface AdminExtensionInterface
     );
 
     /**
-     * @param mixed $object
+     * @param object $object
      */
     public function validate(AdminInterface $admin, ErrorElement $errorElement, $object);
 
@@ -76,14 +84,14 @@ interface AdminExtensionInterface
     /**
      * Get a chance to modify a newly created instance.
      *
-     * @param mixed $object
+     * @param object $object
      */
     public function alterNewInstance(AdminInterface $admin, $object);
 
     /**
      * Get a chance to modify object instance.
      *
-     * @param mixed $object
+     * @param object $object
      */
     public function alterObject(AdminInterface $admin, $object);
 
@@ -96,80 +104,66 @@ interface AdminExtensionInterface
 
     /**
      * Return the controller access mapping.
-     *
-     * @return array
      */
-    // TODO: Uncomment in next major release
-    // public function getAccessMapping(AdminInterface $admin);
+    // NEXT_MAJOR: Uncomment this method
+    // public function getAccessMapping(AdminInterface $admin): array;
 
     /**
      * Returns the list of batch actions.
-     *
-     * @param array $actions
-     *
-     * @return array
      */
-    // TODO: Uncomment in next major release
-    // public function configureBatchActions(AdminInterface $admin, array $actions);
+    // NEXT_MAJOR: Uncomment this method
+    // public function configureBatchActions(AdminInterface $admin, array $actions): array;
 
     /**
      * Get a chance to modify export fields.
      *
-     * @param string[] $fields
-     *
      * @return string[]
      */
-    // TODO: Uncomment in next major release
-    // public function configureExportFields(AdminInterface $admin, array $fields);
+    // NEXT_MAJOR: Uncomment this method
+    // public function configureExportFields(AdminInterface $admin, array $fields): array;
 
     /**
-     * @param mixed $object
+     * @param object $object
      */
     public function preUpdate(AdminInterface $admin, $object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      */
     public function postUpdate(AdminInterface $admin, $object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      */
     public function prePersist(AdminInterface $admin, $object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      */
     public function postPersist(AdminInterface $admin, $object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      */
     public function preRemove(AdminInterface $admin, $object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      */
     public function postRemove(AdminInterface $admin, $object);
 
     /*
      * Get all action buttons for an action
-     *
-     * @param array          $list
-     * @param string         $action
-     * @param mixed          $object
-     *
-     * @return array
      */
-    // TODO: Uncomment in next major release
-    // public function configureActionButtons(AdminInterface $admin, $list, $action, $object);
+    // NEXT_MAJOR: Uncomment this method
+    // public function configureActionButtons(AdminInterface $admin, array $list, string $action, object $object): array;
 
     /*
-     * NEXT_MAJOR: Uncomment in next major release
+     * NEXT_MAJOR: Uncomment this method
      *
      * Returns a list of default filters
-     *
-     * @param array          $filterValues
      */
-    // public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues);
+    // public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void;
 }
+
+class_exists(\Sonata\Form\Validator\ErrorElement::class);

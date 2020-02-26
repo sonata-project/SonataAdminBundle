@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -14,6 +16,8 @@ namespace Sonata\AdminBundle\Route;
 use Symfony\Component\Routing\Route;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class RouteCollection
@@ -42,6 +46,11 @@ class RouteCollection
      * @var string
      */
     protected $baseRoutePattern;
+
+    /**
+     * @var Route[]
+     */
+    private $cachedElements = [];
 
     /**
      * @param string $baseCodeRoute
@@ -83,7 +92,11 @@ class RouteCollection
         $routeName = $this->baseRouteName.'_'.$name;
 
         if (!isset($defaults['_controller'])) {
-            $actionJoiner = false === \strpos($this->baseControllerName, '\\') ? ':' : '::';
+            $actionJoiner = false === strpos($this->baseControllerName, '\\') ? ':' : '::';
+            if (':' !== $actionJoiner && false !== strpos($this->baseControllerName, ':')) {
+                $actionJoiner = ':';
+            }
+
             $defaults['_controller'] = $this->baseControllerName.$actionJoiner.$this->actionify($code);
         }
 
@@ -93,10 +106,10 @@ class RouteCollection
 
         $defaults['_sonata_name'] = $routeName;
 
-        $this->elements[$this->getCode($name)] = function () use (
-            $pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition) {
+        $element = static function () use ($pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition) {
             return new Route($pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition);
         };
+        $this->addElement($code, $element);
 
         return $this;
     }
@@ -120,8 +133,8 @@ class RouteCollection
      */
     public function addCollection(self $collection)
     {
-        foreach ($collection->getElements() as $code => $route) {
-            $this->elements[$code] = $route;
+        foreach ($collection->getElements() as $code => $element) {
+            $this->addElement($code, $element);
         }
 
         return $this;
@@ -132,8 +145,8 @@ class RouteCollection
      */
     public function getElements()
     {
-        foreach ($this->elements as $name => $element) {
-            $this->elements[$name] = $this->resolve($element);
+        foreach ($this->elements as $code => $element) {
+            $this->resolveElement($code);
         }
 
         return $this->elements;
@@ -146,7 +159,12 @@ class RouteCollection
      */
     public function has($name)
     {
-        return array_key_exists($this->getCode($name), $this->elements);
+        return \array_key_exists($this->getCode($name), $this->elements);
+    }
+
+    final public function hasCached(string $name): bool
+    {
+        return \array_key_exists($this->getCode($name), $this->cachedElements);
     }
 
     /**
@@ -160,8 +178,7 @@ class RouteCollection
     {
         if ($this->has($name)) {
             $code = $this->getCode($name);
-
-            $this->elements[$code] = $this->resolve($this->elements[$code]);
+            $this->resolveElement($code);
 
             return $this->elements[$code];
         }
@@ -179,6 +196,21 @@ class RouteCollection
         unset($this->elements[$this->getCode($name)]);
 
         return $this;
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    final public function restore(string $name): self
+    {
+        if ($this->hasCached($name)) {
+            $code = $this->getCode($name);
+            $this->addElement($code, $this->cachedElements[$code]);
+
+            return $this;
+        }
+
+        throw new \InvalidArgumentException(sprintf('Element "%s" does not exist in cache.', $name));
     }
 
     /**
@@ -200,9 +232,9 @@ class RouteCollection
         }
 
         $elements = $this->elements;
-        foreach ($elements as $key => $element) {
-            if (!\in_array($key, $routeCodeList)) {
-                unset($this->elements[$key]);
+        foreach ($elements as $code => $element) {
+            if (!\in_array($code, $routeCodeList, true)) {
+                unset($this->elements[$code]);
             }
         }
 
@@ -276,14 +308,26 @@ class RouteCollection
     }
 
     /**
-     * @return Route
+     * @param Route|callable $element
      */
-    private function resolve($element)
+    final protected function addElement(string $code, $element): void
     {
-        if (\is_callable($element)) {
-            return \call_user_func($element);
-        }
+        $this->elements[$code] = $element;
+        $this->updateCachedElement($code);
+    }
 
-        return $element;
+    final protected function updateCachedElement(string $code): void
+    {
+        $this->cachedElements[$code] = $this->elements[$code];
+    }
+
+    private function resolveElement(string $code): void
+    {
+        $element = $this->elements[$code];
+
+        if (\is_callable($element)) {
+            $this->elements[$code] = $element();
+            $this->updateCachedElement($code);
+        }
     }
 }

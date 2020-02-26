@@ -1,11 +1,6 @@
 Form Help Messages and Descriptions
 ===================================
 
-.. note::
-    This article assumes you are using Symfony 4. Using Symfony 2.8 or 3
-    will require to slightly modify some namespaces and paths when creating
-    entities and admins.
-
 Help Messages
 -------------
 
@@ -19,10 +14,9 @@ Example
 
 .. code-block:: php
 
-    <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -39,15 +33,18 @@ Example
         }
     }
 
+.. figure:: ../images/help_message.png
+   :align: center
+   :alt: Example of the two form fields with help messages.
+
 Alternative Ways To Define Help Messages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 All at once::
 
-    <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -66,10 +63,9 @@ All at once::
 
 or step by step::
 
-    <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -85,11 +81,7 @@ or step by step::
     }
 
 This can be very useful if you want to apply general help messages via an ``AdminExtension``.
-This Extension for example adds a note field to some entities which use a custom trait.
-
-.. code-block:: php
-
-    <?php
+This Extension for example adds a note field to some entities which use a custom trait::
 
     namespace App\Admin\Extension;
 
@@ -98,14 +90,13 @@ This Extension for example adds a note field to some entities which use a custom
     use Sonata\AdminBundle\Form\FormMapper;
     use Sonata\AdminBundle\Show\ShowMapper;
 
-    class NoteAdminExtension extends AbstractAdminExtension
+    final class NoteAdminExtension extends AbstractAdminExtension
     {
-
         // add this field to the datagrid every time its available
         /**
          * @param DatagridMapper $datagridMapper
          */
-        public function configureDatagridFilters(DatagridMapper $datagridMapper)
+        protected function configureDatagridFilters(DatagridMapper $datagridMapper)
         {
             $datagridMapper
                 ->add('note')
@@ -118,7 +109,7 @@ This Extension for example adds a note field to some entities which use a custom
         /**
          * @param FormMapper $formMapper
          */
-        public function configureFormFields(FormMapper $formMapper)
+        protected function configureFormFields(FormMapper $formMapper)
         {
             $formMapper
                 ->addHelp('note', 'Use this field for an internal note.')
@@ -129,7 +120,7 @@ This Extension for example adds a note field to some entities which use a custom
         /**
          * @param ShowMapper $showMapper
          */
-        public function configureShowFields(ShowMapper $showMapper)
+        protected function configureShowFields(ShowMapper $showMapper)
         {
             $showMapper
                 ->with('Internal')
@@ -139,36 +130,6 @@ This Extension for example adds a note field to some entities which use a custom
         }
     }
 
-
-Help messages in a sub-field
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code-block:: php
-
-    <?php
-    // src/Admin/PostAdmin.php
-
-    use Sonata\CoreBundle\Form\Type\ImmutableArrayType;
-    use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-    use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-
-    class PostAdmin extends AbstractAdmin
-    {
-        protected function configureFormFields(FormMapper $formMapper)
-        {
-            $formMapper
-                ->add('enabled')
-                ->add('settings', ImmutableArrayType::class, [
-                    'keys' => [
-                        ['content', TextareaType::class, [
-                            'sonata_help' => 'Set the content'
-                        ]],
-                        ['public', CheckboxType::class, []],
-                    ]
-                ])
-            ;
-        }
-    }
 
 Advanced usage
 ^^^^^^^^^^^^^^
@@ -189,10 +150,9 @@ Example
 
 .. code-block:: php
 
-    <?php
     // src/Admin/PostAdmin.php
 
-    class PostAdmin extends AbstractAdmin
+    final class PostAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {

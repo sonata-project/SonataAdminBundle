@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -39,6 +41,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  *  - a button to open the associated admin create form in a dialog,
  *    in order to create and select an associated model.
  *  - a button to unlink the associated model, if any.
+ *
+ * @final since sonata-project/admin-bundle 3.52
  */
 class ModelListType extends AbstractType
 {

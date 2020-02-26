@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -15,7 +17,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 
 class FilteredAdmin extends AbstractAdmin
 {
-    protected function configureDefaultFilterValues(array &$filterValues)
+    protected function configureDefaultFilterValues(array &$filterValues): void
     {
         $filterValues['foo'] = [
             'type' => '1',

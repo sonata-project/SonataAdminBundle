@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -21,6 +23,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * This class is built to allow AdminInterface to work properly
  * if the MopaBootstrapBundle is not installed.
+ *
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
@@ -55,5 +59,10 @@ class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension
     public function getExtendedType()
     {
         return FormType::class;
+    }
+
+    public static function getExtendedTypes()
+    {
+        return [FormType::class];
     }
 }

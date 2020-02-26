@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -26,7 +28,7 @@ use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
  */
 class ObjectAclManipulatorTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->output = $this->prophesize(OutputInterface::class);
         $this->admin = $this->prophesize(AdminInterface::class);
@@ -37,11 +39,11 @@ class ObjectAclManipulatorTest extends TestCase
         $this->securityIdentity = new UserSecurityIdentity('Michael', 'stdClass');
     }
 
-    public function testConfigureAclsIgnoresNonAclSecurityHandlers()
+    public function testConfigureAclsIgnoresNonAclSecurityHandlers(): void
     {
         $this->admin->getSecurityHandler()->shouldBeCalled();
         $this->admin->getCode()->shouldBeCalled()->willReturn('test');
-        $this->output->writeln(Argument::allof(
+        $this->output->writeln(Argument::allOf(
             Argument::containingString('ignoring'),
             Argument::containingString('test')
         ))->shouldBeCalled();
@@ -57,7 +59,7 @@ class ObjectAclManipulatorTest extends TestCase
         );
     }
 
-    public function testConfigureAcls()
+    public function testConfigureAcls(): void
     {
         $securityHandler = $this->prophesize(AclSecurityHandlerInterface::class);
         $acls = $this->prophesize('SplObjectStorage');
@@ -65,7 +67,7 @@ class ObjectAclManipulatorTest extends TestCase
             ->shouldBeCalled()
             ->willReturn(false, true);
         $acl = $this->prophesize(AclInterface::class)->reveal();
-        $acls->offsetGet(Argument::Type(ObjectIdentityInterface::class))
+        $acls->offsetGet(Argument::type(ObjectIdentityInterface::class))
             ->shouldBeCalled()
             ->willReturn($acl);
         $securityHandler->findObjectAcls($this->oids)->shouldBeCalled()->willReturn($acls->reveal());
@@ -74,7 +76,7 @@ class ObjectAclManipulatorTest extends TestCase
         $securityHandler->buildSecurityInformation($this->admin)->shouldBeCalled()->willReturn([]);
         $securityHandler->addObjectClassAces($acl, [])->shouldBeCalled();
         $securityHandler->updateAcl($acl)->shouldBeCalled()->willThrow(new \Exception('test exception'));
-        $this->output->writeln(Argument::allof(
+        $this->output->writeln(Argument::allOf(
             Argument::containingString('ignoring'),
             Argument::containingString('test exception')
         ))->shouldBeCalled();

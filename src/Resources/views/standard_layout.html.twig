@@ -31,6 +31,20 @@ file that was distributed with this source code.
             <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         {% endblock %}
 
+        <meta data-sonata-admin='{{ {
+            config: {
+                CONFIRM_EXIT: sonata_admin.adminPool.getOption('confirm_exit'),
+                USE_SELECT2: sonata_admin.adminPool.getOption('use_select2'),
+                USE_ICHECK: sonata_admin.adminPool.getOption('use_icheck'),
+                USE_STICKYFORMS: sonata_admin.adminPool.getOption('use_stickyforms'),
+                DEBUG: sonata_admin.adminPool.getOption('js_debug'),
+            },
+            translations: {
+                CONFIRM_EXIT: 'confirm_exit'|trans({}, 'SonataAdminBundle'),
+            },
+        }|json_encode()|raw }}'
+        >
+
         {% block stylesheets %}
             {% for stylesheet in sonata_admin.adminPool.getOption('stylesheets', []) %}
                 <link rel="stylesheet" href="{{ asset(stylesheet) }}">
@@ -39,24 +53,6 @@ file that was distributed with this source code.
 
         {% block javascripts %}
             {% block sonata_javascript_config %}
-                <script>
-                    window.SONATA_CONFIG = {
-                        CONFIRM_EXIT: {% if sonata_admin.adminPool.getOption('confirm_exit') %}true{% else %}false{% endif %},
-                        USE_SELECT2: {% if sonata_admin.adminPool.getOption('use_select2') %}true{% else %}false{% endif %},
-                        USE_ICHECK: {% if sonata_admin.adminPool.getOption('use_icheck') %}true{% else %}false{% endif %},
-                        USE_STICKYFORMS: {% if sonata_admin.adminPool.getOption('use_stickyforms') %}true{% else %}false{% endif %}
-                    };
-                    window.SONATA_TRANSLATIONS = {
-                        CONFIRM_EXIT: '{{ 'confirm_exit'|trans({}, 'SonataAdminBundle')|escape('js') }}'
-                    };
-
-                    // http://getbootstrap.com/getting-started/#support-ie10-width
-                    if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
-                        var msViewportStyle = document.createElement('style');
-                        msViewportStyle.appendChild(document.createTextNode('@-ms-viewport{width:auto!important}'));
-                        document.querySelector('head').appendChild(msViewportStyle);
-                    }
-                </script>
             {% endblock %}
 
             {% block sonata_javascript_pool %}
@@ -134,7 +130,7 @@ file that was distributed with this source code.
                     </noscript>
                 {% endblock %}
                 {% block logo %}
-                    {% spaceless %}
+                    {% apply spaceless %}
                         <a class="logo" href="{{ path('sonata_admin_dashboard') }}">
                             {% if 'single_image' == sonata_admin.adminPool.getOption('title_mode') or 'both' == sonata_admin.adminPool.getOption('title_mode') %}
                                 <img src="{{ asset(sonata_admin.adminPool.titlelogo) }}" alt="{{ sonata_admin.adminPool.title }}">
@@ -143,11 +139,11 @@ file that was distributed with this source code.
                                 <span>{{ sonata_admin.adminPool.title }}</span>
                             {% endif %}
                         </a>
-                    {% endspaceless %}
+                    {% endapply %}
                 {% endblock %}
                 {% block sonata_nav %}
                     <nav class="navbar navbar-static-top" role="navigation">
-                        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" 
+                        <a href="#" class="sidebar-toggle" data-toggle="offcanvas"
                            role="button" title="{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}">
                             <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
                         </a>
@@ -173,15 +169,15 @@ file that was distributed with this source code.
                                                                         {% if menu.extra('safe_label', true) %}
                                                                             {{- label|raw -}}
                                                                         {% else %}
-                                                                            {{- label -}}
+                                                                            {{- label|truncate(100) -}}
                                                                         {% endif %}
                                                                     </a>
                                                                 {% else %}
-                                                                    <span>{{ label }}</span>
+                                                                    <span>{{ label|truncate(100) }}</span>
                                                                 {% endif %}
                                                             </li>
                                                         {% else %}
-                                                            <li class="active"><span>{{ label }}</span></li>
+                                                            <li class="active"><span>{{ label|truncate(100) }}</span></li>
                                                         {% endif %}
                                                     {% endfor %}
                                                 {% endif %}

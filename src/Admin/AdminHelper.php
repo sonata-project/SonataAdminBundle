@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -23,10 +25,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminHelper
 {
+    /**
+     * @var string
+     */
+    private const FORM_FIELD_DELETE = '_delete';
+
     /**
      * @var Pool
      */
@@ -47,16 +56,18 @@ class AdminHelper
     public function getChildFormBuilder(FormBuilderInterface $formBuilder, $elementId)
     {
         foreach (new FormBuilderIterator($formBuilder) as $name => $formBuilder) {
-            if ($name == $elementId) {
+            if ($name === $elementId) {
                 return $formBuilder;
             }
         }
+
+        return null;
     }
 
     /**
      * @param string $elementId
      *
-     * @return null|FormView
+     * @return FormView|null
      */
     public function getChildFormView(FormView $formView, $elementId)
     {
@@ -65,6 +76,8 @@ class AdminHelper
                 return $formView;
             }
         }
+
+        return null;
     }
 
     /**
@@ -87,7 +100,6 @@ class AdminHelper
      *   For now the append form element action used to add a new row works
      *   only for direct FieldDescription (not nested one).
      *
-     *
      * @param object $subject
      * @param string $elementId
      *
@@ -98,15 +110,34 @@ class AdminHelper
      */
     public function appendFormFieldElement(AdminInterface $admin, $subject, $elementId)
     {
+        // child rows marked as toDelete
+        $toDelete = [];
         // retrieve the subject
         $formBuilder = $admin->getFormBuilder();
+
+        // get the field element
+        $childFormBuilder = $this->getChildFormBuilder($formBuilder, $elementId);
+
+        if ($childFormBuilder) {
+            $formData = $admin->getRequest()->get($formBuilder->getName(), []);
+            if (\array_key_exists($childFormBuilder->getName(), $formData)) {
+                $formData = $admin->getRequest()->get($formBuilder->getName(), []);
+                $i = 0;
+                foreach ($formData[$childFormBuilder->getName()] as $name => &$field) {
+                    $toDelete[$i] = false;
+                    if (\array_key_exists(self::FORM_FIELD_DELETE, $field)) {
+                        $toDelete[$i] = true;
+                        unset($field[self::FORM_FIELD_DELETE]);
+                    }
+                    ++$i;
+                }
+            }
+            $admin->getRequest()->request->set($formBuilder->getName(), $formData);
+        }
 
         $form = $formBuilder->getForm();
         $form->setData($subject);
         $form->handleRequest($admin->getRequest());
-
-        // get the field element
-        $childFormBuilder = $this->getChildFormBuilder($formBuilder, $elementId);
 
         //Child form not found (probably nested one)
         //if childFormBuilder was not found resulted in fatal error getName() method call on non object
@@ -175,6 +206,17 @@ class AdminHelper
         // bind the data
         $finalForm->setData($form->getData());
 
+        // back up delete field
+        if (\count($toDelete) > 0) {
+            $i = 0;
+            foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
+                if ($childField->has(self::FORM_FIELD_DELETE)) {
+                    $childField->get(self::FORM_FIELD_DELETE)->setData($toDelete[$i] ?? false);
+                }
+                ++$i;
+            }
+        }
+
         return [$fieldDescription, $finalForm];
     }
 
@@ -220,7 +262,7 @@ class AdminHelper
      *
      * @return string
      *
-     * @deprecated Deprecated since version 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead
+     * @deprecated since sonata-project/admin-bundle 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead
      */
     public function camelize($property)
     {
@@ -288,7 +330,7 @@ class AdminHelper
     {
         $element = array_shift($elements);
         $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
-        if (0 == \count($elements)) {
+        if (0 === \count($elements)) {
             return $associationAdmin->getClass();
         }
 

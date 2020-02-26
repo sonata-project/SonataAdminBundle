@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -13,10 +15,6 @@ namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\Pool;
-use Symfony\Bridge\Twig\AppVariable;
-use Symfony\Bridge\Twig\Command\DebugCommand;
-use Symfony\Bridge\Twig\Extension\FormExtension;
-use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,10 +47,8 @@ final class RetrieveFormFieldElementAction
 
     /**
      * @throws NotFoundHttpException
-     *
-     * @return Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $code = $request->get('code');
         $elementId = $request->get('elementId');
@@ -96,27 +92,8 @@ final class RetrieveFormFieldElementAction
         return new Response($renderer->searchAndRenderBlock($view, 'widget'));
     }
 
-    /**
-     * @return FormRenderer|TwigRenderer
-     */
-    private function getFormRenderer()
+    private function getFormRenderer(): FormRenderer
     {
-        // BC for Symfony < 3.2 where this runtime does not exists
-        if (!method_exists(AppVariable::class, 'getToken')) {
-            $extension = $this->twig->getExtension(FormExtension::class);
-            $extension->initRuntime($this->twig);
-
-            return $extension->renderer;
-        }
-
-        // BC for Symfony < 3.4 where runtime should be TwigRenderer
-        if (!method_exists(DebugCommand::class, 'getLoaderPaths')) {
-            $runtime = $this->twig->getRuntime(TwigRenderer::class);
-            $runtime->setEnvironment($this->twig);
-
-            return $runtime;
-        }
-
         return $this->twig->getRuntime(FormRenderer::class);
     }
 }

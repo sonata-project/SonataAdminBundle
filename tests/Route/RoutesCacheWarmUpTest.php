@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -23,7 +25,7 @@ class RoutesCacheWarmUpTest extends TestCase
      */
     protected $routesCacheWarmUp;
 
-    public function setUp()
+    public function setUp(): void
     {
         $routesCache = $this->getMockBuilder(RoutesCache::class)->disableOriginalConstructor()->getMock();
         $pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
@@ -31,7 +33,7 @@ class RoutesCacheWarmUpTest extends TestCase
         $this->routesCacheWarmUp = new RoutesCacheWarmUp($routesCache, $pool);
     }
 
-    public function testIsOptional()
+    public function testIsOptional(): void
     {
         $this->assertTrue($this->routesCacheWarmUp->isOptional());
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -21,14 +23,9 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
-use Symfony\Bridge\Twig\AppVariable;
-use Symfony\Bridge\Twig\Command\DebugCommand;
-use Symfony\Bridge\Twig\Extension\FormExtension;
-use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\FormRenderer;
-use Symfony\Component\Form\FormRendererEngineInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -36,37 +33,6 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
-use Twig\RuntimeLoader\FactoryRuntimeLoader;
-use Twig\Template;
-
-class Foo
-{
-    public function setEnabled($value)
-    {
-    }
-}
-
-class Bar
-{
-    public function setEnabled($value)
-    {
-    }
-}
-
-class Baz
-{
-    private $bar;
-
-    public function setBar(Bar $bar)
-    {
-        $this->bar = $bar;
-    }
-
-    public function getBar()
-    {
-        return $this->bar;
-    }
-}
 
 final class SetObjectFieldValueActionTest extends TestCase
 {
@@ -95,7 +61,7 @@ final class SetObjectFieldValueActionTest extends TestCase
      */
     private $validator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->twig = new Environment(new ArrayLoader([
             'admin_template' => 'renderedTemplate',
@@ -113,7 +79,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         );
     }
 
-    public function testSetObjectFieldValueAction()
+    public function testSetObjectFieldValueAction(): void
     {
         $object = new Foo();
         $request = new Request([
@@ -122,11 +88,10 @@ final class SetObjectFieldValueActionTest extends TestCase
             'field' => 'enabled',
             'value' => 1,
             'context' => 'list',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
         $pool = $this->prophesize(Pool::class);
-        $template = $this->prophesize(Template::class);
         $translator = $this->prophesize(TranslatorInterface::class);
         $propertyAccessor = new PropertyAccessor();
         $templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
@@ -155,13 +120,13 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription->getValue(Argument::cetera())->willReturn('some value');
 
         $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
-        $action = $this->action;
-        $response = $action($request);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $response = ($this->action)($request);
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
-    public function testSetObjectFieldValueActionOnARelationField()
+    public function testSetObjectFieldValueActionOnARelationField(): void
     {
         $object = new Baz();
         $associationObject = new Bar();
@@ -171,11 +136,10 @@ final class SetObjectFieldValueActionTest extends TestCase
             'field' => 'bar',
             'value' => 1,
             'context' => 'list',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
         $modelManager = $this->prophesize(ModelManagerInterface::class);
-        $template = $this->prophesize(Template::class);
         $translator = $this->prophesize(TranslatorInterface::class);
         $propertyAccessor = new PropertyAccessor();
         $templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
@@ -209,13 +173,13 @@ final class SetObjectFieldValueActionTest extends TestCase
         $modelManager->find(\get_class($associationObject), 1)->willReturn($associationObject);
 
         $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
-        $action = $this->action;
-        $response = $action($request);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $response = ($this->action)($request);
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
-    public function testSetObjectFieldValueActionWithViolations()
+    public function testSetObjectFieldValueActionWithViolations(): void
     {
         $bar = new Bar();
         $object = new Baz();
@@ -226,7 +190,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             'field' => 'bar.enabled',
             'value' => 1,
             'context' => 'list',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'POST', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
         $propertyAccessor = new PropertyAccessor();
@@ -242,53 +206,58 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription->getOption('editable')->willReturn(true);
         $fieldDescription->getType()->willReturn('boolean');
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
-        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertSame(json_encode("error1\nerror2"), $response->getContent());
     }
 
-    private function configureFormRenderer()
+    public function testSetObjectFieldEditableMultipleValue(): void
     {
-        $runtime = new FormRenderer($this->createMock(
-            FormRendererEngineInterface::class,
-            CsrfTokenManagerInterface::class
+        $object = new StatusMultiple();
+        $request = new Request([
+            'code' => 'sonata.post.admin',
+            'objectId' => 42,
+            'field' => 'status',
+            'value' => [1, 2],
+            'context' => 'list',
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+
+        $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
+        $pool = $this->prophesize(Pool::class);
+        $template = $this->prophesize(Template::class);
+        $translator = $this->prophesize(TranslatorInterface::class);
+        $propertyAccessor = new PropertyAccessor();
+        $templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
+        $container = $this->prophesize(ContainerInterface::class);
+
+        $this->admin->getObject(42)->willReturn($object);
+        $this->admin->getCode()->willReturn('sonata.post.admin');
+        $this->admin->hasAccess('edit', $object)->willReturn(true);
+        $this->admin->getListFieldDescription('status')->willReturn($fieldDescription->reveal());
+        $this->admin->update($object)->shouldBeCalled();
+        // NEXT_MAJOR: Remove this line
+        $this->admin->getTemplate('base_list_field')->willReturn('admin_template');
+        $templateRegistry->getTemplate('base_list_field')->willReturn('admin_template');
+        $container->get('sonata.post.admin.template_registry')->willReturn($templateRegistry->reveal());
+        $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
+        $this->twig->addExtension(new SonataAdminExtension(
+            $pool->reveal(),
+            null,
+            $translator->reveal(),
+            $container->reveal()
         ));
+        $fieldDescription->getOption('editable')->willReturn(true);
+        $fieldDescription->getOption('multiple')->willReturn(true);
+        $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
+        $fieldDescription->getType()->willReturn('boolean');
+        $fieldDescription->getTemplate()->willReturn(false);
+        $fieldDescription->getValue(Argument::cetera())->willReturn(['some value']);
 
-        // Remove the condition when dropping sf < 3.2
-        if (!method_exists(AppVariable::class, 'getToken')) {
-            $extension = new FormExtension();
+        $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
 
-            $this->twig->addExtension($extension);
-            $extension->renderer = $runtime;
+        $response = ($this->action)($request);
 
-            return $runtime;
-        }
-
-        // Remove the condition when dropping sf < 3.4
-        if (!method_exists(DebugCommand::class, 'getLoaderPaths')) {
-            $twigRuntime = $this->prophesize(TwigRenderer::class);
-
-            $this->twig->addRuntimeLoader(new FactoryRuntimeLoader(
-                FormRenderer::class,
-                function () use ($runtime) {
-                    return $runtime;
-                }
-            ));
-            $this->twig->getRuntime(TwigRenderer::class)->willReturn($twigRuntime->reveal());
-            $twigRuntime->setEnvironment($this->twig)->shouldBeCalled();
-
-            return $twigRuntime;
-        }
-
-        $this->twig->addRuntimeLoader(new FactoryRuntimeLoader(
-            FormRenderer::class,
-            function () use ($runtime) {
-                return $runtime;
-            }
-        ));
-
-        return $runtime;
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 }

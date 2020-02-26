@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -20,6 +22,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * This type define a standard hidden field, that stored id to a object.
+ *
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */

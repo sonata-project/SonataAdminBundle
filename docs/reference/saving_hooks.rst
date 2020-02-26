@@ -26,7 +26,6 @@ advantage.
     When embedding one Admin within another, for example using the ``sonata_type_admin``
     field type, the child Admin's hooks are **not** fired.
 
-
 Example used with the FOS/UserBundle
 ------------------------------------
 
@@ -36,19 +35,16 @@ and is compatible with Doctrine ORM, Doctrine ODM. See
 
 The user management system requires to perform specific calls when the user
 password or username are updated. This is how the Admin bundle can be used to
-solve the issue by using the ``preUpdate`` saving hook.
+solve the issue by using the ``preUpdate`` saving hook::
 
-.. code-block:: php
-
-    <?php
-    namespace FOS\UserBundle\Admin\Entity;
+    namespace Sonata\UserBundle\Admin\Entity;
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
     use FOS\UserBundle\Model\UserManagerInterface;
     use Sonata\AdminBundle\Form\Type\ModelType;
     use Sonata\UserBundle\Form\Type\SecurityRolesType;
 
-    class UserAdmin extends AbstractAdmin
+    final class UserAdmin extends AbstractAdmin
     {
         protected function configureFormFields(FormMapper $formMapper)
         {
@@ -98,16 +94,14 @@ The service declaration where the ``UserManager`` is injected into the Admin cla
     .. code-block:: xml
 
         <service id="fos.user.admin.user" class="%fos.user.admin.user.class%">
-            <tag name="sonata.admin" manager_type="orm" group="fos_user" />
-            <argument />
+            <argument/>
             <argument>%fos.user.admin.user.entity%</argument>
-            <argument />
-
+            <argument/>
             <call method="setUserManager">
-                <argument type="service" id="fos_user.user_manager" />
+                <argument type="service" id="fos_user.user_manager"/>
             </call>
+            <tag name="sonata.admin" manager_type="orm" group="fos_user"/>
         </service>
-
 
 Hooking in the Controller
 -------------------------
@@ -126,14 +120,12 @@ redefine the following methods:
 - list objects : ``preList($object)``
 
 If these methods return a **Response**, the process is interrupted and the response
-will be returned as is by the controller (if it returns null, the process continues). You
-can generate easily a redirection to the object show page by using the method
-``redirectTo($object)``.
+will be returned as is by the controller (if it returns null, the process continues).
+You can generate a redirection to the object show page by using the method ``redirectTo($object)``.
 
 .. note::
 
-    Use case: you need to prohibit the deletion of a specific item. You may do a simple
-    check in the ``preDelete($object)`` method.
-
+    If you need to prohibit the deletion of a specific item, you may do a check
+    in the ``preDelete($object)`` method.
 
 .. _FOSUserBundle on GitHub: https://github.com/FriendsOfSymfony/FOSUserBundle/

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -22,14 +24,14 @@ class ModelTypeTest extends TypeTestCase
 {
     protected $type;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->type = new ModelType(PropertyAccess::createPropertyAccessor());
     }
 
-    public function testGetDefaultOptions()
+    public function testGetDefaultOptions(): void
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
 
@@ -59,7 +61,7 @@ class ModelTypeTest extends TypeTestCase
     /**
      * @dataProvider getCompoundOptionTests
      */
-    public function testCompoundOption($expectedCompound, $multiple, $expanded)
+    public function testCompoundOption(bool $expectedCompound, bool $multiple, bool $expanded): void
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
         $optionResolver = new OptionsResolver();

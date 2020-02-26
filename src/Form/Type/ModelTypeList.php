@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -25,7 +27,7 @@ namespace Sonata\AdminBundle\Form\Type;
  *
  * NEXT_MAJOR: remove this class.
  *
- * @deprecated since version 3.5, to be removed in 4.0. Use ModelListType instead
+ * @deprecated since sonata-project/admin-bundle 3.5, to be removed in 4.0. Use ModelListType instead
  */
 class ModelTypeList extends ModelListType
 {

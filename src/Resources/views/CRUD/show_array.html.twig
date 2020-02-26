@@ -12,6 +12,6 @@ file that was distributed with this source code.
 
 {% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
 
-{% block field%}
+{% block field %}
     {{ show.render_array(value, field_description.options.inline|default(false)) }}
 {% endblock %}

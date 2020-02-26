@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -38,10 +40,8 @@ final class GetShortObjectDescriptionAction
 
     /**
      * @throws NotFoundHttpException
-     *
-     * @return Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $code = $request->get('code');
         $objectId = $request->get('objectId');
@@ -69,16 +69,16 @@ final class GetShortObjectDescriptionAction
 
         $object = $admin->getObject($objectId);
 
-        if (!$object && 'html' == $request->get('_format')) {
+        if (!$object && 'html' === $request->get('_format')) {
             return new Response();
         }
 
-        if ('json' == $request->get('_format')) {
+        if ('json' === $request->get('_format')) {
             return new JsonResponse(['result' => [
                 'id' => $admin->id($object),
                 'label' => $admin->toString($object),
             ]]);
-        } elseif ('html' == $request->get('_format')) {
+        } elseif ('html' === $request->get('_format')) {
             return new Response($this->twig->render($admin->getTemplate('short_object_description'), [
                 'admin' => $admin,
                 'description' => $admin->toString($object),

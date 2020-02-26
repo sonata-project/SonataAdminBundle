@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -19,6 +21,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Admin menu voter based on extra `admin`.
+ *
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Samusev Andrey <andrey.simfi@ya.ru>
  */
@@ -40,7 +44,7 @@ class AdminVoter implements VoterInterface
     }
 
     /**
-     * @deprecated since version 3.31. Pass a RequestStack to the constructor instead.
+     * @deprecated since sonata-project/admin-bundle 3.31. Pass a RequestStack to the constructor instead.
      *
      * @return $this
      */
@@ -51,7 +55,8 @@ class AdminVoter implements VoterInterface
                 'The %s() method is deprecated since version 3.31.
                 Pass a Symfony\Component\HttpFoundation\RequestStack
                 in the constructor instead.',
-            __METHOD__),
+                __METHOD__
+            ),
             E_USER_DEPRECATED
         );
 
@@ -87,7 +92,7 @@ class AdminVoter implements VoterInterface
         }
 
         $route = $item->getExtra('route');
-        if ($route && $request && $route == $request->get('_route')) {
+        if ($route && $request && $route === $request->get('_route')) {
             return true;
         }
 

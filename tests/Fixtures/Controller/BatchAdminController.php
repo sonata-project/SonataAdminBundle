@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -25,7 +27,7 @@ class BatchAdminController extends CRUDController
      */
     public function batchActionFooIsRelevant(array $idx, $allElements)
     {
-        if (isset($idx[0]) && 123 == $idx[0] && isset($idx[1]) && 456 == $idx[1]) {
+        if (isset($idx[0], $idx[1]) && 123 == $idx[0] && 456 == $idx[1]) {
             return true;
         }
 
@@ -36,7 +38,7 @@ class BatchAdminController extends CRUDController
         return false;
     }
 
-    public function batchActionFoo(ProxyQueryInterface $query)
+    public function batchActionFoo(ProxyQueryInterface $query): void
     {
     }
 

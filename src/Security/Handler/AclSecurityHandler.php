@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -25,6 +27,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AclSecurityHandler implements AclSecurityHandlerInterface
@@ -171,7 +175,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         try {
             $acl = $this->aclProvider->findAcl($objectIdentity);
         } catch (AclNotFoundException $e) {
-            return;
+            return null;
         }
 
         return $acl;
@@ -208,7 +212,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
 
             foreach ($permissions as $permission) {
                 // add only the object permissions
-                if (\in_array($permission, $this->getObjectPermissions())) {
+                if (\in_array($permission, $this->getObjectPermissions(), true)) {
                     $builder->add($permission);
                     $hasRole = true;
                 }

@@ -1,0 +1,40 @@
+services:
+    # Under real conditions, this service is registered by "doctrine/doctrine-bundle"
+    database_connection:
+        class: Sonata\AdminBundle\Tests\Fixtures\DoctrineBundle\Connection
+
+    Sonata\AdminBundle\Tests\App\Model\FooRepository: ~
+
+    sonata.admin.manager.test:
+        class: Sonata\AdminBundle\Tests\App\Model\ModelManager
+        arguments:
+            - '@Sonata\AdminBundle\Tests\App\Model\FooRepository'
+        tags:
+            - {name: sonata.admin.manager}
+
+    sonata.admin.builder.test_form:
+        class: Sonata\AdminBundle\Tests\App\Builder\FormContractor
+        arguments:
+            - '@form.factory'
+
+    sonata.admin.builder.test_show:
+        class: Sonata\AdminBundle\Tests\App\Builder\ShowBuilder
+
+    sonata.admin.builder.test_list:
+        class: Sonata\AdminBundle\Tests\App\Builder\ListBuilder
+
+    sonata.admin.pager.test:
+        class: Sonata\AdminBundle\Tests\App\Datagrid\Pager
+        arguments:
+            - '@Sonata\AdminBundle\Tests\App\Model\FooRepository'
+
+    sonata.admin.builder.test_datagrid:
+        class: Sonata\AdminBundle\Tests\App\Builder\DatagridBuilder
+        arguments:
+            - '@form.factory'
+            - '@sonata.admin.pager.test'
+
+    Sonata\AdminBundle\Tests\App\Admin\FooAdmin:
+        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, ~]
+        tags:
+            - {name: sonata.admin, manager_type: test, label: Foo}

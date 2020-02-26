@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -29,6 +31,7 @@ use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Object\Metadata;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
@@ -36,9 +39,8 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Sonata\CoreBundle\Model\Metadata;
-use Sonata\CoreBundle\Validator\Constraints\InlineConstraint;
-use Sonata\CoreBundle\Validator\ErrorElement;
+use Sonata\Form\Validator\Constraints\InlineConstraint;
+use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -57,10 +59,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, AdminTreeInterface
 {
-    const CONTEXT_MENU = 'menu';
-    const CONTEXT_DASHBOARD = 'dashboard';
+    public const CONTEXT_MENU = 'menu';
+    public const CONTEXT_DASHBOARD = 'dashboard';
 
-    const CLASS_REGEX =
+    public const CLASS_REGEX =
         '@
         (?:([A-Za-z0-9]*)\\\)?        # vendor name / app name
         (Bundle\\\)?                  # optional bundle directory
@@ -70,7 +72,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             Doctrine\\\Orm|Doctrine\\\Phpcr|Doctrine\\\MongoDB|Doctrine\\\CouchDB
         )\\\(.*)@x';
 
-    const MOSAIC_ICON_CLASS = 'fa fa-th-large fa-fw';
+    public const MOSAIC_ICON_CLASS = 'fa fa-th-large fa-fw';
 
     /**
      * The list FieldDescription constructed from the configureListField method.
@@ -201,7 +203,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @var bool
      *
-     * @deprecated since 3.34, to be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.34, to be removed in 4.0.
      */
     protected $persistFilters = false;
 
@@ -238,7 +240,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * NEXT_MAJOR: remove this attribute.
      *
-     * @deprecated This attribute is deprecated since 3.24 and will be removed in 4.0
+     * @deprecated This attribute is deprecated since sonata-project/admin-bundle 3.24 and will be removed in 4.0
      *
      * @var string
      */
@@ -295,7 +297,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @var \Symfony\Component\Translation\TranslatorInterface
      *
-     * @deprecated since 3.9, to be removed with 4.0
+     * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
      */
     protected $translator;
 
@@ -383,7 +385,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $menuFactory;
 
     /**
-     * @var array
+     * @var array<string, bool>
      */
     protected $loaded = [
         'view_fields' => false,
@@ -393,19 +395,19 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     ];
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $formTheme = [];
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $filterTheme = [];
 
     /**
-     * @var array
+     * @var array<string, string>
      *
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      */
     protected $templates = [];
 
@@ -475,14 +477,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The subclasses supported by the admin class.
      *
-     * @var array
+     * @var array<string, string>
      */
     private $subClasses = [];
 
     /**
      * The list collection.
      *
-     * @var array
+     * @var FieldDescriptionCollection
      */
     private $list;
 
@@ -620,7 +622,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
             // NEXT_MAJOR: Remove this hack, because all field labels will be translated with the major release
             // No translation key exists
-            if ($transLabel == $label) {
+            if ($transLabel === $label) {
                 $fields[$key] = $field;
             } else {
                 $fields[$transLabel] = $field;
@@ -640,7 +642,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function initialize()
     {
         if (!$this->classnameLabel) {
-            $this->classnameLabel = substr($this->getClass(), strrpos($this->getClass(), '\\') + 1);
+            /* NEXT_MAJOR: remove cast to string, null is not supposed to be
+            supported but was documented as such */
+            $this->classnameLabel = substr(
+                (string) $this->getClass(),
+                strrpos((string) $this->getClass(), '\\') + 1
+            );
         }
 
         // NEXT_MAJOR: Remove this line.
@@ -713,6 +720,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
     }
 
+    /**
+     * @param object $object
+     */
     public function preValidate($object)
     {
     }
@@ -752,6 +762,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         // build the values array
         if ($this->hasRequest()) {
             $filters = $this->request->query->get('filter', []);
+            if (isset($filters['_page'])) {
+                $filters['_page'] = (int) $filters['_page'];
+            }
+            if (isset($filters['_per_page'])) {
+                $filters['_per_page'] = (int) $filters['_per_page'];
+            }
 
             // if filter persistence is configured
             // NEXT_MAJOR: remove `$this->persistFilters !== false` from the condition
@@ -850,7 +866,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @throws \InvalidArgumentException
      *
-     * @return null|string
+     * @return string|null
      */
     public function getParentAssociationMapping()
     {
@@ -858,7 +874,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         if (\is_array($this->parentAssociationMapping) && $this->getParent()) {
             $parent = $this->getParent()->getCode();
 
-            if (array_key_exists($parent, $this->parentAssociationMapping)) {
+            if (\array_key_exists($parent, $this->parentAssociationMapping)) {
                 return $this->parentAssociationMapping[$parent];
             }
 
@@ -901,7 +917,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
-                    throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', \get_class($this)));
+                    throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', static::class));
                 }
                 $baseRoutePattern = $this->urlize($matches[5], '-');
             }
@@ -918,7 +934,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             preg_match(self::CLASS_REGEX, $this->class, $matches);
 
             if (!$matches) {
-                throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', \get_class($this)));
+                throw new \RuntimeException(sprintf('Please define a default `baseRoutePattern` value for the admin class `%s`', static::class));
             }
 
             $this->cachedBaseRoutePattern = sprintf(
@@ -951,7 +967,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 preg_match(self::CLASS_REGEX, $this->class, $matches);
 
                 if (!$matches) {
-                    throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', \get_class($this)));
+                    throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', static::class));
                 }
                 $baseRouteName = $this->urlize($matches[5]);
             }
@@ -967,10 +983,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             preg_match(self::CLASS_REGEX, $this->class, $matches);
 
             if (!$matches) {
-                throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', \get_class($this)));
+                throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', static::class));
             }
 
-            $this->cachedBaseRouteName = sprintf('admin_%s%s_%s',
+            $this->cachedBaseRouteName = sprintf(
+                'admin_%s%s_%s',
                 empty($matches[1]) ? '' : $this->urlize($matches[1]).'_',
                 $this->urlize($matches[3]),
                 $this->urlize($matches[5])
@@ -1028,11 +1045,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function addSubClass($subClass)
     {
         @trigger_error(sprintf(
-            'Method "%s" is deprecated since 3.30 and will be removed in 4.0.',
+            'Method "%s" is deprecated since sonata-project/admin-bundle 3.30 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
-        if (!\in_array($subClass, $this->subClasses)) {
+        if (!\in_array($subClass, $this->subClasses, true)) {
             $this->subClasses[] = $subClass;
         }
     }
@@ -1059,7 +1076,19 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function getActiveSubClass()
     {
         if (!$this->hasActiveSubClass()) {
-            return;
+            @trigger_error(sprintf(
+                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
+                'Use %s::hasActiveSubClass() to know if there is an active subclass.',
+                __METHOD__,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare string as return type
+            // throw new \LogicException(sprintf(
+            //    'Admin "%s" has no active subclass.',
+            //    static::class
+            // ));
+
+            return null;
         }
 
         return $this->getSubClass($this->getActiveSubclassCode());
@@ -1068,13 +1097,37 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function getActiveSubclassCode()
     {
         if (!$this->hasActiveSubClass()) {
-            return;
+            @trigger_error(sprintf(
+                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
+                'Use %s::hasActiveSubClass() to know if there is an active subclass.',
+                __METHOD__,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare string as return type
+            // throw new \LogicException(sprintf(
+            //    'Admin "%s" has no active subclass.',
+            //    static::class
+            // ));
+
+            return null;
         }
 
         $subClass = $this->getRequest()->query->get('subclass');
 
         if (!$this->hasSubClass($subClass)) {
-            return;
+            @trigger_error(sprintf(
+                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
+                'Use %s::hasActiveSubClass() to know if there is an active subclass.',
+                __METHOD__,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare string as return type
+            // throw new \LogicException(sprintf(
+            //    'Admin "%s" has no active subclass.',
+            //    static::class
+            // ));
+
+            return null;
         }
 
         return $subClass;
@@ -1095,18 +1148,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $actions = $this->configureBatchActions($actions);
 
         foreach ($this->getExtensions() as $extension) {
-            // TODO: remove method check in next major release
+            // NEXT_MAJOR: remove method check
             if (method_exists($extension, 'configureBatchActions')) {
                 $actions = $extension->configureBatchActions($this, $actions);
             }
         }
 
         foreach ($actions  as $name => &$action) {
-            if (!array_key_exists('label', $action)) {
+            if (!\array_key_exists('label', $action)) {
                 $action['label'] = $this->getTranslationLabel($name, 'batch', 'label');
             }
 
-            if (!array_key_exists('translation_domain', $action)) {
+            if (!\array_key_exists('translation_domain', $action)) {
                 $action['translation_domain'] = $this->getTranslationDomain();
             }
         }
@@ -1146,6 +1199,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->routeGenerator->hasAdminRoute($this, $name);
     }
 
+    /**
+     * @param string      $name
+     * @param string|null $adminCode
+     *
+     * @return bool
+     */
     public function isCurrentRoute($name, $adminCode = null)
     {
         if (!$this->hasRequest()) {
@@ -1165,7 +1224,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             return false;
         }
 
-        return ($admin->getBaseRouteName().'_'.$name) == $route;
+        return ($admin->getBaseRouteName().'_'.$name) === $route;
     }
 
     public function generateObjectUrl($name, $object, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
@@ -1190,6 +1249,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->templateRegistry = $templateRegistry;
     }
 
+    /**
+     * @param array<string, string> $templates
+     */
     public function setTemplates(array $templates)
     {
         // NEXT_MAJOR: Remove this line
@@ -1211,9 +1273,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      *
-     * @return array
+     * @return array<string, string>
      */
     public function getTemplates()
     {
@@ -1221,11 +1283,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      *
      * @param string $name
      *
-     * @return null|string
+     * @return string|null
      */
     public function getTemplate($name)
     {
@@ -1347,7 +1409,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function buildTabMenu($action, AdminInterface $childAdmin = null)
     {
         if ($this->loaded['tab_menu']) {
-            return;
+            return $this->menu;
         }
 
         $this->loaded['tab_menu'] = true;
@@ -1368,6 +1430,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
 
         $this->menu = $menu;
+
+        return $this->menu;
     }
 
     public function buildSideMenu($action, AdminInterface $childAdmin = null)
@@ -1445,7 +1509,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * NEXT_MAJOR: remove this method
      *
-     * @deprecated since 3.34, to be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.34, to be removed in 4.0.
      */
     public function setPersistFilters($persist)
     {
@@ -1457,9 +1521,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->persistFilters = $persist;
     }
 
-    /**
-     * @param FilterPersisterInterface|null $filterPersister
-     */
     public function setFilterPersister(FilterPersisterInterface $filterPersister = null)
     {
         $this->filterPersister = $filterPersister;
@@ -1639,7 +1700,7 @@ EOT;
      */
     public function hasFormFieldDescription($name)
     {
-        return array_key_exists($name, $this->formFieldDescriptions) ? true : false;
+        return \array_key_exists($name, $this->formFieldDescriptions) ? true : false;
     }
 
     public function addFormFieldDescription($name, FieldDescriptionInterface $fieldDescription)
@@ -1685,7 +1746,7 @@ EOT;
 
     public function hasShowFieldDescription($name)
     {
-        return array_key_exists($name, $this->showFieldDescriptions);
+        return \array_key_exists($name, $this->showFieldDescriptions);
     }
 
     public function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription)
@@ -1714,7 +1775,7 @@ EOT;
     {
         $this->buildList();
 
-        return array_key_exists($name, $this->listFieldDescriptions) ? true : false;
+        return \array_key_exists($name, $this->listFieldDescriptions) ? true : false;
     }
 
     public function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription)
@@ -1734,7 +1795,7 @@ EOT;
 
     public function hasFilterFieldDescription($name)
     {
-        return array_key_exists($name, $this->filterFieldDescriptions) ? true : false;
+        return \array_key_exists($name, $this->filterFieldDescriptions) ? true : false;
     }
 
     public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription)
@@ -1763,7 +1824,8 @@ EOT;
 
             throw new \RuntimeException(sprintf(
                 'Circular reference detected! The child admin `%s` is already in the parent tree of the `%s` admin.',
-                $child->getCode(), $this->getCode()
+                $child->getCode(),
+                $this->getCode()
             ));
         }
 
@@ -1779,8 +1841,8 @@ EOT;
             $child->addParentAssociationMapping($this->getCode(), $args[1]);
         } else {
             @trigger_error(
-                'Calling "addChild" without second argument is deprecated since 3.35'
-                .' and will not be allowed in 4.0.',
+                'Calling "addChild" without second argument is deprecated since'
+                .' sonata-project/admin-bundle 3.35 and will not be allowed in 4.0.',
                 E_USER_DEPRECATED
             );
         }
@@ -1840,7 +1902,7 @@ EOT;
         $child = $this->getCurrentChildAdmin();
 
         if (null === $child) {
-            return;
+            return null;
         }
 
         for ($c = $child; null !== $c; $c = $child->getCurrentChildAdmin()) {
@@ -1873,7 +1935,7 @@ EOT;
     public function getUniqid()
     {
         if (!$this->uniqid) {
-            $this->uniqid = 's'.substr(md5($this->getBaseCodeRoute()), 0, 10);
+            $this->uniqid = 's'.uniqid();
         }
 
         return $this->uniqid;
@@ -1909,13 +1971,13 @@ EOT;
     /**
      * @param string $name
      *
-     * @return null|mixed
+     * @return mixed|null
      */
     public function getPersistentParameter($name)
     {
         $parameters = $this->getPersistentParameters();
 
-        return isset($parameters[$name]) ? $parameters[$name] : null;
+        return $parameters[$name] ?? null;
     }
 
     public function getBreadcrumbs($action)
@@ -2039,7 +2101,7 @@ EOT;
      *
      * @return string the translated string
      *
-     * @deprecated since 3.9, to be removed with 4.0
+     * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
      */
     public function transChoice($id, $count, array $parameters = [], $domain = null, $locale = null)
     {
@@ -2068,7 +2130,7 @@ EOT;
      *
      * NEXT_MAJOR: remove this method
      *
-     * @deprecated since 3.9, to be removed with 4.0
+     * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
      */
     public function setTranslator(TranslatorInterface $translator)
     {
@@ -2088,7 +2150,7 @@ EOT;
      *
      * NEXT_MAJOR: remove this method
      *
-     * @deprecated since 3.9, to be removed with 4.0
+     * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
      */
     public function getTranslator()
     {
@@ -2208,7 +2270,7 @@ EOT;
     /**
      * NEXT_MAJOR: Remove this function.
      *
-     * @deprecated This method is deprecated since 3.24 and will be removed in 4.0
+     * @deprecated This method is deprecated since sonata-project/admin-bundle 3.24 and will be removed in 4.0
      *
      * @param string $baseCodeRoute
      */
@@ -2332,7 +2394,7 @@ EOT;
     {
         $key = md5(json_encode($name).($object ? '/'.spl_object_hash($object) : ''));
 
-        if (!array_key_exists($key, $this->cacheIsGranted)) {
+        if (!\array_key_exists($key, $this->cacheIsGranted)) {
             $this->cacheIsGranted[$key] = $this->securityHandler->isGranted($this, $name, $object ?: $this);
         }
 
@@ -2503,7 +2565,7 @@ EOT;
      */
     public function determinedPerPageValue($perPage)
     {
-        return \in_array($perPage, $this->perPageOptions);
+        return \in_array($perPage, $this->perPageOptions, true);
     }
 
     public function isAclEnabled()
@@ -2548,7 +2610,7 @@ EOT;
     {
         $access = $this->getAccess();
 
-        if (!array_key_exists($action, $access)) {
+        if (!\array_key_exists($action, $access)) {
             throw new \InvalidArgumentException(sprintf(
                 'Action "%s" could not be found in access mapping.'
                 .' Please make sure your action is defined into your admin class accessMapping property.',
@@ -2579,7 +2641,7 @@ EOT;
     {
         $access = $this->getAccess();
 
-        if (!array_key_exists($action, $access)) {
+        if (!\array_key_exists($action, $access)) {
             return false;
         }
 
@@ -2596,11 +2658,17 @@ EOT;
         return true;
     }
 
+    /**
+     * @param string      $action
+     * @param object|null $object
+     *
+     * @return array
+     */
     public function configureActionButtons($action, $object = null)
     {
         $list = [];
 
-        if (\in_array($action, ['tree', 'show', 'edit', 'delete', 'list', 'batch'])
+        if (\in_array($action, ['tree', 'show', 'edit', 'delete', 'list', 'batch'], true)
             && $this->hasAccess('create')
             && $this->hasRoute('create')
         ) {
@@ -2611,7 +2679,7 @@ EOT;
             ];
         }
 
-        if (\in_array($action, ['show', 'delete', 'acl', 'history'])
+        if (\in_array($action, ['show', 'delete', 'acl', 'history'], true)
             && $this->canAccessObject('edit', $object)
             && $this->hasRoute('edit')
         ) {
@@ -2622,7 +2690,7 @@ EOT;
             ];
         }
 
-        if (\in_array($action, ['show', 'edit', 'acl'])
+        if (\in_array($action, ['show', 'edit', 'acl'], true)
             && $this->canAccessObject('history', $object)
             && $this->hasRoute('history')
         ) {
@@ -2633,7 +2701,7 @@ EOT;
             ];
         }
 
-        if (\in_array($action, ['edit', 'history'])
+        if (\in_array($action, ['edit', 'history'], true)
             && $this->isAclEnabled()
             && $this->canAccessObject('acl', $object)
             && $this->hasRoute('acl')
@@ -2645,7 +2713,7 @@ EOT;
             ];
         }
 
-        if (\in_array($action, ['edit', 'history', 'acl'])
+        if (\in_array($action, ['edit', 'history', 'acl'], true)
             && $this->canAccessObject('show', $object)
             && \count($this->getShow()) > 0
             && $this->hasRoute('show')
@@ -2657,7 +2725,7 @@ EOT;
             ];
         }
 
-        if (\in_array($action, ['show', 'edit', 'delete', 'acl', 'batch'])
+        if (\in_array($action, ['show', 'edit', 'delete', 'acl', 'batch'], true)
             && $this->hasAccess('list')
             && $this->hasRoute('list')
         ) {
@@ -2673,7 +2741,7 @@ EOT;
 
     /**
      * @param string $action
-     * @param mixed  $object
+     * @param object $object
      *
      * @return array
      */
@@ -2682,7 +2750,7 @@ EOT;
         $list = $this->configureActionButtons($action, $object);
 
         foreach ($this->getExtensions() as $extension) {
-            // TODO: remove method check in next major release
+            // NEXT_MAJOR: remove method check
             if (method_exists($extension, 'configureActionButtons')) {
                 $list = $extension->configureActionButtons($this, $list, $action, $object);
             }
@@ -2763,11 +2831,11 @@ EOT;
         $filter = $this->getFilterParameters();
         $default = $this->getDefaultFilterValues();
 
-        if (!array_key_exists($name, $filter) || !array_key_exists($name, $default)) {
+        if (!\array_key_exists($name, $filter) || !\array_key_exists($name, $default)) {
             return false;
         }
 
-        return $filter[$name] == $default[$name];
+        return $filter[$name] === $default[$name];
     }
 
     /**
@@ -2803,7 +2871,7 @@ EOT;
         $this->configureDefaultFilterValues($defaultFilterValues);
 
         foreach ($this->getExtensions() as $extension) {
-            // NEXT_MAJOR: remove method check in next major release
+            // NEXT_MAJOR: remove method check
             if (method_exists($extension, 'configureDefaultFilterValues')) {
                 $extension->configureDefaultFilterValues($this, $defaultFilterValues);
             }
@@ -2847,8 +2915,6 @@ EOT;
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @return mixed
-     *
      * @deprecated Use configureTabMenu instead
      */
     protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
@@ -2859,13 +2925,11 @@ EOT;
      * Configures the tab menu in your admin.
      *
      * @param string $action
-     *
-     * @return mixed
      */
     protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
         // Use configureSideMenu not to mess with previous overrides
-        // TODO remove once deprecation period is over
+        // NEXT_MAJOR: remove this line
         $this->configureSideMenu($menu, $action, $childAdmin);
     }
 
@@ -2901,7 +2965,7 @@ EOT;
 
         $mapper = new ListMapper($this->getListBuilder(), $this->list, $this);
 
-        if (\count($this->getBatchActions()) > 0) {
+        if (\count($this->getBatchActions()) > 0 && $this->hasRequest() && !$this->getRequest()->isXmlHttpRequest()) {
             $fieldDescription = $this->getModelManager()->getNewFieldDescriptionInstance(
                 $this->getClass(),
                 'batch',
@@ -2969,7 +3033,7 @@ EOT;
 
             $value = $propertyAccessor->getValue($object, $propertyPath);
 
-            if (\is_array($value) || ($value instanceof \Traversable && $value instanceof \ArrayAccess)) {
+            if (\is_array($value) || $value instanceof \ArrayAccess) {
                 $value[] = $parent;
                 $propertyAccessor->setValue($object, $propertyPath, $value);
             } else {
@@ -3001,7 +3065,7 @@ EOT;
         throw new \RuntimeException(sprintf(
             'Unable to find the subclass `%s` for admin `%s`',
             $name,
-            \get_class($this)
+            static::class
         ));
     }
 
@@ -3017,7 +3081,7 @@ EOT;
 
         $metadata->addConstraint(new InlineConstraint([
             'service' => $this,
-            'method' => function (ErrorElement $errorElement, $object) use ($admin) {
+            'method' => static function (ErrorElement $errorElement, $object) use ($admin) {
                 /* @var \Sonata\AdminBundle\Admin\AdminInterface $admin */
 
                 // This avoid the main validation to be cascaded to children
@@ -3049,7 +3113,7 @@ EOT;
     /**
      * Return list routes with permissions name.
      *
-     * @return array
+     * @return array<string, string>
      */
     protected function getAccess()
     {
@@ -3068,7 +3132,7 @@ EOT;
         ], $this->getAccessMapping());
 
         foreach ($this->extensions as $extension) {
-            // TODO: remove method check in next major release
+            // NEXT_MAJOR: remove method check
             if (method_exists($extension, 'getAccessMapping')) {
                 $access = array_merge($access, $extension->getAccessMapping($this));
             }
@@ -3078,7 +3142,7 @@ EOT;
     }
 
     /**
-     * Returns a list of default filters.
+     * Configures a list of default filters.
      */
     protected function configureDefaultFilterValues(array &$filterValues)
     {
@@ -3087,7 +3151,7 @@ EOT;
     /**
      * Build all the related urls to the current admin.
      */
-    private function buildRoutes()
+    private function buildRoutes(): void
     {
         if ($this->loaded['routes']) {
             return;
@@ -3111,3 +3175,5 @@ EOT;
         }
     }
 }
+
+class_exists(\Sonata\Form\Validator\ErrorElement::class);

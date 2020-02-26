@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -15,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -31,6 +34,8 @@ use Symfony\Component\Form\FormBuilder;
  */
 class DatagridMapperTest extends TestCase
 {
+    private const DEFAULT_GRANTED_ROLE = 'ROLE_ADMIN_BAZ';
+
     /**
      * @var DatagridMapper
      */
@@ -41,7 +46,7 @@ class DatagridMapperTest extends TestCase
      */
     private $datagrid;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
 
@@ -56,41 +61,52 @@ class DatagridMapperTest extends TestCase
 
         $admin = $this->createMock(AdminInterface::class);
 
-        $datagridBuilder->expects($this->any())
+        $datagridBuilder
             ->method('addFilter')
-            ->will($this->returnCallback(function ($datagrid, $type, $fieldDescription, $admin) {
+            ->willReturnCallback(function (
+                Datagrid $datagrid,
+                ?string $type,
+                FieldDescriptionInterface $fieldDescription,
+                AdminInterface $admin
+            ): void {
                 $fieldDescription->setType($type);
 
                 $filter = $this->getMockForAbstractClass(Filter::class);
 
-                $filter->expects($this->any())
+                $filter
                     ->method('getDefaultOptions')
-                    ->will($this->returnValue(['foo_default_option' => 'bar_default']));
+                    ->willReturn(['foo_default_option' => 'bar_default']);
 
                 $filter->initialize($fieldDescription->getName(), $fieldDescription->getOptions());
                 $datagrid->addFilter($filter);
-            }));
+            });
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
-        $modelManager->expects($this->any())
+        $modelManager
             ->method('getNewFieldDescriptionInstance')
-            ->will($this->returnCallback(function ($class, $name, array $options = []) {
+            ->willReturnCallback(function (?string $class, string $name, array $options = []): BaseFieldDescription {
                 $fieldDescription = $this->getFieldDescriptionMock();
                 $fieldDescription->setName($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
-            }));
+            });
 
-        $admin->expects($this->any())
+        $admin
             ->method('getModelManager')
-            ->will($this->returnValue($modelManager));
+            ->willReturn($modelManager);
+
+        $admin
+            ->method('isGranted')
+            ->willReturnCallback(static function (string $name, object $object = null): bool {
+                return self::DEFAULT_GRANTED_ROLE === $name;
+            });
 
         $this->datagridMapper = new DatagridMapper($datagridBuilder, $this->datagrid, $admin);
     }
 
-    public function testFluidInterface()
+    public function testFluidInterface(): void
     {
         $fieldDescription = $this->getFieldDescriptionMock('fooName', 'fooLabel');
 
@@ -99,7 +115,7 @@ class DatagridMapperTest extends TestCase
         $this->assertSame($this->datagridMapper, $this->datagridMapper->reorder([]));
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $this->assertFalse($this->datagridMapper->has('fooName'));
 
@@ -125,7 +141,7 @@ class DatagridMapperTest extends TestCase
         ], $filter->getOptions());
     }
 
-    public function testGet2()
+    public function testGet2(): void
     {
         $this->assertFalse($this->datagridMapper->has('fooName'));
 
@@ -154,7 +170,7 @@ class DatagridMapperTest extends TestCase
         ], $filter->getOptions());
     }
 
-    public function testAdd()
+    public function testAdd(): void
     {
         $this->datagridMapper->add('fooName');
 
@@ -166,7 +182,7 @@ class DatagridMapperTest extends TestCase
         $this->assertSame('fooName', $fieldDescription->getName());
     }
 
-    public function testAddWithoutFieldName()
+    public function testAddWithoutFieldName(): void
     {
         $this->datagridMapper->add('foo.bar');
 
@@ -179,7 +195,7 @@ class DatagridMapperTest extends TestCase
         $this->assertSame('bar', $fieldDescription->getOption('field_name'));
     }
 
-    public function testAddRemove()
+    public function testAddRemove(): void
     {
         $this->assertFalse($this->datagridMapper->has('fooName'));
 
@@ -193,35 +209,39 @@ class DatagridMapperTest extends TestCase
         $this->assertSame('fooFilterName', $fieldDescription->getOption('field_name'));
     }
 
-    public function testAddException()
+    public function testAddException(): void
     {
-        $this->expectException(\RuntimeException::class, 'Unknown field name in datagrid mapper. Field name should be either of FieldDescriptionInterface interface or string');
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(
+            'Unknown field name in datagrid mapper. Field name should be either of FieldDescriptionInterface interface or string'
+        );
 
         $this->datagridMapper->add(12345);
     }
 
-    public function testAddDuplicateNameException()
+    public function testAddDuplicateNameException(): void
     {
         $tmpNames = [];
         $this->datagridMapper->getAdmin()
             ->expects($this->exactly(2))
             ->method('hasFilterFieldDescription')
-            ->will($this->returnCallback(function ($name) use (&$tmpNames) {
+            ->willReturnCallback(static function (string $name) use (&$tmpNames): bool {
                 if (isset($tmpNames[$name])) {
                     return true;
                 }
                 $tmpNames[$name] = $name;
 
                 return false;
-            }));
+            });
 
-        $this->expectException(\RuntimeException::class, 'Duplicate field name "fooName" in datagrid mapper. Names should be unique.');
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Duplicate field name "fooName" in datagrid mapper. Names should be unique.');
 
         $this->datagridMapper->add('fooName');
         $this->datagridMapper->add('fooName');
     }
 
-    public function testKeys()
+    public function testKeys(): void
     {
         $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
         $fieldDescription2 = $this->getFieldDescriptionMock('fooName2', 'fooLabel2');
@@ -232,7 +252,7 @@ class DatagridMapperTest extends TestCase
         $this->assertSame(['fooName1', 'fooName2'], $this->datagridMapper->keys());
     }
 
-    public function testReorder()
+    public function testReorder(): void
     {
         $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
         $fieldDescription2 = $this->getFieldDescriptionMock('fooName2', 'fooLabel2');
@@ -261,7 +281,28 @@ class DatagridMapperTest extends TestCase
         ], array_keys($this->datagrid->getFilters()));
     }
 
-    private function getFieldDescriptionMock($name = null, $label = null)
+    public function testAddOptionRole(): void
+    {
+        $this->datagridMapper->add('bar', 'bar');
+
+        $this->assertTrue($this->datagridMapper->has('bar'));
+
+        $this->datagridMapper->add('quux', 'bar', [], null, null, ['role' => 'ROLE_QUX']);
+
+        $this->assertTrue($this->datagridMapper->has('bar'));
+        $this->assertFalse($this->datagridMapper->has('quux'));
+
+        $this->datagridMapper
+            ->add('foobar', 'bar', [], null, null, ['role' => self::DEFAULT_GRANTED_ROLE])
+            ->add('foo', 'bar', [], null, null, ['role' => 'ROLE_QUX'])
+            ->add('baz', 'bar');
+
+        $this->assertTrue($this->datagridMapper->has('foobar'));
+        $this->assertFalse($this->datagridMapper->has('foo'));
+        $this->assertTrue($this->datagridMapper->has('baz'));
+    }
+
+    private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription
     {
         $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class);
 

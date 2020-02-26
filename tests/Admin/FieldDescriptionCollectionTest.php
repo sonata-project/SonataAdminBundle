@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -17,16 +19,16 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 
 class FieldDescriptionCollectionTest extends TestCase
 {
-    public function testMethods()
+    public function testMethods(): void
     {
         $collection = new FieldDescriptionCollection();
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('title'));
+        $fieldDescription->expects($this->once())->method('getName')->willReturn('title');
         $collection->add($fieldDescription);
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('position'));
+        $fieldDescription->expects($this->once())->method('getName')->willReturn('position');
         $collection->add($fieldDescription);
 
         $this->assertFalse($collection->has('foo'));
@@ -37,8 +39,8 @@ class FieldDescriptionCollectionTest extends TestCase
         $this->assertCount(2, $collection->getElements());
         $this->assertCount(2, $collection);
 
-        $this->isInstanceOf(FieldDescriptionInterface::class, $collection['title']);
-        $this->isInstanceOf(FieldDescriptionInterface::class, $collection->get('title'));
+        $this->assertInstanceOf(FieldDescriptionInterface::class, $collection['title']);
+        $this->assertInstanceOf(FieldDescriptionInterface::class, $collection->get('title'));
 
         $collection->remove('title');
         $this->assertFalse($collection->has('title'));
@@ -49,7 +51,7 @@ class FieldDescriptionCollectionTest extends TestCase
         $this->assertCount(0, $collection);
     }
 
-    public function testNonExistentField()
+    public function testNonExistentField(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Element "foo" does not exist.');
@@ -58,7 +60,7 @@ class FieldDescriptionCollectionTest extends TestCase
         $collection->get('foo');
     }
 
-    public function testArrayAccessSetField()
+    public function testArrayAccessSetField(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Cannot set value, use add');
@@ -68,16 +70,16 @@ class FieldDescriptionCollectionTest extends TestCase
         $collection['foo'] = null;
     }
 
-    public function testReorderListWithoutBatchField()
+    public function testReorderListWithoutBatchField(): void
     {
         $collection = new FieldDescriptionCollection();
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('title'));
+        $fieldDescription->expects($this->once())->method('getName')->willReturn('title');
         $collection->add($fieldDescription);
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('position'));
+        $fieldDescription->expects($this->once())->method('getName')->willReturn('position');
         $collection->add($fieldDescription);
 
         $newOrder = ['position', 'title'];
@@ -87,20 +89,20 @@ class FieldDescriptionCollectionTest extends TestCase
         $this->assertSame($newOrder, $actualElements, 'the order is wrong');
     }
 
-    public function testReorderListWithBatchField()
+    public function testReorderListWithBatchField(): void
     {
         $collection = new FieldDescriptionCollection();
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('title'));
+        $fieldDescription->expects($this->once())->method('getName')->willReturn('title');
         $collection->add($fieldDescription);
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('position'));
+        $fieldDescription->expects($this->once())->method('getName')->willReturn('position');
         $collection->add($fieldDescription);
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->expects($this->once())->method('getName')->will($this->returnValue('batch'));
+        $fieldDescription->expects($this->once())->method('getName')->willReturn('batch');
         $collection->add($fieldDescription);
 
         $newOrder = ['position', 'title'];

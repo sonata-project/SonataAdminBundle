@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -15,8 +17,6 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Command\CreateClassCacheCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @group legacy
@@ -37,7 +37,7 @@ class CreateClassCacheCommandTest extends TestCase
      */
     private $application;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $tempFile = tempnam(sys_get_temp_dir(), 'sonata_');
         if (file_exists($tempFile)) {
@@ -52,33 +52,12 @@ class CreateClassCacheCommandTest extends TestCase
         }
 
         $this->application = new Application();
-        $command = new CreateClassCacheCommand();
-
-        $container = $this->createMock(ContainerInterface::class);
-        $kernel = $this->createMock(KernelInterface::class);
-
-        $kernel->expects($this->any())
-            ->method('getCacheDir')
-            ->will($this->returnValue($this->tempDirectory));
-
-        $kernel->expects($this->any())
-            ->method('isDebug')
-            ->will($this->returnValue(false));
-
-        $container->expects($this->any())
-                ->method('get')
-                ->will($this->returnCallback(function ($id) use ($kernel) {
-                    if ('kernel' == $id) {
-                        return $kernel;
-                    }
-                }));
-
-        $command->setContainer($container);
+        $command = new CreateClassCacheCommand($this->tempDirectory, false);
 
         $this->application->add($command);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ($this->tempDirectory) {
             if (file_exists($this->tempDirectory.'/classes.map')) {
@@ -95,7 +74,7 @@ class CreateClassCacheCommandTest extends TestCase
         }
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $this->markTestSkipped();
         $this->assertFileExists($this->tempDirectory.'/classes.map');
@@ -111,7 +90,7 @@ class CreateClassCacheCommandTest extends TestCase
         $this->assertFileEquals(__DIR__.'/../Fixtures/Command/classes.php', $this->tempDirectory.'/classes.php');
     }
 
-    public function testExecuteWithException()
+    public function testExecuteWithException(): void
     {
         $this->assertFileExists($this->tempDirectory.'/classes.map');
         unlink($this->tempDirectory.'/classes.map');

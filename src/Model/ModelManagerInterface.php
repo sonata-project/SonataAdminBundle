@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -11,11 +13,11 @@
 
 namespace Sonata\AdminBundle\Model;
 
-use Exporter\Source\SourceIteratorInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\Exporter\Source\SourceIteratorInterface;
 
 /**
  * A model manager is a bridge between the model classes and the admin
@@ -32,21 +34,21 @@ interface ModelManagerInterface
     public function getNewFieldDescriptionInstance($class, $name, array $options = []);
 
     /**
-     * @param mixed $object
+     * @param object $object
      *
      * @throws ModelManagerException
      */
     public function create($object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      *
      * @throws ModelManagerException
      */
     public function update($object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      *
      * @throws ModelManagerException
      */
@@ -154,7 +156,7 @@ interface ModelManagerInterface
      *
      * @param string $class
      *
-     * @return mixed
+     * @return object
      */
     public function getModelInstance($class);
 
@@ -168,26 +170,24 @@ interface ModelManagerInterface
     /**
      * Removes an element from the collection.
      *
-     * @param mixed $collection
-     * @param mixed $element
+     * @param array  $collection
+     * @param object $element
      */
     public function collectionRemoveElement(&$collection, &$element);
 
     /**
      * Add an element from the collection.
      *
-     * @param mixed $collection
-     * @param mixed $element
-     *
-     * @return mixed
+     * @param array  $collection
+     * @param object $element
      */
     public function collectionAddElement(&$collection, &$element);
 
     /**
      * Check if the element exists in the collection.
      *
-     * @param mixed $collection
-     * @param mixed $element
+     * @param array  $collection
+     * @param object $element
      *
      * @return bool
      */
@@ -196,23 +196,21 @@ interface ModelManagerInterface
     /**
      * Clear the collection.
      *
-     * @param mixed $collection
-     *
-     * @return mixed
+     * @param array $collection
      */
     public function collectionClear(&$collection);
 
     /**
      * Returns the parameters used in the columns header.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid);
 
     /**
      * @param string $class
      *
-     * @return array
+     * @return array<string, string>
      */
     public function getDefaultSortValues($class);
 
@@ -248,20 +246,19 @@ interface ModelManagerInterface
     /**
      * @param string $class
      *
-     * @return array
+     * @return string[]
      */
     public function getExportFields($class);
 
     /**
      * @param int $page
      *
-     * @return mixed
+     * @return array<string, mixed>
      */
     public function getPaginationParameters(DatagridInterface $datagrid, $page);
 
     /**
      * @param string $class
-     * @param array  $idx
      */
     public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
 }

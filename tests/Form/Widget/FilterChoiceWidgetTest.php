@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -17,12 +19,12 @@ class FilterChoiceWidgetTest extends BaseWidgetTest
 {
     protected $type = 'filter';
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
 
-    public function testDefaultValueRendering()
+    public function testDefaultValueRendering(): void
     {
         $choice = $this->factory->create(
             $this->getChoiceClass(),
@@ -32,13 +34,13 @@ class FilterChoiceWidgetTest extends BaseWidgetTest
 
         $html = $this->renderWidget($choice->createView());
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<option value="" selected="selected">[trans]Choose an option[/trans]</option>',
             $this->cleanHtmlWhitespace($html)
         );
     }
 
-    public function testRequiredIsDisabledForEmptyPlaceholder()
+    public function testRequiredIsDisabledForEmptyPlaceholder(): void
     {
         $choice = $this->factory->create(
             $this->getChoiceClass(),
@@ -48,13 +50,13 @@ class FilterChoiceWidgetTest extends BaseWidgetTest
 
         $html = $this->renderWidget($choice->createView());
 
-        $this->assertNotContains(
+        $this->assertStringNotContainsString(
             'required="required"',
             $this->cleanHtmlWhitespace($html)
         );
     }
 
-    public function testRequiredIsEnabledIfPlaceholderIsSet()
+    public function testRequiredIsEnabledIfPlaceholderIsSet(): void
     {
         $choice = $this->factory->create(
             $this->getChoiceClass(),
@@ -64,7 +66,7 @@ class FilterChoiceWidgetTest extends BaseWidgetTest
 
         $html = $this->renderWidget($choice->createView());
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'required="required"',
             $this->cleanHtmlWhitespace($html)
         );

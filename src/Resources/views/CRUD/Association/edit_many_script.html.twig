@@ -431,7 +431,7 @@ This code manages the many-to-[one|many] association field popup
             link.onclick = null;
 
             jQuery(link)
-                .click(field_remove_element_{{ id}})
+                .click(field_remove_element_{{ id }})
                 .trigger('click')
             ;
 
@@ -479,7 +479,12 @@ This code manages the many-to-[one|many] association field popup
                     associationadmin.generateUrl('edit', {'id' : 'OBJECT_ID'})
                 }}'.replace('OBJECT_ID', jQuery(this).val());
 
-                jQuery('#field_actions_{{ id }} a.btn-warning').attr('href', edit_button_url);
+                var edit_button_node = jQuery('#field_actions_{{ id }} a.btn-warning');
+                if (jQuery(this).val()) {
+                    edit_button_node.removeClass('hidden').attr('href', edit_button_url);
+                } else {
+                    edit_button_node.addClass('hidden');
+                }
             {% endif %}
         });
 

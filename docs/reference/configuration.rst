@@ -76,12 +76,16 @@ Full Configuration Options
                 # Auto order groups and admins by label or id
                 sort_admins: false
                 confirm_exit: true
+                js_debug: false
                 use_select2: true
                 use_icheck: true
                 use_bootlint: false
                 use_stickyforms: true
                 pager_links: null
                 form_type: standard
+                default_group: default
+                default_label_catalogue: SonataAdminBundle
+                default_icon: '<i class="fa fa-folder"></i>'
                 dropdown_number_groups_per_colums:  2
                 title_mode: ~ # One of "single_text"; "single_image"; "both"
 
@@ -243,3 +247,4 @@ Full Configuration Options
             show_mosaic_button: true
             global_search:
                 show_empty_boxes: show
+                case_sensitive: true

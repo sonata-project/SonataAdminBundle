@@ -2,12 +2,12 @@
 
 {#
     This file doesn't seem to be used anymore ; commenting it for now in order not to mess with user's configurations.
-    TODO: Remove it and all of its references
+    NEXT_MAJOR: Remove it and all of its references
 #}
 
 {#
 {% block choice_widget %}
-{% spaceless %}
+{% apply spaceless %}
     {% if expanded %}
         <ul {{ block('widget_container_attributes') }} class="inputs-list">
         {% for child in form %}
@@ -35,20 +35,20 @@
         {{ block('choice_widget_options') }}
     </select>
     {% endif %}
-{% endspaceless %}
+{% endapply %}
 {% endblock choice_widget %}
 
 {% block form_widget_simple %}
-{% spaceless %}
+{% apply spaceless %}
     {% set type = type|default('text') %}
     <input type="{{ type }}" {{ block('widget_attributes') }} value="{{ value }}">
-{% endspaceless %}
+{% endapply %}
 {% endblock form_widget_simple %}
 
 &#123;&#35; Labels &#35;&#125;
 
 {% block form_label %}
-{% spaceless %}
+{% apply spaceless %}
     {% if not compound %}
         {% set attr = attr|merge({'for': id}) %}
     {% endif %}
@@ -65,13 +65,13 @@
     {% else %}
         <label{% for attrname,attrvalue in attr %} {{attrname}}="{{attrvalue}}"{% endfor %}>{{ label|trans({}, translation_domain) }}</label>
     {% endif %}
-{% endspaceless %}
+{% endapply %}
 {% endblock %}
 
 &#123;&#35; Rows &#35;&#125;
 
 {% block form_row %}
-{% spaceless %}
+{% apply spaceless %}
     <div class="form-group {{ (0 < form_errors(form)|length)? 'has-error':'' }} ">
         {{ form_label(form, label|default(null)) }}
         <div class="col-sm-10 col-md-5">
@@ -79,13 +79,13 @@
             {{ form_errors(form) }}
         </div>
     </div>
-{% endspaceless %}
+{% endapply %}
 {% endblock form_row %}
 
 &#123;&#35; Misc &#35;&#125;
 
 {% block form_errors %}
-{% spaceless %}
+{% apply spaceless %}
     {% if errors|length > 0 %}
         {% if not form.parent  or 'repeated' in form.vars['block_prefixes'] %}
             <div class="form-group has-error">
@@ -101,6 +101,6 @@
             </div>
         {% endif %}
     {% endif %}
-{% endspaceless %}
+{% endapply %}
 {% endblock form_errors %}
 #}

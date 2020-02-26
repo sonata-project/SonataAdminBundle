@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Sonata Project package.
  *
@@ -26,6 +28,8 @@ use Symfony\Component\PropertyAccess\Exception\NoSuchIndexException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminType extends AbstractType
@@ -39,7 +43,7 @@ class AdminType extends AbstractType
         }
 
         if ($options['delete'] && $admin->hasAccess('delete')) {
-            if (!array_key_exists('translation_domain', $options['delete_options']['type_options'])) {
+            if (!\array_key_exists('translation_domain', $options['delete_options']['type_options'])) {
                 $options['delete_options']['type_options']['translation_domain'] = $admin->getTranslationDomain();
             }
 
@@ -98,7 +102,7 @@ class AdminType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'delete' => function (Options $options) {
+            'delete' => static function (Options $options) {
                 return false !== $options['btn_delete'];
             },
             'delete_options' => [
