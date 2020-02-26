@@ -128,6 +128,11 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $help;
 
     /**
+     * @var array the parameters to use in help message
+     */
+    protected $helpTranslationParameters = [];
+
+    /**
      * @var array[] cached object field getters
      */
     private static $fieldGetters = [];
@@ -458,6 +463,21 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public function getHelp()
     {
         return $this->help;
+    }
+
+    /**
+     * Defines the help translation parameters.
+     *
+     * @param array $help
+     */
+    public function setHelpTranslationParameters(array $helpTranslationParameters)
+    {
+        $this->helpTranslationParameters = $helpTranslationParameters;
+    }
+
+    public function getHelpTranslationParameters()
+    {
+        return $this->helpTranslationParameters;
     }
 
     public function getLabel()
