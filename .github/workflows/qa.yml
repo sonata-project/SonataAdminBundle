@@ -8,5 +8,7 @@ jobs:
       - uses: actions/checkout@master
       - name: PHPStan
         uses: "docker://oskarstark/phpstan-ga"
+        env:
+          REQUIRE_DEV: 'true'
         with:
           args: analyse
