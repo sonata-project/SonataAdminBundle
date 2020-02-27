@@ -38,8 +38,8 @@ class RoleSecurityHandlerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->authorizationChecker = $this->getMockForAbstractClass(AuthorizationCheckerInterface::class);
-        $this->admin = $this->getMockForAbstractClass(AdminInterface::class);
+        $this->authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
+        $this->admin = $this->createMock(AdminInterface::class);
     }
 
     /**
@@ -56,7 +56,7 @@ class RoleSecurityHandlerTest extends TestCase
         $this->assertSame($expected, $handler->getBaseRole($this->admin));
     }
 
-    public function getBaseRoleTests()
+    public function getBaseRoleTests(): array
     {
         return [
             ['ROLE_FOO_BAR_%s', 'foo.bar'],
@@ -79,38 +79,26 @@ class RoleSecurityHandlerTest extends TestCase
 
         $this->authorizationChecker
             ->method('isGranted')
-            ->willReturnCallback(static function (array $attributes, $object) {
-                if (\in_array('ROLE_BATMAN', $attributes, true)) {
-                    return true;
+            ->willReturnCallback(static function (string $attribute, $object) {
+                switch ($attribute) {
+                    case 'ROLE_BATMAN':
+                    case 'ROLE_IRONMAN':
+                    case 'ROLE_FOO_BAR_ABC':
+                    case 'ROLE_FOO_BAR_BAZ_ALL':
+                        return true;
+                    case 'ROLE_AUTH_EXCEPTION':
+                        throw new AuthenticationCredentialsNotFoundException();
+                    case 'ROLE_FOO_BAR_DEF':
+                        return $object instanceof \stdClass;
+                    default:
+                        return false;
                 }
-
-                if (\in_array('ROLE_IRONMAN', $attributes, true)) {
-                    return true;
-                }
-
-                if (\in_array('ROLE_AUTH_EXCEPTION', $attributes, true)) {
-                    throw new AuthenticationCredentialsNotFoundException();
-                }
-
-                if (\in_array('ROLE_FOO_BAR_ABC', $attributes, true)) {
-                    return true;
-                }
-
-                if (\in_array('ROLE_FOO_BAR_DEF', $attributes, true) && is_a($object, 'stdClass')) {
-                    return true;
-                }
-
-                if (\in_array('ROLE_FOO_BAR_BAZ_ALL', $attributes, true)) {
-                    return true;
-                }
-
-                return false;
             });
 
         $this->assertSame($expected, $handler->isGranted($this->admin, $operation, $object));
     }
 
-    public function getIsGrantedTests()
+    public function getIsGrantedTests(): array
     {
         return [
             //empty
@@ -191,7 +179,7 @@ class RoleSecurityHandlerTest extends TestCase
 
         $this->authorizationChecker
             ->method('isGranted')
-            ->willReturnCallback(static function (array $attributes, $object): void {
+            ->willReturnCallback(static function (): void {
                 throw new \RuntimeException('Something is wrong');
             });
 
@@ -199,16 +187,22 @@ class RoleSecurityHandlerTest extends TestCase
         $handler->isGranted($this->admin, 'BAZ');
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testCreateObjectSecurity(): void
     {
         $handler = $this->getRoleSecurityHandler(['ROLE_FOO']);
-        $this->assertNull($handler->createObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
+        $handler->createObjectSecurity($this->getSonataAdminObject(), new \stdClass());
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testDeleteObjectSecurity(): void
     {
         $handler = $this->getRoleSecurityHandler(['ROLE_FOO']);
-        $this->assertNull($handler->deleteObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
+        $handler->deleteObjectSecurity($this->getSonataAdminObject(), new \stdClass());
     }
 
     public function testBuildSecurityInformation(): void
