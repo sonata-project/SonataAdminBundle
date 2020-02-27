@@ -61,9 +61,9 @@ class RoleSecurityHandler implements SecurityHandlerInterface
         $allRole = sprintf($this->getBaseRole($admin), 'ALL');
 
         try {
-            return $this->authorizationChecker->isGranted($this->superAdminRoles)
-                || $this->authorizationChecker->isGranted($attributes, $object)
-                || $this->authorizationChecker->isGranted([$allRole], $object);
+            return $this->isAnyGranted($this->superAdminRoles)
+                || $this->isAnyGranted($attributes, $object)
+                || $this->isAnyGranted([$allRole], $object);
         } catch (AuthenticationCredentialsNotFoundException $e) {
             return false;
         }
@@ -85,5 +85,16 @@ class RoleSecurityHandler implements SecurityHandlerInterface
 
     public function deleteObjectSecurity(AdminInterface $admin, $object)
     {
+    }
+
+    private function isAnyGranted(array $attributes, $subject = null): bool
+    {
+        foreach ($attributes as $attribute) {
+            if ($this->authorizationChecker->isGranted($attribute, $subject)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
