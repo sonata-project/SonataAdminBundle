@@ -52,14 +52,6 @@
                 <argument type="service" id="sonata.admin.breadcrumbs_builder"/>
             </call>
         </service>
-        <!-- controller as services -->
-        <service id="sonata.admin.controller.admin" class="Sonata\AdminBundle\Controller\HelperController" public="true">
-            <deprecated>The controller service "%service_id%" is deprecated in favor of several action services since version 3.38.0 and will be removed in 4.0.</deprecated>
-            <argument type="service" id="twig"/>
-            <argument type="service" id="sonata.admin.pool"/>
-            <argument type="service" id="sonata.admin.helper"/>
-            <argument type="service" id="validator"/>
-        </service>
         <!-- audit manager -->
         <service id="sonata.admin.audit.manager" class="Sonata\AdminBundle\Model\AuditManager" public="true">
             <argument type="service" id="service_container"/>
