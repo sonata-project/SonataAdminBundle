@@ -1,8 +1,7 @@
 {% block form %}
     {{ sonata_block_render_event('sonata.admin.edit.form.top', { 'admin': admin, 'object': object }) }}
 
-    {# NEXT_MAJOR: remove default filter #}
-    {% set url = objectId|default(admin.id(object)) is not null ? 'edit' : 'create' %}
+    {% set url = objectId is not null ? 'edit' : 'create' %}
 
     {% if not admin.hasRoute(url) %}
         <div>
@@ -12,8 +11,7 @@
         <form
               {% if sonata_admin.adminPool.getOption('form_type') == 'horizontal' %}class="form-horizontal"{% endif %}
               role="form"
-              {# NEXT_MAJOR: remove default filter #}
-              action="{% block sonata_form_action_url %}{{ admin.generateUrl(url, {'id': objectId|default(admin.id(object)), 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}{% endblock %}"
+              action="{% block sonata_form_action_url %}{{ admin.generateUrl(url, {'id': objectId, 'uniqid': admin.uniqid, 'subclass': app.request.get('subclass')}) }}{% endblock %}"
               {% if form.vars.multipart %} enctype="multipart/form-data"{% endif %}
               method="POST"
               {% if not sonata_admin.adminPool.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
@@ -84,8 +82,7 @@
                 <div class="sonata-ba-form-actions well well-small form-actions">
                 {% block sonata_form_actions %}
                     {% if app.request.isxmlhttprequest %}
-                        {# NEXT_MAJOR: remove default filter #}
-                        {% if objectId|default(admin.id(object)) is not null %}
+                        {% if objectId is not null %}
                             <button type="submit" class="btn btn-success" name="btn_update"><i class="fa fa-save" aria-hidden="true"></i> {{ 'btn_update'|trans({}, 'SonataAdminBundle') }}</button>
                             {% if admin.hasRoute('delete') and admin.hasAccess('delete', object) %}
                                 {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
@@ -103,8 +100,7 @@
                                 {{ 'btn_preview'|trans({}, 'SonataAdminBundle') }}
                             </button>
                         {% endif %}
-                        {# NEXT_MAJOR: remove default filter #}
-                        {% if objectId|default(admin.id(object)) is not null %}
+                        {% if objectId is not null %}
                             <button type="submit" class="btn btn-success" name="btn_update_and_edit"><i class="fa fa-save" aria-hidden="true"></i> {{ 'btn_update_and_edit_again'|trans({}, 'SonataAdminBundle') }}</button>
 
                             {% if admin.hasRoute('list') and admin.hasAccess('list') %}
