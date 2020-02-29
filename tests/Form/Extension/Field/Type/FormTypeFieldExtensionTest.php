@@ -180,8 +180,6 @@ class FormTypeFieldExtensionTest extends TestCase
                  'class' => false,
                  'options' => [],
             ],
-            // NEXT_MAJOR: Remove this line
-            'sonata_help' => null,
             'sonata_admin_code' => 'parent_code',
         ];
 
@@ -281,24 +279,5 @@ class FormTypeFieldExtensionTest extends TestCase
         ];
 
         $this->assertSame($expected, $formView->vars['block_prefixes']);
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testSonataHelp(): void
-    {
-        $extension = new FormTypeFieldExtension([], []);
-        $optionResolver = new OptionsResolver();
-        $extension->configureOptions($optionResolver);
-
-        $defaultOptions = $optionResolver->resolve();
-
-        $this->assertArrayHasKey('sonata_help', $defaultOptions);
-        $this->assertNull($defaultOptions['sonata_help']);
-
-        $optionsWithSonataHelp = $optionResolver->resolve(['sonata_help' => 'Sonata help message']);
-
-        $this->assertSame('Sonata help message', $optionsWithSonataHelp['sonata_help']);
     }
 }
