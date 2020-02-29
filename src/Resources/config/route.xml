@@ -4,9 +4,6 @@
         <service id="sonata.admin.route.path_info" class="Sonata\AdminBundle\Route\PathInfoBuilder" public="true">
             <argument type="service" id="sonata.admin.audit.manager"/>
         </service>
-        <service id="sonata.admin.route.query_string" class="Sonata\AdminBundle\Route\QueryStringBuilder" public="true">
-            <argument type="service" id="sonata.admin.audit.manager"/>
-        </service>
         <service id="sonata.admin.route.default_generator" class="Sonata\AdminBundle\Route\DefaultRouteGenerator" public="true">
             <argument type="service" id="router"/>
             <argument type="service" id="sonata.admin.route.cache"/>
