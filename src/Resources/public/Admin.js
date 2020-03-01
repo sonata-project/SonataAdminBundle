@@ -243,15 +243,6 @@ var Admin = {
         }
     },
 
-    /**
-     * NEXT_MAJOR: remove this function.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.0
-     */
-    add_pretty_errors: function() {
-        console.warn('Admin.add_pretty_errors() is deprecated since sonata-project/admin-bundle 3.0');
-    },
-
     stopEvent: function(event) {
         event.preventDefault();
 
