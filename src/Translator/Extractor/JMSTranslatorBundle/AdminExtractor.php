@@ -26,6 +26,8 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
+ * NEXT_MAJOR: Remove implementing TranslatorInterface and SecurityHandlerInterface.
+ *
  * @final since sonata-project/admin-bundle 3.52
  */
 class AdminExtractor implements ExtractorInterface, TranslatorInterface, SecurityHandlerInterface, LabelTranslatorStrategyInterface
@@ -106,7 +108,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         $this->catalogue = new MessageCatalogue();
 
         foreach ($this->adminPool->getAdminGroups() as $name => $group) {
-            $this->trans($name, [], $group['label_catalogue']);
+            $this->addMessage($name, $group['label_catalogue']);
         }
 
         foreach ($this->adminPool->getAdminServiceIds() as $id) {
@@ -114,7 +116,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
 
             $label = $admin->getLabel();
             if (!empty($label)) {
-                $this->trans($label, [], $admin->getTranslationDomain());
+                $this->addMessage($label, $admin->getTranslationDomain());
             }
 
             $this->translator = $admin->getTranslator();
@@ -188,6 +190,11 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         return $catalogue;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     */
     public function trans($id, array $parameters = [], $domain = null, $locale = null)
     {
         $this->addMessage($id, $domain);
@@ -195,6 +202,11 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         return $id;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     */
     public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
     {
         $this->addMessage($id, $domain);
@@ -202,33 +214,68 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         return $id;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     */
     public function setLocale($locale)
     {
         $this->translator->setLocale($locale);
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     */
     public function getLocale()
     {
         return $this->translator->getLocale();
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     */
     public function isGranted(AdminInterface $admin, $attributes, $object = null)
     {
         return true;
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     */
     public function buildSecurityInformation(AdminInterface $admin)
     {
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     */
     public function createObjectSecurity(AdminInterface $admin, $object)
     {
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     */
     public function deleteObjectSecurity(AdminInterface $admin, $object)
     {
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     */
     public function getBaseRole(AdminInterface $admin)
     {
     }
