@@ -199,15 +199,6 @@ final class SonataAdminExtension extends Extension
             ->addTag(ModelManagerCompilerPass::MANAGER_TAG);
     }
 
-    /**
-     * NEXT_MAJOR: remove this property.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.56
-     */
-    public function configureClassesToCompile(): void
-    {
-    }
-
     public function getNamespace()
     {
         return 'https://sonata-project.org/schema/dic/admin';
