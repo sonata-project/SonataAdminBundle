@@ -17,7 +17,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PoolTest extends TestCase
@@ -69,7 +68,9 @@ class PoolTest extends TestCase
         $container = $this->createMock(ContainerInterface::class);
 
         $container->method('get')->will($this->onConsecutiveCalls(
-            $admin_group1, $admin_group2, $admin_group3
+            $admin_group1,
+            $admin_group2,
+            $admin_group3
         ));
 
         $pool = new Pool($container, 'Sonata Admin', '/path/to/pic.png');
@@ -515,45 +516,6 @@ class PoolTest extends TestCase
     public function testGetContainer(): void
     {
         $this->assertInstanceOf(ContainerInterface::class, $this->pool->getContainer());
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testTemplate(): void
-    {
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->getTemplate('ajax')
-            ->shouldBeCalledTimes(1)
-            ->willReturn('Foo.html.twig');
-
-        $this->pool->setTemplateRegistry($templateRegistry->reveal());
-
-        $this->assertSame('Foo.html.twig', $this->pool->getTemplate('ajax'));
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testSetGetTemplates(): void
-    {
-        $templates = [
-            'ajax' => 'Foo.html.twig',
-            'layout' => 'Bar.html.twig',
-        ];
-
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->setTemplates($templates)
-            ->shouldBeCalledTimes(1);
-        $templateRegistry->getTemplates()
-            ->shouldBeCalledTimes(1)
-            ->willReturn($templates);
-
-        $this->pool->setTemplateRegistry($templateRegistry->reveal());
-
-        $this->pool->setTemplates($templates);
-
-        $this->assertSame($templates, $this->pool->getTemplates());
     }
 
     public function testGetTitleLogo(): void

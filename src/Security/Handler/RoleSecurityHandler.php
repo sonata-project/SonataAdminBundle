@@ -34,16 +34,8 @@ class RoleSecurityHandler implements SecurityHandlerInterface
      */
     protected $superAdminRoles;
 
-    /**
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     */
-    public function __construct($authorizationChecker, array $superAdminRoles)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker, array $superAdminRoles)
     {
-        // NEXT_MAJOR: Move AuthorizationCheckerInterface check to method signature
-        if (!$authorizationChecker instanceof AuthorizationCheckerInterface) {
-            throw new \InvalidArgumentException('Argument 1 should be an instance of Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
-        }
-
         $this->authorizationChecker = $authorizationChecker;
         $this->superAdminRoles = $superAdminRoles;
     }
@@ -61,9 +53,9 @@ class RoleSecurityHandler implements SecurityHandlerInterface
         $allRole = sprintf($this->getBaseRole($admin), 'ALL');
 
         try {
-            return $this->authorizationChecker->isGranted($this->superAdminRoles)
-                || $this->authorizationChecker->isGranted($attributes, $object)
-                || $this->authorizationChecker->isGranted([$allRole], $object);
+            return $this->isAnyGranted($this->superAdminRoles)
+                || $this->isAnyGranted($attributes, $object)
+                || $this->isAnyGranted([$allRole], $object);
         } catch (AuthenticationCredentialsNotFoundException $e) {
             return false;
         }
@@ -85,5 +77,16 @@ class RoleSecurityHandler implements SecurityHandlerInterface
 
     public function deleteObjectSecurity(AdminInterface $admin, $object): void
     {
+    }
+
+    private function isAnyGranted(array $attributes, $subject = null): bool
+    {
+        foreach ($attributes as $attribute) {
+            if ($this->authorizationChecker->isGranted($attribute, $subject)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

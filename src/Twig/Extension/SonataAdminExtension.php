@@ -29,7 +29,6 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
-use Twig\Template;
 use Twig\TemplateWrapper;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -82,17 +81,10 @@ final class SonataAdminExtension extends AbstractExtension
     public function __construct(
         Pool $pool,
         LoggerInterface $logger = null,
-        TranslatorInterface $translator = null,
+        TranslatorInterface $translator,
         ContainerInterface $templateRegistries = null,
         AuthorizationCheckerInterface $securityChecker = null
     ) {
-        // NEXT_MAJOR: make the translator parameter required
-        if (null === $translator) {
-            @trigger_error(
-                'The $translator parameter will be required fields with the 4.0 release.',
-                E_USER_DEPRECATED
-            );
-        }
         $this->pool = $pool;
         $this->logger = $logger;
         $this->translator = $translator;
@@ -176,9 +168,7 @@ final class SonataAdminExtension extends AbstractExtension
     ) {
         $template = $this->getTemplate(
             $fieldDescription,
-            // NEXT_MAJOR: Remove this line and use commented line below instead
-            $fieldDescription->getAdmin()->getTemplate('base_list_field'),
-            //$this->getTemplateRegistry($fieldDescription->getAdmin()->getCode())->getTemplate('base_list_field'),
+            $this->getTemplateRegistry($fieldDescription->getAdmin()->getCode())->getTemplate('base_list_field'),
             $environment
         );
 

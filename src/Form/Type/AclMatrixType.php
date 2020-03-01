@@ -51,16 +51,6 @@ class AclMatrixType extends AbstractType
         $resolver->setAllowedTypes('acl_value', ['string', UserInterface::class]);
     }
 
-    /**
-     * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
-     *
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
     public function getBlockPrefix()
     {
         return 'sonata_type_acl_matrix';

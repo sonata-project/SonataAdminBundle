@@ -51,7 +51,7 @@ class SearchHandlerTest extends TestCase
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $admin->expects($this->once())->method('getDatagrid')->willReturn($datagrid);
 
-        $handler = new SearchHandler($this->getPool($admin));
+        $handler = new SearchHandler($this->getPool($admin), true);
         $this->assertFalse($handler->search($admin, 'myservice'));
     }
 

@@ -397,13 +397,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $filterTheme = [];
 
     /**
-     * @var array<string, string>
-     *
-     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
-     */
-    protected $templates = [];
-
-    /**
      * @var AdminExtensionInterface[]
      */
     protected $extensions = [];
@@ -908,7 +901,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 throw new \RuntimeException(sprintf('Cannot automatically determine base route name, please define a default `baseRouteName` value for the admin class `%s`', static::class));
             }
 
-            $this->cachedBaseRouteName = sprintf('admin_%s%s_%s',
+            $this->cachedBaseRouteName = sprintf(
+                'admin_%s%s_%s',
                 empty($matches[1]) ? '' : $this->urlize($matches[1]).'_',
                 $this->urlize($matches[3]),
                 $this->urlize($matches[5])
@@ -1153,9 +1147,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function setTemplates(array $templates): void
     {
-        // NEXT_MAJOR: Remove this line
-        $this->templates = $templates;
-
         $this->getTemplateRegistry()->setTemplates($templates);
     }
 
@@ -1164,32 +1155,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function setTemplate($name, $template): void
     {
-        // NEXT_MAJOR: Remove this line
-        $this->templates[$name] = $template;
-
         $this->getTemplateRegistry()->setTemplate($name, $template);
-    }
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
-     *
-     * @return array<string, string>
-     */
-    public function getTemplates(): array
-    {
-        return $this->getTemplateRegistry()->getTemplates();
-    }
-
-    /**
-     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
-     *
-     * @param string $name
-     *
-     * @return string|null
-     */
-    public function getTemplate($name)
-    {
-        return $this->getTemplateRegistry()->getTemplate($name);
     }
 
     public function getNewInstance()
@@ -1707,7 +1673,8 @@ EOT;
 
             throw new \RuntimeException(sprintf(
                 'Circular reference detected! The child admin `%s` is already in the parent tree of the `%s` admin.',
-                $child->getCode(), $this->getCode()
+                $child->getCode(),
+                $this->getCode()
             ));
         }
 
@@ -2190,15 +2157,8 @@ EOT;
         return $this->getNormalizedIdentifier($entity);
     }
 
-    public function setValidator($validator): void
+    public function setValidator(ValidatorInterface $validator): void
     {
-        // NEXT_MAJOR: Move ValidatorInterface check to method signature
-        if (!$validator instanceof ValidatorInterface) {
-            throw new \InvalidArgumentException(
-                'Argument 1 must be an instance of Symfony\Component\Validator\Validator\ValidatorInterface'
-            );
-        }
-
         $this->validator = $validator;
     }
 
@@ -2510,9 +2470,7 @@ EOT;
             $actions['create'] = [
                 'label' => 'link_add',
                 'translation_domain' => 'SonataAdminBundle',
-                // NEXT_MAJOR: Remove this line and use commented line below it instead
-                'template' => $this->getTemplate('action_create'),
-                // 'template' => $this->getTemplateRegistry()->getTemplate('action_create'),
+                'template' => $this->getTemplateRegistry()->getTemplate('action_create'),
                 'url' => $this->generateUrl('create'),
                 'icon' => 'plus-circle',
             ];
@@ -2618,7 +2576,7 @@ EOT;
         $this->configureDefaultFilterValues($defaultFilterValues);
 
         foreach ($this->getExtensions() as $extension) {
-            // NEXT_MAJOR: remove method check in next major release
+            // NEXT_MAJOR: remove method check
             if (method_exists($extension, 'configureDefaultFilterValues')) {
                 $extension->configureDefaultFilterValues($this, $defaultFilterValues);
             }
@@ -2676,7 +2634,7 @@ EOT;
     protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
         // Use configureSideMenu not to mess with previous overrides
-        // TODO remove once deprecation period is over
+        // NEXT_MAJOR: remove this line
         $this->configureSideMenu($menu, $action, $childAdmin);
     }
 
@@ -2725,9 +2683,7 @@ EOT;
             );
 
             $fieldDescription->setAdmin($this);
-            // NEXT_MAJOR: Remove this line and use commented line below it instead
-            $fieldDescription->setTemplate($this->getTemplate('batch'));
-            // $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('batch'));
+            $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('batch'));
 
             $mapper->add($fieldDescription, 'batch');
         }
@@ -2751,9 +2707,7 @@ EOT;
             );
 
             $fieldDescription->setAdmin($this);
-            // NEXT_MAJOR: Remove this line and use commented line below it instead
-            $fieldDescription->setTemplate($this->getTemplate('select'));
-            // $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('select'));
+            $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('select'));
 
             $mapper->add($fieldDescription, 'select');
         }

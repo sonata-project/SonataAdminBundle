@@ -162,7 +162,11 @@ class SonataAdminExtensionTest extends TestCase
         $this->securityChecker->isGranted(Argument::type('string'), null)->willReturn(true);
 
         $this->twigExtension = new SonataAdminExtension(
-            $this->pool, $this->logger, $this->translator, $this->container->reveal(), $this->securityChecker->reveal()
+            $this->pool,
+            $this->logger,
+            $this->translator,
+            $this->container->reveal(),
+            $this->securityChecker->reveal()
         );
         $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
 
@@ -258,95 +262,6 @@ class SonataAdminExtensionTest extends TestCase
         $this->fieldDescription
             ->method('getLabel')
             ->willReturn('Data');
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
-     * @dataProvider getRenderListElementTests
-     */
-    public function testRenderListElement(string $expected, string $type, $value, array $options): void
-    {
-        $this->admin
-            ->method('getPersistentParameters')
-            ->willReturn(['context' => 'foo']);
-
-        $this->admin
-            ->method('hasAccess')
-            ->willReturn(true);
-
-        // NEXT_MAJOR: Remove this line
-        $this->admin
-            ->method('getTemplate')
-            ->with('base_list_field')
-            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
-
-        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
-
-        $this->fieldDescription
-            ->method('getValue')
-            ->willReturn($value);
-
-        $this->fieldDescription
-            ->method('getType')
-            ->willReturn($type);
-
-        $this->fieldDescription
-            ->method('getOptions')
-            ->willReturn($options);
-
-        $this->fieldDescription
-            ->method('getOption')
-            ->willReturnCallback(static function ($name, $default = null) use ($options) {
-                return $options[$name] ?? $default;
-            });
-
-        $this->fieldDescription
-            ->method('getTemplate')
-            ->willReturnCallback(static function () use ($type) {
-                switch ($type) {
-                    case 'string':
-                        return '@SonataAdmin/CRUD/list_string.html.twig';
-                    case 'boolean':
-                        return '@SonataAdmin/CRUD/list_boolean.html.twig';
-                    case 'datetime':
-                        return '@SonataAdmin/CRUD/list_datetime.html.twig';
-                    case 'date':
-                        return '@SonataAdmin/CRUD/list_date.html.twig';
-                    case 'time':
-                        return '@SonataAdmin/CRUD/list_time.html.twig';
-                    case 'currency':
-                        return '@SonataAdmin/CRUD/list_currency.html.twig';
-                    case 'percent':
-                        return '@SonataAdmin/CRUD/list_percent.html.twig';
-                    case 'email':
-                        return '@SonataAdmin/CRUD/list_email.html.twig';
-                    case 'choice':
-                        return '@SonataAdmin/CRUD/list_choice.html.twig';
-                    case 'array':
-                        return '@SonataAdmin/CRUD/list_array.html.twig';
-                    case 'trans':
-                        return '@SonataAdmin/CRUD/list_trans.html.twig';
-                    case 'url':
-                        return '@SonataAdmin/CRUD/list_url.html.twig';
-                    case 'html':
-                        return '@SonataAdmin/CRUD/list_html.html.twig';
-                    case 'nonexistent':
-                        // template doesn't exist
-                        return '@SonataAdmin/CRUD/list_nonexistent_template.html.twig';
-                    default:
-                        return false;
-                }
-            });
-
-        $this->assertSame(
-            $this->removeExtraWhitespace($expected),
-            $this->removeExtraWhitespace($this->twigExtension->renderListElement(
-                $this->environment,
-                $this->object,
-                $this->fieldDescription
-            ))
-        );
     }
 
     public function getRenderListElementTests()
@@ -1323,10 +1238,6 @@ EOT
      */
     public function testRenderViewElement(string $expected, string $type, $value, array $options): void
     {
-        $this->admin
-            ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/base_show_field.html.twig');
-
         $this->fieldDescription
             ->method('getValue')
             ->willReturnCallback(static function () use ($value) {
@@ -1379,15 +1290,15 @@ EOT
             });
 
         $this->assertSame(
-                $this->removeExtraWhitespace($expected),
-                $this->removeExtraWhitespace(
-                    $this->twigExtension->renderViewElement(
-                        $this->environment,
-                        $this->fieldDescription,
-                        $this->object
-                    )
+            $this->removeExtraWhitespace($expected),
+            $this->removeExtraWhitespace(
+                $this->twigExtension->renderViewElement(
+                    $this->environment,
+                    $this->fieldDescription,
+                    $this->object
                 )
-            );
+            )
+        );
     }
 
     public function getRenderViewElementTests()
@@ -2035,50 +1946,6 @@ EOT
                 $this->twigExtension,
                 $object,
                 $fieldDescription
-            )
-        );
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
-     */
-    public function testRenderWithDebug(): void
-    {
-        $this->fieldDescription
-            ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
-
-        $this->fieldDescription
-            ->method('getFieldName')
-            ->willReturn('fd_name');
-
-        $this->fieldDescription
-            ->method('getValue')
-            ->willReturn('foo');
-
-        $parameters = [
-            'admin' => $this->admin,
-            'value' => 'foo',
-            'field_description' => $this->fieldDescription,
-            'object' => $this->object,
-        ];
-
-        $this->environment->enableDebug();
-
-        $this->assertSame(
-            $this->removeExtraWhitespace(<<<'EOT'
-<!-- START
-    fieldName: fd_name
-    template: @SonataAdmin/CRUD/base_list_field.html.twig
-    compiled template: @SonataAdmin/CRUD/base_list_field.html.twig
--->
-    <td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>
-<!-- END - fieldName: fd_name -->
-EOT
-            ),
-            $this->removeExtraWhitespace(
-                $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription, $parameters)
             )
         );
     }

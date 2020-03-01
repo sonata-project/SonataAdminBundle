@@ -130,34 +130,6 @@ This Extension for example adds a note field to some entities which use a custom
         }
     }
 
-Help messages in a sub-field
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code-block:: php
-
-    // src/Admin/PostAdmin.php
-
-    use Sonata\Form\Type\ImmutableArrayType;
-    use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-    use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-
-    final class PostAdmin extends AbstractAdmin
-    {
-        protected function configureFormFields(FormMapper $formMapper)
-        {
-            $formMapper
-                ->add('enabled')
-                ->add('settings', ImmutableArrayType::class, [
-                    'keys' => [
-                        ['content', TextareaType::class, [
-                            'sonata_help' => 'Set the content'
-                        ]],
-                        ['public', CheckboxType::class, []],
-                    ]
-                ])
-            ;
-        }
-    }
 
 Advanced usage
 ^^^^^^^^^^^^^^

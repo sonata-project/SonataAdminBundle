@@ -1,7 +1,6 @@
 rules:
     blank_line_after_directive: ~
     short_array_syntax: ~
-    no_app_console: ~
     typo: ~
     replacement: ~
     composer_dev_option_at_the_end: ~
@@ -17,14 +16,17 @@ rules:
     ensure_order_of_code_blocks_in_configuration_block: ~
     american_english: ~
     valid_use_statements: ~
-    yaml_instead_of_yml_suffix: ~
     extend_abstract_admin: ~
     final_admin_class: ~
     final_admin_extension_classes: ~
-    kernel_instead_of_app_kernel: ~
     no_admin_yaml: ~
-    no_app_bundle: ~
     no_bash_prompt: ~
     no_composer_phar: ~
-    no_config_yaml: ~
     no_inheritdoc: ~
+
+    # can be enabled when no Symfony 3.4 support anymore
+    #yaml_instead_of_yml_suffix: ~
+    #no_app_bundle: ~
+    #no_config_yaml: ~
+    #kernel_instead_of_app_kernel: ~
+    #no_app_console: ~

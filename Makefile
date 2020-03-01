@@ -6,7 +6,7 @@ all:
 	@echo "Please choose a task."
 .PHONY: all
 
-lint: lint-composer lint-yaml lint-composer lint-xml lint-php
+lint: lint-composer lint-yaml lint-xml lint-php
 .PHONY: lint
 
 lint-composer:

@@ -30,6 +30,7 @@ use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\DefaultRouteGenerator;
@@ -1170,38 +1171,6 @@ class AdminTest extends TestCase
         $this->assertSame('SonataNewsBundle:FooAdmin', $admin->getBaseControllerName());
     }
 
-    public function testGetTemplates(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
-
-        $templates = [
-            'list' => '@FooAdmin/CRUD/list.html.twig',
-            'show' => '@FooAdmin/CRUD/show.html.twig',
-            'edit' => '@FooAdmin/CRUD/edit.html.twig',
-        ];
-
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->getTemplates()->shouldBeCalled()->willReturn($templates);
-
-        $admin->setTemplateRegistry($templateRegistry->reveal());
-
-        $this->assertSame($templates, $admin->getTemplates());
-    }
-
-    public function testGetTemplate1(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
-
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->getTemplate('edit')->shouldBeCalled()->willReturn('@FooAdmin/CRUD/edit.html.twig');
-        $templateRegistry->getTemplate('show')->shouldBeCalled()->willReturn('@FooAdmin/CRUD/show.html.twig');
-
-        $admin->setTemplateRegistry($templateRegistry->reveal());
-
-        $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $admin->getTemplate('edit'));
-        $this->assertSame('@FooAdmin/CRUD/show.html.twig', $admin->getTemplate('show'));
-    }
-
     public function testGetIdParameter(): void
     {
         $postAdmin = new PostAdmin(
@@ -1421,17 +1390,17 @@ class AdminTest extends TestCase
 
     public function testSetFilterPersister(): void
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin = new class('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle\Controller\PostAdminController') extends PostAdmin {
+            public function persistFilters(): bool
+            {
+                return $this->persistFilters;
+            }
+        };
 
-        $filterPersister = $this->createMock('Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface');
+        $filterPersister = $this->createMock(FilterPersisterInterface::class);
 
-        $reflector = new \ReflectionObject($admin);
-
-        $persistFiltersAttribute = $reflector->getProperty('persistFilters');
-        $persistFiltersAttribute->setAccessible(true);
-        $this->assertFalse($persistFiltersAttribute->getValue($admin));
         $admin->setFilterPersister($filterPersister);
-        $this->assertTrue($persistFiltersAttribute->getValue($admin));
+        $this->assertTrue($admin->persistFilters());
     }
 
     public function testGetRootCode(): void
@@ -1601,19 +1570,20 @@ class AdminTest extends TestCase
         $formBuild = $this->createMock(FormBuilder::class);
         $formBuild->expects($this->once())
                 ->method('addEventListener')
-                ->with($this->identicalTo(FormEvents::POST_SUBMIT),
-                        $this->callback(static function ($callback) use ($testAdminPreValidate, $event): bool {
-                            if (\is_callable($callback)) {
-                                $closure = $callback->bindTo($testAdminPreValidate);
-                                $closure($event);
+                ->with(
+                    $this->identicalTo(FormEvents::POST_SUBMIT),
+                    $this->callback(static function ($callback) use ($testAdminPreValidate, $event): bool {
+                        if (\is_callable($callback)) {
+                            $closure = $callback->bindTo($testAdminPreValidate);
+                            $closure($event);
 
-                                return true;
-                            }
+                            return true;
+                        }
 
-                            return false;
-                        }),
-                        $this->greaterThan(0)
-                    );
+                        return false;
+                    }),
+                    $this->greaterThan(0)
+                );
 
         $formContractor = $this->createMock(FormContractorInterface::class);
         $formContractor
