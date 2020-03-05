@@ -159,6 +159,115 @@ Available types and associated options
 | ``TemplateRegistry::TYPE_*``         |                     | See :doc:`Field Types <field_types>`                                  |
 +--------------------------------------+---------------------+-----------------------------------------------------------------------+
 
+Symfony Data Transformers
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If the model field has a limited list of values (enumeration), it is convenient to use a value object to control
+the available values. For example, consider the value object of moderation status with the following values:
+``awaiting``, ``approved``, ``rejected``::
+
+    final class ModerationStatus
+    {
+        public const AWAITING = 'awaiting';
+        public const APPROVED = 'approved';
+        public const REJECTED = 'rejected';
+
+        private static $instances = [];
+
+        private string $value;
+
+        private function __construct(string $value)
+        {
+            if (!array_key_exists($value, self::choices())) {
+                throw new \DomainException(sprintf('The value "%s" is not a valid moderation status.', $value));
+            }
+
+            $this->value = $value;
+        }
+
+        public static function byValue(string $value): ModerationStatus
+        {
+            // limitation of count object instances
+            if (!isset(self::$instances[$value])) {
+                self::$instances[$value] = new static($value);
+            }
+
+            return self::$instances[$value];
+        }
+
+        public function getValue(): string
+        {
+            return $this->value;
+        }
+
+        public static function choices(): array
+        {
+            return [
+                self::AWAITING => 'moderation_status.awaiting',
+                self::APPROVED => 'moderation_status.approved',
+                self::REJECTED => 'moderation_status.rejected',
+            ];
+        }
+
+        public function __toString(): string
+        {
+            return self::choices()[$this->value];
+        }
+    }
+
+To use this Value Object in the _`Symfony Form`: https://symfony.com/doc/current/forms.html component, we need a
+_`Data Transformer`: https://symfony.com/doc/current/form/data_transformers.html ::
+
+    use Symfony\Component\Form\DataTransformerInterface;
+    use Symfony\Component\Form\Exception\TransformationFailedException;
+
+    final class ModerationStatusDataTransformer implements DataTransformerInterface
+    {
+        public function transform($value): ?string
+        {
+            $status = $this->reverseTransform($value);
+
+            return $status instanceof ModerationStatus ? $status->value() : null;
+        }
+
+        public function reverseTransform($value): ?ModerationStatus
+        {
+            if (null === $value || '' === $value) {
+                return null;
+            }
+
+            if ($value instanceof ModerationStatus) {
+                return $value;
+            }
+
+            try {
+                return ModerationStatus::byValue($value);
+            } catch (\Throwable $e) {
+                throw new TransformationFailedException($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+    }
+
+For quick moderation of objects, it is convenient to do this on the page for viewing all objects. But if we just
+indicate the field as editable, then when editing we get in the object a string with the value itself (``awaiting``,
+``approved``, ``rejected``), and not the Value Object (``ModerationStatus``). To solve this problem, you must specify
+the Data Transformer in the ``data_transformer`` field so that it correctly converts the input data into the data
+expected by your object::
+
+    // ...
+
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+            ->add('moderation_status', 'choice', [
+                'editable' => true,
+                'choices' => ModerationStatus::choices(),
+                'data_transformer' => new ModerationStatusDataTransformer(),
+            ])
+        ;
+    }
+
+
 Customizing the query used to generate the list
 -----------------------------------------------
 

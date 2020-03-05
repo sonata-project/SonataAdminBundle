@@ -11,6 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Sonata\AdminBundle\Form\DataTransformer\BooleanToStringTransformer;
+use Sonata\AdminBundle\Form\DataTransformerResolver;
 use Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension;
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
 use Sonata\AdminBundle\Form\Extension\Field\Type\MopaCompatibilityTypeFieldExtension;
@@ -143,6 +145,17 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('form.type', ['alias' => 'sonata_type_filter_datetime_range'])
             ->args([
                 new ReferenceConfigurator('translator'),
+            ])
+
+        ->set('sonata.admin.form.data_transformer.boolean_to_string', BooleanToStringTransformer::class)
+            ->args([
+                1,
+            ])
+
+        ->set('sonata.admin.form.data_transformer_resolver', DataTransformerResolver::class)
+            ->call('addCustomGlobalTransformer', [
+                'boolean',
+                new ReferenceConfigurator('sonata.admin.form.data_transformer.boolean_to_string'),
             ])
     ;
 };
