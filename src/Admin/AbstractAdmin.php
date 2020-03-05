@@ -51,8 +51,9 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -295,7 +296,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * NEXT_MAJOR: remove this property
      *
-     * @var \Symfony\Component\Translation\TranslatorInterface
+     * @var TranslatorInterface|LegacyTranslatorInterface
      *
      * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
      */
@@ -2132,7 +2133,7 @@ EOT;
      *
      * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
      */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(LegacyTranslatorInterface $translator)
     {
         $args = \func_get_args();
         if (isset($args[1]) && $args[1]) {
@@ -2141,6 +2142,21 @@ EOT;
                 E_USER_DEPRECATED
             );
         }
+
+        $this->translator = $translator;
+    }
+
+    /**
+     * NEXT_MAJOR: remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0
+     */
+    final public function setContractTranslator(TranslatorInterface $translator): void
+    {
+        @trigger_error(
+            'The '.__METHOD__.' method is deprecated since version 3.x and will be removed in 4.0.',
+            E_USER_DEPRECATED
+        );
 
         $this->translator = $translator;
     }

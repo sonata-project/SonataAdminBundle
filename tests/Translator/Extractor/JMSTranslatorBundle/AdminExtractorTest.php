@@ -18,6 +18,7 @@ use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Translation\ExtractorInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
@@ -62,8 +63,8 @@ class AdminExtractorTest extends TestCase
             $this->markTestSkipped('JMS Translator Bundle does not exist');
         }
 
-        $this->fooAdmin = $this->getMockForAbstractClass(AdminInterface::class);
-        $this->barAdmin = $this->getMockForAbstractClass(AdminInterface::class);
+        $this->fooAdmin = $this->createMock(AbstractAdmin::class);
+        $this->barAdmin = $this->createMock(AbstractAdmin::class);
 
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $container
@@ -79,9 +80,7 @@ class AdminExtractorTest extends TestCase
 
         $logger = $this->getMockForAbstractClass(LoggerInterface::class);
 
-        $this->pool = $this->getMockBuilder(Pool::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->pool = $this->createMock(Pool::class);
         $this->pool
             ->method('getAdminServiceIds')
             ->willReturn(['foo_admin', 'bar_admin']);

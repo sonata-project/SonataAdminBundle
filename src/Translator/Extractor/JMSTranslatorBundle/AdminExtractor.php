@@ -121,7 +121,8 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
             $this->labelStrategy = $admin->getLabelTranslatorStrategy();
             $this->domain = $admin->getTranslationDomain();
 
-            $admin->setTranslator($this);
+            // NEXT_MAJOR: Remove the following call.
+            $admin->setContractTranslator($this);
             $admin->setSecurityHandler($this);
             $admin->setLabelTranslatorStrategy($this);
 

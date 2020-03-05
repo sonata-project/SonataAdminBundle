@@ -27,8 +27,9 @@ use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -71,10 +72,15 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getDatagridBuilder();
 
-    public function setTranslator(TranslatorInterface $translator);
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
+    public function setTranslator(LegacyTranslatorInterface $translator);
 
     /**
-     * @return TranslatorInterface
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @return TranslatorInterface|LegacyTranslatorInterface
      */
     public function getTranslator();
 
