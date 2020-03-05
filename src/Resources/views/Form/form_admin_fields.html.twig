@@ -469,7 +469,7 @@ file that was distributed with this source code.
 {% endblock sonata_type_immutable_array_widget %}
 
 {% block sonata_type_immutable_array_widget_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div class="form-group{% if child.vars.errors|length > 0 %} has-error{% endif %} {{ attr.row_class|default('') }}" id="sonata-ba-field-container-{{ id }}-{{ key }}">
 
             {{ form_label(child) }}
