@@ -445,7 +445,7 @@ class DatagridTest extends TestCase
 
         $this->datagrid->buildPager();
 
-        $this->assertSame(['_sort_by' => $sortBy, 'foo' => null], $this->datagrid->getValues());
+        $this->assertSame(['_sort_by' => $sortBy, 'foo' => null, '_sort_order' => 'ASC'], $this->datagrid->getValues());
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('fooFormName'));
         $this->assertSame(['bar' => 'baz'], $this->formBuilder->get('fooFormName')->getOptions());
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_sort_by'));
@@ -499,6 +499,7 @@ class DatagridTest extends TestCase
             '_page' => $page,
             '_per_page' => $perPage,
             'foo' => null,
+            '_sort_order' => 'ASC',
         ], $this->datagrid->getValues());
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('fooFormName'));
         $this->assertSame(['bar' => 'baz'], $this->formBuilder->get('fooFormName')->getOptions());
