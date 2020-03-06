@@ -80,6 +80,7 @@ class AdminHelperTest extends TestCase
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->once())->method('getAssociationAdmin')->willReturn($admin);
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBar']);
+        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
 
         $object = $this->getMockBuilder('stdClass')
             ->setMethods(['addFooBar'])
@@ -87,6 +88,29 @@ class AdminHelperTest extends TestCase
         $object->expects($this->once())->method('addFooBar');
 
         $this->helper->addNewInstance($object, $fieldDescription);
+    }
+
+    public function testAddNewInstanceWithParentAssociation(): void
+    {
+        $admin = $this->createMock(AdminInterface::class);
+        $admin->expects($this->once())->method('getNewInstance')->willReturn(new \stdClass());
+
+        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
+        $fieldDescription->expects($this->once())->method('getAssociationAdmin')->willReturn($admin);
+        $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBar']);
+        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([['fieldName' => 'parent']]);
+
+        $object2 = $this->getMockBuilder('stdClass')
+            ->setMethods(['addFooBar'])
+            ->getMock();
+        $object2->expects($this->once())->method('addFooBar');
+
+        $object1 = $this->getMockBuilder('stdClass')
+            ->setMethods(['getParent'])
+            ->getMock();
+        $object1->expects($this->once())->method('getParent')->willReturn($object2);
+
+        $this->helper->addNewInstance($object1, $fieldDescription);
     }
 
     public function testAddNewInstancePlural(): void
@@ -97,6 +121,7 @@ class AdminHelperTest extends TestCase
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->once())->method('getAssociationAdmin')->willReturn($admin);
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBars']);
+        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
 
         $object = $this->getMockBuilder('stdClass')
             ->setMethods(['addFooBar'])
@@ -114,6 +139,7 @@ class AdminHelperTest extends TestCase
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->expects($this->once())->method('getAssociationAdmin')->willReturn($admin);
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'entries']);
+        $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
 
         $object = $this->getMockBuilder('stdClass')
             ->setMethods(['addEntry'])
@@ -187,6 +213,7 @@ class AdminHelperTest extends TestCase
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription->method('getAssociationAdmin')->willReturn($admin);
         $fieldDescription->method('getAssociationMapping')->willReturn($associationMapping);
+        $fieldDescription->method('getParentAssociationMappings')->willReturn([]);
 
         $admin
             ->method('getFormFieldDescription')
