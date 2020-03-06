@@ -231,6 +231,19 @@ class AdminHelper
     {
         $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
         $mapping = $fieldDescription->getAssociationMapping();
+        $parentMappings = $fieldDescription->getParentAssociationMappings();
+
+        foreach ($parentMappings as $parentMapping) {
+            $method = sprintf('get%s', Inflector::classify($parentMapping['fieldName']));
+
+            if (!method_exists($object, $method)) {
+                throw new \RuntimeException(
+                    sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object))
+                );
+            }
+
+            $object = $object->$method();
+        }
 
         $method = sprintf('add%s', Inflector::classify($mapping['fieldName']));
 
