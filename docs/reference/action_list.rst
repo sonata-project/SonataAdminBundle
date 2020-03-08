@@ -216,7 +216,7 @@ Customizing the query used to generate the list
 
 You can customize the list query thanks to the ``configureQuery`` method::
 
-    protected function configureQuery($query)
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
         $query = parent::configureQuery($query);
         $query->andWhere(
