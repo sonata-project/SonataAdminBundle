@@ -1323,6 +1323,20 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function defineFormBuilder(FormBuilderInterface $formBuilder)
     {
+        if (!$this->hasSubject()) {
+            @trigger_error(sprintf(
+                'Calling %s() when there is no subject is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Use %s::setSubject() to set the subject.',
+                __METHOD__,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+            // NEXT_MAJOR : remove the previous `trigger_error()` call and uncomment the following exception
+            // throw new \LogicException(sprintf(
+            //    'Admin "%s" has no subject.',
+            //    static::class
+            // ));
+        }
+
         $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
 
         $this->configureFormFields($mapper);

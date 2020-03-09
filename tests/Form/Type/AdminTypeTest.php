@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Prophecy\Argument\Token\AnyValueToken;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -50,20 +51,23 @@ class AdminTypeTest extends TypeTestCase
     public function testSubmitValidData(): void
     {
         $parentAdmin = $this->prophesize(AdminInterface::class);
+        $parentAdmin->getSubject()->shouldBeCalled()->willReturn(null);
         $parentField = $this->prophesize(FieldDescriptionInterface::class);
         $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
 
         $modelManager = $this->prophesize(ModelManagerInterface::class);
-        $modelManager->modelReverseTransform(Foo::class, [])->shouldBeCalled();
+
+        $foo = new Foo();
 
         $admin = $this->prophesize(AbstractAdmin::class);
         $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(false);
         $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
         $admin->hasAccess('delete')->shouldBeCalled()->willReturn(false);
-        $admin->setSubject(null)->shouldBeCalled();
         $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
         $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);
         $admin->getClass()->shouldBeCalled()->willReturn(Foo::class);
+        $admin->getNewInstance()->shouldBeCalled()->willReturn($foo);
+        $admin->setSubject($foo)->shouldBeCalled();
 
         $field = $this->prophesize(FieldDescriptionInterface::class);
         $field->getAssociationAdmin()->shouldBeCalled()->willReturn($admin->reveal());
@@ -115,12 +119,95 @@ class AdminTypeTest extends TypeTestCase
 
         $this->builder->add('foo.bar');
 
+        $type = new AdminType();
         try {
-            $type = new AdminType();
             $type->buildForm($this->builder, [
                 'sonata_field_description' => $field->reveal(),
                 'delete' => false, // not needed
                 'property_path' => 'bar', // actual test case
+            ]);
+        } catch (NoSuchPropertyException $exception) {
+            $this->fail($exception->getMessage());
+        }
+    }
+
+    public function testArrayCollection(): void
+    {
+        $foo = new Foo();
+
+        $parentSubject = new \stdClass();
+        $parentSubject->foo = new ArrayCollection([$foo]);
+
+        $parentAdmin = $this->prophesize(AdminInterface::class);
+        $parentAdmin->getSubject()->shouldBeCalled()->willReturn($parentSubject);
+        $parentField = $this->prophesize(FieldDescriptionInterface::class);
+        $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
+
+        $modelManager = $this->prophesize(ModelManagerInterface::class);
+
+        $admin = $this->prophesize(AbstractAdmin::class);
+        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(false);
+        $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
+        $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
+        $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);
+        $admin->getClass()->shouldBeCalled()->willReturn(Foo::class);
+        $admin->setSubject($foo)->shouldBeCalled();
+
+        $field = $this->prophesize(FieldDescriptionInterface::class);
+        $field->getAssociationAdmin()->shouldBeCalled()->willReturn($admin->reveal());
+        $field->getFieldName()->shouldBeCalled()->willReturn('foo');
+        $field->getParentAssociationMappings()->shouldBeCalled()->willReturn([]);
+
+        $this->builder->add('foo');
+
+        $type = new AdminType();
+        try {
+            $type->buildForm($this->builder, [
+                'sonata_field_description' => $field->reveal(),
+                'delete' => false, // not needed
+                'property_path' => '[0]', // actual test case
+            ]);
+        } catch (NoSuchPropertyException $exception) {
+            $this->fail($exception->getMessage());
+        }
+    }
+
+    public function testArrayCollectionNotFound(): void
+    {
+        $parentSubject = new \stdClass();
+        $parentSubject->foo = new ArrayCollection();
+
+        $parentAdmin = $this->prophesize(AdminInterface::class);
+        $parentAdmin->getSubject()->shouldBeCalled()->willReturn($parentSubject);
+        $parentField = $this->prophesize(FieldDescriptionInterface::class);
+        $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
+
+        $modelManager = $this->prophesize(ModelManagerInterface::class);
+
+        $foo = new Foo();
+
+        $admin = $this->prophesize(AbstractAdmin::class);
+        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(false);
+        $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
+        $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
+        $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);
+        $admin->getClass()->shouldBeCalled()->willReturn(Foo::class);
+        $admin->getNewInstance()->shouldBeCalled()->willReturn($foo);
+        $admin->setSubject($foo)->shouldBeCalled();
+
+        $field = $this->prophesize(FieldDescriptionInterface::class);
+        $field->getAssociationAdmin()->shouldBeCalled()->willReturn($admin->reveal());
+        $field->getFieldName()->shouldBeCalled()->willReturn('foo');
+        $field->getParentAssociationMappings()->shouldBeCalled()->willReturn([]);
+
+        $this->builder->add('foo');
+
+        $type = new AdminType();
+        try {
+            $type->buildForm($this->builder, [
+                'sonata_field_description' => $field->reveal(),
+                'delete' => false, // not needed
+                'property_path' => '[0]', // actual test case
             ]);
         } catch (NoSuchPropertyException $exception) {
             $this->fail($exception->getMessage());
