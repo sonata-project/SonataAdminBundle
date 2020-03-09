@@ -1613,7 +1613,7 @@ class AdminTest extends TestCase
 
     public function testFormAddPostSubmitEventForPreValidation(): void
     {
-        $modelAdmin = new ModelAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'Sonata\FooBundle\Controller\ModelAdminController');
+        $modelAdmin = new ModelAdmin('sonata.post.admin.model', \stdClass::class, 'Sonata\FooBundle\Controller\ModelAdminController');
         $object = new \stdClass();
 
         $labelTranslatorStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
@@ -1669,6 +1669,7 @@ class AdminTest extends TestCase
                 ->willReturn($formBuild);
 
         $modelAdmin->setFormContractor($formContractor);
+        $modelAdmin->setSubject($object);
         $modelAdmin->defineFormBuilder($formBuild);
         $modelAdmin->getForm();
     }
