@@ -214,6 +214,10 @@ to more field types, see `SonataDoctrineORMAdminBundle Documentation`_.
 Customizing the query used to generate the list
 -----------------------------------------------
 
+.. versionadded:: 3.63
+
+    The ``configureQuery`` method was introduced in 3.63.
+
 You can customize the list query thanks to the ``configureQuery`` method::
 
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
