@@ -20,7 +20,9 @@
                         {% for field_name in form_group.fields|filter(field_name => form[field_name] is defined) %}
                             {{ form_row(form[field_name]) }}
                         {% else %}
-                            <em>{{ 'message_form_group_empty'|trans({}, 'SonataAdminBundle') }}</em>
+                            {% if form_group.description is not defined %}
+                                <em>{{ 'message_form_group_empty'|trans({}, 'SonataAdminBundle') }}</em>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>
