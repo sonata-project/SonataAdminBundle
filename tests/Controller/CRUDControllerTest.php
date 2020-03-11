@@ -45,9 +45,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -152,11 +150,6 @@ class CRUDControllerTest extends TestCase
     private $translator;
 
     /**
-     * @var FormBuilderInterface
-     */
-    private $formBuilder;
-
-    /**
      * @var LoggerInterface&MockObject
      */
     private $logger;
@@ -177,11 +170,6 @@ class CRUDControllerTest extends TestCase
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->parameters = [];
         $this->template = '';
-
-        $this->formBuilder = $this->createMock(FormBuilderInterface::class);
-        $this->admin
-            ->method('getFormBuilder')
-            ->willReturn($this->formBuilder);
 
         $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
 
@@ -1107,11 +1095,6 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('delete'))
             ->willReturn(true);
 
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
-
         $this->request->setMethod(Request::METHOD_DELETE);
 
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
@@ -1135,11 +1118,6 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('delete'))
-            ->willReturn(true);
-
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
             ->willReturn(true);
 
         $this->request->setMethod(Request::METHOD_POST);
@@ -1172,11 +1150,6 @@ class CRUDControllerTest extends TestCase
             ->method('getClass')
             ->willReturn('stdClass');
 
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
-
         $this->assertLoggerLogsModelManagerException($this->admin, 'delete');
 
         $this->request->setMethod(Request::METHOD_DELETE);
@@ -1204,11 +1177,6 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('checkAccess')
             ->with($this->equalTo('delete'))
-            ->willReturn(true);
-
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
             ->willReturn(true);
 
         $this->admin->expects($this->once())
@@ -1250,11 +1218,6 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('delete'))
             ->willReturn(true);
 
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
-
         $this->request->setMethod(Request::METHOD_DELETE);
 
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
@@ -1294,11 +1257,6 @@ class CRUDControllerTest extends TestCase
 
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
 
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
-
         $response = $this->controller->deleteAction(1);
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
@@ -1333,11 +1291,6 @@ class CRUDControllerTest extends TestCase
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('_method', Request::METHOD_DELETE);
-
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
 
         $response = $this->controller->deleteAction(1);
 
@@ -1404,11 +1357,6 @@ class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_DELETE);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
 
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
-
         $response = $this->controller->deleteAction(1);
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
@@ -1433,54 +1381,12 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('_method', Request::METHOD_DELETE);
         $this->request->request->set('_sonata_csrf_token', 'CSRF-INVALID');
 
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
-
         try {
             $this->controller->deleteAction(1);
         } catch (HttpException $e) {
             $this->assertSame('The csrf token is not valid, CSRF attack?', $e->getMessage());
             $this->assertSame(400, $e->getStatusCode());
         }
-    }
-
-    public function testDeleteActionWithDisabledCsrfProtection(): void
-    {
-        $object = new \stdClass();
-
-        $this->admin->expects($this->once())
-            ->method('getObject')
-            ->willReturn($object);
-
-        $this->admin->expects($this->once())
-            ->method('checkAccess')
-            ->with($this->equalTo('delete'))
-            ->willReturn(true);
-
-        $this->request->setMethod(Request::METHOD_POST);
-        $this->request->request->set('_method', Request::METHOD_DELETE);
-
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(false);
-
-        $this->admin->expects($this->once())
-            ->method('toString')
-            ->with($object)
-            ->willReturn(\stdClass::class);
-
-        $this->translator->expects($this->once())
-            ->method('trans')
-            ->willReturn('flash message');
-
-        $this->admin->expects($this->once())
-            ->method('delete')
-            ->with($object);
-
-        $this->controller->deleteAction(1);
     }
 
     public function testEditActionNotFoundException(): void
@@ -3627,11 +3533,6 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
-
         $this->controller->batchAction();
     }
 
@@ -3641,55 +3542,12 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('_sonata_csrf_token', 'CSRF-INVALID');
 
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
-
         try {
             $this->controller->batchAction();
         } catch (HttpException $e) {
             $this->assertSame('The csrf token is not valid, CSRF attack?', $e->getMessage());
             $this->assertSame(400, $e->getStatusCode());
         }
-    }
-
-    public function testBatchActionActionWithDisabledCsrfProtection(): void
-    {
-        $this->request->setMethod(Request::METHOD_POST);
-        $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
-
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(false);
-
-        $this->admin->expects($this->once())
-            ->method('getBatchActions')
-            ->willReturn(['foo' => ['label' => 'foo']]);
-
-        $datagrid = $this->createMock(DatagridInterface::class);
-
-        $this->admin->expects($this->once())
-            ->method('getDatagrid')
-            ->willReturn($datagrid);
-
-        $datagrid->expects($this->once())
-            ->method('buildPager');
-
-        $form = $this->createMock(FormInterface::class);
-
-        $datagrid->expects($this->once())
-            ->method('getForm')
-            ->willReturn($form);
-
-        $formView = $this->createMock(FormView::class);
-
-        $form->expects($this->once())
-            ->method('createView')
-            ->willReturn($formView);
-
-        $this->controller->batchAction();
     }
 
     /**
@@ -3718,11 +3576,6 @@ class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
-
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
 
         $this->controller->batchAction();
     }
@@ -3776,11 +3629,6 @@ class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
-
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
 
         $result = $this->controller->batchAction();
 
@@ -3840,11 +3688,6 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('idx', ['123', '456']);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
-
         $result = $this->controller->batchAction();
 
         $this->assertInstanceOf(RedirectResponse::class, $result);
@@ -3888,11 +3731,6 @@ class CRUDControllerTest extends TestCase
         $datagrid->expects($this->once())
             ->method('getForm')
             ->willReturn($form);
-
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
 
         $this->assertInstanceOf(Response::class, $this->controller->batchAction());
 
@@ -3940,11 +3778,6 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('idx', ['789']);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
-
         $result = $controller->batchAction();
 
         $this->assertInstanceOf(RedirectResponse::class, $result);
@@ -3982,11 +3815,6 @@ class CRUDControllerTest extends TestCase
             ->method('getForm')
             ->willReturn($form);
 
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
-
         $this->controller->batchAction();
 
         $this->assertSame('custom_template.html.twig', $this->template);
@@ -4021,11 +3849,6 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('idx', ['999']);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
-
         $result = $controller->batchAction();
 
         $this->assertInstanceOf(RedirectResponse::class, $result);
@@ -4058,11 +3881,6 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('action', 'delete');
         $this->request->request->set('idx', []);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
-
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
 
         $result = $this->controller->batchAction();
 
@@ -4107,11 +3925,6 @@ class CRUDControllerTest extends TestCase
         $this->admin
             ->method('getClass')
             ->willReturn('Foo');
-
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('action', 'bar');
@@ -4175,11 +3988,6 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('data', json_encode(['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('foo', 'bar');
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
-
-        $this->formBuilder->expects($this->once())
-            ->method('getOption')
-            ->with('csrf_protection')
-            ->willReturn(true);
 
         $result = $this->controller->batchAction();
 
