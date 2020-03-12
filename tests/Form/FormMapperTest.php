@@ -107,6 +107,8 @@ class FormMapperTest extends TestCase
             'translation_domain' => null,
             'name' => 'default',
             'box_class' => 'box box-primary',
+            'empty_message' => 'message_form_group_empty',
+            'empty_message_translation_domain' => 'SonataAdminBundle',
             'auto_created' => true,
             'groups' => ['foobar'],
             'tab' => true,
@@ -120,6 +122,8 @@ class FormMapperTest extends TestCase
             'translation_domain' => null,
             'name' => 'foobar',
             'box_class' => 'box box-primary',
+            'empty_message' => 'message_form_group_empty',
+            'empty_message_translation_domain' => 'SonataAdminBundle',
             'fields' => [],
         ]], $this->admin->getFormGroups());
     }
@@ -139,6 +143,8 @@ class FormMapperTest extends TestCase
             'translation_domain' => 'Foobar',
             'name' => 'foobar',
             'box_class' => 'box box-primary',
+            'empty_message' => 'message_form_group_empty',
+            'empty_message_translation_domain' => 'SonataAdminBundle',
             'fields' => [],
             'role' => self::DEFAULT_GRANTED_ROLE,
         ]], $this->admin->getFormGroups());
@@ -151,6 +157,8 @@ class FormMapperTest extends TestCase
             'translation_domain' => 'Foobar',
             'name' => 'default',
             'box_class' => 'box box-primary',
+            'empty_message' => 'message_form_group_empty',
+            'empty_message_translation_domain' => 'SonataAdminBundle',
             'auto_created' => true,
             'groups' => ['foobar'],
             'tab' => true,
@@ -184,6 +192,8 @@ class FormMapperTest extends TestCase
             'translation_domain' => 'Foobar',
             'name' => 'default',
             'box_class' => 'box box-primary',
+            'empty_message' => 'message_form_group_empty',
+            'empty_message_translation_domain' => 'SonataAdminBundle',
             'auto_created' => true,
             'groups' => ['foobar'],
             'tab' => true,
@@ -197,6 +207,8 @@ class FormMapperTest extends TestCase
             'translation_domain' => 'Foobar',
             'name' => 'foobar',
             'box_class' => 'box box-primary',
+            'empty_message' => 'message_form_group_empty',
+            'empty_message_translation_domain' => 'SonataAdminBundle',
             'fields' => [
                 'foo' => 'foo',
             ],
