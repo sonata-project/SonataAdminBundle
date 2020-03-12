@@ -97,8 +97,6 @@ class AdminHelper
     /**
      * Note:
      *   This code is ugly, but there is no better way of doing it.
-     *   For now the append form element action used to add a new row works
-     *   only for direct FieldDescription (not nested one).
      *
      * @param object $subject
      * @param string $elementId
