@@ -51,9 +51,9 @@ class AdminHelperTest extends TestCase
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
-        $formBuilder = new FormBuilder('test', 'stdClass', $eventDispatcher, $formFactory);
+        $formBuilder = new FormBuilder('test', \stdClass::class, $eventDispatcher, $formFactory);
 
-        $childFormBuilder = new FormBuilder('elementId', 'stdClass', $eventDispatcher, $formFactory);
+        $childFormBuilder = new FormBuilder('elementId', \stdClass::class, $eventDispatcher, $formFactory);
         $formBuilder->add($childFormBuilder);
 
         $this->assertNull($this->helper->getChildFormBuilder($formBuilder, 'foo'));
@@ -82,7 +82,7 @@ class AdminHelperTest extends TestCase
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBar']);
         $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
 
-        $object = $this->getMockBuilder('stdClass')
+        $object = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['addFooBar'])
             ->getMock();
         $object->expects($this->once())->method('addFooBar');
@@ -100,12 +100,12 @@ class AdminHelperTest extends TestCase
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBar']);
         $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([['fieldName' => 'parent']]);
 
-        $object2 = $this->getMockBuilder('stdClass')
+        $object2 = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['addFooBar'])
             ->getMock();
         $object2->expects($this->once())->method('addFooBar');
 
-        $object1 = $this->getMockBuilder('stdClass')
+        $object1 = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getParent'])
             ->getMock();
         $object1->expects($this->once())->method('getParent')->willReturn($object2);
@@ -123,7 +123,7 @@ class AdminHelperTest extends TestCase
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'fooBars']);
         $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
 
-        $object = $this->getMockBuilder('stdClass')
+        $object = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['addFooBar'])
             ->getMock();
         $object->expects($this->once())->method('addFooBar');
@@ -141,7 +141,7 @@ class AdminHelperTest extends TestCase
         $fieldDescription->expects($this->once())->method('getAssociationMapping')->willReturn(['fieldName' => 'entries']);
         $fieldDescription->expects($this->once())->method('getParentAssociationMappings')->willReturn([]);
 
-        $object = $this->getMockBuilder('stdClass')
+        $object = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['addEntry'])
             ->getMock();
         $object->expects($this->once())->method('addEntry');
@@ -151,13 +151,13 @@ class AdminHelperTest extends TestCase
 
     public function testGetElementAccessPath(): void
     {
-        $object = $this->getMockBuilder('stdClass')
+        $object = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getPathToObject'])
             ->getMock();
-        $subObject = $this->getMockBuilder('stdClass')
+        $subObject = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getAnother'])
             ->getMock();
-        $sub2Object = $this->getMockBuilder('stdClass')
+        $sub2Object = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getMoreThings'])
             ->getMock();
 
@@ -173,10 +173,10 @@ class AdminHelperTest extends TestCase
     public function testItThrowsExceptionWhenDoesNotFindTheFullPath(): void
     {
         $path = 'uniquePartOfId_path_to_object_0_more_calls';
-        $object = $this->getMockBuilder('stdClass')
+        $object = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getPathToObject'])
             ->getMock();
-        $subObject = $this->getMockBuilder('stdClass')
+        $subObject = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getMore'])
             ->getMock();
 
@@ -289,19 +289,19 @@ class AdminHelperTest extends TestCase
     public function testAppendFormFieldElementNested(): void
     {
         $admin = $this->createMock(AdminInterface::class);
-        $object = $this->getMockBuilder('stdClass')
+        $object = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getSubObject'])
             ->getMock();
-        $simpleObject = $this->getMockBuilder('stdClass')
+        $simpleObject = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getSubObject'])
             ->getMock();
-        $subObject = $this->getMockBuilder('stdClass')
+        $subObject = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getAnd'])
             ->getMock();
-        $sub2Object = $this->getMockBuilder('stdClass')
+        $sub2Object = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getMore'])
             ->getMock();
-        $sub3Object = $this->getMockBuilder('stdClass')
+        $sub3Object = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getFinalData'])
             ->getMock();
         $dataMapper = $this->createMock(DataMapperInterface::class);

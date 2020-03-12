@@ -234,9 +234,12 @@ class AdminHelper
         foreach ($parentMappings as $parentMapping) {
             $method = sprintf('get%s', Inflector::classify($parentMapping['fieldName']));
 
-            if (!method_exists($object, $method)) {
+            if (!\is_callable([$object, $method])) {
+                /*
+                 * NEXT_MAJOR: Use BadMethodCallException instead
+                 */
                 throw new \RuntimeException(
-                    sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object))
+                    sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
                 );
             }
 
@@ -245,15 +248,18 @@ class AdminHelper
 
         $method = sprintf('add%s', Inflector::classify($mapping['fieldName']));
 
-        if (!method_exists($object, $method)) {
+        if (!\is_callable([$object, $method])) {
             $method = rtrim($method, 's');
 
-            if (!method_exists($object, $method)) {
+            if (!\is_callable([$object, $method])) {
                 $method = sprintf('add%s', Inflector::classify(Inflector::singularize($mapping['fieldName'])));
 
-                if (!method_exists($object, $method)) {
+                if (!\is_callable([$object, $method])) {
+                    /*
+                     * NEXT_MAJOR: Use BadMethodCallException instead
+                     */
                     throw new \RuntimeException(
-                        sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object))
+                        sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
                     );
                 }
             }
