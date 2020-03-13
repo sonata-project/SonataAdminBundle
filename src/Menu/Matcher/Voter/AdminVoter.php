@@ -21,11 +21,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 /**
  * Admin menu voter based on extra `admin`.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Samusev Andrey <andrey.simfi@ya.ru>
  */
-class AdminVoter implements VoterInterface
+final class AdminVoter implements VoterInterface
 {
     /**
      * @var RequestStack
@@ -37,7 +35,7 @@ class AdminVoter implements VoterInterface
         $this->requestStack = $requestStack;
     }
 
-    public function matchItem(ItemInterface $item)
+    public function matchItem(ItemInterface $item): ?bool
     {
         $admin = $item->getExtra('admin');
 

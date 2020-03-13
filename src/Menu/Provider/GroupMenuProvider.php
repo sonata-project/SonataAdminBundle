@@ -22,11 +22,9 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 /**
  * Menu provider based on group options.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Alexandru Furculita <alex@furculita.net>
  */
-class GroupMenuProvider implements MenuProviderInterface
+final class GroupMenuProvider implements MenuProviderInterface
 {
     /**
      * @var FactoryInterface
@@ -53,13 +51,9 @@ class GroupMenuProvider implements MenuProviderInterface
     /**
      * Retrieves the menu based on the group options.
      *
-     * @param string $name
-     *
      * @throws \InvalidArgumentException if the menu does not exists
-     *
-     * @return \Knp\Menu\ItemInterface
      */
-    public function get($name, array $options = [])
+    public function get(string $name, array $options = []): ItemInterface
     {
         $group = $options['group'];
 
@@ -93,12 +87,8 @@ class GroupMenuProvider implements MenuProviderInterface
 
     /**
      * Checks whether a menu exists in this provider.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
-    public function has($name, array $options = [])
+    public function has(string $name, array $options = []): bool
     {
         return 'sonata_group_menu' === $name;
     }
