@@ -240,7 +240,7 @@ class BreadcrumbsBuilderTest extends TestCase
         );
         if ('list' === $action) {
             $admin->isChild()->willReturn(true);
-            $menu->setUri(false)->shouldBeCalled();
+            $menu->setUri(null)->shouldBeCalled();
         } else {
             $menu->setUri()->shouldNotBeCalled();
         }
