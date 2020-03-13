@@ -22,6 +22,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 /**
  * Menu provider based on group options.
  *
+ * NEXT_MAJOR: Bump "knplabs/knp-menu-bundle" to ^3.0 and update the method signatures.
+ *
  * @final since sonata-project/admin-bundle 3.52
  *
  * @author Alexandru Furculita <alex@furculita.net>
