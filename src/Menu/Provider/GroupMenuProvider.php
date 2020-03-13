@@ -77,13 +77,9 @@ class GroupMenuProvider implements MenuProviderInterface
     /**
      * Retrieves the menu based on the group options.
      *
-     * @param string $name
-     *
      * @throws \InvalidArgumentException if the menu does not exists
-     *
-     * @return \Knp\Menu\ItemInterface
      */
-    public function get($name, array $options = [])
+    public function get(string $name, array $options = []): ItemInterface
     {
         /**
          * @var array{ label: string, label_catalogue: string, icon: string, on_top?: bool, keep_open: bool, provider: string, items: list }
@@ -120,12 +116,8 @@ class GroupMenuProvider implements MenuProviderInterface
 
     /**
      * Checks whether a menu exists in this provider.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
-    public function has($name, array $options = [])
+    public function has(string $name, array $options = []): bool
     {
         return 'sonata_group_menu' === $name;
     }
