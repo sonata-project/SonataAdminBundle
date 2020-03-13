@@ -41,7 +41,7 @@ class ChildrenVoter implements VoterInterface
         $this->matcher = $matcher;
     }
 
-    public function matchItem(ItemInterface $item)
+    public function matchItem(ItemInterface $item): ?bool
     {
         if (!$item->getExtra('sonata_admin', false)) {
             return null;

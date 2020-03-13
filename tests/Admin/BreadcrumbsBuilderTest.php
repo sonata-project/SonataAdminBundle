@@ -115,11 +115,11 @@ class BreadcrumbsBuilderTest extends TestCase
 
         $menu->expects($this->once())
             ->method('setUri')
-            ->with($this->identicalTo(false));
+            ->with($this->identicalTo(null));
 
         $menu->expects($this->exactly(5))
             ->method('getParent')
-            ->willReturn(false);
+            ->willReturn(null);
 
         $routeGenerator->expects($this->exactly(5))
             ->method('generate')
@@ -213,6 +213,9 @@ class BreadcrumbsBuilderTest extends TestCase
 
         $menuFactory = $this->getMockForAbstractClass(FactoryInterface::class);
         $menu = $this->getMockForAbstractClass(ItemInterface::class);
+        $menu
+            ->method('getParent')
+            ->willReturn(null);
         $translatorStrategy = $this->getMockForAbstractClass(LabelTranslatorStrategyInterface::class);
         $routeGenerator = $this->getMockForAbstractClass(RouteGeneratorInterface::class);
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
@@ -492,7 +495,7 @@ class BreadcrumbsBuilderTest extends TestCase
         );
         if ('list' === $action) {
             $admin->isChild()->willReturn(true);
-            $menu->setUri(false)->shouldBeCalled();
+            $menu->setUri(null)->shouldBeCalled();
         } else {
             $menu->setUri()->shouldNotBeCalled();
         }

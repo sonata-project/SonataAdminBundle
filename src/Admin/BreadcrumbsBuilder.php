@@ -121,7 +121,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         }
 
         if ('list' === $action) {
-            $menu->setUri(false);
+            $menu->setUri(null);
 
             return $menu;
         }
