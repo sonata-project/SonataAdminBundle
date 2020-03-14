@@ -25,7 +25,6 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\Exception\ModelManagerException;
-use Sonata\AdminBundle\Export\Exporter as SonataExporter;
 use Sonata\AdminBundle\Model\AuditManager;
 use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -196,16 +195,7 @@ class CRUDControllerTest extends TestCase
             ->method('render')
             ->will($templatingRenderReturnCallback);
 
-        // NEXT_MAJOR : require sonata/exporter ^1.7 and remove conditional
-        if (class_exists(Exporter::class)) {
-            $exporter = new Exporter([new JsonWriter('/tmp/sonataadmin/export.json')]);
-        } else {
-            $exporter = $this->createMock(SonataExporter::class);
-
-            $exporter
-                ->method('getResponse')
-                ->willReturn(new StreamedResponse());
-        }
+        $exporter = new Exporter([new JsonWriter('/tmp/sonataadmin/export.json')]);
 
         $this->auditManager = $this->getMockBuilder(AuditManager::class)
             ->disableOriginalConstructor()
