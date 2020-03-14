@@ -881,29 +881,10 @@ class CRUDController extends Controller
 
         $format = $request->get('format');
 
-        // NEXT_MAJOR: remove the check
-        if (!$this->has('sonata.admin.admin_exporter')) {
-            @trigger_error(
-                'Not registering the exporter bundle is deprecated since version 3.14.'
-                .' You must register it to be able to use the export action in 4.0.',
-                E_USER_DEPRECATED
-            );
-            $allowedExportFormats = (array) $this->admin->getExportFormats();
-
-            $class = (string) $this->admin->getClass();
-            $filename = sprintf(
-                'export_%s_%s.%s',
-                strtolower((string) substr($class, strripos($class, '\\') + 1)),
-                date('Y_m_d_H_i_s', strtotime('now')),
-                $format
-            );
-            $exporter = $this->get('sonata.admin.exporter');
-        } else {
-            $adminExporter = $this->get('sonata.admin.admin_exporter');
-            $allowedExportFormats = $adminExporter->getAvailableFormats($this->admin);
-            $filename = $adminExporter->getExportFilename($this->admin, $format);
-            $exporter = $this->get('sonata.exporter.exporter');
-        }
+        $adminExporter = $this->get('sonata.admin.admin_exporter');
+        $allowedExportFormats = $adminExporter->getAvailableFormats($this->admin);
+        $filename = $adminExporter->getExportFilename($this->admin, $format);
+        $exporter = $this->get('sonata.exporter.exporter');
 
         if (!\in_array($format, $allowedExportFormats, true)) {
             throw new \RuntimeException(
