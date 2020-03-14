@@ -24,10 +24,8 @@ cache:
 env:
   global:
     - PATH="$HOME/.local/bin:$PATH"
-    - SYMFONY_DEPRECATIONS_HELPER=max[self]=0
     - TARGET=test
     - UPSTREAM_URL=https://github.com/sonata-project/SonataAdminBundle.git
-    - PHPUNIT_VERSION=8
 
 matrix:
   fast_finish: true
