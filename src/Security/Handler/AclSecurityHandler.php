@@ -109,7 +109,8 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         }
 
         try {
-            return $this->authorizationChecker->isGranted($this->superAdminRoles) || $this->authorizationChecker->isGranted($attributes, $object);
+            return $this->isAnyGranted($this->superAdminRoles) ||
+                $this->isAnyGranted($attributes, $object);
         } catch (AuthenticationCredentialsNotFoundException $e) {
             return false;
         }
@@ -249,6 +250,17 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
         foreach ($acl->getClassAces() as $index => $entry) {
             if ($entry->getSecurityIdentity() instanceof UserSecurityIdentity && $entry->getSecurityIdentity()->getUsername() === $username) {
                 return $index;
+            }
+        }
+
+        return false;
+    }
+
+    private function isAnyGranted(array $attributes, $subject = null): bool
+    {
+        foreach ($attributes as $attribute) {
+            if ($this->authorizationChecker->isGranted($attribute, $subject)) {
+                return true;
             }
         }
 

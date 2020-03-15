@@ -1359,10 +1359,6 @@ class CRUDController extends Controller
      */
     protected function validateCsrfToken($intention): void
     {
-        if (false === $this->admin->getFormBuilder()->getOption('csrf_protection')) {
-            return;
-        }
-
         $request = $this->getRequest();
         $token = $request->get('_sonata_csrf_token');
 
