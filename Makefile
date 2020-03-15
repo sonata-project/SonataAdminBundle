@@ -54,10 +54,8 @@ cs-fix-xml:
 build:
 	mkdir $@
 
-HAS_PCOV=$(shell php --modules|grep --quiet pcov;echo $$?)
-
 test:
-ifeq ($(HAS_PCOV), 0)
+ifeq ($(shell php --modules|grep --quiet pcov;echo $$?), 0)
 	phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
 else
 	phpunit -c phpunit.xml.dist
