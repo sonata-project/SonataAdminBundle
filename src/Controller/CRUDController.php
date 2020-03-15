@@ -96,10 +96,8 @@ class CRUDController extends Controller
      *
      * @return Response
      */
-    public function listAction()
+    public function listAction(Request $request)
     {
-        $request = $this->getRequest();
-
         $this->admin->checkAccess('list');
 
         $preResponse = $this->preList($request);
@@ -168,9 +166,8 @@ class CRUDController extends Controller
      *
      * @return Response|RedirectResponse
      */
-    public function deleteAction()
+    public function deleteAction(Request $request)
     {
-        $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
@@ -246,12 +243,11 @@ class CRUDController extends Controller
      *
      * @return Response|RedirectResponse
      */
-    public function editAction()
+    public function editAction(Request $request)
     {
         // the key used to lookup the template
         $templateKey = 'edit';
 
-        $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
         $existingObject = $this->admin->getObject($id);
 
@@ -364,9 +360,8 @@ class CRUDController extends Controller
      *
      * @return Response|RedirectResponse
      */
-    public function batchAction()
+    public function batchAction(Request $request)
     {
-        $request = $this->getRequest();
         $restMethod = $this->getRestMethod();
 
         if (Request::METHOD_POST !== $restMethod) {
@@ -486,9 +481,8 @@ class CRUDController extends Controller
      *
      * @return Response
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-        $request = $this->getRequest();
         // the key used to lookup the template
         $templateKey = 'edit';
 
@@ -605,9 +599,8 @@ class CRUDController extends Controller
      *
      * @return Response
      */
-    public function showAction()
+    public function showAction(Request $request)
     {
-        $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
@@ -652,9 +645,8 @@ class CRUDController extends Controller
      *
      * @return Response
      */
-    public function historyAction()
+    public function historyAction(Request $request)
     {
-        $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
@@ -699,9 +691,8 @@ class CRUDController extends Controller
      *
      * @return Response
      */
-    public function historyViewRevisionAction($revision = null)
+    public function historyViewRevisionAction(Request $request, $revision = null)
     {
-        $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
@@ -752,19 +743,18 @@ class CRUDController extends Controller
     /**
      * Compare history revisions of object.
      *
-     * @param int|string|null $base_revision
-     * @param int|string|null $compare_revision
+     * @param int|string|null $baseRevision
+     * @param int|string|null $compareRevision
      *
      * @throws AccessDeniedException If access is not granted
      * @throws NotFoundHttpException If the object or revision does not exist or the audit reader is not available
      *
      * @return Response
      */
-    public function historyCompareRevisionsAction($base_revision = null, $compare_revision = null)
+    public function historyCompareRevisionsAction(Request $request, $baseRevision = null, $compareRevision = null)
     {
         $this->admin->checkAccess('historyCompareRevisions');
 
-        $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
@@ -786,39 +776,39 @@ class CRUDController extends Controller
         $reader = $manager->getReader($this->admin->getClass());
 
         // retrieve the base revision
-        $base_object = $reader->find($this->admin->getClass(), $id, $base_revision);
-        if (!$base_object) {
+        $baseObject = $reader->find($this->admin->getClass(), $id, $baseRevision);
+        if (!$baseObject) {
             throw $this->createNotFoundException(
                 sprintf(
                     'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
                     $id,
-                    $base_revision,
+                    $baseRevision,
                     $this->admin->getClass()
                 )
             );
         }
 
         // retrieve the compare revision
-        $compare_object = $reader->find($this->admin->getClass(), $id, $compare_revision);
-        if (!$compare_object) {
+        $compareObject = $reader->find($this->admin->getClass(), $id, $compareRevision);
+        if (!$compareObject) {
             throw $this->createNotFoundException(
                 sprintf(
                     'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
                     $id,
-                    $compare_revision,
+                    $compareRevision,
                     $this->admin->getClass()
                 )
             );
         }
 
-        $this->admin->setSubject($base_object);
+        $this->admin->setSubject($baseObject);
 
         $template = $this->templateRegistry->getTemplate('show_compare');
 
         return $this->renderWithExtraParams($template, [
             'action' => 'show',
-            'object' => $base_object,
-            'object_compare' => $compare_object,
+            'object' => $baseObject,
+            'object_compare' => $compareObject,
             'elements' => $this->admin->getShow(),
         ], null);
     }
@@ -868,13 +858,12 @@ class CRUDController extends Controller
      *
      * @return Response|RedirectResponse
      */
-    public function aclAction()
+    public function aclAction(Request $request)
     {
         if (!$this->admin->isAclEnabled()) {
             throw $this->createNotFoundException('ACL are not enabled for this admin');
         }
 
-        $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
 
@@ -1423,7 +1412,7 @@ class CRUDController extends Controller
 
         if ($parentAdmin->getObject($parentId) !== $propertyAccessor->getValue($object, $propertyPath)) {
             throw new \RuntimeException(sprintf(
-                'There is no association between %s and %s',
+                'There is no association between "%s" and "%s"',
                 $parentAdmin->toString($parentAdmin->getObject($parentId)),
                 $this->admin->toString($object)
             ));
