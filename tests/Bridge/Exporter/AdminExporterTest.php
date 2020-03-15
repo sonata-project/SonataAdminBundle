@@ -24,7 +24,7 @@ class AdminExporterTest extends TestCase
     public function provideExportFormats()
     {
         return [
-            'no override' => [['xls'], ['json', 'xml', 'csv', 'xls'], ['xls']],
+            'no override' => [['xls'], null, ['xls']],
             'override in admin' => [['csv'], ['csv'], ['xls']],
         ];
     }
@@ -32,7 +32,7 @@ class AdminExporterTest extends TestCase
     /**
      * @dataProvider provideExportFormats
      */
-    public function testAdminHasPriorityOverGlobalSettings(array $expectedFormats, array $adminFormats, array $globalFormats): void
+    public function testAdminHasPriorityOverGlobalSettings(array $expectedFormats, ?array $adminFormats, array $globalFormats): void
     {
         $writers = [];
         foreach ($globalFormats as $exportFormat) {

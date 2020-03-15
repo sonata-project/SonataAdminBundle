@@ -163,14 +163,12 @@ class CRUDController extends Controller
     /**
      * Delete action.
      *
-     * @param int|string|null $id
-     *
      * @throws NotFoundHttpException If the object does not exist
      * @throws AccessDeniedException If access is not granted
      *
      * @return Response|RedirectResponse
      */
-    public function deleteAction($id) // NEXT_MAJOR: Remove the unused $id parameter
+    public function deleteAction()
     {
         $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
@@ -242,26 +240,14 @@ class CRUDController extends Controller
     /**
      * Edit action.
      *
-     * @param int|string|null $deprecatedId
-     *
      * @throws NotFoundHttpException If the object does not exist
      * @throws \RuntimeException     If no editable field is defined
      * @throws AccessDeniedException If access is not granted
      *
      * @return Response|RedirectResponse
      */
-    public function editAction($deprecatedId = null) // NEXT_MAJOR: Remove the unused $id parameter
+    public function editAction()
     {
-        if (isset(\func_get_args()[0])) {
-            @trigger_error(
-                sprintf(
-                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.62 and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
-                    __METHOD__
-                ),
-                E_USER_DEPRECATED
-            );
-        }
-
         // the key used to lookup the template
         $templateKey = 'edit';
 
@@ -614,25 +600,13 @@ class CRUDController extends Controller
     /**
      * Show action.
      *
-     * @param int|string|null $deprecatedId
-     *
      * @throws NotFoundHttpException If the object does not exist
      * @throws AccessDeniedException If access is not granted
      *
      * @return Response
      */
-    public function showAction($deprecatedId = null) // NEXT_MAJOR: Remove the unused $id parameter
+    public function showAction()
     {
-        if (isset(\func_get_args()[0])) {
-            @trigger_error(
-                sprintf(
-                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.62 and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
-                    __METHOD__
-                ),
-                E_USER_DEPRECATED
-            );
-        }
-
         $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
@@ -655,13 +629,9 @@ class CRUDController extends Controller
         $fields = $this->admin->getShow();
         \assert($fields instanceof FieldDescriptionCollection);
 
-        // NEXT_MAJOR: replace deprecation with exception
         if (!\is_array($fields->getElements()) || 0 === $fields->count()) {
-            @trigger_error(
-                'Calling this method without implementing "configureShowFields"'
-                .' is not supported since sonata-project/admin-bundle 3.40.0'
-                .' and will no longer be possible in 4.0',
-                E_USER_DEPRECATED
+            throw new \RuntimeException(
+                'No fields defined. Did you forget to implement the "configureShowFields" method?'
             );
         }
 
@@ -677,25 +647,13 @@ class CRUDController extends Controller
     /**
      * Show history revisions for object.
      *
-     * @param int|string|null $deprecatedId
-     *
      * @throws AccessDeniedException If access is not granted
      * @throws NotFoundHttpException If the object does not exist or the audit reader is not available
      *
      * @return Response
      */
-    public function historyAction($deprecatedId = null) // NEXT_MAJOR: Remove the unused $id parameter
+    public function historyAction()
     {
-        if (isset(\func_get_args()[0])) {
-            @trigger_error(
-                sprintf(
-                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.62 and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
-                    __METHOD__
-                ),
-                E_USER_DEPRECATED
-            );
-        }
-
         $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
@@ -734,15 +692,14 @@ class CRUDController extends Controller
     /**
      * View history revision of object.
      *
-     * @param int|string|null $id
-     * @param string|null     $revision
+     * @param string|null $revision
      *
      * @throws AccessDeniedException If access is not granted
      * @throws NotFoundHttpException If the object or revision does not exist or the audit reader is not available
      *
      * @return Response
      */
-    public function historyViewRevisionAction($id = null, $revision = null) // NEXT_MAJOR: Remove the unused $id parameter
+    public function historyViewRevisionAction($revision = null)
     {
         $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
@@ -795,7 +752,6 @@ class CRUDController extends Controller
     /**
      * Compare history revisions of object.
      *
-     * @param int|string|null $id
      * @param int|string|null $base_revision
      * @param int|string|null $compare_revision
      *
@@ -804,7 +760,7 @@ class CRUDController extends Controller
      *
      * @return Response
      */
-    public function historyCompareRevisionsAction($id = null, $base_revision = null, $compare_revision = null) // NEXT_MAJOR: Remove the unused $id parameter
+    public function historyCompareRevisionsAction($base_revision = null, $compare_revision = null)
     {
         $this->admin->checkAccess('historyCompareRevisions');
 
@@ -907,25 +863,13 @@ class CRUDController extends Controller
     /**
      * Returns the Response object associated to the acl action.
      *
-     * @param int|string|null $deprecatedId
-     *
      * @throws AccessDeniedException If access is not granted
      * @throws NotFoundHttpException If the object does not exist or the ACL is not enabled
      *
      * @return Response|RedirectResponse
      */
-    public function aclAction($deprecatedId = null) // NEXT_MAJOR: Remove the unused $id parameter
+    public function aclAction()
     {
-        if (isset(\func_get_args()[0])) {
-            @trigger_error(
-                sprintf(
-                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.62 and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
-                    __METHOD__
-                ),
-                E_USER_DEPRECATED
-            );
-        }
-
         if (!$this->admin->isAclEnabled()) {
             throw $this->createNotFoundException('ACL are not enabled for this admin');
         }
@@ -1472,23 +1416,17 @@ class CRUDController extends Controller
             return;
         }
 
-        // NEXT_MAJOR: remove this check
-        if (!$this->admin->getParentAssociationMapping()) {
-            return;
-        }
-
         $parentId = $request->get($parentAdmin->getIdParameter());
 
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $propertyPath = new PropertyPath($this->admin->getParentAssociationMapping());
 
         if ($parentAdmin->getObject($parentId) !== $propertyAccessor->getValue($object, $propertyPath)) {
-            // NEXT_MAJOR: make this exception
-            @trigger_error(
-                "Accessing a child that isn't connected to a given parent is"
-                ." deprecated since sonata-project/admin-bundle 3.34 and won't be allowed in 4.0.",
-                E_USER_DEPRECATED
-            );
+            throw new \RuntimeException(sprintf(
+                'There is no association between %s and %s',
+                $parentAdmin->toString($parentAdmin->getObject($parentId)),
+                $this->admin->toString($object)
+            ));
         }
     }
 
@@ -1502,12 +1440,10 @@ class CRUDController extends Controller
         $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
     }
 
-    private function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): ?JsonResponse
+    private function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): JsonResponse
     {
         if (!\in_array('application/json', $request->getAcceptableContentTypes(), true)) {
-            @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`', E_USER_DEPRECATED);
-
-            return null;
+            return $this->renderJson([], Response::HTTP_NOT_ACCEPTABLE);
         }
 
         $errors = [];
@@ -1527,7 +1463,7 @@ class CRUDController extends Controller
     private function handleXmlHttpRequestSuccessResponse(Request $request, $object): JsonResponse
     {
         if (!\in_array('application/json', $request->getAcceptableContentTypes(), true)) {
-            @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`', E_USER_DEPRECATED);
+            return $this->renderJson([], Response::HTTP_NOT_ACCEPTABLE);
         }
 
         return $this->renderJson([
