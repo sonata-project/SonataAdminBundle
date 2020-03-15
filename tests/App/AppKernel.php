@@ -86,6 +86,11 @@ final class AppKernel extends Kernel
             'providers' => ['in_memory' => ['memory' => null]],
         ]);
 
+        $containerBuilder->loadFromExtension('twig', [
+            'strict_variables' => '%kernel.debug%',
+            'exception_controller' => null,
+        ]);
+
         $loader->load($this->getProjectDir().'/config/services.yml');
     }
 
