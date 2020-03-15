@@ -54,6 +54,7 @@ matrix:
     - env: SONATA_BLOCK='dev-master as 3.x-dev'
 
 before_install:
+  - phpenv config-rm xdebug.ini
   - git remote add upstream ${UPSTREAM_URL} && git fetch --all
   - if [[ -x .travis/check_relevant_${TARGET}.sh && "$TRAVIS_PULL_REQUEST" != "false" ]]; then export RELEVANT=$(.travis/check_relevant_${TARGET}.sh); fi;
   - if [[ ! -z ${RELEVANT} ]];then exit 0; fi;

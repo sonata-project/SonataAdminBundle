@@ -54,16 +54,9 @@ cs-fix-xml:
 build:
 	mkdir $@
 
-HAS_XDEBUG=$(shell php --modules|grep --quiet xdebug;echo $$?)
-
-build/xdebug-filter.php: phpunit.xml.dist build
-ifeq ($(HAS_XDEBUG), 0)
-	vendor/bin/simple-phpunit --dump-xdebug-filter $@
-endif
-
-test: build/xdebug-filter.php
-ifeq ($(HAS_XDEBUG), 0)
-	vendor/bin/simple-phpunit --prepend build/xdebug-filter.php -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
+test:
+ifeq ($(shell php --modules|grep --quiet pcov;echo $$?), 0)
+	vendor/bin/simple-phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
 else
 	vendor/bin/simple-phpunit -c phpunit.xml.dist
 endif
