@@ -22,7 +22,7 @@ use Sonata\AdminBundle\Model\AuditManagerInterface;
  *
  * @final since sonata-project/admin-bundle 3.52
  *
- * @deprecated since sonata-project/admin-bundle 3.x, to be removed with 4.0
+ * @deprecated since sonata-project/admin-bundle 3.62, to be removed with 4.0
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
