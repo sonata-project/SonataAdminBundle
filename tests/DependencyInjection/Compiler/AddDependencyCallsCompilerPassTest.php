@@ -75,6 +75,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $container = $this->getContainer();
         $container->removeAlias('translator');
         $container->removeDefinition('translator');
+        $this->extension->prepend($container);
         $this->extension->load([$this->config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
@@ -88,6 +89,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
     public function testProcessParsingFullValidConfig(): void
     {
         $container = $this->getContainer();
+        $this->extension->prepend($container);
         $this->extension->load([$this->config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
@@ -152,6 +154,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
     public function testProcessResultingConfig(): void
     {
         $container = $this->getContainer();
+        $this->extension->prepend($container);
         $this->extension->load([$this->config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
@@ -246,6 +249,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $config['options']['sort_admins'] = true;
         unset($config['dashboard']['groups']);
 
+        $this->extension->prepend($container);
         $this->extension->load([$config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
@@ -272,6 +276,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $container = $this->getContainer();
         $container->setParameter('sonata.admin.parameter.groupname', 'resolved_group_name');
 
+        $this->extension->prepend($container);
         $this->extension->load([$config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
@@ -288,6 +293,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
     {
         $container = $this->getContainer();
 
+        $this->extension->prepend($container);
         $this->extension->load([$this->getConfig()], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
@@ -347,6 +353,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
     {
         $container = $this->getContainer();
 
+        $this->extension->prepend($container);
         $this->extension->load([$this->getConfig()], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
@@ -386,6 +393,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             'route_params' => ['articleId' => 3],
         ];
 
+        $this->extension->prepend($container);
         $this->extension->load([$config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
@@ -423,6 +431,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
             'roles' => ['ROLE_ONE'],
         ];
 
+        $this->extension->prepend($container);
         $this->extension->load([$config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
@@ -440,6 +449,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $config = $this->config;
         $config['dashboard']['groups'] = [];
 
+        $this->extension->prepend($container);
         $this->extension->load([$config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
@@ -462,6 +472,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $config = $this->config;
         $config['dashboard']['groups'] = [];
 
+        $this->extension->prepend($container);
         $this->extension->load([$config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
@@ -487,6 +498,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $config = $this->config;
         $config['dashboard']['groups'] = [];
 
+        $this->extension->prepend($container);
         $this->extension->load([$config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();
@@ -515,6 +527,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $config = $this->config;
         $config['dashboard']['groups'] = [];
 
+        $this->extension->prepend($container);
         $this->extension->load([$config], $container);
 
         $compilerPass = new AddDependencyCallsCompilerPass();

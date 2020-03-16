@@ -38,6 +38,7 @@ use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 use Sonata\AdminBundle\Twig\GlobalVariables;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class SonataAdminExtensionTest extends AbstractExtensionTestCase
 {
@@ -309,10 +310,15 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
     public function testLoadIntlTemplate(): void
     {
-        $this->load([
-            'use_intl_templates' => true,
-        ]);
-        $templates = $this->container->getParameter('sonata.admin.configuration.templates');
+        $container = new ContainerBuilder();
+        $container->setParameter('kernel.bundles', []);
+        $container->prependExtensionConfig('sonata_admin', ['use_intl_templates' => true]);
+        $extension = new SonataAdminExtension();
+        $extension->prepend($container);
+        $configs = $container->getExtensionConfig('sonata_admin');
+        $extension->load($configs, $container);
+
+        $templates = $container->getParameter('sonata.admin.configuration.templates');
         $this->assertSame('@SonataAdmin/CRUD/Intl/history_revision_timestamp.html.twig', $templates['history_revision_timestamp']);
     }
 
