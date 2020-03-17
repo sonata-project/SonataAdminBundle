@@ -241,9 +241,9 @@ more about it `here <https://symfony.com/doc/current/security/guard_authenticati
             return new RedirectResponse($this->router->generate('admin_login'));
         }
 
-        protected function getLoginUrl(): RedirectResponse
+        protected function getLoginUrl(): string
         {
-            return new RedirectResponse($this->router->generate('admin_login'));
+            return $this->router->generate('admin_login');
         }
 
         public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): RedirectResponse
