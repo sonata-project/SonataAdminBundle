@@ -203,11 +203,7 @@ more about it `here <https://symfony.com/doc/current/security/guard_authenticati
 
         public function supports(Request $request): bool
         {
-            if ($request->getPathInfo() != '/admin/login' || $request->getMethod() != 'POST') {
-                return false;
-            }
-
-            return true;
+            return $request->attributes->get('_route') === 'admin_login' && $request->isMethod('POST');
         }
 
         public function getCredentials(Request $request): array
