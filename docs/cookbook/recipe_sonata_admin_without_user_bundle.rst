@@ -256,13 +256,13 @@ this will be handled by Symfony, but we still need to register that route::
 
     namespace App\Controller;
 
-    use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+    use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use App\Form\AdminLoginForm;
     use Symfony\Component\Routing\Annotation\Route;
     use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
     use Symfony\Component\HttpFoundation\Response;
 
-    final class AdminLoginController extends Controller
+    final class AdminLoginController extends AbstractController
     {
         /**
          * @var AuthenticationUtils
