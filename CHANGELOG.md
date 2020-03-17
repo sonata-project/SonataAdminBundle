@@ -2,6 +2,25 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.62.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.61.0...3.62.0) - 2020-03-16
+### Added
+- Allow `_sort_by` filter to not be initially defined.
+- Import templates from SonataIntlBundle
+
+### Removed
+- deleteAction and batchAction does not use anymore the csrf_protection option from the editAction.
+- Dropped SonataIntlBundle
+
+### Fixed
+- Stop calling the configureFormField in deleteAction and batchAction.
+- Deprecation passing more than one attribute to `isGranted`
+- `_sort_by` without `_sort_order` does not use invalid value anymore
+- Deprecation passing more than one attribute to isGranted
+- Only trigger deprecations of `sonata_help` when it is actually used
+
+### Deprecated
+- Deprecate id param of Sonata Action
+
 ## [3.61.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.60.0...3.61.0) - 2020-02-18
 ### Added
 - `ifEnd` throws `LogicException` if there is nothing to end.

@@ -255,7 +255,7 @@ class CRUDController extends Controller
         if (isset(\func_get_args()[0])) {
             @trigger_error(
                 sprintf(
-                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
+                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.62 and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
                     __METHOD__
                 ),
                 E_USER_DEPRECATED
@@ -626,7 +626,7 @@ class CRUDController extends Controller
         if (isset(\func_get_args()[0])) {
             @trigger_error(
                 sprintf(
-                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
+                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.62 and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
                     __METHOD__
                 ),
                 E_USER_DEPRECATED
@@ -689,7 +689,7 @@ class CRUDController extends Controller
         if (isset(\func_get_args()[0])) {
             @trigger_error(
                 sprintf(
-                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
+                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.62 and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
                     __METHOD__
                 ),
                 E_USER_DEPRECATED
@@ -938,7 +938,7 @@ class CRUDController extends Controller
         if (isset(\func_get_args()[0])) {
             @trigger_error(
                 sprintf(
-                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
+                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.62 and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
                     __METHOD__
                 ),
                 E_USER_DEPRECATED
@@ -1523,7 +1523,7 @@ class CRUDController extends Controller
 
     private function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): ?JsonResponse
     {
-        if ('application/json' !== $request->headers->get('Accept')) {
+        if (!\in_array('application/json', $request->getAcceptableContentTypes(), true)) {
             @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`', E_USER_DEPRECATED);
 
             return null;
@@ -1545,7 +1545,7 @@ class CRUDController extends Controller
      */
     private function handleXmlHttpRequestSuccessResponse(Request $request, $object): JsonResponse
     {
-        if ('application/json' !== $request->headers->get('Accept')) {
+        if (!\in_array('application/json', $request->getAcceptableContentTypes(), true)) {
             @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`', E_USER_DEPRECATED);
         }
 

@@ -23,10 +23,8 @@ cache:
 env:
   global:
     - PATH="$HOME/.local/bin:$PATH"
-    - SYMFONY_DEPRECATIONS_HELPER=max[self]=0
     - TARGET=test
     - UPSTREAM_URL=https://github.com/sonata-project/SonataAdminBundle.git
-    - PHPUNIT_VERSION=8
 
 matrix:
   fast_finish: true
@@ -54,6 +52,7 @@ install:
   - if [ -x .travis/install_${TARGET}.sh ]; then .travis/install_${TARGET}.sh; fi;
 
 before_script:
+  - phpenv config-rm xdebug.ini
   - if [ -x .travis/before_script_${TARGET}.sh ]; then .travis/before_script_${TARGET}.sh; fi;
 
 script: make $TARGET

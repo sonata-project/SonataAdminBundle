@@ -109,7 +109,7 @@ final class GroupMenuProvider implements MenuProviderInterface
         if (!empty($item['roles'])) {
             $isItemGranted = false;
             foreach ($item['roles'] as $role) {
-                if ($this->checker->isGranted([$role])) {
+                if ($this->checker->isGranted($role)) {
                     $isItemGranted = true;
                     break;
                 }
@@ -120,7 +120,7 @@ final class GroupMenuProvider implements MenuProviderInterface
         if (!empty($group['roles'])) {
             $isGroupGranted = false;
             foreach ($group['roles'] as $role) {
-                if ($this->checker->isGranted([$role])) {
+                if ($this->checker->isGranted($role)) {
                     $isGroupGranted = true;
                     break;
                 }
