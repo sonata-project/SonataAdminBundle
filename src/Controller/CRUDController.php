@@ -104,19 +104,8 @@ class CRUDController implements ContainerAwareInterface
      */
     public function renderWithExtraParams($view, array $parameters = [], Response $response = null)
     {
-        if (!$this->isXmlHttpRequest()) {
-            $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
-        }
-        $parameters['admin'] = $parameters['admin'] ??
-            $this->admin;
-
-        $parameters['base_template'] = $parameters['base_template'] ??
-            $this->getBaseTemplate();
-
-        $parameters['admin_pool'] = $this->get('sonata.admin.pool');
-
         //NEXT_MAJOR: Remove method alias and use $this->render() directly.
-        return $this->originalRender($view, $parameters, $response);
+        return $this->originalRender($view, $this->addRenderExtraParams($parameters), $response);
     }
 
     /**
@@ -1081,6 +1070,19 @@ class CRUDController implements ContainerAwareInterface
     public function getRequest()
     {
         return $this->container->get('request_stack')->getCurrentRequest();
+    }
+
+    protected function addRenderExtraParams(array $parameters = []): array
+    {
+        if (!$this->isXmlHttpRequest()) {
+            $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
+        }
+
+        $parameters['admin'] = $parameters['admin'] ?? $this->admin;
+        $parameters['base_template'] = $parameters['base_template'] ?? $this->getBaseTemplate();
+        $parameters['admin_pool'] = $this->get('sonata.admin.pool');
+
+        return $parameters;
     }
 
     /**
