@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.62.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.62.0...3.62.1) - 2020-03-17
+### Fixed
+- Accessing to a non-existing parameter when extending `AbstractSonataAdminExtension`
+- Check for "application/json" presence at `Accept` HTTP header, even if multiple types are provided.
+- Deprecation about passing more than one attribute to `isGranted`
+
 ## [3.62.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.61.0...3.62.0) - 2020-03-16
 ### Added
 - Allow `_sort_by` filter to not be initially defined.

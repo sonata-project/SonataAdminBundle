@@ -86,9 +86,7 @@ final class SonataAdminExtension extends Extension
             $container->removeDefinition('sonata.admin.lock.extension');
         }
 
-        $useIntlTemplates = $config['use_intl_templates'] || isset($bundles['SonataIntlBundle']);
-
-        $container->setParameter('sonata.admin.configuration.use_intl_templates', $useIntlTemplates);
+        $useIntlTemplates = $container->getParameter('sonata.admin.configuration.use_intl_templates');
 
         if ($useIntlTemplates) {
             if ('@SonataAdmin/CRUD/history_revision_timestamp.html.twig' === $config['templates']['history_revision_timestamp']) {
@@ -198,6 +196,20 @@ final class SonataAdminExtension extends Extension
         $container
             ->registerForAutoconfiguration(ModelManagerInterface::class)
             ->addTag(ModelManagerCompilerPass::MANAGER_TAG);
+    }
+
+    /**
+     * Allow an extension to prepend the extension configurations.
+     */
+    public function prepend(ContainerBuilder $container): void
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+
+        $configs = $container->getExtensionConfig($this->getAlias());
+        $config = $this->processConfiguration(new Configuration(), $configs);
+
+        $useIntlTemplates = $config['use_intl_templates'] || isset($bundles['SonataIntlBundle']);
+        $container->setParameter('sonata.admin.configuration.use_intl_templates', $useIntlTemplates);
     }
 
     public function getNamespace()

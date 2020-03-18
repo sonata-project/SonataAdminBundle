@@ -79,6 +79,7 @@ abstract class AbstractSonataAdminExtension extends Extension
         ];
 
         $useIntlTemplates = $container->getParameter('sonata.admin.configuration.use_intl_templates');
+
         if ($useIntlTemplates) {
             $defaultConfig['templates']['types']['list'] = array_merge($defaultConfig['templates']['types']['list'], [
                 'date' => '@SonataAdmin/CRUD/Intl/list_date.html.twig',
