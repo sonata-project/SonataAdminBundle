@@ -56,7 +56,7 @@ interface ProxyQueryInterface
     public function setSortOrder($sortOrder);
 
     /**
-     * @return strind
+     * @return string
      */
     public function getSortOrder();
 
