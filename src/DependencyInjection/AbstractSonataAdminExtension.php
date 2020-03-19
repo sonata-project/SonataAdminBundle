@@ -78,7 +78,9 @@ abstract class AbstractSonataAdminExtension extends Extension
             ],
         ];
 
-        $useIntlTemplates = $container->getParameter('sonata.admin.configuration.use_intl_templates');
+        $useIntlTemplates = $container->hasParameter('sonata.admin.configuration.use_intl_templates')
+            ? $container->getParameter('sonata.admin.configuration.use_intl_templates')
+            : false;
 
         if ($useIntlTemplates) {
             $defaultConfig['templates']['types']['list'] = array_merge($defaultConfig['templates']['types']['list'], [

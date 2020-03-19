@@ -17,6 +17,6 @@ file that was distributed with this source code.
         {% set attributes = field_description.options.attributes|default({}) %}
         {% set locale = field_description.options.locale|default(null) %}
 
-        {{ value|format_currency(currency, attributes, locale) }}
+        {{ value|sonata_format_currency(currency, attributes, locale) }}
     {%- endif -%}
 {% endapply -%}

@@ -17,6 +17,6 @@ file that was distributed with this source code.
         {% set locale = field_description.options.locale|default(null) %}
         {% set type = field_description.options.type|default('default') %}
 
-        {{ value | format_number(attributes, 'decimal', type, locale) }}
+        {{ value | sonata_format_number(attributes, 'decimal', type, locale) }}
     {%- endif -%}
 {% endapply -%}

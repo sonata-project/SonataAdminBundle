@@ -91,6 +91,8 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $useIntlTemplates = $container->getParameter('sonata.admin.configuration.use_intl_templates');
 
         if ($useIntlTemplates) {
+            $loader->load('intl.xml');
+
             if ('@SonataAdmin/CRUD/history_revision_timestamp.html.twig' === $config['templates']['history_revision_timestamp']) {
                 $config['templates']['history_revision_timestamp'] = '@SonataAdmin/CRUD/Intl/history_revision_timestamp.html.twig';
             }

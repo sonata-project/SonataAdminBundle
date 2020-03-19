@@ -21,7 +21,7 @@ file that was distributed with this source code.
         {% set timeType = field_description.options.timeType|default(null) %}
 
         <time datetime="{{ value|date('c', 'UTC') }}" title="{{ value|date('c', 'UTC') }}">
-            {{ value|format_datetime(dateType, timeType, pattern, timezone, calendar, locale) }}
+            {{ value|sonata_format_datetime(dateType, timeType, pattern, timezone, calendar, locale) }}
         </time>
     {%- endif -%}
 {% endapply -%}

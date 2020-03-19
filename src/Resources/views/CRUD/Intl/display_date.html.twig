@@ -20,7 +20,7 @@ file that was distributed with this source code.
         {% set dateType = field_description.options.dateType|default(null) %}
 
         <time datetime="{{ value|date('Y-m-d', 'UTC') }}" title="{{ value|date('Y-m-d', 'UTC') }}">
-            {{ value|format_date(dateType, pattern, timezone, calendar, locale) }}
+            {{ value|sonata_format_date(dateType, pattern, timezone, calendar, locale) }}
         </time>
     {%- endif -%}
 {% endapply -%}
