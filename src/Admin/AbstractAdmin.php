@@ -1383,7 +1383,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * @final since sonata-project/admin-bundle 3.x
+     * @final since sonata-project/admin-bundle 3.63.0
      */
     public function createQuery($context = 'list')
     {

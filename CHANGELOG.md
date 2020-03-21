@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.63.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.62.1...3.63.0) - 2020-03-21
+### Added
+- Added SonataIntlBundle support back
+- Added `configureQuery` method for an easier way to override Admin list queries.
+
+### Fixed
+- Class Helper addNewInstance take care about parentAssociation mapping.
+
+### Deprecated
+- Inheritance of the `createQuery` method.
+
 ## [3.62.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.62.0...3.62.1) - 2020-03-17
 ### Fixed
 - Accessing to a non-existing parameter when extending `AbstractSonataAdminExtension`
