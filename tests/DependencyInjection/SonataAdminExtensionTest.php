@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
+use Sonata\AdminBundle\DependencyInjection\Configuration;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\AdminBundle\Event\AdminEventExtension;
 use Sonata\AdminBundle\Filter\FilterFactory;
@@ -38,34 +39,27 @@ use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 use Sonata\AdminBundle\Twig\GlobalVariables;
+use Symfony\Component\Config\Definition\Processor;
 
 class SonataAdminExtensionTest extends AbstractExtensionTestCase
 {
     /**
-     * @var string[]
+     * @var array
      */
-    private $defaultStylesheets = [];
-
-    /**
-     * @var string[]
-     */
-    private $defaultJavascripts = [];
+    private $defaultConfiguration = [];
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->container->setParameter('kernel.bundles', []);
-        $this->load();
-        $this->defaultStylesheets = $this->container
-            ->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets']
-        ;
-        $this->defaultJavascripts = $this->container
-            ->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts']
-        ;
+
+        $this->defaultConfiguration = (new Processor())->processConfiguration(new Configuration(), []);
     }
 
     public function testHasCoreServicesAlias(): void
     {
+        $this->load();
+
         $this->assertContainerBuilderHasService(Pool::class);
         $this->assertContainerBuilderHasService(AdminPoolLoader::class);
         $this->assertContainerBuilderHasService(AdminHelper::class);
@@ -116,6 +110,8 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
             'JMSDiExtraBundle' => true,
         ]);
 
+        $this->load();
+
         $this->container->compile();
     }
 
@@ -165,15 +161,20 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
     public function testExtraStylesheetsGetAdded(): void
     {
         $this->container->setParameter('kernel.bundles', []);
+
         $extraStylesheets = ['foo/bar.css', 'bar/quux.css'];
         $this->load([
             'assets' => [
                 'extra_stylesheets' => $extraStylesheets,
             ],
         ]);
+
         $stylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
 
-        $this->assertSame(array_merge($this->defaultStylesheets, $extraStylesheets), $stylesheets);
+        $this->assertSame(
+            array_merge($this->defaultConfiguration['assets']['stylesheets'], $extraStylesheets),
+            $stylesheets
+        );
     }
 
     public function testRemoveStylesheetsGetRemoved(): void
@@ -190,7 +191,12 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         ]);
         $stylesheets = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['stylesheets'];
 
-        $this->assertSame(array_values(array_diff($this->defaultStylesheets, $removeStylesheets)), $stylesheets);
+        $this->assertSame(
+            array_values(
+                array_diff($this->defaultConfiguration['assets']['stylesheets'], $removeStylesheets)
+            ),
+            $stylesheets
+        );
     }
 
     public function testExtraJavascriptsGetAdded(): void
@@ -204,7 +210,10 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         ]);
         $javascripts = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts'];
 
-        $this->assertSame(array_merge($this->defaultJavascripts, $extraJavascripts), $javascripts);
+        $this->assertSame(
+            array_merge($this->defaultConfiguration['assets']['javascripts'], $extraJavascripts),
+            $javascripts
+        );
     }
 
     public function testRemoveJavascriptsGetRemoved(): void
@@ -221,7 +230,12 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         ]);
         $javascripts = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts'];
 
-        $this->assertSame(array_values(array_diff($this->defaultJavascripts, $removeJavascripts)), $javascripts);
+        $this->assertSame(
+            array_values(
+                array_diff($this->defaultConfiguration['assets']['javascripts'], $removeJavascripts)
+            ),
+            $javascripts
+        );
     }
 
     public function testAssetsCanBeAddedAndRemoved(): void
@@ -250,20 +264,28 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         ;
 
         $this->assertSame(
-            array_merge(array_diff($this->defaultStylesheets, $removeStylesheets), $extraStylesheets),
+            array_merge(
+                array_diff($this->defaultConfiguration['assets']['stylesheets'], $removeStylesheets),
+                $extraStylesheets
+            ),
             $stylesheets
         );
 
         $javascripts = $this->container->getDefinition('sonata.admin.pool')->getArgument(3)['javascripts'];
 
         $this->assertSame(
-            array_merge(array_diff($this->defaultJavascripts, $removeJavascripts), $extraJavascripts),
+            array_merge(
+                array_diff($this->defaultConfiguration['assets']['javascripts'], $removeJavascripts),
+                $extraJavascripts
+            ),
             $javascripts
         );
     }
 
     public function testDefaultTemplates(): void
     {
+        $this->load();
+
         $this->assertSame([
             'user_block' => '@SonataAdmin/Core/user_block.html.twig',
             'add_block' => '@SonataAdmin/Core/add_block.html.twig',
