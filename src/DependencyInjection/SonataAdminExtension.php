@@ -212,7 +212,9 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $configs = $container->getExtensionConfig($this->getAlias());
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $useIntlTemplates = $config['use_intl_templates'] || isset($bundles['SonataIntlBundle']);
+        $defaultUseIntlTemplates = $config['use_intl_templates'] || isset($bundles['SonataIntlBundle']);
+        $useIntlTemplates = $this->getExplicitlyConfigured('use_intl_templates', $configs, $defaultUseIntlTemplates);
+
         $container->setParameter('sonata.admin.configuration.use_intl_templates', $useIntlTemplates);
 
         if (!isset($bundles['JMSDiExtraBundle'])) {
@@ -321,5 +323,19 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
         $modelChoice = $container->getDefinition('sonata.admin.form.type.model_choice');
         $modelChoice->replaceArgument(0, new Reference('form.property_accessor'));
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getExplicitlyConfigured(string $property, array $configs, $defaultValue)
+    {
+        foreach ($configs as $config) {
+            if (isset($config[$property])) {
+                return $config[$property];
+            }
+        }
+
+        return $defaultValue;
     }
 }

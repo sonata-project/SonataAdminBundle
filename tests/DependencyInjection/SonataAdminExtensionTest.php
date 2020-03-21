@@ -335,7 +335,35 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->load();
 
         $templates = $this->container->getParameter('sonata.admin.configuration.templates');
-        $this->assertSame('@SonataAdmin/CRUD/Intl/history_revision_timestamp.html.twig', $templates['history_revision_timestamp']);
+        $this->assertSame(
+            '@SonataAdmin/CRUD/Intl/history_revision_timestamp.html.twig',
+            $templates['history_revision_timestamp']
+        );
+    }
+
+    public function testLoadIntlTemplateIfTheSonataIntlBundleIsEnabled(): void
+    {
+        $this->container->setParameter('kernel.bundles', ['SonataIntlBundle' => true]);
+        $this->load();
+
+        $templates = $this->container->getParameter('sonata.admin.configuration.templates');
+        $this->assertSame(
+            '@SonataAdmin/CRUD/Intl/history_revision_timestamp.html.twig',
+            $templates['history_revision_timestamp']
+        );
+    }
+
+    public function testDoNotLoadIntlTemplatesWithIntlBundleEnabledAndParameterSetToFalse(): void
+    {
+        $this->container->setParameter('kernel.bundles', ['SonataIntlBundle' => true]);
+        $this->container->prependExtensionConfig('sonata_admin', ['use_intl_templates' => false]);
+        $this->load();
+
+        $templates = $this->container->getParameter('sonata.admin.configuration.templates');
+        $this->assertSame(
+            '@SonataAdmin/CRUD/history_revision_timestamp.html.twig',
+            $templates['history_revision_timestamp']
+        );
     }
 
     protected function getContainerExtensions(): array
