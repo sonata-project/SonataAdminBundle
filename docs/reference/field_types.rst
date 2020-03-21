@@ -198,7 +198,7 @@ Parameter                   Description
 **strip**                   Strip HTML and PHP tags from a string
 **truncate**                Truncate a string to ``length`` characters beginning from start. Implies strip. Beware of HTML entities. Make sure to configure your HTML editor to disable entities if you want to use truncate. For instance, use `config.entities <http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-entities>`_ for ckeditor
 **truncate.length**         The length to truncate the string to (default ``30``)
-**truncate.preserve**       Preserve whole words (default ``false``)
+**truncate.cut**            Determines if whole words must be cut (default ``true``)
 **truncate.separator**      Separator to be appended to the trimmed string (default ``...``)
 ========================    ==================================================================
 
@@ -236,7 +236,7 @@ Parameter                   Description
             // `Creating a Template for the Field...`
             ->add('content', 'html', [
                 'truncate' => [
-                    'preserve' => true
+                    'cut' => false
                 ]
             ])
 
@@ -253,7 +253,7 @@ Parameter                   Description
             ->add('content', 'html', [
                 'truncate' => [
                     'length' => 20,
-                    'preserve' => true,
+                    'cut' => false,
                     'separator' => '***'
                 ]
             ])

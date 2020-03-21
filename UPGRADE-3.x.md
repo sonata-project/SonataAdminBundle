@@ -1,6 +1,33 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated the `truncate.preserve` option in views
+
+You should use the `truncate.cut` option instead, which has `false` as its default value
+and the opposite behavior:
+
+Before:
+```php
+$showMapper
+    ->add('field', null, [
+        'truncate' => [
+            'preserve' => true,
+        ],
+    ])
+;
+```
+
+After:
+```php
+$showMapper
+    ->add('field', null, [
+        'truncate' => [
+            'cut' => false,
+        ],
+    ])
+;
+```
+
 ## Deprecated not setting "sonata.admin.manager" tag in model manager services
 
 If you are using [autoconfiguration](https://symfony.com/doc/4.4/service_container.html#the-autoconfigure-option),

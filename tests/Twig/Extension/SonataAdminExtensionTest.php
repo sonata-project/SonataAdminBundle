@@ -1291,7 +1291,7 @@ EOT
                 </td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
-                ['truncate' => ['preserve' => true]],
+                ['truncate' => ['cut' => false]],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345">
@@ -1310,7 +1310,7 @@ EOT
                 [
                     'truncate' => [
                         'length' => 20,
-                        'preserve' => true,
+                        'cut' => false,
                         'separator' => '[...]',
                     ],
                 ],
@@ -1962,7 +1962,7 @@ EOT
                 '<th>Data</th> <td> Creating a Template for the Field... </td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
-                ['truncate' => ['preserve' => true]],
+                ['truncate' => ['cut' => false]],
             ],
             [
                 '<th>Data</th> <td> Creating a Template for the Fi etc. </td>',
@@ -1977,7 +1977,7 @@ EOT
                 [
                     'truncate' => [
                         'length' => 20,
-                        'preserve' => true,
+                        'cut' => false,
                         'separator' => '[...]',
                     ],
                 ],
@@ -2079,6 +2079,76 @@ EOT
                         'less' => 'Less',
                     ],
                     'safe' => false,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @group legacy
+     *
+     * @dataProvider getDeprecatedTruncateOptions
+     *
+     * @expectedDeprecation The "truncate.preserve" option is deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use "truncate.cut" instead. ("@SonataAdmin/CRUD/show_html.html.twig" at line %d).
+     */
+    public function testDeprecatedTruncatePreserve(string $expected, string $type, $value, array $options): void
+    {
+        $this->admin
+            ->method('getTemplate')
+            ->willReturn('@SonataAdmin/CRUD/base_show_field.html.twig');
+
+        $this->fieldDescription
+            ->method('getValue')
+            ->willReturn($value);
+
+        $this->fieldDescription
+            ->method('getType')
+            ->willReturn($type);
+
+        $this->fieldDescription
+            ->method('getOptions')
+            ->willReturn($options);
+
+        $this->fieldDescription
+            ->method('getTemplate')
+            ->willReturn('@SonataAdmin/CRUD/show_html.html.twig');
+
+        $this->assertSame(
+            $this->removeExtraWhitespace($expected),
+            $this->removeExtraWhitespace(
+                $this->twigExtension->renderViewElement(
+                    $this->environment,
+                    $this->fieldDescription,
+                    $this->object
+                )
+            )
+        );
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
+    public function getDeprecatedTruncateOptions(): iterable
+    {
+        yield from [
+            [
+                '<th>Data</th> <td> Creating a Template for the Field... </td>',
+                'html',
+                '<p><strong>Creating a Template for the Field</strong> and form</p>',
+                ['truncate' => ['preserve' => true]],
+            ],
+            [
+                '<th>Data</th> <td> Creating a Template for[...] </td>',
+                'html',
+                '<p><strong>Creating a Template for the Field</strong> and form</p>',
+                [
+                    'truncate' => [
+                        'length' => 20,
+                        'preserve' => true,
+                        'separator' => '[...]',
+                    ],
                 ],
             ],
         ];
