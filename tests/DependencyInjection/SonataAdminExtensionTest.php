@@ -309,11 +309,11 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
     public function testLoadIntlTemplate(): void
     {
-        $this->load([
-            'use_intl_templates' => true,
-        ]);
+        $bundlesWithSonataIntlBundle = array_merge($this->container->getParameter('kernel.bundles'), ['SonataIntlBundle' => true]);
+        $this->container->setParameter('kernel.bundles', $bundlesWithSonataIntlBundle);
+        $this->load();
         $templates = $this->container->getParameter('sonata.admin.configuration.templates');
-        $this->assertSame('@SonataAdmin/CRUD/Intl/history_revision_timestamp.html.twig', $templates['history_revision_timestamp']);
+        $this->assertSame('@SonataIntl/CRUD/history_revision_timestamp.html.twig', $templates['history_revision_timestamp']);
     }
 
     protected function getContainerExtensions(): array
