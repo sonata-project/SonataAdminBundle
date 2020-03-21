@@ -88,7 +88,9 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             $container->removeDefinition('sonata.admin.lock.extension');
         }
 
-        $useIntlTemplates = $container->getParameter('sonata.admin.configuration.use_intl_templates');
+        $useIntlTemplates = $config['use_intl_templates'] || isset($bundles['SonataIntlBundle']);
+
+        $container->setParameter('sonata.admin.configuration.use_intl_templates', $useIntlTemplates);
 
         if ($useIntlTemplates) {
             if ('@SonataAdmin/CRUD/history_revision_timestamp.html.twig' === $config['templates']['history_revision_timestamp']) {
@@ -209,16 +211,12 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
     {
         $bundles = $container->getParameter('kernel.bundles');
 
-        $configs = $container->getExtensionConfig($this->getAlias());
-        $config = $this->processConfiguration(new Configuration(), $configs);
-
-        $useIntlTemplates = $config['use_intl_templates'] || isset($bundles['SonataIntlBundle']);
-        $container->setParameter('sonata.admin.configuration.use_intl_templates', $useIntlTemplates);
-
         if (!isset($bundles['JMSDiExtraBundle'])) {
             return;
         }
 
+        $configs = $container->getExtensionConfig($this->getAlias());
+        $config = $this->processConfiguration(new Configuration(), $configs);
         if (!$config['options']['enable_jms_di_extra_autoregistration']) {
             return;
         }
