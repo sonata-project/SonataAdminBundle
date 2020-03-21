@@ -78,28 +78,29 @@ abstract class AbstractSonataAdminExtension extends Extension
             ],
         ];
 
-        $useIntlTemplates = $container->getParameter('sonata.admin.configuration.use_intl_templates');
-        if ($useIntlTemplates) {
+        // let's add some magic, only overwrite template if the SonataIntlBundle is enabled
+        $bundles = $container->getParameter('kernel.bundles');
+        if (isset($bundles['SonataIntlBundle'])) {
             $defaultConfig['templates']['types']['list'] = array_merge($defaultConfig['templates']['types']['list'], [
-                'date' => '@SonataAdmin/CRUD/Intl/list_date.html.twig',
-                'datetime' => '@SonataAdmin/CRUD/Intl/list_datetime.html.twig',
-                'smallint' => '@SonataAdmin/CRUD/Intl/list_decimal.html.twig',
-                'bigint' => '@SonataAdmin/CRUD/Intl/list_decimal.html.twig',
-                'integer' => '@SonataAdmin/CRUD/Intl/list_decimal.html.twig',
-                'decimal' => '@SonataAdmin/CRUD/Intl/list_decimal.html.twig',
-                'currency' => '@SonataAdmin/CRUD/Intl/list_currency.html.twig',
-                'percent' => '@SonataAdmin/CRUD/Intl/list_percent.html.twig',
+                'date' => '@SonataIntl/CRUD/list_date.html.twig',
+                'datetime' => '@SonataIntl/CRUD/list_datetime.html.twig',
+                'smallint' => '@SonataIntl/CRUD/list_decimal.html.twig',
+                'bigint' => '@SonataIntl/CRUD/list_decimal.html.twig',
+                'integer' => '@SonataIntl/CRUD/list_decimal.html.twig',
+                'decimal' => '@SonataIntl/CRUD/list_decimal.html.twig',
+                'currency' => '@SonataIntl/CRUD/list_currency.html.twig',
+                'percent' => '@SonataIntl/CRUD/list_percent.html.twig',
             ]);
 
             $defaultConfig['templates']['types']['show'] = array_merge($defaultConfig['templates']['types']['show'], [
-                'date' => '@SonataAdmin/CRUD/Intl/show_date.html.twig',
-                'datetime' => '@SonataAdmin/CRUD/Intl/show_datetime.html.twig',
-                'smallint' => '@SonataAdmin/CRUD/Intl/show_decimal.html.twig',
-                'bigint' => '@SonataAdmin/CRUD/Intl/show_decimal.html.twig',
-                'integer' => '@SonataAdmin/CRUD/Intl/show_decimal.html.twig',
-                'decimal' => '@SonataAdmin/CRUD/Intl/show_decimal.html.twig',
-                'currency' => '@SonataAdmin/CRUD/Intl/show_currency.html.twig',
-                'percent' => '@SonataAdmin/CRUD/Intl/show_percent.html.twig',
+                'date' => '@SonataIntl/CRUD/show_date.html.twig',
+                'datetime' => '@SonataIntl/CRUD/show_datetime.html.twig',
+                'smallint' => '@SonataIntl/CRUD/show_decimal.html.twig',
+                'bigint' => '@SonataIntl/CRUD/show_decimal.html.twig',
+                'integer' => '@SonataIntl/CRUD/show_decimal.html.twig',
+                'decimal' => '@SonataIntl/CRUD/show_decimal.html.twig',
+                'currency' => '@SonataIntl/CRUD/show_currency.html.twig',
+                'percent' => '@SonataIntl/CRUD/show_percent.html.twig',
             ]);
         }
 
