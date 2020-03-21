@@ -66,8 +66,7 @@ class ExtensionCompilerPassTest extends TestCase
      */
     public function testAdminExtensionLoad(): void
     {
-        $this->extension->prepend($container = $this->getContainer());
-        $this->extension->load([], $container);
+        $this->extension->load([], $container = $this->getContainer());
 
         $this->assertTrue($container->hasParameter($this->root.'.extension.map'));
         $this->assertIsArray($extensionMap = $container->getParameter($this->root.'.extension.map'));
@@ -85,8 +84,7 @@ class ExtensionCompilerPassTest extends TestCase
      */
     public function testFlattenEmptyExtensionConfiguration(): void
     {
-        $this->extension->prepend($container = $this->getContainer());
-        $this->extension->load([], $container);
+        $this->extension->load([], $container = $this->getContainer());
         $extensionMap = $container->getParameter($this->root.'.extension.map');
 
         $method = new \ReflectionMethod(
@@ -118,8 +116,7 @@ class ExtensionCompilerPassTest extends TestCase
     public function testFlattenExtensionConfiguration(): void
     {
         $config = $this->getConfig();
-        $this->extension->prepend($container = $this->getContainer());
-        $this->extension->load([$config], $container);
+        $this->extension->load([$config], $container = $this->getContainer());
         $extensionMap = $container->getParameter($this->root.'.extension.map');
 
         $method = new \ReflectionMethod(
@@ -200,7 +197,6 @@ class ExtensionCompilerPassTest extends TestCase
         ];
 
         $container = $this->getContainer();
-        $this->extension->prepend($container);
         $this->extension->load([$config], $container);
 
         $extensionsPass = new ExtensionCompilerPass();
@@ -224,7 +220,6 @@ class ExtensionCompilerPassTest extends TestCase
         ];
 
         $container = $this->getContainer();
-        $this->extension->prepend($container);
         $this->extension->load([$config], $container);
 
         $extensionsPass = new ExtensionCompilerPass();
@@ -240,7 +235,6 @@ class ExtensionCompilerPassTest extends TestCase
     public function testProcess(): void
     {
         $container = $this->getContainer();
-        $this->extension->prepend($container);
         $this->extension->load([$this->config], $container);
 
         $extensionsPass = new ExtensionCompilerPass();
@@ -303,7 +297,6 @@ class ExtensionCompilerPassTest extends TestCase
         ];
 
         $container = $this->getContainer();
-        $this->extension->prepend($container);
         $this->extension->load([$config], $container);
 
         $extensionsPass = new ExtensionCompilerPass();
