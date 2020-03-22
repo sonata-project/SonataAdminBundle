@@ -338,6 +338,23 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->assertSame('@SonataIntl/CRUD/history_revision_timestamp.html.twig', $templates['history_revision_timestamp']);
     }
 
+    public function testLegacyTextExtensionConfiguration(): void
+    {
+        $this->load();
+
+        $this->assertTrue($this->container->getParameter('sonata.admin.configuration.legacy_twig_text_extension'));
+        $this->assertContainerBuilderNotHasService('sonata.string.twig.extension');
+
+        $this->load([
+            'options' => [
+                'legacy_twig_text_extension' => false,
+            ],
+        ]);
+
+        $this->assertFalse($this->container->getParameter('sonata.admin.configuration.legacy_twig_text_extension'));
+        $this->assertContainerBuilderHasService('sonata.string.twig.extension');
+    }
+
     protected function getContainerExtensions(): array
     {
         return [new SonataAdminExtension()];
