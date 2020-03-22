@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\CoreController;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,7 +32,7 @@ class CoreControllerTest extends TestCase
      */
     public function testdashboardActionStandardRequest(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = new Container();
 
         $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
         $templateRegistry->getTemplate('ajax')->willReturn('ajax.html');
@@ -50,26 +50,14 @@ class CoreControllerTest extends TestCase
 
         $breadcrumbsBuilder = $this->getMockForAbstractClass(BreadcrumbsBuilderInterface::class);
 
-        $values = [
-            DashboardAction::class => $dashboardAction = new DashboardAction(
-                [],
-                $breadcrumbsBuilder,
-                $templateRegistry->reveal(),
-                $pool,
-                $twig
-            ),
-            'request_stack' => $requestStack,
-        ];
-
-        $container->method('get')->willReturnCallback(static function (string $id) use ($values) {
-            return $values[$id];
-        });
-
-        $container
-            ->method('has')
-            ->willReturnCallback(static function (string $id): bool {
-                return 'templating' === $id;
-            });
+        $container->set(DashboardAction::class, new DashboardAction(
+            [],
+            $breadcrumbsBuilder,
+            $templateRegistry->reveal(),
+            $pool,
+            $twig
+        ));
+        $container->set('request_stack', $requestStack);
 
         $controller = new CoreController();
         $controller->setContainer($container);
@@ -82,7 +70,7 @@ class CoreControllerTest extends TestCase
      */
     public function testdashboardActionAjaxLayout(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = new Container();
 
         $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
         $templateRegistry->getTemplate('ajax')->willReturn('ajax.html');
@@ -100,20 +88,14 @@ class CoreControllerTest extends TestCase
         $requestStack = new RequestStack();
         $requestStack->push($request);
 
-        $values = [
-            DashboardAction::class => $dashboardAction = new DashboardAction(
-                [],
-                $breadcrumbsBuilder,
-                $templateRegistry->reveal(),
-                $pool,
-                $twig
-            ),
-            'request_stack' => $requestStack,
-        ];
-
-        $container->method('get')->willReturnCallback(static function ($id) use ($values) {
-            return $values[$id];
-        });
+        $container->set(DashboardAction::class, new DashboardAction(
+            [],
+            $breadcrumbsBuilder,
+            $templateRegistry->reveal(),
+            $pool,
+            $twig
+        ));
+        $container->set('request_stack', $requestStack);
 
         $controller = new CoreController();
         $controller->setContainer($container);

@@ -24,7 +24,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 /**
@@ -33,7 +33,7 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 class GenerateObjectAclCommandTest extends TestCase
 {
     /**
-     * @var ContainerInterface
+     * @var Container
      */
     private $container;
 
@@ -41,16 +41,7 @@ class GenerateObjectAclCommandTest extends TestCase
     {
         parent::setUp();
 
-        $this->container = $this->createMock(ContainerInterface::class);
-
-        $this->container
-            ->method('has')
-            ->willReturnCallback(static function (string $id): bool {
-                switch ($id) {
-                    case 'doctrine':
-                        return false;
-                }
-            });
+        $this->container = new Container();
     }
 
     public function testExecuteWithoutDoctrineService(): void

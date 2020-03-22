@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -40,7 +40,7 @@ class AdminHelperTest extends TestCase
 
     public function setUp(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = new Container();
 
         $pool = new Pool($container, 'title', 'logo.png');
         $this->helper = new AdminHelper($pool);
@@ -191,7 +191,7 @@ class AdminHelperTest extends TestCase
 
     public function testAppendFormFieldElement(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = new Container();
 
         $propertyAccessorBuilder = new PropertyAccessorBuilder();
         $propertyAccesor = $propertyAccessorBuilder->getPropertyAccessor();
