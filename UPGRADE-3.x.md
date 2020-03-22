@@ -1,6 +1,51 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated not setting as `false` the configuration option `sonata_admin.options.legacy_twig_text_extension`
+
+This option controls which Twig text extension will be used to provide filters like
+`truncate` or `wordwrap`.
+The legacy behavior is provided by the abandoned package ["twig/extensions"](https://github.com/twigphp/Twig-extensions#twig-extensions-repository),
+while the new implementation is based on ["twig/string-extra"](https://github.com/twigphp/string-extra).
+Its default value is `true` in order to keep the legacy behavior. You should set
+it to `false` in order to get the behavior which will be used by default at 4.0.
+
+```yaml
+sonata_admin:
+    options:
+        legacy_twig_text_extension: false
+```
+
+## Deprecated the `truncate.preserve` and `truncate.separator` options in views
+
+You should use the `truncate.separator` and `truncate.cut` options instead. Unlike
+`truncate.preserve`, `truncate.cut` has `false` as its default value and the opposite
+behavior:
+
+Before:
+```php
+$showMapper
+    ->add('field', null, [
+        'truncate' => [
+            'preserve' => true,
+            'separator' => '...',
+        ],
+    ])
+;
+```
+
+After:
+```php
+$showMapper
+    ->add('field', null, [
+        'truncate' => [
+            'cut' => false,
+            'ellipsis' => '...',
+        ],
+    ])
+;
+```
+
 ## Deprecated not setting "sonata.admin.manager" tag in model manager services
 
 If you are using [autoconfiguration](https://symfony.com/doc/4.4/service_container.html#the-autoconfigure-option),

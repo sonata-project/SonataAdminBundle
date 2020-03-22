@@ -82,6 +82,8 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
+        $this->configureTwigTextExtension($container, $loader, $config);
+
         $config['options']['javascripts'] = $this->buildJavascripts($config);
         $config['options']['stylesheets'] = $this->buildStylesheets($config);
         $config['options']['role_admin'] = $config['security']['role_admin'];
@@ -318,5 +320,14 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
         $modelChoice = $container->getDefinition('sonata.admin.form.type.model_choice');
         $modelChoice->replaceArgument(0, new Reference('form.property_accessor'));
+    }
+
+    private function configureTwigTextExtension(ContainerBuilder $container, XmlFileLoader $loader, array $config): void
+    {
+        $container->setParameter('sonata.admin.configuration.legacy_twig_text_extension', $config['options']['legacy_twig_text_extension']);
+
+        if (false === $config['options']['legacy_twig_text_extension']) {
+            $loader->load('twig_string.xml');
+        }
     }
 }
