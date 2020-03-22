@@ -18,18 +18,21 @@ use Sonata\AdminBundle\Action\DashboardAction;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
 class DashboardActionTest extends TestCase
 {
+    /**
+     * @var DashboardAction
+     */
     private $action;
 
     protected function setUp(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = new Container();
 
         $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
         $templateRegistry->getTemplate('ajax')->willReturn('ajax.html');
@@ -52,7 +55,7 @@ class DashboardActionTest extends TestCase
         );
     }
 
-    public function testdashboardActionStandardRequest()
+    public function testdashboardActionStandardRequest(): void
     {
         $request = new Request();
 
