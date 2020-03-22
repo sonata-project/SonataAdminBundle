@@ -30,6 +30,7 @@ use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -2106,14 +2107,15 @@ class AdminTest extends TestCase
         $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
             'admin.my_code', 'My\Class', 'MyBundle:ClassAdmin',
         ]);
+        $query = $this->createMock(ProxyQueryInterface::class);
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager->expects($this->once())
             ->method('createQuery')
             ->with('My\Class')
-            ->willReturn('a query');
+            ->willReturn($query);
 
         $admin->setModelManager($modelManager);
-        $this->assertSame('a query', $admin->createQuery('list'));
+        $this->assertSame($query, $admin->createQuery('list'));
     }
 
     public function testGetDataSourceIterator(): void

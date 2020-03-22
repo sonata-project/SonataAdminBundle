@@ -214,11 +214,15 @@ to more field types, see `SonataDoctrineORMAdminBundle Documentation`_.
 Customizing the query used to generate the list
 -----------------------------------------------
 
-You can customize the list query thanks to the ``createQuery`` method::
+.. versionadded:: 3.63
 
-    public function createQuery($context = 'list')
+    The ``configureQuery`` method was introduced in 3.63.
+
+You can customize the list query thanks to the ``configureQuery`` method::
+
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
-        $query = parent::createQuery($context);
+        $query = parent::configureQuery($query);
         $query->andWhere(
             $query->expr()->eq($query->getRootAliases()[0] . '.my_field', ':my_param')
         );

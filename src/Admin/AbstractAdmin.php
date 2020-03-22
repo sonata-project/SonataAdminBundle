@@ -1246,6 +1246,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->list;
     }
 
+    /**
+     * @final since sonata-project/admin-bundle 3.63.0
+     */
     public function createQuery($context = 'list')
     {
         if (\func_num_args() > 0) {
@@ -1254,8 +1257,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
                 E_USER_DEPRECATED
             );
         }
+
         $query = $this->getModelManager()->createQuery($this->getClass());
 
+        $query = $this->configureQuery($query);
         foreach ($this->extensions as $extension) {
             $extension->configureQuery($this, $query, $context);
         }
@@ -2544,6 +2549,11 @@ EOT;
      */
     protected function configure(): void
     {
+    }
+
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+    {
+        return $query;
     }
 
     /**
