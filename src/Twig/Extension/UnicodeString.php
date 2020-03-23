@@ -29,6 +29,9 @@ use Symfony\Component\String\UnicodeString as DecoratedUnicodeString;
  */
 final class UnicodeString
 {
+    /**
+     * @var DecoratedUnicodeString
+     */
     private $unicodeString;
 
     public function __construct(string $string = '')
