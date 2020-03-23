@@ -42,7 +42,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Extensions\TextExtension;
-use Twig\Extra\String\StringExtension as TwigStringExtension;
 
 /**
  * Test for SonataAdminExtension.
@@ -203,8 +202,7 @@ class SonataAdminExtensionTest extends TestCase
         $urlGenerator = new UrlGenerator($routeCollection, $requestContext);
         $this->environment->addExtension(new RoutingExtension($urlGenerator));
         $this->environment->addExtension(new TextExtension());
-        $this->environment->addExtension($twigStringExtension = new TwigStringExtension());
-        $this->environment->addExtension(new StringExtension($twigStringExtension));
+        $this->environment->addExtension(new StringExtension());
 
         // initialize object
         $this->object = new \stdClass();
@@ -2113,7 +2111,7 @@ EOT
         ]);
         $environment->addExtension($this->twigExtension);
         $environment->addExtension(new TranslationExtension($this->translator));
-        $environment->addExtension(new TextExtension());
+        $environment->addExtension(new StringExtension(new TextExtension()));
 
         $this->admin
             ->method('getTemplate')

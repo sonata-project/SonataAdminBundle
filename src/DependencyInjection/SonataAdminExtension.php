@@ -325,9 +325,11 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
     private function configureTwigTextExtension(ContainerBuilder $container, XmlFileLoader $loader, array $config): void
     {
         $container->setParameter('sonata.admin.configuration.legacy_twig_text_extension', $config['options']['legacy_twig_text_extension']);
+        $loader->load('twig_string.xml');
 
-        if (false === $config['options']['legacy_twig_text_extension']) {
-            $loader->load('twig_string.xml');
+        if (false !== $config['options']['legacy_twig_text_extension']) {
+            $stringExtension = $container->getDefinition('sonata.string.twig.extension');
+            $stringExtension->replaceArgument(0, new Reference('sonata.core.twig.extension.text'));
         }
     }
 }

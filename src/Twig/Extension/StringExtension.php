@@ -15,7 +15,7 @@ namespace Sonata\AdminBundle\Twig\Extension;
 
 use Symfony\Component\String\UnicodeString as DecoratedUnicodeString;
 use Twig\Extension\AbstractExtension;
-use Twig\Extra\String\StringExtension as TwigStringExtension;
+use Twig\Extensions\TextExtension;
 use Twig\TwigFilter;
 
 /**
@@ -32,13 +32,13 @@ use Twig\TwigFilter;
 final class StringExtension extends AbstractExtension
 {
     /**
-     * @var TwigStringExtension
+     * @var TextExtension
      */
-    private $extension;
+    private $legacyExtension;
 
-    public function __construct(TwigStringExtension $extension)
+    public function __construct(TextExtension $legacyExtension = null)
     {
-        $this->extension = $extension;
+        $this->legacyExtension = $legacyExtension;
     }
 
     /**
@@ -46,8 +46,14 @@ final class StringExtension extends AbstractExtension
      */
     public function getFilters(): array
     {
+        if (null !== $this->legacyExtension) {
+            return [
+                new TwigFilter('sonata_truncate', 'twig_truncate_filter', ['needs_environment' => true]),
+            ];
+        }
+
         return [
-            new TwigFilter('truncate', [$this, 'legacyTruncteWithUnicodeString']),
+            new TwigFilter('sonata_truncate', [$this, 'legacyTruncteWithUnicodeString']),
         ];
     }
 
