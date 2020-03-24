@@ -24,6 +24,7 @@ use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
+use Sonata\AdminBundle\Twig\Extension\StringExtension;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
@@ -38,7 +39,6 @@ use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Environment;
-use Twig\Extensions\TextExtension;
 use Twig\Loader\FilesystemLoader;
 
 /**
@@ -117,7 +117,7 @@ class SonataAdminExtensionTest extends TestCase
     {
         date_default_timezone_set('Europe/London');
 
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $container = $this->createMock(ContainerInterface::class);
 
         $this->pool = new Pool($container, '', '');
         $this->pool->setAdminServiceIds(['sonata_admin_foo_service']);
@@ -199,7 +199,7 @@ class SonataAdminExtensionTest extends TestCase
         $requestContext = new RequestContext();
         $urlGenerator = new UrlGenerator($routeCollection, $requestContext);
         $this->environment->addExtension(new RoutingExtension($urlGenerator));
-        $this->environment->addExtension(new TextExtension());
+        $this->environment->addExtension(new StringExtension());
 
         // initialize object
         $this->object = new \stdClass();
@@ -1117,14 +1117,14 @@ EOT
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345">
-                Creating a Template for the Fi...
+                Creating a Template for the...
                 </td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['truncate' => true],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345"> Creating a... </td>',
+                '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345"> Creatin... </td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['truncate' => ['length' => 10]],
@@ -1135,27 +1135,27 @@ EOT
                 </td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
-                ['truncate' => ['preserve' => true]],
+                ['truncate' => ['cut' => false]],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345">
-                Creating a Template for the Fi etc.
+                Creating a Template for t etc.
                 </td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
-                ['truncate' => ['separator' => ' etc.']],
+                ['truncate' => ['ellipsis' => ' etc.']],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345">
-                Creating a Template for[...]
+                Creating a Template[...]
                 </td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 [
                     'truncate' => [
                         'length' => 20,
-                        'preserve' => true,
-                        'separator' => '[...]',
+                        'cut' => false,
+                        'ellipsis' => '[...]',
                     ],
                 ],
             ],
@@ -1722,13 +1722,13 @@ EOT
                 ['strip' => true],
             ],
             [
-                '<th>Data</th> <td> Creating a Template for the Fi... </td>',
+                '<th>Data</th> <td> Creating a Template for the... </td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['truncate' => true],
             ],
             [
-                '<th>Data</th> <td> Creating a... </td>',
+                '<th>Data</th> <td> Creatin... </td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['truncate' => ['length' => 10]],
@@ -1737,23 +1737,23 @@ EOT
                 '<th>Data</th> <td> Creating a Template for the Field... </td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
-                ['truncate' => ['preserve' => true]],
+                ['truncate' => ['cut' => false]],
             ],
             [
-                '<th>Data</th> <td> Creating a Template for the Fi etc. </td>',
+                '<th>Data</th> <td> Creating a Template for t etc. </td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
-                ['truncate' => ['separator' => ' etc.']],
+                ['truncate' => ['ellipsis' => ' etc.']],
             ],
             [
-                '<th>Data</th> <td> Creating a Template for[...] </td>',
+                '<th>Data</th> <td> Creating a Template[...] </td>',
                 'html',
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 [
                     'truncate' => [
                         'length' => 20,
-                        'preserve' => true,
-                        'separator' => '[...]',
+                        'cut' => false,
+                        'ellipsis' => '[...]',
                     ],
                 ],
             ],

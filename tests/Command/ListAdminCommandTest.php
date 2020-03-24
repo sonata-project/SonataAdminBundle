@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\ListAdminCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -30,7 +30,7 @@ class ListAdminCommandTest extends TestCase
     {
         $application = new Application();
 
-        $container = $this->createMock(ContainerInterface::class);
+        $container = new Container();
 
         $admin1 = $this->createMock(AdminInterface::class);
         $admin1
@@ -42,17 +42,8 @@ class ListAdminCommandTest extends TestCase
             ->method('getClass')
             ->willReturn('Acme\Entity\Bar');
 
-        $container
-            ->method('get')
-            ->willReturnCallback(static function (string $id) use ($admin1, $admin2): AdminInterface {
-                switch ($id) {
-                    case 'acme.admin.foo':
-                        return $admin1;
-
-                    case 'acme.admin.bar':
-                        return $admin2;
-                }
-            });
+        $container->set('acme.admin.foo', $admin1);
+        $container->set('acme.admin.bar', $admin2);
 
         $pool = new Pool($container, '', '');
         $pool->setAdminServiceIds(['acme.admin.foo', 'acme.admin.bar']);

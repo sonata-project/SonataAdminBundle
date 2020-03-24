@@ -56,7 +56,9 @@
         "symfony/twig-bundle": "^4.3",
         "symfony/validator": "^4.3",
         "twig/extensions": "^1.5",
-        "twig/twig": "^2.10"
+        "twig/extra-bundle": "^3.0",
+        "twig/string-extra": "^3.0",
+        "twig/twig": "^2.12.1"
     },
     "conflict": {
         "doctrine/doctrine-bundle": ">=3",

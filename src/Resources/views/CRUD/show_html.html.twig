@@ -7,9 +7,9 @@
         {%- if field_description.options.truncate is defined -%}
             {% set truncate = field_description.options.truncate %}
             {% set length = truncate.length|default(30) %}
-            {% set preserve = truncate.preserve|default(false) %}
-            {% set separator = truncate.separator|default('...') %}
-            {{ value|striptags|truncate(length, preserve, separator)|raw }}
+            {% set cut = truncate.cut is defined ? truncate.cut : true %}
+            {% set ellipsis = truncate.ellipsis is defined ? truncate.ellipsis : '...' %}
+            {{ value|striptags|sonata_truncate(length, ellipsis, cut)|raw }}
         {%- else -%}
             {%- if field_description.options.strip is defined -%}
                 {% set value = value|striptags %}

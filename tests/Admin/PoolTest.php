@@ -17,22 +17,31 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PoolTest extends TestCase
 {
     /**
+     * @var Container
+     */
+    private $container;
+
+    /**
      * @var Pool
      */
-    private $pool = null;
+    private $pool;
 
     public function setUp(): void
     {
-        $this->pool = new Pool($this->getContainer(), 'Sonata Admin', '/path/to/pic.png', ['foo' => 'bar']);
+        $this->container = new Container();
+        $this->pool = new Pool($this->container, 'Sonata Admin', '/path/to/pic.png', ['foo' => 'bar']);
     }
 
     public function testGetGroups(): void
     {
+        $this->container->set('sonata.user.admin.group1', $this->createMock(AdminInterface::class));
+
         $this->pool->setAdminServiceIds(['sonata.user.admin.group1']);
 
         $this->pool->setAdminGroups([
@@ -47,8 +56,8 @@ class PoolTest extends TestCase
     public function testHasGroup(): void
     {
         $this->pool->setAdminGroups([
-                'adminGroup1' => [],
-            ]);
+            'adminGroup1' => [],
+        ]);
 
         $this->assertTrue($this->pool->hasGroup('adminGroup1'));
         $this->assertFalse($this->pool->hasGroup('adminGroup2'));
@@ -56,27 +65,22 @@ class PoolTest extends TestCase
 
     public function testGetDashboardGroups(): void
     {
-        $admin_group1 = $this->createMock(AdminInterface::class);
-        $admin_group1->expects($this->once())->method('showIn')->willReturn(true);
+        $adminGroup1 = $this->createMock(AdminInterface::class);
+        $adminGroup1->expects($this->once())->method('showIn')->willReturn(true);
 
-        $admin_group2 = $this->createMock(AdminInterface::class);
-        $admin_group2->expects($this->once())->method('showIn')->willReturn(false);
+        $adminGroup2 = $this->createMock(AdminInterface::class);
+        $adminGroup2->expects($this->once())->method('showIn')->willReturn(false);
 
-        $admin_group3 = $this->createMock(AdminInterface::class);
-        $admin_group3->expects($this->once())->method('showIn')->willReturn(false);
+        $adminGroup3 = $this->createMock(AdminInterface::class);
+        $adminGroup3->expects($this->once())->method('showIn')->willReturn(false);
 
-        $container = $this->createMock(ContainerInterface::class);
+        $this->container->set('sonata.user.admin.group1', $adminGroup1);
+        $this->container->set('sonata.user.admin.group2', $adminGroup2);
+        $this->container->set('sonata.user.admin.group3', $adminGroup3);
 
-        $container->method('get')->will($this->onConsecutiveCalls(
-            $admin_group1,
-            $admin_group2,
-            $admin_group3
-        ));
+        $this->pool->setAdminServiceIds(['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3']);
 
-        $pool = new Pool($container, 'Sonata Admin', '/path/to/pic.png');
-        $pool->setAdminServiceIds(['sonata.user.admin.group1', 'sonata.user.admin.group2', 'sonata.user.admin.group3']);
-
-        $pool->setAdminGroups([
+        $this->pool->setAdminGroups([
             'adminGroup1' => [
                 'items' => ['itemKey' => $this->getItemArray('sonata.user.admin.group1')],
             ],
@@ -88,10 +92,10 @@ class PoolTest extends TestCase
             ],
         ]);
 
-        $groups = $pool->getDashboardGroups();
+        $groups = $this->pool->getDashboardGroups();
 
         $this->assertCount(1, $groups);
-        $this->assertSame($admin_group1, $groups['adminGroup1']['items']['itemKey']);
+        $this->assertSame($adminGroup1, $groups['adminGroup1']['items']['itemKey']);
     }
 
     public function testGetAdminsByGroupWhenGroupNotSet(): void
@@ -116,6 +120,10 @@ class PoolTest extends TestCase
 
     public function testGetAdminsByGroup(): void
     {
+        $this->container->set('sonata.admin1', $this->createMock(AdminInterface::class));
+        $this->container->set('sonata.admin2', $this->createMock(AdminInterface::class));
+        $this->container->set('sonata.admin3', $this->createMock(AdminInterface::class));
+
         $this->pool->setAdminServiceIds(['sonata.admin1', 'sonata.admin2', 'sonata.admin3']);
         $this->pool->setAdminGroups([
             'adminGroup1' => [
@@ -164,6 +172,8 @@ class PoolTest extends TestCase
 
     public function testGetAdminForClassWhenAdminClassIsSet(): void
     {
+        $this->container->set('sonata.user.admin.group1', $this->createMock(AdminInterface::class));
+
         $this->pool->setAdminServiceIds(['sonata.user.admin.group1']);
         $this->pool->setAdminClasses([
             'someclass' => ['sonata.user.admin.group1'],
@@ -198,6 +208,8 @@ class PoolTest extends TestCase
 
     public function testGetAdminByAdminCode(): void
     {
+        $this->container->set('sonata.news.admin.post', $this->createMock(AdminInterface::class));
+
         $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
 
         $this->assertInstanceOf(AdminInterface::class, $this->pool->getAdminByAdminCode('sonata.news.admin.post'));
@@ -217,12 +229,8 @@ class PoolTest extends TestCase
             ->with($this->equalTo('sonata.news.admin.comment'))
             ->willReturn($childAdmin);
 
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock
-            ->method('get')
-            ->willReturn($adminMock);
+        $this->container->set('sonata.news.admin.post', $adminMock);
 
-        $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
         $this->pool->setAdminServiceIds(['sonata.news.admin.post', 'sonata.news.admin.comment']);
 
         $this->assertSame($childAdmin, $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.comment'));
@@ -235,12 +243,7 @@ class PoolTest extends TestCase
             ->method('hasChild')
             ->willReturn(false);
 
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock
-            ->method('get')
-            ->willReturn($adminMock);
-
-        $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
+        $this->container->set('sonata.news.admin.post', $adminMock);
         $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -300,13 +303,9 @@ class PoolTest extends TestCase
         $adminMock->expects($this->never())
             ->method('hasChild');
 
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->expects($this->never())
-            ->method('get');
-
         /** @var MockObject|Pool $poolMock */
         $poolMock = $this->getMockBuilder(Pool::class)
-            ->setConstructorArgs([$containerMock, 'Sonata', '/path/to/logo.png'])
+            ->setConstructorArgs([$this->container, 'Sonata', '/path/to/logo.png'])
             ->disableOriginalClone()
             ->setMethodsExcept(['getAdminByAdminCode'])
             ->getMock();
@@ -339,13 +338,9 @@ class PoolTest extends TestCase
         $adminMock->expects($this->never())
             ->method('getChild');
 
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->expects($this->never())
-            ->method('get');
-
         /** @var MockObject|Pool $poolMock */
         $poolMock = $this->getMockBuilder(Pool::class)
-            ->setConstructorArgs([$containerMock, 'Sonata', '/path/to/logo.png'])
+            ->setConstructorArgs([$this->container, 'Sonata', '/path/to/logo.png'])
             ->disableOriginalClone()
             ->setMethodsExcept(['getAdminByAdminCode'])
             ->getMock();
@@ -394,12 +389,8 @@ class PoolTest extends TestCase
                 ->method('getChild');
         }
 
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock
-            ->method('get')
-            ->willReturn($adminMock);
+        $this->container->set('sonata.news.admin.post', $adminMock);
 
-        $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
         $this->pool->setAdminServiceIds(['sonata.news.admin.post', 'sonata.news.admin.comment']);
 
         $this->assertTrue($this->pool->hasAdminByAdminCode($adminId));
@@ -434,12 +425,6 @@ class PoolTest extends TestCase
         $adminMock->expects($this->never())
             ->method('getChild');
 
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->expects($this->never())
-            ->method('get');
-
-        $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
-
         $this->assertFalse($this->pool->hasAdminByAdminCode($adminId));
     }
 
@@ -454,12 +439,6 @@ class PoolTest extends TestCase
 
     public function testHasAdminByAdminCodeWithNonExistentCode(): void
     {
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->expects($this->never())
-            ->method('get');
-
-        $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
-
         $this->assertFalse($this->pool->hasAdminByAdminCode('sonata.news.admin.nonexistent_code'));
     }
 
@@ -475,18 +454,14 @@ class PoolTest extends TestCase
         $adminMock->expects($this->never())
             ->method('getChild');
 
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock->expects($this->once())
-            ->method('get')
-            ->willReturn($adminMock);
+        $this->container->set('sonata.news.admin.post', $adminMock);
 
-        $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
         $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
 
         $this->assertFalse($this->pool->hasAdminByAdminCode($adminId));
     }
 
-    public function getInvalidChildAdminServiceNamesToCheck()
+    public function getInvalidChildAdminServiceNamesToCheck(): array
     {
         return [
             ['sonata.news.admin.post|'],
@@ -538,18 +513,6 @@ class PoolTest extends TestCase
     public function testOptionDefault(): void
     {
         $this->assertSame([], $this->pool->getOption('nonexistantarray', []));
-    }
-
-    private function getContainer(): ContainerInterface
-    {
-        $containerMock = $this->createMock(ContainerInterface::class);
-        $containerMock
-            ->method('get')
-            ->willReturnCallback(function () {
-                return $this->createMock(AdminInterface::class);
-            });
-
-        return $containerMock;
     }
 
     private function getItemArray(string $serviceId): array
