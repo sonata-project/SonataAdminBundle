@@ -50,7 +50,7 @@
                                         class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (tab_query_index == loop.index) %} in active{% endif %}"
                                         id="{{ _tab_name }}"
                                     >
-                                        <div class="box-body  container-fluid">
+                                        <div class="card-body  container-fluid">
                                             <div class="sonata-ba-collapsed-fields">
                                                 {% if form_tab.description != false %}
                                                     <p>
@@ -79,7 +79,8 @@
             {{ form_rest(form) }}
 
             {% block formactions %}
-                <div class="sonata-ba-form-actions well well-small form-actions">
+                <div class="card">
+                <div class="sonata-ba-form-actions card-body form-actions">
                 {% block sonata_form_actions %}
                     {% if app.request.isxmlhttprequest %}
                         {% if objectId is not null %}

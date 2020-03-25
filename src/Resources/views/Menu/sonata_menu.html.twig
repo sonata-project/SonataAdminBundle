@@ -1,21 +1,31 @@
 {% extends 'knp_menu.html.twig' %}
 
 {% block root %}
-    {%- set listAttributes = item.childrenAttributes|merge({'class': 'sidebar-menu', 'data-widget': 'tree'}) %}
+    {%- set listAttributes = item.childrenAttributes|merge({'class': 'nav nav-pills nav-sidebar flex-column', 'data-widget': 'treeview', 'role': 'menu', 'data-accordion': 'false'}) %}
     {%- set request        = item.extra('request') ?: app.request %}
     {{ block('list') -}}
 {% endblock %}
 
 {% block item %}
+    {%- do item.setAttribute('class', (item.Attribute('class')~' nav-item')|trim) %}
+    {%- do item.setLinkAttribute('class', (item.linkAttribute('class')~' nav-link')|trim) %}
+
     {%- if item.displayed %}
         {#- check role of the group #}
         {%- set display = item.extra('roles') is empty or is_granted(sonata_admin.adminPool.getOption('role_super_admin')) or item.extra('roles')|filter(role => is_granted(role))|length > 0 %}
     {%- endif %}
 
     {%- if item.displayed and display|default %}
-        {% set options = options|merge({branch_class: 'treeview', currentClass: "active", ancestorClass: "active"}) %}
+        {% set options = options|merge({branch_class: 'has-treeview', ancestorClass: "menu-open"}) %}
+
+        {%- if matcher.isCurrent(item) %}
+            {%- do item.setLinkAttribute('class', (item.linkAttribute('class')~' active')|trim) %}
+        {%- elseif matcher.isAncestor(item, options.matchingDepth) %}
+            {%- do item.setLinkAttribute('class', (item.linkAttribute('class')~' activeaaaaa')|trim) %}
+        {%- endif %}
+
         {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' active')|trim) %}
-        {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' treeview-menu')|trim) %}
+        {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' nav nav-treeview')|trim) %}
         {{ parent() }}
     {% endif %}
 {% endblock %}
@@ -24,7 +34,7 @@
     {% apply spaceless %}
         {% set translation_domain = item.extra('label_catalogue', 'messages') %}
         {% if item.extra('on_top') is defined and not item.extra('on_top') %}
-            {% set icon = item.extra('icon')|default(item.level > 1 ? '<i class="fa fa-angle-double-right" aria-hidden="true"></i>' : '') %}
+            {% set icon = item.extra('icon')|default(item.level > 1 ? '<i class="nav-icon fa fa-angle-double-right" aria-hidden="true"></i>' : '') %}
         {% else %}
             {% set icon = item.extra('icon') %}
         {% endif %}
@@ -35,11 +45,13 @@
 
 {% block spanElement %}
     {% apply spaceless %}
-        <a href="#">
+        <a href="#" class="nav-link">
             {% set translation_domain = item.extra('label_catalogue') %}
             {% set icon = item.extra('icon')|default('') %}
             {{ icon|raw }}
-            {{ parent() }}
+            <p>
+                {{ parent() }}
+            </p>
             {%- if item.extra('keep_open') is not defined or not item.extra('keep_open') -%}
                 <span class="pull-right-container"><i class="fa pull-right fa-angle-left"></i></span>
             {%- endif -%}

@@ -10,8 +10,8 @@ file that was distributed with this source code.
 #}
 
 {% if admin.hasAccess('delete', object) and admin.hasRoute('delete') %}
-    <a href="{{ admin.generateObjectUrl('delete', object) }}" class="btn btn-sm btn-default delete_link" title="{{ 'action_delete'|trans({}, 'SonataAdminBundle') }}">
-        <i class="fa fa-times" aria-hidden="true"></i>
+    <a href="{{ admin.generateObjectUrl('delete', object) }}" class="btn btn-danger btn-sm" title="{{ 'action_delete'|trans({}, 'SonataAdminBundle') }}">
+        <i class="fa fa-trash" aria-hidden="true"></i>
         {{ 'action_delete'|trans({}, 'SonataAdminBundle') }}
     </a>
 {% endif %}

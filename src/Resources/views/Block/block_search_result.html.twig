@@ -19,15 +19,15 @@ file that was distributed with this source code.
     {% endif %}
 
     <div class="col-lg-4 col-md-6 search-box-item {{ visibility_class }}">
-        <div class="box box-solid {{ visibility_class }}">
-            <div class="box-header with-border {{ visibility_class }}">
+        <div class="card card-solid {{ visibility_class }}">
+            <div class="card-header with-border {{ visibility_class }}">
                 {% set icon = settings.icon|default('') %}
                 {{ icon|raw }}
-                <h3 class="box-title">
+                <h3 class="card-title">
                     {{ admin.label|trans({}, admin.translationdomain) }}
                 </h3>
 
-                <div class="box-tools pull-right">
+                <div class="card-tools pull-right">
                     {% if pager and pager.getNbResults() > 0 %}
                         <span class="badge">{{ pager.getNbResults() }}</span>
                     {% elseif admin.hasRoute('create') and admin.hasAccess('create') %}
@@ -43,7 +43,7 @@ file that was distributed with this source code.
                 </div>
             </div>
             {% if pager and pager.getResults()|length %}
-                <div class="box-body no-padding">
+                <div class="card-body p-0">
                     <ul class="nav nav-stacked sonata-search-result-list">
                         {% for result in pager.getResults() %}
                             {% set link = admin.getSearchResultLink(result) %}
@@ -56,7 +56,7 @@ file that was distributed with this source code.
                     </ul>
                 </div>
             {% else %}
-                <div class="box-body">
+                <div class="card-body">
                     <p>
                         <em>{{ 'no_results_found'|trans({}, 'SonataAdminBundle') }}</em>
                     </p>

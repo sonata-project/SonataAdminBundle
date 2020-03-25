@@ -39,13 +39,14 @@ file that was distributed with this source code.
         {% endif %}
 
         {# Add a margin if no pager to prevent dropdown cropping on window #}
-        <div class="box box-primary"{% if admin.datagrid.pager.lastPage == 1 %} style="margin-bottom: 100px;"{% endif %}>
-            <div class="box-body{% if admin.datagrid.results|length > 0 %} table-responsive no-padding{% endif %}">
+        {% if admin.datagrid.results|length > 0 %}
+        <div class="card card-primary card-outline"{% if admin.datagrid.pager.lastPage == 1 %} style="margin-bottom: 100px;"{% endif %}>
+            <div class="card-body{% if admin.datagrid.results|length > 0 %} table-responsive p-0{% endif %}">
                 {{ sonata_block_render_event('sonata.admin.list.table.top', { 'admin': admin }) }}
 
                 {% block list_header %}{% endblock %}
 
-                {% if admin.datagrid.results|length > 0 %}
+
                     <table class="table table-bordered table-striped table-hover sonata-ba-list">
                         {% block table_header %}
                             <thead>
@@ -98,65 +99,101 @@ file that was distributed with this source code.
                         {% block table_footer %}
                         {% endblock %}
                     </table>
-                {% else %}
-                    {% block no_result_content %}
-                        <div class="info-box">
-                            <span class="info-box-icon bg-aqua"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i></span>
-                            <div class="info-box-content">
-                                <span class="info-box-text">{{ 'no_result'|trans({}, 'SonataAdminBundle') }}</span>
-                                <div class="progress">
-                                    <div class="progress-bar" style="width: 0%"></div>
-                                </div>
-                                <span class="progress-description">
-                                    {% if not app.request.xmlHttpRequest %}
-                                    <ul class="list-unstyled">
-                                        {% include get_admin_template('button_create', admin.code) %}
-                                    </ul>
-                                    {% endif %}
-                                </span>
-                            </div><!-- /.info-box-content -->
-                        </div>
-                    {% endblock %}
-                {% endif %}
+
 
                 {{ sonata_block_render_event('sonata.admin.list.table.bottom', { 'admin': admin }) }}
             </div>
+
+            {% else %}
+                {% block no_result_content %}
+                    <div class="card card-primary card-outline p-0">
+                        <div class="card body p-0 m-0">
+                            <div class="info-box  m-0">
+                                <span class="info-box-icon bg-info rounded-0"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">{{ 'no_result'|trans({}, 'SonataAdminBundle') }}</span>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-info" style="width: 0%"></div>
+                                    </div>
+                                    <span class="progress-description">
+                                        {% if not app.request.xmlHttpRequest %}
+                                            <ul class="list-unstyled">
+                                                {% include get_admin_template('button_create', admin.code) %}
+                                            </ul>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endblock %}
+            {% endif %}
+
             {% block list_footer %}
                 {% if admin.datagrid.results|length > 0 %}
-                    <div class="box-footer">
-                        <div class="form-inline clearfix">
+                    <div class="card-footer">
+
+                        <div class=" float-right">
+                            {% if admin.hasRoute('export') and admin.hasAccess('export') and export_formats|length %}
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fa fa-share-square-o" aria-hidden="true"></i>
+                                        {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        {% for format in export_formats %}
+                                            <li>
+                                                <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">
+                                                    <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
+                                                    {{ ("export_format_" ~ format)|trans({}, 'SonataAdminBundle') }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+
+                                &nbsp;-&nbsp;
+                            {% endif %}
+
+                            {% block pager_results %}
+                                {% include get_admin_template('pager_results', admin.code) %}
+                            {% endblock %}
+                        </div>
+
+                        <div class="">
                             {% if not app.request.isXmlHttpRequest %}
-                                <div class="pull-left">
+                                <div>
                                     {% if admin.hasRoute('batch') and batchactions|length > 0 %}
                                         {% block batch %}
                                             <script>
                                                 {% block batch_javascript %}
-                                                    jQuery(document).ready(function ($) {
-                                                        // Toggle individual checkboxes when the batch checkbox is changed
-                                                        $('#list_batch_checkbox').on('ifChanged change', function () {
-                                                            var checkboxes = $(this)
-                                                                .closest('table')
-                                                                .find('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
-                                                            ;
-
-                                                            if (Admin.get_config('USE_ICHECK')) {
-                                                                checkboxes.iCheck($(this).is(':checked') ? 'check' : 'uncheck');
-                                                            } else {
-                                                                checkboxes.prop('checked', this.checked);
-                                                            }
-                                                        });
-
-                                                        // Add a CSS class to rows when they are selected
-                                                        $('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
-                                                            .on('ifChanged change', function () {
-                                                                $(this)
-                                                                    .closest('tr, div.sonata-ba-list-field-batch')
-                                                                    .toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'))
-                                                                ;
-                                                            })
-                                                            .trigger('ifChanged')
+                                                jQuery(document).ready(function ($) {
+                                                    // Toggle individual checkboxes when the batch checkbox is changed
+                                                    $('#list_batch_checkbox').on('ifChanged change', function () {
+                                                        var checkboxes = $(this)
+                                                            .closest('table')
+                                                            .find('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
                                                         ;
+
+                                                        if (Admin.get_config('USE_ICHECK')) {
+                                                            checkboxes.iCheck($(this).is(':checked') ? 'check' : 'uncheck');
+                                                        } else {
+                                                            checkboxes.prop('checked', this.checked);
+                                                        }
                                                     });
+
+                                                    // Add a CSS class to rows when they are selected
+                                                    $('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
+                                                        .on('ifChanged change', function () {
+                                                            $(this)
+                                                                .closest('tr, div.sonata-ba-list-field-batch')
+                                                                .toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'))
+                                                            ;
+                                                        })
+                                                        .trigger('ifChanged')
+                                                    ;
+                                                });
                                                 {% endblock %}
                                             </script>
 
@@ -179,35 +216,14 @@ file that was distributed with this source code.
                                     {% endif %}
                                 </div>
 
-                                <div class="pull-right">
-                                    {% if admin.hasRoute('export') and admin.hasAccess('export') and export_formats|length %}
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fa fa-share-square-o" aria-hidden="true"></i>
-                                                {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                {% for format in export_formats %}
-                                                <li>
-                                                    <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">
-                                                        <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
-                                                        {{ ("export_format_" ~ format)|trans({}, 'SonataAdminBundle') }}
-                                                    </a>
-                                                </li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
 
-                                        &nbsp;-&nbsp;
-                                    {% endif %}
-
-                                    {% block pager_results %}
-                                        {% include get_admin_template('pager_results', admin.code) %}
-                                    {% endblock %}
-                                </div>
                             {% endif %}
+
                         </div>
+
+
+
+
 
                         {% block pager_links %}
                             {% if admin.datagrid.pager.haveToPaginate() %}
@@ -257,8 +273,8 @@ file that was distributed with this source code.
         {% form_theme form get_admin_template('filter', admin.code) %}
 
         <div class="col-xs-12 col-md-12 sonata-filters-box" style="display: {{ admin.datagrid.hasDisplayableFilters ? 'block' : 'none' }}" id="filter-container-{{ admin.uniqid() }}">
-            <div class="box box-primary" >
-                <div class="box-body">
+            <div class="card card-primary" >
+                <div class="card-body">
                     <form class="sonata-filter-form form-horizontal {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET" role="form">
                         {{ form_errors(form) }}
 

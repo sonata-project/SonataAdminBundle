@@ -6,12 +6,12 @@
 
         <div class="{{ form_group.class|default('col-md-12') }}">
             <div class="{{ form_group.box_class }}">
-                <div class="box-header">
-                    <h4 class="box-title">
+                <div class="card-header">
+                    <h4 class="card-title">
                         {{ form_group.label|trans({}, form_group.translation_domain ?: admin.translationDomain) }}
                     </h4>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     <div class="sonata-ba-collapsed-fields">
                         {% if form_group.description %}
                             <p>{{ form_group.description|trans({}, form_group.translation_domain ?: admin.translationDomain)|raw }}</p>

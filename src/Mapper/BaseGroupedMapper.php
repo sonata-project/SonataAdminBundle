@@ -80,7 +80,7 @@ abstract class BaseGroupedMapper extends BaseMapper
 //            'label' => $this->admin->getLabelTranslatorStrategy()->getLabel($name, $this->getName(), 'group'),
             'translation_domain' => null,
             'name' => $name,
-            'box_class' => 'box box-primary',
+            'box_class' => 'card card-primary card-outline',
             'empty_message' => 'message_form_group_empty',
             'empty_message_translation_domain' => 'SonataAdminBundle',
         ];
