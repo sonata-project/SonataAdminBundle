@@ -553,6 +553,32 @@ class DatagridTest extends TestCase
         $this->assertInstanceOf(FormBuilder::class, $this->formBuilder->get('_per_page'));
     }
 
+    public function testBuildPagerDefaultFilters()
+    {
+        $filter = $this->createMock(FilterInterface::class);
+        $filter->expects($this->once())
+            ->method('getName')
+            ->willReturn('propertyName');
+        $filter
+            ->method('getRenderSettings')
+            ->willReturn(['foo2', ['bar2' => 'baz2']]);
+        $filter
+            ->expects($this->once())
+            ->method('apply')
+            ->willReturnCallback(function (ProxyQueryInterface $query, array $value): void {
+                $this->assertArrayHasKey('type', $value);
+                $this->assertSame('type', $value['type']);
+                $this->assertArrayHasKey('value', $value);
+                $this->assertSame('value', $value['value']);
+            });
+
+        $this->datagrid->addFilter($filter);
+
+        $this->datagrid->setValue('propertyName', 'type', 'value');
+
+        $this->datagrid->buildPager();
+    }
+
     public function getBuildPagerWithPage2Tests(): array
     {
         // tests for php 5.3, because isset functionality was changed since php 5.4

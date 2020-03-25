@@ -150,9 +150,9 @@ class Datagrid implements DatagridInterface
 
         foreach ($this->getFilters() as $name => $filter) {
             $this->values[$name] = isset($this->values[$name]) ? $this->values[$name] : null;
-            $filterFormName = $filter->getFormName();
-            if (isset($this->values[$filterFormName]['value']) && '' !== $this->values[$filterFormName]['value']) {
-                $filter->apply($this->query, $data[$filterFormName]);
+            $filterParam = $this->resolveFilterValue($data, $name, $filter);
+            if ($filterParam && isset($filterParam['value']) && '' !== $filterParam['value']) {
+                $filter->apply($this->query, $filterParam);
             }
         }
 
@@ -292,5 +292,26 @@ class Datagrid implements DatagridInterface
         $this->buildPager();
 
         return $this->form;
+    }
+
+    /**
+     * Returns the default filter value if the user has not set it.
+     */
+    private function resolveFilterValue(?array $data, string $name, FilterInterface $filter): ?array
+    {
+        $userValue = $data[$filter->getFormName()] ?? null;
+        if (!isset($this->values[$name])) {
+            return $userValue;
+        }
+
+        $withoutNulls = array_filter($userValue ?? [], static function ($val): bool {
+            return null !== $val;
+        });
+
+        if (empty($withoutNulls)) {
+            return $this->values[$name];
+        }
+
+        return $userValue;
     }
 }
