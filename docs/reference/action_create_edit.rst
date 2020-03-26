@@ -120,7 +120,7 @@ options for the group itself.
 - ``fields``: The fields in your form group (you should NOT override this
   unless you know what you're doing).
 - ``box_class``: The class for your form group box in the admin; by default,
-  the value is set to ``box box-primary``.
+  the value is set to ``card card-primary``.
 - ``description``: A text shown at the top of the form group.
 - ``translation_domain``: The translation domain for the form group title
   (the Admin translation domain is used by default).
@@ -137,7 +137,7 @@ To specify options, do as follows::
                 ->tab('General') // the tab call is optional
                     ->with('Addresses', [
                         'class'       => 'col-md-8',
-                        'box_class'   => 'box box-solid box-danger',
+                        'box_class'   => 'card card-solid card-danger',
                         'description' => 'Lorem ipsum',
                         // ...
                     ])

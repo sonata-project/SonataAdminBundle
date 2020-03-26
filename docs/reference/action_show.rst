@@ -26,7 +26,7 @@ When adding a group to your show page, you may specify some options for the grou
 - ``fields``: the fields in your group (you should NOT override this unless
   you know what you're doing).
 - ``box_class``: the class for your group box in the admin; by default,
-  the value is set to ``box box-primary``.
+  the value is set to ``card card-primary``.
 - ``description``: to complete
 - ``translation_domain``: to complete
 
@@ -45,7 +45,7 @@ To specify options, do as follow::
                 ->tab('General') // the tab call is optional
                     ->with('Addresses', [
                         'class'       => 'col-md-8',
-                        'box_class'   => 'box box-solid box-danger',
+                        'box_class'   => 'card card-solid card-danger',
                         'description' => 'Lorem ipsum',
                     ])
                         ->add('title')
