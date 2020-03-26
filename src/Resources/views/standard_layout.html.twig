@@ -111,14 +111,14 @@ file that was distributed with this source code.
     </head>
     <body
             {% block body_attributes -%}
-                class="sonata-bc skin-black fixed
+                class="sonata-bc layout-navbar-fixed
                 {% if app.request.cookies.get('sonata_sidebar_hide') -%}
                     sidebar-collapse
                 {%- endif -%}"
             {%- endblock -%}
     >
 
-    <nav class="wrapper">
+    <div class="wrapper">
 
         {% block sonata_header %}
             <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -368,7 +368,7 @@ file that was distributed with this source code.
                 {% endblock sonata_page_content %}
             </nav>
         {% endblock sonata_wrapper %}
-    </nav>
+    </div>
 
     {% if sonata_admin.adminPool.getOption('use_bootlint') %}
         {% block bootlint %}
