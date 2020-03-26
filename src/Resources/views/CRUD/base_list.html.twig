@@ -245,22 +245,28 @@ file that was distributed with this source code.
     {%- if admin.datagrid.filters|length %}
         <ul class="nav navbar-nav navbar-right">
 
-            <li class="dropdown sonata-actions">
-                <a href="#" class="dropdown-toggle sonata-ba-action" data-toggle="dropdown">
+            <li class="nav-item dropdown sonata-actions">
+                <a href="#" class="nav-link dropdown-toggle sonata-ba-action" data-toggle="dropdown">
                     <i class="fa fa-filter" aria-hidden="true"></i>
                     {{ 'link_filters'|trans({}, 'SonataAdminBundle') }}
-                    <span class="badge sonata-filter-count"></span>
+                    <span class="badge badge-pill badge-secondary sonata-filter-count"></span>
                     <b class="caret"></b>
                 </a>
 
                 <ul class="dropdown-menu" role="menu">
                     {% for filter in admin.datagrid.filters|filter(filter => filter.options['show_filter'] is same as(true) or filter.options['show_filter'] is null) %}
                         {% set filterActive = ((filter.isActive() or filter.options['show_filter']) and not admin.isDefaultFilter(filter.formName)) %}
-                        <li>
+                        <a href="#" class="dropdown-item sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
+                            <i class="fa {{ (filter.isActive() or filter.options['show_filter']) ? 'fa-check-square-o' : 'fa-square-o' }}"></i>{{ filter.label|trans({}, filter.translationDomain ?: admin.translationDomain) }}
+                        </a>
+                        {#
+                        {% set filterActive = ((filter.isActive() or filter.options['show_filter']) and not admin.isDefaultFilter(filter.formName)) %}
+                        <li class="dropdown-item">
                             <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
                                 <i class="fa {{ (filter.isActive() or filter.options['show_filter']) ? 'fa-check-square-o' : 'fa-square-o' }}"></i>{{ filter.label|trans({}, filter.translationDomain ?: admin.translationDomain) }}
                             </a>
                         </li>
+                        #}
                     {% endfor %}
                 </ul>
             </li>

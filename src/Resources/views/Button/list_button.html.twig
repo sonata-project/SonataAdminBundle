@@ -10,7 +10,7 @@ file that was distributed with this source code.
 #}
 
 {% if admin.hasAccess('list') and admin.hasRoute('list') %}
-    <li>
+    <li class="dropdown-item">
         <a class="sonata-action-element" href="{{ admin.generateUrl('list') }}">
             <i class="fa fa-list" aria-hidden="true"></i>
             {{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}

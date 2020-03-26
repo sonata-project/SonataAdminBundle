@@ -134,49 +134,45 @@ file that was distributed with this source code.
                         <ul class="navbar-nav">
                             <li class="nav-item"><a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a></li>
                         </ul>
-                        <div class="navbar-left">
-                            {% block sonata_breadcrumb %}
-                                <div class="hidden-xs">
-                                    {% if _breadcrumb is not empty or action is defined %}
-                                        <nav aria-label="breadcrumb">
-                                            <ol class="breadcrumb">
-                                                {% if _breadcrumb is empty %}
-                                                    {% if action is defined %}
-                                                        {% for menu in breadcrumbs_builder.breadcrumbs(admin, action) %}
-                                                            {%- set translation_domain = menu.extra('translation_domain', 'messages') -%}
-                                                            {%- set label = menu.label -%}
-                                                            {%- if translation_domain is not same as(false) -%}
-                                                                {%- set label = label|trans(menu.extra('translation_params', {}), translation_domain) -%}
-                                                            {%- endif -%}
+                        {% block sonata_breadcrumb %}
+                            {% if _breadcrumb is not empty or action is defined %}
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        {% if _breadcrumb is empty %}
+                                            {% if action is defined %}
+                                                {% for menu in breadcrumbs_builder.breadcrumbs(admin, action) %}
+                                                    {%- set translation_domain = menu.extra('translation_domain', 'messages') -%}
+                                                    {%- set label = menu.label -%}
+                                                    {%- if translation_domain is not same as(false) -%}
+                                                        {%- set label = label|trans(menu.extra('translation_params', {}), translation_domain) -%}
+                                                    {%- endif -%}
 
-                                                            {% if not loop.last %}
-                                                                <li class="breadcrumb-item">
-                                                                    {% if menu.uri is not empty %}
-                                                                        <a href="{{ menu.uri }}">
-                                                                            {% if menu.extra('safe_label', true) %}
-                                                                                {{- label|raw -}}
-                                                                            {% else %}
-                                                                                {{- label|truncate(100) -}}
-                                                                            {% endif %}
-                                                                        </a>
+                                                    {% if not loop.last %}
+                                                        <li class="breadcrumb-item">
+                                                            {% if menu.uri is not empty %}
+                                                                <a href="{{ menu.uri }}">
+                                                                    {% if menu.extra('safe_label', true) %}
+                                                                        {{- label|raw -}}
                                                                     {% else %}
-                                                                        <span>{{ label|truncate(100) }}</span>
+                                                                        {{- label|truncate(100) -}}
                                                                     {% endif %}
-                                                                </li>
+                                                                </a>
                                                             {% else %}
-                                                                <li class="breadcrumb-item active" aria-current="page">{{ label|truncate(100) }}</li>
+                                                                <span>{{ label|truncate(100) }}</span>
                                                             {% endif %}
-                                                        {% endfor %}
+                                                        </li>
+                                                    {% else %}
+                                                        <li class="breadcrumb-item active" aria-current="page">{{ label|truncate(100) }}</li>
                                                     {% endif %}
-                                                {% else %}
-                                                    {{ _breadcrumb|raw }}
-                                                {% endif %}
-                                            </ol>
-                                        </nav>
-                                    {% endif %}
-                                </div>
-                            {% endblock sonata_breadcrumb %}
-                        </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% else %}
+                                            {{ _breadcrumb|raw }}
+                                        {% endif %}
+                                    </ol>
+                                </nav>
+                            {% endif %}
+                        {% endblock sonata_breadcrumb %}
 
                         {% block sonata_top_nav_menu %}
                             {% if app.user and is_granted(sonata_admin.adminPool.getOption('role_admin')) %}
