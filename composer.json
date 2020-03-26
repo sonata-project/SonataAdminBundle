@@ -27,7 +27,7 @@
         "doctrine/inflector": "^1.1",
         "knplabs/knp-menu": "^3.1",
         "knplabs/knp-menu-bundle": "^3.0",
-        "sonata-project/block-bundle": "^4.0",
+        "sonata-project/block-bundle": "^3.18.3 || ^4.0",
         "sonata-project/doctrine-extensions": "^1.4",
         "sonata-project/exporter": "^2.1",
         "sonata-project/form-extensions": "^1.1.2",
