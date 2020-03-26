@@ -24,7 +24,7 @@ file that was distributed with this source code.
 
 {% block content %}
     <div class="sonata-ba-delete">
-        <div class="card card-danger">
+        <div class="card card-danger card-outline">
             <div class="card-header">
                 {% if batch_translation_domain is not same as(false) %}
                     {% set action_label = action_label|trans({}, batch_translation_domain) %}

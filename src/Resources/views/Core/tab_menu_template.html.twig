@@ -3,6 +3,9 @@
 {% block item %}
 {% import "knp_menu.html.twig" as macros %}
 {% if item.displayed %}
+    {%- do item.setAttribute('class', (item.Attribute('class')~' nav-item')|trim) %}
+    {%- do item.setLinkAttribute('class', (item.linkAttribute('class')~' nav-link')|trim) %}
+
     {%- set attributes = item.attributes %}
     {%- set is_dropdown = attributes.dropdown|default(false) %}
     {%- set divider_prepend = attributes.divider_prepend|default(false) %}
