@@ -375,18 +375,18 @@ CASESENSITIVE;
                     ->children()
                         ->arrayNode('stylesheets')
                             ->defaultValue([
-                                'bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css',
-                                'bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css',
-                                'bundles/sonatacore/vendor/ionicons/css/ionicons.min.css',
+                                'bundles/sonataadmin/vendor/bootstrap/dist/css/bootstrap.min.css',
+                                'bundles/sonataadmin/vendor/components-font-awesome/css/font-awesome.min.css',
+                                'bundles/sonataadmin/vendor/ionicons/css/ionicons.min.css',
                                 'bundles/sonataadmin/vendor/admin-lte/dist/css/adminlte.min.css',
                                 'bundles/sonataadmin/vendor/iCheck/skins/square/blue.css',
 
-                                'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+                                'bundles/sonataadmin/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
 
                                 'bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css',
 
-                                'bundles/sonatacore/vendor/select2/select2.css',
-                                'bundles/sonatacore/vendor/select2-bootstrap-css/select2-bootstrap.min.css',
+                                'bundles/sonataadmin/vendor/select2/select2.css',
+                                'bundles/sonataadmin/vendor/select2-bootstrap-css/select2-bootstrap.min.css',
 
                                 'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
 
@@ -394,7 +394,7 @@ CASESENSITIVE;
                                 'bundles/sonataadmin/css/layout.css',
                                 'bundles/sonataadmin/css/tree.css',
 
-                                'bundles/sonatacore/css/flashmessage.css',
+                                'bundles/sonataadmin/css/flashmessage.css',
                             ])
                             ->prototype('scalar')->end()
                         ->end()
@@ -410,25 +410,25 @@ CASESENSITIVE;
                         ->end()
                         ->arrayNode('javascripts')
                             ->defaultValue([
-                                'bundles/sonatacore/vendor/jquery/dist/jquery.min.js',
+                                'bundles/sonataadmin/vendor/jquery/dist/jquery.min.js',
                                 'bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js',
 
                                 'bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js',
                                 'bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js',
 
-                                'bundles/sonatacore/vendor/moment/min/moment.min.js',
+                                'bundles/sonataadmin/vendor/moment/min/moment.min.js',
 
                                 'bundles/sonataadmin/vendor/popper.js/dist/umd/popper.js',
-                                'bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js',
+                                'bundles/sonataadmin/vendor/bootstrap/dist/js/bootstrap.min.js',
 
-                                'bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+                                'bundles/sonataadmin/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
 
                                 'bundles/sonataadmin/vendor/jquery-form/jquery.form.js',
                                 'bundles/sonataadmin/jquery/jquery.confirmExit.js',
 
                                 'bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js',
 
-                                'bundles/sonatacore/vendor/select2/select2.min.js',
+                                'bundles/sonataadmin/vendor/select2/select2.min.js',
 
                                 'bundles/sonataadmin/vendor/admin-lte/dist/js/adminlte.min.js',
                                 'bundles/sonataadmin/vendor/iCheck/icheck.min.js',
@@ -443,7 +443,7 @@ CASESENSITIVE;
                                 'bundles/sonataadmin/treeview.js',
                                 'bundles/sonataadmin/sidebar.js',
 
-                                'bundles/sonatacore/js/base.js',
+                                'bundles/sonataadmin/js/base.js',
                             ])
                             ->prototype('scalar')->end()
                         ->end()
