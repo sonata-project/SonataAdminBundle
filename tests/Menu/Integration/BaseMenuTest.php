@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslator;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 /**

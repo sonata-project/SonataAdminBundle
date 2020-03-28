@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Tests\Menu\Integration;
 use Knp\Menu\MenuFactory;
 use Knp\Menu\MenuItem;
 use Prophecy\Argument;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TabMenuTest extends BaseMenuTest
 {

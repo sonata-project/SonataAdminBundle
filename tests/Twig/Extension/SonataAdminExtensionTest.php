@@ -38,7 +38,8 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\Translator;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Extensions\TextExtension;
@@ -265,6 +266,35 @@ class SonataAdminExtensionTest extends TestCase
         $this->fieldDescription
             ->method('getLabel')
             ->willReturn('Data');
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @group legacy
+     */
+    public function testConstructThrowsExceptionWithWrongTranslationArgument(): void
+    {
+        $this->expectException(\TypeError::class);
+
+        new SonataAdminExtension(
+            $this->pool,
+            null,
+            new \stdClass()
+        );
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     * @group legacy
+     */
+    public function testConstructWithLegacyTranslator(): void
+    {
+        new SonataAdminExtension(
+            $this->pool,
+            null,
+            $this->createStub(LegacyTranslatorInterface::class)
+        );
     }
 
     /**
