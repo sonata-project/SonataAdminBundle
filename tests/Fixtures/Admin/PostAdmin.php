@@ -17,12 +17,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 
 class PostAdmin extends AbstractAdmin
 {
-    protected $metadataClass = null;
-
-    public function setParentAssociationMapping($associationMapping): void
-    {
-        $this->parentAssociationMapping = $associationMapping;
-    }
+    protected $classMetaData;
 
     public function setClassMetaData($classMetaData): void
     {

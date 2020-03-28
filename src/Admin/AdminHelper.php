@@ -223,7 +223,7 @@ class AdminHelper
      *
      * @param object $object
      *
-     * @throws \RuntimeException
+     * @throws \BadMethodCallException
      */
     public function addNewInstance($object, FieldDescriptionInterface $fieldDescription): void
     {
@@ -235,10 +235,7 @@ class AdminHelper
             $method = sprintf('get%s', Inflector::classify($parentMapping['fieldName']));
 
             if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
-                /*
-                 * NEXT_MAJOR: Use BadMethodCallException instead
-                 */
-                throw new \RuntimeException(
+                throw new \BadMethodCallException(
                     sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
                 );
             }
@@ -255,10 +252,7 @@ class AdminHelper
                 $method = sprintf('add%s', Inflector::classify(Inflector::singularize($mapping['fieldName'])));
 
                 if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
-                    /*
-                     * NEXT_MAJOR: Use BadMethodCallException instead
-                     */
-                    throw new \RuntimeException(
+                    throw new \BadMethodCallException(
                         sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
                     );
                 }

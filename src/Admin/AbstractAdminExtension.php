@@ -55,7 +55,7 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
     }
 
-    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list'): void
+    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query): void
     {
     }
 

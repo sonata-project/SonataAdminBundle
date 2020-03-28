@@ -41,19 +41,10 @@ class ConfigureQueryEvent extends Event
      */
     protected $proxyQuery;
 
-    /**
-     * @var string
-     */
-    protected $context;
-
-    /**
-     * @param string $context
-     */
-    public function __construct(AdminInterface $admin, ProxyQueryInterface $proxyQuery, $context)
+    public function __construct(AdminInterface $admin, ProxyQueryInterface $proxyQuery)
     {
         $this->admin = $admin;
         $this->proxyQuery = $proxyQuery;
-        $this->context = $context;
     }
 
     /**
@@ -62,14 +53,6 @@ class ConfigureQueryEvent extends Event
     public function getAdmin()
     {
         return $this->admin;
-    }
-
-    /**
-     * @return string
-     */
-    public function getContext()
-    {
-        return $this->context;
     }
 
     /**

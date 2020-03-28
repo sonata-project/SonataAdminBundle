@@ -45,7 +45,7 @@ final class AdminExporter
     {
         $adminExportFormats = $admin->getExportFormats();
 
-        if (null !== $adminExportFormats) {
+        if (!empty($adminExportFormats)) {
             return $adminExportFormats;
         }
 

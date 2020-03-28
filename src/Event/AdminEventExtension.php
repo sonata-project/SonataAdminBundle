@@ -69,10 +69,10 @@ class AdminEventExtension extends AbstractAdminExtension
         );
     }
 
-    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list'): void
+    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query): void
     {
         $this->eventDispatcher->dispatch(
-            new ConfigureQueryEvent($admin, $query, $context),
+            new ConfigureQueryEvent($admin, $query),
             'sonata.admin.event.configure.query'
         );
     }

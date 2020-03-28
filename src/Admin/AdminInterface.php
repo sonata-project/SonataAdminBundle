@@ -123,12 +123,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getManagerType();
 
-    /**
-     * @param string $context NEXT_MAJOR: remove this argument
-     *
-     * @return ProxyQueryInterface
-     */
-    public function createQuery($context = 'list');
+    public function createQuery(): ProxyQueryInterface;
 
     /**
      * @return FormBuilderInterface the form builder
@@ -548,13 +543,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Returns list of supported sub classes.
      */
     public function getSubClasses(): array;
-
-    /**
-     * Adds a new class to a list of supported sub classes.
-     *
-     * @param $subClass
-     */
-    public function addSubClass($subClass);
 
     /**
      * Sets the list of supported sub classes.

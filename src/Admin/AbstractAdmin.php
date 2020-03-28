@@ -197,17 +197,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $label;
 
     /**
-     * Whether or not to persist the filters in the session.
-     *
-     * NEXT_MAJOR: remove this property
-     *
-     * @var bool
-     *
-     * @deprecated since sonata-project/admin-bundle 3.34, to be removed in 4.0.
-     */
-    protected $persistFilters = false;
-
-    /**
      * Array of routes related to this admin.
      *
      * @var RouteCollection
@@ -233,26 +222,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @var AdminInterface|null
      */
-    protected $parent = null;
-
-    /**
-     * The related parent association, ie if OrderElement has a parent property named order,
-     * then the $parentAssociationMapping must be a string named `order`.
-     *
-     * NEXT_MAJOR: remove this attribute.
-     *
-     * @deprecated This attribute is deprecated since sonata-project/admin-bundle 3.24 and will be removed in 4.0
-     *
-     * @var string
-     */
-    protected $baseCodeRoute = '';
-
-    /**
-     * NEXT_MAJOR: should be default array and private.
-     *
-     * @var string|array
-     */
-    protected $parentAssociationMapping = null;
+    protected $parent;
 
     /**
      * Reference the parent FieldDescription related to this admin
@@ -352,12 +322,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * @var SecurityHandlerInterface
      */
-    protected $securityHandler = null;
+    protected $securityHandler;
 
     /**
      * @var ValidatorInterface
      */
-    protected $validator = null;
+    protected $validator;
 
     /**
      * The configuration pool.
@@ -448,6 +418,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $accessMapping = [];
 
     /**
+     * @var string[]
+     */
+    private $parentAssociationMapping = [];
+
+    /**
      * @var MutableTemplateRegistryInterface
      */
     private $templateRegistry;
@@ -482,11 +457,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @var Form|null
      */
     private $form;
-
-    /**
-     * @var DatagridInterface
-     */
-    private $filter;
 
     /**
      * The cached base route name.
@@ -561,14 +531,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     /**
      * {@inheritdoc}
-     *
-     * NEXT_MAJOR: return null to indicate no override
      */
     public function getExportFormats()
     {
-        return [
-            'json', 'xml', 'csv', 'xls',
-        ];
+        return null;
     }
 
     /**
@@ -579,9 +545,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $fields = $this->getModelManager()->getExportFields($this->getClass());
 
         foreach ($this->getExtensions() as $extension) {
-            if (method_exists($extension, 'configureExportFields')) {
-                $fields = $extension->configureExportFields($this, $fields);
-            }
+            $fields = $extension->configureExportFields($this, $fields);
         }
 
         return $fields;
@@ -620,10 +584,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function initialize(): void
     {
         if (!$this->classnameLabel) {
-            /* NEXT_MAJOR: remove cast to string, null is not supposed to be
-            supported but was documented as such */
             $this->classnameLabel = substr(
-                (string) $this->getClass(),
+                $this->getClass(),
                 strrpos((string) $this->getClass(), '\\') + 1
             );
         }
@@ -738,8 +700,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             }
 
             // if filter persistence is configured
-            // NEXT_MAJOR: remove `$this->persistFilters !== false` from the condition
-            if (false !== $this->persistFilters && null !== $this->filterPersister) {
+            if (null !== $this->filterPersister) {
                 // if reset filters is asked, remove from storage
                 if ('reset' === $this->request->query->get('filters')) {
                     $this->filterPersister->reset($this->getCode());
@@ -785,23 +746,21 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function getParentAssociationMapping()
     {
-        // NEXT_MAJOR: remove array check
-        if (\is_array($this->parentAssociationMapping) && $this->getParent()) {
-            $parent = $this->getParent()->getCode();
-
-            if (\array_key_exists($parent, $this->parentAssociationMapping)) {
-                return $this->parentAssociationMapping[$parent];
-            }
-
-            throw new \InvalidArgumentException(sprintf(
-                "There's no association between %s and %s.",
-                $this->getCode(),
-                $this->getParent()->getCode()
-            ));
+        if (!$this->getParent()) {
+            return null;
         }
 
-        // NEXT_MAJOR: remove this line
-        return $this->parentAssociationMapping;
+        $parent = $this->getParent()->getCode();
+
+        if (\array_key_exists($parent, $this->parentAssociationMapping)) {
+            return $this->parentAssociationMapping[$parent];
+        }
+
+        throw new \InvalidArgumentException(sprintf(
+            'There\'s no association between "%s" and "%s".',
+            $this->getCode(),
+            $this->getParent()->getCode()
+        ));
     }
 
     /**
@@ -941,21 +900,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->subClasses;
     }
 
-    /**
-     * NEXT_MAJOR: remove this method.
-     */
-    public function addSubClass($subClass): void
-    {
-        @trigger_error(sprintf(
-            'Method "%s" is deprecated since sonata-project/admin-bundle 3.30 and will be removed in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        if (!\in_array($subClass, $this->subClasses, true)) {
-            $this->subClasses[] = $subClass;
-        }
-    }
-
     public function setSubClasses(array $subClasses): void
     {
         $this->subClasses = $subClasses;
@@ -975,61 +919,34 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return false;
     }
 
-    public function getActiveSubClass()
+    public function getActiveSubClass(): string
     {
         if (!$this->hasActiveSubClass()) {
-            @trigger_error(sprintf(
-                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
-                'Use %s::hasActiveSubClass() to know if there is an active subclass.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare string as return type
-            // throw new \LogicException(sprintf(
-            //    'Admin "%s" has no active subclass.',
-            //    static::class
-            // ));
-
-            return null;
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no active subclass.',
+                static::class
+            ));
         }
 
         return $this->getSubClass($this->getActiveSubclassCode());
     }
 
-    public function getActiveSubclassCode()
+    public function getActiveSubclassCode(): string
     {
         if (!$this->hasActiveSubClass()) {
-            @trigger_error(sprintf(
-                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
-                'Use %s::hasActiveSubClass() to know if there is an active subclass.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare string as return type
-            // throw new \LogicException(sprintf(
-            //    'Admin "%s" has no active subclass.',
-            //    static::class
-            // ));
-
-            return null;
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no active subclass.',
+                static::class
+            ));
         }
 
         $subClass = $this->getRequest()->query->get('subclass');
 
         if (!$this->hasSubClass($subClass)) {
-            @trigger_error(sprintf(
-                'Calling %s() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. '.
-                'Use %s::hasActiveSubClass() to know if there is an active subclass.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare string as return type
-            // throw new \LogicException(sprintf(
-            //    'Admin "%s" has no active subclass.',
-            //    static::class
-            // ));
-
-            return null;
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no active subclass.',
+                static::class
+            ));
         }
 
         return $subClass;
@@ -1246,23 +1163,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->list;
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.63.0
-     */
-    public function createQuery($context = 'list')
+    final public function createQuery(): ProxyQueryInterface
     {
-        if (\func_num_args() > 0) {
-            @trigger_error(
-                'The $context argument of '.__METHOD__.' is deprecated since 3.3, to be removed in 4.0.',
-                E_USER_DEPRECATED
-            );
-        }
-
         $query = $this->getModelManager()->createQuery($this->getClass());
 
         $query = $this->configureQuery($query);
         foreach ($this->extensions as $extension) {
-            $extension->configureQuery($this, $query, $context);
+            $extension->configureQuery($this, $query);
         }
 
         return $query;
@@ -1358,28 +1265,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->label;
     }
 
-    /**
-     * @param bool $persist
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @deprecated since sonata-project/admin-bundle 3.34, to be removed in 4.0.
-     */
-    public function setPersistFilters($persist): void
-    {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.34 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
-
-        $this->persistFilters = $persist;
-    }
-
     public function setFilterPersister(FilterPersisterInterface $filterPersister = null): void
     {
         $this->filterPersister = $filterPersister;
-        // NEXT_MAJOR remove the deprecated property will be removed. Needed for persisted filter condition.
-        $this->persistFilters = true;
     }
 
     /**
@@ -1503,13 +1391,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             $message = <<<'EOT'
 You are trying to set entity an instance of "%s",
 which is not the one registered with this admin class ("%s").
-This is deprecated since 3.5 and will no longer be supported in 4.0.
 EOT;
 
-            @trigger_error(
-                sprintf($message, \get_class($subject), $this->getClass()),
-                E_USER_DEPRECATED
-            ); // NEXT_MAJOR : throw an exception instead
+            throw new \LogicException(sprintf(
+                $message,
+                \get_class($subject ?? ''),
+                $this->getClass()
+            ));
         }
 
         $this->subject = $subject;
@@ -1669,7 +1557,7 @@ EOT;
         return $this->filterFieldDescriptions;
     }
 
-    public function addChild(AdminInterface $child): void
+    public function addChild(AdminInterface $child, string $parentMappingField): void
     {
         for ($parentAdmin = $this; null !== $parentAdmin; $parentAdmin = $parentAdmin->getParent()) {
             if ($parentAdmin->getCode() !== $child->getCode()) {
@@ -1687,19 +1575,7 @@ EOT;
 
         $child->setParent($this);
 
-        // NEXT_MAJOR: remove $args and add $field parameter to this function on next Major
-
-        $args = \func_get_args();
-
-        if (isset($args[1])) {
-            $child->addParentAssociationMapping($this->getCode(), $args[1]);
-        } else {
-            @trigger_error(
-                'Calling "addChild" without second argument is deprecated since'
-                .' sonata-project/admin-bundle 3.35 and will not be allowed in 4.0.',
-                E_USER_DEPRECATED
-            );
-        }
+        $child->addParentAssociationMapping($this->getCode(), $parentMappingField);
     }
 
     public function hasChild($code)
@@ -2588,10 +2464,7 @@ EOT;
         $this->configureDefaultFilterValues($defaultFilterValues);
 
         foreach ($this->getExtensions() as $extension) {
-            // NEXT_MAJOR: remove method check
-            if (method_exists($extension, 'configureDefaultFilterValues')) {
-                $extension->configureDefaultFilterValues($this, $defaultFilterValues);
-            }
+            $extension->configureDefaultFilterValues($this, $defaultFilterValues);
         }
 
         return $defaultFilterValues;
@@ -2752,12 +2625,8 @@ EOT;
 
     /**
      * Gets the subclass corresponding to the given name.
-     *
-     * @param string $name The name of the sub class
-     *
-     * @return string the subclass
      */
-    protected function getSubClass($name)
+    protected function getSubClass(string $name): string
     {
         if ($this->hasSubClass($name)) {
             return $this->subClasses[$name];

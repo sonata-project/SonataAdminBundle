@@ -43,11 +43,6 @@ class ConfigureQueryEventTest extends TestCase
         $this->event = new ConfigureQueryEvent($this->admin, $this->proxyQuery, 'Foo');
     }
 
-    public function testGetContext(): void
-    {
-        $this->assertSame('Foo', $this->event->getContext());
-    }
-
     public function testGetAdmin(): void
     {
         $result = $this->event->getAdmin();

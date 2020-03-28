@@ -54,10 +54,7 @@ interface AdminExtensionInterface
      */
     public function validate(AdminInterface $admin, ErrorElement $errorElement, $object);
 
-    /**
-     * @param string $context
-     */
-    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list');
+    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query): void;
 
     /**
      * Get a chance to modify a newly created instance.

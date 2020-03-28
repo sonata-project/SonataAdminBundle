@@ -31,7 +31,6 @@ use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\DefaultRouteGenerator;
@@ -58,7 +57,6 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Doctrine\Adapter\AdapterInterface;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -279,6 +277,24 @@ class AdminTest extends TestCase
         $this->assertSame(['sonata.post.admin.comment' => $commentAdmin], $postAdmin->getChildren());
     }
 
+    public function testGetParentAssociationMappingReturnsNullWithNoAssociation(): void
+    {
+        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
+
+        $this->assertNull($commentAdmin->getParentAssociationMapping());
+    }
+
+    public function testGetParentAssociationMappingThrowsExceptionWithWrongNoAssociation(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $postAdmin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'SonataNewsBundle:CommentAdmin');
+        $commentAdmin->setParent($postAdmin);
+
+        $this->assertNull($commentAdmin->getParentAssociationMapping());
+    }
+
     /**
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::configure
      */
@@ -300,11 +316,12 @@ class AdminTest extends TestCase
 
     public function testConfigureWithValidParentAssociationMapping(): void
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-        $admin->setParentAssociationMapping('Category');
+        $postAdmin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'Sonata\NewsBundle\Controller\CommentAdminController');
+        $postAdmin->addChild($commentAdmin, 'post');
 
-        $admin->initialize();
-        $this->assertSame('Category', $admin->getParentAssociationMapping());
+        $commentAdmin->initialize();
+        $this->assertSame('post', $commentAdmin->getParentAssociationMapping());
     }
 
     public function provideGetBaseRoutePattern()
@@ -516,97 +533,6 @@ class AdminTest extends TestCase
         $this->assertSame($expected, $admin->getBaseRouteName());
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Calling "addChild" without second argument is deprecated since sonata-project/admin-bundle 3.35 and will not be allowed in 4.0.
-     * @dataProvider provideGetBaseRouteName
-     */
-    public function testGetBaseRouteNameWithChildAdmin(string $objFqn, string $expected): void
-    {
-        $routeGenerator = new DefaultRouteGenerator(
-            $this->createMock(RouterInterface::class),
-            new RoutesCache($this->cacheTempFolder, true)
-        );
-
-        $container = new Container();
-        $pool = new Pool($container, 'Sonata Admin', '/path/to/pic.png');
-
-        $pathInfo = new PathInfoBuilder($this->createMock(AuditManagerInterface::class));
-        $postAdmin = new PostAdmin('sonata.post.admin.post', $objFqn, 'Sonata\NewsBundle\Controller\PostAdminController');
-        $container->set('sonata.post.admin.post', $postAdmin);
-        $postAdmin->setConfigurationPool($pool);
-        $postAdmin->setRouteBuilder($pathInfo);
-        $postAdmin->setRouteGenerator($routeGenerator);
-        $postAdmin->initialize();
-
-        $commentAdmin = new CommentAdmin(
-            'sonata.post.admin.comment',
-            'Application\Sonata\NewsBundle\Entity\Comment',
-            'Sonata\NewsBundle\Controller\CommentAdminController'
-        );
-        $container->set('sonata.post.admin.comment', $commentAdmin);
-        $commentAdmin->setConfigurationPool($pool);
-        $commentAdmin->setRouteBuilder($pathInfo);
-        $commentAdmin->setRouteGenerator($routeGenerator);
-        $commentAdmin->initialize();
-
-        $postAdmin->addChild($commentAdmin, 'post');
-
-        $commentVoteAdmin = new CommentVoteAdmin(
-            'sonata.post.admin.comment_vote',
-            'Application\Sonata\NewsBundle\Entity\CommentVote',
-            'Sonata\NewsBundle\Controller\CommentVoteAdminController'
-        );
-
-        $container->set('sonata.post.admin.comment_vote', $commentVoteAdmin);
-        $commentVoteAdmin->setConfigurationPool($pool);
-        $commentVoteAdmin->setRouteBuilder($pathInfo);
-        $commentVoteAdmin->setRouteGenerator($routeGenerator);
-        $commentVoteAdmin->initialize();
-
-        $commentAdmin->addChild($commentVoteAdmin);
-        $pool->setAdminServiceIds([
-            'sonata.post.admin.post',
-            'sonata.post.admin.comment',
-            'sonata.post.admin.comment_vote',
-        ]);
-
-        $this->assertSame($expected.'_comment', $commentAdmin->getBaseRouteName());
-
-        $this->assertTrue($postAdmin->hasRoute('show'));
-        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post.show'));
-        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.show'));
-        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment|sonata.post.admin.comment_vote.show'));
-        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.comment.list'));
-        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.comment|sonata.post.admin.comment_vote.list'));
-        $this->assertFalse($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.edit'));
-        $this->assertFalse($commentAdmin->hasRoute('edit'));
-        $this->assertSame('post', $commentAdmin->getParentAssociationMapping());
-
-        /*
-         * Test the route name from request
-         */
-        $postListRequest = new Request(
-            [],
-            [],
-            [
-                '_route' => $postAdmin->getBaseRouteName().'_list',
-            ]
-        );
-
-        $postAdmin->setRequest($postListRequest);
-        $commentAdmin->setRequest($postListRequest);
-
-        $this->assertTrue($postAdmin->isCurrentRoute('list'));
-        $this->assertFalse($postAdmin->isCurrentRoute('create'));
-        $this->assertFalse($commentAdmin->isCurrentRoute('list'));
-        $this->assertFalse($commentVoteAdmin->isCurrentRoute('list'));
-        $this->assertTrue($commentAdmin->isCurrentRoute('list', 'sonata.post.admin.post'));
-        $this->assertFalse($commentAdmin->isCurrentRoute('edit', 'sonata.post.admin.post'));
-        $this->assertTrue($commentVoteAdmin->isCurrentRoute('list', 'sonata.post.admin.post'));
-        $this->assertFalse($commentVoteAdmin->isCurrentRoute('edit', 'sonata.post.admin.post'));
-    }
-
     public function testGetBaseRouteNameWithUnreconizedClassname(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -698,10 +624,6 @@ class AdminTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
-     * @expectedDeprecation Calling Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubclassCode() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. Use Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass() to know if there is an active subclass.
-     *
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getSubClasses
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getSubClass
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::setSubClasses
@@ -713,7 +635,6 @@ class AdminTest extends TestCase
      */
     public function testSubClass(): void
     {
-        // NEXT_MAJOR: Remove the "@group" and "@expectedDeprecation" annotations
         $admin = new PostAdmin(
             'sonata.post.admin.post',
             Post::class,
@@ -722,8 +643,6 @@ class AdminTest extends TestCase
         $this->assertFalse($admin->hasSubClass('test'));
         $this->assertFalse($admin->hasActiveSubClass());
         $this->assertCount(0, $admin->getSubClasses());
-        $this->assertNull($admin->getActiveSubClass());
-        $this->assertNull($admin->getActiveSubclassCode());
         $this->assertSame(Post::class, $admin->getClass());
 
         // Just for the record, if there is no inheritance set, the getSubject is not used
@@ -739,9 +658,6 @@ class AdminTest extends TestCase
         $this->assertTrue($admin->hasSubClass('extended1'));
         $this->assertFalse($admin->hasActiveSubClass());
         $this->assertCount(2, $admin->getSubClasses());
-        // NEXT_MAJOR: remove the following 2 `assertNull()` assertions
-        $this->assertNull($admin->getActiveSubClass());
-        $this->assertNull($admin->getActiveSubclassCode());
         $this->assertSame(
             BlogPost::class,
             $admin->getClass(),
@@ -768,20 +684,42 @@ class AdminTest extends TestCase
 
         $request->query->set('subclass', 'inject');
 
-        $this->assertNull($admin->getActiveSubclassCode());
-        // NEXT_MAJOR: remove the previous `assertNull()` assertion and uncomment the following lines
-        // $this->expectException(\LogicException::class);
-        // $this->expectExceptionMessage(sprintf('Admin "%s" has no active subclass.', PostAdmin::class));
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage(sprintf('Admin "%s" has no active subclass.', PostAdmin::class));
+
+        $admin->getActiveSubclassCode();
     }
 
-    /**
-     * @group legacy
-     *
-     * @expectedDeprecation Calling Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubclassCode() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. Use Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass() to know if there is an active subclass.
-     */
+    public function testSubClassCodeThrowsExceptionWithNoActiveSubclass(): void
+    {
+        $admin = new PostAdmin(
+            'sonata.post.admin.post',
+            Post::class,
+            'SonataNewsBundle:PostAdmin'
+        );
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage(sprintf('Admin "%s" has no active subclass.', PostAdmin::class));
+
+        $admin->getActiveSubclassCode();
+    }
+
+    public function testActiveSubClassCodeThrowsExceptionWithNoActiveSubclass(): void
+    {
+        $admin = new PostAdmin(
+            'sonata.post.admin.post',
+            Post::class,
+            'SonataNewsBundle:PostAdmin'
+        );
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage(sprintf('Admin "%s" has no active subclass.', PostAdmin::class));
+
+        $admin->getActiveSubClass();
+    }
+
     public function testNonExistantSubclass(): void
     {
-        // NEXT_MAJOR: Remove the "@group" and "@expectedDeprecation" annotations
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
         $admin->setModelManager($this->getMockForAbstractClass(ModelManagerInterface::class));
 
@@ -791,7 +729,7 @@ class AdminTest extends TestCase
 
         $this->assertTrue($admin->hasActiveSubClass());
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
 
         $admin->getActiveSubClass();
     }
@@ -806,20 +744,6 @@ class AdminTest extends TestCase
         $request = new Request(['subclass' => 'extended1']);
         $admin->setRequest($request);
         $this->assertTrue($admin->hasActiveSubClass());
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Method "Sonata\AdminBundle\Admin\AbstractAdmin::addSubClass" is deprecated since sonata-project/admin-bundle 3.30 and will be removed in 4.0.
-     */
-    public function testAddSubClassIsDeprecated(): void
-    {
-        $admin = new PostAdmin(
-            'sonata.post.admin.post',
-            Post::class,
-            'Sonata\NewsBundle\Controller\PostAdminController'
-        );
-        $admin->addSubClass('whatever');
     }
 
     public function testGetPerPageOptions(): void
@@ -1208,7 +1132,7 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertSame(['json', 'xml', 'csv', 'xls'], $admin->getExportFormats());
+        $this->assertNull($admin->getExportFormats());
     }
 
     public function testGetUrlsafeIdentifier(): void
@@ -1387,21 +1311,6 @@ class AdminTest extends TestCase
             ->willReturn('fooTranslated');
 
         $this->assertSame('fooTranslated', $admin->transChoice('foo', 2, ['name' => 'Andrej'], 'fooMessageDomain'));
-    }
-
-    public function testSetFilterPersister(): void
-    {
-        $admin = new class('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle\Controller\PostAdminController') extends PostAdmin {
-            public function persistFilters(): bool
-            {
-                return $this->persistFilters;
-            }
-        };
-
-        $filterPersister = $this->createMock(FilterPersisterInterface::class);
-
-        $admin->setFilterPersister($filterPersister);
-        $this->assertTrue($admin->persistFilters());
     }
 
     public function testGetRootCode(): void
@@ -1633,8 +1542,7 @@ class AdminTest extends TestCase
         $postAdmin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'Sonata\NewsBundle\Controller\CommentAdminController');
-        $commentAdmin->setParentAssociationMapping('post.author');
-        $commentAdmin->setParent($postAdmin);
+        $postAdmin->addChild($commentAdmin, 'post.author');
 
         $request = $this->createMock(Request::class);
         $query = $this->createMock(ParameterBag::class);
@@ -1739,7 +1647,15 @@ class AdminTest extends TestCase
         $this->assertSame($bazFieldDescription, $modelAdmin->getFilterFieldDescription('baz'));
     }
 
-    public function testGetSubjectNoRequest(): void
+    public function testGetSubjectThrowsExceptionWithWrongInstance(): void
+    {
+        $this->expectException(\LogicException::class);
+
+        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'SonataNewsBundle:PostAdmin');
+        $admin->setSubject(new \stdClass());
+    }
+
+    public function testSetSubject(): void
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
@@ -2221,7 +2137,7 @@ class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\Post',
             'Sonata\NewsBundle\Controller\PostAdminController'
         );
-        $postAdmin->addChild($postAdmin);
+        $postAdmin->addChild($postAdmin, 'parentPost');
     }
 
     public function testGetRootAncestor(): void
