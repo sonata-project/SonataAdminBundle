@@ -26,7 +26,8 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Security\Acl\Voter\FieldVote;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatorInterface as LegacyTranslationInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Extension\AbstractExtension;
@@ -83,17 +84,36 @@ class SonataAdminExtension extends AbstractExtension
     public function __construct(
         Pool $pool,
         LoggerInterface $logger = null,
-        TranslatorInterface $translator = null,
+        $translator = null,
         ContainerInterface $templateRegistries = null,
         AuthorizationCheckerInterface $securityChecker = null
     ) {
-        // NEXT_MAJOR: make the translator parameter required
+        // NEXT_MAJOR: make the translator parameter required, move TranslatorInterface check to method signature
+        // and remove this block
+
         if (null === $translator) {
             @trigger_error(
                 'The $translator parameter will be required fields with the 4.0 release.',
                 E_USER_DEPRECATED
             );
+        } else {
+            if (!$translator instanceof TranslatorInterface) {
+                @trigger_error(sprintf(
+                    'The $translator parameter should be an instance of "%s" and will be mandatory in 4.0.',
+                    TranslatorInterface::class
+                ), E_USER_DEPRECATED);
+            }
+
+            if (!$translator instanceof TranslatorInterface && !$translator instanceof LegacyTranslationInterface) {
+                throw new \TypeError(sprintf(
+                    'Argument 2 must be an instance of "%s" or preferably "%s", "%s given"',
+                    TranslatorInterface::class,
+                    LegacyTranslationInterface::class,
+                    \get_class($translator)
+                ));
+            }
         }
+
         $this->pool = $pool;
         $this->logger = $logger;
         $this->translator = $translator;
