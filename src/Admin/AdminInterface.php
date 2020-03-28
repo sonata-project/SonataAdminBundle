@@ -322,7 +322,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function supportsPreviewMode();
 
     /**
-     * @return object a new object instance
+     * @return object|null a new object instance
      */
     public function getNewInstance();
 
