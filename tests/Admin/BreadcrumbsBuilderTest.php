@@ -62,9 +62,9 @@ class BreadcrumbsBuilderTest extends TestCase
                 return $menu;
             });
 
-        $postAdmin = new PostAdmin('sonata.post.admin.post', DummySubject::class, 'SonataNewsBundle:PostAdmin');
-        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'SonataNewsBundle:CommentAdmin');
-        $subCommentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'SonataNewsBundle:CommentAdmin');
+        $postAdmin = new PostAdmin('sonata.post.admin.post', DummySubject::class, 'Sonata\NewsBundle\Controller\PostAdminController');
+        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'Sonata\NewsBundle\Controller\CommentAdminController');
+        $subCommentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'Sonata\NewsBundle\Controller\CommentAdminController');
 
         $postAdmin->addChild($commentAdmin);
         $postAdmin->setRequest(new Request(['id' => $postAdminSubjectId]));
@@ -222,8 +222,8 @@ class BreadcrumbsBuilderTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $postAdmin = new PostAdmin('sonata.post.admin.post', DummySubject::class, 'SonataNewsBundle:PostAdmin');
-        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'SonataNewsBundle:CommentAdmin');
+        $postAdmin = new PostAdmin('sonata.post.admin.post', DummySubject::class, 'Sonata\NewsBundle\Controller\PostAdminController');
+        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'Sonata\NewsBundle\Controller\CommentAdminController');
 
         $postAdmin->addChild($commentAdmin);
         $postAdmin->setRequest(new Request(['id' => $postAdminSubjectId]));
