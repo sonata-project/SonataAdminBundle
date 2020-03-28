@@ -7,7 +7,7 @@ as defined by your ``Admin`` services. This is useful to help you start using
 advantage of the Dashboard.
 
 The Dashboard is, by default, available at ``/admin/dashboard``, which is handled by
-the ``SonataAdminBundle:Core:dashboard`` controller action. The default view file for
+the ``Sonata\AdminBundle\Action\DashboardAction`` controller action. The default view file for
 this action is ``@SonataAdmin/Core/dashboard.html.twig``, but you can change
 this in your admin configuration:
 
