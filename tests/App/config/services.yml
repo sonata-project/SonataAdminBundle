@@ -1,7 +1,4 @@
 services:
-    Twig\Extensions\TextExtension:
-        tags:
-            - {name: twig.extension}
     # Under real conditions, this service is registered by "doctrine/doctrine-bundle"
     database_connection:
         class: Sonata\AdminBundle\Tests\Fixtures\DoctrineBundle\Connection
