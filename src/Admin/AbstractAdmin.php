@@ -2630,24 +2630,12 @@ EOT;
     }
 
     /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated Use configureTabMenu instead
-     */
-    protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
-    {
-    }
-
-    /**
      * Configures the tab menu in your admin.
      *
      * @param string $action
      */
     protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
-        // Use configureSideMenu not to mess with previous overrides
-        // NEXT_MAJOR: remove this line
-        $this->configureSideMenu($menu, $action, $childAdmin);
     }
 
     /**

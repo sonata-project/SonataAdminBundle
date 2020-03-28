@@ -47,15 +47,8 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
     }
 
-    public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null): void
-    {
-    }
-
     public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null): void
     {
-        // Use configureSideMenu not to mess with previous overrides
-        // NEXT_MAJOR: remove this line
-        $this->configureSideMenu($admin, $menu, $action, $childAdmin);
     }
 
     public function validate(AdminInterface $admin, ErrorElement $errorElement, $object): void
