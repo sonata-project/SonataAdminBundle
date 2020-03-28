@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
+use Sonata\AdminBundle\Maker\AdminMaker;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\App\Model\ModelManager;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -29,31 +29,20 @@ final class ModelManagerCompilerPassTest extends TestCase
 {
     public function testProcess(): void
     {
-        $adminMaker = $this->prophesize(Definition::class);
-        $adminMaker->replaceArgument(Argument::type('integer'), Argument::any())->shouldNotBeCalled();
-        $adminMaker->hasTag(Argument::exact(ModelManagerCompilerPass::MANAGER_TAG))
-            ->willReturn(false);
-        $containerBuilderMock = $this->prophesize(ContainerBuilder::class);
+        $adminMaker = new Definition(AdminMaker::class);
+        $adminMaker->setArguments([
+            '',
+            [],
+        ]);
 
-        $containerBuilderMock->getServiceIds()
-            ->willReturn([]);
-
-        $containerBuilderMock->getDefinitions()
-            ->willReturn([]);
-
-        $containerBuilderMock->findTaggedServiceIds(Argument::exact(ModelManagerCompilerPass::MANAGER_TAG))
-            ->willReturn([]);
-
-        $containerBuilderMock->getParameter(Argument::exact('kernel.bundles'))
-            ->willReturn(['MakerBundle' => 'MakerBundle']);
-
-        $containerBuilderMock->getDefinition(Argument::exact('sonata.admin.maker'))
-            ->willReturn($adminMaker->reveal());
-        $containerBuilderMock->getParameter(Argument::containingString('kernel.project_dir'))
-            ->willReturn(null);
+        $containerBuilder = new ContainerBuilder();
+        $containerBuilder->setDefinition('sonata.admin.maker', $adminMaker);
+        $containerBuilder->setParameter('kernel.bundles', ['MakerBundle' => 'MakerBundle']);
 
         $compilerPass = new ModelManagerCompilerPass();
-        $compilerPass->process($containerBuilderMock->reveal());
+        $compilerPass->process($containerBuilder);
+
+        $this->assertCount(0, $adminMaker->getArgument(1));
     }
 
     /**
@@ -65,140 +54,69 @@ final class ModelManagerCompilerPassTest extends TestCase
      */
     public function testProcessWithUntaggedManagerDefinition(): void
     {
-        $adminMaker = $this->prophesize(Definition::class);
-        $adminMaker->replaceArgument(Argument::type('integer'), Argument::any())->shouldBeCalledTimes(1);
-        $adminMaker->hasTag(Argument::exact(ModelManagerCompilerPass::MANAGER_TAG))
-            ->willReturn(false);
-        $containerBuilderMock = $this->prophesize(ContainerBuilder::class);
+        $adminMaker = new Definition(AdminMaker::class);
+        $adminMaker->setArguments([
+            '',
+            [],
+        ]);
 
-        $containerBuilderMock->getServiceIds()
-            ->willReturn(['sonata.admin.manager.test']);
+        $containerBuilder = new ContainerBuilder();
+        $containerBuilder->setDefinition('sonata.admin.maker', $adminMaker);
+        $containerBuilder->setParameter('kernel.bundles', ['MakerBundle' => 'MakerBundle']);
 
-        $definitionMock = $this->prophesize(Definition::class);
-
-        $containerBuilderMock->getDefinitions()
-            ->willReturn([
-                'sonata.admin.maker' => $adminMaker->reveal(),
-                'sonata.admin.manager.test' => $definitionMock->reveal(),
-            ]);
-
-        $definitionMock->getClass()
-            ->willReturn(ModelManager::class);
-
-        $definitionMock->hasTag(Argument::exact(ModelManagerCompilerPass::MANAGER_TAG))
-            ->willReturn(false);
-
-        $definitionMock->addTag(Argument::exact(ModelManagerCompilerPass::MANAGER_TAG))
-            ->willReturn(null);
-
-        $containerBuilderMock->findTaggedServiceIds(Argument::exact(ModelManagerCompilerPass::MANAGER_TAG))
-            ->willReturn(['sonata.admin.manager.test' => ['other.tag']]);
-
-        $containerBuilderMock->getParameter(Argument::exact('kernel.bundles'))
-            ->willReturn(['MakerBundle' => 'MakerBundle']);
-
-        $containerBuilderMock->findDefinition(Argument::exact('sonata.admin.manager.test'))
-            ->willReturn($definitionMock->reveal());
-
-        $containerBuilderMock->getDefinition(Argument::exact('sonata.admin.maker'))
-            ->willReturn($adminMaker->reveal());
-
-        $containerBuilderMock->getParameter(Argument::containingString('kernel.project_dir'))
-            ->willReturn(null);
+        $managerDefinition = new Definition(ModelManager::class);
+        $containerBuilder->setDefinition('sonata.admin.manager.test', $managerDefinition);
 
         $compilerPass = new ModelManagerCompilerPass();
-        $compilerPass->process($containerBuilderMock->reveal());
+        $compilerPass->process($containerBuilder);
+
+        $this->assertCount(1, $adminMaker->getArgument(1));
     }
 
     public function testProcessWithTaggedManagerDefinition(): void
     {
-        $adminMaker = $this->prophesize(Definition::class);
-        $adminMaker->replaceArgument(Argument::type('integer'), Argument::any())->shouldBeCalledTimes(1);
-        $adminMaker->hasTag(Argument::exact(ModelManagerCompilerPass::MANAGER_TAG))
-            ->willReturn(false);
-        $containerBuilderMock = $this->prophesize(ContainerBuilder::class);
+        $adminMaker = new Definition(AdminMaker::class);
+        $adminMaker->setArguments([
+            '',
+            [],
+        ]);
+        $containerBuilder = new ContainerBuilder();
+        $containerBuilder->setParameter('kernel.bundles', ['MakerBundle' => 'MakerBundle']);
+        $containerBuilder->setDefinition('sonata.admin.maker', $adminMaker);
 
-        $containerBuilderMock->getServiceIds()
-            ->willReturn(['sonata.admin.manager.test']);
+        $managerDefinition = new Definition(ModelManager::class);
+        $managerDefinition->addTag(ModelManagerCompilerPass::MANAGER_TAG);
 
-        $definitionMock = $this->prophesize(Definition::class);
-
-        $containerBuilderMock->getDefinitions()
-            ->willReturn([
-                'sonata.admin.maker' => $adminMaker->reveal(),
-                'sonata.admin.manager.test' => $definitionMock->reveal(),
-            ]);
-
-        $definitionMock->getClass()
-            ->willReturn(ModelManager::class);
-
-        $definitionMock->hasTag(Argument::exact(ModelManagerCompilerPass::MANAGER_TAG))
-            ->willReturn(true);
-
-        $containerBuilderMock->findTaggedServiceIds(Argument::exact(ModelManagerCompilerPass::MANAGER_TAG))
-            ->willReturn(['sonata.admin.manager.test' => [ModelManagerCompilerPass::MANAGER_TAG, 'other.tag']]);
-
-        $containerBuilderMock->getParameter(Argument::exact('kernel.bundles'))
-            ->willReturn(['MakerBundle' => 'MakerBundle']);
-
-        $containerBuilderMock->findDefinition(Argument::exact('sonata.admin.manager.test'))
-            ->willReturn($definitionMock->reveal());
-
-        $containerBuilderMock->getDefinition(Argument::exact('sonata.admin.maker'))
-            ->willReturn($adminMaker->reveal());
-
-        $containerBuilderMock->getParameter(Argument::containingString('kernel.project_dir'))
-            ->willReturn(null);
+        $containerBuilder->setDefinition('sonata.admin.manager.test', $managerDefinition);
 
         $compilerPass = new ModelManagerCompilerPass();
-        $compilerPass->process($containerBuilderMock->reveal());
+        $compilerPass->process($containerBuilder);
+
+        $this->assertCount(1, $adminMaker->getArgument(1));
     }
 
     public function testProcessWithInvalidTaggedManagerDefinition(): void
     {
-        $adminMaker = $this->prophesize(Definition::class);
-        $adminMaker->replaceArgument(Argument::type('integer'), Argument::any())->shouldNotBeCalled();
-        $adminMaker->hasTag(Argument::exact(ModelManagerCompilerPass::MANAGER_TAG))
-            ->willReturn(false);
-        $containerBuilderMock = $this->prophesize(ContainerBuilder::class);
+        $adminMaker = new Definition(AdminMaker::class);
+        $adminMaker->setArguments([
+            '',
+            [],
+        ]);
 
-        $containerBuilderMock->getServiceIds()
-            ->willReturn(['sonata.admin.manager.test']);
+        $containerBuilder = new ContainerBuilder();
+        $containerBuilder->setParameter('kernel.bundles', ['MakerBundle' => 'MakerBundle']);
+        $containerBuilder->setDefinition('sonata.admin.maker', $adminMaker);
 
-        $definitionMock = $this->prophesize(Definition::class);
+        $managerDefinition = new Definition(\stdClass::class);
+        $managerDefinition->addTag(ModelManagerCompilerPass::MANAGER_TAG);
 
-        $containerBuilderMock->getDefinitions()
-            ->willReturn([
-                'sonata.admin.maker' => $adminMaker->reveal(),
-                'sonata.admin.manager.test' => $definitionMock->reveal(),
-            ]);
-
-        $definitionMock->getClass()
-            ->willReturn(\stdClass::class);
-
-        $definitionMock->hasTag(Argument::exact(ModelManagerCompilerPass::MANAGER_TAG))
-            ->willReturn(true);
-
-        $containerBuilderMock->findTaggedServiceIds(Argument::exact(ModelManagerCompilerPass::MANAGER_TAG))
-            ->willReturn(['sonata.admin.manager.test' => [ModelManagerCompilerPass::MANAGER_TAG, 'other.tag']]);
-
-        $containerBuilderMock->getParameter(Argument::exact('kernel.bundles'))
-            ->willReturn(['MakerBundle' => 'MakerBundle']);
-
-        $containerBuilderMock->findDefinition(Argument::exact('sonata.admin.manager.test'))
-            ->willReturn($definitionMock->reveal());
-
-        $containerBuilderMock->getDefinition(Argument::exact('sonata.admin.maker'))
-            ->willReturn($adminMaker->reveal());
-
-        $containerBuilderMock->getParameter(Argument::containingString('kernel.project_dir'))
-            ->willReturn(null);
+        $containerBuilder->setDefinition('sonata.admin.manager.test', $managerDefinition);
 
         $compilerPass = new ModelManagerCompilerPass();
 
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage(sprintf('Service "sonata.admin.manager.test" must implement `%s`.', ModelManagerInterface::class));
 
-        $compilerPass->process($containerBuilderMock->reveal());
+        $compilerPass->process($containerBuilder);
     }
 }
