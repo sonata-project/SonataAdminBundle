@@ -183,7 +183,7 @@ class ShowMapper extends BaseGroupedMapper
         $this->admin->setShowTabs($tabs);
     }
 
-    protected function getName()
+    protected function getName(): string
     {
         return 'show';
     }

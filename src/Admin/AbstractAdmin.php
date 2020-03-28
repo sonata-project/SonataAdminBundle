@@ -529,12 +529,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->datagridValues['_per_page'] = $this->maxPerPage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExportFormats()
+    public function getExportFormats(): array
     {
-        return null;
+        return [];
     }
 
     /**
@@ -741,10 +738,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * value (ie the parent object) or to filter the object.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return string|null
      */
-    public function getParentAssociationMapping()
+    public function getParentAssociationMapping(): ?string
     {
         if (!$this->getParent()) {
             return null;
@@ -763,11 +758,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         ));
     }
 
-    /**
-     * @param string $code
-     * @param string $value
-     */
-    final public function addParentAssociationMapping($code, $value): void
+    final public function addParentAssociationMapping(string $code, string $value): void
     {
         $this->parentAssociationMapping[$code] = $value;
     }
@@ -871,7 +862,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->cachedBaseRouteName;
     }
 
-    public function getClass()
+    public function getClass(): string
     {
         if ($this->hasActiveSubClass()) {
             if ($this->getParentFieldDescription()) {

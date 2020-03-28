@@ -254,10 +254,7 @@ abstract class BaseGroupedMapper extends BaseMapper
 
     abstract protected function setTabs(array $tabs);
 
-    /**
-     * @return string
-     */
-    abstract protected function getName();
+    abstract protected function getName(): string;
 
     /**
      * Add the field name to the current group.

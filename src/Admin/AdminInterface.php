@@ -74,10 +74,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * - subclass name if subclass parameter is defined
      * - subject class name if subject is defined
      * - class name if not.
-     *
-     * @return string
      */
-    public function getClass();
+    public function getClass(): string;
 
     public function attachAdminClass(FieldDescriptionInterface $fieldDescription);
 
@@ -384,7 +382,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @return string[]
      */
-    public function getExportFormats();
+    public function getExportFormats(): array;
 
     /**
      * Retuns a list of exported fields.

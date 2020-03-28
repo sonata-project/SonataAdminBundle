@@ -1132,7 +1132,7 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertNull($admin->getExportFormats());
+        $this->assertEmpty($admin->getExportFormats());
     }
 
     public function testGetUrlsafeIdentifier(): void
@@ -2054,8 +2054,9 @@ class AdminTest extends TestCase
 
         $admin = $this->getMockBuilder(AbstractAdmin::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getDatagrid', 'getTranslationLabel', 'trans'])
+            ->setMethods(['getDatagrid', 'getTranslationLabel', 'trans', 'getClass'])
             ->getMockForAbstractClass();
+        $admin->method('getClass')->willReturn(AbstractAdmin::class);
         $admin->method('getDatagrid')->willReturn($datagrid);
         $admin->setModelManager($modelManager);
 

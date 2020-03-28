@@ -299,7 +299,7 @@ class FormMapper extends BaseGroupedMapper
         $this->admin->setFormTabs($tabs);
     }
 
-    protected function getName()
+    protected function getName(): string
     {
         return 'form';
     }
