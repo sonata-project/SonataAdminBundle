@@ -21,36 +21,36 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
-use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use Sonata\AdminBundle\Tests\Fixtures\Translator\DummyLabelTranslatorStrategy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
 
-class FormMapperTest extends TestCase
+final class FormMapperTest extends TestCase
 {
     private const DEFAULT_GRANTED_ROLE = 'ROLE_ADMIN_BAZ';
 
     /**
      * @var FormContractorInterface
      */
-    protected $contractor;
+    private $contractor;
 
     /**
      * @var AdminInterface
      */
-    protected $admin;
+    private $admin;
 
     /**
      * @var ModelManagerInterface
      */
-    protected $modelManager;
+    private $modelManager;
 
     /**
      * @var FormMapper
      */
-    protected $formMapper;
+    private $formMapper;
 
     protected function setUp(): void
     {
@@ -85,8 +85,7 @@ class FormMapperTest extends TestCase
 
         $this->admin->setModelManager($this->modelManager);
 
-        $labelTranslatorStrategy = $this->getMockForAbstractClass(LabelTranslatorStrategyInterface::class);
-        $this->admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
+        $this->admin->setLabelTranslatorStrategy(new DummyLabelTranslatorStrategy());
 
         $this->formMapper = new FormMapper(
             $this->contractor,

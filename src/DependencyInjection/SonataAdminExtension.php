@@ -191,8 +191,6 @@ final class SonataAdminExtension extends Extension
 
         $container->setParameter('sonata.admin.configuration.show.mosaic.button', $config['show_mosaic_button']);
 
-        $container->setParameter('sonata.admin.configuration.translate_group_label', $config['translate_group_label']);
-
         $this->replacePropertyAccessor($container);
 
         $container
