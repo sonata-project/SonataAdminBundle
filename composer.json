@@ -22,11 +22,11 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.3",
         "doctrine/common": "^2.7",
         "doctrine/inflector": "^1.1",
         "knplabs/knp-menu-bundle": "^2.2.2",
-        "sonata-project/block-bundle": "^3.18",
+        "sonata-project/block-bundle": "^3.18 || ^4.0",
         "sonata-project/core-bundle": "^3.18.0",
         "sonata-project/exporter": "^1.11.0 || ^2.0",
         "symfony/asset": "^4.3 || ^5.0",
