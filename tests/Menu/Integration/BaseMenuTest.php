@@ -19,7 +19,7 @@ use Knp\Menu\Renderer\TwigRenderer;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Tests\Fixtures\StubTranslator;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
