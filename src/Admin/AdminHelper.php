@@ -234,7 +234,7 @@ class AdminHelper
         foreach ($parentMappings as $parentMapping) {
             $method = sprintf('get%s', Inflector::classify($parentMapping['fieldName']));
 
-            if (!\is_callable([$object, $method])) {
+            if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
                 /*
                  * NEXT_MAJOR: Use BadMethodCallException instead
                  */
@@ -248,13 +248,13 @@ class AdminHelper
 
         $method = sprintf('add%s', Inflector::classify($mapping['fieldName']));
 
-        if (!\is_callable([$object, $method])) {
+        if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
             $method = rtrim($method, 's');
 
-            if (!\is_callable([$object, $method])) {
+            if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
                 $method = sprintf('add%s', Inflector::classify(Inflector::singularize($mapping['fieldName'])));
 
-                if (!\is_callable([$object, $method])) {
+                if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
                     /*
                      * NEXT_MAJOR: Use BadMethodCallException instead
                      */
