@@ -6,8 +6,9 @@
             <code>$this-&gt;parentAssociationMapping</code>
         </InvalidReturnStatement>
         <!--will be fixed in v4. Currently BC break. Remove string from union type of $this->parentAssociationMapping-->
-        <InvalidArrayOffset occurrences="1">
+        <InvalidArrayOffset occurrences="2">
             <code>$this-&gt;parentAssociationMapping[$code]</code>
+            <code>$this-&gt;parentAssociationMapping[$parent-&gt;getCode()]</code>
         </InvalidArrayOffset>
         <!--will be removed in v4. Currently BC break-->
         <InvalidPropertyAssignmentValue occurrences="1">
