@@ -78,8 +78,8 @@ class CRUDController implements ContainerAwareInterface
      *
      * @see renderWithExtraParams()
      *
-     * @param string $view       The view name
-     * @param array  $parameters An array of parameters to pass to the view
+     * @param string               $view       The view name
+     * @param array<string, mixed> $parameters An array of parameters to pass to the view
      *
      * @return Response A Response instance
      *
@@ -98,7 +98,8 @@ class CRUDController implements ContainerAwareInterface
     /**
      * Renders a view while passing mandatory parameters on to the template.
      *
-     * @param string $view The view name
+     * @param string               $view       The view name
+     * @param array<string, mixed> $parameters An array of parameters to pass to the view
      *
      * @return Response A Response instance
      */
@@ -1072,6 +1073,11 @@ class CRUDController implements ContainerAwareInterface
         return $this->container->get('request_stack')->getCurrentRequest();
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     *
+     * @return array<string, mixed>
+     */
     protected function addRenderExtraParams(array $parameters = []): array
     {
         if (!$this->isXmlHttpRequest()) {
