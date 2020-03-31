@@ -23,6 +23,7 @@ final class FieldDescription extends BaseFieldDescription
 
     public function getTargetEntity()
     {
+        return null;
     }
 
     public function setFieldMapping($fieldMapping)
@@ -35,6 +36,7 @@ final class FieldDescription extends BaseFieldDescription
 
     public function isIdentifier()
     {
+        return false;
     }
 
     public function getValue($object)
