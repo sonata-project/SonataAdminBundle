@@ -178,7 +178,7 @@ CASESENSITIVE;
                             ->info('Use text filters from "twig/extensions" instead of those provided by "twig/string-extra".')
                             ->defaultValue(static function (): bool {
                                 @trigger_error(
-                                    'Using `true` as value for "sonata.admin.configuration.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.x.'.
+                                    'Using `true` as value for "sonata.admin.configuration.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.64.'.
                                     'You should set it to `false`, which will be the default value since version 4.0.'
                                 );
 
@@ -188,7 +188,7 @@ CASESENSITIVE;
                                 ->ifTrue()
                                 ->then(static function (bool $v): bool {
                                     @trigger_error(
-                                        'Using `true` as value for "sonata.admin.configuration.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.x.'.
+                                        'Using `true` as value for "sonata.admin.configuration.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.64.'.
                                         'You should set it to `false`, which will be the default value since version 4.0.'
                                     );
 
