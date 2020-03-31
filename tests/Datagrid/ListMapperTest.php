@@ -174,19 +174,19 @@ class ListMapperTest extends TestCase
     {
         $this->listMapper->add('fooName');
         $this->listMapper->add('fooNameLabelBar', null, ['label' => 'Foo Bar']);
-        $this->listMapper->add('fooNameLabelFalse', null, ['label' => false]);
+        $this->listMapper->add('fooNameLabelEmpty', null, ['label' => '']);
 
         $this->assertTrue($this->listMapper->has('fooName'));
 
         $fieldDescription = $this->listMapper->get('fooName');
         $fieldLabelBar = $this->listMapper->get('fooNameLabelBar');
-        $fieldLabelFalse = $this->listMapper->get('fooNameLabelFalse');
+        $fieldLabelFalse = $this->listMapper->get('fooNameLabelEmpty');
 
         $this->assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
         $this->assertSame('fooName', $fieldDescription->getName());
         $this->assertSame('fooName', $fieldDescription->getOption('label'));
         $this->assertSame('Foo Bar', $fieldLabelBar->getOption('label'));
-        $this->assertFalse($fieldLabelFalse->getOption('label'));
+        $this->assertEmpty($fieldLabelFalse->getOption('label'));
     }
 
     public function testAddViewInlineAction(): void

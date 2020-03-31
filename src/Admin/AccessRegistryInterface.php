@@ -22,18 +22,13 @@ interface AccessRegistryInterface
 {
     /**
      * Return the controller access mapping.
-     *
-     * @return array
      */
-    public function getAccessMapping();
+    public function getAccessMapping(): array;
 
     /**
      * Hook to handle access authorization.
-     *
-     * @param string $action
-     * @param object $object
      */
-    public function checkAccess($action, $object = null);
+    public function checkAccess(string $action, ?object $object = null): void;
 
     /**
      * Hook to handle access authorization, without throwing an exception.

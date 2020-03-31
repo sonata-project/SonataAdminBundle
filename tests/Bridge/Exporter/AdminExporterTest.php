@@ -24,7 +24,7 @@ class AdminExporterTest extends TestCase
     public function provideExportFormats()
     {
         return [
-            'no override' => [['xls'], null, ['xls']],
+            'no override' => [['xls'], [], ['xls']],
             'override in admin' => [['csv'], ['csv'], ['xls']],
         ];
     }

@@ -75,8 +75,11 @@ class BaseAdminModelManagerTest extends TestCase
 
     public function testId(): void
     {
-        $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->exactly(2))->method('getNormalizedIdentifier');
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager
+            ->expects($this->exactly(2))
+            ->method('getNormalizedIdentifier')
+            ->willReturn('42');
 
         $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);

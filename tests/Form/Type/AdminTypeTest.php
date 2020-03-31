@@ -112,9 +112,10 @@ class AdminTypeTest extends TypeTestCase
 
     public function testDotFields(): void
     {
+        $bar = new \stdClass();
+        $bar->baz = 1;
         $foo = new \stdClass();
-        $foo->bar = 1;
-
+        $foo->bar = $bar;
         $parentSubject = new \stdClass();
         $parentSubject->foo = $foo;
 
@@ -130,7 +131,7 @@ class AdminTypeTest extends TypeTestCase
         $admin = $this->prophesize(AbstractAdmin::class);
         $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(true);
         $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
-        $admin->setSubject(1)->shouldBeCalled();
+        $admin->setSubject($bar)->shouldBeCalled();
         $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
         $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);
         $admin->getClass()->shouldBeCalled()->willReturn(Foo::class);

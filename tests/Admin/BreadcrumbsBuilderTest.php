@@ -236,7 +236,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $admin->hasAccess('list')->willReturn(true);
         $admin->generateUrl('list')->willReturn('/myadmin/list');
         $admin->getCurrentChildAdmin()->willReturn(
-            'my_action' === $action ? $childAdmin->reveal() : false
+            'my_action' === $action ? $childAdmin->reveal() : null
         );
         if ('list' === $action) {
             $admin->isChild()->willReturn(true);

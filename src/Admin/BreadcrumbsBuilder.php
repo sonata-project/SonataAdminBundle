@@ -46,7 +46,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         ]);
     }
 
-    public function getBreadcrumbs(AdminInterface $admin, $action): array
+    public function getBreadcrumbs(AdminInterface $admin, string $action): iterable
     {
         $breadcrumbs = [];
         if ($admin->isChild()) {
@@ -69,12 +69,10 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
      * Builds breadcrumbs for $action, starting from $menu.
      *
      * Note: the method will be called by the top admin instance (parent => child)
-     *
-     * @param string $action
      */
     public function buildBreadcrumbs(
         AdminInterface $admin,
-        $action,
+        string $action,
         ?ItemInterface $menu = null
     ): ItemInterface {
         if (!$menu) {
