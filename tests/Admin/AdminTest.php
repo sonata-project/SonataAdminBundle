@@ -58,6 +58,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Doctrine\Adapter\AdapterInterface;
+use Sonata\Exporter\Source\ArraySourceIterator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormBuilder;
@@ -698,10 +699,6 @@ class AdminTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
-     * @expectedDeprecation Calling Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubclassCode() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. Use Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass() to know if there is an active subclass.
-     *
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getSubClasses
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getSubClass
      * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::setSubClasses
@@ -722,8 +719,6 @@ class AdminTest extends TestCase
         $this->assertFalse($admin->hasSubClass('test'));
         $this->assertFalse($admin->hasActiveSubClass());
         $this->assertCount(0, $admin->getSubClasses());
-        $this->assertNull($admin->getActiveSubClass());
-        $this->assertNull($admin->getActiveSubclassCode());
         $this->assertSame(Post::class, $admin->getClass());
 
         // Just for the record, if there is no inheritance set, the getSubject is not used
@@ -739,9 +734,6 @@ class AdminTest extends TestCase
         $this->assertTrue($admin->hasSubClass('extended1'));
         $this->assertFalse($admin->hasActiveSubClass());
         $this->assertCount(2, $admin->getSubClasses());
-        // NEXT_MAJOR: remove the following 2 `assertNull()` assertions
-        $this->assertNull($admin->getActiveSubClass());
-        $this->assertNull($admin->getActiveSubclassCode());
         $this->assertSame(
             BlogPost::class,
             $admin->getClass(),
@@ -768,20 +760,14 @@ class AdminTest extends TestCase
 
         $request->query->set('subclass', 'inject');
 
-        $this->assertNull($admin->getActiveSubclassCode());
-        // NEXT_MAJOR: remove the previous `assertNull()` assertion and uncomment the following lines
-        // $this->expectException(\LogicException::class);
-        // $this->expectExceptionMessage(sprintf('Admin "%s" has no active subclass.', PostAdmin::class));
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage(sprintf('Admin "%s" has no active subclass.', PostAdmin::class));
+
+        $admin->getActiveSubclassCode();
     }
 
-    /**
-     * @group legacy
-     *
-     * @expectedDeprecation Calling Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubclassCode() when there is no active subclass is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0. Use Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass() to know if there is an active subclass.
-     */
     public function testNonExistantSubclass(): void
     {
-        // NEXT_MAJOR: Remove the "@group" and "@expectedDeprecation" annotations
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
         $admin->setModelManager($this->getMockForAbstractClass(ModelManagerInterface::class));
 
@@ -791,7 +777,7 @@ class AdminTest extends TestCase
 
         $this->assertTrue($admin->hasActiveSubClass());
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
 
         $admin->getActiveSubClass();
     }
@@ -1239,7 +1225,6 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'Acme\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertFalse($admin->determinedPerPageValue('foo'));
         $this->assertFalse($admin->determinedPerPageValue(123));
         $this->assertTrue($admin->determinedPerPageValue(16));
     }
@@ -1484,20 +1469,6 @@ class AdminTest extends TestCase
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
         $this->assertEmpty($admin->getPersistentParameters());
-    }
-
-    public function testGetPersistentParametersWithInvalidExtension(): void
-    {
-        $this->expectException(\RuntimeException::class);
-
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $extension = $this->createMock(AdminExtensionInterface::class);
-        $extension->expects($this->once())->method('getPersistentParameters')->willReturn(null);
-
-        $admin->addExtension($extension);
-
-        $admin->getPersistentParameters();
     }
 
     public function testGetPersistentParametersWithValidExtension(): void
@@ -2036,9 +2007,12 @@ class AdminTest extends TestCase
     public function testDefaultDashboardActionsArePresent(string $objFqn, string $expected): void
     {
         $pathInfo = new PathInfoBuilder($this->createMock(AuditManagerInterface::class));
+        $routerMock = $this->createMock(RouterInterface::class);
+
+        $routerMock->method('generate')->willReturn('/admin/post');
 
         $routeGenerator = new DefaultRouteGenerator(
-            $this->createMock(RouterInterface::class),
+            $routerMock,
             new RoutesCache($this->cacheTempFolder, true)
         );
 
@@ -2162,12 +2136,14 @@ class AdminTest extends TestCase
                 'Feld' => 'field',
                 1 => 'foo',
                 2 => 'bar',
-            ]));
+            ]))
+            ->willReturn(new ArraySourceIterator([]));
 
         $admin = $this->getMockBuilder(AbstractAdmin::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getDatagrid', 'getTranslationLabel', 'trans'])
+            ->setMethods(['getClass', 'getDatagrid', 'getTranslationLabel', 'trans'])
             ->getMockForAbstractClass();
+        $admin->method('getClass')->willReturn('App\Admin\MyAdmin');
         $admin->method('getDatagrid')->willReturn($datagrid);
         $admin->setModelManager($modelManager);
 
@@ -2358,42 +2334,6 @@ class AdminTest extends TestCase
         $this->assertSame($commentVoteAdmin, $postAdmin->getCurrentLeafChildAdmin());
         $this->assertSame($commentVoteAdmin, $commentAdmin->getCurrentLeafChildAdmin());
         $this->assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
-    }
-
-    public function testAdminWithoutControllerName(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', null);
-
-        $this->assertNull($admin->getBaseControllerName());
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test and its data provider.
-     *
-     * @group legacy
-     *
-     * @dataProvider getDeprecatedAbstractAdminConstructorArgs
-     *
-     * @expectedDeprecation Passing other type than string%S as argument %d for method Sonata\AdminBundle\Admin\AbstractAdmin::__construct() is deprecated since sonata-project/admin-bundle 3.65. It will accept only string%S in version 4.0.
-     */
-    public function testDeprecatedAbstractAdminConstructorArgs($code, $class, $baseControllerName): void
-    {
-        new PostAdmin($code, $class, $baseControllerName);
-    }
-
-    public function getDeprecatedAbstractAdminConstructorArgs(): iterable
-    {
-        yield from [
-            ['sonata.post.admin.post', null, null],
-            [null, null, null],
-            ['sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', false],
-            ['sonata.post.admin.post', false, false],
-            [false, false, false],
-            [true, true, true],
-            [new \stdClass(), new \stdClass(), new \stdClass()],
-            [0, 0, 0],
-            [1, 1, 1],
-        ];
     }
 
     private function createTagAdmin(Post $post): TagAdmin

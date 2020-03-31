@@ -84,6 +84,7 @@ final class AppendFormFieldElementActionTest extends TestCase
         $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
+            'elementId' => 'element_42',
             'field' => 'enabled',
             'value' => 1,
             'context' => 'list',
@@ -92,22 +93,21 @@ final class AppendFormFieldElementActionTest extends TestCase
         $modelManager = $this->prophesize(ModelManagerInterface::class);
         $formView = new FormView();
         $form = $this->prophesize(Form::class);
-
         $renderer = $this->configureFormRenderer();
 
         $this->admin->getObject(42)->willReturn($object);
         $this->admin->getClass()->willReturn(\get_class($object));
         $this->admin->setSubject($object)->shouldBeCalled();
-        $this->admin->getFormTheme()->willReturn($formView);
-        $this->helper->appendFormFieldElement($this->admin->reveal(), $object, null)->willReturn([
+        $this->admin->getFormTheme()->willReturn([$formView]);
+        $this->helper->appendFormFieldElement($this->admin->reveal(), $object, 'element_42')->willReturn([
             $this->prophesize(FieldDescriptionInterface::class),
             $form->reveal(),
         ]);
-        $this->helper->getChildFormView($formView, null)
+        $this->helper->getChildFormView($formView, 'element_42')
             ->willReturn($formView);
         $modelManager->find(\get_class($object), 42)->willReturn($object);
         $form->createView()->willReturn($formView);
-        $renderer->setTheme($formView, $formView)->shouldBeCalled();
+        $renderer->setTheme($formView, [$formView])->shouldBeCalled();
         $renderer->searchAndRenderBlock($formView, 'widget')->willReturn('block');
 
         $response = ($this->action)($request);

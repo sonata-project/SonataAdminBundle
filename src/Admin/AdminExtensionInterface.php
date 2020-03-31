@@ -44,59 +44,43 @@ interface AdminExtensionInterface
      *
      * NEXT_MAJOR: remove this method.
      *
-     * @param string $action
-     *
      * @deprecated
      */
     public function configureSideMenu(
         AdminInterface $admin,
         MenuItemInterface $menu,
-        $action,
+        string $action,
         ?AdminInterface $childAdmin = null
     );
 
     /**
      * Builds the tab menu.
-     *
-     * @param string $action
      */
     public function configureTabMenu(
         AdminInterface $admin,
         MenuItemInterface $menu,
-        $action,
+        string $action,
         ?AdminInterface $childAdmin = null
-    );
+    ): void;
 
-    /**
-     * @param object $object
-     */
-    public function validate(AdminInterface $admin, ErrorElement $errorElement, $object);
+    public function validate(AdminInterface $admin, ErrorElement $errorElement, object $object): void;
 
-    /**
-     * @param string $context
-     */
-    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list');
+    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, string $context = 'list'): void;
 
     /**
      * Get a chance to modify a newly created instance.
-     *
-     * @param object $object
      */
-    public function alterNewInstance(AdminInterface $admin, $object);
+    public function alterNewInstance(AdminInterface $admin, object $object): void;
 
     /**
      * Get a chance to modify object instance.
-     *
-     * @param object $object
      */
-    public function alterObject(AdminInterface $admin, $object);
+    public function alterObject(AdminInterface $admin, object $object): void;
 
     /**
      * Get a chance to add persistent parameters.
-     *
-     * @return array
      */
-    public function getPersistentParameters(AdminInterface $admin);
+    public function getPersistentParameters(AdminInterface $admin): array;
 
     /**
      * Return the controller access mapping.
@@ -115,35 +99,17 @@ interface AdminExtensionInterface
      */
     public function configureExportFields(AdminInterface $admin, array $fields): array;
 
-    /**
-     * @param object $object
-     */
-    public function preUpdate(AdminInterface $admin, $object);
+    public function preUpdate(AdminInterface $admin, object $object): void;
 
-    /**
-     * @param object $object
-     */
-    public function postUpdate(AdminInterface $admin, $object);
+    public function postUpdate(AdminInterface $admin, object $object): void;
 
-    /**
-     * @param object $object
-     */
-    public function prePersist(AdminInterface $admin, $object);
+    public function prePersist(AdminInterface $admin, object $object): void;
 
-    /**
-     * @param object $object
-     */
-    public function postPersist(AdminInterface $admin, $object);
+    public function postPersist(AdminInterface $admin, object $object): void;
 
-    /**
-     * @param object $object
-     */
-    public function preRemove(AdminInterface $admin, $object);
+    public function preRemove(AdminInterface $admin, object $object): void;
 
-    /**
-     * @param object $object
-     */
-    public function postRemove(AdminInterface $admin, $object);
+    public function postRemove(AdminInterface $admin, object $object): void;
 
     /**
      * Get all action buttons for an action.
@@ -154,7 +120,7 @@ interface AdminExtensionInterface
         AdminInterface $admin,
         array $list,
         string $action,
-        $object
+        ?object $object = null
     ): array;
 
     /**

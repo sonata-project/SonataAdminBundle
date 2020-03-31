@@ -24,6 +24,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
@@ -247,8 +248,9 @@ class AdminHelperTest extends TestCase
         $request->request = new ParameterBag();
 
         $admin
+            ->expects($this->atLeastOnce())
             ->method('getRequest')
-            ->will($this->onConsecutiveCalls($request, $request, $request, null, $request, $request, $request, $request, null, $request));
+            ->willReturn($request);
 
         $foo = $this->createMock(Foo::class);
         $admin
@@ -278,6 +280,7 @@ class AdminHelperTest extends TestCase
         $subChildFormBuilder->setDataMapper($dataMapper);
         $childFormBuilder->add($subChildFormBuilder);
 
+        $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $formBuilder->setCompound(true);
         $formBuilder->setDataMapper($dataMapper);
         $formBuilder->add($childFormBuilder);
@@ -305,6 +308,26 @@ class AdminHelperTest extends TestCase
     public function testAppendFormFieldElementNested(): void
     {
         $admin = $this->createMock(AdminInterface::class);
+        $request = $this->createMock(Request::class);
+        $request
+            ->method('get')
+            ->willReturn([
+                'bar' => [
+                    [
+                        'baz' => [
+                            'baz' => true,
+                        ],
+                    ],
+                    ['_delete' => true],
+                ],
+            ]);
+
+        $request->request = new ParameterBag();
+
+        $admin
+            ->expects($this->atLeastOnce())
+            ->method('getRequest')
+            ->willReturn($request);
         $object = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getSubObject'])
             ->getMock();
@@ -329,6 +352,7 @@ class AdminHelperTest extends TestCase
         $sub2Object->expects($this->atLeastOnce())->method('getMore')->willReturn([$sub3Object]);
         $sub3Object->expects($this->atLeastOnce())->method('getFinalData')->willReturn('value');
 
+        $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $formBuilder->setCompound(true);
         $formBuilder->setDataMapper($dataMapper);
         $formBuilder->add($childFormBuilder);

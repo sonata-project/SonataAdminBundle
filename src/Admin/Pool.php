@@ -70,16 +70,11 @@ class Pool
      */
     protected $propertyAccessor;
 
-    /**
-     * @param string $title
-     * @param string $logoTitle
-     * @param array  $options
-     */
     public function __construct(
         ContainerInterface $container,
-        $title,
-        $logoTitle,
-        $options = [],
+        string $title,
+        string $logoTitle,
+        array $options = [],
         ?PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->container = $container;
@@ -89,10 +84,7 @@ class Pool
         $this->propertyAccessor = $propertyAccessor;
     }
 
-    /**
-     * @return array
-     */
-    public function getGroups()
+    public function getGroups(): array
     {
         $groups = $this->adminGroups;
 
@@ -107,20 +99,13 @@ class Pool
 
     /**
      * Returns whether an admin group exists or not.
-     *
-     * @param string $group
-     *
-     * @return bool
      */
-    public function hasGroup($group)
+    public function hasGroup(string $group): bool
     {
         return isset($this->adminGroups[$group]);
     }
 
-    /**
-     * @return array
-     */
-    public function getDashboardGroups()
+    public function getDashboardGroups(): array
     {
         $groups = $this->adminGroups;
 
@@ -153,13 +138,11 @@ class Pool
     /**
      * Returns all admins related to the given $group.
      *
-     * @param string $group
-     *
      * @throws \InvalidArgumentException
      *
      * @return AdminInterface[]
      */
-    public function getAdminsByGroup($group)
+    public function getAdminsByGroup(string $group): array
     {
         if (!isset($this->adminGroups[$group])) {
             throw new \InvalidArgumentException(sprintf('Group "%s" not found in admin pool.', $group));
@@ -180,12 +163,8 @@ class Pool
 
     /**
      * Return the admin related to the given $class.
-     *
-     * @param string $class
-     *
-     * @return \Sonata\AdminBundle\Admin\AdminInterface|null
      */
-    public function getAdminByClass($class)
+    public function getAdminByClass(string $class): ?AdminInterface
     {
         if (!$this->hasAdminByClass($class)) {
             return null;
@@ -206,12 +185,7 @@ class Pool
         return $this->getInstance($this->adminClasses[$class][0]);
     }
 
-    /**
-     * @param string $class
-     *
-     * @return bool
-     */
-    public function hasAdminByClass($class)
+    public function hasAdminByClass(string $class): bool
     {
         return isset($this->adminClasses[$class]);
     }
@@ -275,13 +249,9 @@ class Pool
     /**
      * Returns a new admin instance depends on the given code.
      *
-     * @param string $id
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return AdminInterface
      */
-    public function getInstance($id)
+    public function getInstance(string $id): AdminInterface
     {
         if (!\in_array($id, $this->adminServiceIds, true)) {
             $msg = sprintf('Admin service "%s" not found in admin pool.', $id);
@@ -323,7 +293,7 @@ class Pool
     /**
      * @return ContainerInterface|null
      */
-    public function getContainer()
+    public function getContainer(): ContainerInterface
     {
         return $this->container;
     }
@@ -333,10 +303,7 @@ class Pool
         $this->adminGroups = $adminGroups;
     }
 
-    /**
-     * @return array
-     */
-    public function getAdminGroups()
+    public function getAdminGroups(): array
     {
         return $this->adminGroups;
     }
@@ -346,10 +313,7 @@ class Pool
         $this->adminServiceIds = $adminServiceIds;
     }
 
-    /**
-     * @return array
-     */
-    public function getAdminServiceIds()
+    public function getAdminServiceIds(): array
     {
         return $this->adminServiceIds;
     }
@@ -359,37 +323,27 @@ class Pool
         $this->adminClasses = $adminClasses;
     }
 
-    /**
-     * @return array
-     */
-    public function getAdminClasses()
+    public function getAdminClasses(): array
     {
         return $this->adminClasses;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitleLogo()
+    public function getTitleLogo(): string
     {
         return $this->titleLogo;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
     /**
-     * @param string $name
-     * @param mixed  $default
+     * @param mixed $default
      *
      * @return mixed
      */
-    public function getOption($name, $default = null)
+    public function getOption(string $name, $default = null)
     {
         if (isset($this->options[$name])) {
             return $this->options[$name];
@@ -398,7 +352,7 @@ class Pool
         return $default;
     }
 
-    public function getPropertyAccessor()
+    public function getPropertyAccessor(): PropertyAccessorInterface
     {
         if (null === $this->propertyAccessor) {
             $this->propertyAccessor = PropertyAccess::createPropertyAccessor();

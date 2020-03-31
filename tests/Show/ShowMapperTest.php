@@ -518,6 +518,10 @@ class ShowMapperTest extends TestCase
         $this->showMapper->add('foo', null, ['label' => false]);
 
         $this->assertFalse($this->showMapper->get('foo')->getOption('label'));
+
+        $this->showMapper->add('bar', null, ['label' => null]);
+
+        $this->assertSame('bar', $this->showMapper->get('bar')->getOption('label'));
     }
 
     public function testAddOptionRole(): void

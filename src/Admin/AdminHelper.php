@@ -47,13 +47,9 @@ class AdminHelper
     }
 
     /**
-     * @param string $elementId
-     *
      * @throws \RuntimeException
-     *
-     * @return FormBuilderInterface|null
      */
-    public function getChildFormBuilder(FormBuilderInterface $formBuilder, $elementId)
+    public function getChildFormBuilder(FormBuilderInterface $formBuilder, string $elementId): ?FormBuilderInterface
     {
         foreach (new FormBuilderIterator($formBuilder) as $name => $formBuilder) {
             if ($name === $elementId) {
@@ -64,12 +60,7 @@ class AdminHelper
         return null;
     }
 
-    /**
-     * @param string $elementId
-     *
-     * @return FormView|null
-     */
-    public function getChildFormView(FormView $formView, $elementId)
+    public function getChildFormView(FormView $formView, string $elementId): ?FormView
     {
         foreach (new \RecursiveIteratorIterator(new FormViewIterator($formView), \RecursiveIteratorIterator::SELF_FIRST) as $name => $formView) {
             if ($name === $elementId) {
@@ -84,12 +75,8 @@ class AdminHelper
      * NEXT_MAJOR: remove this method.
      *
      * @deprecated
-     *
-     * @param string $code
-     *
-     * @return AdminInterface
      */
-    public function getAdmin($code)
+    public function getAdmin(string $code): AdminInterface
     {
         return $this->pool->getInstance($code);
     }
@@ -98,15 +85,10 @@ class AdminHelper
      * Note:
      *   This code is ugly, but there is no better way of doing it.
      *
-     * @param object $subject
-     * @param string $elementId
-     *
      * @throws \RuntimeException
      * @throws \Exception
-     *
-     * @return array
      */
-    public function appendFormFieldElement(AdminInterface $admin, $subject, $elementId)
+    public function appendFormFieldElement(AdminInterface $admin, object $subject, string $elementId): array
     {
         // child rows marked as toDelete
         $toDelete = [];
@@ -215,11 +197,9 @@ class AdminHelper
     /**
      * Add a new instance to the related FieldDescriptionInterface value.
      *
-     * @param object $object
-     *
      * @throws \RuntimeException
      */
-    public function addNewInstance($object, FieldDescriptionInterface $fieldDescription): object
+    public function addNewInstance(object $object, FieldDescriptionInterface $fieldDescription): object
     {
         $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
         $mapping = $fieldDescription->getAssociationMapping();
@@ -274,10 +254,8 @@ class AdminHelper
      * @param mixed  $entity
      *
      * @throws \Exception
-     *
-     * @return string
      */
-    public function getElementAccessPath($elementId, $entity)
+    public function getElementAccessPath(string $elementId, $entity): string
     {
         $propertyAccessor = $this->pool->getPropertyAccessor();
 
@@ -309,12 +287,8 @@ class AdminHelper
 
     /**
      * Recursively find the class name of the admin responsible for the element at the end of an association chain.
-     *
-     * @param array $elements
-     *
-     * @return string
      */
-    protected function getEntityClassName(AdminInterface $admin, $elements)
+    protected function getEntityClassName(AdminInterface $admin, array $elements): string
     {
         $element = array_shift($elements);
         $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();

@@ -29,60 +29,51 @@ interface UrlGeneratorInterface
      *
      * @return RouteCollection the list of available urls
      */
-    public function getRoutes();
+    public function getRoutes(): RouteCollection;
 
     /**
      * Return the parameter name used to represent the id in the url.
-     *
-     * @return string
      */
-    public function getRouterIdParameter();
+    public function getRouterIdParameter(): string;
 
     public function setRouteGenerator(RouteGeneratorInterface $routeGenerator);
 
     /**
      * Generates the object url with the given $name.
      *
-     * @param string               $name
-     * @param object               $object
      * @param array<string, mixed> $parameters
-     * @param int                  $referenceType
      *
      * @return string return a complete url
      */
     public function generateObjectUrl(
-        $name,
-        $object,
+        string $name,
+        object $object,
         array $parameters = [],
-        $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH
-    );
+        int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH
+    ): string;
 
     /**
      * Generates a url for the given parameters.
      *
-     * @param string               $name
      * @param array<string, mixed> $parameters
-     * @param int                  $referenceType
      *
      * @return string return a complete url
      */
-    public function generateUrl($name, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH);
+    public function generateUrl(string $name, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): string;
 
     /**
      * Generates a url for the given parameters.
      *
-     * @param string               $name
      * @param array<string, mixed> $parameters
-     * @param int                  $referenceType
      *
      * @return array return url parts: 'route', 'routeParameters', 'routeAbsolute'
      */
-    public function generateMenuUrl($name, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH);
+    public function generateMenuUrl(string $name, array $parameters = [], int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH): array;
 
     /**
      * @param mixed $entity
      *
-     * @return string a string representation of the id that is safe to use in a url
+     * @return string|null a string representation of the id that is safe to use in a url
      */
-    public function getUrlSafeIdentifier($entity);
+    public function getUrlSafeIdentifier($entity): ?string;
 }

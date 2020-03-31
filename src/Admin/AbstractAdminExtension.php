@@ -47,34 +47,34 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
     }
 
-    public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, ?AdminInterface $childAdmin = null): void
+    public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
     {
     }
 
-    public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, $action, ?AdminInterface $childAdmin = null): void
+    public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
     {
         // Use configureSideMenu not to mess with previous overrides
         // NEXT_MAJOR: remove this line
         $this->configureSideMenu($admin, $menu, $action, $childAdmin);
     }
 
-    public function validate(AdminInterface $admin, ErrorElement $errorElement, $object): void
+    public function validate(AdminInterface $admin, ErrorElement $errorElement, object $object): void
     {
     }
 
-    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, $context = 'list'): void
+    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, string $context = 'list'): void
     {
     }
 
-    public function alterNewInstance(AdminInterface $admin, $object): void
+    public function alterNewInstance(AdminInterface $admin, object $object): void
     {
     }
 
-    public function alterObject(AdminInterface $admin, $object): void
+    public function alterObject(AdminInterface $admin, object $object): void
     {
     }
 
-    public function getPersistentParameters(AdminInterface $admin)
+    public function getPersistentParameters(AdminInterface $admin): array
     {
         return [];
     }
@@ -94,27 +94,27 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
         return $fields;
     }
 
-    public function preUpdate(AdminInterface $admin, $object): void
+    public function preUpdate(AdminInterface $admin, object $object): void
     {
     }
 
-    public function postUpdate(AdminInterface $admin, $object): void
+    public function postUpdate(AdminInterface $admin, object $object): void
     {
     }
 
-    public function prePersist(AdminInterface $admin, $object): void
+    public function prePersist(AdminInterface $admin, object $object): void
     {
     }
 
-    public function postPersist(AdminInterface $admin, $object): void
+    public function postPersist(AdminInterface $admin, object $object): void
     {
     }
 
-    public function preRemove(AdminInterface $admin, $object): void
+    public function preRemove(AdminInterface $admin, object $object): void
     {
     }
 
-    public function postRemove(AdminInterface $admin, $object): void
+    public function postRemove(AdminInterface $admin, object $object): void
     {
     }
 
@@ -125,7 +125,7 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
         AdminInterface $admin,
         array $list,
         string $action,
-        $object
+        ?object $object = null
     ): array {
         return $list;
     }

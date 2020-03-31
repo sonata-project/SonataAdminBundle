@@ -22,100 +22,70 @@ interface FieldDescriptionRegistryInterface
 {
     /**
      * Return FormFieldDescription.
-     *
-     * @param string $name
-     *
-     * @return FieldDescriptionInterface
      */
-    public function getFormFieldDescription($name);
+    public function getFormFieldDescription(string $name): ?FieldDescriptionInterface;
 
     /**
      * Build and return the collection of form FieldDescription.
      *
      * @return FieldDescriptionInterface[] collection of form FieldDescription
      */
-    public function getFormFieldDescriptions();
+    public function getFormFieldDescriptions(): array;
 
     /**
      * Returns true if the admin has a FieldDescription with the given $name.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
-    public function hasShowFieldDescription($name);
+    public function hasShowFieldDescription(string $name): bool;
 
     /**
      * Adds a FieldDescription.
-     *
-     * @param string $name
      */
-    public function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+    public function addShowFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void;
 
     /**
      * Removes a ShowFieldDescription.
-     *
-     * @param string $name
      */
-    public function removeShowFieldDescription($name);
+    public function removeShowFieldDescription(string $name): void;
 
     /**
      * Adds a list FieldDescription.
-     *
-     * @param string $name
      */
-    public function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+    public function addListFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void;
 
     /**
      * Removes a list FieldDescription.
-     *
-     * @param string $name
      */
-    public function removeListFieldDescription($name);
+    public function removeListFieldDescription(string $name): void;
 
     /**
      * Returns a list depend on the given $object.
-     *
-     * @return FieldDescriptionCollection
      */
-    public function getList();
+    public function getList(): FieldDescriptionCollection;
 
     /**
      * Returns true if the filter FieldDescription exists.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
-    public function hasFilterFieldDescription($name);
+    public function hasFilterFieldDescription(string $name): bool;
 
     /**
      * Adds a filter FieldDescription.
-     *
-     * @param string $name
      */
-    public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+    public function addFilterFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void;
 
     /**
      * Removes a filter FieldDescription.
-     *
-     * @param string $name
      */
-    public function removeFilterFieldDescription($name);
+    public function removeFilterFieldDescription(string $name): void;
 
     /**
      * Returns the filter FieldDescription collection.
      *
      * @return FieldDescriptionInterface[]
      */
-    public function getFilterFieldDescriptions();
+    public function getFilterFieldDescriptions(): array;
 
     /**
      * Returns a filter FieldDescription.
-     *
-     * @param string $name
-     *
-     * @return FieldDescriptionInterface|null
      */
-    public function getFilterFieldDescription($name);
+    public function getFilterFieldDescription(string $name): ?FieldDescriptionInterface;
 }

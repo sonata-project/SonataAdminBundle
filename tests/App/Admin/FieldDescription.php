@@ -17,29 +17,29 @@ use Sonata\AdminBundle\Admin\BaseFieldDescription;
 
 final class FieldDescription extends BaseFieldDescription
 {
-    public function setAssociationMapping($associationMapping)
+    public function setAssociationMapping($associationMapping): void
     {
     }
 
-    public function getTargetEntity()
+    public function getTargetEntity(): ?string
     {
         return null;
     }
 
-    public function setFieldMapping($fieldMapping)
+    public function setFieldMapping(array $fieldMapping): void
     {
     }
 
-    public function setParentAssociationMappings(array $parentAssociationMappings)
+    public function setParentAssociationMappings(array $parentAssociationMappings): void
     {
     }
 
-    public function isIdentifier()
+    public function isIdentifier(): bool
     {
         return false;
     }
 
-    public function getValue($object)
+    public function getValue(object $object)
     {
         return $this->getFieldValue($object, $this->fieldName);
     }
