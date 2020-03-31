@@ -10,7 +10,11 @@ file that was distributed with this source code.
 #}
 
 {% if admin.hasAccess('show', object) and admin.hasRoute('show') %}
-    <a href="{{ admin.generateObjectUrl('show', object) }}" class="btn btn-sm btn-default view_link" title="{{ 'action_show'|trans({}, 'SonataAdminBundle') }}">
+    <a
+        href="{{ admin.generateObjectUrl('show', object, actions.link_parameters|default([])) }}"
+        class="btn btn-sm btn-default view_link"
+        title="{{ 'action_show'|trans({}, 'SonataAdminBundle') }}"
+    >
         <i class="fa fa-eye" aria-hidden="true"></i>
         {{ 'action_show'|trans({}, 'SonataAdminBundle') }}
     </a>
