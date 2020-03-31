@@ -2080,6 +2080,8 @@ EOT;
                 return $children;
             }
         }
+
+        return null;
     }
 
     public function trans($id, array $parameters = [], $domain = null, $locale = null)
@@ -2822,6 +2824,8 @@ EOT;
                 return $this->generateObjectUrl($action, $object);
             }
         }
+
+        return null;
     }
 
     /**

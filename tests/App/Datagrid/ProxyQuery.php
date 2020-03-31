@@ -31,6 +31,7 @@ final class ProxyQuery implements ProxyQueryInterface
 
     public function getSortBy()
     {
+        return 'e.id';
     }
 
     public function setSortOrder($sortOrder)
@@ -39,10 +40,12 @@ final class ProxyQuery implements ProxyQueryInterface
 
     public function getSortOrder()
     {
+        return 'ASC';
     }
 
     public function getSingleScalarResult()
     {
+        return 0;
     }
 
     public function setFirstResult($firstResult)
@@ -51,6 +54,7 @@ final class ProxyQuery implements ProxyQueryInterface
 
     public function getFirstResult()
     {
+        throw new \BadMethodCallException('Not implemented.');
     }
 
     public function setMaxResults($maxResults)
@@ -59,10 +63,12 @@ final class ProxyQuery implements ProxyQueryInterface
 
     public function getMaxResults()
     {
+        return 1;
     }
 
     public function getUniqueParameterId()
     {
+        return 1;
     }
 
     public function entityJoin(array $associationMappings)
