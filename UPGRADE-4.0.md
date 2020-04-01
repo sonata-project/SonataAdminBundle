@@ -71,3 +71,6 @@ The `sonata_admin` twig extension is now final. You may no longer extend it.
 
 ## SimplePager
 Method `SimplePager::getResults` is always returning an array
+
+## LockInterface
+`LockInterface` extends from `ModelManagerInterface`.

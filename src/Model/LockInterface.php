@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Exception\LockException;
 /**
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
  */
-interface LockInterface
+interface LockInterface extends ModelManagerInterface
 {
     /**
      * @param object $object
