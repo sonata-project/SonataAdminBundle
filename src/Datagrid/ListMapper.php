@@ -74,6 +74,23 @@ class ListMapper extends BaseMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = [])
     {
+        // Default sort on "associated_property"
+        if (isset($fieldDescriptionOptions['associated_property'])) {
+            if (!isset($fieldDescriptionOptions['sortable'])) {
+                $fieldDescriptionOptions['sortable'] = true;
+            }
+            if (!isset($fieldDescriptionOptions['sort_parent_association_mappings'])) {
+                $fieldDescriptionOptions['sort_parent_association_mappings'] = [[
+                    'fieldName' => $name,
+                ]];
+            }
+            if (!isset($fieldDescriptionOptions['sort_field_mapping'])) {
+                $fieldDescriptionOptions['sort_field_mapping'] = [
+                    'fieldName' => $fieldDescriptionOptions['associated_property'],
+                ];
+            }
+        }
+
         // Change deprecated inline action "view" to "show"
         if ('_action' === $name && 'actions' === $type) {
             if (isset($fieldDescriptionOptions['actions']['view'])) {

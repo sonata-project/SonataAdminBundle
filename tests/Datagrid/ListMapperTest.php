@@ -298,6 +298,47 @@ class ListMapperTest extends TestCase
         }
     }
 
+    public function testAutoSortOnAssociatedProperty(): void
+    {
+        $this->listMapper->add('fooName');
+        $this->listMapper->add(
+            'fooNameAutoSort',
+            null,
+            [
+                'associated_property' => 'fooAssociatedProperty',
+            ]
+        );
+        $this->listMapper->add(
+            'fooNameManualSort',
+            null,
+            [
+                'associated_property' => 'fooAssociatedProperty',
+                'sortable' => false,
+                'sort_parent_association_mappings' => 'fooSortParentAssociationMapping',
+                'sort_field_mapping' => 'fooSortFieldMapping',
+            ]
+        );
+
+        $field = $this->listMapper->get('fooName');
+        $fieldAutoSort = $this->listMapper->get('fooNameAutoSort');
+        $fieldManualSort = $this->listMapper->get('fooNameManualSort');
+
+        $this->assertNull($field->getOption('associated_property'));
+        $this->assertNull($field->getOption('sortable'));
+        $this->assertNull($field->getOption('sort_parent_association_mappings'));
+        $this->assertNull($field->getOption('sort_field_mapping'));
+
+        $this->assertSame('fooAssociatedProperty', $fieldAutoSort->getOption('associated_property'));
+        $this->assertTrue($fieldAutoSort->getOption('sortable'));
+        $this->assertSame([['fieldName' => $fieldAutoSort->getName()]], $fieldAutoSort->getOption('sort_parent_association_mappings'));
+        $this->assertSame(['fieldName' => $fieldAutoSort->getOption('associated_property')], $fieldAutoSort->getOption('sort_field_mapping'));
+
+        $this->assertSame('fooAssociatedProperty', $fieldManualSort->getOption('associated_property'));
+        $this->assertFalse($fieldManualSort->getOption('sortable'));
+        $this->assertSame('fooSortParentAssociationMapping', $fieldManualSort->getOption('sort_parent_association_mappings'));
+        $this->assertSame('fooSortFieldMapping', $fieldManualSort->getOption('sort_field_mapping'));
+    }
+
     public function testKeys(): void
     {
         $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
