@@ -21,31 +21,35 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 interface RouteGeneratorInterface
 {
     /**
-     * @param string $name
-     * @param bool   $absolute
+     * @param string               $name
+     * @param array<string, mixed> $parameters
+     * @param bool                 $absolute
      *
      * @return string
      */
     public function generateUrl(AdminInterface $admin, $name, array $parameters = [], $absolute = false);
 
     /**
-     * @param string $name
-     * @param bool   $absolute
+     * @param string               $name
+     * @param array<string, mixed> $parameters
+     * @param bool                 $absolute
      *
      * @return array
      */
     public function generateMenuUrl(AdminInterface $admin, $name, array $parameters = [], $absolute = false);
 
     /**
-     * @param string $name
-     * @param bool   $absolute
+     * @param string               $name
+     * @param array<string, mixed> $parameters
+     * @param bool                 $absolute
      *
      * @return string
      */
     public function generate($name, array $parameters = [], $absolute = false);
 
     /**
-     * @param string $name
+     * @param string               $name
+     * @param array<string, mixed> $parameters
      *
      * @return bool
      */

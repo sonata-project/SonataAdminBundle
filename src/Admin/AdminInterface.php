@@ -264,21 +264,21 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getValidator();
 
     /**
-     * @return array
+     * @return FieldDescriptionCollection|null
      */
     public function getShow();
 
     public function setFormTheme(array $formTheme);
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getFormTheme();
 
     public function setFilterTheme(array $filterTheme);
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getFilterTheme();
 
@@ -383,7 +383,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns the array of allowed export formats.
      *
-     * @return array
+     * @return string[]
      */
     public function getExportFormats();
 
@@ -407,7 +407,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Return array of filter parameters.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getFilterParameters();
 
@@ -484,7 +484,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Return the form groups.
      *
-     * @return array
+     * @return array<string, mixed>|false (false if the groups have not been initialized)
      */
     public function getFormGroups();
 
@@ -511,7 +511,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns the show groups.
      *
-     * @return array
+     * @return array<string, mixed>|false (false if the groups have not been initialized)
      */
     public function getShowGroups();
 
@@ -586,7 +586,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns the list of batchs actions.
      *
-     * @return array the list of batchs actions
+     * @return array<string, mixed> the list of batchs actions
      */
     public function getBatchActions();
 
@@ -600,7 +600,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns an array of persistent parameters.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getPersistentParameters();
 
@@ -647,7 +647,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getObjectMetadata($object);
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
     public function getListModes();
 
