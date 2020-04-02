@@ -64,7 +64,7 @@ interface ModelManagerInterface
     /**
      * @param string $class
      *
-     * @return object an object matching the criteria or null if none match
+     * @return object|null an object matching the criteria or null if none match
      */
     public function findOneBy($class, array $criteria = []);
 
@@ -216,6 +216,8 @@ interface ModelManagerInterface
 
     /**
      * @param string $class
+     *
+     * @return object
      */
     public function modelReverseTransform($class, array $array = []);
 

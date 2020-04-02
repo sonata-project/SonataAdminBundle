@@ -1852,6 +1852,8 @@ EOT;
                 return $children;
             }
         }
+
+        return null;
     }
 
     public function trans($id, array $parameters = [], $domain = null, $locale = null)

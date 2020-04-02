@@ -37,6 +37,7 @@ final class Datagrid implements DatagridInterface
 
     public function getQuery()
     {
+        throw new \BadMethodCallException('Not implemented.');
     }
 
     public function getResults()
@@ -54,6 +55,7 @@ final class Datagrid implements DatagridInterface
 
     public function getFilters()
     {
+        return [];
     }
 
     public function reorderFilters(array $keys)
@@ -67,6 +69,7 @@ final class Datagrid implements DatagridInterface
 
     public function getColumns()
     {
+        throw new \BadMethodCallException('Not implemented.');
     }
 
     public function setValue($name, $operator, $value)
@@ -80,10 +83,12 @@ final class Datagrid implements DatagridInterface
 
     public function getFilter($name)
     {
+        throw new \BadMethodCallException('Not implemented.');
     }
 
     public function hasFilter($name)
     {
+        return false;
     }
 
     public function removeFilter($name)
@@ -92,9 +97,11 @@ final class Datagrid implements DatagridInterface
 
     public function hasActiveFilters()
     {
+        return false;
     }
 
     public function hasDisplayableFilters()
     {
+        return false;
     }
 }
