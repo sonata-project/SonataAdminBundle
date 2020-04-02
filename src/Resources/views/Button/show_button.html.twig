@@ -9,10 +9,8 @@ file that was distributed with this source code.
 
 #}
 {% if admin.canAccessObject('show', object) and admin.show|length > 0 and admin.hasRoute('show') %}
-    <li class="dropdown-item">
-        <a class="sonata-action-element" href="{{ admin.generateObjectUrl('show', object) }}">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-            {{ 'link_action_show'|trans({}, 'SonataAdminBundle') }}
-        </a>
-    </li>
+    <a class="dropdown-item sonata-action-element" href="{{ admin.generateObjectUrl('show', object) }}">
+        <i class="fa fa-eye" aria-hidden="true"></i>
+        {{ 'link_action_show'|trans({}, 'SonataAdminBundle') }}
+    </a>
 {% endif %}

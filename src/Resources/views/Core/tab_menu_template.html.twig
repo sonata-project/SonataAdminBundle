@@ -4,7 +4,7 @@
 {% import "knp_menu.html.twig" as macros %}
 {% if item.displayed %}
     {%- do item.setAttribute('class', (item.Attribute('class')~' nav-item')|trim) %}
-    {%- do item.setLinkAttribute('class', (item.linkAttribute('class')~' nav-link')|trim) %}
+    {%- do item.setLinkAttribute('class', (item.linkAttribute('class')~' btn nav-link')|trim) %}
 
     {%- set attributes = item.attributes %}
     {%- set is_dropdown = attributes.dropdown|default(false) %}
@@ -87,12 +87,12 @@
 
 {% block linkElement %}
     {% import "knp_menu.html.twig" as macros %}
-    <a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes) }}>
+    <button href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes) }} onclick="window.location.href='{{ item.uri }}'">
         {% if item.attribute('icon') is not empty %}
             <i class="{{ item.attribute('icon') }}"></i>
         {% endif %}
         {{ block('label') }}
-    </a>
+    </button>
 {% endblock %}
 
 {% block spanElement %}

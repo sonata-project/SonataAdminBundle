@@ -9,10 +9,8 @@ file that was distributed with this source code.
 
 #}
 {% if admin.isAclEnabled() and admin.canAccessObject('acl', object) and admin.hasRoute('acl') %}
-    <li class="dropdown-item">
-        <a class="sonata-action-element" href="{{ admin.generateObjectUrl('acl', object) }}">
-            <i class="fa fa-users" aria-hidden="true"></i>
-            {{ 'link_action_acl'|trans({}, 'SonataAdminBundle') }}
-        </a>
-    </li>
+    <a class="dropdown-itemsonata-action-element" href="{{ admin.generateObjectUrl('acl', object) }}">
+        <i class="fa fa-users" aria-hidden="true"></i>
+        {{ 'link_action_acl'|trans({}, 'SonataAdminBundle') }}
+    </a>
 {% endif %}

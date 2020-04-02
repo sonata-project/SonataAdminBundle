@@ -10,21 +10,18 @@ file that was distributed with this source code.
 #}
 
 {% if admin.hasAccess('create') and admin.hasRoute('create') %}
+
     {% if admin.subClasses is empty %}
-        <li class="dropdown-item">
-            <a class="sonata-action-element" href="{{ admin.generateUrl('create') }}">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }}
-            </a>
-        </li>
+        <{{ action_section_type }} class="{{ action_class }} sonata-action-element" href="{{ admin.generateUrl('create') }}" onclick="window.location.href='{{ admin.generateUrl('create') }}'">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }}
+        </{{ action_section_type }}>
     {% else %}
         {% for subclass in admin.subclasses|keys %}
-            <li class="dropdown-item">
-                <a class="sonata-action-element" href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">
-                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                    {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }} {{ subclass|trans({}, admin.translationdomain) }}
-                </a>
-            </li>
+            <{{ action_section_type }} class="{{ action_class }} sonata-action-element" href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }} {{ subclass|trans({}, admin.translationdomain) }}
+            </{{ action_section_type }}>
         {% endfor %}
     {% endif %}
 {% endif %}

@@ -10,10 +10,8 @@ file that was distributed with this source code.
 #}
 
 {% if admin.canAccessObject('edit', object) and admin.hasRoute('edit') %}
-    <li class="dropdown-item">
-        <a class="sonata-action-element" href="{{ admin.generateObjectUrl('edit', object) }}">
-            <i class="fa fa-edit" aria-hidden="true"></i>
-            {{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}
-        </a>
-    </li>
+    <a class="dropdown-item sonata-action-element" href="{{ admin.generateObjectUrl('edit', object) }}">
+        <i class="fa fa-edit" aria-hidden="true"></i>
+        {{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}
+    </a>
 {% endif %}

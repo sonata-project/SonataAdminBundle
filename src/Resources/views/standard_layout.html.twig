@@ -30,14 +30,14 @@ file that was distributed with this source code.
             <meta charset="UTF-8">
             <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         {% endblock %}
-
+        {#                 DEBUG: sonata_admin.adminPool.getOption('js_debug'), #}
         <meta data-sonata-admin='{{ {
             config: {
                 CONFIRM_EXIT: sonata_admin.adminPool.getOption('confirm_exit'),
                 USE_SELECT2: sonata_admin.adminPool.getOption('use_select2'),
                 USE_ICHECK: sonata_admin.adminPool.getOption('use_icheck'),
                 USE_STICKYFORMS: sonata_admin.adminPool.getOption('use_stickyforms'),
-                DEBUG: sonata_admin.adminPool.getOption('js_debug'),
+                DEBUG: true,
             },
             translations: {
                 CONFIRM_EXIT: 'confirm_exit'|trans({}, 'SonataAdminBundle'),
@@ -117,6 +117,7 @@ file that was distributed with this source code.
                 {%- endif -%}"
             {%- endblock -%}
     >
+
 
     <div class="wrapper">
 
@@ -240,8 +241,6 @@ file that was distributed with this source code.
                                             </div>
                                         </form>
                                     </div>
-
-
                                 {% endif %}
                             {% endblock sonata_sidebar_search %}
 
@@ -262,7 +261,7 @@ file that was distributed with this source code.
                 </aside>
             {% endblock sonata_left_side %}
 
-            <nav class="content-wrapper">
+            <div class="content-wrapper">
                 {% block sonata_page_content %}
                     <section class="content-header ">
 
@@ -273,20 +272,21 @@ file that was distributed with this source code.
                                   or _actions is not empty
                                   or _list_filters_actions is not empty
                                  %}
-                                    <nav class="navbar navbar-expand-lg rounded" style="background: #dee2e6; border: 1px solid #ccd0d4" role="navigation">
+                                    <nav class="navbar navbar-default navbar-expand-lg rounded" style="background: #f8f8f8; border: 1px solid #e7e7e7" role="navigation">
+                                        <div class="container-fluid">
                                             {% block tab_menu_navbar_header %}
                                                 {% if _navbar_title is not empty %}
-                                                    <a class="navbar-brand ml-3" href="#">{{ _navbar_title|raw }}</a>
+                                                    <button class="btn navbar-brand ml-3" href="#">{{ _navbar_title|raw }}</button>
 
                                                 {% endif %}
                                             {% endblock %}
 
                                             <div class="collapse navbar-collapse">
-                                                    <div class="navbar-nav mr-auto">
-                                                        {% if _tab_menu is not null %}
-                                                            {{ _tab_menu|raw }}
-                                                        {% endif %}
-                                                    </div>
+                                                <div class="navbar-nav mr-auto">
+                                                    {% if _tab_menu is not null %}
+                                                        {{ _tab_menu|raw }}
+                                                    {% endif %}
+                                                </div>
 
                                                 <div class="navbar-nav">
                                                     {% if _list_filters_actions is not empty %}
@@ -295,30 +295,38 @@ file that was distributed with this source code.
 
                                                     {% block sonata_admin_content_actions_wrappers %}
                                                         {% if _actions|replace({ '<li>': '', '</li>': '' })|trim is not empty %}
-                                                            <ul class="navbar-nav">
+
                                                                 {% if _actions|split('</a>')|length > 2 %}
-                                                                    <li class="nav-item dropdown sonata-actions">
-                                                                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">{{ 'link_actions'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
-                                                                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                                    <div class="nav-item dropdown sonata-actions">
+                                                                        <button class="nav-link btn dropdown-toggle" data-toggle="dropdown">{{ 'link_actions'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></button>
+                                                                        <div class="dropdown-menu dropdown-menu-right" role="menu">
                                                                             {{ _actions|raw }}
-                                                                        </ul>
-                                                                    </li>
+                                                                        </div>
+                                                                    </div>
                                                                 {% else %}
-                                                                    {{ _actions|raw }}
+                                                                    <div class="nav-item sonata-actions">
+                                                                        {{ _actions|raw }}
+                                                                    </div>
                                                                 {% endif %}
-                                                            </ul>
+
                                                         {% endif %}
                                                     {% endblock sonata_admin_content_actions_wrappers %}
 
                                                     {% if admin is defined and action is defined and action == 'list' and admin.listModes|length > 1 %}
-                                                        <div class="btn-group">
+                                                        <div class="nav-item btn-group">
                                                             {% for mode, settings in admin.listModes %}
-                                                                <a href="{{ admin.generateUrl('list', app.request.query.all|merge({_list_mode: mode})) }}" class="btn btn-default navbar-btn btn-sm{% if admin.getListMode() == mode %} active{% endif %}"><i class="{{ settings.class }}"></i></a>
+                                                                <button
+                                                                        class="nav-link btn {#btn-outline-secondary#} navbar-btn btn-sm{% if admin.getListMode() == mode %} btn-primary active{% else %} btn-default{% endif %}"
+                                                                        onclick="window.location.href='{{ admin.generateUrl('list', app.request.query.all|merge({_list_mode: mode})) }}'"
+                                                                ><i class="{{ settings.class }}"></i></button>
+
+
                                                             {% endfor %}
                                                         </div>
                                                     {% endif %}
                                                 </div>
                                             </div>
+                                        </div>
                                     </nav>
                                 {% endif %}
                             {% endblock sonata_page_content_nav %}
@@ -362,7 +370,21 @@ file that was distributed with this source code.
                         {% endblock sonata_admin_content %}
                     </section>
                 {% endblock sonata_page_content %}
-            </nav>
+            </div>
+
+            <footer class="main-footer">
+                <div class="float-right d-none d-sm-block">
+                    <b>Version</b> 3.0.2
+                </div>
+                <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
+                reserved.
+            </footer>
+
+            <aside class="control-sidebar control-sidebar-dark">
+                <!-- Control sidebar content goes here -->
+            </aside>
+
+            <div id="sidebar-overlay"></div>
         {% endblock sonata_wrapper %}
     </div>
 

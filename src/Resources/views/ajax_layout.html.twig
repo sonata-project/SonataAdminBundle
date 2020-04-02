@@ -28,7 +28,7 @@ file that was distributed with this source code.
                         {% if admin is defined and action is defined and action == 'list' and admin.listModes|length > 1 %}
                             <div class="nav navbar-right btn-group">
                                 {% for mode, settings in admin.listModes %}
-                                    <a href="{{ admin.generateUrl('list', app.request.query.all|merge({_list_mode: mode})) }}" class="btn btn-default navbar-btn btn-sm{% if admin.getListMode() == mode %} active{% endif %}"><i class="{{ settings.class }}"></i></a>
+                                    <button href="{{ admin.generateUrl('list', app.request.query.all|merge({_list_mode: mode})) }}" class="btn btn-default navbar-btn btn-sm{% if admin.getListMode() == mode %} active{% endif %}"><i class="{{ settings.class }}"></i></button>
                                 {% endfor %}
                             </div>
                         {% endif %}

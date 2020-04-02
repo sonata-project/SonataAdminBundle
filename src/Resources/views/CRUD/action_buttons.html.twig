@@ -11,7 +11,20 @@ file that was distributed with this source code.
 {% apply spaceless %}
     {% for item in admin.getActionButtons(action, (object is defined) ? object : null ) %}
         {% if item.template is defined %}
-            {% include item.template %}
+            {% if loop.length > 1 %}
+                {% set vars = {
+                    'multiple_actions'  : true,
+                    'action_class':  'dropdown-item' ,
+                    'action_section_type': 'a',
+                } %}
+            {% else %}
+                {% set vars = {
+                    'multiple_actions'  : false,
+                    'action_class':  'nav-link btn',
+                    'action_section_type':  'button',
+                } %}
+            {% endif %}
+            {% include item.template with vars %}
         {% endif %}
     {% endfor %}
 {% endapply %}

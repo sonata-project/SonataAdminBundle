@@ -141,16 +141,14 @@ file that was distributed with this source code.
                                         {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
                                         <span class="caret"></span>
                                     </button>
-                                    <ul class="dropdown-menu">
+                                    <div class="dropdown-menu">
                                         {% for format in export_formats %}
-                                            <li>
-                                                <a href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">
-                                                    <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
-                                                    {{ ("export_format_" ~ format)|trans({}, 'SonataAdminBundle') }}
-                                                </a>
-                                            </li>
+                                            <a class="dropdown-item" href="{{ admin.generateUrl('export', admin.modelmanager.paginationparameters(admin.datagrid, 0) + {'format' : format}) }}">
+                                                <i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>
+                                                {{ ("export_format_" ~ format)|trans({}, 'SonataAdminBundle') }}
+                                            </a>
                                         {% endfor %}
-                                    </ul>
+                                    </div>
                                 </div>
 
                                 &nbsp;-&nbsp;
@@ -243,26 +241,23 @@ file that was distributed with this source code.
 
 {% block list_filters_actions %}
     {%- if admin.datagrid.filters|length %}
-        <ul class="nav navbar-nav navbar-right">
-
-            <li class="nav-item dropdown sonata-actions">
-                <a href="#" class="nav-link dropdown-toggle sonata-ba-action" data-toggle="dropdown">
+            <div class="nav-item dropdown sonata-actions">
+                <button class="nav-link dropdown-toggle btn sonata-ba-action" data-toggle="dropdown">
                     <i class="fa fa-filter" aria-hidden="true"></i>
                     {{ 'link_filters'|trans({}, 'SonataAdminBundle') }}
                     <span class="badge badge-pill badge-secondary sonata-filter-count"></span>
                     <b class="caret"></b>
-                </a>
+                </button>
 
-                <ul class="dropdown-menu" role="menu">
+                <div class="dropdown-menu" role="menu">
                     {% for filter in admin.datagrid.filters|filter(filter => filter.options['show_filter'] is same as(true) or filter.options['show_filter'] is null) %}
                         {% set filterActive = ((filter.isActive() or filter.options['show_filter']) and not admin.isDefaultFilter(filter.formName)) %}
                         <a href="#" class="dropdown-item sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
-                            <i class="fa {{ (filter.isActive() or filter.options['show_filter']) ? 'fa-check-square-o' : 'fa-square-o' }}"></i>{{ filter.label|trans({}, filter.translationDomain ?: admin.translationDomain) }}
+                            <i class="fa {{ (filter.isActive() or filter.options['show_filter']) ? 'fa-check-square-o' : 'fa-square-o' }}"></i> {{ filter.label|trans({}, filter.translationDomain ?: admin.translationDomain) }}
                         </a>
                     {% endfor %}
-                </ul>
-            </li>
-        </ul>
+                </div>
+            </div>
     {% endif -%}
 {% endblock %}
 
@@ -271,9 +266,9 @@ file that was distributed with this source code.
         {% form_theme form get_admin_template('filter', admin.code) %}
 
         <div class="col-xs-12 col-md-12 sonata-filters-box" style="display: {{ admin.datagrid.hasDisplayableFilters ? 'block' : 'none' }}" id="filter-container-{{ admin.uniqid() }}">
-            <div class="card card-primary card-outline" >
+            <div class="card card-primary  card-outline">
                 <div class="card-body">
-                    <form class="sonata-filter-form form-horizontal {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET" role="form">
+                    <form class="sonata-filter-form {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}" action="{{ admin.generateUrl('list') }}" method="GET" role="form">
                         {{ form_errors(form) }}
 
                         <div class="row">
@@ -282,7 +277,7 @@ file that was distributed with this source code.
                                 {% for filter in admin.datagrid.filters %}
                                     {% set filterActive = ((filter.isActive() and filter.options['show_filter'] is null) or (filter.options['show_filter'] is same as(true))) and not admin.isDefaultFilter(filter.formName) %}
                                     {% set filterVisible = filter.options['show_filter'] is same as(true) or filter.options['show_filter'] is null %}
-                                    <div class="form-group row {% block sonata_list_filter_group_class %}{% endblock %}" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ filterVisible ? 'true' : 'false' }}" style="display: {% if filterActive %}block{% else %}none{% endif %}">
+                                    <div class="form-group row {% block sonata_list_filter_group_class %}{% endblock %}" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ filterVisible ? 'true' : 'false' }}" {% if not filterActive %}style="display: none;{% endif %}">
                                         {% if filter.label is not same as(false) %}
                                             <label for="{{ form[filter.formName].children['value'].vars.id }}" class="col-sm-3 control-label">{{ filter.label|trans({}, filter.translationDomain ?: admin.translationDomain) }}</label>
                                         {% endif %}

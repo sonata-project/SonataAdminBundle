@@ -25,8 +25,8 @@ file that was distributed with this source code.
                     <i class="fa fa-code" aria-hidden="true"></i>
                     <a class="sonata-tree__item__edit" href="{{ admin.generateObjectUrl('edit', element) }}">{{ element.name }}</a>
                     <i class="text-muted">{{ element.description }}</i>
-                    <a class="label label-default pull-right" href="{{ admin.generateObjectUrl('edit', element) }}">edit <i class="fa fa-magic" aria-hidden="true"></i></a>
-                    {% if true %}<span class="label label-warning pull-right">true</span>{% endif %}
+                    <a class="badge badge-pill badge-secondary pull-right" href="{{ admin.generateObjectUrl('edit', element) }}">edit <i class="fa fa-magic" aria-hidden="true"></i></a>
+                    {% if true %}<span class="badge badge-warning pull-right">true</span>{% endif %}
                 </div>
 
                 {% if element.children|length %}

@@ -10,10 +10,8 @@ file that was distributed with this source code.
 #}
 
 {% if admin.canAccessObject('history', object) and admin.hasRoute('history') %}
-    <li class="dropdown-item">
-        <a class="sonata-action-element" href="{{ admin.generateObjectUrl('history', object) }}">
-            <i class="fa fa-archive" aria-hidden="true"></i>
-            {{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}
-        </a>
-    </li>
+    <a class="dropdown-item sonata-action-element" href="{{ admin.generateObjectUrl('history', object) }}">
+        <i class="fa fa-archive" aria-hidden="true"></i>
+        {{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}
+    </a>
 {% endif %}

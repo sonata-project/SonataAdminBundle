@@ -438,10 +438,9 @@ var Admin = {
     },
 
     show_form_first_tab_with_errors: function(form, errorSelector) {
-        Admin.log('[core|show_form_first_tab_with_errors] show first tab with errors', form);
+        Admin.log('[core|show_form_first_tab_with_errors] show first tab with errors 2', form);
 
-        var tabs = form.find('.nav-tabs a'), firstTabWithErrors;
-
+        var tabs = form.find('.nav-pills a'), firstTabWithErrors;
         tabs.each(function() {
             var id = jQuery(this).attr('href'),
                 tab = jQuery(this),
@@ -454,9 +453,9 @@ var Admin = {
                     firstTabWithErrors = tab;
                 }
 
-                icon.removeClass('hide');
+                icon.removeClass('d-none');
             } else {
-                icon.addClass('hide');
+                icon.addClass('d-none');
             }
         });
     },
