@@ -22,5 +22,7 @@ class TagAdmin extends AbstractAdmin
         if ($this->getParent() instanceof PostAdmin) {
             return 'posts';
         }
+
+        return null;
     }
 }
