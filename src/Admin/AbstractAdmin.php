@@ -737,7 +737,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * Returns the name of the parent related field, so the field can be use to set the default
      * value (ie the parent object) or to filter the object.
      *
-     * @throws \InvalidArgumentException
+     * @throws \DomainException
      */
     public function getParentAssociationMapping(): ?string
     {
@@ -751,7 +751,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             return $this->parentAssociationMapping[$parent];
         }
 
-        throw new \InvalidArgumentException(sprintf(
+        throw new \DomainException(sprintf(
             'There\'s no association between "%s" and "%s".',
             $this->getCode(),
             $this->getParent()->getCode()
