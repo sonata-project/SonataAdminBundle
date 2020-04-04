@@ -484,6 +484,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Return the form groups.
      *
+     * NEXT_MAJOR: must return only `array<string, mixed>`.
+     *
      * @return array<string, mixed>|false (false if the groups have not been initialized)
      */
     public function getFormGroups();
@@ -493,10 +495,16 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function setFormGroups(array $formGroups);
 
+    /**
+     * NEXT_MAJOR: must return only `array<string, mixed>`.
+     */
     public function getFormTabs();
 
     public function setFormTabs(array $formTabs);
 
+    /**
+     * NEXT_MAJOR: must return only `array<string, mixed>`.
+     */
     public function getShowTabs();
 
     public function setShowTabs(array $showTabs);
@@ -510,6 +518,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Returns the show groups.
+     *
+     * NEXT_MAJOR: must return only `array<string, mixed>`.
      *
      * @return array<string, mixed>|false (false if the groups have not been initialized)
      */

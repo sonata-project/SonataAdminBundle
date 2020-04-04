@@ -84,5 +84,5 @@ interface UrlGeneratorInterface
      *
      * @return string a string representation of the id that is safe to use in a url
      */
-    public function getUrlsafeIdentifier($entity);
+    public function getUrlSafeIdentifier($entity);
 }

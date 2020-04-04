@@ -23,12 +23,12 @@ abstract class Filter implements FilterInterface
     /**
      * @var string|null
      */
-    protected $name = null;
+    protected $name;
 
     /**
      * @var mixed|null
      */
-    protected $value = null;
+    protected $value;
 
     /**
      * @var array

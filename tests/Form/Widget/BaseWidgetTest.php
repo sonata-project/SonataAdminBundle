@@ -31,7 +31,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
      *
      * @var string
      */
-    protected $type = null;
+    protected $type;
 
     /**
      * @var array

@@ -36,7 +36,7 @@ class ObjectAclManipulatorTest extends TestCase
             $this->prophesize(ObjectIdentityInterface::class)->reveal(),
             $this->prophesize(ObjectIdentityInterface::class)->reveal(),
         ]);
-        $this->securityIdentity = new UserSecurityIdentity('Michael', 'stdClass');
+        $this->securityIdentity = new UserSecurityIdentity('Michael', \stdClass::class);
     }
 
     public function testConfigureAclsIgnoresNonAclSecurityHandlers(): void

@@ -85,7 +85,7 @@ class AdminObjectAclDataTest extends TestCase
     /**
      * @group legacy
      */
-    public function testSetForm()
+    public function testSetForm(): AdminObjectAclData
     {
         $form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
@@ -108,7 +108,7 @@ class AdminObjectAclDataTest extends TestCase
         $this->assertInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
     }
 
-    public function testSetAclUsersForm()
+    public function testSetAclUsersForm(): AdminObjectAclData
     {
         $form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
@@ -129,7 +129,7 @@ class AdminObjectAclDataTest extends TestCase
         $this->assertInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
     }
 
-    public function testSetAclRolesForm()
+    public function testSetAclRolesForm(): AdminObjectAclData
     {
         $form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()

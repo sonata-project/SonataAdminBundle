@@ -115,7 +115,7 @@ interface ModelManagerInterface
      *
      * This returns an array to handle cases like a primary key that is
      * composed of multiple columns. If you need a string representation,
-     * use getNormalizedIdentifier resp. getUrlsafeIdentifier
+     * use getNormalizedIdentifier resp. getUrlSafeIdentifier
      *
      * @param object $model
      *
@@ -153,7 +153,7 @@ interface ModelManagerInterface
      *
      * @return string string representation of the id that is safe to use in a url
      */
-    public function getUrlsafeIdentifier($model);
+    public function getUrlSafeIdentifier($model);
 
     /**
      * Create a new instance of the model of the specified class.

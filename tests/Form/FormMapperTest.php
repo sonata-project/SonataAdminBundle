@@ -59,9 +59,14 @@ class FormMapperTest extends TestCase
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
-        $formBuilder = new FormBuilder('test', 'stdClass', $eventDispatcher, $formFactory);
+        $formBuilder = new FormBuilder('test', \stdClass::class, $eventDispatcher, $formFactory);
 
         $this->admin = new CleanAdmin('code', 'class', 'controller');
+
+        // NEXT_MAJOR: Remove the calls to `setFormGroups()` and `setFormTabs()`
+        $this->admin->setFormGroups([]);
+        $this->admin->setFormTabs([]);
+
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
