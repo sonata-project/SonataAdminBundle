@@ -71,7 +71,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * @var \Traversable|array|null
      */
-    protected $results = null;
+    protected $results;
 
     /**
      * @var int
@@ -81,7 +81,7 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
     /**
      * @var ProxyQueryInterface|null
      */
-    protected $query = null;
+    protected $query;
 
     /**
      * @var array

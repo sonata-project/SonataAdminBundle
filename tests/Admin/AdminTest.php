@@ -1131,7 +1131,8 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertFalse($admin->getShowGroups());
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+        $this->assertFalse($admin->getShowGroups('sonata_deprecation_mute'));
 
         $groups = ['foo', 'bar', 'baz'];
 
@@ -1143,7 +1144,8 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertFalse($admin->getFormGroups());
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+        $this->assertFalse($admin->getFormGroups('sonata_deprecation_mute'));
 
         $groups = ['foo', 'bar', 'baz'];
 
@@ -1270,12 +1272,12 @@ class AdminTest extends TestCase
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager->expects($this->once())
-            ->method('getUrlsafeIdentifier')
+            ->method('getUrlSafeIdentifier')
             ->with($this->equalTo($entity))
             ->willReturn('foo');
         $admin->setModelManager($modelManager);
 
-        $this->assertSame('foo', $admin->getUrlsafeIdentifier($entity));
+        $this->assertSame('foo', $admin->getUrlSafeIdentifier($entity));
     }
 
     public function testDeterminedPerPageValue(): void
@@ -2479,6 +2481,42 @@ class AdminTest extends TestCase
         $this->assertSame($commentVoteAdmin, $postAdmin->getCurrentLeafChildAdmin());
         $this->assertSame($commentVoteAdmin, $commentAdmin->getCurrentLeafChildAdmin());
         $this->assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
+    }
+
+    public function testAdminWithoutControllerName(): void
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', null);
+
+        $this->assertNull($admin->getBaseControllerName());
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this test and its data provider.
+     *
+     * @group legacy
+     *
+     * @dataProvider getDeprecatedAbstractAdminConstructorArgs
+     *
+     * @expectedDeprecation Passing other type than string%S as argument %d for method Sonata\AdminBundle\Admin\AbstractAdmin::__construct() is deprecated since sonata-project/admin-bundle 3.x. It will accept only string%S in version 4.0.
+     */
+    public function testDeprecatedAbstractAdminConstructorArgs($code, $class, $baseControllerName): void
+    {
+        new PostAdmin($code, $class, $baseControllerName);
+    }
+
+    public function getDeprecatedAbstractAdminConstructorArgs(): iterable
+    {
+        yield from [
+            ['sonata.post.admin.post', null, null],
+            [null, null, null],
+            ['sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', false],
+            ['sonata.post.admin.post', false, false],
+            [false, false, false],
+            [true, true, true],
+            [new \stdClass(), new \stdClass(), new \stdClass()],
+            [0, 0, 0],
+            [1, 1, 1],
+        ];
     }
 
     private function createTagAdmin(Post $post): TagAdmin

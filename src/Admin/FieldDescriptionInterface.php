@@ -90,7 +90,7 @@ interface FieldDescriptionInterface
     /**
      * return the template name.
      *
-     * @return string the template name
+     * @return string|null the template name
      */
     public function getTemplate();
 
@@ -239,7 +239,7 @@ interface FieldDescriptionInterface
     /**
      * return the label to use for the current field.
      *
-     * @return string
+     * @return string|null
      */
     public function getLabel();
 

@@ -60,7 +60,7 @@ class FormTypeFieldExtensionTest extends TestCase
         $formView->parent = $parentFormView;
 
         $options = [];
-        $config = new FormConfigBuilder('test', 'stdClass', $eventDispatcher, $options);
+        $config = new FormConfigBuilder('test', \stdClass::class, $eventDispatcher, $options);
         $form = new Form($config);
 
         $extension = new FormTypeFieldExtension([], []);
@@ -94,7 +94,7 @@ class FormTypeFieldExtensionTest extends TestCase
 
         $formView = new FormView();
         $options = [];
-        $config = new FormConfigBuilder('test', 'stdClass', $eventDispatcher, $options);
+        $config = new FormConfigBuilder('test', \stdClass::class, $eventDispatcher, $options);
         $config->setAttribute('sonata_admin', [
             'admin' => $admin,
             'name' => 'name',
@@ -137,7 +137,7 @@ class FormTypeFieldExtensionTest extends TestCase
         $formView->vars['name'] = 'format';
 
         $options = [];
-        $config = new FormConfigBuilder('test', 'stdClass', $eventDispatcher, $options);
+        $config = new FormConfigBuilder('test', \stdClass::class, $eventDispatcher, $options);
         $config->setAttribute('sonata_admin', ['admin' => false]);
 
         $form = new Form($config);
@@ -194,7 +194,7 @@ class FormTypeFieldExtensionTest extends TestCase
 
         $formView = new FormView();
         $options = [];
-        $config = new FormConfigBuilder('test', 'stdClass', $eventDispatcher, $options);
+        $config = new FormConfigBuilder('test', \stdClass::class, $eventDispatcher, $options);
         $form = new Form($config);
 
         $extension = new FormTypeFieldExtension([], []);
@@ -262,7 +262,7 @@ class FormTypeFieldExtensionTest extends TestCase
         $formView->parent->parent->parent->vars['sonata_admin_enabled'] = false;
 
         $options = [];
-        $config = new FormConfigBuilder('test', 'stdClass', $eventDispatcher, $options);
+        $config = new FormConfigBuilder('test', \stdClass::class, $eventDispatcher, $options);
         $config->setAttribute('sonata_admin', ['admin' => false]);
 
         $form = new Form($config);

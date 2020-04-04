@@ -77,7 +77,8 @@ class ShowMapper extends BaseGroupedMapper
             );
         }
 
-        if (!$fieldDescription->getLabel() && false !== $fieldDescription->getOption('label')) {
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+        if (!$fieldDescription->getLabel('sonata_deprecation_mute') && false !== $fieldDescription->getOption('label')) {
             $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
         }
 
@@ -165,7 +166,9 @@ class ShowMapper extends BaseGroupedMapper
 
     protected function getGroups()
     {
-        return $this->admin->getShowGroups();
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+
+        return $this->admin->getShowGroups('sonata_deprecation_mute');
     }
 
     protected function setGroups(array $groups)
@@ -175,7 +178,9 @@ class ShowMapper extends BaseGroupedMapper
 
     protected function getTabs()
     {
-        return $this->admin->getShowTabs();
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+
+        return $this->admin->getShowTabs('sonata_deprecation_mute');
     }
 
     protected function setTabs(array $tabs)

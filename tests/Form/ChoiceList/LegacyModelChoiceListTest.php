@@ -21,7 +21,7 @@ use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 
 class LegacyModelChoiceListTest extends TestCase
 {
-    private $modelManager = null;
+    private $modelManager;
 
     public function setUp(): void
     {

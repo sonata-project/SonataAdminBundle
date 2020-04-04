@@ -154,7 +154,7 @@ class SonataAdminExtension extends AbstractExtension
             ),
             new TwigFilter(
                 'sonata_urlsafeid',
-                [$this, 'getUrlsafeIdentifier']
+                [$this, 'getUrlSafeIdentifier']
             ),
             new TwigFilter(
                 'sonata_xeditable_type',
@@ -406,13 +406,13 @@ class SonataAdminExtension extends AbstractExtension
      *
      * @return string string representation of the id that is safe to use in a url
      */
-    public function getUrlsafeIdentifier($model, ?AdminInterface $admin = null)
+    public function getUrlSafeIdentifier($model, ?AdminInterface $admin = null)
     {
         if (null === $admin) {
             $admin = $this->pool->getAdminByClass(ClassUtils::getClass($model));
         }
 
-        return $admin->getUrlsafeIdentifier($model);
+        return $admin->getUrlSafeIdentifier($model);
     }
 
     /**

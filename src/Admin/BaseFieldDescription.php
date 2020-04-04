@@ -109,7 +109,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * @var AdminInterface|null the parent Admin instance
      */
-    protected $parent = null;
+    protected $parent;
 
     /**
      * @var AdminInterface the related admin instance
@@ -209,6 +209,13 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getTemplate()
     {
+        if (null !== $this->template && !\is_string($this->template) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'Returning other type than string or null in method %s() is deprecated since sonata-project/admin-bundle 3.x. It will return only those types in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         return $this->template;
     }
 
@@ -398,6 +405,13 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getLabel()
     {
+        if (null !== $this->getOption('label') && !\is_string($this->getOption('label')) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'Returning other type than string or null in method %s() is deprecated since sonata-project/admin-bundle 3.x. It will return only those types in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         return $this->getOption('label');
     }
 
