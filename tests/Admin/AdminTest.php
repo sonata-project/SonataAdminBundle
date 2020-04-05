@@ -1848,7 +1848,7 @@ class AdminTest extends TestCase
         $admin = new CustomQueryAdmin(
             'test code',
             'Application\Entity\CustomQueryEntity',
-            'SonataFooBundle:CustomQueryAdmin'
+            'Sonata\FooBundle\CustomQueryAdminController'
         );
 
         $admin->setModelManager($modelManager);
