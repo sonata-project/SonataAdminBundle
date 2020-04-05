@@ -293,4 +293,49 @@ class Datagrid implements DatagridInterface
 
         return $this->form;
     }
+
+    public function getSortParameters(FieldDescriptionInterface $fieldDescription): array
+    {
+        $values = $this->getValues();
+
+        if ($this->isFieldAlreadySorted($fieldDescription)) {
+            if ('ASC' === $values['_sort_order']) {
+                $values['_sort_order'] = 'DESC';
+            } else {
+                $values['_sort_order'] = 'ASC';
+            }
+        } else {
+            $values['_sort_order'] = 'ASC';
+        }
+
+        $values['_sort_by'] = \is_string($fieldDescription->getOption('sortable'))
+            ? $fieldDescription->getOption('sortable')
+            : $fieldDescription->getName();
+
+        return ['filter' => $values];
+    }
+
+    public function getPaginationParameters(int $page): array
+    {
+        $values = $this->getValues();
+
+        if (isset($values['_sort_by']) && $values['_sort_by'] instanceof FieldDescriptionInterface) {
+            $values['_sort_by'] = $values['_sort_by']->getName();
+        }
+        $values['_page'] = $page;
+
+        return ['filter' => $values];
+    }
+
+    private function isFieldAlreadySorted(FieldDescriptionInterface $fieldDescription): bool
+    {
+        $values = $this->getValues();
+
+        if (!isset($values['_sort_by']) || !$values['_sort_by'] instanceof FieldDescriptionInterface) {
+            return false;
+        }
+
+        return $values['_sort_by']->getName() === $fieldDescription->getName()
+            || $values['_sort_by']->getName() === $fieldDescription->getOption('sortable');
+    }
 }
