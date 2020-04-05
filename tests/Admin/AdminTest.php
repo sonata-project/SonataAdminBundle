@@ -1805,7 +1805,7 @@ class AdminTest extends TestCase
         $pager = $this->createMock(PagerInterface::class);
         $datagrid = $this->createMock(DatagridInterface::class);
 
-        $admin = new CleanAdmin('test code', 'Application\Entity\CleanEntity', 'SonataFooBundle:CleanAdmin');
+        $admin = new CleanAdmin('test code', 'Application\Entity\CleanEntity', 'Sonata\FooBundle\CleanAdminController');
         $admin->setModelManager($modelManager);
         $admin->setDatagridBuilder($datagridBuilder);
 
