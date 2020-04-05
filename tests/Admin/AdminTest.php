@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use PHPUnit\Framework\TestCase;
@@ -41,9 +42,11 @@ use Sonata\AdminBundle\Route\RoutesCache;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentVoteAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentWithCustomRouteAdmin;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\CustomQueryAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FilteredAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\ModelAdmin;
@@ -56,6 +59,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
+use Sonata\AdminBundle\Tests\Fixtures\Query\CustomQuery;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -1792,6 +1796,88 @@ class AdminTest extends TestCase
         $this->assertSame($fooFieldDescription, $modelAdmin->getFilterFieldDescription('foo'));
         $this->assertSame($barFieldDescription, $modelAdmin->getFilterFieldDescription('bar'));
         $this->assertSame($bazFieldDescription, $modelAdmin->getFilterFieldDescription('baz'));
+    }
+
+    public function testGetDatagrid(): void
+    {
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
+        $pager = $this->createMock(PagerInterface::class);
+        $datagrid = $this->createMock(DatagridInterface::class);
+
+        $admin = new CleanAdmin('test code', 'Application\Entity\CleanEntity', 'SonataFooBundle:CleanAdmin');
+        $admin->setModelManager($modelManager);
+        $admin->setDatagridBuilder($datagridBuilder);
+
+        $datagrid->expects($this->once())
+            ->method('getPager')
+            ->willReturn($pager)
+        ;
+
+        $datagridBuilder->expects($this->once())
+            ->method('getBaseDatagrid')
+            ->with($this->identicalTo($admin), [
+                '_sort_by'    => null,
+                '_sort_order' => null,
+            ])
+            ->willReturn($datagrid)
+        ;
+
+        $result=$admin->getDatagrid();
+        self::assertNotNull($result);
+    }
+
+    public function testGetDatagridWithCustomQuery(): void
+    {
+        $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
+        $listBuilder = $this->getMockForAbstractClass(ListBuilderInterface::class);
+        $pager = $this->createMock(PagerInterface::class);
+        $datagrid = $this->createMock(DatagridInterface::class);
+        $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
+
+        $modelManager
+            ->expects(self::once())
+            ->method('createQuery')
+            ->willReturn(new CustomQuery());
+
+        $modelManager
+            ->expects(self::once())
+            ->method('getNewFieldDescriptionInstance')
+            ->willReturn(new FieldDescription());
+
+        $admin = new CustomQueryAdmin(
+            'test code',
+            'Application\Entity\CustomQueryEntity',
+            'SonataFooBundle:CustomQueryAdmin'
+        );
+
+        $admin->setModelManager($modelManager);
+        $admin->setListBuilder($listBuilder);
+        $admin->setDatagridBuilder($datagridBuilder);
+
+        $datagrid->expects($this->once())
+            ->method('getValues')
+            ->willReturn([
+                '_sort_by' => new FieldDescription(),
+                '_sort_order' => Criteria::DESC,
+            ]);
+
+        $datagrid->expects($this->once())
+            ->method('getPager')
+            ->willReturn($pager);
+
+        $datagridBuilder->expects($this->once())
+            ->method('getBaseDatagrid')
+            ->with($this->identicalTo($admin), [
+                '_sort_by' => new FieldDescription(),
+                '_sort_order' => Criteria::DESC,
+            ])
+            ->willReturn($datagrid);
+
+        $datagrid = $admin->getDatagrid();
+        $values = $datagrid->getValues();
+
+        self::assertNotNull($values);
     }
 
     public function testGetSubjectNoRequest(): void
