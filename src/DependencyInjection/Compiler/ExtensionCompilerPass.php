@@ -90,14 +90,14 @@ class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param string $id
+     * @param string                                                                           $id
+     * @param array<string, array<string, array<string, array<string, array<string, mixed>>>>> $extensionMap
      *
      * @return array
      */
     protected function getExtensionsForAdmin($id, Definition $admin, ContainerBuilder $container, array $extensionMap)
     {
         $extensions = [];
-        $classReflection = $subjectReflection = null;
 
         $excludes = $extensionMap['excludes'];
         unset($extensionMap['excludes']);
@@ -108,37 +108,18 @@ class ExtensionCompilerPass implements CompilerPassInterface
                     if ($id === $subject) {
                         $extensions = array_merge($extensions, $extensionList);
                     }
-                } else {
-                    $class = $this->getManagedClass($admin, $container);
-                    if (!class_exists($class)) {
-                        continue;
-                    }
-                    $classReflection = new \ReflectionClass($class);
-                    $subjectReflection = new \ReflectionClass($subject);
+
+                    continue;
                 }
 
-                if ('instanceof' === $type) {
-                    if ($subjectReflection->getName() === $classReflection->getName() || $classReflection->isSubclassOf($subject)) {
-                        $extensions = array_merge($extensions, $extensionList);
-                    }
+                $class = $this->getManagedClass($admin, $container);
+
+                if (null === $class || !class_exists($class)) {
+                    continue;
                 }
 
-                if ('implements' === $type) {
-                    if ($classReflection->implementsInterface($subject)) {
-                        $extensions = array_merge($extensions, $extensionList);
-                    }
-                }
-
-                if ('extends' === $type) {
-                    if ($classReflection->isSubclassOf($subject)) {
-                        $extensions = array_merge($extensions, $extensionList);
-                    }
-                }
-
-                if ('uses' === $type) {
-                    if ($this->hasTrait($classReflection, $subject)) {
-                        $extensions = array_merge($extensions, $extensionList);
-                    }
+                if ($this->isSubtypeOf($type, $subject, $class)) {
+                    $extensions = array_merge($extensions, $extensionList);
                 }
             }
         }
@@ -153,15 +134,52 @@ class ExtensionCompilerPass implements CompilerPassInterface
     /**
      * Resolves the class argument of the admin to an actual class (in case of %parameter%).
      *
-     * @return string
+     * @return string|null
+     *
+     * @phpstan-return class-string|null
      */
     protected function getManagedClass(Definition $admin, ContainerBuilder $container)
     {
-        return $container->getParameterBag()->resolveValue($admin->getArgument(1));
+        $argument = $admin->getArgument(1);
+        $class = $container->getParameterBag()->resolveValue($argument);
+
+        if (null === $class) {
+            // NEXT_MAJOR: Throw exception
+//            throw new \DomainException(sprintf('The admin "%s" does not have a valid manager.', $admin->getClass()));
+
+            @trigger_error(
+                sprintf('The admin "%s" does not have a valid manager.', $admin->getClass()),
+                E_USER_DEPRECATED
+            );
+        }
+
+        if (!\is_string($class)) {
+            // NEXT_MAJOR: Throw exception
+//            throw new \TypeError(sprintf(
+//                'Argument "%s" for admin class "%s" must be of type string, %s given.',
+//                $argument,
+//                $admin->getClass(),
+//                \is_object($class) ? \get_class($class) : \gettype($class)
+//            ));
+
+            @trigger_error(
+                sprintf(
+                    'Argument "%s" for admin class "%s" must be of type string, %s given.',
+                    $argument,
+                    $admin->getClass(),
+                    \is_object($class) ? \get_class($class) : \gettype($class)
+                ),
+                E_USER_DEPRECATED
+            );
+        }
+
+        return $class;
     }
 
     /**
-     * @return array an array with the following structure.
+     * @param array<string, array<string, array<string, string>>> $config
+     *
+     * @return array<string, array<string, array<string, array<string, array<string, string>>>>> an array with the following structure.
      *
      * [
      *     'excludes'   => ['<admin_id>'  => ['<extension_id>' => ['priority' => <int>]]],
@@ -201,6 +219,8 @@ class ExtensionCompilerPass implements CompilerPassInterface
 
     /**
      * @return bool
+     *
+     * @phpstan-param class-string $traitName
      */
     protected function hasTrait(\ReflectionClass $class, $traitName)
     {
@@ -213,6 +233,30 @@ class ExtensionCompilerPass implements CompilerPassInterface
         }
 
         return $this->hasTrait($parentClass, $traitName);
+    }
+
+    /**
+     * @phpstan-param class-string $class
+     * @phpstan-param class-string $subject
+     */
+    private function isSubtypeOf(string $type, string $subject, string $class): bool
+    {
+        $classReflection = new \ReflectionClass($class);
+
+        switch ($type) {
+            case 'instanceof':
+                $subjectReflection = new \ReflectionClass($subject);
+
+                return $classReflection->isSubclassOf($subject) || $subjectReflection->getName() === $classReflection->getName();
+            case 'implements':
+                return $classReflection->implementsInterface($subject);
+            case 'extends':
+                return $classReflection->isSubclassOf($subject);
+            case 'uses':
+                return $this->hasTrait($classReflection, $subject);
+        }
+
+        return false;
     }
 
     /**
