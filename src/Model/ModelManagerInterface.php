@@ -100,6 +100,10 @@ interface ModelManagerInterface
     /**
      * Get the identifier for the model type of this class.
      *
+     * NEXT_MAJOR: Remove this function in favor of getIdentifierFieldNames
+     *
+     * @deprecated Prefer to use getIdentifierFieldNames
+     *
      * @param string $class fully qualified class name
      *
      * @return string
