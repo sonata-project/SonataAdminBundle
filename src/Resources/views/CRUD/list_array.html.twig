@@ -13,5 +13,9 @@ file that was distributed with this source code.
 {% extends get_admin_template('base_list_field', admin.code) %}
 
 {% block field %}
-    {{ list.render_array(value, field_description.options.inline is not defined or field_description.options.inline) }}
+    {{ list.render_array(
+        value,
+        field_description.options.inline is not defined or field_description.options.inline,
+        { default_translation_domain : admin.translationDomain }|merge(field_description.options)
+    ) }}
 {% endblock %}

@@ -60,6 +60,52 @@ This is currently limited to scalar types (text, integer, url...) and choice typ
 More types might be provided based on the persistency layer defined. Please refer to their
 related documentations.
 
+Array
+^^^^^^
+
+You can use the following parameters:
+
+======================================  ============================================================
+Parameter                               Description
+======================================  ============================================================
+**inline**                              If `true`, the array will be displayed as a single line,
+                                        the whole array and each array level will be wrapped up with square brackets.
+                                        If `false`, the array will be displayed as an unordered list.
+                                        For the `show` action, the default value is `true` and for the `list` action
+                                        it's `false`.
+**display**                             Define what should be displayed: keys, values or both.
+                                        Defaults to `'both'`.
+                                        Available options are: `'both'`, `'keys'`, `'values'`.
+**key_translation_domain**              This option determines if the keys should be translated and
+                                        in which translation domain.
+
+                                        The values of this option can be `true` (use admin
+                                        translation domain), `false` (disable translation), `null`
+                                        (uses the parent translation domain or the default domain)
+                                        or a string which represents the exact translation domain to use.
+**value_translation_domain**            This option determines if the values should be translated and
+                                        in which translation domain.
+
+                                        The values of this option can be `true` (use admin
+                                        translation domain), `false` (disable translation), `null`
+                                        (uses the parent translation domain or the default domain)
+                                        or a string which represents the exact translation domain to use.
+======================================  ============================================================
+
+.. code-block:: php
+
+    protected function configureListFields(ListMapper $listMapper): void
+    {
+        $listMapper
+            ->add('options', 'array', [
+                'inline' => true,
+                'display' => 'both',
+                'key_translation_domain' => true,
+                'value_translation_domain' => null
+            ])
+        ;
+    }
+
 Choice
 ^^^^^^
 
