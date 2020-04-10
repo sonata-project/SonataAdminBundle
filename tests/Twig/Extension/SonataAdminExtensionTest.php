@@ -544,14 +544,14 @@ class SonataAdminExtensionTest extends TestCase
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-array" objectId="12345">
-                    [1 => First] [2 => Second]
+                    [1&nbsp;=>&nbsp;First, 2&nbsp;=>&nbsp;Second]
                 </td>',
                 'array',
                 [1 => 'First', 2 => 'Second'],
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-array" objectId="12345"> </td>',
+                '<td class="sonata-ba-list-field sonata-ba-list-field-array" objectId="12345"> [] </td>',
                 'array',
                 null,
                 [],
@@ -1354,13 +1354,13 @@ EOT
             ['<th>Data</th> <td> EUR 10.746135 </td>', 'currency', 10.746135, ['currency' => 'EUR']],
             ['<th>Data</th> <td> GBP 51.23456 </td>', 'currency', 51.23456, ['currency' => 'GBP']],
             [
-                '<th>Data</th> <td> [1 => First] <br> [2 => Second] </td>',
+                '<th>Data</th> <td> <ul><li>1&nbsp;=>&nbsp;First</li><li>2&nbsp;=>&nbsp;Second</li></ul> </td>',
                 'array',
                 [1 => 'First', 2 => 'Second'],
                 ['safe' => false],
             ],
             [
-                '<th>Data</th> <td> [1 => First] [2 => Second] </td>',
+                '<th>Data</th> <td> [1&nbsp;=>&nbsp;First, 2&nbsp;=>&nbsp;Second] </td>',
                 'array',
                 [1 => 'First', 2 => 'Second'],
                 ['safe' => false, 'inline' => true],
@@ -1777,7 +1777,7 @@ EOT
             ['<th>Data</th> <td> 0 % </td>', 'percent', new NoValueException(), []],
             ['<th>Data</th> <td> </td>', 'currency', new NoValueException(), ['currency' => 'EUR']],
             ['<th>Data</th> <td> </td>', 'currency', new NoValueException(), ['currency' => 'GBP']],
-            ['<th>Data</th> <td> </td>', 'array', new NoValueException(), ['safe' => false]],
+            ['<th>Data</th> <td> <ul></ul> </td>', 'array', new NoValueException(), ['safe' => false]],
             [
                 '<th>Data</th> <td><span class="label label-danger">no</span></td>',
                 'boolean',

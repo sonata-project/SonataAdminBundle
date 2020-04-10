@@ -64,7 +64,7 @@ interface ModelManagerInterface
     /**
      * @param string $class
      *
-     * @return object an object matching the criteria or null if none match
+     * @return object|null an object matching the criteria or null if none match
      */
     public function findOneBy($class, array $criteria = []);
 
@@ -99,6 +99,10 @@ interface ModelManagerInterface
 
     /**
      * Get the identifier for the model type of this class.
+     *
+     * NEXT_MAJOR: Remove this function in favor of getIdentifierFieldNames
+     *
+     * @deprecated Prefer to use getIdentifierFieldNames
      *
      * @param string $class fully qualified class name
      *
@@ -216,6 +220,8 @@ interface ModelManagerInterface
 
     /**
      * @param string $class
+     *
+     * @return object
      */
     public function modelReverseTransform($class, array $array = []);
 

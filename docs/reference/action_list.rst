@@ -88,6 +88,11 @@ Here is an example::
             // Here we specify which property is used to render the label of each entity in the list
             ->add('productCategories', null, [
                 'associated_property' => 'name'
+                // By default, sorting will be done on the associated property.
+                // To sort on another property, add the following:
+                'sort_field_mapping' => [
+                    'fieldName' => 'weight',
+                ],
             ])
 
             // you may also use dotted-notation to access
@@ -132,6 +137,7 @@ Options
 - ``associated_property`` (o): property path to retrieve the "string"
   representation of the collection element, or a closure with the element
   as argument and return a string.
+- ``sort_field_mapping`` (o): property of the collection element to sort on.
 - ``identifier`` (o): if set to true a link appears on the value to edit the element
 
 Available types and associated options

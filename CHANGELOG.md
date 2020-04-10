@@ -2,6 +2,23 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.64.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.63.0...3.64.0) - 2020-03-31
+### Added
+- Added a new option `link_parameters` for list action button. This option is
+  passed to `generateObjectUrl`.
+- Added configuration parameter
+`sonata_admin.options.legacy_twig_text_extension` in order to control which
+text extension will be used;
+- Added `truncate.cut` and `truncate.ellipsis` option in `list_html.html.twig`
+and `show_html.html.twig` views.
+
+### Deprecated
+- Constructing `SonataAdminExtension` with an instance of TranslationInterface
+  from components
+- Deprecated "truncate.preserve" and "truncate.separator" options in
+`list_html.html.twig` and `show_html.html.twig` views;
+- Not setting `sonata_admin.options.legacy_twig_text_extension` as `false`.
+
 ## [3.63.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.62.1...3.63.0) - 2020-03-21
 ### Added
 - Added SonataIntlBundle support back

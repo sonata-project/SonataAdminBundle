@@ -31,6 +31,7 @@ final class Pager implements PagerInterface
 
     public function getMaxPerPage()
     {
+        return 1;
     }
 
     public function setMaxPerPage($max)
@@ -56,5 +57,6 @@ final class Pager implements PagerInterface
 
     public function getMaxPageLinks()
     {
+        return 1;
     }
 }

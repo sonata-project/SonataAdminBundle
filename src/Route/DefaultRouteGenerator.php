@@ -63,7 +63,11 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
     ) {
         $arrayRoute = $this->generateMenuUrl($admin, $name, $parameters, $absolute);
 
-        return $this->router->generate($arrayRoute['route'], $arrayRoute['routeParameters'], $arrayRoute['routeAbsolute']);
+        return $this->router->generate(
+            $arrayRoute['route'],
+            $arrayRoute['routeParameters'],
+            $arrayRoute['routeAbsolute'] ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH
+        );
     }
 
     public function generateMenuUrl(
@@ -116,7 +120,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         return [
             'route' => $this->caches[$code],
             'routeParameters' => $parameters,
-            'routeAbsolute' => $absolute,
+            'routeAbsolute' => UrlGeneratorInterface::ABSOLUTE_URL === $absolute,
         ];
     }
 

@@ -87,8 +87,11 @@ class AdminTypeTest extends TypeTestCase
 
     public function testDotFields(): void
     {
+        $foo = new \stdClass();
+        $foo->bar = 1;
+
         $parentSubject = new \stdClass();
-        $parentSubject->foo = 1;
+        $parentSubject->foo = $foo;
 
         $parentAdmin = $this->prophesize(AdminInterface::class);
         $parentAdmin->getSubject()->shouldBeCalled()->willReturn($parentSubject);
@@ -107,7 +110,8 @@ class AdminTypeTest extends TypeTestCase
 
         $field = $this->prophesize(FieldDescriptionInterface::class);
         $field->getAssociationAdmin()->shouldBeCalled()->willReturn($admin->reveal());
-        $field->getFieldName()->shouldBeCalled()->willReturn('foo');
+        $field->getFieldName()->shouldBeCalled()->willReturn('bar');
+        $field->getParentAssociationMappings()->shouldBeCalled()->willReturn([['fieldName' => 'foo']]);
 
         $this->builder->add('foo.bar');
 
@@ -116,7 +120,7 @@ class AdminTypeTest extends TypeTestCase
             $type->buildForm($this->builder, [
                 'sonata_field_description' => $field->reveal(),
                 'delete' => false, // not needed
-                'property_path' => 'foo', // actual test case
+                'property_path' => 'bar', // actual test case
             ]);
         } catch (NoSuchPropertyException $exception) {
             $this->fail($exception->getMessage());
