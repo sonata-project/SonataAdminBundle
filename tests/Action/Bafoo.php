@@ -19,9 +19,6 @@ class Bafoo
 
     private $datetimeProp;
 
-    /**
-     * @return mixed
-     */
     public function getDateProp(): ?\DateTime
     {
         return $this->dateProp;
