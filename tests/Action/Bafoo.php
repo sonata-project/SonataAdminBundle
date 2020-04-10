@@ -45,9 +45,6 @@ class Bafoo
         return $this->datetimeProp;
     }
 
-    /**
-     * @param mixed $datetimeProp
-     */
     public function setDatetimeProp(\DateTime $datetimeProp): self
     {
         $this->datetimeProp = $datetimeProp;
