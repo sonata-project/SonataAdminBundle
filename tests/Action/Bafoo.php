@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
-/**
- * Class Bafoo.
- */
 class Bafoo
 {
     private $dateProp;
