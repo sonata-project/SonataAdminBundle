@@ -37,9 +37,6 @@ class Bafoo
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getDatetimeProp(): \DateTime
     {
         return $this->datetimeProp;
