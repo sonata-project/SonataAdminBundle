@@ -624,6 +624,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Returns the current child status.
      *
+     * NEXT_MAJOR: Rename the function isCurrentChild()
+     *
      * @return bool
      */
     public function getCurrentChild();

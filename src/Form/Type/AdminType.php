@@ -65,7 +65,17 @@ class AdminType extends AbstractType
                         $path = $this->getFieldDescription($options)->getFieldName().$options['property_path'];
                     }
 
-                    $subject = $p->getValue($parentSubject, $path);
+                    $parentPath = implode(
+                        '',
+                        array_map(
+                            static function (array $associationMapping): string {
+                                return $associationMapping['fieldName'].'.';
+                            },
+                            $this->getFieldDescription($options)->getParentAssociationMappings()
+                        )
+                    );
+
+                    $subject = $p->getValue($parentSubject, $parentPath.$path);
                     $builder->setData($subject);
                 }
             } catch (NoSuchIndexException $e) {

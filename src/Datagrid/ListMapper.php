@@ -74,6 +74,23 @@ class ListMapper extends BaseMapper
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = [])
     {
+        // Default sort on "associated_property"
+        if (isset($fieldDescriptionOptions['associated_property'])) {
+            if (!isset($fieldDescriptionOptions['sortable'])) {
+                $fieldDescriptionOptions['sortable'] = true;
+            }
+            if (!isset($fieldDescriptionOptions['sort_parent_association_mappings'])) {
+                $fieldDescriptionOptions['sort_parent_association_mappings'] = [[
+                    'fieldName' => $name,
+                ]];
+            }
+            if (!isset($fieldDescriptionOptions['sort_field_mapping'])) {
+                $fieldDescriptionOptions['sort_field_mapping'] = [
+                    'fieldName' => $fieldDescriptionOptions['associated_property'],
+                ];
+            }
+        }
+
         // Ensure batch and action pseudo-fields are tagged as virtual
         if (\in_array($type, ['actions', 'batch', 'select'], true)) {
             $fieldDescriptionOptions['virtual_field'] = true;
