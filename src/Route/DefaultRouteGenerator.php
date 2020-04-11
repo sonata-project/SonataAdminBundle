@@ -50,18 +50,18 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         $this->cache = $cache;
     }
 
-    public function generate($name, array $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generate($name, array $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        return $this->router->generate($name, $parameters, $absolute);
+        return $this->router->generate($name, $parameters, $referenceType);
     }
 
     public function generateUrl(
         AdminInterface $admin,
         $name,
         array $parameters = [],
-        $absolute = UrlGeneratorInterface::ABSOLUTE_PATH
+        $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
     ) {
-        $arrayRoute = $this->generateMenuUrl($admin, $name, $parameters, $absolute);
+        $arrayRoute = $this->generateMenuUrl($admin, $name, $parameters, $referenceType);
 
         return $this->router->generate(
             $arrayRoute['route'],
@@ -74,7 +74,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         AdminInterface $admin,
         $name,
         array $parameters = [],
-        $absolute = UrlGeneratorInterface::ABSOLUTE_PATH
+        $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
     ) {
         // if the admin is a child we automatically append the parent's id
         if ($admin->isChild() && $admin->hasRequest()) {
@@ -120,7 +120,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         return [
             'route' => $this->caches[$code],
             'routeParameters' => $parameters,
-            'routeAbsolute' => UrlGeneratorInterface::ABSOLUTE_URL === $absolute,
+            'routeAbsolute' => UrlGeneratorInterface::ABSOLUTE_URL === $referenceType,
         ];
     }
 
