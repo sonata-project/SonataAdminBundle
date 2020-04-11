@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Admin;
 
 use Doctrine\Common\Util\ClassUtils;
-use Knp\Menu\FactoryInterface as MenuFactoryInterface;
+use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
@@ -375,12 +374,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $configurationPool;
 
     /**
-     * @var MenuItemInterface
+     * @var ItemInterface
      */
     protected $menu;
 
     /**
-     * @var MenuFactoryInterface
+     * @var FactoryInterface
      */
     protected $menuFactory;
 
@@ -1227,21 +1226,21 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return ($admin->getBaseRouteName().'_'.$name) === $route;
     }
 
-    public function generateObjectUrl($name, $object, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generateObjectUrl($name, $object, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
     {
         $parameters['id'] = $this->getUrlsafeIdentifier($object);
 
-        return $this->generateUrl($name, $parameters, $absolute);
+        return $this->generateUrl($name, $parameters, $referenceType);
     }
 
-    public function generateUrl($name, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generateUrl($name, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        return $this->routeGenerator->generateUrl($this, $name, $parameters, $absolute);
+        return $this->routeGenerator->generateUrl($this, $name, $parameters, $referenceType);
     }
 
-    public function generateMenuUrl($name, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generateMenuUrl($name, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        return $this->routeGenerator->generateMenuUrl($this, $name, $parameters, $absolute);
+        return $this->routeGenerator->generateMenuUrl($this, $name, $parameters, $referenceType);
     }
 
     final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry)
@@ -2005,7 +2004,7 @@ EOT;
      *
      * @return array
      */
-    public function buildBreadcrumbs($action, MenuItemInterface $menu = null)
+    public function buildBreadcrumbs($action, ItemInterface $menu = null)
     {
         @trigger_error(
             'The '.__METHOD__.' method is deprecated since version 3.2 and will be removed in 4.0.',
@@ -2496,7 +2495,7 @@ EOT;
         return $this->extensions;
     }
 
-    public function setMenuFactory(MenuFactoryInterface $menuFactory)
+    public function setMenuFactory(FactoryInterface $menuFactory)
     {
         $this->menuFactory = $menuFactory;
     }
@@ -2950,7 +2949,7 @@ EOT;
      *
      * @deprecated Use configureTabMenu instead
      */
-    protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    protected function configureSideMenu(ItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
     }
 
@@ -2959,7 +2958,7 @@ EOT;
      *
      * @param string $action
      */
-    protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    protected function configureTabMenu(ItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
         // Use configureSideMenu not to mess with previous overrides
         // NEXT_MAJOR: remove this line
