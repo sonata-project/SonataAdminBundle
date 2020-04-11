@@ -2417,7 +2417,8 @@ EOT;
 
     public function isGranted($name, $object = null)
     {
-        $key = md5(json_encode($name).($object ? '/'.spl_object_hash($object) : ''));
+        $objectRef = $object ? '/'.spl_object_hash($object).'#'.$this->id($object) : '';
+        $key = md5(json_encode($name).$objectRef);
 
         if (!\array_key_exists($key, $this->cacheIsGranted)) {
             $this->cacheIsGranted[$key] = $this->securityHandler->isGranted($this, $name, $object ?: $this);
