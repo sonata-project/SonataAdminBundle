@@ -1294,35 +1294,56 @@ class AdminTest extends TestCase
     public function testIsGranted(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'Acme\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager
+            ->method('getNormalizedIdentifier')
+            ->willReturnCallback(static function (?object $entity = null): ?string {
+                return $entity ? $entity->id : null;
+            });
 
-        $entity = new \stdClass();
+        $admin->setModelManager($modelManager);
+
+        $entity1 = new \stdClass();
+        $entity1->id = '1';
 
         $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
         $securityHandler
+            ->expects($this->exactly(6))
             ->method('isGranted')
             ->willReturnCallback(static function (
                 AdminInterface $adminIn,
                 string $attributes,
-                $object = null
+                ?object $object = null
             ) use (
                 $admin,
-                $entity
+                $entity1
             ): bool {
-                if ($admin === $adminIn && 'FOO' === $attributes) {
-                    if (($object === $admin) || ($object === $entity)) {
-                        return true;
-                    }
-                }
-
-                return false;
+                return $admin === $adminIn && 'FOO' === $attributes &&
+                    ($object === $admin || $object === $entity1);
             });
 
         $admin->setSecurityHandler($securityHandler);
 
         $this->assertTrue($admin->isGranted('FOO'));
-        $this->assertTrue($admin->isGranted('FOO', $entity));
+        $this->assertTrue($admin->isGranted('FOO'));
+        $this->assertTrue($admin->isGranted('FOO', $entity1));
+        $this->assertTrue($admin->isGranted('FOO', $entity1));
         $this->assertFalse($admin->isGranted('BAR'));
-        $this->assertFalse($admin->isGranted('BAR', $entity));
+        $this->assertFalse($admin->isGranted('BAR'));
+        $this->assertFalse($admin->isGranted('BAR', $entity1));
+        $this->assertFalse($admin->isGranted('BAR', $entity1));
+
+        $entity2 = new \stdClass();
+        $entity2->id = '2';
+
+        $this->assertFalse($admin->isGranted('BAR', $entity2));
+        $this->assertFalse($admin->isGranted('BAR', $entity2));
+
+        $entity3 = new \stdClass();
+        $entity3->id = '3';
+
+        $this->assertFalse($admin->isGranted('BAR', $entity3));
+        $this->assertFalse($admin->isGranted('BAR', $entity3));
     }
 
     public function testSupportsPreviewMode(): void
