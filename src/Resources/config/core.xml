@@ -47,13 +47,20 @@
         <service id="sonata.admin.label.strategy.form_component" class="Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy" public="true"/>
         <service id="Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy" alias="sonata.admin.label.strategy.form_component"/>
         <!-- Translation extractor -->
+        <!-- NEXT_MAJOR: Remove the sonata.admin.translator.extractor.jms_translator_bundle service  -->
         <service id="sonata.admin.translator.extractor.jms_translator_bundle" class="Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor" public="true">
+            <deprecated>The service "%service_id%" is deprecated in favor of the "Sonata\AdminBundle\Translator\Extractor\AdminExtractor" service since version 3.x and will be removed in 4.0.</deprecated>
             <tag name="jms_translation.extractor" alias="sonata_admin"/>
             <argument type="service" id="sonata.admin.pool"/>
             <argument type="service" id="logger" on-invalid="ignore"/>
             <call method="setBreadcrumbsBuilder">
                 <argument type="service" id="sonata.admin.breadcrumbs_builder"/>
             </call>
+        </service>
+        <service id="Sonata\AdminBundle\Translator\Extractor\AdminExtractor">
+            <tag name="translation.extractor" alias="sonata_admin"/>
+            <argument type="service" id="sonata.admin.pool"/>
+            <argument type="service" id="sonata.admin.breadcrumbs_builder"/>
         </service>
         <!-- controller as services -->
         <service id="sonata.admin.controller.admin" class="Sonata\AdminBundle\Controller\HelperController" public="true">

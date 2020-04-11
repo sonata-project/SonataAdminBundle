@@ -178,7 +178,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             ->replaceArgument(0, $classes)
             ->replaceArgument(1, $config['options']);
 
-        // remove non used service
+        // NEXT_MAJOR: Remove this block
         if (!isset($bundles['JMSTranslationBundle'])) {
             $container->removeDefinition('sonata.admin.translator.extractor.jms_translator_bundle');
         }

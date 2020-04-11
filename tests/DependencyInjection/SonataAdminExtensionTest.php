@@ -33,6 +33,7 @@ use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
+use Sonata\AdminBundle\Translator\Extractor\AdminExtractor;
 use Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
@@ -97,6 +98,7 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
             MutableTemplateRegistryInterface::class,
             TemplateRegistry::class
         );
+        $this->assertContainerBuilderHasService(AdminExtractor::class);
     }
 
     /**

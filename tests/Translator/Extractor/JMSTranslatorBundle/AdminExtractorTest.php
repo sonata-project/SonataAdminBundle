@@ -27,6 +27,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Test for AdminExtractor.
  *
+ * NEXT_MAJOR: Remove this class.
+ *
+ * @group legacy
+ *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
 class AdminExtractorTest extends TestCase
