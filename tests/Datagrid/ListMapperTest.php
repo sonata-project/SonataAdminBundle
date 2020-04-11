@@ -48,7 +48,7 @@ class ListMapperTest extends TestCase
 
     protected function setUp(): void
     {
-        $listBuilder = $this->createMock(ListBuilderInterface::class);
+        $listBuilder = $this->createStub(ListBuilderInterface::class);
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
         $this->admin = $this->createMock(AbstractAdmin::class);
 
@@ -63,7 +63,7 @@ class ListMapperTest extends TestCase
                 $list->add($fieldDescription);
             });
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = $this->createStub(ModelManagerInterface::class);
 
         $modelManager
             ->method('getNewFieldDescriptionInstance')

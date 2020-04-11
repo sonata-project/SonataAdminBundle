@@ -30,7 +30,7 @@ class ExporterTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $source = $this->createMock(SourceIteratorInterface::class);
+        $source = $this->createStub(SourceIteratorInterface::class);
 
         $exporter = new Exporter();
         $exporter->getResponse('foo', 'foo', $source);

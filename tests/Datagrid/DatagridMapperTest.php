@@ -48,18 +48,18 @@ class DatagridMapperTest extends TestCase
 
     protected function setUp(): void
     {
-        $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
+        $datagridBuilder = $this->createStub(DatagridBuilderInterface::class);
 
-        $proxyQuery = $this->createMock(ProxyQueryInterface::class);
-        $pager = $this->createMock(PagerInterface::class);
-        $fieldDescriptionCollection = $this->createMock(FieldDescriptionCollection::class);
+        $proxyQuery = $this->createStub(ProxyQueryInterface::class);
+        $pager = $this->createStub(PagerInterface::class);
+        $fieldDescriptionCollection = $this->createStub(FieldDescriptionCollection::class);
         $formBuilder = $this->getMockBuilder(FormBuilder::class)
                      ->disableOriginalConstructor()
                      ->getMock();
 
         $this->datagrid = new Datagrid($proxyQuery, $fieldDescriptionCollection, $pager, $formBuilder, []);
 
-        $admin = $this->createMock(AdminInterface::class);
+        $admin = $this->createStub(AdminInterface::class);
 
         $datagridBuilder
             ->method('addFilter')
@@ -81,7 +81,7 @@ class DatagridMapperTest extends TestCase
                 $datagrid->addFilter($filter);
             });
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = $this->createStub(ModelManagerInterface::class);
 
         $modelManager
             ->method('getNewFieldDescriptionInstance')

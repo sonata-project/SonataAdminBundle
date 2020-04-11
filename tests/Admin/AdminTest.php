@@ -845,7 +845,7 @@ class AdminTest extends TestCase
 
         $this->assertNull($admin->getLabelTranslatorStrategy());
 
-        $labelTranslatorStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
+        $labelTranslatorStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
         $admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
         $this->assertSame($labelTranslatorStrategy, $admin->getLabelTranslatorStrategy());
     }
@@ -856,7 +856,7 @@ class AdminTest extends TestCase
 
         $this->assertNull($admin->getRouteBuilder());
 
-        $routeBuilder = $this->createMock(RouteBuilderInterface::class);
+        $routeBuilder = $this->createStub(RouteBuilderInterface::class);
         $admin->setRouteBuilder($routeBuilder);
         $this->assertSame($routeBuilder, $admin->getRouteBuilder());
     }
@@ -867,7 +867,7 @@ class AdminTest extends TestCase
 
         $this->assertNull($admin->getMenuFactory());
 
-        $menuFactory = $this->createMock(FactoryInterface::class);
+        $menuFactory = $this->createStub(FactoryInterface::class);
         $admin->setMenuFactory($menuFactory);
         $this->assertSame($menuFactory, $admin->getMenuFactory());
     }
@@ -878,8 +878,8 @@ class AdminTest extends TestCase
 
         $this->assertSame([], $admin->getExtensions());
 
-        $adminExtension1 = $this->createMock(AdminExtensionInterface::class);
-        $adminExtension2 = $this->createMock(AdminExtensionInterface::class);
+        $adminExtension1 = $this->createStub(AdminExtensionInterface::class);
+        $adminExtension2 = $this->createStub(AdminExtensionInterface::class);
 
         $admin->addExtension($adminExtension1);
         $admin->addExtension($adminExtension2);
@@ -925,7 +925,7 @@ class AdminTest extends TestCase
 
         $this->assertNull($admin->getSecurityHandler());
 
-        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
+        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
         $admin->setSecurityHandler($securityHandler);
         $this->assertSame($securityHandler, $admin->getSecurityHandler());
     }
@@ -961,7 +961,7 @@ class AdminTest extends TestCase
 
         $this->assertNull($admin->getModelManager());
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = $this->createStub(ModelManagerInterface::class);
 
         $admin->setModelManager($modelManager);
         $this->assertSame($modelManager, $admin->getModelManager());
@@ -1012,7 +1012,7 @@ class AdminTest extends TestCase
 
         $this->assertNull($admin->getRouteGenerator());
 
-        $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
+        $routeGenerator = $this->createStub(RouteGeneratorInterface::class);
 
         $admin->setRouteGenerator($routeGenerator);
         $this->assertSame($routeGenerator, $admin->getRouteGenerator());
@@ -1038,7 +1038,7 @@ class AdminTest extends TestCase
 
         $this->assertNull($admin->getShowBuilder());
 
-        $showBuilder = $this->createMock(ShowBuilderInterface::class);
+        $showBuilder = $this->createStub(ShowBuilderInterface::class);
 
         $admin->setShowBuilder($showBuilder);
         $this->assertSame($showBuilder, $admin->getShowBuilder());
@@ -1050,7 +1050,7 @@ class AdminTest extends TestCase
 
         $this->assertNull($admin->getListBuilder());
 
-        $listBuilder = $this->createMock(ListBuilderInterface::class);
+        $listBuilder = $this->createStub(ListBuilderInterface::class);
 
         $admin->setListBuilder($listBuilder);
         $this->assertSame($listBuilder, $admin->getListBuilder());
@@ -1062,7 +1062,7 @@ class AdminTest extends TestCase
 
         $this->assertNull($admin->getDatagridBuilder());
 
-        $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
+        $datagridBuilder = $this->createStub(DatagridBuilderInterface::class);
 
         $admin->setDatagridBuilder($datagridBuilder);
         $this->assertSame($datagridBuilder, $admin->getDatagridBuilder());
@@ -1074,7 +1074,7 @@ class AdminTest extends TestCase
 
         $this->assertNull($admin->getFormContractor());
 
-        $formContractor = $this->createMock(FormContractorInterface::class);
+        $formContractor = $this->createStub(FormContractorInterface::class);
 
         $admin->setFormContractor($formContractor);
         $this->assertSame($formContractor, $admin->getFormContractor());
@@ -1121,7 +1121,7 @@ class AdminTest extends TestCase
 
         $this->assertNull($admin->getTranslator());
 
-        $translator = $this->createMock(TranslatorInterface::class);
+        $translator = $this->createStub(TranslatorInterface::class);
 
         $admin->setTranslator($translator);
         $this->assertSame($translator, $admin->getTranslator());
@@ -1297,7 +1297,7 @@ class AdminTest extends TestCase
 
         $entity = new \stdClass();
 
-        $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
+        $securityHandler = $this->createStub(AclSecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
             ->willReturnCallback(static function (
@@ -1345,7 +1345,7 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'Acme\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
+        $securityHandler = $this->createStub(AclSecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
             ->willReturnCallback(static function (AdminInterface $adminIn, array $attributes, $object = null) use ($admin): bool {
@@ -1449,7 +1449,7 @@ class AdminTest extends TestCase
             }
         };
 
-        $filterPersister = $this->createMock(FilterPersisterInterface::class);
+        $filterPersister = $this->createStub(FilterPersisterInterface::class);
 
         $admin->setFilterPersister($filterPersister);
         $this->assertTrue($admin->persistFilters());
@@ -1593,16 +1593,16 @@ class AdminTest extends TestCase
         $modelAdmin = new ModelAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'Sonata\FooBundle\Controller\ModelAdminController');
         $object = new \stdClass();
 
-        $labelTranslatorStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
+        $labelTranslatorStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
         $modelAdmin->setLabelTranslatorStrategy($labelTranslatorStrategy);
 
-        $validator = $this->createMock(ValidatorInterface::class);
+        $validator = $this->createStub(ValidatorInterface::class);
         $validator
                 ->method('getMetadataFor')
                 ->willReturn($this->createMock(MemberMetadata::class));
         $modelAdmin->setValidator($validator);
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = $this->createStub(ModelManagerInterface::class);
         $modelManager
             ->method('getNewFieldDescriptionInstance')
             ->willReturn(new FieldDescription());
@@ -1614,7 +1614,7 @@ class AdminTest extends TestCase
                 ->method('preValidate')
                 ->with($this->identicalTo($object));
 
-        $event = $this->createMock(FormEvent::class);
+        $event = $this->createStub(FormEvent::class);
         $event
                 ->method('getData')
                 ->willReturn($object);
@@ -1637,7 +1637,7 @@ class AdminTest extends TestCase
                     $this->greaterThan(0)
                 );
 
-        $formContractor = $this->createMock(FormContractorInterface::class);
+        $formContractor = $this->createStub(FormContractorInterface::class);
         $formContractor
                 ->method('getDefaultOptions')
                 ->willReturn([]);
@@ -1687,8 +1687,8 @@ class AdminTest extends TestCase
         $commentAdmin->setParentAssociationMapping('post.author');
         $commentAdmin->setParent($postAdmin);
 
-        $request = $this->createMock(Request::class);
-        $query = $this->createMock(ParameterBag::class);
+        $request = $this->createStub(Request::class);
+        $query = $this->createStub(ParameterBag::class);
         $query
             ->method('get')
             ->willReturn([
@@ -1705,7 +1705,7 @@ class AdminTest extends TestCase
 
         $commentAdmin->setRequest($request);
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = $this->createStub(ModelManagerInterface::class);
         $modelManager
             ->method('getDefaultSortValues')
             ->willReturn([]);
@@ -1758,14 +1758,14 @@ class AdminTest extends TestCase
 
         $modelAdmin->setModelManager($modelManager);
 
-        $pager = $this->createMock(PagerInterface::class);
+        $pager = $this->createStub(PagerInterface::class);
 
-        $datagrid = $this->createMock(DatagridInterface::class);
+        $datagrid = $this->createStub(DatagridInterface::class);
         $datagrid->expects($this->once())
             ->method('getPager')
             ->willReturn($pager);
 
-        $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
+        $datagridBuilder = $this->createStub(DatagridBuilderInterface::class);
         $datagridBuilder->expects($this->once())
             ->method('getBaseDatagrid')
             ->with($this->identicalTo($modelAdmin), [])
@@ -1889,7 +1889,7 @@ class AdminTest extends TestCase
 
         $comment = new Comment();
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = $this->createStub(ModelManagerInterface::class);
         $modelManager
             ->method('find')
             ->with('NewsBundle\Entity\Comment', $adminId)
@@ -1994,7 +1994,7 @@ class AdminTest extends TestCase
 
         $pathInfo = new PathInfoBuilder($this->createMock(AuditManagerInterface::class));
 
-        $labelTranslatorStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
+        $labelTranslatorStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
         $labelTranslatorStrategy
             ->method('getLabel')
             ->willReturnCallback(static function (string $label, string $context = '', string $type = ''): string {
@@ -2006,7 +2006,7 @@ class AdminTest extends TestCase
         $admin->setTranslationDomain('SonataAdminBundle');
         $admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
 
-        $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
+        $routeGenerator = $this->createStub(RouteGeneratorInterface::class);
         $routeGenerator
             ->expects($this->once())
             ->method('hasAdminRoute')
@@ -2014,7 +2014,7 @@ class AdminTest extends TestCase
             ->willReturn(true);
         $admin->setRouteGenerator($routeGenerator);
 
-        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
+        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
             ->willReturnCallback(static function (AdminInterface $adminIn, string $attributes, $object = null) use ($admin): bool {
@@ -2075,7 +2075,7 @@ class AdminTest extends TestCase
 
         $admin->setTemplateRegistry($templateRegistry->reveal());
 
-        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
+        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
             ->willReturnCallback(static function (AdminInterface $adminIn, string $attributes, $object = null) use ($admin): bool {
@@ -2094,8 +2094,8 @@ class AdminTest extends TestCase
 
         $subjectId = uniqid();
 
-        $request = $this->createMock(Request::class);
-        $query = $this->createMock(ParameterBag::class);
+        $request = $this->createStub(Request::class);
+        $query = $this->createStub(ParameterBag::class);
         $query
             ->method('get')
             ->with($this->equalTo('filter'))
@@ -2120,7 +2120,7 @@ class AdminTest extends TestCase
 
         $admin->setRequest($request);
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = $this->createStub(ModelManagerInterface::class);
         $modelManager
             ->method('getDefaultSortValues')
             ->willReturn([]);
@@ -2184,7 +2184,7 @@ class AdminTest extends TestCase
         $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
             'admin.my_code', 'My\Class', 'MyBundle\ClassAdminController',
         ]);
-        $this->assertSame($admin, $admin->setBreadcrumbsBuilder($builder = $this->createMock(
+        $this->assertSame($admin, $admin->setBreadcrumbsBuilder($builder = $this->createStub(
             BreadcrumbsBuilderInterface::class
         )));
         $this->assertSame($builder, $admin->getBreadcrumbsBuilder());
@@ -2214,7 +2214,7 @@ class AdminTest extends TestCase
         ]);
         $builder = $this->prophesize(BreadcrumbsBuilderInterface::class);
         $action = 'myaction';
-        $menu = $this->createMock(ItemInterface::class);
+        $menu = $this->createStub(ItemInterface::class);
         $builder->buildBreadcrumbs($admin, $action, $menu)
             ->shouldBeCalledTimes(1)
             ->willReturn($menu);
@@ -2235,7 +2235,7 @@ class AdminTest extends TestCase
         $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
             'admin.my_code', 'My\Class', 'MyBundle\ClassAdminController',
         ]);
-        $query = $this->createMock(ProxyQueryInterface::class);
+        $query = $this->createStub(ProxyQueryInterface::class);
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager->expects($this->once())
             ->method('createQuery')
@@ -2248,7 +2248,7 @@ class AdminTest extends TestCase
 
     public function testGetDataSourceIterator(): void
     {
-        $datagrid = $this->createMock(DatagridInterface::class);
+        $datagrid = $this->createStub(DatagridInterface::class);
         $datagrid->method('buildPager');
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
@@ -2468,7 +2468,7 @@ class AdminTest extends TestCase
 
         $postAdmin->method('getObject')->willReturn($post);
 
-        $formBuilder = $this->createMock(FormBuilderInterface::class);
+        $formBuilder = $this->createStub(FormBuilderInterface::class);
         $formBuilder->method('getForm')->willReturn(null);
 
         $tagAdmin = $this->getMockBuilder(TagAdmin::class)
@@ -2486,7 +2486,7 @@ class AdminTest extends TestCase
         $tag = new Tag();
         $tagAdmin->setSubject($tag);
 
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
         $tagAdmin->setRequest($request);
 
         $configurationPool = $this->getMockBuilder(Pool::class)

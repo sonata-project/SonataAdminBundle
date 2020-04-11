@@ -173,7 +173,7 @@ class DefaultRouteGeneratorTest extends TestCase
         // no request attached in this test, so this will not be used
         $parentAdmin->expects($this->never())->method('getPersistentParameters')->willReturn(['from' => 'parent']);
 
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
         $request->attributes = $this->createMock(ParameterBag::class);
         $request->attributes->method('has')->willReturn(true);
         $request->attributes
@@ -324,7 +324,7 @@ class DefaultRouteGeneratorTest extends TestCase
         // no request attached in this test, so this will not be used
         $parentAdmin->expects($this->never())->method('getPersistentParameters')->willReturn(['from' => 'parent']);
 
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
         $request->attributes = $this->createMock(ParameterBag::class);
         $request->attributes->method('has')->willReturn(true);
         $request->attributes

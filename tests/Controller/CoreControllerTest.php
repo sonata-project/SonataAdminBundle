@@ -42,7 +42,7 @@ class CoreControllerTest extends TestCase
         $pool = new Pool($container, 'title', 'logo.png');
         $pool->setTemplateRegistry($templateRegistry->reveal());
 
-        $twig = $this->createMock(Environment::class);
+        $twig = $this->createStub(Environment::class);
         $request = new Request();
 
         $requestStack = new RequestStack();
@@ -81,7 +81,7 @@ class CoreControllerTest extends TestCase
         $pool = new Pool($container, 'title', 'logo.png');
         $pool->setTemplateRegistry($templateRegistry->reveal());
 
-        $twig = $this->createMock(Environment::class);
+        $twig = $this->createStub(Environment::class);
         $request = new Request();
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 

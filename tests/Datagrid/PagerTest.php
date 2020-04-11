@@ -141,7 +141,7 @@ class PagerTest extends TestCase
 
     public function testGetQuery(): void
     {
-        $query = $this->createMock(ProxyQueryInterface::class);
+        $query = $this->createStub(ProxyQueryInterface::class);
 
         $this->pager->setQuery($query);
         $this->assertSame($query, $this->pager->getQuery());
@@ -367,7 +367,7 @@ class PagerTest extends TestCase
 
         $this->callMethod($this->pager, 'setNbResults', [3]);
 
-        $query = $this->createMock(ProxyQueryInterface::class);
+        $query = $this->createStub(ProxyQueryInterface::class);
 
         $query
             ->method('setFirstResult')
@@ -495,7 +495,7 @@ class PagerTest extends TestCase
 
         $this->callMethod($this->pager, 'setNbResults', [3]);
 
-        $query = $this->createMock(ProxyQueryInterface::class);
+        $query = $this->createStub(ProxyQueryInterface::class);
 
         $query
             ->method('setFirstResult')
@@ -553,7 +553,7 @@ class PagerTest extends TestCase
 
         $this->callMethod($this->pager, 'setNbResults', [3]);
 
-        $query = $this->createMock(ProxyQueryInterface::class);
+        $query = $this->createStub(ProxyQueryInterface::class);
 
         $query
             ->method('setFirstResult')

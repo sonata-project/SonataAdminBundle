@@ -223,7 +223,7 @@ class PoolTest extends TestCase
             ->method('hasChild')
             ->willReturn(true);
 
-        $childAdmin = $this->createMock(AdminInterface::class);
+        $childAdmin = $this->createStub(AdminInterface::class);
 
         $adminMock->expects($this->once())
             ->method('getChild')
@@ -244,7 +244,7 @@ class PoolTest extends TestCase
      */
     public function testGetAdminByAdminCodeWithInvalidCode(): void
     {
-        $adminMock = $this->createMock(AdminInterface::class);
+        $adminMock = $this->createStub(AdminInterface::class);
         $adminMock
             ->method('hasChild')
             ->willReturn(false);
@@ -289,7 +289,7 @@ class PoolTest extends TestCase
      */
     public function testGetAdminByAdminCodeWithCodeNotChild(): void
     {
-        $adminMock = $this->createMock(AdminInterface::class);
+        $adminMock = $this->createStub(AdminInterface::class);
         $adminMock
             ->method('hasChild')
             ->willReturn(false);
@@ -385,7 +385,7 @@ class PoolTest extends TestCase
         $adminMock = $this->createMock(AdminInterface::class);
 
         if (false !== strpos($adminId, '|')) {
-            $childAdminMock = $this->createMock(AdminInterface::class);
+            $childAdminMock = $this->createStub(AdminInterface::class);
             $adminMock
                 ->method('hasChild')
                 ->willReturn(true);

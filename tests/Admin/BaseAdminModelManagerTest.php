@@ -60,7 +60,7 @@ class BaseAdminModelManagerTest extends TestCase
 
     public function testCreateQuery(): void
     {
-        $query = $this->createMock(ProxyQueryInterface::class);
+        $query = $this->createStub(ProxyQueryInterface::class);
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
         $modelManager
             ->expects($this->once())

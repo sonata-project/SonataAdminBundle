@@ -43,7 +43,7 @@ class BaseGroupedMapperTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $labelStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
+        $labelStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
         $labelStrategy
             ->method('getLabel')
             ->willReturnCallback(static function (string $label): string {

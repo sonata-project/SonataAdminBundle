@@ -32,12 +32,12 @@ class ListAdminCommandTest extends TestCase
 
         $container = new Container();
 
-        $admin1 = $this->createMock(AdminInterface::class);
+        $admin1 = $this->createStub(AdminInterface::class);
         $admin1
             ->method('getClass')
             ->willReturn('Acme\Entity\Foo');
 
-        $admin2 = $this->createMock(AdminInterface::class);
+        $admin2 = $this->createStub(AdminInterface::class);
         $admin2
             ->method('getClass')
             ->willReturn('Acme\Entity\Bar');

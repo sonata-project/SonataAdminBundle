@@ -556,7 +556,7 @@ class ShowMapperTest extends TestCase
             });
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
         $this->admin = new CleanAdmin('code', 'class', 'controller');
-        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
+        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
             ->willReturnCallback(static function (AdminInterface $admin, string $attributes, $object = null): bool {

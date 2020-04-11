@@ -82,7 +82,7 @@ class ExplainAdminCommandTest extends TestCase
             ->method('getRoutes')
             ->willReturn($routeCollection);
 
-        $fieldDescription1 = $this->createMock(FieldDescriptionInterface::class);
+        $fieldDescription1 = $this->createStub(FieldDescriptionInterface::class);
 
         $fieldDescription1
             ->method('getType')
@@ -92,7 +92,7 @@ class ExplainAdminCommandTest extends TestCase
             ->method('getTemplate')
             ->willReturn('@SonataAdmin/CRUD/foo_text.html.twig');
 
-        $fieldDescription2 = $this->createMock(FieldDescriptionInterface::class);
+        $fieldDescription2 = $this->createStub(FieldDescriptionInterface::class);
 
         $fieldDescription2
             ->method('getType')
@@ -134,7 +134,7 @@ class ExplainAdminCommandTest extends TestCase
         $this->admin
             ->method('getParent')
             ->willReturnCallback(function () {
-                $adminParent = $this->createMock(AdminInterface::class);
+                $adminParent = $this->createStub(AdminInterface::class);
 
                 $adminParent
                     ->method('getCode')
@@ -157,7 +157,7 @@ class ExplainAdminCommandTest extends TestCase
 
     public function testExecute(): void
     {
-        $metadata = $this->createMock(MetadataInterface::class);
+        $metadata = $this->createStub(MetadataInterface::class);
 
         $this->validatorFactory->expects($this->once())
             ->method('getMetadataFor')
@@ -180,25 +180,25 @@ class ExplainAdminCommandTest extends TestCase
 
         $metadata->getters = ['email' => $getterMetadata];
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = $this->createStub(ModelManagerInterface::class);
 
         $this->admin
             ->method('getModelManager')
             ->willReturn($modelManager);
 
-        $formBuilder = $this->createMock(FormBuilderInterface::class);
+        $formBuilder = $this->createStub(FormBuilderInterface::class);
 
         $this->admin
              ->method('getFormBuilder')
              ->willReturn($formBuilder);
 
-        $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
+        $datagridBuilder = $this->createStub(DatagridBuilderInterface::class);
 
         $this->admin
             ->method('getDatagridBuilder')
             ->willReturn($datagridBuilder);
 
-        $listBuilder = $this->createMock(ListBuilderInterface::class);
+        $listBuilder = $this->createStub(ListBuilderInterface::class);
 
         $this->admin
             ->method('getListBuilder')
@@ -220,7 +220,7 @@ class ExplainAdminCommandTest extends TestCase
 
     public function testExecuteEmptyValidator(): void
     {
-        $metadata = $this->createMock(MetadataInterface::class);
+        $metadata = $this->createStub(MetadataInterface::class);
 
         $this->validatorFactory->expects($this->once())
             ->method('getMetadataFor')
@@ -230,25 +230,25 @@ class ExplainAdminCommandTest extends TestCase
         $metadata->properties = [];
         $metadata->getters = [];
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = $this->createStub(ModelManagerInterface::class);
 
         $this->admin
             ->method('getModelManager')
             ->willReturn($modelManager);
 
-        $formBuilder = $this->createMock(FormBuilderInterface::class);
+        $formBuilder = $this->createStub(FormBuilderInterface::class);
 
         $this->admin
              ->method('getFormBuilder')
              ->willReturn($formBuilder);
 
-        $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
+        $datagridBuilder = $this->createStub(DatagridBuilderInterface::class);
 
         $this->admin
             ->method('getDatagridBuilder')
             ->willReturn($datagridBuilder);
 
-        $listBuilder = $this->createMock(ListBuilderInterface::class);
+        $listBuilder = $this->createStub(ListBuilderInterface::class);
 
         $this->admin
             ->method('getListBuilder')

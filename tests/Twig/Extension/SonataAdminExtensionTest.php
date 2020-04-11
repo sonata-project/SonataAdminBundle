@@ -120,7 +120,7 @@ class SonataAdminExtensionTest extends TestCase
     {
         date_default_timezone_set('Europe/London');
 
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
 
         $this->pool = new Pool($container, '', '');
         $this->pool->setAdminServiceIds(['sonata_admin_foo_service']);
@@ -173,7 +173,7 @@ class SonataAdminExtensionTest extends TestCase
         );
         $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
 
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
         $request->method('get')->with('_sonata_admin')->willReturn('sonata_admin_foo_service');
 
         $loader = new StubFilesystemLoader([
@@ -2215,7 +2215,7 @@ EOT
 
     public function testGetValueFromFieldDescriptionWithRemoveLoopException(): void
     {
-        $object = $this->createMock(\ArrayAccess::class);
+        $object = $this->createStub(\ArrayAccess::class);
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
 
         $this->expectException(\RuntimeException::class);
@@ -2842,9 +2842,9 @@ EOT
 
     private function mockExtensionContext(string $locale): array
     {
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
         $request->method('getLocale')->willReturn($locale);
-        $appVariable = $this->createMock(AppVariable::class);
+        $appVariable = $this->createStub(AppVariable::class);
         $appVariable->method('getRequest')->willReturn($request);
 
         return ['app' => $appVariable];

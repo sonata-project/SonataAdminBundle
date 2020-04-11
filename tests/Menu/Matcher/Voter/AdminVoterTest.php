@@ -95,7 +95,7 @@ class AdminVoterTest extends AbstractVoterTest
      */
     private function getAdmin(string $code, bool $list = false, bool $granted = false): AbstractAdmin
     {
-        $admin = $this->createMock(AbstractAdmin::class);
+        $admin = $this->createStub(AbstractAdmin::class);
         $admin
             ->method('hasRoute')
             ->with('list')
@@ -127,7 +127,7 @@ class AdminVoterTest extends AbstractVoterTest
         bool $list = false,
         bool $granted = false
     ): AbstractAdmin {
-        $parentAdmin = $this->createMock(AbstractAdmin::class);
+        $parentAdmin = $this->createStub(AbstractAdmin::class);
         $parentAdmin
             ->method('hasRoute')
             ->with('list')
@@ -143,7 +143,7 @@ class AdminVoterTest extends AbstractVoterTest
             ->willReturn($parentCode)
         ;
 
-        $childAdmin = $this->createMock(AbstractAdmin::class);
+        $childAdmin = $this->createStub(AbstractAdmin::class);
         $childAdmin
             ->method('getBaseCodeRoute')
             ->willReturn($parentCode.'|'.$childCode)

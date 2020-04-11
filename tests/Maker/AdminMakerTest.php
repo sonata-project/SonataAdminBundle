@@ -116,7 +116,7 @@ class AdminMakerTest extends TestCase
         $this->output = new StreamOutput(fopen('php://memory', 'w', false));
 
         $this->io = new ConsoleStyle($this->input, $this->output);
-        $autoloaderUtil = $this->createMock(AutoloaderUtil::class);
+        $autoloaderUtil = $this->createStub(AutoloaderUtil::class);
         $autoloaderUtil
             ->method('getPathForFutureClass')
             ->willReturnCallback(function (string $className): string {

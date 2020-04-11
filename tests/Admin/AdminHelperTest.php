@@ -48,8 +48,8 @@ class AdminHelperTest extends TestCase
 
     public function testGetChildFormBuilder(): void
     {
-        $formFactory = $this->createMock(FormFactoryInterface::class);
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $formFactory = $this->createStub(FormFactoryInterface::class);
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
 
         $formBuilder = new FormBuilder('test', \stdClass::class, $eventDispatcher, $formFactory);
 
@@ -198,7 +198,7 @@ class AdminHelperTest extends TestCase
         $pool = new Pool($container, 'title', 'logo.png', [], $propertyAccesor);
         $helper = new AdminHelper($pool);
 
-        $admin = $this->createMock(AdminInterface::class);
+        $admin = $this->createStub(AdminInterface::class);
         $admin
             ->method('getClass')
             ->willReturn(Foo::class);
@@ -210,7 +210,7 @@ class AdminHelperTest extends TestCase
             'isOwningSide' => false,
         ];
 
-        $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
+        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
         $fieldDescription->method('getAssociationAdmin')->willReturn($admin);
         $fieldDescription->method('getAssociationMapping')->willReturn($associationMapping);
         $fieldDescription->method('getParentAssociationMappings')->willReturn([]);
@@ -225,7 +225,7 @@ class AdminHelperTest extends TestCase
                 'bar' => $fieldDescription,
             ]);
 
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
         $request
             ->method('get')
             ->willReturn([
@@ -245,14 +245,14 @@ class AdminHelperTest extends TestCase
             ->method('getRequest')
             ->will($this->onConsecutiveCalls($request, $request, $request, null, $request, $request, $request, $request, null, $request));
 
-        $foo = $this->createMock(Foo::class);
+        $foo = $this->createStub(Foo::class);
 
-        $collection = $this->createMock(Collection::class);
+        $collection = $this->createStub(Collection::class);
         $foo->setBar($collection);
 
-        $dataMapper = $this->createMock(DataMapperInterface::class);
-        $formFactory = $this->createMock(FormFactoryInterface::class);
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $dataMapper = $this->createStub(DataMapperInterface::class);
+        $formFactory = $this->createStub(FormFactoryInterface::class);
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
         $formBuilder = new FormBuilder('test', \get_class($foo), $eventDispatcher, $formFactory);
         $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory);
         $childFormBuilder->setCompound(true);
@@ -304,9 +304,9 @@ class AdminHelperTest extends TestCase
         $sub3Object = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getFinalData'])
             ->getMock();
-        $dataMapper = $this->createMock(DataMapperInterface::class);
-        $formFactory = $this->createMock(FormFactoryInterface::class);
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $dataMapper = $this->createStub(DataMapperInterface::class);
+        $formFactory = $this->createStub(FormFactoryInterface::class);
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
         $formBuilder = new FormBuilder('test', \get_class($simpleObject), $eventDispatcher, $formFactory);
         $childFormBuilder = new FormBuilder('subObject', \get_class($subObject), $eventDispatcher, $formFactory);
 

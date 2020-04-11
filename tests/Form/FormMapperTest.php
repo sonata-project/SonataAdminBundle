@@ -56,13 +56,13 @@ class FormMapperTest extends TestCase
     {
         $this->contractor = $this->createMock(FormContractorInterface::class);
 
-        $formFactory = $this->createMock(FormFactoryInterface::class);
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $formFactory = $this->createStub(FormFactoryInterface::class);
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
 
         $formBuilder = new FormBuilder('test', 'stdClass', $eventDispatcher, $formFactory);
 
         $this->admin = new CleanAdmin('code', 'class', 'controller');
-        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
+        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
             ->willReturnCallback(static function (AdminInterface $admin, string $attributes, $object = null): bool {

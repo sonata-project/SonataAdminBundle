@@ -173,7 +173,7 @@ class CRUDControllerTest extends TestCase
 
         $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
 
-        $templating = $this->createMock(DelegatingEngine::class);
+        $templating = $this->createStub(DelegatingEngine::class);
 
         $templatingRenderReturnCallback = $this->returnCallback(function (
             $view,
@@ -209,7 +209,7 @@ class CRUDControllerTest extends TestCase
         if (class_exists(Exporter::class)) {
             $exporter = new Exporter([new JsonWriter('/tmp/sonataadmin/export.json')]);
         } else {
-            $exporter = $this->createMock(SonataExporter::class);
+            $exporter = $this->createStub(SonataExporter::class);
 
             $exporter
                 ->method('getResponse')
@@ -659,7 +659,7 @@ class CRUDControllerTest extends TestCase
 
     public function testBatchActionDelete(): void
     {
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = $this->createStub(ModelManagerInterface::class);
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
@@ -685,7 +685,7 @@ class CRUDControllerTest extends TestCase
 
     public function testBatchActionDeleteWithModelManagerException(): void
     {
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = $this->createStub(ModelManagerInterface::class);
         $this->assertLoggerLogsModelManagerException($modelManager, 'batchDelete');
 
         $this->admin->expects($this->once())
@@ -1483,7 +1483,7 @@ class CRUDControllerTest extends TestCase
             ->method('getForm')
             ->willReturn($form);
 
-        $formView = $this->createMock(FormView::class);
+        $formView = $this->createStub(FormView::class);
 
         $form
             ->method('createView')
@@ -1616,7 +1616,7 @@ class CRUDControllerTest extends TestCase
 
         $this->request->setMethod(Request::METHOD_POST);
 
-        $formView = $this->createMock(FormView::class);
+        $formView = $this->createStub(FormView::class);
 
         $form
             ->method('createView')
@@ -1781,7 +1781,7 @@ class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
-        $formView = $this->createMock(FormView::class);
+        $formView = $this->createStub(FormView::class);
         $form
             ->method('createView')
             ->willReturn($formView);
@@ -1853,7 +1853,7 @@ class CRUDControllerTest extends TestCase
             ->willReturn(true);
         $this->request->setMethod(Request::METHOD_POST);
 
-        $formView = $this->createMock(FormView::class);
+        $formView = $this->createStub(FormView::class);
 
         $form
             ->method('createView')
@@ -1897,7 +1897,7 @@ class CRUDControllerTest extends TestCase
             ->method('supportsPreviewMode')
             ->willReturn(true);
 
-        $formView = $this->createMock(FormView::class);
+        $formView = $this->createStub(FormView::class);
 
         $form
             ->method('createView')
@@ -1982,7 +1982,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo($object))
             ->willReturn($class);
 
-        $formView = $this->createMock(FormView::class);
+        $formView = $this->createStub(FormView::class);
 
         $form
             ->method('createView')
@@ -2092,7 +2092,7 @@ class CRUDControllerTest extends TestCase
             ->method('all')
             ->willReturn(['field' => 'fielddata']);
 
-        $formView = $this->createMock(FormView::class);
+        $formView = $this->createStub(FormView::class);
 
         $form
             ->method('createView')
@@ -2155,7 +2155,7 @@ class CRUDControllerTest extends TestCase
             ->method('create')
             ->willReturnArgument(0);
 
-        $form = $this->createMock(Form::class);
+        $form = $this->createStub(Form::class);
 
         $this->admin
             ->method('getClass')
@@ -2220,7 +2220,7 @@ class CRUDControllerTest extends TestCase
             ->method('getNewInstance')
             ->willReturn($object);
 
-        $form = $this->createMock(Form::class);
+        $form = $this->createStub(Form::class);
 
         $this->admin
             ->method('getClass')
@@ -2298,7 +2298,7 @@ class CRUDControllerTest extends TestCase
 
         $this->request->setMethod(Request::METHOD_POST);
 
-        $formView = $this->createMock(FormView::class);
+        $formView = $this->createStub(FormView::class);
 
         $form
             ->method('createView')
@@ -2369,7 +2369,7 @@ class CRUDControllerTest extends TestCase
 
         $this->request->setMethod(Request::METHOD_POST);
 
-        $formView = $this->createMock(FormView::class);
+        $formView = $this->createStub(FormView::class);
 
         $form
             ->method('createView')
@@ -2417,7 +2417,7 @@ class CRUDControllerTest extends TestCase
             ->method('create')
             ->willReturnArgument(0);
 
-        $form = $this->createMock(Form::class);
+        $form = $this->createStub(Form::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
@@ -2557,7 +2557,7 @@ class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
-        $formView = $this->createMock(FormView::class);
+        $formView = $this->createStub(FormView::class);
         $form
             ->method('createView')
             ->willReturn($formView);
@@ -2610,7 +2610,7 @@ class CRUDControllerTest extends TestCase
             ->method('supportsPreviewMode')
             ->willReturn(true);
 
-        $formView = $this->createMock(FormView::class);
+        $formView = $this->createStub(FormView::class);
 
         $form
             ->method('createView')
@@ -2689,7 +2689,7 @@ class CRUDControllerTest extends TestCase
             ->method('getExportFormats')
             ->willReturn(['json']);
 
-        $dataSourceIterator = $this->createMock(SourceIteratorInterface::class);
+        $dataSourceIterator = $this->createStub(SourceIteratorInterface::class);
 
         $this->admin->expects($this->once())
             ->method('getDataSourceIterator')
@@ -3568,7 +3568,7 @@ class CRUDControllerTest extends TestCase
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
-        $datagrid = $this->createMock(DatagridInterface::class);
+        $datagrid = $this->createStub(DatagridInterface::class);
         $this->admin->expects($this->once())
             ->method('getDatagrid')
             ->willReturn($datagrid);
@@ -3595,7 +3595,7 @@ class CRUDControllerTest extends TestCase
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
-        $query = $this->createMock(ProxyQueryInterface::class);
+        $query = $this->createStub(ProxyQueryInterface::class);
         $datagrid->expects($this->once())
             ->method('getQuery')
             ->willReturn($query);
@@ -3652,7 +3652,7 @@ class CRUDControllerTest extends TestCase
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
-        $query = $this->createMock(ProxyQueryInterface::class);
+        $query = $this->createStub(ProxyQueryInterface::class);
         $datagrid->expects($this->once())
             ->method('getQuery')
             ->willReturn($query);
@@ -3765,7 +3765,7 @@ class CRUDControllerTest extends TestCase
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
-        $datagrid = $this->createMock(DatagridInterface::class);
+        $datagrid = $this->createStub(DatagridInterface::class);
 
         $this->admin->expects($this->once())
             ->method('getDatagrid')
@@ -3836,7 +3836,7 @@ class CRUDControllerTest extends TestCase
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
-        $datagrid = $this->createMock(DatagridInterface::class);
+        $datagrid = $this->createStub(DatagridInterface::class);
 
         $this->admin->expects($this->once())
             ->method('getDatagrid')
@@ -3869,7 +3869,7 @@ class CRUDControllerTest extends TestCase
             ->method('getBatchActions')
             ->willReturn($batchActions);
 
-        $datagrid = $this->createMock(DatagridInterface::class);
+        $datagrid = $this->createStub(DatagridInterface::class);
 
         $this->admin->expects($this->once())
             ->method('getDatagrid')
@@ -3907,7 +3907,7 @@ class CRUDControllerTest extends TestCase
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
-        $query = $this->createMock(ProxyQueryInterface::class);
+        $query = $this->createStub(ProxyQueryInterface::class);
         $datagrid->expects($this->once())
             ->method('getQuery')
             ->willReturn($query);
@@ -3916,7 +3916,7 @@ class CRUDControllerTest extends TestCase
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = $this->createStub(ModelManagerInterface::class);
 
         $this->admin
             ->method('getModelManager')
@@ -3953,7 +3953,7 @@ class CRUDControllerTest extends TestCase
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
-        $query = $this->createMock(ProxyQueryInterface::class);
+        $query = $this->createStub(ProxyQueryInterface::class);
         $datagrid->expects($this->once())
             ->method('getQuery')
             ->willReturn($query);
