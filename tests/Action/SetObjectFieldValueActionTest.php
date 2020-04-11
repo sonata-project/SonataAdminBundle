@@ -116,7 +116,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription->getOption('editable')->willReturn(true);
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
         $fieldDescription->getType()->willReturn('boolean');
-        $fieldDescription->getTemplate()->willReturn(false);
+        $fieldDescription->getTemplate()->willReturn('field_template');
         $fieldDescription->getValue(Argument::cetera())->willReturn('some value');
 
         $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
@@ -345,7 +345,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription->getOption('multiple')->willReturn(true);
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
         $fieldDescription->getType()->willReturn('boolean');
-        $fieldDescription->getTemplate()->willReturn(false);
+        $fieldDescription->getTemplate()->willReturn('field_template');
         $fieldDescription->getValue(Argument::cetera())->willReturn(['some value']);
 
         $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
