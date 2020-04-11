@@ -149,6 +149,8 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->hasAccess('edit', $object)->willReturn(true);
         $this->admin->getListFieldDescription('dateProp')->willReturn($fieldDescription->reveal());
         $this->admin->update($object)->shouldBeCalled();
+
+        $this->admin->getTemplate('base_list_field')->willReturn('admin_template');
         $templateRegistry->getTemplate('base_list_field')->willReturn('admin_template');
         $container->get('sonata.post.admin.template_registry')->willReturn($templateRegistry->reveal());
         $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
@@ -194,6 +196,8 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->hasAccess('edit', $object)->willReturn(true);
         $this->admin->getListFieldDescription('datetimeProp')->willReturn($fieldDescription->reveal());
         $this->admin->update($object)->shouldBeCalled();
+
+        $this->admin->getTemplate('base_list_field')->willReturn('admin_template');
         $templateRegistry->getTemplate('base_list_field')->willReturn('admin_template');
         $container->get('sonata.post.admin.template_registry')->willReturn($templateRegistry->reveal());
         $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
