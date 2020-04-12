@@ -51,15 +51,15 @@ class GlobalVariables
      * @param string $code
      * @param string $action
      * @param array  $parameters
-     * @param int    $absolute
+     * @param int    $referenceType
      *
      * @return string
      */
-    public function url($code, $action, $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function url($code, $action, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         list($action, $code) = $this->getCodeAction($code, $action);
 
-        return $this->getAdminPool()->getAdminByAdminCode($code)->generateUrl($action, $parameters, $absolute);
+        return $this->getAdminPool()->getAdminByAdminCode($code)->generateUrl($action, $parameters, $referenceType);
     }
 
     /**
@@ -67,15 +67,15 @@ class GlobalVariables
      * @param string $action
      * @param object $object
      * @param array  $parameters
-     * @param int    $absolute
+     * @param int    $referenceType
      *
      * @return string
      */
-    public function objectUrl($code, $action, $object, $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function objectUrl($code, $action, $object, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         list($action, $code) = $this->getCodeAction($code, $action);
 
-        return $this->getAdminPool()->getAdminByAdminCode($code)->generateObjectUrl($action, $object, $parameters, $absolute);
+        return $this->getAdminPool()->getAdminByAdminCode($code)->generateObjectUrl($action, $object, $parameters, $referenceType);
     }
 
     public function getMosaicBackground(): ?string
