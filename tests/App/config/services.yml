@@ -4,12 +4,14 @@ services:
         class: Sonata\AdminBundle\Tests\Fixtures\DoctrineBundle\Connection
 
     Sonata\AdminBundle\Tests\App\Model\FooRepository: ~
+    Sonata\AdminBundle\Tests\App\Model\PR6031Repository: ~
 
     sonata.admin.manager.test:
         class: Sonata\AdminBundle\Tests\App\Model\ModelManager
         arguments:
             $repositories:
                 'Sonata\AdminBundle\Tests\App\Model\Foo': '@Sonata\AdminBundle\Tests\App\Model\FooRepository'
+                'Sonata\AdminBundle\Tests\App\Model\PR6031': '@Sonata\AdminBundle\Tests\App\Model\PR6031Repository'
         tags:
             - {name: sonata.admin.manager}
 
@@ -44,3 +46,8 @@ services:
         arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, ~]
         tags:
             - {name: sonata.admin, manager_type: test, label: Empty}
+
+    Sonata\AdminBundle\Tests\App\Admin\PR6031Admin:
+        arguments: [~, Sonata\AdminBundle\Tests\App\Model\PR6031, ~]
+        tags:
+            - {name: sonata.admin, manager_type: test, label: label}
