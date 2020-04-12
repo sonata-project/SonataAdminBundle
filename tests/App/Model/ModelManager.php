@@ -21,11 +21,17 @@ use Sonata\AdminBundle\Tests\App\Admin\FieldDescription;
 
 final class ModelManager implements ModelManagerInterface
 {
-    private $repository;
+    /**
+     * @var array array<class-string, RepositoryInterface>
+     */
+    private $repositories;
 
-    public function __construct(FooRepository $repository)
+    /**
+     * @param array<class-string, RepositoryInterface> $repositories
+     */
+    public function __construct(array $repositories)
     {
-        $this->repository = $repository;
+        $this->repositories = $repositories;
     }
 
     public function getNewFieldDescriptionInstance($class, $name, array $options = [])
@@ -69,7 +75,7 @@ final class ModelManager implements ModelManagerInterface
 
     public function find($class, $id)
     {
-        return $this->repository->byId($id);
+        return $this->repositories[$class]->byId($id);
     }
 
     public function batchDelete($class, ProxyQueryInterface $queryProxy)
@@ -112,7 +118,7 @@ final class ModelManager implements ModelManagerInterface
 
     public function getModelInstance($class)
     {
-        return new Foo('test_id', 'foo_name');
+        return new $class();
     }
 
     public function getModelCollectionInstance($class)

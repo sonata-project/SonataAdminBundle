@@ -8,7 +8,8 @@ services:
     sonata.admin.manager.test:
         class: Sonata\AdminBundle\Tests\App\Model\ModelManager
         arguments:
-            - '@Sonata\AdminBundle\Tests\App\Model\FooRepository'
+            $repositories:
+                'Sonata\AdminBundle\Tests\App\Model\Foo': '@Sonata\AdminBundle\Tests\App\Model\FooRepository'
         tags:
             - {name: sonata.admin.manager}
 

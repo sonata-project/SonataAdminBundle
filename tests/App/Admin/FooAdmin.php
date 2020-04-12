@@ -17,10 +17,16 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Tests\App\Model\Foo;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 final class FooAdmin extends AbstractAdmin
 {
+    public function getNewInstance()
+    {
+        return new Foo('test_id', 'foo_name');
+    }
+
     protected function configureListFields(ListMapper $list)
     {
         $list->add('name', 'string');

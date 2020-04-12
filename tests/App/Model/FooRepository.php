@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\Model;
 
-final class FooRepository
+final class FooRepository implements RepositoryInterface
 {
+    /**
+     * @var array<class-string, Foo>
+     */
     private $elements;
 
     public function __construct()
