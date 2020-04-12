@@ -120,7 +120,7 @@
 
 {% block label %}
 {{-
-    item.label|trans(
+    item.getLabel()|trans(
         item.getExtra('translation_params', {}),
         item.getExtra(
             'translation_domain',
