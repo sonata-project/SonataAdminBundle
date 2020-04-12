@@ -95,18 +95,6 @@ class TabMenuTest extends BaseMenuTest
         $this->assertStringContainsString('my-other-translation', $html);
     }
 
-    public function testLabelAccessorErrorCase(): void
-    {
-        $translatorProphecy = $this->prophesize(TranslatorInterface::class);
-        $this->translator = $translatorProphecy->reveal();
-        $factory = new MenuFactory();
-        $menu = new MenuItem('test-menu', $factory);
-        $menu->addChild('some-label', ['uri' => '/whatever']);
-        $menu->getFirstChild()->addChild('label', ['uri' => '/whatever']);
-        $this->expectException(\TypeError::class);
-        $this->renderMenu($menu);
-    }
-
     protected function getTemplate()
     {
         return 'Core/tab_menu_template.html.twig';
