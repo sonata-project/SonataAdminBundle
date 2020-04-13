@@ -150,7 +150,7 @@ class CRUDControllerTest extends TestCase
     private $translator;
 
     /**
-     * @var LoggerInterface&MockObject
+     * @var LoggerInterface|MockObject
      */
     private $logger;
 
