@@ -51,7 +51,7 @@ class AdminTypeTest extends TypeTestCase
     public function testSubmitValidData(): void
     {
         $parentAdmin = $this->prophesize(AdminInterface::class);
-        $parentAdmin->getSubject()->shouldBeCalled()->willReturn(null);
+        $parentAdmin->hasSubject()->shouldBeCalled()->willReturn(false);
         $parentField = $this->prophesize(FieldDescriptionInterface::class);
         $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
 
@@ -99,6 +99,7 @@ class AdminTypeTest extends TypeTestCase
 
         $parentAdmin = $this->prophesize(AdminInterface::class);
         $parentAdmin->getSubject()->shouldBeCalled()->willReturn($parentSubject);
+        $parentAdmin->hasSubject()->shouldBeCalled()->willReturn(true);
         $parentField = $this->prophesize(FieldDescriptionInterface::class);
         $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
 
@@ -140,6 +141,7 @@ class AdminTypeTest extends TypeTestCase
 
         $parentAdmin = $this->prophesize(AdminInterface::class);
         $parentAdmin->getSubject()->shouldBeCalled()->willReturn($parentSubject);
+        $parentAdmin->hasSubject()->shouldBeCalled()->willReturn(true);
         $parentField = $this->prophesize(FieldDescriptionInterface::class);
         $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
 
@@ -179,6 +181,7 @@ class AdminTypeTest extends TypeTestCase
 
         $parentAdmin = $this->prophesize(AdminInterface::class);
         $parentAdmin->getSubject()->shouldBeCalled()->willReturn($parentSubject);
+        $parentAdmin->hasSubject()->shouldBeCalled()->willReturn(true);
         $parentField = $this->prophesize(FieldDescriptionInterface::class);
         $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
 
