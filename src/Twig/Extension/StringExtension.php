@@ -36,7 +36,7 @@ final class StringExtension extends AbstractExtension
      */
     private $legacyExtension;
 
-    public function __construct(TextExtension $legacyExtension = null)
+    public function __construct(?TextExtension $legacyExtension = null)
     {
         $this->legacyExtension = $legacyExtension;
     }

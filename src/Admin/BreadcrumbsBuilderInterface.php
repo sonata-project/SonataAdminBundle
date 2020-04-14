@@ -45,6 +45,6 @@ interface BreadcrumbsBuilderInterface
     public function buildBreadcrumbs(
         AdminInterface $admin,
         $action,
-        ItemInterface $menu = null
+        ?ItemInterface $menu = null
     );
 }

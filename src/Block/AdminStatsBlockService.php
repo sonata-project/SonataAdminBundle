@@ -45,7 +45,7 @@ class AdminStatsBlockService extends AbstractBlockService
         $this->pool = $pool;
     }
 
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null)
     {
         $admin = $this->pool->getAdminByAdminCode($blockContext->getSetting('code'));
 

@@ -422,7 +422,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     private function replaceDefaultArguments(
         array $defaultArguments,
         Definition $definition,
-        Definition $parentDefinition = null
+        ?Definition $parentDefinition = null
     ): void {
         $arguments = $definition->getArguments();
         $parentArguments = $parentDefinition ? $parentDefinition->getArguments() : [];

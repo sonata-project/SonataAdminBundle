@@ -93,7 +93,7 @@ class Pool
         $title,
         $logoTitle,
         $options = [],
-        PropertyAccessorInterface $propertyAccessor = null
+        ?PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->container = $container;
         $this->title = $title;

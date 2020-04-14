@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Controller;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -149,9 +148,6 @@ class CRUDControllerTest extends TestCase
      */
     private $translator;
 
-    /**
-     * @var LoggerInterface&MockObject
-     */
     private $logger;
 
     /**
@@ -178,7 +174,7 @@ class CRUDControllerTest extends TestCase
         $templatingRenderReturnCallback = $this->returnCallback(function (
             $view,
             array $parameters = [],
-            Response $response = null
+            ?Response $response = null
         ) {
             $this->template = $view;
 

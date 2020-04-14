@@ -86,7 +86,7 @@ class AdminObjectAclData
         $object,
         \Traversable $aclUsers,
         $maskBuilderClass,
-        \Traversable $aclRoles = null
+        ?\Traversable $aclRoles = null
     ) {
         $this->admin = $admin;
         $this->object = $object;
