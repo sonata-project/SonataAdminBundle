@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Prophecy\Argument;
 use Prophecy\Argument\Token\AnyValueToken;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -53,6 +54,7 @@ class AdminTypeTest extends TypeTestCase
         $parentAdmin = $this->prophesize(AdminInterface::class);
         $parentAdmin->hasSubject()->shouldBeCalled()->willReturn(false);
         $parentField = $this->prophesize(FieldDescriptionInterface::class);
+        $parentField->setAssociationAdmin(Argument::type(AdminInterface::class))->shouldBeCalled();
         $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
 
         $modelManager = $this->prophesize(ModelManagerInterface::class);
@@ -60,7 +62,7 @@ class AdminTypeTest extends TypeTestCase
         $foo = new Foo();
 
         $admin = $this->prophesize(AbstractAdmin::class);
-        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(false);
+        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(true);
         $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
         $admin->hasAccess('delete')->shouldBeCalled()->willReturn(false);
         $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
@@ -101,12 +103,13 @@ class AdminTypeTest extends TypeTestCase
         $parentAdmin->getSubject()->shouldBeCalled()->willReturn($parentSubject);
         $parentAdmin->hasSubject()->shouldBeCalled()->willReturn(true);
         $parentField = $this->prophesize(FieldDescriptionInterface::class);
+        $parentField->setAssociationAdmin(Argument::type(AdminInterface::class))->shouldBeCalled();
         $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
 
         $modelManager = $this->prophesize(ModelManagerInterface::class);
 
         $admin = $this->prophesize(AbstractAdmin::class);
-        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(false);
+        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(true);
         $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
         $admin->setSubject(1)->shouldBeCalled();
         $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
@@ -143,12 +146,13 @@ class AdminTypeTest extends TypeTestCase
         $parentAdmin->getSubject()->shouldBeCalled()->willReturn($parentSubject);
         $parentAdmin->hasSubject()->shouldBeCalled()->willReturn(true);
         $parentField = $this->prophesize(FieldDescriptionInterface::class);
+        $parentField->setAssociationAdmin(Argument::type(AdminInterface::class))->shouldBeCalled();
         $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
 
         $modelManager = $this->prophesize(ModelManagerInterface::class);
 
         $admin = $this->prophesize(AbstractAdmin::class);
-        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(false);
+        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(true);
         $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
         $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
         $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);
@@ -183,6 +187,7 @@ class AdminTypeTest extends TypeTestCase
         $parentAdmin->getSubject()->shouldBeCalled()->willReturn($parentSubject);
         $parentAdmin->hasSubject()->shouldBeCalled()->willReturn(true);
         $parentField = $this->prophesize(FieldDescriptionInterface::class);
+        $parentField->setAssociationAdmin(Argument::type(AdminInterface::class))->shouldBeCalled();
         $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
 
         $modelManager = $this->prophesize(ModelManagerInterface::class);
@@ -190,7 +195,7 @@ class AdminTypeTest extends TypeTestCase
         $foo = new Foo();
 
         $admin = $this->prophesize(AbstractAdmin::class);
-        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(false);
+        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(true);
         $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
         $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
         $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);
