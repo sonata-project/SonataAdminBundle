@@ -72,7 +72,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
     public function buildBreadcrumbs(
         AdminInterface $admin,
         $action,
-        ItemInterface $menu = null
+        ?ItemInterface $menu = null
     ): ItemInterface {
         if (!$menu) {
             $menu = $admin->getMenuFactory()->createItem('root');

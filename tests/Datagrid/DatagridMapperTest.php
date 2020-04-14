@@ -99,7 +99,7 @@ class DatagridMapperTest extends TestCase
 
         $admin
             ->method('isGranted')
-            ->willReturnCallback(static function (string $name, object $object = null): bool {
+            ->willReturnCallback(static function (string $name, ?object $object = null): bool {
                 return self::DEFAULT_GRANTED_ROLE === $name;
             });
 

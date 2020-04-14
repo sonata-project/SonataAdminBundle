@@ -1410,7 +1410,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->datagrid;
     }
 
-    public function buildTabMenu($action, AdminInterface $childAdmin = null)
+    public function buildTabMenu($action, ?AdminInterface $childAdmin = null)
     {
         if ($this->loaded['tab_menu']) {
             return $this->menu;
@@ -1438,7 +1438,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->menu;
     }
 
-    public function buildSideMenu($action, AdminInterface $childAdmin = null)
+    public function buildSideMenu($action, ?AdminInterface $childAdmin = null)
     {
         return $this->buildTabMenu($action, $childAdmin);
     }
@@ -1448,7 +1448,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @return ItemInterface
      */
-    public function getSideMenu($action, AdminInterface $childAdmin = null)
+    public function getSideMenu($action, ?AdminInterface $childAdmin = null)
     {
         if ($this->isChild()) {
             return $this->getParent()->getSideMenu($action, $this);
@@ -1525,7 +1525,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->persistFilters = $persist;
     }
 
-    public function setFilterPersister(FilterPersisterInterface $filterPersister = null)
+    public function setFilterPersister(?FilterPersisterInterface $filterPersister = null)
     {
         $this->filterPersister = $filterPersister;
         // NEXT_MAJOR remove the deprecated property will be removed. Needed for persisted filter condition.
@@ -2004,7 +2004,7 @@ EOT;
      *
      * @return array
      */
-    public function buildBreadcrumbs($action, ItemInterface $menu = null)
+    public function buildBreadcrumbs($action, ?ItemInterface $menu = null)
     {
         @trigger_error(
             'The '.__METHOD__.' method is deprecated since version 3.2 and will be removed in 4.0.',
@@ -2950,7 +2950,7 @@ EOT;
      *
      * @deprecated Use configureTabMenu instead
      */
-    protected function configureSideMenu(ItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    protected function configureSideMenu(ItemInterface $menu, $action, ?AdminInterface $childAdmin = null)
     {
     }
 
@@ -2959,7 +2959,7 @@ EOT;
      *
      * @param string $action
      */
-    protected function configureTabMenu(ItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    protected function configureTabMenu(ItemInterface $menu, $action, ?AdminInterface $childAdmin = null)
     {
         // Use configureSideMenu not to mess with previous overrides
         // NEXT_MAJOR: remove this line
