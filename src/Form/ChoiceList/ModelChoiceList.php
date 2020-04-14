@@ -112,7 +112,7 @@ class ModelChoiceList extends SimpleChoiceList
         $property = null,
         $query = null,
         $choices = [],
-        PropertyAccessorInterface $propertyAccessor = null
+        ?PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->modelManager = $modelManager;
         $this->class = $class;

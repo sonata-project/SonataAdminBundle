@@ -54,7 +54,7 @@ class AdminSearchBlockService extends AbstractBlockService
         $this->searchHandler = $searchHandler;
     }
 
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null)
     {
         try {
             $admin = $this->pool->getAdminByAdminCode($blockContext->getSetting('admin_code'));

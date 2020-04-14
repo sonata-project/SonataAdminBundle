@@ -68,7 +68,7 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
     /**
      * Add an object owner ACE to the object ACL.
      */
-    public function addObjectOwner(AclInterface $acl, UserSecurityIdentity $securityIdentity = null);
+    public function addObjectOwner(AclInterface $acl, ?UserSecurityIdentity $securityIdentity = null);
 
     /**
      * Add the object class ACE's to the object ACL.

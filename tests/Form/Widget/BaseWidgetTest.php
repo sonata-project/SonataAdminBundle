@@ -67,7 +67,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getRenderingEngine(Environment $environment = null)
+    protected function getRenderingEngine(?Environment $environment = null)
     {
         if (!\in_array($this->type, ['form', 'filter'], true)) {
             throw new \Exception('Please override $this->type in your test class specifying template to use (either form or filter)');

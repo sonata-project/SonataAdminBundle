@@ -178,7 +178,7 @@ class CRUDControllerTest extends TestCase
         $templatingRenderReturnCallback = $this->returnCallback(function (
             $view,
             array $parameters = [],
-            Response $response = null
+            ?Response $response = null
         ) {
             $this->template = $view;
 
