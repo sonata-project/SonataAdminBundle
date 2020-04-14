@@ -190,13 +190,6 @@ class AdminHelper
 
             $associationAdmin = $fieldDescription->getAssociationAdmin();
             $associationAdmin->setSubject($newInstance);
-            $fields = array_keys($associationAdmin->getFormFieldDescriptions());
-
-            // for now, not sure how to do that
-            $value = [];
-            foreach ($fields as $name) {
-                $value[$name] = '';
-            }
         }
 
         $finalForm = $admin->getFormBuilder()->getForm();
