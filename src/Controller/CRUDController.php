@@ -1554,7 +1554,7 @@ class CRUDController implements ContainerAwareInterface
 
     private function checkParentChildAssociation(Request $request, $object): void
     {
-        if (!($parentAdmin = $this->admin->getParent())) {
+        if (!$this->admin->isChild()) {
             return;
         }
 
@@ -1563,6 +1563,7 @@ class CRUDController implements ContainerAwareInterface
             return;
         }
 
+        $parentAdmin = $this->admin->getParent();
         $parentId = $request->get($parentAdmin->getIdParameter());
 
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
