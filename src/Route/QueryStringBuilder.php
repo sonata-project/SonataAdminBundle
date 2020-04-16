@@ -59,7 +59,7 @@ class QueryStringBuilder implements RouteBuilderInterface
         }
 
         // an admin can have only one level of nested child
-        if ($admin->getParent()) {
+        if ($admin->isChild()) {
             return;
         }
 

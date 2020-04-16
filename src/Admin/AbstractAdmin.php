@@ -893,7 +893,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function getParentAssociationMapping()
     {
         // NEXT_MAJOR: remove array check
-        if (\is_array($this->parentAssociationMapping) && $this->getParent()) {
+        if (\is_array($this->parentAssociationMapping) && $this->isChild()) {
             $parent = $this->getParent()->getCode();
 
             if (\array_key_exists($parent, $this->parentAssociationMapping)) {
@@ -1035,7 +1035,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function getClass()
     {
         if ($this->hasActiveSubClass()) {
-            if ($this->getParentFieldDescription()) {
+            if ($this->hasParentFieldDescription()) {
                 throw new \RuntimeException('Feature not implemented: an embedded admin cannot have subclass');
             }
 
@@ -1513,13 +1513,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function getRoot()
     {
-        $parentFieldDescription = $this->getParentFieldDescription();
-
-        if (!$parentFieldDescription) {
+        if (!$this->hasParentFieldDescription()) {
             return $this;
         }
 
-        return $parentFieldDescription->getAdmin()->getRoot();
+        return $this->getParentFieldDescription()->getAdmin()->getRoot();
     }
 
     public function setBaseControllerName($baseControllerName)
@@ -1706,6 +1704,22 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function getParentFieldDescription()
     {
+        if (!$this->hasParentFieldDescription()) {
+            @trigger_error(sprintf(
+                'Calling %s() when there is no parent field description is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Use %s::hasParentFieldDescription() to know if there is a parent field description.',
+                __METHOD__,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare FieldDescriptionInterface as return type
+            // throw new \LogicException(sprintf(
+            //    'Admin "%s" has no parent field description.',
+            //    static::class
+            // ));
+
+            return null;
+        }
+
         return $this->parentFieldDescription;
     }
 
@@ -1734,12 +1748,20 @@ EOT;
 
     public function getSubject()
     {
-        if (null === $this->subject && $this->request && !$this->hasParentFieldDescription()) {
-            $id = $this->request->get($this->getIdParameter());
+        if (!$this->hasSubject()) {
+            @trigger_error(sprintf(
+                'Calling %s() when there is no subject is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Use %s::hasSubject() to know if there is a subject.',
+                __METHOD__,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and update the return type
+            // throw new \LogicException(sprintf(
+            //    'Admin "%s" has no subject.',
+            //    static::class
+            // ));
 
-            if (null !== $id) {
-                $this->subject = $this->getObject($id);
-            }
+            return null;
         }
 
         return $this->subject;
@@ -1747,7 +1769,15 @@ EOT;
 
     public function hasSubject()
     {
-        return (bool) $this->getSubject();
+        if (null === $this->subject && $this->hasRequest() && !$this->hasParentFieldDescription()) {
+            $id = $this->request->get($this->getIdParameter());
+
+            if (null !== $id) {
+                $this->subject = $this->getObject($id);
+            }
+        }
+
+        return null !== $this->subject;
     }
 
     public function getFormFieldDescriptions()
@@ -1839,7 +1869,25 @@ EOT;
 
     public function getListFieldDescription($name)
     {
-        return $this->hasListFieldDescription($name) ? $this->listFieldDescriptions[$name] : null;
+        if (!$this->hasListFieldDescription($name)) {
+            @trigger_error(sprintf(
+                'Calling %s() when there is no list field description is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Use %s::hasListFieldDescription(\'%s\') to know if there is a list field description.',
+                __METHOD__,
+                __CLASS__,
+                $name
+            ), E_USER_DEPRECATED);
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare FieldDescriptionInterface as return type
+            // throw new \LogicException(sprintf(
+            //    'Admin "%s" has no list field description for %s.',
+            //    static::class,
+            //    $name
+            // ));
+
+            return null;
+        }
+
+        return $this->listFieldDescriptions[$name];
     }
 
     public function hasListFieldDescription($name)
@@ -1888,11 +1936,12 @@ EOT;
 
     public function addChild(AdminInterface $child)
     {
-        for ($parentAdmin = $this; null !== $parentAdmin; $parentAdmin = $parentAdmin->getParent()) {
-            if ($parentAdmin->getCode() !== $child->getCode()) {
-                continue;
-            }
+        $parentAdmin = $this;
+        while ($parentAdmin->isChild() && $parentAdmin->getCode() !== $child->getCode()) {
+            $parentAdmin = $parentAdmin->getParent();
+        }
 
+        if ($parentAdmin->getCode() === $child->getCode()) {
             throw new \RuntimeException(sprintf(
                 'Circular reference detected! The child admin `%s` is already in the parent tree of the `%s` admin.',
                 $child->getCode(),
@@ -1941,6 +1990,22 @@ EOT;
 
     public function getParent()
     {
+        if (!$this->isChild()) {
+            @trigger_error(sprintf(
+                'Calling %s() when there is no parent is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Use %s::isChild() to know if there is a parent.',
+                __METHOD__,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare AdminInterface as return type
+            // throw new \LogicException(sprintf(
+            //    'Admin "%s" has no parent.',
+            //    static::class
+            // ));
+
+            return null;
+        }
+
         return $this->parent;
     }
 
@@ -2271,6 +2336,7 @@ EOT;
     public function getRequest()
     {
         if (!$this->request) {
+            // NEXT_MAJOR: Throw \LogicException instead.
             throw new \RuntimeException('The Request object has not been set');
         }
 
@@ -3162,6 +3228,7 @@ EOT;
             return $this->subClasses[$name];
         }
 
+        // NEXT_MAJOR: Throw \LogicException instead.
         throw new \RuntimeException(sprintf(
             'Unable to find the subclass `%s` for admin `%s`',
             $name,

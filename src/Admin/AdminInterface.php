@@ -143,6 +143,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getForm();
 
     /**
+     * NEXT MAJOR: Remove the throws tag.
+     *
      * @throws \RuntimeException if no request is set
      *
      * @return Request
@@ -351,6 +353,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function setSubject($subject);
 
     /**
+     * NEXT MAJOR: return object.
+     *
      * @return object|null
      */
     public function getSubject();
@@ -443,7 +447,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function createObjectSecurity($object);
 
     /**
-     * @return AdminInterface|null
+     * @return AdminInterface|null NEXT_MAJOR: return AdminInterface
      */
     public function getParent();
 
