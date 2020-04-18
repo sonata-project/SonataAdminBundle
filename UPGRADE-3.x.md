@@ -123,6 +123,19 @@ extend the corresponding classes in `SonataAdminBundle\Action\`.
 If you need to style headers prefer to use CSS classes and not in the html DOM.
 In this case please use `header_class` option.
 
+## Deprecated returning other type than `Collection` from `SimplePager::getResults()`
+
+When calling `SimplePager::getResults()` on non-empty result which has set `$maxPerPage`, `Collection` would be returned instead of `array` as it is declared in `PagerInterface`. Update usage of `SimplePager::getResults()`, ensure you are transforming `Collection` to `array` and you aren't dealing with any of its methods.
+
+```
+// will return Collection on non-empty result and array on empty result
+$results = $pager->getResults();
+
+if ($results instanceof ArrayCollection) {
+    $results = $results->toArray();
+}
+```
+
 UPGRADE FROM 3.34 to 3.35
 =========================
 
