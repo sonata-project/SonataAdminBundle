@@ -54,7 +54,7 @@ class ExtensionCompilerPassTest extends TestCase
      */
     private $root;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->extension = new SonataAdminExtension();
         $this->config = $this->getConfig();
