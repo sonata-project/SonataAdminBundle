@@ -61,7 +61,7 @@ class DatagridTest extends TestCase
      */
     private $formTypes;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->query = $this->createMock(ProxyQueryInterface::class);
         $this->columns = new FieldDescriptionCollection();

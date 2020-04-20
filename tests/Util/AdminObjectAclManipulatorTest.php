@@ -33,7 +33,7 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilder;
  */
 class AdminObjectAclManipulatorTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->formFactory = $this->prophesize(FormFactoryInterface::class);
         $this->data = $this->prophesize(AdminObjectAclData::class);

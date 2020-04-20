@@ -116,7 +116,7 @@ class SonataAdminExtensionTest extends TestCase
      */
     private $securityChecker;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         date_default_timezone_set('Europe/London');
 

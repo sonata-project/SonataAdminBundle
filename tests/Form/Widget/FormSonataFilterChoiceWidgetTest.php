@@ -24,7 +24,7 @@ class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
 {
     protected $type = 'filter';
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
     }
