@@ -11,17 +11,17 @@ file that was distributed with this source code.
 
 {% extends get_admin_template('base_list_field', admin.code) %}
 
-{% set isEditable = field_description.options.editable is defined and field_description.options.editable and admin.hasAccess('edit', object) %}
-{% set xEditableType = field_description.type|sonata_xeditable_type %}
+{% set is_editable = field_description.options.editable is defined and field_description.options.editable and admin.hasAccess('edit', object) %}
+{% set x_editable_type = field_description.type|sonata_xeditable_type %}
 
-{% if isEditable and xEditableType %}
-    {% block field_span_attributes %}
+{% block field_span_attributes %}
+    {% if is_editable and x_editable_type %}
         {% apply spaceless %}
             {{ parent() }}
             data-source="[{value: 0, text: '{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}'},{value: 1, text: '{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}'}]"
         {% endapply %}
-    {% endblock %}
-{% endif %}
+    {% endif %}
+{% endblock %}
 
 {% block field %}
     {%- include '@SonataAdmin/CRUD/display_boolean.html.twig' -%}

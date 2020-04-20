@@ -18,14 +18,14 @@ file that was distributed with this source code.
 %}
 {% set x_editable_type = field_description.type|sonata_xeditable_type %}
 
-{% if is_editable and x_editable_type %}
-    {% block field_span_attributes %}
+{% block field_span_attributes %}
+    {% if is_editable and x_editable_type %}
         {% apply spaceless %}
             {{ parent() }}
             data-source="{{ field_description|sonata_xeditable_choices|json_encode }}"
         {% endapply %}
-    {% endblock %}
-{% endif %}
+    {% endif %}
+{% endblock %}
 
 {% block field %}
 {% apply spaceless %}
