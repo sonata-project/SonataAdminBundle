@@ -33,7 +33,7 @@ class PoolTest extends TestCase
      */
     private $pool;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->container = new Container();
         $this->pool = new Pool($this->container, 'Sonata Admin', '/path/to/pic.png', ['foo' => 'bar']);

@@ -25,7 +25,7 @@ class ArrayToModelTransformerTest extends TestCase
 {
     private $modelManager;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
     }

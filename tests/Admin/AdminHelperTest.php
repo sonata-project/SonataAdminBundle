@@ -38,7 +38,7 @@ class AdminHelperTest extends TestCase
      */
     protected $helper;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $container = new Container();
 

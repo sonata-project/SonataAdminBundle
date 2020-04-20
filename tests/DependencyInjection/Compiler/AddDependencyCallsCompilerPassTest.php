@@ -52,7 +52,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
     /** @var array */
     private $config;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -28,7 +28,7 @@ class AddFilterTypeCompilerPassTest extends TestCase
 
     private $bazFilter;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->filterFactory = $this->createMock(Definition::class);
         $this->fooFilter = $this->createMock(Definition::class);
