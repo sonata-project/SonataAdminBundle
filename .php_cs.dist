@@ -35,6 +35,7 @@ $rules = [
     'nullable_type_declaration_for_default_null_value' => ['use_nullable_type_declaration' => true],
     'ordered_class_elements' => true,
     'ordered_imports' => true,
+    'php_unit_set_up_tear_down_visibility' => true,
     'phpdoc_order' => true,
     '@PHP56Migration' => true,
     '@PHP56Migration:risky' => true,
