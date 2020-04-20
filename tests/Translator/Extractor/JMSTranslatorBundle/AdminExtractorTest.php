@@ -56,7 +56,7 @@ class AdminExtractorTest extends TestCase
      */
     private $breadcrumbsBuilder;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         if (!interface_exists(ExtractorInterface::class)) {
             $this->markTestSkipped('JMS Translator Bundle does not exist');

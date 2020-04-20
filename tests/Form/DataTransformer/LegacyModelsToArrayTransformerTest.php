@@ -34,7 +34,7 @@ class LegacyModelsToArrayTransformerTest extends TestCase
     /**
      * @group legacy
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         if (!class_exists(SimpleChoiceList::class)) {
             $this->markTestSkipped('Test only available for < SF2.8');

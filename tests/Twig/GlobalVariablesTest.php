@@ -30,7 +30,7 @@ class GlobalVariablesTest extends TestCase
     private $admin;
     private $pool;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->code = 'sonata.page.admin.page|sonata.page.admin.snapshot';
         $this->action = 'list';

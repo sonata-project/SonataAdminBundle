@@ -23,7 +23,7 @@ class LegacyModelChoiceListTest extends TestCase
 {
     private $modelManager;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         if (!class_exists(SimpleChoiceList::class)) {
             $this->markTestSkipped('Test only available for <= SF2.8');

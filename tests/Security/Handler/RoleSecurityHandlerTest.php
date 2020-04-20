@@ -36,7 +36,7 @@ class RoleSecurityHandlerTest extends TestCase
      */
     private $authorizationChecker;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $this->admin = $this->createMock(AdminInterface::class);
