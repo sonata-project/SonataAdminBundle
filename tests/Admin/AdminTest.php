@@ -2498,7 +2498,7 @@ class AdminTest extends TestCase
      *
      * @dataProvider getDeprecatedAbstractAdminConstructorArgs
      *
-     * @expectedDeprecation Passing other type than string%S as argument %d for method Sonata\AdminBundle\Admin\AbstractAdmin::__construct() is deprecated since sonata-project/admin-bundle 3.x. It will accept only string%S in version 4.0.
+     * @expectedDeprecation Passing other type than string%S as argument %d for method Sonata\AdminBundle\Admin\AbstractAdmin::__construct() is deprecated since sonata-project/admin-bundle 3.65. It will accept only string%S in version 4.0.
      */
     public function testDeprecatedAbstractAdminConstructorArgs($code, $class, $baseControllerName): void
     {

@@ -581,21 +581,21 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!\is_string($code)) {
             @trigger_error(sprintf(
-                'Passing other type than string as argument 1 for method %s() is deprecated since sonata-project/admin-bundle 3.x. It will accept only string in version 4.0.',
+                'Passing other type than string as argument 1 for method %s() is deprecated since sonata-project/admin-bundle 3.65. It will accept only string in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
         $this->code = $code;
         if (!\is_string($class)) {
             @trigger_error(sprintf(
-                'Passing other type than string as argument 2 for method %s() is deprecated since sonata-project/admin-bundle 3.x. It will accept only string in version 4.0.',
+                'Passing other type than string as argument 2 for method %s() is deprecated since sonata-project/admin-bundle 3.65. It will accept only string in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
         $this->class = $class;
         if (null !== $baseControllerName && !\is_string($baseControllerName)) {
             @trigger_error(sprintf(
-                'Passing other type than string or null as argument 3 for method %s() is deprecated since sonata-project/admin-bundle 3.x. It will accept only string and null in version 4.0.',
+                'Passing other type than string or null as argument 3 for method %s() is deprecated since sonata-project/admin-bundle 3.65. It will accept only string and null in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -1348,7 +1348,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!$this->hasSubject()) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no subject is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Calling %s() when there is no subject is deprecated since sonata-project/admin-bundle 3.65 and will throw an exception in 4.0. '.
                 'Use %s::setSubject() to set the subject.',
                 __METHOD__,
                 __CLASS__
@@ -1605,7 +1605,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!\is_array($this->formGroups) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.x. It will return only array in version 4.0.',
+                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -1644,7 +1644,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!\is_array($this->formTabs) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.x. It will return only array in version 4.0.',
+                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -1661,7 +1661,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!\is_array($this->showTabs) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.x. It will return only array in version 4.0.',
+                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -1678,7 +1678,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!\is_array($this->showGroups) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.x. It will return only array in version 4.0.',
+                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -2132,13 +2132,13 @@ EOT;
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0
      */
     public function getCurrentChild()
     {
         @trigger_error(
             sprintf(
-                'The %s() method is deprecated since version 3.x and will be removed in 4.0. Use %s::isCurrentChild() instead.',
+                'The %s() method is deprecated since version 3.65 and will be removed in 4.0. Use %s::isCurrentChild() instead.',
                 __METHOD__,
                 __CLASS__
             ),
