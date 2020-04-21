@@ -140,7 +140,7 @@ interface FilterInterface
     /**
      * Returns the main widget used to render the filter.
      *
-     * @return array<string, mixed>
+     * @return array{0: string, 1: array<string, mixed>}
      */
     public function getRenderSettings();
 
