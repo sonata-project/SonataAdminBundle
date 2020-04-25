@@ -30,7 +30,7 @@ class DefaultRouteGeneratorTest extends TestCase
 
     protected $cacheTempFolder;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->cacheTempFolder = sys_get_temp_dir().'/sonata_test_route';
 

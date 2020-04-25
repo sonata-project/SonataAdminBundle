@@ -34,16 +34,16 @@ file that was distributed with this source code.
             {% endblock -%}
         </a>
     {% else %}
-        {% set isEditable = field_description.options.editable is defined and field_description.options.editable and admin.hasAccess('edit', object) %}
-        {% if isEditable and field_description.options.multiple is defined and field_description.options.multiple and value is iterable %}
+        {% set is_editable = field_description.options.editable is defined and field_description.options.editable and admin.hasAccess('edit', object) %}
+        {% if is_editable and field_description.options.multiple is defined and field_description.options.multiple and value is iterable %}
             {# multiple editable field should be real multiple #}
             {# https://vitalets.github.io/x-editable/docs.html#checklist #}
-            {% set xEditableType = 'checklist' %}
+            {% set x_editable_type = 'checklist' %}
         {% else %}
-            {% set xEditableType = field_description.type|sonata_xeditable_type %}
+            {% set x_editable_type = field_description.type|sonata_xeditable_type %}
         {% endif %}
 
-        {% if isEditable and xEditableType %}
+        {% if is_editable and x_editable_type %}
             {% set url = path(
                 'sonata_admin_set_object_field_value',
                 admin.getPersistentParameters|default([])|merge({
@@ -65,7 +65,7 @@ file that was distributed with this source code.
             {% endif %}
 
             <span {% block field_span_attributes %}class="x-editable"
-                  data-type="{{ xEditableType }}"
+                  data-type="{{ x_editable_type }}"
                   data-value="{{ data_value }}"
                   data-title="{{ field_description.label|trans({}, field_description.translationDomain) }}"
                   data-pk="{{ admin.id(object) }}"

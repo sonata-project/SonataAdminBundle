@@ -22,7 +22,7 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
 {
     protected $type = 'form';
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
     }

@@ -50,7 +50,7 @@ interface AdminExtensionInterface
         AdminInterface $admin,
         MenuItemInterface $menu,
         $action,
-        AdminInterface $childAdmin = null
+        ?AdminInterface $childAdmin = null
     );
 
     /**
@@ -62,7 +62,7 @@ interface AdminExtensionInterface
         AdminInterface $admin,
         MenuItemInterface $menu,
         $action,
-        AdminInterface $childAdmin = null
+        ?AdminInterface $childAdmin = null
     );
 
     /**

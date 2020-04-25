@@ -22,9 +22,9 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess;
 
 class ModelToIdPropertyTransformerTest extends TestCase
 {
-    private $modelManager = null;
+    private $modelManager;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
     }

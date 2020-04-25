@@ -2,6 +2,40 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.65.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.64.0...3.65.0) - 2020-04-21
+### Added
+- Added `AbstractAdmin::IsCurrentChild` method
+- Added missing polish translation
+- Added new options (`display`, `key_translation_domain` and
+`value_translation_domain`) to the array field on Show and List pages.
+- Automatically set `sortable`, `sort_parent_association_mappings`, and
+`sort_field_mapping` when `associated_property` is set in `ListMapper::add`
+to enable sorting on `associated_property` by default.
+
+### Deprecated
+- `AbstractAdmin::GetCurrentChild` method
+- Deprecate `getModelIdentifier` in favor of  `getIdentifierFieldNames` in
+`ModelManagerInterface`.
+- Deprecated returning other types than `array` in
+`AbstractAdmin::getFormGroups()`, `AbstractAdmin::getFormTabs()`,
+`AbstractAdmin::getShowTabs()`, `AbstractAdmin::getShowGroups()`.
+- `SimplePager::getResults` will not return ArrayCollection in next major
+  version (4.0)
+
+### Fixed
+- Fixed nesting Twig block definitions under a non-capturing nodes.
+- Fixed collisions with cache keys at `AbstractAdmin::isGranted()`.
+- Fixed returning `void` in some methods which are intended to return a value
+or `null`.
+- Type of argument 3 passed to `UrlGeneratorInterface::generateMenuUrl()`.
+- `AdminHelper::addNewInstance` to detect methods based on `method_exists`
+instead of callable to maintain previous BC behavior.
+- Admin Type is correctly using parentAssociationsMappings when using form with
+  OneToOneToMany fields.
+
+### Changed
+- `$this->getSubject()` always returns a value in `configureFormField`
+
 ## [3.64.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.63.0...3.64.0) - 2020-03-31
 ### Added
 - Added a new option `link_parameters` for list action button. This option is

@@ -55,8 +55,8 @@ class AdminType extends AbstractType
             $p = new PropertyAccessor(false, true);
 
             try {
-                $parentSubject = $admin->getParentFieldDescription()->getAdmin()->getSubject();
-                if (null !== $parentSubject && false !== $parentSubject) {
+                $parentAdmin = $admin->getParentFieldDescription()->getAdmin();
+                if ($parentAdmin->hasSubject() && isset($options['property_path'])) {
                     // this check is to work around duplication issue in property path
                     // https://github.com/sonata-project/SonataAdminBundle/issues/4425
                     if ($this->getFieldDescription($options)->getFieldName() === $options['property_path']) {
@@ -75,11 +75,16 @@ class AdminType extends AbstractType
                         )
                     );
 
-                    $subject = $p->getValue($parentSubject, $parentPath.$path);
+                    $subject = $p->getValue($parentAdmin->getSubject(), $parentPath.$path);
+                    $builder->setData($subject);
+                } else {
+                    $subject = $admin->getNewInstance();
                     $builder->setData($subject);
                 }
             } catch (NoSuchIndexException $e) {
-                // no object here
+                // no object here, we create a new one
+                $subject = $admin->getNewInstance();
+                $builder->setData($subject);
             }
         }
 

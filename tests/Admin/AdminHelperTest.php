@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
-use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Tests\Fixtures\Entity\Bar;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -38,7 +38,7 @@ class AdminHelperTest extends TestCase
      */
     protected $helper;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $container = new Container();
 
@@ -194,14 +194,19 @@ class AdminHelperTest extends TestCase
         $container = new Container();
 
         $propertyAccessorBuilder = new PropertyAccessorBuilder();
-        $propertyAccesor = $propertyAccessorBuilder->getPropertyAccessor();
-        $pool = new Pool($container, 'title', 'logo.png', [], $propertyAccesor);
+        $propertyAccessor = $propertyAccessorBuilder->getPropertyAccessor();
+        $pool = new Pool($container, 'title', 'logo.png', [], $propertyAccessor);
         $helper = new AdminHelper($pool);
 
         $admin = $this->createMock(AdminInterface::class);
         $admin
             ->method('getClass')
             ->willReturn(Foo::class);
+
+        $associationAdmin = $this->createMock(AdminInterface::class);
+        $associationAdmin
+            ->method('getClass')
+            ->willReturn(Bar::class);
 
         $associationMapping = [
             'fieldName' => 'bar',
@@ -211,7 +216,7 @@ class AdminHelperTest extends TestCase
         ];
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription->method('getAssociationAdmin')->willReturn($admin);
+        $fieldDescription->method('getAssociationAdmin')->willReturn($associationAdmin);
         $fieldDescription->method('getAssociationMapping')->willReturn($associationMapping);
         $fieldDescription->method('getParentAssociationMappings')->willReturn([]);
 
@@ -219,7 +224,7 @@ class AdminHelperTest extends TestCase
             ->method('getFormFieldDescription')
             ->willReturn($fieldDescription);
 
-        $admin
+        $associationAdmin
             ->method('getFormFieldDescriptions')
             ->willReturn([
                 'bar' => $fieldDescription,
@@ -246,9 +251,20 @@ class AdminHelperTest extends TestCase
             ->will($this->onConsecutiveCalls($request, $request, $request, null, $request, $request, $request, $request, null, $request));
 
         $foo = $this->createMock(Foo::class);
+        $admin
+            ->method('hasSubject')
+            ->willReturn(true);
+        $admin
+            ->method('getSubject')
+            ->willReturn($foo);
 
-        $collection = $this->createMock(Collection::class);
-        $foo->setBar($collection);
+        $bar = new \stdClass();
+        $associationAdmin
+            ->expects($this->atLeastOnce())
+            ->method('getNewInstance')
+            ->willReturn($bar);
+
+        $foo->expects($this->atLeastOnce())->method('addBar')->with($bar);
 
         $dataMapper = $this->createMock(DataMapperInterface::class);
         $formFactory = $this->createMock(FormFactoryInterface::class);
@@ -266,8 +282,8 @@ class AdminHelperTest extends TestCase
         $formBuilder->setDataMapper($dataMapper);
         $formBuilder->add($childFormBuilder);
 
+        $associationAdmin->expects($this->atLeastOnce())->method('setSubject')->with($bar);
         $admin->method('getFormBuilder')->willReturn($formBuilder);
-        $admin->method('getSubject')->willReturn($foo);
 
         $finalForm = $helper->appendFormFieldElement($admin, $foo, 'test_bar')[1];
 
@@ -292,9 +308,7 @@ class AdminHelperTest extends TestCase
         $object = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getSubObject'])
             ->getMock();
-        $simpleObject = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['getSubObject'])
-            ->getMock();
+
         $subObject = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getAnd'])
             ->getMock();
@@ -307,7 +321,7 @@ class AdminHelperTest extends TestCase
         $dataMapper = $this->createMock(DataMapperInterface::class);
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $formBuilder = new FormBuilder('test', \get_class($simpleObject), $eventDispatcher, $formFactory);
+        $formBuilder = new FormBuilder('test', \get_class($object), $eventDispatcher, $formFactory);
         $childFormBuilder = new FormBuilder('subObject', \get_class($subObject), $eventDispatcher, $formFactory);
 
         $object->expects($this->atLeastOnce())->method('getSubObject')->willReturn([$subObject]);
@@ -319,12 +333,13 @@ class AdminHelperTest extends TestCase
         $formBuilder->setDataMapper($dataMapper);
         $formBuilder->add($childFormBuilder);
 
+        $admin->method('hasSubject')->willReturn(true);
+        $admin->method('getSubject')->willReturn($object);
         $admin->expects($this->once())->method('getFormBuilder')->willReturn($formBuilder);
-        $admin->expects($this->once())->method('getSubject')->willReturn($object);
 
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('unknown collection class');
 
-        $this->helper->appendFormFieldElement($admin, $simpleObject, 'uniquePartOfId_sub_object_0_and_more_0_final_data');
+        $this->helper->appendFormFieldElement($admin, $object, 'uniquePartOfId_sub_object_0_and_more_0_final_data');
     }
 }

@@ -77,7 +77,7 @@ class AdminTest extends TestCase
 {
     protected $cacheTempFolder;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->cacheTempFolder = sys_get_temp_dir().'/sonata_test_route';
         $filesystem = new Filesystem();
@@ -1112,7 +1112,8 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertFalse($admin->getShowGroups());
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+        $this->assertFalse($admin->getShowGroups('sonata_deprecation_mute'));
 
         $groups = ['foo', 'bar', 'baz'];
 
@@ -1124,7 +1125,8 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $this->assertFalse($admin->getFormGroups());
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+        $this->assertFalse($admin->getFormGroups('sonata_deprecation_mute'));
 
         $groups = ['foo', 'bar', 'baz'];
 
@@ -1219,12 +1221,12 @@ class AdminTest extends TestCase
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager->expects($this->once())
-            ->method('getUrlsafeIdentifier')
+            ->method('getUrlSafeIdentifier')
             ->with($this->equalTo($entity))
             ->willReturn('foo');
         $admin->setModelManager($modelManager);
 
-        $this->assertSame('foo', $admin->getUrlsafeIdentifier($entity));
+        $this->assertSame('foo', $admin->getUrlSafeIdentifier($entity));
     }
 
     public function testDeterminedPerPageValue(): void
@@ -1243,35 +1245,56 @@ class AdminTest extends TestCase
     public function testIsGranted(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'Acme\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager
+            ->method('getNormalizedIdentifier')
+            ->willReturnCallback(static function (?object $entity = null): ?string {
+                return $entity ? $entity->id : null;
+            });
 
-        $entity = new \stdClass();
+        $admin->setModelManager($modelManager);
+
+        $entity1 = new \stdClass();
+        $entity1->id = '1';
 
         $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
         $securityHandler
+            ->expects($this->exactly(6))
             ->method('isGranted')
             ->willReturnCallback(static function (
                 AdminInterface $adminIn,
                 string $attributes,
-                $object = null
+                ?object $object = null
             ) use (
                 $admin,
-                $entity
+                $entity1
             ): bool {
-                if ($admin === $adminIn && 'FOO' === $attributes) {
-                    if (($object === $admin) || ($object === $entity)) {
-                        return true;
-                    }
-                }
-
-                return false;
+                return $admin === $adminIn && 'FOO' === $attributes &&
+                    ($object === $admin || $object === $entity1);
             });
 
         $admin->setSecurityHandler($securityHandler);
 
         $this->assertTrue($admin->isGranted('FOO'));
-        $this->assertTrue($admin->isGranted('FOO', $entity));
+        $this->assertTrue($admin->isGranted('FOO'));
+        $this->assertTrue($admin->isGranted('FOO', $entity1));
+        $this->assertTrue($admin->isGranted('FOO', $entity1));
         $this->assertFalse($admin->isGranted('BAR'));
-        $this->assertFalse($admin->isGranted('BAR', $entity));
+        $this->assertFalse($admin->isGranted('BAR'));
+        $this->assertFalse($admin->isGranted('BAR', $entity1));
+        $this->assertFalse($admin->isGranted('BAR', $entity1));
+
+        $entity2 = new \stdClass();
+        $entity2->id = '2';
+
+        $this->assertFalse($admin->isGranted('BAR', $entity2));
+        $this->assertFalse($admin->isGranted('BAR', $entity2));
+
+        $entity3 = new \stdClass();
+        $entity3->id = '3';
+
+        $this->assertFalse($admin->isGranted('BAR', $entity3));
+        $this->assertFalse($admin->isGranted('BAR', $entity3));
     }
 
     public function testSupportsPreviewMode(): void
@@ -1539,7 +1562,7 @@ class AdminTest extends TestCase
 
     public function testFormAddPostSubmitEventForPreValidation(): void
     {
-        $modelAdmin = new ModelAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'Sonata\FooBundle\Controller\ModelAdminController');
+        $modelAdmin = new ModelAdmin('sonata.post.admin.model', \stdClass::class, 'Sonata\FooBundle\Controller\ModelAdminController');
         $object = new \stdClass();
 
         $labelTranslatorStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
@@ -1595,6 +1618,7 @@ class AdminTest extends TestCase
                 ->willReturn($formBuild);
 
         $modelAdmin->setFormContractor($formContractor);
+        $modelAdmin->setSubject($object);
         $modelAdmin->defineFormBuilder($formBuild);
         $modelAdmin->getForm();
     }
@@ -2330,6 +2354,42 @@ class AdminTest extends TestCase
         $this->assertSame($commentVoteAdmin, $postAdmin->getCurrentLeafChildAdmin());
         $this->assertSame($commentVoteAdmin, $commentAdmin->getCurrentLeafChildAdmin());
         $this->assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
+    }
+
+    public function testAdminWithoutControllerName(): void
+    {
+        $admin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', null);
+
+        $this->assertNull($admin->getBaseControllerName());
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this test and its data provider.
+     *
+     * @group legacy
+     *
+     * @dataProvider getDeprecatedAbstractAdminConstructorArgs
+     *
+     * @expectedDeprecation Passing other type than string%S as argument %d for method Sonata\AdminBundle\Admin\AbstractAdmin::__construct() is deprecated since sonata-project/admin-bundle 3.65. It will accept only string%S in version 4.0.
+     */
+    public function testDeprecatedAbstractAdminConstructorArgs($code, $class, $baseControllerName): void
+    {
+        new PostAdmin($code, $class, $baseControllerName);
+    }
+
+    public function getDeprecatedAbstractAdminConstructorArgs(): iterable
+    {
+        yield from [
+            ['sonata.post.admin.post', null, null],
+            [null, null, null],
+            ['sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', false],
+            ['sonata.post.admin.post', false, false],
+            [false, false, false],
+            [true, true, true],
+            [new \stdClass(), new \stdClass(), new \stdClass()],
+            [0, 0, 0],
+            [1, 1, 1],
+        ];
     }
 
     private function createTagAdmin(Post $post): TagAdmin

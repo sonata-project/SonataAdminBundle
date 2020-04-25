@@ -26,7 +26,7 @@ use Sonata\AdminBundle\Datagrid\SimplePager;
  */
 class SimplePagerTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->pager = new SimplePager(10, 2);
         $this->proxyQuery = $this->getMockBuilder(ProxyQueryInterface::class)

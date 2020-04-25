@@ -615,7 +615,7 @@ that should hopefully be there, to a new section named `UPGRADE FROM 42.3.1 to 4
 
 #### Upgrading code comments and deprecation messages
 
-All occurences of `42.x` in comments or deprecation messages should be updating
+All occurrences of `42.x` in comments or deprecation messages should be updating
 by resolving `x` to its value at the time of the release.
 
 :warning: You can do it quickly with a "Search and Replace" feature, but be careful not to replace unwanted matches.

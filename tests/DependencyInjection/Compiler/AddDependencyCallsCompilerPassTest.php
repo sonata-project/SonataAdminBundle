@@ -46,13 +46,13 @@ use Symfony\Component\Validator\ContainerConstraintValidatorFactory;
  */
 class AddDependencyCallsCompilerPassTest extends TestCase
 {
-    /** @var SonataAdminExtension $extension */
+    /** @var SonataAdminExtension */
     private $extension;
 
-    /** @var array $config */
+    /** @var array */
     private $config;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

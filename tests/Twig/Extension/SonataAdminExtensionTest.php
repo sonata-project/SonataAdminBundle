@@ -113,7 +113,7 @@ class SonataAdminExtensionTest extends TestCase
      */
     private $securityChecker;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         date_default_timezone_set('Europe/London');
 
@@ -2006,7 +2006,7 @@ EOT
                 }
             });
 
-        $element = $this->getMockBuilder('stdClass')
+        $element = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['customToString'])
             ->getMock();
         $element
@@ -2082,14 +2082,14 @@ EOT
 
         // set admin to pool
         $this->pool->setAdminServiceIds(['sonata_admin_foo_service']);
-        $this->pool->setAdminClasses(['stdClass' => ['sonata_admin_foo_service']]);
+        $this->pool->setAdminClasses([\stdClass::class => ['sonata_admin_foo_service']]);
 
         $this->admin->expects($this->once())
-            ->method('getUrlsafeIdentifier')
+            ->method('getUrlSafeIdentifier')
             ->with($this->equalTo($entity))
             ->willReturn(1234567);
 
-        $this->assertSame(1234567, $this->twigExtension->getUrlsafeIdentifier($entity));
+        $this->assertSame(1234567, $this->twigExtension->getUrlSafeIdentifier($entity));
     }
 
     public function testGetUrlsafeIdentifier_GivenAdmin_Foo(): void
@@ -2101,20 +2101,20 @@ EOT
             'sonata_admin_foo_service',
             'sonata_admin_bar_service',
         ]);
-        $this->pool->setAdminClasses(['stdClass' => [
+        $this->pool->setAdminClasses([\stdClass::class => [
             'sonata_admin_foo_service',
             'sonata_admin_bar_service',
         ]]);
 
         $this->admin->expects($this->once())
-            ->method('getUrlsafeIdentifier')
+            ->method('getUrlSafeIdentifier')
             ->with($this->equalTo($entity))
             ->willReturn(1234567);
 
         $this->adminBar->expects($this->never())
-            ->method('getUrlsafeIdentifier');
+            ->method('getUrlSafeIdentifier');
 
-        $this->assertSame(1234567, $this->twigExtension->getUrlsafeIdentifier($entity, $this->admin));
+        $this->assertSame(1234567, $this->twigExtension->getUrlSafeIdentifier($entity, $this->admin));
     }
 
     public function testGetUrlsafeIdentifier_GivenAdmin_Bar(): void
@@ -2123,20 +2123,20 @@ EOT
 
         // set admin to pool
         $this->pool->setAdminServiceIds(['sonata_admin_foo_service', 'sonata_admin_bar_service']);
-        $this->pool->setAdminClasses(['stdClass' => [
+        $this->pool->setAdminClasses([\stdClass::class => [
             'sonata_admin_foo_service',
             'sonata_admin_bar_service',
         ]]);
 
         $this->admin->expects($this->never())
-            ->method('getUrlsafeIdentifier');
+            ->method('getUrlSafeIdentifier');
 
         $this->adminBar->expects($this->once())
-            ->method('getUrlsafeIdentifier')
+            ->method('getUrlSafeIdentifier')
             ->with($this->equalTo($entity))
             ->willReturn(1234567);
 
-        $this->assertSame(1234567, $this->twigExtension->getUrlsafeIdentifier($entity, $this->adminBar));
+        $this->assertSame(1234567, $this->twigExtension->getUrlSafeIdentifier($entity, $this->adminBar));
     }
 
     public function xEditableChoicesProvider()

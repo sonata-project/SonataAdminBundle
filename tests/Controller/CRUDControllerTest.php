@@ -148,7 +148,7 @@ class CRUDControllerTest extends TestCase
     private $translator;
 
     /**
-     * @var LoggerInterface&MockObject
+     * @var LoggerInterface|MockObject
      */
     private $logger;
 
@@ -1056,7 +1056,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('getClass')
-            ->willReturn('stdClass');
+            ->willReturn(\stdClass::class);
 
         $this->assertLoggerLogsModelManagerException($this->admin, 'delete');
 
@@ -1713,7 +1713,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('getClass')
-            ->willReturn('stdClass');
+            ->willReturn(\stdClass::class);
 
         $form = $this->createMock(Form::class);
 
@@ -1912,7 +1912,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('getClass')
-            ->willReturn('stdClass');
+            ->willReturn(\stdClass::class);
 
         $this->admin->expects($this->once())
             ->method('getNewInstance')
@@ -1943,7 +1943,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('getClass')
-            ->willReturn('stdClass');
+            ->willReturn(\stdClass::class);
 
         $this->admin->expects($this->once())
             ->method('getNewInstance')
@@ -1968,7 +1968,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('getClass')
-            ->willReturn('stdClass');
+            ->willReturn(\stdClass::class);
 
         $this->admin->expects($this->once())
             ->method('getNewInstance')
@@ -2051,7 +2051,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('getClass')
-            ->willReturn('stdClass');
+            ->willReturn(\stdClass::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
@@ -2116,7 +2116,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('getClass')
-            ->willReturn('stdClass');
+            ->willReturn(\stdClass::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
@@ -2157,7 +2157,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('getClass')
-            ->willReturn('stdClass');
+            ->willReturn(\stdClass::class);
 
         $this->admin->expects($this->once())
             ->method('getNewInstance')
@@ -2222,7 +2222,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('getClass')
-            ->willReturn('stdClass');
+            ->willReturn(\stdClass::class);
 
         $object = new \stdClass();
 
@@ -2333,7 +2333,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('getClass')
-            ->willReturn('stdClass');
+            ->willReturn(\stdClass::class);
 
         $this->admin->expects($this->once())
             ->method('getNormalizedIdentifier')
@@ -2372,7 +2372,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('getClass')
-            ->willReturn('stdClass');
+            ->willReturn(\stdClass::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
@@ -2425,7 +2425,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('getClass')
-            ->willReturn('stdClass');
+            ->willReturn(\stdClass::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')
@@ -2472,7 +2472,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('getClass')
-            ->willReturn('stdClass');
+            ->willReturn(\stdClass::class);
 
         $this->admin->expects($this->once())
             ->method('getForm')

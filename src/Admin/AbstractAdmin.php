@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Admin;
 
 use Doctrine\Common\Util\ClassUtils;
-use Knp\Menu\FactoryInterface as MenuFactoryInterface;
+use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
@@ -229,11 +228,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $children = [];
 
     /**
-     * Reference the parent collection.
+     * Reference the parent admin.
      *
      * @var AdminInterface|null
      */
-    protected $parent = null;
+    protected $parent;
 
     /**
      * The related parent association, ie if OrderElement has a parent property named order,
@@ -252,7 +251,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @var string|array
      */
-    protected $parentAssociationMapping = null;
+    protected $parentAssociationMapping;
 
     /**
      * Reference the parent FieldDescription related to this admin
@@ -352,12 +351,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * @var SecurityHandlerInterface
      */
-    protected $securityHandler = null;
+    protected $securityHandler;
 
     /**
      * @var ValidatorInterface
      */
-    protected $validator = null;
+    protected $validator;
 
     /**
      * The configuration pool.
@@ -367,12 +366,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $configurationPool;
 
     /**
-     * @var MenuItemInterface
+     * @var ItemInterface
      */
     protected $menu;
 
     /**
-     * @var MenuFactoryInterface
+     * @var FactoryInterface
      */
     protected $menuFactory;
 
@@ -484,11 +483,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     private $form;
 
     /**
-     * @var DatagridInterface
-     */
-    private $filter;
-
-    /**
      * The cached base route name.
      *
      * @var string
@@ -505,12 +499,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The form group disposition.
      *
+     * NEXT_MAJOR: must have `[]` as default value and remove the possibility to
+     * hold boolean values.
+     *
      * @var array|bool
      */
     private $formGroups = false;
 
     /**
      * The form tabs disposition.
+     *
+     * NEXT_MAJOR: must have `[]` as default value and remove the possibility to
+     * hold boolean values.
      *
      * @var array|bool
      */
@@ -519,12 +519,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The view group disposition.
      *
+     * NEXT_MAJOR: must have `[]` as default value and remove the possibility to
+     * hold boolean values.
+     *
      * @var array|bool
      */
     private $showGroups = false;
 
     /**
      * The view tab disposition.
+     *
+     * NEXT_MAJOR: must have `[]` as default value and remove the possibility to
+     * hold boolean values.
      *
      * @var array|bool
      */
@@ -545,14 +551,32 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     private $filterPersister;
 
     /**
-     * @param string $code
-     * @param string $class
-     * @param string $baseControllerName
+     * @param string      $code
+     * @param string      $class
+     * @param string|null $baseControllerName
      */
-    public function __construct($code, $class, $baseControllerName)
+    public function __construct($code, $class, $baseControllerName = null)
     {
+        if (!\is_string($code)) {
+            @trigger_error(sprintf(
+                'Passing other type than string as argument 1 for method %s() is deprecated since sonata-project/admin-bundle 3.65. It will accept only string in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
         $this->code = $code;
+        if (!\is_string($class)) {
+            @trigger_error(sprintf(
+                'Passing other type than string as argument 2 for method %s() is deprecated since sonata-project/admin-bundle 3.65. It will accept only string in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
         $this->class = $class;
+        if (null !== $baseControllerName && !\is_string($baseControllerName)) {
+            @trigger_error(sprintf(
+                'Passing other type than string or null as argument 3 for method %s() is deprecated since sonata-project/admin-bundle 3.65. It will accept only string and null in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
         $this->baseControllerName = $baseControllerName;
 
         $this->predefinePerPageOptions();
@@ -561,8 +585,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     /**
      * {@inheritdoc}
-     *
-     * NEXT_MAJOR: return null to indicate no override
      */
     public function getExportFormats()
     {
@@ -1120,21 +1142,21 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return ($admin->getBaseRouteName().'_'.$name) === $route;
     }
 
-    public function generateObjectUrl($name, $object, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generateObjectUrl($name, $object, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        $parameters['id'] = $this->getUrlsafeIdentifier($object);
+        $parameters['id'] = $this->getUrlSafeIdentifier($object);
 
-        return $this->generateUrl($name, $parameters, $absolute);
+        return $this->generateUrl($name, $parameters, $referenceType);
     }
 
-    public function generateUrl($name, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generateUrl($name, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        return $this->routeGenerator->generateUrl($this, $name, $parameters, $absolute);
+        return $this->routeGenerator->generateUrl($this, $name, $parameters, $referenceType);
     }
 
-    public function generateMenuUrl($name, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generateMenuUrl($name, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        return $this->routeGenerator->generateMenuUrl($this, $name, $parameters, $absolute);
+        return $this->routeGenerator->generateMenuUrl($this, $name, $parameters, $referenceType);
     }
 
     final public function setTemplateRegistry(MutableTemplateRegistryInterface $templateRegistry): void
@@ -1188,6 +1210,20 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function defineFormBuilder(FormBuilderInterface $formBuilder): void
     {
+        if (!$this->hasSubject()) {
+            @trigger_error(sprintf(
+                'Calling %s() when there is no subject is deprecated since sonata-project/admin-bundle 3.65 and will throw an exception in 4.0. '.
+                'Use %s::setSubject() to set the subject.',
+                __METHOD__,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+            // NEXT_MAJOR : remove the previous `trigger_error()` call and uncomment the following exception
+            // throw new \LogicException(sprintf(
+            //    'Admin "%s" has no subject.',
+            //    static::class
+            // ));
+        }
+
         $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
 
         $this->configureFormFields($mapper);
@@ -1275,7 +1311,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->datagrid;
     }
 
-    public function buildTabMenu($action, AdminInterface $childAdmin = null): MenuItemInterface
+    public function buildTabMenu($action, ?AdminInterface $childAdmin = null): ItemInterface
     {
         if ($this->loaded['tab_menu']) {
             return $this->menu;
@@ -1308,7 +1344,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @return ItemInterface
      */
-    public function getSideMenu($action, AdminInterface $childAdmin = null)
+    public function getSideMenu($action, ?AdminInterface $childAdmin = null)
     {
         if ($this->isChild()) {
             return $this->getParent()->getSideMenu($action, $this);
@@ -1375,7 +1411,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->persistFilters = $persist;
     }
 
-    public function setFilterPersister(FilterPersisterInterface $filterPersister = null): void
+    public function setFilterPersister(?FilterPersisterInterface $filterPersister = null): void
     {
         $this->filterPersister = $filterPersister;
         // NEXT_MAJOR remove the deprecated property will be removed. Needed for persisted filter condition.
@@ -1416,6 +1452,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function getFormGroups()
     {
+        if (!\is_array($this->formGroups) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         return $this->formGroups;
     }
 
@@ -1436,17 +1479,25 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
-     * @param array $group
+     * @param string $group
      */
     public function reorderFormGroup($group, array $keys): void
     {
-        $formGroups = $this->getFormGroups();
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+        $formGroups = $this->getFormGroups('sonata_deprecation_mute');
         $formGroups[$group]['fields'] = array_merge(array_flip($keys), $formGroups[$group]['fields']);
         $this->setFormGroups($formGroups);
     }
 
     public function getFormTabs()
     {
+        if (!\is_array($this->formTabs) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         return $this->formTabs;
     }
 
@@ -1457,6 +1508,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function getShowTabs()
     {
+        if (!\is_array($this->showTabs) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         return $this->showTabs;
     }
 
@@ -1467,6 +1525,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function getShowGroups()
     {
+        if (!\is_array($this->showGroups) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         return $this->showGroups;
     }
 
@@ -1477,7 +1542,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function reorderShowGroup($group, array $keys): void
     {
-        $showGroups = $this->getShowGroups();
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+        $showGroups = $this->getShowGroups('sonata_deprecation_mute');
         $showGroups[$group]['fields'] = array_merge(array_flip($keys), $showGroups[$group]['fields']);
         $this->setShowGroups($showGroups);
     }
@@ -1838,13 +1904,13 @@ EOT;
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0
      */
     public function getCurrentChild()
     {
         @trigger_error(
             sprintf(
-                'The %s() method is deprecated since version 3.x and will be removed in 4.0. Use %s::isCurrentChild() instead.',
+                'The %s() method is deprecated since version 3.65 and will be removed in 4.0. Use %s::isCurrentChild() instead.',
                 __METHOD__,
                 __CLASS__
             ),
@@ -2159,7 +2225,8 @@ EOT;
 
     public function isGranted($name, $object = null)
     {
-        $key = md5(json_encode($name).($object ? '/'.spl_object_hash($object) : ''));
+        $objectRef = $object ? '/'.spl_object_hash($object).'#'.$this->id($object) : '';
+        $key = md5(json_encode($name).$objectRef);
 
         if (!\array_key_exists($key, $this->cacheIsGranted)) {
             $this->cacheIsGranted[$key] = $this->securityHandler->isGranted($this, $name, $object ?: $this);
@@ -2168,9 +2235,9 @@ EOT;
         return $this->cacheIsGranted[$key];
     }
 
-    public function getUrlsafeIdentifier($entity)
+    public function getUrlSafeIdentifier($entity)
     {
-        return $this->getModelManager()->getUrlsafeIdentifier($entity);
+        return $this->getModelManager()->getUrlSafeIdentifier($entity);
     }
 
     public function getNormalizedIdentifier($entity)
@@ -2230,7 +2297,7 @@ EOT;
         return $this->extensions;
     }
 
-    public function setMenuFactory(MenuFactoryInterface $menuFactory): void
+    public function setMenuFactory(FactoryInterface $menuFactory): void
     {
         $this->menuFactory = $menuFactory;
     }
@@ -2653,7 +2720,7 @@ EOT;
      *
      * @deprecated Use configureTabMenu instead
      */
-    protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    protected function configureSideMenu(ItemInterface $menu, $action, ?AdminInterface $childAdmin = null)
     {
     }
 
@@ -2662,7 +2729,7 @@ EOT;
      *
      * @param string $action
      */
-    protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    protected function configureTabMenu(ItemInterface $menu, $action, ?AdminInterface $childAdmin = null)
     {
         // Use configureSideMenu not to mess with previous overrides
         // NEXT_MAJOR: remove this line

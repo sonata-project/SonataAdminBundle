@@ -14,16 +14,12 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\Prophecy\ObjectProphecy;
 use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 
 class ModelsToArrayTransformerTest extends TestCase
 {
-    /**
-     * @var ObjectProphecy&ModelManagerInterface
-     */
     private $modelManager;
 
     protected function setUp(): void

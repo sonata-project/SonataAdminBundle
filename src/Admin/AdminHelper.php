@@ -110,7 +110,7 @@ class AdminHelper
     {
         // child rows marked as toDelete
         $toDelete = [];
-        // retrieve the subject
+
         $formBuilder = $admin->getFormBuilder();
 
         // get the field element
@@ -141,11 +141,10 @@ class AdminHelper
         //if childFormBuilder was not found resulted in fatal error getName() method call on non object
         if (!$childFormBuilder) {
             $propertyAccessor = $this->pool->getPropertyAccessor();
-            $entity = $admin->getSubject();
 
-            $path = $this->getElementAccessPath($elementId, $entity);
+            $path = $this->getElementAccessPath($elementId, $subject);
 
-            $collection = $propertyAccessor->getValue($entity, $path);
+            $collection = $propertyAccessor->getValue($subject, $path);
 
             if ($collection instanceof DoctrinePersistentCollection || $collection instanceof PersistentCollection) {
                 //since doctrine 2.4
@@ -157,7 +156,7 @@ class AdminHelper
             }
 
             $collection->add(new $entityClassName());
-            $propertyAccessor->setValue($entity, $path, $collection);
+            $propertyAccessor->setValue($subject, $path, $collection);
 
             $fieldDescription = null;
         } else {
@@ -180,14 +179,6 @@ class AdminHelper
             $objectCount = null === $value ? 0 : \count($value);
             $postCount = \count($data[$childFormBuilder->getName()]);
 
-            $fields = array_keys($fieldDescription->getAssociationAdmin()->getFormFieldDescriptions());
-
-            // for now, not sure how to do that
-            $value = [];
-            foreach ($fields as $name) {
-                $value[$name] = '';
-            }
-
             // add new elements to the subject
             while ($objectCount < $postCount) {
                 // append a new instance into the object
@@ -195,7 +186,10 @@ class AdminHelper
                 ++$objectCount;
             }
 
-            $this->addNewInstance($form->getData(), $fieldDescription);
+            $newInstance = $this->addNewInstance($form->getData(), $fieldDescription);
+
+            $associationAdmin = $fieldDescription->getAssociationAdmin();
+            $associationAdmin->setSubject($newInstance);
         }
 
         $finalForm = $admin->getFormBuilder()->getForm();
@@ -225,7 +219,7 @@ class AdminHelper
      *
      * @throws \RuntimeException
      */
-    public function addNewInstance($object, FieldDescriptionInterface $fieldDescription): void
+    public function addNewInstance($object, FieldDescriptionInterface $fieldDescription): object
     {
         $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
         $mapping = $fieldDescription->getAssociationMapping();
@@ -266,6 +260,8 @@ class AdminHelper
         }
 
         $object->$method($instance);
+
+        return $instance;
     }
 
     /**

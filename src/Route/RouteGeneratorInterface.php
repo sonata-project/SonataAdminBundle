@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Route;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -23,29 +24,29 @@ interface RouteGeneratorInterface
     /**
      * @param string               $name
      * @param array<string, mixed> $parameters
-     * @param bool                 $absolute
+     * @param int                  $referenceType
      *
      * @return string
      */
-    public function generateUrl(AdminInterface $admin, $name, array $parameters = [], $absolute = false);
+    public function generateUrl(AdminInterface $admin, $name, array $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH);
 
     /**
      * @param string               $name
      * @param array<string, mixed> $parameters
-     * @param bool                 $absolute
+     * @param int                  $referenceType
      *
      * @return array
      */
-    public function generateMenuUrl(AdminInterface $admin, $name, array $parameters = [], $absolute = false);
+    public function generateMenuUrl(AdminInterface $admin, $name, array $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH);
 
     /**
      * @param string               $name
      * @param array<string, mixed> $parameters
-     * @param bool                 $absolute
+     * @param int                  $referenceType
      *
      * @return string
      */
-    public function generate($name, array $parameters = [], $absolute = false);
+    public function generate($name, array $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH);
 
     /**
      * @param string               $name

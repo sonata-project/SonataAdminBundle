@@ -105,7 +105,7 @@ final class ModelManager implements ModelManagerInterface
         return null;
     }
 
-    public function getUrlsafeIdentifier($model)
+    public function getUrlSafeIdentifier($model)
     {
         return $model->getId();
     }

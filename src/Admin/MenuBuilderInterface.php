@@ -29,5 +29,5 @@ interface MenuBuilderInterface
      *
      * @return ItemInterface|bool
      */
-    public function buildTabMenu($action, AdminInterface $childAdmin = null);
+    public function buildTabMenu($action, ?AdminInterface $childAdmin = null);
 }

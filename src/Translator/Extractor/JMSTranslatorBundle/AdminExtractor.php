@@ -62,7 +62,7 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
      */
     private $breadcrumbsBuilder;
 
-    public function __construct(Pool $adminPool, LoggerInterface $logger = null)
+    public function __construct(Pool $adminPool, ?LoggerInterface $logger = null)
     {
         $this->logger = $logger;
         $this->adminPool = $adminPool;

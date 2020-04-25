@@ -25,12 +25,12 @@ class SessionFilterPersisterTest extends TestCase
      */
     private $session;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->session = $this->prophesize(SessionInterface::class);
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         unset($this->session);
     }
