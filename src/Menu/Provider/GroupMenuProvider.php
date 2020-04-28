@@ -59,15 +59,16 @@ class GroupMenuProvider implements MenuProviderInterface
          * NEXT_MAJOR: Move AuthorizationCheckerInterface check to method signature.
          */
         if (null === $checker) {
-            @trigger_error(
-                'Passing no 3rd argument is deprecated since version 3.10 and will be mandatory in 4.0.
-                Pass Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as 3rd argument.',
-                E_USER_DEPRECATED
-            );
+            @trigger_error(sprintf(
+                'Passing no 3rd argument is deprecated since version 3.10 and will be mandatory in 4.0.'
+                .' Pass %s as 3rd argument.',
+                AuthorizationCheckerInterface::class
+            ), E_USER_DEPRECATED);
         } elseif (!$checker instanceof AuthorizationCheckerInterface) {
-            throw new \InvalidArgumentException(
-                'Argument 3 must be an instance of \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'
-            );
+            throw new \InvalidArgumentException(sprintf(
+                'Argument 3 must be an instance of %s',
+                AuthorizationCheckerInterface::class
+            ));
         }
 
         $this->checker = $checker;

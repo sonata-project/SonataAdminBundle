@@ -122,7 +122,7 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
 
     public function getBaseRole(AdminInterface $admin)
     {
-        return 'ROLE_'.str_replace('.', '_', strtoupper($admin->getCode())).'_%s';
+        return sprintf('ROLE_%s_%%s', str_replace('.', '_', strtoupper($admin->getCode())));
     }
 
     public function buildSecurityInformation(AdminInterface $admin)

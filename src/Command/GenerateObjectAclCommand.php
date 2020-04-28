@@ -67,7 +67,8 @@ class GenerateObjectAclCommand extends QuestionableCommand
         if (null !== $registry && (!$registry instanceof RegistryInterface && !$registry instanceof ManagerRegistry)) {
             if (!$registry instanceof ManagerRegistry) {
                 @trigger_error(sprintf(
-                    "Passing an object that doesn't implement %s as argument 3 to %s() is deprecated since sonata-project/admin-bundle 3.56.",
+                    'Passing an object that doesn\'t implement %s as argument 3 to %s() is deprecated since'
+                    .' sonata-project/admin-bundle 3.56.',
                     ManagerRegistry::class,
                     __METHOD__
                 ), E_USER_DEPRECATED);
@@ -102,18 +103,19 @@ class GenerateObjectAclCommand extends QuestionableCommand
     {
         $output->writeln('Welcome to the AdminBundle object ACL generator');
         $output->writeln([
-                '',
-                'This command helps you to generate ACL entities for the objects handled by the AdminBundle.',
-                '',
-                'If the step option is used, you will be asked if you want to generate the object ACL entities for each Admin.',
-                'You must use the shortcut notation like <comment>AcmeDemoBundle:User</comment> if you want to set an object owner.',
-                '',
+            '',
+            'This command helps you to generate ACL entities for the objects handled by the AdminBundle.',
+            '',
+            'If the step option is used, you will be asked if you want to generate the object ACL entities for each Admin.',
+            'You must use the shortcut notation like <comment>AcmeDemoBundle:User</comment> if you want to set an object owner.',
+            '',
         ]);
 
         if (!$this->registry) {
-            $msg = sprintf('The command "%s" has a dependency on a non-existent service "doctrine".', static::$defaultName);
-
-            throw new ServiceNotFoundException('doctrine', static::class, null, [], $msg);
+            throw new ServiceNotFoundException('doctrine', static::class, null, [], sprintf(
+                'The command "%s" has a dependency on a non-existent service "doctrine".',
+                static::$defaultName
+            ));
         }
 
         if ($input->getOption('user_model')) {
@@ -224,16 +226,25 @@ class GenerateObjectAclCommand extends QuestionableCommand
 
         if ('' === $this->userEntityClass) {
             if ($input->getOption('user_model')) {
-                list($userBundle, $userModel) = Validators::validateEntityName($input->getOption('user_model'));
+                [$userBundle, $userModel] = Validators::validateEntityName($input->getOption('user_model'));
             } else {
-                list($userBundle, $userModel) = $this->askAndValidate($input, $output, 'Please enter the User model shortcut name: ', '', 'Sonata\AdminBundle\Command\Validators::validateEntityName');
+                [$userBundle, $userModel] = $this->askAndValidate(
+                    $input,
+                    $output,
+                    'Please enter the User Entity shortcut name: ',
+                    '',
+                    'Sonata\AdminBundle\Command\Validators::validateEntityName'
+                );
             }
+
             // Entity exists?
             if ($this->registry instanceof RegistryInterface) {
-                $this->userEntityClass = $this->registry->getEntityNamespace($userBundle).'\\'.$userModel;
+                $namespace = $this->registry->getEntityNamespace($userBundle);
             } else {
-                $this->userEntityClass = $this->registry->getAliasNamespace($userBundle).'\\'.$userModel;
+                $namespace = $this->registry->getAliasNamespace($userBundle);
             }
+
+            $this->userEntityClass = sprintf('%s\%s', $namespace, $userModel);
         }
 
         return $this->userEntityClass;

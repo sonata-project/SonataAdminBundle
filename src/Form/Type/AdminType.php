@@ -96,7 +96,7 @@ class AdminType extends AbstractType
                         '',
                         array_map(
                             static function (array $associationMapping): string {
-                                return $associationMapping['fieldName'].'.';
+                                return sprintf('%s.', $associationMapping['fieldName']);
                             },
                             $this->getFieldDescription($options)->getParentAssociationMappings()
                         )

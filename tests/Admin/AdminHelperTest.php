@@ -184,7 +184,7 @@ class AdminHelperTest extends TestCase
         $subObject->expects($this->atLeastOnce())->method('getMore')->willReturn('Value');
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Could not get element id from '.$path.' Failing part: calls');
+        $this->expectExceptionMessage(sprintf('Could not get element id from %s Failing part: calls', $path));
 
         $this->helper->getElementAccessPath($path, $object);
     }

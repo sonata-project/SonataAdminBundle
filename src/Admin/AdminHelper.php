@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Admin;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ODM\MongoDB\PersistentCollection;
 use Doctrine\ORM\PersistentCollection as DoctrinePersistentCollection;
@@ -236,9 +237,11 @@ class AdminHelper
                 /*
                  * NEXT_MAJOR: Use BadMethodCallException instead
                  */
-                throw new \RuntimeException(
-                    sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
-                );
+                throw new \RuntimeException(sprintf(
+                    'Method %s::%s() does not exist.',
+                    ClassUtils::getClass($object),
+                    $method
+                ));
             }
 
             $object = $object->$method();
@@ -256,9 +259,11 @@ class AdminHelper
                     /*
                      * NEXT_MAJOR: Use BadMethodCallException instead
                      */
-                    throw new \RuntimeException(
-                        sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
-                    );
+                    throw new \RuntimeException(sprintf(
+                        'Method %s::%s() does not exist.',
+                        ClassUtils::getClass($object),
+                        $method
+                    ));
                 }
             }
         }
@@ -283,14 +288,11 @@ class AdminHelper
      */
     public function camelize($property)
     {
-        @trigger_error(
-            sprintf(
-                'The %s method is deprecated since 3.1 and will be removed in 4.0. '.
-                'Use \Doctrine\Inflector\Inflector::classify() instead.',
-                __METHOD__
-            ),
-            E_USER_DEPRECATED
-        );
+        @trigger_error(sprintf(
+            'The %s method is deprecated since 3.1 and will be removed in 4.0. Use %s::classify() instead.',
+            __METHOD__,
+            Inflector::class
+        ), E_USER_DEPRECATED);
 
         return InflectorFactory::create()->build()->classify($property);
     }
@@ -328,9 +330,11 @@ class AdminHelper
         }
 
         if (!empty($currentPath)) {
-            throw new \Exception(
-                sprintf('Could not get element id from %s Failing part: %s', $elementId, $currentPath)
-            );
+            throw new \Exception(sprintf(
+                'Could not get element id from %s Failing part: %s',
+                $elementId,
+                $currentPath
+            ));
         }
 
         return $totalPath;

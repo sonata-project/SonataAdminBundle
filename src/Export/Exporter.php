@@ -26,11 +26,11 @@ if (class_exists(CoreExporter::class)) {
     {
         public function __construct()
         {
-            @trigger_error(
-                'The '.__NAMESPACE__.'\Exporter class is deprecated since version 3.14 and will be removed in 4.0.'.
-                ' Use \Sonata\Exporter\Exporter instead',
-                E_USER_DEPRECATED
-            );
+            @trigger_error(sprintf(
+                'The %s\Exporter class is deprecated since version 3.14 and will be removed in 4.0.'
+                .' Use \Sonata\Exporter\Exporter instead',
+                __NAMESPACE__
+            ), E_USER_DEPRECATED);
         }
     }
 } else {

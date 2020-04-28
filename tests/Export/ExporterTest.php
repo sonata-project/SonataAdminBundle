@@ -57,7 +57,7 @@ class ExporterTest extends TestCase
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame($contentType, $response->headers->get('Content-Type'));
         // Quotes does not appear on some sonata versions.
-        $this->assertRegExp('/attachment; filename="?'.$filename.'"?/', $response->headers->get('Content-Disposition'));
+        $this->assertRegExp(sprintf('/attachment; filename="?%s"?/', $filename), $response->headers->get('Content-Disposition'));
     }
 
     public function getGetResponseTests()

@@ -41,7 +41,10 @@ class RoleSecurityHandler implements SecurityHandlerInterface
     {
         // NEXT_MAJOR: Move AuthorizationCheckerInterface check to method signature
         if (!$authorizationChecker instanceof AuthorizationCheckerInterface) {
-            throw new \InvalidArgumentException('Argument 1 should be an instance of Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
+            throw new \InvalidArgumentException(sprintf(
+                'Argument 1 should be an instance of %s',
+                AuthorizationCheckerInterface::class
+            ));
         }
 
         $this->authorizationChecker = $authorizationChecker;
@@ -71,7 +74,7 @@ class RoleSecurityHandler implements SecurityHandlerInterface
 
     public function getBaseRole(AdminInterface $admin)
     {
-        return 'ROLE_'.str_replace('.', '_', strtoupper($admin->getCode())).'_%s';
+        return sprintf('ROLE_%s_%%s', str_replace('.', '_', strtoupper($admin->getCode())));
     }
 
     public function buildSecurityInformation(AdminInterface $admin)

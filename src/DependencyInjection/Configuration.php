@@ -141,15 +141,15 @@ CASESENSITIVE;
                         ->scalarNode('form_type')->defaultValue('standard')->end()
                         ->scalarNode('default_group')
                             ->defaultValue('default')
-                            ->info("Group used for admin services if one isn't provided.")
+                            ->info('Group used for admin services if one isn\'t provided.')
                         ->end()
                         ->scalarNode('default_label_catalogue')
                             ->defaultValue('SonataAdminBundle')
-                            ->info("Label Catalogue used for admin services if one isn't provided.")
+                            ->info('Label Catalogue used for admin services if one isn\'t provided.')
                         ->end()
                         ->scalarNode('default_icon')
                             ->defaultValue('<i class="fa fa-folder"></i>')
-                            ->info("Icon used for admin services if one isn't provided.")
+                            ->info('Icon used for admin services if one isn\'t provided.')
                         ->end()
                         ->integerNode('dropdown_number_groups_per_colums')->defaultValue(2)->end()
                         ->enumNode('title_mode')
@@ -171,8 +171,8 @@ CASESENSITIVE;
                             ->setDeprecated('The child node "%node%" at path "%path%" is deprecated since sonata-project/admin-bundle 3.70 and will be removed in 4.0.')
                             ->defaultValue(static function (): bool {
                                 @trigger_error(
-                                    'Using `true` as value for "sonata_admin.options.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.64. '.
-                                    'You should set it to `false`, which will be the default value since version 4.0.'
+                                    'Using `true` as value for "sonata_admin.options.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.64. '
+                                    .'You should set it to `false`, which will be the default value since version 4.0.'
                                 );
 
                                 return true;
@@ -181,8 +181,8 @@ CASESENSITIVE;
                                 ->ifTrue()
                                 ->then(static function (bool $v): bool {
                                     @trigger_error(
-                                        'Using `true` as value for "sonata_admin.options.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.64 and will be remove in 4.0'.
-                                        'You should set it to `false` before upgrade process.'
+                                        'Using `true` as value for "sonata_admin.options.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.64 and will be remove in 4.0'
+                                        .'You should set it to `false` before upgrade process.'
                                     );
 
                                     return $v;
@@ -206,7 +206,10 @@ CASESENSITIVE;
                                             $disallowedItems = ['items', 'label'];
                                             foreach ($disallowedItems as $item) {
                                                 if (isset($items[$item])) {
-                                                    throw new \InvalidArgumentException(sprintf('The config value "%s" cannot be used alongside "provider" config value', $item));
+                                                    throw new \InvalidArgumentException(sprintf(
+                                                        'The config value "%s" cannot be used alongside "provider" config value',
+                                                        $item
+                                                    ));
                                                 }
                                             }
                                         }

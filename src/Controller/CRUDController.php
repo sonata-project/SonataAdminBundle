@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Controller;
 use Doctrine\Inflector\InflectorFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -92,10 +93,10 @@ class CRUDController implements ContainerAwareInterface
      */
     public function render($view, array $parameters = [], ?Response $response = null)
     {
-        @trigger_error(
-            'Method '.__CLASS__.'::render has been renamed to '.__CLASS__.'::renderWithExtraParams.',
-            E_USER_DEPRECATED
-        );
+        @trigger_error(sprintf(
+            'Method %1$s::render has been renamed to %1$s::renderWithExtraParams.',
+            __CLASS__
+        ), E_USER_DEPRECATED);
 
         return $this->renderWithExtraParams($view, $parameters, $response);
     }
@@ -281,13 +282,12 @@ class CRUDController implements ContainerAwareInterface
     public function editAction($deprecatedId = null) // NEXT_MAJOR: Remove the unused $id parameter
     {
         if (isset(\func_get_args()[0])) {
-            @trigger_error(
-                sprintf(
-                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.62 and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
-                    __METHOD__
-                ),
-                E_USER_DEPRECATED
-            );
+            @trigger_error(sprintf(
+                'Support for the "id" route param as argument 1 at `%s()` is deprecated since'
+                .' sonata-project/admin-bundle 3.62 and will be removed in 4.0,'
+                .' use `AdminInterface::getIdParameter()` instead.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
         }
 
         // the key used to lookup the template
@@ -351,7 +351,7 @@ class CRUDController implements ContainerAwareInterface
                 } catch (LockException $e) {
                     $this->addFlash('sonata_flash_error', $this->trans('flash_lock_error', [
                         '%name%' => $this->escapeHtml($this->admin->toString($existingObject)),
-                        '%link_start%' => '<a href="'.$this->admin->generateObjectUrl('edit', $existingObject).'">',
+                        '%link_start%' => sprintf('<a href="%s">', $this->admin->generateObjectUrl('edit', $existingObject)),
                         '%link_end%' => '</a>',
                     ], 'SonataAdminBundle'));
                 }
@@ -408,7 +408,11 @@ class CRUDController implements ContainerAwareInterface
         $restMethod = $this->getRestMethod();
 
         if (Request::METHOD_POST !== $restMethod) {
-            throw $this->createNotFoundException(sprintf('Invalid request method given "%s", %s expected', $restMethod, Request::METHOD_POST));
+            throw $this->createNotFoundException(sprintf(
+                'Invalid request method given "%s", %s expected',
+                $restMethod,
+                Request::METHOD_POST
+            ));
         }
 
         // check the csrf token
@@ -436,13 +440,11 @@ class CRUDController implements ContainerAwareInterface
         // NEXT_MAJOR: Remove reflection check.
         $reflector = new \ReflectionMethod($this->admin, 'getBatchActions');
         if ($reflector->getDeclaringClass()->getName() === \get_class($this->admin)) {
-            @trigger_error(
-                'Override Sonata\AdminBundle\Admin\AbstractAdmin::getBatchActions method'
-                .' is deprecated since version 3.2.'
-                .' Use Sonata\AdminBundle\Admin\AbstractAdmin::configureBatchActions instead.'
-                .' The method will be final in 4.0.',
-                E_USER_DEPRECATED
-            );
+            @trigger_error(sprintf(
+                'Override %1$s::getBatchActions method is deprecated since version 3.2.'
+                .' Use %1$s::configureBatchActions instead. The method will be final in 4.0.',
+                AbstractAdmin::class
+            ), E_USER_DEPRECATED);
         }
         $batchActions = $this->admin->getBatchActions();
         if (!\array_key_exists($action, $batchActions)) {
@@ -658,13 +660,12 @@ class CRUDController implements ContainerAwareInterface
     public function showAction($deprecatedId = null) // NEXT_MAJOR: Remove the unused $id parameter
     {
         if (isset(\func_get_args()[0])) {
-            @trigger_error(
-                sprintf(
-                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.62 and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
-                    __METHOD__
-                ),
-                E_USER_DEPRECATED
-            );
+            @trigger_error(sprintf(
+                'Support for the "id" route param as argument 1 at `%s()` is deprecated since'
+                .' sonata-project/admin-bundle 3.62 and will be removed in 4.0,'
+                .' use `AdminInterface::getIdParameter()` instead.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
         }
 
         $request = $this->getRequest();
@@ -713,13 +714,12 @@ class CRUDController implements ContainerAwareInterface
     public function historyAction($deprecatedId = null) // NEXT_MAJOR: Remove the unused $id parameter
     {
         if (isset(\func_get_args()[0])) {
-            @trigger_error(
-                sprintf(
-                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.62 and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
-                    __METHOD__
-                ),
-                E_USER_DEPRECATED
-            );
+            @trigger_error(sprintf(
+                'Support for the "id" route param as argument 1 at `%s()` is deprecated since'
+                .' sonata-project/admin-bundle 3.62 and will be removed in 4.0,'
+                .' use `AdminInterface::getIdParameter()` instead.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
         }
 
         $request = $this->getRequest();
@@ -735,12 +735,10 @@ class CRUDController implements ContainerAwareInterface
         $manager = $this->get('sonata.admin.audit.manager');
 
         if (!$manager->hasReader($this->admin->getClass())) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the audit reader for class : %s',
-                    $this->admin->getClass()
-                )
-            );
+            throw $this->createNotFoundException(sprintf(
+                'unable to find the audit reader for class : %s',
+                $this->admin->getClass()
+            ));
         }
 
         $reader = $manager->getReader($this->admin->getClass());
@@ -785,12 +783,10 @@ class CRUDController implements ContainerAwareInterface
         $manager = $this->get('sonata.admin.audit.manager');
 
         if (!$manager->hasReader($this->admin->getClass())) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the audit reader for class : %s',
-                    $this->admin->getClass()
-                )
-            );
+            throw $this->createNotFoundException(sprintf(
+                'unable to find the audit reader for class : %s',
+                $this->admin->getClass()
+            ));
         }
 
         $reader = $manager->getReader($this->admin->getClass());
@@ -799,14 +795,12 @@ class CRUDController implements ContainerAwareInterface
         $object = $reader->find($this->admin->getClass(), $id, $revision);
 
         if (!$object) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
-                    $id,
-                    $revision,
-                    $this->admin->getClass()
-                )
-            );
+            throw $this->createNotFoundException(sprintf(
+                'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
+                $id,
+                $revision,
+                $this->admin->getClass()
+            ));
         }
 
         $this->admin->setSubject($object);
@@ -849,12 +843,10 @@ class CRUDController implements ContainerAwareInterface
         $manager = $this->get('sonata.admin.audit.manager');
 
         if (!$manager->hasReader($this->admin->getClass())) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the audit reader for class : %s',
-                    $this->admin->getClass()
-                )
-            );
+            throw $this->createNotFoundException(sprintf(
+                'unable to find the audit reader for class : %s',
+                $this->admin->getClass()
+            ));
         }
 
         $reader = $manager->getReader($this->admin->getClass());
@@ -862,27 +854,23 @@ class CRUDController implements ContainerAwareInterface
         // retrieve the base revision
         $base_object = $reader->find($this->admin->getClass(), $id, $base_revision);
         if (!$base_object) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
-                    $id,
-                    $base_revision,
-                    $this->admin->getClass()
-                )
-            );
+            throw $this->createNotFoundException(sprintf(
+                'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
+                $id,
+                $base_revision,
+                $this->admin->getClass()
+            ));
         }
 
         // retrieve the compare revision
         $compare_object = $reader->find($this->admin->getClass(), $id, $compare_revision);
         if (!$compare_object) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
-                    $id,
-                    $compare_revision,
-                    $this->admin->getClass()
-                )
-            );
+            throw $this->createNotFoundException(sprintf(
+                'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
+                $id,
+                $compare_revision,
+                $this->admin->getClass()
+            ));
         }
 
         $this->admin->setSubject($base_object);
@@ -916,8 +904,7 @@ class CRUDController implements ContainerAwareInterface
         // NEXT_MAJOR: remove the check
         if (!$this->has('sonata.admin.admin_exporter')) {
             @trigger_error(
-                'Not registering the exporter bundle is deprecated since version 3.14.'
-                .' You must register it to be able to use the export action in 4.0.',
+                'Not registering the exporter bundle is deprecated since version 3.14. You must register it to be able to use the export action in 4.0.',
                 E_USER_DEPRECATED
             );
             $allowedExportFormats = (array) $this->admin->getExportFormats();
@@ -938,14 +925,12 @@ class CRUDController implements ContainerAwareInterface
         }
 
         if (!\in_array($format, $allowedExportFormats, true)) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`',
-                    $format,
-                    $this->admin->getClass(),
-                    implode(', ', $allowedExportFormats)
-                )
-            );
+            throw new \RuntimeException(sprintf(
+                'Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`',
+                $format,
+                $this->admin->getClass(),
+                implode(', ', $allowedExportFormats)
+            ));
         }
 
         return $exporter->getResponse(
@@ -968,13 +953,12 @@ class CRUDController implements ContainerAwareInterface
     public function aclAction($deprecatedId = null) // NEXT_MAJOR: Remove the unused $id parameter
     {
         if (isset(\func_get_args()[0])) {
-            @trigger_error(
-                sprintf(
-                    'Support for the "id" route param as argument 1 at `%s()` is deprecated since sonata-project/admin-bundle 3.62 and will be removed in 4.0, use `AdminInterface::getIdParameter()` instead.',
-                    __METHOD__
-                ),
-                E_USER_DEPRECATED
-            );
+            @trigger_error(sprintf(
+                'Support for the "id" route param as argument 1 at `%s()` is deprecated since'
+                .' sonata-project/admin-bundle 3.62 and will be removed in 4.0,'
+                .' use `AdminInterface::getIdParameter()` instead.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
         }
 
         if (!$this->admin->isAclEnabled()) {
@@ -1155,7 +1139,7 @@ class CRUDController implements ContainerAwareInterface
             ));
         }
 
-        $this->templateRegistry = $this->container->get($this->admin->getCode().'.template_registry');
+        $this->templateRegistry = $this->container->get(sprintf('%s.template_registry', $this->admin->getCode()));
         if (!$this->templateRegistry instanceof TemplateRegistryInterface) {
             throw new \RuntimeException(sprintf(
                 'Unable to find the template registry related to the current admin (%s)',
@@ -1561,8 +1545,7 @@ class CRUDController implements ContainerAwareInterface
         if ($parentAdmin->getObject($parentId) !== $propertyAccessor->getValue($object, $propertyPath)) {
             // NEXT_MAJOR: make this exception
             @trigger_error(
-                "Accessing a child that isn't connected to a given parent is"
-                ." deprecated since sonata-project/admin-bundle 3.34 and won't be allowed in 4.0.",
+                'Accessing a child that isn\'t connected to a given parent is deprecated since sonata-project/admin-bundle 3.34 and won\'t be allowed in 4.0.',
                 E_USER_DEPRECATED
             );
         }

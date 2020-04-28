@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
+use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Exception\NoValueException;
 
@@ -211,7 +212,8 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     {
         if (null !== $this->template && !\is_string($this->template) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'Returning other type than string or null in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only those types in version 4.0.',
+                'Returning other type than string or null in method %s() is deprecated since'
+                .' sonata-project/admin-bundle 3.65. It will return only those types in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
@@ -284,8 +286,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if (!$this->hasAssociationAdmin()) {
             @trigger_error(
                 sprintf(
-                    'Calling %s() when there is no association admin is deprecated since sonata-project/admin-bundle 3.69'
-                    .' and will throw an exception in 4.0. Use %s::hasAssociationAdmin() to know if there is an association admin.',
+                    'Calling %s() when there is no association admin is deprecated since'
+                    .' sonata-project/admin-bundle 3.69 and will throw an exception in 4.0.'
+                    .' Use %s::hasAssociationAdmin() to know if there is an association admin.',
                     __METHOD__,
                     __CLASS__
                 ),
@@ -328,9 +331,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
             $camelizedFieldName = InflectorFactory::create()->build()->classify($fieldName);
 
-            $getters[] = 'get'.$camelizedFieldName;
-            $getters[] = 'is'.$camelizedFieldName;
-            $getters[] = 'has'.$camelizedFieldName;
+            $getters[] = sprintf('get%s', $camelizedFieldName);
+            $getters[] = sprintf('is%s', $camelizedFieldName);
+            $getters[] = sprintf('has%s', $camelizedFieldName);
         }
 
         foreach ($getters as $getter) {
@@ -433,14 +436,11 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      */
     public static function camelize($property)
     {
-        @trigger_error(
-            sprintf(
-                'The %s method is deprecated since 3.1 and will be removed in 4.0. '.
-                'Use \Doctrine\Inflector\Inflector::classify() instead.',
-                __METHOD__
-            ),
-            E_USER_DEPRECATED
-        );
+        @trigger_error(sprintf(
+            'The %s method is deprecated since 3.1 and will be removed in 4.0. Use %s::classify() instead.',
+            __METHOD__,
+            Inflector::class
+        ), E_USER_DEPRECATED);
 
         return InflectorFactory::create()->build()->classify($property);
     }
@@ -465,7 +465,8 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $label = $this->getOption('label');
         if (null !== $label && false !== $label && !\is_string($label) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'Returning other type than string, false or null in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only those types in version 4.0.',
+                'Returning other type than string, false or null in method %s() is deprecated since'
+                .' sonata-project/admin-bundle 3.65. It will return only those types in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }

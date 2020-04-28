@@ -70,11 +70,13 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     protected function getRenderingEngine(?Environment $environment = null): TwigRendererEngine
     {
         if (!\in_array($this->type, ['form', 'filter'], true)) {
-            throw new \Exception('Please override $this->type in your test class specifying template to use (either form or filter)');
+            throw new \Exception(
+                'Please override $this->type in your test class specifying template to use (either form or filter)'
+            );
         }
 
         return new TwigRendererEngine(
-            [$this->type.'_admin_fields.html.twig'],
+            [sprintf('%s_admin_fields.html.twig', $this->type)],
             $environment
         );
     }
@@ -93,7 +95,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     protected function getTemplatePaths(): array
     {
         return array_merge(parent::getTemplatePaths(), [
-            __DIR__.'/../../../src/Resources/views/Form',
+            sprintf('%s/../../../src/Resources/views/Form', __DIR__),
         ]);
     }
 }
