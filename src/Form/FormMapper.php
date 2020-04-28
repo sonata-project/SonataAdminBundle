@@ -190,7 +190,7 @@ class FormMapper extends BaseGroupedMapper
 
         // When the default tab is used, the tabname is not prepended to the index in the group array
         if ('default' !== $tab) {
-            $group = $tab.'.'.$group;
+            $group = sprintf('%s.%s', $tab, $group);
         }
 
         if (isset($groups[$group])) {

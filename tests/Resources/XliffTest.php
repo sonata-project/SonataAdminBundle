@@ -22,6 +22,6 @@ class XliffTest extends XliffValidatorTestCase
      */
     public function getXliffPaths()
     {
-        return [[__DIR__.'/../../src/Resources/translations']];
+        return [[sprintf('%s/../../src/Resources/translations', __DIR__)]];
     }
 }

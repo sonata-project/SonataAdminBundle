@@ -55,7 +55,7 @@ class QueryStringBuilder implements RouteBuilderInterface
         }
 
         if ($admin->isAclEnabled()) {
-            $collection->add('acl', $admin->getRouterIdParameter().'/acl');
+            $collection->add('acl', sprintf('%s/acl', $admin->getRouterIdParameter()));
         }
 
         // an admin can have only one level of nested child

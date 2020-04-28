@@ -44,10 +44,11 @@ final class SetObjectFieldValueAction
     {
         // NEXT_MAJOR: Move ValidatorInterface check to method signature
         if (!($validator instanceof ValidatorInterface)) {
-            throw new \InvalidArgumentException(
-                'Argument 3 is an instance of '.\get_class($validator).', expecting an instance of'
-                .' \Symfony\Component\Validator\Validator\ValidatorInterface'
-            );
+            throw new \InvalidArgumentException(sprintf(
+                'Argument 3 is an instance of %s, expecting an instance of %s',
+                \get_class($validator),
+                ValidatorInterface::class
+            ));
         }
         $this->pool = $pool;
         $this->twig = $twig;
@@ -74,7 +75,11 @@ final class SetObjectFieldValueAction
         }
 
         if (Request::METHOD_POST !== $request->getMethod()) {
-            return new JsonResponse(sprintf('Invalid request method given "%s", %s expected', $request->getMethod(), Request::METHOD_POST), Response::HTTP_METHOD_NOT_ALLOWED);
+            return new JsonResponse(sprintf(
+                'Invalid request method given "%s", %s expected',
+                $request->getMethod(),
+                Request::METHOD_POST
+            ), Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
         $rootObject = $object = $admin->getObject($objectId);

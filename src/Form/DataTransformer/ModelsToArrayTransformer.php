@@ -157,7 +157,10 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         }
 
         if (\count($notFound) > 0) {
-            throw new TransformationFailedException(sprintf('The entities with keys "%s" could not be found', implode('", "', $notFound)));
+            throw new TransformationFailedException(sprintf(
+                'The entities with keys "%s" could not be found',
+                implode('", "', $notFound)
+            ));
         }
 
         return $collection;
@@ -174,8 +177,10 @@ class ModelsToArrayTransformer implements DataTransformerInterface
 
         if (!$choiceList instanceof ModelChoiceLoader
             && !$choiceList instanceof LazyChoiceList) {
-            throw new RuntimeException('First param passed to ModelsToArrayTransformer should be instance of
-                ModelChoiceLoader or LazyChoiceList');
+            throw new RuntimeException(
+                'First param passed to ModelsToArrayTransformer'
+                .' should be instance of ModelChoiceLoader or LazyChoiceList'
+            );
         }
 
         $this->choiceList = $choiceList;
@@ -191,7 +196,10 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         try {
             return $this->modelManager->getIdentifierValues($model);
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($model)), 0, $e);
+            throw new \InvalidArgumentException(sprintf(
+                'Unable to retrieve the identifier values for entity %s',
+                ClassUtils::getClass($model)
+            ), 0, $e);
         }
     }
 

@@ -74,7 +74,7 @@ final class AdminMaker extends AbstractMaker
     {
         $this->projectDirectory = $projectDirectory;
         $this->availableModelManagers = $modelManagers;
-        $this->skeletonDirectory = __DIR__.'/../Resources/skeleton';
+        $this->skeletonDirectory = sprintf('%s/../Resources/skeleton', __DIR__);
     }
 
     public static function getCommandName(): string
@@ -108,7 +108,7 @@ final class AdminMaker extends AbstractMaker
 
         $this->adminClassBasename = $io->ask(
             'The admin class basename',
-            $input->getOption('admin') ?: $this->modelClassBasename.'Admin',
+            $input->getOption('admin') ?: sprintf('%sAdmin', $this->modelClassBasename),
             [Validators::class, 'validateAdminClassBasename']
         );
         if (\count($this->availableModelManagers) > 1) {
@@ -120,14 +120,14 @@ final class AdminMaker extends AbstractMaker
         if ($io->confirm('Do you want to generate a controller?', false)) {
             $this->controllerClassBasename = $io->ask(
                 'The controller class basename',
-                $input->getOption('controller') ?: $this->modelClassBasename.'AdminController',
+                $input->getOption('controller') ?: sprintf('%sAdminController', $this->modelClassBasename),
                 [Validators::class, 'validateControllerClassBasename']
             );
             $input->setOption('controller', $this->controllerClassBasename);
         }
         $input->setOption('services', false);
         if ($io->confirm('Do you want to update the services YAML configuration file?', true)) {
-            $path = $this->projectDirectory.'/config/';
+            $path = sprintf('%s/config/', $this->projectDirectory);
             $servicesFile = $io->ask(
                 'The services YAML configuration file',
                 is_file($path.'admin.yaml') ? 'admin.yaml' : 'services.yaml',
@@ -235,7 +235,7 @@ final class AdminMaker extends AbstractMaker
             $controllerClassFullName = $controllerClassNameDetails->getFullName();
             $generator->generateClass(
                 $controllerClassFullName,
-                $this->skeletonDirectory.'/AdminController.tpl.php',
+                sprintf('%s/AdminController.tpl.php', $this->skeletonDirectory),
                 []
             );
             $generator->writeChanges();
@@ -265,7 +265,7 @@ final class AdminMaker extends AbstractMaker
 
         $generator->generateClass(
             $adminClassFullName,
-            $this->skeletonDirectory.'/Admin.tpl.php',
+            sprintf('%s/Admin.tpl.php', $this->skeletonDirectory),
             ['fields' => $fieldString]
         );
 
@@ -284,7 +284,7 @@ final class AdminMaker extends AbstractMaker
         $this->modelClass = Validators::validateClass($input->getArgument('model'));
         $this->modelClassBasename = (new \ReflectionClass($this->modelClass))->getShortName();
         $this->adminClassBasename = Validators::validateAdminClassBasename(
-            $input->getOption('admin') ?: $this->modelClassBasename.'Admin'
+            $input->getOption('admin') ?: sprintf('%sAdmin', $this->modelClassBasename)
         );
 
         if ($this->controllerClassBasename = $input->getOption('controller')) {

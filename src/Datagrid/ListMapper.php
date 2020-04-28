@@ -104,8 +104,7 @@ class ListMapper extends BaseMapper
         if ('_action' === $name && self::TYPE_ACTIONS === $type) {
             if (isset($fieldDescriptionOptions['actions']['view'])) {
                 @trigger_error(
-                    'Inline action "view" is deprecated since version 2.2.4 and will be removed in 4.0. '
-                    .'Use inline action "show" instead.',
+                    'Inline action "view" is deprecated since version 2.2.4 and will be removed in 4.0. Use inline action "show" instead.',
                     E_USER_DEPRECATED
                 );
 
@@ -123,7 +122,10 @@ class ListMapper extends BaseMapper
 
             $fieldDescriptionOptions['identifier'] = (bool) $fieldDescriptionOptions['identifier'];
             // NEXT_MAJOR: Remove the previous 6 lines and use commented line below it instead
-            // throw new \InvalidArgumentException(sprintf('Value for "identifier" option must be boolean, %s given.', gettype($fieldDescriptionOptions['identifier'])));
+            // throw new \InvalidArgumentException(sprintf(
+            //     'Value for "identifier" option must be boolean, %s given.',
+            //     gettype($fieldDescriptionOptions['identifier'])
+            // ));
         }
 
         if ($name instanceof FieldDescriptionInterface) {
@@ -144,8 +146,8 @@ class ListMapper extends BaseMapper
             );
         } else {
             throw new \TypeError(
-                'Unknown field name in list mapper. '
-                .'Field name should be either of FieldDescriptionInterface interface or string.'
+                'Unknown field name in list mapper.'
+                .' Field name should be either of FieldDescriptionInterface interface or string.'
             );
         }
 

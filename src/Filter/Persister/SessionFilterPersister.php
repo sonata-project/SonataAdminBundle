@@ -53,6 +53,6 @@ final class SessionFilterPersister implements FilterPersisterInterface
      */
     private function buildStorageKey(string $adminCode): string
     {
-        return $adminCode.'.filter.parameters';
+        return sprintf('%s.filter.parameters', $adminCode);
     }
 }

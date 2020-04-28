@@ -265,11 +265,11 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     public function getFirstIndice()
     {
-        @trigger_error(
-            'Method '.__METHOD__.' is deprecated since version 3.11 and will be removed in 4.0, '.
-            'please use getFirstIndex() instead.',
-            E_USER_DEPRECATED
-        );
+        @trigger_error(sprintf(
+            'Method %s is deprecated since version 3.11 and will be removed in 4.0,'
+            .' please use getFirstIndex() instead.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
 
         return $this->getFirstIndex();
     }
@@ -298,11 +298,11 @@ abstract class Pager implements \Iterator, \Countable, \Serializable, PagerInter
      */
     public function getLastIndice()
     {
-        @trigger_error(
-            'Method '.__METHOD__.' is deprecated since version 3.11 and will be removed in 4.0, '.
-            'please use getLastIndex() instead.',
-            E_USER_DEPRECATED
-        );
+        @trigger_error(sprintf(
+            'Method %s is deprecated since version 3.11 and will be removed in 4.0,'
+            .' please use getLastIndex() instead.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
 
         return $this->getLastIndex();
     }

@@ -181,8 +181,7 @@ class AdminObjectAclData
     public function setForm(Form $form)
     {
         @trigger_error(
-            'setForm() is deprecated since version 3.0 and will be removed in 4.0. '
-            .'Use setAclUsersForm() instead.',
+            'setForm() is deprecated since version 3.0 and will be removed in 4.0. Use setAclUsersForm() instead.',
             E_USER_DEPRECATED
         );
 
@@ -201,8 +200,7 @@ class AdminObjectAclData
     public function getForm()
     {
         @trigger_error(
-            'getForm() is deprecated since version 3.0 and will be removed in 4.0. '
-            .'Use getAclUsersForm() instead.',
+            'getForm() is deprecated since version 3.0 and will be removed in 4.0. Use getAclUsersForm() instead.',
             E_USER_DEPRECATED
         );
 
@@ -328,7 +326,7 @@ class AdminObjectAclData
         $reflectionClass = new \ReflectionClass(new $this->maskBuilderClass());
         $this->masks = [];
         foreach ($permissions as $permission) {
-            $this->masks[$permission] = $reflectionClass->getConstant('MASK_'.$permission);
+            $this->masks[$permission] = $reflectionClass->getConstant(sprintf('MASK_%s', $permission));
         }
     }
 }

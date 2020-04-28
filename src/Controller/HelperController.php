@@ -28,11 +28,11 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Twig\Environment;
 
-@trigger_error(
-    'The '.__NAMESPACE__.'\HelperController class is deprecated since version 3.38.0 and will be removed in 4.0.'
+@trigger_error(sprintf(
+    'The %s\HelperController class is deprecated since version 3.38.0 and will be removed in 4.0.'
     .' Use actions inside Sonata\AdminBundle\Action instead.',
-    E_USER_DEPRECATED
-);
+    __NAMESPACE__
+), E_USER_DEPRECATED);
 
 /**
  * NEXT_MAJOR: remove this class.
@@ -70,10 +70,11 @@ class HelperController
     {
         // NEXT_MAJOR: Move ValidatorInterface check to method signature
         if (!($validator instanceof ValidatorInterface)) {
-            throw new \InvalidArgumentException(
-                'Argument 4 is an instance of '.\get_class($validator).', expecting an instance of'
-                .' \Symfony\Component\Validator\Validator\ValidatorInterface'
-            );
+            throw new \InvalidArgumentException(sprintf(
+                'Argument 4 is an instance of %s, expecting an instance of %s',
+                \get_class($validator),
+                ValidatorInterface::class
+            ));
         }
 
         $this->twig = $twig;

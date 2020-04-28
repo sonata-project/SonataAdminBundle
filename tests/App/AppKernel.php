@@ -54,12 +54,12 @@ final class AppKernel extends Kernel
 
     public function getCacheDir(): string
     {
-        return $this->getBaseDir().'cache';
+        return sprintf('%scache', $this->getBaseDir());
     }
 
     public function getLogDir(): string
     {
-        return $this->getBaseDir().'log';
+        return sprintf('%slog', $this->getBaseDir());
     }
 
     public function getProjectDir()
@@ -69,7 +69,7 @@ final class AppKernel extends Kernel
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
-        $routes->import($this->getProjectDir().'/config/routes.yml');
+        $routes->import(sprintf('%s/config/routes.yml', $this->getProjectDir()));
     }
 
     protected function configureContainer(ContainerBuilder $containerBuilder, LoaderInterface $loader)
@@ -93,11 +93,11 @@ final class AppKernel extends Kernel
             'exception_controller' => null,
         ]);
 
-        $loader->load($this->getProjectDir().'/config/services.yml');
+        $loader->load(sprintf('%s/config/services.yml', $this->getProjectDir()));
     }
 
     private function getBaseDir(): string
     {
-        return sys_get_temp_dir().'/sonata-admin-bundle/var/';
+        return sprintf('%s/sonata-admin-bundle/var/', sys_get_temp_dir());
     }
 }

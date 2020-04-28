@@ -230,13 +230,13 @@ class CRUDControllerTest extends TestCase
         $this->csrfProvider
             ->method('getToken')
             ->willReturnCallback(static function (string $intention): CsrfToken {
-                return new CsrfToken($intention, 'csrf-token-123_'.$intention);
+                return new CsrfToken($intention, sprintf('csrf-token-123_%s', $intention));
             });
 
         $this->csrfProvider
             ->method('isTokenValid')
             ->willReturnCallback(static function (CsrfToken $token): bool {
-                return $token->getValue() === 'csrf-token-123_'.$token->getId();
+                return $token->getValue() === sprintf('csrf-token-123_%s', $token->getId());
             });
 
         $this->logger = $this->createMock(LoggerInterface::class);
@@ -326,7 +326,7 @@ class CRUDControllerTest extends TestCase
             ->method('generateObjectUrl')
             ->willReturnCallback(
                 static function (string $name, $object, array $parameters = []): string {
-                    $result = \get_class($object).'_'.$name;
+                    $result = sprintf('%s_%s', \get_class($object), $name);
                     if (!empty($parameters)) {
                         $result .= '?'.http_build_query($parameters);
                     }

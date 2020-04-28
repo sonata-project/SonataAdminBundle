@@ -51,7 +51,7 @@ class RoutesCache
      */
     public function load(AdminInterface $admin)
     {
-        $filename = $this->cacheFolder.'/route_'.md5($admin->getCode());
+        $filename = sprintf('%s/route_%s', $this->cacheFolder, md5($admin->getCode()));
 
         $cache = new ConfigCache($filename, $this->debug);
         if (!$cache->isFresh()) {
@@ -64,7 +64,9 @@ class RoutesCache
             }
 
             if (!$admin->getRoutes()) {
-                throw new \RuntimeException('Invalid data type, AdminInterface::getRoutes must return a RouteCollection');
+                throw new \RuntimeException(
+                    'Invalid data type, AdminInterface::getRoutes must return a RouteCollection'
+                );
             }
 
             foreach ($admin->getRoutes()->getElements() as $code => $route) {

@@ -43,7 +43,7 @@ trait PolyfillControllerTrait
     final protected function proxyToControllerClass($methodName, $arguments)
     {
         if (!method_exists(Controller::class, $methodName)) {
-            throw new \LogicException('Call to undefined method '.__CLASS__.'::'.$methodName);
+            throw new \LogicException(sprintf('Call to undefined method %s::%s', __CLASS__, $methodName));
         }
 
         $controller = new PolyfillProxyContainer($this->container);

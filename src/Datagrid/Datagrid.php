@@ -215,7 +215,8 @@ class Datagrid implements DatagridInterface
     {
         if (!$this->hasFilter($name)) {
             @trigger_error(sprintf(
-                'Passing a nonexistent filter name as argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0.',
+                'Passing a nonexistent filter name as argument 1 to %s() is deprecated since'
+                .' sonata-project/admin-bundle 3.52 and will throw an exception in 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
 
