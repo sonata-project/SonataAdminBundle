@@ -67,7 +67,9 @@ file that was distributed with this source code.
             <span {% block field_span_attributes %}class="x-editable"
                   data-type="{{ x_editable_type }}"
                   data-value="{{ data_value }}"
-                  data-title="{{ field_description.label|trans({}, field_description.translationDomain) }}"
+                  {% if field_description.label is not same as(false) %}
+                    data-title="{{ field_description.label|trans({}, field_description.translationDomain) }}"
+                  {% endif %}
                   data-pk="{{ admin.id(object) }}"
                   data-url="{{ url }}" {% endblock %}>
                 {{ block('field') }}

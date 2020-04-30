@@ -79,7 +79,9 @@ file that was distributed with this source code.
                                                     {% if field_description.getOption('label_icon') %}
                                                         <i class="sonata-ba-list-field-header-label-icon {{ field_description.getOption('label_icon') }}" aria-hidden="true"></i>
                                                     {% endif %}
-                                                    {{ field_description.label|trans({}, field_description.translationDomain) }}
+                                                    {% if field_description.label is not same as(false) %}
+                                                        {{ field_description.label|trans({}, field_description.translationDomain) }}
+                                                    {% endif %}
                                                     {% if sortable %}</a>{% endif %}
                                                 </th>
                                             {% endapply %}
@@ -246,7 +248,10 @@ file that was distributed with this source code.
                         {% set filterActive = ((filter.isActive() or filter.options['show_filter']) and not admin.isDefaultFilter(filter.formName)) %}
                         <li>
                             <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
-                                <i class="fa {{ (filter.isActive() or filter.options['show_filter']) ? 'fa-check-square-o' : 'fa-square-o' }}"></i>{{ filter.label|trans({}, filter.translationDomain ?: admin.translationDomain) }}
+                                <i class="fa {{ (filter.isActive() or filter.options['show_filter']) ? 'fa-check-square-o' : 'fa-square-o' }}"></i>
+                                {% if filter.label is not same as(false) %}
+                                    {{ filter.label|trans({}, filter.translationDomain ?: admin.translationDomain) }}
+                                {% endif %}
                             </a>
                         </li>
                     {% endfor %}
