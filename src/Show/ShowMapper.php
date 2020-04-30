@@ -78,7 +78,7 @@ class ShowMapper extends BaseGroupedMapper
         }
 
         // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
-        if (!$fieldDescription->getLabel('sonata_deprecation_mute') && false !== $fieldDescription->getOption('label')) {
+        if (null === $fieldDescription->getLabel('sonata_deprecation_mute')) {
             $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
         }
 

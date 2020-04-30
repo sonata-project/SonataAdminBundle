@@ -239,7 +239,7 @@ interface FieldDescriptionInterface
     /**
      * return the label to use for the current field.
      *
-     * @return string|null
+     * @return string|false|null
      */
     public function getLabel();
 

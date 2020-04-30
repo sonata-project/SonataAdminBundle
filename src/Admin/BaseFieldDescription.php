@@ -405,14 +405,15 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getLabel()
     {
-        if (null !== $this->getOption('label') && !\is_string($this->getOption('label')) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+        $label = $this->getOption('label');
+        if (null !== $label && false !== $label && !\is_string($label) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
             @trigger_error(sprintf(
-                'Returning other type than string or null in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only those types in version 4.0.',
+                'Returning other type than string, false or null in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only those types in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);
         }
 
-        return $this->getOption('label');
+        return $label;
     }
 
     public function isSortable()
