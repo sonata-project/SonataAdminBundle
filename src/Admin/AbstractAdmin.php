@@ -102,7 +102,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $filterFieldDescriptions = [];
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
      * The number of result to display in the list.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x.
      *
      * @var int
      */
@@ -158,7 +162,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $formOptions = [];
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
      * Default values to the datagrid.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, use configureDefaultSortValues() instead.
      *
      * @var array
      */
@@ -168,7 +176,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     ];
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
      * Predefined per page options.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x.
      *
      * @var array
      */
@@ -601,7 +613,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         }
         $this->baseControllerName = $baseControllerName;
 
+        // NEXT_MAJOR: Remove this line.
         $this->predefinePerPageOptions();
+
+        // NEXT_MAJOR: Remove this line.
         $this->datagridValues['_per_page'] = $this->maxPerPage;
     }
 
@@ -810,13 +825,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
             $parameters = array_merge(
                 $this->getModelManager()->getDefaultSortValues($this->getClass()),
-                $this->datagridValues,
+                $this->datagridValues, // NEXT_MAJOR: Remove this line.
+                $this->getDefaultSortValues(),
                 $this->getDefaultFilterValues(),
                 $filters
             );
 
             if (!$this->determinedPerPageValue($parameters['_per_page'])) {
-                $parameters['_per_page'] = $this->maxPerPage;
+                $parameters['_per_page'] = $this->getMaxPerPage();
             }
 
             // always force the parent value
@@ -1570,10 +1586,19 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since since sonata-project/sonata-admin-bundle 3.x, to be removed in 4.0.
+     *
      * @param int $maxPerPage
      */
     public function setMaxPerPage($maxPerPage)
     {
+        @trigger_error(sprintf(
+            'The method %s is deprecated since sonata-project/sonata-admin-bundle 3.x and will be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         $this->maxPerPage = $maxPerPage;
     }
 
@@ -1582,7 +1607,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function getMaxPerPage()
     {
+        // NEXT_MAJOR: Remove this line and uncomment the following.
         return $this->maxPerPage;
+        // $sortValues = $this->getModelManager()->getDefaultSortValues($this->class);
+
+        // return $sortValues['_per_page'] ?? 25;
     }
 
     /**
@@ -2612,10 +2641,19 @@ EOT;
     }
 
     /**
+     * NEXT_MAJOR: Remove this.
+     *
+     * @deprecated since since sonata-project/sonata-admin-bundle 3.x, to be removed in 4.0.
+     *
      * Set custom per page options.
      */
     public function setPerPageOptions(array $options)
     {
+        @trigger_error(sprintf(
+            'The method %s is deprecated since sonata-project/sonata-admin-bundle 3.x and will be removed in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         $this->perPageOptions = $options;
     }
 
@@ -2626,7 +2664,15 @@ EOT;
      */
     public function getPerPageOptions()
     {
+        // NEXT_MAJOR: Remove this line and uncomment the following
         return $this->perPageOptions;
+//        $perPageOptions = $this->getModelManager()->getDefaultPerPageOptions($this->class);
+//        $perPageOptions[] = $this->getMaxPerPage();
+//
+//        $perPageOptions = array_unique($perPageOptions);
+//        sort($perPageOptions);
+//
+//        return $perPageOptions;
     }
 
     /**
@@ -2658,7 +2704,7 @@ EOT;
      */
     public function determinedPerPageValue($perPage)
     {
-        return \in_array($perPage, $this->perPageOptions, true);
+        return \in_array($perPage, $this->getPerPageOptions(), true);
     }
 
     public function isAclEnabled()
@@ -2960,6 +3006,27 @@ EOT;
     }
 
     /**
+     * Returns a list of default sort values.
+     *
+     * @return array{_page?: int, _per_page?: int, _sort_by?: string, _sort_order?: string}
+     */
+    final protected function getDefaultSortValues(): array
+    {
+        $defaultSortValues = [];
+
+        $this->configureDefaultSortValues($defaultSortValues);
+
+        foreach ($this->getExtensions() as $extension) {
+            // NEXT_MAJOR: remove method check
+            if (method_exists($extension, 'configureDefaultSortValues')) {
+                $extension->configureDefaultSortValues($this, $defaultSortValues);
+            }
+        }
+
+        return $defaultSortValues;
+    }
+
+    /**
      * Returns a list of default filters.
      *
      * @return array
@@ -3201,6 +3268,10 @@ EOT;
     }
 
     /**
+     * NEXT_MAJOR: Remove this function.
+     *
+     * @deprecated since since sonata-project/sonata-admin-bundle 3.x, to be removed in 4.0.
+     *
      * Predefine per page options.
      */
     protected function predefinePerPageOptions()
@@ -3245,6 +3316,17 @@ EOT;
      * Configures a list of default filters.
      */
     protected function configureDefaultFilterValues(array &$filterValues)
+    {
+    }
+
+    /**
+     * Configures a list of default sort values.
+     *
+     * Example:
+     *   $sortValues['_sort_by'] = 'foo'
+     *   $sortValues['_sort_order'] = 'DESC'
+     */
+    protected function configureDefaultSortValues(array &$sortValues)
     {
     }
 
