@@ -1400,32 +1400,6 @@ class CRUDControllerTest extends TestCase
         $this->controller->editAction(null);
     }
 
-    public function testEditActionRuntimeException(): void
-    {
-        $this->expectException(\RuntimeException::class);
-
-        $this->admin->expects($this->once())
-            ->method('getObject')
-            ->willReturn(new \stdClass());
-
-        $this->admin->expects($this->once())
-            ->method('checkAccess')
-            ->with($this->equalTo('edit'))
-            ->willReturn(true);
-
-        $form = $this->createMock(Form::class);
-
-        $this->admin->expects($this->once())
-            ->method('getForm')
-            ->willReturn($form);
-
-        $form->expects($this->once())
-            ->method('all')
-            ->willReturn([]);
-
-        $this->controller->editAction(null);
-    }
-
     public function testEditActionAccessDenied(): void
     {
         $this->expectException(AccessDeniedException::class);
@@ -1489,10 +1463,6 @@ class CRUDControllerTest extends TestCase
             ->method('createView')
             ->willReturn($formView);
 
-        $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
-
         $this->assertInstanceOf(Response::class, $this->controller->editAction(null));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
@@ -1553,10 +1523,6 @@ class CRUDControllerTest extends TestCase
             ->method('isValid')
             ->willReturn(true);
 
-        $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
-
         $this->admin->expects($this->once())
             ->method('toString')
             ->with($this->equalTo($object))
@@ -1602,10 +1568,6 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('isValid')
             ->willReturn(false);
-
-        $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
 
         $this->admin->expects($this->once())
             ->method('toString')
@@ -1671,10 +1633,6 @@ class CRUDControllerTest extends TestCase
             ->method('getData')
             ->willReturn($object);
 
-        $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
-
         $this->admin
             ->method('getNormalizedIdentifier')
             ->with($this->equalTo($object))
@@ -1720,10 +1678,6 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('isValid')
             ->willReturn(false);
-
-        $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
 
         $formError = $this->createMock(FormError::class);
         $formError->expects($this->atLeastOnce())
@@ -1773,10 +1727,6 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('isValid')
             ->willReturn(false);
-
-        $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
@@ -1836,10 +1786,6 @@ class CRUDControllerTest extends TestCase
         $form->expects($this->once())
             ->method('getData')
             ->willReturn($object);
-
-        $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
 
         $this->admin->expects($this->once())
             ->method('toString')
@@ -1911,10 +1857,6 @@ class CRUDControllerTest extends TestCase
             ->method('isValid')
             ->willReturn(true);
 
-        $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
-
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('btn_preview', 'Preview');
 
@@ -1960,10 +1902,6 @@ class CRUDControllerTest extends TestCase
             ->method('getData')
             ->willReturn($object);
 
-        $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
-
         $this->admin
             ->method('getForm')
             ->willReturn($form);
@@ -2005,36 +1943,6 @@ class CRUDControllerTest extends TestCase
             ->method('checkAccess')
             ->with($this->equalTo('create'))
             ->will($this->throwException(new AccessDeniedException()));
-
-        $this->controller->createAction();
-    }
-
-    public function testCreateActionRuntimeException(): void
-    {
-        $this->expectException(\RuntimeException::class);
-
-        $this->admin->expects($this->once())
-            ->method('checkAccess')
-            ->with($this->equalTo('create'))
-            ->willReturn(true);
-
-        $this->admin
-            ->method('getClass')
-            ->willReturn(\stdClass::class);
-
-        $this->admin->expects($this->once())
-            ->method('getNewInstance')
-            ->willReturn(new \stdClass());
-
-        $form = $this->createMock(Form::class);
-
-        $this->admin->expects($this->once())
-            ->method('getForm')
-            ->willReturn($form);
-
-        $form->expects($this->once())
-            ->method('all')
-            ->willReturn([]);
 
         $this->controller->createAction();
     }
@@ -2087,10 +1995,6 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('getForm')
             ->willReturn($form);
-
-        $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
 
         $formView = $this->createMock(FormView::class);
 
@@ -2166,10 +2070,6 @@ class CRUDControllerTest extends TestCase
             ->willReturn($form);
 
         $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
-
-        $form->expects($this->once())
             ->method('isSubmitted')
             ->willReturn(true);
 
@@ -2231,10 +2131,6 @@ class CRUDControllerTest extends TestCase
             ->willReturn($form);
 
         $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
-
-        $form->expects($this->once())
             ->method('isSubmitted')
             ->willReturn(true);
 
@@ -2276,10 +2172,6 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('getForm')
             ->willReturn($form);
-
-        $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
 
         $form->expects($this->once())
             ->method('isSubmitted')
@@ -2343,10 +2235,6 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('getForm')
             ->willReturn($form);
-
-        $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
 
         $form->expects($this->once())
             ->method('isValid')
@@ -2424,10 +2312,6 @@ class CRUDControllerTest extends TestCase
             ->willReturn($form);
 
         $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
-
-        $form->expects($this->once())
             ->method('isSubmitted')
             ->willReturn(true);
 
@@ -2486,10 +2370,6 @@ class CRUDControllerTest extends TestCase
             ->willReturn($form);
 
         $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
-
-        $form->expects($this->once())
             ->method('isSubmitted')
             ->willReturn(true);
 
@@ -2541,10 +2421,6 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('getForm')
             ->willReturn($form);
-
-        $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
 
         $form->expects($this->once())
             ->method('isSubmitted')
@@ -2601,10 +2477,6 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('getForm')
             ->willReturn($form);
-
-        $form->expects($this->once())
-            ->method('all')
-            ->willReturn(['field' => 'fielddata']);
 
         $this->admin->expects($this->once())
             ->method('supportsPreviewMode')
