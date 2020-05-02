@@ -754,40 +754,6 @@ class CRUDControllerTest extends TestCase
         $this->controller->showAction(null);
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation Calling this method without implementing "configureShowFields" is not supported since sonata-project/admin-bundle 3.40.0 and will no longer be possible in 4.0
-     */
-    public function testShowActionDeprecation(): void
-    {
-        $object = new \stdClass();
-
-        $this->admin->expects($this->once())
-            ->method('getObject')
-            ->willReturn($object);
-
-        $this->admin->expects($this->once())
-            ->method('checkAccess')
-            ->with($this->equalTo('show'))
-            ->willReturn(true);
-
-        $show = $this->createMock(FieldDescriptionCollection::class);
-
-        $this->admin->expects($this->once())
-            ->method('getShow')
-            ->willReturn($show);
-
-        $show->expects($this->once())
-            ->method('getElements')
-            ->willReturn([]);
-
-        $show->expects($this->once())
-            ->method('count')
-            ->willReturn(0);
-
-        $this->controller->showAction(null);
-    }
-
     public function testPreShow(): void
     {
         $object = new \stdClass();
@@ -828,10 +794,6 @@ class CRUDControllerTest extends TestCase
         $this->admin->expects($this->once())
             ->method('getShow')
             ->willReturn($show);
-
-        $show->expects($this->once())
-            ->method('getElements')
-            ->willReturn(['field' => 'fielddata']);
 
         $this->assertInstanceOf(Response::class, $this->controller->showAction(null));
 

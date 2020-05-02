@@ -694,16 +694,6 @@ class CRUDController implements ContainerAwareInterface
         $fields = $this->admin->getShow();
         \assert($fields instanceof FieldDescriptionCollection);
 
-        // NEXT_MAJOR: replace deprecation with exception
-        if (!\is_array($fields->getElements()) || 0 === $fields->count()) {
-            @trigger_error(
-                'Calling this method without implementing "configureShowFields"'
-                .' is not supported since sonata-project/admin-bundle 3.40.0'
-                .' and will no longer be possible in 4.0',
-                E_USER_DEPRECATED
-            );
-        }
-
         // NEXT_MAJOR: Remove this line and use commented line below it instead
         $template = $this->admin->getTemplate('show');
         //$template = $this->templateRegistry->getTemplate('show');

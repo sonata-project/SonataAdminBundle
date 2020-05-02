@@ -28,7 +28,9 @@
 
             {% block sonata_tab_content %}
                 {% import "@SonataAdmin/CRUD/base_edit_form_macro.html.twig" as form_helper %}
-                {% set has_tab = ((admin.formtabs|length == 1 and admin.formtabs|keys[0] != 'default') or admin.formtabs|length > 1 ) %}
+                {# NEXT_MAJOR: Remove the sonata_deprecation_mute param. #}
+                {% set formtabs = admin.getformtabs('sonata_deprecation_mute') %}
+                {% set has_tab = ((formtabs|length == 1 and formtabs|keys[0] != 'default') or formtabs|length > 1 ) %}
 
                 <div class="col-md-12">
                     {% if has_tab %}
@@ -36,7 +38,7 @@
                         {% set tab_query_index = app.request.query.get('_tab', 0)|split("_")|last %}
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs" role="tablist">
-                                {% for name, form_tab in admin.formtabs %}
+                                {% for name, form_tab in formtabs %}
                                     {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
                                     <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %} class="active"{% endif %}>
                                         <a href="#{{ _tab_name }}" class="changer-tab" aria-controls="{{ _tab_name }}" data-toggle="tab">
@@ -46,7 +48,7 @@
                                 {% endfor %}
                             </ul>
                             <div class="tab-content">
-                                {% for code, form_tab in admin.formtabs %}
+                                {% for code, form_tab in formtabs %}
                                     {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
                                     <div
                                         class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (tab_query_index == loop.index) %} in active{% endif %}"
@@ -68,8 +70,8 @@
                             </div>
                             <input type="hidden" name="_tab" value="{{ app.request.query.get('_tab') }}">
                         </div>
-                    {% elseif admin.formtabs['default'] is defined %}
-                        {{ form_helper.render_groups(admin, form, admin.formtabs['default'].groups, has_tab) }}
+                    {% elseif formtabs['default'] is defined %}
+                        {{ form_helper.render_groups(admin, form, formtabs['default'].groups, has_tab) }}
                     {% endif %}
                 </div>
             {% endblock %}
