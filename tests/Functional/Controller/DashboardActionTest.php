@@ -15,7 +15,7 @@ namespace Sonata\AdminBundle\Tests\Functional\Controller;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Tests\App\AppKernel;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,7 +23,7 @@ final class DashboardActionTest extends TestCase
 {
     public function testDashboard(): void
     {
-        $client = new Client(new AppKernel());
+        $client = new KernelBrowser(new AppKernel());
         $client->request(Request::METHOD_GET, '/admin/dashboard');
 
         $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
