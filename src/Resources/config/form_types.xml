@@ -4,6 +4,7 @@
         <!-- Form Widget-->
         <service id="sonata.admin.form.type.admin" class="Sonata\AdminBundle\Form\Type\AdminType" public="true">
             <tag name="form.type" alias="sonata_type_admin"/>
+            <argument type="service" id="sonata.admin.helper"/>
         </service>
         <service id="sonata.admin.form.type.model_choice" class="Sonata\AdminBundle\Form\Type\ModelType" public="true">
             <argument type="service" id="property_accessor"/>

@@ -106,8 +106,8 @@ final class SetObjectFieldValueAction
             $propertyPath = new PropertyPath($field);
         }
 
-        // Handle date type has setter expect a DateTime object
-        if ('' !== $value && 'date' === $fieldDescription->getType()) {
+        // Handle date and datetime types have setter expecting a DateTime object
+        if ('' !== $value && \in_array($fieldDescription->getType(), ['date', 'datetime'], true)) {
             $value = new \DateTime($value);
         }
 

@@ -16,9 +16,7 @@ namespace Sonata\AdminBundle\Tests\Form\Type;
 use Doctrine\Common\Collections\ArrayCollection;
 use Prophecy\Argument;
 use Prophecy\Argument\Token\AnyValueToken;
-use Prophecy\Prophecy\ObjectProphecy;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
@@ -27,18 +25,15 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
 use Symfony\Component\Form\FormTypeGuesserInterface;
-use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
-class AdminTypeTest extends TypeTestCase
+/**
+ * @group legacy
+ */
+class LegacyAdminTypeTest extends TypeTestCase
 {
-    /**
-     * @var AdminHelper|ObjectProphecy
-     */
-    private $adminHelper;
-
     /**
      * @var AdminType
      */
@@ -46,12 +41,14 @@ class AdminTypeTest extends TypeTestCase
 
     protected function setUp(): void
     {
-        $this->adminHelper = $this->prophesize(AdminHelper::class);
-        $this->adminType = new AdminType($this->adminHelper->reveal());
+        $this->adminType = new AdminType();
 
         parent::setUp();
     }
 
+    /**
+     * @expectedDeprecation Calling Sonata\AdminBundle\Form\Type\AdminType::__construct without passing an Sonata\AdminBundle\Admin\AdminHelper as argument is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     */
     public function testGetDefaultOptions(): void
     {
         $optionResolver = new OptionsResolver();
@@ -68,6 +65,9 @@ class AdminTypeTest extends TypeTestCase
         $this->assertSame('SonataAdminBundle', $options['btn_catalogue']);
     }
 
+    /**
+     * @expectedDeprecation Calling Sonata\AdminBundle\Form\Type\AdminType::__construct without passing an Sonata\AdminBundle\Admin\AdminHelper as argument is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     */
     public function testSubmitValidData(): void
     {
         $parentAdmin = $this->prophesize(AdminInterface::class);
@@ -110,6 +110,9 @@ class AdminTypeTest extends TypeTestCase
         $this->assertTrue($form->isSynchronized());
     }
 
+    /**
+     * @expectedDeprecation Calling Sonata\AdminBundle\Form\Type\AdminType::__construct without passing an Sonata\AdminBundle\Admin\AdminHelper as argument is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     */
     public function testDotFields(): void
     {
         $foo = new \stdClass();
@@ -153,6 +156,9 @@ class AdminTypeTest extends TypeTestCase
         }
     }
 
+    /**
+     * @expectedDeprecation Calling Sonata\AdminBundle\Form\Type\AdminType::__construct without passing an Sonata\AdminBundle\Admin\AdminHelper as argument is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     */
     public function testArrayCollection(): void
     {
         $foo = new Foo();
@@ -195,6 +201,9 @@ class AdminTypeTest extends TypeTestCase
         }
     }
 
+    /**
+     * @expectedDeprecation Calling Sonata\AdminBundle\Form\Type\AdminType::__construct without passing an Sonata\AdminBundle\Admin\AdminHelper as argument is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     */
     public function testArrayCollectionNotFound(): void
     {
         $parentSubject = new \stdClass();
@@ -217,9 +226,8 @@ class AdminTypeTest extends TypeTestCase
         $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
         $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);
         $admin->getClass()->shouldBeCalled()->willReturn(Foo::class);
+        $admin->getNewInstance()->shouldBeCalled()->willReturn($foo);
         $admin->setSubject($foo)->shouldBeCalled();
-
-        $this->adminHelper->addNewInstance($parentSubject, $parentField->reveal())->shouldBeCalled()->willReturn($foo);
 
         $field = $this->prophesize(FieldDescriptionInterface::class);
         $field->getAssociationAdmin()->shouldBeCalled()->willReturn($admin->reveal());
@@ -248,8 +256,6 @@ class AdminTypeTest extends TypeTestCase
 
         $extension->addTypeExtension(new FormTypeFieldExtension([], []));
         $extensions[] = $extension;
-
-        $extensions[] = new PreloadedExtension([$this->adminType], []);
 
         return $extensions;
     }

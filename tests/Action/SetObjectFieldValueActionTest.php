@@ -114,7 +114,99 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription->getOption('editable')->willReturn(true);
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
         $fieldDescription->getType()->willReturn('boolean');
-        $fieldDescription->getTemplate()->willReturn(false);
+        $fieldDescription->getTemplate()->willReturn('field_template');
+        $fieldDescription->getValue(Argument::cetera())->willReturn('some value');
+
+        $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
+
+        $response = ($this->action)($request);
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    public function testSetObjectFieldValueActionWithDate(): void
+    {
+        $object = new Bafoo();
+        $request = new Request([
+            'code' => 'sonata.post.admin',
+            'objectId' => 42,
+            'field' => 'dateProp',
+            'value' => '2020-12-12',
+            'context' => 'list',
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+
+        $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
+        $pool = $this->prophesize(Pool::class);
+        $translator = $this->prophesize(TranslatorInterface::class);
+        $propertyAccessor = new PropertyAccessor();
+        $templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
+        $container = $this->prophesize(ContainerInterface::class);
+
+        $this->admin->getObject(42)->willReturn($object);
+        $this->admin->getCode()->willReturn('sonata.post.admin');
+        $this->admin->hasAccess('edit', $object)->willReturn(true);
+        $this->admin->getListFieldDescription('dateProp')->willReturn($fieldDescription->reveal());
+        $this->admin->update($object)->shouldBeCalled();
+
+        $templateRegistry->getTemplate('base_list_field')->willReturn('admin_template');
+        $container->get('sonata.post.admin.template_registry')->willReturn($templateRegistry->reveal());
+        $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
+        $this->twig->addExtension(new SonataAdminExtension(
+            $pool->reveal(),
+            null,
+            $translator->reveal(),
+            $container->reveal()
+        ));
+        $fieldDescription->getOption('editable')->willReturn(true);
+        $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
+        $fieldDescription->getType()->willReturn('date');
+        $fieldDescription->getTemplate()->willReturn('field_template');
+        $fieldDescription->getValue(Argument::cetera())->willReturn('some value');
+
+        $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
+
+        $response = ($this->action)($request);
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    public function testSetObjectFieldValueActionWithDateTime(): void
+    {
+        $object = new Bafoo();
+        $request = new Request([
+            'code' => 'sonata.post.admin',
+            'objectId' => 42,
+            'field' => 'datetimeProp',
+            'value' => '2020-12-12 23:11:23',
+            'context' => 'list',
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+
+        $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
+        $pool = $this->prophesize(Pool::class);
+        $translator = $this->prophesize(TranslatorInterface::class);
+        $propertyAccessor = new PropertyAccessor();
+        $templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
+        $container = $this->prophesize(ContainerInterface::class);
+
+        $this->admin->getObject(42)->willReturn($object);
+        $this->admin->getCode()->willReturn('sonata.post.admin');
+        $this->admin->hasAccess('edit', $object)->willReturn(true);
+        $this->admin->getListFieldDescription('datetimeProp')->willReturn($fieldDescription->reveal());
+        $this->admin->update($object)->shouldBeCalled();
+
+        $templateRegistry->getTemplate('base_list_field')->willReturn('admin_template');
+        $container->get('sonata.post.admin.template_registry')->willReturn($templateRegistry->reveal());
+        $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
+        $this->twig->addExtension(new SonataAdminExtension(
+            $pool->reveal(),
+            null,
+            $translator->reveal(),
+            $container->reveal()
+        ));
+        $fieldDescription->getOption('editable')->willReturn(true);
+        $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
+        $fieldDescription->getType()->willReturn('datetime');
+        $fieldDescription->getTemplate()->willReturn('field_template');
         $fieldDescription->getValue(Argument::cetera())->willReturn('some value');
 
         $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
@@ -245,7 +337,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription->getOption('multiple')->willReturn(true);
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
         $fieldDescription->getType()->willReturn('boolean');
-        $fieldDescription->getTemplate()->willReturn(false);
+        $fieldDescription->getTemplate()->willReturn('field_template');
         $fieldDescription->getValue(Argument::cetera())->willReturn(['some value']);
 
         $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
