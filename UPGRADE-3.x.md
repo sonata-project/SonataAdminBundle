@@ -1,6 +1,10 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated not passing a `Sonata\AdminBundle\Admin\AdminHelper` instance to `Sonata\AdminBundle\Form\Type\AdminType::__construct()`
+
+When instantiating a `Sonata\AdminBundle\Form\Type\AdminType` object, please use the 1 parameter signature `($adminHelper)`.
+
 ## Deprecated not setting as `false` the configuration option `sonata_admin.options.legacy_twig_text_extension`
 
 This option controls which Twig text extension will be used to provide filters like
