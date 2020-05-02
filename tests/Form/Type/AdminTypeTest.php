@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\Argument\Token\AnyValueToken;
+use Prophecy\Prophecy\ObjectProphecy;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -35,7 +35,7 @@ use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 class AdminTypeTest extends TypeTestCase
 {
     /**
-     * @var AdminHelper|MockObject
+     * @var AdminHelper|ObjectProphecy
      */
     private $adminHelper;
 
@@ -46,8 +46,8 @@ class AdminTypeTest extends TypeTestCase
 
     protected function setUp(): void
     {
-        $this->adminHelper = $this->createMock(AdminHelper::class);
-        $this->adminType = new AdminType($this->adminHelper);
+        $this->adminHelper = $this->prophesize(AdminHelper::class);
+        $this->adminType = new AdminType($this->adminHelper->reveal());
 
         parent::setUp();
     }
@@ -217,8 +217,9 @@ class AdminTypeTest extends TypeTestCase
         $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
         $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);
         $admin->getClass()->shouldBeCalled()->willReturn(Foo::class);
-        $admin->getNewInstance()->shouldBeCalled()->willReturn($foo);
         $admin->setSubject($foo)->shouldBeCalled();
+
+        $this->adminHelper->addNewInstance($parentSubject, $parentField->reveal())->shouldBeCalled()->willReturn($foo);
 
         $field = $this->prophesize(FieldDescriptionInterface::class);
         $field->getAssociationAdmin()->shouldBeCalled()->willReturn($admin->reveal());
