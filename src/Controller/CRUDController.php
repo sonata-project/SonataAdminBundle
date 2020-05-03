@@ -279,7 +279,6 @@ class CRUDController implements ContainerAwareInterface
      * @param int|string|null $deprecatedId
      *
      * @throws NotFoundHttpException If the object does not exist
-     * @throws \RuntimeException     If no editable field is defined
      * @throws AccessDeniedException If access is not granted
      *
      * @return Response|RedirectResponse
@@ -320,12 +319,6 @@ class CRUDController implements ContainerAwareInterface
         $objectId = $this->admin->getNormalizedIdentifier($existingObject);
 
         $form = $this->admin->getForm();
-
-        if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
-            throw new \RuntimeException(
-                'No editable field defined. Did you forget to implement the "configureFormFields" method?'
-            );
-        }
 
         $form->setData($existingObject);
         $form->handleRequest($request);
@@ -547,7 +540,6 @@ class CRUDController implements ContainerAwareInterface
      * Create action.
      *
      * @throws AccessDeniedException If access is not granted
-     * @throws \RuntimeException     If no editable field is defined
      *
      * @return Response
      */
@@ -583,12 +575,6 @@ class CRUDController implements ContainerAwareInterface
         $this->admin->setSubject($newObject);
 
         $form = $this->admin->getForm();
-
-        if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
-            throw new \RuntimeException(
-                'No editable field defined. Did you forget to implement the "configureFormFields" method?'
-            );
-        }
 
         $form->setData($newObject);
         $form->handleRequest($request);
@@ -707,16 +693,6 @@ class CRUDController implements ContainerAwareInterface
 
         $fields = $this->admin->getShow();
         \assert($fields instanceof FieldDescriptionCollection);
-
-        // NEXT_MAJOR: replace deprecation with exception
-        if (!\is_array($fields->getElements()) || 0 === $fields->count()) {
-            @trigger_error(
-                'Calling this method without implementing "configureShowFields"'
-                .' is not supported since sonata-project/admin-bundle 3.40.0'
-                .' and will no longer be possible in 4.0',
-                E_USER_DEPRECATED
-            );
-        }
 
         // NEXT_MAJOR: Remove this line and use commented line below it instead
         $template = $this->admin->getTemplate('show');
