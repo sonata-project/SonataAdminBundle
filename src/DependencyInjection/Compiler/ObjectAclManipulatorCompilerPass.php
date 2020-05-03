@@ -37,14 +37,13 @@ final class ObjectAclManipulatorCompilerPass implements CompilerPassInterface
             // We trim the possible "%" characters around the class definition since it could be using "%parameter%" syntax.
             $class = trim($class, '%');
 
-            if (!class_exists($class, false) && $container->hasParameter(str_replace("%", "", $class))) {
+            if (!class_exists($class, false) && $container->hasParameter(str_replace('%', '', $class))) {
                 $class = $container->getParameter($class);
             }
 
             if (!is_subclass_of($class, ObjectAclManipulatorInterface::class)) {
                 continue;
             }
-
 
             $availableManagers[$id] = $container->getDefinition($id);
         }
