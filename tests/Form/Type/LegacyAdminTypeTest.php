@@ -47,7 +47,7 @@ class LegacyAdminTypeTest extends TypeTestCase
     }
 
     /**
-     * @expectedDeprecation Calling Sonata\AdminBundle\Form\Type\AdminType::__construct without passing an Sonata\AdminBundle\Admin\AdminHelper as argument is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     * @expectedDeprecation Calling Sonata\AdminBundle\Form\Type\AdminType::__construct without passing an Sonata\AdminBundle\Admin\AdminHelper as argument is deprecated since sonata-project/admin-bundle 3.66 and will throw an exception in 4.0.
      */
     public function testGetDefaultOptions(): void
     {
@@ -66,7 +66,7 @@ class LegacyAdminTypeTest extends TypeTestCase
     }
 
     /**
-     * @expectedDeprecation Calling Sonata\AdminBundle\Form\Type\AdminType::__construct without passing an Sonata\AdminBundle\Admin\AdminHelper as argument is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     * @expectedDeprecation Calling Sonata\AdminBundle\Form\Type\AdminType::__construct without passing an Sonata\AdminBundle\Admin\AdminHelper as argument is deprecated since sonata-project/admin-bundle 3.66 and will throw an exception in 4.0.
      */
     public function testSubmitValidData(): void
     {
@@ -111,7 +111,7 @@ class LegacyAdminTypeTest extends TypeTestCase
     }
 
     /**
-     * @expectedDeprecation Calling Sonata\AdminBundle\Form\Type\AdminType::__construct without passing an Sonata\AdminBundle\Admin\AdminHelper as argument is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     * @expectedDeprecation Calling Sonata\AdminBundle\Form\Type\AdminType::__construct without passing an Sonata\AdminBundle\Admin\AdminHelper as argument is deprecated since sonata-project/admin-bundle 3.66 and will throw an exception in 4.0.
      */
     public function testDotFields(): void
     {
@@ -157,7 +157,7 @@ class LegacyAdminTypeTest extends TypeTestCase
     }
 
     /**
-     * @expectedDeprecation Calling Sonata\AdminBundle\Form\Type\AdminType::__construct without passing an Sonata\AdminBundle\Admin\AdminHelper as argument is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     * @expectedDeprecation Calling Sonata\AdminBundle\Form\Type\AdminType::__construct without passing an Sonata\AdminBundle\Admin\AdminHelper as argument is deprecated since sonata-project/admin-bundle 3.66 and will throw an exception in 4.0.
      */
     public function testArrayCollection(): void
     {
@@ -202,7 +202,7 @@ class LegacyAdminTypeTest extends TypeTestCase
     }
 
     /**
-     * @expectedDeprecation Calling Sonata\AdminBundle\Form\Type\AdminType::__construct without passing an Sonata\AdminBundle\Admin\AdminHelper as argument is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     * @expectedDeprecation Calling Sonata\AdminBundle\Form\Type\AdminType::__construct without passing an Sonata\AdminBundle\Admin\AdminHelper as argument is deprecated since sonata-project/admin-bundle 3.66 and will throw an exception in 4.0.
      */
     public function testArrayCollectionNotFound(): void
     {

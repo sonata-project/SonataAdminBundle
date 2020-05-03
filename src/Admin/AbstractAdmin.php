@@ -1706,7 +1706,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
         if (!$this->hasParentFieldDescription()) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no parent field description is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Calling %s() when there is no parent field description is deprecated since sonata-project/admin-bundle 3.66 and will throw an exception in 4.0. '.
                 'Use %s::hasParentFieldDescription() to know if there is a parent field description.',
                 __METHOD__,
                 __CLASS__
@@ -1750,7 +1750,7 @@ EOT;
     {
         if (!$this->hasSubject()) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no subject is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Calling %s() when there is no subject is deprecated since sonata-project/admin-bundle 3.66 and will throw an exception in 4.0. '.
                 'Use %s::hasSubject() to know if there is a subject.',
                 __METHOD__,
                 __CLASS__
@@ -1871,7 +1871,7 @@ EOT;
     {
         if (!$this->hasListFieldDescription($name)) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no list field description is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Calling %s() when there is no list field description is deprecated since sonata-project/admin-bundle 3.66 and will throw an exception in 4.0. '.
                 'Use %s::hasListFieldDescription(\'%s\') to know if there is a list field description.',
                 __METHOD__,
                 __CLASS__,
@@ -1992,7 +1992,7 @@ EOT;
     {
         if (!$this->isChild()) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no parent is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Calling %s() when there is no parent is deprecated since sonata-project/admin-bundle 3.66 and will throw an exception in 4.0. '.
                 'Use %s::isChild() to know if there is a parent.',
                 __METHOD__,
                 __CLASS__
