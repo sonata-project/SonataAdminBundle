@@ -24,10 +24,11 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class ObjectAclManipulatorCompilerPassTest extends TestCase
 {
-    public function testAvailableManagerFromServiceDefinitionClass(): void
+    /**
+     * @dataProvider containerDataProvider
+     */
+    public function testAvailableManager($containerBuilder): void
     {
-        $containerBuilder = $this->getContainerWithServiceClass();
-
         $objectAclManipulatorCompilerPass = new ObjectAclManipulatorCompilerPass();
 
         $objectAclManipulatorCompilerPass->process($containerBuilder);
@@ -37,17 +38,12 @@ class ObjectAclManipulatorCompilerPassTest extends TestCase
         $this->assertArrayHasKey('sonata.admin.manipulator.acl.object.orm', $availableManagers);
     }
 
-    public function testAvailableManagerFromServiceDefinitionWithParameterClass(): void
+    public function containerDataProvider(): array
     {
-        $containerBuilder = $this->getContainerWithParameterAsServiceClass();
-
-        $objectAclManipulatorCompilerPass = new ObjectAclManipulatorCompilerPass();
-
-        $objectAclManipulatorCompilerPass->process($containerBuilder);
-
-        $availableManagers = $containerBuilder->getDefinition(GenerateObjectAclCommand::class)->getArgument(1);
-
-        $this->assertArrayHasKey('sonata.admin.manipulator.acl.object.orm', $availableManagers);
+        return [
+            [$this->getContainerWithServiceClass()],
+            [$this->getContainerWithParameterAsServiceClass()],
+        ];
     }
 
     private function getContainerWithServiceClass(): ContainerBuilder
