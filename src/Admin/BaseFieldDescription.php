@@ -193,7 +193,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             ->setAllowedTypes('translation_domain', 'string')
             ->setAllowedTypes('type', 'string')
             ->setAllowedTypes('virtual_field', 'bool')
-            ->setDeprecated('header_style', 'The option "header_style" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.x. Use "header_class" instead.');
+            ->setDeprecated('header_style', 'The option "header_style" is deprecated since sonata-project/admin-bundle 3.52 and will be removed in version 4.x. Use "header_class" instead.');
     }
 
     public function setFieldName($fieldName): void
