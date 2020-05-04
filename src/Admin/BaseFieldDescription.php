@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Admin;
 
 use Doctrine\Common\Inflector\Inflector;
 use Sonata\AdminBundle\Exception\NoValueException;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * A FieldDescription hold the information about a field. A typical
@@ -127,9 +128,73 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $help;
 
     /**
+     * @var OptionsResolver
+     */
+    protected $resolver;
+
+    /**
      * @var array[] cached object field getters
      */
     private static $fieldGetters = [];
+
+    public function __construct()
+    {
+        $this->resolver = new OptionsResolver();
+        $this->resolver
+            ->setDefaults([
+                'placeholder' => 'short_object_description_placeholder',
+                'link_parameters' => [],
+            ])
+            ->setDefined([
+                'actions',
+                'associated_property',
+                'code',
+                'field_name',
+                'field_options',
+                'field_type',
+                'header_class',
+                'header_style',
+                'help',
+                'identifier',
+                'label',
+                'parameters',
+                'role',
+                'route',
+                'safe',
+                'sort_field_mapping',
+                'sort_parent_association_mappings',
+                'sortable',
+                'template',
+                'translation_domain',
+                'type',
+                'virtual_field',
+            ])
+            ->setAllowedTypes('actions', ['array[]'])
+            ->setAllowedTypes('associated_property', 'string')
+            ->setAllowedTypes('code', 'string')
+            ->setAllowedTypes('field_name', 'string')
+            ->setAllowedTypes('field_options', 'array')
+            ->setAllowedTypes('field_type', 'string')
+            ->setAllowedTypes('header_class', 'string')
+            ->setAllowedTypes('header_style', 'string')
+            ->setAllowedTypes('help', 'string')
+            ->setAllowedTypes('identifier', 'bool')
+            ->setAllowedTypes('label', ['bool', 'null', 'string'])
+            ->setAllowedTypes('link_parameters', 'array')
+            ->setAllowedTypes('parameters', 'array')
+            ->setAllowedTypes('placeholder', 'string')
+            ->setAllowedTypes('role', ['string', 'string[]'])
+            ->setAllowedTypes('route', 'array')
+            ->setAllowedTypes('safe', 'bool')
+            ->setAllowedTypes('sort_field_mapping', 'array')
+            ->setAllowedTypes('sort_parent_association_mappings', 'array')
+            ->setAllowedTypes('sortable', 'bool')
+            ->setAllowedTypes('template', 'string')
+            ->setAllowedTypes('translation_domain', 'string')
+            ->setAllowedTypes('type', 'string')
+            ->setAllowedTypes('virtual_field', 'bool')
+            ->setDeprecated('header_style', 'The option "header_style" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.x. Use "header_class" instead.');
+    }
 
     public function setFieldName($fieldName): void
     {
@@ -162,11 +227,13 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function setOption($name, $value): void
     {
-        $this->options[$name] = $value;
+        $this->options[$name] = $this->resolver->resolve([$name => $value])[$name];
     }
 
     public function setOptions(array $options): void
     {
+        $options = $this->resolver->resolve($options);
+
         // set the type if provided
         if (isset($options['type'])) {
             $this->setType($options['type']);
@@ -183,15 +250,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if (isset($options['help'])) {
             $this->setHelp($options['help']);
             unset($options['help']);
-        }
-
-        // set default placeholder
-        if (!isset($options['placeholder'])) {
-            $options['placeholder'] = 'short_object_description_placeholder';
-        }
-
-        if (!isset($options['link_parameters'])) {
-            $options['link_parameters'] = [];
         }
 
         $this->options = $options;

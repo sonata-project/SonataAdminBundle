@@ -278,8 +278,8 @@ class ListMapperTest extends TestCase
             [
                 'associated_property' => 'fooAssociatedProperty',
                 'sortable' => false,
-                'sort_parent_association_mappings' => 'fooSortParentAssociationMapping',
-                'sort_field_mapping' => 'fooSortFieldMapping',
+                'sort_parent_association_mappings' => [['fieldName' => 'fooSortParentAssociationMapping']],
+                'sort_field_mapping' => ['fieldName' => 'fooSortFieldMapping'],
             ]
         );
 
@@ -299,8 +299,8 @@ class ListMapperTest extends TestCase
 
         $this->assertSame('fooAssociatedProperty', $fieldManualSort->getOption('associated_property'));
         $this->assertFalse($fieldManualSort->getOption('sortable'));
-        $this->assertSame('fooSortParentAssociationMapping', $fieldManualSort->getOption('sort_parent_association_mappings'));
-        $this->assertSame('fooSortFieldMapping', $fieldManualSort->getOption('sort_field_mapping'));
+        $this->assertSame([['fieldName' => 'fooSortParentAssociationMapping']], $fieldManualSort->getOption('sort_parent_association_mappings'));
+        $this->assertSame(['fieldName' => 'fooSortFieldMapping'], $fieldManualSort->getOption('sort_field_mapping'));
     }
 
     public function testKeys(): void
