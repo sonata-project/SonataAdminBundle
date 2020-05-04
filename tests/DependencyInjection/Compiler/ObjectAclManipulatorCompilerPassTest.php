@@ -14,20 +14,21 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\GenerateObjectAclCommand;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompilerPass;
 use Sonata\AdminBundle\Util\ObjectAclManipulator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @author Olivier Rey
+ * @author Olivier Rey <olivier.rey@gmail.com>
  */
 class ObjectAclManipulatorCompilerPassTest extends TestCase
 {
     /**
      * @dataProvider containerDataProvider
      */
-    public function testAvailableManager($containerBuilder): void
+    public function testAvailableManager(ContainerBuilder $containerBuilder, string $serviceId): void
     {
         $objectAclManipulatorCompilerPass = new ObjectAclManipulatorCompilerPass();
 
@@ -35,49 +36,38 @@ class ObjectAclManipulatorCompilerPassTest extends TestCase
 
         $availableManagers = $containerBuilder->getDefinition(GenerateObjectAclCommand::class)->getArgument(1);
 
-        $this->assertArrayHasKey('sonata.admin.manipulator.acl.object.orm', $availableManagers);
+        $this->assertArrayHasKey($serviceId, $availableManagers);
     }
 
-    public function containerDataProvider(): array
+    public function containerDataProvider(): iterable
     {
-        return [
-            [$this->getContainerWithServiceClass()],
-            [$this->getContainerWithParameterAsServiceClass()],
-        ];
-    }
-
-    private function getContainerWithServiceClass(): ContainerBuilder
-    {
-        $container = $this->getContainer();
-
+        $serviceId = 'sonata.admin.manipulator.acl.object.orm';
+        $container = $this->createContainer();
         $container
-            ->register('sonata.admin.manipulator.acl.object.orm')
+            ->register($serviceId)
             ->setClass(ObjectAclManipulator::class);
 
-        return $container;
-    }
+        yield [$container, $serviceId];
 
-    private function getContainerWithParameterAsServiceClass(): ContainerBuilder
-    {
-        $container = $this->getContainer();
-
-        $container->setParameter('sonata.admin.manipulator.acl.object.orm.class', ObjectAclManipulator::class);
+        $parameterName = 'sonata.admin.manipulator.acl.object.orm.class';
+        $container = $this->createContainer();
+        $container->setParameter($parameterName, ObjectAclManipulator::class);
 
         $container
-            ->register('sonata.admin.manipulator.acl.object.orm')
-            ->setClass('%sonata.admin.manipulator.acl.object.orm.class%');
+            ->register($serviceId)
+            ->setClass('%'.$parameterName.'%');
 
-        return $container;
+        yield [$container, $serviceId];
     }
 
-    private function getContainer(): ContainerBuilder
+    private function createContainer(): ContainerBuilder
     {
+        $pool = $this->createStub(Pool::class);
         $container = new ContainerBuilder();
-
         $container
-            ->register('Sonata\AdminBundle\Command\GenerateObjectAclCommand')
+            ->register(GenerateObjectAclCommand::class)
             ->setClass(GenerateObjectAclCommand::class)
-            ->setArguments(['', []]);
+            ->setArguments([$pool, []]);
 
         return $container;
     }
