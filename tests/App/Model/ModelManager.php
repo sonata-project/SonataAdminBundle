@@ -118,7 +118,7 @@ final class ModelManager implements ModelManagerInterface
 
     public function getModelInstance($class)
     {
-        return new $class();
+        return new Foo('test_id', 'foo_name');
     }
 
     public function getModelCollectionInstance($class)
