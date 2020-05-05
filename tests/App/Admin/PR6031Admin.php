@@ -44,7 +44,7 @@ final class PR6031Admin extends AbstractAdmin
         $show->add('name', 'string');
     }
 
-    protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    protected function configureTabMenu(MenuItemInterface $menu, $action, ?AdminInterface $childAdmin = null)
     {
         $menu
             ->addChild('label')->addChild('label');
