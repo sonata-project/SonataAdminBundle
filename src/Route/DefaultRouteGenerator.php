@@ -85,8 +85,10 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
                 unset($parameters['id']);
             }
 
-            for ($parentAdmin = $admin->getParent(); null !== $parentAdmin; $parentAdmin = $parentAdmin->getParent()) {
+            $parentAdmin = $admin->getParent();
+            while (null !== $parentAdmin) {
                 $parameters[$parentAdmin->getIdParameter()] = $admin->getRequest()->attributes->get($parentAdmin->getIdParameter());
+                $parentAdmin = $parentAdmin->isChild() ? $parentAdmin->getParent() : null;
             }
         }
 

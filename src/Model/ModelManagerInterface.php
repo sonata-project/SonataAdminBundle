@@ -194,6 +194,11 @@ interface ModelManagerInterface
     /**
      * Returns the parameters used in the columns header.
      *
+     * NEXT_MAJOR: - Remove this function
+     *             - Replace admin.modelmanager.sortparameters to admin.datagrid.sortparameters
+     *
+     * @deprecated since sonata-project/sonata-admin-bundle 3.66. To be removed in 4.0.
+     *
      * @return array<string, mixed>
      */
     public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid);
@@ -245,6 +250,11 @@ interface ModelManagerInterface
 
     /**
      * @param int $page
+     *
+     * NEXT_MAJOR: - Remove this function
+     *             - Replace admin.modelmanager.paginationparameters to admin.datagrid.paginationparameters
+     *
+     * @deprecated since sonata-project/sonata-admin-bundle 3.66. To be removed in 4.0.
      *
      * @return array<string, mixed>
      */

@@ -2,6 +2,26 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.66.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.65.0...3.66.0) - 2020-05-03
+### Added
+- The possibility to edit/create an object without any field set in the configureFormField.
+- Allow reuse render extra parameters
+
+### Deprecated
+- not passing a `Sonata\AdminBundle\Admin\AdminHelper` instance to
+`Sonata\AdminBundle\Form\Type\AdminType::__construct()`
+- Deprecate the call of `AbstractAdmin::getParentFieldDescription` if the value is `null`.
+- Deprecate the call of `AbstractAdmin::getSubject` if the value is `null`.
+- Deprecate the call of `AbstractAdmin::getListFieldDescription` if the value is `null`.
+- Deprecate the call of `AbstractAdmin::getParent` if the value is `null`.
+
+### Fixed
+- Do not lose the `parentSubject` in case of multiple calls to the `AppendFormFieldElementAction`.
+- Bug when trying to edit a datetime formtype in datagrid
+- `label => false` doesn't lead to a missing `''` translation in the profiler.
+- `label => '0'` and others non nullable falsy value are not overridden anymore.
+- Fixed documented return type of `Sonata\AdminBundle\Filter\FilterInterface::getRenderSettings()`.
+
 ## [3.65.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.64.0...3.65.0) - 2020-04-21
 ### Added
 - Added `AbstractAdmin::IsCurrentChild` method

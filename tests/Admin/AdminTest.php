@@ -1439,7 +1439,7 @@ class AdminTest extends TestCase
             ->method('getAdmin')
             ->willReturn($parentAdmin);
 
-        $this->assertNull($admin->getParentFieldDescription());
+        $this->assertFalse($admin->hasParentFieldDescription());
         $admin->setParentFieldDescription($parentFieldDescription);
         $this->assertSame($parentFieldDescription, $admin->getParentFieldDescription());
         $this->assertSame('sonata.post.admin.post.parent', $admin->getRootCode());
@@ -1457,7 +1457,7 @@ class AdminTest extends TestCase
             ->method('getAdmin')
             ->willReturn($parentAdmin);
 
-        $this->assertNull($admin->getParentFieldDescription());
+        $this->assertFalse($admin->hasParentFieldDescription());
         $admin->setParentFieldDescription($parentFieldDescription);
         $this->assertSame($parentFieldDescription, $admin->getParentFieldDescription());
         $this->assertSame($parentAdmin, $admin->getRoot());
@@ -1773,7 +1773,7 @@ class AdminTest extends TestCase
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
         $admin->setModelManager($modelManager);
 
-        $this->assertNull($admin->getSubject());
+        $this->assertFalse($admin->hasSubject());
     }
 
     public function testGetSideMenu(): void
@@ -1831,7 +1831,7 @@ class AdminTest extends TestCase
         $admin->setModelManager($modelManager);
 
         $admin->setRequest(new Request(['id' => $id]));
-        $this->assertNull($admin->getSubject());
+        $this->assertFalse($admin->hasSubject());
     }
 
     /**
@@ -1852,6 +1852,7 @@ class AdminTest extends TestCase
         $admin->setModelManager($modelManager);
 
         $admin->setRequest(new Request(['id' => $id]));
+        $this->assertTrue($admin->hasSubject());
         $this->assertSame($entity, $admin->getSubject());
         $this->assertSame($entity, $admin->getSubject()); // model manager must be used only once
     }
@@ -1877,12 +1878,13 @@ class AdminTest extends TestCase
         $commentAdmin->setRequest($request);
         $commentAdmin->setModelManager($modelManager);
 
+        $this->assertTrue($commentAdmin->hasSubject());
         $this->assertSame($comment, $commentAdmin->getSubject());
 
         $commentAdmin->setSubject(null);
         $commentAdmin->setParentFieldDescription(new FieldDescription());
 
-        $this->assertNull($commentAdmin->getSubject());
+        $this->assertFalse($commentAdmin->hasSubject());
     }
 
     /**

@@ -47,7 +47,7 @@ class AdminType extends AbstractType
         // NEXT_MAJOR: Remove this condition.
         if (null === $adminHelper) {
             @trigger_error(sprintf(
-                'Calling %s without passing an %s as argument is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s without passing an %s as argument is deprecated since sonata-project/admin-bundle 3.66'
                 .' and will throw an exception in 4.0.',
                 __METHOD__,
                 AdminHelper::class

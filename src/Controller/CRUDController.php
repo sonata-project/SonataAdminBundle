@@ -69,24 +69,14 @@ class CRUDController extends Controller
     /**
      * Renders a view while passing mandatory parameters on to the template.
      *
-     * @param string $view The view name
+     * @param string               $view       The view name
+     * @param array<string, mixed> $parameters An array of parameters to pass to the view
      *
      * @return Response A Response instance
      */
     public function renderWithExtraParams($view, array $parameters = [], ?Response $response = null)
     {
-        if (!$this->isXmlHttpRequest()) {
-            $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
-        }
-        $parameters['admin'] = $parameters['admin'] ??
-            $this->admin;
-
-        $parameters['base_template'] = $parameters['base_template'] ??
-            $this->getBaseTemplate();
-
-        $parameters['admin_pool'] = $this->get('sonata.admin.pool');
-
-        return parent::render($view, $parameters, $response);
+        return $this->render($view, $this->addRenderExtraParams($parameters), $response);
     }
 
     /**
@@ -238,7 +228,6 @@ class CRUDController extends Controller
      * Edit action.
      *
      * @throws NotFoundHttpException If the object does not exist
-     * @throws \RuntimeException     If no editable field is defined
      * @throws AccessDeniedException If access is not granted
      *
      * @return Response|RedirectResponse
@@ -268,12 +257,6 @@ class CRUDController extends Controller
         $objectId = $this->admin->getNormalizedIdentifier($existingObject);
 
         $form = $this->admin->getForm();
-
-        if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
-            throw new \RuntimeException(
-                'No editable field defined. Did you forget to implement the "configureFormFields" method?'
-            );
-        }
 
         $form->setData($existingObject);
         $form->handleRequest($request);
@@ -477,7 +460,6 @@ class CRUDController extends Controller
      * Create action.
      *
      * @throws AccessDeniedException If access is not granted
-     * @throws \RuntimeException     If no editable field is defined
      *
      * @return Response
      */
@@ -512,12 +494,6 @@ class CRUDController extends Controller
         $this->admin->setSubject($newObject);
 
         $form = $this->admin->getForm();
-
-        if (!\is_array($fields = $form->all()) || 0 === \count($fields)) {
-            throw new \RuntimeException(
-                'No editable field defined. Did you forget to implement the "configureFormFields" method?'
-            );
-        }
 
         $form->setData($newObject);
         $form->handleRequest($request);
@@ -621,12 +597,6 @@ class CRUDController extends Controller
 
         $fields = $this->admin->getShow();
         \assert($fields instanceof FieldDescriptionCollection);
-
-        if (!\is_array($fields->getElements()) || 0 === $fields->count()) {
-            throw new \RuntimeException(
-                'No fields defined. Did you forget to implement the "configureShowFields" method?'
-            );
-        }
 
         $template = $this->templateRegistry->getTemplate('show');
 
@@ -932,6 +902,24 @@ class CRUDController extends Controller
     public function getRequest()
     {
         return $this->container->get('request_stack')->getCurrentRequest();
+    }
+
+    /**
+     * @param array<string, mixed> $parameters
+     *
+     * @return array<string, mixed>
+     */
+    protected function addRenderExtraParams(array $parameters = []): array
+    {
+        if (!$this->isXmlHttpRequest()) {
+            $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
+        }
+
+        $parameters['admin'] = $parameters['admin'] ?? $this->admin;
+        $parameters['base_template'] = $parameters['base_template'] ?? $this->getBaseTemplate();
+        $parameters['admin_pool'] = $this->get('sonata.admin.pool');
+
+        return $parameters;
     }
 
     /**
@@ -1401,10 +1389,11 @@ class CRUDController extends Controller
 
     private function checkParentChildAssociation(Request $request, $object): void
     {
-        if (!($parentAdmin = $this->admin->getParent())) {
+        if (!$this->admin->isChild()) {
             return;
         }
 
+        $parentAdmin = $this->admin->getParent();
         $parentId = $request->get($parentAdmin->getIdParameter());
 
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
