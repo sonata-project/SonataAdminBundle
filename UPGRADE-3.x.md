@@ -1,6 +1,25 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated accessing to a non existing value when adding field to `showMapper` and `listMapper`.
+
+Before:
+```php
+$showMapper->add('nonExistingField');
+$listMapper->add('nonExistingField');
+```
+was displaying nothing in the list and the show views without any warning or error.
+
+But
+```php
+$formMapper->add('nonExistingField');
+```
+was throwing an exception.
+
+In the next major an exception will be thrown if no getter/isser/hasser is found for the property. Since most
+of the time the error is coming from a typo, this will allow the developer to catch it as fast as possible.
+Currently this will only trigger a deprecation if the field value is not found.
+
 ## Deprecated not passing a `Sonata\AdminBundle\Admin\AdminHelper` instance to `Sonata\AdminBundle\Form\Type\AdminType::__construct()`
 
 When instantiating a `Sonata\AdminBundle\Form\Type\AdminType` object, please use the 1 parameter signature `($adminHelper)`.
