@@ -16,9 +16,9 @@ namespace Sonata\AdminBundle\Tests\App\Model;
 final class PR6031Repository implements RepositoryInterface
 {
     /**
-     * @var array<class-string, Foo>
+     * @var array<class-string, PR6031>
      */
-    private $elements;
+    private $elements = [];
 
     public function __construct()
     {

@@ -24,7 +24,7 @@ final class ModelManager implements ModelManagerInterface
     /**
      * @var array array<class-string, RepositoryInterface>
      */
-    private $repositories;
+    private $repositories = [];
 
     /**
      * @param array<class-string, RepositoryInterface> $repositories
