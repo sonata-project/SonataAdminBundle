@@ -96,7 +96,7 @@ file that was distributed with this source code.
                             {% endif %}
 
                             {%- set translation_domain = menu.extra('translation_domain', 'messages') -%}
-                            # We use method accessor instead of ".label" since `menu` implements `ArrayAccess` and could have a property called "label".
+                            {# We use method accessor instead of ".label" since `menu` implements `ArrayAccess` and could have a property called "label".#}
                             {%- set label = menu.getLabel() -%}
                             {%- if translation_domain is not same as(false) -%}
                                 {%- set label = label|trans(menu.extra('translation_params', {}), translation_domain) -%}
@@ -158,7 +158,7 @@ file that was distributed with this source code.
                                                 {% if action is defined %}
                                                     {% for menu in breadcrumbs_builder.breadcrumbs(admin, action) %}
                                                         {%- set translation_domain = menu.extra('translation_domain', 'messages') -%}
-                                                        # We use method accessor instead of ".label" since `menu` implements `ArrayAccess` and could have a property called "label".
+                                                        {# We use method accessor instead of ".label" since `menu` implements `ArrayAccess` and could have a property called "label".#}
                                                         {%- set label = menu.getLabel() -%}
                                                         {%- if translation_domain is not same as(false) -%}
                                                             {%- set label = label|trans(menu.extra('translation_params', {}), translation_domain) -%}
