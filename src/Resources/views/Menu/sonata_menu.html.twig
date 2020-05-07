@@ -47,5 +47,5 @@
     {% endapply %}
 {% endblock %}
 
-# We use method accessor instead of ".label" since `item` implements `ArrayAccess` and could have a property called "label".
+{# We use method accessor instead of ".label" since `item` implements `ArrayAccess` and could have a property called "label".#}
 {% block label %}{% if is_link is defined and is_link %}{{ icon|default|raw }}{% endif %}{% if options.allow_safe_labels and item.extra('safe_label', false) %}{{ item.getLabel()|raw }}{% else %}{{ item.getLabel()|trans({}, translation_domain|default('messages')) }}{% endif %}{% endblock %}
