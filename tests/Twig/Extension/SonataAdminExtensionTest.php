@@ -340,7 +340,7 @@ class SonataAdminExtensionTest extends TestCase
 
         $this->fieldDescription
             ->method('getTemplate')
-            ->willReturnCallback(static function () use ($type) {
+            ->willReturnCallback(static function () use ($type): ?string {
                 switch ($type) {
                     case 'string':
                         return '@SonataAdmin/CRUD/list_string.html.twig';
@@ -372,7 +372,7 @@ class SonataAdminExtensionTest extends TestCase
                         // template doesn`t exist
                         return '@SonataAdmin/CRUD/list_nonexistent_template.html.twig';
                     default:
-                        return false;
+                        return null;
                 }
             });
 
@@ -1497,13 +1497,7 @@ EOT
 
         $this->fieldDescription
             ->method('getValue')
-            ->willReturnCallback(static function () use ($value) {
-                if ($value instanceof NoValueException) {
-                    throw  $value;
-                }
-
-                return $value;
-            });
+            ->willReturn($value);
 
         $this->fieldDescription
             ->method('getType')
@@ -1515,7 +1509,7 @@ EOT
 
         $this->fieldDescription
             ->method('getTemplate')
-            ->willReturnCallback(static function () use ($type) {
+            ->willReturnCallback(static function () use ($type): ?string {
                 switch ($type) {
                     case 'boolean':
                         return '@SonataAdmin/CRUD/show_boolean.html.twig';
@@ -1542,7 +1536,7 @@ EOT
                     case 'html':
                         return '@SonataAdmin/CRUD/show_html.html.twig';
                     default:
-                        return false;
+                        return null;
                 }
             });
 
@@ -2014,65 +2008,6 @@ EOT
                     ],
                 ],
             ],
-
-            // NoValueException
-            ['<th>Data</th> <td></td>', 'string', new NoValueException(), ['safe' => false]],
-            ['<th>Data</th> <td></td>', 'text', new NoValueException(), ['safe' => false]],
-            ['<th>Data</th> <td></td>', 'textarea', new NoValueException(), ['safe' => false]],
-            ['<th>Data</th> <td>&nbsp;</td>', 'datetime', new NoValueException(), []],
-            [
-                '<th>Data</th> <td>&nbsp;</td>',
-                'datetime',
-                new NoValueException(),
-                ['format' => 'd.m.Y H:i:s'],
-            ],
-            ['<th>Data</th> <td>&nbsp;</td>', 'date', new NoValueException(), []],
-            ['<th>Data</th> <td>&nbsp;</td>', 'date', new NoValueException(), ['format' => 'd.m.Y']],
-            ['<th>Data</th> <td>&nbsp;</td>', 'time', new NoValueException(), []],
-            ['<th>Data</th> <td></td>', 'number', new NoValueException(), ['safe' => false]],
-            ['<th>Data</th> <td></td>', 'integer', new NoValueException(), ['safe' => false]],
-            ['<th>Data</th> <td> 0 % </td>', 'percent', new NoValueException(), []],
-            ['<th>Data</th> <td> </td>', 'currency', new NoValueException(), ['currency' => 'EUR']],
-            ['<th>Data</th> <td> </td>', 'currency', new NoValueException(), ['currency' => 'GBP']],
-            ['<th>Data</th> <td> <ul></ul> </td>', 'array', new NoValueException(), ['safe' => false]],
-            [
-                '<th>Data</th> <td><span class="label label-danger">no</span></td>',
-                'boolean',
-                new NoValueException(),
-                [],
-            ],
-            [
-                '<th>Data</th> <td> </td>',
-                'trans',
-                new NoValueException(),
-                ['safe' => false, 'catalogue' => 'SonataAdminBundle'],
-            ],
-            [
-                '<th>Data</th> <td></td>',
-                'choice',
-                new NoValueException(),
-                ['safe' => false, 'choices' => []],
-            ],
-            [
-                '<th>Data</th> <td></td>',
-                'choice',
-                new NoValueException(),
-                ['safe' => false, 'choices' => [], 'multiple' => true],
-            ],
-            ['<th>Data</th> <td>&nbsp;</td>', 'url', new NoValueException(), []],
-            [
-                '<th>Data</th> <td>&nbsp;</td>',
-                'url',
-                new NoValueException(),
-                ['url' => 'http://example.com'],
-            ],
-            [
-                '<th>Data</th> <td>&nbsp;</td>',
-                'url',
-                new NoValueException(),
-                ['route' => ['name' => 'sonata_admin_foo']],
-            ],
-
             [
                 <<<'EOT'
 <th>Data</th> <td><div
@@ -2112,6 +2047,131 @@ EOT
                     ],
                     'safe' => false,
                 ],
+            ],
+        ];
+    }
+
+    /**
+     * @group legacy
+     * @assertDeprecation Accessing a non existing value is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     *
+     * @dataProvider getRenderViewElementWithNoValueTests
+     */
+    public function testRenderViewElementWithNoValue(string $expected, string $type, array $options): void
+    {
+        $this->admin
+            ->method('getTemplate')
+            ->willReturn('@SonataAdmin/CRUD/base_show_field.html.twig');
+
+        $this->fieldDescription
+            ->method('getValue')
+            ->willThrowException(new NoValueException());
+
+        $this->fieldDescription
+            ->method('getType')
+            ->willReturn($type);
+
+        $this->fieldDescription
+            ->method('getOptions')
+            ->willReturn($options);
+
+        $this->fieldDescription
+            ->method('getTemplate')
+            ->willReturnCallback(static function () use ($type): ?string {
+                switch ($type) {
+                    case 'boolean':
+                        return '@SonataAdmin/CRUD/show_boolean.html.twig';
+                    case 'datetime':
+                        return '@SonataAdmin/CRUD/show_datetime.html.twig';
+                    case 'date':
+                        return '@SonataAdmin/CRUD/show_date.html.twig';
+                    case 'time':
+                        return '@SonataAdmin/CRUD/show_time.html.twig';
+                    case 'currency':
+                        return '@SonataAdmin/CRUD/show_currency.html.twig';
+                    case 'percent':
+                        return '@SonataAdmin/CRUD/show_percent.html.twig';
+                    case 'email':
+                        return '@SonataAdmin/CRUD/show_email.html.twig';
+                    case 'choice':
+                        return '@SonataAdmin/CRUD/show_choice.html.twig';
+                    case 'array':
+                        return '@SonataAdmin/CRUD/show_array.html.twig';
+                    case 'trans':
+                        return '@SonataAdmin/CRUD/show_trans.html.twig';
+                    case 'url':
+                        return '@SonataAdmin/CRUD/show_url.html.twig';
+                    case 'html':
+                        return '@SonataAdmin/CRUD/show_html.html.twig';
+                    default:
+                        return null;
+                }
+            });
+
+        $this->assertSame(
+            $this->removeExtraWhitespace($expected),
+            $this->removeExtraWhitespace(
+                $this->twigExtension->renderViewElement(
+                    $this->environment,
+                    $this->fieldDescription,
+                    $this->object
+                )
+            )
+        );
+    }
+
+    public function getRenderViewElementWithNoValueTests(): iterable
+    {
+        return [
+            // NoValueException
+            ['<th>Data</th> <td></td>', 'string', ['safe' => false]],
+            ['<th>Data</th> <td></td>', 'text', ['safe' => false]],
+            ['<th>Data</th> <td></td>', 'textarea', ['safe' => false]],
+            ['<th>Data</th> <td>&nbsp;</td>', 'datetime', []],
+            [
+                '<th>Data</th> <td>&nbsp;</td>',
+                'datetime',
+                ['format' => 'd.m.Y H:i:s'],
+            ],
+            ['<th>Data</th> <td>&nbsp;</td>', 'date', []],
+            ['<th>Data</th> <td>&nbsp;</td>', 'date', ['format' => 'd.m.Y']],
+            ['<th>Data</th> <td>&nbsp;</td>', 'time', []],
+            ['<th>Data</th> <td></td>', 'number', ['safe' => false]],
+            ['<th>Data</th> <td></td>', 'integer', ['safe' => false]],
+            ['<th>Data</th> <td> 0 % </td>', 'percent', []],
+            ['<th>Data</th> <td> </td>', 'currency', ['currency' => 'EUR']],
+            ['<th>Data</th> <td> </td>', 'currency', ['currency' => 'GBP']],
+            ['<th>Data</th> <td> <ul></ul> </td>', 'array', ['safe' => false]],
+            [
+                '<th>Data</th> <td><span class="label label-danger">no</span></td>',
+                'boolean',
+                [],
+            ],
+            [
+                '<th>Data</th> <td> </td>',
+                'trans',
+                ['safe' => false, 'catalogue' => 'SonataAdminBundle'],
+            ],
+            [
+                '<th>Data</th> <td></td>',
+                'choice',
+                ['safe' => false, 'choices' => []],
+            ],
+            [
+                '<th>Data</th> <td></td>',
+                'choice',
+                ['safe' => false, 'choices' => [], 'multiple' => true],
+            ],
+            ['<th>Data</th> <td>&nbsp;</td>', 'url', []],
+            [
+                '<th>Data</th> <td>&nbsp;</td>',
+                'url',
+                ['url' => 'http://example.com'],
+            ],
+            [
+                '<th>Data</th> <td>&nbsp;</td>',
+                'url',
+                ['route' => ['name' => 'sonata_admin_foo']],
             ],
         ];
     }
@@ -2227,6 +2287,12 @@ EOT
         );
     }
 
+    /**
+     * NEXT_MAJOR: Change this test to expect a NoValueException instead.
+     *
+     * @group legacy
+     * @expectedDeprecation Accessing a non existing value is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     */
     public function testGetValueFromFieldDescriptionWithNoValueException(): void
     {
         $object = new \stdClass();
