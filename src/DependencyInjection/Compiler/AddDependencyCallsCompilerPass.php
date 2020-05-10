@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
@@ -236,7 +236,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         ];
 
         foreach ($keys as $key) {
-            $method = 'set'.Inflector::classify($key);
+            $method = $this->generateSetterMethodName($key);
             if (!isset($attributes[$key]) || $definition->hasMethodCall($method)) {
                 continue;
             }
@@ -283,7 +283,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $definition->addMethodCall('setManagerType', [$managerType]);
 
         foreach ($defaultAddServices as $attr => $addServiceId) {
-            $method = 'set'.Inflector::classify($attr);
+            $method = $this->generateSetterMethodName($attr);
 
             if (isset($overwriteAdminConfiguration[$attr]) || !$definition->hasMethodCall($method)) {
                 $args = [new Reference($overwriteAdminConfiguration[$attr] ?? $addServiceId)];
@@ -437,5 +437,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         }
 
         $definition->setArguments($arguments);
+    }
+
+    private function generateSetterMethodName(string $key): string
+    {
+        return 'set'.InflectorFactory::create()->build()->classify($key);
     }
 }

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Admin;
 
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Inflector\Inflector;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ODM\MongoDB\PersistentCollection;
 use Doctrine\ORM\PersistentCollection as DoctrinePersistentCollection;
 use Sonata\AdminBundle\Exception\NoValueException;
@@ -227,8 +227,10 @@ class AdminHelper
         $mapping = $fieldDescription->getAssociationMapping();
         $parentMappings = $fieldDescription->getParentAssociationMappings();
 
+        $inflector = InflectorFactory::create()->build();
+
         foreach ($parentMappings as $parentMapping) {
-            $method = sprintf('get%s', Inflector::classify($parentMapping['fieldName']));
+            $method = sprintf('get%s', $inflector->classify($parentMapping['fieldName']));
 
             if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
                 /*
@@ -242,13 +244,13 @@ class AdminHelper
             $object = $object->$method();
         }
 
-        $method = sprintf('add%s', Inflector::classify($mapping['fieldName']));
+        $method = sprintf('add%s', $inflector->classify($mapping['fieldName']));
 
         if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
             $method = rtrim($method, 's');
 
             if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
-                $method = sprintf('add%s', Inflector::classify(Inflector::singularize($mapping['fieldName'])));
+                $method = sprintf('add%s', $inflector->classify($inflector->singularize($mapping['fieldName'])));
 
                 if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
                     /*
@@ -277,20 +279,20 @@ class AdminHelper
      *
      * @return string
      *
-     * @deprecated since sonata-project/admin-bundle 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead
+     * @deprecated since sonata-project/admin-bundle 3.1. Use \Doctrine\Inflector\Inflector::classify() instead
      */
     public function camelize($property)
     {
         @trigger_error(
             sprintf(
                 'The %s method is deprecated since 3.1 and will be removed in 4.0. '.
-                'Use \Doctrine\Common\Inflector\Inflector::classify() instead.',
+                'Use \Doctrine\Inflector\Inflector::classify() instead.',
                 __METHOD__
             ),
             E_USER_DEPRECATED
         );
 
-        return Inflector::classify($property);
+        return InflectorFactory::create()->build()->classify($property);
     }
 
     /**
