@@ -22,6 +22,7 @@ use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\FileManager;
 use Symfony\Bundle\MakerBundle\Generator;
 use Symfony\Bundle\MakerBundle\Util\AutoloaderUtil;
+use Symfony\Bundle\MakerBundle\Util\MakerFileLinkFormatter;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -123,10 +124,15 @@ class AdminMakerTest extends TestCase
                 return $this->projectDirectory.'/'.str_replace('\\', '/', $className).'.php';
             });
 
-        $fileManager = new FileManager($this->filesystem, $autoloaderUtil, $this->projectDirectory);
+        $fileManager = new FileManager(
+            $this->filesystem,
+            $autoloaderUtil,
+            new MakerFileLinkFormatter(null),
+            $this->projectDirectory
+        );
         $fileManager->setIO($this->io);
-        $this->generator = new Generator($fileManager, 'Sonata\AdminBundle\Tests');
 
+        $this->generator = new Generator($fileManager, 'Sonata\AdminBundle\Tests');
         $maker->generate($this->input, $this->io, $this->generator);
     }
 }
