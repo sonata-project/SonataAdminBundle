@@ -24,7 +24,7 @@
     "require": {
         "php": "^7.2",
         "doctrine/common": "^2.7",
-        "doctrine/inflector": "^1.1",
+        "doctrine/inflector": "^1.4 || ^2.0",
         "knplabs/knp-menu-bundle": "^2.2.2",
         "sonata-project/block-bundle": "^3.18",
         "sonata-project/core-bundle": "^3.18.0",

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Exception\NoValueException;
 
 /**
@@ -293,7 +293,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                 return $this->callCachedGetter($object, $fieldName, $parameters);
             }
 
-            $camelizedFieldName = Inflector::classify($fieldName);
+            $camelizedFieldName = InflectorFactory::create()->build()->classify($fieldName);
 
             $getters[] = 'get'.$camelizedFieldName;
             $getters[] = 'is'.$camelizedFieldName;
@@ -377,20 +377,20 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      *
      * @return string
      *
-     * @deprecated since sonata-project/admin-bundle 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead
+     * @deprecated since sonata-project/admin-bundle 3.1. Use \Doctrine\Inflector\Inflector::classify() instead
      */
     public static function camelize($property)
     {
         @trigger_error(
             sprintf(
                 'The %s method is deprecated since 3.1 and will be removed in 4.0. '.
-                'Use \Doctrine\Common\Inflector\Inflector::classify() instead.',
+                'Use \Doctrine\Inflector\Inflector::classify() instead.',
                 __METHOD__
             ),
             E_USER_DEPRECATED
         );
 
-        return Inflector::classify($property);
+        return InflectorFactory::create()->build()->classify($property);
     }
 
     /**
