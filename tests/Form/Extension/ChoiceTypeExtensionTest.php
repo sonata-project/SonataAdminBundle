@@ -15,7 +15,7 @@ namespace Sonata\AdminBundle\Tests\Form\Extension;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension;
-use Sonata\CoreBundle\Form\Extension\DependencyInjectionExtension;
+use Sonata\AdminBundle\Form\Extension\DependencyInjectionExtension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Forms;

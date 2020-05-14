@@ -14,9 +14,13 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Export;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Export\Exporter;
+use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Source\ArraySourceIterator;
 use Sonata\Exporter\Source\SourceIteratorInterface;
+use Sonata\Exporter\Writer\CsvWriter;
+use Sonata\Exporter\Writer\JsonWriter;
+use Sonata\Exporter\Writer\XlsWriter;
+use Sonata\Exporter\Writer\XmlWriter;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -45,7 +49,12 @@ class ExporterTest extends TestCase
             ['foo' => 'bar'],
         ]);
 
-        $exporter = new Exporter();
+        $exporter = new Exporter([
+            new JsonWriter('/tmp/sonataadmin/export.json'),
+            new XmlWriter('/tmp/sonataadmin/export.xml'),
+            new XlsWriter('/tmp/sonataadmin/export.xls'),
+            new CsvWriter('/tmp/sonataadmin/export.csv'),
+        ]);
         $response = $exporter->getResponse($format, $filename, $source);
 
         $this->assertInstanceOf(Response::class, $response);

@@ -58,7 +58,7 @@ test:
 ifeq ($(shell php --modules|grep --quiet pcov;echo $$?), 0)
 	vendor/bin/simple-phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
 else
-	vendor/bin/simple-phpunit -c phpunit.xml.dist
+	vendor/bin/simple-phpunit -c phpunit.xml.dist --stop-on-error
 endif
 .PHONY: test
 

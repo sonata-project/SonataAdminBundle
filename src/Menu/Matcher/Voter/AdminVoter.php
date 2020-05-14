@@ -65,7 +65,7 @@ class AdminVoter implements VoterInterface
         return $this;
     }
 
-    public function matchItem(ItemInterface $item)
+    public function matchItem(ItemInterface $item): ?bool
     {
         $admin = $item->getExtra('admin');
 

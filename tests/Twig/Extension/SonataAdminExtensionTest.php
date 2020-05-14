@@ -42,7 +42,6 @@ use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterfa
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
-use Twig\Extensions\TextExtension;
 
 /**
  * Test for SonataAdminExtension.
@@ -202,7 +201,6 @@ class SonataAdminExtensionTest extends TestCase
         $requestContext = new RequestContext();
         $urlGenerator = new UrlGenerator($routeCollection, $requestContext);
         $this->environment->addExtension(new RoutingExtension($urlGenerator));
-        $this->environment->addExtension(new TextExtension());
         $this->environment->addExtension(new StringExtension());
 
         // initialize object
@@ -2201,7 +2199,7 @@ EOT
         ]);
         $environment->addExtension($this->twigExtension);
         $environment->addExtension(new TranslationExtension($this->translator));
-        $environment->addExtension(new StringExtension(new TextExtension()));
+        $environment->addExtension(new StringExtension());
 
         $this->admin
             ->method('getTemplate')
@@ -2355,7 +2353,7 @@ EOT
             'object' => $this->object,
         ];
 
-        $template = $this->environment->loadTemplate('@SonataAdmin/CRUD/base_list_field.html.twig');
+        $template = $this->environment->load('@SonataAdmin/CRUD/base_list_field.html.twig')->unwrap();
 
         $this->assertSame(
             '<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>',

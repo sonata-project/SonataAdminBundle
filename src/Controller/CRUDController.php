@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Controller;
 
 use Doctrine\Inflector\InflectorFactory;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -24,10 +25,7 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
-use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -45,13 +43,8 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class CRUDController implements ContainerAwareInterface
+class CRUDController extends AbstractController
 {
-    // NEXT_MAJOR: Don't use these traits anymore (inherit from Controller instead)
-    use ControllerTrait, ContainerAwareTrait {
-        ControllerTrait::render as originalRender;
-    }
-
     /**
      * The related Admin class.
      *
@@ -66,11 +59,13 @@ class CRUDController implements ContainerAwareInterface
      */
     private $templateRegistry;
 
-    public function setContainer(?ContainerInterface $container = null)
+    public function setContainer(?ContainerInterface $container = null): ?ContainerInterface
     {
-        $this->container = $container;
+        $return = parent::setContainer($container);
 
         $this->configure();
+
+        return $return;
     }
 
     /**
@@ -85,7 +80,7 @@ class CRUDController implements ContainerAwareInterface
      *
      * @deprecated since sonata-project/admin-bundle 3.27, to be removed in 4.0. Use Sonata\AdminBundle\Controller\CRUDController::renderWithExtraParams() instead.
      */
-    public function render($view, array $parameters = [], ?Response $response = null)
+    public function render($view, array $parameters = [], ?Response $response = null): Response
     {
         @trigger_error(
             'Method '.__CLASS__.'::render has been renamed to '.__CLASS__.'::renderWithExtraParams.',
@@ -1568,7 +1563,7 @@ class CRUDController implements ContainerAwareInterface
      */
     private function setFormTheme(FormView $formView, ?array $theme = null): void
     {
-        $twig = $this->get('twig');
+        $twig = $this->getContainer('twig');
 
         $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
     }

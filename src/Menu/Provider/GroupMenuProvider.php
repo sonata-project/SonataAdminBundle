@@ -82,7 +82,7 @@ class GroupMenuProvider implements MenuProviderInterface
      *
      * @return \Knp\Menu\ItemInterface
      */
-    public function get($name, array $options = [])
+    public function get($name, array $options = []): ItemInterface
     {
         $group = $options['group'];
 
@@ -121,7 +121,7 @@ class GroupMenuProvider implements MenuProviderInterface
      *
      * @return bool
      */
-    public function has($name, array $options = [])
+    public function has($name, array $options = []): bool
     {
         return 'sonata_group_menu' === $name;
     }

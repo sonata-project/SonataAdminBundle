@@ -54,7 +54,7 @@ class AdminSearchBlockService extends AbstractBlockService
         $this->searchHandler = $searchHandler;
     }
 
-    public function execute(BlockContextInterface $blockContext, ?Response $response = null)
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
     {
         try {
             $admin = $this->pool->getAdminByAdminCode($blockContext->getSetting('admin_code'));
@@ -95,7 +95,7 @@ class AdminSearchBlockService extends AbstractBlockService
         return 'Admin Search Result';
     }
 
-    public function configureSettings(OptionsResolver $resolver)
+    public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([

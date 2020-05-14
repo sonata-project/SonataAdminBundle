@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Object;
 /**
  * NEXT_MAJOR: Remove CoreBundle dependency.
  */
-interface MetadataInterface extends \Sonata\CoreBundle\Model\MetadataInterface
+interface MetadataInterface extends \Sonata\BlockBundle\Meta\MetadataInterface
 {
     public function getTitle(): string;
 

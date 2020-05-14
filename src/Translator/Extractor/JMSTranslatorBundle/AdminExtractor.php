@@ -23,7 +23,7 @@ use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @final since sonata-project/admin-bundle 3.52
@@ -188,14 +188,14 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
         return $catalogue;
     }
 
-    public function trans($id, array $parameters = [], $domain = null, $locale = null)
+    public function trans($id, array $parameters = [], string $domain = null, string $locale = null)
     {
         $this->addMessage($id, $domain);
 
         return $id;
     }
 
-    public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
+    public function transChoice($id, $number, array $parameters = [], string $domain = null, string $locale = null)
     {
         $this->addMessage($id, $domain);
 

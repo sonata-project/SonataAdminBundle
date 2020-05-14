@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -49,19 +47,6 @@ trait PolyfillControllerTrait
         $controller = new PolyfillProxyContainer($this->container);
 
         return $controller->proxyCall($methodName, $arguments);
-    }
-}
-
-class PolyfillProxyContainer extends Controller
-{
-    public function __construct(ContainerInterface $container)
-    {
-        $this->setContainer($container);
-    }
-
-    public function proxyCall($method, $arguments)
-    {
-        return $this->{$method}(...$arguments);
     }
 }
 
