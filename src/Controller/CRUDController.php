@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Controller;
 
 use Doctrine\Inflector\InflectorFactory;
-use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -25,7 +24,10 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -43,8 +45,11 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class CRUDController extends AbstractController
+class CRUDController implements ContainerAwareInterface
 {
+    // NEXT_MAJOR: Don't use these traits anymore (inherit from Controller instead)
+    use ContainerAwareTrait;
+
     /**
      * The related Admin class.
      *
@@ -61,11 +66,11 @@ class CRUDController extends AbstractController
 
     public function setContainer(?ContainerInterface $container = null): ?ContainerInterface
     {
-        $return = parent::setContainer($container);
+        $this->container = $container;
 
         $this->configure();
 
-        return $return;
+        return $this->container;
     }
 
     /**
@@ -87,7 +92,7 @@ class CRUDController extends AbstractController
             E_USER_DEPRECATED
         );
 
-        return $this->renderWithExtraParams($view, $parameters, $response);
+        return new Response($this->renderWithExtraParams($view, $parameters));
     }
 
     /**
@@ -96,12 +101,12 @@ class CRUDController extends AbstractController
      * @param string               $view       The view name
      * @param array<string, mixed> $parameters An array of parameters to pass to the view
      *
-     * @return Response A Response instance
+     * @return string A Response instance
      */
-    public function renderWithExtraParams($view, array $parameters = [], ?Response $response = null)
+    public function renderWithExtraParams($view, array $parameters = [])
     {
         //NEXT_MAJOR: Remove method alias and use $this->render() directly.
-        return $this->originalRender($view, $this->addRenderExtraParams($parameters), $response);
+        return $this->container->get('twig')->render($view, $this->addRenderExtraParams($parameters));
     }
 
     /**
@@ -136,15 +141,15 @@ class CRUDController extends AbstractController
         $template = $this->admin->getTemplate('list');
         // $template = $this->templateRegistry->getTemplate('list');
 
-        return $this->renderWithExtraParams($template, [
+        return new Response($this->renderWithExtraParams($template, [
             'action' => 'list',
             'form' => $formView,
             'datagrid' => $datagrid,
             'csrf_token' => $this->getCsrfToken('sonata.batch'),
-            'export_formats' => $this->has('sonata.admin.admin_exporter') ?
-                $this->get('sonata.admin.admin_exporter')->getAvailableFormats($this->admin) :
+            'export_formats' => $this->container->has('sonata.admin.admin_exporter') ?
+                $this->container->get('sonata.admin.admin_exporter')->getAvailableFormats($this->admin) :
                 $this->admin->getExportFormats(),
-        ], null);
+        ]));
     }
 
     /**
@@ -251,11 +256,11 @@ class CRUDController extends AbstractController
         $template = $this->admin->getTemplate('delete');
         // $template = $this->templateRegistry->getTemplate('delete');
 
-        return $this->renderWithExtraParams($template, [
+        return new Response($this->renderWithExtraParams($template, [
             'object' => $object,
             'action' => 'delete',
             'csrf_token' => $this->getCsrfToken('sonata.delete'),
-        ], null);
+        ]));
     }
 
     /**
@@ -376,12 +381,12 @@ class CRUDController extends AbstractController
         $template = $this->admin->getTemplate($templateKey);
         // $template = $this->templateRegistry->getTemplate($templateKey);
 
-        return $this->renderWithExtraParams($template, [
+        return new Response($this->renderWithExtraParams($template, [
             'action' => 'edit',
             'form' => $formView,
             'object' => $existingObject,
             'objectId' => $objectId,
-        ], null);
+        ]));
     }
 
     /**
@@ -483,7 +488,7 @@ class CRUDController extends AbstractController
             //     $batchActions[$action]['template'] :
             //     $this->templateRegistry->getTemplate('batch_confirmation');
 
-            return $this->renderWithExtraParams($template, [
+            return new Response($this->renderWithExtraParams($template, [
                 'action' => 'list',
                 'action_label' => $actionLabel,
                 'batch_translation_domain' => $batchTranslationDomain,
@@ -491,7 +496,7 @@ class CRUDController extends AbstractController
                 'form' => $formView,
                 'data' => $data,
                 'csrf_token' => $this->getCsrfToken('sonata.batch'),
-            ], null);
+            ]));
         }
 
         // execute the action, batchActionXxxxx
@@ -539,15 +544,14 @@ class CRUDController extends AbstractController
         $class = new \ReflectionClass($this->admin->hasActiveSubClass() ? $this->admin->getActiveSubClass() : $this->admin->getClass());
 
         if ($class->isAbstract()) {
-            return $this->renderWithExtraParams(
+            return new Response($this->renderWithExtraParams(
                 '@SonataAdmin/CRUD/select_subclass.html.twig',
                 [
                     'base_template' => $this->getBaseTemplate(),
                     'admin' => $this->admin,
                     'action' => 'create',
-                ],
-                null
-            );
+                ]
+            ));
         }
 
         $newObject = $this->admin->getNewInstance();
@@ -627,12 +631,12 @@ class CRUDController extends AbstractController
         $template = $this->admin->getTemplate($templateKey);
         // $template = $this->templateRegistry->getTemplate($templateKey);
 
-        return $this->renderWithExtraParams($template, [
+        return new Response($this->renderWithExtraParams($template, [
             'action' => 'create',
             'form' => $formView,
             'object' => $newObject,
             'objectId' => null,
-        ], null);
+        ]));
     }
 
     /**
@@ -683,11 +687,11 @@ class CRUDController extends AbstractController
         $template = $this->admin->getTemplate('show');
         //$template = $this->templateRegistry->getTemplate('show');
 
-        return $this->renderWithExtraParams($template, [
+        return new Response($this->renderWithExtraParams($template, [
             'action' => 'show',
             'object' => $object,
             'elements' => $fields,
-        ], null);
+        ]));
     }
 
     /**
@@ -741,12 +745,12 @@ class CRUDController extends AbstractController
         $template = $this->admin->getTemplate('history');
         // $template = $this->templateRegistry->getTemplate('history');
 
-        return $this->renderWithExtraParams($template, [
+        return new Response($this->renderWithExtraParams($template, [
             'action' => 'history',
             'object' => $object,
             'revisions' => $revisions,
             'currentRevision' => $revisions ? current($revisions) : false,
-        ], null);
+        ]));
     }
 
     /**
@@ -805,11 +809,11 @@ class CRUDController extends AbstractController
         $template = $this->admin->getTemplate('show');
         // $template = $this->templateRegistry->getTemplate('show');
 
-        return $this->renderWithExtraParams($template, [
+        return new Response($this->renderWithExtraParams($template, [
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
-        ], null);
+        ]));
     }
 
     /**
@@ -881,12 +885,12 @@ class CRUDController extends AbstractController
         $template = $this->admin->getTemplate('show_compare');
         // $template = $this->templateRegistry->getTemplate('show_compare');
 
-        return $this->renderWithExtraParams($template, [
+        return new Response($this->renderWithExtraParams($template, [
             'action' => 'show',
             'object' => $base_object,
             'object_compare' => $compare_object,
             'elements' => $this->admin->getShow(),
-        ], null);
+        ]));
     }
 
     /**
@@ -904,7 +908,7 @@ class CRUDController extends AbstractController
         $format = $request->get('format');
 
         // NEXT_MAJOR: remove the check
-        if (!$this->has('sonata.admin.admin_exporter')) {
+        if (!$this->container->has('sonata.admin.admin_exporter')) {
             @trigger_error(
                 'Not registering the exporter bundle is deprecated since version 3.14.'
                 .' You must register it to be able to use the export action in 4.0.',
@@ -1025,7 +1029,7 @@ class CRUDController extends AbstractController
         $template = $this->admin->getTemplate('acl');
         // $template = $this->templateRegistry->getTemplate('acl');
 
-        return $this->renderWithExtraParams($template, [
+        return new Response($this->renderWithExtraParams($template, [
             'action' => 'acl',
             'permissions' => $adminObjectAclData->getUserPermissions(),
             'object' => $object,
@@ -1033,7 +1037,7 @@ class CRUDController extends AbstractController
             'roles' => $aclRoles,
             'aclUsersForm' => $aclUsersForm->createView(),
             'aclRolesForm' => $aclRolesForm->createView(),
-        ], null);
+        ]));
     }
 
     /**
@@ -1052,12 +1056,12 @@ class CRUDController extends AbstractController
     protected function addRenderExtraParams(array $parameters = []): array
     {
         if (!$this->isXmlHttpRequest()) {
-            $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
+            $parameters['breadcrumbs_builder'] = $this->container->get('sonata.admin.breadcrumbs_builder');
         }
 
         $parameters['admin'] = $parameters['admin'] ?? $this->admin;
         $parameters['base_template'] = $parameters['base_template'] ?? $this->getBaseTemplate();
-        $parameters['admin_pool'] = $this->get('sonata.admin.pool');
+        $parameters['admin_pool'] = $this->container->get('sonata.admin.pool');
 
         return $parameters;
     }
@@ -1563,7 +1567,7 @@ class CRUDController extends AbstractController
      */
     private function setFormTheme(FormView $formView, ?array $theme = null): void
     {
-        $twig = $this->getContainer('twig');
+        $twig = $this->container->get('twig');
 
         $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
     }

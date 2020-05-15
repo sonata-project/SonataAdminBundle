@@ -63,6 +63,8 @@
             <argument type="service" id="sonata.admin.helper"/>
             <argument type="service" id="validator"/>
         </service>
+        <service id="sonata.admin.controller.crud" class="Sonata\AdminBundle\Controller\CRUDController" public="true">
+        </service>
         <!-- audit manager -->
         <service id="sonata.admin.audit.manager" class="Sonata\AdminBundle\Model\AuditManager" public="true">
             <argument type="service" id="service_container"/>

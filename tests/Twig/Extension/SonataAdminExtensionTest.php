@@ -2176,65 +2176,6 @@ EOT
 
     /**
      * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     *
-     * @dataProvider getDeprecatedTextExtensionItems
-     *
-     * @expectedDeprecation The "truncate.preserve" option is deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0. Use "truncate.cut" instead. ("@SonataAdmin/CRUD/show_html.html.twig" at line %d).
-     *
-     * @expectedDeprecation The "truncate.separator" option is deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0. Use "truncate.ellipsis" instead. ("@SonataAdmin/CRUD/show_html.html.twig" at line %d).
-     */
-    public function testDeprecatedTextExtension(string $expected, string $type, $value, array $options): void
-    {
-        $loader = new StubFilesystemLoader([
-            __DIR__.'/../../../src/Resources/views/CRUD',
-        ]);
-        $loader->addPath(__DIR__.'/../../../src/Resources/views/', 'SonataAdmin');
-        $environment = new Environment($loader, [
-            'strict_variables' => true,
-            'cache' => false,
-            'autoescape' => 'html',
-            'optimizations' => 0,
-        ]);
-        $environment->addExtension($this->twigExtension);
-        $environment->addExtension(new TranslationExtension($this->translator));
-        $environment->addExtension(new StringExtension());
-
-        $this->admin
-            ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/base_show_field.html.twig');
-
-        $this->fieldDescription
-            ->method('getValue')
-            ->willReturn($value);
-
-        $this->fieldDescription
-            ->method('getType')
-            ->willReturn($type);
-
-        $this->fieldDescription
-            ->method('getOptions')
-            ->willReturn($options);
-
-        $this->fieldDescription
-            ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/show_html.html.twig');
-
-        $this->assertSame(
-            $this->removeExtraWhitespace($expected),
-            $this->removeExtraWhitespace(
-                $this->twigExtension->renderViewElement(
-                    $environment,
-                    $this->fieldDescription,
-                    $this->object
-                )
-            )
-        );
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
      */
     public function getDeprecatedTextExtensionItems(): iterable
     {
