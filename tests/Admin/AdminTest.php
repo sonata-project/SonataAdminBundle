@@ -1438,11 +1438,11 @@ class AdminTest extends TestCase
         $admin->setTranslator($translator);
 
         $translator->expects($this->once())
-            ->method('transChoice')
-            ->with($this->equalTo('foo'), $this->equalTo(2), $this->equalTo([]), $this->equalTo('fooMessageDomain'))
+            ->method('trans')
+            ->with($this->equalTo('foo'), ['count' => 2], $this->equalTo('fooMessageDomain'))
             ->willReturn('fooTranslated');
 
-        $this->assertSame('fooTranslated', $admin->transChoice('foo', 2));
+        $this->assertSame('fooTranslated', $admin->trans('foo', ['count' => 2]));
     }
 
     /**
@@ -1456,11 +1456,11 @@ class AdminTest extends TestCase
         $admin->setTranslator($translator);
 
         $translator->expects($this->once())
-            ->method('transChoice')
-            ->with($this->equalTo('foo'), $this->equalTo(2), $this->equalTo(['name' => 'Andrej']), $this->equalTo('fooMessageDomain'))
+            ->method('trans')
+            ->with($this->equalTo('foo'), ['count' => 2], $this->equalTo('Andrej'), $this->equalTo('fooMessageDomain'))
             ->willReturn('fooTranslated');
 
-        $this->assertSame('fooTranslated', $admin->transChoice('foo', 2, ['name' => 'Andrej'], 'fooMessageDomain'));
+        $this->assertSame('fooTranslated', $admin->trans('foo', ['count' => 2], 'Andrej', 'fooMessageDomain'));
     }
 
     public function testSetFilterPersister(): void

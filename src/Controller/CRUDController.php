@@ -24,6 +24,7 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -63,6 +64,20 @@ class CRUDController implements ContainerAwareInterface
      * @var TemplateRegistryInterface
      */
     private $templateRegistry;
+
+    /**
+     * Adds a flash message to the current session for type.
+     *
+     * @throws \LogicException
+     */
+    protected function addFlash(string $type, string $message): void
+    {
+        if (!$this->container->has('session')) {
+            throw new \LogicException('You can not use the addFlash method if sessions are disabled. Enable them in "config/packages/framework.yaml".');
+        }
+
+        $this->container->get('session')->getFlashBag()->add($type, $message);
+    }
 
     public function setContainer(?ContainerInterface $container = null): ?ContainerInterface
     {

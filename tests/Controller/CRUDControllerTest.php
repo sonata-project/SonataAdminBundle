@@ -41,7 +41,6 @@ use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Exporter\Writer\JsonWriter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
@@ -62,6 +61,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Templating\DelegatingEngine;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -352,12 +352,7 @@ class CRUDControllerTest extends TestCase
             'addFlash',
         ];
         foreach ($testedMethods as $testedMethod) {
-            // NEXT_MAJOR: Remove this check and only use CRUDController
-            if (method_exists(CRUDController::class, $testedMethod)) {
-                $method = new \ReflectionMethod(CRUDController::class, $testedMethod);
-            } else {
-                $method = new \ReflectionMethod(Controller::class, $testedMethod);
-            }
+            $method = new \ReflectionMethod(CRUDController::class, $testedMethod);
 
             $method->setAccessible(true);
             $this->protectedTestedMethods[$testedMethod] = $method;

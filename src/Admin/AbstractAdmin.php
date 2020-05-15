@@ -294,7 +294,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * NEXT_MAJOR: remove this property
      *
-     * @var \Symfony\Component\Translation\TranslatorInterface
+     * @var TranslatorInterface
      *
      * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
      */
@@ -2244,32 +2244,6 @@ EOT;
         $domain = $domain ?: $this->getTranslationDomain();
 
         return $this->translator->trans($id, $parameters, $domain, $locale);
-    }
-
-    /**
-     * Translate a message id.
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @param string      $id
-     * @param int         $count
-     * @param string|null $domain
-     * @param string|null $locale
-     *
-     * @return string the translated string
-     *
-     * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
-     */
-    public function transChoice($id, $count, array $parameters = [], $domain = null, $locale = null)
-    {
-        @trigger_error(
-            'The '.__METHOD__.' method is deprecated since version 3.9 and will be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
-
-        $domain = $domain ?: $this->getTranslationDomain();
-
-        return $this->translator->transChoice($id, $count, $parameters, $domain, $locale);
     }
 
     public function setTranslationDomain($translationDomain)
