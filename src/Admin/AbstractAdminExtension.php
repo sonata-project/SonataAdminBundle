@@ -130,10 +130,11 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
         return $list;
     }
 
-    /**
-     * Returns a list of default filters.
-     */
     public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues)
+    {
+    }
+
+    public function configureDefaultSortValues(AdminInterface $admin, array &$sortValues): void
     {
     }
 }
