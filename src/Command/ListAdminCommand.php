@@ -39,12 +39,12 @@ class ListAdminCommand extends Command
         parent::__construct();
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this->setDescription('List all admin services available');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Admin services:</info>');
         foreach ($this->pool->getAdminServiceIds() as $id) {

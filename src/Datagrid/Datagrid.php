@@ -107,7 +107,7 @@ class Datagrid implements DatagridInterface
         return $this->results;
     }
 
-    public function buildPager()
+    public function buildPager(): void
     {
         if ($this->bound) {
             return;
@@ -196,7 +196,7 @@ class Datagrid implements DatagridInterface
         $this->bound = true;
     }
 
-    public function addFilter(FilterInterface $filter)
+    public function addFilter(FilterInterface $filter): void
     {
         $this->filters[$filter->getName()] = $filter;
     }
@@ -206,7 +206,7 @@ class Datagrid implements DatagridInterface
         return isset($this->filters[$name]);
     }
 
-    public function removeFilter($name)
+    public function removeFilter($name): void
     {
         unset($this->filters[$name]);
     }
@@ -236,7 +236,7 @@ class Datagrid implements DatagridInterface
         return $this->filters;
     }
 
-    public function reorderFilters(array $keys)
+    public function reorderFilters(array $keys): void
     {
         $this->filters = array_merge(array_flip($keys), $this->filters);
     }
@@ -246,7 +246,7 @@ class Datagrid implements DatagridInterface
         return $this->values;
     }
 
-    public function setValue($name, $operator, $value)
+    public function setValue($name, $operator, $value): void
     {
         $this->values[$name] = [
             'type' => $operator,

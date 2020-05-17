@@ -31,9 +31,9 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AddDependencyCallsCompilerPass implements CompilerPassInterface
+final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         // check if translator service exist
         if (!$container->has('translator')) {
@@ -180,7 +180,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         } elseif ($container->getParameter('sonata.admin.configuration.sort_admins')) {
             $groups = $groupDefaults;
 
-            $elementSort = static function (&$element) {
+            $elementSort = static function (&$element): void {
                 usort(
                     $element['items'],
                     static function ($a, $b) {
@@ -217,7 +217,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     /**
      * This method read the attribute keys and configure admin class to use the related dependency.
      */
-    public function applyConfigurationFromAttribute(Definition $definition, array $attributes)
+    public function applyConfigurationFromAttribute(Definition $definition, array $attributes): void
     {
         $keys = [
             'model_manager',
@@ -356,15 +356,12 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         return $definition;
     }
 
-    /**
-     * @param string $serviceId
-     */
     public function fixTemplates(
-        $serviceId,
+        string $serviceId,
         ContainerBuilder $container,
         Definition $definition,
         array $overwrittenTemplates = []
-    ) {
+    ): void {
         $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
 
         $methods = [];

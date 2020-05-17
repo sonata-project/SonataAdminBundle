@@ -98,19 +98,6 @@ interface ModelManagerInterface
     public function createQuery($class, $alias = 'o');
 
     /**
-     * Get the identifier for the model type of this class.
-     *
-     * NEXT_MAJOR: Remove this function in favor of getIdentifierFieldNames
-     *
-     * @deprecated Prefer to use getIdentifierFieldNames
-     *
-     * @param string $class fully qualified class name
-     *
-     * @return string
-     */
-    public function getModelIdentifier($class);
-
-    /**
      * Get the identifiers of this model class.
      *
      * This returns an array to handle cases like a primary key that is

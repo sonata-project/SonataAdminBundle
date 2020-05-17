@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
@@ -31,24 +30,6 @@ class ModelsToArrayTransformerTest extends TestCase
     public function testConstructor(): void
     {
         $transformer = new ModelsToArrayTransformer(
-            $this->modelManager,
-            Foo::class
-        );
-
-        $this->assertInstanceOf(ModelsToArrayTransformer::class, $transformer);
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testLegacyConstructor(): void
-    {
-        $choiceListClass = ModelChoiceLoader::class;
-
-        $choiceList = $this->prophesize($choiceListClass)->reveal();
-
-        $transformer = new ModelsToArrayTransformer(
-            $choiceList,
             $this->modelManager,
             Foo::class
         );

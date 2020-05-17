@@ -124,43 +124,18 @@ class SimplePagerTest extends TestCase
         $this->pager->init();
     }
 
-    /**
-     * NEXT_MAJOR: Remove this test along with fixes to SimplePager.
-     */
-    public function testGetResultsReturnTypeArrayCollection(): void
+    public function testGetResultsAlwaysReturnsAnArray(): void
     {
+        // phpcr odm returns ArrayCollection
+
         $this->proxyQuery->expects($this->once())
             ->method('execute')
             ->with([], null)
-            ->willReturn(['foo', 'bar']);
+            ->willReturn(new ArrayCollection(range(0, 12)));
 
         $this->pager->setQuery($this->proxyQuery);
-        $this->pager->setMaxPerPage(1);
+        $this->pager->setMaxPerPage(2);
 
-        $this->assertInstanceOf(ArrayCollection::class, $this->pager->getResults());
-    }
-
-    public function getResultsReturnType(): array
-    {
-        return [
-            [['foo', 'bar'], 2],
-            [[], null],
-        ];
-    }
-
-    /**
-     * @dataProvider getResultsReturnType
-     */
-    public function testGetResultsReturnTypeArray(array $queryReturnValues, ?int $maxPerPage): void
-    {
-        $this->proxyQuery->expects($this->once())
-            ->method('execute')
-            ->with([], null)
-            ->willReturn($queryReturnValues);
-
-        $this->pager->setQuery($this->proxyQuery);
-        $this->pager->setMaxPerPage($maxPerPage);
-
-        $this->assertIsArray($this->pager->getResults());
+        $this->assertSame(range(0, 1), $this->pager->getResults());
     }
 }

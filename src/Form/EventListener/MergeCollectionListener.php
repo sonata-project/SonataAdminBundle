@@ -42,7 +42,7 @@ class MergeCollectionListener implements EventSubscriberInterface
         ];
     }
 
-    public function onBind(FormEvent $event)
+    public function onBind(FormEvent $event): void
     {
         $collection = $event->getForm()->getData();
         $data = $event->getData();

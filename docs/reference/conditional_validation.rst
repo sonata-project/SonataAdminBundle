@@ -1,7 +1,7 @@
 Inline Validation
 =================
 
-The inline validation code is now part of the SonataCoreBundle.
+The inline validation code is now part of the Sonata Form Extensions.
 You can refer to the related documentation for more information.
 
 The above examples show how the integration has been done with the SonataAdminBundle.
@@ -10,7 +10,7 @@ empty ``validate`` method. This is automatically called, so you can override
 it in your own admin class::
 
     // add this to your existing use statements
-    use Sonata\CoreBundle\Validator\ErrorElement;
+    use Sonata\Form\Validator\ErrorElement;
 
     final class MyAdmin extends AbstractAdmin
     {

@@ -18,8 +18,6 @@ namespace Sonata\AdminBundle\Admin;
  * during the lifecycle of the object.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * @method void preValidate($object)
  */
 interface LifecycleHookProviderInterface
 {
@@ -48,11 +46,7 @@ interface LifecycleHookProviderInterface
      */
     public function delete($object);
 
-    //NEXT_MAJOR: uncomment this method for 4.0
-    //    /**
-    //     * @param object $object
-    //     */
-    //    public function preValidate($object);
+    public function preValidate(object $object);
 
     /**
      * @param object $object

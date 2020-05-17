@@ -140,15 +140,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
             return $name;
         }
 
-        // NEXT_MAJOR: Uncomment the following line.
-        // $codePrefix = $admin->getBaseCodeRoute();
-
-        // NEXT_MAJOR: Remove next 5 lines.
-        $codePrefix = $admin->getCode();
-
-        if ($admin->isChild()) {
-            $codePrefix = $admin->getBaseCodeRoute();
-        }
+        $codePrefix = $admin->getBaseCodeRoute();
 
         // someone provide a code, so it is a child
         if (strpos($name, '.')) {

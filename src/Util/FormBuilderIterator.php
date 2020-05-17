@@ -58,7 +58,7 @@ class FormBuilderIterator extends \RecursiveArrayIterator
         $this->iterator = new \ArrayIterator(self::getKeys($formBuilder));
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->iterator->rewind();
     }
@@ -75,7 +75,7 @@ class FormBuilderIterator extends \RecursiveArrayIterator
         return sprintf('%s_%s', $this->prefix, $name);
     }
 
-    public function next()
+    public function next(): void
     {
         $this->iterator->next();
     }

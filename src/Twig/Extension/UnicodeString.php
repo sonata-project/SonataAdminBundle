@@ -49,7 +49,7 @@ final class UnicodeString
         return (string) $this->unicodeString;
     }
 
-    public function truncate(int $length, string $ellipsis = '', bool $preserve = false): DecoratedUnicodeString
+    public function truncate(int $length, string $ellipsis = '', bool $cut = true): DecoratedUnicodeString
     {
         $stringLength = $this->unicodeString->length();
 
@@ -63,7 +63,7 @@ final class UnicodeString
             $ellipsisLength = 0;
         }
 
-        if ($preserve) {
+        if (!$cut) {
             $length = $ellipsisLength + ($this->unicodeString->indexOf([' ', "\r", "\n", "\t"], ($length ?: 1) - 1) ?? $stringLength);
         }
 

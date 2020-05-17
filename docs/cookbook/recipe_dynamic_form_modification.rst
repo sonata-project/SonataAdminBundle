@@ -36,7 +36,7 @@ Then, you should be able to dynamically add needed fields to the form::
 
             $subject = $this->getSubject();
 
-            if ($subject->isNew()) {
+            if ($this->isNew()) {
                 // The thumbnail field will only be added when the edited item is created
                 $formMapper->add('thumbnail', FileType::class);
             }
@@ -44,6 +44,11 @@ Then, you should be able to dynamically add needed fields to the form::
             // Name field will be added only when create an item
             if ($this->isCurrentRoute('create')) {
                 $formMapper->add('name', TextType::class);
+            }
+
+            // The foo field will added when current action is related acme.demo.admin.code Admin's edit form
+            if ($this->isCurrentRoute('edit', 'acme.demo.admin.code')) {
+                $formMapper->add('foo', 'text');
             }
         }
     }

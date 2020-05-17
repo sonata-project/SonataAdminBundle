@@ -66,26 +66,6 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Gets the form.
-     *
-     * NEXT_MAJOR: remove this method.
-     *
-     * @return Form
-     *
-     * @deprecated since sonata-project/admin-bundle 3.0. Use createAclUsersForm() instead
-     */
-    public function createForm(AdminObjectAclData $data)
-    {
-        @trigger_error(
-            'createForm() is deprecated since version 3.0 and will be removed in 4.0. '
-            .'Use createAclUsersForm() instead.',
-            E_USER_DEPRECATED
-        );
-
-        return $this->createAclUsersForm($data);
-    }
-
-    /**
      * Gets the ACL users form.
      *
      * @return Form
@@ -118,7 +98,7 @@ class AdminObjectAclManipulator
     /**
      * Updates ACL users.
      */
-    public function updateAclUsers(AdminObjectAclData $data)
+    public function updateAclUsers(AdminObjectAclData $data): void
     {
         $aclValues = $data->getAclUsers();
         $form = $data->getAclUsersForm();
@@ -129,7 +109,7 @@ class AdminObjectAclManipulator
     /**
      * Updates ACL roles.
      */
-    public function updateAclRoles(AdminObjectAclData $data)
+    public function updateAclRoles(AdminObjectAclData $data): void
     {
         $aclValues = $data->getAclRoles();
         $form = $data->getAclRolesForm();
@@ -138,27 +118,9 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Updates ACl.
-     *
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.0. Use updateAclUsers() instead
-     */
-    public function updateAcl(AdminObjectAclData $data)
-    {
-        @trigger_error(
-            'updateAcl() is deprecated since version 3.0 and will be removed in 4.0.'
-            .'Use updateAclUsers() instead.',
-            E_USER_DEPRECATED
-        );
-
-        $this->updateAclUsers($data);
-    }
-
-    /**
      * Builds ACL.
      */
-    protected function buildAcl(AdminObjectAclData $data, Form $form, \Traversable $aclValues)
+    protected function buildAcl(AdminObjectAclData $data, Form $form, \Traversable $aclValues): void
     {
         $masks = $data->getMasks();
         $acl = $data->getAcl();

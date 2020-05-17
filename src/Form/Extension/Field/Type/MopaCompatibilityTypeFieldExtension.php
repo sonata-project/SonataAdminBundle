@@ -18,7 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * This class is built to allow AdminInterface to work properly
@@ -30,17 +29,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension
 {
-    /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'horizontal_label_class' => '',
@@ -49,7 +38,7 @@ class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension
         ]);
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['horizontal_label_class'] = $options['horizontal_label_class'];
         $view->vars['horizontal_label_offset_class'] = $options['horizontal_label_offset_class'];

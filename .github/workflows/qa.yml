@@ -1,0 +1,14 @@
+on: [push, pull_request]
+name: Quality assurance
+jobs:
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: PHPStan
+        uses: "docker://oskarstark/phpstan-ga"
+        env:
+          REQUIRE_DEV: 'true'
+        with:
+          args: analyse

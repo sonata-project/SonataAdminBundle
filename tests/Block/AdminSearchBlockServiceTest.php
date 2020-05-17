@@ -19,7 +19,6 @@ use Sonata\AdminBundle\Block\AdminSearchBlockService;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -46,12 +45,7 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
 
     public function testDefaultSettings(): void
     {
-        $blockService = new AdminSearchBlockService(
-            $this->createMock(Environment::class),
-            null,
-            $this->pool,
-            $this->searchHandler
-        );
+        $blockService = new AdminSearchBlockService($this->twig, $this->pool, $this->searchHandler);
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([
@@ -67,17 +61,14 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
     {
         $admin = $this->createMock(AbstractAdmin::class);
 
-        $blockService = new AdminSearchBlockService(
-            $this->createMock(Environment::class),
-            null,
-            $this->pool,
-            $this->searchHandler
-        );
+        $blockService = new AdminSearchBlockService($this->twig, $this->pool, $this->searchHandler);
         $blockContext = $this->getBlockContext($blockService);
 
         $this->searchHandler->expects(self::once())->method('search')->willReturn(false);
         $this->pool->expects(self::once())->method('getAdminByAdminCode')->willReturn($admin);
-        $admin->expects(self::once())->method('checkAccess')->with('list')->willReturn(true);
+        $admin->expects(self::once())->method('checkAccess')->with('list');
+
+        $this->twig->expects(self::never())->method('render');
 
         $response = $blockService->execute($blockContext);
 

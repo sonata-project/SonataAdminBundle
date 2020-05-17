@@ -40,7 +40,7 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
         $this->maskBuilderClass = $maskBuilderClass;
     }
 
-    public function configureAcls(OutputInterface $output, AdminInterface $admin)
+    public function configureAcls(OutputInterface $output, AdminInterface $admin): void
     {
         $securityHandler = $admin->getSecurityHandler();
         if (!$securityHandler instanceof AclSecurityHandlerInterface) {

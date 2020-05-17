@@ -17,7 +17,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -237,11 +236,6 @@ class PoolTest extends TestCase
         $this->assertSame($childAdmin, $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.comment'));
     }
 
-    /**
-     * @group legacy
-     *
-     * @expectedDeprecation Passing an invalid admin code as argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since sonata-project/admin-bundle 3.50 and will throw an exception in 4.0.
-     */
     public function testGetAdminByAdminCodeWithInvalidCode(): void
     {
         $adminMock = $this->createMock(AdminInterface::class);
@@ -252,23 +246,41 @@ class PoolTest extends TestCase
         $this->container->set('sonata.news.admin.post', $adminMock);
         $this->pool->setAdminServiceIds(['sonata.news.admin.post']);
 
-        // NEXT_MAJOR: remove the assertion around getAdminByAdminCode(), remove the "@group" and "@expectedDeprecation" annotations, and uncomment the following line
-        // $this->expectException(\InvalidArgumentException::class);
-        $this->assertFalse($this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid'));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Argument 1 passed to Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() must contain a valid admin reference, "sonata.news.admin.invalid" found at "sonata.news.admin.post|sonata.news.admin.invalid".');
+
+        $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid');
+    }
+
+    public function testGetAdminByAdminCodeWithCodeNotChild(): void
+    {
+        $adminMock = $this->getMockBuilder(AdminInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $adminMock->expects($this->any())
+            ->method('hasChild')
+            ->willReturn(false);
+
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerMock->expects($this->any())
+            ->method('get')
+            ->willReturn($adminMock);
+
+        $this->pool = new Pool($containerMock, 'Sonata', '/path/to/logo.png');
+        $this->pool->setAdminServiceIds(['sonata.news.admin.post', 'sonata.news.admin.valid']);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.valid');
     }
 
     /**
      * @dataProvider getNonStringAdminServiceNames
-     *
-     * @group legacy
-     *
-     * @expectedDeprecation Passing a non string value as argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since sonata-project/admin-bundle 3.51 and will cause a \TypeError in 4.0.
      */
     public function testGetAdminByAdminCodeWithNonStringCode($adminId): void
     {
-        // NEXT_MAJOR: remove the assertion around getAdminByAdminCode(), remove the "@group" and "@expectedDeprecation" annotations, and uncomment the following line
-        // $this->expectException(\TypeError::class);
-        $this->assertFalse($this->pool->getAdminByAdminCode($adminId));
+        $this->expectException(\TypeError::class);
+
+        $this->pool->getAdminByAdminCode($adminId);
     }
 
     public function getNonStringAdminServiceNames(): array
@@ -280,29 +292,6 @@ class PoolTest extends TestCase
             [['some_value']],
             [new \stdClass()],
         ];
-    }
-
-    /**
-     * @group legacy
-     *
-     * @expectedDeprecation Passing an invalid admin hierarchy inside argument 1 for %s() is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.
-     */
-    public function testGetAdminByAdminCodeWithCodeNotChild(): void
-    {
-        $adminMock = $this->createMock(AdminInterface::class);
-        $adminMock
-            ->method('hasChild')
-            ->willReturn(false);
-
-        $this->container->set('sonata.news.admin.post', $adminMock);
-        $this->pool->setAdminServiceIds(['sonata.news.admin.post', 'sonata.news.admin.valid']);
-        $this->assertFalse($this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid'));
-
-        // NEXT_MAJOR: remove the "@group" and "@expectedDeprecation" annotations, the previous assertion and uncomment the following lines
-        // $this->expectException(\InvalidArgumentException::class);
-        // $this->expectExceptionMessage('Argument 1 passed to Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() must contain a valid admin hierarchy, "sonata.news.admin.valid" is not a valid child for "sonata.news.admin.post"');
-        //
-        // $this->pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.valid');
     }
 
     /**
@@ -339,10 +328,6 @@ class PoolTest extends TestCase
 
     /**
      * @dataProvider getInvalidChildAdminServiceNames
-     *
-     * @group legacy
-     *
-     * @expectedDeprecation Passing an invalid admin code as argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since sonata-project/admin-bundle 3.50 and will throw an exception in 4.0.
      */
     public function testGetAdminByAdminCodeWithInvalidChildCode(string $adminId): void
     {
@@ -363,9 +348,13 @@ class PoolTest extends TestCase
             ->method('getInstance')
             ->willReturn($adminMock);
 
-        // NEXT_MAJOR: remove the assertion around getAdminByAdminCode(), remove the "@group" and "@expectedDeprecation" annotations, and uncomment the following line
-        // $this->expectException(\InvalidArgumentException::class);
-        $this->assertFalse($poolMock->getAdminByAdminCode($adminId));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp(sprintf(
+            '{^Argument 1 passed to Sonata\\\AdminBundle\\\Admin\\\Pool::getAdminByAdminCode\(\) must contain a valid admin reference, "[^"]+" found at "%s"\.$}',
+            $adminId
+        ));
+
+        $poolMock->getAdminByAdminCode($adminId);
     }
 
     public function getInvalidChildAdminServiceNames()
@@ -455,10 +444,6 @@ class PoolTest extends TestCase
 
     /**
      * @dataProvider getInvalidChildAdminServiceNamesToCheck
-     *
-     * @group legacy
-     *
-     * @expectedDeprecation Passing an invalid admin %s argument 1 for Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() is deprecated since sonata-project/admin-bundle 3.%s and will throw an exception in 4.0.
      */
     public function testHasAdminByAdminCodeWithInvalidChildCodes(string $adminId): void
     {
@@ -506,45 +491,6 @@ class PoolTest extends TestCase
     public function testGetContainer(): void
     {
         $this->assertInstanceOf(ContainerInterface::class, $this->pool->getContainer());
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testTemplate(): void
-    {
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->getTemplate('ajax')
-            ->shouldBeCalledTimes(1)
-            ->willReturn('Foo.html.twig');
-
-        $this->pool->setTemplateRegistry($templateRegistry->reveal());
-
-        $this->assertSame('Foo.html.twig', $this->pool->getTemplate('ajax'));
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testSetGetTemplates(): void
-    {
-        $templates = [
-            'ajax' => 'Foo.html.twig',
-            'layout' => 'Bar.html.twig',
-        ];
-
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->setTemplates($templates)
-            ->shouldBeCalledTimes(1);
-        $templateRegistry->getTemplates()
-            ->shouldBeCalledTimes(1)
-            ->willReturn($templates);
-
-        $this->pool->setTemplateRegistry($templateRegistry->reveal());
-
-        $this->pool->setTemplates($templates);
-
-        $this->assertSame($templates, $this->pool->getTemplates());
     }
 
     public function testGetTitleLogo(): void

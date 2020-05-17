@@ -51,9 +51,6 @@ This template can be customized to match your needs. You should only extends the
                             </div>
                         </div>
 
-                        {# NEXT_MAJOR : remove this assignment #}
-                        {% set export_formats = export_formats|default(admin.getExportFormats) %}
-
                         <div class="mosaic-inner-text">
                             {% if (admin.hasRoute('batch') and batchactions|length > 0) or (admin.hasRoute('export') and admin.hasAccess('export') and export_formats|length) %}
                                 <input type="checkbox" name="idx[]" value="{{ admin.id(object) }}">
@@ -62,7 +59,7 @@ This template can be customized to match your needs. You should only extends the
                             {% endif %}
 
                             {% block sonata_mosaic_description %}
-                                {{ meta.title|truncate(40) }}
+                                {{ meta.title|sonata_truncate(40) }}
                             {% endblock %}
                         </div>
                     </div>

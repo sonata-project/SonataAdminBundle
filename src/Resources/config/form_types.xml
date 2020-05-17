@@ -43,30 +43,24 @@
         <!-- Form Filter Type -->
         <service id="sonata.admin.form.filter.type.number" class="Sonata\AdminBundle\Form\Type\Filter\NumberType" public="true">
             <tag name="form.type" alias="sonata_type_filter_number"/>
-            <argument type="service" id="translator"/>
         </service>
         <service id="sonata.admin.form.filter.type.choice" class="Sonata\AdminBundle\Form\Type\Filter\ChoiceType" public="true">
             <tag name="form.type" alias="sonata_type_filter_choice"/>
-            <argument type="service" id="translator"/>
         </service>
         <service id="sonata.admin.form.filter.type.default" class="Sonata\AdminBundle\Form\Type\Filter\DefaultType" public="true">
             <tag name="form.type" alias="sonata_type_filter_default"/>
         </service>
         <service id="sonata.admin.form.filter.type.date" class="Sonata\AdminBundle\Form\Type\Filter\DateType" public="true">
             <tag name="form.type" alias="sonata_type_filter_date"/>
-            <argument type="service" id="translator"/>
         </service>
         <service id="sonata.admin.form.filter.type.daterange" class="Sonata\AdminBundle\Form\Type\Filter\DateRangeType" public="true">
             <tag name="form.type" alias="sonata_type_filter_date_range"/>
-            <argument type="service" id="translator"/>
         </service>
         <service id="sonata.admin.form.filter.type.datetime" class="Sonata\AdminBundle\Form\Type\Filter\DateTimeType" public="true">
             <tag name="form.type" alias="sonata_type_filter_datetime"/>
-            <argument type="service" id="translator"/>
         </service>
         <service id="sonata.admin.form.filter.type.datetime_range" class="Sonata\AdminBundle\Form\Type\Filter\DateTimeRangeType" public="true">
             <tag name="form.type" alias="sonata_type_filter_datetime_range"/>
-            <argument type="service" id="translator"/>
         </service>
     </services>
 </container>

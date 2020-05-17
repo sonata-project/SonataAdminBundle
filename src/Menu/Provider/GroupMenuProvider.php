@@ -23,11 +23,9 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 /**
  * Menu provider based on group options.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Alexandru Furculita <alex@furculita.net>
  */
-class GroupMenuProvider implements MenuProviderInterface
+final class GroupMenuProvider implements MenuProviderInterface
 {
     /**
      * @var FactoryInterface
@@ -44,45 +42,19 @@ class GroupMenuProvider implements MenuProviderInterface
      */
     private $checker;
 
-    /**
-     * NEXT_MAJOR: Remove default value null of $checker.
-     *
-     * @param AuthorizationCheckerInterface|null $checker
-     */
-    public function __construct(FactoryInterface $menuFactory, Pool $pool, $checker = null)
+    public function __construct(FactoryInterface $menuFactory, Pool $pool, AuthorizationCheckerInterface $checker)
     {
         $this->menuFactory = $menuFactory;
         $this->pool = $pool;
-
-        /*
-         * NEXT_MAJOR: Remove this if blocks.
-         * NEXT_MAJOR: Move AuthorizationCheckerInterface check to method signature.
-         */
-        if (null === $checker) {
-            @trigger_error(
-                'Passing no 3rd argument is deprecated since version 3.10 and will be mandatory in 4.0.
-                Pass Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as 3rd argument.',
-                E_USER_DEPRECATED
-            );
-        } elseif (!$checker instanceof AuthorizationCheckerInterface) {
-            throw new \InvalidArgumentException(
-                'Argument 3 must be an instance of \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'
-            );
-        }
-
         $this->checker = $checker;
     }
 
     /**
      * Retrieves the menu based on the group options.
      *
-     * @param string $name
-     *
      * @throws \InvalidArgumentException if the menu does not exists
-     *
-     * @return \Knp\Menu\ItemInterface
      */
-    public function get($name, array $options = []): ItemInterface
+    public function get(string $name, array $options = []): ItemInterface
     {
         $group = $options['group'];
 
@@ -116,12 +88,8 @@ class GroupMenuProvider implements MenuProviderInterface
 
     /**
      * Checks whether a menu exists in this provider.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
-    public function has($name, array $options = []): bool
+    public function has(string $name, array $options = []): bool
     {
         return 'sonata_group_menu' === $name;
     }
@@ -133,11 +101,6 @@ class GroupMenuProvider implements MenuProviderInterface
 
             // skip menu item if no `list` url is available or user doesn't have the LIST access rights
             return $admin->hasRoute('list') && $admin->hasAccess('list');
-        }
-
-        //NEXT_MAJOR: Remove if statement of null checker.
-        if (null === $this->checker) {
-            return true;
         }
 
         // Making the checker behave affirmatively even if it's globally unanimous

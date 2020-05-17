@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Tests\Admin;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
@@ -225,16 +224,6 @@ class BaseFieldDescriptionTest extends TestCase
             ->method('getTranslationDomain');
         $description->setOption('translation_domain', 'ExtensionDomain');
         $this->assertSame('ExtensionDomain', $description->getTranslationDomain());
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testCamelize(): void
-    {
-        $this->assertSame('FooBar', BaseFieldDescription::camelize('foo_bar'));
-        $this->assertSame('FooBar', BaseFieldDescription::camelize('foo bar'));
-        $this->assertSame('FOoBar', BaseFieldDescription::camelize('fOo bar'));
     }
 
     public function testGetInaccessibleValue(): void

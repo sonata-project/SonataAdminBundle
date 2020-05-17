@@ -33,12 +33,12 @@ class LockExtension extends AbstractAdminExtension
      */
     protected $fieldName = '_lock_version';
 
-    public function configureFormFields(FormMapper $form)
+    public function configureFormFields(FormMapper $form): void
     {
         $admin = $form->getAdmin();
         $formBuilder = $form->getFormBuilder();
 
-        $formBuilder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($admin) {
+        $formBuilder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($admin): void {
             $data = $event->getData();
             $form = $event->getForm();
 
@@ -63,7 +63,7 @@ class LockExtension extends AbstractAdminExtension
         });
     }
 
-    public function preUpdate(AdminInterface $admin, $object)
+    public function preUpdate(AdminInterface $admin, $object): void
     {
         if (!$admin->hasRequest() || !$data = $admin->getRequest()->get($admin->getUniqid())) {
             return;

@@ -84,7 +84,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
         parent::__construct();
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setDescription('Install ACL for the objects of the Admin Classes.')
@@ -94,7 +94,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
         ;
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Welcome to the AdminBundle object ACL generator');
         $output->writeln([

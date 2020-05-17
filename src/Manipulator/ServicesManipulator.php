@@ -56,7 +56,7 @@ class ServicesManipulator
      *
      * @throws \RuntimeException
      */
-    public function addResource($serviceId, $modelClass, $adminClass, $controllerName, $managerType)
+    public function addResource($serviceId, $modelClass, $adminClass, $controllerName, $managerType): void
     {
         $code = "services:\n";
 

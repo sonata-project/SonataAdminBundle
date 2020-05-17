@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Twig\Extension;
 
 use Symfony\Component\String\UnicodeString as DecoratedUnicodeString;
 use Twig\Extension\AbstractExtension;
-use Twig\Extensions\TextExtension;
 use Twig\TwigFilter;
 
 /**
@@ -32,36 +31,17 @@ use Twig\TwigFilter;
 final class StringExtension extends AbstractExtension
 {
     /**
-     * @var TextExtension
-     */
-    private $legacyExtension;
-
-    public function __construct(?TextExtension $legacyExtension = null)
-    {
-        $this->legacyExtension = $legacyExtension;
-    }
-
-    /**
      * @return TwigFilter[]
      */
     public function getFilters(): array
     {
-        if (null !== $this->legacyExtension) {
-            return [
-                new TwigFilter('sonata_truncate', 'twig_truncate_filter', ['needs_environment' => true]),
-            ];
-        }
-
         return [
             new TwigFilter('sonata_truncate', [$this, 'legacyTruncteWithUnicodeString']),
         ];
     }
 
-    /**
-     * NEXT_MAJOR: Fix the arguments in order to respect the signature at `UnicodeString::truncate()`.
-     */
-    public function legacyTruncteWithUnicodeString(?string $text, int $length = 30, bool $preserve = false, string $ellipsis = '...'): DecoratedUnicodeString
+    public function legacyTruncteWithUnicodeString(?string $text, int $length = 30, string $ellipsis = '...', bool $cut = true): DecoratedUnicodeString
     {
-        return (new UnicodeString($text ?? ''))->truncate($length, $ellipsis, $preserve);
+        return (new UnicodeString($text ?? ''))->truncate($length, $ellipsis, $cut);
     }
 }

@@ -12,8 +12,7 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block title %}
-    {# NEXT_MAJOR: remove default filter #}
-    {% if objectId|default(admin.id(object)) is not null %}
+    {% if objectId is not null %}
         {{ 'title_edit'|trans({'%name%': admin.toString(object)|sonata_truncate(15) }, 'SonataAdminBundle') }}
     {% else %}
         {{ 'title_create'|trans({}, 'SonataAdminBundle')|sonata_truncate(15) }}
@@ -21,8 +20,7 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block navbar_title %}
-    {# NEXT_MAJOR: remove default filter #}
-    {% if objectId|default(admin.id(object)) is not null %}
+    {% if objectId is not null %}
         {{ 'title_edit'|trans({'%name%': admin.toString(object)|sonata_truncate(100) }, 'SonataAdminBundle') }}
     {% else %}
         {{ 'title_create'|trans({}, 'SonataAdminBundle')|sonata_truncate(100) }}

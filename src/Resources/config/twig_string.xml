@@ -3,7 +3,6 @@
     <services>
         <service id="sonata.string.twig.extension" class="Sonata\AdminBundle\Twig\Extension\StringExtension">
             <tag name="twig.extension"/>
-            <argument>null</argument>
         </service>
     </services>
 </container>

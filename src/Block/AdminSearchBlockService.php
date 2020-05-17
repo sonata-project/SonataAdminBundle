@@ -18,7 +18,6 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -41,14 +40,9 @@ class AdminSearchBlockService extends AbstractBlockService
      */
     protected $searchHandler;
 
-    /**
-     * NEXT_MAJOR: Remove `$templating` argument.
-     *
-     * @param Environment|string $twigOrName
-     */
-    public function __construct($twigOrName, ?EngineInterface $templating, Pool $pool, SearchHandler $searchHandler)
+    public function __construct(Environment $twig, Pool $pool, SearchHandler $searchHandler)
     {
-        parent::__construct($twigOrName, $templating);
+        parent::__construct($twig);
 
         $this->pool = $pool;
         $this->searchHandler = $searchHandler;
@@ -88,11 +82,6 @@ class AdminSearchBlockService extends AbstractBlockService
             'pager' => $pager,
             'admin' => $admin,
         ], $response);
-    }
-
-    public function getName()
-    {
-        return 'Admin Search Result';
     }
 
     public function configureSettings(OptionsResolver $resolver): void

@@ -34,16 +34,8 @@ class RoleSecurityHandler implements SecurityHandlerInterface
      */
     protected $superAdminRoles;
 
-    /**
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     */
-    public function __construct($authorizationChecker, array $superAdminRoles)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker, array $superAdminRoles)
     {
-        // NEXT_MAJOR: Move AuthorizationCheckerInterface check to method signature
-        if (!$authorizationChecker instanceof AuthorizationCheckerInterface) {
-            throw new \InvalidArgumentException('Argument 1 should be an instance of Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
-        }
-
         $this->authorizationChecker = $authorizationChecker;
         $this->superAdminRoles = $superAdminRoles;
     }
@@ -79,11 +71,11 @@ class RoleSecurityHandler implements SecurityHandlerInterface
         return [];
     }
 
-    public function createObjectSecurity(AdminInterface $admin, $object)
+    public function createObjectSecurity(AdminInterface $admin, $object): void
     {
     }
 
-    public function deleteObjectSecurity(AdminInterface $admin, $object)
+    public function deleteObjectSecurity(AdminInterface $admin, $object): void
     {
     }
 

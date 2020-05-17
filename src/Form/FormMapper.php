@@ -286,7 +286,7 @@ class FormMapper extends BaseGroupedMapper
         return $this->admin->getFormGroups('sonata_deprecation_mute');
     }
 
-    protected function setGroups(array $groups)
+    protected function setGroups(array $groups): void
     {
         $this->admin->setFormGroups($groups);
     }
@@ -298,7 +298,7 @@ class FormMapper extends BaseGroupedMapper
         return $this->admin->getFormTabs('sonata_deprecation_mute');
     }
 
-    protected function setTabs(array $tabs)
+    protected function setTabs(array $tabs): void
     {
         $this->admin->setFormTabs($tabs);
     }

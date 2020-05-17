@@ -338,7 +338,6 @@ class ExtensionCompilerPassTest extends TestCase
     {
         $container = new ContainerBuilder();
         $container->setParameter('kernel.bundles', [
-            'SonataCoreBundle' => true,
             'KnpMenuBundle' => true,
         ]);
         $container->setParameter('kernel.cache_dir', '/tmp');

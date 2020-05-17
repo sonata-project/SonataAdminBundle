@@ -47,12 +47,12 @@ class SetupAclCommand extends Command
         parent::__construct();
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this->setDescription('Install ACL for Admin Classes');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Starting ACL AdminBundle configuration');
 

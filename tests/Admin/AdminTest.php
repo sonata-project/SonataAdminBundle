@@ -21,8 +21,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminExtensionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
@@ -61,7 +59,6 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -967,44 +964,28 @@ class AdminTest extends TestCase
         $this->assertSame($modelManager, $admin->getModelManager());
     }
 
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @group legacy
-     */
     public function testGetBaseCodeRoute(): void
     {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
+        $postAdmin = new PostAdmin(
+            'sonata.post.admin.post',
+            'NewsBundle\Entity\Post',
+            'Sonata\NewsBundle\Controller\PostAdminController'
+        );
+        $commentAdmin = new CommentAdmin(
+            'sonata.post.admin.comment',
+            'Application\Sonata\NewsBundle\Entity\Comment',
+            'Sonata\NewsBundle\Controller\CommentAdminController'
+        );
 
-        $this->assertSame('', $admin->getBaseCodeRoute());
+        $this->assertSame($postAdmin->getCode(), $postAdmin->getBaseCodeRoute());
 
-        $admin->setBaseCodeRoute('foo');
-        $this->assertSame('foo', $admin->getBaseCodeRoute());
+        $postAdmin->addChild($commentAdmin, 'post');
+
+        $this->assertSame(
+            'sonata.post.admin.post|sonata.post.admin.comment',
+            $commentAdmin->getBaseCodeRoute()
+        );
     }
-
-    // NEXT_MAJOR: uncomment this method.
-    // public function testGetBaseCodeRoute()
-    // {
-    //     $postAdmin = new PostAdmin(
-    //         'sonata.post.admin.post',
-    //         'NewsBundle\Entity\Post',
-    //         'Sonata\NewsBundle\Controller\PostAdminController'
-    //     );
-    //     $commentAdmin = new CommentAdmin(
-    //         'sonata.post.admin.comment',
-    //         'Application\Sonata\NewsBundle\Entity\Comment',
-    //         'Sonata\NewsBundle\Controller\CommentAdminController'
-    //     );
-    //
-    //     $this->assertSame($postAdmin->getCode(), $postAdmin->getBaseCodeRoute());
-    //
-    //     $postAdmin->addChild($commentAdmin);
-    //
-    //     $this->assertSame(
-    //         'sonata.post.admin.post|sonata.post.admin.comment',
-    //         $commentAdmin->getBaseCodeRoute()
-    //     );
-    // }
 
     public function testGetRouteGenerator(): void
     {
@@ -1191,38 +1172,6 @@ class AdminTest extends TestCase
 
         $admin->setBaseControllerName('Sonata\NewsBundle\Controller\FooAdminController');
         $this->assertSame('Sonata\NewsBundle\Controller\FooAdminController', $admin->getBaseControllerName());
-    }
-
-    public function testGetTemplates(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $templates = [
-            'list' => '@FooAdmin/CRUD/list.html.twig',
-            'show' => '@FooAdmin/CRUD/show.html.twig',
-            'edit' => '@FooAdmin/CRUD/edit.html.twig',
-        ];
-
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->getTemplates()->shouldBeCalled()->willReturn($templates);
-
-        $admin->setTemplateRegistry($templateRegistry->reveal());
-
-        $this->assertSame($templates, $admin->getTemplates());
-    }
-
-    public function testGetTemplate1(): void
-    {
-        $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
-
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->getTemplate('edit')->shouldBeCalled()->willReturn('@FooAdmin/CRUD/edit.html.twig');
-        $templateRegistry->getTemplate('show')->shouldBeCalled()->willReturn('@FooAdmin/CRUD/show.html.twig');
-
-        $admin->setTemplateRegistry($templateRegistry->reveal());
-
-        $this->assertSame('@FooAdmin/CRUD/edit.html.twig', $admin->getTemplate('edit'));
-        $this->assertSame('@FooAdmin/CRUD/show.html.twig', $admin->getTemplate('show'));
     }
 
     public function testGetIdParameter(): void
@@ -2172,83 +2121,6 @@ class AdminTest extends TestCase
         $this->assertTrue($admin->isDefaultFilter('foo'));
         $this->assertFalse($admin->isDefaultFilter('bar'));
         $this->assertFalse($admin->isDefaultFilter('a'));
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testDefaultBreadcrumbsBuilder(): void
-    {
-        $container = $this->createMock(ContainerInterface::class);
-        $container->expects($this->once())
-            ->method('getParameter')
-            ->with('sonata.admin.configuration.breadcrumbs')
-            ->willReturn([]);
-
-        $pool = $this->getMockBuilder(Pool::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $pool->expects($this->once())
-            ->method('getContainer')
-            ->willReturn($container);
-
-        $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
-            'admin.my_code', 'My\Class', 'MyBundle\ClassAdminController',
-        ], '', true, true, true, ['getConfigurationPool']);
-        $admin->expects($this->once())
-            ->method('getConfigurationPool')
-            ->willReturn($pool);
-
-        $this->assertInstanceOf(BreadcrumbsBuilder::class, $admin->getBreadcrumbsBuilder());
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testBreadcrumbsBuilderSetter(): void
-    {
-        $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
-            'admin.my_code', 'My\Class', 'MyBundle\ClassAdminController',
-        ]);
-        $this->assertSame($admin, $admin->setBreadcrumbsBuilder($builder = $this->createMock(
-            BreadcrumbsBuilderInterface::class
-        )));
-        $this->assertSame($builder, $admin->getBreadcrumbsBuilder());
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testGetBreadcrumbs(): void
-    {
-        $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
-            'admin.my_code', 'My\Class', 'MyBundle\ClassAdminController',
-        ]);
-        $builder = $this->prophesize(BreadcrumbsBuilderInterface::class);
-        $action = 'myaction';
-        $builder->getBreadcrumbs($admin, $action)->shouldBeCalled();
-        $admin->setBreadcrumbsBuilder($builder->reveal())->getBreadcrumbs($action);
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testBuildBreadcrumbs(): void
-    {
-        $admin = $this->getMockForAbstractClass(AbstractAdmin::class, [
-            'admin.my_code', 'My\Class', 'MyBundle\ClassAdminController',
-        ]);
-        $builder = $this->prophesize(BreadcrumbsBuilderInterface::class);
-        $action = 'myaction';
-        $menu = $this->createMock(ItemInterface::class);
-        $builder->buildBreadcrumbs($admin, $action, $menu)
-            ->shouldBeCalledTimes(1)
-            ->willReturn($menu);
-        $admin->setBreadcrumbsBuilder($builder->reveal());
-
-        /* check the called is proxied only once */
-        $this->assertSame($menu, $admin->buildBreadcrumbs($action, $menu));
-        $this->assertSame($menu, $admin->buildBreadcrumbs($action, $menu));
     }
 
     /**
