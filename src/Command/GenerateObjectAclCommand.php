@@ -17,7 +17,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -51,34 +50,17 @@ class GenerateObjectAclCommand extends QuestionableCommand
     private $aclObjectManipulators = [];
 
     /**
-     * @var RegistryInterface|ManagerRegistry|null
+     * @var ManagerRegistry|null
      */
     private $registry;
 
     /**
-     * @param RegistryInterface|ManagerRegistry|null $registry
+     * @param ManagerRegistry|null $registry
      */
-    public function __construct(Pool $pool, array $aclObjectManipulators, $registry = null)
+    public function __construct(Pool $pool, array $aclObjectManipulators, ?ManagerRegistry $registry = null)
     {
         $this->pool = $pool;
         $this->aclObjectManipulators = $aclObjectManipulators;
-        if (null !== $registry && (!$registry instanceof RegistryInterface && !$registry instanceof ManagerRegistry)) {
-            if (!$registry instanceof ManagerRegistry) {
-                @trigger_error(sprintf(
-                    "Passing an object that doesn't implement %s as argument 3 to %s() is deprecated since sonata-project/admin-bundle 3.56.",
-                    ManagerRegistry::class,
-                    __METHOD__
-                ), E_USER_DEPRECATED);
-            }
-
-            throw new \TypeError(sprintf(
-                'Argument 3 passed to %s() must be either an instance of %s or %s, %s given.',
-                __METHOD__,
-                RegistryInterface::class,
-                ManagerRegistry::class,
-                \is_object($registry) ? \get_class($registry) : \gettype($registry)
-            ));
-        }
         $this->registry = $registry;
 
         parent::__construct();
@@ -182,12 +164,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
             } else {
                 list($userBundle, $userEntity) = $this->askAndValidate($input, $output, 'Please enter the User Entity shortcut name: ', '', 'Sonata\AdminBundle\Command\Validators::validateEntityName');
             }
-            // Entity exists?
-            if ($this->registry instanceof RegistryInterface) {
-                $this->userEntityClass = $this->registry->getEntityNamespace($userBundle).'\\'.$userEntity;
-            } else {
-                $this->userEntityClass = $this->registry->getAliasNamespace($userBundle).'\\'.$userEntity;
-            }
+            $this->userEntityClass = $this->registry->getAliasNamespace($userBundle).'\\'.$userEntity;
         }
 
         return $this->userEntityClass;
