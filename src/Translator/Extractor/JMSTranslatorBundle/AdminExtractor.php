@@ -189,14 +189,14 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
         return $catalogue;
     }
 
-    public function trans($id, array $parameters = [], $domain = null, $locale = null)
+    public function trans($id, array $parameters = [], ?string $domain = null, ?string $locale = null)
     {
         $this->addMessage($id, $domain);
 
         return $id;
     }
 
-    public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
+    public function transChoice($id, $number, array $parameters = [], ?string $domain = null, ?string $locale = null)
     {
         $this->addMessage($id, $domain);
 
