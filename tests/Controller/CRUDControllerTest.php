@@ -304,8 +304,7 @@ class CRUDControllerTest extends TestCase
             ->method('getCode')
             ->willReturn('foo.admin');
 
-        $this->controller = new CRUDController();
-        $this->controller->setContainer($this->container);
+        $this->controller = new CRUDController($this->container);
 
         // Make some methods public to test them
         $testedMethods = [
@@ -552,8 +551,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('list'))
             ->willReturn(true);
 
-        $controller = new PreCRUDController();
-        $controller->setContainer($this->container);
+        $controller = new PreCRUDController($this->container);
 
         $response = $controller->listAction($this->request);
         $this->assertInstanceOf(Response::class, $response);
@@ -728,8 +726,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('show'))
             ->willReturn(true);
 
-        $controller = new PreCRUDController();
-        $controller->setContainer($this->container);
+        $controller = new PreCRUDController($this->container);
 
         $response = $controller->showAction($this->request);
         $this->assertInstanceOf(Response::class, $response);
@@ -884,8 +881,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('delete'))
             ->willReturn(true);
 
-        $controller = new PreCRUDController();
-        $controller->setContainer($this->container);
+        $controller = new PreCRUDController($this->container);
 
         $response = $controller->deleteAction($this->request);
         $this->assertInstanceOf(Response::class, $response);
@@ -1296,8 +1292,7 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('edit'))
             ->willReturn(true);
 
-        $controller = new PreCRUDController();
-        $controller->setContainer($this->container);
+        $controller = new PreCRUDController($this->container);
 
         $response = $controller->editAction($this->request);
         $this->assertInstanceOf(Response::class, $response);
@@ -1815,8 +1810,7 @@ class CRUDControllerTest extends TestCase
             ->method('getNewInstance')
             ->willReturn($object);
 
-        $controller = new PreCRUDController();
-        $controller->setContainer($this->container);
+        $controller = new PreCRUDController($this->container);
 
         $response = $controller->createAction($this->request);
         $this->assertInstanceOf(Response::class, $response);
@@ -3441,8 +3435,7 @@ class CRUDControllerTest extends TestCase
 
     public function testBatchActionNonRelevantAction(): void
     {
-        $controller = new BatchAdminController();
-        $controller->setContainer($this->container);
+        $controller = new BatchAdminController($this->container);
 
         $batchActions = ['foo' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
@@ -3507,8 +3500,7 @@ class CRUDControllerTest extends TestCase
 
     public function testBatchActionNonRelevantAction2(): void
     {
-        $controller = new BatchAdminController();
-        $controller->setContainer($this->container);
+        $controller = new BatchAdminController($this->container);
 
         $batchActions = ['foo' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 
@@ -3566,8 +3558,7 @@ class CRUDControllerTest extends TestCase
 
     public function testBatchActionNoItemsEmptyQuery(): void
     {
-        $controller = new BatchAdminController();
-        $controller->setContainer($this->container);
+        $controller = new BatchAdminController($this->container);
 
         $batchActions = ['bar' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
 

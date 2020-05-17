@@ -1,9 +1,15 @@
 services:
+    _defaults:
+        autowire: true
+
     # Under real conditions, this service is registered by "doctrine/doctrine-bundle"
     database_connection:
         class: Sonata\AdminBundle\Tests\Fixtures\DoctrineBundle\Connection
 
     Sonata\AdminBundle\Tests\App\Model\FooRepository: ~
+
+    Sonata\AdminBundle\Controller\CRUDController:
+        public: true
 
     sonata.admin.manager.test:
         class: Sonata\AdminBundle\Tests\App\Model\ModelManager

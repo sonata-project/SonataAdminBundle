@@ -25,6 +25,7 @@ use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -58,13 +59,10 @@ class CRUDController extends AbstractController
      */
     private $templateRegistry;
 
-    public function setContainer(\Psr\Container\ContainerInterface $container): ?\Psr\Container\ContainerInterface
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-
         $this->configure();
-
-        return $this->container;
     }
 
     /**
