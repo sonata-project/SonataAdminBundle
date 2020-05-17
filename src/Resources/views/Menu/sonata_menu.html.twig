@@ -55,7 +55,8 @@
         {% if options.allow_safe_labels and item.extra('safe_label', false) %}
             {{ item.label|raw }}
         {% else %}
-            {{ item.label|trans(item.extra('label_translation_parameters', {}), translation_domain|default('messages')) }}
+            {% set translation_domain = item.extra('label_catalogue', 'messages') %}
+            {{ item.label|trans(item.extra('label_translation_parameters', {}), translation_domain) }}
         {% endif %}
     {% endapply %}
 {% endblock %}
