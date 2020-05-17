@@ -47,4 +47,4 @@
     {% endapply %}
 {% endblock %}
 
-{% block label %}{% if is_link is defined and is_link %}{{ icon|default|raw }}{% endif %}{% if options.allow_safe_labels and item.extra('safe_label', false) %}{{ item.label|raw }}{% else %}{{ item.label|trans(item.extra('translation_params') | default({}), translation_domain|default('messages')) }}{% endif %}{% endblock %}
+{% block label %}{% if is_link is defined and is_link %}{{ icon|default|raw }}{% endif %}{% if options.allow_safe_labels and item.extra('safe_label', false) %}{{ item.label|raw }}{% else %}{{ item.label|trans(item.extra('label_translation_parameters')|default({}), translation_domain|default('messages')) }}{% endif %}{% endblock %}
