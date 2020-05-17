@@ -119,7 +119,7 @@ class BreadcrumbsBuilderTest extends TestCase
 
         $menu->expects($this->exactly(5))
             ->method('getParent')
-            ->willReturn(false);
+            ->willReturn(null);
 
         $routeGenerator->expects($this->exactly(5))
             ->method('generate')

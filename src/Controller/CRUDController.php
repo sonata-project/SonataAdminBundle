@@ -116,12 +116,11 @@ class CRUDController implements ContainerAwareInterface
      * @param string               $view       The view name
      * @param array<string, mixed> $parameters An array of parameters to pass to the view
      *
-     * @return string A Response instance
+     * @return Response
      */
-    public function renderWithExtraParams($view, array $parameters = [])
+    public function renderWithExtraParams($view, array $parameters = []): Response
     {
-        //NEXT_MAJOR: Remove method alias and use $this->render() directly.
-        return $this->container->get('twig')->render($view, $this->addRenderExtraParams($parameters));
+        return new Response($this->container->get('twig')->render($view, $this->addRenderExtraParams($parameters)));
     }
 
     /**

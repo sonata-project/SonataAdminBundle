@@ -503,7 +503,7 @@ class CRUDControllerTest extends TestCase
         $this->parameters = [];
         $this->assertInstanceOf(
             Response::class,
-            $this->controller->renderWithExtraParams('@FooAdmin/foo.html.twig', [], null)
+            $this->controller->renderWithExtraParams('@FooAdmin/foo.html.twig', [])
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);
