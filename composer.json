@@ -60,7 +60,7 @@
         "symfony/validator": "^4.3 || ^5.0",
         "twig/extra-bundle": "^3.0",
         "twig/string-extra": "^3.0",
-        "twig/twig": "^3.0.0"
+        "twig/twig": "^2.12.1"
     },
     "conflict": {
         "doctrine/doctrine-bundle": ">=3",

@@ -67,7 +67,7 @@ class SearchActionTest extends TestCase
             'admin_pool' => $this->pool,
             'query' => 'some search',
             'groups' => [],
-        ])->willReturn(new Response());
+        ])->willReturn('');
 
         $this->assertInstanceOf(Response::class, ($this->action)($request));
     }
