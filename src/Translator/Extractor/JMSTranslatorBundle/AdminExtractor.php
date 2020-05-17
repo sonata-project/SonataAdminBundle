@@ -23,7 +23,7 @@ use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AdminExtractor implements ExtractorInterface, TranslatorInterface, SecurityHandlerInterface, LabelTranslatorStrategyInterface
 {

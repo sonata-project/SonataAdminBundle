@@ -27,8 +27,8 @@ use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>

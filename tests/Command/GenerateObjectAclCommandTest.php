@@ -20,7 +20,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\GenerateObjectAclCommand;
 use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -66,7 +65,7 @@ class GenerateObjectAclCommandTest extends TestCase
     {
         $pool = new Pool($this->container, '', '');
 
-        $registry = $this->prophesize(RegistryInterface::class)->reveal();
+        $registry = $this->prophesize(ManagerRegistry::class)->reveal();
         $command = new GenerateObjectAclCommand($pool, [], $registry);
 
         $application = new Application();

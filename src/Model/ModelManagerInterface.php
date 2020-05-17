@@ -197,7 +197,7 @@ interface ModelManagerInterface
      * NEXT_MAJOR: - Remove this function
      *             - Replace admin.modelmanager.sortparameters to admin.datagrid.sortparameters
      *
-     * @deprecated since sonata-project/sonata-admin-bundle 3.66. To be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.66. To be removed in 4.0.
      *
      * @return array<string, mixed>
      */
@@ -254,7 +254,7 @@ interface ModelManagerInterface
      * NEXT_MAJOR: - Remove this function
      *             - Replace admin.modelmanager.paginationparameters to admin.datagrid.paginationparameters
      *
-     * @deprecated since sonata-project/sonata-admin-bundle 3.66. To be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.66. To be removed in 4.0.
      *
      * @return array<string, mixed>
      */
