@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Exception\NoValueException;
 
 /**
@@ -293,7 +293,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                 return $this->callCachedGetter($object, $fieldName, $parameters);
             }
 
-            $camelizedFieldName = Inflector::classify($fieldName);
+            $camelizedFieldName = InflectorFactory::create()->build()->classify($fieldName);
 
             $getters[] = 'get'.$camelizedFieldName;
             $getters[] = 'is'.$camelizedFieldName;
@@ -320,7 +320,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             return $object->{$fieldName};
         }
 
-        throw new NoValueException(sprintf('Unable to retrieve the value of `%s`', $this->getName()));
+        throw new NoValueException(sprintf(
+            'Neither the property "%s" nor one of the methods "%s()" exist and have public access in class "%s".',
+            $this->getName(),
+            implode('()", "', $getters),
+            \get_class($object)
+        ));
     }
 
     public function setAdmin(AdminInterface $admin): void

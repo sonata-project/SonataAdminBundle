@@ -60,6 +60,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Templating\DelegatingEngine;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -318,12 +319,7 @@ class CRUDControllerTest extends TestCase
             'addFlash',
         ];
         foreach ($testedMethods as $testedMethod) {
-            // NEXT_MAJOR: Remove this check and only use CRUDController
-            if (method_exists(CRUDController::class, $testedMethod)) {
-                $method = new \ReflectionMethod(CRUDController::class, $testedMethod);
-            } else {
-                $method = new \ReflectionMethod(Controller::class, $testedMethod);
-            }
+            $method = new \ReflectionMethod(CRUDController::class, $testedMethod);
 
             $method->setAccessible(true);
             $this->protectedTestedMethods[$testedMethod] = $method;
@@ -474,7 +470,7 @@ class CRUDControllerTest extends TestCase
         $this->parameters = [];
         $this->assertInstanceOf(
             Response::class,
-            $this->controller->renderWithExtraParams('@FooAdmin/foo.html.twig', [], null)
+            $this->controller->renderWithExtraParams('@FooAdmin/foo.html.twig', [])
         );
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/standard_layout.html.twig', $this->parameters['base_template']);

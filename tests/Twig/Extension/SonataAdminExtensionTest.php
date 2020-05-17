@@ -1240,13 +1240,7 @@ EOT
     {
         $this->fieldDescription
             ->method('getValue')
-            ->willReturnCallback(static function () use ($value) {
-                if ($value instanceof NoValueException) {
-                    throw  $value;
-                }
-
-                return $value;
-            });
+            ->willReturn($value);
 
         $this->fieldDescription
             ->method('getType')
@@ -1258,7 +1252,7 @@ EOT
 
         $this->fieldDescription
             ->method('getTemplate')
-            ->willReturnCallback(static function () use ($type) {
+            ->willReturnCallback(static function () use ($type): ?string {
                 switch ($type) {
                     case 'boolean':
                         return '@SonataAdmin/CRUD/show_boolean.html.twig';
@@ -1285,7 +1279,7 @@ EOT
                     case 'html':
                         return '@SonataAdmin/CRUD/show_html.html.twig';
                     default:
-                        return false;
+                        return null;
                 }
             });
 
@@ -1757,65 +1751,6 @@ EOT
                     ],
                 ],
             ],
-
-            // NoValueException
-            ['<th>Data</th> <td></td>', 'string', new NoValueException(), ['safe' => false]],
-            ['<th>Data</th> <td></td>', 'text', new NoValueException(), ['safe' => false]],
-            ['<th>Data</th> <td></td>', 'textarea', new NoValueException(), ['safe' => false]],
-            ['<th>Data</th> <td>&nbsp;</td>', 'datetime', new NoValueException(), []],
-            [
-                '<th>Data</th> <td>&nbsp;</td>',
-                'datetime',
-                new NoValueException(),
-                ['format' => 'd.m.Y H:i:s'],
-            ],
-            ['<th>Data</th> <td>&nbsp;</td>', 'date', new NoValueException(), []],
-            ['<th>Data</th> <td>&nbsp;</td>', 'date', new NoValueException(), ['format' => 'd.m.Y']],
-            ['<th>Data</th> <td>&nbsp;</td>', 'time', new NoValueException(), []],
-            ['<th>Data</th> <td></td>', 'number', new NoValueException(), ['safe' => false]],
-            ['<th>Data</th> <td></td>', 'integer', new NoValueException(), ['safe' => false]],
-            ['<th>Data</th> <td> 0 % </td>', 'percent', new NoValueException(), []],
-            ['<th>Data</th> <td> </td>', 'currency', new NoValueException(), ['currency' => 'EUR']],
-            ['<th>Data</th> <td> </td>', 'currency', new NoValueException(), ['currency' => 'GBP']],
-            ['<th>Data</th> <td> <ul></ul> </td>', 'array', new NoValueException(), ['safe' => false]],
-            [
-                '<th>Data</th> <td><span class="label label-danger">no</span></td>',
-                'boolean',
-                new NoValueException(),
-                [],
-            ],
-            [
-                '<th>Data</th> <td> </td>',
-                'trans',
-                new NoValueException(),
-                ['safe' => false, 'catalogue' => 'SonataAdminBundle'],
-            ],
-            [
-                '<th>Data</th> <td></td>',
-                'choice',
-                new NoValueException(),
-                ['safe' => false, 'choices' => []],
-            ],
-            [
-                '<th>Data</th> <td></td>',
-                'choice',
-                new NoValueException(),
-                ['safe' => false, 'choices' => [], 'multiple' => true],
-            ],
-            ['<th>Data</th> <td>&nbsp;</td>', 'url', new NoValueException(), []],
-            [
-                '<th>Data</th> <td>&nbsp;</td>',
-                'url',
-                new NoValueException(),
-                ['url' => 'http://example.com'],
-            ],
-            [
-                '<th>Data</th> <td>&nbsp;</td>',
-                'url',
-                new NoValueException(),
-                ['route' => ['name' => 'sonata_admin_foo']],
-            ],
-
             [
                 <<<'EOT'
 <th>Data</th> <td><div
@@ -1899,6 +1834,7 @@ EOT
 
     public function testGetValueFromFieldDescriptionWithNoValueException(): void
     {
+        $this->expectException(NoValueException::class);
         $object = new \stdClass();
         $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
 

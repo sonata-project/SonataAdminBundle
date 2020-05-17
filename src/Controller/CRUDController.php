@@ -24,8 +24,7 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -43,7 +42,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class CRUDController extends Controller
+class CRUDController extends AbstractController
 {
     /**
      * The related Admin class.
@@ -59,11 +58,13 @@ class CRUDController extends Controller
      */
     private $templateRegistry;
 
-    public function setContainer(?ContainerInterface $container = null): void
+    public function setContainer(\Psr\Container\ContainerInterface $container): ?\Psr\Container\ContainerInterface
     {
         $this->container = $container;
 
         $this->configure();
+
+        return $this->container;
     }
 
     /**
@@ -72,9 +73,9 @@ class CRUDController extends Controller
      * @param string               $view       The view name
      * @param array<string, mixed> $parameters An array of parameters to pass to the view
      *
-     * @return Response A Response instance
+     * @return Response
      */
-    public function renderWithExtraParams($view, array $parameters = [], ?Response $response = null)
+    public function renderWithExtraParams($view, array $parameters = [], ?Response $response = null): Response
     {
         return $this->render($view, $this->addRenderExtraParams($parameters), $response);
     }
@@ -112,10 +113,10 @@ class CRUDController extends Controller
             'form' => $formView,
             'datagrid' => $datagrid,
             'csrf_token' => $this->getCsrfToken('sonata.batch'),
-            'export_formats' => $this->has('sonata.admin.admin_exporter') ?
-                $this->get('sonata.admin.admin_exporter')->getAvailableFormats($this->admin) :
+            'export_formats' => $this->container->has('sonata.admin.admin_exporter') ?
+                $this->container->get('sonata.admin.admin_exporter')->getAvailableFormats($this->admin) :
                 $this->admin->getExportFormats(),
-        ], null);
+        ]);
     }
 
     /**
@@ -221,7 +222,7 @@ class CRUDController extends Controller
             'object' => $object,
             'action' => 'delete',
             'csrf_token' => $this->getCsrfToken('sonata.delete'),
-        ], null);
+        ]);
     }
 
     /**
@@ -332,7 +333,7 @@ class CRUDController extends Controller
             'form' => $formView,
             'object' => $existingObject,
             'objectId' => $objectId,
-        ], null);
+        ]);
     }
 
     /**
@@ -426,7 +427,7 @@ class CRUDController extends Controller
                 'form' => $formView,
                 'data' => $data,
                 'csrf_token' => $this->getCsrfToken('sonata.batch'),
-            ], null);
+            ]);
         }
 
         // execute the action, batchActionXxxxx
@@ -479,8 +480,7 @@ class CRUDController extends Controller
                     'base_template' => $this->getBaseTemplate(),
                     'admin' => $this->admin,
                     'action' => 'create',
-                ],
-                null
+                ]
             );
         }
 
@@ -564,7 +564,7 @@ class CRUDController extends Controller
             'form' => $formView,
             'object' => $newObject,
             'objectId' => null,
-        ], null);
+        ]);
     }
 
     /**
@@ -604,7 +604,7 @@ class CRUDController extends Controller
             'action' => 'show',
             'object' => $object,
             'elements' => $fields,
-        ], null);
+        ]);
     }
 
     /**
@@ -648,7 +648,7 @@ class CRUDController extends Controller
             'object' => $object,
             'revisions' => $revisions,
             'currentRevision' => $revisions ? current($revisions) : false,
-        ], null);
+        ]);
     }
 
     /**
@@ -707,7 +707,7 @@ class CRUDController extends Controller
             'action' => 'show',
             'object' => $object,
             'elements' => $this->admin->getShow(),
-        ], null);
+        ]);
     }
 
     /**
@@ -780,7 +780,7 @@ class CRUDController extends Controller
             'object' => $baseObject,
             'object_compare' => $compareObject,
             'elements' => $this->admin->getShow(),
-        ], null);
+        ]);
     }
 
     /**
@@ -893,7 +893,7 @@ class CRUDController extends Controller
             'roles' => $aclRoles,
             'aclUsersForm' => $aclUsersForm->createView(),
             'aclRolesForm' => $aclRolesForm->createView(),
-        ], null);
+        ]);
     }
 
     /**
@@ -912,12 +912,12 @@ class CRUDController extends Controller
     protected function addRenderExtraParams(array $parameters = []): array
     {
         if (!$this->isXmlHttpRequest()) {
-            $parameters['breadcrumbs_builder'] = $this->get('sonata.admin.breadcrumbs_builder');
+            $parameters['breadcrumbs_builder'] = $this->container->get('sonata.admin.breadcrumbs_builder');
         }
 
         $parameters['admin'] = $parameters['admin'] ?? $this->admin;
         $parameters['base_template'] = $parameters['base_template'] ?? $this->getBaseTemplate();
-        $parameters['admin_pool'] = $this->get('sonata.admin.pool');
+        $parameters['admin_pool'] = $this->container->get('sonata.admin.pool');
 
         return $parameters;
     }
@@ -1413,7 +1413,7 @@ class CRUDController extends Controller
      */
     private function setFormTheme(FormView $formView, ?array $theme = null): void
     {
-        $twig = $this->get('twig');
+        $twig = $this->container->get('twig');
 
         $twig->getRuntime(FormRenderer::class)->setTheme($formView, $theme);
     }

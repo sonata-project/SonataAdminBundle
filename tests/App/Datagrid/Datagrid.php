@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\Datagrid;
 
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
@@ -28,6 +29,16 @@ final class Datagrid implements DatagridInterface
     {
         $this->formFactory = $formFactory;
         $this->pager = $pager;
+    }
+
+    public function getSortParameters(FieldDescriptionInterface $fieldDescription)
+    {
+        return [];
+    }
+
+    public function getPaginationParameters(int $page)
+    {
+        return [];
     }
 
     public function getPager()
