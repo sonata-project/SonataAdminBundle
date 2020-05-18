@@ -51,7 +51,7 @@
 
 {% block label %}
     {% apply spaceless %}
-        {% if is_link is defined and is_link %}
+        {%- if is_link is defined and is_link -%}
             {{ icon|default|raw }}
         {% endif %}
         {% if options.allow_safe_labels and item.extra('safe_label', false) %}
