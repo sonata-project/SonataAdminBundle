@@ -22,7 +22,6 @@
 
 {% block linkElement %}
     {% apply spaceless %}
-        {# NEXT_MAJOR: Remove the deprecated option 'label_catalogue'. #}
         {% set translation_domain = item.extra('label_catalogue', 'messages') %}
         {% if item.extra('on_top') is defined and not item.extra('on_top') %}
             {% set icon = item.extra('icon')|default(item.level > 1 ? '<i class="fa fa-angle-double-right" aria-hidden="true"></i>' : '') %}
@@ -37,7 +36,6 @@
 {% block spanElement %}
     {% apply spaceless %}
         <a href="#">
-            {# NEXT_MAJOR: Remove the deprecated option 'label_catalogue'. #}
             {% set translation_domain = item.extra('label_catalogue', 'messages') %}
             {% set icon = item.extra('icon')|default('') %}
             {{ icon|raw }}
@@ -57,7 +55,6 @@
         {% if options.allow_safe_labels and item.extra('safe_label', false) %}
             {{ item.label|raw }}
         {% else %}
-            {# NEXT_MAJOR: Remove the deprecated option 'label_catalogue'. #}
             {% set translation_domain = item.extra('label_catalogue', 'messages') %}
             {{ item.label|trans(item.extra('label_translation_parameters', {}), translation_domain) }}
         {% endif %}
