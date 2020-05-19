@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Controller;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -32,7 +31,6 @@ use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
-use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
@@ -157,58 +155,6 @@ class CRUDControllerTest extends TestCase
      * @var LoggerInterface|MockObject
      */
     private $logger;
-
-    private function createTwig(): Environment
-    {
-        $templatingRenderReturnCallback = $this->returnCallback(function (
-            string $name,
-            array $context = []
-        ): string {
-            $this->template = $name;
-
-            $this->parameters = $context;
-
-            return '';
-        });
-
-        $twig = $this->getMockBuilder(Environment::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $twig
-            ->method('getRuntime')
-            ->willReturn($this->createMock(FormRenderer::class));
-
-        $twig
-            ->method('render')
-            ->will($templatingRenderReturnCallback);
-
-        return $twig;
-    }
-
-    private function createController(string $classname = CRUDController::class): CRUDController {
-        $requestStack = new RequestStack();
-        $requestStack->push($this->request);
-
-        $pool = new Pool($this->container, 'title', 'logo.png');
-        $pool->setAdminServiceIds(['foo.admin']);
-
-        return new $classname(
-            $requestStack,
-            $pool,
-            $this->templateRegistry->reveal(),
-            new BreadcrumbsBuilder([]),
-            $this->createTwig(),
-            $this->translator,
-            $this->session,
-            $this->kernel,
-            $this->auditManager,
-            $this->exporter,
-            new AdminExporter($this->exporter),
-            $this->csrfProvider,
-            $this->logger
-        );
-    }
 
     /**
      * {@inheritdoc}
@@ -3718,5 +3664,57 @@ class CRUDControllerTest extends TestCase
             ->method('trans')
             ->with($this->equalTo($id), $this->equalTo($parameters), $this->equalTo($domain), $this->equalTo($locale))
             ->willReturn($id);
+    }
+
+    private function createTwig(): Environment
+    {
+        $templatingRenderReturnCallback = $this->returnCallback(function (
+            string $name,
+            array $context = []
+        ): string {
+            $this->template = $name;
+
+            $this->parameters = $context;
+
+            return '';
+        });
+
+        $twig = $this->getMockBuilder(Environment::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $twig
+            ->method('getRuntime')
+            ->willReturn($this->createMock(FormRenderer::class));
+
+        $twig
+            ->method('render')
+            ->will($templatingRenderReturnCallback);
+
+        return $twig;
+    }
+
+    private function createController(string $classname = CRUDController::class): CRUDController {
+        $requestStack = new RequestStack();
+        $requestStack->push($this->request);
+
+        $pool = new Pool($this->container, 'title', 'logo.png');
+        $pool->setAdminServiceIds(['foo.admin']);
+
+        return new $classname(
+            $requestStack,
+            $pool,
+            $this->templateRegistry->reveal(),
+            new BreadcrumbsBuilder([]),
+            $this->createTwig(),
+            $this->translator,
+            $this->session,
+            $this->kernel,
+            $this->auditManager,
+            $this->exporter,
+            new AdminExporter($this->exporter),
+            $this->csrfProvider,
+            $this->logger
+        );
     }
 }

@@ -56,6 +56,13 @@ use Twig\Environment;
 class CRUDController extends AbstractController
 {
     /**
+     * The related Admin class.
+     *
+     * @var AdminInterface
+     */
+    protected $admin;
+
+    /**
      * @var RequestStack
      */
     private $requestStack;
@@ -122,13 +129,6 @@ class CRUDController extends AbstractController
      */
     private $logger;
 
-    /**
-     * The related Admin class.
-     *
-     * @var AdminInterface
-     */
-    protected $admin;
-
     public function __construct(
         RequestStack $requestStack,
         Pool $pool,
@@ -139,10 +139,10 @@ class CRUDController extends AbstractController
         SessionInterface $session,
         KernelInterface $kernel,
         AuditManagerInterface $auditManager,
-        Exporter $exporter = null,
-        AdminExporter $adminExporter = null,
-        CsrfTokenManagerInterface $csrfTokenManager = null,
-        LoggerInterface $logger = null
+        ?Exporter $exporter = null,
+        ?AdminExporter $adminExporter = null,
+        ?CsrfTokenManagerInterface $csrfTokenManager = null,
+        ?LoggerInterface $logger = null
     ) {
         $this->requestStack = $requestStack;
         $this->pool = $pool;
@@ -159,11 +159,6 @@ class CRUDController extends AbstractController
         $this->logger = $logger ?? new NullLogger();
 
         $this->configure();
-    }
-
-    protected function addFlash(string $type, string $message): void
-    {
-        $this->session->getFlashBag()->add($type, $message);
     }
 
     /**
@@ -987,12 +982,14 @@ class CRUDController extends AbstractController
         ]);
     }
 
-    /**
-     * @return Request|null
-     */
     public function getRequest(): ?Request
     {
         return $this->requestStack->getCurrentRequest();
+    }
+
+    protected function addFlash(string $type, string $message): void
+    {
+        $this->session->getFlashBag()->add($type, $message);
     }
 
     /**
@@ -1113,8 +1110,6 @@ class CRUDController extends AbstractController
     /**
      * Proxy for the logger service of the container.
      * If no such service is found, a NullLogger is returned.
-     *
-     * @return LoggerInterface
      */
     protected function getLogger(): LoggerInterface
     {
