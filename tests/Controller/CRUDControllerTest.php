@@ -3694,7 +3694,8 @@ class CRUDControllerTest extends TestCase
         return $twig;
     }
 
-    private function createController(string $classname = CRUDController::class): CRUDController {
+    private function createController(string $classname = CRUDController::class): CRUDController
+    {
         $requestStack = new RequestStack();
         $requestStack->push($this->request);
 
