@@ -1,6 +1,7 @@
 services:
     _defaults:
         autowire: true
+        autoconfigure: true
 
     # Under real conditions, this service is registered by "doctrine/doctrine-bundle"
     database_connection:
@@ -10,6 +11,9 @@ services:
 
     Sonata\AdminBundle\Controller\CRUDController:
         public: true
+
+    Sonata\AdminBundle\Templating\TemplateRegistryInterface:
+        alias: 'sonata.admin.global_template_registry'
 
     sonata.admin.manager.test:
         class: Sonata\AdminBundle\Tests\App\Model\ModelManager

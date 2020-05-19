@@ -53,6 +53,19 @@
             </call>
         </service>
         <service id="sonata.admin.controller.crud" class="Sonata\AdminBundle\Controller\CRUDController" public="true">
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="sonata.admin.pool"/>
+            <argument type="service" id="sonata.admin.global_template_registry"/>
+            <argument type="service" id="sonata.admin.breadcrumbs_builder"/>
+            <argument type="service" id="twig"/>
+            <argument type="service" id="translator"/>
+            <argument type="service" id="session"/>
+            <argument type="service" id="kernel"/>
+            <argument type="service" id="sonata.admin.audit.manager"/>
+            <argument type="service" id="sonata.exporter.exporter" on-invalid="null"/>
+            <argument type="service" id="sonata.admin.admin_exporter" on-invalid="null"/>
+            <argument type="service" id="crsf_token_manager" on-invalid="null"/>
+            <argument type="service" id="logger" on-invalid="null"/>
         </service>
         <!-- audit manager -->
         <service id="sonata.admin.audit.manager" class="Sonata\AdminBundle\Model\AuditManager" public="true">

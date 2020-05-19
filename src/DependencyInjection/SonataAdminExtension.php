@@ -61,6 +61,11 @@ final class SonataAdminExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('twig.xml');
         $loader->load('twig_string.xml');
+
+        if (isset($bundles['SonataExporterBundle'])) {
+            $loader->load('exporter.xml');
+        }
+
         $loader->load('core.xml');
         $loader->load('form_types.xml');
         $loader->load('validator.xml');
@@ -72,10 +77,6 @@ final class SonataAdminExtension extends Extension
 
         if (isset($bundles['MakerBundle'])) {
             $loader->load('makers.xml');
-        }
-
-        if (isset($bundles['SonataExporterBundle'])) {
-            $loader->load('exporter.xml');
         }
 
         $configuration = $this->getConfiguration($configs, $container);
