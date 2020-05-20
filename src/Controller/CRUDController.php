@@ -28,6 +28,7 @@ use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
+use Sonata\AdminBundle\Util\AdminObjectAclUserManager;
 use Sonata\Exporter\Exporter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -44,6 +45,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
+use Symfony\Component\Security\Acl\Permission\MaskBuilderInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -129,6 +131,16 @@ class CRUDController extends AbstractController
      */
     private $logger;
 
+    /**
+     * @var AdminObjectAclManipulator|null
+     */
+    private $adminObjectAclManipulator;
+
+    /**
+     * @var AdminObjectAclUserManager|null
+     */
+    private $adminObjectAclUserManager;
+
     public function __construct(
         RequestStack $requestStack,
         Pool $pool,
@@ -142,7 +154,9 @@ class CRUDController extends AbstractController
         ?Exporter $exporter = null,
         ?AdminExporter $adminExporter = null,
         ?CsrfTokenManagerInterface $csrfTokenManager = null,
-        ?LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
+        ?AdminObjectAclManipulator $adminObjectAclManipulator = null,
+        ?AdminObjectAclUserManager $adminObjectAclUserManager = null
     ) {
         $this->requestStack = $requestStack;
         $this->pool = $pool;
@@ -157,6 +171,8 @@ class CRUDController extends AbstractController
         $this->adminExporter = $adminExporter;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->logger = $logger ?? new NullLogger();
+        $this->adminObjectAclManipulator = $adminObjectAclManipulator;
+        $this->adminObjectAclUserManager = $adminObjectAclUserManager;
 
         $this->configure();
     }
@@ -933,17 +949,16 @@ class CRUDController extends AbstractController
         $aclUsers = $this->getAclUsers();
         $aclRoles = $this->getAclRoles();
 
-        $adminObjectAclManipulator = $this->pool->getContainer()->get('sonata.admin.object.manipulator.acl.admin');
         $adminObjectAclData = new AdminObjectAclData(
             $this->admin,
             $object,
             $aclUsers,
-            $adminObjectAclManipulator->getMaskBuilderClass(),
+            $this->adminObjectAclManipulator->getMaskBuilderClass(),
             $aclRoles
         );
 
-        $aclUsersForm = $adminObjectAclManipulator->createAclUsersForm($adminObjectAclData);
-        $aclRolesForm = $adminObjectAclManipulator->createAclRolesForm($adminObjectAclData);
+        $aclUsersForm = $this->adminObjectAclManipulator->createAclUsersForm($adminObjectAclData);
+        $aclRolesForm = $this->adminObjectAclManipulator->createAclRolesForm($adminObjectAclData);
 
         if (Request::METHOD_POST === $request->getMethod()) {
             if ($request->request->has(AdminObjectAclManipulator::ACL_USERS_FORM_NAME)) {
@@ -958,7 +973,7 @@ class CRUDController extends AbstractController
                 $form->handleRequest($request);
 
                 if ($form->isValid()) {
-                    $adminObjectAclManipulator->$updateMethod($adminObjectAclData);
+                    $this->adminObjectAclManipulator->$updateMethod($adminObjectAclData);
                     $this->addFlash(
                         'sonata_flash_success',
                         $this->trans('flash_acl_edit_success', [], 'SonataAdminBundle')
@@ -1269,31 +1284,20 @@ class CRUDController extends AbstractController
 
     /**
      * Gets ACL users.
-     *
-     * @return \Traversable
      */
-    protected function getAclUsers()
+    protected function getAclUsers(): \Traversable
     {
-        $aclUsers = [];
-
-        $userManagerServiceName = $this->pool->getContainer()->getParameter('sonata.admin.security.acl_user_manager');
-        if (null !== $userManagerServiceName && $this->has($userManagerServiceName)) {
-            $userManager = $this->get($userManagerServiceName);
-
-            if (method_exists($userManager, 'findUsers')) {
-                $aclUsers = $userManager->findUsers();
-            }
-        }
+        $aclUsers = $this->adminObjectAclUserManager instanceof AdminObjectAclUserManager ?
+            $this->adminObjectAclUserManager->findUsers() :
+            [];
 
         return \is_array($aclUsers) ? new \ArrayIterator($aclUsers) : $aclUsers;
     }
 
     /**
      * Gets ACL roles.
-     *
-     * @return \Traversable
      */
-    protected function getAclRoles()
+    protected function getAclRoles(): \Traversable
     {
         $aclRoles = [];
         $roleHierarchy = $this->pool->getContainer()->getParameter('security.role_hierarchy.roles');

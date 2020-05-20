@@ -66,6 +66,8 @@
             <argument type="service" id="sonata.admin.admin_exporter" on-invalid="null"/>
             <argument type="service" id="crsf_token_manager" on-invalid="null"/>
             <argument type="service" id="logger" on-invalid="null"/>
+            <argument type="service" id="sonata.admin.object.manipulator.acl.admin" on-invalid="null"/>
+            <argument on-invalid="null">%sonata.admin.security.acl_user_manager%</argument>
         </service>
         <!-- audit manager -->
         <service id="sonata.admin.audit.manager" class="Sonata\AdminBundle\Model\AuditManager" public="true">

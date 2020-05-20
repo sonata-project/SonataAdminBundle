@@ -2770,7 +2770,8 @@ class CRUDControllerTest extends TestCase
 
         $this->request->setMethod(Request::METHOD_POST);
 
-        $response = $this->controller->aclAction($this->request);
+        $controller = $this->createController();
+        $response = $controller->aclAction($this->request);
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
 
@@ -3715,7 +3716,8 @@ class CRUDControllerTest extends TestCase
             $this->exporter,
             new AdminExporter($this->exporter),
             $this->csrfProvider,
-            $this->logger
+            $this->logger,
+            $this->adminObjectAclManipulator
         );
     }
 }
