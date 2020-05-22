@@ -822,6 +822,9 @@ class AdminTest extends TestCase
         $admin->addSubClass('whatever');
     }
 
+    /**
+     * @group legacy
+     */
     public function testGetPerPageOptions(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
@@ -1144,6 +1147,9 @@ class AdminTest extends TestCase
         $this->assertSame(14, $admin->getMaxPageLinks());
     }
 
+    /**
+     * @group legacy
+     */
     public function testGetMaxPerPage(): void
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
@@ -1236,10 +1242,6 @@ class AdminTest extends TestCase
         $this->assertFalse($admin->determinedPerPageValue('foo'));
         $this->assertFalse($admin->determinedPerPageValue(123));
         $this->assertTrue($admin->determinedPerPageValue(16));
-
-        $admin->setPerPageOptions([101, 102, 103]);
-        $this->assertFalse($admin->determinedPerPageValue(16));
-        $this->assertTrue($admin->determinedPerPageValue(101));
     }
 
     public function testIsGranted(): void

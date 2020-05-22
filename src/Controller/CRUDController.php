@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Controller;
 
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -488,8 +488,8 @@ class CRUDController extends AbstractController
             throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
         }
 
-        $camelizedAction = Inflector::classify($action);
-        $isRelevantAction = sprintf('batchAction%sIsRelevant', ucfirst($camelizedAction));
+        $camelizedAction = InflectorFactory::create()->build()->classify($action);
+        $isRelevantAction = sprintf('batchAction%sIsRelevant', $camelizedAction);
 
         if (method_exists($this, $isRelevantAction)) {
             $nonRelevantMessage = $this->$isRelevantAction($idx, $allElements, $request);

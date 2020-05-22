@@ -1794,6 +1794,62 @@ EOT
         ];
     }
 
+    public function getRenderViewElementWithNoValueTests(): iterable
+    {
+        return [
+            // NoValueException
+            ['<th>Data</th> <td></td>', 'string', ['safe' => false]],
+            ['<th>Data</th> <td></td>', 'text', ['safe' => false]],
+            ['<th>Data</th> <td></td>', 'textarea', ['safe' => false]],
+            ['<th>Data</th> <td>&nbsp;</td>', 'datetime', []],
+            [
+                '<th>Data</th> <td>&nbsp;</td>',
+                'datetime',
+                ['format' => 'd.m.Y H:i:s'],
+            ],
+            ['<th>Data</th> <td>&nbsp;</td>', 'date', []],
+            ['<th>Data</th> <td>&nbsp;</td>', 'date', ['format' => 'd.m.Y']],
+            ['<th>Data</th> <td>&nbsp;</td>', 'time', []],
+            ['<th>Data</th> <td></td>', 'number', ['safe' => false]],
+            ['<th>Data</th> <td></td>', 'integer', ['safe' => false]],
+            ['<th>Data</th> <td> 0 % </td>', 'percent', []],
+            ['<th>Data</th> <td> </td>', 'currency', ['currency' => 'EUR']],
+            ['<th>Data</th> <td> </td>', 'currency', ['currency' => 'GBP']],
+            ['<th>Data</th> <td> <ul></ul> </td>', 'array', ['safe' => false]],
+            [
+                '<th>Data</th> <td><span class="label label-danger">no</span></td>',
+                'boolean',
+                [],
+            ],
+            [
+                '<th>Data</th> <td> </td>',
+                'trans',
+                ['safe' => false, 'catalogue' => 'SonataAdminBundle'],
+            ],
+            [
+                '<th>Data</th> <td></td>',
+                'choice',
+                ['safe' => false, 'choices' => []],
+            ],
+            [
+                '<th>Data</th> <td></td>',
+                'choice',
+                ['safe' => false, 'choices' => [], 'multiple' => true],
+            ],
+            ['<th>Data</th> <td>&nbsp;</td>', 'url', []],
+            [
+                '<th>Data</th> <td>&nbsp;</td>',
+                'url',
+                ['url' => 'http://example.com'],
+            ],
+            [
+                '<th>Data</th> <td>&nbsp;</td>',
+                'url',
+                ['route' => ['name' => 'sonata_admin_foo']],
+            ],
+        ];
+    }
+
     public function testGetValueFromFieldDescription(): void
     {
         $object = new \stdClass();

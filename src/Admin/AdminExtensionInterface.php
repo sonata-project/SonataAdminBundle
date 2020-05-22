@@ -24,6 +24,8 @@ use Sonata\Form\Validator\ErrorElement;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @method void configureDefaultSortValues(AdminInterface $admin, array &$sortValues)
  */
 interface AdminExtensionInterface
 {
@@ -159,6 +161,13 @@ interface AdminExtensionInterface
      * Returns a list of default filters.
      */
     public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void;
+
+    /*
+     * NEXT_MAJOR: Uncomment this method
+     *
+     * Returns a list of default sort values
+     */
+    // public function configureDefaultSortValues(AdminInterface $admin, array &$sortValues): void;
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);
