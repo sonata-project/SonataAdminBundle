@@ -75,6 +75,11 @@ This method has been deprecated without replacement.
 UPGRADE FROM 3.74 to 3.75
 =========================
 
+## Deprecated `Sonata\AdminBundle\Controller\CRUDController::getRestMethod()` method
+
+`Sonata\AdminBundle\Controller\CRUDController::getRestMethod()` method is deprecated.
+Use `Symfony\Component\HttpFoundation\Request::getMethod()` instead.
+
 ## Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface` collection-related methods.
 
 Use:

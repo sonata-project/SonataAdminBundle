@@ -219,7 +219,7 @@ class CRUDController implements ContainerAwareInterface
             return $preResponse;
         }
 
-        if (Request::METHOD_DELETE === $this->getRestMethod()) {
+        if (Request::METHOD_DELETE === $request->getMethod()) {
             // check the csrf token
             $this->validateCsrfToken('sonata.delete');
 
@@ -407,7 +407,7 @@ class CRUDController implements ContainerAwareInterface
     public function batchAction()
     {
         $request = $this->getRequest();
-        $restMethod = $this->getRestMethod();
+        $restMethod = $request->getMethod();
 
         if (Request::METHOD_POST !== $restMethod) {
             throw $this->createNotFoundException(sprintf(
@@ -1116,20 +1116,25 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * Returns the correct RESTful verb, given either by the request itself or
      * via the "_method" parameter.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use `Request::getMethod()` instead.
      *
      * @return string HTTP method, either
      */
     protected function getRestMethod()
     {
-        $request = $this->getRequest();
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.x'
+            .', to be removed in 4.0. Use `%s::getMethod()` instead.',
+            __METHOD__,
+            Request::class
+        ), E_USER_DEPRECATED);
 
-        if (Request::getHttpMethodParameterOverride() || !$request->request->has('_method')) {
-            return $request->getMethod();
-        }
-
-        return $request->request->get('_method');
+        return $this->getRequest()->getMethod();
     }
 
     /**
@@ -1262,7 +1267,7 @@ class CRUDController implements ContainerAwareInterface
             $url = $this->admin->generateUrl('create', $params);
         }
 
-        if ('DELETE' === $this->getRestMethod()) {
+        if ('DELETE' === $request->getMethod()) {
             return $this->redirectToList();
         }
 

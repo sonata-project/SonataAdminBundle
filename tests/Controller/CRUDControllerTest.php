@@ -158,10 +158,16 @@ class CRUDControllerTest extends TestCase
     private $logger;
 
     /**
+     * @var bool
+     */
+    private $httpMethodParameterOverride = false;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
     {
+        $this->httpMethodParameterOverride = Request::getHttpMethodParameterOverride();
         $this->container = new Container();
         $this->request = new Request();
         $this->pool = new Pool($this->container, 'title', 'logo.png');
@@ -366,6 +372,18 @@ class CRUDControllerTest extends TestCase
 
             $method->setAccessible(true);
             $this->protectedTestedMethods[$testedMethod] = $method;
+        }
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        if (!$this->httpMethodParameterOverride && Request::getHttpMethodParameterOverride()) {
+            $disableHttpMethodParameterOverride = \Closure::bind(static function (): void {
+                self::$httpMethodParameterOverride = false;
+            }, null, Request::class);
+            $disableHttpMethodParameterOverride();
         }
     }
 
@@ -1098,11 +1116,14 @@ class CRUDControllerTest extends TestCase
 
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
+        Request::enableHttpMethodParameterOverride();
+
         $response = $this->controller->deleteAction(1);
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertSame(json_encode(['result' => 'ok']), $response->getContent());
         $this->assertSame([], $this->session->getFlashBag()->all());
+        $this->assertSame(Request::METHOD_DELETE, $this->request->getMethod());
     }
 
     public function testDeleteActionAjaxError(): void
@@ -1229,11 +1250,14 @@ class CRUDControllerTest extends TestCase
 
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
 
+        Request::enableHttpMethodParameterOverride();
+
         $response = $this->controller->deleteAction(1);
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
         $this->assertSame('list', $response->getTargetUrl());
+        $this->assertSame(Request::METHOD_DELETE, $this->request->getMethod());
     }
 
     /**
@@ -1264,11 +1288,14 @@ class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('_method', Request::METHOD_DELETE);
 
+        Request::enableHttpMethodParameterOverride();
+
         $response = $this->controller->deleteAction(1);
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
         $this->assertSame('list', $response->getTargetUrl());
+        $this->assertSame(Request::METHOD_DELETE, $this->request->getMethod());
     }
 
     public function testDeleteActionWrongRequestMethod(): void
@@ -1287,6 +1314,8 @@ class CRUDControllerTest extends TestCase
         //without POST request parameter "_method" should not be used as real REST method
         $this->request->query->set('_method', Request::METHOD_DELETE);
 
+        Request::enableHttpMethodParameterOverride();
+
         $this->assertInstanceOf(Response::class, $this->controller->deleteAction(1));
 
         $this->assertSame($this->admin, $this->parameters['admin']);
@@ -1299,6 +1328,7 @@ class CRUDControllerTest extends TestCase
 
         $this->assertSame([], $this->session->getFlashBag()->all());
         $this->assertSame('@SonataAdmin/CRUD/delete.html.twig', $this->template);
+        $this->assertSame(Request::METHOD_GET, $this->request->getMethod());
     }
 
     /**
@@ -1353,12 +1383,16 @@ class CRUDControllerTest extends TestCase
         $this->request->request->set('_method', Request::METHOD_DELETE);
         $this->request->request->set('_sonata_csrf_token', 'CSRF-INVALID');
 
+        Request::enableHttpMethodParameterOverride();
+
         try {
             $this->controller->deleteAction(1);
         } catch (HttpException $e) {
             $this->assertSame('The csrf token is not valid, CSRF attack?', $e->getMessage());
             $this->assertSame(400, $e->getStatusCode());
         }
+
+        $this->assertSame(Request::METHOD_DELETE, $this->request->getMethod());
     }
 
     public function testEditActionNotFoundException(): void
