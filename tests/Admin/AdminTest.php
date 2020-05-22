@@ -1840,13 +1840,13 @@ class AdminTest extends TestCase
         $datagridBuilder->expects($this->once())
             ->method('getBaseDatagrid')
             ->with($this->identicalTo($admin), [
-                '_sort_by'    => null,
+                '_sort_by' => null,
                 '_sort_order' => null,
             ])
             ->willReturn($datagrid)
         ;
 
-        $result=$admin->getDatagrid();
+        $result = $admin->getDatagrid();
         self::assertNotNull($result);
     }
 
@@ -1863,9 +1863,9 @@ class AdminTest extends TestCase
             ->method('getDefaultSortValues')
             ->willReturn([
                 '_sort_order' => Criteria::ASC,
-                '_sort_by'    => 'id',
-                '_page'       => 1,
-                '_per_page'   => 25,
+                '_sort_by' => 'id',
+                '_page' => 1,
+                '_per_page' => 25,
             ])
         ;
 
@@ -1892,7 +1892,7 @@ class AdminTest extends TestCase
             ->method('getValues')
             ->willReturn([
                 '_sort_order' => Criteria::DESC,
-                '_sort_by'    => 'title',
+                '_sort_by' => 'title',
             ])
         ;
 
@@ -1913,7 +1913,7 @@ class AdminTest extends TestCase
 
         $expected = [
             '_sort_order' => Criteria::DESC,
-            '_sort_by'    => 'title',
+            '_sort_by' => 'title',
         ];
 
         self::assertSame($expected, $values);
