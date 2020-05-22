@@ -14,13 +14,15 @@
                 <div class="box-body">
                     <div class="sonata-ba-collapsed-fields">
                         {% if form_group.description %}
-                            <p>{{ form_group.description|trans({}, form_group.translation_domain ?: admin.translationDomain) }}</p>
+                            <p>{{ form_group.description|trans({}, form_group.translation_domain ?: admin.translationDomain)|raw }}</p>
                         {% endif %}
 
                         {% for field_name in form_group.fields|filter(field_name => form[field_name] is defined) %}
-                            {{ form_row(form[field_name])}}
+                            {{ form_row(form[field_name]) }}
                         {% else %}
-                            <em>{{ 'message_form_group_empty'|trans({}, 'SonataAdminBundle') }}</em>
+                            {% if form_group.empty_message != false %}
+                                <em>{{ form_group.empty_message|trans({}, form_group.empty_message_translation_domain) }}</em>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>

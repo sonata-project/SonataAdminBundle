@@ -17,13 +17,14 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminSearchBlockService;
 use Sonata\AdminBundle\Search\SearchHandler;
-use Sonata\BlockBundle\Test\AbstractBlockServiceTestCase;
-use Sonata\BlockBundle\Test\FakeTemplating;
+use Sonata\BlockBundle\Test\BlockServiceTestCase;
+use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
+class AdminSearchBlockServiceTest extends BlockServiceTestCase
 {
     /**
      * @var Pool
@@ -39,17 +40,22 @@ class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
     {
         parent::setUp();
 
-        $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
-        $this->searchHandler = $this->getMockBuilder(SearchHandler::class)->disableOriginalConstructor()->getMock();
+        $this->pool = $this->createMock(Pool::class);
+        $this->searchHandler = $this->createMock(SearchHandler::class);
     }
 
     public function testDefaultSettings(): void
     {
-        $blockService = new AdminSearchBlockService('foo', $this->templating, $this->pool, $this->searchHandler);
+        $blockService = new AdminSearchBlockService(
+            $this->createMock(Environment::class),
+            null,
+            $this->pool,
+            $this->searchHandler
+        );
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([
-            'admin_code' => false,
+            'admin_code' => '',
             'query' => '',
             'page' => 0,
             'per_page' => 10,
@@ -59,23 +65,23 @@ class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
 
     public function testGlobalSearchReturnsEmptyWhenFiltersAreDisabled(): void
     {
-        $admin = $this->getMockBuilder(AbstractAdmin::class)->disableOriginalConstructor()->getMock();
-        $templating = $this->getMockBuilder(FakeTemplating::class)->disableOriginalConstructor()->getMock();
+        $admin = $this->createMock(AbstractAdmin::class);
 
-        $blockService = new AdminSearchBlockService('foo', $templating, $this->pool, $this->searchHandler);
+        $blockService = new AdminSearchBlockService(
+            $this->createMock(Environment::class),
+            null,
+            $this->pool,
+            $this->searchHandler
+        );
         $blockContext = $this->getBlockContext($blockService);
 
         $this->searchHandler->expects(self::once())->method('search')->willReturn(false);
         $this->pool->expects(self::once())->method('getAdminByAdminCode')->willReturn($admin);
         $admin->expects(self::once())->method('checkAccess')->with('list')->willReturn(true);
 
-        // Make sure the template is never generated (empty response is required,
-        // but the FakeTemplate always returns an empty response)
-        $templating->expects(self::never())->method('renderResponse');
-
         $response = $blockService->execute($blockContext);
 
         static::assertSame('', $response->getContent());
-        static::assertSame(204, $response->getStatusCode());
+        static::assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 }

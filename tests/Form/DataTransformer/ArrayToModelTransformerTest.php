@@ -23,9 +23,9 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity;
  */
 class ArrayToModelTransformerTest extends TestCase
 {
-    private $modelManager = null;
+    private $modelManager;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
     }
@@ -45,7 +45,7 @@ class ArrayToModelTransformerTest extends TestCase
     {
         $transformer = new ArrayToModelTransformer($this->modelManager, FooEntity::class);
 
-        $this->modelManager->expects($this->any())
+        $this->modelManager
             ->method('modelReverseTransform')
             ->willReturn(new FooEntity());
 

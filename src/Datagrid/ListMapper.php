@@ -22,6 +22,8 @@ use Sonata\AdminBundle\Mapper\BaseMapper;
 /**
  * This class is used to simulate the Form API.
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ListMapper extends BaseMapper
@@ -63,15 +65,32 @@ class ListMapper extends BaseMapper
     }
 
     /**
-     * @param string      $name
-     * @param string|null $type
+     * @param FieldDescriptionInterface|string $name
+     * @param string|null                      $type
      *
-     * @throws \RuntimeException
+     * @throws \LogicException
      *
      * @return $this
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = [])
     {
+        // Default sort on "associated_property"
+        if (isset($fieldDescriptionOptions['associated_property'])) {
+            if (!isset($fieldDescriptionOptions['sortable'])) {
+                $fieldDescriptionOptions['sortable'] = true;
+            }
+            if (!isset($fieldDescriptionOptions['sort_parent_association_mappings'])) {
+                $fieldDescriptionOptions['sort_parent_association_mappings'] = [[
+                    'fieldName' => $name,
+                ]];
+            }
+            if (!isset($fieldDescriptionOptions['sort_field_mapping'])) {
+                $fieldDescriptionOptions['sort_field_mapping'] = [
+                    'fieldName' => $fieldDescriptionOptions['associated_property'],
+                ];
+            }
+        }
+
         // Change deprecated inline action "view" to "show"
         if ('_action' === $name && 'actions' === $type) {
             if (isset($fieldDescriptionOptions['actions']['view'])) {
@@ -92,12 +111,23 @@ class ListMapper extends BaseMapper
             $fieldDescriptionOptions['virtual_field'] = true;
         }
 
+        if (\array_key_exists('identifier', $fieldDescriptionOptions) && !\is_bool($fieldDescriptionOptions['identifier'])) {
+            @trigger_error(
+                'Passing a non boolean value for the "identifier" option is deprecated since sonata-project/admin-bundle 3.51 and will throw an exception in 4.0.',
+                E_USER_DEPRECATED
+            );
+
+            $fieldDescriptionOptions['identifier'] = (bool) $fieldDescriptionOptions['identifier'];
+            // NEXT_MAJOR: Remove the previous 6 lines and use commented line below it instead
+            // throw new \InvalidArgumentException(sprintf('Value for "identifier" option must be boolean, %s given.', gettype($fieldDescriptionOptions['identifier'])));
+        }
+
         if ($name instanceof FieldDescriptionInterface) {
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
         } elseif (\is_string($name)) {
             if ($this->admin->hasListFieldDescription($name)) {
-                throw new \RuntimeException(sprintf(
+                throw new \LogicException(sprintf(
                     'Duplicate field name "%s" in list mapper. Names should be unique.',
                     $name
                 ));
@@ -109,13 +139,14 @@ class ListMapper extends BaseMapper
                 $fieldDescriptionOptions
             );
         } else {
-            throw new \RuntimeException(
+            throw new \TypeError(
                 'Unknown field name in list mapper. '
                 .'Field name should be either of FieldDescriptionInterface interface or string.'
             );
         }
 
-        if (null === $fieldDescription->getLabel()) {
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+        if (null === $fieldDescription->getLabel('sonata_deprecation_mute')) {
             $fieldDescription->setOption(
                 'label',
                 $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'list', 'label')

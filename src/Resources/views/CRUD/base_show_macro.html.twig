@@ -26,7 +26,7 @@
                             {% block show_field %}
                                 <tr class="sonata-ba-view-container">
                                     {% if elements[field_name] is defined %}
-                                        {{ elements[field_name]|render_view_element(object)}}
+                                        {{ elements[field_name]|render_view_element(object) }}
                                     {% endif %}
                                 </tr>
                             {% endblock %}

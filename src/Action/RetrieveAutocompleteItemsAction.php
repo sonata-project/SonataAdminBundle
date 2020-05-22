@@ -20,6 +20,7 @@ use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 final class RetrieveAutocompleteItemsAction
@@ -96,7 +97,7 @@ final class RetrieveAutocompleteItemsAction
         $targetAdmin->checkAccess($targetAdminAccessAction);
 
         if (mb_strlen($searchText, 'UTF-8') < $minimumInputLength) {
-            return new JsonResponse(['status' => 'KO', 'message' => 'Too short search string.'], 403);
+            return new JsonResponse(['status' => 'KO', 'message' => 'Too short search string.'], Response::HTTP_FORBIDDEN);
         }
 
         $targetAdmin->setFilterPersister(null);
@@ -107,7 +108,7 @@ final class RetrieveAutocompleteItemsAction
                 throw new \RuntimeException('Callback does not contain callable function.');
             }
 
-            \call_user_func($callback, $targetAdmin, $property, $searchText);
+            $callback($targetAdmin, $property, $searchText);
         } else {
             if (\is_array($property)) {
                 // multiple properties
@@ -116,7 +117,8 @@ final class RetrieveAutocompleteItemsAction
                         throw new \RuntimeException(sprintf(
                             'To retrieve autocomplete items,'
                             .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
-                            $prop, \get_class($targetAdmin)
+                            $prop,
+                            \get_class($targetAdmin)
                         ));
                     }
 
@@ -154,7 +156,7 @@ final class RetrieveAutocompleteItemsAction
                     throw new \RuntimeException('Option "to_string_callback" does not contain callable function.');
                 }
 
-                $label = \call_user_func($toStringCallback, $entity, $property);
+                $label = $toStringCallback($entity, $property);
             } else {
                 $resultMetadata = $targetAdmin->getObjectMetadata($entity);
                 $label = $resultMetadata->getTitle();

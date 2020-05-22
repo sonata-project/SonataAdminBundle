@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BaseFieldDescription;
 use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -60,14 +61,19 @@ class DatagridMapperTest extends TestCase
 
         $admin = $this->createMock(AdminInterface::class);
 
-        $datagridBuilder->expects($this->any())
+        $datagridBuilder
             ->method('addFilter')
-            ->willReturnCallback(function ($datagrid, $type, $fieldDescription, $admin): void {
+            ->willReturnCallback(function (
+                Datagrid $datagrid,
+                ?string $type,
+                FieldDescriptionInterface $fieldDescription,
+                AdminInterface $admin
+            ): void {
                 $fieldDescription->setType($type);
 
                 $filter = $this->getMockForAbstractClass(Filter::class);
 
-                $filter->expects($this->any())
+                $filter
                     ->method('getDefaultOptions')
                     ->willReturn(['foo_default_option' => 'bar_default']);
 
@@ -77,9 +83,9 @@ class DatagridMapperTest extends TestCase
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
-        $modelManager->expects($this->any())
+        $modelManager
             ->method('getNewFieldDescriptionInstance')
-            ->willReturnCallback(function ($class, $name, array $options = []) {
+            ->willReturnCallback(function (?string $class, string $name, array $options = []): BaseFieldDescription {
                 $fieldDescription = $this->getFieldDescriptionMock();
                 $fieldDescription->setName($name);
                 $fieldDescription->setOptions($options);
@@ -87,13 +93,13 @@ class DatagridMapperTest extends TestCase
                 return $fieldDescription;
             });
 
-        $admin->expects($this->any())
+        $admin
             ->method('getModelManager')
             ->willReturn($modelManager);
 
-        $admin->expects($this->any())
+        $admin
             ->method('isGranted')
-            ->willReturnCallback(static function (string $name, object $object = null): bool {
+            ->willReturnCallback(static function (string $name, ?object $object = null): bool {
                 return self::DEFAULT_GRANTED_ROLE === $name;
             });
 
@@ -205,7 +211,10 @@ class DatagridMapperTest extends TestCase
 
     public function testAddException(): void
     {
-        $this->expectException(\RuntimeException::class, 'Unknown field name in datagrid mapper. Field name should be either of FieldDescriptionInterface interface or string');
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(
+            'Unknown field name in datagrid mapper. Field name should be either of FieldDescriptionInterface interface or string'
+        );
 
         $this->datagridMapper->add(12345);
     }
@@ -216,7 +225,7 @@ class DatagridMapperTest extends TestCase
         $this->datagridMapper->getAdmin()
             ->expects($this->exactly(2))
             ->method('hasFilterFieldDescription')
-            ->willReturnCallback(static function ($name) use (&$tmpNames) {
+            ->willReturnCallback(static function (string $name) use (&$tmpNames): bool {
                 if (isset($tmpNames[$name])) {
                     return true;
                 }
@@ -225,7 +234,8 @@ class DatagridMapperTest extends TestCase
                 return false;
             });
 
-        $this->expectException(\RuntimeException::class, 'Duplicate field name "fooName" in datagrid mapper. Names should be unique.');
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Duplicate field name "fooName" in datagrid mapper. Names should be unique.');
 
         $this->datagridMapper->add('fooName');
         $this->datagridMapper->add('fooName');

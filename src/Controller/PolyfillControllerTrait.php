@@ -32,7 +32,7 @@ trait PolyfillControllerTrait
         $this->proxyToController($methodName, $arguments);
     }
 
-    public function render($view, array $parameters = [], Response $response = null)
+    public function render($view, array $parameters = [], ?Response $response = null)
     {
         return $this->__call('render', [$view, $parameters, $response]);
     }
@@ -61,7 +61,7 @@ class PolyfillProxyContainer extends Controller
 
     public function proxyCall($method, $arguments)
     {
-        return \call_user_func_array([$this, $method], $arguments);
+        return $this->{$method}(...$arguments);
     }
 }
 

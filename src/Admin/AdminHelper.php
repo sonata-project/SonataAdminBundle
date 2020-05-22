@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Admin;
 
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Inflector\Inflector;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ODM\MongoDB\PersistentCollection;
 use Doctrine\ORM\PersistentCollection as DoctrinePersistentCollection;
 use Sonata\AdminBundle\Exception\NoValueException;
@@ -25,10 +25,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminHelper
 {
+    /**
+     * @var string
+     */
+    private const FORM_FIELD_DELETE = '_delete';
+
     /**
      * @var Pool
      */
@@ -53,6 +60,8 @@ class AdminHelper
                 return $formBuilder;
             }
         }
+
+        return null;
     }
 
     /**
@@ -67,6 +76,8 @@ class AdminHelper
                 return $formView;
             }
         }
+
+        return null;
     }
 
     /**
@@ -86,9 +97,6 @@ class AdminHelper
     /**
      * Note:
      *   This code is ugly, but there is no better way of doing it.
-     *   For now the append form element action used to add a new row works
-     *   only for direct FieldDescription (not nested one).
-     *
      *
      * @param object $subject
      * @param string $elementId
@@ -102,7 +110,7 @@ class AdminHelper
     {
         // child rows marked as toDelete
         $toDelete = [];
-        // retrieve the subject
+
         $formBuilder = $admin->getFormBuilder();
 
         // get the field element
@@ -115,9 +123,9 @@ class AdminHelper
                 $i = 0;
                 foreach ($formData[$childFormBuilder->getName()] as $name => &$field) {
                     $toDelete[$i] = false;
-                    if (\array_key_exists('_delete', $field)) {
+                    if (\array_key_exists(self::FORM_FIELD_DELETE, $field)) {
                         $toDelete[$i] = true;
-                        unset($field['_delete']);
+                        unset($field[self::FORM_FIELD_DELETE]);
                     }
                     ++$i;
                 }
@@ -133,11 +141,10 @@ class AdminHelper
         //if childFormBuilder was not found resulted in fatal error getName() method call on non object
         if (!$childFormBuilder) {
             $propertyAccessor = $this->pool->getPropertyAccessor();
-            $entity = $admin->getSubject();
 
-            $path = $this->getElementAccessPath($elementId, $entity);
+            $path = $this->getElementAccessPath($elementId, $subject);
 
-            $collection = $propertyAccessor->getValue($entity, $path);
+            $collection = $propertyAccessor->getValue($subject, $path);
 
             if ($collection instanceof DoctrinePersistentCollection || $collection instanceof PersistentCollection) {
                 //since doctrine 2.4
@@ -149,7 +156,7 @@ class AdminHelper
             }
 
             $collection->add(new $entityClassName());
-            $propertyAccessor->setValue($entity, $path, $collection);
+            $propertyAccessor->setValue($subject, $path, $collection);
 
             $fieldDescription = null;
         } else {
@@ -172,14 +179,6 @@ class AdminHelper
             $objectCount = null === $value ? 0 : \count($value);
             $postCount = \count($data[$childFormBuilder->getName()]);
 
-            $fields = array_keys($fieldDescription->getAssociationAdmin()->getFormFieldDescriptions());
-
-            // for now, not sure how to do that
-            $value = [];
-            foreach ($fields as $name) {
-                $value[$name] = '';
-            }
-
             // add new elements to the subject
             while ($objectCount < $postCount) {
                 // append a new instance into the object
@@ -187,7 +186,10 @@ class AdminHelper
                 ++$objectCount;
             }
 
-            $this->addNewInstance($form->getData(), $fieldDescription);
+            $newInstance = $this->addNewInstance($form->getData(), $fieldDescription);
+
+            $associationAdmin = $fieldDescription->getAssociationAdmin();
+            $associationAdmin->setSubject($newInstance);
         }
 
         $finalForm = $admin->getFormBuilder()->getForm();
@@ -200,7 +202,9 @@ class AdminHelper
         if (\count($toDelete) > 0) {
             $i = 0;
             foreach ($finalForm->get($childFormBuilder->getName()) as $childField) {
-                $childField->get('_delete')->setData(isset($toDelete[$i]) && $toDelete[$i]);
+                if ($childField->has(self::FORM_FIELD_DELETE)) {
+                    $childField->get(self::FORM_FIELD_DELETE)->setData($toDelete[$i] ?? false);
+                }
                 ++$i;
             }
         }
@@ -214,29 +218,54 @@ class AdminHelper
      * @param object $object
      *
      * @throws \RuntimeException
+     *
+     * @return object
      */
     public function addNewInstance($object, FieldDescriptionInterface $fieldDescription)
     {
         $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
         $mapping = $fieldDescription->getAssociationMapping();
+        $parentMappings = $fieldDescription->getParentAssociationMappings();
 
-        $method = sprintf('add%s', Inflector::classify($mapping['fieldName']));
+        $inflector = InflectorFactory::create()->build();
 
-        if (!method_exists($object, $method)) {
+        foreach ($parentMappings as $parentMapping) {
+            $method = sprintf('get%s', $inflector->classify($parentMapping['fieldName']));
+
+            if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
+                /*
+                 * NEXT_MAJOR: Use BadMethodCallException instead
+                 */
+                throw new \RuntimeException(
+                    sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
+                );
+            }
+
+            $object = $object->$method();
+        }
+
+        $method = sprintf('add%s', $inflector->classify($mapping['fieldName']));
+
+        if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
             $method = rtrim($method, 's');
 
-            if (!method_exists($object, $method)) {
-                $method = sprintf('add%s', Inflector::classify(Inflector::singularize($mapping['fieldName'])));
+            if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
+                $method = sprintf('add%s', $inflector->classify($inflector->singularize($mapping['fieldName'])));
 
-                if (!method_exists($object, $method)) {
+                if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
+                    /*
+                     * NEXT_MAJOR: Use BadMethodCallException instead
+                     */
                     throw new \RuntimeException(
-                        sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object))
+                        sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
                     );
                 }
             }
         }
 
         $object->$method($instance);
+
+        return $instance;
     }
 
     /**
@@ -250,20 +279,20 @@ class AdminHelper
      *
      * @return string
      *
-     * @deprecated Deprecated since version 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead
+     * @deprecated since sonata-project/admin-bundle 3.1. Use \Doctrine\Inflector\Inflector::classify() instead
      */
     public function camelize($property)
     {
         @trigger_error(
             sprintf(
                 'The %s method is deprecated since 3.1 and will be removed in 4.0. '.
-                'Use \Doctrine\Common\Inflector\Inflector::classify() instead.',
+                'Use \Doctrine\Inflector\Inflector::classify() instead.',
                 __METHOD__
             ),
             E_USER_DEPRECATED
         );
 
-        return Inflector::classify($property);
+        return InflectorFactory::create()->build()->classify($property);
     }
 
     /**

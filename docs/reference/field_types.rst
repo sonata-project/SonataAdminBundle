@@ -15,7 +15,7 @@ date            display a formatted date. Accepts an optional ``format`` paramet
 datetime        display a formatted date and time. Accepts an optional ``format`` and ``timezone`` parameter
 text            display a text
 textarea        display a textarea
-trans           translate the value with a provided ``catalogue`` option
+trans           translate the value with a provided ``catalogue`` (translation domain) and ``format`` (sprintf format) option
 string          display a text
 number          display a number
 currency        display a number with a provided ``currency`` option
@@ -60,6 +60,52 @@ This is currently limited to scalar types (text, integer, url...) and choice typ
 More types might be provided based on the persistency layer defined. Please refer to their
 related documentations.
 
+Array
+^^^^^^
+
+You can use the following parameters:
+
+======================================  ============================================================
+Parameter                               Description
+======================================  ============================================================
+**inline**                              If `true`, the array will be displayed as a single line,
+                                        the whole array and each array level will be wrapped up with square brackets.
+                                        If `false`, the array will be displayed as an unordered list.
+                                        For the `show` action, the default value is `true` and for the `list` action
+                                        it's `false`.
+**display**                             Define what should be displayed: keys, values or both.
+                                        Defaults to `'both'`.
+                                        Available options are: `'both'`, `'keys'`, `'values'`.
+**key_translation_domain**              This option determines if the keys should be translated and
+                                        in which translation domain.
+
+                                        The values of this option can be `true` (use admin
+                                        translation domain), `false` (disable translation), `null`
+                                        (uses the parent translation domain or the default domain)
+                                        or a string which represents the exact translation domain to use.
+**value_translation_domain**            This option determines if the values should be translated and
+                                        in which translation domain.
+
+                                        The values of this option can be `true` (use admin
+                                        translation domain), `false` (disable translation), `null`
+                                        (uses the parent translation domain or the default domain)
+                                        or a string which represents the exact translation domain to use.
+======================================  ============================================================
+
+.. code-block:: php
+
+    protected function configureListFields(ListMapper $listMapper): void
+    {
+        $listMapper
+            ->add('options', 'array', [
+                'inline' => true,
+                'display' => 'both',
+                'key_translation_domain' => true,
+                'value_translation_domain' => null
+            ])
+        ;
+    }
+
 Choice
 ^^^^^^
 
@@ -91,9 +137,7 @@ Parameter                               Description
         ;
     }
 
-The ``choice`` field type also supports multiple values that can be separated by a ``delimiter``.
-
-.. code-block:: php
+The ``choice`` field type also supports multiple values that can be separated by a ``delimiter``::
 
     protected function configureListFields(ListMapper $listMapper)
     {
@@ -200,8 +244,8 @@ Parameter                   Description
 **strip**                   Strip HTML and PHP tags from a string
 **truncate**                Truncate a string to ``length`` characters beginning from start. Implies strip. Beware of HTML entities. Make sure to configure your HTML editor to disable entities if you want to use truncate. For instance, use `config.entities <http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-entities>`_ for ckeditor
 **truncate.length**         The length to truncate the string to (default ``30``)
-**truncate.preserve**       Preserve whole words (default ``false``)
-**truncate.separator**      Separator to be appended to the trimmed string (default ``...``)
+**truncate.cut**            Determines if whole words must be cut (default ``true``)
+**truncate.ellipsis**       Ellipsis to be appended to the trimmed string (default ``...``)
 ========================    ==================================================================
 
 .. code-block:: php
@@ -238,7 +282,7 @@ Parameter                   Description
             // `Creating a Template for the Field...`
             ->add('content', 'html', [
                 'truncate' => [
-                    'preserve' => true
+                    'cut' => false
                 ]
             ])
 
@@ -246,7 +290,7 @@ Parameter                   Description
             // `Creating a Template for the Fi, etc.`
             ->add('content', 'html', [
                 'truncate' => [
-                    'separator' => ', etc.'
+                    'ellipsis' => ', etc.'
                 ]
             ])
 
@@ -255,9 +299,46 @@ Parameter                   Description
             ->add('content', 'html', [
                 'truncate' => [
                     'length' => 20,
-                    'preserve' => true,
-                    'separator' => '***'
+                    'cut' => false,
+                    'ellipsis' => '***'
                 ]
             ])
         ;
     }
+
+Create your own field type
+--------------------------
+
+Field types are Twig templates that are registered in the configuration
+section matching your model manager. The example below uses
+``sonata_doctrine_orm_admin``.
+
+.. code-block:: yaml
+
+    # config/sonata_doctrine_orm_admin.yaml
+
+    sonata_doctrine_orm_admin:
+        templates:
+            types:
+                show: # or "list"
+                    dump: 'fieldtypes/show_dump.html.twig'
+
+Now add a twig file to your ``templates/`` directory. The example below
+uses ``@SonataAdmin/CRUD/base_show_field.html.twig`` to provide the row
+layout used by the "show" template.
+Within this base template you can override the ``field`` block to
+rewrite the contents of the field content cell in this row.
+
+.. code-block:: html+twig
+
+    {# templates/fieldtypes/show_dump.html.twig #}
+
+    {% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+    {% block field %}
+        {{ dump(value) }}
+    {% endblock %}
+
+Take a look at the default templates in
+``@SonataAdmin/Resources/views/CRUD`` to get an idea of the
+possibilities when writing field templates.

@@ -47,14 +47,14 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
     }
 
-    public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, $action, ?AdminInterface $childAdmin = null)
     {
     }
 
-    public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, $action, ?AdminInterface $childAdmin = null)
     {
         // Use configureSideMenu not to mess with previous overrides
-        // TODO remove once deprecation period is over
+        // NEXT_MAJOR: remove this line
         $this->configureSideMenu($admin, $menu, $action, $childAdmin);
     }
 
@@ -118,15 +118,23 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
     }
 
+    /**
+     * @param array  $list
+     * @param string $action
+     * @param object $object
+     *
+     * @return array
+     */
     public function configureActionButtons(AdminInterface $admin, $list, $action, $object)
     {
         return $list;
     }
 
-    /**
-     * Returns a list of default filters.
-     */
     public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues)
+    {
+    }
+
+    public function configureDefaultSortValues(AdminInterface $admin, array &$sortValues): void
     {
     }
 }

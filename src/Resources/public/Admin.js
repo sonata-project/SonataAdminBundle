@@ -97,9 +97,11 @@ var Admin = {
             Admin.log('[core|setup_select2] configure Select2 on', subject);
 
             jQuery('select:not([data-sonata-select2="false"])', subject).each(function() {
-                var select            = jQuery(this);
-                var allowClearEnabled = false;
-                var popover           = select.data('popover');
+                var select                  = jQuery(this);
+                var allowClearEnabled       = false;
+                var popover                 = select.data('popover');
+                var maximumSelectionSize    = null;
+                var minimumResultsForSearch = 10;
 
                 select.removeClass('form-control');
 
@@ -109,6 +111,14 @@ var Admin = {
                     allowClearEnabled = false;
                 }
 
+                if (select.attr('data-sonata-select2-maximumSelectionSize')) {
+                    maximumSelectionSize = select.attr('data-sonata-select2-maximumSelectionSize');
+                }
+
+                if (select.attr('data-sonata-select2-minimumResultsForSearch')) {
+                    minimumResultsForSearch = select.attr('data-sonata-select2-minimumResultsForSearch');
+                }
+
                 select.select2({
                     width: function(){
                         // Select2 v3 and v4 BC. If window.Select2 is defined, then the v3 is installed.
@@ -116,8 +126,9 @@ var Admin = {
                         return Admin.get_select2_width(window.Select2 ? this.element : select);
                     },
                     dropdownAutoWidth: true,
-                    minimumResultsForSearch: 10,
-                    allowClear: allowClearEnabled
+                    minimumResultsForSearch: minimumResultsForSearch,
+                    allowClear: allowClearEnabled,
+                    maximumSelectionSize: maximumSelectionSize
                 });
 
                 if (undefined !== popover) {
@@ -235,10 +246,10 @@ var Admin = {
     /**
      * NEXT_MAJOR: remove this function.
      *
-     * @deprecated in version 3.0
+     * @deprecated since sonata-project/admin-bundle 3.0
      */
     add_pretty_errors: function() {
-        console.warn('Admin.add_pretty_errors() was deprecated in version 3.0');
+        console.warn('Admin.add_pretty_errors() is deprecated since sonata-project/admin-bundle 3.0');
     },
 
     stopEvent: function(event) {

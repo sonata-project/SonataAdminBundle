@@ -17,9 +17,12 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Sonata\AdminBundle\Maker\AdminMaker;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\FileManager;
 use Symfony\Bundle\MakerBundle\Generator;
+use Symfony\Bundle\MakerBundle\Util\AutoloaderUtil;
+use Symfony\Bundle\MakerBundle\Util\MakerFileLinkFormatter;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -63,32 +66,37 @@ class AdminMakerTest extends TestCase
      */
     private $servicesFile;
 
+    /**
+     * @var Filesystem
+     */
+    private $filesystem;
+
     protected function setup(): void
     {
-        if (!class_exists('Symfony\Component\Console\CommandLoader\CommandLoaderInterface')) {
-            $this->markTestSkipped('Test only available for SF 3.4');
-        }
-
         $managerOrmProxy = $this->prophesize(ModelManagerInterface::class);
-        $managerOrmProxy->getExportFields(Argument::exact('Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo'))
+        $managerOrmProxy->getExportFields(Argument::exact(Foo::class))
             ->willReturn(['bar', 'baz']);
 
         $this->modelManagers = ['sonata.admin.manager.orm' => $managerOrmProxy->reveal()];
         $this->servicesFile = sprintf('%s.yml', lcg_value());
-        $this->projectDirectory = sys_get_temp_dir();
+        $this->projectDirectory = sys_get_temp_dir().'/sonata-admin-bundle/';
+        $this->filesystem = new Filesystem();
     }
 
     protected function tearDown(): void
     {
-        @unlink($this->projectDirectory.'/config/'.$this->servicesFile);
+        $this->filesystem->remove($this->projectDirectory);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testExecute(): void
     {
         $maker = new AdminMaker($this->projectDirectory, $this->modelManagers);
 
         $in = [
-            'model' => \Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo::class,
+            'model' => Foo::class,
             '--admin' => 'FooAdmin',
             '--controller' => 'FooAdminController',
             '--services' => $this->servicesFile,
@@ -109,10 +117,22 @@ class AdminMakerTest extends TestCase
         $this->output = new StreamOutput(fopen('php://memory', 'w', false));
 
         $this->io = new ConsoleStyle($this->input, $this->output);
-        $fileManager = new FileManager(new Filesystem(), '.');
-        $fileManager->setIO($this->io);
-        $this->generator = new Generator($fileManager, 'Sonata\AdminBundle\Tests');
+        $autoloaderUtil = $this->createMock(AutoloaderUtil::class);
+        $autoloaderUtil
+            ->method('getPathForFutureClass')
+            ->willReturnCallback(function (string $className): string {
+                return $this->projectDirectory.'/'.str_replace('\\', '/', $className).'.php';
+            });
 
+        $fileManager = new FileManager(
+            $this->filesystem,
+            $autoloaderUtil,
+            new MakerFileLinkFormatter(null),
+            $this->projectDirectory
+        );
+        $fileManager->setIO($this->io);
+
+        $this->generator = new Generator($fileManager, 'Sonata\AdminBundle\Tests');
         $maker->generate($this->input, $this->io, $this->generator);
     }
 }

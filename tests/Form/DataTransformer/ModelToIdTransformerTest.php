@@ -19,9 +19,9 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 class ModelToIdTransformerTest extends TestCase
 {
-    private $modelManager = null;
+    private $modelManager;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
     }
@@ -57,7 +57,7 @@ class ModelToIdTransformerTest extends TestCase
     {
         $transformer = new ModelToIdTransformer($this->modelManager, 'TEST2');
 
-        $this->modelManager->expects($this->any())->method('find');
+        $this->modelManager->method('find');
 
         $this->assertSame($expected, $transformer->reverseTransform($value));
     }

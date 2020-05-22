@@ -29,7 +29,7 @@ You can enable it in your ``sonata_admin`` configuration:
         sonata_admin:
             options:
                 lock_protection: true
-                
+
 You must also configure each entity that you want to support by adding a
 field called ``$version`` on which the Doctrine ``Version`` feature is activated.
 
@@ -38,19 +38,19 @@ Using Annotations::
     // src/Entity/Car.php
 
     namespace App\Entity\Car;
-    
+
     use Doctrine\ORM\Mapping as ORM;
 
     class Car
     {
         // ...
-        
+
         /**
          * @ORM\Column(type="integer")
          * @ORM\Version
          */
         protected $version;
-        
+
         // ...
     }
 
@@ -58,14 +58,14 @@ Using XML:
 
 .. code-block:: xml
 
-    <?xml version="1.0" encoding="utf-8"?>
+    <?xml version="1.0" encoding="UTF-8"?>
     <!-- src/Resources/orm/Car.orm.xml -->
     <doctrine-mapping>
         <entity name="App\Entity\Car">
             <!-- ... -->
-    
+
             <field name="version" type="integer" version="true"/>
-    
+
             <!-- ... -->
         </entity>
     </doctrine-mapping>

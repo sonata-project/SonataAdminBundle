@@ -18,6 +18,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class GlobalVariables
@@ -25,7 +27,7 @@ class GlobalVariables
     /**
      * @var ContainerInterface
      *
-     * @deprecated Since version 3.5, will be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.5, will be removed in 4.0.
      * NEXT_MAJOR : remove this property
      */
     protected $container;
@@ -79,31 +81,31 @@ class GlobalVariables
      * @param string $code
      * @param string $action
      * @param array  $parameters
-     * @param int    $absolute
+     * @param int    $referenceType
      *
      * @return string
      */
-    public function url($code, $action, $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function url($code, $action, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         list($action, $code) = $this->getCodeAction($code, $action);
 
-        return $this->getAdminPool()->getAdminByAdminCode($code)->generateUrl($action, $parameters, $absolute);
+        return $this->getAdminPool()->getAdminByAdminCode($code)->generateUrl($action, $parameters, $referenceType);
     }
 
     /**
      * @param string $code
      * @param string $action
-     * @param mixed  $object
+     * @param object $object
      * @param array  $parameters
-     * @param int    $absolute
+     * @param int    $referenceType
      *
      * @return string
      */
-    public function objectUrl($code, $action, $object, $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function objectUrl($code, $action, $object, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         list($action, $code) = $this->getCodeAction($code, $action);
 
-        return $this->getAdminPool()->getAdminByAdminCode($code)->generateObjectUrl($action, $object, $parameters, $absolute);
+        return $this->getAdminPool()->getAdminByAdminCode($code)->generateObjectUrl($action, $object, $parameters, $referenceType);
     }
 
     public function getMosaicBackground(): ?string
@@ -111,7 +113,7 @@ class GlobalVariables
         return $this->mosaicBackground;
     }
 
-    private function getCodeAction($code, $action): array
+    private function getCodeAction(string $code, string $action): array
     {
         if ($pipe = strpos($code, '|')) {
             // convert code=sonata.page.admin.page|sonata.page.admin.snapshot, action=list

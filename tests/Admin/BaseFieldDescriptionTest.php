@@ -87,7 +87,7 @@ class BaseFieldDescriptionTest extends TestCase
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
         $description->setAdmin($admin);
-        $this->isInstanceOf(AdminInterface::class, $description->getAdmin());
+        $this->assertInstanceOf(AdminInterface::class, $description->getAdmin());
 
         $associationAdmin = $this->getMockForAbstractClass(AdminInterface::class);
         $associationAdmin->expects($this->once())->method('setParentFieldDescription');
@@ -95,11 +95,11 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertFalse($description->hasAssociationAdmin());
         $description->setAssociationAdmin($associationAdmin);
         $this->assertTrue($description->hasAssociationAdmin());
-        $this->isInstanceOf(AdminInterface::class, $description->getAssociationAdmin());
+        $this->assertInstanceOf(AdminInterface::class, $description->getAssociationAdmin());
 
         $parent = $this->getMockForAbstractClass(AdminInterface::class);
         $description->setParent($parent);
-        $this->isInstanceOf(AdminInterface::class, $description->getParent());
+        $this->assertInstanceOf(AdminInterface::class, $description->getParent());
     }
 
     public function testGetValue(): void
@@ -107,7 +107,7 @@ class BaseFieldDescriptionTest extends TestCase
         $description = new FieldDescription();
         $description->setOption('code', 'getFoo');
 
-        $mock = $this->getMockBuilder('stdClass')
+        $mock = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getFoo'])
             ->getMock();
         $mock->expects($this->once())->method('getFoo')->willReturn(42);
@@ -123,7 +123,7 @@ class BaseFieldDescriptionTest extends TestCase
         $description1->setOption('code', 'getWithOneParameter');
         $description1->setOption('parameters', $oneParameter);
 
-        $mock1 = $this->getMockBuilder('stdClass')
+        $mock1 = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getWithOneParameter'])
             ->getMock();
         $returnValue1 = $arg1 + 2;
@@ -140,11 +140,11 @@ class BaseFieldDescriptionTest extends TestCase
         $description2->setOption('code', 'getWithTwoParameters');
         $description2->setOption('parameters', $twoParameters);
 
-        $mock2 = $this->getMockBuilder('stdClass')
+        $mock2 = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getWithTwoParameters'])
             ->getMock();
         $returnValue2 = $arg1 + $arg2;
-        $mock2->expects($this->any())->method('getWithTwoParameters')->with($this->equalTo($arg1), $this->equalTo($arg2))->willReturn($returnValue2);
+        $mock2->method('getWithTwoParameters')->with($this->equalTo($arg1), $this->equalTo($arg2))->willReturn($returnValue2);
         $this->assertSame(42, $description2->getFieldValue($mock2, 'fake'));
 
         /*
@@ -152,7 +152,7 @@ class BaseFieldDescriptionTest extends TestCase
          */
         foreach (['getFake', 'isFake', 'hasFake'] as $method) {
             $description3 = new FieldDescription();
-            $mock3 = $this->getMockBuilder('stdClass')
+            $mock3 = $this->getMockBuilder(\stdClass::class)
                 ->setMethods([$method])
                 ->getMock();
 
@@ -178,7 +178,7 @@ class BaseFieldDescriptionTest extends TestCase
         $this->expectException(\Sonata\AdminBundle\Exception\NoValueException::class);
 
         $description = new FieldDescription();
-        $mock = $this->getMockBuilder('stdClass')
+        $mock = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getFoo'])
             ->getMock();
 
@@ -191,7 +191,7 @@ class BaseFieldDescriptionTest extends TestCase
     public function testGetVirtualValue(): void
     {
         $description = new FieldDescription();
-        $mock = $this->getMockBuilder('stdClass')
+        $mock = $this->getMockBuilder(\stdClass::class)
             ->setMethods(['getFoo'])
             ->getMock();
 

@@ -18,6 +18,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class DefaultRouteGenerator implements RouteGeneratorInterface
@@ -48,27 +50,31 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         $this->cache = $cache;
     }
 
-    public function generate($name, array $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function generate($name, array $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        return $this->router->generate($name, $parameters, $absolute);
+        return $this->router->generate($name, $parameters, $referenceType);
     }
 
     public function generateUrl(
         AdminInterface $admin,
         $name,
         array $parameters = [],
-        $absolute = UrlGeneratorInterface::ABSOLUTE_PATH
+        $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
     ) {
-        $arrayRoute = $this->generateMenuUrl($admin, $name, $parameters, $absolute);
+        $arrayRoute = $this->generateMenuUrl($admin, $name, $parameters, $referenceType);
 
-        return $this->router->generate($arrayRoute['route'], $arrayRoute['routeParameters'], $arrayRoute['routeAbsolute']);
+        return $this->router->generate(
+            $arrayRoute['route'],
+            $arrayRoute['routeParameters'],
+            $arrayRoute['routeAbsolute'] ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH
+        );
     }
 
     public function generateMenuUrl(
         AdminInterface $admin,
         $name,
         array $parameters = [],
-        $absolute = UrlGeneratorInterface::ABSOLUTE_PATH
+        $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
     ) {
         // if the admin is a child we automatically append the parent's id
         if ($admin->isChild() && $admin->hasRequest()) {
@@ -79,8 +85,10 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
                 unset($parameters['id']);
             }
 
-            for ($parentAdmin = $admin->getParent(); null !== $parentAdmin; $parentAdmin = $parentAdmin->getParent()) {
+            $parentAdmin = $admin->getParent();
+            while (null !== $parentAdmin) {
                 $parameters[$parentAdmin->getIdParameter()] = $admin->getRequest()->attributes->get($parentAdmin->getIdParameter());
+                $parentAdmin = $parentAdmin->isChild() ? $parentAdmin->getParent() : null;
             }
         }
 
@@ -114,7 +122,7 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
         return [
             'route' => $this->caches[$code],
             'routeParameters' => $parameters,
-            'routeAbsolute' => $absolute,
+            'routeAbsolute' => UrlGeneratorInterface::ABSOLUTE_URL === $referenceType,
         ];
     }
 

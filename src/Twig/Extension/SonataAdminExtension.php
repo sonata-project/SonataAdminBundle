@@ -26,7 +26,8 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Security\Acl\Voter\FieldVote;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatorInterface as LegacyTranslationInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Extension\AbstractExtension;
@@ -36,6 +37,8 @@ use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class SonataAdminExtension extends AbstractExtension
@@ -80,18 +83,37 @@ class SonataAdminExtension extends AbstractExtension
 
     public function __construct(
         Pool $pool,
-        LoggerInterface $logger = null,
-        TranslatorInterface $translator = null,
-        ContainerInterface $templateRegistries = null,
-        AuthorizationCheckerInterface $securityChecker = null
+        ?LoggerInterface $logger = null,
+        $translator = null,
+        ?ContainerInterface $templateRegistries = null,
+        ?AuthorizationCheckerInterface $securityChecker = null
     ) {
-        // NEXT_MAJOR: make the translator parameter required
+        // NEXT_MAJOR: make the translator parameter required, move TranslatorInterface check to method signature
+        // and remove this block
+
         if (null === $translator) {
             @trigger_error(
                 'The $translator parameter will be required fields with the 4.0 release.',
                 E_USER_DEPRECATED
             );
+        } else {
+            if (!$translator instanceof TranslatorInterface) {
+                @trigger_error(sprintf(
+                    'The $translator parameter should be an instance of "%s" and will be mandatory in 4.0.',
+                    TranslatorInterface::class
+                ), E_USER_DEPRECATED);
+            }
+
+            if (!$translator instanceof TranslatorInterface && !$translator instanceof LegacyTranslationInterface) {
+                throw new \TypeError(sprintf(
+                    'Argument 2 must be an instance of "%s" or preferably "%s", "%s given"',
+                    TranslatorInterface::class,
+                    LegacyTranslationInterface::class,
+                    \get_class($translator)
+                ));
+            }
         }
+
         $this->pool = $pool;
         $this->logger = $logger;
         $this->translator = $translator;
@@ -132,7 +154,7 @@ class SonataAdminExtension extends AbstractExtension
             ),
             new TwigFilter(
                 'sonata_urlsafeid',
-                [$this, 'getUrlsafeIdentifier']
+                [$this, 'getUrlSafeIdentifier']
             ),
             new TwigFilter(
                 'sonata_xeditable_type',
@@ -162,8 +184,8 @@ class SonataAdminExtension extends AbstractExtension
     /**
      * render a list element from the FieldDescription.
      *
-     * @param mixed $object
-     * @param array $params
+     * @param object $object
+     * @param array  $params
      *
      * @return string
      */
@@ -190,7 +212,7 @@ class SonataAdminExtension extends AbstractExtension
     }
 
     /**
-     * @deprecated since 3.33, to be removed in 4.0. Use render instead
+     * @deprecated since sonata-project/admin-bundle 3.33, to be removed in 4.0. Use render instead
      *
      * @return string
      */
@@ -234,6 +256,13 @@ class SonataAdminExtension extends AbstractExtension
         } catch (NoValueException $e) {
             if ($fieldDescription->getAssociationAdmin()) {
                 $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
+            } else {
+                // NEXT_MAJOR: throw the NoValueException.
+                @trigger_error(
+                    'Accessing a non existing value is deprecated'
+                    .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
+                    E_USER_DEPRECATED
+                );
             }
         }
 
@@ -243,7 +272,7 @@ class SonataAdminExtension extends AbstractExtension
     /**
      * render a view element.
      *
-     * @param mixed $object
+     * @param object $object
      *
      * @return string
      */
@@ -261,6 +290,13 @@ class SonataAdminExtension extends AbstractExtension
         try {
             $value = $fieldDescription->getValue($object);
         } catch (NoValueException $e) {
+            // NEXT_MAJOR: Remove the try catch in order to throw the NoValueException.
+            @trigger_error(
+                'Accessing a non existing value is deprecated'
+                .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
+                E_USER_DEPRECATED
+            );
+
             $value = null;
         }
 
@@ -295,12 +331,26 @@ class SonataAdminExtension extends AbstractExtension
         try {
             $baseValue = $fieldDescription->getValue($baseObject);
         } catch (NoValueException $e) {
+            // NEXT_MAJOR: Remove the try catch in order to throw the NoValueException.
+            @trigger_error(
+                'Accessing a non existing value is deprecated'
+                .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
+                E_USER_DEPRECATED
+            );
+
             $baseValue = null;
         }
 
         try {
             $compareValue = $fieldDescription->getValue($compareObject);
         } catch (NoValueException $e) {
+            // NEXT_MAJOR: Remove the try catch in order to throw the NoValueException.
+            @trigger_error(
+                'Accessing a non existing value is deprecated'
+                .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
+                E_USER_DEPRECATED
+            );
+
             $compareValue = null;
         }
 
@@ -367,7 +417,7 @@ class SonataAdminExtension extends AbstractExtension
                 ));
             }
 
-            return \call_user_func([$element, $method]);
+            return $element->{$method}();
         }
 
         if (\is_callable($propertyPath)) {
@@ -384,13 +434,13 @@ class SonataAdminExtension extends AbstractExtension
      *
      * @return string string representation of the id that is safe to use in a url
      */
-    public function getUrlsafeIdentifier($model, AdminInterface $admin = null)
+    public function getUrlSafeIdentifier($model, ?AdminInterface $admin = null)
     {
         if (null === $admin) {
             $admin = $this->pool->getAdminByClass(ClassUtils::getClass($model));
         }
 
-        return $admin->getUrlsafeIdentifier($model);
+        return $admin->getUrlSafeIdentifier($model);
     }
 
     /**
@@ -570,9 +620,12 @@ class SonataAdminExtension extends AbstractExtension
             $template = $environment->load($templateName);
         } catch (LoaderError $e) {
             @trigger_error(
-                'Relying on default template loading on field template loading exception '.
-                'is deprecated since 3.1 and will be removed in 4.0. '.
-                'A \Twig_Error_Loader exception will be thrown instead',
+                sprintf(
+                    'Relying on default template loading on field template loading exception '.
+                    'is deprecated since 3.1 and will be removed in 4.0. '.
+                    'A %s exception will be thrown instead',
+                    LoaderError::class
+                ),
                 E_USER_DEPRECATED
             );
             $template = $environment->load($defaultTemplate);

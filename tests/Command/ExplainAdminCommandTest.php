@@ -25,7 +25,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
@@ -58,19 +58,19 @@ class ExplainAdminCommandTest extends TestCase
     {
         $this->application = new Application();
 
-        $container = $this->createMock(ContainerInterface::class);
+        $container = new Container();
 
         $this->admin = $this->createMock(AdminInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getCode')
             ->willReturn('foo');
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
             ->willReturn('Acme\Entity\Foo');
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getBaseControllerName')
             ->willReturn(CRUDController::class);
 
@@ -78,80 +78,72 @@ class ExplainAdminCommandTest extends TestCase
         $routeCollection->add('list');
         $routeCollection->add('edit');
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getRoutes')
             ->willReturn($routeCollection);
 
         $fieldDescription1 = $this->createMock(FieldDescriptionInterface::class);
 
-        $fieldDescription1->expects($this->any())
+        $fieldDescription1
             ->method('getType')
             ->willReturn('text');
 
-        $fieldDescription1->expects($this->any())
+        $fieldDescription1
             ->method('getTemplate')
             ->willReturn('@SonataAdmin/CRUD/foo_text.html.twig');
 
         $fieldDescription2 = $this->createMock(FieldDescriptionInterface::class);
 
-        $fieldDescription2->expects($this->any())
+        $fieldDescription2
             ->method('getType')
             ->willReturn('datetime');
 
-        $fieldDescription2->expects($this->any())
+        $fieldDescription2
             ->method('getTemplate')
             ->willReturn('@SonataAdmin/CRUD/bar_datetime.html.twig');
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getListFieldDescriptions')
             ->willReturn([
                 'fooTextField' => $fieldDescription1,
                 'barDateTimeField' => $fieldDescription2,
             ]);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getFilterFieldDescriptions')
             ->willReturn([
                 'fooTextField' => $fieldDescription1,
                 'barDateTimeField' => $fieldDescription2,
             ]);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getFormTheme')
             ->willReturn(['@Foo/bar.html.twig']);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getFormFieldDescriptions')
             ->willReturn([
                 'fooTextField' => $fieldDescription1,
                 'barDateTimeField' => $fieldDescription2,
             ]);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('isChild')
             ->willReturn(true);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getParent')
             ->willReturnCallback(function () {
                 $adminParent = $this->createMock(AdminInterface::class);
 
-                $adminParent->expects($this->any())
+                $adminParent
                     ->method('getCode')
                     ->willReturn('foo_child');
 
                 return $adminParent;
             });
 
-        $container->expects($this->any())
-            ->method('get')
-            ->willReturnCallback(function (string $id): AdminInterface {
-                if ('acme.admin.foo' === $id) {
-                    return $this->admin;
-                }
-            });
-
-        $container->expects($this->any())->method('has')->willReturn(true);
+        $container->set('acme.admin.foo', $this->admin);
 
         $pool = new Pool($container, '', '');
         $pool->setAdminServiceIds(['acme.admin.foo', 'acme.admin.bar']);
@@ -190,25 +182,25 @@ class ExplainAdminCommandTest extends TestCase
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getModelManager')
             ->willReturn($modelManager);
 
         $formBuilder = $this->createMock(FormBuilderInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
              ->method('getFormBuilder')
              ->willReturn($formBuilder);
 
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getDatagridBuilder')
             ->willReturn($datagridBuilder);
 
         $listBuilder = $this->createMock(ListBuilderInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getListBuilder')
             ->willReturn($listBuilder);
 
@@ -240,25 +232,25 @@ class ExplainAdminCommandTest extends TestCase
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getModelManager')
             ->willReturn($modelManager);
 
         $formBuilder = $this->createMock(FormBuilderInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
              ->method('getFormBuilder')
              ->willReturn($formBuilder);
 
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getDatagridBuilder')
             ->willReturn($datagridBuilder);
 
         $listBuilder = $this->createMock(ListBuilderInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getListBuilder')
             ->willReturn($listBuilder);
 

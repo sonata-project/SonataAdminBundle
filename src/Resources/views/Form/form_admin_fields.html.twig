@@ -23,12 +23,20 @@ file that was distributed with this source code.
     {% endif %}
 {%- endblock form_errors %}
 
+{# NEXT_MAJOR: Remove this block and all the calls made to this block #}
 {% block sonata_help %}
 {% apply spaceless %}
 {% if sonata_help is defined and sonata_help %}
+    {% deprecated 'The "sonata_help" option is deprecated since sonata-project/admin-bundle 3.60, to be removed in 4.0. Use "help" instead.' %}
     <span class="help-block sonata-ba-field-widget-help">{{ sonata_help|raw }}</span>
 {% endif %}
 {% endapply %}
+{% endblock %}
+
+{% block form_help %}
+    {% apply spaceless %}
+        <span class="help-block sonata-ba-field-widget-help">{{ parent() }}</span>
+    {% endapply %}
 {% endblock %}
 
 {% block form_widget -%}
@@ -349,7 +357,7 @@ file that was distributed with this source code.
     {% set show_label = show_label ?? true %}
     <div class="form-group{% if errors|length > 0 %} has-error{% endif %}" id="sonata-ba-field-container-{{ id }}">
         {% if sonata_admin.field_description.options is defined %}
-            {% set label = sonata_admin.field_description.options.name|default(label)  %}
+            {% set label = sonata_admin.field_description.options.name|default(label) %}
         {% endif %}
 
         {% set div_class = 'sonata-ba-field' %}
@@ -395,6 +403,8 @@ file that was distributed with this source code.
             {% if sonata_admin is defined and sonata_admin_enabled and sonata_admin.field_description.help|default(false) %}
                 <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans({}, sonata_admin.field_description.translationDomain ?: admin.translationDomain)|raw }}</span>
             {% endif %}
+
+            {{ form_help(form) }}
         </div>
     </div>
 {% endblock form_row %}
@@ -470,16 +480,16 @@ file that was distributed with this source code.
 
 {% block sonata_type_immutable_array_widget_row %}
     {% apply spaceless %}
-        <div class="form-group{% if child.vars.errors|length > 0%} has-error{%endif%}" id="sonata-ba-field-container-{{ id }}-{{ key }}">
+        <div class="form-group{% if child.vars.errors|length > 0 %} has-error{% endif %}" id="sonata-ba-field-container-{{ id }}-{{ key }}">
 
             {{ form_label(child) }}
 
             {% set div_class = "" %}
             {% if sonata_admin.options['form_type'] == 'horizontal' %}
                 {% set div_class = 'col-sm-9' %}
-            {% endif%}
+            {% endif %}
 
-            <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if child.vars.errors|length > 0 %}sonata-ba-field-error{% endif %}">
+            <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }}{% if child.vars.errors|length > 0 %} sonata-ba-field-error{% endif %}">
                 {{ form_widget(child, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
                 {% set sonata_help = child.vars.sonata_help %}
                 {{ block('sonata_help') }}
@@ -533,12 +543,16 @@ file that was distributed with this source code.
                 };
 
                 jQuery.each(allFields, function (i, field) {
-                    jQuery(controlGroupIdFunc(field)).hide();
+                    var fieldContainer = controlGroupIdFunc(field);
+                    jQuery(fieldContainer).hide();
+                    jQuery(fieldContainer).find('[required="required"]').attr('data-required', 'required').removeAttr("required");
                 });
 
                 if (map[val]) {
                     jQuery.each(map[val], function (i, field) {
-                        jQuery(controlGroupIdFunc(field)).show();
+                        var fieldContainer = controlGroupIdFunc(field);
+                        jQuery(fieldContainer).show();
+                        jQuery(fieldContainer).find('[data-required="required"]').attr("required", "required");
                     });
                 }
             }
@@ -546,14 +560,14 @@ file that was distributed with this source code.
             {% if value is empty %}
                 choice_field_mask_show(showMaskChoiceEl.val());
             {% else %}
-                choice_field_mask_show('{{ value }}');
+                choice_field_mask_show('{{ value|e('js') }}');
             {% endif %}
         });
 
     </script>
 {% endblock %}
 
-{%  block sonata_type_choice_multiple_sortable %}
+{% block sonata_type_choice_multiple_sortable %}
     <input type="hidden" name="{{ full_name }}" id="{{ id }}" value="{{ value|join(',') }}" />
 
     <script>

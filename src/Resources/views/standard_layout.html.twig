@@ -169,11 +169,11 @@ file that was distributed with this source code.
                                                                         {% if menu.extra('safe_label', true) %}
                                                                             {{- label|raw -}}
                                                                         {% else %}
-                                                                            {{- label -}}
+                                                                            {{- label|truncate(100) -}}
                                                                         {% endif %}
                                                                     </a>
                                                                 {% else %}
-                                                                    <span>{{ label }}</span>
+                                                                    <span>{{ label|truncate(100) }}</span>
                                                                 {% endif %}
                                                             </li>
                                                         {% else %}

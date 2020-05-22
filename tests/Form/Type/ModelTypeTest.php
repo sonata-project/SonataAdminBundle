@@ -24,7 +24,7 @@ class ModelTypeTest extends TypeTestCase
 {
     protected $type;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -61,7 +61,7 @@ class ModelTypeTest extends TypeTestCase
     /**
      * @dataProvider getCompoundOptionTests
      */
-    public function testCompoundOption($expectedCompound, $multiple, $expanded): void
+    public function testCompoundOption(bool $expectedCompound, bool $multiple, bool $expanded): void
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
         $optionResolver = new OptionsResolver();

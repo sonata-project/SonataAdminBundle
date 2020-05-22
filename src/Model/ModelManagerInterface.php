@@ -20,10 +20,9 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 
 /**
- * A model manager is a bridge between the model classes and the admin
- * functionality.
+ * A model manager is a bridge between the model classes and the admin functionality.
  */
-interface ModelManagerInterface
+interface ModelManagerInterface extends DatagridManagerInterface
 {
     /**
      * @param string $class
@@ -34,21 +33,21 @@ interface ModelManagerInterface
     public function getNewFieldDescriptionInstance($class, $name, array $options = []);
 
     /**
-     * @param mixed $object
+     * @param object $object
      *
      * @throws ModelManagerException
      */
     public function create($object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      *
      * @throws ModelManagerException
      */
     public function update($object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      *
      * @throws ModelManagerException
      */
@@ -64,7 +63,7 @@ interface ModelManagerInterface
     /**
      * @param string $class
      *
-     * @return object an object matching the criteria or null if none match
+     * @return object|null an object matching the criteria or null if none match
      */
     public function findOneBy($class, array $criteria = []);
 
@@ -100,6 +99,10 @@ interface ModelManagerInterface
     /**
      * Get the identifier for the model type of this class.
      *
+     * NEXT_MAJOR: Remove this function in favor of getIdentifierFieldNames
+     *
+     * @deprecated Prefer to use getIdentifierFieldNames
+     *
      * @param string $class fully qualified class name
      *
      * @return string
@@ -111,7 +114,7 @@ interface ModelManagerInterface
      *
      * This returns an array to handle cases like a primary key that is
      * composed of multiple columns. If you need a string representation,
-     * use getNormalizedIdentifier resp. getUrlsafeIdentifier
+     * use getNormalizedIdentifier resp. getUrlSafeIdentifier
      *
      * @param object $model
      *
@@ -149,14 +152,14 @@ interface ModelManagerInterface
      *
      * @return string string representation of the id that is safe to use in a url
      */
-    public function getUrlsafeIdentifier($model);
+    public function getUrlSafeIdentifier($model);
 
     /**
      * Create a new instance of the model of the specified class.
      *
      * @param string $class
      *
-     * @return mixed
+     * @return object
      */
     public function getModelInstance($class);
 
@@ -170,26 +173,24 @@ interface ModelManagerInterface
     /**
      * Removes an element from the collection.
      *
-     * @param mixed $collection
-     * @param mixed $element
+     * @param array  $collection
+     * @param object $element
      */
     public function collectionRemoveElement(&$collection, &$element);
 
     /**
      * Add an element from the collection.
      *
-     * @param mixed $collection
-     * @param mixed $element
-     *
-     * @return mixed
+     * @param array  $collection
+     * @param object $element
      */
     public function collectionAddElement(&$collection, &$element);
 
     /**
      * Check if the element exists in the collection.
      *
-     * @param mixed $collection
-     * @param mixed $element
+     * @param array  $collection
+     * @param object $element
      *
      * @return bool
      */
@@ -198,28 +199,26 @@ interface ModelManagerInterface
     /**
      * Clear the collection.
      *
-     * @param mixed $collection
-     *
-     * @return mixed
+     * @param array $collection
      */
     public function collectionClear(&$collection);
 
     /**
      * Returns the parameters used in the columns header.
      *
-     * @return array
+     * NEXT_MAJOR: - Remove this function
+     *             - Replace admin.modelmanager.sortparameters to admin.datagrid.sortparameters
+     *
+     * @deprecated since sonata-project/admin-bundle 3.66. To be removed in 4.0.
+     *
+     * @return array<string, mixed>
      */
     public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid);
 
     /**
      * @param string $class
      *
-     * @return array
-     */
-    public function getDefaultSortValues($class);
-
-    /**
-     * @param string $class
+     * @return object
      */
     public function modelReverseTransform($class, array $array = []);
 
@@ -250,20 +249,24 @@ interface ModelManagerInterface
     /**
      * @param string $class
      *
-     * @return array
+     * @return string[]
      */
     public function getExportFields($class);
 
     /**
      * @param int $page
      *
-     * @return mixed
+     * NEXT_MAJOR: - Remove this function
+     *             - Replace admin.modelmanager.paginationparameters to admin.datagrid.paginationparameters
+     *
+     * @deprecated since sonata-project/admin-bundle 3.66. To be removed in 4.0.
+     *
+     * @return array<string, mixed>
      */
     public function getPaginationParameters(DatagridInterface $datagrid, $page);
 
     /**
      * @param string $class
-     * @param array  $idx
      */
     public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
 }

@@ -13,7 +13,7 @@ file that was distributed with this source code.
     {%- if value is empty -%}
         &nbsp;
     {%- else -%}
-        {% set options = field_description.options %}
+        {% set options = field_description.options|default(null) %}
         <time datetime="{{ value|date('c', 'UTC') }}" title="{{ value|date('c', 'UTC') }}">
             {{ value|date(options.format|default(null), options.timezone|default(null)) }}
         </time>

@@ -22,6 +22,8 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 /**
  * This class is used to simulate the Form API.
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ShowMapper extends BaseGroupedMapper
@@ -38,16 +40,16 @@ class ShowMapper extends BaseGroupedMapper
     }
 
     /**
-     * @param mixed $name
-     * @param mixed $type
+     * @param FieldDescriptionInterface|string $name
+     * @param string|null                      $type
      *
-     * @throws \RuntimeException
+     * @throws \LogicException
      *
      * @return $this
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = [])
     {
-        if (null !== $this->apply && !$this->apply) {
+        if (!$this->shouldApply()) {
             return $this;
         }
 
@@ -66,13 +68,17 @@ class ShowMapper extends BaseGroupedMapper
                     $fieldDescriptionOptions
                 );
             } else {
-                throw new \RuntimeException(sprintf('Duplicate field name "%s" in show mapper. Names should be unique.', $name));
+                throw new \LogicException(sprintf('Duplicate field name "%s" in show mapper. Names should be unique.', $name));
             }
         } else {
-            throw new \RuntimeException('invalid state');
+            throw new \TypeError(
+                'Unknown field name in show mapper. '
+                .'Field name should be either of FieldDescriptionInterface interface or string.'
+            );
         }
 
-        if (!$fieldDescription->getLabel() && false !== $fieldDescription->getOption('label')) {
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+        if (null === $fieldDescription->getLabel('sonata_deprecation_mute')) {
             $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
         }
 
@@ -160,7 +166,9 @@ class ShowMapper extends BaseGroupedMapper
 
     protected function getGroups()
     {
-        return $this->admin->getShowGroups();
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+
+        return $this->admin->getShowGroups('sonata_deprecation_mute');
     }
 
     protected function setGroups(array $groups)
@@ -170,7 +178,9 @@ class ShowMapper extends BaseGroupedMapper
 
     protected function getTabs()
     {
-        return $this->admin->getShowTabs();
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+
+        return $this->admin->getShowTabs('sonata_deprecation_mute');
     }
 
     protected function setTabs(array $tabs)

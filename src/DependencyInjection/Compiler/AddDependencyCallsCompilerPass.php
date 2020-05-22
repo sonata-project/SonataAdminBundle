@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
@@ -21,12 +21,13 @@ use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Add all dependencies to the Admin class, this avoid to write too many lines
  * in the configuration files.
+ *
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
@@ -57,9 +58,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 // Temporary fix until we can support service locators
                 $definition->setPublic(true);
 
-                // NEXT_MAJOR: Remove check for DefinitionDecorator instance when dropping Symfony <3.3 support
-                if ($definition instanceof ChildDefinition ||
-                    (!class_exists(ChildDefinition::class) && $definition instanceof DefinitionDecorator)) {
+                if ($definition instanceof ChildDefinition) {
                     $parentDefinition = $container->getDefinition($definition->getParent());
                 }
 
@@ -237,7 +236,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         ];
 
         foreach ($keys as $key) {
-            $method = 'set'.Inflector::classify($key);
+            $method = $this->generateSetterMethodName($key);
             if (!isset($attributes[$key]) || $definition->hasMethodCall($method)) {
                 continue;
             }
@@ -284,7 +283,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $definition->addMethodCall('setManagerType', [$managerType]);
 
         foreach ($defaultAddServices as $attr => $addServiceId) {
-            $method = 'set'.Inflector::classify($attr);
+            $method = $this->generateSetterMethodName($attr);
 
             if (isset($overwriteAdminConfiguration[$attr]) || !$definition->hasMethodCall($method)) {
                 $args = [new Reference($overwriteAdminConfiguration[$attr] ?? $addServiceId)];
@@ -423,7 +422,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     private function replaceDefaultArguments(
         array $defaultArguments,
         Definition $definition,
-        Definition $parentDefinition = null
+        ?Definition $parentDefinition = null
     ): void {
         $arguments = $definition->getArguments();
         $parentArguments = $parentDefinition ? $parentDefinition->getArguments() : [];
@@ -438,5 +437,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         }
 
         $definition->setArguments($arguments);
+    }
+
+    private function generateSetterMethodName(string $key): string
+    {
+        return 'set'.InflectorFactory::create()->build()->classify($key);
     }
 }

@@ -172,7 +172,7 @@ can specify the templates to use in the ``Admin`` service definition:
                     - App\Entity\Post
                     - ~
                 calls:
-                    - [setTemplate, ['edit', '@App/PostAdmin/edit.html.twig']]
+                    - [setTemplate, ['edit', 'PostAdmin/edit.html.twig']]
                 tags:
                     - { name: sonata.admin, manager_type: orm, group: 'Content', label: 'Post' }
 
@@ -187,7 +187,7 @@ can specify the templates to use in the ``Admin`` service definition:
             <argument/>
             <call method="setTemplate">
                 <argument>edit</argument>
-                <argument>@App/PostAdmin/edit.html.twig</argument>
+                <argument>PostAdmin/edit.html.twig</argument>
             </call>
         </service>
 

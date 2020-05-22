@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Menu\Matcher\Voter;
 
 use Knp\Menu\ItemInterface;
+use Knp\Menu\Matcher\Voter\VoterInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +25,7 @@ class AdminVoterTest extends AbstractVoterTest
     /**
      * {@inheritdoc}
      */
-    public function provideData()
+    public function provideData(): array
     {
         return [
             'no data' => [null, null, null, null],
@@ -59,7 +60,7 @@ class AdminVoterTest extends AbstractVoterTest
     /**
      * {@inheritdoc}
      */
-    protected function createVoter($dataVoter, $route)
+    protected function createVoter($dataVoter, $route): VoterInterface
     {
         $request = new Request();
         $request->request->set('_sonata_admin', $dataVoter);
@@ -68,24 +69,22 @@ class AdminVoterTest extends AbstractVoterTest
         $requestStack = new RequestStack();
         $requestStack->push($request);
 
-        $voter = new AdminVoter($requestStack);
-
-        return $voter;
+        return new AdminVoter($requestStack);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function createItem($data)
+    protected function createItem($data): ItemInterface
     {
         $item = $this->getMockForAbstractClass(ItemInterface::class);
-        $item->expects($this->any())
-             ->method('getExtra')
-             ->with($this->logicalOr(
+        $item
+            ->method('getExtra')
+            ->with($this->logicalOr(
                 $this->equalTo('admin'),
                 $this->equalTo('route')
-             ))
-             ->willReturn($data)
+            ))
+            ->willReturn($data)
         ;
 
         return $item;
@@ -98,24 +97,20 @@ class AdminVoterTest extends AbstractVoterTest
     {
         $admin = $this->createMock(AbstractAdmin::class);
         $admin
-            ->expects($this->any())
             ->method('hasRoute')
             ->with('list')
             ->willReturn($list)
         ;
         $admin
-            ->expects($this->any())
             ->method('hasAccess')
             ->with('list')
             ->willReturn($granted)
         ;
         $admin
-            ->expects($this->any())
             ->method('getCode')
             ->willReturn($code)
         ;
         $admin
-            ->expects($this->any())
             ->method('getChildren')
             ->willReturn([])
         ;
@@ -134,32 +129,27 @@ class AdminVoterTest extends AbstractVoterTest
     ): AbstractAdmin {
         $parentAdmin = $this->createMock(AbstractAdmin::class);
         $parentAdmin
-            ->expects($this->any())
             ->method('hasRoute')
             ->with('list')
             ->willReturn($list)
         ;
         $parentAdmin
-            ->expects($this->any())
             ->method('hasAccess')
             ->with('list')
             ->willReturn($granted)
         ;
         $parentAdmin
-            ->expects($this->any())
             ->method('getCode')
             ->willReturn($parentCode)
         ;
 
         $childAdmin = $this->createMock(AbstractAdmin::class);
         $childAdmin
-            ->expects($this->any())
             ->method('getBaseCodeRoute')
             ->willReturn($parentCode.'|'.$childCode)
         ;
 
         $parentAdmin
-            ->expects($this->any())
             ->method('getChildren')
             ->willReturn([$childAdmin])
         ;

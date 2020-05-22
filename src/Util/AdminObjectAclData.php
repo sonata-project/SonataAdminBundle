@@ -21,6 +21,8 @@ use Symfony\Component\Security\Acl\Domain\Acl;
 /**
  * AdminObjectAclData holds data manipulated by {@link AdminObjectAclManipulator}.
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  */
 class AdminObjectAclData
@@ -36,7 +38,7 @@ class AdminObjectAclData
     protected $admin;
 
     /**
-     * @var mixed
+     * @var object
      */
     protected $object;
 
@@ -76,7 +78,7 @@ class AdminObjectAclData
     protected $maskBuilderClass;
 
     /**
-     * @param mixed  $object
+     * @param object $object
      * @param string $maskBuilderClass
      */
     public function __construct(
@@ -84,7 +86,7 @@ class AdminObjectAclData
         $object,
         \Traversable $aclUsers,
         $maskBuilderClass,
-        \Traversable $aclRoles = null
+        ?\Traversable $aclRoles = null
     ) {
         $this->admin = $admin;
         $this->object = $object;
@@ -108,7 +110,7 @@ class AdminObjectAclData
     /**
      * Gets object.
      *
-     * @return mixed
+     * @return object
      */
     public function getObject()
     {
@@ -174,7 +176,7 @@ class AdminObjectAclData
      *
      * @return AdminObjectAclData
      *
-     * @deprecated Deprecated since version 3.0. Use setAclUsersForm() instead
+     * @deprecated since sonata-project/admin-bundle 3.0. Use setAclUsersForm() instead
      */
     public function setForm(Form $form)
     {
@@ -194,7 +196,7 @@ class AdminObjectAclData
      *
      * @return Form
      *
-     * @deprecated Deprecated since version 3.0. Use getAclUsersForm() instead
+     * @deprecated since sonata-project/admin-bundle version 3.0. Use getAclUsersForm() instead
      */
     public function getForm()
     {

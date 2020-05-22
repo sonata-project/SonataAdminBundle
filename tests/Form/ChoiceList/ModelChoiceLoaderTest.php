@@ -20,9 +20,9 @@ use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
 
 class ModelChoiceLoaderTest extends TestCase
 {
-    private $modelManager = null;
+    private $modelManager;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
     }
@@ -41,7 +41,7 @@ class ModelChoiceLoaderTest extends TestCase
             ->method('findBy')
             ->willReturn([$fooA, $fooB]);
 
-        $this->modelManager->expects($this->any())
+        $this->modelManager
             ->method('getIdentifierValues')
             ->willReturnCallback(static function (Foo $foo) {
                 return [$foo->getBar()];

@@ -22,9 +22,9 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess;
 
 class ModelToIdPropertyTransformerTest extends TestCase
 {
-    private $modelManager = null;
+    private $modelManager;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
     }
@@ -37,9 +37,8 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $entity->setBar('example');
 
         $this->modelManager
-            ->expects($this->any())
             ->method('find')
-            ->willReturnCallback(static function ($class, $id) use ($entity) {
+            ->willReturnCallback(static function (string $class, $id) use ($entity) {
                 if (Foo::class === $class && 123 === $id) {
                     return $entity;
                 }
@@ -57,14 +56,13 @@ class ModelToIdPropertyTransformerTest extends TestCase
     /**
      * @dataProvider getReverseTransformMultipleTests
      */
-    public function testReverseTransformMultiple($expected, $params, $entity1, $entity2, $entity3): void
+    public function testReverseTransformMultiple(array $expected, $params, Foo $entity1, Foo $entity2, Foo $entity3): void
     {
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
         $this->modelManager
-            ->expects($this->any())
             ->method('find')
-            ->willReturnCallback(static function ($className, $value) use ($entity1, $entity2, $entity3) {
+            ->willReturnCallback(static function (string $className, int $value) use ($entity1, $entity2, $entity3) {
                 if (Foo::class !== $className) {
                     return;
                 }
@@ -84,7 +82,6 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $collection = new ArrayCollection();
         $this->modelManager
-            ->expects($this->any())
             ->method('getModelCollectionInstance')
             ->with($this->equalTo(Foo::class))
             ->willReturn($collection);
@@ -119,18 +116,19 @@ class ModelToIdPropertyTransformerTest extends TestCase
     /**
      * @dataProvider getReverseTransformMultipleInvalidTypeTests
      */
-    public function testReverseTransformMultipleInvalidTypeTests($expected, $params, $type): void
+    public function testReverseTransformMultipleInvalidTypeTests(array $expected, $params, string $type): void
     {
         $this->expectException(
-            \UnexpectedValueException::class);
-        $this->expectExceptionMessage(sprintf('Value should be array, %s given.', $type)
+            \UnexpectedValueException::class
+        );
+        $this->expectExceptionMessage(
+            sprintf('Value should be array, %s given.', $type)
         );
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
         $collection = new ArrayCollection();
         $this->modelManager
-            ->expects($this->any())
             ->method('getModelCollectionInstance')
             ->with($this->equalTo(Foo::class))
             ->willReturn($collection);
@@ -140,7 +138,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->assertSame($expected, $result->getValues());
     }
 
-    public function getReverseTransformMultipleInvalidTypeTests()
+    public function getReverseTransformMultipleInvalidTypeTests(): array
     {
         return [
             [[], true, 'boolean'],
@@ -238,7 +236,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $this->modelManager->expects($this->exactly(3))
             ->method('getIdentifierValues')
-            ->willReturnCallback(static function ($value) use ($entity1, $entity2, $entity3) {
+            ->willReturnCallback(static function (Foo $value) use ($entity1, $entity2, $entity3): array {
                 if ($value === $entity1) {
                     return [123];
                 }

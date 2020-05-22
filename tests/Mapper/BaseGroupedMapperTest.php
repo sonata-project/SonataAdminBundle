@@ -37,27 +37,27 @@ class BaseGroupedMapperTest extends TestCase
     private $tabs;
     private $groups;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $admin = $this->getMockBuilder(AbstractAdmin::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $labelStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
-        $labelStrategy->expects($this->any())
+        $labelStrategy
             ->method('getLabel')
-            ->willReturnCallback(static function ($label) {
+            ->willReturnCallback(static function (string $label): string {
                 return 'label_'.strtolower($label);
             });
 
-        $admin->expects($this->any())
+        $admin
             ->method('getLabelTranslatorStrategy')
             ->willReturn($labelStrategy);
 
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $configurationPool = new Pool($container, 'myTitle', 'myLogoTitle');
 
-        $admin->expects($this->any())
+        $admin
             ->method('getConfigurationPool')
             ->willReturn($configurationPool);
 
@@ -71,25 +71,25 @@ class BaseGroupedMapperTest extends TestCase
         $this->tabs = [];
         $this->groups = [];
 
-        $this->baseGroupedMapper->expects($this->any())
+        $this->baseGroupedMapper
             ->method('getTabs')
             ->willReturnCallback(function () {
                 return $this->getTabs();
             });
 
-        $this->baseGroupedMapper->expects($this->any())
+        $this->baseGroupedMapper
             ->method('setTabs')
             ->willReturnCallback(function (array $tabs): void {
                 $this->setTabs($tabs);
             });
 
-        $this->baseGroupedMapper->expects($this->any())
+        $this->baseGroupedMapper
             ->method('getGroups')
             ->willReturnCallback(function () {
                 return $this->getTestGroups();
             });
 
-        $this->baseGroupedMapper->expects($this->any())
+        $this->baseGroupedMapper
             ->method('setGroups')
             ->willReturnCallback(function (array $groups): void {
                 $this->setTestGroups($groups);
@@ -135,7 +135,7 @@ class BaseGroupedMapperTest extends TestCase
 
     public function testGroupNotClosedException(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('You should close previous group "fooGroup1" with end() before adding new tab "fooGroup2".');
 
         $this->baseGroupedMapper->with('fooGroup1');
@@ -144,7 +144,7 @@ class BaseGroupedMapperTest extends TestCase
 
     public function testGroupInTabException(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields.');
 
         $this->baseGroupedMapper->with('fooGroup');
@@ -153,7 +153,7 @@ class BaseGroupedMapperTest extends TestCase
 
     public function testTabInTabException(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('You should close previous tab "fooTab" with end() before adding new tab "barTab".');
 
         $this->baseGroupedMapper->tab('fooTab');
@@ -171,15 +171,47 @@ class BaseGroupedMapperTest extends TestCase
         $this->assertFalse($this->baseGroupedMapper->hasOpenTab(), '->hasOpenTab() returns false when all tabs are closed');
     }
 
+    public function testIfTrueApply(): void
+    {
+        $this->baseGroupedMapper->ifTrue(true)->tab('fooTab')->ifEnd();
+        $this->assertTrue($this->baseGroupedMapper->hasOpenTab());
+    }
+
+    public function testIfTrueNotApply(): void
+    {
+        $this->baseGroupedMapper->ifTrue(false)->tab('fooTab')->ifEnd();
+        $this->assertFalse($this->baseGroupedMapper->hasOpenTab());
+    }
+
+    public function testIfFalseApply(): void
+    {
+        $this->baseGroupedMapper->ifFalse(false)->tab('fooTab')->ifEnd();
+        $this->assertTrue($this->baseGroupedMapper->hasOpenTab());
+    }
+
+    public function testIfFalseNotApply(): void
+    {
+        $this->baseGroupedMapper->ifFalse(true)->tab('fooTab')->ifEnd();
+        $this->assertFalse($this->baseGroupedMapper->hasOpenTab());
+    }
+
     public function testEndException(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('No open tabs or groups, you cannot use end()');
 
         $this->baseGroupedMapper->end();
     }
 
-    public function labelDataProvider()
+    public function testIfEndException(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('No open ifTrue() or ifFalse(), you cannot use ifEnd()');
+
+        $this->baseGroupedMapper->ifEnd();
+    }
+
+    public function labelDataProvider(): array
     {
         return [
             'nominal use case not translated' => [false, 'fooGroup1', null, 'fooGroup1'],
@@ -192,14 +224,14 @@ class BaseGroupedMapperTest extends TestCase
     /**
      * @dataProvider labelDataProvider
      */
-    public function testLabel($translated, $name, $label, $expectedLabel): void
+    public function testLabel(bool $translated, string $name, ?string $label, string $expectedLabel): void
     {
         $container = $this->baseGroupedMapper
             ->getAdmin()
             ->getConfigurationPool()
             ->getContainer();
 
-        $container->expects($this->any())
+        $container
             ->method('getParameter')
             ->willReturn($translated);
 
@@ -215,22 +247,22 @@ class BaseGroupedMapperTest extends TestCase
         $this->assertSame($expectedLabel, $this->groups[$name]['label']);
     }
 
-    public function getTabs()
+    public function getTabs(): array
     {
         return $this->tabs;
     }
 
-    public function setTabs($tabs): void
+    public function setTabs(array $tabs): void
     {
         $this->tabs = $tabs;
     }
 
-    public function getTestGroups()
+    public function getTestGroups(): array
     {
         return $this->groups;
     }
 
-    public function setTestGroups($groups): void
+    public function setTestGroups(array $groups): void
     {
         $this->groups = $groups;
     }

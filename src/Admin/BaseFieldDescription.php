@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Exception\NoValueException;
 
 /**
@@ -109,7 +109,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * @var AdminInterface|null the parent Admin instance
      */
-    protected $parent = null;
+    protected $parent;
 
     /**
      * @var AdminInterface the related admin instance
@@ -209,6 +209,13 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getTemplate()
     {
+        if (null !== $this->template && !\is_string($this->template) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'Returning other type than string or null in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only those types in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         return $this->template;
     }
 
@@ -266,7 +273,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public function getFieldValue($object, $fieldName)
     {
         if ($this->isVirtual() || null === $object) {
-            return;
+            return null;
         }
 
         $getters = [];
@@ -286,7 +293,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                 return $this->callCachedGetter($object, $fieldName, $parameters);
             }
 
-            $camelizedFieldName = Inflector::classify($fieldName);
+            $camelizedFieldName = InflectorFactory::create()->build()->classify($fieldName);
 
             $getters[] = 'get'.$camelizedFieldName;
             $getters[] = 'is'.$camelizedFieldName;
@@ -297,14 +304,14 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             if (method_exists($object, $getter) && \is_callable([$object, $getter])) {
                 $this->cacheFieldGetter($object, $fieldName, 'getter', $getter);
 
-                return \call_user_func_array([$object, $getter], $parameters);
+                return $object->{$getter}(...$parameters);
             }
         }
 
         if (method_exists($object, '__call')) {
             $this->cacheFieldGetter($object, $fieldName, 'call');
 
-            return \call_user_func_array([$object, '__call'], [$fieldName, $parameters]);
+            return $object->{$fieldName}(...$parameters);
         }
 
         if (isset($object->{$fieldName})) {
@@ -313,7 +320,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             return $object->{$fieldName};
         }
 
-        throw new NoValueException(sprintf('Unable to retrieve the value of `%s`', $this->getName()));
+        throw new NoValueException(sprintf(
+            'Neither the property "%s" nor one of the methods "%s()" exist and have public access in class "%s".',
+            $this->getName(),
+            implode('()", "', $getters),
+            \get_class($object)
+        ));
     }
 
     public function setAdmin(AdminInterface $admin)
@@ -365,20 +377,20 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      *
      * @return string
      *
-     * @deprecated Deprecated since version 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead
+     * @deprecated since sonata-project/admin-bundle 3.1. Use \Doctrine\Inflector\Inflector::classify() instead
      */
     public static function camelize($property)
     {
         @trigger_error(
             sprintf(
                 'The %s method is deprecated since 3.1 and will be removed in 4.0. '.
-                'Use \Doctrine\Common\Inflector\Inflector::classify() instead.',
+                'Use \Doctrine\Inflector\Inflector::classify() instead.',
                 __METHOD__
             ),
             E_USER_DEPRECATED
         );
 
-        return Inflector::classify($property);
+        return InflectorFactory::create()->build()->classify($property);
     }
 
     /**
@@ -398,7 +410,15 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getLabel()
     {
-        return $this->getOption('label');
+        $label = $this->getOption('label');
+        if (null !== $label && false !== $label && !\is_string($label) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'Returning other type than string, false or null in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only those types in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
+        return $label;
     }
 
     public function isSortable()
@@ -459,21 +479,15 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
         if ('getter' === self::$fieldGetters[$getterKey]['method']) {
-            return \call_user_func_array(
-                [$object, self::$fieldGetters[$getterKey]['getter']],
-                $parameters
-            );
+            return $object->{self::$fieldGetters[$getterKey]['getter']}(...$parameters);
         } elseif ('call' === self::$fieldGetters[$getterKey]['method']) {
-            return \call_user_func_array(
-                [$object, '__call'],
-                [$fieldName, $parameters]
-            );
+            return $object->{$fieldName}(...$parameters);
         }
 
         return $object->{$fieldName};
     }
 
-    private function cacheFieldGetter($object, ?string $fieldName, string $method, ?string $getter = null)
+    private function cacheFieldGetter($object, ?string $fieldName, string $method, ?string $getter = null): void
     {
         $getterKey = $this->getFieldGetterKey($object, $fieldName);
         if (null !== $getterKey) {

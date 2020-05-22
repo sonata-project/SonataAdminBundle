@@ -24,7 +24,7 @@ use Sonata\CoreBundle\Exporter\Exporter as BaseExporter;
 /**
  * NEXT_MAJOR: remove this class.
  *
- * @deprecated
+ * @deprecated since sonata-project/admin-bundle 3.14, to be removed in 4.0.
  */
 class Exporter extends BaseExporter
 {

@@ -117,7 +117,7 @@ class FilterTest extends TestCase
      * @param $expected
      * @param $value
      */
-    public function testIsActive($expected, $value): void
+    public function testIsActive(bool $expected, array $value): void
     {
         $filter = new FooFilter();
         $filter->setValue($value);
@@ -125,7 +125,7 @@ class FilterTest extends TestCase
         $this->assertSame($expected, $filter->isActive());
     }
 
-    public function isActiveData()
+    public function isActiveData(): array
     {
         return [
             [false, []],
@@ -152,7 +152,10 @@ class FilterTest extends TestCase
         try {
             $filter->getFieldMapping();
         } catch (\RuntimeException $e) {
-            $this->assertContains('The option `field_mapping` must be set for field: `foo`', $e->getMessage());
+            $this->assertStringContainsString(
+                'The option `field_mapping` must be set for field: `foo`',
+                $e->getMessage()
+            );
 
             return;
         }
@@ -207,7 +210,10 @@ class FilterTest extends TestCase
         try {
             $filter->getAssociationMapping();
         } catch (\RuntimeException $e) {
-            $this->assertContains('The option `association_mapping` must be set for field: `foo`', $e->getMessage());
+            $this->assertStringContainsString(
+                'The option `association_mapping` must be set for field: `foo`',
+                $e->getMessage()
+            );
 
             return;
         }

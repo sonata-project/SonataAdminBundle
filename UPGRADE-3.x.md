@@ -1,6 +1,141 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated accessing to a non existing value when adding field to `showMapper` and `listMapper`.
+
+Before:
+```php
+$showMapper->add('nonExistingField');
+$listMapper->add('nonExistingField');
+```
+was displaying nothing in the list and the show views without any warning or error.
+
+But
+```php
+$formMapper->add('nonExistingField');
+```
+was throwing an exception.
+
+In the next major an exception will be thrown if no getter/isser/hasser is found for the property. Since most
+of the time the error is coming from a typo, this will allow the developer to catch it as fast as possible.
+Currently this will only trigger a deprecation if the field value is not found.
+
+## Deprecated not passing a `Sonata\AdminBundle\Admin\AdminHelper` instance to `Sonata\AdminBundle\Form\Type\AdminType::__construct()`
+
+When instantiating a `Sonata\AdminBundle\Form\Type\AdminType` object, please use the 1 parameter signature `($adminHelper)`.
+
+## Deprecated not setting as `false` the configuration option `sonata_admin.options.legacy_twig_text_extension`
+
+This option controls which Twig text extension will be used to provide filters like
+`truncate` or `wordwrap`.
+The legacy behavior is provided by the abandoned package ["twig/extensions"](https://github.com/twigphp/Twig-extensions#twig-extensions-repository),
+while the new implementation is based on ["twig/string-extra"](https://github.com/twigphp/string-extra).
+Its default value is `true` in order to keep the legacy behavior. You should set
+it to `false` in order to get the behavior which will be used by default at 4.0.
+
+```yaml
+sonata_admin:
+    options:
+        legacy_twig_text_extension: false
+```
+
+## Deprecated the `truncate.preserve` and `truncate.separator` options in views
+
+You should use the `truncate.separator` and `truncate.cut` options instead. Unlike
+`truncate.preserve`, `truncate.cut` has `false` as its default value and the opposite
+behavior:
+
+Before:
+```php
+$showMapper
+    ->add('field', null, [
+        'truncate' => [
+            'preserve' => true,
+            'separator' => '...',
+        ],
+    ])
+;
+```
+
+After:
+```php
+$showMapper
+    ->add('field', null, [
+        'truncate' => [
+            'cut' => false,
+            'ellipsis' => '...',
+        ],
+    ])
+;
+```
+
+## Deprecated not setting "sonata.admin.manager" tag in model manager services
+
+If you are using [autoconfiguration](https://symfony.com/doc/4.4/service_container.html#the-autoconfigure-option),
+all the services implementing `Sonata\AdminBundle\Model\ModelManagerInterface` will
+be automatically tagged. Otherwise, you must tag them explicitly.
+
+Before:
+```xml
+<service id="sonata.admin.manager.custom" class="App\Model\ModelManager">
+    <!-- ... -->
+</service>
+```
+
+After:
+```xml
+<service id="sonata.admin.manager.custom" class="App\Model\ModelManager">
+    <!-- ... -->
+    <tag name="sonata.admin.manager"/>
+</service>
+```
+
+## Deprecated `sonata_help` option in form types
+
+You should use Symfony's [`help`](https://symfony.com/doc/4.4/reference/forms/types/form.html#help) option instead.
+
+Before:
+```php
+$formMapper
+    ->add('field', null, [
+        'sonata_help' => 'Help text',
+    ])
+;
+```
+
+After:
+```php
+$formMapper
+    ->add('field', null, [
+        'help' => 'Help text',
+    ])
+;
+```
+
+UPGRADE FROM 3.56 to 3.57
+=========================
+
+## Deprecated the use of string names to reference filters in favor of the FQCN of the filter.
+
+Before:
+```php
+$datagridMapper
+    ->add('field', 'filter_type')
+;
+```
+
+After:
+```php
+use App\Filter\FilterType;
+
+$datagridMapper
+    ->add('field', FilterType::class)
+;
+```
+
+UPGRADE FROM 3.51 to 3.52
+=========================
+
 ## Deprecated `SonataAdminBundle\Controller\HelperController` in favor of actions
 
 If you extended that controller, you should split your extended controller and
@@ -10,6 +145,19 @@ extend the corresponding classes in `SonataAdminBundle\Action\`.
 
 If you need to style headers prefer to use CSS classes and not in the html DOM.
 In this case please use `header_class` option.
+
+## Deprecated returning other type than `Collection` from `SimplePager::getResults()`
+
+When calling `SimplePager::getResults()` on non-empty result which has set `$maxPerPage`, `Collection` would be returned instead of `array` as it is declared in `PagerInterface`. Update usage of `SimplePager::getResults()`, ensure you are transforming `Collection` to `array` and you aren't dealing with any of its methods.
+
+```
+// will return Collection on non-empty result and array on empty result
+$results = $pager->getResults();
+
+if ($results instanceof ArrayCollection) {
+    $results = $results->toArray();
+}
+```
 
 UPGRADE FROM 3.34 to 3.35
 =========================
@@ -113,6 +261,15 @@ The `AbstractAdmin::setBaseCodeRoute()` method is no longer supported.
 There is no replacement for this method.
 You can still use the `AbstractAdmin::setCode()` method to set the code
 of an admin.
+
+UPGRADE FROM 3.57 to 3.58
+=========================
+
+## Dropped generator commands
+
+`sonata:admin:generate` was based on the SensioGeneratorBundle, which is
+incompatible with Symfony 4 and is no longer maintained. Please use
+`make:sonata:admin` instead.
 
 UPGRADE FROM 3.20 to 3.21
 =========================

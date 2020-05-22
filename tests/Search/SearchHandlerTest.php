@@ -25,15 +25,10 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 class SearchHandlerTest extends TestCase
 {
-    /**
-     * @param AdminInterface $admin
-     *
-     * @return Pool
-     */
-    public function getPool(AdminInterface $admin = null)
+    public function getPool(?AdminInterface $admin = null): Pool
     {
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $container->expects($this->any())->method('get')->willReturnCallback(static function ($id) use ($admin) {
+        $container->method('get')->willReturnCallback(static function (string $id) use ($admin): AdminInterface {
             if ('fake' === $id) {
                 throw new ServiceNotFoundException('Fake service does not exist');
             }
@@ -65,7 +60,7 @@ class SearchHandlerTest extends TestCase
      *
      * @dataProvider buildPagerWithGlobalSearchFieldProvider
      */
-    public function buildPagerWithGlobalSearchField($caseSensitive): void
+    public function buildPagerWithGlobalSearchField(bool $caseSensitive): void
     {
         $filter = $this->getMockForAbstractClass(FilterInterface::class);
         $filter->expects($this->once())->method('getOption')->willReturn(true);
@@ -87,7 +82,7 @@ class SearchHandlerTest extends TestCase
         $this->assertInstanceOf(PagerInterface::class, $handler->search($admin, 'myservice'));
     }
 
-    public function buildPagerWithGlobalSearchFieldProvider()
+    public function buildPagerWithGlobalSearchFieldProvider(): array
     {
         return [
             [true],

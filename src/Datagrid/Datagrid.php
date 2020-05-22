@@ -18,11 +18,14 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class Datagrid implements DatagridInterface
@@ -130,7 +133,15 @@ class Datagrid implements DatagridInterface
 
         $this->formBuilder->add('_sort_order', $hiddenType);
         $this->formBuilder->add('_page', $hiddenType);
-        $this->formBuilder->add('_per_page', $hiddenType);
+
+        if (isset($this->values['_per_page']) && \is_array($this->values['_per_page'])) {
+            $this->formBuilder->add('_per_page', CollectionType::class, [
+                'entry_type' => $hiddenType,
+                'allow_add' => true,
+            ]);
+        } else {
+            $this->formBuilder->add('_per_page', $hiddenType);
+        }
 
         $this->form = $this->formBuilder->getForm();
         $this->form->submit($this->values);
@@ -152,7 +163,9 @@ class Datagrid implements DatagridInterface
 
             if ($this->values['_sort_by']->isSortable()) {
                 $this->query->setSortBy($this->values['_sort_by']->getSortParentAssociationMapping(), $this->values['_sort_by']->getSortFieldMapping());
-                $this->query->setSortOrder(isset($this->values['_sort_order']) ? $this->values['_sort_order'] : null);
+
+                $this->values['_sort_order'] = $this->values['_sort_order'] ?? 'ASC';
+                $this->query->setSortOrder($this->values['_sort_order']);
             }
         }
 
@@ -200,7 +213,22 @@ class Datagrid implements DatagridInterface
 
     public function getFilter($name)
     {
-        return $this->hasFilter($name) ? $this->filters[$name] : null;
+        if (!$this->hasFilter($name)) {
+            @trigger_error(sprintf(
+                'Passing a nonexistent filter name as argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.52 and will throw an exception in 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare FilterInterface as return type
+            // throw new \InvalidArgumentException(sprintf(
+            //    'Filter named "%s" doesn\'t exist.',
+            //    $name
+            // ));
+
+            return null;
+        }
+
+        return $this->filters[$name];
     }
 
     public function getFilters()
@@ -264,5 +292,50 @@ class Datagrid implements DatagridInterface
         $this->buildPager();
 
         return $this->form;
+    }
+
+    public function getSortParameters(FieldDescriptionInterface $fieldDescription): array
+    {
+        $values = $this->getValues();
+
+        if ($this->isFieldAlreadySorted($fieldDescription)) {
+            if ('ASC' === $values['_sort_order']) {
+                $values['_sort_order'] = 'DESC';
+            } else {
+                $values['_sort_order'] = 'ASC';
+            }
+        } else {
+            $values['_sort_order'] = 'ASC';
+        }
+
+        $values['_sort_by'] = \is_string($fieldDescription->getOption('sortable'))
+            ? $fieldDescription->getOption('sortable')
+            : $fieldDescription->getName();
+
+        return ['filter' => $values];
+    }
+
+    public function getPaginationParameters(int $page): array
+    {
+        $values = $this->getValues();
+
+        if (isset($values['_sort_by']) && $values['_sort_by'] instanceof FieldDescriptionInterface) {
+            $values['_sort_by'] = $values['_sort_by']->getName();
+        }
+        $values['_page'] = $page;
+
+        return ['filter' => $values];
+    }
+
+    private function isFieldAlreadySorted(FieldDescriptionInterface $fieldDescription): bool
+    {
+        $values = $this->getValues();
+
+        if (!isset($values['_sort_by']) || !$values['_sort_by'] instanceof FieldDescriptionInterface) {
+            return false;
+        }
+
+        return $values['_sort_by']->getName() === $fieldDescription->getName()
+            || $values['_sort_by']->getName() === $fieldDescription->getOption('sortable');
     }
 }

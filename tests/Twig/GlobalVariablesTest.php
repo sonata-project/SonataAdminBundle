@@ -30,7 +30,7 @@ class GlobalVariablesTest extends TestCase
     private $admin;
     private $pool;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->code = 'sonata.page.admin.page|sonata.page.admin.snapshot';
         $this->action = 'list';
@@ -104,8 +104,8 @@ class GlobalVariablesTest extends TestCase
      */
     public function testInvalidArgumentException(): void
     {
-        $this->expectException(
-            \InvalidArgumentException::class,
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
             '$adminPool should be an instance of Sonata\AdminBundle\Admin\Pool'
         );
 

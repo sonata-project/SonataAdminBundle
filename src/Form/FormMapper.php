@@ -23,6 +23,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 /**
  * This class is use to simulate the Form API.
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class FormMapper extends BaseGroupedMapper
@@ -50,13 +52,13 @@ class FormMapper extends BaseGroupedMapper
 
     /**
      * @param FormBuilderInterface|string $name
-     * @param string                      $type
+     * @param string|null                 $type
      *
      * @return $this
      */
     public function add($name, $type = null, array $options = [], array $fieldDescriptionOptions = [])
     {
-        if (null !== $this->apply && !$this->apply) {
+        if (!$this->shouldApply()) {
             return $this;
         }
 
@@ -279,7 +281,9 @@ class FormMapper extends BaseGroupedMapper
 
     protected function getGroups()
     {
-        return $this->admin->getFormGroups();
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+
+        return $this->admin->getFormGroups('sonata_deprecation_mute');
     }
 
     protected function setGroups(array $groups)
@@ -289,7 +293,9 @@ class FormMapper extends BaseGroupedMapper
 
     protected function getTabs()
     {
-        return $this->admin->getFormTabs();
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+
+        return $this->admin->getFormTabs('sonata_deprecation_mute');
     }
 
     protected function setTabs(array $tabs)

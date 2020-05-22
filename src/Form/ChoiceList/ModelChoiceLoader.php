@@ -24,6 +24,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ModelChoiceLoader implements ChoiceLoaderInterface
@@ -70,7 +72,7 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
         $property = null,
         $query = null,
         $choices = [],
-        PropertyAccessorInterface $propertyAccessor = null
+        ?PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->modelManager = $modelManager;
         $this->class = $class;

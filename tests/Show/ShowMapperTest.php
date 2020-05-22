@@ -70,40 +70,40 @@ class ShowMapperTest extends TestCase
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
         $this->admin = $this->getMockForAbstractClass(AdminInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getLabel')
             ->willReturn('AdminLabel');
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getShowTabs')
             ->willReturn([]);
 
         $this->groups = [];
         $this->listShowFields = [];
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getShowGroups')
             ->willReturnCallback(function () {
                 return $this->groups;
             });
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('setShowGroups')
-            ->willReturnCallback(function ($showGroups): void {
+            ->willReturnCallback(function (array $showGroups): void {
                 $this->groups = $showGroups;
             });
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('reorderShowGroup')
-            ->willReturnCallback(function ($group, $keys): void {
+            ->willReturnCallback(function (string $group, array $keys): void {
                 $this->groups[$group]['fields'] = array_merge(array_flip($keys), $this->groups[$group]['fields']);
             });
 
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
 
-        $modelManager->expects($this->any())
+        $modelManager
             ->method('getNewFieldDescriptionInstance')
-            ->willReturnCallback(function ($class, $name, array $options = []) {
+            ->willReturnCallback(function (?string $class, string $name, array $options = []) {
                 $fieldDescription = $this->getFieldDescriptionMock();
                 $fieldDescription->setName($name);
                 $fieldDescription->setOptions($options);
@@ -111,19 +111,19 @@ class ShowMapperTest extends TestCase
                 return $fieldDescription;
             });
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getModelManager')
             ->willReturn($modelManager);
 
         $labelTranslatorStrategy = new NoopLabelTranslatorStrategy();
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getLabelTranslatorStrategy')
             ->willReturn($labelTranslatorStrategy);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('hasShowFieldDescription')
-            ->willReturnCallback(function ($name) {
+            ->willReturnCallback(function (string $name): bool {
                 if (isset($this->listShowFields[$name])) {
                     return true;
                 }
@@ -132,9 +132,14 @@ class ShowMapperTest extends TestCase
                 return false;
             });
 
-        $this->showBuilder->expects($this->any())
+        $this->showBuilder
             ->method('addField')
-            ->willReturnCallback(static function ($list, $type, $fieldDescription, $admin): void {
+            ->willReturnCallback(static function (
+                FieldDescriptionCollection $list,
+                ?string $type,
+                FieldDescriptionInterface $fieldDescription,
+                AdminInterface $admin
+            ): void {
                 $list->add($fieldDescription);
             });
 
@@ -187,10 +192,33 @@ class ShowMapperTest extends TestCase
         $this->assertSame('fooName', $fieldDescription->getOption('label'));
     }
 
+    public function testIfTrueApplyWithTab(): void
+    {
+        $this->showMapper->ifTrue(true);
+        $this->showMapper->tab('fooTab')->add('fooName')->end();
+        $this->showMapper->ifEnd();
+
+        $this->assertTrue($this->showMapper->has('fooName'));
+        $fieldDescription = $this->showMapper->get('fooName');
+
+        $this->assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
+        $this->assertSame('fooName', $fieldDescription->getName());
+        $this->assertSame('fooName', $fieldDescription->getOption('label'));
+    }
+
     public function testIfTrueNotApply(): void
     {
         $this->showMapper->ifTrue(false);
         $this->showMapper->add('fooName');
+        $this->showMapper->ifEnd();
+
+        $this->assertFalse($this->showMapper->has('fooName'));
+    }
+
+    public function testIfTrueNotApplyWithTab(): void
+    {
+        $this->showMapper->ifTrue(false);
+        $this->showMapper->tab('fooTab')->add('fooName')->end();
         $this->showMapper->ifEnd();
 
         $this->assertFalse($this->showMapper->has('fooName'));
@@ -226,10 +254,33 @@ class ShowMapperTest extends TestCase
         $this->assertSame('fooName', $fieldDescription->getOption('label'));
     }
 
+    public function testIfFalseApplyWithTab(): void
+    {
+        $this->showMapper->ifFalse(false);
+        $this->showMapper->tab('fooTab')->add('fooName')->end();
+        $this->showMapper->ifEnd();
+
+        $this->assertTrue($this->showMapper->has('fooName'));
+        $fieldDescription = $this->showMapper->get('fooName');
+
+        $this->assertInstanceOf(FieldDescriptionInterface::class, $fieldDescription);
+        $this->assertSame('fooName', $fieldDescription->getName());
+        $this->assertSame('fooName', $fieldDescription->getOption('label'));
+    }
+
     public function testIfFalseNotApply(): void
     {
         $this->showMapper->ifFalse(true);
         $this->showMapper->add('fooName');
+        $this->showMapper->ifEnd();
+
+        $this->assertFalse($this->showMapper->has('fooName'));
+    }
+
+    public function testIfFalseNotApplyWithTab(): void
+    {
+        $this->showMapper->ifFalse(true);
+        $this->showMapper->tab('fooTab')->add('fooName')->end();
         $this->showMapper->ifEnd();
 
         $this->assertFalse($this->showMapper->has('fooName'));
@@ -253,56 +304,80 @@ class ShowMapperTest extends TestCase
 
     public function testIfTrueNested(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+        $this->showMapper
+            ->ifTrue(true)
+                ->ifTrue(true)
+                    ->add('fooName')
+                ->ifEnd()
+            ->ifEnd()
+        ;
 
-        $this->showMapper->ifTrue(true);
-        $this->showMapper->ifTrue(true);
+        $this->assertTrue($this->showMapper->has('fooName'));
     }
 
     public function testIfFalseNested(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+        $this->showMapper
+            ->ifFalse(false)
+                ->ifFalse(false)
+                    ->add('fooName')
+                ->ifEnd()
+            ->ifEnd()
+        ;
 
-        $this->showMapper->ifFalse(false);
-        $this->showMapper->ifFalse(false);
+        $this->assertTrue($this->showMapper->has('fooName'));
     }
 
     public function testIfCombinationNested(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+        $this->showMapper
+            ->ifTrue(true)
+                ->ifFalse(false)
+                    ->add('fooName')
+                ->ifEnd()
+            ->ifEnd()
+        ;
 
-        $this->showMapper->ifTrue(true);
-        $this->showMapper->ifFalse(false);
+        $this->assertTrue($this->showMapper->has('fooName'));
     }
 
     public function testIfFalseCombinationNested2(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+        $this->showMapper
+            ->ifFalse(false)
+                ->ifTrue(true)
+                    ->add('fooName')
+                ->ifEnd()
+            ->ifEnd()
+        ;
 
-        $this->showMapper->ifFalse(false);
-        $this->showMapper->ifTrue(true);
+        $this->assertTrue($this->showMapper->has('fooName'));
     }
 
     public function testIfFalseCombinationNested3(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+        $this->showMapper
+            ->ifFalse(true)
+                ->ifTrue(false)
+                    ->add('fooName')
+                ->ifEnd()
+            ->ifEnd()
+        ;
 
-        $this->showMapper->ifFalse(true);
-        $this->showMapper->ifTrue(false);
+        $this->assertFalse($this->showMapper->has('fooName'));
     }
 
     public function testIfFalseCombinationNested4(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Cannot nest ifTrue or ifFalse call');
+        $this->showMapper
+            ->ifTrue(false)
+                ->ifFalse(true)
+                    ->add('fooName')
+                ->ifEnd()
+            ->ifEnd()
+        ;
 
-        $this->showMapper->ifTrue(false);
-        $this->showMapper->ifFalse(true);
+        $this->assertFalse($this->showMapper->has('fooName'));
     }
 
     public function testAddRemove(): void
@@ -320,7 +395,8 @@ class ShowMapperTest extends TestCase
 
     public function testAddException(): void
     {
-        $this->expectException(\RuntimeException::class, 'invalid state');
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Unknown field name in show mapper. Field name should be either of FieldDescriptionInterface interface or string.');
 
         $this->showMapper->add(12345);
     }
@@ -328,7 +404,10 @@ class ShowMapperTest extends TestCase
     public function testAddDuplicateFieldNameException(): void
     {
         $name = 'name';
-        $this->expectException(\RuntimeException::class, sprintf('Duplicate field %s "name" in show mapper. Names should be unique.', $name));
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage(
+            sprintf('Duplicate field %s "name" in show mapper. Names should be unique.', $name)
+        );
 
         $this->showMapper->add($name);
         $this->showMapper->add($name);
@@ -369,6 +448,8 @@ class ShowMapperTest extends TestCase
                 'translation_domain' => null,
                 'name' => 'Group1',
                 'box_class' => 'box box-primary',
+                'empty_message' => 'message_form_group_empty',
+                'empty_message_translation_domain' => 'SonataAdminBundle',
                 'fields' => ['fooName1' => 'fooName1', 'fooName2' => 'fooName2', 'fooName3' => 'fooName3', 'fooName4' => 'fooName4'],
             ], ], $this->admin->getShowGroups());
 
@@ -384,6 +465,8 @@ class ShowMapperTest extends TestCase
                 'translation_domain' => null,
                 'name' => 'Group1',
                 'box_class' => 'box box-primary',
+                'empty_message' => 'message_form_group_empty',
+                'empty_message_translation_domain' => 'SonataAdminBundle',
                 'fields' => ['fooName3' => 'fooName3', 'fooName2' => 'fooName2', 'fooName1' => 'fooName1', 'fooName4' => 'fooName4'],
             ], ], true), print_r($this->admin->getShowGroups(), true));
     }
@@ -466,7 +549,7 @@ class ShowMapperTest extends TestCase
     private function cleanShowMapper(): void
     {
         $this->showBuilder = $this->getMockForAbstractClass(ShowBuilderInterface::class);
-        $this->showBuilder->expects($this->any())
+        $this->showBuilder
             ->method('addField')
             ->willReturnCallback(static function (FieldDescriptionCollection $list, ?string $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin): void {
                 $list->add($fieldDescription);
@@ -475,9 +558,8 @@ class ShowMapperTest extends TestCase
         $this->admin = new CleanAdmin('code', 'class', 'controller');
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
-            ->expects($this->any())
             ->method('isGranted')
-            ->willReturnCallback(static function (AdminInterface $admin, $attributes, $object = null): bool {
+            ->willReturnCallback(static function (AdminInterface $admin, string $attributes, $object = null): bool {
                 return self::DEFAULT_GRANTED_ROLE === $attributes;
             });
 
@@ -487,7 +569,7 @@ class ShowMapperTest extends TestCase
 
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
 
-        $modelManager->expects($this->any())
+        $modelManager
             ->method('getNewFieldDescriptionInstance')
             ->willReturnCallback(function (string $class, string $name, array $options = []): FieldDescriptionInterface {
                 $fieldDescription = $this->getFieldDescriptionMock();

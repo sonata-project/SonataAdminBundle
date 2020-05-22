@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Command;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
@@ -24,13 +25,12 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class GenerateObjectAclCommand extends QuestionableCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     protected static $defaultName = 'sonata:admin:generate-object-acl';
 
     /**
@@ -51,14 +51,34 @@ class GenerateObjectAclCommand extends QuestionableCommand
     private $aclObjectManipulators = [];
 
     /**
-     * @var RegistryInterface
+     * @var RegistryInterface|ManagerRegistry|null
      */
     private $registry;
 
-    public function __construct(Pool $pool, array $aclObjectManipulators, RegistryInterface $registry = null)
+    /**
+     * @param RegistryInterface|ManagerRegistry|null $registry
+     */
+    public function __construct(Pool $pool, array $aclObjectManipulators, $registry = null)
     {
         $this->pool = $pool;
         $this->aclObjectManipulators = $aclObjectManipulators;
+        if (null !== $registry && (!$registry instanceof RegistryInterface && !$registry instanceof ManagerRegistry)) {
+            if (!$registry instanceof ManagerRegistry) {
+                @trigger_error(sprintf(
+                    "Passing an object that doesn't implement %s as argument 3 to %s() is deprecated since sonata-project/admin-bundle 3.56.",
+                    ManagerRegistry::class,
+                    __METHOD__
+                ), E_USER_DEPRECATED);
+            }
+
+            throw new \TypeError(sprintf(
+                'Argument 3 passed to %s() must be either an instance of %s or %s, %s given.',
+                __METHOD__,
+                RegistryInterface::class,
+                ManagerRegistry::class,
+                \is_object($registry) ? \get_class($registry) : \gettype($registry)
+            ));
+        }
         $this->registry = $registry;
 
         parent::__construct();
@@ -98,8 +118,14 @@ class GenerateObjectAclCommand extends QuestionableCommand
             } catch (\Exception $e) {
                 $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
-                return;
+                return 1;
             }
+        }
+
+        if (!$this->aclObjectManipulators) {
+            $output->writeln('No manipulators are implemented : <info>ignoring</info>');
+
+            return 1;
         }
 
         foreach ($this->pool->getAdminServiceIds() as $id) {
@@ -127,7 +153,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
             }
 
             $manipulatorId = sprintf('sonata.admin.manipulator.acl.object.%s', $admin->getManagerType());
-            if ($manipulator = $this->aclObjectManipulators[$manipulatorId] ?? null) {
+            if (!$manipulator = $this->aclObjectManipulators[$manipulatorId] ?? null) {
                 $output->writeln('Admin class is using a manager type that has no manipulator implemented : <info>ignoring</info>');
 
                 continue;
@@ -141,6 +167,8 @@ class GenerateObjectAclCommand extends QuestionableCommand
             \assert($admin instanceof AdminInterface);
             $manipulator->batchConfigureAcls($output, $admin, $securityIdentity);
         }
+
+        return 0;
     }
 
     /**
@@ -151,12 +179,14 @@ class GenerateObjectAclCommand extends QuestionableCommand
         if ('' === $this->userEntityClass) {
             if ($input->getOption('user_entity')) {
                 list($userBundle, $userEntity) = Validators::validateEntityName($input->getOption('user_entity'));
-                $this->userEntityClass = $this->registry->getEntityNamespace($userBundle).'\\'.$userEntity;
             } else {
                 list($userBundle, $userEntity) = $this->askAndValidate($input, $output, 'Please enter the User Entity shortcut name: ', '', 'Sonata\AdminBundle\Command\Validators::validateEntityName');
-
-                // Entity exists?
+            }
+            // Entity exists?
+            if ($this->registry instanceof RegistryInterface) {
                 $this->userEntityClass = $this->registry->getEntityNamespace($userBundle).'\\'.$userEntity;
+            } else {
+                $this->userEntityClass = $this->registry->getAliasNamespace($userBundle).'\\'.$userEntity;
             }
         }
 

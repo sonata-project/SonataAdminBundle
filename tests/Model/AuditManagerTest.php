@@ -32,9 +32,9 @@ class AuditManagerTest extends TestCase
         $fooReader = $this->getMockForAbstractClass(AuditReaderInterface::class);
         $barReader = $this->getMockForAbstractClass(AuditReaderInterface::class);
 
-        $container->expects($this->any())
+        $container
             ->method('get')
-            ->willReturnCallback(static function ($id) use ($fooReader, $barReader) {
+            ->willReturnCallback(static function (string $id) use ($fooReader, $barReader): AuditReaderInterface {
                 switch ($id) {
                     case 'foo_reader':
                         return $fooReader;
@@ -56,7 +56,8 @@ class AuditManagerTest extends TestCase
 
     public function testGetReaderWithException(): void
     {
-        $this->expectException(\RuntimeException::class, 'The class "Foo\Foo" does not have any reader manager');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The class "Foo\Foo" does not have any reader manager');
 
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $auditManager = new AuditManager($container);

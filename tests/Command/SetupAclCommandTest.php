@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Command\SetupAclCommand;
 use Sonata\AdminBundle\Util\AdminAclManipulatorInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -28,23 +28,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SetupAclCommandTest extends TestCase
 {
     /**
-     * @var ContainerInterface
+     * @var Container
      */
     private $container;
 
     protected function setUp(): void
     {
-        $this->container = $this->createMock(ContainerInterface::class);
+        $this->container = new Container();
         $admin = $this->createMock(AdminInterface::class);
 
-        $this->container->expects($this->any())
-            ->method('get')
-            ->willReturnCallback(static function (string $id) use ($admin): AdminInterface {
-                switch ($id) {
-                    case 'acme.admin.foo':
-                        return $admin;
-                }
-            });
+        $this->container->set('acme.admin.foo', $admin);
     }
 
     public function testExecute(): void
@@ -66,12 +59,7 @@ class SetupAclCommandTest extends TestCase
 
     public function testExecuteWithException1(): void
     {
-        $this->container->expects($this->any())
-            ->method('get')
-            ->willReturnCallback(static function (string $id) {
-                throw new \Exception('Foo Exception');
-            });
-
+        $this->container->set('acme.admin.foo', null);
         $pool = new Pool($this->container, '', '');
         $pool->setAdminServiceIds(['acme.admin.foo']);
 
@@ -84,7 +72,10 @@ class SetupAclCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertRegExp('@Starting ACL AdminBundle configuration\s+Warning : The admin class cannot be initiated from the command line\s+Foo Exception@', $commandTester->getDisplay());
+        $this->assertRegExp(
+            '@Starting ACL AdminBundle configuration\s+Warning : The admin class cannot be initiated from the command line\s+You have requested a non-existent service "acme.admin.foo".@',
+            $commandTester->getDisplay()
+        );
     }
 
     public function testExecuteWithException2(): void

@@ -24,14 +24,15 @@ class QueryStringBuilderTest extends TestCase
     /**
      * @dataProvider getBuildTests
      */
-    public function testBuild(array $expectedRoutes, $hasReader, $aclEnabled, $getParent): void
+    public function testBuild(array $expectedRoutes, bool $hasReader, bool $aclEnabled, ?AdminInterface $getParent): void
     {
         $audit = $this->getMockForAbstractClass(AuditManagerInterface::class);
         $audit->expects($this->once())->method('hasReader')->willReturn($hasReader);
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->once())->method('getParent')->willReturn($getParent);
-        $admin->expects($this->any())->method('getChildren')->willReturn([]);
+        $admin->expects($this->once())->method('isChild')->willReturn($getParent instanceof AdminInterface);
+        $admin->method('getParent')->willReturn($getParent);
+        $admin->method('getChildren')->willReturn([]);
         $admin->expects($this->once())->method('isAclEnabled')->willReturn($aclEnabled);
 
         $routeCollection = new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'baseControllerName');
@@ -47,7 +48,7 @@ class QueryStringBuilderTest extends TestCase
         }
     }
 
-    public function getBuildTests()
+    public function getBuildTests(): array
     {
         return [
             [['list', 'create', 'batch', 'edit', 'delete', 'show', 'export', 'history', 'history_view_revision', 'history_compare_revisions', 'acl'], true, true, null],
@@ -76,7 +77,7 @@ class QueryStringBuilderTest extends TestCase
         $child2->expects($this->once())->method('getRoutes')->willReturn($childRouteCollection2);
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->once())->method('getParent')->willReturn(null);
+        $admin->expects($this->once())->method('isChild')->willReturn(false);
         $admin->expects($this->once())->method('getChildren')->willReturn([$child1, $child2]);
         $admin->expects($this->once())->method('isAclEnabled')->willReturn(true);
 

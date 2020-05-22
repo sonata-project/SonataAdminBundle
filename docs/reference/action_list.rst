@@ -69,6 +69,17 @@ Here is an example::
                 ],
             ])
 
+            // editable multiple field
+            ->add('winner', 'choice', [
+                'editable' => true,
+                'multiple' => true,
+                'choices' => [
+                    'jury' => 'Jury',
+                    'voting' => 'Voting',
+                    'encouraging' => 'Encouraging',
+                ],
+            ])
+
             // we can add options to the field depending on the type
             ->add('price', 'currency', [
                 'currency' => $this->currencyDetector->getCurrency()->getLabel()
@@ -77,6 +88,11 @@ Here is an example::
             // Here we specify which property is used to render the label of each entity in the list
             ->add('productCategories', null, [
                 'associated_property' => 'name'
+                // By default, sorting will be done on the associated property.
+                // To sort on another property, add the following:
+                'sort_field_mapping' => [
+                    'fieldName' => 'weight',
+                ],
             ])
 
             // you may also use dotted-notation to access
@@ -87,7 +103,12 @@ Here is an example::
             ->add('_action', null, [
                 'actions' => [
                     'show' => [],
-                    'edit' => [],
+                    'edit' => [
+                        // You may add custom link parameters used to generate the action url
+                        'link_parameters' => [
+                            'full' => true,
+                        ]
+                    ],
                     'delete' => [],
                 ]
             ])
@@ -116,6 +137,7 @@ Options
 - ``associated_property`` (o): property path to retrieve the "string"
   representation of the collection element, or a closure with the element
   as argument and return a string.
+- ``sort_field_mapping`` (o): property of the collection element to sort on.
 - ``identifier`` (o): if set to true a link appears on the value to edit the element
 
 Available types and associated options
@@ -125,67 +147,75 @@ Available types and associated options
 
     ``(m)`` means that option is mandatory
 
-+-----------+----------------+-----------------------------------------------------------------------+
-| Type      | Options        | Description                                                           |
-+===========+================+=======================================================================+
-| actions   | actions        | List of available actions                                             |
-+-----------+----------------+-----------------------------------------------------------------------+
-| batch     |                | Renders a checkbox                                                    |
-+-----------+----------------+-----------------------------------------------------------------------+
-| select    |                | Renders a select box                                                  |
-+-----------+----------------+-----------------------------------------------------------------------+
-| array     |                | Displays an array                                                     |
-+-----------+----------------+-----------------------------------------------------------------------+
-| boolean   | ajax_hidden    | Yes/No; ajax_hidden allows to hide list field during an AJAX context. |
-+           +----------------+-----------------------------------------------------------------------+
-|           | editable       | Yes/No; editable allows to edit directly from the list if authorized. |
-+           +----------------+-----------------------------------------------------------------------+
-|           | inverse        | Yes/No; reverses the background color (green for false, red for true) |
-+-----------+----------------+-----------------------------------------------------------------------+
-| choice    | choices        | Possible choices                                                      |
-+           +----------------+-----------------------------------------------------------------------+
-|           | multiple       | Is it a multiple choice option? Defaults to false.                    |
-+           +----------------+-----------------------------------------------------------------------+
-|           | delimiter      | Separator of values if multiple.                                      |
-+           +----------------+-----------------------------------------------------------------------+
-|           | catalogue      | Translation catalogue.                                                |
-+           +----------------+-----------------------------------------------------------------------+
-|           | class          | Class path for editable association field.                            |
-+-----------+----------------+-----------------------------------------------------------------------+
-| currency  | currency (m)   | A currency string (EUR or USD for instance).                          |
-+-----------+----------------+-----------------------------------------------------------------------+
-| date      | format         | A format understandable by Twig's ``date`` function.                  |
-+-----------+----------------+-----------------------------------------------------------------------+
-| datetime  | format         | A format understandable by Twig's ``date`` function.                  |
-+-----------+----------------+-----------------------------------------------------------------------+
-| email     | as_string      | Renders the email as string, without any link.                        |
-+           +----------------+-----------------------------------------------------------------------+
-|           | subject        | Add subject parameter to email link.                                  |
-+           +----------------+-----------------------------------------------------------------------+
-|           | body           | Add body parameter to email link.                                     |
-+-----------+----------------+-----------------------------------------------------------------------+
-| percent   |                | Renders value as a percentage.                                        |
-+-----------+----------------+-----------------------------------------------------------------------+
-| string    |                | Renders a string.                                                     |
-+-----------+----------------+-----------------------------------------------------------------------+
-| text      |                | See 'string'                                                          |
-+-----------+----------------+-----------------------------------------------------------------------+
-| html      |                | Renders string as html                                                |
-+-----------+----------------+-----------------------------------------------------------------------+
-| time      |                | Renders a datetime's time with format ``H:i:s``.                      |
-+-----------+----------------+-----------------------------------------------------------------------+
-| trans     | catalogue      | Translates the value with catalogue ``catalogue`` if defined.         |
-+-----------+----------------+-----------------------------------------------------------------------+
-| url       | url            | Adds a link with url ``url`` to the displayed value                   |
-+           +----------------+-----------------------------------------------------------------------+
-|           | route          | Give a route to generate the url                                      |
-+           +                +                                                                       +
-|           |   name         | Route name                                                            |
-+           +                +                                                                       +
-|           |   parameters   | Route parameters                                                      |
-+           +----------------+-----------------------------------------------------------------------+
-|           | hide_protocol  | Hide http:// or https:// (default: false)                             |
-+-----------+----------------+-----------------------------------------------------------------------+
++-----------+---------------------+-----------------------------------------------------------------------+
+| Type      | Options             | Description                                                           |
++===========+=====================+=======================================================================+
+| actions   | actions             | List of available actions                                             |
++           +                     +                                                                       +
+|           |   edit              | Name of the action (``show``, ``edit``, ``history``, ``delete``, etc) |
++           +                     +                                                                       +
+|           |     link_parameters | Route parameters                                                      |
++-----------+---------------------+-----------------------------------------------------------------------+
+| batch     |                     | Renders a checkbox                                                    |
++-----------+---------------------+-----------------------------------------------------------------------+
+| select    |                     | Renders a select box                                                  |
++-----------+---------------------+-----------------------------------------------------------------------+
+| array     |                     | Displays an array                                                     |
++-----------+---------------------+-----------------------------------------------------------------------+
+| boolean   | ajax_hidden         | Yes/No; ajax_hidden allows to hide list field during an AJAX context. |
++           +---------------------+-----------------------------------------------------------------------+
+|           | editable            | Yes/No; editable allows to edit directly from the list if authorized. |
++           +---------------------+-----------------------------------------------------------------------+
+|           | inverse             | Yes/No; reverses the background color (green for false, red for true) |
++-----------+---------------------+-----------------------------------------------------------------------+
+| choice    | choices             | Possible choices                                                      |
++           +---------------------+-----------------------------------------------------------------------+
+|           | multiple            | Is it a multiple choice option? Defaults to false.                    |
++           +---------------------+-----------------------------------------------------------------------+
+|           | delimiter           | Separator of values if multiple.                                      |
++           +---------------------+-----------------------------------------------------------------------+
+|           | catalogue           | Translation catalogue.                                                |
++           +---------------------+-----------------------------------------------------------------------+
+|           | class               | Class path for editable association field.                            |
++-----------+---------------------+-----------------------------------------------------------------------+
+| currency  | currency (m)        | A currency string (EUR or USD for instance).                          |
++-----------+---------------------+-----------------------------------------------------------------------+
+| date      | format              | A format understandable by Twig's ``date`` function.                  |
++           +---------------------+-----------------------------------------------------------------------+
+|           | timezone            | Second argument for Twig's ``date`` function                          |
++-----------+---------------------+-----------------------------------------------------------------------+
+| datetime  | format              | A format understandable by Twig's ``date`` function.                  |
++           +---------------------+-----------------------------------------------------------------------+
+|           | timezone            | Second argument for Twig's ``date`` function                          |
++-----------+---------------------+-----------------------------------------------------------------------+
+| email     | as_string           | Renders the email as string, without any link.                        |
++           +---------------------+-----------------------------------------------------------------------+
+|           | subject             | Add subject parameter to email link.                                  |
++           +---------------------+-----------------------------------------------------------------------+
+|           | body                | Add body parameter to email link.                                     |
++-----------+---------------------+-----------------------------------------------------------------------+
+| percent   |                     | Renders value as a percentage.                                        |
++-----------+---------------------+-----------------------------------------------------------------------+
+| string    |                     | Renders a string.                                                     |
++-----------+---------------------+-----------------------------------------------------------------------+
+| text      |                     | See 'string'                                                          |
++-----------+---------------------+-----------------------------------------------------------------------+
+| html      |                     | Renders string as html                                                |
++-----------+---------------------+-----------------------------------------------------------------------+
+| time      |                     | Renders a datetime's time with format ``H:i:s``.                      |
++-----------+---------------------+-----------------------------------------------------------------------+
+| trans     | catalogue           | Translates the value with catalogue ``catalogue`` if defined.         |
++-----------+---------------------+-----------------------------------------------------------------------+
+| url       | url                 | Adds a link with url ``url`` to the displayed value                   |
++           +---------------------+-----------------------------------------------------------------------+
+|           | route               | Give a route to generate the url                                      |
++           +                     +                                                                       +
+|           |   name              | Route name                                                            |
++           +                     +                                                                       +
+|           |   parameters        | Route parameters                                                      |
++           +---------------------+-----------------------------------------------------------------------+
+|           | hide_protocol       | Hide http:// or https:// (default: false)                             |
++-----------+---------------------+-----------------------------------------------------------------------+
 
 If you have the SonataDoctrineORMAdminBundle installed, you have access
 to more field types, see `SonataDoctrineORMAdminBundle Documentation`_.
@@ -199,11 +229,15 @@ to more field types, see `SonataDoctrineORMAdminBundle Documentation`_.
 Customizing the query used to generate the list
 -----------------------------------------------
 
-You can customize the list query thanks to the ``createQuery`` method::
+.. versionadded:: 3.63
 
-    public function createQuery($context = 'list')
+    The ``configureQuery`` method was introduced in 3.63.
+
+You can customize the list query thanks to the ``configureQuery`` method::
+
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
-        $query = parent::createQuery($context);
+        $query = parent::configureQuery($query);
         $query->andWhere(
             $query->expr()->eq($query->getRootAliases()[0] . '.my_field', ':my_param')
         );

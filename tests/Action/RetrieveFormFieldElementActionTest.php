@@ -21,15 +21,12 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Symfony\Bridge\Twig\AppVariable;
-use Symfony\Bridge\Twig\Command\DebugCommand;
-use Symfony\Bridge\Twig\Extension\FormExtension;
-use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
 final class RetrieveFormFieldElementActionTest extends TestCase
@@ -83,7 +80,7 @@ final class RetrieveFormFieldElementActionTest extends TestCase
             'field' => 'enabled',
             'value' => 1,
             'context' => 'list',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'POST']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST]);
 
         $modelManager = $this->prophesize(ModelManagerInterface::class);
         $formView = new FormView();
@@ -107,37 +104,15 @@ final class RetrieveFormFieldElementActionTest extends TestCase
         $renderer->setTheme($formView, $formView)->shouldBeCalled();
         $renderer->searchAndRenderBlock($formView, 'widget')->willReturn('block');
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
-        $this->isInstanceOf(Response::class, $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertSame($response->getContent(), 'block');
     }
 
     private function configureFormRenderer()
     {
         $runtime = $this->prophesize(FormRenderer::class);
-
-        // Remove the condition when dropping sf < 3.2
-        if (!method_exists(AppVariable::class, 'getToken')) {
-            $extension = $this->prophesize(FormExtension::class);
-
-            $this->twig->getExtension(FormExtension::class)->willReturn($extension->reveal());
-            $extension->initRuntime($this->twig->reveal())->shouldBeCalled();
-            $extension->renderer = $runtime->reveal();
-
-            return $runtime;
-        }
-
-        // Remove the condition when dropping sf < 3.4
-        if (!method_exists(DebugCommand::class, 'getLoaderPaths')) {
-            $twigRuntime = $this->prophesize(TwigRenderer::class);
-
-            $this->twig->getRuntime(TwigRenderer::class)->willReturn($twigRuntime->reveal());
-            $twigRuntime->setEnvironment($this->twig->reveal())->shouldBeCalled();
-
-            return $twigRuntime;
-        }
 
         $this->twig->getRuntime(FormRenderer::class)->willReturn($runtime->reveal());
 

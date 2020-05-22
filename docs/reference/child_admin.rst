@@ -17,6 +17,9 @@ its parent:
 
         # config/services.yaml
 
+        App\Admin\VideoAdmin:
+            # tags, calls, etc
+
         App\Admin\PlaylistAdmin:
             calls:
                 - [addChild, ['@App\Admin\VideoAdmin', 'playlist']]
@@ -24,6 +27,10 @@ its parent:
     .. code-block:: xml
 
         <!-- config/services.xml -->
+
+        <service id="App\Admin\VideoAdmin">
+            <!-- tags, calls, etc -->
+        </service>
 
         <service id="App\Admin\PlaylistAdmin">
             <!-- ... -->
@@ -45,7 +52,7 @@ class::
 
     final class PlaylistAdmin extends AbstractAdmin
     {
-        protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+        protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
         {
             if (!$childAdmin && !in_array($action, ['edit', 'show'])) {
                 return;
@@ -66,7 +73,7 @@ class::
 
             if ($this->isGranted('LIST')) {
                 $menu->addChild('Manage Videos', [
-                    'uri' => $admin->generateUrl('sonata.admin.video.list', ['id' => $id])
+                    'uri' => $admin->generateUrl('App\Admin\VideoAdmin.list', ['id' => $id])
                 ]);
             }
         }

@@ -68,9 +68,9 @@ class AdminPoolLoaderTest extends TestCase
             ->method('getRoutes')
             ->willReturn($routeCollection2);
 
-        $pool->expects($this->any())
+        $pool
             ->method('getInstance')
-            ->willReturnCallback(static function ($id) use ($admin1, $admin2) {
+            ->willReturnCallback(static function (string $id) use ($admin1, $admin2): AdminInterface {
                 switch ($id) {
                     case 'foo_admin':
                         return $admin1;

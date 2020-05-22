@@ -13,29 +13,50 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Prophecy\Argument;
 use Prophecy\Argument\Token\AnyValueToken;
+use Prophecy\Prophecy\ObjectProphecy;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
 use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
+use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
 use Symfony\Component\Form\FormTypeGuesserInterface;
+use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
-use Symfony\Component\Form\Tests\Fixtures\TestExtension;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class AdminTypeTest extends TypeTestCase
 {
+    /**
+     * @var AdminHelper|ObjectProphecy
+     */
+    private $adminHelper;
+
+    /**
+     * @var AdminType
+     */
+    private $adminType;
+
+    protected function setUp(): void
+    {
+        $this->adminHelper = $this->prophesize(AdminHelper::class);
+        $this->adminType = new AdminType($this->adminHelper->reveal());
+
+        parent::setUp();
+    }
+
     public function testGetDefaultOptions(): void
     {
-        $type = new AdminType();
-
         $optionResolver = new OptionsResolver();
 
-        $type->configureOptions($optionResolver);
+        $this->adminType->configureOptions($optionResolver);
 
         $options = $optionResolver->resolve();
 
@@ -50,20 +71,24 @@ class AdminTypeTest extends TypeTestCase
     public function testSubmitValidData(): void
     {
         $parentAdmin = $this->prophesize(AdminInterface::class);
+        $parentAdmin->hasSubject()->shouldBeCalled()->willReturn(false);
         $parentField = $this->prophesize(FieldDescriptionInterface::class);
+        $parentField->setAssociationAdmin(Argument::type(AdminInterface::class))->shouldBeCalled();
         $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
 
         $modelManager = $this->prophesize(ModelManagerInterface::class);
-        $modelManager->modelReverseTransform(Foo::class, [])->shouldBeCalled();
+
+        $foo = new Foo();
 
         $admin = $this->prophesize(AbstractAdmin::class);
-        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(false);
+        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(true);
         $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
         $admin->hasAccess('delete')->shouldBeCalled()->willReturn(false);
-        $admin->setSubject(null)->shouldBeCalled();
         $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
         $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);
         $admin->getClass()->shouldBeCalled()->willReturn(Foo::class);
+        $admin->getNewInstance()->shouldBeCalled()->willReturn($foo);
+        $admin->setSubject($foo)->shouldBeCalled();
 
         $field = $this->prophesize(FieldDescriptionInterface::class);
         $field->getAssociationAdmin()->shouldBeCalled()->willReturn($admin->reveal());
@@ -87,18 +112,23 @@ class AdminTypeTest extends TypeTestCase
 
     public function testDotFields(): void
     {
+        $foo = new \stdClass();
+        $foo->bar = 1;
+
         $parentSubject = new \stdClass();
-        $parentSubject->foo = 1;
+        $parentSubject->foo = $foo;
 
         $parentAdmin = $this->prophesize(AdminInterface::class);
         $parentAdmin->getSubject()->shouldBeCalled()->willReturn($parentSubject);
+        $parentAdmin->hasSubject()->shouldBeCalled()->willReturn(true);
         $parentField = $this->prophesize(FieldDescriptionInterface::class);
+        $parentField->setAssociationAdmin(Argument::type(AdminInterface::class))->shouldBeCalled();
         $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
 
         $modelManager = $this->prophesize(ModelManagerInterface::class);
 
         $admin = $this->prophesize(AbstractAdmin::class);
-        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(false);
+        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(true);
         $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
         $admin->setSubject(1)->shouldBeCalled();
         $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
@@ -107,16 +137,102 @@ class AdminTypeTest extends TypeTestCase
 
         $field = $this->prophesize(FieldDescriptionInterface::class);
         $field->getAssociationAdmin()->shouldBeCalled()->willReturn($admin->reveal());
-        $field->getFieldName()->shouldBeCalled()->willReturn('foo');
+        $field->getFieldName()->shouldBeCalled()->willReturn('bar');
+        $field->getParentAssociationMappings()->shouldBeCalled()->willReturn([['fieldName' => 'foo']]);
 
         $this->builder->add('foo.bar');
 
         try {
-            $type = new AdminType();
-            $type->buildForm($this->builder, [
+            $this->adminType->buildForm($this->builder, [
                 'sonata_field_description' => $field->reveal(),
                 'delete' => false, // not needed
-                'property_path' => 'foo', // actual test case
+                'property_path' => 'bar', // actual test case
+            ]);
+        } catch (NoSuchPropertyException $exception) {
+            $this->fail($exception->getMessage());
+        }
+    }
+
+    public function testArrayCollection(): void
+    {
+        $foo = new Foo();
+
+        $parentSubject = new \stdClass();
+        $parentSubject->foo = new ArrayCollection([$foo]);
+
+        $parentAdmin = $this->prophesize(AdminInterface::class);
+        $parentAdmin->getSubject()->shouldBeCalled()->willReturn($parentSubject);
+        $parentAdmin->hasSubject()->shouldBeCalled()->willReturn(true);
+        $parentField = $this->prophesize(FieldDescriptionInterface::class);
+        $parentField->setAssociationAdmin(Argument::type(AdminInterface::class))->shouldBeCalled();
+        $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
+
+        $modelManager = $this->prophesize(ModelManagerInterface::class);
+
+        $admin = $this->prophesize(AbstractAdmin::class);
+        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(true);
+        $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
+        $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
+        $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);
+        $admin->getClass()->shouldBeCalled()->willReturn(Foo::class);
+        $admin->setSubject($foo)->shouldBeCalled();
+
+        $field = $this->prophesize(FieldDescriptionInterface::class);
+        $field->getAssociationAdmin()->shouldBeCalled()->willReturn($admin->reveal());
+        $field->getFieldName()->shouldBeCalled()->willReturn('foo');
+        $field->getParentAssociationMappings()->shouldBeCalled()->willReturn([]);
+
+        $this->builder->add('foo');
+
+        try {
+            $this->adminType->buildForm($this->builder, [
+                'sonata_field_description' => $field->reveal(),
+                'delete' => false, // not needed
+                'property_path' => '[0]', // actual test case
+            ]);
+        } catch (NoSuchPropertyException $exception) {
+            $this->fail($exception->getMessage());
+        }
+    }
+
+    public function testArrayCollectionNotFound(): void
+    {
+        $parentSubject = new \stdClass();
+        $parentSubject->foo = new ArrayCollection();
+
+        $parentAdmin = $this->prophesize(AdminInterface::class);
+        $parentAdmin->getSubject()->shouldBeCalled()->willReturn($parentSubject);
+        $parentAdmin->hasSubject()->shouldBeCalled()->willReturn(true);
+        $parentField = $this->prophesize(FieldDescriptionInterface::class);
+        $parentField->setAssociationAdmin(Argument::type(AdminInterface::class))->shouldBeCalled();
+        $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
+
+        $modelManager = $this->prophesize(ModelManagerInterface::class);
+
+        $foo = new Foo();
+
+        $admin = $this->prophesize(AbstractAdmin::class);
+        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(true);
+        $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
+        $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
+        $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);
+        $admin->getClass()->shouldBeCalled()->willReturn(Foo::class);
+        $admin->setSubject($foo)->shouldBeCalled();
+
+        $this->adminHelper->addNewInstance($parentSubject, $parentField->reveal())->shouldBeCalled()->willReturn($foo);
+
+        $field = $this->prophesize(FieldDescriptionInterface::class);
+        $field->getAssociationAdmin()->shouldBeCalled()->willReturn($admin->reveal());
+        $field->getFieldName()->shouldBeCalled()->willReturn('foo');
+        $field->getParentAssociationMappings()->shouldBeCalled()->willReturn([]);
+
+        $this->builder->add('foo');
+
+        try {
+            $this->adminType->buildForm($this->builder, [
+                'sonata_field_description' => $field->reveal(),
+                'delete' => false, // not needed
+                'property_path' => '[0]', // actual test case
             ]);
         } catch (NoSuchPropertyException $exception) {
             $this->fail($exception->getMessage());
@@ -126,11 +242,14 @@ class AdminTypeTest extends TypeTestCase
     protected function getExtensions()
     {
         $extensions = parent::getExtensions();
+
         $guesser = $this->prophesize(FormTypeGuesserInterface::class)->reveal();
         $extension = new TestExtension($guesser);
 
         $extension->addTypeExtension(new FormTypeFieldExtension([], []));
         $extensions[] = $extension;
+
+        $extensions[] = new PreloadedExtension([$this->adminType], []);
 
         return $extensions;
     }

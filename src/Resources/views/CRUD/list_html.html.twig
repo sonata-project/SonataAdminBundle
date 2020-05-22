@@ -7,9 +7,15 @@
         {%- if field_description.options.truncate is defined -%}
             {% set truncate = field_description.options.truncate %}
             {% set length = truncate.length|default(30) %}
-            {% set preserve = truncate.preserve|default(false) %}
-            {% set separator = truncate.separator|default('...') %}
-            {{ value|striptags|truncate(length, preserve, separator)|raw }}
+            {% if truncate.preserve is defined %}
+                {% deprecated 'The "truncate.preserve" option is deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0. Use "truncate.cut" instead.' %}
+            {% endif %}
+            {% set cut = truncate.cut is defined ? truncate.cut : (truncate.preserve is defined ? truncate.preserve != true : true) %}
+            {% if truncate.separator is defined %}
+                {% deprecated 'The "truncate.separator" option is deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0. Use "truncate.ellipsis" instead.' %}
+            {% endif %}
+            {% set ellipsis = truncate.ellipsis is defined ? truncate.ellipsis : (truncate.separator is defined ? truncate.separator : '...') %}
+            {{ value|striptags|sonata_truncate(length, cut == false, ellipsis)|raw }}
         {%- else -%}
             {%- if field_description.options.strip is defined -%}
                 {% set value = value|striptags %}

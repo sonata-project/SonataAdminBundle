@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection;
+namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\Matcher\MatcherInterface;
@@ -27,7 +27,6 @@ use Sonata\BlockBundle\DependencyInjection\SonataBlockExtension;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Bundle\FrameworkBundle\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -42,13 +41,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ExtensionCompilerPassTest extends TestCase
 {
-    /** @var SonataAdminExtension $extension */
+    /** @var SonataAdminExtension */
     private $extension;
 
-    /** @var array $config */
+    /** @var array */
     private $config;
-
-    private $hasTraits;
 
     /**
      * Root name of the configuration.
@@ -57,12 +54,11 @@ class ExtensionCompilerPassTest extends TestCase
      */
     private $root;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->extension = new SonataAdminExtension();
         $this->config = $this->getConfig();
         $this->root = 'sonata.admin';
-        $this->hasTraits = version_compare(PHP_VERSION, '5.4.0', '>=');
     }
 
     /**
@@ -73,7 +69,7 @@ class ExtensionCompilerPassTest extends TestCase
         $this->extension->load([], $container = $this->getContainer());
 
         $this->assertTrue($container->hasParameter($this->root.'.extension.map'));
-        $this->assertInternalType('array', $extensionMap = $container->getParameter($this->root.'.extension.map'));
+        $this->assertIsArray($extensionMap = $container->getParameter($this->root.'.extension.map'));
 
         $this->assertArrayHasKey('admins', $extensionMap);
         $this->assertArrayHasKey('excludes', $extensionMap);
@@ -92,7 +88,8 @@ class ExtensionCompilerPassTest extends TestCase
         $extensionMap = $container->getParameter($this->root.'.extension.map');
 
         $method = new \ReflectionMethod(
-            ExtensionCompilerPass::class, 'flattenExtensionConfiguration'
+            ExtensionCompilerPass::class,
+            'flattenExtensionConfiguration'
         );
 
         $method->setAccessible(true);
@@ -123,7 +120,8 @@ class ExtensionCompilerPassTest extends TestCase
         $extensionMap = $container->getParameter($this->root.'.extension.map');
 
         $method = new \ReflectionMethod(
-            ExtensionCompilerPass::class, 'flattenExtensionConfiguration'
+            ExtensionCompilerPass::class,
+            'flattenExtensionConfiguration'
         );
 
         $method->setAccessible(true);
@@ -176,15 +174,10 @@ class ExtensionCompilerPassTest extends TestCase
         // Uses
         $this->assertArrayHasKey('uses', $extensionMap);
 
-        if ($this->hasTraits) {
-            $this->assertCount(1, $extensionMap['uses']);
-            $this->assertArrayHasKey(TimestampableTrait::class, $extensionMap['uses']);
-            $this->assertCount(1, $extensionMap['uses'][TimestampableTrait::class]);
-            $this->assertArrayHasKey('sonata_extension_post', $extensionMap['uses'][TimestampableTrait::class]);
-        } else {
-            $this->assertCount(0, $extensionMap['uses']);
-            $this->assertArrayNotHasKey(TimestampableTrait::class, $extensionMap['uses']);
-        }
+        $this->assertCount(1, $extensionMap['uses']);
+        $this->assertArrayHasKey(TimestampableTrait::class, $extensionMap['uses']);
+        $this->assertCount(1, $extensionMap['uses'][TimestampableTrait::class]);
+        $this->assertArrayHasKey('sonata_extension_post', $extensionMap['uses'][TimestampableTrait::class]);
     }
 
     /**
@@ -295,10 +288,6 @@ class ExtensionCompilerPassTest extends TestCase
      */
     public function testProcessThrowsExceptionIfTraitsAreNotAvailable(): void
     {
-        if (!$this->hasTraits) {
-            $this->expectException(InvalidConfigurationException::class, 'PHP >= 5.4.0 is required to use traits.');
-        }
-
         $config = [
             'extensions' => [
                 'sonata_extension_post' => [
@@ -340,9 +329,7 @@ class ExtensionCompilerPassTest extends TestCase
             ],
         ];
 
-        if ($this->hasTraits) {
-            $config['extensions']['sonata_extension_post']['uses'] = [TimestampableTrait::class];
-        }
+        $config['extensions']['sonata_extension_post']['uses'] = [TimestampableTrait::class];
 
         return $config;
     }

@@ -13,7 +13,7 @@ file that was distributed with this source code.
     {% set route = field_description.options.route.name|default(null) %}
 
     {% if
-        field_description.options.identifier is defined
+        field_description.options.identifier|default(false)
         and route
         and admin.hasRoute(route)
         and admin.hasAccess(route, route in ['show', 'edit'] ? object : null)
@@ -34,10 +34,16 @@ file that was distributed with this source code.
             {% endblock -%}
         </a>
     {% else %}
-        {% set isEditable = field_description.options.editable is defined and field_description.options.editable and admin.hasAccess('edit', object) %}
-        {% set xEditableType = field_description.type|sonata_xeditable_type %}
+        {% set is_editable = field_description.options.editable is defined and field_description.options.editable and admin.hasAccess('edit', object) %}
+        {% if is_editable and field_description.options.multiple is defined and field_description.options.multiple and value is iterable %}
+            {# multiple editable field should be real multiple #}
+            {# https://vitalets.github.io/x-editable/docs.html#checklist #}
+            {% set x_editable_type = 'checklist' %}
+        {% else %}
+            {% set x_editable_type = field_description.type|sonata_xeditable_type %}
+        {% endif %}
 
-        {% if isEditable and xEditableType %}
+        {% if is_editable and x_editable_type %}
             {% set url = path(
                 'sonata_admin_set_object_field_value',
                 admin.getPersistentParameters|default([])|merge({
@@ -52,14 +58,18 @@ file that was distributed with this source code.
                 {% set data_value = value.format('Y-m-d') %}
             {% elseif field_description.type == 'boolean' and value is empty %}
                 {% set data_value = 0 %}
+            {% elseif value is iterable %}
+                {% set data_value = value|json_encode %}
             {% else %}
                 {% set data_value = value %}
             {% endif %}
 
             <span {% block field_span_attributes %}class="x-editable"
-                  data-type="{{ xEditableType }}"
+                  data-type="{{ x_editable_type }}"
                   data-value="{{ data_value }}"
-                  data-title="{{ field_description.label|trans({}, field_description.translationDomain) }}"
+                  {% if field_description.label is not same as(false) %}
+                    data-title="{{ field_description.label|trans({}, field_description.translationDomain) }}"
+                  {% endif %}
                   data-pk="{{ admin.id(object) }}"
                   data-url="{{ url }}" {% endblock %}>
                 {{ block('field') }}

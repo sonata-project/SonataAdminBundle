@@ -9,11 +9,11 @@ file that was distributed with this source code.
 
 #}
 
-{% if not sonata_admin.field_description.hasassociationadmin%}
+{% if not sonata_admin.field_description.hasassociationadmin %}
     {{ value|render_relation_element(sonata_admin.field_description) }}
 {% elseif sonata_admin.edit == 'inline' %}
     {% for field_description in sonata_admin.field_description.associationadmin.formfielddescriptions %}
-        {{ form_row(form[field_description.name])}}
+        {{ form_row(form[field_description.name]) }}
     {% endfor %}
 {% else %}
     <div id="field_container_{{ id }}" class="field-container">
@@ -76,10 +76,11 @@ file that was distributed with this source code.
             </div>
             {% endif %}
 
-            {% if sonata_admin.edit == 'list'
+            {% set display_btn_delete = sonata_admin.edit == 'list'
                 and sonata_admin.field_description.associationadmin.hasRoute('delete')
                 and sonata_admin.field_description.associationadmin.hasAccess('delete')
                 and btn_delete %}
+            {% if display_btn_delete %}
                 <a  href=""
                     onclick="return remove_selected_element_{{ id }}(this);"
                     class="btn btn-danger btn-sm sonata-ba-action"
@@ -89,10 +90,11 @@ file that was distributed with this source code.
                     {{ btn_delete|trans({}, btn_catalogue) }}
                 </a>
             {% endif %}
+
+            {% if display_btn_list or display_btn_add or display_btn_delete %}
+                {% include '@SonataAdmin/CRUD/Association/edit_modal.html.twig' %}
+                {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
+            {% endif %}
         </div>
-
-        {% include '@SonataAdmin/CRUD/Association/edit_modal.html.twig' %}
     </div>
-
-    {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
 {% endif %}

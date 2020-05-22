@@ -24,15 +24,11 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
 {
     /**
      * Set the permissions not related to an object instance and also to be available when objects do not exist.
-     *
-     * @abstract
      */
     public function setAdminPermissions(array $permissions);
 
     /**
      * Return the permissions not related to an object instance and also to be available when objects do not exist.
-     *
-     * @abstract
      *
      * @return array
      */
@@ -40,15 +36,11 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
 
     /**
      * Set the permissions related to an object instance.
-     *
-     * @abstract
      */
     public function setObjectPermissions(array $permissions);
 
     /**
      * Return the permissions related to an object instance.
-     *
-     * @abstract
      *
      * @return array
      */
@@ -57,16 +49,12 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
     /**
      * Get the ACL for the passed object identity.
      *
-     * @abstract
-     *
      * @return AclInterface|null or NULL if not found
      */
     public function getObjectAcl(ObjectIdentityInterface $objectIdentity);
 
     /**
      * Find the ACLs for the passed object identities.
-     *
-     * @abstract
      *
      * @param \Traversable $oids a collection of ObjectIdentityInterface implementations
      * @param array        $sids an array of SecurityIdentityInterface implementations
@@ -79,10 +67,8 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
 
     /**
      * Add an object owner ACE to the object ACL.
-     *
-     * @abstract
      */
-    public function addObjectOwner(AclInterface $acl, UserSecurityIdentity $securityIdentity = null);
+    public function addObjectOwner(AclInterface $acl, ?UserSecurityIdentity $securityIdentity = null);
 
     /**
      * Add the object class ACE's to the object ACL.
@@ -92,23 +78,17 @@ interface AclSecurityHandlerInterface extends SecurityHandlerInterface
     /**
      * Create an object ACL.
      *
-     * @abstract
-     *
      * @return AclInterface
      */
     public function createAcl(ObjectIdentityInterface $objectIdentity);
 
     /**
      * Update the ACL.
-     *
-     * @abstract
      */
     public function updateAcl(AclInterface $acl);
 
     /**
      * Delete the ACL.
-     *
-     * @abstract
      */
     public function deleteAcl(ObjectIdentityInterface $objectIdentity);
 

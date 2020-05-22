@@ -21,13 +21,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class SetupAclCommand extends Command
 {
-    /**
-     * {@inheritdoc}
-     */
     protected static $defaultName = 'sonata:admin:setup-acl';
 
     /**
@@ -70,5 +69,7 @@ class SetupAclCommand extends Command
             \assert($admin instanceof AdminInterface);
             $this->aclManipulator->configureAcls($output, $admin);
         }
+
+        return 0;
     }
 }

@@ -25,6 +25,8 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ModelsToArrayTransformer implements DataTransformerInterface
@@ -42,7 +44,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * @var ModelChoiceList
      *
-     * @deprecated since 3.12, to be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.12, to be removed in 4.0
      * NEXT_MAJOR: remove this property
      */
     protected $choiceList;
@@ -167,7 +169,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
      *
      * @throws RuntimeException
      */
-    private function legacyConstructor(array $args)
+    private function legacyConstructor(array $args): void
     {
         $choiceList = $args[0];
 

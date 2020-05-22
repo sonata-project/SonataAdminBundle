@@ -42,7 +42,7 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
         $this->assertSame(['map' => []], $options);
     }
 
-    public function setAllowedTypesProvider()
+    public function setAllowedTypesProvider(): array
     {
         return [
             'null' => [null],
@@ -59,7 +59,7 @@ class ChoiceFieldMaskTypeTest extends TypeTestCase
     public function testSetAllowedTypes($map): void
     {
         $this->expectException(InvalidOptionsException::class);
-        $this->expectExceptionMessageRegExp('/The option "map" with value .* is expected to be of type "array", but is of type ".*"/');
+        $this->expectExceptionMessageMatches('/The option "map" with value .* is expected to be of type "array", but is of type ".*"/');
 
         $this->resolveOptions(['map' => $map]);
     }
