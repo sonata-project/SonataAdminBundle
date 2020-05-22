@@ -1115,7 +1115,7 @@ class CRUDController implements ContainerAwareInterface
     {
         $request = $this->getRequest();
 
-        if (Request::getHttpMethodParameterOverride() || !$request->request->has('_method')) {
+        if (!Request::getHttpMethodParameterOverride() || !$request->request->has('_method')) {
             return $request->getMethod();
         }
 
