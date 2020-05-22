@@ -136,6 +136,10 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void
     {
     }
+
+    public function configureDefaultSortValues(AdminInterface $admin, array &$sortValues): void
+    {
+    }
 }
 
 class_exists(\Sonata\Form\Validator\ErrorElement::class);

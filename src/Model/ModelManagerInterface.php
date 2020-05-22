@@ -20,10 +20,9 @@ use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 
 /**
- * A model manager is a bridge between the model classes and the admin
- * functionality.
+ * A model manager is a bridge between the model classes and the admin functionality.
  */
-interface ModelManagerInterface
+interface ModelManagerInterface extends DatagridManagerInterface
 {
     /**
      * @param string $class
@@ -197,18 +196,11 @@ interface ModelManagerInterface
      * NEXT_MAJOR: - Remove this function
      *             - Replace admin.modelmanager.sortparameters to admin.datagrid.sortparameters
      *
-     * @deprecated since sonata-project/sonata-admin-bundle 3.66. To be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.66. To be removed in 4.0.
      *
      * @return array<string, mixed>
      */
     public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid);
-
-    /**
-     * @param string $class
-     *
-     * @return array<string, string>
-     */
-    public function getDefaultSortValues($class);
 
     /**
      * @param string $class
@@ -254,7 +246,7 @@ interface ModelManagerInterface
      * NEXT_MAJOR: - Remove this function
      *             - Replace admin.modelmanager.paginationparameters to admin.datagrid.paginationparameters
      *
-     * @deprecated since sonata-project/sonata-admin-bundle 3.66. To be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.66. To be removed in 4.0.
      *
      * @return array<string, mixed>
      */

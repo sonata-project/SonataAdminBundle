@@ -200,6 +200,13 @@ final class SonataAdminExtension extends AbstractExtension
         try {
             $value = $fieldDescription->getValue($object);
         } catch (NoValueException $e) {
+            // NEXT_MAJOR: Remove the try catch in order to throw the NoValueException.
+            @trigger_error(
+                'Accessing a non existing value is deprecated'
+                .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
+                E_USER_DEPRECATED
+            );
+
             $value = null;
         }
 
@@ -234,12 +241,26 @@ final class SonataAdminExtension extends AbstractExtension
         try {
             $baseValue = $fieldDescription->getValue($baseObject);
         } catch (NoValueException $e) {
+            // NEXT_MAJOR: Remove the try catch in order to throw the NoValueException.
+            @trigger_error(
+                'Accessing a non existing value is deprecated'
+                .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
+                E_USER_DEPRECATED
+            );
+
             $baseValue = null;
         }
 
         try {
             $compareValue = $fieldDescription->getValue($compareObject);
         } catch (NoValueException $e) {
+            // NEXT_MAJOR: Remove the try catch in order to throw the NoValueException.
+            @trigger_error(
+                'Accessing a non existing value is deprecated'
+                .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
+                E_USER_DEPRECATED
+            );
+
             $compareValue = null;
         }
 
