@@ -67,7 +67,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $name;
 
     /**
-     * @var string|int the type
+     * @var string the type
      */
     protected $type;
 
@@ -224,7 +224,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->type = $type;
     }
 
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -270,7 +270,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return null !== $this->associationAdmin;
     }
 
-    public function getFieldValue(?object $object, string $fieldName)
+    public function getFieldValue(?object $object, ?string $fieldName)
     {
         if ($this->isVirtual() || null === $object) {
             return null;
