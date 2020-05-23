@@ -96,10 +96,8 @@ interface FieldDescriptionInterface
 
     /**
      * Returns the type.
-     *
-     * @return int|string
      */
-    public function getType();
+    public function getType(): ?string;
 
     /**
      * set the parent Admin (only used in nested admin).
@@ -245,5 +243,5 @@ interface FieldDescriptionInterface
     /**
      * @return mixed
      */
-    public function getFieldValue(?object $object, string $fieldName);
+    public function getFieldValue(?object $object, ?string $fieldName);
 }
