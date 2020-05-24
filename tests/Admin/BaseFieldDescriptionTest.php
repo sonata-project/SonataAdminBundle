@@ -169,7 +169,7 @@ class BaseFieldDescriptionTest extends TestCase
         $description4 = new FieldDescription();
         $description4->setOption('code', 'myMethod');
 
-        $this->assertSame($description4->getFieldValue($mock4, null), 'myMethodValue');
+        $this->assertSame($description4->getFieldValue($mock4, ''), 'myMethodValue');
     }
 
     public function testGetValueNoValueException(): void

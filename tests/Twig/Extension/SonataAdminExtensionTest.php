@@ -214,12 +214,12 @@ class SonataAdminExtensionTest extends TestCase
         $this->admin
             ->method('id')
             ->with($this->equalTo($this->object))
-            ->willReturn(12345);
+            ->willReturn('12345');
 
         $this->admin
             ->method('getNormalizedIdentifier')
             ->with($this->equalTo($this->object))
-            ->willReturn(12345);
+            ->willReturn('12345');
 
         $this->admin
             ->method('trans')
@@ -234,7 +234,7 @@ class SonataAdminExtensionTest extends TestCase
         $this->adminBar
             ->method('getNormalizedIdentifier')
             ->with($this->equalTo($this->object))
-            ->willReturn(12345);
+            ->willReturn('12345');
 
         $container
             ->method('get')
@@ -1928,12 +1928,14 @@ EOT
             ->method('getAssociationAdmin')
             ->willReturn($this->admin);
 
+        $newInstance = new \stdClass();
+
         $this->admin->expects($this->once())
             ->method('getNewInstance')
-            ->willReturn('foo');
+            ->willReturn($newInstance);
 
         $this->assertSame(
-            'foo',
+            $newInstance,
             $this->getMethodAsPublic('getValueFromFieldDescription')->invoke(
                 $this->twigExtension,
                 $object,
@@ -2079,9 +2081,9 @@ EOT
         $this->admin->expects($this->once())
             ->method('getUrlSafeIdentifier')
             ->with($this->equalTo($entity))
-            ->willReturn(1234567);
+            ->willReturn('1234567');
 
-        $this->assertSame(1234567, $this->twigExtension->getUrlSafeIdentifier($entity));
+        $this->assertSame('1234567', $this->twigExtension->getUrlSafeIdentifier($entity));
     }
 
     public function testGetUrlsafeIdentifier_GivenAdmin_Foo(): void
@@ -2101,12 +2103,12 @@ EOT
         $this->admin->expects($this->once())
             ->method('getUrlSafeIdentifier')
             ->with($this->equalTo($entity))
-            ->willReturn(1234567);
+            ->willReturn('1234567');
 
         $this->adminBar->expects($this->never())
             ->method('getUrlSafeIdentifier');
 
-        $this->assertSame(1234567, $this->twigExtension->getUrlSafeIdentifier($entity, $this->admin));
+        $this->assertSame('1234567', $this->twigExtension->getUrlSafeIdentifier($entity, $this->admin));
     }
 
     public function testGetUrlsafeIdentifier_GivenAdmin_Bar(): void
@@ -2126,9 +2128,9 @@ EOT
         $this->adminBar->expects($this->once())
             ->method('getUrlSafeIdentifier')
             ->with($this->equalTo($entity))
-            ->willReturn(1234567);
+            ->willReturn('1234567');
 
-        $this->assertSame(1234567, $this->twigExtension->getUrlSafeIdentifier($entity, $this->adminBar));
+        $this->assertSame('1234567', $this->twigExtension->getUrlSafeIdentifier($entity, $this->adminBar));
     }
 
     public function xEditableChoicesProvider()

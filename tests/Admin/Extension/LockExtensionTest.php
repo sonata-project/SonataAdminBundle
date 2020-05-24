@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Model\LockInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Tests\App\Model\ModelManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilder;
@@ -64,13 +65,17 @@ class LockExtensionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->modelManager = $this->prophesize(LockInterface::class);
+        $this->modelManager = $this->prophesize(ModelManager::class);
         $this->admin = $this->prophesize(AbstractAdmin::class);
-
         $this->eventDispatcher = new EventDispatcher();
         $this->request = new Request();
         $this->object = new \stdClass();
         $this->lockExtension = new LockExtension();
+    }
+
+    public function testModelManagerImplementsLockInterface(): void
+    {
+        $this->assertInstanceOf(LockInterface::class, $this->modelManager->reveal());
     }
 
     public function testConfigureFormFields(): void
@@ -147,6 +152,7 @@ class LockExtensionTest extends TestCase
 
     public function testPreUpdateIfAdminHasNoRequest(): void
     {
+        $this->configureAdmin();
         $this->modelManager->lock()->shouldNotBeCalled();
 
         $this->lockExtension->preUpdate($this->admin->reveal(), $this->object);

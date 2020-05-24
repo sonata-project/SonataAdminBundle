@@ -166,9 +166,7 @@ class CRUDControllerTest extends TestCase
         $this->pool = new Pool($this->container, 'title', 'logo.png');
         $this->pool->setAdminServiceIds(['foo.admin']);
         $this->request->attributes->set('_sonata_admin', 'foo.admin');
-        $this->admin = $this->getMockBuilder(AdminInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->admin = $this->createMock(AdminInterface::class);
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->parameters = [];
         $this->template = '';
@@ -357,14 +355,14 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('setUniqid')
-            ->willReturnCallback(static function (int $uniqid) use (&$uniqueId): void {
+            ->willReturnCallback(static function (string $uniqid) use (&$uniqueId): void {
                 $uniqueId = $uniqid;
             });
 
-        $this->request->query->set('uniqid', 123456);
+        $this->request->query->set('uniqid', '123456');
         $this->protectedTestedMethods['configure']->invoke($this->controller);
 
-        $this->assertSame(123456, $uniqueId);
+        $this->assertSame('123456', $uniqueId);
     }
 
     public function testConfigureChild(): void
@@ -373,7 +371,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('setUniqid')
-            ->willReturnCallback(static function ($uniqid) use (&$uniqueId): void {
+            ->willReturnCallback(static function (string $uniqid) use (&$uniqueId): void {
                 $uniqueId = $uniqid;
             });
 
@@ -388,10 +386,10 @@ class CRUDControllerTest extends TestCase
             ->method('getParent')
             ->willReturn($adminParent);
 
-        $this->request->query->set('uniqid', 123456);
+        $this->request->query->set('uniqid', '123456');
         $this->protectedTestedMethods['configure']->invoke($this->controller);
 
-        $this->assertSame(123456, $uniqueId);
+        $this->assertSame('123456', $uniqueId);
     }
 
     public function testConfigureWithException(): void
@@ -407,11 +405,12 @@ class CRUDControllerTest extends TestCase
 
     public function testConfigureWithException2(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Admin service "nonexistent.admin" not found in admin pool.');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Unable to find the admin class related to the current controller');
 
         $this->pool->setAdminServiceIds(['nonexistent.admin']);
         $this->request->attributes->set('_sonata_admin', 'nonexistent.admin');
+
         $this->protectedTestedMethods['configure']->invoke($this->controller);
     }
 
@@ -525,8 +524,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('list'))
-            ->willReturn(true);
+            ->with($this->equalTo('list'));
 
         $controller = $this->createController(PreCRUDController::class);
 
@@ -546,8 +544,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('list'))
-            ->willReturn(true);
+            ->with($this->equalTo('list'));
 
         $form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
@@ -597,8 +594,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('batchDelete'))
-            ->willReturn(true);
+            ->with($this->equalTo('batchDelete'));
 
         $this->admin->expects($this->once())
             ->method('getModelManager')
@@ -667,7 +663,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('getObject')
-            ->willReturn(false);
+            ->willReturn(null);
 
         $this->controller->showAction($this->request);
     }
@@ -699,8 +695,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('show'))
-            ->willReturn(true);
+            ->with($this->equalTo('show'));
 
         $this->container->set('foo.admin', $this->admin);
         $controller = $this->createController(PreCRUDController::class);
@@ -720,8 +715,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('show'))
-            ->willReturn(true);
+            ->with($this->equalTo('show'));
 
         $show = $this->createMock(FieldDescriptionCollection::class);
 
@@ -822,7 +816,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('getObject')
-            ->willReturn(false);
+            ->willReturn(null);
 
         $this->controller->deleteAction($this->request);
     }
@@ -854,8 +848,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
-            ->willReturn(true);
+            ->with($this->equalTo('delete'));
 
         $controller = $this->createController(PreCRUDController::class);
 
@@ -874,8 +867,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
-            ->willReturn(true);
+            ->with($this->equalTo('delete'));
 
         $this->assertInstanceOf(Response::class, $this->controller->deleteAction($this->request));
 
@@ -902,8 +894,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
-            ->willReturn(true);
+            ->with($this->equalTo('delete'));
 
         $controller = $this->createController();
 
@@ -930,8 +921,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
-            ->willReturn(true);
+            ->with($this->equalTo('delete'));
 
         $this->request->setMethod(Request::METHOD_DELETE);
 
@@ -955,8 +945,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
-            ->willReturn(true);
+            ->with($this->equalTo('delete'));
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('_method', Request::METHOD_DELETE);
@@ -981,8 +970,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
-            ->willReturn(true);
+            ->with($this->equalTo('delete'));
 
         $this->admin
             ->method('getClass')
@@ -1014,8 +1002,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
-            ->willReturn(true);
+            ->with($this->equalTo('delete'));
 
         $this->admin->expects($this->once())
             ->method('delete')
@@ -1053,8 +1040,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
-            ->willReturn(true);
+            ->with($this->equalTo('delete'));
 
         $this->request->setMethod(Request::METHOD_DELETE);
 
@@ -1080,8 +1066,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
-            ->willReturn(true);
+            ->with($this->equalTo('delete'));
 
         $this->admin->expects($this->once())
             ->method('toString')
@@ -1117,8 +1102,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
-            ->willReturn(true);
+            ->with($this->equalTo('delete'));
 
         $this->admin->expects($this->once())
             ->method('toString')
@@ -1148,8 +1132,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
-            ->willReturn(true);
+            ->with($this->equalTo('delete'));
 
         //without POST request parameter "_method" should not be used as real REST method
         $this->request->query->set('_method', Request::METHOD_DELETE);
@@ -1180,8 +1163,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
-            ->willReturn(true);
+            ->with($this->equalTo('delete'));
 
         $this->admin->expects($this->once())
             ->method('toString')
@@ -1212,8 +1194,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('delete'))
-            ->willReturn(true);
+            ->with($this->equalTo('delete'));
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('_method', Request::METHOD_DELETE);
@@ -1233,7 +1214,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('getObject')
-            ->willReturn(false);
+            ->willReturn(null);
 
         $this->controller->editAction($this->request);
     }
@@ -1265,8 +1246,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
-            ->willReturn(true);
+            ->with($this->equalTo('edit'));
 
         $controller = $this->createController(PreCRUDController::class);
 
@@ -1285,8 +1265,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
-            ->willReturn(true);
+            ->with($this->equalTo('edit'));
 
         $form = $this->createMock(Form::class);
 
@@ -1388,8 +1367,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
-            ->willReturn(true);
+            ->with($this->equalTo('edit'));
 
         $form = $this->createMock(Form::class);
 
@@ -1447,8 +1425,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
-            ->willReturn(true);
+            ->with($this->equalTo('edit'));
 
         $form = $this->createMock(Form::class);
 
@@ -1498,8 +1475,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
-            ->willReturn(true);
+            ->with($this->equalTo('edit'));
 
         $form = $this->createMock(Form::class);
 
@@ -1543,8 +1519,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
-            ->willReturn(true);
+            ->with($this->equalTo('edit'));
 
         $form = $this->createMock(Form::class);
 
@@ -1585,8 +1560,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
-            ->willReturn(true);
+            ->with($this->equalTo('edit'));
 
         $this->admin
             ->method('getClass')
@@ -1648,8 +1622,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
-            ->willReturn(true);
+            ->with($this->equalTo('edit'));
 
         $form = $this->createMock(Form::class);
 
@@ -1702,8 +1675,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('checkAccess')
-            ->with($this->equalTo('edit'))
-            ->willReturn(true);
+            ->with($this->equalTo('edit'));
 
         $this->admin
             ->method('getClass')
@@ -1771,8 +1743,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('create'))
-            ->willReturn(true);
+            ->with($this->equalTo('create'));
 
         $this->admin
             ->method('getClass')
@@ -1793,8 +1764,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('create'))
-            ->willReturn(true);
+            ->with($this->equalTo('create'));
 
         $object = new \stdClass();
 
@@ -1840,20 +1810,22 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->exactly(2))
             ->method('checkAccess')
-            ->willReturnCallback(static function (string $name, $objectIn = null) use ($object): bool {
+            ->willReturnCallback(static function (string $name, $objectIn = null) use ($object): void {
                 if ('edit' === $name) {
-                    return true;
+                    return;
                 }
 
                 if ('create' !== $name) {
-                    return false;
+                    throw new AccessDeniedException();
                 }
 
                 if (null === $objectIn) {
-                    return true;
+                    return;
                 }
 
-                return $objectIn === $object;
+                if ($objectIn !== $object) {
+                    throw new AccessDeniedException();
+                }
             });
 
         $this->admin->expects($this->once())
@@ -1920,12 +1892,12 @@ class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('checkAccess')
-            ->willReturnCallback(static function (string $name, $object = null): bool {
+            ->willReturnCallback(static function (string $name, $object = null): void {
                 if ('create' !== $name) {
                     throw new AccessDeniedException();
                 }
                 if (null === $object) {
-                    return true;
+                    return;
                 }
 
                 throw new AccessDeniedException();
@@ -1969,8 +1941,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('create'))
-            ->willReturn(true);
+            ->with($this->equalTo('create'));
 
         $object = new \stdClass();
 
@@ -2031,8 +2002,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->admin->expects($this->exactly(2))
             ->method('checkAccess')
-            ->with($this->equalTo('create'))
-            ->willReturn(true);
+            ->with($this->equalTo('create'));
 
         $this->admin
             ->method('getClass')
@@ -2098,16 +2068,18 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->exactly(2))
             ->method('checkAccess')
-            ->willReturnCallback(static function (string $name, $objectIn = null) use ($object): bool {
+            ->willReturnCallback(static function (string $name, $objectIn = null) use ($object): void {
                 if ('create' !== $name) {
-                    return false;
+                    throw new AccessDeniedException();
                 }
 
                 if (null === $objectIn) {
-                    return true;
+                    return;
                 }
 
-                return $objectIn === $object;
+                if ($objectIn !== $object) {
+                    throw new AccessDeniedException();
+                }
             });
 
         $this->admin->expects($this->once())
@@ -2164,8 +2136,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('create'))
-            ->willReturn(true);
+            ->with($this->equalTo('create'));
 
         $object = new \stdClass();
 
@@ -2213,8 +2184,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('create'))
-            ->willReturn(true);
+            ->with($this->equalTo('create'));
 
         $object = new \stdClass();
 
@@ -2256,8 +2226,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('create'))
-            ->willReturn(true);
+            ->with($this->equalTo('create'));
 
         $object = new \stdClass();
 
@@ -2330,8 +2299,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('export'))
-            ->willReturn(true);
+            ->with($this->equalTo('export'));
 
         $this->admin->expects($this->once())
             ->method('getExportFormats')
@@ -2350,8 +2318,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('export'))
-            ->willReturn(true);
+            ->with($this->equalTo('export'));
 
         $this->admin->expects($this->once())
             ->method('getExportFormats')
@@ -2397,7 +2364,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('getObject')
-            ->willReturn(false);
+            ->willReturn(null);
 
         $this->controller->historyAction($this->request);
     }
@@ -2411,8 +2378,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('history'))
-            ->willReturn(true);
+            ->with($this->equalTo('history'));
 
         $object = new \stdClass();
 
@@ -2438,8 +2404,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('history'))
-            ->willReturn(true);
+            ->with($this->equalTo('history'));
 
         $object = new \stdClass();
 
@@ -2499,7 +2464,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('getObject')
-            ->willReturn(false);
+            ->willReturn(null);
 
         $this->controller->aclAction($this->request);
     }
@@ -2541,8 +2506,8 @@ class CRUDControllerTest extends TestCase
             ->willReturn($object);
 
         $this->admin
-            ->method('checkAccess')
-            ->willReturn(true);
+            ->expects($this->once())
+            ->method('checkAccess');
 
         $this->admin
             ->method('getSecurityInformation')
@@ -2625,8 +2590,8 @@ class CRUDControllerTest extends TestCase
             ->willReturn($object);
 
         $this->admin
-            ->method('checkAccess')
-            ->willReturn(true);
+            ->expects($this->once())
+            ->method('checkAccess');
 
         $this->admin
             ->method('getSecurityInformation')
@@ -2713,8 +2678,8 @@ class CRUDControllerTest extends TestCase
             ->willReturn($object);
 
         $this->admin
-            ->method('checkAccess')
-            ->willReturn(true);
+            ->expects($this->once())
+            ->method('checkAccess');
 
         $this->admin
             ->method('getSecurityInformation')
@@ -2781,8 +2746,6 @@ class CRUDControllerTest extends TestCase
 
     public function testHistoryViewRevisionActionAccessDenied(): void
     {
-        $this->expectException(AccessDeniedException::class);
-
         $this->admin
             ->method('getObject')
             ->willReturn(new \stdClass());
@@ -2792,19 +2755,21 @@ class CRUDControllerTest extends TestCase
             ->with($this->equalTo('historyViewRevision'))
             ->will($this->throwException(new AccessDeniedException()));
 
+        $this->expectException(AccessDeniedException::class);
+
         $this->controller->historyViewRevisionAction($this->request, null);
     }
 
     public function testHistoryViewRevisionActionNotFoundException(): void
     {
-        $this->expectException(NotFoundHttpException::class);
-        $this->expectExceptionMessage('unable to find the object with id: 123');
-
         $this->request->query->set('id', 123);
 
         $this->admin->expects($this->once())
             ->method('getObject')
-            ->willReturn(false);
+            ->willReturn(null);
+
+        $this->expectException(NotFoundHttpException::class);
+        $this->expectExceptionMessage('unable to find the object with id: 123');
 
         $this->controller->historyViewRevisionAction($this->request, null);
     }
@@ -2818,8 +2783,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyViewRevision'))
-            ->willReturn(true);
+            ->with($this->equalTo('historyViewRevision'));
 
         $object = new \stdClass();
 
@@ -2850,8 +2814,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyViewRevision'))
-            ->willReturn(true);
+            ->with($this->equalTo('historyViewRevision'));
 
         $object = new \stdClass();
 
@@ -2889,8 +2852,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyViewRevision'))
-            ->willReturn(true);
+            ->with($this->equalTo('historyViewRevision'));
 
         $object = new \stdClass();
 
@@ -2924,8 +2886,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('setSubject')
-            ->with($this->equalTo($objectRevision))
-            ->willReturn(null);
+            ->with($this->equalTo($objectRevision));
 
         $fieldDescriptionCollection = new FieldDescriptionCollection();
         $this->admin->expects($this->once())
@@ -2966,12 +2927,11 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyCompareRevisions'))
-            ->willReturn(true);
+            ->with($this->equalTo('historyCompareRevisions'));
 
         $this->admin->expects($this->once())
             ->method('getObject')
-            ->willReturn(false);
+            ->willReturn(null);
 
         $this->controller->historyCompareRevisionsAction($this->request, null, null);
     }
@@ -2985,8 +2945,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyCompareRevisions'))
-            ->willReturn(true);
+            ->with($this->equalTo('historyCompareRevisions'));
 
         $object = new \stdClass();
 
@@ -3017,8 +2976,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyCompareRevisions'))
-            ->willReturn(true);
+            ->with($this->equalTo('historyCompareRevisions'));
 
         $object = new \stdClass();
 
@@ -3062,8 +3020,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyCompareRevisions'))
-            ->willReturn(true);
+            ->with($this->equalTo('historyCompareRevisions'));
 
         $object = new \stdClass();
 
@@ -3110,8 +3067,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('historyCompareRevisions'))
-            ->willReturn(true);
+            ->with($this->equalTo('historyCompareRevisions'));
 
         $object = new \stdClass();
 
@@ -3153,8 +3109,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('setSubject')
-            ->with($this->equalTo($objectRevision))
-            ->willReturn(null);
+            ->with($this->equalTo($objectRevision));
 
         $fieldDescriptionCollection = new FieldDescriptionCollection();
         $this->admin->expects($this->once())
@@ -3268,8 +3223,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('batchDelete'))
-            ->willReturn(true);
+            ->with($this->equalTo('batchDelete'));
 
         $this->admin
             ->method('getModelManager')
@@ -3320,8 +3274,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('batchDelete'))
-            ->willReturn(true);
+            ->with($this->equalTo('batchDelete'));
 
         $this->admin
             ->method('getModelManager')
@@ -3587,8 +3540,7 @@ class CRUDControllerTest extends TestCase
 
         $this->admin->expects($this->once())
             ->method('checkAccess')
-            ->with($this->equalTo('batchDelete'))
-            ->willReturn(true);
+            ->with($this->equalTo('batchDelete'));
 
         $this->admin
             ->method('getModelManager')

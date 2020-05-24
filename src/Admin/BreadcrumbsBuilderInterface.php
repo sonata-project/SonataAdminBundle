@@ -30,5 +30,5 @@ interface BreadcrumbsBuilderInterface
      *
      * @return iterable the breadcrumbs
      */
-    public function getBreadcrumbs(AdminInterface $admin, $action);
+    public function getBreadcrumbs(AdminInterface $admin, string $action): iterable;
 }

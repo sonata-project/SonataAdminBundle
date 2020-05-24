@@ -77,6 +77,7 @@ final class RetrieveFormFieldElementActionTest extends TestCase
         $request = new Request([
             'code' => 'sonata.post.admin',
             'objectId' => 42,
+            'elementId' => 'element_42',
             'field' => 'enabled',
             'value' => 1,
             'context' => 'list',
@@ -92,16 +93,16 @@ final class RetrieveFormFieldElementActionTest extends TestCase
         $this->admin->getObject(42)->willReturn($object);
         $this->admin->getClass()->willReturn(\get_class($object));
         $this->admin->setSubject($object)->shouldBeCalled();
-        $this->admin->getFormTheme()->willReturn($formView);
+        $this->admin->getFormTheme()->willReturn([$formView]);
         $this->admin->getFormBuilder()->willReturn($formBuilder->reveal());
-        $this->helper->getChildFormView($formView, null)
+        $this->helper->getChildFormView($formView, 'element_42')
             ->willReturn($formView);
         $modelManager->find(\get_class($object), 42)->willReturn($object);
         $form->setData($object)->shouldBeCalled();
         $form->handleRequest($request)->shouldBeCalled();
         $form->createView()->willReturn($formView);
         $formBuilder->getForm()->willReturn($form->reveal());
-        $renderer->setTheme($formView, $formView)->shouldBeCalled();
+        $renderer->setTheme($formView, [$formView])->shouldBeCalled();
         $renderer->searchAndRenderBlock($formView, 'widget')->willReturn('block');
 
         $response = ($this->action)($request);

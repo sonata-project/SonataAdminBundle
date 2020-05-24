@@ -18,7 +18,9 @@ use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
@@ -35,137 +37,98 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
-    public function setMenuFactory(MenuFactoryInterface $menuFactory);
+    public function setMenuFactory(MenuFactoryInterface $menuFactory): void;
 
-    /**
-     * @return MenuFactoryInterface
-     */
-    public function getMenuFactory();
+    public function getMenuFactory(): ?MenuFactoryInterface;
 
-    public function setFormContractor(FormContractorInterface $formContractor);
+    public function setFormContractor(FormContractorInterface $formContractor): void;
 
-    public function setListBuilder(ListBuilderInterface $listBuilder);
+    public function setListBuilder(ListBuilderInterface $listBuilder): void;
 
-    /**
-     * @return ListBuilderInterface
-     */
-    public function getListBuilder();
+    public function getListBuilder(): ?ListBuilderInterface;
 
-    public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder);
+    public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder): void;
 
-    /**
-     * @return DatagridBuilderInterface
-     */
-    public function getDatagridBuilder();
+    public function getDatagridBuilder(): ?DatagridBuilderInterface;
 
-    public function setTranslator(TranslatorInterface $translator);
+    public function setTranslator(TranslatorInterface $translator): void;
 
-    /**
-     * @return TranslatorInterface
-     */
-    public function getTranslator();
+    public function getTranslator(): ?TranslatorInterface;
 
-    public function setRequest(Request $request);
+    public function setRequest(Request $request): void;
 
-    public function setConfigurationPool(Pool $pool);
+    public function setConfigurationPool(Pool $pool): void;
 
     /**
      * Returns subjectClass/class/subclass name managed
      * - subclass name if subclass parameter is defined
      * - subject class name if subject is defined
      * - class name if not.
-     *
-     * @return string
      */
-    public function getClass();
+    public function getClass(): string;
 
-    public function attachAdminClass(FieldDescriptionInterface $fieldDescription);
+    public function attachAdminClass(FieldDescriptionInterface $fieldDescription): void;
 
-    /**
-     * @return \Sonata\AdminBundle\Datagrid\DatagridInterface
-     */
-    public function getDatagrid();
+    public function getDatagrid(): ?DatagridInterface;
 
     /**
      * Set base controller name.
-     *
-     * @param string $baseControllerName
      */
-    public function setBaseControllerName($baseControllerName);
+    public function setBaseControllerName(string $baseControllerName): void;
 
     /**
      * Get base controller name.
-     *
-     * @return string
      */
-    public function getBaseControllerName();
+    public function getBaseControllerName(): string;
 
     /**
      * Sets a list of templates.
      */
-    public function setTemplates(array $templates);
+    public function setTemplates(array $templates): void;
 
     /**
      * Sets a specific template.
-     *
-     * @param string $name
-     * @param string $template
      */
-    public function setTemplate($name, $template);
+    public function setTemplate(string $name, string $template): void;
 
-    /**
-     * @return \Sonata\AdminBundle\Model\ModelManagerInterface
-     */
-    public function getModelManager();
+    public function getModelManager(): ?ModelManagerInterface;
 
     /**
      * @return string the manager type of the admin
      */
-    public function getManagerType();
+    public function getManagerType(): ?string;
 
     /**
      * @param string $context NEXT_MAJOR: remove this argument
-     *
-     * @return ProxyQueryInterface
      */
-    public function createQuery($context = 'list');
+    public function createQuery($context = 'list'): ProxyQueryInterface;
 
     /**
      * @return FormBuilderInterface the form builder
      */
-    public function getFormBuilder();
+    public function getFormBuilder(): FormBuilderInterface;
 
     /**
      * Returns a form depend on the given $object.
-     *
-     * @return FormInterface
      */
-    public function getForm();
+    public function getForm(): ?FormInterface;
 
     /**
      * NEXT MAJOR: Remove the throws tag.
      *
      * @throws \RuntimeException if no request is set
-     *
-     * @return Request
      */
-    public function getRequest();
+    public function getRequest(): Request;
 
     /**
      * @return bool true if a request object is linked to this Admin, false
      *              otherwise
      */
-    public function hasRequest();
+    public function hasRequest(): bool;
 
-    /**
-     * @return string
-     */
-    public function getCode();
+    public function getCode(): string;
 
-    /**
-     * @return string
-     */
-    public function getBaseCodeRoute();
+    public function getBaseCodeRoute(): string;
 
     /**
      * Return the roles and permissions per role
@@ -175,23 +138,21 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @return array 'role' => ['permission', 'permission']
      */
-    public function getSecurityInformation();
+    public function getSecurityInformation(): array;
 
-    public function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription);
+    public function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription): void;
 
     /**
      * Get parent field description.
      *
      * @return FieldDescriptionInterface The parent field description
      */
-    public function getParentFieldDescription();
+    public function getParentFieldDescription(): ?FieldDescriptionInterface;
 
     /**
      * Returns true if the Admin is linked to a parent FieldDescription.
-     *
-     * @return bool
      */
-    public function hasParentFieldDescription();
+    public function hasParentFieldDescription(): bool;
 
     /**
      * translate a message id.
@@ -206,194 +167,139 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @deprecated since sonata-project/admin-bundle 3.9, to be removed in 4.0
      */
-    public function trans($id, array $parameters = [], $domain = null, $locale = null);
+    public function trans($id, array $parameters = [], $domain = null, $locale = null): string;
 
     /**
      * Returns the parameter representing request id, ie: id or childId.
-     *
-     * @return string
      */
-    public function getIdParameter();
+    public function getIdParameter(): string;
 
     /**
      * Returns true if the route $name is available.
-     *
+     */
+    public function hasRoute(string $name): bool;
+
+    public function setSecurityHandler(SecurityHandlerInterface $securityHandler): void;
+
+    public function getSecurityHandler(): ?SecurityHandlerInterface;
+
+    /**
      * @param string $name
-     *
-     * @return bool
      */
-    public function hasRoute($name);
-
-    public function setSecurityHandler(SecurityHandlerInterface $securityHandler);
-
-    /**
-     * @return SecurityHandlerInterface|null
-     */
-    public function getSecurityHandler();
-
-    /**
-     * @param string      $name
-     * @param object|null $object
-     *
-     * @return bool
-     */
-    public function isGranted($name, $object = null);
+    public function isGranted($name, ?object $object = null): bool;
 
     /**
      * @param mixed $entity
      *
      * @return string a string representation of the identifiers for this instance
      */
-    public function getNormalizedIdentifier($entity);
+    public function getNormalizedIdentifier($entity): ?string;
 
     /**
      * Shorthand method for templating.
      *
      * @param object $entity
-     *
-     * @return mixed
      */
-    public function id($entity);
+    public function id($entity): ?string;
 
-    public function setValidator(ValidatorInterface $validator);
+    public function setValidator(ValidatorInterface $validator): void;
 
-    /**
-     * @return ValidatorInterface
-     */
-    public function getValidator();
+    public function getValidator(): ?ValidatorInterface;
 
-    /**
-     * @return FieldDescriptionCollection|null
-     */
-    public function getShow();
+    public function getShow(): ?FieldDescriptionCollection;
 
-    public function setFormTheme(array $formTheme);
+    public function setFormTheme(array $formTheme): void;
 
     /**
      * @return string[]
      */
-    public function getFormTheme();
+    public function getFormTheme(): array;
 
-    public function setFilterTheme(array $filterTheme);
+    public function setFilterTheme(array $filterTheme): void;
 
     /**
      * @return string[]
      */
-    public function getFilterTheme();
+    public function getFilterTheme(): array;
 
-    public function addExtension(AdminExtensionInterface $extension);
+    public function addExtension(AdminExtensionInterface $extension): void;
 
     /**
      * Returns an array of extension related to the current Admin.
      *
      * @return AdminExtensionInterface[]
      */
-    public function getExtensions();
+    public function getExtensions(): array;
 
-    public function setRouteBuilder(RouteBuilderInterface $routeBuilder);
+    public function setRouteBuilder(RouteBuilderInterface $routeBuilder): void;
 
-    /**
-     * @return RouteBuilderInterface
-     */
-    public function getRouteBuilder();
+    public function getRouteBuilder(): ?RouteBuilderInterface;
 
     /**
      * @param object $object
-     *
-     * @return string
      */
-    public function toString($object);
+    public function toString($object): string;
 
-    public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy);
+    public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy): void;
 
-    /**
-     * @return LabelTranslatorStrategyInterface
-     */
-    public function getLabelTranslatorStrategy();
+    public function getLabelTranslatorStrategy(): ?LabelTranslatorStrategyInterface;
 
     /**
      * Returning true will enable preview mode for
      * the target entity and show a preview button
      * when editing/creating an entity.
-     *
-     * @return bool
      */
-    public function supportsPreviewMode();
+    public function supportsPreviewMode(): bool;
 
-    /**
-     * @return object a new object instance
-     */
-    public function getNewInstance();
+    public function getNewInstance(): object;
 
-    /**
-     * @param string $uniqId
-     */
-    public function setUniqid($uniqId);
+    public function setUniqid(string $uniqId): void;
 
     /**
      * Returns the uniqid.
-     *
-     * @return string
      */
-    public function getUniqid();
+    public function getUniqid(): string;
 
     /**
      * Returns the classname label.
      *
      * @return string the classname label
      */
-    public function getClassnameLabel();
+    public function getClassnameLabel(): string;
 
     /**
      * @param mixed $id
-     *
-     * @return object|null
      */
-    public function getObject($id);
+    public function getObject($id): ?object;
 
-    /**
-     * @param object|null $subject
-     */
-    public function setSubject($subject);
+    public function setSubject(?object $subject): void;
 
     /**
      * NEXT MAJOR: return object.
-     *
-     * @return object|null
      */
-    public function getSubject();
+    public function getSubject(): ?object;
 
     /**
      * Returns a list FieldDescription.
-     *
-     * @param string $name
-     *
-     * @return FieldDescriptionInterface
      */
-    public function getListFieldDescription($name);
+    public function getListFieldDescription(string $name): ?FieldDescriptionInterface;
 
     /**
      * Returns true if the list FieldDescription exists.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
-    public function hasListFieldDescription($name);
+    public function hasListFieldDescription(string $name): bool;
 
     /**
      * Returns the collection of list FieldDescriptions.
-     *
-     * @return array
      */
-    public function getListFieldDescriptions();
+    public function getListFieldDescriptions(): array;
 
     /**
      * Returns the array of allowed export formats.
      *
      * @return string[]
      */
-    public function getExportFormats();
+    public function getExportFormats(): array;
 
     /**
      * Retuns a list of exported fields.
@@ -402,32 +308,25 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Returns SourceIterator.
-     *
-     * @return SourceIteratorInterface
      */
-    public function getDataSourceIterator();
+    public function getDataSourceIterator(): SourceIteratorInterface;
 
     /**
      * Call before the batch action, allow you to alter the query and the idx.
-     *
-     * @param string $actionName
-     * @param bool   $allElements
      */
-    public function preBatchAction($actionName, ProxyQueryInterface $query, array &$idx, $allElements);
+    public function preBatchAction(string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements = false): void;
 
     /**
      * Return array of filter parameters.
      *
      * @return array<string, mixed>
      */
-    public function getFilterParameters();
+    public function getFilterParameters(): array;
 
     /**
      * Return true if the Admin is related to a subject.
-     *
-     * @return bool
      */
-    public function hasSubject();
+    public function hasSubject(): bool;
 
     /**
      * NEXT_MAJOR: remove this method.
@@ -437,49 +336,40 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @deprecated this feature cannot be stable, use a custom validator,
      *             the feature will be removed with Symfony 2.2
      */
-    public function validate(ErrorElement $errorElement, $object);
+    public function validate(ErrorElement $errorElement, $object): void;
 
-    /**
-     * @param string $context
-     *
-     * @return bool
-     */
-    public function showIn($context);
+    public function showIn(string $context): bool;
 
     /**
      * Add object security, fe. make the current user owner of the object.
-     *
-     * @param object $object
      */
-    public function createObjectSecurity($object);
+    public function createObjectSecurity(object $object): void;
 
     /**
      * @return AdminInterface|null NEXT_MAJOR: return AdminInterface
      */
-    public function getParent();
+    public function getParent(): ?self;
 
-    public function setParent(self $admin);
+    public function setParent(self $admin): void;
 
     /**
      * Returns true if the Admin class has an Parent Admin defined.
-     *
-     * @return bool
      */
-    public function isChild();
+    public function isChild(): bool;
 
     /**
      * Set the translation domain.
      *
      * @param string $translationDomain the translation domain
      */
-    public function setTranslationDomain($translationDomain);
+    public function setTranslationDomain(string $translationDomain): void;
 
     /**
      * Returns the translation domain.
      *
      * @return string the translation domain
      */
-    public function getTranslationDomain();
+    public function getTranslationDomain(): string;
 
     /**
      * Return the form groups.
@@ -493,28 +383,26 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Set the form groups.
      */
-    public function setFormGroups(array $formGroups);
+    public function setFormGroups(array $formGroups): void;
 
     /**
      * NEXT_MAJOR: must return only `array<string, mixed>`.
      */
     public function getFormTabs();
 
-    public function setFormTabs(array $formTabs);
+    public function setFormTabs(array $formTabs): void;
 
     /**
      * NEXT_MAJOR: must return only `array<string, mixed>`.
      */
     public function getShowTabs();
 
-    public function setShowTabs(array $showTabs);
+    public function setShowTabs(array $showTabs): void;
 
     /**
      * Remove a form group field.
-     *
-     * @param string $key
      */
-    public function removeFieldFromFormGroup($key);
+    public function removeFieldFromFormGroup(string $key): void;
 
     /**
      * Returns the show groups.
@@ -528,35 +416,27 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Set the show groups.
      */
-    public function setShowGroups(array $showGroups);
+    public function setShowGroups(array $showGroups): void;
 
     /**
      * Reorder items in showGroup.
-     *
-     * @param string $group
      */
-    public function reorderShowGroup($group, array $keys);
+    public function reorderShowGroup(string $group, array $keys): void;
 
     /**
      * add a FieldDescription.
-     *
-     * @param string $name
      */
-    public function addFormFieldDescription($name, FieldDescriptionInterface $fieldDescription);
+    public function addFormFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void;
 
     /**
      * Remove a FieldDescription.
-     *
-     * @param string $name
      */
-    public function removeFormFieldDescription($name);
+    public function removeFormFieldDescription(string $name): void;
 
     /**
      * Returns true if this admin uses ACL.
-     *
-     * @return bool
      */
-    public function isAclEnabled();
+    public function isAclEnabled(): bool;
 
     /**
      * Returns list of supported sub classes.
@@ -568,130 +448,103 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @param $subClass
      */
-    public function addSubClass($subClass);
+    public function addSubClass($subClass): void;
 
     /**
      * Sets the list of supported sub classes.
      */
-    public function setSubClasses(array $subClasses);
+    public function setSubClasses(array $subClasses): void;
 
     /**
      * Returns true if the admin has the sub classes.
      *
      * @param string $name The name of the sub class
-     *
-     * @return bool
      */
-    public function hasSubClass($name);
+    public function hasSubClass(string $name): bool;
 
     /**
      * Returns true if a subclass is currently active.
-     *
-     * @return bool
      */
-    public function hasActiveSubClass();
+    public function hasActiveSubClass(): bool;
 
     /**
      * Returns the currently active sub class.
      *
      * @return string the active sub class
      */
-    public function getActiveSubClass();
+    public function getActiveSubClass(): string;
 
     /**
      * Returns the currently active sub class code.
      *
      * @return string the code for active sub class
      */
-    public function getActiveSubclassCode();
+    public function getActiveSubclassCode(): string;
 
     /**
      * Returns the list of batchs actions.
      *
      * @return array<string, mixed> the list of batchs actions
      */
-    public function getBatchActions();
+    public function getBatchActions(): array;
 
     /**
      * Returns Admin`s label.
-     *
-     * @return string
      */
-    public function getLabel();
+    public function getLabel(): ?string;
 
     /**
      * Returns an array of persistent parameters.
      *
      * @return array<string, mixed>
      */
-    public function getPersistentParameters();
+    public function getPersistentParameters(): array;
 
     public function getPersistentParameter(string $name);
 
     /**
      * Set the current child status.
-     *
-     * @param bool $currentChild
      */
-    public function setCurrentChild($currentChild);
+    public function setCurrentChild(bool $currentChild): void;
 
     /**
      * Returns the current child status.
      *
      * NEXT_MAJOR: Rename the function isCurrentChild()
-     *
-     * @return bool
      */
-    public function getCurrentChild();
+    public function getCurrentChild(): bool;
 
     /**
      * Get translation label using the current TranslationStrategy.
-     *
-     * @param string $label
-     * @param string $context
-     * @param string $type
-     *
-     * @return string
      */
-    public function getTranslationLabel($label, $context = '', $type = '');
+    public function getTranslationLabel(string $label, string $context = '', string $type = ''): string;
 
     /**
      * @param object $object
-     *
-     * @return MetadataInterface
      */
-    public function getObjectMetadata($object);
+    public function getObjectMetadata($object): MetadataInterface;
 
     /**
      * @return array<string, array<string, mixed>>
      */
-    public function getListModes();
+    public function getListModes(): array;
 
-    /**
-     * @param string $mode
-     */
-    public function setListMode($mode);
+    public function setListMode(string $mode): void;
 
     /**
      * return the list mode.
-     *
-     * @return string
      */
-    public function getListMode();
+    public function getListMode(): string;
 
     /*
      * Configure buttons for an action
-     *
-     * @param object|null $object
      */
-    public function getActionButtons(string $action, $object = null): array;
+    public function getActionButtons(string $action, ?object $object = null): array;
 
     /**
      * Get the list of actions that can be accessed directly from the dashboard.
-     *
-     * @return array
      */
-    public function getDashboardActions();
+    public function getDashboardActions(): array;
 
     /**
      * Check the current request is given route or not.
@@ -700,10 +553,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Returns the result link for an object.
-     *
-     * @param object $object
      */
-    public function getSearchResultLink($object): ?string;
+    public function getSearchResultLink(object $object): ?string;
 
     /**
      * Setting to true will enable mosaic button for the admin screen.
@@ -721,7 +572,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Check object existence and access, without throwing Exception.
      */
-    public function canAccessObject(string $action, object $object): bool;
+    public function canAccessObject(string $action, ?object $object = null): bool;
 
     /**
      * Returns the master admin.
@@ -734,4 +585,4 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getRootCode(): string;
 }
 
-class_exists(\Sonata\Form\Validator\ErrorElement::class);
+class_exists(ErrorElement::class);

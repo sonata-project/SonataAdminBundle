@@ -116,7 +116,7 @@ class LegacyAdminTypeTest extends TypeTestCase
     public function testDotFields(): void
     {
         $foo = new \stdClass();
-        $foo->bar = 1;
+        $foo->bar = new \stdClass();
 
         $parentSubject = new \stdClass();
         $parentSubject->foo = $foo;
@@ -133,7 +133,7 @@ class LegacyAdminTypeTest extends TypeTestCase
         $admin = $this->prophesize(AbstractAdmin::class);
         $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(true);
         $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
-        $admin->setSubject(1)->shouldBeCalled();
+        $admin->setSubject($parentSubject->foo->bar)->shouldBeCalled();
         $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
         $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);
         $admin->getClass()->shouldBeCalled()->willReturn(Foo::class);

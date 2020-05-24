@@ -49,9 +49,9 @@ final class GetShortObjectDescriptionAction
         $uniqid = $request->get('uniqid');
         $linkParameters = $request->get('linkParameters', []);
 
-        $admin = $this->pool->getInstance($code);
-
-        if (!$admin) {
+        try {
+            $admin = $this->pool->getInstance($code);
+        } catch (\InvalidArgumentException $e) {
             throw new NotFoundHttpException(sprintf(
                 'Could not find admin for code "%s"',
                 $code
