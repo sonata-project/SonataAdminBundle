@@ -2589,19 +2589,19 @@ EOT;
         return $this->cacheIsGranted[$key];
     }
 
-    public function getUrlSafeIdentifier($entity)
+    public function getUrlSafeIdentifier($model)
     {
-        return $this->getModelManager()->getUrlSafeIdentifier($entity);
+        return $this->getModelManager()->getUrlSafeIdentifier($model);
     }
 
-    public function getNormalizedIdentifier($entity)
+    public function getNormalizedIdentifier($model)
     {
-        return $this->getModelManager()->getNormalizedIdentifier($entity);
+        return $this->getModelManager()->getNormalizedIdentifier($model);
     }
 
-    public function id($entity)
+    public function id($model)
     {
-        return $this->getNormalizedIdentifier($entity);
+        return $this->getNormalizedIdentifier($model);
     }
 
     public function setValidator($validator)

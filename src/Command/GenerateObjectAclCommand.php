@@ -34,6 +34,8 @@ class GenerateObjectAclCommand extends QuestionableCommand
     protected static $defaultName = 'sonata:admin:generate-object-acl';
 
     /**
+     * NEXT_MAJOR: Rename to `$userModelClass`.
+     *
      * @var string
      */
     protected $userEntityClass = '';
@@ -89,7 +91,9 @@ class GenerateObjectAclCommand extends QuestionableCommand
         $this
             ->setDescription('Install ACL for the objects of the Admin Classes.')
             ->addOption('object_owner', null, InputOption::VALUE_OPTIONAL, 'If set, the task will set the object owner for each admin.')
-            ->addOption('user_entity', null, InputOption::VALUE_OPTIONAL, 'Shortcut notation like <comment>AcmeDemoBundle:User</comment>. If not set, it will be asked the first time an object owner is set.')
+            // NEXT_MAJOR: Remove "user_entity" option.
+            ->addOption('user_entity', null, InputOption::VALUE_OPTIONAL, '<error>DEPRECATED</error> Use <comment>user_model</comment> option instead.')
+            ->addOption('user_model', null, InputOption::VALUE_OPTIONAL, 'Shortcut notation like <comment>AcmeDemoBundle:User</comment>. If not set, it will be asked the first time an object owner is set.')
             ->addOption('step', null, InputOption::VALUE_NONE, 'If set, the task will ask for each admin if the ACLs need to be generated and what object owner to set, if any.')
         ;
     }
@@ -112,7 +116,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
             throw new ServiceNotFoundException('doctrine', static::class, null, [], $msg);
         }
 
-        if ($input->getOption('user_entity')) {
+        if ($input->getOption('user_model')) {
             try {
                 $this->getUserEntityClass($input, $output);
             } catch (\Exception $e) {
@@ -171,22 +175,64 @@ class GenerateObjectAclCommand extends QuestionableCommand
         return 0;
     }
 
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        parent::initialize($input, $output);
+
+        // NEXT_MAJOR: Remove the following conditional block.
+        if (null !== $input->getOption('user_entity')) {
+            $output->writeln([
+                'Option <comment>user_entity</comment> is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+                .' Use <comment>user_model</comment> option instead.',
+                '',
+            ]);
+
+            @trigger_error(
+                'Option "user_entity" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+                .' Use "user_model" option instead.',
+                E_USER_DEPRECATED
+            );
+
+            if (null === $input->getOption('user_model')) {
+                $input->setOption('user_model', $input->getOption('user_entity'));
+            }
+        }
+    }
+
+    protected function getUserModelClass(InputInterface $input, OutputInterface $output): string
+    {
+        return $this->getUserEntityClass($input, $output);
+    }
+
     /**
+     * NEXT_MAJOR: Remove this method and move its body to `getUserModelClass()`.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x. Use `getUserModelClass()` instead.
+     *
      * @return string
      */
     protected function getUserEntityClass(InputInterface $input, OutputInterface $output)
     {
+        if (self::class !== static::class) {
+            @trigger_error(sprintf(
+                'Method %s() is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+                .' Use %s::getUserModelClass() instead.',
+                __METHOD__,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+        }
+
         if ('' === $this->userEntityClass) {
-            if ($input->getOption('user_entity')) {
-                list($userBundle, $userEntity) = Validators::validateEntityName($input->getOption('user_entity'));
+            if ($input->getOption('user_model')) {
+                list($userBundle, $userModel) = Validators::validateEntityName($input->getOption('user_model'));
             } else {
-                list($userBundle, $userEntity) = $this->askAndValidate($input, $output, 'Please enter the User Entity shortcut name: ', '', 'Sonata\AdminBundle\Command\Validators::validateEntityName');
+                list($userBundle, $userModel) = $this->askAndValidate($input, $output, 'Please enter the User model shortcut name: ', '', 'Sonata\AdminBundle\Command\Validators::validateEntityName');
             }
             // Entity exists?
             if ($this->registry instanceof RegistryInterface) {
-                $this->userEntityClass = $this->registry->getEntityNamespace($userBundle).'\\'.$userEntity;
+                $this->userEntityClass = $this->registry->getEntityNamespace($userBundle).'\\'.$userModel;
             } else {
-                $this->userEntityClass = $this->registry->getAliasNamespace($userBundle).'\\'.$userEntity;
+                $this->userEntityClass = $this->registry->getAliasNamespace($userBundle).'\\'.$userModel;
             }
         }
 

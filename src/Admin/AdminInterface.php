@@ -240,20 +240,20 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function isGranted($name, $object = null);
 
     /**
-     * @param mixed $entity
+     * @param mixed $model
      *
      * @return string a string representation of the identifiers for this instance
      */
-    public function getNormalizedIdentifier($entity);
+    public function getNormalizedIdentifier($model);
 
     /**
      * Shorthand method for templating.
      *
-     * @param object $entity
+     * @param object $model
      *
      * @return mixed
      */
-    public function id($entity);
+    public function id($model);
 
     /**
      * @param ValidatorInterface $validator

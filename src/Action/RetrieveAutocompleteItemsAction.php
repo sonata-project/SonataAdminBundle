@@ -150,20 +150,20 @@ final class RetrieveAutocompleteItemsAction
         $items = [];
         $results = $pager->getResults();
 
-        foreach ($results as $entity) {
+        foreach ($results as $model) {
             if (null !== $toStringCallback) {
                 if (!\is_callable($toStringCallback)) {
                     throw new \RuntimeException('Option "to_string_callback" does not contain callable function.');
                 }
 
-                $label = $toStringCallback($entity, $property);
+                $label = $toStringCallback($model, $property);
             } else {
-                $resultMetadata = $targetAdmin->getObjectMetadata($entity);
+                $resultMetadata = $targetAdmin->getObjectMetadata($model);
                 $label = $resultMetadata->getTitle();
             }
 
             $items[] = [
-                'id' => $admin->id($entity),
+                'id' => $admin->id($model),
                 'label' => $label,
             ];
         }
