@@ -22,6 +22,7 @@ use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Tests\App\Builder\ShowBuilder;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 
@@ -581,6 +582,8 @@ class ShowMapperTest extends TestCase
 
         $this->admin->setModelManager($modelManager);
         $this->admin->setLabelTranslatorStrategy(new NoopLabelTranslatorStrategy());
+
+        $this->admin->setShowBuilder(new ShowBuilder());
     }
 
     private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription

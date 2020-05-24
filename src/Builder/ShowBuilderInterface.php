@@ -22,6 +22,9 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
  */
 interface ShowBuilderInterface extends BuilderInterface
 {
+    /**
+     * @return FieldDescriptionCollection
+     */
     public function getBaseList(array $options = []);
 
     /**
