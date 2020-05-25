@@ -519,6 +519,8 @@ class FormMapperTest extends TestCase
         $this->assertTrue($this->formMapper->has('bar'));
         $this->assertFalse($this->formMapper->has('quux'));
 
+        $this->formMapper->end(); // Close default
+
         $this->formMapper
             ->with('qux')
                 ->add('foobar', 'bar', [], ['role' => self::DEFAULT_GRANTED_ROLE])

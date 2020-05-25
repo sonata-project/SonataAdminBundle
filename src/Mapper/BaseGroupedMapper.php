@@ -40,13 +40,9 @@ abstract class BaseGroupedMapper extends BaseMapper
     /**
      * Add new group or tab (if parameter "tab=true" is available in options).
      *
-     * @param string $name
-     *
      * @throws \LogicException
-     *
-     * @return $this
      */
-    public function with($name, array $options = [])
+    public function with(string $name, array $options = []): self
     {
         if (!$this->shouldApply()) {
             return $this;
@@ -162,12 +158,8 @@ abstract class BaseGroupedMapper extends BaseMapper
 
     /**
      * Only nested add if the condition match true.
-     *
-     * @param bool $bool
-     *
-     * @return $this
      */
-    public function ifTrue($bool)
+    public function ifTrue(bool $bool): self
     {
         $this->apply[] = true === $bool;
 
@@ -176,12 +168,8 @@ abstract class BaseGroupedMapper extends BaseMapper
 
     /**
      * Only nested add if the condition match false.
-     *
-     * @param bool $bool
-     *
-     * @return $this
      */
-    public function ifFalse($bool)
+    public function ifFalse(bool $bool): self
     {
         $this->apply[] = false === $bool;
 
@@ -190,10 +178,8 @@ abstract class BaseGroupedMapper extends BaseMapper
 
     /**
      * @throws \LogicException
-     *
-     * @return $this
      */
-    public function ifEnd()
+    public function ifEnd(): self
     {
         if (empty($this->apply)) {
             throw new \LogicException('No open ifTrue() or ifFalse(), you cannot use ifEnd()');
@@ -206,12 +192,8 @@ abstract class BaseGroupedMapper extends BaseMapper
 
     /**
      * Add new tab.
-     *
-     * @param string $name
-     *
-     * @return $this
      */
-    public function tab($name, array $options = [])
+    public function tab(string $name, array $options = []): self
     {
         return $this->with($name, array_merge($options, ['tab' => true]));
     }
@@ -220,10 +202,8 @@ abstract class BaseGroupedMapper extends BaseMapper
      * Close the current group or tab.
      *
      * @throws \LogicException
-     *
-     * @return $this
      */
-    public function end()
+    public function end(): self
     {
         if (!$this->shouldApply()) {
             return $this;
@@ -242,34 +222,24 @@ abstract class BaseGroupedMapper extends BaseMapper
 
     /**
      * Returns a boolean indicating if there is an open tab at the moment.
-     *
-     * @return bool
      */
-    public function hasOpenTab()
+    public function hasOpenTab(): bool
     {
         return null !== $this->currentTab;
     }
 
-    /**
-     * @return array
-     */
-    abstract protected function getGroups();
+    abstract protected function getGroups(): array;
 
-    /**
-     * @return array
-     */
-    abstract protected function getTabs();
+    abstract protected function getTabs(): array;
 
-    abstract protected function setGroups(array $groups);
+    abstract protected function setGroups(array $groups): void;
 
-    abstract protected function setTabs(array $tabs);
+    abstract protected function setTabs(array $tabs): void;
 
     /**
      * NEXT_MAJOR: make this method abstract.
-     *
-     * @return string
      */
-    protected function getName()
+    protected function getName(): string
     {
         @trigger_error(__METHOD__.' should be implemented and will be abstract in 4.0.', E_USER_DEPRECATED);
 
@@ -278,10 +248,8 @@ abstract class BaseGroupedMapper extends BaseMapper
 
     /**
      * Add the field name to the current group.
-     *
-     * @param string $fieldName
      */
-    protected function addFieldToCurrentGroup($fieldName)
+    protected function addFieldToCurrentGroup(string $fieldName): array
     {
         // Note this line must happen before the next line.
         // See https://github.com/sonata-project/SonataAdminBundle/pull/1351
@@ -299,13 +267,11 @@ abstract class BaseGroupedMapper extends BaseMapper
      *
      * Note that this can have the side effect to change the 'group' value
      * returned by the getGroup function
-     *
-     * @return string
      */
-    protected function getCurrentGroupName()
+    protected function getCurrentGroupName(): string
     {
         if (!$this->currentGroup) {
-            $this->with($this->admin->getLabel(), ['auto_created' => true]);
+            $this->with($this->admin->getLabel() ?: 'default', ['auto_created' => true]);
         }
 
         return $this->currentGroup;
