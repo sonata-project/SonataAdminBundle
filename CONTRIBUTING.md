@@ -4,6 +4,10 @@ Thanks for your interest in Sonata projects!
 
 This document is about issues and pull requests.
 
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
+
 ## Summary
 
 * [Issues](#issues)
@@ -25,22 +29,22 @@ If you happen to find a bug, we kindly request you report it. However,
 before submitting it, please check the [project documentation available
 online](https://sonata-project.org/bundles/).
 
-Then, if it appears that it is indeed a real bug, you may report it using
+Then, if it appears that it is indeed a real bug, you MAY report it using
 Github by following these points are taken care of:
 
 * Check if the bug is not already reported!
 * The title sums up the issue with clarity.
 * A description of the workflow needed to reproduce the bug. Please try to make
   sentences, dumping an error message by itself is frowned upon.
-* If your issue is an error page, you must provide us with a stack trace. With
+* If your issue is an error page, you MUST provide us with a stack trace. With
   recent versions of Symfony, you can even get stack traces as plain text at the
 end of the page. Just look for "Stack Trace (Plain Text)", and copy/paste what
 you see. **Do not** make a screenshot of the stack trace, as screenshots are
 not indexed by search engines and will make it difficult for other people to
 find your bug report. If you have an issue when using the Symfony CLI,
 use the `-vvv` option to get a stack trace.
-* Screenshots should be considered additional data, and therefore, you should
-  always provide a textual description of the bug. It is strongly recommended
+* Screenshots SHOULD be considered additional data, and therefore, you SHOULD
+  always provide a textual description of the bug. It is strongly RECOMMENDED
 to provide them when reporting UI-related bugs.
 * If you need to provide code, make sure you know how to get syntactic
   coloration, in particular with [fenced code
@@ -75,7 +79,7 @@ php-cs-fixer fix --verbose
 
 Please note that we try to keep phpdoc to a minimum, so if an `@param` phpdoc
 comment brings nothing more than the type hint and variable name already do,
-it should be removed. Descriptions are optional if you want to document a type.
+it SHOULD be removed. Descriptions are OPTIONAL if you want to document a type.
 
 ```php
 /**
@@ -101,24 +105,24 @@ To get sphinx, simply run the following command.
 pip install --requirement docs/requirements.txt --user
 ```
 
-Some python binaries should be downloaded to `~/.local/bin` for Linux or `~/Library/Python/2.7/bin` for Mac OS,
+Some python binaries SHOULD be downloaded to `~/.local/bin` for Linux or `~/Library/Python/2.7/bin` for Mac OS,
 [modify your `$PATH` environment variable](http://www.linfo.org/path_env_var.html)
 so that it contains this path and then, from the root of the project, run `make docs`
 
-If `make docs` is successful, you should be able to see your modifications:
+If `make docs` is successful, you SHOULD be able to see your modifications:
 
 ```bash
 $YOUR_FAVORITE_BROWSER docs/_build/html/index.html
 ```
 
-If your PR contains a new feature, you must add documentation for it.
+If your PR contains a new feature, you MUST add documentation for it.
 Of course, you can also create PRs consisting only in documentation changes.
 
-Documentation contributions should comply with [the Symfony documentation standards][sf_docs_standards].
+Documentation contributions SHOULD comply with [the Symfony documentation standards][sf_docs_standards].
 
 #### The tests
 
-If your PR contains a fix, tests should be added to prove the bug.
+If your PR contains a fix, tests SHOULD be added to prove the bug.
 
 If your PR contains an addition, a new feature, this one has to be fully covered by tests.
 
@@ -131,10 +135,10 @@ Some rules have to be respected about the test:
   * `@codeCoverageIgnore`
   * `@codeCoverageIgnoreStart`
   * `@codeCoverageIgnoreEnd`
-* All test methods must be prefixed by `test`. Example: `public function testItReturnsNull()`.
+* All test methods MUST be prefixed by `test`. Example: `public function testItReturnsNull()`.
 * As opposed, the `@test` annotation is prohibited.
-* All test method names must be in camel case format.
-* Most of the time, the test class should have the same name as the targeted class, suffixed by `Test`.
+* All test method names MUST be in camel case format.
+* Most of the time, the test class SHOULD have the same name as the targeted class, suffixed by `Test`.
 * The `@expectedException*` annotations are prohibited. Use `PHPUnit_Framework_TestCase::setExpectedException()`.
 
 ##### Using test doubles
@@ -153,16 +157,16 @@ and focus on the goal of your PR and only on that.
 3. If you are changing an existing test class, you MUST use the same implementation it already uses,
 to be more consistent.
 4. You MAY submit a PR that migrates a test class from the built-in test double implementation to Prophecy,
-but it must migrate it entirely. The PR should only be about the migration.
+but it MUST migrate it entirely. The PR SHOULD only be about the migration.
 
 ### Writing a Pull Request
 
 #### The subject
 
-Ideally, a Pull Request should concern one and **only one** subject, so that it
+Ideally, a Pull Request SHOULD concern one and **only one** subject, so that it
 remains clear, and independent changes can be merged quickly.
 
-If you want to fix a typo and improve the performance of a process, you should
+If you want to fix a typo and improve the performance of a process, you SHOULD
 try as much as possible to do it in a **separate** PR, so that we can quickly
 merge one while discussing the other.
 
@@ -175,7 +179,7 @@ on your PR explaining why you feel it is the case.
 
 #### The Changelog
 
-For each PR, a change log must be provided.
+For each PR, a change log MUST be provided.
 
 There are few cases where no change log is necessary:
 
@@ -184,7 +188,7 @@ There are few cases where no change log is necessary:
 
 **Do not** edit the `CHANGELOG.md` directly though, because having every
 contributor write PR with changes in the same file, at roughly the same line is
-a recipe for conflicts. Instead, fill in the dedicated section that should
+a recipe for conflicts. Instead, fill in the dedicated section that SHOULD
 appear in a textaread when submitting your PR.
 
 Your note can be put on one of these sections:
@@ -200,7 +204,7 @@ More information about the followed changelog format: [keepachangelog.com](http:
 
 #### The base branch
 
-Before writing a PR, you have to check on which branch your changes should be based.
+Before writing a PR, you have to check on which branch your changes SHOULD be based.
 
 Each project follows [semver](http://semver.org/) convention for release management.
 
@@ -218,19 +222,19 @@ Deprecation removal  | No (Can't be)            | Major           | `master` | |
 Notes:
   * Branch `3.x` is the branch of the **latest stable** minor release and
   has to be used for Backward compatible PRs.
-  * If you PR is not **Backward Compatible** but can be, it **must** be:
+  * If you PR is not **Backward Compatible** but can be, it **MUST** be:
     * Changing a function/method signature? Prefer create a new one and deprecate the old one.
     * Code deletion? Don't. Please deprecate it instead.
     * If your BC PR is accepted, you can do a new one on the `master` branch which removes the deprecated code.
     * SYMFONY DOC REF (same logic)?
 
 If you have a non-BC PR to propose, please try to create a related BC PR first.
-This BC PR should mark every piece of code that needs to be removed / uncommented / reworked
+This BC PR SHOULD mark every piece of code that needs to be removed / uncommented / reworked
 in the corresponding non-BC PR with the following marker comment : `NEXT_MAJOR`.
 When the BC PR is merged in the stable branch, wait for the stable branch to be
 merged in the unstable branch, and then work on your non-BC PR.
 
-For instance, assuming you want to introduce a new method to an existing interface, you should do something like this:
+For instance, assuming you want to introduce a new method to an existing interface, you SHOULD do something like this:
 
 ```php
 <?php
@@ -253,7 +257,7 @@ interface BarInterface
 ##### Deprecation
 
 In some cases, you might have some code parts that might become superseded by others, but could still be used by the end user.
-If the concerned code is not tagged as `internal`, it must be deprecated on the stable branch, then removed.
+If the concerned code is not tagged as `internal`, it MUST be deprecated on the stable branch, then removed.
 
 If an alternate usage solution is possible, you **MUST** provide it in the deprecation message.
 
@@ -262,12 +266,12 @@ The deprecated minor version **MUST NOT** be provided. Use `x` instead. It will 
 Any deprecation **MUST** be documented in the corresponding `UPGRADE-[0-9].x.md`.
 The documentation **MUST** be filled inside the top **unreleased** section with a sub title.
 
-The `NEXT_MAJOR` tag should not be used for deprecation.
+The `NEXT_MAJOR` tag SHOULD not be used for deprecation.
 The `@deprecated` and `E_USER_DEPRECATED` key will be searched for before releasing the next major version.
 
 You have three ways to deprecate things.
 
-For class definitions, methods (or first level functions) and properties, use the `@deprecated` tag: 
+For class definitions, methods (or first level functions) and properties, use the `@deprecated` tag:
 
 ```php
 /**
@@ -338,7 +342,7 @@ If you want to change some dependencies, here are the rules:
 - Don't add support for a version lower than the current one.
 - Don't change the highest supported version to a lower one.
 - Lower version dropping is accepted as a Backward Compatible change according to [semver][semver_dependencies_update],
-but some extra rules must be respected here:
+but some extra rules MUST be respected here:
   - PHP versions that are under the [orange zone][php_supported_versions] (Security Support) **MUST NOT** be dropped on the stable branch.
   - PHP versions that are under the [green zone][php_supported_versions] (Active Support) **MUST NOT** be dropped on the master branch.
   - If it's a Symfony package, at least the last LTS version **MUST** be supported, even on master.
@@ -351,7 +355,7 @@ but some extra rules must be respected here:
 
 Legacy branches are **NOT** supported at all. Any submitted Pull Request will be immediately closed.
 
-Core team members *may* cherry-pick some fixes from the stable branch to the legacy one if it's really needed
+Core team members *MAY* cherry-pick some fixes from the stable branch to the legacy one if it's really needed
 and if the legacy one is not too old (~less than one month).
 
 #### The commit message
@@ -370,9 +374,9 @@ we cannot recommend enough the following:
 To sum them up, the commit message has to be crystal clear and of course,
 related to the PR content.
 
-The first line of the commit message must be short, keep it under 50
-characters. It must say concisely but *precisely* what you did. The other
-lines, if needed, should contain a complete description of *why* you did this.
+The first line of the commit message MUST be short, keep it under 50
+characters. It MUST say concisely but *precisely* what you did. The other
+lines, if needed, SHOULD contain a complete description of *why* you did this.
 
 Bad commit message subject:
 
@@ -400,14 +404,14 @@ flux capacitor object that might not be defined.
 Fixes #42
 ```
 
-The description is optional but strongly recommended. It could be asked by the
+The description is OPTIONAL but strongly RECOMMENDED. It could be asked by the
 team if needed. PR will often lead to complicated, hard-to-read conversations
 with many links to other web pages.
 
-The commit description should be able to live without what is said in the PR,
-and should ideally sum it up in a crystal clear way, so that people do not have
+The commit description SHOULD be able to live without what is said in the PR,
+and SHOULD ideally sum it up in a crystal clear way, so that people do not have
 to open a web browser to understand what you did.
-Links to PRs/Issues and external references are of course welcome, but should
+Links to PRs/Issues and external references are of course welcome, but SHOULD
 not be considered enough. When you reference an issue, make sure to use one of
 the keywords described in [the dedicated github
 article](https://help.github.com/articles/closing-issues-via-commit-messages/).
@@ -437,7 +441,7 @@ This is to avoid the pain of making a reviewer rework their whole PR and then no
 
 Things to hunt for :
 
-- missing docs . This is what you should look for first. If you think the PR lacks docs,
+- missing docs . This is what you SHOULD look for first. If you think the PR lacks docs,
 ask for them, because you will be better at reviewing it if you understand it better,
 and docs help a lot with that.
 - missing tests : Encourage people to do TDD by making clear a PR will not get merged
@@ -463,8 +467,8 @@ Is the contributor trying to be clever or to be clear?
 Leave no stone unturned. When in doubt, ask for a clarification. If the
 clarification seems useful, and does not appear in a code comment or in a commit
 message, say so and / or make use a squash-merge to customize the commit message.
-Ideally, the project history should be understandable without an internet connection,
-and the PR should be understandable without having a look at the changes.
+Ideally, the project history SHOULD be understandable without an internet connection,
+and the PR SHOULD be understandable without having a look at the changes.
 
 Also, make sure your feedback is actionable, it is important to keep the ball rolling,
 so if you raise a question, try to also provide solutions.
@@ -475,9 +479,9 @@ Applying labels requires write access to PRs, but you can still advise if you do
 There are several labels that will help determine what the next version number will be.
 Apply the first label that matches one of this conditions, in that order:
 
-- `major`: there is a BC-break. The PR should target the `master` branch.
-- `minor`: there is a backwards-compatible change in the API. The PR should target the stable branch.
-- `patch`: this fixes an issue (not necessarily reported). The PR should target the stable branch.
+- `major`: there is a BC-break. The PR SHOULD target the `master` branch.
+- `minor`: there is a backwards-compatible change in the API. The PR SHOULD target the stable branch.
+- `patch`: this fixes an issue (not necessarily reported). The PR SHOULD target the stable branch.
 - `docs`: this PR is solely about the docs. `pedantic` is implied.
 - `pedantic`: this change does not warrant a release.
 
@@ -504,7 +508,7 @@ or if there is a situation (faulty commit, revert needed) maybe you can merge it
 Do not merge any merge request dropping a dependency version support.
 To achieve that, mark them as `RTM`, and mention then on Slack when asking for a release.
 
-This rule should be applied for these reasons:
+This rule SHOULD be applied for these reasons:
 
 - Even if it's semver compatible, we don't maintain minor branches.
 So it's preferable to give priority to bugfixes over version-dropping PRs.
@@ -549,10 +553,10 @@ but are encouraged to report release requests on the dedicated private Slack cha
 ### Minor releases and patch releases
 
 Releasing software is the last step to getting your bugfixes or new features to your user base,
-and should be done regularly, so that users are not tempted to use development branches.
+and SHOULD be done regularly, so that users are not tempted to use development branches.
 To know what you are going to release on branch 42.x, given that the last release on this branch is 42.3.1,
 go to `https://github.com/sonata-project/SonataAdminBundle/compare/42.3.1...42.x`.
-You should see a list of commits, some of which should contain links to pull requests.
+You should see a list of commits, some of which SHOULD contain links to pull requests.
 
 #### Determining the next release number
 
@@ -567,7 +571,7 @@ Then, click on the commit hash to show it and open the browser dev toolbar from 
 
 Then you know the exact datetime of the released commit is `2018-04-20T09:47:48Z`. Copy it.
 
-It's important to NOT use the tag datetime because the tag may be written later after the commit.
+It's important to NOT use the tag datetime because the tag MAY be written later after the commit.
 
 An alternative way to do this is to issue the following command in your shell:
 ```shell
@@ -584,11 +588,11 @@ base:3.x merged:>2018-04-20T09:47:48Z
  It MUST be the current stable branch, or the legacy branch where you want to make a release.
  - `merged`: All the pull request merged **after** the given datetime.
 
-If any of those pull requests is labeled `minor`, then the next release should be a minor release (42.4.0).
+If any of those pull requests is labeled `minor`, then the next release SHOULD be a minor release (42.4.0).
 Otherwise, if there are any pull requests labeled `patch`,
-the next release should be a patch release (42.3.2).
-If there are neither minor nor patch pull requests, all the others should be labeled `docs` or `pedantic`,
-and you should not make a release.
+the next release SHOULD be a patch release (42.3.2).
+If there are neither minor nor patch pull requests, all the others SHOULD be labeled `docs` or `pedantic`,
+and you SHOULD not make a release.
 
 ![Pull requests page](https://user-images.githubusercontent.com/1698357/39665578-031aa2e6-5097-11e8-9f68-9ea32eec2b79.png)
 
@@ -599,9 +603,9 @@ If you find a non-labelled PR or a `major` one, a mistake was made and MUST be f
 
 #### Adding the release to the UPGRADE file
 
-If there are any deprecations, then the release should be minor and the UPGRADE-42.x file should be changed,
+If there are any deprecations, then the release SHOULD be minor and the UPGRADE-42.x file SHOULD be changed,
 moving the instructions explaining how to bypass the deprecation messages,
-that should hopefully be there, to a new section named `UPGRADE FROM 42.3.1 to 42.4.0`.
+that SHOULD hopefully be there, to a new section named `UPGRADE FROM 42.3.1 to 42.4.0`.
 
 ```patch
  UPGRADE 42.x
@@ -615,24 +619,24 @@ that should hopefully be there, to a new section named `UPGRADE FROM 42.3.1 to 4
 
 #### Upgrading code comments and deprecation messages
 
-All occurrences of `42.x` in comments or deprecation messages should be updating
+All occurrences of `42.x` in comments or deprecation messages SHOULD be updating
 by resolving `x` to its value at the time of the release.
 
 :warning: You can do it quickly with a "Search and Replace" feature, but be careful not to replace unwanted matches.
 
 #### Compiling the changelog
 
-Each non-pedantic (and therefore non-docs) PR should contain a `CHANGELOG` section,
+Each non-pedantic (and therefore non-docs) PR SHOULD contain a `CHANGELOG` section,
 that you need to copy manually into the `CHANGELOG.md` file.
 The title is in the following format :
 `[42.3.2](https://github.com/sonata-project/SonataNewsBundle/compare/42.3.1...42.3.2) - YYYY-MM-DD`.
 
 :warning: Do not hesitate to review the changelog before the copy.
-The entries should be short, clear and must tell what have been fixed/improved for **the end user**, not how.
+The entries SHOULD be short, clear and MUST tell what have been fixed/improved for **the end user**, not how.
 
 #### Creating the release commit
 
-The changes above should be added to a signed commit with the following message : `42.3.2`. Nothing else.
+The changes above SHOULD be added to a signed commit with the following message : `42.3.2`. Nothing else.
 You MUST sign the tag with your GPG key, after which all you have to do is push it.
 If you don't have push access, you can still create a PR with the relevant changes
 and have them signed off by someone who has it.
@@ -655,7 +659,7 @@ Submit the data, and you are done!
 
 ### Major releases
 
-Major releases should be done on a regular basis,
+Major releases SHOULD be done on a regular basis,
 to avoid branches getting too far from their more stable counterparts:
 the biggest the gap, the harder the merges are.
 We use a 3 branch system, which means releasing 42.0.0 implies that:
@@ -667,10 +671,10 @@ We use a 3 branch system, which means releasing 42.0.0 implies that:
 
 #### Preparing the unstable branch
 
-- Every `NEXT_MAJOR` instruction should be followed **before** the release.
-- If possible, the latest version of every dependency should be supported
-(`composer outdated` shouldn't output anything).
-- If sensible, the old major versions of every dependency should be dropped.
+- Every `NEXT_MAJOR` instruction SHOULD be followed **before** the release.
+- If possible, the latest version of every dependency SHOULD be supported
+(`composer outdated` SHOULD NOT output anything).
+- If sensible, the old major versions of every dependency SHOULD be dropped.
 
 #### Pre-release cleanup
 
@@ -687,10 +691,10 @@ it SHOULD receive one if that version is a patch version.
 
 #### Creating the new stable branch and files
 
-If the current major is `42`, a new `43.x` branch should be created from master,
-then a commit should be done on master to bump the `branch-alias` and version numbers in the README.
+If the current major is `42`, a new `43.x` branch SHOULD be created from master,
+then a commit SHOULD be done on master to bump the `branch-alias` and version numbers in the README.
 
-Also, the following files must be created/updated on the new stable branch:
+Also, the following files MUST be created/updated on the new stable branch:
 
  - `UPGRADE-43.x.md`, containing only the main title
  - `UPGRADE-43.0.md`, containing the upgrade notes fetched from the major PRs.
@@ -701,7 +705,7 @@ Push the new branch with a commit containing the modified files and "43.x-dev" a
 
 #### Tagging the release
 
-Finally, a signed tag should be created on the newly-created stable branch and the release note MUST be filled.
+Finally, a signed tag SHOULD be created on the newly-created stable branch and the release note MUST be filled.
 
 [sphinx_install]: http://www.sphinx-doc.org/en/stable/
 [pip_install]: https://pip.pypa.io/en/stable/installing/
