@@ -38,11 +38,11 @@ file that was distributed with this source code.
     {%- endblock -%}
 </td>
 
-{% block field_compare %}
-    {% if(value_compare is defined) %}
-        <td>
+{%- block field_compare -%}
+    {% apply spaceless %}
+        {% if(value_compare is defined) %}
             {% set value = value_compare %}
-            {{ block('field') }}
-        </td>
-    {% endif %}
-{% endblock %}
+            <td>{{ block('field') }}</td>
+        {% endif %}
+    {% endapply %}
+{%- endblock -%}

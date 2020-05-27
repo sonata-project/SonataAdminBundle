@@ -358,12 +358,14 @@ class SonataAdminExtension extends AbstractExtension
             'admin' => $fieldDescription->getAdmin(),
             'field_description' => $fieldDescription,
             'value' => $baseValue,
+            'object' => $baseObject,
         ]);
 
         $compareValueOutput = $template->render([
             'field_description' => $fieldDescription,
             'admin' => $fieldDescription->getAdmin(),
             'value' => $compareValue,
+            'object' => $compareObject,
         ]);
 
         // Compare the rendered output of both objects by using the (possibly) overridden field block
@@ -375,6 +377,7 @@ class SonataAdminExtension extends AbstractExtension
             'value_compare' => $compareValue,
             'is_diff' => $isDiff,
             'admin' => $fieldDescription->getAdmin(),
+            'object' => $baseObject,
         ], $environment);
     }
 
