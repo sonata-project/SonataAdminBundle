@@ -226,7 +226,7 @@ CASESENSITIVE;
                                 ->children()
                                     ->scalarNode('label')->end()
                                     ->scalarNode('label_catalogue')->end()
-                                    ->scalarNode('icon')->defaultValue('<i class="fa fa-folder"></i>')->end()
+                                    ->scalarNode('icon')->end()
                                     ->scalarNode('on_top')->defaultFalse()->info('Show menu item in side dashboard menu without treeview')->end()
                                     ->scalarNode('keep_open')->defaultFalse()->info('Keep menu group always open')->end()
                                     ->scalarNode('provider')->end()
