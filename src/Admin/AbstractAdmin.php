@@ -106,7 +106,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * The number of result to display in the list.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x.
+     * @deprecated since sonata-project/admin-bundle 3.67.
      *
      * @var int
      */
@@ -166,7 +166,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * Default values to the datagrid.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, use configureDefaultSortValues() instead.
+     * @deprecated since sonata-project/admin-bundle 3.67, use configureDefaultSortValues() instead.
      *
      * @var array
      */
@@ -180,7 +180,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * Predefined per page options.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x.
+     * @deprecated since sonata-project/admin-bundle 3.67.
      *
      * @var array
      */
@@ -1586,14 +1586,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.67, to be removed in 4.0.
      *
      * @param int $maxPerPage
      */
     public function setMaxPerPage($maxPerPage)
     {
         @trigger_error(sprintf(
-            'The method %s is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method %s is deprecated since sonata-project/admin-bundle 3.67 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -2709,14 +2709,14 @@ EOT;
     /**
      * NEXT_MAJOR: Remove this.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.67, to be removed in 4.0.
      *
      * Set custom per page options.
      */
     public function setPerPageOptions(array $options)
     {
         @trigger_error(sprintf(
-            'The method %s is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method %s is deprecated since sonata-project/admin-bundle 3.67 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -3337,7 +3337,7 @@ EOT;
     /**
      * NEXT_MAJOR: Remove this function.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.67, to be removed in 4.0.
      *
      * Predefine per page options.
      */

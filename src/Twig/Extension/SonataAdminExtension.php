@@ -260,7 +260,7 @@ class SonataAdminExtension extends AbstractExtension
                 // NEXT_MAJOR: throw the NoValueException.
                 @trigger_error(
                     'Accessing a non existing value is deprecated'
-                    .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
+                    .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
                     E_USER_DEPRECATED
                 );
             }
@@ -293,7 +293,7 @@ class SonataAdminExtension extends AbstractExtension
             // NEXT_MAJOR: Remove the try catch in order to throw the NoValueException.
             @trigger_error(
                 'Accessing a non existing value is deprecated'
-                .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
+                .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
                 E_USER_DEPRECATED
             );
 
@@ -334,7 +334,7 @@ class SonataAdminExtension extends AbstractExtension
             // NEXT_MAJOR: Remove the try catch in order to throw the NoValueException.
             @trigger_error(
                 'Accessing a non existing value is deprecated'
-                .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
+                .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
                 E_USER_DEPRECATED
             );
 
@@ -347,7 +347,7 @@ class SonataAdminExtension extends AbstractExtension
             // NEXT_MAJOR: Remove the try catch in order to throw the NoValueException.
             @trigger_error(
                 'Accessing a non existing value is deprecated'
-                .' since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.',
+                .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
                 E_USER_DEPRECATED
             );
 

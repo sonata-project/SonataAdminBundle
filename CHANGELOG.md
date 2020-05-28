@@ -2,6 +2,31 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.67.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.66.0...3.67.0) - 2020-05-28
+### Added
+- Manage class definition which is using "%parameter%" syntax.
+- Added some `AbstractAdmin::configureDefaultSortValues` to override $datagridValues.
+- Added some `AbstractAdminExtension::configureDefaultSortValues` to override $datagridValues.
+
+### Fixed
+- Reference to configuration option in `legacy_twig_text_extension` deprecation message.
+- Call to deprecated `trans` method of `AbstractAdmin`
+- Declare missing `one_to_many`, `many_to_many`, `many_to_one` and `one_to_one` type templates.
+
+### Changed
+- Update `doctrine/inflection` to ^1.4 || ^2.0
+- update index of the first element in collection from 1 to 0
+
+### Deprecated
+- Accessing to a non existing value when adding field to `showMapper` and `listMapper`.
+- Deprecate the `AbstractAdmin::maxPerPage` property
+- Deprecate the `AbstractAdmin::setMaxPerPage` method
+- Deprecate the `AbstractAdmin::perPageOption` property
+- Deprecate the `AbstractAdmin::setPerPageOption` method
+- Deprecate the `AbstractAdmin::predefinePerPageOptions` method
+- Deprecate the `AbstractAdmin::datagridValues` property
+- Deprecate implementing `ModelManagerInterface` without implementing `DatagridManagerInterface`
+
 ## [3.66.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.65.0...3.66.0) - 2020-05-03
 ### Added
 - The possibility to edit/create an object without any field set in the configureFormField.

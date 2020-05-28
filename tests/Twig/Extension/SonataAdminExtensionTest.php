@@ -2053,7 +2053,7 @@ EOT
 
     /**
      * @group legacy
-     * @assertDeprecation Accessing a non existing value is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     * @assertDeprecation Accessing a non existing value is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.
      *
      * @dataProvider getRenderViewElementWithNoValueTests
      */
@@ -2291,7 +2291,7 @@ EOT
      * NEXT_MAJOR: Change this test to expect a NoValueException instead.
      *
      * @group legacy
-     * @expectedDeprecation Accessing a non existing value is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0.
+     * @expectedDeprecation Accessing a non existing value is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.
      */
     public function testGetValueFromFieldDescriptionWithNoValueException(): void
     {
