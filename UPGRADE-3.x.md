@@ -1,6 +1,29 @@
 UPGRADE 3.x
 ===========
 
+## Added constants for "show" and "list" templating types
+
+You can use `TemplateRegistry` constants, like
+```
+$showMapper->add('foo', TemplateRegistry::TYPE_STRING)
+```
+instead of using directly a string value.
+```
+$showMapper->add('foo', 'string')
+```
+
+The list of available types can be found in [the documentation](docs/reference/field_types.rst).
+
+## Deprecated templating types
+
+- `text`: deprecated in favor of `TemplateRegistry::TYPE_STRING`
+- `decimal`: deprecated in favor of `TemplateRegistry::TYPE_FLOAT`
+- `smallint`: deprecated in favor of `TemplateRegistry::TYPE_INTEGER`
+- `bigint`: deprecated in favor of `TemplateRegistry::TYPE_INTEGER`
+
+UPGRADE FROM 3.66 to 3.67
+=========================
+
 ## Deprecated accessing to a non existing value when adding field to `showMapper` and `listMapper`.
 
 Before:
@@ -20,9 +43,15 @@ In the next major an exception will be thrown if no getter/isser/hasser is found
 of the time the error is coming from a typo, this will allow the developer to catch it as fast as possible.
 Currently this will only trigger a deprecation if the field value is not found.
 
+UPGRADE FROM 3.65 to 3.66
+=========================
+
 ## Deprecated not passing a `Sonata\AdminBundle\Admin\AdminHelper` instance to `Sonata\AdminBundle\Form\Type\AdminType::__construct()`
 
 When instantiating a `Sonata\AdminBundle\Form\Type\AdminType` object, please use the 1 parameter signature `($adminHelper)`.
+
+UPGRADE FROM 3.63 to 3.64
+=========================
 
 ## Deprecated not setting as `false` the configuration option `sonata_admin.options.legacy_twig_text_extension`
 
@@ -68,6 +97,9 @@ $showMapper
     ])
 ;
 ```
+
+UPGRADE FROM 3.59 to 3.60
+=========================
 
 ## Deprecated not setting "sonata.admin.manager" tag in model manager services
 
