@@ -480,14 +480,14 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the
             $datagridMapper
                 ->add('full_text', CallbackFilter::class, [
                     'callback' => [$this, 'getFullTextFilter'],
-                    'field_type' => 'text'
+                    'field_type' => TextType::class,
                 ]);
         }
 
         public function getFullTextFilter($queryBuilder, $alias, $field, $value)
         {
             if (!$value['value']) {
-                return;
+                return false;
             }
 
             // Use `andWhere` instead of `where` to prevent overriding existing `where` conditions
@@ -500,6 +500,8 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the
             return true;
         }
     }
+
+The callback function should return a boolean indicating whether it is active.
 
 You can also get the filter type which can be helpful to change the operator
 type of your condition(s)::
