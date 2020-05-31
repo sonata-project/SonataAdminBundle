@@ -1,6 +1,9 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.67 to 3.68
+=========================
+
 ## Added constants for "show" and "list" templating types
 
 You can use `TemplateRegistry` constants, like

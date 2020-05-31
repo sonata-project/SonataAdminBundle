@@ -26,7 +26,7 @@ final class TemplateRegistry implements MutableTemplateRegistryInterface
     /**
      * NEXT_MAJOR: Remove this constant.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use Sonata\AdminBundle\Templating\TemplateRegistry::TYPE_STRING instead.
+     * @deprecated since sonata-project/admin-bundle 3.68, to be removed in 4.0. Use Sonata\AdminBundle\Templating\TemplateRegistry::TYPE_STRING instead.
      */
     public const TYPE_TEXT = 'text';
     public const TYPE_TEXTAREA = 'textarea';
@@ -36,20 +36,20 @@ final class TemplateRegistry implements MutableTemplateRegistryInterface
     /**
      * NEXT_MAJOR: Remove this constant.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use Sonata\AdminBundle\Templating\TemplateRegistry::TYPE_INTEGER instead.
+     * @deprecated since sonata-project/admin-bundle 3.68, to be removed in 4.0. Use Sonata\AdminBundle\Templating\TemplateRegistry::TYPE_INTEGER instead.
      */
     public const TYPE_SMALLINT = 'smallint';
     /**
      * NEXT_MAJOR: Remove this constant.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use Sonata\AdminBundle\Templating\TemplateRegistry::TYPE_INTEGER instead.
+     * @deprecated since sonata-project/admin-bundle 3.68, to be removed in 4.0. Use Sonata\AdminBundle\Templating\TemplateRegistry::TYPE_INTEGER instead.
      */
     public const TYPE_BIGINT = 'bigint';
     public const TYPE_INTEGER = 'integer';
     /**
      * NEXT_MAJOR: Remove this constant.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0. Use Sonata\AdminBundle\Templating\TemplateRegistry::TYPE_FLOAT instead.
+     * @deprecated since sonata-project/admin-bundle 3.68, to be removed in 4.0. Use Sonata\AdminBundle\Templating\TemplateRegistry::TYPE_FLOAT instead.
      */
     public const TYPE_DECIMAL = 'decimal';
     public const TYPE_FLOAT = 'float';
