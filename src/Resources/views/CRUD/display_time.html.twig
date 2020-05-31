@@ -14,7 +14,7 @@ file that was distributed with this source code.
         &nbsp;
     {%- else -%}
         <time datetime="{{ value|date('H:i:sP', 'UTC') }}" title="{{ value|date('H:i:sP', 'UTC') }}">
-            {{ value|date('H:i:s', field_description.options.timezone|default(null)) }}
+            {{ value|date(field_description.options.format|default('H:i:s'), field_description.options.timezone|default(null)) }}
         </time>
     {%- endif -%}
 {% endapply -%}

@@ -51,7 +51,7 @@ Here is an example::
 
             // you may specify the field type directly as the
             // second argument instead of in the options
-            ->add('isVariation', 'boolean')
+            ->add('isVariation', TemplateRegistry::TYPE_BOOLEAN)
 
             // if null, the type will be guessed
             ->add('enabled', null, [
@@ -59,7 +59,7 @@ Here is an example::
             ])
 
             // editable association field
-            ->add('status', 'choice', [
+            ->add('status', TemplateRegistry::TYPE_CHOICE, [
                 'editable' => true,
                 'class' => 'Vendor\ExampleBundle\Entity\ExampleStatus',
                 'choices' => [
@@ -70,7 +70,7 @@ Here is an example::
             ])
 
             // editable multiple field
-            ->add('winner', 'choice', [
+            ->add('winner', TemplateRegistry::TYPE_CHOICE, [
                 'editable' => true,
                 'multiple' => true,
                 'choices' => [
@@ -81,7 +81,7 @@ Here is an example::
             ])
 
             // we can add options to the field depending on the type
-            ->add('price', 'currency', [
+            ->add('price', TemplateRegistry::TYPE_CURRENCY, [
                 'currency' => $this->currencyDetector->getCurrency()->getLabel()
             ])
 
@@ -557,10 +557,10 @@ Example::
                 'header_style' => 'width: 5%; text-align: center',
                 'row_align' => 'center'
             ])
-            ->add('name', 'text', [
+            ->add('name', TemplateRegistry::TYPE_STRING, [
                 'header_style' => 'width: 35%'
             ])
-            ->add('description', 'text', [
+            ->add('description', TemplateRegistry::TYPE_STRING, [
                 'header_style' => 'width: 35%',
                 'collapse' => true
             ])
