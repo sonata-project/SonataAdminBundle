@@ -514,42 +514,30 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The form group disposition.
      *
-     * NEXT_MAJOR: must have `[]` as default value and remove the possibility to
-     * hold boolean values.
-     *
-     * @var array|bool
+     * @var array<string, mixed>
      */
-    private $formGroups = false;
+    private $formGroups = [];
 
     /**
      * The form tabs disposition.
      *
-     * NEXT_MAJOR: must have `[]` as default value and remove the possibility to
-     * hold boolean values.
-     *
-     * @var array|bool
+     * @var array<string, mixed>
      */
-    private $formTabs = false;
+    private $formTabs = [];
 
     /**
      * The view group disposition.
      *
-     * NEXT_MAJOR: must have `[]` as default value and remove the possibility to
-     * hold boolean values.
-     *
-     * @var array|bool
+     * @var array<string, mixed>
      */
-    private $showGroups = false;
+    private $showGroups = [];
 
     /**
      * The view tab disposition.
      *
-     * NEXT_MAJOR: must have `[]` as default value and remove the possibility to
-     * hold boolean values.
-     *
-     * @var array|bool
+     * @var array<string, mixed>
      */
-    private $showTabs = false;
+    private $showTabs = [];
 
     /**
      * The manager type to use for the admin.
@@ -1410,15 +1398,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->maxPageLinks;
     }
 
-    public function getFormGroups()
+    public function getFormGroups(): array
     {
-        if (!\is_array($this->formGroups) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
-            @trigger_error(sprintf(
-                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
         return $this->formGroups;
     }
 
@@ -1446,15 +1427,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->setFormGroups($formGroups);
     }
 
-    public function getFormTabs()
+    public function getFormTabs(): array
     {
-        if (!\is_array($this->formTabs) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
-            @trigger_error(sprintf(
-                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
         return $this->formTabs;
     }
 
@@ -1463,15 +1437,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->formTabs = $formTabs;
     }
 
-    public function getShowTabs()
+    public function getShowTabs(): array
     {
-        if (!\is_array($this->showTabs) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
-            @trigger_error(sprintf(
-                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
         return $this->showTabs;
     }
 
@@ -1480,15 +1447,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->showTabs = $showTabs;
     }
 
-    public function getShowGroups()
+    public function getShowGroups(): array
     {
-        if (!\is_array($this->showGroups) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
-            @trigger_error(sprintf(
-                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
         return $this->showGroups;
     }
 

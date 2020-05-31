@@ -43,7 +43,7 @@ class FormMapper extends BaseGroupedMapper
         $this->formBuilder = $formBuilder;
     }
 
-    public function reorder(array $keys)
+    public function reorder(array $keys): self
     {
         $this->admin->reorderFormGroup($this->getCurrentGroupName(), $keys);
 
@@ -52,11 +52,8 @@ class FormMapper extends BaseGroupedMapper
 
     /**
      * @param FormBuilderInterface|string $name
-     * @param string|null                 $type
-     *
-     * @return $this
      */
-    public function add($name, $type = null, array $options = [], array $fieldDescriptionOptions = [])
+    public function add($name, ?string $type = null, array $options = [], array $fieldDescriptionOptions = []): self
     {
         if (!$this->shouldApply()) {
             return $this;
@@ -151,26 +148,26 @@ class FormMapper extends BaseGroupedMapper
         return $this;
     }
 
-    public function get($name)
+    public function get(string $name): FormBuilderInterface
     {
         $name = $this->sanitizeFieldName($name);
 
         return $this->formBuilder->get($name);
     }
 
-    public function has($key)
+    public function has(string $key): bool
     {
         $key = $this->sanitizeFieldName($key);
 
         return $this->formBuilder->has($key);
     }
 
-    final public function keys()
+    final public function keys(): array
     {
         return array_keys($this->formBuilder->all());
     }
 
-    public function remove($key)
+    public function remove(string $key): self
     {
         $key = $this->sanitizeFieldName($key);
         $this->admin->removeFormFieldDescription($key);
@@ -186,10 +183,8 @@ class FormMapper extends BaseGroupedMapper
      * @param string $group          The group to delete
      * @param string $tab            The tab the group belongs to, defaults to 'default'
      * @param bool   $deleteEmptyTab Whether or not the Tab should be deleted, when the deleted group leaves the tab empty after deletion
-     *
-     * @return $this
      */
-    public function removeGroup($group, $tab = 'default', $deleteEmptyTab = false)
+    public function removeGroup(string $group, string $tab = 'default', bool $deleteEmptyTab = false): self
     {
         $groups = $this->getGroups();
 
@@ -221,29 +216,17 @@ class FormMapper extends BaseGroupedMapper
         return $this;
     }
 
-    /**
-     * @return FormBuilderInterface
-     */
-    public function getFormBuilder()
+    public function getFormBuilder(): FormBuilderInterface
     {
         return $this->formBuilder;
     }
 
-    /**
-     * @param string $name
-     * @param mixed  $type
-     *
-     * @return FormBuilderInterface
-     */
-    public function create($name, $type = null, array $options = [])
+    public function create(string $name, ?string $type = null, array $options = []): FormBuilderInterface
     {
         return $this->formBuilder->create($name, $type, $options);
     }
 
-    /**
-     * @return FormMapper
-     */
-    public function setHelps(array $helps = [])
+    public function setHelps(array $helps = []): self
     {
         foreach ($helps as $name => $help) {
             $this->addHelp($name, $help);
@@ -252,10 +235,7 @@ class FormMapper extends BaseGroupedMapper
         return $this;
     }
 
-    /**
-     * @return FormMapper
-     */
-    public function addHelp($name, $help)
+    public function addHelp(string $name, string $help): self
     {
         if ($this->admin->hasFormFieldDescription($name)) {
             $this->admin->getFormFieldDescription($name)->setHelp($help);
@@ -269,17 +249,13 @@ class FormMapper extends BaseGroupedMapper
      * form element with dots in its name (when data
      * get bound, the default dataMapper is a PropertyPathMapper).
      * So use this trick to avoid any issue.
-     *
-     * @param string $fieldName
-     *
-     * @return string
      */
-    protected function sanitizeFieldName($fieldName)
+    protected function sanitizeFieldName(string $fieldName): string
     {
         return str_replace(['__', '.'], ['____', '__'], $fieldName);
     }
 
-    protected function getGroups()
+    protected function getGroups(): array
     {
         // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
 
@@ -291,7 +267,7 @@ class FormMapper extends BaseGroupedMapper
         $this->admin->setFormGroups($groups);
     }
 
-    protected function getTabs()
+    protected function getTabs(): array
     {
         // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
 
@@ -303,7 +279,7 @@ class FormMapper extends BaseGroupedMapper
         $this->admin->setFormTabs($tabs);
     }
 
-    protected function getName()
+    protected function getName(): string
     {
         return 'form';
     }

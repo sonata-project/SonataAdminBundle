@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
+namespace Sonata\AdminBundle\Tests\Fixtures\Mapper;
 
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 
 abstract class AbstractDummyGroupedMapper extends BaseGroupedMapper
 {
-    protected function getName()
+    protected function getName(): string
     {
         return 'dummy';
     }
