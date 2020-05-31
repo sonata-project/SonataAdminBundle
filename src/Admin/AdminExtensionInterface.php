@@ -125,31 +125,43 @@ interface AdminExtensionInterface
 
     /**
      * @param object $object
+     *
+     * @return void
      */
     public function preUpdate(AdminInterface $admin, $object);
 
     /**
      * @param object $object
+     *
+     * @return void
      */
     public function postUpdate(AdminInterface $admin, $object);
 
     /**
      * @param object $object
+     *
+     * @return void
      */
     public function prePersist(AdminInterface $admin, $object);
 
     /**
      * @param object $object
+     *
+     * @return void
      */
     public function postPersist(AdminInterface $admin, $object);
 
     /**
      * @param object $object
+     *
+     * @return void
      */
     public function preRemove(AdminInterface $admin, $object);
 
     /**
      * @param object $object
+     *
+     * @return void
      */
     public function postRemove(AdminInterface $admin, $object);
 
