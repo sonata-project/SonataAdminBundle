@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Builder\BuilderInterface;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\AbstractDummyGroupedMapper;
+use Sonata\AdminBundle\Tests\Fixtures\Mapper\AbstractDummyGroupedMapper;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

@@ -537,6 +537,8 @@ class ShowMapperTest extends TestCase
         $this->assertTrue($this->showMapper->has('bar'));
         $this->assertFalse($this->showMapper->has('quux'));
 
+        $this->showMapper->end(); // Close default
+
         $this->showMapper
             ->with('qux')
                 ->add('foobar', 'bar', ['role' => self::DEFAULT_GRANTED_ROLE])

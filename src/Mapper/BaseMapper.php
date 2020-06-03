@@ -39,45 +39,32 @@ abstract class BaseMapper
         $this->admin = $admin;
     }
 
-    /**
-     * @return AdminInterface
-     */
-    public function getAdmin()
+    public function getAdmin(): AdminInterface
     {
         return $this->admin;
     }
 
     /**
-     * @param string $key
-     *
      * @return mixed
      */
-    abstract public function get($key);
+    abstract public function get(string $key);
+
+    abstract public function has(string $key): bool;
 
     /**
-     * @param string $key
-     *
-     * @return bool
-     */
-    abstract public function has($key);
-
-    /**
-     * @param string $key
-     *
      * @return $this
      */
-    abstract public function remove($key);
+    abstract public function remove(string $key);
 
-    // To be uncommented on 4.0.
     /**
      * Returns configured keys.
      *
      * @return string[]
      */
-    //abstract public function keys();
+    abstract public function keys(): array;
 
     /**
-     * @param array $keys field names
+     * @param string[] $keys field names
      *
      * @return $this
      */

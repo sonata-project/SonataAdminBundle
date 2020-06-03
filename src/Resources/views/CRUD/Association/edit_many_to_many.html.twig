@@ -26,7 +26,7 @@ file that was distributed with this source code.
                                                     class="required"
                                                 {% endif %}
                                             >
-                                                {{ nested_field.vars['sonata_admin'].admin.trans(nested_field.vars.label) }}
+                                                {{ nested_field.vars.label|trans({}, nested_field.vars['sonata_admin'].admin.translationDomain) }}
                                             </th>
                                         {% endif %}
                                     {% endfor %}
@@ -64,10 +64,7 @@ file that was distributed with this source code.
                         {% for nested_group_field_name, nested_group_field in form.children %}
                             {% for field_name, nested_field in nested_group_field.children %}
                                 {% if sonata_admin.field_description.associationadmin.hasformfielddescriptions(field_name) is defined %}
-                                    {{ form_row(nested_field, {
-                                        'inline': 'natural',
-                                        'edit'  : 'inline'
-                                    }) }}
+                                    {{ form_row(nested_field) }}
                                     {% set dummy = nested_group_field.setrendered %}
                                 {% else %}
                                     {% if nested_field.vars.name == '_delete' %}

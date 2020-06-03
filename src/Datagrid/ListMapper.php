@@ -43,12 +43,9 @@ class ListMapper extends BaseMapper
     }
 
     /**
-     * @param string      $name
-     * @param string|null $type
-     *
-     * @return $this
+     * @param FieldDescriptionInterface|string $name
      */
-    public function addIdentifier($name, $type = null, array $fieldDescriptionOptions = [])
+    public function addIdentifier($name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
         $fieldDescriptionOptions['identifier'] = true;
 
@@ -66,13 +63,10 @@ class ListMapper extends BaseMapper
 
     /**
      * @param FieldDescriptionInterface|string $name
-     * @param string|null                      $type
      *
      * @throws \LogicException
-     *
-     * @return $this
      */
-    public function add($name, $type = null, array $fieldDescriptionOptions = [])
+    public function add($name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
         // Default sort on "associated_property"
         if (isset($fieldDescriptionOptions['associated_property'])) {
@@ -146,17 +140,17 @@ class ListMapper extends BaseMapper
         return $this;
     }
 
-    public function get($name)
+    public function get(string $name): FieldDescriptionInterface
     {
         return $this->list->get($name);
     }
 
-    public function has($key)
+    public function has(string $key): bool
     {
         return $this->list->has($key);
     }
 
-    public function remove($key)
+    public function remove(string $key): self
     {
         $this->admin->removeListFieldDescription($key);
         $this->list->remove($key);
@@ -164,12 +158,12 @@ class ListMapper extends BaseMapper
         return $this;
     }
 
-    final public function keys()
+    final public function keys(): array
     {
         return array_keys($this->list->getElements());
     }
 
-    public function reorder(array $keys)
+    public function reorder(array $keys): self
     {
         $this->list->reorder($keys);
 

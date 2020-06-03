@@ -109,7 +109,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * The number of result to display in the list.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x.
+     * @deprecated since sonata-project/admin-bundle 3.67.
      *
      * @var int
      */
@@ -169,7 +169,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * Default values to the datagrid.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, use configureDefaultSortValues() instead.
+     * @deprecated since sonata-project/admin-bundle 3.67, use configureDefaultSortValues() instead.
      *
      * @var array
      */
@@ -183,7 +183,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * Predefined per page options.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x.
+     * @deprecated since sonata-project/admin-bundle 3.67.
      *
      * @var array
      */
@@ -514,42 +514,30 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * The form group disposition.
      *
-     * NEXT_MAJOR: must have `[]` as default value and remove the possibility to
-     * hold boolean values.
-     *
-     * @var array|bool
+     * @var array<string, mixed>
      */
-    private $formGroups = false;
+    private $formGroups = [];
 
     /**
      * The form tabs disposition.
      *
-     * NEXT_MAJOR: must have `[]` as default value and remove the possibility to
-     * hold boolean values.
-     *
-     * @var array|bool
+     * @var array<string, mixed>
      */
-    private $formTabs = false;
+    private $formTabs = [];
 
     /**
      * The view group disposition.
      *
-     * NEXT_MAJOR: must have `[]` as default value and remove the possibility to
-     * hold boolean values.
-     *
-     * @var array|bool
+     * @var array<string, mixed>
      */
-    private $showGroups = false;
+    private $showGroups = [];
 
     /**
      * The view tab disposition.
      *
-     * NEXT_MAJOR: must have `[]` as default value and remove the possibility to
-     * hold boolean values.
-     *
-     * @var array|bool
+     * @var array<string, mixed>
      */
-    private $showTabs = false;
+    private $showTabs = [];
 
     /**
      * The manager type to use for the admin.
@@ -1379,12 +1367,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.67, to be removed in 4.0.
      */
     public function setMaxPerPage(int $maxPerPage): void
     {
         @trigger_error(sprintf(
-            'The method %s is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method %s is deprecated since sonata-project/admin-bundle 3.67 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -1410,15 +1398,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->maxPageLinks;
     }
 
-    public function getFormGroups()
+    public function getFormGroups(): array
     {
-        if (!\is_array($this->formGroups) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
-            @trigger_error(sprintf(
-                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
         return $this->formGroups;
     }
 
@@ -1446,15 +1427,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->setFormGroups($formGroups);
     }
 
-    public function getFormTabs()
+    public function getFormTabs(): array
     {
-        if (!\is_array($this->formTabs) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
-            @trigger_error(sprintf(
-                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
         return $this->formTabs;
     }
 
@@ -1463,15 +1437,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->formTabs = $formTabs;
     }
 
-    public function getShowTabs()
+    public function getShowTabs(): array
     {
-        if (!\is_array($this->showTabs) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
-            @trigger_error(sprintf(
-                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
         return $this->showTabs;
     }
 
@@ -1480,15 +1447,8 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->showTabs = $showTabs;
     }
 
-    public function getShowGroups()
+    public function getShowGroups(): array
     {
-        if (!\is_array($this->showGroups) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
-            @trigger_error(sprintf(
-                'Returning other type than array in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only array in version 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
         return $this->showGroups;
     }
 
@@ -2336,14 +2296,14 @@ EOT;
     /**
      * NEXT_MAJOR: Remove this.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.67, to be removed in 4.0.
      *
      * Set custom per page options.
      */
     public function setPerPageOptions(array $options): void
     {
         @trigger_error(sprintf(
-            'The method %s is deprecated since sonata-project/admin-bundle 3.x and will be removed in 4.0.',
+            'The method %s is deprecated since sonata-project/admin-bundle 3.67 and will be removed in 4.0.',
             __METHOD__
         ), E_USER_DEPRECATED);
 
@@ -2908,7 +2868,7 @@ EOT;
     /**
      * NEXT_MAJOR: Remove this function.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.67, to be removed in 4.0.
      *
      * Predefine per page options.
      */

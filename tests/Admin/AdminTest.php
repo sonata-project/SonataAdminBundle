@@ -1101,8 +1101,7 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
-        $this->assertFalse($admin->getShowGroups('sonata_deprecation_mute'));
+        $this->assertSame([], $admin->getShowGroups());
 
         $groups = ['foo', 'bar', 'baz'];
 
@@ -1114,8 +1113,7 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
-        $this->assertFalse($admin->getFormGroups('sonata_deprecation_mute'));
+        $this->assertSame([], $admin->getFormGroups());
 
         $groups = ['foo', 'bar', 'baz'];
 

@@ -175,8 +175,10 @@ class SonataAdminExtensionTest extends TestCase
 
         $loader = new FilesystemLoader([
             __DIR__.'/../../../src/Resources/views/CRUD',
+            __DIR__.'/../../Fixtures/Resources/views/CRUD',
         ]);
         $loader->addPath(__DIR__.'/../../../src/Resources/views/', 'SonataAdmin');
+        $loader->addPath(__DIR__.'/../../Fixtures/Resources/views/', 'App');
 
         $this->environment = new Environment($loader, [
             'strict_variables' => true,
@@ -2400,6 +2402,123 @@ EOT
         );
         $this->assertTrue($this->twigExtension->isGrantedAffirmative('foo'));
         $this->assertTrue($this->twigExtension->isGrantedAffirmative('bar'));
+    }
+
+    /**
+     * @dataProvider getRenderViewElementCompareTests
+     */
+    public function testRenderViewElementCompare(string $expected, string $type, $value, array $options, ?string $objectName = null): void
+    {
+        $this->admin
+            ->method('getTemplate')
+            ->willReturn('@SonataAdmin/CRUD/base_show_compare.html.twig');
+
+        $this->fieldDescription
+            ->method('getValue')
+            ->willReturn($value);
+
+        $this->fieldDescription
+            ->method('getType')
+            ->willReturn($type);
+
+        $this->fieldDescription
+            ->method('getOptions')
+            ->willReturn($options);
+
+        $this->fieldDescription
+            ->method('getTemplate')
+            ->willReturnCallback(static function () use ($type, $options): ?string {
+                if (isset($options['template'])) {
+                    return $options['template'];
+                }
+
+                switch ($type) {
+                    case 'boolean':
+                        return '@SonataAdmin/CRUD/show_boolean.html.twig';
+                    case 'datetime':
+                        return '@SonataAdmin/CRUD/show_datetime.html.twig';
+                    case 'date':
+                        return '@SonataAdmin/CRUD/show_date.html.twig';
+                    case 'time':
+                        return '@SonataAdmin/CRUD/show_time.html.twig';
+                    case 'currency':
+                        return '@SonataAdmin/CRUD/show_currency.html.twig';
+                    case 'percent':
+                        return '@SonataAdmin/CRUD/show_percent.html.twig';
+                    case 'email':
+                        return '@SonataAdmin/CRUD/show_email.html.twig';
+                    case 'choice':
+                        return '@SonataAdmin/CRUD/show_choice.html.twig';
+                    case 'array':
+                        return '@SonataAdmin/CRUD/show_array.html.twig';
+                    case 'trans':
+                        return '@SonataAdmin/CRUD/show_trans.html.twig';
+                    case 'url':
+                        return '@SonataAdmin/CRUD/show_url.html.twig';
+                    case 'html':
+                        return '@SonataAdmin/CRUD/show_html.html.twig';
+                    default:
+                        return null;
+                }
+            });
+
+        $this->object->name = 'SonataAdmin';
+
+        $comparedObject = clone $this->object;
+
+        if (null !== $objectName) {
+            $comparedObject->name = $objectName;
+        }
+
+        $this->assertSame(
+            $this->removeExtraWhitespace($expected),
+            $this->removeExtraWhitespace(
+                $this->twigExtension->renderViewElementCompare(
+                    $this->environment,
+                    $this->fieldDescription,
+                    $this->object,
+                    $comparedObject
+                )
+            )
+        );
+    }
+
+    public function getRenderViewElementCompareTests(): iterable
+    {
+        return [
+            ['<th>Data</th> <td>Example</td><td>Example</td>', 'string', 'Example', ['safe' => false]],
+            ['<th>Data</th> <td>Example</td><td>Example</td>', 'text', 'Example', ['safe' => false]],
+            ['<th>Data</th> <td>Example</td><td>Example</td>', 'textarea', 'Example', ['safe' => false]],
+            ['<th>Data</th> <td>SonataAdmin<br/>Example</td><td>SonataAdmin<br/>Example</td>', 'virtual_field', 'Example', ['template' => 'custom_show_field.html.twig', 'safe' => false, 'SonataAdmin']],
+            ['<th class="diff">Data</th> <td>SonataAdmin<br/>Example</td><td>SonataAdmin<br/>Example</td>', 'virtual_field', 'Example', ['template' => 'custom_show_field.html.twig', 'safe' => false], 'sonata-project/admin-bundle'],
+            [
+                '<th>Data</th> <td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> May 27, 2020 10:11 </time></td>'
+                .'<td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> May 27, 2020 10:11 </time></td>',
+                'datetime',
+                new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')), [],
+            ],
+            [
+                '<th>Data</th> <td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> 27.05.2020 10:11:12 </time></td>'
+                .'<td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> 27.05.2020 10:11:12 </time></td>',
+                'datetime',
+                new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
+                ['format' => 'd.m.Y H:i:s'],
+            ],
+            [
+                '<th>Data</th> <td><time datetime="2020-05-27T10:11:12+00:00" title="2020-05-27T10:11:12+00:00"> May 27, 2020 18:11 </time></td>'
+                .'<td><time datetime="2020-05-27T10:11:12+00:00" title="2020-05-27T10:11:12+00:00"> May 27, 2020 18:11 </time></td>',
+                'datetime',
+                new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('UTC')),
+                ['timezone' => 'Asia/Hong_Kong'],
+            ],
+            [
+                '<th>Data</th> <td><time datetime="2020-05-27" title="2020-05-27"> May 27, 2020 </time></td>'
+                .'<td><time datetime="2020-05-27" title="2020-05-27"> May 27, 2020 </time></td>',
+                'date',
+                new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
+                [],
+            ],
+        ];
     }
 
     /**

@@ -22,27 +22,14 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
  */
 interface ListBuilderInterface extends BuilderInterface
 {
-    /**
-     * @return FieldDescriptionCollection
-     */
-    public function getBaseList(array $options = []);
+    public function getBaseList(array $options = []): FieldDescriptionCollection;
 
-    /**
-     * Modify a field description to display it in the list view.
-     *
-     * @param mixed|null $type
-     */
-    public function buildField($type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin);
+    public function buildField(?string $type, FieldDescriptionInterface $fieldDescription, AdminInterface $admin): void;
 
-    /**
-     * Modify a field description and add it to the displayed columns.
-     *
-     * @param mixed|null $type
-     */
     public function addField(
         FieldDescriptionCollection $list,
-        $type,
+        ?string $type,
         FieldDescriptionInterface $fieldDescription,
         AdminInterface $admin
-    );
+    ): void;
 }

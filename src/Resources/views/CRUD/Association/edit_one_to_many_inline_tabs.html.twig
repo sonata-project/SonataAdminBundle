@@ -20,7 +20,7 @@ file that was distributed with this source code.
                                 data-toggle="tab"
                             >
                                 <i class="icon-exclamation-sign has-errors hide"></i>
-                                {{ associationAdmin.trans(name, {}, form_group.translation_domain) }}
+                                {{ name|trans({}, form_group.translation_domain) }}
                             </a>
                         </li>
                     {% endfor %}
@@ -38,10 +38,7 @@ file that was distributed with this source code.
                                         {% set nested_field = nested_group_field.children[field_name] %}
                                         <div class="sonata-ba-field-{{ id }}-{{ field_name }}">
                                             {% if associationAdmin.formfielddescriptions[field_name] is defined %}
-                                                {{ form_row(nested_field, {
-                                                    'inline': 'natural',
-                                                    'edit'  : 'inline'
-                                                }) }}
+                                                {{ form_row(nested_field) }}
                                                 {% set dummy = nested_group_field.setrendered %}
                                             {% else %}
                                                 {{ form_row(nested_field) }}
