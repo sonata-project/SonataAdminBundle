@@ -370,7 +370,15 @@ td.sonata-ba-list-field .editable-empty:not(.editable-open) {
 .checkbox label,
 .radio label {
     font-weight: 700;
-    margin-left: -20px;
+}
+
+/**
+ * Undo Bootstrap styling for checkboxes and radio buttons when iCheck is in use.
+ */
+body.sonata-icheck .checkbox label,
+body.sonata-icheck .radio label {
+  padding-left: 0;
+  margin-left: 0;
 }
 
 /**
