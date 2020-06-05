@@ -50,7 +50,10 @@ file that was distributed with this source code.
                             {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name].help %}
                                 <span class="help-block">
                                     {%- block help %}
-                                        {{- sonata_admin.field_description.associationadmin.formfielddescriptions[field_name].help|trans({}, sonata_admin.field_description.associationadmin.formfielddescriptions[field_name].translationDomain)|raw -}}
+                                        {{- sonata_admin.field_description.associationadmin.formfielddescriptions[field_name].help|trans(
+                                            {},
+                                            sonata_admin.field_description.associationadmin.formfielddescriptions[field_name].translationDomain
+                                        )|raw -}}
                                     {% endblock -%}
                                 </span>
                             {% endif %}
