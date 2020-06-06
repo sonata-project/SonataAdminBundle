@@ -252,7 +252,7 @@ Configure the default ordering in the list view
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Configuring the default ordering column can be achieved by overriding the
-``datagridValues`` array property. All three keys ``_page``, ``_sort_order`` and
+``configureDefaultSortValues()`` method. All three keys ``_page``, ``_sort_order`` and
 ``_sort_by`` can be omitted::
 
     // src/Admin/PostAdmin.php
@@ -263,17 +263,17 @@ Configuring the default ordering column can be achieved by overriding the
     {
         // ...
 
-        protected $datagridValues = [
-
+        protected function configureDefaultSortValues(array &$sortValues): void
+        {
             // display the first page (default = 1)
-            '_page' => 1,
+            $sortValues['_page'] = 1;
 
             // reverse order (default = 'ASC')
-            '_sort_order' => 'DESC',
+            $sortValues['_sort_order'] = 'DESC';
 
             // name of the ordered field (default = the model's id field, if any)
-            '_sort_by' => 'updatedAt',
-        ];
+            $sortValues['_sort_by'] = 'updatedAt';
+        }
 
         // ...
     }
@@ -284,7 +284,38 @@ Configuring the default ordering column can be achieved by overriding the
 
 .. note::
 
-    **TODO**: how to sort by multiple fields (this might be a separate recipe?)
+    For UI reason, it's not possible to sort by multiple fields. However, this behavior can be simulate by
+    adding some default orders in the ``configureQuery()`` method. The following example is using
+    ``SonataAdminBundle`` with ``SonataDoctrineORMAdminBundle``::
+
+        // src/Admin/PostAdmin.php
+
+        use Sonata\AdminBundle\Admin\AbstractAdmin;
+
+        final class PostAdmin extends AbstractAdmin
+        {
+            // ...
+
+            protected function configureDefaultSortValues(array &$sortValues): void
+            {
+                // display the first page (default = 1)
+                $sortValues['_page'] = 1;
+
+                // reverse order (default = 'ASC')
+                $sortValues['_sort_order'] = 'DESC';
+
+                // name of the ordered field (default = the model's id field, if any)
+                $sortValues['_sort_by'] = 'updatedAt';
+            }
+
+            protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+            {
+                $query->addOrderBy('author', 'ASC');
+                $query->addOrderBy('createdAt', 'ASC');
+            }
+
+            // ...
+        }
 
 Filters
 -------
@@ -397,12 +428,13 @@ This is an example using these constants for an ``boolean`` type::
 
     class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        protected $datagridValues = [
-            'enabled' => [
+        protected function configureDefaultFilterValues(array &$filterValues)
+        {
+            $filterValues['enabled'] = [
                 'type'  => EqualType::TYPE_IS_EQUAL, // => 1
                 'value' => BooleanType::TYPE_YES     // => 1
-            ]
-        ];
+            ];
+        }
     }
 
 Please note that setting a ``false`` value on a the ``boolean`` type
@@ -417,46 +449,21 @@ as defined in the class constants::
         const TYPE_NO = 2;
     }
 
-Default filters can also be added to the datagrid values by overriding
-the ``getFilterParameters`` method::
-
-    use Sonata\Form\Type\EqualType;
-    use Sonata\Form\Type\BooleanType;
-
-    class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
-    {
-        public function getFilterParameters()
-        {
-            $this->datagridValues = array_merge([
-                'enabled' => [
-                    'type'  => EqualType::TYPE_IS_EQUAL,
-                    'value' => BooleanType::TYPE_YES
-                ]
-            ], $this->datagridValues);
-
-            return parent::getFilterParameters();
-        }
-    }
-
-This approach is useful when you need to create dynamic filters::
+This approach allow to create dynamic filters::
 
     class PostAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        public function getFilterParameters()
+        protected function configureDefaultFilterValues(array &$filterValues)
         {
             // Assuming security context injected
             if (!$this->securityContext->isGranted('ROLE_ADMIN')) {
                 $user = $this->securityContext->getToken()->getUser();
 
-                $this->datagridValues = array_merge([
-                    'author' => [
-                        'type'  => EqualType::TYPE_IS_EQUAL,
-                        'value' => $user->getId()
-                    ]
-                ], $this->datagridValues);
+                $filterValues['author'] = [
+                    'type'  => EqualType::TYPE_IS_EQUAL,
+                    'value' => $user->getId()
+                ];
             }
-
-            return parent::getFilterParameters();
         }
     }
 
