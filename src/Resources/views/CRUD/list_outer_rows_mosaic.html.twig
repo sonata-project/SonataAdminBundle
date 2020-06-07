@@ -62,7 +62,7 @@ This template can be customized to match your needs. You should only extends the
                             {% endif %}
 
                             {% block sonata_mosaic_description %}
-                                {{ meta.title|truncate(40) }}
+                                {{ meta.title|u.truncate(40) }}
                             {% endblock %}
                         </div>
                     </div>

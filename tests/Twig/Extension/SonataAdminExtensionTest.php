@@ -25,7 +25,6 @@ use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
-use Sonata\AdminBundle\Twig\Extension\StringExtension;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
@@ -42,7 +41,7 @@ use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterfa
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
-use Twig\Extensions\TextExtension;
+use Twig\Extra\String\StringExtension;
 
 /**
  * Test for SonataAdminExtension.
@@ -204,7 +203,6 @@ class SonataAdminExtensionTest extends TestCase
         $requestContext = new RequestContext();
         $urlGenerator = new UrlGenerator($routeCollection, $requestContext);
         $this->environment->addExtension(new RoutingExtension($urlGenerator));
-        $this->environment->addExtension(new TextExtension());
         $this->environment->addExtension(new StringExtension());
 
         // initialize object
@@ -2203,7 +2201,7 @@ EOT
         ]);
         $environment->addExtension($this->twigExtension);
         $environment->addExtension(new TranslationExtension($this->translator));
-        $environment->addExtension(new StringExtension(new TextExtension()));
+        $environment->addExtension(new StringExtension());
 
         $this->admin
             ->method('getTemplate')
@@ -2250,7 +2248,7 @@ EOT
         ];
 
         yield 'custom_length' => [
-            '<th>Data</th> <td> Creating a Template for[...] </td>',
+            '<th>Data</th> <td> Creating a Template[...] </td>',
             'html',
             '<p><strong>Creating a Template for the Field</strong> and form</p>',
             [
