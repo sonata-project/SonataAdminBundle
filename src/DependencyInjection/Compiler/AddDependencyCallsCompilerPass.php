@@ -50,6 +50,12 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
         $pool = $container->getDefinition('sonata.admin.pool');
 
+        $defaultValues = [
+            'group' => $container->getParameter('sonata.admin.configuration.default_group'),
+            'label_catalogue' => $container->getParameter('sonata.admin.configuration.default_label_catalogue'),
+            'icon' => $container->getParameter('sonata.admin.configuration.default_icon'),
+        ];
+
         foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $tags) {
             foreach ($tags as $attributes) {
                 $definition = $container->getDefinition($id);
@@ -88,11 +94,9 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 $resolvedGroupName = isset($attributes['group']) ?
                     $parameterBag->resolveValue($attributes['group']) :
-                    $container->getParameter('sonata.admin.configuration.default_group');
-                $labelCatalogue = $attributes['label_catalogue'] ??
-                    $container->getParameter('sonata.admin.configuration.default_label_catalogue');
-                $icon = $attributes['icon'] ??
-                    $container->getParameter('sonata.admin.configuration.default_icon');
+                    $defaultValues['group'];
+                $labelCatalogue = $attributes['label_catalogue'] ?? $defaultValues['label_catalogue'];
+                $icon = $attributes['icon'] ?? $defaultValues['icon'];
                 $onTop = $attributes['on_top'] ?? false;
                 $keepOpen = $attributes['keep_open'] ?? false;
 
@@ -135,6 +139,8 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $groupDefaults[$resolvedGroupName] = [
                         'items' => [],
                         'label' => $resolvedGroupName,
+                        'label_catalogue' => $defaultValues['label_catalogue'],
+                        'icon' => $defaultValues['icon'],
                         'roles' => [],
                         'on_top' => false,
                         'keep_open' => false,
@@ -150,7 +156,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 }
 
                 if (empty($group['label_catalogue'])) {
-                    $groups[$resolvedGroupName]['label_catalogue'] = 'SonataAdminBundle';
+                    $groups[$resolvedGroupName]['label_catalogue'] = $groupDefaults[$resolvedGroupName]['label_catalogue'];
                 }
 
                 if (empty($group['icon'])) {

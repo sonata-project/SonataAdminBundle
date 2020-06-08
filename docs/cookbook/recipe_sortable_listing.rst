@@ -122,11 +122,12 @@ Now we need to define the sort by field to be ``$position``::
 
     final class ClientAdmin extends AbstractAdmin
     {
-        protected $datagridValues = [
-            '_page' => 1,
-            '_sort_order' => 'ASC',
-            '_sort_by' => 'position',
-        ];
+        protected function configureDefaultSortValues(array &$sortValues): void
+        {
+            $sortValues['_page'] = 1;
+            $sortValues['_sort_order'] = 'ASC';
+            $sortValues['_sort_by'] = 'position';
+        }
 
         protected function configureRoutes(RouteCollection $collection)
         {

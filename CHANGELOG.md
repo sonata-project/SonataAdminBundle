@@ -2,6 +2,25 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.68.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.67.0...3.68.0) - 2020-05-31
+### Added
+- Added `TemplateRegistry::TYPE_*` constant to be used instead of string value.
+- Added `format` option for `time` field type.
+
+### Fixed
+- Fixed exposing missing `object` variable in history compare view.
+- Menu item `label_catalogue` correctly use the default value
+  `default_label_catalogue`
+- Menu item `icon` correctly use the default value `default_icon`
+- Render of CKeditor field when embedded in a collection with the `inline =>
+  natural` option.
+
+### Deprecated
+- Deprecated `smallint` type for template ; use `integer` instead.
+- Deprecated `bigint` type for template ; use `integer` instead.
+- Deprecated `decimal` type for template ; use `float` instead.
+- Deprecated `text` type for template ; use `string` instead.
+
 ## [3.67.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.66.0...3.67.0) - 2020-05-28
 ### Added
 - Manage class definition which is using "%parameter%" syntax.

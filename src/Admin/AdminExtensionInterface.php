@@ -115,6 +115,8 @@ interface AdminExtensionInterface
      * Get all action buttons for an action.
      *
      * @param object $object
+     *
+     * @return void
      */
     public function configureActionButtons(
         AdminInterface $admin,

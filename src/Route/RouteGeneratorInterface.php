@@ -49,8 +49,7 @@ interface RouteGeneratorInterface
     public function generate($name, array $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH);
 
     /**
-     * @param string               $name
-     * @param array<string, mixed> $parameters
+     * @param string $name
      *
      * @return bool
      */
