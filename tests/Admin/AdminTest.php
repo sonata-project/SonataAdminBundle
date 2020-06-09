@@ -43,6 +43,11 @@ use Sonata\AdminBundle\Route\RoutesCache;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
+use Sonata\AdminBundle\Tests\App\Builder\DatagridBuilder;
+use Sonata\AdminBundle\Tests\App\Builder\FormContractor;
+use Sonata\AdminBundle\Tests\App\Builder\ListBuilder;
+use Sonata\AdminBundle\Tests\App\Builder\ShowBuilder;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\AvoidInfiniteLoopAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentVoteAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentWithCustomRouteAdmin;
@@ -67,6 +72,9 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormRegistry;
+use Symfony\Component\Form\ResolvedFormTypeFactory;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -1274,16 +1282,16 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'Acme\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $entity = new \stdClass();
+        $model = new \stdClass();
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager->expects($this->once())
             ->method('getUrlSafeIdentifier')
-            ->with($this->equalTo($entity))
+            ->with($this->equalTo($model))
             ->willReturn('foo');
         $admin->setModelManager($modelManager);
 
-        $this->assertSame('foo', $admin->getUrlSafeIdentifier($entity));
+        $this->assertSame('foo', $admin->getUrlSafeIdentifier($model));
     }
 
     public function testDeterminedPerPageValue(): void
@@ -1301,8 +1309,8 @@ class AdminTest extends TestCase
         $modelManager = $this->createStub(ModelManagerInterface::class);
         $modelManager
             ->method('getNormalizedIdentifier')
-            ->willReturnCallback(static function (?object $entity = null): ?string {
-                return $entity ? $entity->id : null;
+            ->willReturnCallback(static function (?object $model = null): ?string {
+                return $model ? $model->id : null;
             });
 
         $admin->setModelManager($modelManager);
@@ -1597,6 +1605,13 @@ class AdminTest extends TestCase
         $this->assertInstanceOf(Collection::class, $tag->getPosts());
         $this->assertCount(2, $tag->getPosts());
         $this->assertContains($post, $tag->getPosts());
+    }
+
+    public function testGetFormWithArrayParentValue(): void
+    {
+        $post = new Post();
+        $tagAdmin = $this->createTagAdmin($post);
+        $tag = $tagAdmin->getSubject();
 
         // Case of an array
         $tag->setPosts([]);
@@ -1892,22 +1907,22 @@ class AdminTest extends TestCase
      */
     public function testGetSubject($id): void
     {
-        $entity = new Post();
+        $model = new Post();
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
             ->expects($this->once())
             ->method('find')
             ->with('NewsBundle\Entity\Post', $id)
-            ->willReturn($entity);
+            ->willReturn($model);
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
         $admin->setModelManager($modelManager);
 
         $admin->setRequest(new Request(['id' => $id]));
         $this->assertTrue($admin->hasSubject());
-        $this->assertSame($entity, $admin->getSubject());
-        $this->assertSame($entity, $admin->getSubject()); // model manager must be used only once
+        $this->assertSame($model, $admin->getSubject());
+        $this->assertSame($model, $admin->getSubject()); // model manager must be used only once
     }
 
     public function testGetSubjectWithParentDescription(): void
@@ -2493,6 +2508,37 @@ class AdminTest extends TestCase
         $admin = new PostAdmin('sonata.post.admin.post', 'Application\Sonata\NewsBundle\Entity\Post', null);
 
         $this->assertNull($admin->getBaseControllerName());
+    }
+
+    public function testAdminAvoidInifiniteLoop(): void
+    {
+        $this->expectNotToPerformAssertions();
+
+        $formFactory = new FormFactory(new FormRegistry([], new ResolvedFormTypeFactory()));
+
+        $admin = new AvoidInfiniteLoopAdmin('code', \stdClass::class, null);
+        $admin->setSubject(new \stdClass());
+
+        $admin->setFormContractor(new FormContractor($formFactory));
+
+        $admin->setShowBuilder(new ShowBuilder());
+
+        $admin->setListBuilder(new ListBuilder());
+
+        $pager = $this->createStub(PagerInterface::class);
+        $admin->setDatagridBuilder(new DatagridBuilder($formFactory, $pager));
+
+        $validator = $this->createMock(ValidatorInterface::class);
+        $validator->method('getMetadataFor')->willReturn($this->createStub(MemberMetadata::class));
+        $admin->setValidator($validator);
+
+        $routeGenerator = $this->createStub(RouteGeneratorInterface::class);
+        $admin->setRouteGenerator($routeGenerator);
+
+        $admin->getForm();
+        $admin->getShow();
+        $admin->getList();
+        $admin->getDatagrid();
     }
 
     /**

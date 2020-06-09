@@ -74,6 +74,10 @@
                 <source>link_add</source>
                 <target>Afegir nou</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>Editar</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>Llistar</target>
@@ -173,6 +177,10 @@
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Els elements seleccionats han estat esborrats amb èxit.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_no_elements_processed">
+                <source>flash_batch_no_elements_processed</source>
+                <target>No s'ha processat cap element.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
@@ -477,6 +485,18 @@
             <trans-unit id="read_less">
                 <source>read_less</source>
                 <target>Tancar</target>
+            </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Commuta la navegació</target>
+            </trans-unit>
+            <trans-unit id="label_type_starts_with">
+                <source>label_type_starts_with</source>
+                <target>comença amb</target>
+            </trans-unit>
+            <trans-unit id="label_type_ends_with">
+                <source>label_type_ends_with</source>
+                <target>acaba amb</target>
             </trans-unit>
         </body>
     </file>

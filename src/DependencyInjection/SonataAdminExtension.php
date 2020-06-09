@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
-use JMS\DiExtraBundle\DependencyInjection\Configuration as JMSDiExtraBundleDependencyInjectionConfiguration;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Config\FileLocator;
@@ -61,15 +60,16 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         }
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('twig.xml');
-        $loader->load('core.xml');
-        $loader->load('form_types.xml');
-        $loader->load('validator.xml');
-        $loader->load('route.xml');
-        $loader->load('block.xml');
-        $loader->load('menu.xml');
-        $loader->load('commands.xml');
         $loader->load('actions.xml');
+        $loader->load('block.xml');
+        $loader->load('commands.xml');
+        $loader->load('core.xml');
+        $loader->load('event_listener.xml');
+        $loader->load('form_types.xml');
+        $loader->load('menu.xml');
+        $loader->load('route.xml');
+        $loader->load('twig.xml');
+        $loader->load('validator.xml');
 
         if (isset($bundles['MakerBundle'])) {
             $loader->load('makers.xml');
@@ -205,62 +205,9 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
     /**
      * Allow an extension to prepend the extension configurations.
-     *
-     * NEXT_MAJOR: remove all code that deals with JMSDiExtraBundle
      */
     public function prepend(ContainerBuilder $container)
     {
-        $bundles = $container->getParameter('kernel.bundles');
-
-        if (!isset($bundles['JMSDiExtraBundle'])) {
-            return;
-        }
-
-        $configs = $container->getExtensionConfig($this->getAlias());
-        $config = $this->processConfiguration(new Configuration(), $configs);
-        if (!$config['options']['enable_jms_di_extra_autoregistration']) {
-            return;
-        }
-
-        $sonataAdminPattern = 'Sonata\AdminBundle\Annotation';
-        $annotationPatternsConfigured = false;
-
-        $diExtraConfigs = $container->getExtensionConfig('jms_di_extra');
-        foreach ($diExtraConfigs as $diExtraConfig) {
-            if (isset($diExtraConfig['annotation_patterns'])) {
-                // don't add our own pattern if user has already done so
-                if (false !== array_search($sonataAdminPattern, $diExtraConfig['annotation_patterns'], true)) {
-                    return;
-                }
-                $annotationPatternsConfigured = true;
-
-                break;
-            }
-        }
-
-        @trigger_error(
-            'Automatic registration of annotations is deprecated since 3.14, to be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
-
-        if ($annotationPatternsConfigured) {
-            $annotationPatterns = [$sonataAdminPattern];
-        } else {
-            // get annotation_patterns default from DiExtraBundle configuration
-            $diExtraConfigDefinition = new JMSDiExtraBundleDependencyInjectionConfiguration();
-            // FIXME: this will break if DiExtraBundle adds any mandatory configuration
-            $diExtraConfig = $this->processConfiguration($diExtraConfigDefinition, []);
-
-            $annotationPatterns = $diExtraConfig['annotation_patterns'];
-            $annotationPatterns[] = $sonataAdminPattern;
-        }
-
-        $container->prependExtensionConfig(
-            'jms_di_extra',
-            [
-                'annotation_patterns' => $annotationPatterns,
-            ]
-        );
     }
 
     /**
@@ -322,14 +269,18 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $modelChoice->replaceArgument(0, new Reference('form.property_accessor'));
     }
 
+    /**
+     * NEXT_MAJOR: remove this method.
+     */
     private function configureTwigTextExtension(ContainerBuilder $container, XmlFileLoader $loader, array $config): void
     {
         $container->setParameter('sonata.admin.configuration.legacy_twig_text_extension', $config['options']['legacy_twig_text_extension']);
         $loader->load('twig_string.xml');
 
         if (false !== $config['options']['legacy_twig_text_extension']) {
-            $stringExtension = $container->getDefinition('sonata.string.twig.extension');
-            $stringExtension->replaceArgument(0, new Reference('sonata.core.twig.extension.text'));
+            $container
+                ->getDefinition('sonata.string.twig.extension')
+                ->replaceArgument(0, new Reference('sonata.deprecated_text.twig.extension'));
         }
     }
 }

@@ -1,0 +1,11 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Class Doctrine\\\\ODM\\\\MongoDB\\\\PersistentCollection not found\\.$#"
+			count: 1
+			path: src/Admin/AdminHelper.php
+
+		-
+			message: "#^Class Doctrine\\\\ORM\\\\PersistentCollection not found\\.$#"
+			count: 1
+			path: src/Admin/AdminHelper.php

@@ -133,20 +133,20 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
             throw new \RuntimeException('Please define "property" parameter.');
         }
 
-        foreach ($collection as $entity) {
-            $id = current($this->modelManager->getIdentifierValues($entity));
+        foreach ($collection as $model) {
+            $id = current($this->modelManager->getIdentifierValues($model));
 
             if (null !== $this->toStringCallback) {
                 if (!\is_callable($this->toStringCallback)) {
                     throw new \RuntimeException('Callback in "to_string_callback" option doesn`t contain callable function.');
                 }
 
-                $label = ($this->toStringCallback)($entity, $this->property);
+                $label = ($this->toStringCallback)($model, $this->property);
             } else {
                 try {
-                    $label = (string) $entity;
+                    $label = (string) $model;
                 } catch (\Exception $e) {
-                    throw new \RuntimeException(sprintf("Unable to convert the entity %s to String, entity must have a '__toString()' method defined", ClassUtils::getClass($entity)), 0, $e);
+                    throw new \RuntimeException(sprintf("Unable to convert the entity %s to String, entity must have a '__toString()' method defined", ClassUtils::getClass($model)), 0, $e);
                 }
             }
 

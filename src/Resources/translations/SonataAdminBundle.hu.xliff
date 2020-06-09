@@ -74,6 +74,10 @@
                 <source>link_add</source>
                 <target>Új hozzáadása</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>Szerkesztés</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>Lista</target>
@@ -173,6 +177,10 @@
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>A kijelölt elemek sikeresen törölve lettek.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_no_elements_processed">
+                <source>flash_batch_no_elements_processed</source>
+                <target>Nincs feldolgozva elem.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
@@ -468,15 +476,27 @@
             </trans-unit>
             <trans-unit id="label_unknown_user">
                 <source>label_unknown_user</source>
-                <target>label_unknown_user</target>
+                <target>ismeretlen</target>
             </trans-unit>
             <trans-unit id="read_more">
                 <source>read_more</source>
-                <target>read_more</target>
+                <target>Olvass tovább</target>
             </trans-unit>
             <trans-unit id="read_less">
                 <source>read_less</source>
-                <target>read_less</target>
+                <target>Bezárni</target>
+            </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Váltás a navigációhoz</target>
+            </trans-unit>
+            <trans-unit id="label_type_starts_with">
+                <source>label_type_starts_with</source>
+                <target>kezdődik</target>
+            </trans-unit>
+            <trans-unit id="label_type_ends_with">
+                <source>label_type_ends_with</source>
+                <target>végződik</target>
             </trans-unit>
         </body>
     </file>

@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
-                <target>Administration</target>
+                <target>Administratioun</target>
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
@@ -328,7 +328,7 @@
             </trans-unit>
             <trans-unit id="td_compare">
                 <source>td_compare</source>
-                <target>td_compare</target>
+                <target>Verglach</target>
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
@@ -489,6 +489,14 @@
             <trans-unit id="toggle_navigation">
                 <source>toggle_navigation</source>
                 <target>Navigatioun an-/ausblenden</target>
+            </trans-unit>
+            <trans-unit id="label_type_starts_with">
+                <source>label_type_starts_with</source>
+                <target>fänkt mat</target>
+            </trans-unit>
+            <trans-unit id="label_type_ends_with">
+                <source>label_type_ends_with</source>
+                <target>goung mat</target>
             </trans-unit>
         </body>
     </file>

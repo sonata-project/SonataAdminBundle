@@ -36,7 +36,7 @@
             </trans-unit>
             <trans-unit id="btn_advanced_filters">
                 <source>btn_advanced_filters</source>
-                <target>btn_advanced_filters</target>
+                <target>Napredni filtri</target>
             </trans-unit>
             <trans-unit id="btn_update">
                 <source>btn_update</source>
@@ -74,6 +74,10 @@
                 <source>link_add</source>
                 <target>Novi unos</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>Promijeni</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>Lista</target>
@@ -88,7 +92,7 @@
             </trans-unit>
             <trans-unit id="title_show">
                 <source>title_show</source>
-                <target>title_show</target>
+                <target>Pregled "%name%"</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
@@ -120,7 +124,7 @@
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
-                <target>Administracija</target>
+                <target>Administratorius</target>
             </trans-unit>
             <trans-unit id="link_expand">
                 <source>link_expand</source>
@@ -168,11 +172,15 @@
             </trans-unit>
             <trans-unit id="flash_lock_error">
                 <source>flash_lock_error</source>
-                <target>flash_lock_error</target>
+                <target>Drugi je korisnik izmijenio stavku "%name%". Molimo %link_start%kliknite ovdje%link_end% da biste ponovno učitali stranicu i ponovo primijenili promjene.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Odabrani unosi su uspješno izbrisani.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_no_elements_processed">
+                <source>flash_batch_no_elements_processed</source>
+                <target>Nije obrađen nijedan element.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
@@ -188,7 +196,7 @@
             </trans-unit>
             <trans-unit id="form_not_available">
                 <source>form_not_available</source>
-                <target>form_not_available</target>
+                <target>Obrazac nije dostupan.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>link_breadcrumb_dashboard</source>
@@ -336,7 +344,7 @@
             </trans-unit>
             <trans-unit id="td_role">
                 <source>td_role</source>
-                <target>td_role</target>
+                <target>Uloga</target>
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
@@ -348,7 +356,7 @@
             </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
-                <target>list_results_count_prefix</target>
+                <target>barem</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
@@ -452,31 +460,43 @@
             </trans-unit>
             <trans-unit id="link_filters">
                 <source>link_filters</source>
-                <target>link_filters</target>
+                <target>Filteri</target>
             </trans-unit>
             <trans-unit id="stats_view_more">
                 <source>stats_view_more</source>
-                <target>stats_view_more</target>
+                <target>Vidi više</target>
             </trans-unit>
             <trans-unit id="title_select_subclass">
                 <source>title_select_subclass</source>
-                <target>title_select_subclass</target>
+                <target>Odaberite vrstu objekta</target>
             </trans-unit>
             <trans-unit id="no_subclass_available">
                 <source>no_subclass_available</source>
-                <target>no_subclass_available</target>
+                <target>Nisu dostupne vrste objekata</target>
             </trans-unit>
             <trans-unit id="label_unknown_user">
                 <source>label_unknown_user</source>
-                <target>label_unknown_user</target>
+                <target>nepoznata</target>
             </trans-unit>
             <trans-unit id="read_more">
                 <source>read_more</source>
-                <target>read_more</target>
+                <target>Čitaj više</target>
             </trans-unit>
             <trans-unit id="read_less">
                 <source>read_less</source>
-                <target>read_less</target>
+                <target>Zatvoriti</target>
+            </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Uključi navigaciju</target>
+            </trans-unit>
+            <trans-unit id="label_type_starts_with">
+                <source>label_type_starts_with</source>
+                <target>počinje sa</target>
+            </trans-unit>
+            <trans-unit id="label_type_ends_with">
+                <source>label_type_ends_with</source>
+                <target>završava sa</target>
             </trans-unit>
         </body>
     </file>

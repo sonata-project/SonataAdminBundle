@@ -74,6 +74,10 @@
                 <source>link_add</source>
                 <target>Dodaj</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>Uredi</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>Seznam</target>
@@ -88,7 +92,7 @@
             </trans-unit>
             <trans-unit id="title_show">
                 <source>title_show</source>
-                <target>title_show</target>
+                <target>Prikaži "%name%"</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
@@ -173,6 +177,10 @@
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Izbrani predmeti so bili uspešno izbrisani.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_no_elements_processed">
+                <source>flash_batch_no_elements_processed</source>
+                <target>Elementi niso obdelani.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
@@ -472,11 +480,23 @@
             </trans-unit>
             <trans-unit id="read_more">
                 <source>read_more</source>
-                <target>read_more</target>
+                <target>Preberi več</target>
             </trans-unit>
             <trans-unit id="read_less">
                 <source>read_less</source>
-                <target>read_less</target>
+                <target>Zapreti</target>
+            </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Preklopite navigacijo</target>
+            </trans-unit>
+            <trans-unit id="label_type_starts_with">
+                <source>label_type_starts_with</source>
+                <target>se začne z</target>
+            </trans-unit>
+            <trans-unit id="label_type_ends_with">
+                <source>label_type_ends_with</source>
+                <target>konča z</target>
             </trans-unit>
         </body>
     </file>

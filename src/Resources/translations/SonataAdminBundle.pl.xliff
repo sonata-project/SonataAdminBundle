@@ -172,11 +172,15 @@
             </trans-unit>
             <trans-unit id="flash_lock_error">
                 <source>flash_lock_error</source>
-                <target>flash_lock_error</target>
+                <target>Inny użytkownik zmodyfikował element "%name%". %link_start%Kliknij tutaj%link_end%, aby ponownie załadować stronę i zastosować zmiany ponownie.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Wybrane elementy zostały pomyślnie usunięte.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_no_elements_processed">
+                <source>flash_batch_no_elements_processed</source>
+                <target>Brak przetworzonych elementów.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
@@ -324,7 +328,7 @@
             </trans-unit>
             <trans-unit id="td_compare">
                 <source>td_compare</source>
-                <target>td_compare</target>
+                <target>Porównaj</target>
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
@@ -340,7 +344,7 @@
             </trans-unit>
             <trans-unit id="td_role">
                 <source>td_role</source>
-                <target>td_role</target>
+                <target>Rola</target>
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
@@ -348,7 +352,7 @@
             </trans-unit>
             <trans-unit id="label_compare_revision">
                 <source>label_compare_revision</source>
-                <target>label_compare_revision</target>
+                <target>Porównaj wersję</target>
             </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
@@ -485,6 +489,14 @@
             <trans-unit id="toggle_navigation">
                 <source>toggle_navigation</source>
                 <target>Zwiń/rozwiń menu nawigacji</target>
+            </trans-unit>
+            <trans-unit id="label_type_starts_with">
+                <source>label_type_starts_with</source>
+                <target>zaczynać z</target>
+            </trans-unit>
+            <trans-unit id="label_type_ends_with">
+                <source>label_type_ends_with</source>
+                <target>kończy się na</target>
             </trans-unit>
         </body>
     </file>

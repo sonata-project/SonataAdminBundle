@@ -41,10 +41,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ExtensionCompilerPassTest extends TestCase
 {
-    /** @var SonataAdminExtension */
+    /**
+     * @var SonataAdminExtension
+     */
     private $extension;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     private $config;
 
     /**

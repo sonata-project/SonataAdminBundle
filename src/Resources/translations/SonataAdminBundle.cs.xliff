@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
-                <target>Administration</target>
+                <target>Administrativa</target>
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
@@ -74,6 +74,10 @@
                 <source>link_add</source>
                 <target>Přidat nový</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>Upravit</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>Výpis</target>
@@ -88,7 +92,7 @@
             </trans-unit>
             <trans-unit id="title_show">
                 <source>title_show</source>
-                <target>title_show</target>
+                <target>Zobrazit "%name%"</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
@@ -120,7 +124,7 @@
             </trans-unit>
             <trans-unit id="Admin">
                 <source>Admin</source>
-                <target>Admin</target>
+                <target>Správce</target>
             </trans-unit>
             <trans-unit id="link_expand">
                 <source>link_expand</source>
@@ -173,6 +177,10 @@
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Zvolené položky byly úspěšně odstraněny.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_no_elements_processed">
+                <source>flash_batch_no_elements_processed</source>
+                <target>Nebyly zpracovány žádné prvky.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
@@ -336,7 +344,7 @@
             </trans-unit>
             <trans-unit id="td_role">
                 <source>td_role</source>
-                <target>td_role</target>
+                <target>Role</target>
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
@@ -420,7 +428,7 @@
             </trans-unit>
             <trans-unit id="short_object_description_placeholder">
                 <source>short_object_description_placeholder</source>
-                <target/>
+                <target>Žádný výběr</target>
             </trans-unit>
             <trans-unit id="title_search_results">
                 <source>title_search_results</source>
@@ -460,23 +468,35 @@
             </trans-unit>
             <trans-unit id="title_select_subclass">
                 <source>title_select_subclass</source>
-                <target>title_select_subclass</target>
+                <target>Vyberte typ objektu</target>
             </trans-unit>
             <trans-unit id="no_subclass_available">
                 <source>no_subclass_available</source>
-                <target>no_subclass_available</target>
+                <target>Nejsou k dispozici žádné typy objektů</target>
             </trans-unit>
             <trans-unit id="label_unknown_user">
                 <source>label_unknown_user</source>
-                <target>label_unknown_user</target>
+                <target>neznámý</target>
             </trans-unit>
             <trans-unit id="read_more">
                 <source>read_more</source>
-                <target>read_more</target>
+                <target>Přečtěte si více</target>
             </trans-unit>
             <trans-unit id="read_less">
                 <source>read_less</source>
-                <target>read_less</target>
+                <target>Zavřít</target>
+            </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Přepnout navigaci</target>
+            </trans-unit>
+            <trans-unit id="label_type_starts_with">
+                <source>label_type_starts_with</source>
+                <target>začíná s</target>
+            </trans-unit>
+            <trans-unit id="label_type_ends_with">
+                <source>label_type_ends_with</source>
+                <target>končí s</target>
             </trans-unit>
         </body>
     </file>

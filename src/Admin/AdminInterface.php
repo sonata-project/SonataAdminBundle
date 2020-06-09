@@ -33,18 +33,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @method array  configureActionButtons(string $action, ?object $object = null)
- * @method string getSearchResultLink(object $object)
- * @method void   showMosaicButton(bool $isShown)
- * @method bool   isDefaultFilter(string $name)
- * @method bool   isCurrentRoute(string $name, ?string $adminCode)
- * @method bool   canAccessObject(string $action, object $object)
- * @method mixed  getPersistentParameter(string $name)
- * @method array            getExportFields
- * @method array            getSubClasses
- * @method AdminInterface   getRoot
- * @method string           getRootCode
- * @method array getActionButtons(string $action, ?object $object)
+ * @method array                           configureActionButtons(string $action, ?object $object = null)
+ * @method string                          getSearchResultLink(object $object)
+ * @method void                            showMosaicButton(bool $isShown)
+ * @method bool                            isDefaultFilter(string $name)
+ * @method bool                            isCurrentRoute(string $name, ?string $adminCode)
+ * @method bool                            canAccessObject(string $action, object $object)
+ * @method mixed                           getPersistentParameter(string $name)
+ * @method array                           getExportFields()
+ * @method array                           getSubClasses()
+ * @method AdminInterface                  getRoot()
+ * @method string                          getRootCode()
+ * @method array                           getActionButtons(string $action, ?object $object)
+ * @method FieldDescriptionCollection|null getList()
  */
 interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
@@ -240,20 +241,20 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function isGranted($name, $object = null);
 
     /**
-     * @param mixed $entity
+     * @param mixed $model
      *
      * @return string a string representation of the identifiers for this instance
      */
-    public function getNormalizedIdentifier($entity);
+    public function getNormalizedIdentifier($model);
 
     /**
      * Shorthand method for templating.
      *
-     * @param object $entity
+     * @param object $model
      *
      * @return mixed
      */
-    public function id($entity);
+    public function id($model);
 
     /**
      * @param ValidatorInterface $validator
@@ -269,6 +270,9 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * @return FieldDescriptionCollection|null
      */
     public function getShow();
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    public function getList(): ?FieldDescriptionCollection;
 
     public function setFormTheme(array $formTheme);
 
@@ -360,6 +364,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getSubject();
 
     /**
+     * NEXT_MAJOR: Remove this method, since it's already in FieldDescriptionRegistryInterface.
+     *
      * Returns a list FieldDescription.
      *
      * @param string $name
@@ -369,6 +375,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getListFieldDescription($name);
 
     /**
+     * NEXT_MAJOR: Remove this method, since it's already in FieldDescriptionRegistryInterface.
+     *
      * Returns true if the list FieldDescription exists.
      *
      * @param string $name
@@ -378,6 +386,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function hasListFieldDescription($name);
 
     /**
+     * NEXT_MAJOR: Remove this method, since it's already in FieldDescriptionRegistryInterface.
+     *
      * Returns the collection of list FieldDescriptions.
      *
      * @return array
@@ -542,6 +552,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function reorderShowGroup($group, array $keys);
 
     /**
+     * NEXT_MAJOR: Remove this method, since it's already in FieldDescriptionRegistryInterface.
+     *
      * add a FieldDescription.
      *
      * @param string $name
@@ -549,6 +561,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function addFormFieldDescription($name, FieldDescriptionInterface $fieldDescription);
 
     /**
+     * NEXT_MAJOR: Remove this method, since it's already in FieldDescriptionRegistryInterface.
+     *
      * Remove a FieldDescription.
      *
      * @param string $name

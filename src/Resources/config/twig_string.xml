@@ -5,5 +5,9 @@
             <tag name="twig.extension"/>
             <argument>null</argument>
         </service>
+        <service id="sonata.deprecated_text.twig.extension" class="Sonata\AdminBundle\Twig\Extension\DeprecatedTextExtension">
+            <deprecated/>
+            <tag name="twig.extension"/>
+        </service>
     </services>
 </container>

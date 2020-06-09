@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
-                <target>Administration</target>
+                <target>Administrare</target>
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
@@ -74,6 +74,10 @@
                 <source>link_add</source>
                 <target>Adăugați</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>Editați</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>Lista</target>
@@ -88,7 +92,7 @@
             </trans-unit>
             <trans-unit id="title_show">
                 <source>title_show</source>
-                <target>title_show</target>
+                <target>Vizualizare "%name%"</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
@@ -168,11 +172,15 @@
             </trans-unit>
             <trans-unit id="flash_lock_error">
                 <source>flash_lock_error</source>
-                <target>flash_lock_error</target>
+                <target>Un alt utilizator a modificat elementul "%name%". Vă rugăm %link_start%faceți clic aici%link_end% pentru a reîncărca pagina și a aplica din nou modificările.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Itemii selectați au fost șterși cu succes.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_no_elements_processed">
+                <source>flash_batch_no_elements_processed</source>
+                <target>Nu au fost procesate elemente.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
@@ -188,7 +196,7 @@
             </trans-unit>
             <trans-unit id="form_not_available">
                 <source>form_not_available</source>
-                <target>form_not_available</target>
+                <target>Formularul nu este disponibil.</target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>link_breadcrumb_dashboard</source>
@@ -320,7 +328,7 @@
             </trans-unit>
             <trans-unit id="td_compare">
                 <source>td_compare</source>
-                <target>td_compare</target>
+                <target>Comparaţie</target>
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>
@@ -336,7 +344,7 @@
             </trans-unit>
             <trans-unit id="td_role">
                 <source>td_role</source>
-                <target>td_role</target>
+                <target>Rol</target>
             </trans-unit>
             <trans-unit id="label_view_revision">
                 <source>label_view_revision</source>
@@ -344,11 +352,11 @@
             </trans-unit>
             <trans-unit id="label_compare_revision">
                 <source>label_compare_revision</source>
-                <target>label_compare_revision</target>
+                <target>Comparați revizuirea</target>
             </trans-unit>
             <trans-unit id="list_results_count_prefix">
                 <source>list_results_count_prefix</source>
-                <target>list_results_count_prefix</target>
+                <target>cel puţin</target>
             </trans-unit>
             <trans-unit id="list_results_count">
                 <source>list_results_count</source>
@@ -456,27 +464,39 @@
             </trans-unit>
             <trans-unit id="stats_view_more">
                 <source>stats_view_more</source>
-                <target>stats_view_more</target>
+                <target>Vezi mai mult</target>
             </trans-unit>
             <trans-unit id="title_select_subclass">
                 <source>title_select_subclass</source>
-                <target>title_select_subclass</target>
+                <target>Selectați tipul obiectului</target>
             </trans-unit>
             <trans-unit id="no_subclass_available">
                 <source>no_subclass_available</source>
-                <target>no_subclass_available</target>
+                <target>Nu există tipuri de obiecte disponibile</target>
             </trans-unit>
             <trans-unit id="label_unknown_user">
                 <source>label_unknown_user</source>
-                <target>label_unknown_user</target>
+                <target>necunoscut</target>
             </trans-unit>
             <trans-unit id="read_more">
                 <source>read_more</source>
-                <target>read_more</target>
+                <target>Citeste mai mult</target>
             </trans-unit>
             <trans-unit id="read_less">
                 <source>read_less</source>
-                <target>read_less</target>
+                <target>Închide</target>
+            </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Comutare navigare</target>
+            </trans-unit>
+            <trans-unit id="label_type_starts_with">
+                <source>label_type_starts_with</source>
+                <target>incepe cu</target>
+            </trans-unit>
+            <trans-unit id="label_type_ends_with">
+                <source>label_type_ends_with</source>
+                <target>se termină cu</target>
             </trans-unit>
         </body>
     </file>

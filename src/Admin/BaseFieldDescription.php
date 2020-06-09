@@ -112,12 +112,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $parent;
 
     /**
-     * @var AdminInterface the related admin instance
+     * @var AdminInterface|null the related admin instance
      */
     protected $admin;
 
     /**
-     * @var AdminInterface the associated admin class if the object is associated to another entity
+     * @var AdminInterface|null the associated admin class if the object is associated to another entity
      */
     protected $associationAdmin;
 
@@ -236,7 +236,26 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getParent()
     {
+        if (!$this->hasParent()) {
+            @trigger_error(
+                sprintf(
+                    'Calling %s() when there is no parent is deprecated since sonata-project/admin-bundle 3.69'
+                    .' and will throw an exception in 4.0. Use %s::hasParent() to know if there is a parent.',
+                    __METHOD__,
+                    __CLASS__
+                ),
+                E_USER_DEPRECATED
+            );
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
+            // throw new \LogicException(sprintf('%s has no parent.', static::class));
+        }
+
         return $this->parent;
+    }
+
+    public function hasParent()
+    {
+        return null !== $this->parent;
     }
 
     public function getAssociationMapping()
@@ -262,6 +281,20 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getAssociationAdmin()
     {
+        if (!$this->hasAssociationAdmin()) {
+            @trigger_error(
+                sprintf(
+                    'Calling %s() when there is no association admin is deprecated since sonata-project/admin-bundle 3.69'
+                    .' and will throw an exception in 4.0. Use %s::hasAssociationAdmin() to know if there is an association admin.',
+                    __METHOD__,
+                    __CLASS__
+                ),
+                E_USER_DEPRECATED
+            );
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
+            // throw new \LogicException(sprintf('%s has no association admin.', static::class));
+        }
+
         return $this->associationAdmin;
     }
 
@@ -335,7 +368,26 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getAdmin()
     {
+        if (!$this->hasAdmin()) {
+            @trigger_error(
+                sprintf(
+                    'Calling %s() when there is no admin is deprecated since sonata-project/admin-bundle 3.69'
+                    .' and will throw an exception in 4.0. Use %s::hasAdmin() to know if there is an admin.',
+                    __METHOD__,
+                    __CLASS__
+                ),
+                E_USER_DEPRECATED
+            );
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
+            // throw new \LogicException(sprintf('%s has no admin.', static::class));
+        }
+
         return $this->admin;
+    }
+
+    public function hasAdmin()
+    {
+        return null !== $this->admin;
     }
 
     public function mergeOption($name, array $options = [])

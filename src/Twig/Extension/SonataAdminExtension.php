@@ -440,7 +440,12 @@ class SonataAdminExtension extends AbstractExtension
     public function getUrlSafeIdentifier($model, ?AdminInterface $admin = null)
     {
         if (null === $admin) {
-            $admin = $this->pool->getAdminByClass(ClassUtils::getClass($model));
+            $class = ClassUtils::getClass($model);
+            if (!$this->pool->hasAdminByClass($class)) {
+                throw new \InvalidArgumentException('You must pass an admin.');
+            }
+
+            $admin = $this->pool->getAdminByClass($class);
         }
 
         return $admin->getUrlSafeIdentifier($model);

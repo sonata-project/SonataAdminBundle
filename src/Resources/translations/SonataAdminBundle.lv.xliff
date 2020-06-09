@@ -74,6 +74,10 @@
                 <source>link_add</source>
                 <target>Pievienot jaunu</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>Rediģēt</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>Saraksts</target>
@@ -168,11 +172,17 @@
             </trans-unit>
             <trans-unit id="flash_lock_error">
                 <source>flash_lock_error</source>
-                <target>Cits lietotājs ir modificējis objektu "%name%". Lūdzu, %link_start%click here%link_end%, lai pārlādētu lapu un pielietotu izmaiņas vēlreiz.</target>
+                <target>Cits lietotājs ir modificējis objektu "%name%". Lūdzu, %link_start%click here%link_end%, lai
+                    pārlādētu lapu un pielietotu izmaiņas vēlreiz.
+                </target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Izvēlētie objekti tika veiksmīgi dzēsti.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_no_elements_processed">
+                <source>flash_batch_no_elements_processed</source>
+                <target>Netika apstrādāti elementi.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
@@ -212,11 +222,14 @@
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Vai tiešām vēlaties apstiprināt šo darbību un izpildīt to atlasītajam elementam?|Vai tiešām vēlaties apstiprināt šo darbību un izpildīt to %count% atlasītajiem elementiem?</target>
+                <target>Vai tiešām vēlaties apstiprināt šo darbību un izpildīt to atlasītajam elementam?|Vai tiešām
+                    vēlaties apstiprināt šo darbību un izpildīt to %count% atlasītajiem elementiem?
+                </target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
-                <target>Vai tiešām vēlaties apstiprināt šo darbību un izpildīt to visiem atlasītajiem elementiem?</target>
+                <target>Vai tiešām vēlaties apstiprināt šo darbību un izpildīt to visiem atlasītajiem elementiem?
+                </target>
             </trans-unit>
             <trans-unit id="btn_execute_batch_action">
                 <source>btn_execute_batch_action</source>
@@ -477,6 +490,18 @@
             <trans-unit id="read_less">
                 <source>read_less</source>
                 <target>Aizvērt</target>
+            </trans-unit>
+            <trans-unit id="label_type_starts_with">
+                <source>label_type_starts_with</source>
+                <target>sākas ar</target>
+            </trans-unit>
+            <trans-unit id="label_type_ends_with">
+                <source>label_type_ends_with</source>
+                <target>beidzas ar</target>
+            </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Pārslēgt navigāciju</target>
             </trans-unit>
         </body>
     </file>
