@@ -61,15 +61,16 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         }
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('twig.xml');
-        $loader->load('core.xml');
-        $loader->load('form_types.xml');
-        $loader->load('validator.xml');
-        $loader->load('route.xml');
-        $loader->load('block.xml');
-        $loader->load('menu.xml');
-        $loader->load('commands.xml');
         $loader->load('actions.xml');
+        $loader->load('block.xml');
+        $loader->load('commands.xml');
+        $loader->load('core.xml');
+        $loader->load('event_listener.xml');
+        $loader->load('form_types.xml');
+        $loader->load('menu.xml');
+        $loader->load('route.xml');
+        $loader->load('twig.xml');
+        $loader->load('validator.xml');
 
         if (isset($bundles['MakerBundle'])) {
             $loader->load('makers.xml');
@@ -324,12 +325,19 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
     private function configureTwigTextExtension(ContainerBuilder $container, XmlFileLoader $loader, array $config): void
     {
+        $bundles = $container->getParameter('kernel.bundles');
+
         $container->setParameter('sonata.admin.configuration.legacy_twig_text_extension', $config['options']['legacy_twig_text_extension']);
         $loader->load('twig_string.xml');
 
-        if (false !== $config['options']['legacy_twig_text_extension']) {
+        if (isset($bundles['SonataCoreBundle']) && false !== $config['options']['legacy_twig_text_extension']) {
             $stringExtension = $container->getDefinition('sonata.string.twig.extension');
             $stringExtension->replaceArgument(0, new Reference('sonata.core.twig.extension.text'));
+        } elseif (isset($bundles['SonataTwigBundle']) && false !== $config['options']['legacy_twig_text_extension']) {
+            if ($container->getDefinition('sonata.twig.extension.deprecated_text_extension')) {
+                $stringExtension = $container->getDefinition('sonata.string.twig.extension');
+                $stringExtension->replaceArgument(0, new Reference('sonata.twig.extension.deprecated_text_extension'));
+            }
         }
     }
 }
