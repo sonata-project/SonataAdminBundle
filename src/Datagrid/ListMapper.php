@@ -28,6 +28,10 @@ use Sonata\AdminBundle\Mapper\BaseMapper;
  */
 class ListMapper extends BaseMapper
 {
+    public const TYPE_ACTIONS = 'actions';
+    public const TYPE_BATCH = 'batch';
+    public const TYPE_SELECT = 'select';
+
     /**
      * @var FieldDescriptionCollection
      */
@@ -91,8 +95,13 @@ class ListMapper extends BaseMapper
             }
         }
 
+        // Type-guess the action field here because it is not a model property.
+        if ('_action' === $name && null === $type) {
+            $type = self::TYPE_ACTIONS;
+        }
+
         // Change deprecated inline action "view" to "show"
-        if ('_action' === $name && 'actions' === $type) {
+        if ('_action' === $name && self::TYPE_ACTIONS === $type) {
             if (isset($fieldDescriptionOptions['actions']['view'])) {
                 @trigger_error(
                     'Inline action "view" is deprecated since version 2.2.4 and will be removed in 4.0. '
@@ -104,11 +113,6 @@ class ListMapper extends BaseMapper
 
                 unset($fieldDescriptionOptions['actions']['view']);
             }
-        }
-
-        // Ensure batch and action pseudo-fields are tagged as virtual
-        if (\in_array($type, ['actions', 'batch', 'select'], true)) {
-            $fieldDescriptionOptions['virtual_field'] = true;
         }
 
         if (\array_key_exists('identifier', $fieldDescriptionOptions) && !\is_bool($fieldDescriptionOptions['identifier'])) {
@@ -163,6 +167,11 @@ class ListMapper extends BaseMapper
         if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
             // add the field with the FormBuilder
             $this->builder->addField($this->list, $type, $fieldDescription, $this->admin);
+
+            // Ensure batch and action pseudo-fields are tagged as virtual
+            if (\in_array($fieldDescription->getType(), [self::TYPE_ACTIONS, self::TYPE_BATCH, self::TYPE_SELECT], true)) {
+                $fieldDescription->setOption('virtual_field', true);
+            }
         }
 
         return $this;
