@@ -1394,13 +1394,17 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $adminCode = $fieldDescription->getOption('admin_code');
 
         if (null !== $adminCode) {
+            if (!$pool->hasAdminByAdminCode($adminCode)) {
+                return;
+            }
+
             $admin = $pool->getAdminByAdminCode($adminCode);
         } else {
-            $admin = $pool->getAdminByClass($fieldDescription->getTargetEntity());
-        }
+            if (!$pool->hasAdminByClass($fieldDescription->getTargetEntity())) {
+                return;
+            }
 
-        if (!$admin) {
-            return;
+            $admin = $pool->getAdminByClass($fieldDescription->getTargetEntity());
         }
 
         if ($this->hasRequest()) {
@@ -2072,7 +2076,24 @@ EOT;
 
     public function getChild($code)
     {
-        return $this->hasChild($code) ? $this->children[$code] : null;
+        if (!$this->hasChild($code)) {
+            @trigger_error(sprintf(
+                'Calling %s() when there is no child is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will throw an exception in 4.0. Use %s::hasChild() to know if the child exists.',
+                __METHOD__,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare AdminInterface as return type
+            // throw new \LogicException(sprintf(
+            //    'Admin "%s" has no child for the code %s.',
+            //    static::class,
+            //    $code
+            // ));
+
+            return null;
+        }
+
+        return $this->children[$code];
     }
 
     public function setParent(AdminInterface $parent)

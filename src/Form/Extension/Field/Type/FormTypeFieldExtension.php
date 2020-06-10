@@ -215,7 +215,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         try {
             $value = $fieldDescription->getValue($object);
         } catch (NoValueException $e) {
-            if ($fieldDescription->getAssociationAdmin()) {
+            if ($fieldDescription->hasAssociationAdmin()) {
                 $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
             }
         }

@@ -17,6 +17,9 @@ namespace Sonata\AdminBundle\Admin;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @method string|null getTargetModel()
+ * @method bool        hasAdmin()
+ * @method bool        hasParent()
+ * @method bool        hasAssociationAdmin()
  */
 interface FieldDescriptionInterface
 {
@@ -119,9 +122,12 @@ interface FieldDescriptionInterface
     /**
      * Returns the parent Admin (only used in nested admin).
      *
-     * @return AdminInterface|null
+     * @return AdminInterface|null // NEXT_MAJOR: Return AdminInterface
      */
     public function getParent();
+
+    // NEXT_MAJOR: Uncomment the following line
+    // public function hasParent(): bool;
 
     /**
      * Define the association mapping definition.
@@ -186,9 +192,12 @@ interface FieldDescriptionInterface
     /**
      * Returns the associated Admin instance (only used if the field is linked to an Admin).
      *
-     * @return AdminInterface|null
+     * @return AdminInterface|null // NEXT_MAJOR: Return AdminInterface
      */
     public function getAssociationAdmin();
+
+    // NEXT_MAJOR: Uncomment the following line
+    // public function hasAssociationAdmin(): bool;
 
     /**
      * Returns true if the FieldDescription is linked to an identifier field.
@@ -215,6 +224,9 @@ interface FieldDescriptionInterface
      * @return AdminInterface the admin class linked to this FieldDescription
      */
     public function getAdmin();
+
+    // NEXT_MAJOR: Uncomment the following line
+    // public function hasAdmin(): bool;
 
     /**
      * merge option values related to the provided option name.
