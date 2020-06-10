@@ -15,6 +15,8 @@ namespace Sonata\AdminBundle\Admin;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @method string|null getTargetModel()
  */
 interface FieldDescriptionInterface
 {
@@ -136,11 +138,17 @@ interface FieldDescriptionInterface
     public function getAssociationMapping();
 
     /**
-     * Returns the related Target Entity.
+     * NEXT_MAJOR: Remove this method in favor of `getTargetModel()`.
+     *
+     * Returns the related Target object model.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.x. Use `getTargetModel()` instead.
      *
      * @return string|null
      */
     public function getTargetEntity();
+
+    // public function getTargetModel(): ?string;
 
     /**
      * set the field mapping information.
