@@ -3277,7 +3277,7 @@ EOT;
             $fieldDescription->setTemplate($this->getTemplate('batch'));
             // $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('batch'));
 
-            $mapper->add($fieldDescription, 'batch');
+            $mapper->add($fieldDescription, ListMapper::TYPE_BATCH);
         }
 
         $this->configureListFields($mapper);
@@ -3303,7 +3303,7 @@ EOT;
             $fieldDescription->setTemplate($this->getTemplate('select'));
             // $fieldDescription->setTemplate($this->getTemplateRegistry()->getTemplate('select'));
 
-            $mapper->add($fieldDescription, 'select');
+            $mapper->add($fieldDescription, ListMapper::TYPE_SELECT);
         }
     }
 
