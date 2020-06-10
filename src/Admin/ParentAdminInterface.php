@@ -48,7 +48,7 @@ interface ParentAdminInterface
      *
      * @param string $code
      *
-     * @return AdminInterface|null
+     * @return AdminInterface|null // NEXT_MAJOR: Return AdminInterface
      */
     public function getChild($code);
 }
