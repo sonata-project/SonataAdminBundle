@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
-use Symfony\Component\String\UnicodeString as DecoratedUnicodeString;
+use Symfony\Component\String\UnicodeString as SymfonyUnicodeString;
 use Twig\Extension\AbstractExtension;
 use Twig\Extensions\TextExtension;
 use Twig\TwigFilter;
@@ -60,8 +60,8 @@ final class StringExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Fix the arguments in order to respect the signature at `UnicodeString::truncate()`.
      */
-    public function legacyTruncteWithUnicodeString(?string $text, int $length = 30, bool $preserve = false, string $ellipsis = '...'): DecoratedUnicodeString
+    public function legacyTruncteWithUnicodeString(?string $text, int $length = 30, bool $preserve = false, string $ellipsis = '...'): SymfonyUnicodeString
     {
-        return (new UnicodeString($text ?? ''))->truncate($length, $ellipsis, $preserve);
+        return (new SymfonyUnicodeString($text ?? ''))->truncate($length, $ellipsis, $preserve);
     }
 }

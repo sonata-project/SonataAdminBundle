@@ -1,6 +1,10 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated `SonataAdminBundle\Twig\Extension\UnicodeString`
+
+Use `Symfony\Component\String\UnicodeString` instead.
+
 UPGRADE FROM 3.67 to 3.68
 =========================
 
