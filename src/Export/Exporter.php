@@ -13,19 +13,29 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Export;
 
-use Sonata\CoreBundle\Exporter\Exporter as BaseExporter;
+use Sonata\CoreBundle\Exporter\Exporter as CoreExporter;
+use Sonata\Exporter\Exporter as BaseExporter;
 
-@trigger_error(
-    'The '.__NAMESPACE__.'\Exporter class is deprecated since version 3.14 and will be removed in 4.0.'.
-    ' Use \Sonata\Exporter\Exporter instead',
-    E_USER_DEPRECATED
-);
-
-/**
- * NEXT_MAJOR: remove this class.
- *
- * @deprecated since sonata-project/admin-bundle 3.14, to be removed in 4.0.
- */
-class Exporter extends BaseExporter
-{
+if (class_exists(CoreExporter::class)) {
+    /**
+     * NEXT_MAJOR: remove this class.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.14, to be removed in 4.0.
+     */
+    class Exporter extends CoreExporter
+    {
+        public function __construct()
+        {
+            @trigger_error(
+                'The '.__NAMESPACE__.'\Exporter class is deprecated since version 3.14 and will be removed in 4.0.'.
+                ' Use \Sonata\Exporter\Exporter instead',
+                E_USER_DEPRECATED
+            );
+        }
+    }
+} else {
+    class_alias(
+        BaseExporter::class,
+        __NAMESPACE__.'\Exporter'
+    );
 }

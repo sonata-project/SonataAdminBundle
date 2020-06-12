@@ -63,9 +63,15 @@ class SonataAdminBundle extends Bundle
 
     /**
      * Register form mapping information.
+     *
+     * NEXT_MAJOR: remove this method
      */
     public function registerFormMapping()
     {
+        if (!class_exists(FormHelper::class)) {
+            return;
+        }
+
         FormHelper::registerFormTypeMapping([
             'sonata_type_admin' => AdminType::class,
             'sonata_type_model' => ModelType::class,
