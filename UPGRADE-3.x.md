@@ -1,6 +1,10 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated `sonata_truncate` Twig filter
+
+This filter has been deprecated in favor of the [`u` filter](https://twig.symfony.com/doc/2.x/filters/u.html):
+
 ## Deprecated `SonataAdminBundle\Twig\Extension\UnicodeString`
 
 Use `Symfony\Component\String\UnicodeString` instead.
