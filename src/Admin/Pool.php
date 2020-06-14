@@ -203,7 +203,7 @@ class Pool
         if (!$this->hasAdminByClass($class)) {
             @trigger_error(sprintf(
                 'Calling %s() when there is no admin for the class %s is deprecated since sonata-project/admin-bundle'
-                .' 3.x and will throw an exception in 4.0. Use %s::hasAdminByClass() to know if the admin exists.',
+                .' 3.69 and will throw an exception in 4.0. Use %s::hasAdminByClass() to know if the admin exists.',
                 __METHOD__,
                 $class,
                 __CLASS__

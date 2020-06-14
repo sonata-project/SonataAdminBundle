@@ -182,13 +182,13 @@ class GenerateObjectAclCommand extends QuestionableCommand
         // NEXT_MAJOR: Remove the following conditional block.
         if (null !== $input->getOption('user_entity')) {
             $output->writeln([
-                'Option <comment>user_entity</comment> is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+                'Option <comment>user_entity</comment> is deprecated since sonata-project/admin-bundle 3.69 and will be removed in version 4.0.'
                 .' Use <comment>user_model</comment> option instead.',
                 '',
             ]);
 
             @trigger_error(
-                'Option "user_entity" is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+                'Option "user_entity" is deprecated since sonata-project/admin-bundle 3.69 and will be removed in version 4.0.'
                 .' Use "user_model" option instead.',
                 E_USER_DEPRECATED
             );
@@ -207,7 +207,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
     /**
      * NEXT_MAJOR: Remove this method and move its body to `getUserModelClass()`.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x. Use `getUserModelClass()` instead.
+     * @deprecated since sonata-project/admin-bundle 3.69. Use `getUserModelClass()` instead.
      *
      * @return string
      */
@@ -215,7 +215,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
     {
         if (self::class !== static::class) {
             @trigger_error(sprintf(
-                'Method %s() is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+                'Method %s() is deprecated since sonata-project/admin-bundle 3.69 and will be removed in version 4.0.'
                 .' Use %s::getUserModelClass() instead.',
                 __METHOD__,
                 __CLASS__

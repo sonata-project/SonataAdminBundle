@@ -239,7 +239,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if (!$this->hasParent()) {
             @trigger_error(
                 sprintf(
-                    'Calling %s() when there is no parent is deprecated since sonata-project/admin-bundle 3.x'
+                    'Calling %s() when there is no parent is deprecated since sonata-project/admin-bundle 3.69'
                     .' and will throw an exception in 4.0. Use %s::hasParent() to know if there is a parent.',
                     __METHOD__,
                     __CLASS__
@@ -284,7 +284,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if (!$this->hasAssociationAdmin()) {
             @trigger_error(
                 sprintf(
-                    'Calling %s() when there is no association admin is deprecated since sonata-project/admin-bundle 3.x'
+                    'Calling %s() when there is no association admin is deprecated since sonata-project/admin-bundle 3.69'
                     .' and will throw an exception in 4.0. Use %s::hasAssociationAdmin() to know if there is an association admin.',
                     __METHOD__,
                     __CLASS__
@@ -371,7 +371,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if (!$this->hasAdmin()) {
             @trigger_error(
                 sprintf(
-                    'Calling %s() when there is no admin is deprecated since sonata-project/admin-bundle 3.x'
+                    'Calling %s() when there is no admin is deprecated since sonata-project/admin-bundle 3.69'
                     .' and will throw an exception in 4.0. Use %s::hasAdmin() to know if there is an admin.',
                     __METHOD__,
                     __CLASS__

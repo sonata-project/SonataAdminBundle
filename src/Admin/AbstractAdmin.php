@@ -1826,7 +1826,7 @@ EOT;
 
         if (!$this->hasFormFieldDescription($name)) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no form field description is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Calling %s() when there is no form field description is deprecated since sonata-project/admin-bundle 3.69 and will throw an exception in 4.0. '.
                 'Use %s::hasFormFieldDescription() to know if there is a form field description.',
                 __METHOD__,
                 __CLASS__
@@ -1898,7 +1898,7 @@ EOT;
 
         if (!$this->hasShowFieldDescription($name)) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no show field description is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Calling %s() when there is no show field description is deprecated since sonata-project/admin-bundle 3.69 and will throw an exception in 4.0. '.
                 'Use %s::hasFormFieldDescription() to know if there is a show field description.',
                 __METHOD__,
                 __CLASS__
@@ -1988,7 +1988,7 @@ EOT;
 
         if (!$this->hasFilterFieldDescription($name)) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no filter field description is deprecated since sonata-project/admin-bundle 3.x and will throw an exception in 4.0. '.
+                'Calling %s() when there is no filter field description is deprecated since sonata-project/admin-bundle 3.69 and will throw an exception in 4.0. '.
                 'Use %s::hasFilterFieldDescription() to know if there is a filter field description.',
                 __METHOD__,
                 __CLASS__
@@ -2078,7 +2078,7 @@ EOT;
     {
         if (!$this->hasChild($code)) {
             @trigger_error(sprintf(
-                'Calling %s() when there is no child is deprecated since sonata-project/admin-bundle 3.x'
+                'Calling %s() when there is no child is deprecated since sonata-project/admin-bundle 3.69'
                 .' and will throw an exception in 4.0. Use %s::hasChild() to know if the child exists.',
                 __METHOD__,
                 __CLASS__

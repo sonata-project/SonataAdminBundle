@@ -347,7 +347,7 @@ class AdminHelper
     /**
      * NEXT_MAJOR: Remove this method and move its body to `getModelClassName()`.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x. Use `getModelClassName()` instead.
+     * @deprecated since sonata-project/admin-bundle 3.69. Use `getModelClassName()` instead.
      *
      * @param array $elements
      *
@@ -357,7 +357,7 @@ class AdminHelper
     {
         if (self::class !== static::class) {
             @trigger_error(sprintf(
-                'Method %s() is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+                'Method %s() is deprecated since sonata-project/admin-bundle 3.69 and will be removed in version 4.0.'
                 .' Use %s::getModelClassName() instead.',
                 __METHOD__,
                 __CLASS__

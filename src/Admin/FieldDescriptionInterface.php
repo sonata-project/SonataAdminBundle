@@ -148,7 +148,7 @@ interface FieldDescriptionInterface
      *
      * Returns the related Target object model.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x. Use `getTargetModel()` instead.
+     * @deprecated since sonata-project/admin-bundle 3.69. Use `getTargetModel()` instead.
      *
      * @return string|null
      */
