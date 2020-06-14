@@ -173,15 +173,15 @@ file that was distributed with this source code.
                                                                         {% if menu.extra('safe_label', true) %}
                                                                             {{- label|raw -}}
                                                                         {% else %}
-                                                                            {{- label|sonata_truncate(100) -}}
+                                                                            {{- label|u.truncate(100) -}}
                                                                         {% endif %}
                                                                     </a>
                                                                 {% else %}
-                                                                    <span>{{ label|sonata_truncate(100) }}</span>
+                                                                    <span>{{ label|u.truncate(100) }}</span>
                                                                 {% endif %}
                                                             </li>
                                                         {% else %}
-                                                            <li class="active"><span>{{ label|sonata_truncate(100) }}</span></li>
+                                                            <li class="active"><span>{{ label|u.truncate(100) }}</span></li>
                                                         {% endif %}
                                                     {% endfor %}
                                                 {% endif %}
@@ -328,7 +328,7 @@ file that was distributed with this source code.
                         {% block sonata_admin_content %}
 
                             {% block notice %}
-                                {% include '@SonataTwig/FlashMessage/render.html.twig' %}
+                                {% include ['@SonataCore/FlashMessage/render.html.twig', '@SonataTwig/FlashMessage/render.html.twig'] %}
                             {% endblock notice %}
 
                             {% if _preview is not empty %}

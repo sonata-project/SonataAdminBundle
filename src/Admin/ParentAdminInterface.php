@@ -45,6 +45,8 @@ interface ParentAdminInterface
 
     /**
      * Returns an admin child with the given $code.
+     *
+     * @return AdminInterface|null // NEXT_MAJOR: Return AdminInterface
      */
     public function getChild(string $code): ?AdminInterface;
 }

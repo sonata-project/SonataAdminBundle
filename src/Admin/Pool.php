@@ -167,6 +167,19 @@ class Pool
     public function getAdminByClass(string $class): ?AdminInterface
     {
         if (!$this->hasAdminByClass($class)) {
+            @trigger_error(sprintf(
+                'Calling %s() when there is no admin for the class %s is deprecated since sonata-project/admin-bundle'
+                .' 3.69 and will throw an exception in 4.0. Use %s::hasAdminByClass() to know if the admin exists.',
+                __METHOD__,
+                $class,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement,
+            // uncomment the following exception and declare AdminInterface as return type
+            //
+            // throw new \LogicException(sprintf('Pool has no admin for the class %s.', $class));
+
             return null;
         }
 

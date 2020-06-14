@@ -1207,16 +1207,16 @@ class AdminTest extends TestCase
     {
         $admin = new PostAdmin('sonata.post.admin.post', 'Acme\NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
 
-        $entity = new \stdClass();
+        $model = new \stdClass();
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager->expects($this->once())
             ->method('getUrlSafeIdentifier')
-            ->with($this->equalTo($entity))
+            ->with($this->equalTo($model))
             ->willReturn('foo');
         $admin->setModelManager($modelManager);
 
-        $this->assertSame('foo', $admin->getUrlSafeIdentifier($entity));
+        $this->assertSame('foo', $admin->getUrlSafeIdentifier($model));
     }
 
     public function testDeterminedPerPageValue(): void
@@ -1233,8 +1233,8 @@ class AdminTest extends TestCase
         $modelManager = $this->createStub(ModelManagerInterface::class);
         $modelManager
             ->method('getNormalizedIdentifier')
-            ->willReturnCallback(static function (?object $entity = null): ?string {
-                return $entity ? $entity->id : null;
+            ->willReturnCallback(static function (?object $model = null): ?string {
+                return $model ? $model->id : null;
             });
 
         $admin->setModelManager($modelManager);
@@ -1810,22 +1810,22 @@ class AdminTest extends TestCase
      */
     public function testGetSubject($id): void
     {
-        $entity = new Post();
+        $model = new Post();
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
             ->expects($this->once())
             ->method('find')
             ->with('NewsBundle\Entity\Post', $id)
-            ->willReturn($entity);
+            ->willReturn($model);
 
         $admin = new PostAdmin('sonata.post.admin.post', 'NewsBundle\Entity\Post', 'Sonata\NewsBundle\Controller\PostAdminController');
         $admin->setModelManager($modelManager);
 
         $admin->setRequest(new Request(['id' => $id]));
         $this->assertTrue($admin->hasSubject());
-        $this->assertSame($entity, $admin->getSubject());
-        $this->assertSame($entity, $admin->getSubject()); // model manager must be used only once
+        $this->assertSame($model, $admin->getSubject());
+        $this->assertSame($model, $admin->getSubject()); // model manager must be used only once
     }
 
     public function testGetSubjectWithParentDescription(): void

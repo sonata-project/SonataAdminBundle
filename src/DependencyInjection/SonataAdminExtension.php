@@ -59,16 +59,17 @@ final class SonataAdminExtension extends Extension
         }
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('actions.xml');
+        $loader->load('block.xml');
+        $loader->load('commands.xml');
+        $loader->load('core.xml');
+        $loader->load('event_listener.xml');
+        $loader->load('form_types.xml');
+        $loader->load('menu.xml');
+        $loader->load('route.xml');
         $loader->load('twig.xml');
         $loader->load('twig_string.xml');
-        $loader->load('core.xml');
-        $loader->load('form_types.xml');
         $loader->load('validator.xml');
-        $loader->load('route.xml');
-        $loader->load('block.xml');
-        $loader->load('menu.xml');
-        $loader->load('commands.xml');
-        $loader->load('actions.xml');
 
         if (isset($bundles['MakerBundle'])) {
             $loader->load('makers.xml');
@@ -80,6 +81,8 @@ final class SonataAdminExtension extends Extension
 
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
+
+        $this->configureTwigTextExtension($container, $loader, $config);
 
         $config['options']['javascripts'] = $this->buildJavascripts($config);
         $config['options']['stylesheets'] = $this->buildStylesheets($config);
@@ -248,5 +251,23 @@ final class SonataAdminExtension extends Extension
 
         $modelChoice = $container->getDefinition('sonata.admin.form.type.model_choice');
         $modelChoice->replaceArgument(0, new Reference('form.property_accessor'));
+    }
+
+    private function configureTwigTextExtension(ContainerBuilder $container, XmlFileLoader $loader, array $config): void
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+
+        $container->setParameter('sonata.admin.configuration.legacy_twig_text_extension', $config['options']['legacy_twig_text_extension']);
+        $loader->load('twig_string.xml');
+
+        if (isset($bundles['SonataCoreBundle']) && false !== $config['options']['legacy_twig_text_extension']) {
+            $stringExtension = $container->getDefinition('sonata.string.twig.extension');
+            $stringExtension->replaceArgument(0, new Reference('sonata.core.twig.extension.text'));
+        } elseif (isset($bundles['SonataTwigBundle']) && false !== $config['options']['legacy_twig_text_extension']) {
+            if ($container->hasDefinition('sonata.twig.extension.deprecated_text_extension')) {
+                $stringExtension = $container->getDefinition('sonata.string.twig.extension');
+                $stringExtension->replaceArgument(0, new Reference('sonata.twig.extension.deprecated_text_extension'));
+            }
+        }
     }
 }

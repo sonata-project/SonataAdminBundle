@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig\Extension;
 
-use Symfony\Component\String\UnicodeString as DecoratedUnicodeString;
+use Symfony\Component\String\UnicodeString as SymfonyUnicodeString;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 /**
+ * NEXT_MAJOR: Remove this class.
+ *
  * Decorates `Twig\Extra\String\StringExtension` in order to provide the `$cut`
  * argument for `Symfony\Component\String\UnicodeString::truncate()`.
  * This class must be removed when the component ships this feature.
@@ -40,8 +42,14 @@ final class StringExtension extends AbstractExtension
         ];
     }
 
-    public function legacyTruncteWithUnicodeString(?string $text, int $length = 30, string $ellipsis = '...', bool $cut = true): DecoratedUnicodeString
+    public function legacyTruncteWithUnicodeString(?string $text, int $length = 30, bool $preserve = false, string $ellipsis = '...'): SymfonyUnicodeString
     {
-        return (new UnicodeString($text ?? ''))->truncate($length, $ellipsis, $cut);
+        @trigger_error(
+            'The "sonata_truncate" twig filter is deprecated'
+            .' since sonata-project/admin-bundle 3.69 and will be removed in 4.0. Use "u.truncate" instead.',
+            E_USER_DEPRECATED
+        );
+
+        return (new SymfonyUnicodeString($text ?? ''))->truncate($length, $ellipsis, $preserve);
     }
 }

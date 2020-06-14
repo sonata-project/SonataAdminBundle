@@ -141,13 +141,6 @@ class PoolTest extends TestCase
         $this->assertCount(1, $this->pool->getAdminsByGroup('adminGroup2'));
     }
 
-    public function testGetAdminForClassWhenAdminClassIsNotSet(): void
-    {
-        $this->pool->setAdminClasses(['someclass' => 'sonata.user.admin.group1']);
-        $this->assertFalse($this->pool->hasAdminByClass('notexists'));
-        $this->assertNull($this->pool->getAdminByClass('notexists'));
-    }
-
     public function testGetAdminForClassWithInvalidFormat(): void
     {
         $this->expectException(\RuntimeException::class);

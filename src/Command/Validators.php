@@ -49,17 +49,17 @@ class Validators
      */
     public static function validateEntityName($shortcut)
     {
-        $entity = str_replace('/', '\\', $shortcut);
+        $model = str_replace('/', '\\', $shortcut);
 
-        if (false === $pos = strpos($entity, ':')) {
+        if (false === $pos = strpos($model, ':')) {
             throw new \InvalidArgumentException(sprintf(
                 'The entity name must contain a ":" (colon sign) '
                 .'("%s" given, expecting something like AcmeBlogBundle:Post)',
-                $entity
+                $model
             ));
         }
 
-        return [substr($entity, 0, $pos), substr($entity, $pos + 1)];
+        return [substr($model, 0, $pos), substr($model, $pos + 1)];
     }
 
     /**

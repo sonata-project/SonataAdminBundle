@@ -2,6 +2,47 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.69.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.68.0...3.69.0) - 2020-06-14
+### Added
+- Added `FieldDescriptionInterface::getParent()`.
+- Added `FieldDescriptionInterface::getAssociationAdmin()`.
+- Added `FieldDescriptionInterface::getAdmin()`.
+- Body classes `sonata-icheck` and `sonata-select2` when iCheck or Select2 are
+  enabled.
+- Added `Sonata\AdminBundle\EventListener\AssetsInstallCommandListener` to add
+  `sonatacore` asssets when SonataCoreBundle is not installed
+
+### Fixed
+- Type guessing the `_action` list field.
+- Styling of checkboxes and radio buttons when iCheck is disabled.
+
+### Changed
+- Changed use of `truncate` filter with `u` filter.
+- ignore `sonata.admin.configuration.legacy_twig_text_extension` when
+  SonataCoreBundle is not installed
+
+### Deprecated
+- Calling `AbstractAdmin::getChild()` when there is no child.
+- Calling `BaseFieldDescription::getParent()` when there is no parent.
+- Calling `BaseFieldDescription::getAssociationAdmin()` when there is no
+  association admin.
+- Calling `BaseFieldDescription::getAdmin()` when there is no admin.
+- Calling `Pool::getAdminByClass()` when there is no admin for the class.
+- Deprecated `Sonata\AdminBundle\Twig\Extension\UnicodeString` in favor of
+  `Symfony\Component\String\UnicodeString`.
+- Deprecated `sonata_truncate` in favor of `u.truncate`.
+- Deprecated `FieldDescriptionInterface::getTargetEntity()` in favor of
+  `FieldDescriptionInterface::getTargetModel()`;
+- Deprecated `AdminHelper::getEntityClassName()` in favor of
+  `AdminHelper::getModelClassName()`;
+- Deprecated `GenerateObjectAclCommand::getUserEntityClass()` in favor of
+  `GenerateObjectAclCommand::getUserModelClass()`.
+- Deprecated `--user_entity` option in favor of `--user_model` at
+  `sonata:admin:generate-object-acl` command.
+
+### Removed
+- remove all `SonataCoreBundle` dependencies
+
 ## [3.68.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.67.0...3.68.0) - 2020-05-31
 ### Added
 - Added `TemplateRegistry::TYPE_*` constant to be used instead of string value.

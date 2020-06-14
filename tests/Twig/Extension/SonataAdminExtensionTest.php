@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\NoValueException;
+use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
+use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
-use Sonata\AdminBundle\Twig\Extension\StringExtension;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
@@ -39,6 +39,7 @@ use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\Translator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
+use Twig\Extra\String\StringExtension;
 use Twig\Loader\FilesystemLoader;
 
 /**
@@ -153,20 +154,22 @@ class SonataAdminExtensionTest extends TestCase
 
         $this->translator = $translator;
 
-        $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
-        $this->container = $this->prophesize(ContainerInterface::class);
-        $this->container->get('sonata_admin_foo_service.template_registry')->willReturn($this->templateRegistry->reveal());
+        $this->templateRegistry = new TemplateRegistry();
+        $this->container = $this->createMock(ContainerInterface::class);
+        $this->container
+            ->method('get')
+            ->with('sonata_admin_foo_service.template_registry')
+            ->willReturn($this->templateRegistry);
 
-        $this->securityChecker = $this->prophesize(AuthorizationCheckerInterface::class);
-        $this->securityChecker->isGranted(['foo', 'bar'], null)->willReturn(false);
-        $this->securityChecker->isGranted(Argument::type('string'), null)->willReturn(true);
+        $this->securityChecker = $this->createMock(AuthorizationCheckerInterface::class);
+        $this->securityChecker->method('isGranted')->willReturn(true);
 
         $this->twigExtension = new SonataAdminExtension(
             $this->pool,
             $this->logger,
             $this->translator,
-            $this->container->reveal(),
-            $this->securityChecker->reveal()
+            $this->container,
+            $this->securityChecker
         );
         $this->twigExtension->setXEditableTypeMapping($this->xEditableTypeMapping);
 
@@ -1852,6 +1855,87 @@ EOT
         ];
     }
 
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @group legacy
+     *
+     * @dataProvider getDeprecatedTextExtensionItems
+     *
+     * @expectedDeprecation The "truncate.preserve" option is deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0. Use "truncate.cut" instead. ("@SonataAdmin/CRUD/show_html.html.twig" at line %d).
+     *
+     * @expectedDeprecation The "truncate.separator" option is deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0. Use "truncate.ellipsis" instead. ("@SonataAdmin/CRUD/show_html.html.twig" at line %d).
+     */
+    public function testDeprecatedTextExtension(string $expected, string $type, $value, array $options): void
+    {
+        $loader = new StubFilesystemLoader([
+            __DIR__.'/../../../src/Resources/views/CRUD',
+        ]);
+        $loader->addPath(__DIR__.'/../../../src/Resources/views/', 'SonataAdmin');
+        $environment = new Environment($loader, [
+            'strict_variables' => true,
+            'cache' => false,
+            'autoescape' => 'html',
+            'optimizations' => 0,
+        ]);
+        $environment->addExtension($this->twigExtension);
+        $environment->addExtension(new TranslationExtension($this->translator));
+        $environment->addExtension(new StringExtension());
+
+        $this->fieldDescription
+            ->method('getValue')
+            ->willReturn($value);
+
+        $this->fieldDescription
+            ->method('getType')
+            ->willReturn($type);
+
+        $this->fieldDescription
+            ->method('getOptions')
+            ->willReturn($options);
+
+        $this->fieldDescription
+            ->method('getTemplate')
+            ->willReturn('@SonataAdmin/CRUD/show_html.html.twig');
+
+        $this->assertSame(
+            $this->removeExtraWhitespace($expected),
+            $this->removeExtraWhitespace(
+                $this->twigExtension->renderViewElement(
+                    $environment,
+                    $this->fieldDescription,
+                    $this->object
+                )
+            )
+        );
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
+    public function getDeprecatedTextExtensionItems(): iterable
+    {
+        yield 'default_separator' => [
+            '<th>Data</th> <td> Creating a Template for the Field... </td>',
+            'html',
+            '<p><strong>Creating a Template for the Field</strong> and form</p>',
+            ['truncate' => ['preserve' => true, 'separator' => '...']],
+        ];
+
+        yield 'custom_length' => [
+            '<th>Data</th> <td> Creating a Template[...] </td>',
+            'html',
+            '<p><strong>Creating a Template for the Field</strong> and form</p>',
+            [
+                'truncate' => [
+                    'length' => 20,
+                    'preserve' => true,
+                    'separator' => '[...]',
+                ],
+            ],
+        ];
+    }
+
     public function testGetValueFromFieldDescription(): void
     {
         $object = new \stdClass();
@@ -2073,7 +2157,7 @@ EOT
 
     public function testGetUrlsafeIdentifier(): void
     {
-        $entity = new \stdClass();
+        $model = new \stdClass();
 
         // set admin to pool
         $this->pool->setAdminServiceIds(['sonata_admin_foo_service']);
@@ -2081,15 +2165,15 @@ EOT
 
         $this->admin->expects($this->once())
             ->method('getUrlSafeIdentifier')
-            ->with($this->equalTo($entity))
+            ->with($this->equalTo($model))
             ->willReturn('1234567');
 
-        $this->assertSame('1234567', $this->twigExtension->getUrlSafeIdentifier($entity));
+        $this->assertSame('1234567', $this->twigExtension->getUrlSafeIdentifier($model));
     }
 
     public function testGetUrlsafeIdentifier_GivenAdmin_Foo(): void
     {
-        $entity = new \stdClass();
+        $model = new \stdClass();
 
         // set admin to pool
         $this->pool->setAdminServiceIds([
@@ -2103,18 +2187,18 @@ EOT
 
         $this->admin->expects($this->once())
             ->method('getUrlSafeIdentifier')
-            ->with($this->equalTo($entity))
+            ->with($this->equalTo($model))
             ->willReturn('1234567');
 
         $this->adminBar->expects($this->never())
             ->method('getUrlSafeIdentifier');
 
-        $this->assertSame('1234567', $this->twigExtension->getUrlSafeIdentifier($entity, $this->admin));
+        $this->assertSame('1234567', $this->twigExtension->getUrlSafeIdentifier($model, $this->admin));
     }
 
     public function testGetUrlsafeIdentifier_GivenAdmin_Bar(): void
     {
-        $entity = new \stdClass();
+        $model = new \stdClass();
 
         // set admin to pool
         $this->pool->setAdminServiceIds(['sonata_admin_foo_service', 'sonata_admin_bar_service']);
@@ -2128,10 +2212,10 @@ EOT
 
         $this->adminBar->expects($this->once())
             ->method('getUrlSafeIdentifier')
-            ->with($this->equalTo($entity))
+            ->with($this->equalTo($model))
             ->willReturn('1234567');
 
-        $this->assertSame('1234567', $this->twigExtension->getUrlSafeIdentifier($entity, $this->adminBar));
+        $this->assertSame('1234567', $this->twigExtension->getUrlSafeIdentifier($model, $this->adminBar));
     }
 
     public function xEditableChoicesProvider()
@@ -2408,10 +2492,6 @@ EOT
      */
     public function testRenderViewElementCompare(string $expected, string $type, $value, array $options, ?string $objectName = null): void
     {
-        $this->admin
-            ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/base_show_compare.html.twig');
-
         $this->fieldDescription
             ->method('getValue')
             ->willReturn($value);

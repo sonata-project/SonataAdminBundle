@@ -102,20 +102,20 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
             }
 
             $choices = [];
-            foreach ($entities as $key => $entity) {
+            foreach ($entities as $key => $model) {
                 if ($this->propertyPath) {
                     // If the property option was given, use it
-                    $valueObject = $this->propertyAccessor->getValue($entity, $this->propertyPath);
+                    $valueObject = $this->propertyAccessor->getValue($model, $this->propertyPath);
                 } else {
                     // Otherwise expect a __toString() method in the entity
                     try {
-                        $valueObject = (string) $entity;
+                        $valueObject = (string) $model;
                     } catch (\Exception $e) {
-                        throw new RuntimeException(sprintf('Unable to convert the entity "%s" to string, provide "property" option or implement "__toString()" method in your entity.', ClassUtils::getClass($entity)), 0, $e);
+                        throw new RuntimeException(sprintf('Unable to convert the entity "%s" to string, provide "property" option or implement "__toString()" method in your entity.', ClassUtils::getClass($model)), 0, $e);
                     }
                 }
 
-                $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($entity));
+                $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($model));
 
                 if (!\array_key_exists($valueObject, $choices)) {
                     $choices[$valueObject] = [];
@@ -152,14 +152,14 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
     }
 
     /**
-     * @param object $entity
+     * @param object $model
      */
-    private function getIdentifierValues($entity): array
+    private function getIdentifierValues($model): array
     {
         try {
-            return $this->modelManager->getIdentifierValues($entity);
+            return $this->modelManager->getIdentifierValues($model);
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($entity)), 0, $e);
+            throw new \InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($model)), 0, $e);
         }
     }
 }

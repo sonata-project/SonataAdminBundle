@@ -189,18 +189,18 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function isGranted($name, ?object $object = null): bool;
 
     /**
-     * @param mixed $entity
+     * @param mixed $model
      *
      * @return string a string representation of the identifiers for this instance
      */
-    public function getNormalizedIdentifier($entity): ?string;
+    public function getNormalizedIdentifier($model): ?string;
 
     /**
      * Shorthand method for templating.
      *
-     * @param object $entity
+     * @param object $model
      */
-    public function id($entity): ?string;
+    public function id($model): ?string;
 
     public function setValidator(ValidatorInterface $validator): void;
 

@@ -23,6 +23,9 @@ use Symfony\Component\String\UnicodeString as DecoratedUnicodeString;
  *
  * @see https://github.com/symfony/symfony/pull/35649
  *
+ * NEXT_MAJOR: Remove this class
+ * @deprecated since sonata-project/admin-bundle 3.69, use Symfony\Component\String\UnicodeString instead.
+ *
  * @throws ExceptionInterface
  *
  * @author Javier Spagnoletti <phansys@gmail.com>
