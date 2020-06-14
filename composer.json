@@ -49,11 +49,11 @@
         "symfony/security-bundle": "^4.3",
         "symfony/security-core": "^4.3",
         "symfony/security-csrf": "^4.3",
+        "symfony/string": "^5.1",
         "symfony/translation": "^4.3",
         "symfony/twig-bridge": "^4.3",
         "symfony/twig-bundle": "^4.3",
         "symfony/validator": "^4.3",
-        "twig/extensions": "^1.5",
         "twig/extra-bundle": "^3.0",
         "twig/string-extra": "^3.0",
         "twig/twig": "^2.12.1"
