@@ -28,7 +28,7 @@ final class FooAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $form)
     {
-        $form->add('name', TextType::class);
+        $form->add('name', TextType::class, ['help' => 'Help me!']);
     }
 
     protected function configureShowFields(ShowMapper $show)
