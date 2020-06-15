@@ -140,7 +140,7 @@ class FormMapper extends BaseGroupedMapper
             }
 
             if (null !== $help) {
-                $this->admin->getFormFieldDescription($name)->setHelp($help);
+                $fieldDescription->setHelp($help);
             }
         }
 
