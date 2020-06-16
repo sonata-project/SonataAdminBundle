@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.69.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.69.0...3.69.1) - 2020-06-16
+### Fixed
+- Infinite recursion error when mapping form fields with a help option set.
+
 ## [3.69.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.68.0...3.69.0) - 2020-06-14
 ### Added
 - Added `FieldDescriptionInterface::getParent()`.
