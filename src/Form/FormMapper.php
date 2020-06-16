@@ -112,8 +112,6 @@ class FormMapper extends BaseGroupedMapper
             $fieldDescription->setName($fieldName);
         }
 
-        $this->admin->addFormFieldDescription($fieldName, $fieldDescription);
-
         if ($name instanceof FormBuilderInterface) {
             $type = null;
             $options = [];
@@ -143,6 +141,8 @@ class FormMapper extends BaseGroupedMapper
                 $fieldDescription->setHelp($help);
             }
         }
+
+        $this->admin->addFormFieldDescription($fieldName, $fieldDescription);
 
         if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
             $this->formBuilder->add($name, $type, $options);
