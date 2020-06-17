@@ -121,7 +121,15 @@ final class SetObjectFieldValueAction
 
         // Handle date and datetime types have setter expecting a DateTime object
         if ('' !== $value && \in_array($fieldDescription->getType(), ['date', 'datetime'], true)) {
-            $value = new \DateTime($value);
+            $inputTimezone = new \DateTimeZone(date_default_timezone_get());
+            $outputTimezone = $fieldDescription->getOption('timezone');
+
+            if ($outputTimezone && !$outputTimezone instanceof \DateTimeZone) {
+                $outputTimezone = new \DateTimeZone($outputTimezone);
+            }
+
+            $value = new \DateTime($value, $outputTimezone ?: $inputTimezone);
+            $value->setTimezone($inputTimezone);
         }
 
         // Handle boolean type transforming the value into a boolean
