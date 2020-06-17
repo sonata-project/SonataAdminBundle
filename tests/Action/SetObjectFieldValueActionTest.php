@@ -124,7 +124,25 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
-    public function testSetObjectFieldValueActionWithDate(): void
+    public function getTimeZones(): iterable
+    {
+        $default = new \DateTimeZone(date_default_timezone_get());
+        $custom = new \DateTimeZone('Europe/Rome');
+
+        return [
+            [null, $default],
+            [false, $default],
+            [$default->getName(), $default],
+            [$default, $default],
+            [$custom->getName(), $custom],
+            [$custom, $custom],
+        ];
+    }
+
+    /**
+     * @dataProvider getTimeZones
+     */
+    public function testSetObjectFieldValueActionWithDate($timezone, \DateTimeZone $expectedTimezone): void
     {
         $object = new Bafoo();
         $request = new Request([
@@ -158,6 +176,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             $container->reveal()
         ));
         $fieldDescription->getOption('editable')->willReturn(true);
+        $fieldDescription->getOption('timezone')->willReturn($timezone);
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
         $fieldDescription->getType()->willReturn('date');
         $fieldDescription->getTemplate()->willReturn('field_template');
@@ -168,9 +187,20 @@ final class SetObjectFieldValueActionTest extends TestCase
         $response = ($this->action)($request);
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+
+        $defaultTimezone = new \DateTimeZone(date_default_timezone_get());
+        $expectedDate = new \DateTime($request->query->get('value'), $expectedTimezone);
+        $expectedDate->setTimezone($defaultTimezone);
+
+        $this->assertInstanceOf(\DateTime::class, $object->getDateProp());
+        $this->assertSame($expectedDate->format('Y-m-d'), $object->getDateProp()->format('Y-m-d'));
+        $this->assertSame($defaultTimezone->getName(), $object->getDateProp()->getTimezone()->getName());
     }
 
-    public function testSetObjectFieldValueActionWithDateTime(): void
+    /**
+     * @dataProvider getTimeZones
+     */
+    public function testSetObjectFieldValueActionWithDateTime($timezone, \DateTimeZone $expectedTimezone): void
     {
         $object = new Bafoo();
         $request = new Request([
@@ -204,6 +234,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             $container->reveal()
         ));
         $fieldDescription->getOption('editable')->willReturn(true);
+        $fieldDescription->getOption('timezone')->willReturn($timezone);
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
         $fieldDescription->getType()->willReturn('datetime');
         $fieldDescription->getTemplate()->willReturn('field_template');
@@ -214,6 +245,14 @@ final class SetObjectFieldValueActionTest extends TestCase
         $response = ($this->action)($request);
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+
+        $defaultTimezone = new \DateTimeZone(date_default_timezone_get());
+        $expectedDate = new \DateTime($request->query->get('value'), $expectedTimezone);
+        $expectedDate->setTimezone($defaultTimezone);
+
+        $this->assertInstanceOf(\DateTime::class, $object->getDatetimeProp());
+        $this->assertSame($expectedDate->format('Y-m-d H:i:s'), $object->getDatetimeProp()->format('Y-m-d H:i:s'));
+        $this->assertSame($defaultTimezone->getName(), $object->getDatetimeProp()->getTimezone()->getName());
     }
 
     public function testSetObjectFieldValueActionOnARelationField(): void

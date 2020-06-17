@@ -31,7 +31,7 @@ class Bafoo
         return $this;
     }
 
-    public function getDatetimeProp(): \DateTime
+    public function getDatetimeProp(): ?\DateTime
     {
         return $this->datetimeProp;
     }
