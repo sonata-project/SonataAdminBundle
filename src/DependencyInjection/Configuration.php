@@ -34,13 +34,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('sonata_admin');
-
-        // Keep compatibility with symfony/config < 4.2
-        if (!method_exists($treeBuilder, 'getRootNode')) {
-            $rootNode = $treeBuilder->root('sonata_admin');
-        } else {
-            $rootNode = $treeBuilder->getRootNode();
-        }
+        $rootNode = $treeBuilder->getRootNode();
 
         $caseSensitiveInfo = <<<'CASESENSITIVE'
 Whether the global search should behave case sensitive or not.
@@ -176,6 +170,7 @@ CASESENSITIVE;
                         // NEXT_MAJOR : remove this option
                         ->booleanNode('legacy_twig_text_extension')
                             ->info('Use text filters from "twig/extensions" instead of those provided by "twig/string-extra".')
+                            ->setDeprecated('The child node "%node%" at path "%path%" is deprecated since sonata-project/admin-bundle 3.x and will be remove in 4.0.')
                             ->defaultValue(static function (): bool {
                                 @trigger_error(
                                     'Using `true` as value for "sonata_admin.options.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.64. '.
@@ -188,8 +183,8 @@ CASESENSITIVE;
                                 ->ifTrue()
                                 ->then(static function (bool $v): bool {
                                     @trigger_error(
-                                        'Using `true` as value for "sonata_admin.options.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.64. '.
-                                        'You should set it to `false`, which will be the default value since version 4.0.'
+                                        'Using `true` as value for "sonata_admin.options.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.64 and will be remove in 4.0'.
+                                        'You should set it to `false` before upgrade process.'
                                     );
 
                                     return $v;

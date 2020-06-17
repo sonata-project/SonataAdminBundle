@@ -29,18 +29,28 @@ use Twig\TwigFilter;
  * @internal
  *
  * @see https://github.com/symfony/symfony/pull/35649
+ * @deprecated since sonata-project/admin-bundle 3.69, to be removed in 4.0.
  *
  * @author Javier Spagnoletti <phansys@gmail.com>
  */
 final class StringExtension extends AbstractExtension
 {
     /**
-     * @var TextExtension
+     * @var AbstractExtension
      */
     private $legacyExtension;
 
-    public function __construct(?TextExtension $legacyExtension = null)
+    public function __construct(?AbstractExtension $legacyExtension = null)
     {
+        if (!$legacyExtension instanceof TextExtension && !$legacyExtension instanceof DeprecatedTextExtension) {
+            throw new \TypeError(sprintf(
+                'Argument 1 passed to %s::__construct() must be instance of %s or %s',
+                self::class,
+                TextExtension::class,
+                DeprecatedTextExtension::class
+            ));
+        }
+
         $this->legacyExtension = $legacyExtension;
     }
 
@@ -65,16 +75,15 @@ final class StringExtension extends AbstractExtension
             E_USER_DEPRECATED
         );
 
-        if (null !== $this->legacyExtension) {
+        if ($this->legacyExtension instanceof TextExtension) {
             return twig_truncate_filter($env, $text, $length, $preserve, $ellipsis);
+        } elseif ($this->legacyExtension instanceof DeprecatedTextExtension) {
+            return $this->legacyExtension->twigTruncateFilter($env, $text, $length, $preserve, $ellipsis);
         }
 
         return $this->legacyTruncteWithUnicodeString($text, $length, $preserve, $ellipsis);
     }
 
-    /**
-     * NEXT_MAJOR: Fix the arguments in order to respect the signature at `UnicodeString::truncate()`.
-     */
     public function legacyTruncteWithUnicodeString(?string $text, int $length = 30, bool $preserve = false, string $ellipsis = '...'): SymfonyUnicodeString
     {
         return (new SymfonyUnicodeString($text ?? ''))->truncate($length, $ellipsis, $preserve);
