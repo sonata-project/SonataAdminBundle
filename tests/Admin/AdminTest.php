@@ -1597,6 +1597,13 @@ class AdminTest extends TestCase
         $this->assertInstanceOf(Collection::class, $tag->getPosts());
         $this->assertCount(2, $tag->getPosts());
         $this->assertContains($post, $tag->getPosts());
+    }
+
+    public function testGetFormWithArrayParentValue(): void
+    {
+        $post = new Post();
+        $tagAdmin = $this->createTagAdmin($post);
+        $tag = $tagAdmin->getSubject();
 
         // Case of an array
         $tag->setPosts([]);

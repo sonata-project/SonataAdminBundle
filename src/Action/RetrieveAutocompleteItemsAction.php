@@ -184,8 +184,6 @@ final class RetrieveAutocompleteItemsAction
         AdminInterface $admin,
         string $field
     ): FieldDescriptionInterface {
-        $admin->getFilterFieldDescriptions();
-
         $fieldDescription = $admin->getFilterFieldDescription($field);
 
         if (!$fieldDescription) {
@@ -208,8 +206,6 @@ final class RetrieveAutocompleteItemsAction
         AdminInterface $admin,
         string $field
     ): FieldDescriptionInterface {
-        $admin->getFormFieldDescriptions();
-
         $fieldDescription = $admin->getFormFieldDescription($field);
 
         if (!$fieldDescription) {
