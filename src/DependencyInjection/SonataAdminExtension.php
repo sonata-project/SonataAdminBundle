@@ -323,21 +323,18 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $modelChoice->replaceArgument(0, new Reference('form.property_accessor'));
     }
 
+    /**
+     * NEXT_MAJOR: remove this method.
+     */
     private function configureTwigTextExtension(ContainerBuilder $container, XmlFileLoader $loader, array $config): void
     {
-        $bundles = $container->getParameter('kernel.bundles');
-
         $container->setParameter('sonata.admin.configuration.legacy_twig_text_extension', $config['options']['legacy_twig_text_extension']);
         $loader->load('twig_string.xml');
 
-        if (isset($bundles['SonataCoreBundle']) && false !== $config['options']['legacy_twig_text_extension']) {
-            $stringExtension = $container->getDefinition('sonata.string.twig.extension');
-            $stringExtension->replaceArgument(0, new Reference('sonata.core.twig.extension.text'));
-        } elseif (isset($bundles['SonataTwigBundle']) && false !== $config['options']['legacy_twig_text_extension']) {
-            if ($container->getDefinition('sonata.twig.extension.deprecated_text_extension')) {
-                $stringExtension = $container->getDefinition('sonata.string.twig.extension');
-                $stringExtension->replaceArgument(0, new Reference('sonata.twig.extension.deprecated_text_extension'));
-            }
+        if (false !== $config['options']['legacy_twig_text_extension']) {
+            $container
+                ->getDefinition('sonata.string.twig.extension')
+                ->replaceArgument(0, new Reference('sonata.deprecated_text.twig.extension'));
         }
     }
 }
