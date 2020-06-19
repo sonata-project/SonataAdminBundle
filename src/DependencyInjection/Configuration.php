@@ -170,7 +170,7 @@ CASESENSITIVE;
                         // NEXT_MAJOR : remove this option
                         ->booleanNode('legacy_twig_text_extension')
                             ->info('Use text filters from "twig/extensions" instead of those provided by "twig/string-extra".')
-                            ->setDeprecated('The child node "%node%" at path "%path%" is deprecated since sonata-project/admin-bundle 3.x and will be remove in 4.0.')
+                            ->setDeprecated('The child node "%node%" at path "%path%" is deprecated since sonata-project/admin-bundle 3.70 and will be removed in 4.0.')
                             ->defaultValue(static function (): bool {
                                 @trigger_error(
                                     'Using `true` as value for "sonata_admin.options.legacy_twig_text_extension" option is deprecated since sonata-project/admin-bundle 3.64. '.

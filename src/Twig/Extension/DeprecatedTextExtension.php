@@ -21,7 +21,7 @@ use Twig\Extension\AbstractExtension;
  *
  * @internal
  *
- * @deprecated since sonata-project/admin-bundle 3.x, to be removed in 4.0.
+ * @deprecated since sonata-project/admin-bundle 3.70, to be removed in 4.0.
  *
  * This class is used to support `Sonata\AdminBundle\Twig\Extension\StringExtensions` when `sonata_admin.options.legacy_twig_text_extension`
  * is set to true and deprecated `twig/extensions` is not installed. It is copy of required function, which keep BC for `sonata_truncate`
