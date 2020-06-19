@@ -74,6 +74,10 @@
                 <source>link_add</source>
                 <target>Adicionar novo</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>Editar</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>Listar</target>
@@ -173,6 +177,10 @@
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Itens selecionados foram deletados com sucesso.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_no_elements_processed">
+                <source>flash_batch_no_elements_processed</source>
+                <target>Nenhum elemento processado.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
@@ -356,7 +364,7 @@
             </trans-unit>
             <trans-unit id="label_export_download">
                 <source>label_export_download</source>
-                <target>Download</target>
+                <target>Baixar</target>
             </trans-unit>
             <trans-unit id="export_format_json">
                 <source>export_format_json</source>
@@ -472,11 +480,15 @@
             </trans-unit>
             <trans-unit id="read_more">
                 <source>read_more</source>
-                <target>read_more</target>
+                <target>Consulte mais informação</target>
             </trans-unit>
             <trans-unit id="read_less">
                 <source>read_less</source>
-                <target>read_less</target>
+                <target>Fechar</target>
+            </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Alternar de navegação</target>
             </trans-unit>
         </body>
     </file>

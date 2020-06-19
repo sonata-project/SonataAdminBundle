@@ -74,6 +74,10 @@
                 <source>link_add</source>
                 <target>Legg til ny</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>Endre</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>Liste</target>
@@ -88,7 +92,7 @@
             </trans-unit>
             <trans-unit id="title_show">
                 <source>title_show</source>
-                <target>title_show</target>
+                <target>Vis "%name%"</target>
             </trans-unit>
             <trans-unit id="title_dashboard">
                 <source>title_dashboard</source>
@@ -168,11 +172,15 @@
             </trans-unit>
             <trans-unit id="flash_lock_error">
                 <source>flash_lock_error</source>
-                <target>flash_lock_error</target>
+                <target>En annen bruker har endret elementet "%name%". Vennligst %link_start%klikk her%link_end% for å laste inn siden på nytt og bruke endringene igjen.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Valgte objekt har blitt slettet</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_no_elements_processed">
+                <source>flash_batch_no_elements_processed</source>
+                <target>Ingen elementer behandlet.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
@@ -188,7 +196,8 @@
             </trans-unit>
             <trans-unit id="form_not_available">
                 <source>form_not_available</source>
-                <target>form_not_available</target>
+                <target>Skjema er ikke tilgjengelig
+                </target>
             </trans-unit>
             <trans-unit id="link_breadcrumb_dashboard">
                 <source>link_breadcrumb_dashboard</source>
@@ -456,7 +465,7 @@
             </trans-unit>
             <trans-unit id="stats_view_more">
                 <source>stats_view_more</source>
-                <target>stats_view_more</target>
+                <target>Se mer</target>
             </trans-unit>
             <trans-unit id="title_select_subclass">
                 <source>title_select_subclass</source>
@@ -468,15 +477,19 @@
             </trans-unit>
             <trans-unit id="label_unknown_user">
                 <source>label_unknown_user</source>
-                <target>label_unknown_user</target>
+                <target>ukjent</target>
             </trans-unit>
             <trans-unit id="read_more">
                 <source>read_more</source>
-                <target>read_more</target>
+                <target>Les mer</target>
             </trans-unit>
             <trans-unit id="read_less">
                 <source>read_less</source>
-                <target>read_less</target>
+                <target>Lukke</target>
+            </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Bytt navigering</target>
             </trans-unit>
         </body>
     </file>

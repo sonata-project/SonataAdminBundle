@@ -302,10 +302,6 @@
                 <source>label_date_type_not_null</source>
                 <target>non è vuoto</target>
             </trans-unit>
-            <trans-unit id="label_date_type_range">
-                <source>label_date_type_range</source>
-                <target>periodo</target>
-            </trans-unit>
             <trans-unit id="label_date_type_between">
                 <source>label_date_type_between</source>
                 <target>Nel periodo</target>
@@ -484,11 +480,15 @@
             </trans-unit>
             <trans-unit id="read_more">
                 <source>read_more</source>
-                <target>read_more</target>
+                <target>Leggi di più</target>
             </trans-unit>
             <trans-unit id="read_less">
                 <source>read_less</source>
-                <target>read_less</target>
+                <target>Chiudere</target>
+            </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Attivare/disattivare la navigazione</target>
             </trans-unit>
         </body>
     </file>
