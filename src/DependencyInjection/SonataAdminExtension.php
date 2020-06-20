@@ -82,8 +82,6 @@ final class SonataAdminExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
-        $this->configureTwigTextExtension($container, $loader, $config);
-
         $config['options']['javascripts'] = $this->buildJavascripts($config);
         $config['options']['stylesheets'] = $this->buildStylesheets($config);
         $config['options']['role_admin'] = $config['security']['role_admin'];
@@ -251,20 +249,5 @@ final class SonataAdminExtension extends Extension
 
         $modelChoice = $container->getDefinition('sonata.admin.form.type.model_choice');
         $modelChoice->replaceArgument(0, new Reference('form.property_accessor'));
-    }
-
-    /**
-     * NEXT_MAJOR: remove this method.
-     */
-    private function configureTwigTextExtension(ContainerBuilder $container, XmlFileLoader $loader, array $config): void
-    {
-        $container->setParameter('sonata.admin.configuration.legacy_twig_text_extension', $config['options']['legacy_twig_text_extension']);
-        $loader->load('twig_string.xml');
-
-        if (false !== $config['options']['legacy_twig_text_extension']) {
-            $container
-                ->getDefinition('sonata.string.twig.extension')
-                ->replaceArgument(0, new Reference('sonata.deprecated_text.twig.extension'));
-        }
     }
 }
