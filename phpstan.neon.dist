@@ -1,0 +1,16 @@
+includes:
+    - phpstan-baseline.neon
+parameters:
+    level: 0
+
+    paths:
+        - src
+    excludes_analyse:
+        # Class Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList not found. I can't even find this class too
+        - src/Form/ChoiceList/ModelChoiceList.php
+        - src/Form/DataTransformer/LegacyModelsToArrayTransformer.php
+        - src/Form/DataTransformer/ModelsToArrayTransformer.php
+        - src/Annotation/Admin.php
+        - src/Form/Type/ModelType.php
+        # temporarily ignore template files
+        - src/Resources/**.tpl.php
