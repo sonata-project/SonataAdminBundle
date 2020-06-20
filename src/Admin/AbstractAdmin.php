@@ -394,10 +394,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @var array<string, bool>
      */
     protected $loaded = [
-        'view_fields' => false,
-        'view_groups' => false,
+        'view_fields' => false, // NEXT_MAJOR: Remove this unused value.
+        'view_groups' => false, // NEXT_MAJOR: Remove this unused value.
         'routes' => false,
         'tab_menu' => false,
+        'show' => false,
+        'list' => false,
+        'form' => false,
+        'datagrid' => false,
     ];
 
     /**
@@ -1235,7 +1239,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->form;
     }
 
-    public function getList(): FieldDescriptionCollection
+    public function getList(): ?FieldDescriptionCollection
     {
         $this->buildList();
 
@@ -2811,9 +2815,11 @@ EOT;
      */
     protected function buildShow(): void
     {
-        if ($this->show) {
+        if ($this->loaded['show']) {
             return;
         }
+
+        $this->loaded['show'] = true;
 
         $this->show = $this->getShowBuilder()->getBaseList();
         $mapper = new ShowMapper($this->getShowBuilder(), $this->show, $this);
@@ -2830,9 +2836,11 @@ EOT;
      */
     protected function buildList(): void
     {
-        if ($this->list) {
+        if ($this->loaded['list']) {
             return;
         }
+
+        $this->loaded['list'] = true;
 
         $this->list = $this->getListBuilder()->getBaseList();
         $mapper = new ListMapper($this->getListBuilder(), $this->list, $this);
@@ -2885,9 +2893,11 @@ EOT;
      */
     protected function buildForm(): void
     {
-        if ($this->form) {
+        if ($this->loaded['form']) {
             return;
         }
+
+        $this->loaded['form'] = true;
 
         // append parent object if any
         // todo : clean the way the Admin class can retrieve set the object
@@ -3034,9 +3044,11 @@ EOT;
      */
     private function buildDatagrid(): void
     {
-        if ($this->datagrid) {
+        if ($this->loaded['datagrid']) {
             return;
         }
+
+        $this->loaded['datagrid'] = true;
 
         $filterParameters = $this->getFilterParameters();
 

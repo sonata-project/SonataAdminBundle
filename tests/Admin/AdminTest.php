@@ -41,6 +41,11 @@ use Sonata\AdminBundle\Route\RoutesCache;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
+use Sonata\AdminBundle\Tests\App\Builder\DatagridBuilder;
+use Sonata\AdminBundle\Tests\App\Builder\FormContractor;
+use Sonata\AdminBundle\Tests\App\Builder\ListBuilder;
+use Sonata\AdminBundle\Tests\App\Builder\ShowBuilder;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\AvoidInfiniteLoopAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentVoteAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentWithCustomRouteAdmin;
@@ -65,6 +70,9 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormRegistry;
+use Symfony\Component\Form\ResolvedFormTypeFactory;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -1515,6 +1523,13 @@ class AdminTest extends TestCase
         $this->assertInstanceOf(Collection::class, $tag->getPosts());
         $this->assertCount(2, $tag->getPosts());
         $this->assertContains($post, $tag->getPosts());
+    }
+
+    public function testGetFormWithArrayParentValue(): void
+    {
+        $post = new Post();
+        $tagAdmin = $this->createTagAdmin($post);
+        $tag = $tagAdmin->getSubject();
 
         // Case of an array
         $tag->setPosts([]);
@@ -2332,6 +2347,38 @@ class AdminTest extends TestCase
         $this->assertSame($commentVoteAdmin, $postAdmin->getCurrentLeafChildAdmin());
         $this->assertSame($commentVoteAdmin, $commentAdmin->getCurrentLeafChildAdmin());
         $this->assertNull($commentVoteAdmin->getCurrentLeafChildAdmin());
+    }
+
+    public function testAdminAvoidInifiniteLoop(): void
+    {
+        $this->expectNotToPerformAssertions();
+
+        $formFactory = new FormFactory(new FormRegistry([], new ResolvedFormTypeFactory()));
+
+        $admin = new AvoidInfiniteLoopAdmin('code', \stdClass::class, null);
+        $admin->setSubject(new \stdClass());
+
+        $admin->setFormContractor(new FormContractor($formFactory));
+
+        $admin->setShowBuilder(new ShowBuilder());
+
+        $admin->setListBuilder(new ListBuilder());
+
+        $pager = $this->createStub(PagerInterface::class);
+        $admin->setDatagridBuilder(new DatagridBuilder($formFactory, $pager));
+
+        $validator = $this->createMock(ValidatorInterface::class);
+        $validator->method('getMetadataFor')->willReturn($this->createStub(MemberMetadata::class));
+        $admin->setValidator($validator);
+
+        $routeGenerator = $this->createStub(RouteGeneratorInterface::class);
+        $routeGenerator->method('hasAdminRoute')->willReturn(false);
+        $admin->setRouteGenerator($routeGenerator);
+
+        $admin->getForm();
+        $admin->getShow();
+        $admin->getList();
+        $admin->getDatagrid();
     }
 
     private function createTagAdmin(Post $post): TagAdmin

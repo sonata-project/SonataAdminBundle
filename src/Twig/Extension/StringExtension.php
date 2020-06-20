@@ -27,6 +27,7 @@ use Twig\TwigFilter;
  * @internal
  *
  * @see https://github.com/symfony/symfony/pull/35649
+ * @deprecated since sonata-project/admin-bundle 3.69, to be removed in 4.0.
  *
  * @author Javier Spagnoletti <phansys@gmail.com>
  */

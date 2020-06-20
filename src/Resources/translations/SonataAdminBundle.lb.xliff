@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
-                <target>Administration</target>
+                <target>Administratioun</target>
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
@@ -328,7 +328,7 @@
             </trans-unit>
             <trans-unit id="td_compare">
                 <source>td_compare</source>
-                <target>td_compare</target>
+                <target>Verglach</target>
             </trans-unit>
             <trans-unit id="td_revision">
                 <source>td_revision</source>

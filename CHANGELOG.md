@@ -2,6 +2,53 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.70.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.69.1...3.70.0) - 2020-06-19
+### Added
+- Added missing `ar` translations
+- Added missing `bg` translations
+- Added missing `ca` translations
+- Added missing `cs` translations
+- Added missing `de` translations
+- Added missing `es` translations
+- Added missing `eu` translations
+- Added missing `fa` translations
+- Added missing `hr` translations
+- Added missing `hu` translations
+- Added missing `it` translations
+- Added missing `ja` translations
+- Added missing `lb` translations
+- Added missing `lt` translations
+- Added missing `lv` translations
+- Added missing `no` translations
+- Added missing `pl` translations
+- Added missing `pt` translations
+- Added missing `pt_BR` translations
+- Added missing `ro` translations
+- Added missing `ru` translations
+- Added missing `sk` translations
+- Added missing `sl` translations
+- Added missing `sv_SE` translations
+- Added missing `tr` translations
+- Added missing `uk` translations
+- Added missing `zn_CH` translations
+
+### Fixed
+- `getFormFieldDescriptions`, `getFormFieldDescription` and
+  `hasFormFieldDescription` doesn't build form anymore if the build already
+started, avoiding an infinite loop.
+- `getShowFieldDescriptions`, `getShowFieldDescription` and
+  `hasShowFieldDescription` doesn't build show anymore if the build already
+started, avoiding an infinite loop.
+- `getListFieldDescriptions`, `getListFieldDescription` and
+  `hasListFieldDescription` doesn't build list anymore if the build already
+started, avoiding an infinite loop.
+- `getFilterFieldDescriptions`, `getFilterFieldDescription` and
+  `hasFilterFieldDescription` doesn't build datagrid anymore if the build
+already started, avoiding an infinite loop.
+
+### Deprecated
+- Deprecated `sonata_admin.options.legacy_twig_text_extension` configuration
+
 ## [3.69.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.69.0...3.69.1) - 2020-06-16
 ### Fixed
 - Infinite recursion error when mapping form fields with a help option set.

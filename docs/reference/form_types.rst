@@ -79,10 +79,6 @@ The available options are:
 ``preferred_choices``
   defaults to [] - see the `Symfony choice Field Type docs`_ for more info
 
-``choice_list``
-  **(deprecated in favor of choice_loader since Symfony 2.7)**
-  defaults to a ``ModelChoiceList`` built from the other options
-
 ``choice_loader``
   defaults to a ``ModelChoiceLoader`` built from the other options
 

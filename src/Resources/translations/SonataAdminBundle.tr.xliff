@@ -74,6 +74,10 @@
                 <source>link_add</source>
                 <target>Yeni ekle</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>Düzenle</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>Liste</target>
@@ -173,6 +177,10 @@
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Seçili kayıtlar silindi.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_no_elements_processed">
+                <source>flash_batch_no_elements_processed</source>
+                <target>Hiçbir öğe işlenmedi.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
@@ -477,6 +485,10 @@
             <trans-unit id="read_less">
                 <source>read_less</source>
                 <target>Kapat</target>
+            </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Gezinmeyi aç / kapat</target>
             </trans-unit>
         </body>
     </file>

@@ -99,22 +99,6 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    /**
-     * @doesNotPerformAssertions
-     * @group legacy
-     */
-    public function testContainerCompileWithJMSDiExtraBundle(): void
-    {
-        $this->markTestSkipped();
-        $this->container->setParameter('kernel.bundles', [
-            'JMSDiExtraBundle' => true,
-        ]);
-
-        $this->load();
-
-        $this->container->compile();
-    }
-
     public function testHasServiceDefinitionForLockExtension(): void
     {
         $this->container->setParameter('kernel.bundles', []);
@@ -336,6 +320,28 @@ class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->load();
         $templates = $this->container->getParameter('sonata.admin.configuration.templates');
         $this->assertSame('@SonataIntl/CRUD/history_revision_timestamp.html.twig', $templates['history_revision_timestamp']);
+    }
+
+    public function testLegacyTextExtensionConfiguration(): void
+    {
+        $this->load();
+
+        $this->assertTrue($this->container->getParameter('sonata.admin.configuration.legacy_twig_text_extension'));
+        $this->assertContainerBuilderHasService('sonata.string.twig.extension');
+
+        $this->assertSame(
+            'sonata.deprecated_text.twig.extension',
+            (string) $this->container->getDefinition('sonata.string.twig.extension')->getArgument(0)
+        );
+
+        $this->load([
+            'options' => [
+                'legacy_twig_text_extension' => false,
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasService('sonata.string.twig.extension');
+        $this->assertNull($this->container->getDefinition('sonata.string.twig.extension')->getArgument(0));
     }
 
     protected function getContainerExtensions(): array

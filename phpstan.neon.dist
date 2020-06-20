@@ -1,14 +1,10 @@
 includes:
     - phpstan-baseline.neon
-
 parameters:
     level: 0
 
     paths:
         - src
-
     excludes_analyse:
-        - tests/bootstrap.php
-
-    autoload_files:
-        - vendor/autoload.php
+        # temporarily ignore template files
+        - src/Resources/**.tpl.php

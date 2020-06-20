@@ -91,11 +91,6 @@ interface FieldDescriptionRegistryInterface
     //public function getListFieldDescriptions(): array;
 
     /**
-     * Returns a list depend on the given $object.
-     */
-    public function getList(): FieldDescriptionCollection;
-
-    /**
      * Returns a filter FieldDescription.
      *
      * @return FieldDescriptionInterface|null // NEXT_MAJOR: Remove the null return type
