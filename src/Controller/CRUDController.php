@@ -1001,7 +1001,7 @@ class CRUDController extends AbstractController
         return $this->requestStack->getCurrentRequest();
     }
 
-    protected function addFlash(string $type, string $message): void
+    protected function addFlash(string $type, $message): void
     {
         $this->session->getFlashBag()->add($type, $message);
     }
