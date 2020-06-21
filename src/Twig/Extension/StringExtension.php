@@ -36,15 +36,18 @@ use Twig\TwigFilter;
 final class StringExtension extends AbstractExtension
 {
     /**
-     * @var AbstractExtension
+     * @var AbstractExtension|null
      */
     private $legacyExtension;
 
     public function __construct(?AbstractExtension $legacyExtension = null)
     {
-        if (!$legacyExtension instanceof TextExtension && !$legacyExtension instanceof DeprecatedTextExtension) {
+        if (null !== $legacyExtension
+            && !$legacyExtension instanceof TextExtension
+            && !$legacyExtension instanceof DeprecatedTextExtension
+        ) {
             throw new \TypeError(sprintf(
-                'Argument 1 passed to %s::__construct() must be instance of %s or %s',
+                'Argument 1 passed to %s::__construct() must be instance of %s or %s or null',
                 self::class,
                 TextExtension::class,
                 DeprecatedTextExtension::class
