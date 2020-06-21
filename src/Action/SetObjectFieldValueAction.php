@@ -159,6 +159,7 @@ final class SetObjectFieldValueAction
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
         $extension = $this->twig->getExtension(SonataAdminExtension::class);
+        \assert($extension instanceof SonataAdminExtension);
 
         $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription);
 

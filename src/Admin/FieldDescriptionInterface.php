@@ -20,6 +20,7 @@ namespace Sonata\AdminBundle\Admin;
  * @method bool        hasAdmin()
  * @method bool        hasParent()
  * @method bool        hasAssociationAdmin()
+ * @method void        setHelp(string $help)
  */
 interface FieldDescriptionInterface
 {
@@ -299,4 +300,10 @@ interface FieldDescriptionInterface
      * @return mixed
      */
     public function getFieldValue($object, $fieldName);
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    /**
+//     * Defines the help message.
+//     */
+//    public function setHelp(string $help): void;
 }

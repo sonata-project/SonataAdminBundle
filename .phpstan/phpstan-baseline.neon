@@ -1,0 +1,134 @@
+parameters:
+    ignoreErrors:
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Call to an undefined method Sonata\\\\AdminBundle\\\\Datagrid\\\\PagerInterface\\:\\:isLastPage\\(\\)\\.$#"
+            count: 1
+            path: ../src/Action/RetrieveAutocompleteItemsAction.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Call to an undefined method Sonata\\\\AdminBundle\\\\Datagrid\\\\PagerInterface\\:\\:getPage\\(\\)\\.$#"
+            count: 1
+            path: ../src/Action/SearchAction.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Call to an undefined method Sonata\\\\AdminBundle\\\\Datagrid\\\\PagerInterface\\:\\:getNbResults\\(\\)\\.$#"
+            count: 1
+            path: ../src/Action/SearchAction.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\AdminBundle\\\\Datagrid\\\\Datagrid\\:\\:addFilter\\(\\) should return Sonata\\\\AdminBundle\\\\Filter\\\\FilterInterface but return statement is missing\\.$#"
+            count: 1
+            path: ../src/Datagrid/Datagrid.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\FieldDescriptionInterface\\:\\:getLabel\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            count: 1
+            path: ../src/Datagrid/ListMapper.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Constructor of class Sonata\\\\AdminBundle\\\\Form\\\\DataTransformer\\\\ModelsToArrayTransformer has an unused parameter \\$choiceList\\.$#"
+            count: 1
+            path: ../src/Form/DataTransformer/ModelsToArrayTransformer.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Constructor of class Sonata\\\\AdminBundle\\\\Form\\\\DataTransformer\\\\ModelsToArrayTransformer has an unused parameter \\$class\\.$#"
+            count: 1
+            path: ../src/Form/DataTransformer/ModelsToArrayTransformer.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Constructor of class Sonata\\\\AdminBundle\\\\Form\\\\DataTransformer\\\\ModelsToArrayTransformer has an unused parameter \\$modelManager\\.$#"
+            count: 1
+            path: ../src/Form/DataTransformer/ModelsToArrayTransformer.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\:\\:getFormGroups\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            count: 1
+            path: ../src/Form/FormMapper.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\:\\:getFormTabs\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            count: 1
+            path: ../src/Form/FormMapper.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\FieldDescriptionInterface\\:\\:getLabel\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            count: 1
+            path: ../src/Show/ShowMapper.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\:\\:getShowGroups\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            count: 1
+            path: ../src/Show/ShowMapper.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\AdminBundle\\\\Admin\\\\AdminInterface\\:\\:getShowTabs\\(\\) invoked with 1 parameter, 0 required\\.$#"
+            count: 1
+            path: ../src/Show/ShowMapper.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\AdminBundle\\\\Translator\\\\Extractor\\\\JMSTranslatorBundle\\\\AdminExtractor\\:\\:buildSecurityInformation\\(\\) should return array\\<string, mixed\\> but return statement is missing\\.$#"
+            count: 1
+            path: ../src/Translator/Extractor/JMSTranslatorBundle/AdminExtractor.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\AdminBundle\\\\Translator\\\\Extractor\\\\JMSTranslatorBundle\\\\AdminExtractor\\:\\:getBaseRole\\(\\) should return string but return statement is missing\\.$#"
+            count: 1
+            path: ../src/Translator/Extractor/JMSTranslatorBundle/AdminExtractor.php
+
+# next 6 errors are due to not installed Doctrine ORM\ODM
+        -
+            message: "#^Class Doctrine\\\\ODM\\\\MongoDB\\\\PersistentCollection not found\\.$#"
+            count: 1
+            path: ../src/Admin/AdminHelper.php
+
+        -
+            message: "#^Class Doctrine\\\\ORM\\\\PersistentCollection not found\\.$#"
+            count: 1
+            path: ../src/Admin/AdminHelper.php
+
+        -
+            message: "#^Call to method getTypeClass\\(\\) on an unknown class Doctrine\\\\ODM\\\\MongoDB\\\\PersistentCollection\\.$#"
+            count: 1
+            path: ../src/Admin/AdminHelper.php
+
+        -
+            message: "#^Call to method getTypeClass\\(\\) on an unknown class Doctrine\\\\ORM\\\\PersistentCollection\\.$#"
+            count: 1
+            path: ../src/Admin/AdminHelper.php
+
+        -
+            message: "#^Call to method add\\(\\) on an unknown class Doctrine\\\\ODM\\\\MongoDB\\\\PersistentCollection\\.$#"
+            count: 1
+            path: ../src/Admin/AdminHelper.php
+
+        -
+            message: "#^Call to method add\\(\\) on an unknown class Doctrine\\\\ORM\\\\PersistentCollection\\.$#"
+            count: 1
+            path: ../src/Admin/AdminHelper.php
+
+# Symfony related errors
+        -
+            message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeParentInterface\\:\\:arrayNode\\(\\)\\.$#"
+            count: 1
+            path: ../src/DependencyInjection/Configuration.php
+
+        -
+            # Symfony BC break policy
+            message: "#^Method Symfony\\\\Contracts\\\\EventDispatcher\\\\EventDispatcherInterface\\:\\:dispatch\\(\\) invoked with 2 parameters, 1 required\\.$#"
+            count: 1
+            path: ../src/Menu/MenuBuilder.php

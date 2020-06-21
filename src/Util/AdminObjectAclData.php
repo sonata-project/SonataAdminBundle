@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Util;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
+use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Security\Acl\Domain\Acl;
 
@@ -93,6 +93,9 @@ class AdminObjectAclData
         $this->aclUsers = $aclUsers;
         $this->aclRoles = (null === $aclRoles) ? new \ArrayIterator() : $aclRoles;
         $this->maskBuilderClass = $maskBuilderClass;
+        if (!$admin->isAclEnabled()) {
+            throw new \InvalidArgumentException('The admin must have ACL enabled.');
+        }
 
         $this->updateMasks();
     }
@@ -260,7 +263,7 @@ class AdminObjectAclData
      */
     public function getPermissions()
     {
-        return $this->admin->getSecurityHandler()->getObjectPermissions();
+        return $this->getSecurityHandler()->getObjectPermissions();
     }
 
     /**
@@ -303,11 +306,14 @@ class AdminObjectAclData
     /**
      * Gets security handler.
      *
-     * @return SecurityHandlerInterface
+     * @return AclSecurityHandlerInterface
      */
     public function getSecurityHandler()
     {
-        return $this->admin->getSecurityHandler();
+        $securityHandler = $this->admin->getSecurityHandler();
+        \assert($securityHandler instanceof AclSecurityHandlerInterface);
+
+        return $securityHandler;
     }
 
     /**
@@ -315,7 +321,7 @@ class AdminObjectAclData
      */
     public function getSecurityInformation()
     {
-        return $this->admin->getSecurityHandler()->buildSecurityInformation($this->admin);
+        return $this->getSecurityHandler()->buildSecurityInformation($this->admin);
     }
 
     /**

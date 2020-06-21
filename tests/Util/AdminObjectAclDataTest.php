@@ -206,6 +206,12 @@ class AdminObjectAclDataTest extends TestCase
         $this->assertSame([], $adminObjectAclData->getSecurityInformation());
     }
 
+    public function testAdminAclIsNotEnabled(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->createAdminObjectAclData(true, false);
+    }
+
     protected static function createAclUsers()
     {
         return new \ArrayIterator();
@@ -216,10 +222,10 @@ class AdminObjectAclDataTest extends TestCase
         return new \ArrayIterator();
     }
 
-    protected function createAdminObjectAclData(bool $isOwner = true)
+    protected function createAdminObjectAclData(bool $isOwner = true, bool $isAclEnabled = true)
     {
         return new AdminObjectAclData(
-            $this->createAdmin($isOwner),
+            $this->createAdmin($isOwner, $isAclEnabled),
             new \stdClass(),
             self::createAclUsers(),
             MaskBuilder::class,
@@ -227,7 +233,7 @@ class AdminObjectAclDataTest extends TestCase
         );
     }
 
-    protected function createAdmin(bool $isOwner = true): AdminInterface
+    protected function createAdmin(bool $isOwner = true, bool $isAclEnabled = true): AdminInterface
     {
         $securityHandler = $this->getMockForAbstractClass(AclSecurityHandlerInterface::class);
 
@@ -252,6 +258,11 @@ class AdminObjectAclDataTest extends TestCase
         $admin
             ->method('getSecurityHandler')
             ->willReturn($securityHandler)
+        ;
+
+        $admin
+            ->method('isAclEnabled')
+            ->willReturn($isAclEnabled)
         ;
 
         return $admin;

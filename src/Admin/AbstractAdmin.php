@@ -51,6 +51,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGener
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Mapping\GenericMetadata;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -3410,6 +3411,16 @@ EOT;
 
         // add the custom inline validation option
         $metadata = $this->validator->getMetadataFor($this->getClass());
+        if (!$metadata instanceof GenericMetadata) {
+            throw new \UnexpectedValueException(
+                sprintf(
+                    'Cannot add inline validator for %s because its metadata is an instance of %s instead of %s',
+                    $this->getClass(),
+                    \get_class($metadata),
+                    GenericMetadata::class
+                )
+            );
+        }
 
         $metadata->addConstraint(new InlineConstraint([
             'service' => $this,

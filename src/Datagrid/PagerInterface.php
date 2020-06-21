@@ -71,4 +71,15 @@ interface PagerInterface
      * @return int
      */
     public function getMaxPageLinks();
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    /**
+//     * Returns true if on the last page.
+//     *
+//     * @return bool
+//     */
+//    public function isLastPage(): bool;
+
+//    NEXT_MAJOR: uncomment this method in 4.0
+//    public function getNbResults(): int;
 }

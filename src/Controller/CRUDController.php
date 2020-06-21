@@ -53,6 +53,11 @@ class CRUDController implements ContainerAwareInterface
     }
 
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * The related Admin class.
      *
      * @var AdminInterface
@@ -1011,7 +1016,7 @@ class CRUDController implements ContainerAwareInterface
                 $updateMethod = 'updateAclRoles';
             }
 
-            if (isset($form)) {
+            if (isset($form, $updateMethod)) {
                 $form->handleRequest($request);
 
                 if ($form->isValid()) {
