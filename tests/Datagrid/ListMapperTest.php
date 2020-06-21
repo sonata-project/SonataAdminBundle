@@ -60,6 +60,7 @@ class ListMapperTest extends TestCase
                 BaseFieldDescription $fieldDescription,
                 AbstractAdmin $admin
             ): void {
+                $fieldDescription->setType($type);
                 $list->add($fieldDescription);
             });
 
@@ -363,6 +364,18 @@ class ListMapperTest extends TestCase
         $this->assertTrue($this->listMapper->has('foobar'));
         $this->assertFalse($this->listMapper->has('foo'));
         $this->assertTrue($this->listMapper->has('baz'));
+    }
+
+    public function testTypeGuessActionField(): void
+    {
+        $this->listMapper->add('_action', null);
+
+        $field = $this->fieldDescriptionCollection->get('_action');
+
+        $this->assertTrue(
+            $field->isVirtual(),
+            'Failed asserting that FieldDescription with name "'.$field->getName().'" is tagged with virtual flag.'
+        );
     }
 
     private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription

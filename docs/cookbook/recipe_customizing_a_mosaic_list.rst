@@ -18,7 +18,7 @@ It is possible to configure the default view by creating a dedicated template.
    please use the following configuration:
 
     .. code-block:: yaml
-    
+
         # config/packages/sonata_admin.yaml
 
         sonata_admin:
@@ -89,11 +89,11 @@ The ``list_outer_rows_mosaic.html.twig`` is the name of one mosaic's tile. You s
 
     {% block sonata_mosaic_description %}
         {% if admin.hasAccess('edit', object) and admin.hasRoute('edit') %}
-            <a href="{{ admin.generateUrl('edit', {'id' : object|sonata_urlsafeid(admin) }) }}">{{ meta.title|sonata_truncate(40) }}</a>
+            <a href="{{ admin.generateUrl('edit', {'id' : object|sonata_urlsafeid(admin) }) }}">{{ meta.title|u.truncate(40) }}</a>
         {% elseif admin.hasAccess('show', object) and admin.hasRoute('show') %}
-            <a href="{{ admin.generateUrl('show', {'id' : object|sonata_urlsafeid(admin) }) }}">{{ meta.title|sonata_truncate(40) }}</a>
+            <a href="{{ admin.generateUrl('show', {'id' : object|sonata_urlsafeid(admin) }) }}">{{ meta.title|u.truncate(40) }}</a>
         {% else %}
-            {{ meta.title|sonata_truncate(40) }}
+            {{ meta.title|u.truncate(40) }}
         {% endif %}
     {% endblock %}
 

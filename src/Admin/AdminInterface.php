@@ -189,18 +189,18 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function isGranted($name, ?object $object = null): bool;
 
     /**
-     * @param mixed $entity
+     * @param mixed $model
      *
      * @return string a string representation of the identifiers for this instance
      */
-    public function getNormalizedIdentifier($entity): ?string;
+    public function getNormalizedIdentifier($model): ?string;
 
     /**
      * Shorthand method for templating.
      *
-     * @param object $entity
+     * @param object $model
      */
-    public function id($entity): ?string;
+    public function id($model): ?string;
 
     public function setValidator(ValidatorInterface $validator): void;
 
@@ -209,6 +209,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getShow(): ?FieldDescriptionCollection;
 
     public function setFormTheme(array $formTheme): void;
+
+    public function getList(): ?FieldDescriptionCollection;
 
     /**
      * @return string[]
@@ -280,16 +282,22 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getSubject(): ?object;
 
     /**
+     * NEXT_MAJOR: Remove this method, since it's already in FieldDescriptionRegistryInterface.
+     *
      * Returns a list FieldDescription.
      */
     public function getListFieldDescription(string $name): ?FieldDescriptionInterface;
 
     /**
+     * NEXT_MAJOR: Remove this method, since it's already in FieldDescriptionRegistryInterface.
+     *
      * Returns true if the list FieldDescription exists.
      */
     public function hasListFieldDescription(string $name): bool;
 
     /**
+     * NEXT_MAJOR: Remove this method, since it's already in FieldDescriptionRegistryInterface.
+     *
      * Returns the collection of list FieldDescriptions.
      */
     public function getListFieldDescriptions(): array;
@@ -420,11 +428,15 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function reorderShowGroup(string $group, array $keys): void;
 
     /**
+     * NEXT_MAJOR: Remove this method, since it's already in FieldDescriptionRegistryInterface.
+     *
      * add a FieldDescription.
      */
     public function addFormFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void;
 
     /**
+     * NEXT_MAJOR: Remove this method, since it's already in FieldDescriptionRegistryInterface.
+     *
      * Remove a FieldDescription.
      */
     public function removeFormFieldDescription(string $name): void;

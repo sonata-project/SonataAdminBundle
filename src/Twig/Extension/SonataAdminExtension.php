@@ -28,6 +28,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
+use Twig\Error\LoaderError;
 use Twig\Extension\AbstractExtension;
 use Twig\TemplateWrapper;
 use Twig\TwigFilter;
@@ -316,7 +317,12 @@ final class SonataAdminExtension extends AbstractExtension
     public function getUrlSafeIdentifier($model, ?AdminInterface $admin = null)
     {
         if (null === $admin) {
-            $admin = $this->pool->getAdminByClass(ClassUtils::getClass($model));
+            $class = ClassUtils::getClass($model);
+            if (!$this->pool->hasAdminByClass($class)) {
+                throw new \InvalidArgumentException('You must pass an admin.');
+            }
+
+            $admin = $this->pool->getAdminByClass($class);
         }
 
         return $admin->getUrlSafeIdentifier($model);

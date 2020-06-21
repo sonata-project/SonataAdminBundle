@@ -63,6 +63,7 @@ final class SonataAdminExtension extends Extension
         $loader->load('block.xml');
         $loader->load('commands.xml');
         $loader->load('core.xml');
+        $loader->load('event_listener.xml');
         $loader->load('form_types.xml');
         $loader->load('menu.xml');
         $loader->load('route.xml');

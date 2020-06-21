@@ -33,14 +33,14 @@ class ModelToIdPropertyTransformerTest extends TestCase
     {
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false);
 
-        $entity = new Foo();
-        $entity->setBar('example');
+        $model = new Foo();
+        $model->setBar('example');
 
         $this->modelManager
             ->method('find')
-            ->willReturnCallback(static function (string $class, $id) use ($entity) {
+            ->willReturnCallback(static function (string $class, $id) use ($model) {
                 if (Foo::class === $class && 123 === $id) {
-                    return $entity;
+                    return $model;
                 }
             });
 
@@ -50,7 +50,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->assertNull($transformer->reverseTransform(12));
         $this->assertNull($transformer->reverseTransform([123]));
         $this->assertNull($transformer->reverseTransform([123, 456, 789]));
-        $this->assertSame($entity, $transformer->reverseTransform(123));
+        $this->assertSame($model, $transformer->reverseTransform(123));
     }
 
     /**
@@ -151,8 +151,8 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
     public function testTransform(): void
     {
-        $entity = new Foo();
-        $entity->setBar('example');
+        $model = new Foo();
+        $model->setBar('example');
 
         $this->modelManager->expects($this->once())
             ->method('getIdentifierValues')
@@ -166,13 +166,13 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->assertSame([], $transformer->transform(0));
         $this->assertSame([], $transformer->transform('0'));
 
-        $this->assertSame([123, '_labels' => ['example']], $transformer->transform($entity));
+        $this->assertSame([123, '_labels' => ['example']], $transformer->transform($model));
     }
 
     public function testTransformWorksWithArrayAccessEntity(): void
     {
-        $entity = new FooArrayAccess();
-        $entity->setBar('example');
+        $model = new FooArrayAccess();
+        $model->setBar('example');
 
         $this->modelManager->expects($this->once())
             ->method('getIdentifierValues')
@@ -180,24 +180,24 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, FooArrayAccess::class, 'bar', false);
 
-        $this->assertSame([123, '_labels' => ['example']], $transformer->transform($entity));
+        $this->assertSame([123, '_labels' => ['example']], $transformer->transform($model));
     }
 
     public function testTransformToStringCallback(): void
     {
-        $entity = new Foo();
-        $entity->setBar('example');
-        $entity->setBaz('bazz');
+        $model = new Foo();
+        $model->setBar('example');
+        $model->setBaz('bazz');
 
         $this->modelManager->expects($this->once())
             ->method('getIdentifierValues')
             ->willReturn([123]);
 
-        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, static function ($entity) {
-            return $entity->getBaz();
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, static function ($model) {
+            return $model->getBaz();
         });
 
-        $this->assertSame([123, '_labels' => ['bazz']], $transformer->transform($entity));
+        $this->assertSame([123, '_labels' => ['bazz']], $transformer->transform($model));
     }
 
     public function testTransformToStringCallbackException(): void
@@ -205,9 +205,9 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Callback in "to_string_callback" option doesn`t contain callable function.');
 
-        $entity = new Foo();
-        $entity->setBar('example');
-        $entity->setBaz('bazz');
+        $model = new Foo();
+        $model->setBar('example');
+        $model->setBaz('bazz');
 
         $this->modelManager->expects($this->once())
             ->method('getIdentifierValues')
@@ -215,7 +215,7 @@ class ModelToIdPropertyTransformerTest extends TestCase
 
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, '987654');
 
-        $transformer->transform($entity);
+        $transformer->transform($model);
     }
 
     public function testTransformMultiple(): void
@@ -273,9 +273,9 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
 
-        $entity = new Foo();
+        $model = new Foo();
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
-        $transformer->transform($entity);
+        $transformer->transform($model);
     }
 
     public function testTransformArrayAccessException(): void
@@ -283,10 +283,10 @@ class ModelToIdPropertyTransformerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
 
-        $entity = new FooArrayAccess();
-        $entity->setBar('example');
+        $model = new FooArrayAccess();
+        $model->setBar('example');
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, FooArrayAccess::class, 'bar', true);
-        $transformer->transform($entity);
+        $transformer->transform($model);
     }
 
     public function testTransformEntityException(): void

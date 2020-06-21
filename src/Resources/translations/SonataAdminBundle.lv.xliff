@@ -74,6 +74,10 @@
                 <source>link_add</source>
                 <target>Pievienot jaunu</target>
             </trans-unit>
+            <trans-unit id="link_edit">
+                <source>link_edit</source>
+                <target>Rediģēt</target>
+            </trans-unit>
             <trans-unit id="link_list">
                 <source>link_list</source>
                 <target>Saraksts</target>
@@ -173,6 +177,10 @@
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
                 <target>Izvēlētie objekti tika veiksmīgi dzēsti.</target>
+            </trans-unit>
+            <trans-unit id="flash_batch_no_elements_processed">
+                <source>flash_batch_no_elements_processed</source>
+                <target>Netika apstrādāti elementi.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_error">
                 <source>flash_batch_delete_error</source>
@@ -477,6 +485,10 @@
             <trans-unit id="read_less">
                 <source>read_less</source>
                 <target>Aizvērt</target>
+            </trans-unit>
+            <trans-unit id="toggle_navigation">
+                <source>toggle_navigation</source>
+                <target>Pārslēgt navigāciju</target>
             </trans-unit>
         </body>
     </file>

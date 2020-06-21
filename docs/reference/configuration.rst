@@ -98,7 +98,7 @@ Full Configuration Options
                     id:
                         label: ~
                         label_catalogue: ~
-                        icon: '<i class="fa fa-folder"></i>'
+                        icon: ~
                         provider: ~
                         items:
                             admin: ~
