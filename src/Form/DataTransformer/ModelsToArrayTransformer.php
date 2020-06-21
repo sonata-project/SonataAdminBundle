@@ -53,7 +53,9 @@ class ModelsToArrayTransformer implements DataTransformerInterface
      *
      * @param LazyChoiceList|ModelChoiceLoader $choiceList
      * @param ModelManagerInterface            $modelManager
-     * @param $class
+     * @param string                           $class
+     *
+     * @phpstan-param class-string $class
      *
      * @throws RuntimeException
      */
@@ -61,7 +63,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     {
         /*
         NEXT_MAJOR: Remove condition , magic methods, legacyConstructor() method, $choiceList property and argument
-        __construct() signature should be : public function __construct(ModelManager $modelManager, $class)
+        __construct() signature should be : public function __construct(ModelManager $modelManager, string $class)
          */
 
         $args = \func_get_args();

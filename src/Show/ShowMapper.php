@@ -30,6 +30,11 @@ class ShowMapper extends BaseGroupedMapper
 {
     protected $list;
 
+    /**
+     * @var ShowBuilderInterface
+     */
+    protected $builder;
+
     public function __construct(
         ShowBuilderInterface $showBuilder,
         FieldDescriptionCollection $list,

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\EventListener;
 
-use Symfony\Component\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Console\Application as FrameworkApplication;
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
@@ -56,6 +56,7 @@ final class AssetsInstallCommandListener
     {
         $command = $event->getCommand();
         $application = $command->getApplication();
+        \assert($application instanceof FrameworkApplication);
 
         try {
             $coreBundle = $application->getKernel()->getBundle('SonataCoreBundle');
@@ -67,12 +68,10 @@ final class AssetsInstallCommandListener
             return;
         }
 
-        $output = $event->getOutput();
-
         $this->execute($event->getInput(), $event->getOutput(), $application);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output, Application $application): int
+    protected function execute(InputInterface $input, OutputInterface $output, FrameworkApplication $application): int
     {
         /**
          * @var KernelInterface

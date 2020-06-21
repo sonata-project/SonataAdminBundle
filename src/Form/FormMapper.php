@@ -34,6 +34,11 @@ class FormMapper extends BaseGroupedMapper
      */
     protected $formBuilder;
 
+    /**
+     * @var FormContractorInterface
+     */
+    protected $builder;
+
     public function __construct(
         FormContractorInterface $formContractor,
         FormBuilderInterface $formBuilder,
@@ -106,7 +111,7 @@ class FormMapper extends BaseGroupedMapper
         );
 
         // Note that the builder var is actually the formContractor:
-        $this->builder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
+        $this->builder->fixFieldDescription($this->admin, $fieldDescription);
 
         if ($fieldName !== $name) {
             $fieldDescription->setName($fieldName);

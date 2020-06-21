@@ -205,7 +205,7 @@ final class AdminMaker extends AbstractMaker
             $controllerName = $this->controllerClassBasename ? $controllerClassFullName : '~';
 
             $id = $input->getOption('id') ?:
-                $this->getAdminServiceId('App', $this->adminClassBasename);
+                $this->getAdminServiceId($this->adminClassBasename);
 
             $servicesManipulator->addResource(
                 $id,

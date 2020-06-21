@@ -82,6 +82,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Mapping\MemberMetadata;
+use Symfony\Component\Validator\Mapping\PropertyMetadataInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AdminTest extends TestCase
@@ -1689,6 +1690,56 @@ class AdminTest extends TestCase
         $modelAdmin->setSubject($object);
         $modelAdmin->defineFormBuilder($formBuild);
         $modelAdmin->getForm();
+    }
+
+    public function testCanAddInlineValidationOnlyForGenericMetadata(): void
+    {
+        $modelAdmin = new ModelAdmin('sonata.post.admin.model', \stdClass::class, 'Sonata\FooBundle\Controller\ModelAdminController');
+        $object = new \stdClass();
+
+        $labelTranslatorStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
+        $modelAdmin->setLabelTranslatorStrategy($labelTranslatorStrategy);
+
+        $validator = $this->createStub(ValidatorInterface::class);
+        $metadata = $this->createStub(PropertyMetadataInterface::class);
+        $validator
+            ->method('getMetadataFor')
+            ->willReturn($metadata);
+        $modelAdmin->setValidator($validator);
+
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager
+            ->method('getNewFieldDescriptionInstance')
+            ->willReturn(new FieldDescription());
+        $modelAdmin->setModelManager($modelManager);
+
+        $event = $this->createStub(FormEvent::class);
+        $event
+            ->method('getData')
+            ->willReturn($object);
+
+        $formBuild = $this->createStub(FormBuilder::class);
+
+        $formContractor = $this->createStub(FormContractorInterface::class);
+        $formContractor
+            ->method('getDefaultOptions')
+            ->willReturn([]);
+        $formContractor
+            ->method('getFormBuilder')
+            ->willReturn($formBuild);
+
+        $modelAdmin->setFormContractor($formContractor);
+        $modelAdmin->setSubject($object);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            sprintf(
+                'Cannot add inline validator for stdClass because its metadata is an instance of %s instead of Symfony\Component\Validator\Mapping\GenericMetadata',
+                \get_class($metadata)
+            )
+        );
+
+        $modelAdmin->defineFormBuilder($formBuild);
     }
 
     public function testRemoveFieldFromFormGroup(): void

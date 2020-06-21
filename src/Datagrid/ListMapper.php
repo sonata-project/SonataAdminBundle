@@ -37,6 +37,11 @@ class ListMapper extends BaseMapper
      */
     protected $list;
 
+    /**
+     * @var ListBuilderInterface
+     */
+    protected $builder;
+
     public function __construct(
         ListBuilderInterface $listBuilder,
         FieldDescriptionCollection $list,

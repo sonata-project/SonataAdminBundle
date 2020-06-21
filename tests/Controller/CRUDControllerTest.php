@@ -2697,7 +2697,7 @@ class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', 123);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('isAclEnabled')
             ->willReturn(true);
 
@@ -2780,7 +2780,7 @@ class CRUDControllerTest extends TestCase
         $this->request->query->set('id', 123);
         $this->request->request->set(AdminObjectAclManipulator::ACL_USERS_FORM_NAME, []);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('isAclEnabled')
             ->willReturn(true);
 
@@ -2869,7 +2869,7 @@ class CRUDControllerTest extends TestCase
         $this->request->query->set('id', 123);
         $this->request->request->set(AdminObjectAclManipulator::ACL_ROLES_FORM_NAME, []);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects($this->exactly(2))
             ->method('isAclEnabled')
             ->willReturn(true);
 
