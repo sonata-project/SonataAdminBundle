@@ -1878,6 +1878,38 @@ class AdminTest extends TestCase
         $this->assertSame(['value' => $authorId], $parameters['post__author']);
     }
 
+    public function testGetFilterParametersWithoutRequest(): void
+    {
+        $authorId = uniqid();
+
+        $postAdmin = new PostAdmin(
+            'sonata.post.admin.post',
+            'Application\Sonata\NewsBundle\Entity\Post',
+            'Sonata\NewsBundle\Controller\PostAdminController'
+        );
+
+        $commentAdmin = new CommentAdmin(
+            'sonata.post.admin.comment',
+            'Application\Sonata\NewsBundle\Entity\Comment',
+            'Sonata\NewsBundle\Controller\CommentAdminController'
+        );
+        $commentAdmin->setParentAssociationMapping('post.author');
+        $commentAdmin->setParent($postAdmin);
+
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager
+            ->method('getDefaultSortValues')
+            ->willReturn([])
+        ;
+
+        $commentAdmin->setModelManager($modelManager);
+
+        $parameters = $commentAdmin->getFilterParameters();
+
+        $this->assertTrue(isset($parameters['post__author']));
+        $this->assertSame(['value' => $authorId], $parameters['post__author']);
+    }
+
     public function testGetFilterFieldDescription(): void
     {
         $modelAdmin = new ModelAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'Sonata\FooBundle\Controller\ModelAdminController');
@@ -1887,6 +1919,10 @@ class AdminTest extends TestCase
         $bazFieldDescription = new FieldDescription();
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager
+            ->method('getDefaultSortValues')
+            ->willReturn([]);
+
         $modelManager->expects($this->exactly(3))
             ->method('getNewFieldDescriptionInstance')
             ->willReturnCallback(static function ($adminClass, string $name, $filterOptions) use ($fooFieldDescription, $barFieldDescription, $bazFieldDescription) {
