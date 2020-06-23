@@ -172,9 +172,7 @@
             </trans-unit>
             <trans-unit id="flash_lock_error">
                 <source>flash_lock_error</source>
-                <target>قام مستخدم آخر بتعديل العنصر "%name%". يرجى %link_start%النقر هنا%link_end% لإعادة تحميل الصفحة
-                    وتطبيق التغييرات مرة أخرى.
-                </target>
+                <target>قام مستخدم آخر بتعديل العنصر "%name%". يرجى %link_start%النقر هنا%link_end% لإعادة تحميل الصفحة وتطبيق التغييرات مرة أخرى.</target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
