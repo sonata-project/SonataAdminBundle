@@ -222,9 +222,7 @@
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>Vai tiešām vēlaties apstiprināt šo darbību un izpildīt to atlasītajam elementam?|Vai tiešām
-                    vēlaties apstiprināt šo darbību un izpildīt to %count% atlasītajiem elementiem?
-                </target>
+                <target>Vai tiešām vēlaties apstiprināt šo darbību un izpildīt to atlasītajam elementam?|Vai tiešām vēlaties apstiprināt šo darbību un izpildīt to %count% atlasītajiem elementiem?</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
