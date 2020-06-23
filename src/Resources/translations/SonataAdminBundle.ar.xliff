@@ -220,9 +220,7 @@
             </trans-unit>
             <trans-unit id="message_batch_confirmation">
                 <source>message_batch_confirmation</source>
-                <target>]1,Inf] هل أنت متأكد أنك تريد تأكيد و تنفيذ هذا العمل ل %count% عناصر المحددة؟|{1} هل أنت متأكد
-                    أنك تريد تأكيد و تنفيذ هذا العمل للعنصر المحدد؟
-                </target>
+                <target>]1,Inf] هل أنت متأكد أنك تريد تأكيد و تنفيذ هذا العمل ل  %count% عناصر المحددة؟|{1} هل أنت متأكد أنك تريد تأكيد و تنفيذ هذا العمل للعنصر المحدد؟</target>
             </trans-unit>
             <trans-unit id="message_batch_all_confirmation">
                 <source>message_batch_all_confirmation</source>
