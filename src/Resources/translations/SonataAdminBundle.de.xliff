@@ -490,6 +490,14 @@
                 <source>toggle_navigation</source>
                 <target>Navigation ein-/ausblenden</target>
             </trans-unit>
+            <trans-unit id="label_type_exists">
+                <source>label_type_exists</source>
+                <target>existiert</target>
+            </trans-unit>
+            <trans-unit id="label_type_not_exists">
+                <source>label_type_not_exists</source>
+                <target>existiert nicht</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

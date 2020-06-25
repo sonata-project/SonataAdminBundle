@@ -490,6 +490,14 @@
                 <source>toggle_navigation</source>
                 <target>Toggle Navigation</target>
             </trans-unit>
+            <trans-unit id="label_type_exists">
+                <source>label_type_exists</source>
+                <target>exists</target>
+            </trans-unit>
+            <trans-unit id="label_type_not_exists">
+                <source>label_type_not_exists</source>
+                <target>does not exist</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
