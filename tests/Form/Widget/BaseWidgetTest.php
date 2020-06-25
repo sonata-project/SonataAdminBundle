@@ -53,7 +53,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getEnvironment()
+    protected function getEnvironment(): Environment
     {
         $environment = parent::getEnvironment();
         $environment->addGlobal('sonata_admin', $this->getSonataAdmin());
@@ -67,7 +67,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getRenderingEngine(?Environment $environment = null)
+    protected function getRenderingEngine(Environment $environment): TwigRendererEngine
     {
         if (!\in_array($this->type, ['form', 'filter'], true)) {
             throw new \Exception('Please override $this->type in your test class specifying template to use (either form or filter)');
@@ -90,7 +90,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getTemplatePaths()
+    protected function getTemplatePaths(): array
     {
         return array_merge(parent::getTemplatePaths(), [
             __DIR__.'/../../../src/Resources/views/Form',
