@@ -68,7 +68,7 @@ final class RetrieveAutocompleteItemsAction
             $reqParamPageNumber = $filterAutocomplete->getFieldOption('req_param_name_page_number', '_page');
             $toStringCallback = $filterAutocomplete->getFieldOption('to_string_callback');
             $targetAdminAccessAction = $filterAutocomplete->getFieldOption('target_admin_access_action', 'list');
-            $resultItemCallback = $filterAutocomplete->getFieldOption('response_item_callback');
+            $responseItemCallback = $filterAutocomplete->getFieldOption('response_item_callback');
         } else {
             // create/edit form
             $fieldDescription = $this->retrieveFormFieldDescription($admin, $request->get('field'));
