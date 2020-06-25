@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Admin;
 
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Inflector\Inflector;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ODM\MongoDB\PersistentCollection;
 use Doctrine\ORM\PersistentCollection as DoctrinePersistentCollection;
 use Sonata\AdminBundle\Exception\NoValueException;
@@ -97,8 +97,6 @@ class AdminHelper
     /**
      * Note:
      *   This code is ugly, but there is no better way of doing it.
-     *   For now the append form element action used to add a new row works
-     *   only for direct FieldDescription (not nested one).
      *
      * @param object $subject
      * @param string $elementId
@@ -112,7 +110,7 @@ class AdminHelper
     {
         // child rows marked as toDelete
         $toDelete = [];
-        // retrieve the subject
+
         $formBuilder = $admin->getFormBuilder();
 
         // get the field element
@@ -143,23 +141,22 @@ class AdminHelper
         //if childFormBuilder was not found resulted in fatal error getName() method call on non object
         if (!$childFormBuilder) {
             $propertyAccessor = $this->pool->getPropertyAccessor();
-            $entity = $admin->getSubject();
 
-            $path = $this->getElementAccessPath($elementId, $entity);
+            $path = $this->getElementAccessPath($elementId, $subject);
 
-            $collection = $propertyAccessor->getValue($entity, $path);
+            $collection = $propertyAccessor->getValue($subject, $path);
 
             if ($collection instanceof DoctrinePersistentCollection || $collection instanceof PersistentCollection) {
                 //since doctrine 2.4
-                $entityClassName = $collection->getTypeClass()->getName();
+                $modelClassName = $collection->getTypeClass()->getName();
             } elseif ($collection instanceof Collection) {
-                $entityClassName = $this->getEntityClassName($admin, explode('.', preg_replace('#\[\d*?\]#', '', $path)));
+                $modelClassName = $this->getEntityClassName($admin, explode('.', preg_replace('#\[\d*?\]#', '', $path)));
             } else {
                 throw new \Exception('unknown collection class');
             }
 
-            $collection->add(new $entityClassName());
-            $propertyAccessor->setValue($entity, $path, $collection);
+            $collection->add(new $modelClassName());
+            $propertyAccessor->setValue($subject, $path, $collection);
 
             $fieldDescription = null;
         } else {
@@ -182,14 +179,6 @@ class AdminHelper
             $objectCount = null === $value ? 0 : \count($value);
             $postCount = \count($data[$childFormBuilder->getName()]);
 
-            $fields = array_keys($fieldDescription->getAssociationAdmin()->getFormFieldDescriptions());
-
-            // for now, not sure how to do that
-            $value = [];
-            foreach ($fields as $name) {
-                $value[$name] = '';
-            }
-
             // add new elements to the subject
             while ($objectCount < $postCount) {
                 // append a new instance into the object
@@ -197,7 +186,10 @@ class AdminHelper
                 ++$objectCount;
             }
 
-            $this->addNewInstance($form->getData(), $fieldDescription);
+            $newInstance = $this->addNewInstance($form->getData(), $fieldDescription);
+
+            $associationAdmin = $fieldDescription->getAssociationAdmin();
+            $associationAdmin->setSubject($newInstance);
         }
 
         $finalForm = $admin->getFormBuilder()->getForm();
@@ -226,29 +218,54 @@ class AdminHelper
      * @param object $object
      *
      * @throws \RuntimeException
+     *
+     * @return object
      */
     public function addNewInstance($object, FieldDescriptionInterface $fieldDescription)
     {
         $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
         $mapping = $fieldDescription->getAssociationMapping();
+        $parentMappings = $fieldDescription->getParentAssociationMappings();
 
-        $method = sprintf('add%s', Inflector::classify($mapping['fieldName']));
+        $inflector = InflectorFactory::create()->build();
 
-        if (!method_exists($object, $method)) {
+        foreach ($parentMappings as $parentMapping) {
+            $method = sprintf('get%s', $inflector->classify($parentMapping['fieldName']));
+
+            if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
+                /*
+                 * NEXT_MAJOR: Use BadMethodCallException instead
+                 */
+                throw new \RuntimeException(
+                    sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
+                );
+            }
+
+            $object = $object->$method();
+        }
+
+        $method = sprintf('add%s', $inflector->classify($mapping['fieldName']));
+
+        if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
             $method = rtrim($method, 's');
 
-            if (!method_exists($object, $method)) {
-                $method = sprintf('add%s', Inflector::classify(Inflector::singularize($mapping['fieldName'])));
+            if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
+                $method = sprintf('add%s', $inflector->classify($inflector->singularize($mapping['fieldName'])));
 
-                if (!method_exists($object, $method)) {
+                if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
+                    /*
+                     * NEXT_MAJOR: Use BadMethodCallException instead
+                     */
                     throw new \RuntimeException(
-                        sprintf('Please add a method %s in the %s class!', $method, ClassUtils::getClass($object))
+                        sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
                     );
                 }
             }
         }
 
         $object->$method($instance);
+
+        return $instance;
     }
 
     /**
@@ -262,20 +279,20 @@ class AdminHelper
      *
      * @return string
      *
-     * @deprecated since sonata-project/admin-bundle 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead
+     * @deprecated since sonata-project/admin-bundle 3.1. Use \Doctrine\Inflector\Inflector::classify() instead
      */
     public function camelize($property)
     {
         @trigger_error(
             sprintf(
                 'The %s method is deprecated since 3.1 and will be removed in 4.0. '.
-                'Use \Doctrine\Common\Inflector\Inflector::classify() instead.',
+                'Use \Doctrine\Inflector\Inflector::classify() instead.',
                 __METHOD__
             ),
             E_USER_DEPRECATED
         );
 
-        return Inflector::classify($property);
+        return InflectorFactory::create()->build()->classify($property);
     }
 
     /**
@@ -283,13 +300,13 @@ class AdminHelper
      *
      * @param string $elementId expects string in format used in form id field.
      *                          (uniqueIdentifier_model_sub_model or uniqueIdentifier_model_1_sub_model etc.)
-     * @param mixed  $entity
+     * @param mixed  $model
      *
      * @throws \Exception
      *
      * @return string
      */
-    public function getElementAccessPath($elementId, $entity)
+    public function getElementAccessPath($elementId, $model)
     {
         $propertyAccessor = $this->pool->getPropertyAccessor();
 
@@ -304,7 +321,7 @@ class AdminHelper
             $currentPath .= empty($currentPath) ? $part : '_'.$part;
             $separator = empty($totalPath) ? '' : '.';
 
-            if ($propertyAccessor->isReadable($entity, $totalPath.$separator.$currentPath)) {
+            if ($propertyAccessor->isReadable($model, $totalPath.$separator.$currentPath)) {
                 $totalPath .= $separator.$currentPath;
                 $currentPath = '';
             }
@@ -321,6 +338,16 @@ class AdminHelper
 
     /**
      * Recursively find the class name of the admin responsible for the element at the end of an association chain.
+     */
+    protected function getModelClassName(AdminInterface $admin, array $elements): string
+    {
+        return $this->getEntityClassName($admin, $elements);
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method and move its body to `getModelClassName()`.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.69. Use `getModelClassName()` instead.
      *
      * @param array $elements
      *
@@ -328,6 +355,15 @@ class AdminHelper
      */
     protected function getEntityClassName(AdminInterface $admin, $elements)
     {
+        if (self::class !== static::class) {
+            @trigger_error(sprintf(
+                'Method %s() is deprecated since sonata-project/admin-bundle 3.69 and will be removed in version 4.0.'
+                .' Use %s::getModelClassName() instead.',
+                __METHOD__,
+                __CLASS__
+            ), E_USER_DEPRECATED);
+        }
+
         $element = array_shift($elements);
         $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
         if (0 === \count($elements)) {

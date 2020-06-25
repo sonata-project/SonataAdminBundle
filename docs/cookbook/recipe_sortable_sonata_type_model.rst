@@ -66,7 +66,7 @@ We now need to create the join entity configuration, create the following file i
 
 .. code-block:: xml
 
-    <?xml version="1.0" encoding="utf-8"?>
+    <?xml version="1.0" encoding="UTF-8"?>
     <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                       xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
@@ -288,9 +288,7 @@ Part 3 : Update admin classes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This is a very important part, the admin class **should** be created for the join entity. If you don't do that, the field will never display properly.
-So we are going to start by creating this ``UserBundle\Admin\UserHasExpectationsAdmin.php`` ...
-
-.. code-block:: php
+So we are going to start by creating this ``UserBundle\Admin\UserHasExpectationsAdmin.php``::
 
     namespace UserBundle\Admin;
 

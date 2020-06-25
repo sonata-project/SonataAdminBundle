@@ -81,6 +81,8 @@ abstract class BaseGroupedMapper extends BaseMapper
             'translation_domain' => null,
             'name' => $name,
             'box_class' => 'box box-primary',
+            'empty_message' => 'message_form_group_empty',
+            'empty_message_translation_domain' => 'SonataAdminBundle',
         ];
 
         // NEXT_MAJOR: remove this code
@@ -187,10 +189,16 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
+     * @throws \LogicException
+     *
      * @return $this
      */
     public function ifEnd()
     {
+        if (empty($this->apply)) {
+            throw new \LogicException('No open ifTrue() or ifFalse(), you cannot use ifEnd()');
+        }
+
         array_pop($this->apply);
 
         return $this;

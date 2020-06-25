@@ -160,5 +160,7 @@ class ExplainAdminCommand extends Command
 
         $output->writeln('');
         $output->writeln('<info>done!</info>');
+
+        return 0;
     }
 }

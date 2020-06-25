@@ -21,6 +21,8 @@ file that was distributed with this source code.
 {% set _actions = block('actions') is defined ? block('actions')|trim : null %}
 {% set _navbar_title = block('navbar_title') is defined ? block('navbar_title')|trim : null %}
 {% set _list_filters_actions = block('list_filters_actions') is defined ? block('list_filters_actions')|trim : null -%}
+{% set _use_select2 = sonata_admin.adminPool.getOption('use_select2') %}
+{% set _use_icheck = sonata_admin.adminPool.getOption('use_icheck') %}
 
 <!DOCTYPE html>
 <html {% block html_attributes %}class="no-js"{% endblock %}>
@@ -34,8 +36,8 @@ file that was distributed with this source code.
         <meta data-sonata-admin='{{ {
             config: {
                 CONFIRM_EXIT: sonata_admin.adminPool.getOption('confirm_exit'),
-                USE_SELECT2: sonata_admin.adminPool.getOption('use_select2'),
-                USE_ICHECK: sonata_admin.adminPool.getOption('use_icheck'),
+                USE_SELECT2: _use_select2,
+                USE_ICHECK: _use_icheck,
                 USE_STICKYFORMS: sonata_admin.adminPool.getOption('use_stickyforms'),
                 DEBUG: sonata_admin.adminPool.getOption('js_debug'),
             },
@@ -112,6 +114,8 @@ file that was distributed with this source code.
     <body
             {% block body_attributes -%}
                 class="sonata-bc skin-black fixed
+                {% if _use_select2 %}sonata-select2{% endif %}
+                {% if _use_icheck %}sonata-icheck{% endif %}
                 {% if app.request.cookies.get('sonata_sidebar_hide') -%}
                     sidebar-collapse
                 {%- endif -%}"
@@ -169,15 +173,15 @@ file that was distributed with this source code.
                                                                         {% if menu.extra('safe_label', true) %}
                                                                             {{- label|raw -}}
                                                                         {% else %}
-                                                                            {{- label|truncate(100) -}}
+                                                                            {{- label|u.truncate(100) -}}
                                                                         {% endif %}
                                                                     </a>
                                                                 {% else %}
-                                                                    <span>{{ label|truncate(100) }}</span>
+                                                                    <span>{{ label|u.truncate(100) }}</span>
                                                                 {% endif %}
                                                             </li>
                                                         {% else %}
-                                                            <li class="active"><span>{{ label|truncate(100) }}</span></li>
+                                                            <li class="active"><span>{{ label|u.truncate(100) }}</span></li>
                                                         {% endif %}
                                                     {% endfor %}
                                                 {% endif %}
@@ -324,7 +328,7 @@ file that was distributed with this source code.
                         {% block sonata_admin_content %}
 
                             {% block notice %}
-                                {% include '@SonataCore/FlashMessage/render.html.twig' %}
+                                {% include ['@SonataCore/FlashMessage/render.html.twig', '@SonataTwig/FlashMessage/render.html.twig'] %}
                             {% endblock notice %}
 
                             {% if _preview is not empty %}

@@ -2,6 +2,287 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.70.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.70.0...3.70.1) - 2020-06-21
+### Fixed
+- Allow `null` argument for `StringExtension` constructor
+
+## [3.70.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.69.1...3.70.0) - 2020-06-19
+### Added
+- Added missing `ar` translations
+- Added missing `bg` translations
+- Added missing `ca` translations
+- Added missing `cs` translations
+- Added missing `de` translations
+- Added missing `es` translations
+- Added missing `eu` translations
+- Added missing `fa` translations
+- Added missing `hr` translations
+- Added missing `hu` translations
+- Added missing `it` translations
+- Added missing `ja` translations
+- Added missing `lb` translations
+- Added missing `lt` translations
+- Added missing `lv` translations
+- Added missing `no` translations
+- Added missing `pl` translations
+- Added missing `pt` translations
+- Added missing `pt_BR` translations
+- Added missing `ro` translations
+- Added missing `ru` translations
+- Added missing `sk` translations
+- Added missing `sl` translations
+- Added missing `sv_SE` translations
+- Added missing `tr` translations
+- Added missing `uk` translations
+- Added missing `zn_CH` translations
+
+### Fixed
+- `getFormFieldDescriptions`, `getFormFieldDescription` and
+  `hasFormFieldDescription` doesn't build form anymore if the build already
+started, avoiding an infinite loop.
+- `getShowFieldDescriptions`, `getShowFieldDescription` and
+  `hasShowFieldDescription` doesn't build show anymore if the build already
+started, avoiding an infinite loop.
+- `getListFieldDescriptions`, `getListFieldDescription` and
+  `hasListFieldDescription` doesn't build list anymore if the build already
+started, avoiding an infinite loop.
+- `getFilterFieldDescriptions`, `getFilterFieldDescription` and
+  `hasFilterFieldDescription` doesn't build datagrid anymore if the build
+already started, avoiding an infinite loop.
+
+### Deprecated
+- Deprecated `sonata_admin.options.legacy_twig_text_extension` configuration
+
+## [3.69.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.69.0...3.69.1) - 2020-06-16
+### Fixed
+- Infinite recursion error when mapping form fields with a help option set.
+
+## [3.69.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.68.0...3.69.0) - 2020-06-14
+### Added
+- Added `FieldDescriptionInterface::getParent()`.
+- Added `FieldDescriptionInterface::getAssociationAdmin()`.
+- Added `FieldDescriptionInterface::getAdmin()`.
+- Body classes `sonata-icheck` and `sonata-select2` when iCheck or Select2 are
+  enabled.
+- Added `Sonata\AdminBundle\EventListener\AssetsInstallCommandListener` to add
+  `sonatacore` asssets when SonataCoreBundle is not installed
+
+### Fixed
+- Type guessing the `_action` list field.
+- Styling of checkboxes and radio buttons when iCheck is disabled.
+
+### Changed
+- Changed use of `truncate` filter with `u` filter.
+- ignore `sonata.admin.configuration.legacy_twig_text_extension` when
+  SonataCoreBundle is not installed
+
+### Deprecated
+- Calling `AbstractAdmin::getChild()` when there is no child.
+- Calling `BaseFieldDescription::getParent()` when there is no parent.
+- Calling `BaseFieldDescription::getAssociationAdmin()` when there is no
+  association admin.
+- Calling `BaseFieldDescription::getAdmin()` when there is no admin.
+- Calling `Pool::getAdminByClass()` when there is no admin for the class.
+- Deprecated `Sonata\AdminBundle\Twig\Extension\UnicodeString` in favor of
+  `Symfony\Component\String\UnicodeString`.
+- Deprecated `sonata_truncate` in favor of `u.truncate`.
+- Deprecated `FieldDescriptionInterface::getTargetEntity()` in favor of
+  `FieldDescriptionInterface::getTargetModel()`;
+- Deprecated `AdminHelper::getEntityClassName()` in favor of
+  `AdminHelper::getModelClassName()`;
+- Deprecated `GenerateObjectAclCommand::getUserEntityClass()` in favor of
+  `GenerateObjectAclCommand::getUserModelClass()`.
+- Deprecated `--user_entity` option in favor of `--user_model` at
+  `sonata:admin:generate-object-acl` command.
+
+### Removed
+- remove all `SonataCoreBundle` dependencies
+
+## [3.68.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.67.0...3.68.0) - 2020-05-31
+### Added
+- Added `TemplateRegistry::TYPE_*` constant to be used instead of string value.
+- Added `format` option for `time` field type.
+
+### Fixed
+- Fixed exposing missing `object` variable in history compare view.
+- Menu item `label_catalogue` correctly use the default value
+  `default_label_catalogue`
+- Menu item `icon` correctly use the default value `default_icon`
+- Render of CKeditor field when embedded in a collection with the `inline =>
+  natural` option.
+
+### Deprecated
+- Deprecated `smallint` type for template ; use `integer` instead.
+- Deprecated `bigint` type for template ; use `integer` instead.
+- Deprecated `decimal` type for template ; use `float` instead.
+- Deprecated `text` type for template ; use `string` instead.
+
+## [3.67.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.66.0...3.67.0) - 2020-05-28
+### Added
+- Manage class definition which is using "%parameter%" syntax.
+- Added some `AbstractAdmin::configureDefaultSortValues` to override $datagridValues.
+- Added some `AbstractAdminExtension::configureDefaultSortValues` to override $datagridValues.
+
+### Fixed
+- Reference to configuration option in `legacy_twig_text_extension` deprecation message.
+- Call to deprecated `trans` method of `AbstractAdmin`
+- Declare missing `one_to_many`, `many_to_many`, `many_to_one` and `one_to_one` type templates.
+
+### Changed
+- Update `doctrine/inflection` to ^1.4 || ^2.0
+- update index of the first element in collection from 1 to 0
+
+### Deprecated
+- Accessing to a non existing value when adding field to `showMapper` and `listMapper`.
+- Deprecate the `AbstractAdmin::maxPerPage` property
+- Deprecate the `AbstractAdmin::setMaxPerPage` method
+- Deprecate the `AbstractAdmin::perPageOption` property
+- Deprecate the `AbstractAdmin::setPerPageOption` method
+- Deprecate the `AbstractAdmin::predefinePerPageOptions` method
+- Deprecate the `AbstractAdmin::datagridValues` property
+- Deprecate implementing `ModelManagerInterface` without implementing `DatagridManagerInterface`
+
+## [3.66.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.65.0...3.66.0) - 2020-05-03
+### Added
+- The possibility to edit/create an object without any field set in the configureFormField.
+- Allow reuse render extra parameters
+
+### Deprecated
+- not passing a `Sonata\AdminBundle\Admin\AdminHelper` instance to
+`Sonata\AdminBundle\Form\Type\AdminType::__construct()`
+- Deprecate the call of `AbstractAdmin::getParentFieldDescription` if the value is `null`.
+- Deprecate the call of `AbstractAdmin::getSubject` if the value is `null`.
+- Deprecate the call of `AbstractAdmin::getListFieldDescription` if the value is `null`.
+- Deprecate the call of `AbstractAdmin::getParent` if the value is `null`.
+
+### Fixed
+- Do not lose the `parentSubject` in case of multiple calls to the `AppendFormFieldElementAction`.
+- Bug when trying to edit a datetime formtype in datagrid
+- `label => false` doesn't lead to a missing `''` translation in the profiler.
+- `label => '0'` and others non nullable falsy value are not overridden anymore.
+- Fixed documented return type of `Sonata\AdminBundle\Filter\FilterInterface::getRenderSettings()`.
+
+## [3.65.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.64.0...3.65.0) - 2020-04-21
+### Added
+- Added `AbstractAdmin::IsCurrentChild` method
+- Added missing polish translation
+- Added new options (`display`, `key_translation_domain` and
+`value_translation_domain`) to the array field on Show and List pages.
+- Automatically set `sortable`, `sort_parent_association_mappings`, and
+`sort_field_mapping` when `associated_property` is set in `ListMapper::add`
+to enable sorting on `associated_property` by default.
+
+### Deprecated
+- `AbstractAdmin::GetCurrentChild` method
+- Deprecate `getModelIdentifier` in favor of  `getIdentifierFieldNames` in
+`ModelManagerInterface`.
+- Deprecated returning other types than `array` in
+`AbstractAdmin::getFormGroups()`, `AbstractAdmin::getFormTabs()`,
+`AbstractAdmin::getShowTabs()`, `AbstractAdmin::getShowGroups()`.
+- `SimplePager::getResults` will not return ArrayCollection in next major
+  version (4.0)
+
+### Fixed
+- Fixed nesting Twig block definitions under a non-capturing nodes.
+- Fixed collisions with cache keys at `AbstractAdmin::isGranted()`.
+- Fixed returning `void` in some methods which are intended to return a value
+or `null`.
+- Type of argument 3 passed to `UrlGeneratorInterface::generateMenuUrl()`.
+- `AdminHelper::addNewInstance` to detect methods based on `method_exists`
+instead of callable to maintain previous BC behavior.
+- Admin Type is correctly using parentAssociationsMappings when using form with
+  OneToOneToMany fields.
+
+### Changed
+- `$this->getSubject()` always returns a value in `configureFormField`
+
+## [3.64.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.63.0...3.64.0) - 2020-03-31
+### Added
+- Added a new option `link_parameters` for list action button. This option is
+  passed to `generateObjectUrl`.
+- Added configuration parameter
+`sonata_admin.options.legacy_twig_text_extension` in order to control which
+text extension will be used;
+- Added `truncate.cut` and `truncate.ellipsis` option in `list_html.html.twig`
+and `show_html.html.twig` views.
+
+### Deprecated
+- Constructing `SonataAdminExtension` with an instance of TranslationInterface
+  from components
+- Deprecated "truncate.preserve" and "truncate.separator" options in
+`list_html.html.twig` and `show_html.html.twig` views;
+- Not setting `sonata_admin.options.legacy_twig_text_extension` as `false`.
+
+## [3.63.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.62.1...3.63.0) - 2020-03-21
+### Added
+- Added SonataIntlBundle support back
+- Added `configureQuery` method for an easier way to override Admin list queries.
+
+### Fixed
+- Class Helper addNewInstance take care about parentAssociation mapping.
+
+### Deprecated
+- Inheritance of the `createQuery` method.
+
+## [3.62.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.62.0...3.62.1) - 2020-03-17
+### Fixed
+- Accessing to a non-existing parameter when extending `AbstractSonataAdminExtension`
+- Check for "application/json" presence at `Accept` HTTP header, even if multiple types are provided.
+- Deprecation about passing more than one attribute to `isGranted`
+
+## [3.62.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.61.0...3.62.0) - 2020-03-16
+### Added
+- Allow `_sort_by` filter to not be initially defined.
+- Import templates from SonataIntlBundle
+
+### Removed
+- deleteAction and batchAction does not use anymore the csrf_protection option from the editAction.
+- Dropped SonataIntlBundle
+
+### Fixed
+- Stop calling the configureFormField in deleteAction and batchAction.
+- Deprecation passing more than one attribute to `isGranted`
+- `_sort_by` without `_sort_order` does not use invalid value anymore
+- Deprecation passing more than one attribute to isGranted
+- Only trigger deprecations of `sonata_help` when it is actually used
+
+### Deprecated
+- Deprecate id param of Sonata Action
+
+## [3.61.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.60.0...3.61.0) - 2020-02-18
+### Added
+- `ifEnd` throws `LogicException` if there is nothing to end.
+
+### Fixed
+- Calling `ContainerBuilder::getDefinition()` with ids which have no associated
+  definition.
+
+## [3.60.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.59.0...3.60.0) - 2020-02-17
+### Added
+- `sonata.admin.manager` tag to services implementing `ModelManagerInterface`.
+
+### Fixed
+- Wording of `EqualOperatorType`
+
+### Deprecated
+- The use of `sonata_help` in form types
+
+## [3.59.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.58.0...3.59.0) - 2020-02-10
+### Added
+- Add support for symfony form help
+
+### Fixed
+- Make filter alias optional
+- Fix error of using list ValueObject as editable field in list fields.
+
+## [3.58.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.57.0...3.58.0) - 2020-01-26
+### Fixed
+- Revert to trully unique uniqid for admins
+- Deprecations for event dispatching
+
+### Removed
+- Support for Symfony < 4.3
+
 ## [3.57.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.56.1...3.57.0) - 2020-01-13
 ### Added
 - Added OperatorType usable in CallbackFilter

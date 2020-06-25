@@ -62,9 +62,8 @@ class BreadcrumbsBuilderTest extends TestCase
                 return $menu;
             });
 
-        $postAdmin = new PostAdmin('sonata.post.admin.post', DummySubject::class, 'SonataNewsBundle:PostAdmin');
-        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'SonataNewsBundle:CommentAdmin');
-        $subCommentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'SonataNewsBundle:CommentAdmin');
+        $postAdmin = new PostAdmin('sonata.post.admin.post', DummySubject::class, 'Sonata\NewsBundle\Controller\PostAdminController');
+        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'Sonata\NewsBundle\Controller\CommentAdminController');
 
         $postAdmin->addChild($commentAdmin);
         $postAdmin->setRequest(new Request(['id' => $postAdminSubjectId]));
@@ -76,7 +75,7 @@ class BreadcrumbsBuilderTest extends TestCase
         $commentAdmin->initialize();
         $postAdmin->initialize();
 
-        $commentAdmin->setCurrentChild($subCommentAdmin);
+        $commentAdmin->setCurrentChild(true);
 
         $container
             ->method('getParameter')
@@ -135,18 +134,14 @@ class BreadcrumbsBuilderTest extends TestCase
                 ['DummySubject_list'],
                 ['Comment_list'],
                 ['DummySubject_list'],
-
                 ['Comment_list'],
                 ['DummySubject_list'],
                 ['Comment_list'],
-
                 ['DummySubject_list'],
                 ['Comment_list'],
                 ['Comment_edit'],
-
                 ['DummySubject_list'],
                 ['Comment_list'],
-
                 ['DummySubject_list'],
                 ['Comment_list']
             )
@@ -154,18 +149,14 @@ class BreadcrumbsBuilderTest extends TestCase
                 'someOtherLabel',
                 'someInterestingLabel',
                 'someFancyLabel',
-
                 'someTipTopLabel',
                 'someFunkyLabel',
                 'someAwesomeLabel',
-
                 'someMildlyInterestingLabel',
                 'someWTFLabel',
                 'someBadLabel',
-
                 'someLongLabel',
                 'someEndlessLabel',
-
                 'someOriginalLabel',
                 'someOkayishLabel'
             ));
@@ -178,25 +169,21 @@ class BreadcrumbsBuilderTest extends TestCase
                 ['dummy subject representation'],
                 ['someInterestingLabel'],
                 ['this is a comment'],
-
                 ['link_breadcrumb_dashboard'],
                 ['someFancyLabel'],
                 ['dummy subject representation'],
                 ['someTipTopLabel'],
                 ['this is a comment'],
                 ['link_breadcrumb_dashboard'],
-
                 ['someFunkyLabel'],
                 ['dummy subject representation'],
                 ['someAwesomeLabel'],
                 ['this is a comment'],
                 ['link_breadcrumb_dashboard'],
-
                 ['someMildlyInterestingLabel'],
                 ['dummy subject representation'],
                 ['someWTFLabel'],
                 ['link_breadcrumb_dashboard'],
-
                 ['someBadLabel'],
                 ['dummy subject representation'],
                 ['someLongLabel'],
@@ -234,8 +221,8 @@ class BreadcrumbsBuilderTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $postAdmin = new PostAdmin('sonata.post.admin.post', DummySubject::class, 'SonataNewsBundle:PostAdmin');
-        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'SonataNewsBundle:CommentAdmin');
+        $postAdmin = new PostAdmin('sonata.post.admin.post', DummySubject::class, 'Sonata\NewsBundle\Controller\PostAdminController');
+        $commentAdmin = new CommentAdmin('sonata.post.admin.comment', Comment::class, 'Sonata\NewsBundle\Controller\CommentAdminController');
 
         $postAdmin->addChild($commentAdmin);
         $postAdmin->setRequest(new Request(['id' => $postAdminSubjectId]));
@@ -262,13 +249,11 @@ class BreadcrumbsBuilderTest extends TestCase
             ->withConsecutive(
                 ['DummySubject_list'],
                 ['DummySubject_repost'],
-
                 ['DummySubject_list']
             )
             ->will($this->onConsecutiveCalls(
                 'someOtherLabel',
                 'someInterestingLabel',
-
                 'someCoolLabel'
             ));
 
@@ -278,7 +263,6 @@ class BreadcrumbsBuilderTest extends TestCase
                 ['link_breadcrumb_dashboard'],
                 ['someOtherLabel'],
                 ['someInterestingLabel'],
-
                 ['link_breadcrumb_dashboard'],
                 ['someCoolLabel'],
                 ['dummy subject representation']

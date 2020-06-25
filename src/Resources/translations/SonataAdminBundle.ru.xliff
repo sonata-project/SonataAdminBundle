@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="sonata_administration">
                 <source>sonata_administration</source>
-                <target>Administration</target>
+                <target>администрация</target>
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>

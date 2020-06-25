@@ -46,13 +46,17 @@ use Symfony\Component\Validator\ContainerConstraintValidatorFactory;
  */
 class AddDependencyCallsCompilerPassTest extends TestCase
 {
-    /** @var SonataAdminExtension $extension */
+    /**
+     * @var SonataAdminExtension
+     */
     private $extension;
 
-    /** @var array $config */
+    /**
+     * @var array
+     */
     private $config;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -140,7 +144,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
 
         $this->assertArrayHasKey('sonata_group_two', $dashboardGroupsSettings);
         $this->assertArrayHasKey('provider', $dashboardGroupsSettings['sonata_group_two']);
-        $this->assertContains('my_menu', $dashboardGroupsSettings['sonata_group_two']['provider']);
+        $this->assertStringContainsString('my_menu', $dashboardGroupsSettings['sonata_group_two']['provider']);
 
         $this->assertArrayHasKey('sonata_group_five', $dashboardGroupsSettings);
         $this->assertTrue($dashboardGroupsSettings['sonata_group_five']['keep_open']);
@@ -183,7 +187,10 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->assertFalse($adminGroups['sonata_group_one']['on_top']);
         $this->assertTrue($adminGroups['sonata_group_three']['on_top']);
         $this->assertFalse($adminGroups['sonata_group_one']['keep_open']);
-        $this->assertContains('sonata_post_admin', $adminGroups['sonata_group_one']['items'][0]['admin']);
+        $this->assertStringContainsString(
+            'sonata_post_admin',
+            $adminGroups['sonata_group_one']['items'][0]['admin']
+        );
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['items']);
         $this->assertContains('sonata_news_admin', $adminGroups['sonata_group_one']['item_adds']);
         $this->assertNotContains('sonata_article_admin', $adminGroups['sonata_group_one']['items']);
@@ -191,7 +198,7 @@ class AddDependencyCallsCompilerPassTest extends TestCase
 
         $this->assertArrayHasKey('sonata_group_two', $adminGroups);
         $this->assertArrayHasKey('provider', $adminGroups['sonata_group_two']);
-        $this->assertContains('my_menu', $adminGroups['sonata_group_two']['provider']);
+        $this->assertStringContainsString('my_menu', $adminGroups['sonata_group_two']['provider']);
 
         $this->assertArrayHasKey('sonata_group_five', $adminGroups);
         $this->assertTrue($adminGroups['sonata_group_five']['keep_open']);

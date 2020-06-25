@@ -43,9 +43,10 @@ interface UrlGeneratorInterface
     /**
      * Generates the object url with the given $name.
      *
-     * @param string $name
-     * @param object $object
-     * @param int    $absolute
+     * @param string               $name
+     * @param object               $object
+     * @param array<string, mixed> $parameters
+     * @param int                  $referenceType
      *
      * @return string return a complete url
      */
@@ -53,33 +54,35 @@ interface UrlGeneratorInterface
         $name,
         $object,
         array $parameters = [],
-        $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH
+        $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH
     );
 
     /**
      * Generates a url for the given parameters.
      *
-     * @param string $name
-     * @param int    $absolute
+     * @param string               $name
+     * @param array<string, mixed> $parameters
+     * @param int                  $referenceType
      *
      * @return string return a complete url
      */
-    public function generateUrl($name, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH);
+    public function generateUrl($name, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH);
 
     /**
      * Generates a url for the given parameters.
      *
-     * @param string $name
-     * @param int    $absolute
+     * @param string               $name
+     * @param array<string, mixed> $parameters
+     * @param int                  $referenceType
      *
      * @return array return url parts: 'route', 'routeParameters', 'routeAbsolute'
      */
-    public function generateMenuUrl($name, array $parameters = [], $absolute = RoutingUrlGeneratorInterface::ABSOLUTE_PATH);
+    public function generateMenuUrl($name, array $parameters = [], $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH);
 
     /**
-     * @param mixed $entity
+     * @param mixed $model
      *
      * @return string a string representation of the id that is safe to use in a url
      */
-    public function getUrlsafeIdentifier($entity);
+    public function getUrlSafeIdentifier($model);
 }

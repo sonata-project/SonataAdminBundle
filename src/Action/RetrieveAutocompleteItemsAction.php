@@ -118,7 +118,8 @@ final class RetrieveAutocompleteItemsAction
                         throw new \RuntimeException(sprintf(
                             'To retrieve autocomplete items,'
                             .' you should add filter "%s" to "%s" in configureDatagridFilters() method.',
-                            $prop, \get_class($targetAdmin)
+                            $prop,
+                            \get_class($targetAdmin)
                         ));
                     }
 
@@ -150,20 +151,20 @@ final class RetrieveAutocompleteItemsAction
         $items = [];
         $results = $pager->getResults();
 
-        foreach ($results as $entity) {
+        foreach ($results as $model) {
             if (null !== $toStringCallback) {
                 if (!\is_callable($toStringCallback)) {
                     throw new \RuntimeException('Option "to_string_callback" does not contain callable function.');
                 }
 
-                $label = $toStringCallback($entity, $property);
+                $label = $toStringCallback($model, $property);
             } else {
-                $resultMetadata = $targetAdmin->getObjectMetadata($entity);
+                $resultMetadata = $targetAdmin->getObjectMetadata($model);
                 $label = $resultMetadata->getTitle();
             }
 
-            $item = [
-                'id' => $admin->id($entity),
+            $items[] = [
+                'id' => $admin->id($model),
                 'label' => $label,
             ];
 
@@ -190,8 +191,6 @@ final class RetrieveAutocompleteItemsAction
         AdminInterface $admin,
         string $field
     ): FieldDescriptionInterface {
-        $admin->getFilterFieldDescriptions();
-
         $fieldDescription = $admin->getFilterFieldDescription($field);
 
         if (!$fieldDescription) {
@@ -214,8 +213,6 @@ final class RetrieveAutocompleteItemsAction
         AdminInterface $admin,
         string $field
     ): FieldDescriptionInterface {
-        $admin->getFormFieldDescriptions();
-
         $fieldDescription = $admin->getFormFieldDescription($field);
 
         if (!$fieldDescription) {

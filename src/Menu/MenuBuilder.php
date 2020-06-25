@@ -19,6 +19,7 @@ use Knp\Menu\Provider\MenuProviderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Event\ConfigureMenuEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 
 /**
  * Sonata menu builder.
@@ -59,7 +60,7 @@ class MenuBuilder
         $this->pool = $pool;
         $this->factory = $factory;
         $this->provider = $provider;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
     }
 
     /**
@@ -93,7 +94,7 @@ class MenuBuilder
         }
 
         $event = new ConfigureMenuEvent($this->factory, $menu);
-        $this->eventDispatcher->dispatch(ConfigureMenuEvent::SIDEBAR, $event);
+        $this->eventDispatcher->dispatch($event, ConfigureMenuEvent::SIDEBAR);
 
         return $event->getMenu();
     }

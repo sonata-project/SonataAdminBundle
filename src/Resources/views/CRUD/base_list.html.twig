@@ -23,11 +23,11 @@ file that was distributed with this source code.
 {%- endblock -%}
 
 {% block title %}
-    {{ admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject)|truncate(15) }, 'SonataAdminBundle') : '' }}
+    {{ admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject)|u.truncate(15) }, 'SonataAdminBundle') : '' }}
 {% endblock %}
 
 {% block navbar_title %}
-    {{ admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject)|truncate(100) }, 'SonataAdminBundle') : '' }}
+    {{ admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject)|u.truncate(100) }, 'SonataAdminBundle') : '' }}
 {% endblock %}
 
 {% block list_table %}
@@ -66,7 +66,9 @@ file that was distributed with this source code.
                                             {% if field_description.options.sortable is defined and field_description.options.sortable %}
                                                 {% set sortable             = true %}
                                                 {% set sort_parameters      = admin.modelmanager.sortparameters(field_description, admin.datagrid) %}
-                                                {% set current              = admin.datagrid.values._sort_by == field_description or admin.datagrid.values._sort_by.name == sort_parameters.filter._sort_by %}
+                                                {% set current              = admin.datagrid.values._sort_by is defined
+                                                    and (admin.datagrid.values._sort_by == field_description
+                                                        or admin.datagrid.values._sort_by.name == sort_parameters.filter._sort_by) %}
                                                 {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
                                                 {% set sort_by              = current ? admin.datagrid.values._sort_order : field_description.options._sort_order %}
                                             {% endif %}
@@ -77,7 +79,9 @@ file that was distributed with this source code.
                                                     {% if field_description.getOption('label_icon') %}
                                                         <i class="sonata-ba-list-field-header-label-icon {{ field_description.getOption('label_icon') }}" aria-hidden="true"></i>
                                                     {% endif %}
-                                                    {{ field_description.label|trans({}, field_description.translationDomain) }}
+                                                    {% if field_description.label is not same as(false) %}
+                                                        {{ field_description.label|trans({}, field_description.translationDomain) }}
+                                                    {% endif %}
                                                     {% if sortable %}</a>{% endif %}
                                                 </th>
                                             {% endapply %}
@@ -244,7 +248,10 @@ file that was distributed with this source code.
                         {% set filterActive = ((filter.isActive() or filter.options['show_filter']) and not admin.isDefaultFilter(filter.formName)) %}
                         <li>
                             <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
-                                <i class="fa {{ (filter.isActive() or filter.options['show_filter']) ? 'fa-check-square-o' : 'fa-square-o' }}"></i>{{ filter.label|trans({}, filter.translationDomain ?: admin.translationDomain) }}
+                                <i class="fa {{ (filter.isActive() or filter.options['show_filter']) ? 'fa-check-square-o' : 'fa-square-o' }}"></i>
+                                {% if filter.label is not same as(false) %}
+                                    {{ filter.label|trans({}, filter.translationDomain ?: admin.translationDomain) }}
+                                {% endif %}
                             </a>
                         </li>
                     {% endfor %}

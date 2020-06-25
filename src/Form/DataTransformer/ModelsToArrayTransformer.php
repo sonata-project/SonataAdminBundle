@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
 use Doctrine\Common\Util\ClassUtils;
-use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\Doctrine\Adapter\AdapterInterface;
@@ -42,7 +41,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     protected $class;
 
     /**
-     * @var ModelChoiceList
+     * @var ModelChoiceLoader|LazyChoiceList
      *
      * @deprecated since sonata-project/admin-bundle 3.12, to be removed in 4.0
      * NEXT_MAJOR: remove this property
@@ -52,8 +51,8 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     /**
      * ModelsToArrayTransformer constructor.
      *
-     * @param ModelChoiceList|LazyChoiceList|ModelChoiceLoader $choiceList
-     * @param ModelManagerInterface                            $modelManager
+     * @param LazyChoiceList|ModelChoiceLoader $choiceList
+     * @param ModelManagerInterface            $modelManager
      * @param $class
      *
      * @throws RuntimeException
@@ -130,8 +129,8 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         }
 
         $array = [];
-        foreach ($collection as $key => $entity) {
-            $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($entity));
+        foreach ($collection as $key => $model) {
+            $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($model));
 
             $array[] = $id;
         }
@@ -150,8 +149,8 @@ class ModelsToArrayTransformer implements DataTransformerInterface
 
         // optimize this into a SELECT WHERE IN query
         foreach ($keys as $key) {
-            if ($entity = $this->modelManager->find($this->class, $key)) {
-                $collection[] = $entity;
+            if ($model = $this->modelManager->find($this->class, $key)) {
+                $collection[] = $model;
             } else {
                 $notFound[] = $key;
             }
@@ -173,11 +172,10 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     {
         $choiceList = $args[0];
 
-        if (!$choiceList instanceof ModelChoiceList
-            && !$choiceList instanceof ModelChoiceLoader
+        if (!$choiceList instanceof ModelChoiceLoader
             && !$choiceList instanceof LazyChoiceList) {
             throw new RuntimeException('First param passed to ModelsToArrayTransformer should be instance of
-                ModelChoiceLoader or ModelChoiceList or LazyChoiceList');
+                ModelChoiceLoader or LazyChoiceList');
         }
 
         $this->choiceList = $choiceList;
@@ -186,14 +184,14 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param object $entity
+     * @param object $model
      */
-    private function getIdentifierValues($entity): array
+    private function getIdentifierValues($model): array
     {
         try {
-            return $this->modelManager->getIdentifierValues($entity);
+            return $this->modelManager->getIdentifierValues($model);
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($entity)), 0, $e);
+            throw new \InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($model)), 0, $e);
         }
     }
 

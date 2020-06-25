@@ -69,5 +69,7 @@ class SetupAclCommand extends Command
             \assert($admin instanceof AdminInterface);
             $this->aclManipulator->configureAcls($output, $admin);
         }
+
+        return 0;
     }
 }

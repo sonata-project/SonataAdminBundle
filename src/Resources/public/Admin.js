@@ -368,7 +368,7 @@ var Admin = {
         var highestCounterRegexp = new RegExp('_([0-9]+)[^0-9]*$');
         jQuery(subject).find('[data-prototype]').each(function() {
             var collection = jQuery(this);
-            var counter = 0;
+            var counter = -1;
             collection.children().each(function() {
                 var matches = highestCounterRegexp.exec(jQuery('[id^="sonata-ba-field-container"]', this).attr('id'));
                 if (matches && matches[1] && matches[1] > counter) {

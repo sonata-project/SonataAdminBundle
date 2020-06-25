@@ -19,19 +19,23 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Route\DefaultRouteGenerator;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RoutesCache;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
 class DefaultRouteGeneratorTest extends TestCase
 {
+    private const ROUTER_DOMAIN = 'http://sonata-project';
+
     protected $cacheTempFolder;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->cacheTempFolder = sys_get_temp_dir().'/sonata_test_route';
 
-        exec('rm -rf '.$this->cacheTempFolder);
+        $filesystem = new Filesystem();
+        $filesystem->remove($this->cacheTempFolder);
     }
 
     public function testGenerate(): void
@@ -49,8 +53,12 @@ class DefaultRouteGeneratorTest extends TestCase
     /**
      * @dataProvider getGenerateUrlTests
      */
-    public function testGenerateUrl(string $expected, string $name, array $parameters): void
-    {
+    public function testGenerateUrl(
+        string $expected,
+        string $name,
+        array $parameters,
+        int $referenceType = RouterInterface::ABSOLUTE_PATH
+    ): void {
         $childCollection = new RouteCollection('base.Code.Foo|base.Code.Bar', 'admin_acme_child', '/foo/', 'BundleName:ControllerName');
         $childCollection->add('bar');
 
@@ -72,17 +80,18 @@ class DefaultRouteGeneratorTest extends TestCase
         $router = $this->getMockForAbstractClass(RouterInterface::class);
         $router->expects($this->once())
             ->method('generate')
-            ->willReturnCallback(static function (string $name, array $parameters = []): string {
+            ->willReturnCallback(static function (string $name, array $parameters = [], int $referenceType = RouterInterface::ABSOLUTE_PATH): string {
                 $params = '';
+                $domain = RouterInterface::ABSOLUTE_URL === $referenceType ? self::ROUTER_DOMAIN : '';
                 if (!empty($parameters)) {
                     $params .= '?'.http_build_query($parameters);
                 }
 
                 switch ($name) {
                     case 'admin_acme_foo':
-                        return '/foo'.$params;
+                        return $domain.'/foo'.$params;
                     case 'admin_acme_child_bar':
-                        return '/foo/bar'.$params;
+                        return $domain.'/foo/bar'.$params;
                 }
             });
 
@@ -90,7 +99,7 @@ class DefaultRouteGeneratorTest extends TestCase
 
         $generator = new DefaultRouteGenerator($router, $cache);
 
-        $this->assertSame($expected, $generator->generateUrl($admin, $name, $parameters));
+        $this->assertSame($expected, $generator->generateUrl($admin, $name, $parameters, $referenceType));
     }
 
     public function getGenerateUrlTests(): array
@@ -98,6 +107,13 @@ class DefaultRouteGeneratorTest extends TestCase
         return [
             ['/foo?abc=a123&efg=e456&default_param=default_val', 'foo', ['default_param' => 'default_val']],
             ['/foo/bar?abc=a123&efg=e456&default_param=default_val', 'base.Code.Bar.bar', ['default_param' => 'default_val']],
+            ['/foo/bar?abc=a123&efg=e456&default_param=default_val', 'base.Code.Bar.bar', ['default_param' => 'default_val'], RouterInterface::ABSOLUTE_PATH],
+            [
+                self::ROUTER_DOMAIN.'/foo/bar?abc=a123&efg=e456&default_param=default_val',
+                'base.Code.Bar.bar',
+                ['default_param' => 'default_val'],
+                RouterInterface::ABSOLUTE_URL,
+            ],
         ];
     }
 

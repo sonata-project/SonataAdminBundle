@@ -26,11 +26,14 @@ class AddFilterTypeCompilerPassTest extends TestCase
 
     private $barFilter;
 
-    public function setUp(): void
+    private $bazFilter;
+
+    protected function setUp(): void
     {
         $this->filterFactory = $this->createMock(Definition::class);
         $this->fooFilter = $this->createMock(Definition::class);
         $this->barFilter = $this->createMock(Definition::class);
+        $this->bazFilter = $this->createMock(Definition::class);
     }
 
     public function testProcess(): void
@@ -44,6 +47,7 @@ class AddFilterTypeCompilerPassTest extends TestCase
                 ['sonata.admin.builder.filter.factory', $this->filterFactory],
                 ['acme.demo.foo_filter', $this->fooFilter],
                 ['acme.demo.bar_filter', $this->barFilter],
+                ['acme.demo.baz_filter', $this->bazFilter],
             ]);
 
         $containerBuilderMock->expects($this->once())
@@ -60,6 +64,10 @@ class AddFilterTypeCompilerPassTest extends TestCase
                         'alias' => 'bar_filter_alias',
                     ],
                 ],
+                'acme.demo.baz_filter' => [
+                    'tag1' => [
+                    ],
+                ],
             ]);
 
         $this->fooFilter->method('getClass')
@@ -68,6 +76,9 @@ class AddFilterTypeCompilerPassTest extends TestCase
         $this->barFilter->method('getClass')
             ->willReturn('Acme\Filter\BarFilter');
 
+        $this->bazFilter->method('getClass')
+            ->willReturn('Acme\Filter\BazFilter');
+
         $this->filterFactory->expects($this->once())
             ->method('replaceArgument')
             ->with(1, $this->equalTo([
@@ -75,6 +86,7 @@ class AddFilterTypeCompilerPassTest extends TestCase
                 'Acme\Filter\FooFilter' => 'acme.demo.foo_filter',
                 'bar_filter_alias' => 'acme.demo.bar_filter',
                 'Acme\Filter\BarFilter' => 'acme.demo.bar_filter',
+                'Acme\Filter\BazFilter' => 'acme.demo.baz_filter',
             ]));
 
         $extensionsPass = new AddFilterTypeCompilerPass();

@@ -59,10 +59,12 @@ final class ModelManager implements ModelManagerInterface
 
     public function findBy($class, array $criteria = [])
     {
+        return [];
     }
 
     public function findOneBy($class, array $criteria = [])
     {
+        return null;
     }
 
     public function find($class, $id)
@@ -76,6 +78,7 @@ final class ModelManager implements ModelManagerInterface
 
     public function getParentFieldDescription($parentAssociationMapping, $class)
     {
+        throw new \BadMethodCallException('Not implemented.');
     }
 
     public function createQuery($class, $alias = 'o')
@@ -89,27 +92,32 @@ final class ModelManager implements ModelManagerInterface
 
     public function getIdentifierValues($model)
     {
+        return [];
     }
 
     public function getIdentifierFieldNames($class)
     {
+        return [];
     }
 
     public function getNormalizedIdentifier($model)
     {
+        return null;
     }
 
-    public function getUrlsafeIdentifier($model)
+    public function getUrlSafeIdentifier($model)
     {
         return $model->getId();
     }
 
     public function getModelInstance($class)
     {
+        return new Foo('test_id', 'foo_name');
     }
 
     public function getModelCollectionInstance($class)
     {
+        return [];
     }
 
     public function collectionRemoveElement(&$collection, &$element)
@@ -130,6 +138,7 @@ final class ModelManager implements ModelManagerInterface
 
     public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid)
     {
+        return [];
     }
 
     public function getDefaultSortValues($class)
@@ -139,10 +148,12 @@ final class ModelManager implements ModelManagerInterface
 
     public function modelReverseTransform($class, array $array = [])
     {
+        throw new \BadMethodCallException('Not implemented.');
     }
 
     public function modelTransform($class, $instance)
     {
+        throw new \BadMethodCallException('Not implemented.');
     }
 
     public function executeQuery($query)
@@ -155,6 +166,7 @@ final class ModelManager implements ModelManagerInterface
 
     public function getExportFields($class)
     {
+        return [];
     }
 
     public function getPaginationParameters(DatagridInterface $datagrid, $page)

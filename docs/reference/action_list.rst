@@ -51,7 +51,7 @@ Here is an example::
 
             // you may specify the field type directly as the
             // second argument instead of in the options
-            ->add('isVariation', 'boolean')
+            ->add('isVariation', TemplateRegistry::TYPE_BOOLEAN)
 
             // if null, the type will be guessed
             ->add('enabled', null, [
@@ -59,7 +59,7 @@ Here is an example::
             ])
 
             // editable association field
-            ->add('status', 'choice', [
+            ->add('status', TemplateRegistry::TYPE_CHOICE, [
                 'editable' => true,
                 'class' => 'Vendor\ExampleBundle\Entity\ExampleStatus',
                 'choices' => [
@@ -70,7 +70,7 @@ Here is an example::
             ])
 
             // editable multiple field
-            ->add('winner', 'choice', [
+            ->add('winner', TemplateRegistry::TYPE_CHOICE, [
                 'editable' => true,
                 'multiple' => true,
                 'choices' => [
@@ -81,13 +81,18 @@ Here is an example::
             ])
 
             // we can add options to the field depending on the type
-            ->add('price', 'currency', [
+            ->add('price', TemplateRegistry::TYPE_CURRENCY, [
                 'currency' => $this->currencyDetector->getCurrency()->getLabel()
             ])
 
             // Here we specify which property is used to render the label of each entity in the list
             ->add('productCategories', null, [
                 'associated_property' => 'name'
+                // By default, sorting will be done on the associated property.
+                // To sort on another property, add the following:
+                'sort_field_mapping' => [
+                    'fieldName' => 'weight',
+                ],
             ])
 
             // you may also use dotted-notation to access
@@ -98,7 +103,12 @@ Here is an example::
             ->add('_action', null, [
                 'actions' => [
                     'show' => [],
-                    'edit' => [],
+                    'edit' => [
+                        // You may add custom link parameters used to generate the action url
+                        'link_parameters' => [
+                            'full' => true,
+                        ]
+                    ],
                     'delete' => [],
                 ]
             ])
@@ -127,6 +137,7 @@ Options
 - ``associated_property`` (o): property path to retrieve the "string"
   representation of the collection element, or a closure with the element
   as argument and return a string.
+- ``sort_field_mapping`` (o): property of the collection element to sort on.
 - ``identifier`` (o): if set to true a link appears on the value to edit the element
 
 Available types and associated options
@@ -136,71 +147,75 @@ Available types and associated options
 
     ``(m)`` means that option is mandatory
 
-+-----------+----------------+-----------------------------------------------------------------------+
-| Type      | Options        | Description                                                           |
-+===========+================+=======================================================================+
-| actions   | actions        | List of available actions                                             |
-+-----------+----------------+-----------------------------------------------------------------------+
-| batch     |                | Renders a checkbox                                                    |
-+-----------+----------------+-----------------------------------------------------------------------+
-| select    |                | Renders a select box                                                  |
-+-----------+----------------+-----------------------------------------------------------------------+
-| array     |                | Displays an array                                                     |
-+-----------+----------------+-----------------------------------------------------------------------+
-| boolean   | ajax_hidden    | Yes/No; ajax_hidden allows to hide list field during an AJAX context. |
-+           +----------------+-----------------------------------------------------------------------+
-|           | editable       | Yes/No; editable allows to edit directly from the list if authorized. |
-+           +----------------+-----------------------------------------------------------------------+
-|           | inverse        | Yes/No; reverses the background color (green for false, red for true) |
-+-----------+----------------+-----------------------------------------------------------------------+
-| choice    | choices        | Possible choices                                                      |
-+           +----------------+-----------------------------------------------------------------------+
-|           | multiple       | Is it a multiple choice option? Defaults to false.                    |
-+           +----------------+-----------------------------------------------------------------------+
-|           | delimiter      | Separator of values if multiple.                                      |
-+           +----------------+-----------------------------------------------------------------------+
-|           | catalogue      | Translation catalogue.                                                |
-+           +----------------+-----------------------------------------------------------------------+
-|           | class          | Class path for editable association field.                            |
-+-----------+----------------+-----------------------------------------------------------------------+
-| currency  | currency (m)   | A currency string (EUR or USD for instance).                          |
-+-----------+----------------+-----------------------------------------------------------------------+
-| date      | format         | A format understandable by Twig's ``date`` function.                  |
-+           +----------------+-----------------------------------------------------------------------+
-|           | timezone       | Second argument for Twig's ``date`` function                          |
-+-----------+----------------+-----------------------------------------------------------------------+
-| datetime  | format         | A format understandable by Twig's ``date`` function.                  |
-+           +----------------+-----------------------------------------------------------------------+
-|           | timezone       | Second argument for Twig's ``date`` function                          |
-+-----------+----------------+-----------------------------------------------------------------------+
-| email     | as_string      | Renders the email as string, without any link.                        |
-+           +----------------+-----------------------------------------------------------------------+
-|           | subject        | Add subject parameter to email link.                                  |
-+           +----------------+-----------------------------------------------------------------------+
-|           | body           | Add body parameter to email link.                                     |
-+-----------+----------------+-----------------------------------------------------------------------+
-| percent   |                | Renders value as a percentage.                                        |
-+-----------+----------------+-----------------------------------------------------------------------+
-| string    |                | Renders a string.                                                     |
-+-----------+----------------+-----------------------------------------------------------------------+
-| text      |                | See 'string'                                                          |
-+-----------+----------------+-----------------------------------------------------------------------+
-| html      |                | Renders string as html                                                |
-+-----------+----------------+-----------------------------------------------------------------------+
-| time      |                | Renders a datetime's time with format ``H:i:s``.                      |
-+-----------+----------------+-----------------------------------------------------------------------+
-| trans     | catalogue      | Translates the value with catalogue ``catalogue`` if defined.         |
-+-----------+----------------+-----------------------------------------------------------------------+
-| url       | url            | Adds a link with url ``url`` to the displayed value                   |
-+           +----------------+-----------------------------------------------------------------------+
-|           | route          | Give a route to generate the url                                      |
-+           +                +                                                                       +
-|           |   name         | Route name                                                            |
-+           +                +                                                                       +
-|           |   parameters   | Route parameters                                                      |
-+           +----------------+-----------------------------------------------------------------------+
-|           | hide_protocol  | Hide http:// or https:// (default: false)                             |
-+-----------+----------------+-----------------------------------------------------------------------+
++-----------+---------------------+-----------------------------------------------------------------------+
+| Type      | Options             | Description                                                           |
++===========+=====================+=======================================================================+
+| actions   | actions             | List of available actions                                             |
++           +                     +                                                                       +
+|           |   edit              | Name of the action (``show``, ``edit``, ``history``, ``delete``, etc) |
++           +                     +                                                                       +
+|           |     link_parameters | Route parameters                                                      |
++-----------+---------------------+-----------------------------------------------------------------------+
+| batch     |                     | Renders a checkbox                                                    |
++-----------+---------------------+-----------------------------------------------------------------------+
+| select    |                     | Renders a select box                                                  |
++-----------+---------------------+-----------------------------------------------------------------------+
+| array     |                     | Displays an array                                                     |
++-----------+---------------------+-----------------------------------------------------------------------+
+| boolean   | ajax_hidden         | Yes/No; ajax_hidden allows to hide list field during an AJAX context. |
++           +---------------------+-----------------------------------------------------------------------+
+|           | editable            | Yes/No; editable allows to edit directly from the list if authorized. |
++           +---------------------+-----------------------------------------------------------------------+
+|           | inverse             | Yes/No; reverses the background color (green for false, red for true) |
++-----------+---------------------+-----------------------------------------------------------------------+
+| choice    | choices             | Possible choices                                                      |
++           +---------------------+-----------------------------------------------------------------------+
+|           | multiple            | Is it a multiple choice option? Defaults to false.                    |
++           +---------------------+-----------------------------------------------------------------------+
+|           | delimiter           | Separator of values if multiple.                                      |
++           +---------------------+-----------------------------------------------------------------------+
+|           | catalogue           | Translation catalogue.                                                |
++           +---------------------+-----------------------------------------------------------------------+
+|           | class               | Class path for editable association field.                            |
++-----------+---------------------+-----------------------------------------------------------------------+
+| currency  | currency (m)        | A currency string (EUR or USD for instance).                          |
++-----------+---------------------+-----------------------------------------------------------------------+
+| date      | format              | A format understandable by Twig's ``date`` function.                  |
++           +---------------------+-----------------------------------------------------------------------+
+|           | timezone            | Second argument for Twig's ``date`` function                          |
++-----------+---------------------+-----------------------------------------------------------------------+
+| datetime  | format              | A format understandable by Twig's ``date`` function.                  |
++           +---------------------+-----------------------------------------------------------------------+
+|           | timezone            | Second argument for Twig's ``date`` function                          |
++-----------+---------------------+-----------------------------------------------------------------------+
+| email     | as_string           | Renders the email as string, without any link.                        |
++           +---------------------+-----------------------------------------------------------------------+
+|           | subject             | Add subject parameter to email link.                                  |
++           +---------------------+-----------------------------------------------------------------------+
+|           | body                | Add body parameter to email link.                                     |
++-----------+---------------------+-----------------------------------------------------------------------+
+| percent   |                     | Renders value as a percentage.                                        |
++-----------+---------------------+-----------------------------------------------------------------------+
+| string    |                     | Renders a string.                                                     |
++-----------+---------------------+-----------------------------------------------------------------------+
+| text      |                     | See 'string'                                                          |
++-----------+---------------------+-----------------------------------------------------------------------+
+| html      |                     | Renders string as html                                                |
++-----------+---------------------+-----------------------------------------------------------------------+
+| time      |                     | Renders a datetime's time with format ``H:i:s``.                      |
++-----------+---------------------+-----------------------------------------------------------------------+
+| trans     | catalogue           | Translates the value with catalogue ``catalogue`` if defined.         |
++-----------+---------------------+-----------------------------------------------------------------------+
+| url       | url                 | Adds a link with url ``url`` to the displayed value                   |
++           +---------------------+-----------------------------------------------------------------------+
+|           | route               | Give a route to generate the url                                      |
++           +                     +                                                                       +
+|           |   name              | Route name                                                            |
++           +                     +                                                                       +
+|           |   parameters        | Route parameters                                                      |
++           +---------------------+-----------------------------------------------------------------------+
+|           | hide_protocol       | Hide http:// or https:// (default: false)                             |
++-----------+---------------------+-----------------------------------------------------------------------+
 
 If you have the SonataDoctrineORMAdminBundle installed, you have access
 to more field types, see `SonataDoctrineORMAdminBundle Documentation`_.
@@ -214,11 +229,15 @@ to more field types, see `SonataDoctrineORMAdminBundle Documentation`_.
 Customizing the query used to generate the list
 -----------------------------------------------
 
-You can customize the list query thanks to the ``createQuery`` method::
+.. versionadded:: 3.63
 
-    public function createQuery($context = 'list')
+    The ``configureQuery`` method was introduced in 3.63.
+
+You can customize the list query thanks to the ``configureQuery`` method::
+
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
-        $query = parent::createQuery($context);
+        $query = parent::configureQuery($query);
         $query->andWhere(
             $query->expr()->eq($query->getRootAliases()[0] . '.my_field', ':my_param')
         );
@@ -233,7 +252,7 @@ Configure the default ordering in the list view
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Configuring the default ordering column can be achieved by overriding the
-``datagridValues`` array property. All three keys ``_page``, ``_sort_order`` and
+``configureDefaultSortValues()`` method. All three keys ``_page``, ``_sort_order`` and
 ``_sort_by`` can be omitted::
 
     // src/Admin/PostAdmin.php
@@ -244,17 +263,17 @@ Configuring the default ordering column can be achieved by overriding the
     {
         // ...
 
-        protected $datagridValues = [
-
+        protected function configureDefaultSortValues(array &$sortValues): void
+        {
             // display the first page (default = 1)
-            '_page' => 1,
+            $sortValues['_page'] = 1;
 
             // reverse order (default = 'ASC')
-            '_sort_order' => 'DESC',
+            $sortValues['_sort_order'] = 'DESC';
 
             // name of the ordered field (default = the model's id field, if any)
-            '_sort_by' => 'updatedAt',
-        ];
+            $sortValues['_sort_by'] = 'updatedAt';
+        }
 
         // ...
     }
@@ -265,7 +284,38 @@ Configuring the default ordering column can be achieved by overriding the
 
 .. note::
 
-    **TODO**: how to sort by multiple fields (this might be a separate recipe?)
+    For UI reason, it's not possible to sort by multiple fields. However, this behavior can be simulate by
+    adding some default orders in the ``configureQuery()`` method. The following example is using
+    ``SonataAdminBundle`` with ``SonataDoctrineORMAdminBundle``::
+
+        // src/Admin/PostAdmin.php
+
+        use Sonata\AdminBundle\Admin\AbstractAdmin;
+
+        final class PostAdmin extends AbstractAdmin
+        {
+            // ...
+
+            protected function configureDefaultSortValues(array &$sortValues): void
+            {
+                // display the first page (default = 1)
+                $sortValues['_page'] = 1;
+
+                // reverse order (default = 'ASC')
+                $sortValues['_sort_order'] = 'DESC';
+
+                // name of the ordered field (default = the model's id field, if any)
+                $sortValues['_sort_by'] = 'updatedAt';
+            }
+
+            protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+            {
+                $query->addOrderBy('author', 'ASC');
+                $query->addOrderBy('createdAt', 'ASC');
+            }
+
+            // ...
+        }
 
 Filters
 -------
@@ -378,12 +428,13 @@ This is an example using these constants for an ``boolean`` type::
 
     class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        protected $datagridValues = [
-            'enabled' => [
+        protected function configureDefaultFilterValues(array &$filterValues)
+        {
+            $filterValues['enabled'] = [
                 'type'  => EqualType::TYPE_IS_EQUAL, // => 1
                 'value' => BooleanType::TYPE_YES     // => 1
-            ]
-        ];
+            ];
+        }
     }
 
 Please note that setting a ``false`` value on a the ``boolean`` type
@@ -398,46 +449,21 @@ as defined in the class constants::
         const TYPE_NO = 2;
     }
 
-Default filters can also be added to the datagrid values by overriding
-the ``getFilterParameters`` method::
-
-    use Sonata\Form\Type\EqualType;
-    use Sonata\Form\Type\BooleanType;
-
-    class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
-    {
-        public function getFilterParameters()
-        {
-            $this->datagridValues = array_merge([
-                'enabled' => [
-                    'type'  => EqualType::TYPE_IS_EQUAL,
-                    'value' => BooleanType::TYPE_YES
-                ]
-            ], $this->datagridValues);
-
-            return parent::getFilterParameters();
-        }
-    }
-
-This approach is useful when you need to create dynamic filters::
+This approach allow to create dynamic filters::
 
     class PostAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        public function getFilterParameters()
+        protected function configureDefaultFilterValues(array &$filterValues)
         {
             // Assuming security context injected
             if (!$this->securityContext->isGranted('ROLE_ADMIN')) {
                 $user = $this->securityContext->getToken()->getUser();
 
-                $this->datagridValues = array_merge([
-                    'author' => [
-                        'type'  => EqualType::TYPE_IS_EQUAL,
-                        'value' => $user->getId()
-                    ]
-                ], $this->datagridValues);
+                $filterValues['author'] = [
+                    'type'  => EqualType::TYPE_IS_EQUAL,
+                    'value' => $user->getId()
+                ];
             }
-
-            return parent::getFilterParameters();
         }
     }
 
@@ -461,14 +487,14 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the
             $datagridMapper
                 ->add('full_text', CallbackFilter::class, [
                     'callback' => [$this, 'getFullTextFilter'],
-                    'field_type' => 'text'
+                    'field_type' => TextType::class,
                 ]);
         }
 
         public function getFullTextFilter($queryBuilder, $alias, $field, $value)
         {
             if (!$value['value']) {
-                return;
+                return false;
             }
 
             // Use `andWhere` instead of `where` to prevent overriding existing `where` conditions
@@ -481,6 +507,8 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the
             return true;
         }
     }
+
+The callback function should return a boolean indicating whether it is active.
 
 You can also get the filter type which can be helpful to change the operator
 type of your condition(s)::
@@ -536,10 +564,10 @@ Example::
                 'header_style' => 'width: 5%; text-align: center',
                 'row_align' => 'center'
             ])
-            ->add('name', 'text', [
+            ->add('name', TemplateRegistry::TYPE_STRING, [
                 'header_style' => 'width: 35%'
             ])
-            ->add('description', 'text', [
+            ->add('description', TemplateRegistry::TYPE_STRING, [
                 'header_style' => 'width: 35%',
                 'collapse' => true
             ])

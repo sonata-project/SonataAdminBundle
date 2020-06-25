@@ -32,7 +32,7 @@ trait PolyfillControllerTrait
         $this->proxyToController($methodName, $arguments);
     }
 
-    public function render($view, array $parameters = [], Response $response = null)
+    public function render($view, array $parameters = [], ?Response $response = null)
     {
         return $this->__call('render', [$view, $parameters, $response]);
     }

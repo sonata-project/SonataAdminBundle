@@ -79,5 +79,7 @@ class CreateClassCacheCommand extends Command
         );
 
         $output->writeln(' done!');
+
+        return 0;
     }
 }

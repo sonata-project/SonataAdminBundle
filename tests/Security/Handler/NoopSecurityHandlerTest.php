@@ -22,9 +22,9 @@ class NoopSecurityHandlerTest extends TestCase
     /**
      * @var NoopSecurityHandler
      */
-    private $handler = null;
+    private $handler;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->handler = new NoopSecurityHandler();
     }

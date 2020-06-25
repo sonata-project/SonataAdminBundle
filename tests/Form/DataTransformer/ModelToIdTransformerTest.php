@@ -19,9 +19,9 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 
 class ModelToIdTransformerTest extends TestCase
 {
-    private $modelManager = null;
+    private $modelManager;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
     }

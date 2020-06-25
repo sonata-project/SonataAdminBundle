@@ -21,10 +21,10 @@ use Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
-use Sonata\DatagridBundle\Datagrid\DatagridInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -215,7 +215,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
     private function configureAutocompleteItemsDatagrid(): ObjectProphecy
     {
-        $entity = new \stdClass();
+        $model = new \stdClass();
 
         $targetAdmin = $this->prophesize(AbstractAdmin::class);
         $datagrid = $this->prophesize(DatagridInterface::class);
@@ -223,23 +223,23 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $pager = $this->prophesize(Pager::class);
         $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
 
-        $this->admin->getNewInstance()->willReturn($entity);
-        $this->admin->setSubject($entity)->shouldBeCalled();
+        $this->admin->getNewInstance()->willReturn($model);
+        $this->admin->setSubject($model)->shouldBeCalled();
         $this->admin->hasAccess('create')->willReturn(true);
         $this->admin->getFormFieldDescription('barField')->willReturn($fieldDescription->reveal());
         $this->admin->getFormFieldDescriptions()->willReturn(null);
-        $this->admin->id($entity)->willReturn(123);
+        $this->admin->id($model)->willReturn(123);
         $targetAdmin->checkAccess('list')->shouldBeCalled();
         $targetAdmin->setFilterPersister(null)->shouldBeCalled();
         $targetAdmin->getDatagrid()->willReturn($datagrid->reveal());
-        $targetAdmin->getObjectMetadata($entity)->willReturn($metadata->reveal());
+        $targetAdmin->getObjectMetadata($model)->willReturn($metadata->reveal());
         $metadata->getTitle()->willReturn('FOO');
 
         $datagrid->setValue('_per_page', null, 10)->shouldBeCalled();
         $datagrid->setValue('_page', null, 1)->shouldBeCalled();
         $datagrid->buildPager()->willReturn(null);
         $datagrid->getPager()->willReturn($pager->reveal());
-        $pager->getResults()->willReturn([$entity]);
+        $pager->getResults()->willReturn([$model]);
         $pager->isLastPage()->willReturn(true);
         $fieldDescription->getTargetEntity()->willReturn(Foo::class);
         $fieldDescription->getName()->willReturn('barField');

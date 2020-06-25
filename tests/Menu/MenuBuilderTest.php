@@ -136,9 +136,15 @@ class MenuBuilderTest extends TestCase
             ->expects($this->once())
             ->method('dispatch')
             ->with(
-                $this->equalTo('sonata.admin.event.configure.menu.sidebar'),
-                $this->isInstanceOf(ConfigureMenuEvent::class)
+                $this->isInstanceOf(ConfigureMenuEvent::class),
+                $this->equalTo('sonata.admin.event.configure.menu.sidebar')
             );
+
+        $this->provider
+            ->expects($this->once())
+            ->method('get')
+            ->with('sonata_group_menu')
+            ->willReturn($this->factory->createItem('bar'));
 
         $this->builder->createSidebarMenu();
     }

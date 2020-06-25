@@ -22,6 +22,7 @@ use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Tests\App\Builder\ShowBuilder;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 
@@ -448,6 +449,8 @@ class ShowMapperTest extends TestCase
                 'translation_domain' => null,
                 'name' => 'Group1',
                 'box_class' => 'box box-primary',
+                'empty_message' => 'message_form_group_empty',
+                'empty_message_translation_domain' => 'SonataAdminBundle',
                 'fields' => ['fooName1' => 'fooName1', 'fooName2' => 'fooName2', 'fooName3' => 'fooName3', 'fooName4' => 'fooName4'],
             ], ], $this->admin->getShowGroups());
 
@@ -463,6 +466,8 @@ class ShowMapperTest extends TestCase
                 'translation_domain' => null,
                 'name' => 'Group1',
                 'box_class' => 'box box-primary',
+                'empty_message' => 'message_form_group_empty',
+                'empty_message_translation_domain' => 'SonataAdminBundle',
                 'fields' => ['fooName3' => 'fooName3', 'fooName2' => 'fooName2', 'fooName1' => 'fooName1', 'fooName4' => 'fooName4'],
             ], ], true), print_r($this->admin->getShowGroups(), true));
     }
@@ -577,6 +582,8 @@ class ShowMapperTest extends TestCase
 
         $this->admin->setModelManager($modelManager);
         $this->admin->setLabelTranslatorStrategy(new NoopLabelTranslatorStrategy());
+
+        $this->admin->setShowBuilder(new ShowBuilder());
     }
 
     private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription

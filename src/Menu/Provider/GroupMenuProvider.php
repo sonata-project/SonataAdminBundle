@@ -17,6 +17,7 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -146,7 +147,7 @@ class GroupMenuProvider implements MenuProviderInterface
         if (!empty($item['roles'])) {
             $isItemGranted = false;
             foreach ($item['roles'] as $role) {
-                if ($this->checker->isGranted([$role])) {
+                if ($this->checker->isGranted($role)) {
                     $isItemGranted = true;
                     break;
                 }
@@ -157,7 +158,7 @@ class GroupMenuProvider implements MenuProviderInterface
         if (!empty($group['roles'])) {
             $isGroupGranted = false;
             foreach ($group['roles'] as $role) {
-                if ($this->checker->isGranted([$role])) {
+                if ($this->checker->isGranted($role)) {
                     $isGroupGranted = true;
                     break;
                 }
@@ -172,7 +173,11 @@ class GroupMenuProvider implements MenuProviderInterface
         if (isset($item['admin']) && !empty($item['admin'])) {
             $admin = $this->pool->getInstance($item['admin']);
 
-            $options = $admin->generateMenuUrl('list', [], $item['route_absolute']);
+            $options = $admin->generateMenuUrl(
+                'list',
+                [],
+                $item['route_absolute'] ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH
+            );
             $options['extras'] = [
                 'label_catalogue' => $admin->getTranslationDomain(),
                 'admin' => $admin,

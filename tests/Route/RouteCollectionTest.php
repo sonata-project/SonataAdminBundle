@@ -61,9 +61,15 @@ class RouteCollectionTest extends TestCase
 
         $routeCollection->add('view');
         $this->assertTrue($routeCollection->has('view'));
+        $this->assertTrue($routeCollection->hasCached('view'));
 
         $routeCollection->remove('view');
         $this->assertFalse($routeCollection->has('view'));
+        $this->assertTrue($routeCollection->hasCached('view'));
+
+        $routeCollection->restore('view');
+        $this->assertTrue($routeCollection->has('view'));
+        $this->assertTrue($routeCollection->hasCached('view'));
 
         $routeCollection->add('create');
         $route = $routeCollection->get('create');

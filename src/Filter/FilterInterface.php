@@ -95,22 +95,22 @@ interface FilterInterface
     public function getFieldName();
 
     /**
-     * @return array of mappings
+     * @return array<string, string> array of mappings
      */
     public function getParentAssociationMappings();
 
     /**
-     * @return array field mapping
+     * @return array<string, string> field mapping
      */
     public function getFieldMapping();
 
     /**
-     * @return array association mapping
+     * @return array<string, string>  association mapping
      */
     public function getAssociationMapping();
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getFieldOptions();
 
@@ -140,7 +140,7 @@ interface FilterInterface
     /**
      * Returns the main widget used to render the filter.
      *
-     * @return array
+     * @return array{0: string, 1: array<string, mixed>}
      */
     public function getRenderSettings();
 

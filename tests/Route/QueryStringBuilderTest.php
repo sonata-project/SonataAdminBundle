@@ -30,7 +30,8 @@ class QueryStringBuilderTest extends TestCase
         $audit->expects($this->once())->method('hasReader')->willReturn($hasReader);
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->once())->method('getParent')->willReturn($getParent);
+        $admin->expects($this->once())->method('isChild')->willReturn($getParent instanceof AdminInterface);
+        $admin->method('getParent')->willReturn($getParent);
         $admin->method('getChildren')->willReturn([]);
         $admin->expects($this->once())->method('isAclEnabled')->willReturn($aclEnabled);
 
@@ -76,7 +77,7 @@ class QueryStringBuilderTest extends TestCase
         $child2->expects($this->once())->method('getRoutes')->willReturn($childRouteCollection2);
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->once())->method('getParent')->willReturn(null);
+        $admin->expects($this->once())->method('isChild')->willReturn(false);
         $admin->expects($this->once())->method('getChildren')->willReturn([$child1, $child2]);
         $admin->expects($this->once())->method('isAclEnabled')->willReturn(true);
 

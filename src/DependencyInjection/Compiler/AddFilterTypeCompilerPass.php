@@ -38,7 +38,9 @@ class AddFilterTypeCompilerPass implements CompilerPassInterface
 
             // NEXT_MAJOR: Remove this loop, only FQCN will be supported
             foreach ($attributes as $eachTag) {
-                $types[$eachTag['alias']] = $id;
+                if (isset($eachTag['alias'])) {
+                    $types[$eachTag['alias']] = $id;
+                }
             }
         }
 

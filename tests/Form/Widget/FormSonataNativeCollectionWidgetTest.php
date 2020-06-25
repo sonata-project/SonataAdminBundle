@@ -15,14 +15,14 @@ namespace Sonata\AdminBundle\Tests\Form\Widget;
 
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
 use Sonata\AdminBundle\Form\Type\CollectionType;
+use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
 use Symfony\Component\Form\FormTypeGuesserInterface;
-use Symfony\Component\Form\Tests\Fixtures\TestExtension;
 
 class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
 {
     protected $type = 'form';
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
     }
@@ -48,7 +48,7 @@ class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
 
         $html = $this->renderWidget($choice->createView());
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'sonata-collection-delete',
             $this->cleanHtmlWhitespace($html)
         );

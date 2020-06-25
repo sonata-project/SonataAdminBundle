@@ -1,10 +1,16 @@
 services:
+    # Under real conditions, this service is registered by "doctrine/doctrine-bundle"
+    database_connection:
+        class: Sonata\AdminBundle\Tests\Fixtures\DoctrineBundle\Connection
+
     Sonata\AdminBundle\Tests\App\Model\FooRepository: ~
 
     sonata.admin.manager.test:
         class: Sonata\AdminBundle\Tests\App\Model\ModelManager
         arguments:
             - '@Sonata\AdminBundle\Tests\App\Model\FooRepository'
+        tags:
+            - {name: sonata.admin.manager}
 
     sonata.admin.builder.test_form:
         class: Sonata\AdminBundle\Tests\App\Builder\FormContractor
@@ -32,3 +38,8 @@ services:
         arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, ~]
         tags:
             - {name: sonata.admin, manager_type: test, label: Foo}
+
+    Sonata\AdminBundle\Tests\App\Admin\EmptyAdmin:
+        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, ~]
+        tags:
+            - {name: sonata.admin, manager_type: test, label: Empty}

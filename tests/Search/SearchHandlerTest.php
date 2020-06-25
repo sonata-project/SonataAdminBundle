@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 class SearchHandlerTest extends TestCase
 {
-    public function getPool(AdminInterface $admin = null): Pool
+    public function getPool(?AdminInterface $admin = null): Pool
     {
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $container->method('get')->willReturnCallback(static function (string $id) use ($admin): AdminInterface {

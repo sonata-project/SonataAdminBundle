@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Block;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminStatsBlockService;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
+use Twig\Environment;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -31,12 +32,16 @@ class AdminStatsBlockServiceTest extends BlockServiceTestCase
     {
         parent::setUp();
 
-        $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
+        $this->pool = $this->createMock(Pool::class);
     }
 
     public function testDefaultSettings(): void
     {
-        $blockService = new AdminStatsBlockService('foo', $this->templating, $this->pool);
+        $blockService = new AdminStatsBlockService(
+            $this->createMock(Environment::class),
+            null,
+            $this->pool
+        );
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([

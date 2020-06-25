@@ -15,6 +15,11 @@ namespace Sonata\AdminBundle\Admin;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @method string|null getTargetModel()
+ * @method bool        hasAdmin()
+ * @method bool        hasParent()
+ * @method bool        hasAssociationAdmin()
  */
 interface FieldDescriptionInterface
 {
@@ -26,7 +31,7 @@ interface FieldDescriptionInterface
     public function setFieldName($fieldName);
 
     /**
-     * return the field name.
+     * Returns the field name.
      *
      * @return string the field name
      */
@@ -40,14 +45,14 @@ interface FieldDescriptionInterface
     public function setName($name);
 
     /**
-     * Return the name, the name can be used as a form label or table header.
+     * Returns the name, the name can be used as a form label or table header.
      *
      * @return string the name
      */
     public function getName();
 
     /**
-     * Return the value represented by the provided name.
+     * Returns the value represented by the provided name.
      *
      * @param string     $name
      * @param mixed|null $default
@@ -74,28 +79,28 @@ interface FieldDescriptionInterface
     public function setOptions(array $options);
 
     /**
-     * return options.
+     * Returns options.
      *
      * @return array options
      */
     public function getOptions();
 
     /**
-     * return the template used to render the field.
+     * Returns the template used to render the field.
      *
      * @param string $template
      */
     public function setTemplate($template);
 
     /**
-     * return the template name.
+     * Returns the template name.
      *
-     * @return string the template name
+     * @return string|null the template name
      */
     public function getTemplate();
 
     /**
-     * return the field type, the type is a mandatory field as it used to select the correct template
+     * Returns the field type, the type is a mandatory field as it used to select the correct template
      * or the logic associated to the current FieldDescription object.
      *
      * @param string $type
@@ -103,7 +108,7 @@ interface FieldDescriptionInterface
     public function setType($type);
 
     /**
-     * return the type.
+     * Returns the type.
      *
      * @return int|string
      */
@@ -115,11 +120,14 @@ interface FieldDescriptionInterface
     public function setParent(AdminInterface $parent);
 
     /**
-     * return the parent Admin (only used in nested admin).
+     * Returns the parent Admin (only used in nested admin).
      *
-     * @return AdminInterface|null
+     * @return AdminInterface|null // NEXT_MAJOR: Return AdminInterface
      */
     public function getParent();
+
+    // NEXT_MAJOR: Uncomment the following line
+    // public function hasParent(): bool;
 
     /**
      * Define the association mapping definition.
@@ -129,18 +137,24 @@ interface FieldDescriptionInterface
     public function setAssociationMapping($associationMapping);
 
     /**
-     * return the association mapping definition.
+     * Returns the association mapping definition.
      *
      * @return array
      */
     public function getAssociationMapping();
 
     /**
-     * return the related Target Entity.
+     * NEXT_MAJOR: Remove this method in favor of `getTargetModel()`.
+     *
+     * Returns the related Target object model.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.69. Use `getTargetModel()` instead.
      *
      * @return string|null
      */
     public function getTargetEntity();
+
+    // public function getTargetModel(): ?string;
 
     /**
      * set the field mapping information.
@@ -150,7 +164,7 @@ interface FieldDescriptionInterface
     public function setFieldMapping($fieldMapping);
 
     /**
-     * return the field mapping definition.
+     * Returns the field mapping definition.
      *
      * @return array the field mapping definition
      */
@@ -162,7 +176,7 @@ interface FieldDescriptionInterface
     public function setParentAssociationMappings(array $parentAssociationMappings);
 
     /**
-     * return the parent association mapping definitions.
+     * Returns the parent association mapping definitions.
      *
      * @return array the parent association mapping definitions
      */
@@ -176,21 +190,24 @@ interface FieldDescriptionInterface
     public function setAssociationAdmin(AdminInterface $associationAdmin);
 
     /**
-     * return the associated Admin instance (only used if the field is linked to an Admin).
+     * Returns the associated Admin instance (only used if the field is linked to an Admin).
      *
-     * @return AdminInterface|null
+     * @return AdminInterface|null // NEXT_MAJOR: Return AdminInterface
      */
     public function getAssociationAdmin();
 
+    // NEXT_MAJOR: Uncomment the following line
+    // public function hasAssociationAdmin(): bool;
+
     /**
-     * return true if the FieldDescription is linked to an identifier field.
+     * Returns true if the FieldDescription is linked to an identifier field.
      *
      * @return bool
      */
     public function isIdentifier();
 
     /**
-     * return the value linked to the description.
+     * Returns the value linked to the description.
      *
      * @param object $object
      *
@@ -207,6 +224,9 @@ interface FieldDescriptionInterface
      * @return AdminInterface the admin class linked to this FieldDescription
      */
     public function getAdmin();
+
+    // NEXT_MAJOR: Uncomment the following line
+    // public function hasAdmin(): bool;
 
     /**
      * merge option values related to the provided option name.
@@ -230,42 +250,43 @@ interface FieldDescriptionInterface
     public function setMappingType($mappingType);
 
     /**
-     * return the mapping type.
+     * Returns the mapping type.
      *
      * @return int|string
      */
     public function getMappingType();
 
     /**
-     * return the label to use for the current field.
+     * Returns the label to use for the current field.
+     * Use null to fallback to the default label and false to hide the label.
      *
-     * @return string
+     * @return string|false|null
      */
     public function getLabel();
 
     /**
-     * Return the translation domain to use for the current field.
+     * Returns the translation domain to use for the current field.
      *
      * @return string
      */
     public function getTranslationDomain();
 
     /**
-     * Return true if field is sortable.
+     * Returns true if field is sortable.
      *
      * @return bool
      */
     public function isSortable();
 
     /**
-     * return the field mapping definition used when sorting.
+     * Returns the field mapping definition used when sorting.
      *
      * @return array the field mapping definition
      */
     public function getSortFieldMapping();
 
     /**
-     * return the parent association mapping definitions used when sorting.
+     * Returns the parent association mapping definitions used when sorting.
      *
      * @return array the parent association mapping definitions
      */

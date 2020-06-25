@@ -37,7 +37,7 @@ class BaseGroupedMapperTest extends TestCase
     private $tabs;
     private $groups;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $admin = $this->getMockBuilder(AbstractAdmin::class)
             ->disableOriginalConstructor()
@@ -203,7 +203,15 @@ class BaseGroupedMapperTest extends TestCase
         $this->baseGroupedMapper->end();
     }
 
-    public function labelDataProvider()
+    public function testIfEndException(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('No open ifTrue() or ifFalse(), you cannot use ifEnd()');
+
+        $this->baseGroupedMapper->ifEnd();
+    }
+
+    public function labelDataProvider(): array
     {
         return [
             'nominal use case not translated' => [false, 'fooGroup1', null, 'fooGroup1'],
@@ -216,7 +224,7 @@ class BaseGroupedMapperTest extends TestCase
     /**
      * @dataProvider labelDataProvider
      */
-    public function testLabel(string $translated, string $name, ?string $label, string $expectedLabel): void
+    public function testLabel(bool $translated, string $name, ?string $label, string $expectedLabel): void
     {
         $container = $this->baseGroupedMapper
             ->getAdmin()

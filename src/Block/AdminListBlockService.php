@@ -49,7 +49,7 @@ class AdminListBlockService extends AbstractBlockService
         $twigOrName,
         ?EngineInterface $templating,
         Pool $pool,
-        TemplateRegistryInterface $templateRegistry = null
+        ?TemplateRegistryInterface $templateRegistry = null
     ) {
         parent::__construct($twigOrName, $templating);
 
@@ -57,7 +57,7 @@ class AdminListBlockService extends AbstractBlockService
         $this->templateRegistry = $templateRegistry ?: new TemplateRegistry();
     }
 
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null)
     {
         $dashboardGroups = $this->pool->getDashboardGroups();
 

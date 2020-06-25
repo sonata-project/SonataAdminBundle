@@ -6,7 +6,7 @@ all:
 	@echo "Please choose a task."
 .PHONY: all
 
-lint: lint-composer lint-yaml lint-composer lint-xml lint-php
+lint: lint-composer lint-yaml lint-xml lint-php
 .PHONY: lint
 
 lint-composer:
@@ -54,18 +54,11 @@ cs-fix-xml:
 build:
 	mkdir $@
 
-HAS_XDEBUG=$(shell php --modules|grep --quiet xdebug;echo $$?)
-
-build/xdebug-filter.php: phpunit.xml.dist build
-ifeq ($(HAS_XDEBUG), 0)
-	phpunit --dump-xdebug-filter $@
-endif
-
-test: build/xdebug-filter.php
-ifeq ($(HAS_XDEBUG), 0)
-	phpunit --prepend build/xdebug-filter.php -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
+test:
+ifeq ($(shell php --modules|grep --quiet pcov;echo $$?), 0)
+	vendor/bin/simple-phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
 else
-	phpunit -c phpunit.xml.dist
+	vendor/bin/simple-phpunit -c phpunit.xml.dist
 endif
 .PHONY: test
 

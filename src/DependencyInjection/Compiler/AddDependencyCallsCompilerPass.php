@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
@@ -49,6 +49,12 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $groupDefaults = $admins = $classes = [];
 
         $pool = $container->getDefinition('sonata.admin.pool');
+
+        $defaultValues = [
+            'group' => $container->getParameter('sonata.admin.configuration.default_group'),
+            'label_catalogue' => $container->getParameter('sonata.admin.configuration.default_label_catalogue'),
+            'icon' => $container->getParameter('sonata.admin.configuration.default_icon'),
+        ];
 
         foreach ($container->findTaggedServiceIds('sonata.admin') as $id => $tags) {
             foreach ($tags as $attributes) {
@@ -88,11 +94,9 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 $resolvedGroupName = isset($attributes['group']) ?
                     $parameterBag->resolveValue($attributes['group']) :
-                    $container->getParameter('sonata.admin.configuration.default_group');
-                $labelCatalogue = $attributes['label_catalogue'] ??
-                    $container->getParameter('sonata.admin.configuration.default_label_catalogue');
-                $icon = $attributes['icon'] ??
-                    $container->getParameter('sonata.admin.configuration.default_icon');
+                    $defaultValues['group'];
+                $labelCatalogue = $attributes['label_catalogue'] ?? $defaultValues['label_catalogue'];
+                $icon = $attributes['icon'] ?? $defaultValues['icon'];
                 $onTop = $attributes['on_top'] ?? false;
                 $keepOpen = $attributes['keep_open'] ?? false;
 
@@ -135,6 +139,8 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $groupDefaults[$resolvedGroupName] = [
                         'items' => [],
                         'label' => $resolvedGroupName,
+                        'label_catalogue' => $defaultValues['label_catalogue'],
+                        'icon' => $defaultValues['icon'],
                         'roles' => [],
                         'on_top' => false,
                         'keep_open' => false,
@@ -150,7 +156,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 }
 
                 if (empty($group['label_catalogue'])) {
-                    $groups[$resolvedGroupName]['label_catalogue'] = 'SonataAdminBundle';
+                    $groups[$resolvedGroupName]['label_catalogue'] = $groupDefaults[$resolvedGroupName]['label_catalogue'];
                 }
 
                 if (empty($group['icon'])) {
@@ -236,7 +242,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         ];
 
         foreach ($keys as $key) {
-            $method = 'set'.Inflector::classify($key);
+            $method = $this->generateSetterMethodName($key);
             if (!isset($attributes[$key]) || $definition->hasMethodCall($method)) {
                 continue;
             }
@@ -283,7 +289,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $definition->addMethodCall('setManagerType', [$managerType]);
 
         foreach ($defaultAddServices as $attr => $addServiceId) {
-            $method = 'set'.Inflector::classify($attr);
+            $method = $this->generateSetterMethodName($attr);
 
             if (isset($overwriteAdminConfiguration[$attr]) || !$definition->hasMethodCall($method)) {
                 $args = [new Reference($overwriteAdminConfiguration[$attr] ?? $addServiceId)];
@@ -422,7 +428,7 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
     private function replaceDefaultArguments(
         array $defaultArguments,
         Definition $definition,
-        Definition $parentDefinition = null
+        ?Definition $parentDefinition = null
     ): void {
         $arguments = $definition->getArguments();
         $parentArguments = $parentDefinition ? $parentDefinition->getArguments() : [];
@@ -437,5 +443,10 @@ class AddDependencyCallsCompilerPass implements CompilerPassInterface
         }
 
         $definition->setArguments($arguments);
+    }
+
+    private function generateSetterMethodName(string $key): string
+    {
+        return 'set'.InflectorFactory::create()->build()->classify($key);
     }
 }

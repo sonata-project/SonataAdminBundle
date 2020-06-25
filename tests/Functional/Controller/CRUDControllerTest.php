@@ -32,6 +32,14 @@ final class CRUDControllerTest extends WebTestCase
         );
     }
 
+    public function testEmptyList(): void
+    {
+        $client = static::createClient();
+        $client->request(Request::METHOD_GET, '/admin/empty/list');
+
+        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+    }
+
     public function testCreate(): void
     {
         $client = static::createClient();
@@ -42,6 +50,14 @@ final class CRUDControllerTest extends WebTestCase
             1,
             $crawler->filter('.sonata-ba-collapsed-fields label:contains("Name")')->count()
         );
+    }
+
+    public function testEmptyCreate(): void
+    {
+        $client = static::createClient();
+        $client->request(Request::METHOD_GET, '/admin/empty/create');
+
+        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 
     public function testShow(): void
@@ -56,6 +72,14 @@ final class CRUDControllerTest extends WebTestCase
         );
     }
 
+    public function testEmptyShow(): void
+    {
+        $client = static::createClient();
+        $client->request(Request::METHOD_GET, '/admin/empty/test_id/show');
+
+        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+    }
+
     public function testEdit(): void
     {
         $client = static::createClient();
@@ -66,6 +90,14 @@ final class CRUDControllerTest extends WebTestCase
             1,
             $crawler->filter('.sonata-ba-collapsed-fields label:contains("Name")')->count()
         );
+    }
+
+    public function testEmptyEdit(): void
+    {
+        $client = static::createClient();
+        $client->request(Request::METHOD_GET, '/admin/empty/test_id/edit');
+
+        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 
     protected static function getKernelClass()

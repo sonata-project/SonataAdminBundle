@@ -25,7 +25,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
@@ -58,7 +58,7 @@ class ExplainAdminCommandTest extends TestCase
     {
         $this->application = new Application();
 
-        $container = $this->createMock(ContainerInterface::class);
+        $container = new Container();
 
         $this->admin = $this->createMock(AdminInterface::class);
 
@@ -143,15 +143,7 @@ class ExplainAdminCommandTest extends TestCase
                 return $adminParent;
             });
 
-        $container
-            ->method('get')
-            ->willReturnCallback(function (string $id): AdminInterface {
-                if ('acme.admin.foo' === $id) {
-                    return $this->admin;
-                }
-            });
-
-        $container->method('has')->willReturn(true);
+        $container->set('acme.admin.foo', $this->admin);
 
         $pool = new Pool($container, '', '');
         $pool->setAdminServiceIds(['acme.admin.foo', 'acme.admin.bar']);

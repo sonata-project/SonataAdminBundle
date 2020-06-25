@@ -27,6 +27,8 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
+use Symfony\Component\Validator\Mapping\MemberMetadata;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class FormMapperTest extends TestCase
 {
@@ -59,9 +61,25 @@ class FormMapperTest extends TestCase
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
-        $formBuilder = new FormBuilder('test', 'stdClass', $eventDispatcher, $formFactory);
+        $formBuilder = new FormBuilder('test', \stdClass::class, $eventDispatcher, $formFactory);
+        $formBuilder2 = new FormBuilder('test', \stdClass::class, $eventDispatcher, $formFactory);
 
-        $this->admin = new CleanAdmin('code', 'class', 'controller');
+        $formFactory->method('createNamedBuilder')->willReturn($formBuilder);
+        $this->contractor->method('getFormBuilder')->willReturn($formBuilder2);
+
+        $this->admin = new CleanAdmin('code', \stdClass::class, 'controller');
+        $this->admin->setSubject(new \stdClass());
+
+        $validator = $this->createMock(ValidatorInterface::class);
+        $validator
+            ->method('getMetadataFor')
+            ->willReturn($this->createMock(MemberMetadata::class));
+        $this->admin->setValidator($validator);
+
+        // NEXT_MAJOR: Remove the calls to `setFormGroups()` and `setFormTabs()`
+        $this->admin->setFormGroups([]);
+        $this->admin->setFormTabs([]);
+
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
@@ -70,6 +88,7 @@ class FormMapperTest extends TestCase
             });
 
         $this->admin->setSecurityHandler($securityHandler);
+        $this->admin->setFormContractor($this->contractor);
 
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
 
@@ -107,6 +126,8 @@ class FormMapperTest extends TestCase
             'translation_domain' => null,
             'name' => 'default',
             'box_class' => 'box box-primary',
+            'empty_message' => 'message_form_group_empty',
+            'empty_message_translation_domain' => 'SonataAdminBundle',
             'auto_created' => true,
             'groups' => ['foobar'],
             'tab' => true,
@@ -120,6 +141,8 @@ class FormMapperTest extends TestCase
             'translation_domain' => null,
             'name' => 'foobar',
             'box_class' => 'box box-primary',
+            'empty_message' => 'message_form_group_empty',
+            'empty_message_translation_domain' => 'SonataAdminBundle',
             'fields' => [],
         ]], $this->admin->getFormGroups());
     }
@@ -139,6 +162,8 @@ class FormMapperTest extends TestCase
             'translation_domain' => 'Foobar',
             'name' => 'foobar',
             'box_class' => 'box box-primary',
+            'empty_message' => 'message_form_group_empty',
+            'empty_message_translation_domain' => 'SonataAdminBundle',
             'fields' => [],
             'role' => self::DEFAULT_GRANTED_ROLE,
         ]], $this->admin->getFormGroups());
@@ -151,6 +176,8 @@ class FormMapperTest extends TestCase
             'translation_domain' => 'Foobar',
             'name' => 'default',
             'box_class' => 'box box-primary',
+            'empty_message' => 'message_form_group_empty',
+            'empty_message_translation_domain' => 'SonataAdminBundle',
             'auto_created' => true,
             'groups' => ['foobar'],
             'tab' => true,
@@ -184,6 +211,8 @@ class FormMapperTest extends TestCase
             'translation_domain' => 'Foobar',
             'name' => 'default',
             'box_class' => 'box box-primary',
+            'empty_message' => 'message_form_group_empty',
+            'empty_message_translation_domain' => 'SonataAdminBundle',
             'auto_created' => true,
             'groups' => ['foobar'],
             'tab' => true,
@@ -197,6 +226,8 @@ class FormMapperTest extends TestCase
             'translation_domain' => 'Foobar',
             'name' => 'foobar',
             'box_class' => 'box box-primary',
+            'empty_message' => 'message_form_group_empty',
+            'empty_message_translation_domain' => 'SonataAdminBundle',
             'fields' => [
                 'foo' => 'foo',
             ],

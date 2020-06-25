@@ -26,6 +26,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use Twig\Extra\TwigExtraBundle\TwigExtraBundle;
 
 final class AppKernel extends Kernel
 {
@@ -41,6 +42,7 @@ final class AppKernel extends Kernel
         return [
             new FrameworkBundle(),
             new TwigBundle(),
+            new TwigExtraBundle(),
             new SecurityBundle(),
             new KnpMenuBundle(),
             new SonataBlockBundle(),
@@ -74,17 +76,21 @@ final class AppKernel extends Kernel
     {
         $containerBuilder->loadFromExtension('framework', [
             'secret' => 'MySecret',
-            'trusted_proxies' => [],
             'fragments' => ['enabled' => true],
             'form' => ['enabled' => true],
-            'session' => ['handler_id' => null, 'storage_id' => 'session.storage.mock_file', 'name' => 'MOCKSESSID'],
-            'templating' => ['engine' => ['twig']],
+            'session' => ['handler_id' => 'session.handler.native_file', 'storage_id' => 'session.storage.mock_file', 'name' => 'MOCKSESSID'],
+            'assets' => null,
             'test' => true,
         ]);
 
         $containerBuilder->loadFromExtension('security', [
             'firewalls' => ['main' => ['anonymous' => true]],
             'providers' => ['in_memory' => ['memory' => null]],
+        ]);
+
+        $containerBuilder->loadFromExtension('twig', [
+            'strict_variables' => '%kernel.debug%',
+            'exception_controller' => null,
         ]);
 
         $loader->load($this->getProjectDir().'/config/services.yml');

@@ -60,6 +60,7 @@ class ListMapperTest extends TestCase
                 BaseFieldDescription $fieldDescription,
                 AbstractAdmin $admin
             ): void {
+                $fieldDescription->setType($type);
                 $list->add($fieldDescription);
             });
 
@@ -87,7 +88,7 @@ class ListMapperTest extends TestCase
 
         $this->admin
             ->method('isGranted')
-            ->willReturnCallback(static function (string $name, object $object = null): bool {
+            ->willReturnCallback(static function (string $name, ?object $object = null): bool {
                 return self::DEFAULT_GRANTED_ROLE === $name;
             });
 
@@ -168,7 +169,7 @@ class ListMapperTest extends TestCase
         $this->assertFalse($this->listMapper->has('fooName'));
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('{^Value for "identifier" option must be boolean, [^]+ given.$}');
+        $this->expectExceptionMessageMatches('/^Value for "identifier" option must be boolean, .+ given.$/');
 
         $this->listMapper->add('fooName', null, ['identifier' => $value]);
     }
@@ -298,6 +299,47 @@ class ListMapperTest extends TestCase
         }
     }
 
+    public function testAutoSortOnAssociatedProperty(): void
+    {
+        $this->listMapper->add('fooName');
+        $this->listMapper->add(
+            'fooNameAutoSort',
+            null,
+            [
+                'associated_property' => 'fooAssociatedProperty',
+            ]
+        );
+        $this->listMapper->add(
+            'fooNameManualSort',
+            null,
+            [
+                'associated_property' => 'fooAssociatedProperty',
+                'sortable' => false,
+                'sort_parent_association_mappings' => 'fooSortParentAssociationMapping',
+                'sort_field_mapping' => 'fooSortFieldMapping',
+            ]
+        );
+
+        $field = $this->listMapper->get('fooName');
+        $fieldAutoSort = $this->listMapper->get('fooNameAutoSort');
+        $fieldManualSort = $this->listMapper->get('fooNameManualSort');
+
+        $this->assertNull($field->getOption('associated_property'));
+        $this->assertNull($field->getOption('sortable'));
+        $this->assertNull($field->getOption('sort_parent_association_mappings'));
+        $this->assertNull($field->getOption('sort_field_mapping'));
+
+        $this->assertSame('fooAssociatedProperty', $fieldAutoSort->getOption('associated_property'));
+        $this->assertTrue($fieldAutoSort->getOption('sortable'));
+        $this->assertSame([['fieldName' => $fieldAutoSort->getName()]], $fieldAutoSort->getOption('sort_parent_association_mappings'));
+        $this->assertSame(['fieldName' => $fieldAutoSort->getOption('associated_property')], $fieldAutoSort->getOption('sort_field_mapping'));
+
+        $this->assertSame('fooAssociatedProperty', $fieldManualSort->getOption('associated_property'));
+        $this->assertFalse($fieldManualSort->getOption('sortable'));
+        $this->assertSame('fooSortParentAssociationMapping', $fieldManualSort->getOption('sort_parent_association_mappings'));
+        $this->assertSame('fooSortFieldMapping', $fieldManualSort->getOption('sort_field_mapping'));
+    }
+
     public function testKeys(): void
     {
         $fieldDescription1 = $this->getFieldDescriptionMock('fooName1', 'fooLabel1');
@@ -358,6 +400,18 @@ class ListMapperTest extends TestCase
         $this->assertTrue($this->listMapper->has('foobar'));
         $this->assertFalse($this->listMapper->has('foo'));
         $this->assertTrue($this->listMapper->has('baz'));
+    }
+
+    public function testTypeGuessActionField(): void
+    {
+        $this->listMapper->add('_action', null);
+
+        $field = $this->fieldDescriptionCollection->get('_action');
+
+        $this->assertTrue(
+            $field->isVirtual(),
+            'Failed asserting that FieldDescription with name "'.$field->getName().'" is tagged with virtual flag.'
+        );
     }
 
     private function getFieldDescriptionMock(?string $name = null, ?string $label = null): BaseFieldDescription

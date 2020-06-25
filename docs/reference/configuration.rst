@@ -92,8 +92,6 @@ Full Configuration Options
                 # Enable locking when editing an object, if the corresponding object manager supports it.
                 lock_protection: false
 
-                # Enable automatic registration of annotations with JMSDiExtraBundle
-                enable_jms_di_extra_autoregistration: true
             dashboard:
                 groups:
 
@@ -101,7 +99,7 @@ Full Configuration Options
                     id:
                         label: ~
                         label_catalogue: ~
-                        icon: '<i class="fa fa-folder"></i>'
+                        icon: ~
                         provider: ~
                         items:
                             admin: ~

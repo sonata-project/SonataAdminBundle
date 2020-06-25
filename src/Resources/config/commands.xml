@@ -12,11 +12,6 @@
             <argument type="service" id="validator"/>
             <tag name="console.command"/>
         </service>
-        <service id="Sonata\AdminBundle\Command\GenerateAdminCommand" class="Sonata\AdminBundle\Command\GenerateAdminCommand" public="true">
-            <argument type="service" id="sonata.admin.pool"/>
-            <argument type="collection"/>
-            <tag name="console.command"/>
-        </service>
         <service id="Sonata\AdminBundle\Command\GenerateObjectAclCommand" class="Sonata\AdminBundle\Command\GenerateObjectAclCommand" public="true">
             <argument type="service" id="sonata.admin.pool"/>
             <argument type="collection"/>

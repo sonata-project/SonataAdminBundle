@@ -66,6 +66,7 @@ class AuditManager implements AuditManagerInterface
             }
         }
 
+        // NEXT_MAJOR: Throw a \LogicException instead.
         throw new \RuntimeException(sprintf('The class "%s" does not have any reader manager', $class));
     }
 }

@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection;
 
-use JMS\DiExtraBundle\DependencyInjection\Configuration as JMSDiExtraBundleDependencyInjectionConfiguration;
+use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
+use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -59,15 +60,16 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         }
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('twig.xml');
-        $loader->load('core.xml');
-        $loader->load('form_types.xml');
-        $loader->load('validator.xml');
-        $loader->load('route.xml');
-        $loader->load('block.xml');
-        $loader->load('menu.xml');
-        $loader->load('commands.xml');
         $loader->load('actions.xml');
+        $loader->load('block.xml');
+        $loader->load('commands.xml');
+        $loader->load('core.xml');
+        $loader->load('event_listener.xml');
+        $loader->load('form_types.xml');
+        $loader->load('menu.xml');
+        $loader->load('route.xml');
+        $loader->load('twig.xml');
+        $loader->load('validator.xml');
 
         if (isset($bundles['MakerBundle'])) {
             $loader->load('makers.xml');
@@ -79,6 +81,8 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
+
+        $this->configureTwigTextExtension($container, $loader, $config);
 
         $config['options']['javascripts'] = $this->buildJavascripts($config);
         $config['options']['stylesheets'] = $this->buildStylesheets($config);
@@ -97,38 +101,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
         $container->setParameter('sonata.admin.configuration.global_search.empty_boxes', $config['global_search']['empty_boxes']);
         $container->setParameter('sonata.admin.configuration.global_search.case_sensitive', $config['global_search']['case_sensitive']);
-        $container->setParameter('sonata.admin.configuration.templates', $config['templates'] + [
-            'user_block' => '@SonataAdmin/Core/user_block.html.twig',
-            'add_block' => '@SonataAdmin/Core/add_block.html.twig',
-            'layout' => '@SonataAdmin/standard_layout.html.twig',
-            'ajax' => '@SonataAdmin/ajax_layout.html.twig',
-            'dashboard' => '@SonataAdmin/Core/dashboard.html.twig',
-            'list' => '@SonataAdmin/CRUD/list.html.twig',
-            'filter' => '@SonataAdmin/Form/filter_admin_fields.html.twig',
-            'show' => '@SonataAdmin/CRUD/show.html.twig',
-            'show_compare' => '@SonataAdmin/CRUD/show_compare.html.twig',
-            'edit' => '@SonataAdmin/CRUD/edit.html.twig',
-            'history' => '@SonataAdmin/CRUD/history.html.twig',
-            'history_revision_timestamp' => '@SonataAdmin/CRUD/history_revision_timestamp.html.twig',
-            'acl' => '@SonataAdmin/CRUD/acl.html.twig',
-            'action' => '@SonataAdmin/CRUD/action.html.twig',
-            'short_object_description' => '@SonataAdmin/Helper/short-object-description.html.twig',
-            'preview' => '@SonataAdmin/CRUD/preview.html.twig',
-            'list_block' => '@SonataAdmin/Block/block_admin_list.html.twig',
-            'delete' => '@SonataAdmin/CRUD/delete.html.twig',
-            'batch' => '@SonataAdmin/CRUD/list__batch.html.twig',
-            'select' => '@SonataAdmin/CRUD/list__select.html.twig',
-            'batch_confirmation' => '@SonataAdmin/CRUD/batch_confirmation.html.twig',
-            'inner_list_row' => '@SonataAdmin/CRUD/list_inner_row.html.twig',
-            'base_list_field' => '@SonataAdmin/CRUD/base_list_field.html.twig',
-            'pager_links' => '@SonataAdmin/Pager/links.html.twig',
-            'pager_results' => '@SonataAdmin/Pager/results.html.twig',
-            'tab_menu_template' => '@SonataAdmin/Core/tab_menu_template.html.twig',
-            'knp_menu_template' => '@SonataAdmin/Menu/sonata_menu.html.twig',
-            'outer_list_rows_mosaic' => '@SonataAdmin/CRUD/list_outer_rows_mosaic.html.twig',
-            'outer_list_rows_list' => '@SonataAdmin/CRUD/list_outer_rows_list.html.twig',
-            'outer_list_rows_tree' => '@SonataAdmin/CRUD/list_outer_rows_tree.html.twig',
-        ]);
+        $container->setParameter('sonata.admin.configuration.templates', $config['templates']);
         $container->setParameter('sonata.admin.configuration.admin_services', $config['admin_services']);
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
         $container->setParameter('sonata.admin.configuration.dashboard_blocks', $config['dashboard']['blocks']);
@@ -210,7 +183,7 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
             $container->removeDefinition('sonata.admin.translator.extractor.jms_translator_bundle');
         }
 
-        //remove non-Mopa compatibility layer
+        // remove non-Mopa compatibility layer
         if (isset($bundles['MopaBootstrapBundle'])) {
             $container->removeDefinition('sonata.admin.form.extension.field.mopa');
         }
@@ -224,66 +197,17 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
         $container->setParameter('sonata.admin.configuration.translate_group_label', $config['translate_group_label']);
 
         $this->replacePropertyAccessor($container);
+
+        $container
+            ->registerForAutoconfiguration(ModelManagerInterface::class)
+            ->addTag(ModelManagerCompilerPass::MANAGER_TAG);
     }
 
     /**
      * Allow an extension to prepend the extension configurations.
-     *
-     * NEXT_MAJOR: remove all code that deals with JMSDiExtraBundle
      */
     public function prepend(ContainerBuilder $container)
     {
-        $bundles = $container->getParameter('kernel.bundles');
-
-        if (!isset($bundles['JMSDiExtraBundle'])) {
-            return;
-        }
-
-        $configs = $container->getExtensionConfig($this->getAlias());
-        $config = $this->processConfiguration(new Configuration(), $configs);
-        if (!$config['options']['enable_jms_di_extra_autoregistration']) {
-            return;
-        }
-
-        $sonataAdminPattern = 'Sonata\AdminBundle\Annotation';
-        $annotationPatternsConfigured = false;
-
-        $diExtraConfigs = $container->getExtensionConfig('jms_di_extra');
-        foreach ($diExtraConfigs as $diExtraConfig) {
-            if (isset($diExtraConfig['annotation_patterns'])) {
-                // don't add our own pattern if user has already done so
-                if (false !== array_search($sonataAdminPattern, $diExtraConfig['annotation_patterns'], true)) {
-                    return;
-                }
-                $annotationPatternsConfigured = true;
-
-                break;
-            }
-        }
-
-        @trigger_error(
-            'Automatic registration of annotations is deprecated since 3.14, to be removed in 4.0.',
-            E_USER_DEPRECATED
-        );
-
-        if ($annotationPatternsConfigured) {
-            $annotationPatterns = [$sonataAdminPattern];
-        } else {
-            // get annotation_patterns default from DiExtraBundle configuration
-            $diExtraConfigDefinition = new JMSDiExtraBundleDependencyInjectionConfiguration();
-            // FIXME: this will break if DiExtraBundle adds any mandatory configuration
-            $diExtraConfig = $this->processConfiguration($diExtraConfigDefinition, []);
-
-            $annotationPatterns = $diExtraConfig['annotation_patterns'];
-            $annotationPatterns[] = $sonataAdminPattern;
-        }
-
-        $container->prependExtensionConfig(
-            'jms_di_extra',
-            [
-                'annotation_patterns' => $annotationPatterns,
-            ]
-        );
     }
 
     /**
@@ -343,5 +267,20 @@ class SonataAdminExtension extends Extension implements PrependExtensionInterfac
 
         $modelChoice = $container->getDefinition('sonata.admin.form.type.model_choice');
         $modelChoice->replaceArgument(0, new Reference('form.property_accessor'));
+    }
+
+    /**
+     * NEXT_MAJOR: remove this method.
+     */
+    private function configureTwigTextExtension(ContainerBuilder $container, XmlFileLoader $loader, array $config): void
+    {
+        $container->setParameter('sonata.admin.configuration.legacy_twig_text_extension', $config['options']['legacy_twig_text_extension']);
+        $loader->load('twig_string.xml');
+
+        if (false !== $config['options']['legacy_twig_text_extension']) {
+            $container
+                ->getDefinition('sonata.string.twig.extension')
+                ->replaceArgument(0, new Reference('sonata.deprecated_text.twig.extension'));
+        }
     }
 }

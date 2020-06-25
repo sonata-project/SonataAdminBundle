@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Exception\NoValueException;
 
 /**
@@ -109,15 +109,15 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * @var AdminInterface|null the parent Admin instance
      */
-    protected $parent = null;
+    protected $parent;
 
     /**
-     * @var AdminInterface the related admin instance
+     * @var AdminInterface|null the related admin instance
      */
     protected $admin;
 
     /**
-     * @var AdminInterface the associated admin class if the object is associated to another entity
+     * @var AdminInterface|null the associated admin class if the object is associated to another entity
      */
     protected $associationAdmin;
 
@@ -209,6 +209,13 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getTemplate()
     {
+        if (null !== $this->template && !\is_string($this->template) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'Returning other type than string or null in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only those types in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
         return $this->template;
     }
 
@@ -229,7 +236,26 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getParent()
     {
+        if (!$this->hasParent()) {
+            @trigger_error(
+                sprintf(
+                    'Calling %s() when there is no parent is deprecated since sonata-project/admin-bundle 3.69'
+                    .' and will throw an exception in 4.0. Use %s::hasParent() to know if there is a parent.',
+                    __METHOD__,
+                    __CLASS__
+                ),
+                E_USER_DEPRECATED
+            );
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
+            // throw new \LogicException(sprintf('%s has no parent.', static::class));
+        }
+
         return $this->parent;
+    }
+
+    public function hasParent()
+    {
+        return null !== $this->parent;
     }
 
     public function getAssociationMapping()
@@ -255,6 +281,20 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getAssociationAdmin()
     {
+        if (!$this->hasAssociationAdmin()) {
+            @trigger_error(
+                sprintf(
+                    'Calling %s() when there is no association admin is deprecated since sonata-project/admin-bundle 3.69'
+                    .' and will throw an exception in 4.0. Use %s::hasAssociationAdmin() to know if there is an association admin.',
+                    __METHOD__,
+                    __CLASS__
+                ),
+                E_USER_DEPRECATED
+            );
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
+            // throw new \LogicException(sprintf('%s has no association admin.', static::class));
+        }
+
         return $this->associationAdmin;
     }
 
@@ -286,7 +326,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                 return $this->callCachedGetter($object, $fieldName, $parameters);
             }
 
-            $camelizedFieldName = Inflector::classify($fieldName);
+            $camelizedFieldName = InflectorFactory::create()->build()->classify($fieldName);
 
             $getters[] = 'get'.$camelizedFieldName;
             $getters[] = 'is'.$camelizedFieldName;
@@ -313,7 +353,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             return $object->{$fieldName};
         }
 
-        throw new NoValueException(sprintf('Unable to retrieve the value of `%s`', $this->getName()));
+        throw new NoValueException(sprintf(
+            'Neither the property "%s" nor one of the methods "%s()" exist and have public access in class "%s".',
+            $this->getName(),
+            implode('()", "', $getters),
+            \get_class($object)
+        ));
     }
 
     public function setAdmin(AdminInterface $admin)
@@ -323,7 +368,26 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getAdmin()
     {
+        if (!$this->hasAdmin()) {
+            @trigger_error(
+                sprintf(
+                    'Calling %s() when there is no admin is deprecated since sonata-project/admin-bundle 3.69'
+                    .' and will throw an exception in 4.0. Use %s::hasAdmin() to know if there is an admin.',
+                    __METHOD__,
+                    __CLASS__
+                ),
+                E_USER_DEPRECATED
+            );
+            // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
+            // throw new \LogicException(sprintf('%s has no admin.', static::class));
+        }
+
         return $this->admin;
+    }
+
+    public function hasAdmin()
+    {
+        return null !== $this->admin;
     }
 
     public function mergeOption($name, array $options = [])
@@ -365,20 +429,20 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      *
      * @return string
      *
-     * @deprecated since sonata-project/admin-bundle 3.1. Use \Doctrine\Common\Inflector\Inflector::classify() instead
+     * @deprecated since sonata-project/admin-bundle 3.1. Use \Doctrine\Inflector\Inflector::classify() instead
      */
     public static function camelize($property)
     {
         @trigger_error(
             sprintf(
                 'The %s method is deprecated since 3.1 and will be removed in 4.0. '.
-                'Use \Doctrine\Common\Inflector\Inflector::classify() instead.',
+                'Use \Doctrine\Inflector\Inflector::classify() instead.',
                 __METHOD__
             ),
             E_USER_DEPRECATED
         );
 
-        return Inflector::classify($property);
+        return InflectorFactory::create()->build()->classify($property);
     }
 
     /**
@@ -398,7 +462,15 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getLabel()
     {
-        return $this->getOption('label');
+        $label = $this->getOption('label');
+        if (null !== $label && false !== $label && !\is_string($label) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'Returning other type than string, false or null in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only those types in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
+        return $label;
     }
 
     public function isSortable()
