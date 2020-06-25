@@ -544,7 +544,7 @@ var Admin = {
         return '100%';
     },
 
-    setup_sortable_select2: function(subject, data, options) {
+    setup_sortable_select2: function(subject, data, customOptions) {
         var transformedData = [];
         for (var i = 0 ; i < data.length ; i++) {
             transformedData[i] = {id: data[i].data, text: data[i].label};
@@ -559,7 +559,7 @@ var Admin = {
             dropdownAutoWidth: true,
             data: transformedData,
             multiple: true
-        }, options);
+        }, customOptions);
 
         subject.select2(options);
 
