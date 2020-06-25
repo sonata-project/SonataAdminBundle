@@ -18,6 +18,8 @@ use Sonata\AdminBundle\SonataAdminBundle;
 use Sonata\BlockBundle\SonataBlockBundle;
 use Sonata\CoreBundle\SonataCoreBundle;
 use Sonata\Doctrine\Bridge\Symfony\Bundle\SonataDoctrineBundle;
+use Sonata\Form\Bridge\Symfony\SonataFormBundle;
+use Sonata\Twig\Bridge\Symfony\SonataTwigBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
@@ -39,17 +41,24 @@ final class AppKernel extends Kernel
 
     public function registerBundles()
     {
-        return [
+        $bundles = [
             new FrameworkBundle(),
             new TwigBundle(),
             new TwigExtraBundle(),
             new SecurityBundle(),
             new KnpMenuBundle(),
             new SonataBlockBundle(),
-            new SonataCoreBundle(),
             new SonataDoctrineBundle(),
             new SonataAdminBundle(),
+            new SonataTwigBundle(),
+            new SonataFormBundle(),
         ];
+
+        if (class_exists(SonataCoreBundle::class)) {
+            $bundles[] = new SonataCoreBundle();
+        }
+
+        return $bundles;
     }
 
     public function getCacheDir(): string
