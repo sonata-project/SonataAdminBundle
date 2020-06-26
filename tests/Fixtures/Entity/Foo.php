@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 class Foo
 {
     public $qux;
+
     private $bar;
 
     private $baz;
