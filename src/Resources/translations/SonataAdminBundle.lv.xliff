@@ -172,7 +172,9 @@
             </trans-unit>
             <trans-unit id="flash_lock_error">
                 <source>flash_lock_error</source>
-                <target>Cits lietotājs ir modificējis objektu "%name%". Lūdzu, %link_start%click here%link_end%, lai pārlādētu lapu un pielietotu izmaiņas vēlreiz.</target>
+                <target>Cits lietotājs ir modificējis objektu "%name%". Lūdzu, %link_start%click here%link_end%, lai
+                    pārlādētu lapu un pielietotu izmaiņas vēlreiz.
+                </target>
             </trans-unit>
             <trans-unit id="flash_batch_delete_success">
                 <source>flash_batch_delete_success</source>
@@ -485,6 +487,14 @@
             <trans-unit id="read_less">
                 <source>read_less</source>
                 <target>Aizvērt</target>
+            </trans-unit>
+            <trans-unit id="label_type_starts_with">
+                <source>label_type_starts_with</source>
+                <target>sākas ar</target>
+            </trans-unit>
+            <trans-unit id="label_type_ends_with">
+                <source>label_type_ends_with</source>
+                <target>beidzas ar</target>
             </trans-unit>
             <trans-unit id="toggle_navigation">
                 <source>toggle_navigation</source>

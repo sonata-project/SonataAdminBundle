@@ -491,6 +491,14 @@
                 <source>toggle_navigation</source>
                 <target>Alternar de navegação</target>
             </trans-unit>
+            <trans-unit id="label_type_starts_with">
+                <source>label_type_starts_with</source>
+                <target>começa com</target>
+            </trans-unit>
+            <trans-unit id="label_type_ends_with">
+                <source>label_type_ends_with</source>
+                <target>termina com</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
