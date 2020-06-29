@@ -20,6 +20,7 @@ use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\TwigStringExtensionCompilerPass;
 use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
 use Sonata\AdminBundle\Form\Type\CollectionType;
@@ -36,6 +37,7 @@ use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Form\Type\ModelReferenceType;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\CoreBundle\Form\FormHelper;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -52,6 +54,7 @@ class SonataAdminBundle extends Bundle
         $container->addCompilerPass(new GlobalVariablesCompilerPass());
         $container->addCompilerPass(new ModelManagerCompilerPass());
         $container->addCompilerPass(new ObjectAclManipulatorCompilerPass());
+        $container->addCompilerPass(new TwigStringExtensionCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 1);
 
         $this->registerFormMapping();
     }

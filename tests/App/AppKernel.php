@@ -28,7 +28,6 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
-use Twig\Extra\TwigExtraBundle\TwigExtraBundle;
 
 final class AppKernel extends Kernel
 {
@@ -44,7 +43,6 @@ final class AppKernel extends Kernel
         $bundles = [
             new FrameworkBundle(),
             new TwigBundle(),
-            new TwigExtraBundle(),
             new SecurityBundle(),
             new KnpMenuBundle(),
             new SonataBlockBundle(),
