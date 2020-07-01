@@ -10,3 +10,5 @@ chmod u+x "${HOME}/bin/coveralls"
 pecl install pcov
 
 composer update --prefer-dist --no-interaction --prefer-stable ${COMPOSER_FLAGS}
+
+make yarn-build

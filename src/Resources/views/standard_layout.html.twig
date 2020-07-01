@@ -23,9 +23,17 @@ file that was distributed with this source code.
 {% set _list_filters_actions = block('list_filters_actions') is defined ? block('list_filters_actions')|trim : null -%}
 {% set _use_select2 = sonata_admin.adminPool.getOption('use_select2') %}
 {% set _use_icheck = sonata_admin.adminPool.getOption('use_icheck') %}
+{% set _use_webpack = sonata_admin.adminPool.getOption('use_webpack') %}
 
 <!DOCTYPE html>
-<html {% block html_attributes %}class="no-js"{% endblock %}>
+
+<html {% block html_attributes %}class="no-js"{% endblock %}
+{% if _use_webpack %}
+    momentLocale="{{ canonicalize_locale_for_moment() }}"
+    select2Locale="{{ canonicalize_locale_for_select2() }}"
+    lang="en"
+{% endif %}
+>
     <head>
         {% block meta_tags %}
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -48,9 +56,15 @@ file that was distributed with this source code.
         >
 
         {% block stylesheets %}
-            {% for stylesheet in sonata_admin.adminPool.getOption('stylesheets', []) %}
-                <link rel="stylesheet" href="{{ asset(stylesheet) }}">
-            {% endfor %}
+            {% if _use_webpack %}
+                {% for name, path in sonata_admin_webpack_entries %}
+                    {{ encore_entry_link_tags(name, null, name) }}
+                {% endfor %}
+            {% else %}
+                {% for stylesheet in sonata_admin.adminPool.getOption('stylesheets', []) %}
+                    <link rel="stylesheet" href="{{ asset(stylesheet) }}">
+                {% endfor %}
+            {% endif %}
         {% endblock %}
 
         {% block javascripts %}
@@ -58,28 +72,38 @@ file that was distributed with this source code.
             {% endblock %}
 
             {% block sonata_javascript_pool %}
-                {% for javascript in sonata_admin.adminPool.getOption('javascripts', []) %}
-                    <script src="{{ asset(javascript) }}"></script>
-                {% endfor %}
+                {% if _use_webpack %}
+                    {% for name, path in sonata_admin_webpack_entries %}
+                        {{ encore_entry_script_tags(name, null, name) }}
+                    {% endfor %}
+                {% else %}
+                    {% for javascript in sonata_admin.adminPool.getOption('javascripts', []) %}
+                        <script src="{{ asset(javascript) }}"></script>
+                    {% endfor %}
+                {% endif %}
             {% endblock %}
 
-            {# localize moment #}
-            {% set localeForMoment = canonicalize_locale_for_moment() %}
-            {% if localeForMoment %}
-                <script src="{{ asset(
-                    'bundles/sonatacore/vendor/moment/locale/' ~
-                    localeForMoment ~
-                    '.js'
-                ) }}"></script>
-            {% endif %}
+            {% if not _use_webpack %}
+                {# localize moment #}
+                {% set localeForMoment = canonicalize_locale_for_moment() %}
+                {% if localeForMoment %}
+                    <script src="{{ asset(
+                        'bundles/sonatacore/vendor/moment/locale/' ~
+                        localeForMoment ~
+                        '.js'
+                    ) }}"></script>
+                {% endif %}
 
-            {# localize select2 #}
-            {% if sonata_admin.adminPool.getOption('use_select2') %}
-                {% set localeForSelect2 = canonicalize_locale_for_select2() %}
-                {% if localeForSelect2 %}
-                    <script src="{{ asset('bundles/sonatacore/vendor/select2/select2_locale_' ~ localeForSelect2 ~ '.js') }}"></script>
+                {# localize select2 #}
+                {% if sonata_admin.adminPool.getOption('use_select2') %}
+                    {% set localeForSelect2 = canonicalize_locale_for_select2() %}
+                    {% if localeForSelect2 %}
+                        <script src="{{ asset('bundles/sonatacore/vendor/select2/select2_locale_' ~ localeForSelect2 ~ '.js') }}"></script>
+                    {% endif %}
                 {% endif %}
             {% endif %}
+
+
         {% endblock %}
 
         <title>

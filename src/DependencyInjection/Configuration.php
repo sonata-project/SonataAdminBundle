@@ -131,6 +131,7 @@ CASESENSITIVE;
                         ->booleanNode('sort_admins')->defaultFalse()->info('Auto order groups and admins by label or id')->end()
                         ->booleanNode('confirm_exit')->defaultTrue()->end()
                         ->booleanNode('js_debug')->defaultFalse()->end()
+                        ->booleanNode('use_webpack')->defaultFalse()->end()
                         ->booleanNode('use_select2')->defaultTrue()->end()
                         ->booleanNode('use_icheck')->defaultTrue()->end()
                         ->booleanNode('use_bootlint')->defaultFalse()->end()
