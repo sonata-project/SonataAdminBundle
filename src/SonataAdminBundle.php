@@ -56,7 +56,6 @@ class SonataAdminBundle extends Bundle
         $container->addCompilerPass(new ModelManagerCompilerPass());
         $container->addCompilerPass(new ObjectAclManipulatorCompilerPass());
         $container->addCompilerPass(new TwigStringExtensionCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 1);
-        $container->addCompilerPass(new WebpackEntriesCompilerPass());
 
         $this->registerFormMapping();
     }

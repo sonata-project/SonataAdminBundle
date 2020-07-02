@@ -38,7 +38,7 @@ class SonataAdminBundleTest extends TestCase
             ->setMethods(['addCompilerPass'])
             ->getMock();
 
-        $containerBuilder->expects($this->exactly(8))
+        $containerBuilder->expects($this->exactly(7))
             ->method('addCompilerPass')
             ->willReturnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION): void {
                 if ($pass instanceof AddDependencyCallsCompilerPass) {
@@ -66,10 +66,6 @@ class SonataAdminBundleTest extends TestCase
                 }
 
                 if ($pass instanceof TwigStringExtensionCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof WebpackEntriesCompilerPass) {
                     return;
                 }
 
