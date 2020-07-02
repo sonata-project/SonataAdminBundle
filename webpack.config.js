@@ -8,7 +8,7 @@ Encore
   .setOutputPath('src/Resources/public/dist')
   .setPublicPath('/bundles/sonataadmin/dist')
   .setManifestKeyPrefix('dist')
-  .addEntry('sonata_admin', './src/Resources/public/js/sonata_admin.js')
+  .addEntry('sonata_admin_app', './src/Resources/public/js/sonata_admin.js')
   .autoProvidejQuery()
   .enableSassLoader()
   .enableSourceMaps(!Encore.isProduction())
@@ -27,4 +27,7 @@ Encore
   .addPlugin(new webpack.optimize.LimitChunkCountPlugin({maxChunks: 1}), PluginPriorities.DefinePlugin)
 ;
 
-module.exports = Encore.getWebpackConfig();
+const sonataAdminConfig = Encore.getWebpackConfig();
+sonataAdminConfig.name = 'sonataAdminConfig';
+
+module.exports = [sonataAdminConfig];

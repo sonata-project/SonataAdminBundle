@@ -54,7 +54,6 @@
         "symfony/twig-bridge": "^4.3",
         "symfony/twig-bundle": "^4.3",
         "symfony/validator": "^4.3",
-        "symfony/webpack-encore-bundle": "^1.7",
         "twig/string-extra": "^3.0",
         "twig/twig": "^2.12.1"
     },
@@ -82,6 +81,7 @@
     "suggest": {
         "jms/translation-bundle": "Extract message keys from Admins",
         "kunicmarko/sonata-auto-configure-bundle": "Auto configures Admin classes",
+        "symfony/webpack-encore-bundle": "^1.7",
         "twig/extra-bundle": "Auto configures the Twig Intl extension"
     },
     "config": {

@@ -57,9 +57,7 @@ file that was distributed with this source code.
 
         {% block stylesheets %}
             {% if _use_webpack %}
-                {% for name, path in sonata_admin_webpack_entries %}
-                    {{ encore_entry_link_tags(name, null, name) }}
-                {% endfor %}
+                {{ encore_entry_link_tags('sonata_admin_app', null, 'sonataAadminConfig') }}
             {% else %}
                 {% for stylesheet in sonata_admin.adminPool.getOption('stylesheets', []) %}
                     <link rel="stylesheet" href="{{ asset(stylesheet) }}">
@@ -73,9 +71,7 @@ file that was distributed with this source code.
 
             {% block sonata_javascript_pool %}
                 {% if _use_webpack %}
-                    {% for name, path in sonata_admin_webpack_entries %}
-                        {{ encore_entry_script_tags(name, null, name) }}
-                    {% endfor %}
+                    {{ encore_entry_script_tags('sonata_admin_app', null, 'sonataAadminConfig') }}
                 {% else %}
                     {% for javascript in sonata_admin.adminPool.getOption('javascripts', []) %}
                         <script src="{{ asset(javascript) }}"></script>
