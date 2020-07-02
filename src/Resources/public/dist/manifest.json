@@ -1,6 +1,6 @@
 {
-  "dist/sonata_admin.css": "/bundles/sonataadmin/dist/sonata_admin.css",
-  "dist/sonata_admin.js": "/bundles/sonataadmin/dist/sonata_admin.js",
+  "dist/sonata_admin_app.css": "/bundles/sonataadmin/dist/sonata_admin_app.css",
+  "dist/sonata_admin_app.js": "/bundles/sonataadmin/dist/sonata_admin_app.js",
   "dist/fonts/fontawesome-webfont.eot": "/bundles/sonataadmin/dist/fonts/fontawesome-webfont.674f50d2.eot",
   "dist/fonts/fontawesome-webfont.woff2?v=4.7.0": "/bundles/sonataadmin/dist/fonts/fontawesome-webfont.af7ae505.woff2",
   "dist/fonts/fontawesome-webfont.ttf?v=4.7.0": "/bundles/sonataadmin/dist/fonts/fontawesome-webfont.b06871f2.ttf",
