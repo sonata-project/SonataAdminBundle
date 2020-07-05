@@ -89,7 +89,7 @@ final class RetrieveAutocompleteItemsAction
             $targetAdminAccessAction = $formAutocompleteConfig->getAttribute('target_admin_access_action');
         }
 
-        $searchText = $request->get('q');
+        $searchText = $request->get('q', '');
 
         $targetAdmin = $fieldDescription->getAssociationAdmin();
 
