@@ -1,6 +1,9 @@
 UPGRADE 3.x
 ===========
 
+UPGRADE FROM 3.68 to 3.69
+=========================
+
 ## Deprecated `sonata_truncate` Twig filter
 
 This filter has been deprecated in favor of the [`u` filter](https://twig.symfony.com/doc/2.x/filters/u.html):
