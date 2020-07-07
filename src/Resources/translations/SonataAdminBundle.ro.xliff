@@ -490,6 +490,14 @@
                 <source>toggle_navigation</source>
                 <target>Comutare navigare</target>
             </trans-unit>
+            <trans-unit id="label_type_starts_with">
+                <source>label_type_starts_with</source>
+                <target>incepe cu</target>
+            </trans-unit>
+            <trans-unit id="label_type_ends_with">
+                <source>label_type_ends_with</source>
+                <target>se termină cu</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

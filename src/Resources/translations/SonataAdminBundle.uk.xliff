@@ -490,6 +490,14 @@
                 <source>toggle_navigation</source>
                 <target>Увімкнути навігацію</target>
             </trans-unit>
+            <trans-unit id="label_type_starts_with">
+                <source>label_type_starts_with</source>
+                <target>починається з</target>
+            </trans-unit>
+            <trans-unit id="label_type_ends_with">
+                <source>label_type_ends_with</source>
+                <target>закінчується на</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

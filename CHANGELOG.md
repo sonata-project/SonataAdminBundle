@@ -2,6 +2,27 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.71.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.71.0...3.71.1) - 2020-06-30
+### Changed
+- [[#6170](https://github.com/sonata-project/SonataAdminBundle/pull/6170)] Move
+  `twig/extra-bundle` from `require` to `suggest`
+([@wbloszyk](https://github.com/wbloszyk))
+
+### Fixed
+- [[#6170](https://github.com/sonata-project/SonataAdminBundle/pull/6170)] Fix
+  error with missing `u` filter when `twig/extra-bundle` is not registred
+([@wbloszyk](https://github.com/wbloszyk))
+
+## [3.71.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.70.1...3.71.0) - 2020-06-28
+### Added
+- [[#6134](https://github.com/sonata-project/SonataAdminBundle/pull/6134)]
+  Added `StringOperatorType`
+([@napestershine](https://github.com/napestershine))
+
+### Fixed
+- [[#6168](https://github.com/sonata-project/SonataAdminBundle/pull/6168)] Fix
+  unit tests ([@peter-gribanov](https://github.com/peter-gribanov))
+
 ## [3.70.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.70.0...3.70.1) - 2020-06-21
 ### Fixed
 - Allow `null` argument for `StringExtension` constructor

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures;
 
+use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormTypeExtensionInterface;
 use Symfony\Component\Form\FormTypeGuesserInterface;
@@ -24,19 +25,23 @@ class TestExtension implements FormExtensionInterface
     private $extensions = [];
     private $guesser;
 
-    public function __construct(FormTypeGuesserInterface $guesser)
+    public function __construct(?FormTypeGuesserInterface $guesser)
     {
         $this->guesser = $guesser;
     }
 
-    public function addType(FormTypeInterface $type)
+    public function addType(FormTypeInterface $type): void
     {
         $this->types[\get_class($type)] = $type;
     }
 
     public function getType($name): FormTypeInterface
     {
-        return isset($this->types[$name]) ? $this->types[$name] : null;
+        if (!isset($this->types[$name])) {
+            throw new InvalidArgumentException(sprintf('Type "%s" is not supported.', $name));
+        }
+
+        return $this->types[$name];
     }
 
     public function hasType($name): bool
@@ -44,7 +49,7 @@ class TestExtension implements FormExtensionInterface
         return isset($this->types[$name]);
     }
 
-    public function addTypeExtension(FormTypeExtensionInterface $extension)
+    public function addTypeExtension(FormTypeExtensionInterface $extension): void
     {
         foreach ($extension::getExtendedTypes() as $type) {
             if (!isset($this->extensions[$type])) {
@@ -57,7 +62,7 @@ class TestExtension implements FormExtensionInterface
 
     public function getTypeExtensions($name): array
     {
-        return isset($this->extensions[$name]) ? $this->extensions[$name] : [];
+        return $this->extensions[$name] ?? [];
     }
 
     public function hasTypeExtensions($name): bool
