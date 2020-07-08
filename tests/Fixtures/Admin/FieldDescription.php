@@ -27,6 +27,11 @@ class FieldDescription extends BaseFieldDescription
         // TODO: Implement getTargetEntity() method.
     }
 
+    public function getTargetModel(): ?string
+    {
+        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
+    }
+
     public function setFieldMapping($fieldMapping): void
     {
         // TODO: Implement setFieldMapping() method.

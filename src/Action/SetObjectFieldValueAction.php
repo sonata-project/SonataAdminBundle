@@ -132,7 +132,7 @@ final class SetObjectFieldValueAction
         if ('' !== $value
             && 'choice' === $fieldDescription->getType()
             && null !== $fieldDescription->getOption('class')
-            && $fieldDescription->getOption('class') === $fieldDescription->getTargetEntity()
+            && $fieldDescription->getOption('class') === $fieldDescription->getTargetModel()
         ) {
             $value = $admin->getModelManager()->find($fieldDescription->getOption('class'), $value);
 
