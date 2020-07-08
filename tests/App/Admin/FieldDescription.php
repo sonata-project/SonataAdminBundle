@@ -26,6 +26,11 @@ final class FieldDescription extends BaseFieldDescription
         return null;
     }
 
+    public function getTargetModel()
+    {
+        return null;
+    }
+
     public function setFieldMapping($fieldMapping)
     {
     }
