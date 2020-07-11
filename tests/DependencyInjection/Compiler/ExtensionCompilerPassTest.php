@@ -254,6 +254,7 @@ class ExtensionCompilerPassTest extends TestCase
         $this->assertTrue($container->hasDefinition('sonata_post_admin'));
         $this->assertTrue($container->hasDefinition('sonata_article_admin'));
         $this->assertTrue($container->hasDefinition('sonata_news_admin'));
+        $this->assertTrue($container->hasDefinition('sonata_admin_without_entity'));
 
         $securityExtension = $container->get('sonata_extension_security');
         $publishExtension = $container->get('sonata_extension_publish');
@@ -285,6 +286,11 @@ class ExtensionCompilerPassTest extends TestCase
         $this->assertSame($securityExtension, $extensions[1]);
         $this->assertSame($filterExtension, $extensions[2]);
         $this->assertSame($orderExtension, $extensions[4]);
+
+        $def = $container->get('sonata_admin_without_entity');
+        $extensions = $def->getExtensions();
+        $this->assertCount(2, $extensions);
+        $this->assertSame($securityExtension, $extensions[0]);
     }
 
     /**
@@ -410,6 +416,12 @@ class ExtensionCompilerPassTest extends TestCase
             ->setPublic(true)
             ->setClass(MockAdmin::class)
             ->setArguments(['', Article::class, CRUDController::class])
+            ->addTag('sonata.admin');
+        $container
+            ->register('sonata_admin_without_entity')
+            ->setPublic(true)
+            ->setClass(MockAdmin::class)
+            ->setArguments(['', null, CRUDController::class])
             ->addTag('sonata.admin');
         $container
             ->register('event_dispatcher')
