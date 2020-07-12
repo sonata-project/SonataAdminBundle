@@ -15,8 +15,14 @@ namespace Sonata\AdminBundle\Tests\App\Model;
 
 final class Foo
 {
+    /**
+     * @var string
+     */
     private $id;
 
+    /**
+     * @var string
+     */
     private $name;
 
     public function __construct(string $id, string $name)
