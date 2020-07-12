@@ -35,8 +35,7 @@ file that was distributed with this source code.
 
         {{ sonata_block_render_event('sonata.admin.show.top', { 'admin': admin, 'object': object }) }}
 
-        {# NEXT_MAJOR: Remove the sonata_deprecation_mute param. #}
-        {% set showtabs = admin.getshowtabs('sonata_deprecation_mute') %}
+        {% set showtabs = admin.getshowtabs() %}
         {% set has_tab = (showtabs|length == 1 and showtabs|keys[0] != 'default') or showtabs|length > 1 %}
 
         {% if has_tab %}

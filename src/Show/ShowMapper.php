@@ -82,8 +82,7 @@ class ShowMapper extends BaseGroupedMapper
 
         $this->addFieldToCurrentGroup($fieldKey);
 
-        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
-        if (null === $fieldDescription->getLabel('sonata_deprecation_mute')) {
+        if (null === $fieldDescription->getLabel()) {
             $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
         }
 
@@ -169,9 +168,7 @@ class ShowMapper extends BaseGroupedMapper
 
     protected function getGroups(): array
     {
-        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
-
-        return $this->admin->getShowGroups('sonata_deprecation_mute');
+        return $this->admin->getShowGroups();
     }
 
     protected function setGroups(array $groups): void
@@ -181,9 +178,7 @@ class ShowMapper extends BaseGroupedMapper
 
     protected function getTabs(): array
     {
-        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
-
-        return $this->admin->getShowTabs('sonata_deprecation_mute');
+        return $this->admin->getShowTabs();
     }
 
     protected function setTabs(array $tabs): void

@@ -457,7 +457,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Adds a new class to a list of supported sub classes.
      *
-     * @param $subClass
+     * @param string $subClass
      */
     public function addSubClass($subClass): void;
 

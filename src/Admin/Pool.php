@@ -305,9 +305,6 @@ class Pool
         return $admin;
     }
 
-    /**
-     * @return ContainerInterface|null
-     */
     public function getContainer(): ContainerInterface
     {
         return $this->container;

@@ -1442,8 +1442,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function reorderFormGroup(string $group, array $keys): void
     {
-        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
-        $formGroups = $this->getFormGroups('sonata_deprecation_mute');
+        $formGroups = $this->getFormGroups();
         $formGroups[$group]['fields'] = array_merge(array_flip($keys), $formGroups[$group]['fields']);
         $this->setFormGroups($formGroups);
     }
@@ -1480,8 +1479,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
     public function reorderShowGroup(string $group, array $keys): void
     {
-        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
-        $showGroups = $this->getShowGroups('sonata_deprecation_mute');
+        $showGroups = $this->getShowGroups();
         $showGroups[$group]['fields'] = array_merge(array_flip($keys), $showGroups[$group]['fields']);
         $this->setShowGroups($showGroups);
     }
