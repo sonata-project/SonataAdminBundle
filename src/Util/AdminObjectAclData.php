@@ -55,7 +55,7 @@ class AdminObjectAclData
     /**
      * @var array Cache of masks
      */
-    protected $masks;
+    protected $masks = [];
 
     /**
      * @var Form

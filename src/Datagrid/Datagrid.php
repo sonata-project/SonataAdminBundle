@@ -40,7 +40,7 @@ class Datagrid implements DatagridInterface
     /**
      * @var array
      */
-    protected $values;
+    protected $values = [];
 
     /**
      * @var FieldDescriptionCollection
@@ -73,7 +73,7 @@ class Datagrid implements DatagridInterface
     protected $form;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $results;
 

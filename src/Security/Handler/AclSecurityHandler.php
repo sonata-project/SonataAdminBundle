@@ -52,17 +52,17 @@ class AclSecurityHandler implements AclSecurityHandlerInterface
     /**
      * @var array
      */
-    protected $superAdminRoles;
+    protected $superAdminRoles = [];
 
     /**
      * @var array
      */
-    protected $adminPermissions;
+    protected $adminPermissions = [];
 
     /**
      * @var array
      */
-    protected $objectPermissions;
+    protected $objectPermissions = [];
 
     /**
      * @var string

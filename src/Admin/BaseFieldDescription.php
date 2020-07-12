@@ -85,17 +85,17 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * @var array the ORM association mapping
      */
-    protected $associationMapping;
+    protected $associationMapping = [];
 
     /**
      * @var array the ORM field information
      */
-    protected $fieldMapping;
+    protected $fieldMapping = [];
 
     /**
      * @var array the ORM parent mapping association
      */
-    protected $parentAssociationMappings;
+    protected $parentAssociationMappings = [];
 
     /**
      * @var string the template name
