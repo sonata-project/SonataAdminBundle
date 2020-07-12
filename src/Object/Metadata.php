@@ -43,7 +43,7 @@ final class Metadata implements MetadataInterface
     /**
      * @var array<string, mixed>
      */
-    private $options;
+    private $options = [];
 
     /**
      * @param array<string, mixed> $options

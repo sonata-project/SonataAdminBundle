@@ -32,7 +32,7 @@ class RoleSecurityHandler implements SecurityHandlerInterface
     /**
      * @var array
      */
-    protected $superAdminRoles;
+    protected $superAdminRoles = [];
 
     /**
      * @param AuthorizationCheckerInterface $authorizationChecker

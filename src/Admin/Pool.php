@@ -71,7 +71,7 @@ class Pool
     /**
      * @var array
      */
-    protected $options;
+    protected $options = [];
 
     /**
      * @var PropertyAccessorInterface
