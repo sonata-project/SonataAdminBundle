@@ -63,7 +63,7 @@ class Pool
     /**
      * @var array
      */
-    protected $options;
+    protected $options = [];
 
     /**
      * @var PropertyAccessorInterface
@@ -215,7 +215,9 @@ class Pool
         $code = trim(array_shift($codes));
 
         if ('' === $code) {
-            throw new \InvalidArgumentException('Root admin code must contain a valid admin reference, empty string given.');
+            throw new \InvalidArgumentException(
+                'Root admin code must contain a valid admin reference, empty string given.'
+            );
         }
 
         $admin = $this->getInstance($code);

@@ -15,6 +15,9 @@ namespace Sonata\AdminBundle\Tests\App\Model;
 
 final class FooRepository
 {
+    /**
+     * @var Foo[]
+     */
     private $elements;
 
     public function __construct()

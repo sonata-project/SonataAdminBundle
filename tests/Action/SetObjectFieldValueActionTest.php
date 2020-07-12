@@ -254,7 +254,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription->getType()->willReturn('choice');
         $fieldDescription->getOption('editable')->willReturn(true);
         $fieldDescription->getOption('class')->willReturn(Bar::class);
-        $fieldDescription->getTargetEntity()->willReturn(Bar::class);
+        $fieldDescription->getTargetModel()->willReturn(Bar::class);
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
         $fieldDescription->getTemplate()->willReturn('field_template');
         $fieldDescription->getValue(Argument::cetera())->willReturn('some value');

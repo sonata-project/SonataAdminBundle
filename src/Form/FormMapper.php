@@ -34,6 +34,11 @@ class FormMapper extends BaseGroupedMapper
      */
     protected $formBuilder;
 
+    /**
+     * @var FormContractorInterface
+     */
+    protected $builder;
+
     public function __construct(
         FormContractorInterface $formContractor,
         FormBuilderInterface $formBuilder,
@@ -103,7 +108,7 @@ class FormMapper extends BaseGroupedMapper
         );
 
         // Note that the builder var is actually the formContractor:
-        $this->builder->fixFieldDescription($this->admin, $fieldDescription, $fieldDescriptionOptions);
+        $this->builder->fixFieldDescription($this->admin, $fieldDescription);
 
         if ($fieldName !== $name) {
             $fieldDescription->setName($fieldName);
@@ -185,7 +190,7 @@ class FormMapper extends BaseGroupedMapper
 
         // When the default tab is used, the tabname is not prepended to the index in the group array
         if ('default' !== $tab) {
-            $group = $tab.'.'.$group;
+            $group = sprintf('%s.%s', $tab, $group);
         }
 
         if (isset($groups[$group])) {

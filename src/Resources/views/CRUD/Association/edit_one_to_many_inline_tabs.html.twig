@@ -20,7 +20,7 @@ file that was distributed with this source code.
                                 data-toggle="tab"
                             >
                                 <i class="icon-exclamation-sign has-errors hide"></i>
-                                {{ name|trans({}, form_group.translation_domain) }}
+                                {{ form_group.label|trans({}, form_group.translation_domain|default(associationAdmin.translationDomain)) }}
                             </a>
                         </li>
                     {% endfor %}

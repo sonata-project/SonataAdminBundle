@@ -42,13 +42,18 @@ final class ModelManagerCompilerPass implements CompilerPassInterface
             }
 
             if (!is_subclass_of($definition->getClass(), ModelManagerInterface::class)) {
-                throw new LogicException(sprintf('Service "%s" must implement `%s`.', $id, ModelManagerInterface::class));
+                throw new LogicException(sprintf(
+                    'Service "%s" must implement `%s`.',
+                    $id,
+                    ModelManagerInterface::class
+                ));
             }
 
             // NEXT_MAJOR: Remove this check.
             if (!$definition->hasTag(self::MANAGER_TAG)) {
                 @trigger_error(sprintf(
-                    'Not setting the "%s" tag on the "%s" service is deprecated since sonata-project/admin-bundle 3.60.',
+                    'Not setting the "%s" tag on the "%s" service is deprecated since'
+                    .' sonata-project/admin-bundle 3.60.',
                     self::MANAGER_TAG,
                     $id
                 ), E_USER_DEPRECATED);

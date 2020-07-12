@@ -32,7 +32,7 @@ class DefaultRouteGeneratorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->cacheTempFolder = sys_get_temp_dir().'/sonata_test_route';
+        $this->cacheTempFolder = sprintf('%s/sonata_test_route', sys_get_temp_dir());
 
         $filesystem = new Filesystem();
         $filesystem->remove($this->cacheTempFolder);
@@ -89,9 +89,9 @@ class DefaultRouteGeneratorTest extends TestCase
 
                 switch ($name) {
                     case 'admin_acme_foo':
-                        return $domain.'/foo'.$params;
+                        return sprintf('%s/foo%s', $domain, $params);
                     case 'admin_acme_child_bar':
-                        return $domain.'/foo/bar'.$params;
+                        return sprintf('%s/foo/bar%s', $domain, $params);
                 }
             });
 
@@ -109,7 +109,7 @@ class DefaultRouteGeneratorTest extends TestCase
             ['/foo/bar?abc=a123&efg=e456&default_param=default_val', 'base.Code.Bar.bar', ['default_param' => 'default_val']],
             ['/foo/bar?abc=a123&efg=e456&default_param=default_val', 'base.Code.Bar.bar', ['default_param' => 'default_val'], RouterInterface::ABSOLUTE_PATH],
             [
-                self::ROUTER_DOMAIN.'/foo/bar?abc=a123&efg=e456&default_param=default_val',
+                sprintf('%s/foo/bar?abc=a123&efg=e456&default_param=default_val', self::ROUTER_DOMAIN),
                 'base.Code.Bar.bar',
                 ['default_param' => 'default_val'],
                 RouterInterface::ABSOLUTE_URL,
@@ -199,9 +199,9 @@ class DefaultRouteGeneratorTest extends TestCase
 
                 switch ($name) {
                     case 'admin_acme_foo':
-                        return '/foo'.$params;
+                        return sprintf('/foo%s', $params);
                     case 'admin_acme_child_bar':
-                        return '/foo/bar'.$params;
+                        return sprintf('/foo/bar%s', $params);
                 }
             });
 
@@ -256,9 +256,9 @@ class DefaultRouteGeneratorTest extends TestCase
 
                 switch ($name) {
                     case 'admin_acme_foo':
-                        return '/foo'.$params;
+                        return sprintf('/foo%s', $params);
                     case 'admin_acme_child_bar':
-                        return '/foo/bar'.$params;
+                        return sprintf('/foo/bar%s', $params);
                 }
             });
 
@@ -361,9 +361,9 @@ class DefaultRouteGeneratorTest extends TestCase
 
                 switch ($name) {
                     case 'admin_acme_child_bar':
-                        return '/foo/bar'.$params;
+                        return sprintf('/foo/bar%s', $params);
                     case 'admin_acme_child_standalone_bar':
-                        return '/bar'.$params;
+                        return sprintf('/bar%s', $params);
                 }
             });
 

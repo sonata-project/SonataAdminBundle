@@ -14,14 +14,17 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Admin;
 
 use Knp\Menu\FactoryInterface as MenuFactoryInterface;
+use Knp\Menu\ItemInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Object\MetadataInterface;
+use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\Exporter\Source\SourceIteratorInterface;
@@ -69,7 +72,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     public function attachAdminClass(FieldDescriptionInterface $fieldDescription): void;
 
-    public function getDatagrid(): ?DatagridInterface;
+    public function getDatagrid(): DatagridInterface;
 
     /**
      * Set base controller name.
@@ -544,8 +547,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getListMode(): string;
 
-    /*
-     * Configure buttons for an action
+    /**
+     * Configure buttons for an action.
      */
     public function getActionButtons(string $action, ?object $object = null): array;
 
@@ -591,6 +594,43 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Returns the root code.
      */
     public function getRootCode(): string;
+
+    public function setFilterPersister(?FilterPersisterInterface $filterPersister = null): void;
+
+    /**
+     * Returns the baseRoutePattern used to generate the routing information.
+     */
+    public function getBaseRoutePattern(): string;
+
+    /**
+     * Returns the baseRouteName used to generate the routing information.
+     */
+    public function getBaseRouteName(): string;
+
+    public function getSideMenu(string $action, ?self $childAdmin = null): ItemInterface;
+
+    public function addParentAssociationMapping(string $code, string $value): void;
+
+    public function getRouteGenerator(): ?RouteGeneratorInterface;
+
+    /**
+     * Returns the current child admin instance.
+     */
+    public function getCurrentChildAdmin(): ?self;
+
+    /**
+     * Returns the name of the parent related field, so the field can be use to set the default
+     * value (ie the parent object) or to filter the object.
+     */
+    public function getParentAssociationMapping(): ?string;
+
+    public function reorderFormGroup(string $group, array $keys): void;
+
+    /**
+     * This method is being called by the main admin class and the child class,
+     * the getFormBuilder is only call by the main admin class.
+     */
+    public function defineFormBuilder(FormBuilderInterface $formBuilder): void;
 }
 
 class_exists(ErrorElement::class);

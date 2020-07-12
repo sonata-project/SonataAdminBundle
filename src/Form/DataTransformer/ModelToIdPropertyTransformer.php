@@ -113,17 +113,30 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
         if ($this->multiple) {
             $isArray = \is_array($entityOrCollection);
             if (!$isArray && substr(\get_class($entityOrCollection), -1 * \strlen($this->className)) === $this->className) {
-                throw new \InvalidArgumentException('A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
-            } elseif ($isArray || ($entityOrCollection instanceof \ArrayAccess)) {
+                throw new \InvalidArgumentException(
+                    'A multiple selection must be passed a collection not a single value.'
+                    .' Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true"'
+                    .' is set for many-to-many or one-to-many relations.'
+                );
+            }
+            if ($isArray || ($entityOrCollection instanceof \ArrayAccess)) {
                 $collection = $entityOrCollection;
             } else {
-                throw new \InvalidArgumentException('A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
+                throw new \InvalidArgumentException(
+                    'A multiple selection must be passed a collection not a single value.'
+                    .' Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true"'
+                    .' is set for many-to-many or one-to-many relations.'
+                );
             }
         } else {
             if (substr(\get_class($entityOrCollection), -1 * \strlen($this->className)) === $this->className) {
                 $collection = [$entityOrCollection];
             } elseif ($entityOrCollection instanceof \ArrayAccess) {
-                throw new \InvalidArgumentException('A single selection must be passed a single value not a collection. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
+                throw new \InvalidArgumentException(
+                    'A single selection must be passed a single value not a collection.'
+                    .' Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true"'
+                    .' is set for many-to-many or one-to-many relations.'
+                );
             } else {
                 $collection = [$entityOrCollection];
             }
@@ -138,7 +151,9 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
 
             if (null !== $this->toStringCallback) {
                 if (!\is_callable($this->toStringCallback)) {
-                    throw new \RuntimeException('Callback in "to_string_callback" option doesn`t contain callable function.');
+                    throw new \RuntimeException(
+                        'Callback in "to_string_callback" option doesn`t contain callable function.'
+                    );
                 }
 
                 $label = ($this->toStringCallback)($model, $this->property);
@@ -146,7 +161,10 @@ class ModelToIdPropertyTransformer implements DataTransformerInterface
                 try {
                     $label = (string) $model;
                 } catch (\Exception $e) {
-                    throw new \RuntimeException(sprintf("Unable to convert the entity %s to String, entity must have a '__toString()' method defined", ClassUtils::getClass($model)), 0, $e);
+                    throw new \RuntimeException(sprintf(
+                        'Unable to convert the entity %s to String, entity must have a \'__toString()\' method defined',
+                        ClassUtils::getClass($model)
+                    ), 0, $e);
                 }
             }
 

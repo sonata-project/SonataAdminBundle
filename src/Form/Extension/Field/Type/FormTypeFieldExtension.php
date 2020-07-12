@@ -37,7 +37,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     /**
      * @var array
      */
-    protected $options;
+    protected $options = [];
 
     public function __construct(array $defaultClasses, array $options)
     {

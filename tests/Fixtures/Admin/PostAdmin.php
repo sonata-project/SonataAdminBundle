@@ -17,25 +17,9 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 
 class PostAdmin extends AbstractAdmin
 {
-    protected $metadataClass;
-
     public function setParentAssociationMapping($associationMapping): void
     {
         $this->parentAssociationMapping = $associationMapping;
-    }
-
-    public function setClassMetaData($classMetaData): void
-    {
-        $this->classMetaData = $classMetaData;
-    }
-
-    public function getClassMetaData()
-    {
-        if ($this->classMetaData) {
-            return $this->classMetaData;
-        }
-
-        return parent::getClassMetaData();
     }
 
     protected function configureBatchActions(array $actions): array

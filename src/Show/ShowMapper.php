@@ -30,6 +30,11 @@ class ShowMapper extends BaseGroupedMapper
 {
     protected $list;
 
+    /**
+     * @var ShowBuilderInterface
+     */
+    protected $builder;
+
     public function __construct(
         ShowBuilderInterface $showBuilder,
         FieldDescriptionCollection $list,
@@ -61,12 +66,15 @@ class ShowMapper extends BaseGroupedMapper
                     $fieldDescriptionOptions
                 );
             } else {
-                throw new \LogicException(sprintf('Duplicate field name "%s" in show mapper. Names should be unique.', $name));
+                throw new \LogicException(sprintf(
+                    'Duplicate field name "%s" in show mapper. Names should be unique.',
+                    $name
+                ));
             }
         } else {
             throw new \TypeError(
-                'Unknown field name in show mapper. '
-                .'Field name should be either of FieldDescriptionInterface interface or string.'
+                'Unknown field name in show mapper.'
+                .' Field name should be either of FieldDescriptionInterface interface or string.'
             );
         }
 
@@ -121,7 +129,7 @@ class ShowMapper extends BaseGroupedMapper
 
         // When the default tab is used, the tabname is not prepended to the index in the group array
         if ('default' !== $tab) {
-            $group = $tab.'.'.$group;
+            $group = sprintf('%s.%s', $tab, $group);
         }
 
         if (isset($groups[$group])) {

@@ -67,7 +67,11 @@ final class SetObjectFieldValueAction
         }
 
         if (Request::METHOD_POST !== $request->getMethod()) {
-            return new JsonResponse(sprintf('Invalid request method given "%s", %s expected', $request->getMethod(), Request::METHOD_POST), Response::HTTP_METHOD_NOT_ALLOWED);
+            return new JsonResponse(sprintf(
+                'Invalid request method given "%s", %s expected',
+                $request->getMethod(),
+                Request::METHOD_POST
+            ), Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
         $rootObject = $object = $admin->getObject($objectId);
@@ -120,7 +124,7 @@ final class SetObjectFieldValueAction
         if ('' !== $value
             && 'choice' === $fieldDescription->getType()
             && null !== $fieldDescription->getOption('class')
-            && $fieldDescription->getOption('class') === $fieldDescription->getTargetEntity()
+            && $fieldDescription->getOption('class') === $fieldDescription->getTargetModel()
         ) {
             $value = $admin->getModelManager()->find($fieldDescription->getOption('class'), $value);
 
@@ -152,6 +156,7 @@ final class SetObjectFieldValueAction
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
         $extension = $this->twig->getExtension(SonataAdminExtension::class);
+        \assert($extension instanceof SonataAdminExtension);
 
         $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription);
 

@@ -79,7 +79,7 @@ class AdminMakerTest extends TestCase
 
         $this->modelManagers = ['sonata.admin.manager.orm' => $managerOrmProxy->reveal()];
         $this->servicesFile = sprintf('%s.yml', lcg_value());
-        $this->projectDirectory = sys_get_temp_dir().'/sonata-admin-bundle/';
+        $this->projectDirectory = sprintf('%s/sonata-admin-bundle/', sys_get_temp_dir());
         $this->filesystem = new Filesystem();
     }
 
@@ -121,7 +121,7 @@ class AdminMakerTest extends TestCase
         $autoloaderUtil
             ->method('getPathForFutureClass')
             ->willReturnCallback(function (string $className): string {
-                return $this->projectDirectory.'/'.str_replace('\\', '/', $className).'.php';
+                return sprintf('%s/%s.php', $this->projectDirectory, str_replace('\\', '/', $className));
             });
 
         $fileManager = new FileManager(

@@ -87,9 +87,9 @@ class RouteCollection
         array $methods = [],
         $condition = ''
     ) {
-        $pattern = $this->baseRoutePattern.'/'.($pattern ?: $name);
+        $pattern = sprintf('%s/%s', $this->baseRoutePattern, $pattern ?: $name);
         $code = $this->getCode($name);
-        $routeName = $this->baseRouteName.'_'.$name;
+        $routeName = sprintf('%s_%s', $this->baseRouteName, $name);
 
         if (!isset($defaults['_controller'])) {
             $actionJoiner = false === strpos($this->baseControllerName, '\\') ? ':' : '::';
@@ -125,7 +125,7 @@ class RouteCollection
             return $name;
         }
 
-        return $this->baseCodeRoute.'.'.$name;
+        return sprintf('%s.%s', $this->baseCodeRoute, $name);
     }
 
     /**
