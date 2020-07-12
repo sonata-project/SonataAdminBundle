@@ -15,6 +15,9 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Entity\Form;
 
 class FooEntity
 {
+    /**
+     * @var array
+     */
     private $values;
 
     public function __construct(array $values = [])

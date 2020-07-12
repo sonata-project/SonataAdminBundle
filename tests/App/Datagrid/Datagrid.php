@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\App\Datagrid;
 
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
@@ -21,7 +22,14 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 final class Datagrid implements DatagridInterface
 {
+    /**
+     * @var FormFactoryInterface
+     */
     private $formFactory;
+
+    /**
+     * @var PagerInterface
+     */
     private $pager;
 
     public function __construct(FormFactoryInterface $formFactory, PagerInterface $pager)
@@ -103,5 +111,15 @@ final class Datagrid implements DatagridInterface
     public function hasDisplayableFilters()
     {
         return false;
+    }
+
+    public function getSortParameters(FieldDescriptionInterface $fieldDescription): array
+    {
+        return [];
+    }
+
+    public function getPaginationParameters(int $page): array
+    {
+        return [];
     }
 }

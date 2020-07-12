@@ -17,13 +17,14 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 final class FooAdmin extends AbstractAdmin
 {
     protected function configureListFields(ListMapper $list)
     {
-        $list->add('name', 'string');
+        $list->add('name', TemplateRegistry::TYPE_STRING);
     }
 
     protected function configureFormFields(FormMapper $form)
@@ -33,6 +34,6 @@ final class FooAdmin extends AbstractAdmin
 
     protected function configureShowFields(ShowMapper $show)
     {
-        $show->add('name', 'string');
+        $show->add('name', TemplateRegistry::TYPE_STRING);
     }
 }

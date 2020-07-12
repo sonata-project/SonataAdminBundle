@@ -19,12 +19,12 @@ class FieldDescription extends BaseFieldDescription
 {
     public function setAssociationMapping($associationMapping): void
     {
-        // TODO: Implement setAssociationMapping() method.
+        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
     public function getTargetEntity(): void
     {
-        // TODO: Implement getTargetEntity() method.
+        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
     public function getTargetModel(): ?string
@@ -34,12 +34,12 @@ class FieldDescription extends BaseFieldDescription
 
     public function setFieldMapping($fieldMapping): void
     {
-        // TODO: Implement setFieldMapping() method.
+        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
     public function isIdentifier(): void
     {
-        // TODO: Implement isIdentifier() method.
+        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
     /**
@@ -49,7 +49,7 @@ class FieldDescription extends BaseFieldDescription
      */
     public function setParentAssociationMappings(array $parentAssociationMappings): void
     {
-        // TODO: Implement setParentAssociationMappings() method.
+        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
     /**
@@ -61,6 +61,6 @@ class FieldDescription extends BaseFieldDescription
      */
     public function getValue($object)
     {
-        // TODO: Implement getValue() method.
+        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 }
