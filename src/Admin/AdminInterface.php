@@ -106,7 +106,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * @return FormBuilderInterface the form builder
      */
-    public function getFormBuilder(): FormBuilderInterface;
+    public function getFormBuilder();
 
     /**
      * Returns a form depend on the given $object.
@@ -253,7 +253,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function supportsPreviewMode(): bool;
 
-    public function getNewInstance(): object;
+    public function getNewInstance();
 
     public function setUniqid(string $uniqId): void;
 
@@ -312,7 +312,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Retuns a list of exported fields.
      */
-    public function getExportFields(): array;
+    public function getExportFields();
 
     /**
      * Returns SourceIterator.
@@ -322,7 +322,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Call before the batch action, allow you to alter the query and the idx.
      */
-    public function preBatchAction(string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements = false): void;
+    public function preBatchAction(string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements = false);
 
     /**
      * Return array of filter parameters.

@@ -36,17 +36,17 @@ interface LifecycleHookProviderInterface
      */
     public function delete(object $object): void;
 
-    public function preValidate(object $object): void;
+    public function preValidate(object $object);
 
-    public function preUpdate(object $object): void;
+    public function preUpdate(object $object);
 
-    public function postUpdate(object $object): void;
+    public function postUpdate(object $object);
 
-    public function prePersist(object $object): void;
+    public function prePersist(object $object);
 
-    public function postPersist(object $object): void;
+    public function postPersist(object $object);
 
-    public function preRemove(object $object): void;
+    public function preRemove(object $object);
 
-    public function postRemove(object $object): void;
+    public function postRemove(object $object);
 }

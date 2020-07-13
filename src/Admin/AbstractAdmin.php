@@ -583,7 +583,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * {@inheritdoc}
      */
-    public function getExportFields(): array
+    public function getExportFields()
     {
         $fields = $this->getModelManager()->getExportFields($this->getClass());
 
@@ -704,31 +704,31 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
     }
 
-    public function preUpdate(object $object): void
+    public function preUpdate(object $object)
     {
     }
 
-    public function postUpdate(object $object): void
+    public function postUpdate(object $object)
     {
     }
 
-    public function prePersist(object $object): void
+    public function prePersist(object $object)
     {
     }
 
-    public function postPersist(object $object): void
+    public function postPersist(object $object)
     {
     }
 
-    public function preRemove(object $object): void
+    public function preRemove(object $object)
     {
     }
 
-    public function postRemove(object $object): void
+    public function postRemove(object $object)
     {
     }
 
-    public function preBatchAction(string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements = false): void
+    public function preBatchAction(string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements = false)
     {
     }
 
@@ -1140,7 +1140,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->getTemplateRegistry()->setTemplate($name, $template);
     }
 
-    public function getNewInstance(): object
+    public function getNewInstance()
     {
         $object = $this->getModelManager()->getModelInstance($this->getClass());
         foreach ($this->getExtensions() as $extension) {
@@ -1150,7 +1150,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $object;
     }
 
-    public function getFormBuilder(): FormBuilderInterface
+    public function getFormBuilder()
     {
         $this->formOptions['data_class'] = $this->getClass();
 
