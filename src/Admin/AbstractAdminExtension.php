@@ -94,27 +94,27 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
         return $fields;
     }
 
-    public function preUpdate(AdminInterface $admin, object $object): void
+    public function preUpdate(AdminInterface $admin, object $object)
     {
     }
 
-    public function postUpdate(AdminInterface $admin, object $object): void
+    public function postUpdate(AdminInterface $admin, object $object)
     {
     }
 
-    public function prePersist(AdminInterface $admin, object $object): void
+    public function prePersist(AdminInterface $admin, object $object)
     {
     }
 
-    public function postPersist(AdminInterface $admin, object $object): void
+    public function postPersist(AdminInterface $admin, object $object)
     {
     }
 
-    public function preRemove(AdminInterface $admin, object $object): void
+    public function preRemove(AdminInterface $admin, object $object)
     {
     }
 
-    public function postRemove(AdminInterface $admin, object $object): void
+    public function postRemove(AdminInterface $admin, object $object)
     {
     }
 

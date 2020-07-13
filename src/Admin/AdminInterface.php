@@ -65,7 +65,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * - subject class name if subject is defined
      * - class name if not.
      */
-    public function getClass(): string;
+    public function getClass();
 
     public function attachAdminClass(FieldDescriptionInterface $fieldDescription): void;
 
@@ -101,7 +101,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * @param string $context NEXT_MAJOR: remove this argument
      */
-    public function createQuery($context = 'list'): ProxyQueryInterface;
+    public function createQuery($context = 'list');
 
     /**
      * @return FormBuilderInterface the form builder
@@ -272,7 +272,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * @param mixed $id
      */
-    public function getObject($id): ?object;
+    public function getObject($id);
 
     public function setSubject(?object $subject): void;
 
@@ -322,7 +322,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * Call before the batch action, allow you to alter the query and the idx.
      */
-    public function preBatchAction(string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements = false);
+    public function preBatchAction($actionName, ProxyQueryInterface $query, array &$idx, $allElements);
 
     /**
      * Return array of filter parameters.
@@ -494,7 +494,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @return array<string, mixed> the list of batchs actions
      */
-    public function getBatchActions(): array;
+    public function getBatchActions();
 
     /**
      * Returns Admin`s label.
@@ -506,7 +506,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      *
      * @return array<string, mixed>
      */
-    public function getPersistentParameters(): array;
+    public function getPersistentParameters();
 
     public function getPersistentParameter(string $name);
 
@@ -530,7 +530,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /**
      * @param object $object
      */
-    public function getObjectMetadata($object): MetadataInterface;
+    public function getObjectMetadata($object);
 
     /**
      * @return array<string, array<string, mixed>>

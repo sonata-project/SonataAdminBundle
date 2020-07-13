@@ -122,7 +122,7 @@ interface FieldDescriptionInterface
     /**
      * Define the association mapping definition.
      */
-    public function setAssociationMapping(array $associationMapping): void;
+    public function setAssociationMapping(array $associationMapping);
 
     /**
      * Returns the association mapping definition.
@@ -136,14 +136,14 @@ interface FieldDescriptionInterface
      *
      * @deprecated since sonata-project/admin-bundle 3.69. Use `getTargetModel()` instead.
      */
-    public function getTargetEntity(): ?string;
+    public function getTargetEntity();
 
     // public function getTargetModel(): ?string;
 
     /**
      * Sets the field mapping information.
      */
-    public function setFieldMapping(array $fieldMapping): void;
+    public function setFieldMapping(array $fieldMapping);
 
     /**
      * Returns the field mapping definition.
@@ -155,7 +155,7 @@ interface FieldDescriptionInterface
     /**
      * set the parent association mappings information.
      */
-    public function setParentAssociationMappings(array $parentAssociationMappings): void;
+    public function setParentAssociationMappings(array $parentAssociationMappings);
 
     /**
      * Returns the parent association mapping definitions.
@@ -184,7 +184,7 @@ interface FieldDescriptionInterface
     /**
      * Returns true if the FieldDescription is linked to an identifier field.
      */
-    public function isIdentifier(): bool;
+    public function isIdentifier();
 
     /**
      * Returns the value linked to the description.

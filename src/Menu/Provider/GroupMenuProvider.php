@@ -54,7 +54,7 @@ final class GroupMenuProvider implements MenuProviderInterface
      *
      * @throws \InvalidArgumentException if the menu does not exists
      */
-    public function get(string $name, array $options = []): ItemInterface
+    public function get($name, array $options = []): ItemInterface
     {
         $group = $options['group'];
 
@@ -89,7 +89,7 @@ final class GroupMenuProvider implements MenuProviderInterface
     /**
      * Checks whether a menu exists in this provider.
      */
-    public function has(string $name, array $options = []): bool
+    public function has($name, array $options = []): bool
     {
         return 'sonata_group_menu' === $name;
     }

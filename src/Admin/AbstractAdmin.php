@@ -728,7 +728,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     {
     }
 
-    public function preBatchAction(string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements = false)
+    public function preBatchAction($actionName, ProxyQueryInterface $query, array &$idx, $allElements)
     {
     }
 
@@ -826,7 +826,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @return string the baseRoutePattern used to generate the routing information
      */
-    public function getBaseRoutePattern(): string
+    public function getBaseRoutePattern()
     {
         if (null !== $this->cachedBaseRoutePattern) {
             return $this->cachedBaseRoutePattern;
@@ -876,7 +876,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * @return string the baseRouteName used to generate the routing information
      */
-    public function getBaseRouteName(): string
+    public function getBaseRouteName()
     {
         if (null !== $this->cachedBaseRouteName) {
             return $this->cachedBaseRouteName;
@@ -918,7 +918,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->cachedBaseRouteName;
     }
 
-    public function getClass(): string
+    public function getClass()
     {
         if ($this->hasActiveSubClass()) {
             if ($this->hasParentFieldDescription()) {
@@ -1014,7 +1014,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $subClass;
     }
 
-    public function getBatchActions(): array
+    public function getBatchActions()
     {
         $actions = [];
 
@@ -1222,7 +1222,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $fieldDescription->setAssociationAdmin($admin);
     }
 
-    public function getObject($id): ?object
+    public function getObject($id)
     {
         $object = $this->getModelManager()->find($this->getClass(), $id);
         foreach ($this->getExtensions() as $extension) {
@@ -1249,7 +1249,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     /**
      * @final since sonata-project/admin-bundle 3.63.0
      */
-    public function createQuery($context = 'list'): ProxyQueryInterface
+    public function createQuery($context = 'list')
     {
         if (\func_num_args() > 0) {
             @trigger_error(
@@ -1929,7 +1929,7 @@ EOT;
         return $this->classnameLabel;
     }
 
-    public function getPersistentParameters(): array
+    public function getPersistentParameters()
     {
         $parameters = [];
 
@@ -2468,7 +2468,7 @@ EOT;
      * NEXT_MAJOR: Decide the type declaration for the $object argument, since it is
      * passed as argument 1 to `toString()` method, which currently accepts null.
      */
-    public function getObjectMetadata($object): MetadataInterface
+    public function getObjectMetadata($object)
     {
         return new Metadata($this->toString($object));
     }
@@ -2761,23 +2761,23 @@ EOT;
         return $defaultFilterValues;
     }
 
-    protected function configureFormFields(FormMapper $form): void
+    protected function configureFormFields(FormMapper $form)
     {
     }
 
-    protected function configureListFields(ListMapper $list): void
+    protected function configureListFields(ListMapper $list)
     {
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter): void
+    protected function configureDatagridFilters(DatagridMapper $filter)
     {
     }
 
-    protected function configureShowFields(ShowMapper $show): void
+    protected function configureShowFields(ShowMapper $show)
     {
     }
 
-    protected function configureRoutes(RouteCollection $collection): void
+    protected function configureRoutes(RouteCollection $collection)
     {
     }
 
@@ -2803,7 +2803,7 @@ EOT;
     /**
      * Configures the tab menu in your admin.
      */
-    protected function configureTabMenu(ItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
+    protected function configureTabMenu(ItemInterface $menu, $action, ?AdminInterface $childAdmin = null)
     {
         // Use configureSideMenu not to mess with previous overrides
         // NEXT_MAJOR: remove this line

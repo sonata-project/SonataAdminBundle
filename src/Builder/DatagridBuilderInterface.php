@@ -27,7 +27,7 @@ interface DatagridBuilderInterface extends BuilderInterface
         ?string $type,
         FieldDescriptionInterface $fieldDescription,
         AdminInterface $admin
-    ): void;
+    );
 
-    public function getBaseDatagrid(AdminInterface $admin, array $values = []): DatagridInterface;
+    public function getBaseDatagrid(AdminInterface $admin, array $values = []);
 }

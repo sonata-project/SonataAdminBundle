@@ -26,7 +26,7 @@ interface FormContractorInterface extends BuilderInterface
 {
     public function __construct(FormFactoryInterface $formFactory);
 
-    public function getFormBuilder(string $name, array $options = []): FormBuilderInterface;
+    public function getFormBuilder(string $name, array $options = []);
 
-    public function getDefaultOptions(?string $type, FieldDescriptionInterface $fieldDescription): array;
+    public function getDefaultOptions(?string $type, FieldDescriptionInterface $fieldDescription);
 }

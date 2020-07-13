@@ -22,12 +22,12 @@ use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
  */
 interface ShowBuilderInterface extends BuilderInterface
 {
-    public function getBaseList(array $options = []): FieldDescriptionCollection;
+    public function getBaseList(array $options = []);
 
     public function addField(
         FieldDescriptionCollection $list,
         ?string $type,
         FieldDescriptionInterface $fieldDescription,
         AdminInterface $admin
-    ): void;
+    );
 }
