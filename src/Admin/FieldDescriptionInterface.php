@@ -85,7 +85,7 @@ interface FieldDescriptionInterface
     /**
      * Sets the template used to render the field.
      */
-    public function setTemplate(string $template): void;
+    public function setTemplate(?string $template): void;
 
     /**
      * Returns the template name.
