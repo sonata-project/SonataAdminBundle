@@ -37,8 +37,9 @@ file that was distributed with this source code.
                 {% for field_name, nested_field in nested_group_field.children %}
                     <td class="
                         sonata-ba-td-{{ id }}-{{ field_name }}
+                        form-group
                         control-group
-                        {% if nested_field.vars.errors|default(false) %} error sonata-ba-field-error{% endif %}
+                        {% if nested_field.vars.errors|default(false) %} error has-error sonata-ba-field-error{% endif %}
                         "
                         {% if nested_field.vars['attr']['hidden']|default(false) %}
                             style="display:none;"
@@ -67,7 +68,7 @@ file that was distributed with this source code.
                             {% endif %}
                         {% endif %}
                         {% if nested_field.vars.errors|default(false) %}
-                            <div class="help-inline sonata-ba-field-error-messages">
+                            <div class="help-block help-inline sonata-ba-field-error-messages">
                                 {{ form_errors(nested_field) }}
                             </div>
                         {% endif %}
