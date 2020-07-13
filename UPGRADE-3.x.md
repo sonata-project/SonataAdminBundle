@@ -1,6 +1,21 @@
 UPGRADE 3.x
 ===========
 
+## Deprecated `SonataAdminBundle\Admin\AdminHelper::addNewInstance()`
+
+Use
+```
+$instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
+SonataAdminBundle\Admin\AdminHelper::addInstance($object, $fieldDescription, $instance);
+```
+Instead of
+```
+$this->adminHelper->addNewInstance($object, $fieldDescription);
+```
+
+The static method `addInstance()` avoids the need to inject the admin helper dependency,
+and adds more flexibility with the instance you're adding to the object.
+
 UPGRADE FROM 3.68 to 3.69
 =========================
 
