@@ -2273,6 +2273,12 @@ EOT
         $this->assertSame('test123', $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     * @expectedDeprecation Passing argument 3 to Sonata\AdminBundle\Twig\Extension\SonataAdminExtension::getValueFromFieldDescription() is deprecated since sonata-project/admin-bundle 3.x and will be ignored in version 4.0.
+     */
     public function testGetValueFromFieldDescriptionWithRemoveLoopException(): void
     {
         $object = $this->createMock(\ArrayAccess::class);

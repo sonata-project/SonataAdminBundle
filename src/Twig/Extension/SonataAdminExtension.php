@@ -234,6 +234,8 @@ class SonataAdminExtension extends AbstractExtension
      * return the value related to FieldDescription, if the associated object does no
      * exists => a temporary one is created.
      *
+     * NEXT_MAJOR: remove $params parameter and @throws \RuntimeException.
+     *
      * @param object $object
      *
      * @throws \RuntimeException
@@ -245,6 +247,15 @@ class SonataAdminExtension extends AbstractExtension
         FieldDescriptionInterface $fieldDescription,
         array $params = []
     ) {
+        if (isset(\func_get_args()[2])) {
+            @trigger_error(sprintf(
+                'Passing argument 3 to %s() is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will be ignored in version 4.0.',
+                __METHOD__
+            ), E_USER_DEPRECATED);
+        }
+
+        // NEXT_MAJOR: remove this check
         if (isset($params['loop']) && $object instanceof \ArrayAccess) {
             throw new \RuntimeException('remove the loop requirement');
         }
