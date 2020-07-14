@@ -94,4 +94,4 @@ you will see something like this:
    :alt: Sonata Admin with Workflow
    :width: 700px
 
-.. _`Workflow Component`: https://symfony.com/doc/current/components/workflow.html
+.. _`Workflow Component`: https://symfony.com/doc/4.4/components/workflow.html

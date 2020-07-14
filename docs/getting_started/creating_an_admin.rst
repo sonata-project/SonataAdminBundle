@@ -212,4 +212,4 @@ entity and learn more about this class.
     If you're not seeing the nice labels, but instead something like
     "link_add", you should make sure that you've `enabled the translator`_.
 
-.. _`enabled the translator`: http://symfony.com/doc/current/book/translation.html#configuration
+.. _`enabled the translator`: https://symfony.com/doc/4.4/translation.html#configuration

@@ -450,4 +450,4 @@ by overriding ``checkAccess`` function::
         }
     }
 
-.. _`Core's documentation`: http://sonata-project.org/bundles/core/master/doc/reference/form_types.html#sonata-type-translatable-choice
+.. _`Core's documentation`: https://sonata-project.org/bundles/core/master/doc/reference/form_types.html#sonata-type-translatable-choice
