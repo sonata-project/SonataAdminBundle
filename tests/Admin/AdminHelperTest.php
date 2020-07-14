@@ -77,7 +77,7 @@ class AdminHelperTest extends TestCase
      *
      * @group legacy
      *
-     * @expectedDeprecation Method Sonata\AdminBundle\Admin\AdminHelper::addNewInstance() is deprecated since sonata-project/admin-bundle 3.x. It will be removed in version 4.0. Use Sonata\AdminBundle\Manipulator\ObjectManipulator::addInstance() instead.
+     * @expectedDeprecation Method Sonata\AdminBundle\Admin\AdminHelper::addNewInstance() is deprecated since sonata-project/admin-bundle 3.72. It will be removed in version 4.0. Use Sonata\AdminBundle\Manipulator\ObjectManipulator::addInstance() instead.
      */
     public function testAddNewInstance(): void
     {
@@ -102,7 +102,7 @@ class AdminHelperTest extends TestCase
      *
      * @group legacy
      *
-     * @expectedDeprecation Method Sonata\AdminBundle\Admin\AdminHelper::addNewInstance() is deprecated since sonata-project/admin-bundle 3.x. It will be removed in version 4.0. Use Sonata\AdminBundle\Manipulator\ObjectManipulator::addInstance() instead.
+     * @expectedDeprecation Method Sonata\AdminBundle\Admin\AdminHelper::addNewInstance() is deprecated since sonata-project/admin-bundle 3.72. It will be removed in version 4.0. Use Sonata\AdminBundle\Manipulator\ObjectManipulator::addInstance() instead.
      */
     public function testAddNewInstancePlural(): void
     {
@@ -127,7 +127,7 @@ class AdminHelperTest extends TestCase
      *
      * @group legacy
      *
-     * @expectedDeprecation Method Sonata\AdminBundle\Admin\AdminHelper::addNewInstance() is deprecated since sonata-project/admin-bundle 3.x. It will be removed in version 4.0. Use Sonata\AdminBundle\Manipulator\ObjectManipulator::addInstance() instead.
+     * @expectedDeprecation Method Sonata\AdminBundle\Admin\AdminHelper::addNewInstance() is deprecated since sonata-project/admin-bundle 3.72. It will be removed in version 4.0. Use Sonata\AdminBundle\Manipulator\ObjectManipulator::addInstance() instead.
      */
     public function testAddNewInstanceInflector(): void
     {
