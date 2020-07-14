@@ -578,5 +578,59 @@ Checkbox range selection
     You can check / uncheck a range of checkboxes by clicking a first one,
     then a second one with shift + click.
 
+Displaying a non-model field
+----------------------------
+
+.. versionadded:: 3.x
+
+  Support for displaying fields not part of the model class was introduced in version 3.x.
+
+The list view can also display fields that are not part of the model class.
+
+In some situations you can add a new getter to your model class to calculate
+a field based on the other fields of your model::
+
+    // src/Entity/User.php
+
+    public function getFullName(): string
+    {
+        return $this->getGivenName().' '.$this->getFamilyName();
+    }
+
+    // src/Admin/UserAdmin.php
+
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper->addIdentifier('fullName');
+    }
+
+In situations where the data are not available in the model or it is more performant
+to have the database calculate the value you can override the ``configureQuery()`` Admin
+class method to add fields to the result set.
+In ``configureListFields()`` these fields can be added using the alias given
+in the query.
+
+In the following example the number of comments for a post is added to the
+query and displayed::
+
+    // src/Admin/PostAdmin.php
+
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+    {
+        $query = parent::configureQuery($query);
+
+        $query
+            ->leftJoin('n.Comments', 'c')
+            ->addSelect('COUNT(c.id) numberofcomments')
+            ->addGroupBy('n');
+
+        return $query;
+    }
+
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper->addIdentifier('numberofcomments');
+    }
+
 .. _`SonataDoctrineORMAdminBundle Documentation`: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html
 .. _`here`: https://github.com/sonata-project/SonataCoreBundle/tree/3.x/src/Form/Type
