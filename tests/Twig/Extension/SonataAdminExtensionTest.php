@@ -387,6 +387,68 @@ class SonataAdminExtensionTest extends TestCase
     }
 
     /**
+     * NEXT_MAJOR: Remove @expectedDeprecation.
+     *
+     * @group legacy
+     * @expectedDeprecation The Sonata\AdminBundle\Admin\AbstractAdmin::getTemplate method is deprecated (since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead).
+     */
+    public function testRenderListElementWithAdditionalValuesInArray(): void
+    {
+        // NEXT_MAJOR: Remove this line
+        $this->admin
+            ->method('getTemplate')
+            ->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+
+        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+
+        $this->fieldDescription
+            ->method('getTemplate')
+            ->willReturn('@SonataAdmin/CRUD/list_string.html.twig');
+
+        $this->assertSame(
+            $this->removeExtraWhitespace('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> Extra value </td>'),
+            $this->removeExtraWhitespace($this->twigExtension->renderListElement(
+                $this->environment,
+                [$this->object, 'fd_name' => 'Extra value'],
+                $this->fieldDescription
+            ))
+        );
+    }
+
+    /**
+     * NEXT_MAJOR: Remove @expectedDeprecation.
+     *
+     * @group legacy
+     * @expectedDeprecation Accessing a non existing value is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.
+     */
+    public function testRenderListElementWithNoValueException(): void
+    {
+        // NEXT_MAJOR: Remove this line
+        $this->admin
+            ->method('getTemplate')
+            ->with('base_list_field')
+            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+
+        $this->templateRegistry->getTemplate('base_list_field')->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+
+        $this->fieldDescription
+            ->method('getValue')
+            ->willReturnCallback(static function (): void {
+                throw new NoValueException();
+            });
+
+        $this->assertSame(
+            $this->removeExtraWhitespace('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> </td>'),
+            $this->removeExtraWhitespace($this->twigExtension->renderListElement(
+                $this->environment,
+                $this->object,
+                $this->fieldDescription
+            ))
+        );
+    }
+
+    /**
      * @dataProvider getDeprecatedRenderListElementTests
      * @group legacy
      */
@@ -2261,6 +2323,11 @@ EOT
         ];
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testGetValueFromFieldDescription(): void
     {
         $object = new \stdClass();
@@ -2273,6 +2340,11 @@ EOT
         $this->assertSame('test123', $this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testGetValueFromFieldDescriptionWithRemoveLoopException(): void
     {
         $object = $this->createMock(\ArrayAccess::class);
@@ -2288,7 +2360,7 @@ EOT
     }
 
     /**
-     * NEXT_MAJOR: Change this test to expect a NoValueException instead.
+     * NEXT_MAJOR: Remove this test.
      *
      * @group legacy
      * @expectedDeprecation Accessing a non existing value is deprecated since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.
@@ -2311,6 +2383,11 @@ EOT
         $this->assertNull($this->twigExtension->getValueFromFieldDescription($object, $fieldDescription));
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testGetValueFromFieldDescriptionWithNoValueExceptionNewAdminInstance(): void
     {
         $object = new \stdClass();

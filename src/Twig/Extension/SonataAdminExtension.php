@@ -184,14 +184,14 @@ class SonataAdminExtension extends AbstractExtension
     /**
      * render a list element from the FieldDescription.
      *
-     * @param object $object
-     * @param array  $params
+     * @param object|array $listElement
+     * @param array        $params
      *
      * @return string
      */
     public function renderListElement(
         Environment $environment,
-        $object,
+        $listElement,
         FieldDescriptionInterface $fieldDescription,
         $params = []
     ) {
@@ -203,10 +203,12 @@ class SonataAdminExtension extends AbstractExtension
             $environment
         );
 
+        [$object, $value] = $this->getObjectAndValueFromListElement($listElement, $fieldDescription);
+
         return $this->render($fieldDescription, $template, array_merge($params, [
             'admin' => $fieldDescription->getAdmin(),
             'object' => $object,
-            'value' => $this->getValueFromFieldDescription($object, $fieldDescription),
+            'value' => $value,
             'field_description' => $fieldDescription,
         ]), $environment);
     }
@@ -238,6 +240,10 @@ class SonataAdminExtension extends AbstractExtension
      *
      * @throws \RuntimeException
      *
+     * NEXT_MAJOR: Remove this method
+     *
+     * @deprecated This method is deprecated with no replacement since sonata-project/admin-bundle 3.x and will be removed in 4.0.
+     *
      * @return mixed
      */
     public function getValueFromFieldDescription(
@@ -245,6 +251,12 @@ class SonataAdminExtension extends AbstractExtension
         FieldDescriptionInterface $fieldDescription,
         array $params = []
     ) {
+        @trigger_error(sprintf(
+            'The %s() method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
+            .' There is no replacement.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         if (isset($params['loop']) && $object instanceof \ArrayAccess) {
             throw new \RuntimeException('remove the loop requirement');
         }
@@ -694,5 +706,50 @@ EOT;
         }
 
         throw new ServiceNotFoundException($serviceId);
+    }
+
+    /**
+     * Extracts the object and requested value from the $listElement.
+     *
+     * @param object|array $listElement
+     *
+     * @throws \TypeError when $listElement is not an object or an array with an object on offset 0
+     *
+     * @return array An array containing object and value
+     */
+    private function getObjectAndValueFromListElement(
+        $listElement,
+        FieldDescriptionInterface $fieldDescription
+    ): array {
+        if (\is_object($listElement)) {
+            $object = $listElement;
+        } elseif (\is_array($listElement)) {
+            if (!isset($listElement[0]) || !\is_object($listElement[0])) {
+                throw new \TypeError(sprintf('If argument 1 passed to %s() is an array it must contain an object at offset 0.', __METHOD__));
+            }
+
+            $object = $listElement[0];
+        } else {
+            throw new \TypeError(sprintf('Argument 1 passed to %s() must be an object or an array, %s given.', __METHOD__, \gettype($listElement)));
+        }
+
+        if (\is_array($listElement) && \array_key_exists($fieldDescription->getName(), $listElement)) {
+            $value = $listElement[$fieldDescription->getName()];
+        } else {
+            try {
+                $value = $fieldDescription->getValue($object);
+            } catch (NoValueException $e) {
+                // NEXT_MAJOR: throw the NoValueException.
+                @trigger_error(
+                    'Accessing a non existing value is deprecated'
+                    .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
+                    E_USER_DEPRECATED
+                );
+
+                $value = null;
+            }
+        }
+
+        return [$object, $value];
     }
 }

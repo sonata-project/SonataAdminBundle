@@ -30,3 +30,7 @@ rules:
     #no_config_yaml: ~
     #kernel_instead_of_app_kernel: ~
     #no_app_console: ~
+
+whitelist:
+    lines:
+        - '.. versionadded:: 3.x'
