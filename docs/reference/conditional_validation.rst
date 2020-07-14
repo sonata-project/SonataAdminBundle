@@ -1,7 +1,7 @@
 Inline Validation
 =================
 
-The inline validation code is now part of the SonataCoreBundle.
+The inline validation code is now part of the Sonata Form Extensions.
 You can refer to the related documentation for more information.
 
 The above examples show how the integration has been done with the SonataAdminBundle.
