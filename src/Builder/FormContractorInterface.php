@@ -36,7 +36,7 @@ interface FormContractorInterface extends BuilderInterface
     /**
      * Should provide Symfony form options.
      *
-     * @param string $type
+     * @param string|null $type
      *
      * @return array
      */
