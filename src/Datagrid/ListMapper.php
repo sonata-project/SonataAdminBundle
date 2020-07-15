@@ -37,6 +37,11 @@ class ListMapper extends BaseMapper
      */
     protected $list;
 
+    /**
+     * @var ListBuilderInterface
+     */
+    protected $builder;
+
     public function __construct(
         ListBuilderInterface $listBuilder,
         FieldDescriptionCollection $list,
@@ -116,13 +121,12 @@ class ListMapper extends BaseMapper
             );
         } else {
             throw new \TypeError(
-                'Unknown field name in list mapper. '
-                .'Field name should be either of FieldDescriptionInterface interface or string.'
+                'Unknown field name in list mapper.'
+                .' Field name should be either of FieldDescriptionInterface interface or string.'
             );
         }
 
-        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
-        if (null === $fieldDescription->getLabel('sonata_deprecation_mute')) {
+        if (null === $fieldDescription->getLabel()) {
             $fieldDescription->setOption(
                 'label',
                 $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'list', 'label')

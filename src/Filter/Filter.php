@@ -116,7 +116,10 @@ abstract class Filter implements FilterInterface
         $fieldName = $this->getOption('field_name');
 
         if (!$fieldName) {
-            throw new \RuntimeException(sprintf('The option `field_name` must be set for field: `%s`', $this->getName()));
+            throw new \RuntimeException(sprintf(
+                'The option `field_name` must be set for field: `%s`',
+                $this->getName()
+            ));
         }
 
         return $fieldName;
@@ -132,7 +135,10 @@ abstract class Filter implements FilterInterface
         $fieldMapping = $this->getOption('field_mapping');
 
         if (!$fieldMapping) {
-            throw new \RuntimeException(sprintf('The option `field_mapping` must be set for field: `%s`', $this->getName()));
+            throw new \RuntimeException(sprintf(
+                'The option `field_mapping` must be set for field: `%s`',
+                $this->getName()
+            ));
         }
 
         return $fieldMapping;
@@ -143,7 +149,10 @@ abstract class Filter implements FilterInterface
         $associationMapping = $this->getOption('association_mapping');
 
         if (!$associationMapping) {
-            throw new \RuntimeException(sprintf('The option `association_mapping` must be set for field: `%s`', $this->getName()));
+            throw new \RuntimeException(sprintf(
+                'The option `association_mapping` must be set for field: `%s`',
+                $this->getName()
+            ));
         }
 
         return $associationMapping;

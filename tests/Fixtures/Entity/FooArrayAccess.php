@@ -45,12 +45,12 @@ class FooArrayAccess implements \ArrayAccess
 
     public function offsetSet($offset, $value): void
     {
-        throw new \BadMethodCallException('Array access of class '.\get_class($this).' is read-only!');
+        throw new \BadMethodCallException(sprintf('Array access of class %s is read-only!', \get_class($this)));
     }
 
     public function offsetUnset($offset): void
     {
-        throw new \BadMethodCallException('Array access of class '.\get_class($this).' is read-only!');
+        throw new \BadMethodCallException(sprintf('Array access of class %s is read-only!', \get_class($this)));
     }
 
     public function getBar()

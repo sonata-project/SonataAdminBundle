@@ -279,8 +279,7 @@ final class SonataAdminExtension extends AbstractExtension
 
             if ($method) {
                 @trigger_error(
-                    'Option "associated_tostring" is deprecated since version 2.3 and will be removed in 4.0. '
-                    .'Use "associated_property" instead.',
+                    'Option "associated_tostring" is deprecated since version 2.3 and will be removed in 4.0. Use "associated_property" instead.',
                     E_USER_DEPRECATED
                 );
             } else {
@@ -289,8 +288,8 @@ final class SonataAdminExtension extends AbstractExtension
 
             if (!method_exists($element, $method)) {
                 throw new \RuntimeException(sprintf(
-                    'You must define an `associated_property` option or '.
-                    'create a `%s::__toString` method to the field option %s from service %s is ',
+                    'You must define an `associated_property` option or create a `%s::__toString` method'
+                    .' to the field option %s from service %s is ',
                     \get_class($element),
                     $fieldDescription->getName(),
                     $fieldDescription->getAdmin()->getCode()
@@ -538,21 +537,17 @@ final class SonataAdminExtension extends AbstractExtension
         try {
             $template = $environment->load($templateName);
         } catch (LoaderError $e) {
-            @trigger_error(
-                sprintf(
-                    'Relying on default template loading on field template loading exception '.
-                    'is deprecated since 3.1 and will be removed in 4.0. '.
-                    'A %s exception will be thrown instead',
-                    LoaderError::class
-                ),
-                E_USER_DEPRECATED
-            );
+            @trigger_error(sprintf(
+                'Relying on default template loading on field template loading exception is deprecated since 3.1'
+                .' and will be removed in 4.0. A %s exception will be thrown instead',
+                LoaderError::class
+            ), E_USER_DEPRECATED);
             $template = $environment->load($defaultTemplate);
 
             if (null !== $this->logger) {
                 $this->logger->warning(sprintf(
-                    'An error occured trying to load the template "%s" for the field "%s", '.
-                    'the default template "%s" was used instead.',
+                    'An error occured trying to load the template "%s" for the field "%s",'
+                    .' the default template "%s" was used instead.',
                     $templateName,
                     $fieldDescription->getFieldName(),
                     $defaultTemplate

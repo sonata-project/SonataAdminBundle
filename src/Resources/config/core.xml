@@ -44,7 +44,9 @@
         <service id="sonata.admin.label.strategy.form_component" class="Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy" public="false"/>
         <service id="Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy" alias="sonata.admin.label.strategy.form_component"/>
         <!-- Translation extractor -->
+        <!-- NEXT_MAJOR: Remove the sonata.admin.translator.extractor.jms_translator_bundle service  -->
         <service id="sonata.admin.translator.extractor.jms_translator_bundle" class="Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor" public="true">
+            <deprecated>The service "%service_id%" is deprecated in favor of the "Sonata\AdminBundle\Translator\Extractor\AdminExtractor" service since version 3.x and will be removed in 4.0.</deprecated>
             <tag name="jms_translation.extractor" alias="sonata_admin"/>
             <argument type="service" id="sonata.admin.pool"/>
             <argument type="service" id="logger" on-invalid="ignore"/>
@@ -68,6 +70,10 @@
             <argument type="service" id="logger" on-invalid="null"/>
             <argument type="service" id="sonata.admin.object.manipulator.acl.admin" on-invalid="null"/>
             <argument on-invalid="null">%sonata.admin.security.acl_user_manager%</argument>
+        <service id="Sonata\AdminBundle\Translator\Extractor\AdminExtractor">
+            <tag name="translation.extractor" alias="sonata_admin"/>
+            <argument type="service" id="sonata.admin.pool"/>
+            <argument type="service" id="sonata.admin.breadcrumbs_builder"/>
         </service>
         <!-- audit manager -->
         <service id="sonata.admin.audit.manager" class="Sonata\AdminBundle\Model\AuditManager" public="true">

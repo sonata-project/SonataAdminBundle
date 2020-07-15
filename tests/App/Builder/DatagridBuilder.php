@@ -23,7 +23,14 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 final class DatagridBuilder implements DatagridBuilderInterface
 {
+    /**
+     * @var FormFactoryInterface
+     */
     private $formFactory;
+
+    /**
+     * @var PagerInterface
+     */
     private $pager;
 
     public function __construct(FormFactoryInterface $formFactory, PagerInterface $pager)

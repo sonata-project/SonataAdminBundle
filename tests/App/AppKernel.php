@@ -18,7 +18,7 @@ use Sonata\AdminBundle\SonataAdminBundle;
 use Sonata\BlockBundle\SonataBlockBundle;
 use Sonata\Doctrine\Bridge\Symfony\Bundle\SonataDoctrineBundle;
 use Sonata\Form\Bridge\Symfony\Bundle\SonataFormBundle;
-use Sonata\Twig\Bridge\Symfony\SonataTwigBundle;
+use Sonata\Form\Bridge\Symfony\SonataFormBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
@@ -27,7 +27,6 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
-use Twig\Extra\TwigExtraBundle\TwigExtraBundle;
 
 final class AppKernel extends Kernel
 {
@@ -61,12 +60,12 @@ final class AppKernel extends Kernel
 
     public function getCacheDir(): string
     {
-        return $this->getBaseDir().'cache';
+        return sprintf('%scache', $this->getBaseDir());
     }
 
     public function getLogDir(): string
     {
-        return $this->getBaseDir().'log';
+        return sprintf('%slog', $this->getBaseDir());
     }
 
     public function getProjectDir()

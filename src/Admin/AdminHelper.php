@@ -214,9 +214,11 @@ class AdminHelper
                 /*
                  * NEXT_MAJOR: Use BadMethodCallException instead
                  */
-                throw new \RuntimeException(
-                    sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
-                );
+                throw new \RuntimeException(sprintf(
+                    'Method %s::%s() does not exist.',
+                    ClassUtils::getClass($object),
+                    $method
+                ));
             }
 
             $object = $object->$method();
@@ -234,9 +236,11 @@ class AdminHelper
                     /*
                      * NEXT_MAJOR: Use BadMethodCallException instead
                      */
-                    throw new \RuntimeException(
-                        sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
-                    );
+                    throw new \RuntimeException(sprintf(
+                        'Method %s::%s() does not exist.',
+                        ClassUtils::getClass($object),
+                        $method
+                    ));
                 }
             }
         }
@@ -277,9 +281,11 @@ class AdminHelper
         }
 
         if (!empty($currentPath)) {
-            throw new \Exception(
-                sprintf('Could not get element id from %s Failing part: %s', $elementId, $currentPath)
-            );
+            throw new \Exception(sprintf(
+                'Could not get element id from %s Failing part: %s',
+                $elementId,
+                $currentPath
+            ));
         }
 
         return $totalPath;

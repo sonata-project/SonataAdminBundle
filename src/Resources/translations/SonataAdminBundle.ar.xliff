@@ -490,6 +490,14 @@
                 <source>toggle_navigation</source>
                 <target>تبديل التنقل</target>
             </trans-unit>
+            <trans-unit id="label_type_starts_with">
+                <source>label_type_starts_with</source>
+                <target>ابدا ب</target>
+            </trans-unit>
+            <trans-unit id="label_type_ends_with">
+                <source>label_type_ends_with</source>
+                <target>ينتهي بـ</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -99,8 +99,14 @@ abstract class BaseGroupedMapper extends BaseMapper
                     throw new \LogicException('New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields.');
                 }
 
-                throw new \LogicException(sprintf('You should close previous tab "%s" with end() before adding new tab "%s".', $this->currentTab, $name));
-            } elseif ($this->currentGroup) {
+                throw new \LogicException(sprintf(
+                    'You should close previous tab "%s" with end() before adding new tab "%s".',
+                    $this->currentTab,
+                    $name
+                ));
+            }
+
+            if ($this->currentGroup) {
                 throw new \LogicException(sprintf('You should open tab before adding new group "%s".', $name));
             }
 
@@ -116,7 +122,11 @@ abstract class BaseGroupedMapper extends BaseMapper
             $this->currentTab = $code;
         } else {
             if ($this->currentGroup) {
-                throw new \LogicException(sprintf('You should close previous group "%s" with end() before adding new tab "%s".', $this->currentGroup, $name));
+                throw new \LogicException(sprintf(
+                    'You should close previous group "%s" with end() before adding new tab "%s".',
+                    $this->currentGroup,
+                    $name
+                ));
             }
 
             if (!$this->currentTab) {
@@ -130,7 +140,8 @@ abstract class BaseGroupedMapper extends BaseMapper
 
             // if no tab is selected, we go the the main one named '_' ..
             if ('default' !== $this->currentTab) {
-                $code = $this->currentTab.'.'.$name; // groups with the same name can be on different tabs, so we prefix them in order to make unique group name
+                // groups with the same name can be on different tabs, so we prefix them in order to make unique group name
+                $code = sprintf('%s.%s', $this->currentTab, $name);
             }
 
             $groups = $this->getGroups();
@@ -241,7 +252,10 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     protected function getName(): string
     {
-        @trigger_error(__METHOD__.' should be implemented and will be abstract in 4.0.', E_USER_DEPRECATED);
+        @trigger_error(sprintf(
+            '%s should be implemented and will be abstract in 4.0.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
 
         return 'default';
     }

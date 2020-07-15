@@ -79,6 +79,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Mapping\MemberMetadata;
+use Symfony\Component\Validator\Mapping\PropertyMetadataInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -88,7 +89,7 @@ class AdminTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->cacheTempFolder = sys_get_temp_dir().'/sonata_test_route';
+        $this->cacheTempFolder = sprintf('%s/sonata_test_route', sys_get_temp_dir());
         $filesystem = new Filesystem();
         $filesystem->remove($this->cacheTempFolder);
     }
@@ -400,7 +401,7 @@ class AdminTest extends TestCase
         $commentAdmin = new CommentAdmin('sonata.post.admin.comment', 'Application\Sonata\NewsBundle\Entity\Comment', 'Sonata\NewsBundle\Controller\CommentAdminController');
         $commentAdmin->setParent($postAdmin);
 
-        $this->assertSame($expected.'/{id}/comment', $commentAdmin->getBaseRoutePattern());
+        $this->assertSame(sprintf('%s/{id}/comment', $expected), $commentAdmin->getBaseRoutePattern());
     }
 
     /**
@@ -422,7 +423,7 @@ class AdminTest extends TestCase
         $commentAdmin->setParent($postAdmin);
         $commentVoteAdmin->setParent($commentAdmin);
 
-        $this->assertSame($expected.'/{id}/comment/{childId}/commentvote', $commentVoteAdmin->getBaseRoutePattern());
+        $this->assertSame(sprintf('%s/{id}/comment/{childId}/commentvote', $expected), $commentVoteAdmin->getBaseRoutePattern());
     }
 
     public function testGetBaseRoutePatternWithSpecifedPattern(): void
@@ -580,7 +581,7 @@ class AdminTest extends TestCase
             'sonata.post.admin.comment_vote',
         ]);
 
-        $this->assertSame($expected.'_comment', $commentAdmin->getBaseRouteName());
+        $this->assertSame(sprintf('%s_comment', $expected), $commentAdmin->getBaseRouteName());
 
         $this->assertTrue($postAdmin->hasRoute('show'));
         $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post.show'));
@@ -599,7 +600,7 @@ class AdminTest extends TestCase
             [],
             [],
             [
-                '_route' => $postAdmin->getBaseRouteName().'_list',
+                '_route' => sprintf('%s_list', $postAdmin->getBaseRouteName()),
             ]
         );
 
@@ -1609,6 +1610,56 @@ class AdminTest extends TestCase
         $modelAdmin->getForm();
     }
 
+    public function testCanAddInlineValidationOnlyForGenericMetadata(): void
+    {
+        $modelAdmin = new ModelAdmin('sonata.post.admin.model', \stdClass::class, 'Sonata\FooBundle\Controller\ModelAdminController');
+        $object = new \stdClass();
+
+        $labelTranslatorStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
+        $modelAdmin->setLabelTranslatorStrategy($labelTranslatorStrategy);
+
+        $validator = $this->createStub(ValidatorInterface::class);
+        $metadata = $this->createStub(PropertyMetadataInterface::class);
+        $validator
+            ->method('getMetadataFor')
+            ->willReturn($metadata);
+        $modelAdmin->setValidator($validator);
+
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager
+            ->method('getNewFieldDescriptionInstance')
+            ->willReturn(new FieldDescription());
+        $modelAdmin->setModelManager($modelManager);
+
+        $event = $this->createStub(FormEvent::class);
+        $event
+            ->method('getData')
+            ->willReturn($object);
+
+        $formBuild = $this->createStub(FormBuilder::class);
+
+        $formContractor = $this->createStub(FormContractorInterface::class);
+        $formContractor
+            ->method('getDefaultOptions')
+            ->willReturn([]);
+        $formContractor
+            ->method('getFormBuilder')
+            ->willReturn($formBuild);
+
+        $modelAdmin->setFormContractor($formContractor);
+        $modelAdmin->setSubject($object);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            sprintf(
+                'Cannot add inline validator for stdClass because its metadata is an instance of %s instead of Symfony\Component\Validator\Mapping\GenericMetadata',
+                \get_class($metadata)
+            )
+        );
+
+        $modelAdmin->defineFormBuilder($formBuild);
+    }
+
     public function testRemoveFieldFromFormGroup(): void
     {
         $formGroups = [
@@ -1797,7 +1848,7 @@ class AdminTest extends TestCase
             ['azerty'],
             ['4f69bbb5f14a13347f000092'],
             ['0779ca8d-e2be-11e4-ac58-0242ac11000b'],
-            ['123'.AdapterInterface::ID_SEPARATOR.'my_type'], // composite keys are supported
+            [sprintf('123%smy_type', AdapterInterface::ID_SEPARATOR)], // composite keys are supported
         ];
     }
 
@@ -1959,7 +2010,7 @@ class AdminTest extends TestCase
         $labelTranslatorStrategy
             ->method('getLabel')
             ->willReturnCallback(static function (string $label, string $context = '', string $type = ''): string {
-                return $context.'.'.$type.'_'.$label;
+                return sprintf('%s.%s_%s', $context, $type, $label);
             });
 
         $admin = new PostAdmin('sonata.post.admin.model', 'Application\Sonata\FooBundle\Entity\Model', 'Sonata\FooBundle\Controller\ModelAdminController');
@@ -2163,7 +2214,7 @@ class AdminTest extends TestCase
         $admin
             ->method('getTranslationLabel')
             ->willReturnCallback(static function (string $label, string $context = '', string $type = ''): string {
-                return $context.'.'.$type.'_'.$label;
+                return sprintf('%s.%s_%s', $context, $type, $label);
             });
         $admin
             ->method('trans')

@@ -88,7 +88,7 @@ class GlobalVariables
         if ($pipe = strpos($code, '|')) {
             // convert code=sonata.page.admin.page|sonata.page.admin.snapshot, action=list
             // to => sonata.page.admin.page|sonata.page.admin.snapshot.list
-            $action = $code.'.'.$action;
+            $action = sprintf('%s.%s', $code, $action);
             $code = substr($code, 0, $pipe);
         }
 

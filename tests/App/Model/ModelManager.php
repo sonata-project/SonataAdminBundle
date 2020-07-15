@@ -22,6 +22,9 @@ use Sonata\AdminBundle\Tests\App\Admin\FieldDescription;
 
 class ModelManager implements ModelManagerInterface, LockInterface
 {
+    /**
+     * @var FooRepository
+     */
     private $repository;
 
     public function __construct(FooRepository $repository)
@@ -143,6 +146,11 @@ class ModelManager implements ModelManagerInterface, LockInterface
     }
 
     public function getDefaultSortValues($class)
+    {
+        return [];
+    }
+
+    public function getDefaultPerPageOptions(string $class): array
     {
         return [];
     }

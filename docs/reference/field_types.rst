@@ -11,11 +11,11 @@ Fieldtype                                  Description
 =======================================    =============================================
 ``TemplateRegistry::TYPE_ARRAY``           display value from an array
 ``TemplateRegistry::TYPE_BOOLEAN``         display a green or red picture dependant on the boolean value
-``TemplateRegistry::TYPE_DATE``            display a formatted date. Accepts an optional ``format`` parameter
-``TemplateRegistry::TYPE_TIME``            display a formatted time. Accepts an optional ``format`` and ``timezone`` parameter
-``TemplateRegistry::TYPE_DATETIME``        display a formatted date and time. Accepts an optional ``format`` and ``timezone`` parameter
+``TemplateRegistry::TYPE_DATE``            display a formatted date. Accepts the option ``format``
+``TemplateRegistry::TYPE_TIME``            display a formatted time. Accepts the options ``format`` and ``timezone``
+``TemplateRegistry::TYPE_DATETIME``        display a formatted date and time. Accepts the options ``format`` and ``timezone``
 ``TemplateRegistry::TYPE_STRING``          display a text
-``TemplateRegistry::TYPE_EMAIL``           display a mailto link
+``TemplateRegistry::TYPE_EMAIL``           display a mailto link. Accepts the options ``as_string``, ``subject`` and ``body``
 ``TemplateRegistry::TYPE_TEXTAREA``        display a textarea
 ``TemplateRegistry::TYPE_TRANS``           translate the value with a provided ``catalogue`` (translation domain) and ``format`` (sprintf format) option
 ``TemplateRegistry::TYPE_FLOAT``           display a number
@@ -30,7 +30,7 @@ Fieldtype                                  Description
 ``TemplateRegistry::TYPE_ONE_TO_ONE``      used for relational tables
 =======================================    =============================================
 
-Theses types accept an ``editable`` parameter to edit the value from within the list action.
+Theses types accept an ``editable`` option to edit the value from within the list action.
 This is currently limited to scalar types (text, integer, url...) and choice types with association field.
 
 .. note::
@@ -65,10 +65,10 @@ This is currently limited to scalar types (text, integer, url...) and choice typ
 ``TemplateRegistry::TYPE_ARRAY``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can use the following parameters:
+You can use the following options:
 
 ======================================  ============================================================
-Parameter                               Description
+Option                                  Description
 ======================================  ============================================================
 **inline**                              If `true`, the array will be displayed as a single line,
                                         the whole array and each array level will be wrapped up with square brackets.
@@ -108,19 +108,53 @@ Parameter                               Description
         ;
     }
 
+``TemplateRegistry::TYPE_BOOLEAN``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can use the following options:
+
+======================================  ======================================================================
+Option                                  Description
+======================================  ======================================================================
+**ajax_hidden**                         Yes/No; ajax_hidden allows to hide list field during an AJAX context.
+**editable**                            Yes/No; editable allows to edit directly from the list if authorized.
+**inverse**                             Yes/No; reverses the background color (green for false, red for true).
+======================================  ======================================================================
+
+.. code-block:: php
+
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+            ->add('invalid', TemplateRegistry::TYPE_BOOLEAN, [
+                'editable' => true,
+                'inverse'  => true,
+            ])
+        ;
+    }
+
+.. note::
+
+    It is better to prefer non negative notions when possible for boolean values
+    so use the ``inverse`` option if you really cannot find a good enough antonym for the name you have.
+
 ``TemplateRegistry::TYPE_CHOICE``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can use the following parameters:
+You can use the following options:
 
-======================================  ============================================================
-Parameter                               Description
-======================================  ============================================================
-**choices**                             Array of choices
+======================================  ======================================================================
+Option                                  Description
+======================================  ======================================================================
+**choices**                             Array of choices.
+**multiple**                            Determines if choosing multiple options is allowed. Defaults to false.
+**delimiter**                           Separator of values, if multiple.
+**catalogue**                           Translation catalogue.
+**class**                               Class qualified name for editable association field.
 **required**                            Whether the field is required or not (default true) when the
                                         ``editable`` option is set to ``true``. If false, an empty
                                         placeholder will be added.
-======================================  ============================================================
+======================================  ======================================================================
 
 .. code-block:: php
 
@@ -166,10 +200,10 @@ The ``TemplateRegistry::TYPE_CHOICE`` field type also supports multiple values t
 
 Display URL link to external website or controller action.
 
-You can use the following parameters:
+You can use the following options:
 
 ======================================  ==================================================================
-Parameter                               Description
+Option                                  Description
 ======================================  ==================================================================
 **hide_protocol**                       remove protocol part from the link text
 **url**                                 URL address (e.g. ``http://example.com``)
@@ -238,10 +272,10 @@ Parameter                               Description
 
 Display (and optionally truncate or strip tags from) raw html.
 
-You can use the following parameters:
+You can use the following options:
 
 ========================    ==================================================================
-Parameter                   Description
+Option                      Description
 ========================    ==================================================================
 **strip**                   Strip HTML and PHP tags from a string
 **truncate**                Truncate a string to ``length`` characters beginning from start. Implies strip. Beware of HTML entities. Make sure to configure your HTML editor to disable entities if you want to use truncate. For instance, use `config.entities <http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-entities>`_ for ckeditor

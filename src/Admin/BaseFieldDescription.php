@@ -84,17 +84,17 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * @var array the ORM association mapping
      */
-    protected $associationMapping;
+    protected $associationMapping = [];
 
     /**
      * @var array the ORM field information
      */
-    protected $fieldMapping;
+    protected $fieldMapping = [];
 
     /**
      * @var array the ORM parent mapping association
      */
-    protected $parentAssociationMappings;
+    protected $parentAssociationMappings = [];
 
     /**
      * @var string the template name
@@ -209,13 +209,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     public function getTemplate(): ?string
     {
-        if (null !== $this->template && !\is_string($this->template) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
-            @trigger_error(sprintf(
-                'Returning other type than string or null in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only those types in version 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
         return $this->template;
     }
 
@@ -284,8 +277,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if (!$this->hasAssociationAdmin()) {
             @trigger_error(
                 sprintf(
-                    'Calling %s() when there is no association admin is deprecated since sonata-project/admin-bundle 3.69'
-                    .' and will throw an exception in 4.0. Use %s::hasAssociationAdmin() to know if there is an association admin.',
+                    'Calling %s() when there is no association admin is deprecated since'
+                    .' sonata-project/admin-bundle 3.69 and will throw an exception in 4.0.'
+                    .' Use %s::hasAssociationAdmin() to know if there is an association admin.',
                     __METHOD__,
                     __CLASS__
                 ),
@@ -328,9 +322,9 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
             $camelizedFieldName = InflectorFactory::create()->build()->classify($fieldName);
 
-            $getters[] = 'get'.$camelizedFieldName;
-            $getters[] = 'is'.$camelizedFieldName;
-            $getters[] = 'has'.$camelizedFieldName;
+            $getters[] = sprintf('get%s', $camelizedFieldName);
+            $getters[] = sprintf('is%s', $camelizedFieldName);
+            $getters[] = sprintf('has%s', $camelizedFieldName);
         }
 
         foreach ($getters as $getter) {
@@ -431,17 +425,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->help;
     }
 
+    /**
+     * @return string|false|null
+     */
     public function getLabel()
     {
-        $label = $this->getOption('label');
-        if (null !== $label && false !== $label && !\is_string($label) && 'sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
-            @trigger_error(sprintf(
-                'Returning other type than string, false or null in method %s() is deprecated since sonata-project/admin-bundle 3.65. It will return only those types in version 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
-        return $label;
+        return $this->getOption('label');
     }
 
     public function isSortable(): bool
