@@ -50,6 +50,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -1008,7 +1009,7 @@ class CRUDController extends AbstractController
 
     protected function addFlash(string $type, $message): void
     {
-        $this->session->getFlashBag()->add($type, $message);
+        $this->session->set($type, $message);
     }
 
     /**
