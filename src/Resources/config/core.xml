@@ -70,6 +70,7 @@
             <argument type="service" id="logger" on-invalid="null"/>
             <argument type="service" id="sonata.admin.object.manipulator.acl.admin" on-invalid="null"/>
             <argument on-invalid="null">%sonata.admin.security.acl_user_manager%</argument>
+        </service>
         <service id="Sonata\AdminBundle\Translator\Extractor\AdminExtractor">
             <tag name="translation.extractor" alias="sonata_admin"/>
             <argument type="service" id="sonata.admin.pool"/>
