@@ -2038,7 +2038,7 @@ EOT;
 
         $domain = $domain ?: $this->getTranslationDomain();
 
-        return $this->translator->transChoice($id, $count, $parameters, $domain, $locale);
+        return $this->trans($id, $parameters, $domain, $locale);
     }
 
     public function setTranslationDomain(string $translationDomain): void
