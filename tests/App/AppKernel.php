@@ -40,18 +40,23 @@ final class AppKernel extends Kernel
 
     public function registerBundles()
     {
-        return [
+        $bundles = [
             new FrameworkBundle(),
             new TwigBundle(),
-            new TwigExtraBundle(),
             new SecurityBundle(),
             new KnpMenuBundle(),
             new SonataBlockBundle(),
-            new SonataTwigBundle(),
-            new SonataFormBundle(),
             new SonataDoctrineBundle(),
             new SonataAdminBundle(),
+            new SonataTwigBundle(),
+            new SonataFormBundle(),
         ];
+
+        if (class_exists(SonataCoreBundle::class)) {
+            $bundles[] = new SonataCoreBundle();
+        }
+
+        return $bundles;
     }
 
     public function getCacheDir(): string
@@ -71,7 +76,7 @@ final class AppKernel extends Kernel
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
-        $routes->import($this->getProjectDir().'/config/routes.yml');
+        $routes->import(sprintf('%s/config/routes.yml', $this->getProjectDir()));
     }
 
     protected function configureContainer(ContainerBuilder $containerBuilder, LoaderInterface $loader)
@@ -95,11 +100,11 @@ final class AppKernel extends Kernel
             'exception_controller' => null,
         ]);
 
-        $loader->load($this->getProjectDir().'/config/services.yml');
+        $loader->load(sprintf('%s/config/services.yml', $this->getProjectDir()));
     }
 
     private function getBaseDir(): string
     {
-        return sys_get_temp_dir().'/sonata-admin-bundle/var/';
+        return sprintf('%s/sonata-admin-bundle/var/', sys_get_temp_dir());
     }
 }

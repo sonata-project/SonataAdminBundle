@@ -57,6 +57,11 @@ use Twig\Environment;
 class CRUDController extends AbstractController
 {
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * The related Admin class.
      *
      * @var AdminInterface
@@ -404,7 +409,7 @@ class CRUDController extends AbstractController
                 } catch (LockException $e) {
                     $this->addFlash('sonata_flash_error', $this->trans('flash_lock_error', [
                         '%name%' => $this->escapeHtml($this->admin->toString($existingObject)),
-                        '%link_start%' => '<a href="'.$this->admin->generateObjectUrl('edit', $existingObject).'">',
+                        '%link_start%' => sprintf('<a href="%s">', $this->admin->generateObjectUrl('edit', $existingObject)),
                         '%link_end%' => '</a>',
                     ], 'SonataAdminBundle'));
                 }
@@ -458,7 +463,11 @@ class CRUDController extends AbstractController
         $restMethod = $this->getRestMethod();
 
         if (Request::METHOD_POST !== $restMethod) {
-            throw $this->createNotFoundException(sprintf('Invalid request method given "%s", %s expected', $restMethod, Request::METHOD_POST));
+            throw $this->createNotFoundException(sprintf(
+                'Invalid request method given "%s", %s expected',
+                $restMethod,
+                Request::METHOD_POST
+            ));
         }
 
         // check the csrf token
@@ -735,13 +744,13 @@ class CRUDController extends AbstractController
 
         $this->admin->checkAccess('history', $object);
 
-        if (!$this->auditManager->hasReader($this->admin->getClass())) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the audit reader for class : %s',
-                    $this->admin->getClass()
-                )
-            );
+        $manager = $this->get('sonata.admin.audit.manager');
+
+        if (!$manager->hasReader($this->admin->getClass())) {
+            throw $this->createNotFoundException(sprintf(
+                'unable to find the audit reader for class : %s',
+                $this->admin->getClass()
+            ));
         }
 
         $reader = $this->auditManager->getReader($this->admin->getClass());
@@ -779,13 +788,13 @@ class CRUDController extends AbstractController
 
         $this->admin->checkAccess('historyViewRevision', $object);
 
-        if (!$this->auditManager->hasReader($this->admin->getClass())) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the audit reader for class : %s',
-                    $this->admin->getClass()
-                )
-            );
+        $manager = $this->get('sonata.admin.audit.manager');
+
+        if (!$manager->hasReader($this->admin->getClass())) {
+            throw $this->createNotFoundException(sprintf(
+                'unable to find the audit reader for class : %s',
+                $this->admin->getClass()
+            ));
         }
 
         $reader = $this->auditManager->getReader($this->admin->getClass());
@@ -794,14 +803,12 @@ class CRUDController extends AbstractController
         $object = $reader->find($this->admin->getClass(), $id, $revision);
 
         if (!$object) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
-                    $id,
-                    $revision,
-                    $this->admin->getClass()
-                )
-            );
+            throw $this->createNotFoundException(sprintf(
+                'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
+                $id,
+                $revision,
+                $this->admin->getClass()
+            ));
         }
 
         $this->admin->setSubject($object);
@@ -837,13 +844,13 @@ class CRUDController extends AbstractController
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
-        if (!$this->auditManager->hasReader($this->admin->getClass())) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'unable to find the audit reader for class : %s',
-                    $this->admin->getClass()
-                )
-            );
+        $manager = $this->get('sonata.admin.audit.manager');
+
+        if (!$manager->hasReader($this->admin->getClass())) {
+            throw $this->createNotFoundException(sprintf(
+                'unable to find the audit reader for class : %s',
+                $this->admin->getClass()
+            ));
         }
 
         $reader = $this->auditManager->getReader($this->admin->getClass());
@@ -904,14 +911,12 @@ class CRUDController extends AbstractController
         $filename = $this->adminExporter->getExportFilename($this->admin, $format);
 
         if (!\in_array($format, $allowedExportFormats, true)) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`',
-                    $format,
-                    $this->admin->getClass(),
-                    implode(', ', $allowedExportFormats)
-                )
-            );
+            throw new \RuntimeException(sprintf(
+                'Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`',
+                $format,
+                $this->admin->getClass(),
+                implode(', ', $allowedExportFormats)
+            ));
         }
 
         return $this->exporter->getResponse(
@@ -968,7 +973,7 @@ class CRUDController extends AbstractController
                 $updateMethod = 'updateAclRoles';
             }
 
-            if (isset($form)) {
+            if (isset($form, $updateMethod)) {
                 $form->handleRequest($request);
 
                 if ($form->isValid()) {
@@ -1104,6 +1109,14 @@ class CRUDController extends AbstractController
             throw new \RuntimeException(sprintf(
                 'Unable to find the admin class related to the current controller (%s)',
                 static::class
+            ));
+        }
+
+        $this->templateRegistry = $this->container->get(sprintf('%s.template_registry', $this->admin->getCode()));
+        if (!$this->templateRegistry instanceof TemplateRegistryInterface) {
+            throw new \RuntimeException(sprintf(
+                'Unable to find the template registry related to the current admin (%s)',
+                $this->admin->getCode()
             ));
         }
 
