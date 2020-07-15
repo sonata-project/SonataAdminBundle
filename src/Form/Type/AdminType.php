@@ -50,7 +50,7 @@ class AdminType extends AbstractType
     {
         if (null !== $adminHelper) {
             @trigger_error(sprintf(
-                'Passing argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.x'
+                'Passing argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.72'
                 .' and will be ignored in version 4.0.',
                 __METHOD__
             ), E_USER_DEPRECATED);

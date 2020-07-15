@@ -217,7 +217,7 @@ class AdminHelper
     /**
      * NEXT_MAJOR: remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x, use to be removed with 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.72, use to be removed with 4.0.
      *
      * Add a new instance to the related FieldDescriptionInterface value.
      *
@@ -230,7 +230,7 @@ class AdminHelper
     public function addNewInstance($object, FieldDescriptionInterface $fieldDescription)
     {
         @trigger_error(sprintf(
-            'Method %s() is deprecated since sonata-project/admin-bundle 3.x. It will be removed in version 4.0.'
+            'Method %s() is deprecated since sonata-project/admin-bundle 3.72. It will be removed in version 4.0.'
             .' Use %s::addInstance() instead.',
             __METHOD__,
             ObjectManipulator::class
