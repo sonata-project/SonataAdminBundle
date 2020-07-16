@@ -142,14 +142,6 @@ class FormMapper extends BaseGroupedMapper
             if (null !== $help) {
                 $this->admin->getFormFieldDescription($name)->setHelp($help);
             }
-
-            $helpTranslationParameters = [];
-            if (isset($options['help_translation_parameters'])) {
-                $helpTranslationParameters = $options['help_translation_parameters'];
-                unset($options['help_translation_parameters']);
-            }
-
-            $this->admin->getFormFieldDescription($name)->setHelpTranslationParameters($helpTranslationParameters);
         }
 
         if (!isset($fieldDescriptionOptions['role']) || $this->admin->isGranted($fieldDescriptionOptions['role'])) {
