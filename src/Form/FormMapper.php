@@ -136,20 +136,9 @@ class FormMapper extends BaseGroupedMapper
                 $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($name, 'form', 'label');
             }
 
-            if (isset($options['label_translation_parameters'])) {
-                $fieldDescription->setOption('label_translation_parameters', $options['label_translation_parameters']);
-                unset($options['label_translation_parameters']);
-            }
-
             if (isset($options['help'])) {
                 $fieldDescription->setHelp($options['help']);
                 unset($options['help']);
-            }
-
-
-            if (isset($options['help_translation_parameters'])) {
-                $fieldDescription->setOption('help_translation_parameters', $options['help_translation_parameters']);
-                unset($options['help_translation_parameters']);
             }
         }
 
