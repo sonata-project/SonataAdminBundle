@@ -460,6 +460,16 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->help;
     }
 
+    public function getHelpTranslationParameters()
+    {
+        return $this->getOption('help_translation_parameters');
+    }
+
+    public function getLabelTranslationParameters()
+    {
+        return $this->getOption('label_translation_parameters');
+    }
+
     public function getLabel()
     {
         $label = $this->getOption('label');
