@@ -1434,11 +1434,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
             $admin = $pool->getAdminByAdminCode($adminCode);
         } else {
-            if (!$pool->hasAdminByClass($fieldDescription->getTargetModel())) {
+            // NEXT_MAJOR: Remove the check and use `getTargetModel`.
+            if (method_exists($fieldDescription, 'getTargetModel')) {
+                $targetModel = $fieldDescription->getTargetModel();
+            } else {
+                $targetModel = $fieldDescription->getTargetEntity();
+            }
+
+            if (!$pool->hasAdminByClass($targetModel)) {
                 return;
             }
 
-            $admin = $pool->getAdminByClass($fieldDescription->getTargetModel());
+            $admin = $pool->getAdminByClass($targetModel);
         }
 
         if ($this->hasRequest()) {
