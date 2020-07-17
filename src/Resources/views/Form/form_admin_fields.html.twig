@@ -158,7 +158,7 @@ file that was distributed with this source code.
             {% elseif not sonata_admin.admin %}
                 {{- label|trans(label_translation_parameters, translation_domain) -}}
             {% else %}
-                {{ label|trans(sonata_admin.field_description.labelTranslationParameters|default({}), sonata_admin.field_description.translationDomain ?: admin.translationDomain) }}
+                {{ label|trans(sonata_admin.field_description.options.label_translation_parameters|default({}), sonata_admin.field_description.translationDomain ?: admin.translationDomain) }}
             {% endif %}
         </label>
     {% endif %}
@@ -401,7 +401,7 @@ file that was distributed with this source code.
             {% endif %}
 
             {% if sonata_admin is defined and sonata_admin_enabled and sonata_admin.field_description.help|default(false) %}
-                <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans(sonata_admin.field_description.helpTranslationParameters|default({}), sonata_admin.field_description.translationDomain ?: admin.translationDomain)|raw }}</span>
+                <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans(sonata_admin.field_description.options.help_translation_parameters|default({}), sonata_admin.field_description.translationDomain ?: admin.translationDomain)|raw }}</span>
             {% endif %}
 
             {{ form_help(form) }}

@@ -138,7 +138,7 @@ class FormMapper extends BaseGroupedMapper
 
             if (isset($options['label_translation_parameters'])) {
                 $fieldDescription->setOption('label_translation_parameters', $options['label_translation_parameters']);
-                unset($options['help']);
+                unset($options['label_translation_parameters']);
             }
 
             if (isset($options['help'])) {
@@ -149,7 +149,7 @@ class FormMapper extends BaseGroupedMapper
 
             if (isset($options['help_translation_parameters'])) {
                 $fieldDescription->setOption('help_translation_parameters', $options['help_translation_parameters']);
-                unset($options['help']);
+                unset($options['help_translation_parameters']);
             }
         }
 
