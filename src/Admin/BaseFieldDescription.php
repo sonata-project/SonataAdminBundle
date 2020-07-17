@@ -97,7 +97,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     protected $parentAssociationMappings = [];
 
     /**
-     * @var string the template name
+     * @var string|null the template name
      */
     protected $template;
 
@@ -202,7 +202,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->options;
     }
 
-    public function setTemplate(string $template): void
+    public function setTemplate(?string $template): void
     {
         $this->template = $template;
     }
