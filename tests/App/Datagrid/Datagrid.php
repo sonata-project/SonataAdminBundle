@@ -38,12 +38,12 @@ final class Datagrid implements DatagridInterface
         $this->pager = $pager;
     }
 
-    public function getSortParameters(FieldDescriptionInterface $fieldDescription)
+    public function getSortParameters(FieldDescriptionInterface $fieldDescription): array
     {
         return [];
     }
 
-    public function getPaginationParameters(int $page)
+    public function getPaginationParameters(int $page): array
     {
         return [];
     }
@@ -121,15 +121,5 @@ final class Datagrid implements DatagridInterface
     public function hasDisplayableFilters()
     {
         return false;
-    }
-
-    public function getSortParameters(FieldDescriptionInterface $fieldDescription): array
-    {
-        return [];
-    }
-
-    public function getPaginationParameters(int $page): array
-    {
-        return [];
     }
 }
