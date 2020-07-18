@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
+use Sonata\AdminBundle\Manipulator\ObjectManipulator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,22 +36,22 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 class AdminType extends AbstractType
 {
     /**
-     * @var AdminHelper
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @var AdminHelper|null
      */
     private $adminHelper;
 
     /**
-     * NEXT_MAJOR: Allow only `AdminHelper` for argument 1 and remove the default null value.
+     * NEXT_MAJOR: Remove the __construct method.
      */
     public function __construct(?AdminHelper $adminHelper = null)
     {
-        // NEXT_MAJOR: Remove this condition.
-        if (null === $adminHelper) {
+        if (null !== $adminHelper) {
             @trigger_error(sprintf(
-                'Calling %s without passing an %s as argument is deprecated since sonata-project/admin-bundle 3.66'
-                .' and will throw an exception in 4.0.',
-                __METHOD__,
-                AdminHelper::class
+                'Passing argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.72'
+                .' and will be ignored in version 4.0.',
+                __METHOD__
             ), E_USER_DEPRECATED);
         }
 
@@ -106,10 +107,7 @@ class AdminType extends AbstractType
                         $subject = $p->getValue($parentSubject, $parentPath.$path);
                     } catch (NoSuchIndexException $e) {
                         // no object here, we create a new one
-                        // NEXT_MAJOR: Remove the null check.
-                        if (null !== $this->adminHelper) {
-                            $subject = $this->adminHelper->addNewInstance($parentSubject, $parentFieldDescription);
-                        }
+                        $subject = ObjectManipulator::setObject($admin->getNewInstance(), $parentSubject, $parentFieldDescription);
                     }
                 }
             }

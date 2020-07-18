@@ -306,19 +306,19 @@ If you want to use the Tab Menu in a different way, you can replace the Menu Tem
 Translations
 ^^^^^^^^^^^^
 
-The translation parameters and domain can be customised by using the
-``translation_domain`` and ``translation_parameters`` keys of the extra array
+The label translation parameters and domain can be customised by using the
+``label_translation_parameters`` and ``label_catalogue`` keys of the extra array
 of data associated with the item, respectively::
 
     $menuItem->setExtras([
-        'translation_parameters' => ['myparam' => 'myvalue'],
-        'translation_domain' => 'My domain',
+        'label_translation_parameters' => ['myparam' => 'myvalue'],
+        'label_catalogue' => 'My domain',
     ]);
 
 You can also set the translation domain on the menu root, and children will
 inherit it::
 
-    $menu->setExtra('translation_domain', 'My domain');
+    $menu->setExtra('label_catalogue', 'My domain');
 
 Filter parameters
 ^^^^^^^^^^^^^^^^^

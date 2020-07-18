@@ -28,7 +28,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * NEXT_MAJOR: Remove this class and the jms/translation-bundle dev dependency.
  *
- * @deprecated since sonata-project/admin-bundle 3.x. Use `translation:update` Symfony command instead.
+ * @deprecated since sonata-project/admin-bundle 3.72. Use `translation:update` Symfony command instead.
  */
 final class AdminExtractor implements ExtractorInterface, TranslatorInterface, SecurityHandlerInterface, LabelTranslatorStrategyInterface
 {

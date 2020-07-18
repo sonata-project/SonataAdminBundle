@@ -29,6 +29,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelHiddenType;
+use Sonata\AdminBundle\Manipulator\ObjectManipulator;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Object\Metadata;
 use Sonata\AdminBundle\Object\MetadataInterface;
@@ -1156,6 +1157,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function getNewInstance(): object
     {
         $object = $this->getModelManager()->getModelInstance($this->getClass());
+
+        $this->appendParentObject($object);
+
         foreach ($this->getExtensions() as $extension) {
             $extension->alterNewInstance($this, $object);
         }
@@ -1221,11 +1225,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
             $admin = $pool->getAdminByAdminCode($adminCode);
         } else {
-            if (!$pool->hasAdminByClass($fieldDescription->getTargetModel())) {
+            // NEXT_MAJOR: Remove the check and use `getTargetModel`.
+            if (method_exists($fieldDescription, 'getTargetModel')) {
+                $targetModel = $fieldDescription->getTargetModel();
+            } else {
+                $targetModel = $fieldDescription->getTargetEntity();
+            }
+
+            if (!$pool->hasAdminByClass($targetModel)) {
                 return;
             }
 
-            $admin = $pool->getAdminByClass($fieldDescription->getTargetModel());
+            $admin = $pool->getAdminByClass($targetModel);
         }
 
         if ($this->hasRequest()) {
@@ -2889,26 +2900,6 @@ EOT;
 
         $this->loaded['form'] = true;
 
-        // append parent object if any
-        // todo : clean the way the Admin class can retrieve set the object
-        if ($this->isChild() && $this->getParentAssociationMapping()) {
-            $parent = $this->getParent()->getObject($this->request->get($this->getParent()->getIdParameter()));
-
-            $propertyAccessor = $this->getConfigurationPool()->getPropertyAccessor();
-            $propertyPath = new PropertyPath($this->getParentAssociationMapping());
-
-            $object = $this->getSubject();
-
-            $value = $propertyAccessor->getValue($object, $propertyPath);
-
-            if (\is_array($value) || $value instanceof \ArrayAccess) {
-                $value[] = $parent;
-                $propertyAccessor->setValue($object, $propertyPath, $value);
-            } else {
-                $propertyAccessor->setValue($object, $propertyPath, $parent);
-            }
-        }
-
         $formBuilder = $this->getFormBuilder();
         $formBuilder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $this->preValidate($event->getData());
@@ -3033,6 +3024,38 @@ EOT;
      */
     protected function configureDefaultSortValues(array &$sortValues)
     {
+    }
+
+    /**
+     * Set the parent object, if any, to the provided object.
+     */
+    final protected function appendParentObject(object $object): void
+    {
+        if ($this->isChild() && $this->getParentAssociationMapping()) {
+            $parentAdmin = $this->getParent();
+            $parentObject = $parentAdmin->getObject($this->request->get($parentAdmin->getIdParameter()));
+
+            if (null !== $parentObject) {
+                $propertyAccessor = $this->getConfigurationPool()->getPropertyAccessor();
+                $propertyPath = new PropertyPath($this->getParentAssociationMapping());
+
+                $value = $propertyAccessor->getValue($object, $propertyPath);
+
+                if (\is_array($value) || $value instanceof \ArrayAccess) {
+                    $value[] = $parentObject;
+                    $propertyAccessor->setValue($object, $propertyPath, $value);
+                } else {
+                    $propertyAccessor->setValue($object, $propertyPath, $parentObject);
+                }
+            }
+        } elseif ($this->hasParentFieldDescription()) {
+            $parentAdmin = $this->getParentFieldDescription()->getAdmin();
+            $parentObject = $parentAdmin->getObject($this->request->get($parentAdmin->getIdParameter()));
+
+            if (null !== $parentObject) {
+                ObjectManipulator::setObject($object, $parentObject, $this->getParentFieldDescription());
+            }
+        }
     }
 
     /**
