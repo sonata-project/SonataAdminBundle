@@ -57,10 +57,7 @@ class GenerateObjectAclCommand extends QuestionableCommand
      */
     private $registry;
 
-    /**
-     * @param RegistryInterface|ManagerRegistry|null $registry
-     */
-    public function __construct(Pool $pool, array $aclObjectManipulators, ?ManagerRegistry $registry = null)
+    public function __construct(Pool $pool, array $aclObjectManipulators, $registry = null)
     {
         $this->pool = $pool;
         $this->aclObjectManipulators = $aclObjectManipulators;

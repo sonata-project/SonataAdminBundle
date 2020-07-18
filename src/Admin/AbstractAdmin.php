@@ -2020,27 +2020,6 @@ EOT;
         return $this->translator->trans($id, $parameters, $domain, $locale);
     }
 
-    /**
-     * Translate a message id.
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @return string the translated string
-     *
-     * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
-     */
-    public function transChoice(string $id, int $count, array $parameters = [], ?string $domain = null, ?string $locale = null): string
-    {
-        @trigger_error(sprintf(
-            'The %s method is deprecated since version 3.9 and will be removed in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        $domain = $domain ?: $this->getTranslationDomain();
-
-        return $this->trans($id, $parameters, $domain, $locale);
-    }
-
     public function setTranslationDomain(string $translationDomain): void
     {
         $this->translationDomain = $translationDomain;

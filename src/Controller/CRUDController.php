@@ -117,17 +117,17 @@ class CRUDController extends AbstractController
     private $auditManager;
 
     /**
-     * @var Exporter|null
+     * @var Exporter
      */
     private $exporter;
 
     /**
-     * @var AdminExporter|null
+     * @var AdminExporter
      */
     private $adminExporter;
 
     /**
-     * @var CsrfTokenManagerInterface|null
+     * @var CsrfTokenManagerInterface
      */
     private $csrfTokenManager;
 
@@ -137,7 +137,7 @@ class CRUDController extends AbstractController
     private $logger;
 
     /**
-     * @var AdminObjectAclManipulator|null
+     * @var AdminObjectAclManipulator
      */
     private $adminObjectAclManipulator;
 
@@ -156,11 +156,11 @@ class CRUDController extends AbstractController
         SessionInterface $session,
         KernelInterface $kernel,
         AuditManagerInterface $auditManager,
-        ?Exporter $exporter = null,
-        ?AdminExporter $adminExporter = null,
-        ?CsrfTokenManagerInterface $csrfTokenManager = null,
-        ?LoggerInterface $logger = null,
-        ?AdminObjectAclManipulator $adminObjectAclManipulator = null,
+        Exporter $exporter,
+        AdminExporter $adminExporter,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        LoggerInterface $logger,
+        AdminObjectAclManipulator $adminObjectAclManipulator,
         ?AdminObjectAclUserManager $adminObjectAclUserManager = null
     ) {
         $this->requestStack = $requestStack;
