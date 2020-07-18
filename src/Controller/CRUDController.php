@@ -58,11 +58,6 @@ use Twig\Environment;
 class CRUDController extends AbstractController
 {
     /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
      * The related Admin class.
      *
      * @var AdminInterface
@@ -1039,7 +1034,7 @@ class CRUDController extends AbstractController
      */
     protected function getParameter($name)
     {
-        return $this->container->getParameter($name);
+        return $this->pool->getContainer()->getParameter($name);
     }
 
     /**
@@ -1113,7 +1108,7 @@ class CRUDController extends AbstractController
             ));
         }
 
-        $this->templateRegistry = $this->container->get(sprintf('%s.template_registry', $this->admin->getCode()));
+        $this->templateRegistry = $this->pool->getContainer()->get(sprintf('%s.template_registry', $this->admin->getCode()));
         if (!$this->templateRegistry instanceof TemplateRegistryInterface) {
             throw new \RuntimeException(sprintf(
                 'Unable to find the template registry related to the current admin (%s)',
