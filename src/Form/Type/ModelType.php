@@ -29,16 +29,14 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 /**
  * This type define a standard select input with a + sign to add new associated object.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ModelType extends AbstractType
+final class ModelType extends AbstractType
 {
     /**
      * @var PropertyAccessorInterface
      */
-    protected $propertyAccessor;
+    private $propertyAccessor;
 
     public function __construct(PropertyAccessorInterface $propertyAccessor)
     {

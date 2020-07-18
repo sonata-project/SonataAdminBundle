@@ -17,15 +17,6 @@ namespace Sonata\AdminBundle\Admin;
  * Implementations should provide arrays of FieldDescriptionInterface instances.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * @method bool                        hasFormFieldDescription($name)
- * @method void                        addFormFieldDescription($name, FieldDescriptionInterface $fieldDescription)
- * @method void                        removeFormFieldDescription($name)
- * @method FieldDescriptionInterface   getShowFieldDescription($name)
- * @method FieldDescriptionInterface[] getShowFieldDescriptions()
- * @method bool                        hasListFieldDescription()
- * @method FieldDescriptionInterface   getListFieldDescription($name)
- * @method FieldDescriptionInterface[] getListFieldDescriptions()
  */
 interface FieldDescriptionRegistryInterface
 {
@@ -34,14 +25,11 @@ interface FieldDescriptionRegistryInterface
      */
     public function getFormFieldDescription(string $name): ?FieldDescriptionInterface;
 
-    // NEXT_MAJOR: Uncomment the following line.
-    //public function hasFormFieldDescription(string $name): bool;
+    public function hasFormFieldDescription(string $name): bool;
 
-    // NEXT_MAJOR: Uncomment the following line.
-    //public function addFormFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void;
+    public function addFormFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void;
 
-    // NEXT_MAJOR: Uncomment the following line.
-    //public function removeFormFieldDescription(string $name): void;
+    public function removeFormFieldDescription(string $name): void;
 
     /**
      * Build and return the collection of form FieldDescription.
@@ -50,8 +38,7 @@ interface FieldDescriptionRegistryInterface
      */
     public function getFormFieldDescriptions(): array;
 
-    // NEXT_MAJOR: Uncomment the following line.
-    //public function getShowFieldDescription(string $name): FieldDescriptionInterface;
+    public function getShowFieldDescription(string $name): FieldDescriptionInterface;
 
     /**
      * Returns true if the admin has a FieldDescription with the given $name.
@@ -68,14 +55,11 @@ interface FieldDescriptionRegistryInterface
      */
     public function removeShowFieldDescription(string $name): void;
 
-    // NEXT_MAJOR: Uncomment the following line.
-    //public function getShowFieldDescriptions(): array;
+    public function getShowFieldDescriptions(): array;
 
-    // NEXT_MAJOR: Uncomment the following line.
-    //public function hasListFieldDescription(string $name): bool;
+    public function hasListFieldDescription(string $name): bool;
 
-    // NEXT_MAJOR: Uncomment the following line.
-    //public function getListFieldDescription(string $name): FieldDescriptionInterface;
+    public function getListFieldDescription(string $name): FieldDescriptionInterface;
 
     /**
      * Adds a list FieldDescription.
@@ -87,15 +71,12 @@ interface FieldDescriptionRegistryInterface
      */
     public function removeListFieldDescription(string $name): void;
 
-    // NEXT_MAJOR: Uncomment the following line.
-    //public function getListFieldDescriptions(): array;
+    public function getListFieldDescriptions(): array;
 
     /**
      * Returns a filter FieldDescription.
-     *
-     * @return FieldDescriptionInterface|null // NEXT_MAJOR: Remove the null return type
      */
-    public function getFilterFieldDescription(string $name): ?FieldDescriptionInterface;
+    public function getFilterFieldDescription(string $name): FieldDescriptionInterface;
 
     /**
      * Returns true if the filter FieldDescription exists.

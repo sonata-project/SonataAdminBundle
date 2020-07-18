@@ -16,26 +16,24 @@ namespace Sonata\AdminBundle\Model;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AuditManager implements AuditManagerInterface
+final class AuditManager implements AuditManagerInterface
 {
     /**
      * @var array
      */
-    protected $classes = [];
+    private $classes = [];
 
     /**
      * @var array
      */
-    protected $readers = [];
+    private $readers = [];
 
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    private $container;
 
     public function __construct(ContainerInterface $container)
     {
@@ -66,7 +64,6 @@ class AuditManager implements AuditManagerInterface
             }
         }
 
-        // NEXT_MAJOR: Throw a \LogicException instead.
-        throw new \RuntimeException(sprintf('The class "%s" does not have any reader manager', $class));
+        throw new \LogicException(sprintf('The class "%s" does not have any reader manager', $class));
     }
 }

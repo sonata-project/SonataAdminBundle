@@ -6,7 +6,7 @@
         <default key="permanent">true</default>
     </route>
     <route id="sonata_admin_dashboard" path="/dashboard">
-        <default key="_controller">Sonata\AdminBundle\Action\DashboardAction</default>
+        <default key="_controller">sonata.admin.action.dashboard</default>
     </route>
     <route id="sonata_admin_retrieve_form_element" path="/core/get-form-field-element">
         <default key="_controller">sonata.admin.action.retrieve_form_field_element</default>
@@ -23,7 +23,7 @@
         <default key="_controller">sonata.admin.action.set_object_field_value</default>
     </route>
     <route id="sonata_admin_search" path="/search">
-        <default key="_controller">Sonata\AdminBundle\Action\SearchAction</default>
+        <default key="_controller">sonata.admin.action.search</default>
     </route>
     <route id="sonata_admin_retrieve_autocomplete_items" path="/core/get-autocomplete-items">
         <default key="_controller">sonata.admin.action.retrieve_autocomplete_items</default>

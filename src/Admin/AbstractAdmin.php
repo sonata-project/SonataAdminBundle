@@ -34,6 +34,7 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Object\Metadata;
 use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Route\RouteGeneratorInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
@@ -54,9 +55,9 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Mapping\GenericMetadata;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -105,17 +106,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @var FieldDescriptionInterface[]
      */
     protected $filterFieldDescriptions = [];
-
-    /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * The number of result to display in the list.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.67.
-     *
-     * @var int
-     */
-    protected $maxPerPage = 32;
 
     /**
      * The maximum number of page numbers to display in the list.
@@ -167,31 +157,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $formOptions = [];
 
     /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * Default values to the datagrid.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.67, use configureDefaultSortValues() instead.
-     *
-     * @var array
-     */
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-    ];
-
-    /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * Predefined per page options.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.67.
-     *
-     * @var array
-     */
-    protected $perPageOptions = [16, 32, 64, 128, 256];
-
-    /**
      * Pager type.
      *
      * @var string
@@ -213,20 +178,9 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     protected $label;
 
     /**
-     * Whether or not to persist the filters in the session.
-     *
-     * NEXT_MAJOR: remove this property
-     *
-     * @var bool
-     *
-     * @deprecated since sonata-project/admin-bundle 3.34, to be removed in 4.0.
-     */
-    protected $persistFilters = false;
-
-    /**
      * Array of routes related to this admin.
      *
-     * @var RouteCollection
+     * @var RouteCollectionInterface
      */
     protected $routes;
 
@@ -250,25 +204,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @var AdminInterface|null
      */
     protected $parent;
-
-    /**
-     * The related parent association, ie if OrderElement has a parent property named order,
-     * then the $parentAssociationMapping must be a string named `order`.
-     *
-     * NEXT_MAJOR: remove this attribute.
-     *
-     * @deprecated This attribute is deprecated since sonata-project/admin-bundle 3.24 and will be removed in 4.0
-     *
-     * @var string
-     */
-    protected $baseCodeRoute = '';
-
-    /**
-     * NEXT_MAJOR: should be default array and private.
-     *
-     * @var string|array
-     */
-    protected $parentAssociationMapping;
 
     /**
      * Reference the parent FieldDescription related to this admin
@@ -312,7 +247,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      *
      * NEXT_MAJOR: remove this property
      *
-     * @var \Symfony\Component\Translation\TranslatorInterface
+     * @var TranslatorInterface
      *
      * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
      */
@@ -396,8 +331,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @var array<string, bool>
      */
     protected $loaded = [
-        'view_fields' => false, // NEXT_MAJOR: Remove this unused value.
-        'view_groups' => false, // NEXT_MAJOR: Remove this unused value.
         'routes' => false,
         'tab_menu' => false,
         'show' => false,
@@ -466,6 +399,11 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      * @var array [action1 => requiredRole1, action2 => [requiredRole2, requiredRole3]]
      */
     protected $accessMapping = [];
+
+    /**
+     * @var array
+     */
+    private $parentAssociationMapping = [];
 
     /**
      * @var MutableTemplateRegistryInterface
@@ -564,12 +502,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->code = $code;
         $this->class = $class;
         $this->baseControllerName = $baseControllerName;
-
-        // NEXT_MAJOR: Remove this line.
-        $this->predefinePerPageOptions();
-
-        // NEXT_MAJOR: Remove this line.
-        $this->datagridValues['_per_page'] = $this->maxPerPage;
     }
 
     /**
@@ -609,7 +541,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             $label = $this->getTranslationLabel($field, 'export', 'label');
 
             // NEXT_MAJOR: We have to find another way to have a translated label or stop deprecating the translator.
-            $transLabel = $this->trans($label);
+            $transLabel = $this->translator->trans($label, [], $this->getTranslationDomain());
 
             // NEXT_MAJOR: Remove the following code in favor of the commented one.
             // If a key is provided we use it otherwise we use the generated label.
@@ -635,12 +567,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function initialize(): void
     {
         if (!$this->classnameLabel) {
-            /* NEXT_MAJOR: remove cast to string, null is not supposed to be
-            supported but was documented as such */
-            $this->classnameLabel = substr(
-                (string) $this->getClass(),
-                strrpos((string) $this->getClass(), '\\') + 1
-            );
+            $this->classnameLabel = substr($this->getClass(), strrpos($this->getClass(), '\\') + 1);
         }
 
         $this->configure();
@@ -753,8 +680,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             }
 
             // if filter persistence is configured
-            // NEXT_MAJOR: remove `$this->persistFilters !== false` from the condition
-            if (false !== $this->persistFilters && null !== $this->filterPersister) {
+            if (null !== $this->filterPersister) {
                 // if reset filters is asked, remove from storage
                 if ('reset' === $this->request->query->get('filters')) {
                     $this->filterPersister->reset($this->getCode());
@@ -771,13 +697,12 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
             $parameters = array_merge(
                 $this->getModelManager()->getDefaultSortValues($this->getClass()),
-                $this->datagridValues, // NEXT_MAJOR: Remove this line.
                 $this->getDefaultSortValues(),
                 $this->getDefaultFilterValues(),
                 $filters
             );
 
-            if (!$this->determinedPerPageValue($parameters['_per_page'])) {
+            if (!isset($parameters['_per_page']) || !$this->determinedPerPageValue($parameters['_per_page'])) {
                 $parameters['_per_page'] = $this->getMaxPerPage();
             }
 
@@ -799,8 +724,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
      */
     public function getParentAssociationMapping(): ?string
     {
-        // NEXT_MAJOR: remove array check
-        if (\is_array($this->parentAssociationMapping) && $this->isChild()) {
+        if ($this->isChild()) {
             $parent = $this->getParent()->getCode();
 
             if (\array_key_exists($parent, $this->parentAssociationMapping)) {
@@ -814,8 +738,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
             ));
         }
 
-        // NEXT_MAJOR: remove this line
-        return $this->parentAssociationMapping;
+        return null;
     }
 
     final public function addParentAssociationMapping(string $code, string $value): void
@@ -965,21 +888,6 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->subClasses;
     }
 
-    /**
-     * NEXT_MAJOR: remove this method.
-     */
-    public function addSubClass($subClass): void
-    {
-        @trigger_error(sprintf(
-            'Method "%s" is deprecated since sonata-project/admin-bundle 3.30 and will be removed in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        if (!\in_array($subClass, $this->subClasses, true)) {
-            $this->subClasses[] = $subClass;
-        }
-    }
-
     public function setSubClasses(array $subClasses): void
     {
         $this->subClasses = $subClasses;
@@ -1063,10 +971,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $actions;
     }
 
-    /**
-     * NEXT_MAJOR: Create a `RouteCollectionInterface` and use as return type.
-     */
-    public function getRoutes(): RouteCollection
+    public function getRoutes(): RouteCollectionInterface
     {
         $this->buildRoutes();
 
@@ -1192,17 +1097,10 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function defineFormBuilder(FormBuilderInterface $formBuilder): void
     {
         if (!$this->hasSubject()) {
-            @trigger_error(sprintf(
-                'Calling %s() when there is no subject is deprecated since sonata-project/admin-bundle 3.65'
-                .' and will throw an exception in 4.0. Use %s::setSubject() to set the subject.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
-            // NEXT_MAJOR : remove the previous `trigger_error()` call and uncomment the following exception
-            // throw new \LogicException(sprintf(
-            //    'Admin "%s" has no subject.',
-            //    static::class
-            // ));
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no subject.',
+                static::class
+            ));
         }
 
         $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
@@ -1229,12 +1127,7 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
             $admin = $pool->getAdminByAdminCode($adminCode);
         } else {
-            // NEXT_MAJOR: Remove the check and use `getTargetModel`.
-            if (method_exists($fieldDescription, 'getTargetModel')) {
-                $targetModel = $fieldDescription->getTargetModel();
-            } else {
-                $targetModel = $fieldDescription->getTargetEntity();
-            }
+            $targetModel = $fieldDescription->getTargetModel();
 
             if (!$pool->hasAdminByClass($targetModel)) {
                 return;
@@ -1274,23 +1167,13 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->list;
     }
 
-    /**
-     * @final since sonata-project/admin-bundle 3.63.0
-     */
-    public function createQuery($context = 'list'): ProxyQueryInterface
+    final public function createQuery(): ProxyQueryInterface
     {
-        if (\func_num_args() > 0) {
-            @trigger_error(sprintf(
-                'The $context argument of %s is deprecated since 3.3, to be removed in 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
         $query = $this->getModelManager()->createQuery($this->getClass());
 
         $query = $this->configureQuery($query);
         foreach ($this->extensions as $extension) {
-            $extension->configureQuery($this, $query, $context);
+            $extension->configureQuery($this, $query);
         }
 
         return $query;
@@ -1376,52 +1259,16 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         return $this->label;
     }
 
-    /**
-     * @param bool $persist
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @deprecated since sonata-project/admin-bundle 3.34, to be removed in 4.0.
-     */
-    public function setPersistFilters(bool $persist): void
-    {
-        @trigger_error(sprintf(
-            'The %s method is deprecated since version 3.34 and will be removed in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        $this->persistFilters = $persist;
-    }
-
     public function setFilterPersister(?FilterPersisterInterface $filterPersister = null): void
     {
         $this->filterPersister = $filterPersister;
-        // NEXT_MAJOR remove the deprecated property will be removed. Needed for persisted filter condition.
-        $this->persistFilters = true;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.67, to be removed in 4.0.
-     */
-    public function setMaxPerPage(int $maxPerPage): void
-    {
-        @trigger_error(sprintf(
-            'The method %s is deprecated since sonata-project/admin-bundle 3.67 and will be removed in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        $this->maxPerPage = $maxPerPage;
     }
 
     public function getMaxPerPage(): int
     {
-        // NEXT_MAJOR: Remove this line and uncomment the following.
-        return $this->maxPerPage;
-        // $sortValues = $this->getModelManager()->getDefaultSortValues($this->class);
+        $sortValues = $this->getModelManager()->getDefaultSortValues($this->class);
 
-        // return $sortValues['_per_page'] ?? 25;
+        return $sortValues['_per_page'] ?? 25;
     }
 
     public function setMaxPageLinks(int $maxPageLinks): void
@@ -1499,28 +1346,18 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
         $this->setShowGroups($showGroups);
     }
 
-    public function setParentFieldDescription(?FieldDescriptionInterface $parentFieldDescription): void
+    public function setParentFieldDescription(FieldDescriptionInterface $parentFieldDescription): void
     {
         $this->parentFieldDescription = $parentFieldDescription;
     }
 
-    public function getParentFieldDescription(): ?FieldDescriptionInterface
+    public function getParentFieldDescription(): FieldDescriptionInterface
     {
         if (!$this->hasParentFieldDescription()) {
-            @trigger_error(sprintf(
-                'Calling %s() when there is no parent field description is deprecated since'
-                .' sonata-project/admin-bundle 3.66 and will throw an exception in 4.0.'
-                .' Use %s::hasParentFieldDescription() to know if there is a parent field description.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare FieldDescriptionInterface as return type
-            // throw new \LogicException(sprintf(
-            //    'Admin "%s" has no parent field description.',
-            //    static::class
-            // ));
-
-            return null;
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no parent field description.',
+                static::class
+            ));
         }
 
         return $this->parentFieldDescription;
@@ -1534,35 +1371,24 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
     public function setSubject(?object $subject): void
     {
         if (\is_object($subject) && !is_a($subject, $this->getClass(), true)) {
-            $message = <<<'EOT'
-You are trying to set entity an instance of "%s",
-which is not the one registered with this admin class ("%s").
-This is deprecated since 3.5 and will no longer be supported in 4.0.
-EOT;
-
-            // NEXT_MAJOR : throw an exception instead
-            @trigger_error(sprintf($message, \get_class($subject), $this->getClass()), E_USER_DEPRECATED);
+            throw new \LogicException(sprintf(
+                'Admin "%s" does not allow this subject: %s, use the one register with this admin class %s',
+                static::class,
+                \get_class($subject),
+                $this->getClass()
+            ));
         }
 
         $this->subject = $subject;
     }
 
-    public function getSubject(): ?object
+    public function getSubject(): object
     {
         if (!$this->hasSubject()) {
-            @trigger_error(sprintf(
-                'Calling %s() when there is no subject is deprecated since sonata-project/admin-bundle 3.66'
-                .' and will throw an exception in 4.0. Use %s::hasSubject() to know if there is a subject.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and update the return type
-            // throw new \LogicException(sprintf(
-            //    'Admin "%s" has no subject.',
-            //    static::class
-            // ));
-
-            return null;
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no subject.',
+                static::class
+            ));
         }
 
         return $this->subject;
@@ -1588,26 +1414,16 @@ EOT;
         return $this->formFieldDescriptions;
     }
 
-    public function getFormFieldDescription(string $name): ?FieldDescriptionInterface
+    public function getFormFieldDescription(string $name): FieldDescriptionInterface
     {
         $this->buildForm();
 
         if (!$this->hasFormFieldDescription($name)) {
-            @trigger_error(sprintf(
-                'Calling %s() when there is no form field description is deprecated since'
-                .' sonata-project/admin-bundle 3.69 and will throw an exception in 4.0.'
-                .' Use %s::hasFormFieldDescription() to know if there is a form field description.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare FieldDescriptionInterface as return type
-            // throw new \LogicException(sprintf(
-            //    'Admin "%s" has no form field description for the field %s.',
-            //    static::class,
-            //    $name
-            // ));
-
-            return null;
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no form field description for the field %s.',
+                static::class,
+                $name
+            ));
         }
 
         return $this->formFieldDescriptions[$name];
@@ -1651,26 +1467,16 @@ EOT;
     /**
      * Returns the form FieldDescription with the given $name.
      */
-    public function getShowFieldDescription(string $name): ?FieldDescriptionInterface
+    public function getShowFieldDescription(string $name): FieldDescriptionInterface
     {
         $this->buildShow();
 
         if (!$this->hasShowFieldDescription($name)) {
-            @trigger_error(sprintf(
-                'Calling %s() when there is no show field description is deprecated since'
-                .' sonata-project/admin-bundle 3.69 and will throw an exception in 4.0.'
-                .' Use %s::hasFormFieldDescription() to know if there is a show field description.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare FieldDescriptionInterface as return type
-            // throw new \LogicException(sprintf(
-            //    'Admin "%s" has no show field description for the field %s.',
-            //    static::class,
-            //    $name
-            // ));
-
-            return null;
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no show field description for the field %s.',
+                static::class,
+                $name
+            ));
         }
 
         return $this->showFieldDescriptions[$name];
@@ -1700,27 +1506,16 @@ EOT;
         return $this->listFieldDescriptions;
     }
 
-    public function getListFieldDescription(string $name): ?FieldDescriptionInterface
+    public function getListFieldDescription(string $name): FieldDescriptionInterface
     {
         $this->buildList();
 
         if (!$this->hasListFieldDescription($name)) {
-            @trigger_error(sprintf(
-                'Calling %s() when there is no list field description is deprecated since'
-                .' sonata-project/admin-bundle 3.66 and will throw an exception in 4.0.'
-                .' Use %s::hasListFieldDescription(\'%s\') to know if there is a list field description.',
-                __METHOD__,
-                __CLASS__,
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no list field description for %s.',
+                static::class,
                 $name
-            ), E_USER_DEPRECATED);
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare FieldDescriptionInterface as return type
-            // throw new \LogicException(sprintf(
-            //    'Admin "%s" has no list field description for %s.',
-            //    static::class,
-            //    $name
-            // ));
-
-            return null;
+            ));
         }
 
         return $this->listFieldDescriptions[$name];
@@ -1743,26 +1538,16 @@ EOT;
         unset($this->listFieldDescriptions[$name]);
     }
 
-    public function getFilterFieldDescription(string $name): ?FieldDescriptionInterface
+    public function getFilterFieldDescription(string $name): FieldDescriptionInterface
     {
         $this->buildDatagrid();
 
         if (!$this->hasFilterFieldDescription($name)) {
-            @trigger_error(sprintf(
-                'Calling %s() when there is no filter field description is deprecated since'
-                .' sonata-project/admin-bundle 3.69 and will throw an exception in 4.0.'
-                .' Use %s::hasFilterFieldDescription() to know if there is a filter field description.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare FieldDescriptionInterface as return type
-            // throw new \LogicException(sprintf(
-            //    'Admin "%s" has no filter field description for the field %s.',
-            //    static::class,
-            //    $name
-            // ));
-
-            return null;
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no filter field description for the field %s.',
+                static::class,
+                $name
+            ));
         }
 
         return $this->filterFieldDescriptions[$name];
@@ -1792,7 +1577,7 @@ EOT;
         return $this->filterFieldDescriptions;
     }
 
-    public function addChild(AdminInterface $child): void
+    public function addChild(AdminInterface $child, string $field): void
     {
         $parentAdmin = $this;
         while ($parentAdmin->isChild() && $parentAdmin->getCode() !== $child->getCode()) {
@@ -1810,19 +1595,7 @@ EOT;
         $this->children[$child->getCode()] = $child;
 
         $child->setParent($this);
-
-        // NEXT_MAJOR: remove $args and add $field parameter to this function on next Major
-
-        $args = \func_get_args();
-
-        if (isset($args[1])) {
-            $child->addParentAssociationMapping($this->getCode(), $args[1]);
-        } else {
-            @trigger_error(
-                'Calling "addChild" without second argument is deprecated since sonata-project/admin-bundle 3.35 and will not be allowed in 4.0.',
-                E_USER_DEPRECATED
-            );
-        }
+        $child->addParentAssociationMapping($this->getCode(), $field);
     }
 
     public function hasChild(string $code): bool
@@ -1835,23 +1608,14 @@ EOT;
         return $this->children;
     }
 
-    public function getChild(string $code): ?AdminInterface
+    public function getChild(string $code): AdminInterface
     {
         if (!$this->hasChild($code)) {
-            @trigger_error(sprintf(
-                'Calling %s() when there is no child is deprecated since sonata-project/admin-bundle 3.69'
-                .' and will throw an exception in 4.0. Use %s::hasChild() to know if the child exists.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare AdminInterface as return type
-            // throw new \LogicException(sprintf(
-            //    'Admin "%s" has no child for the code %s.',
-            //    static::class,
-            //    $code
-            // ));
-
-            return null;
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no child for the code %s.',
+                static::class,
+                $code
+            ));
         }
 
         return $this->children[$code];
@@ -1862,22 +1626,13 @@ EOT;
         $this->parent = $parent;
     }
 
-    public function getParent(): ?AdminInterface
+    public function getParent(): AdminInterface
     {
         if (!$this->isChild()) {
-            @trigger_error(sprintf(
-                'Calling %s() when there is no parent is deprecated since sonata-project/admin-bundle 3.66'
-                .' and will throw an exception in 4.0. Use %s::isChild() to know if there is a parent.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, the `return null` statement, uncomment the following exception and declare AdminInterface as return type
-            // throw new \LogicException(sprintf(
-            //    'Admin "%s" has no parent.',
-            //    static::class
-            // ));
-
-            return null;
+            throw new \LogicException(sprintf(
+                'Admin "%s" has no parent.',
+                static::class
+            ));
         }
 
         return $this->parent;
@@ -1985,23 +1740,6 @@ EOT;
         $this->currentChild = $currentChild;
     }
 
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0
-     */
-    public function getCurrentChild(): bool
-    {
-        @trigger_error(sprintf(
-            'The %s() method is deprecated since version 3.65 and will be removed in 4.0.'
-            .' Use %s::isCurrentChild() instead.',
-            __METHOD__,
-            __CLASS__
-        ), E_USER_DEPRECATED);
-
-        return $this->currentChild;
-    }
-
     public function isCurrentChild(): bool
     {
         return $this->currentChild;
@@ -2023,39 +1761,6 @@ EOT;
         return null;
     }
 
-    public function trans($id, array $parameters = [], $domain = null, $locale = null): string
-    {
-        @trigger_error(sprintf(
-            'The %s method is deprecated since version 3.9 and will be removed in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        $domain = $domain ?: $this->getTranslationDomain();
-
-        return $this->translator->trans($id, $parameters, $domain, $locale);
-    }
-
-    /**
-     * Translate a message id.
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @return string the translated string
-     *
-     * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
-     */
-    public function transChoice(string $id, int $count, array $parameters = [], ?string $domain = null, ?string $locale = null): string
-    {
-        @trigger_error(sprintf(
-            'The %s method is deprecated since version 3.9 and will be removed in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        $domain = $domain ?: $this->getTranslationDomain();
-
-        return $this->translator->transChoice($id, $count, $parameters, $domain, $locale);
-    }
-
     public function setTranslationDomain(string $translationDomain): void
     {
         $this->translationDomain = $translationDomain;
@@ -2073,7 +1778,7 @@ EOT;
      *
      * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
      */
-    public function setTranslator(?TranslatorInterface $translator): void
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $args = \func_get_args();
         if (isset($args[1]) && $args[1]) {
@@ -2084,23 +1789,6 @@ EOT;
         }
 
         $this->translator = $translator;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @deprecated since sonata-project/admin-bundle 3.9, to be removed with 4.0
-     */
-    public function getTranslator(): ?TranslatorInterface
-    {
-        @trigger_error(sprintf(
-            'The %s method is deprecated since version 3.9 and will be removed in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        return $this->translator;
     }
 
     public function getTranslationLabel(string $label, string $context = '', string $type = ''): string
@@ -2120,8 +1808,7 @@ EOT;
     public function getRequest(): Request
     {
         if (!$this->request) {
-            // NEXT_MAJOR: Throw \LogicException instead.
-            throw new \RuntimeException('The Request object has not been set');
+            throw new \LogicException('The Request object has not been set');
         }
 
         return $this->request;
@@ -2132,7 +1819,7 @@ EOT;
         return null !== $this->request;
     }
 
-    public function setFormContractor(?FormContractorInterface $formBuilder): void
+    public function setFormContractor(FormContractorInterface $formBuilder): void
     {
         $this->formContractor = $formBuilder;
     }
@@ -2142,7 +1829,7 @@ EOT;
         return $this->formContractor;
     }
 
-    public function setDatagridBuilder(?DatagridBuilderInterface $datagridBuilder): void
+    public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder): void
     {
         $this->datagridBuilder = $datagridBuilder;
     }
@@ -2152,7 +1839,7 @@ EOT;
         return $this->datagridBuilder;
     }
 
-    public function setListBuilder(?ListBuilderInterface $listBuilder): void
+    public function setListBuilder(ListBuilderInterface $listBuilder): void
     {
         $this->listBuilder = $listBuilder;
     }
@@ -2172,7 +1859,7 @@ EOT;
         return $this->showBuilder;
     }
 
-    public function setConfigurationPool(?Pool $configurationPool): void
+    public function setConfigurationPool(Pool $configurationPool): void
     {
         $this->configurationPool = $configurationPool;
     }
@@ -2272,7 +1959,7 @@ EOT;
         $this->getSecurityHandler()->createObjectSecurity($this, $object);
     }
 
-    public function setSecurityHandler(?SecurityHandlerInterface $securityHandler): void
+    public function setSecurityHandler(SecurityHandlerInterface $securityHandler): void
     {
         $this->securityHandler = $securityHandler;
     }
@@ -2329,7 +2016,7 @@ EOT;
         return $this->getNormalizedIdentifier($model);
     }
 
-    public function setValidator(?ValidatorInterface $validator): void
+    public function setValidator(ValidatorInterface $validator): void
     {
         $this->validator = $validator;
     }
@@ -2376,7 +2063,7 @@ EOT;
         return $this->extensions;
     }
 
-    public function setMenuFactory(?FactoryInterface $menuFactory): void
+    public function setMenuFactory(FactoryInterface $menuFactory): void
     {
         $this->menuFactory = $menuFactory;
     }
@@ -2386,7 +2073,7 @@ EOT;
         return $this->menuFactory;
     }
 
-    public function setRouteBuilder(?RouteBuilderInterface $routeBuilder): void
+    public function setRouteBuilder(RouteBuilderInterface $routeBuilder): void
     {
         $this->routeBuilder = $routeBuilder;
     }
@@ -2413,7 +2100,7 @@ EOT;
         return sprintf('%s:%s', ClassUtils::getClass($object), spl_object_hash($object));
     }
 
-    public function setLabelTranslatorStrategy(?LabelTranslatorStrategyInterface $labelTranslatorStrategy): void
+    public function setLabelTranslatorStrategy(LabelTranslatorStrategyInterface $labelTranslatorStrategy): void
     {
         $this->labelTranslatorStrategy = $labelTranslatorStrategy;
     }
@@ -2429,36 +2116,17 @@ EOT;
     }
 
     /**
-     * NEXT_MAJOR: Remove this.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.67, to be removed in 4.0.
-     *
-     * Set custom per page options.
-     */
-    public function setPerPageOptions(array $options): void
-    {
-        @trigger_error(sprintf(
-            'The method %s is deprecated since sonata-project/admin-bundle 3.67 and will be removed in 4.0.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        $this->perPageOptions = $options;
-    }
-
-    /**
      * Returns predefined per page options.
      */
     public function getPerPageOptions(): array
     {
-        // NEXT_MAJOR: Remove this line and uncomment the following
-        return $this->perPageOptions;
-//        $perPageOptions = $this->getModelManager()->getDefaultPerPageOptions($this->class);
-//        $perPageOptions[] = $this->getMaxPerPage();
-//
-//        $perPageOptions = array_unique($perPageOptions);
-//        sort($perPageOptions);
-//
-//        return $perPageOptions;
+        $perPageOptions = $this->getModelManager()->getDefaultPerPageOptions($this->class);
+        $perPageOptions[] = $this->getMaxPerPage();
+
+        $perPageOptions = array_unique($perPageOptions);
+        sort($perPageOptions);
+
+        return $perPageOptions;
     }
 
     /**
@@ -2695,28 +2363,6 @@ EOT;
         return null;
     }
 
-    /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * Checks if a filter type is set to a default value.
-     */
-    final public function isDefaultFilter(string $name): bool
-    {
-        @trigger_error(sprintf(
-            'Method "%s" is deprecated since sonata-project/admin-bundle 3.x.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        $filter = $this->getFilterParameters();
-        $default = $this->getDefaultFilterValues();
-
-        if (!\array_key_exists($name, $filter) || !\array_key_exists($name, $default)) {
-            return false;
-        }
-
-        return $filter[$name] === $default[$name];
-    }
-
     public function canAccessObject(string $action, ?object $object = null): bool
     {
         return $object && $this->id($object) && $this->hasAccess($action, $object);
@@ -2766,10 +2412,7 @@ EOT;
         $this->configureDefaultSortValues($defaultSortValues);
 
         foreach ($this->getExtensions() as $extension) {
-            // NEXT_MAJOR: remove method check
-            if (method_exists($extension, 'configureDefaultSortValues')) {
-                $extension->configureDefaultSortValues($this, $defaultSortValues);
-            }
+            $extension->configureDefaultSortValues($this, $defaultSortValues);
         }
 
         return $defaultSortValues;
@@ -2785,10 +2428,7 @@ EOT;
         $this->configureDefaultFilterValues($defaultFilterValues);
 
         foreach ($this->getExtensions() as $extension) {
-            // NEXT_MAJOR: remove method check
-            if (method_exists($extension, 'configureDefaultFilterValues')) {
-                $extension->configureDefaultFilterValues($this, $defaultFilterValues);
-            }
+            $extension->configureDefaultFilterValues($this, $defaultFilterValues);
         }
 
         return $defaultFilterValues;
@@ -2810,7 +2450,7 @@ EOT;
     {
     }
 
-    protected function configureRoutes(RouteCollection $collection): void
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
     }
 
@@ -2825,22 +2465,10 @@ EOT;
     }
 
     /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated Use configureTabMenu instead
-     */
-    protected function configureSideMenu(ItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
-    {
-    }
-
-    /**
      * Configures the tab menu in your admin.
      */
     protected function configureTabMenu(ItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
     {
-        // Use configureSideMenu not to mess with previous overrides
-        // NEXT_MAJOR: remove this line
-        $this->configureSideMenu($menu, $action, $childAdmin);
     }
 
     /**
@@ -2953,8 +2581,7 @@ EOT;
             return $this->subClasses[$name];
         }
 
-        // NEXT_MAJOR: Throw \LogicException instead.
-        throw new \RuntimeException(sprintf('Unable to find the subclass `%s` for admin `%s`', $name, static::class));
+        throw new \LogicException(sprintf('Unable to find the subclass `%s` for admin `%s`', $name, static::class));
     }
 
     /**
@@ -2996,20 +2623,6 @@ EOT;
             },
             'serializingWarning' => true,
         ]));
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this function.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.67, to be removed in 4.0.
-     *
-     * Predefine per page options.
-     */
-    protected function predefinePerPageOptions(): void
-    {
-        array_unshift($this->perPageOptions, $this->maxPerPage);
-        $this->perPageOptions = array_unique($this->perPageOptions);
-        sort($this->perPageOptions);
     }
 
     /**
@@ -3175,5 +2788,3 @@ EOT;
         }
     }
 }
-
-class_exists(ErrorElement::class);

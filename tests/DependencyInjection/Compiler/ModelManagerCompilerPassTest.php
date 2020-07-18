@@ -45,34 +45,6 @@ final class ModelManagerCompilerPassTest extends TestCase
         $this->assertCount(0, $adminMaker->getArgument(1));
     }
 
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     *
-     * @expectedDeprecation Not setting the "sonata.admin.manager" tag on the "sonata.admin.manager.test" service is deprecated since sonata-project/admin-bundle 3.60.
-     */
-    public function testProcessWithUntaggedManagerDefinition(): void
-    {
-        $adminMaker = new Definition(AdminMaker::class);
-        $adminMaker->setArguments([
-            '',
-            [],
-        ]);
-
-        $containerBuilder = new ContainerBuilder();
-        $containerBuilder->setDefinition('sonata.admin.maker', $adminMaker);
-        $containerBuilder->setParameter('kernel.bundles', ['MakerBundle' => 'MakerBundle']);
-
-        $managerDefinition = new Definition(ModelManager::class);
-        $containerBuilder->setDefinition('sonata.admin.manager.test', $managerDefinition);
-
-        $compilerPass = new ModelManagerCompilerPass();
-        $compilerPass->process($containerBuilder);
-
-        $this->assertCount(1, $adminMaker->getArgument(1));
-    }
-
     public function testProcessWithTaggedManagerDefinition(): void
     {
         $adminMaker = new Definition(AdminMaker::class);

@@ -106,7 +106,6 @@ class BreadcrumbsBuilderTest extends TestCase
         $admin->hasRoute('show')->willReturn(true);
         $admin->generateUrl('show', ['id' => 'my-object'])->willReturn('/myadmin/my-object');
 
-        $admin->trans('My class', [], null)->willReturn('Ma classe');
         $admin->hasRoute('list')->willReturn(true);
         $admin->hasAccess('list')->willReturn(true);
         $admin->generateUrl('list')->willReturn('/myadmin/list');

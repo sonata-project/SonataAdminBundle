@@ -12,7 +12,6 @@ file that was distributed with this source code.
 
     <input type="text" id="{{ id }}_autocomplete_input" value=""
         {%- for attribute,value in attr %} {{ attribute }}="{{ value }}" {% endfor -%}
-        {%- if read_only|default(false) %} readonly="readonly"{% endif -%}    {# NEXT_MAJOR: remove #}
         {%- if disabled %} disabled="disabled"{% endif %}
     />
 
@@ -72,8 +71,7 @@ file that was distributed with this source code.
                 placeholder: '{{ placeholder ?: allowClearPlaceholder }}', // allowClear needs placeholder to work properly
                 allowClear: {{ required ? 'false' : 'true' }},
                 enable: {{ disabled ? 'false' : 'true' }},
-                readonly: {{ read_only|default(false) or attr.read_only|default(false) ? 'true' : 'false' }}, {# NEXT_MAJOR: remove #}
-                {# readonly: {{ attr.read_only|default(false) ? 'true' : 'false' }}, #}    {# NEXT_MAJOR: uncomment #}
+                readonly: {{ attr.read_only|default(false) ? 'true' : 'false' }},
                 minimumInputLength: {{ minimum_input_length }},
                 multiple: {{ multiple ? 'true' : 'false' }},
                 width: function() {

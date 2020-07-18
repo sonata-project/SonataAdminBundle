@@ -49,6 +49,16 @@ final class Pager implements PagerInterface
     {
     }
 
+    public function isLastPage(): bool
+    {
+        return false;
+    }
+
+    public function getNbResults(): int
+    {
+        return 10;
+    }
+
     public function getResults(): array
     {
         return $this->repository->all();

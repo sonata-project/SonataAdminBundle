@@ -16,7 +16,6 @@ namespace Sonata\AdminBundle\Tests\Block;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminListBlockService;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
-use Sonata\AdminBundle\Tests\Fixtures\Block\FakeBlockService;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
 
 /**
@@ -50,20 +49,6 @@ class AdminListBlockServiceTest extends BlockServiceTestCase
 
         $this->assertSettings([
             'groups' => false,
-        ], $blockContext);
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testOverriddenDefaultSettings(): void
-    {
-        $blockService = new FakeBlockService($this->twig, $this->pool, $this->templateRegistry->reveal());
-        $blockContext = $this->getBlockContext($blockService);
-
-        $this->assertSettings([
-            'foo' => 'bar',
-            'groups' => true,
         ], $blockContext);
     }
 }

@@ -20,11 +20,9 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType as SymfonyCollecti
  * This type wrap native `collection` form type and render `add` and `delete`
  * buttons in standard Symfony` collection form type.
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class CollectionType extends AbstractType
+final class CollectionType extends AbstractType
 {
     public function getParent()
     {

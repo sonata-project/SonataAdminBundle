@@ -14,16 +14,14 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Admin;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class FieldDescriptionCollection implements \ArrayAccess, \Countable
+final class FieldDescriptionCollection implements \ArrayAccess, \Countable
 {
     /**
      * @var FieldDescriptionInterface[]
      */
-    protected $elements = [];
+    private $elements = [];
 
     public function add(FieldDescriptionInterface $fieldDescription): void
     {

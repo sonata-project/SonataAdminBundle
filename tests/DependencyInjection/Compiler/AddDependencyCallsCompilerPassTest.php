@@ -70,7 +70,6 @@ class AddDependencyCallsCompilerPassTest extends TestCase
         $this->expectExceptionMessage(
             'The "translator" service is not yet enabled.
                 It\'s required by SonataAdmin to display all labels properly.
-
                 To learn how to enable the translator service please visit:
                 http://symfony.com/doc/current/translation.html#configuration
             '

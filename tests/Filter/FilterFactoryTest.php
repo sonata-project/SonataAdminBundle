@@ -98,22 +98,4 @@ class FilterFactoryTest extends TestCase
         $filter = new FilterFactory($container, [$fqcn => 'my.filter.id']);
         $filter->create('test', $fqcn);
     }
-
-    /**
-     * @group legacy
-     */
-    public function testCreateFilterWithTypeName(): void
-    {
-        $filter = $this->getMockForAbstractClass(FilterInterface::class);
-        $filter->expects($this->once())
-            ->method('initialize');
-
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $container->expects($this->once())
-            ->method('get')
-            ->willReturn($filter);
-
-        $filter = new FilterFactory($container, ['mytype' => 'mytype']);
-        $filter->create('test', 'mytype');
-    }
 }

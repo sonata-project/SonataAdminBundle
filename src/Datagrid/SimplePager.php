@@ -16,29 +16,27 @@ namespace Sonata\AdminBundle\Datagrid;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Sjoerd Peters <sjoerd.peters@gmail.com>
  */
-class SimplePager extends Pager
+final class SimplePager extends Pager
 {
     /**
      * @var bool
      */
-    protected $haveToPaginate;
+    private $haveToPaginate;
 
     /**
      * How many pages to look forward to create links to next pages.
      *
      * @var int
      */
-    protected $threshold;
+    private $threshold;
 
     /**
      * @var int
      */
-    protected $thresholdCount;
+    private $thresholdCount;
 
     /**
      * The threshold parameter can be used to determine how far ahead the pager
@@ -58,7 +56,7 @@ class SimplePager extends Pager
         $this->setThreshold($threshold);
     }
 
-    public function getNbResults()
+    public function getNbResults(): int
     {
         $n = ($this->getLastPage() - 1) * $this->getMaxPerPage();
         if ($this->getLastPage() === $this->getPage()) {

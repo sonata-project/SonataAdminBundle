@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Twig\Extension;
 
 use Doctrine\Common\Util\ClassUtils;
-use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
@@ -28,15 +27,12 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
-use Twig\Error\LoaderError;
 use Twig\Extension\AbstractExtension;
 use Twig\TemplateWrapper;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 final class SonataAdminExtension extends AbstractExtension
@@ -50,18 +46,14 @@ final class SonataAdminExtension extends AbstractExtension
     ];
 
     /**
-     * @var TranslatorInterface|null
+     * @var TranslatorInterface
      */
-    protected $translator;
+    private $translator;
+
     /**
      * @var Pool
      */
     private $pool;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
 
     /**
      * @var string[]
@@ -80,13 +72,11 @@ final class SonataAdminExtension extends AbstractExtension
 
     public function __construct(
         Pool $pool,
-        ?LoggerInterface $logger = null,
         TranslatorInterface $translator,
         ?ContainerInterface $templateRegistries = null,
         ?AuthorizationCheckerInterface $securityChecker = null
     ) {
         $this->pool = $pool;
-        $this->logger = $logger;
         $this->translator = $translator;
         $this->templateRegistries = $templateRegistries;
         $this->securityChecker = $securityChecker;
@@ -200,23 +190,10 @@ final class SonataAdminExtension extends AbstractExtension
             $environment
         );
 
-        try {
-            $value = $fieldDescription->getValue($object);
-        } catch (NoValueException $e) {
-            // NEXT_MAJOR: Remove the try catch in order to throw the NoValueException.
-            @trigger_error(
-                'Accessing a non existing value is deprecated'
-                .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
-                E_USER_DEPRECATED
-            );
-
-            $value = null;
-        }
-
         return $this->render($fieldDescription, $template, [
             'field_description' => $fieldDescription,
             'object' => $object,
-            'value' => $value,
+            'value' => $fieldDescription->getValue($object),
             'admin' => $fieldDescription->getAdmin(),
         ], $environment);
     }
@@ -241,31 +218,8 @@ final class SonataAdminExtension extends AbstractExtension
             $environment
         );
 
-        try {
-            $baseValue = $fieldDescription->getValue($baseObject);
-        } catch (NoValueException $e) {
-            // NEXT_MAJOR: Remove the try catch in order to throw the NoValueException.
-            @trigger_error(
-                'Accessing a non existing value is deprecated'
-                .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
-                E_USER_DEPRECATED
-            );
-
-            $baseValue = null;
-        }
-
-        try {
-            $compareValue = $fieldDescription->getValue($compareObject);
-        } catch (NoValueException $e) {
-            // NEXT_MAJOR: Remove the try catch in order to throw the NoValueException.
-            @trigger_error(
-                'Accessing a non existing value is deprecated'
-                .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
-                E_USER_DEPRECATED
-            );
-
-            $compareValue = null;
-        }
+        $baseValue = $fieldDescription->getValue($baseObject);
+        $compareValue = $fieldDescription->getValue($compareObject);
 
         $baseValueOutput = $template->render([
             'admin' => $fieldDescription->getAdmin(),
@@ -310,17 +264,7 @@ final class SonataAdminExtension extends AbstractExtension
         $propertyPath = $fieldDescription->getOption('associated_property');
 
         if (null === $propertyPath) {
-            // For BC kept associated_tostring option behavior
-            $method = $fieldDescription->getOption('associated_tostring');
-
-            if ($method) {
-                @trigger_error(
-                    'Option "associated_tostring" is deprecated since version 2.3 and will be removed in 4.0. Use "associated_property" instead.',
-                    E_USER_DEPRECATED
-                );
-            } else {
-                $method = '__toString';
-            }
+            $method = '__toString';
 
             if (!method_exists($element, $method)) {
                 throw new \RuntimeException(sprintf(
@@ -402,12 +346,7 @@ final class SonataAdminExtension extends AbstractExtension
             } else {
                 foreach ($choices as $value => $text) {
                     if ($catalogue) {
-                        if (null !== $this->translator) {
-                            $text = $this->translator->trans($text, [], $catalogue);
-                        // NEXT_MAJOR: Remove this check
-                        } elseif (method_exists($fieldDescription->getAdmin(), 'trans')) {
-                            $text = $fieldDescription->getAdmin()->trans($text, [], $catalogue);
-                        }
+                        $text = $this->translator->trans($text, [], $catalogue);
                     }
 
                     $xEditableChoices[] = [
@@ -546,7 +485,7 @@ final class SonataAdminExtension extends AbstractExtension
         try {
             $value = $fieldDescription->getValue($object);
         } catch (NoValueException $e) {
-            if ($fieldDescription->getAssociationAdmin()) {
+            if ($fieldDescription->hasAssociationAdmin()) {
                 $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
             }
         }
@@ -568,28 +507,7 @@ final class SonataAdminExtension extends AbstractExtension
     ) {
         $templateName = $fieldDescription->getTemplate() ?: $defaultTemplate;
 
-        try {
-            $template = $environment->load($templateName);
-        } catch (LoaderError $e) {
-            @trigger_error(sprintf(
-                'Relying on default template loading on field template loading exception is deprecated since 3.1'
-                .' and will be removed in 4.0. A %s exception will be thrown instead',
-                LoaderError::class
-            ), E_USER_DEPRECATED);
-            $template = $environment->load($defaultTemplate);
-
-            if (null !== $this->logger) {
-                $this->logger->warning(sprintf(
-                    'An error occured trying to load the template "%s" for the field "%s",'
-                    .' the default template "%s" was used instead.',
-                    $templateName,
-                    $fieldDescription->getFieldName(),
-                    $defaultTemplate
-                ), ['exception' => $e]);
-            }
-        }
-
-        return $template;
+        return $environment->load($templateName);
     }
 
     private function render(
@@ -669,18 +587,7 @@ EOT;
         if (\is_array($listElement) && \array_key_exists($fieldDescription->getName(), $listElement)) {
             $value = $listElement[$fieldDescription->getName()];
         } else {
-            try {
-                $value = $fieldDescription->getValue($object);
-            } catch (NoValueException $e) {
-                // NEXT_MAJOR: throw the NoValueException.
-                @trigger_error(
-                    'Accessing a non existing value is deprecated'
-                    .' since sonata-project/admin-bundle 3.67 and will throw an exception in 4.0.',
-                    E_USER_DEPRECATED
-                );
-
-                $value = null;
-            }
+            $value = $fieldDescription->getValue($object);
         }
 
         return [$object, $value];

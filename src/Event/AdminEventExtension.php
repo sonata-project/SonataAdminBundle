@@ -24,13 +24,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AdminEventExtension extends AbstractAdminExtension
+final class AdminEventExtension extends AbstractAdminExtension
 {
-    protected $eventDispatcher;
+    private $eventDispatcher;
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {

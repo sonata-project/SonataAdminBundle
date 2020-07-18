@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
@@ -23,7 +22,6 @@ use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
-use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
@@ -85,11 +83,6 @@ class SonataAdminExtensionTest extends TestCase
     private $pool;
 
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
      * @var string[]
      */
     private $xEditableTypeMapping;
@@ -124,7 +117,6 @@ class SonataAdminExtensionTest extends TestCase
         $this->pool->setAdminServiceIds(['sonata_admin_foo_service']);
         $this->pool->setAdminClasses(['fooClass' => ['sonata_admin_foo_service']]);
 
-        $this->logger = $this->getMockForAbstractClass(LoggerInterface::class);
         $this->xEditableTypeMapping = [
             'choice' => 'select',
             'boolean' => 'select',
@@ -166,7 +158,6 @@ class SonataAdminExtensionTest extends TestCase
 
         $this->twigExtension = new SonataAdminExtension(
             $this->pool,
-            $this->logger,
             $this->translator,
             $this->container,
             $this->securityChecker
@@ -225,12 +216,6 @@ class SonataAdminExtensionTest extends TestCase
             ->method('getNormalizedIdentifier')
             ->with($this->equalTo($this->object))
             ->willReturn('12345');
-
-        $this->admin
-            ->method('trans')
-            ->willReturnCallback(static function ($id, $parameters = [], $domain = null) use ($translator) {
-                return $translator->trans($id, $parameters, $domain);
-            });
 
         $this->adminBar = $this->createMock(AbstractAdmin::class);
         $this->adminBar
@@ -1855,135 +1840,6 @@ EOT
         ];
     }
 
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @group legacy
-     *
-     * @dataProvider getDeprecatedTextExtensionItems
-     *
-     * @expectedDeprecation The "truncate.preserve" option is deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0. Use "truncate.cut" instead. ("@SonataAdmin/CRUD/show_html.html.twig" at line %d).
-     *
-     * @expectedDeprecation The "truncate.separator" option is deprecated since sonata-project/admin-bundle 3.65, to be removed in 4.0. Use "truncate.ellipsis" instead. ("@SonataAdmin/CRUD/show_html.html.twig" at line %d).
-     */
-    public function testDeprecatedTextExtension(string $expected, string $type, $value, array $options): void
-    {
-        $loader = new StubFilesystemLoader([
-            sprintf('%s/../../../src/Resources/views/CRUD', __DIR__),
-        ]);
-        $loader->addPath(sprintf('%s/../../../src/Resources/views/', __DIR__), 'SonataAdmin');
-        $environment = new Environment($loader, [
-            'strict_variables' => true,
-            'cache' => false,
-            'autoescape' => 'html',
-            'optimizations' => 0,
-        ]);
-        $environment->addExtension($this->twigExtension);
-        $environment->addExtension(new TranslationExtension($this->translator));
-        $environment->addExtension(new StringExtension());
-
-        $this->fieldDescription
-            ->method('getValue')
-            ->willReturn($value);
-
-        $this->fieldDescription
-            ->method('getType')
-            ->willReturn($type);
-
-        $this->fieldDescription
-            ->method('getOptions')
-            ->willReturn($options);
-
-        $this->fieldDescription
-            ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/show_html.html.twig');
-
-        $this->assertSame(
-            $this->removeExtraWhitespace($expected),
-            $this->removeExtraWhitespace(
-                $this->twigExtension->renderViewElement(
-                    $environment,
-                    $this->fieldDescription,
-                    $this->object
-                )
-            )
-        );
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     */
-    public function getDeprecatedTextExtensionItems(): iterable
-    {
-        yield 'default_separator' => [
-            '<th>Data</th> <td> Creating a Template for the Field... </td>',
-            'html',
-            '<p><strong>Creating a Template for the Field</strong> and form</p>',
-            ['truncate' => ['preserve' => true, 'separator' => '...']],
-        ];
-
-        yield 'custom_length' => [
-            '<th>Data</th> <td> Creating a Template[...] </td>',
-            'html',
-            '<p><strong>Creating a Template for the Field</strong> and form</p>',
-            [
-                'truncate' => [
-                    'length' => 20,
-                    'preserve' => true,
-                    'separator' => '[...]',
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testGetValueFromFieldDescription(): void
-    {
-        $object = new \stdClass();
-        $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
-
-        $fieldDescription
-            ->method('getValue')
-            ->willReturn('test123');
-
-        $this->assertSame(
-            'test123',
-            $this->getMethodAsPublic('getValueFromFieldDescription')->invoke(
-                $this->twigExtension,
-                $object,
-                $fieldDescription
-            )
-        );
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testGetValueFromFieldDescriptionWithRemoveLoopException(): void
-    {
-        $object = $this->createMock(\ArrayAccess::class);
-        $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
-
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('remove the loop requirement');
-
-        $this->assertSame(
-            'anything',
-            $this->getMethodAsPublic('getValueFromFieldDescription')->invoke(
-                $this->twigExtension,
-                $object,
-                $fieldDescription,
-                ['loop' => true]
-            )
-        );
-    }
-
     public function testGetValueFromFieldDescriptionWithNoValueException(): void
     {
         $object = new \stdClass();
@@ -1996,46 +1852,10 @@ EOT
             });
 
         $fieldDescription
-            ->method('getAssociationAdmin')
-            ->willReturn(null);
+            ->method('hasAssociationAdmin')
+            ->willReturn(false);
 
         $this->assertNull(
-            $this->getMethodAsPublic('getValueFromFieldDescription')->invoke(
-                $this->twigExtension,
-                $object,
-                $fieldDescription
-            )
-        );
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testGetValueFromFieldDescriptionWithNoValueExceptionNewAdminInstance(): void
-    {
-        $object = new \stdClass();
-        $fieldDescription = $this->getMockForAbstractClass(FieldDescriptionInterface::class);
-
-        $fieldDescription
-            ->method('getValue')
-            ->willReturnCallback(static function (): void {
-                throw new NoValueException();
-            });
-
-        $fieldDescription
-            ->method('getAssociationAdmin')
-            ->willReturn($this->admin);
-
-        $newInstance = new \stdClass();
-
-        $this->admin->expects($this->once())
-            ->method('getNewInstance')
-            ->willReturn($newInstance);
-
-        $this->assertSame(
-            $newInstance,
             $this->getMethodAsPublic('getValueFromFieldDescription')->invoke(
                 $this->twigExtension,
                 $object,
@@ -2051,7 +1871,7 @@ EOT
 
     public function testRenderRelationElementToString(): void
     {
-        $this->fieldDescription->expects($this->exactly(2))
+        $this->fieldDescription->expects($this->exactly(1))
             ->method('getOption')
             ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
@@ -2063,39 +1883,12 @@ EOT
         $this->assertSame('salut', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
-    /**
-     * @group legacy
-     */
-    public function testDeprecatedRelationElementToString(): void
-    {
-        $this->fieldDescription->expects($this->exactly(2))
-            ->method('getOption')
-            ->willReturnCallback(static function ($value, $default = null) {
-                if ('associated_tostring' === $value) {
-                    return '__toString';
-                }
-            });
-
-        $element = new FooToString();
-        $this->assertSame(
-            'salut',
-            $this->twigExtension->renderRelationElement($element, $this->fieldDescription)
-        );
-    }
-
-    /**
-     * @group legacy
-     */
     public function testRenderRelationElementCustomToString(): void
     {
-        $this->fieldDescription->expects($this->exactly(2))
+        $this->fieldDescription->expects($this->exactly(1))
             ->method('getOption')
             ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
-                    return $default;
-                }
-
-                if ('associated_tostring' === $value) {
                     return 'customToString';
                 }
             });
@@ -2110,20 +1903,8 @@ EOT
         $this->assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
-    /**
-     * @group legacy
-     */
     public function testRenderRelationElementMethodNotExist(): void
     {
-        $this->fieldDescription->expects($this->exactly(2))
-            ->method('getOption')
-
-            ->willReturnCallback(static function ($value, $default = null) {
-                if ('associated_tostring' === $value) {
-                    return 'nonExistedMethod';
-                }
-            });
-
         $element = new \stdClass();
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('You must define an `associated_property` option or create a `stdClass::__toString');

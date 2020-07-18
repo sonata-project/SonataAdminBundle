@@ -20,11 +20,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ChoiceType extends AbstractType
+final class ChoiceType extends AbstractType
 {
     public function getBlockPrefix()
     {

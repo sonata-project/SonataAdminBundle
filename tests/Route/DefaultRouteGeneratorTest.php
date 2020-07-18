@@ -128,7 +128,7 @@ class DefaultRouteGeneratorTest extends TestCase
         $admin->expects($this->once())->method('hasParentFieldDescription')->willReturn(false);
         $admin->expects($this->once())->method('hasRequest')->willReturn(true);
         $admin->expects($this->once())->method('getPersistentParameters')->willReturn([]);
-        $admin->expects($this->exactly(2))->method('getRoutes')->willReturn(new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'BundleName:ControllerName'));
+        $admin->expects($this->once())->method('getRoutes')->willReturn(new RouteCollection('base.Code.Route', 'baseRouteName', 'baseRoutePattern', 'BundleName:ControllerName'));
         $admin->method('getExtensions')->willReturn([]);
         $admin->method('getCode')->willReturn('Code');
 

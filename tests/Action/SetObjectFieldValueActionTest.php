@@ -107,7 +107,6 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
         $this->twig->addExtension(new SonataAdminExtension(
             $pool->reveal(),
-            null,
             $translator->reveal(),
             $container->reveal()
         ));
@@ -171,7 +170,6 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
         $this->twig->addExtension(new SonataAdminExtension(
             $pool->reveal(),
-            null,
             $translator->reveal(),
             $container->reveal()
         ));
@@ -227,7 +225,6 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->getModelManager()->willReturn($modelManager->reveal());
         $this->twig->addExtension(new SonataAdminExtension(
             $this->pool->reveal(),
-            null,
             $translator->reveal(),
             $container->reveal()
         ));
@@ -310,7 +307,6 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
         $this->twig->addExtension(new SonataAdminExtension(
             $pool->reveal(),
-            null,
             $translator->reveal(),
             $container->reveal()
         ));

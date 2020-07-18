@@ -18,14 +18,12 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\Form\Validator\ErrorElement;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * @method void configureDefaultSortValues(AdminInterface $admin, array &$sortValues)
  */
 interface AdminExtensionInterface
 {
@@ -37,21 +35,7 @@ interface AdminExtensionInterface
 
     public function configureShowFields(ShowMapper $showMapper);
 
-    public function configureRoutes(AdminInterface $admin, RouteCollection $collection);
-
-    /**
-     * DEPRECATED: Use configureTabMenu instead.
-     *
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated
-     */
-    public function configureSideMenu(
-        AdminInterface $admin,
-        MenuItemInterface $menu,
-        string $action,
-        ?AdminInterface $childAdmin = null
-    );
+    public function configureRoutes(AdminInterface $admin, RouteCollectionInterface $collection);
 
     /**
      * Builds the tab menu.
@@ -65,7 +49,7 @@ interface AdminExtensionInterface
 
     public function validate(AdminInterface $admin, ErrorElement $errorElement, object $object): void;
 
-    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, string $context = 'list'): void;
+    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query): void;
 
     /**
      * Get a chance to modify a newly created instance.
@@ -129,11 +113,7 @@ interface AdminExtensionInterface
     public function configureDefaultFilterValues(AdminInterface $admin, array &$filterValues): void;
 
     /*
-     * NEXT_MAJOR: Uncomment this method
-     *
      * Returns a list of default sort values
      */
-    // public function configureDefaultSortValues(AdminInterface $admin, array &$sortValues): void;
+    public function configureDefaultSortValues(AdminInterface $admin, array &$sortValues): void;
 }
-
-class_exists(\Sonata\Form\Validator\ErrorElement::class);

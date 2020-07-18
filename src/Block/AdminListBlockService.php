@@ -23,16 +23,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AdminListBlockService extends AbstractBlockService
+final class AdminListBlockService extends AbstractBlockService
 {
     /**
      * @var Pool
      */
-    protected $pool;
+    private $pool;
 
     /**
      * @var TemplateRegistryInterface

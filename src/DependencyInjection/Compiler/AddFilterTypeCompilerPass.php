@@ -17,8 +17,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 final class AddFilterTypeCompilerPass implements CompilerPassInterface
@@ -35,13 +33,6 @@ final class AddFilterTypeCompilerPass implements CompilerPassInterface
             $serviceDefinition->setPublic(true); // Temporary fix until we can support service locators
 
             $types[$serviceDefinition->getClass()] = $id;
-
-            // NEXT_MAJOR: Remove this loop, only FQCN will be supported
-            foreach ($attributes as $eachTag) {
-                if (isset($eachTag['alias'])) {
-                    $types[$eachTag['alias']] = $id;
-                }
-            }
         }
 
         $definition->replaceArgument(1, $types);

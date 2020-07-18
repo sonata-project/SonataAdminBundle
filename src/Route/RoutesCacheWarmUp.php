@@ -17,21 +17,19 @@ use Sonata\AdminBundle\Admin\Pool;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class RoutesCacheWarmUp implements CacheWarmerInterface
+final class RoutesCacheWarmUp implements CacheWarmerInterface
 {
     /**
      * @var RoutesCache
      */
-    protected $cache;
+    private $cache;
 
     /**
      * @var Pool
      */
-    protected $pool;
+    private $pool;
 
     public function __construct(RoutesCache $cache, Pool $pool)
     {

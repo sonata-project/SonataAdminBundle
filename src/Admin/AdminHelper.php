@@ -71,16 +71,6 @@ class AdminHelper
     }
 
     /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated
-     */
-    public function getAdmin(string $code): AdminInterface
-    {
-        return $this->pool->getInstance($code);
-    }
-
-    /**
      * Note:
      *   This code is ugly, but there is no better way of doing it.
      *
@@ -131,7 +121,7 @@ class AdminHelper
                 //since doctrine 2.4
                 $modelClassName = $collection->getTypeClass()->getName();
             } elseif ($collection instanceof Collection) {
-                $modelClassName = $this->getEntityClassName($admin, explode('.', preg_replace('#\[\d*?\]#', '', $path)));
+                $modelClassName = $this->getModelClassName($admin, explode('.', preg_replace('#\[\d*?\]#', '', $path)));
             } else {
                 throw new \Exception('unknown collection class');
             }
@@ -195,29 +185,6 @@ class AdminHelper
     }
 
     /**
-     * NEXT_MAJOR: remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.72, use to be removed with 4.0.
-     *
-     * Add a new instance to the related FieldDescriptionInterface value.
-     *
-     * @throws \RuntimeException
-     */
-    public function addNewInstance(object $object, FieldDescriptionInterface $fieldDescription): object
-    {
-        @trigger_error(sprintf(
-            'Method %s() is deprecated since sonata-project/admin-bundle 3.72. It will be removed in version 4.0.'
-            .' Use %s::addInstance() instead.',
-            __METHOD__,
-            ObjectManipulator::class
-        ), E_USER_DEPRECATED);
-
-        $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
-
-        return ObjectManipulator::addInstance($object, $instance, $fieldDescription);
-    }
-
-    /**
      * Get access path to element which works with PropertyAccessor.
      *
      * @param string $elementId expects string in format used in form id field.
@@ -263,31 +230,12 @@ class AdminHelper
      */
     protected function getModelClassName(AdminInterface $admin, array $elements): string
     {
-        return $this->getEntityClassName($admin, $elements);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method and move its body to `getModelClassName()`.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.69. Use `getModelClassName()` instead.
-     */
-    protected function getEntityClassName(AdminInterface $admin, array $elements): string
-    {
-        if (self::class !== static::class) {
-            @trigger_error(sprintf(
-                'Method %s() is deprecated since sonata-project/admin-bundle 3.69 and will be removed in version 4.0.'
-                .' Use %s::getModelClassName() instead.',
-                __METHOD__,
-                __CLASS__
-            ), E_USER_DEPRECATED);
-        }
-
         $element = array_shift($elements);
         $associationAdmin = $admin->getFormFieldDescription($element)->getAssociationAdmin();
         if (0 === \count($elements)) {
             return $associationAdmin->getClass();
         }
 
-        return $this->getEntityClassName($associationAdmin, $elements);
+        return $this->getModelClassName($associationAdmin, $elements);
     }
 }
