@@ -53,11 +53,13 @@ use Sonata\AdminBundle\Tests\Fixtures\Admin\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\FilteredAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\ModelAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
+use Sonata\AdminBundle\Tests\Fixtures\Admin\PostCategoryAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostWithCustomRouteAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\TagAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\BlogPost;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post;
+use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\PostCategory;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
@@ -1494,57 +1496,116 @@ class AdminTest extends TestCase
         $this->assertSame($expected, $admin->getPersistentParameters());
     }
 
-    public function testGetFormWithNonCollectionParentValue(): void
+    public function testGetNewInstanceForChildAdminWithParentValue(): void
     {
         $post = new Post();
-        $tagAdmin = $this->createTagAdmin($post);
-        $tag = $tagAdmin->getSubject();
 
-        $tag->setPosts(null);
-        $tagAdmin->getForm();
-        $this->assertSame($post, $tag->getPosts());
+        $postAdmin = $this->getMockBuilder(PostAdmin::class)->disableOriginalConstructor()->getMock();
+        $postAdmin->method('getObject')->willReturn($post);
+
+        $formBuilder = $this->createStub(FormBuilderInterface::class);
+        $formBuilder->method('getForm')->willReturn(null);
+
+        $tag = new Tag();
+
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager->method('getModelInstance')->willReturn($tag);
+
+        $tagAdmin = new TagAdmin('admin.tag', Tag::class, 'MyBundle\MyController');
+        $tagAdmin->setModelManager($modelManager);
+        $tagAdmin->setParent($postAdmin);
+
+        $request = $this->createStub(Request::class);
+        $tagAdmin->setRequest($request);
+
+        $configurationPool = $this->getMockBuilder(Pool::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $configurationPool->method('getPropertyAccessor')->willReturn(PropertyAccess::createPropertyAccessor());
+
+        $tagAdmin->setConfigurationPool($configurationPool);
+
+        $tag = $tagAdmin->getNewInstance();
+
+        $this->assertSame($post, $tag->getPost());
     }
 
-    public function testGetFormWithCollectionParentValue(): void
+    public function testGetNewInstanceForChildAdminWithCollectionParentValue(): void
     {
         $post = new Post();
-        $tagAdmin = $this->createTagAdmin($post);
-        $tag = $tagAdmin->getSubject();
 
-        // Case of a doctrine collection
-        $this->assertInstanceOf(Collection::class, $tag->getPosts());
-        $this->assertCount(0, $tag->getPosts());
+        $postAdmin = $this->getMockBuilder(PostAdmin::class)->disableOriginalConstructor()->getMock();
+        $postAdmin->method('getObject')->willReturn($post);
 
-        $tag->addPost(new Post());
+        $formBuilder = $this->createStub(FormBuilderInterface::class);
+        $formBuilder->method('getForm')->willReturn(null);
 
-        $this->assertCount(1, $tag->getPosts());
+        $postCategory = new PostCategory();
 
-        $tagAdmin->getForm();
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager->method('getModelInstance')->willReturn($postCategory);
 
-        $this->assertInstanceOf(Collection::class, $tag->getPosts());
-        $this->assertCount(2, $tag->getPosts());
-        $this->assertContains($post, $tag->getPosts());
+        $postCategoryAdmin = new PostCategoryAdmin('admin.post_category', PostCategoryAdmin::class, 'MyBundle\MyController');
+        $postCategoryAdmin->setModelManager($modelManager);
+        $postCategoryAdmin->setParent($postAdmin);
+
+        $request = $this->createStub(Request::class);
+        $postCategoryAdmin->setRequest($request);
+
+        $configurationPool = $this->getMockBuilder(Pool::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $configurationPool->method('getPropertyAccessor')->willReturn(PropertyAccess::createPropertyAccessor());
+
+        $postCategoryAdmin->setConfigurationPool($configurationPool);
+
+        $postCategory = $postCategoryAdmin->getNewInstance();
+
+        $this->assertInstanceOf(Collection::class, $postCategory->getPosts());
+        $this->assertCount(1, $postCategory->getPosts());
+        $this->assertContains($post, $postCategory->getPosts());
     }
 
-    public function testGetFormWithArrayParentValue(): void
+    public function testGetNewInstanceForEmbededAdminWithParentValue(): void
     {
         $post = new Post();
-        $tagAdmin = $this->createTagAdmin($post);
-        $tag = $tagAdmin->getSubject();
 
-        // Case of an array
-        $tag->setPosts([]);
-        $this->assertCount(0, $tag->getPosts());
+        $postAdmin = $this->getMockBuilder(PostAdmin::class)->disableOriginalConstructor()->getMock();
+        $postAdmin->method('getObject')->willReturn($post);
 
-        $tag->addPost(new Post());
+        $formBuilder = $this->createStub(FormBuilderInterface::class);
+        $formBuilder->method('getForm')->willReturn(null);
 
-        $this->assertCount(1, $tag->getPosts());
+        $parentField = $this->createStub(FieldDescriptionInterface::class);
+        $parentField->method('getAdmin')->willReturn($postAdmin);
+        $parentField->method('getParentAssociationMappings')->willReturn([]);
+        $parentField->method('getAssociationMapping')->willReturn(['fieldName' => 'tag', 'mappedBy' => 'post']);
 
-        $tagAdmin->getForm();
+        $tag = new Tag();
 
-        $this->assertIsArray($tag->getPosts());
-        $this->assertCount(2, $tag->getPosts());
-        $this->assertContains($post, $tag->getPosts());
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager->method('getModelInstance')->willReturn($tag);
+
+        $tagAdmin = new TagAdmin('admin.tag', Tag::class, 'MyBundle\MyController');
+        $tagAdmin->setModelManager($modelManager);
+        $tagAdmin->setParentFieldDescription($parentField);
+
+        $request = $this->createStub(Request::class);
+        $tagAdmin->setRequest($request);
+
+        $configurationPool = $this->getMockBuilder(Pool::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $configurationPool->method('getPropertyAccessor')->willReturn(PropertyAccess::createPropertyAccessor());
+
+        $tagAdmin->setConfigurationPool($configurationPool);
+
+        $tag = $tagAdmin->getNewInstance();
+
+        $this->assertSame($post, $tag->getPost());
     }
 
     public function testFormAddPostSubmitEventForPreValidation(): void
@@ -2430,45 +2491,5 @@ class AdminTest extends TestCase
         $admin->getShow();
         $admin->getList();
         $admin->getDatagrid();
-    }
-
-    private function createTagAdmin(Post $post): TagAdmin
-    {
-        $postAdmin = $this->getMockBuilder(PostAdmin::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $postAdmin->method('getObject')->willReturn($post);
-
-        $formBuilder = $this->createMock(FormBuilderInterface::class);
-        $formBuilder->method('getForm')->willReturn(null);
-
-        $tagAdmin = $this->getMockBuilder(TagAdmin::class)
-            ->setConstructorArgs([
-                'admin.tag',
-                Tag::class,
-                'MyBundle\MyController',
-            ])
-            ->setMethods(['getFormBuilder'])
-            ->getMock();
-
-        $tagAdmin->method('getFormBuilder')->willReturn($formBuilder);
-        $tagAdmin->setParent($postAdmin);
-
-        $tag = new Tag();
-        $tagAdmin->setSubject($tag);
-
-        $request = $this->createMock(Request::class);
-        $tagAdmin->setRequest($request);
-
-        $configurationPool = $this->getMockBuilder(Pool::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $configurationPool->method('getPropertyAccessor')->willReturn(PropertyAccess::createPropertyAccessor());
-
-        $tagAdmin->setConfigurationPool($configurationPool);
-
-        return $tagAdmin;
     }
 }

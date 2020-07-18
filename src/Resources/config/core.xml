@@ -46,7 +46,7 @@
         <!-- Translation extractor -->
         <!-- NEXT_MAJOR: Remove the sonata.admin.translator.extractor.jms_translator_bundle service  -->
         <service id="sonata.admin.translator.extractor.jms_translator_bundle" class="Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor" public="true">
-            <deprecated>The service "%service_id%" is deprecated in favor of the "Sonata\AdminBundle\Translator\Extractor\AdminExtractor" service since version 3.x and will be removed in 4.0.</deprecated>
+            <deprecated>The service "%service_id%" is deprecated in favor of the "Sonata\AdminBundle\Translator\Extractor\AdminExtractor" service since version 3.72 and will be removed in 4.0.</deprecated>
             <tag name="jms_translation.extractor" alias="sonata_admin"/>
             <argument type="service" id="sonata.admin.pool"/>
             <argument type="service" id="logger" on-invalid="ignore"/>
