@@ -132,21 +132,6 @@ class FormMapper extends BaseGroupedMapper
             if (!isset($options['label'])) {
                 $options['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($name, 'form', 'label');
             }
-
-            // NEXT_MAJOR: Remove this block.
-            if (isset($options['help'])) {
-                $containsHtml = $options['help'] !== strip_tags($options['help']);
-
-                if (!isset($options['help_html']) && $containsHtml) {
-                    @trigger_error(
-                        'Using HTML syntax within the "help" option and not setting the "help_html" option to "true" is deprecated'
-                        .' since sonata-project/admin-bundle 3.x and it will not work in version 4.0.',
-                        E_USER_DEPRECATED
-                    );
-
-                    $options['help_html'] = true;
-                }
-            }
         }
 
         $this->admin->addFormFieldDescription($fieldName, $fieldDescription);
@@ -234,48 +219,6 @@ class FormMapper extends BaseGroupedMapper
     public function create(string $name, ?string $type = null, array $options = []): FormBuilderInterface
     {
         return $this->formBuilder->create($name, $type, $options);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0. Use Symfony Form "help" option instead.
-     */
-    public function setHelps(array $helps = []): self
-    {
-        @trigger_error(sprintf(
-            'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
-            .' Use Symfony Form "help" option instead.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        foreach ($helps as $name => $help) {
-            $this->addHelp($name, $help, 'sonata_deprecation_mute');
-        }
-
-        return $this;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0. Use Symfony Form "help" option instead.
-     */
-    public function addHelp(string $name, string $help): self
-    {
-        if ('sonata_deprecation_mute' !== (\func_get_args()[2] ?? null)) {
-            @trigger_error(sprintf(
-                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
-                .' Use Symfony Form "help" option instead.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
-        if ($this->admin->hasFormFieldDescription($name)) {
-            $this->admin->getFormFieldDescription($name)->setHelp($help, 'sonata_deprecation_mute');
-        }
-
-        return $this;
     }
 
     /**

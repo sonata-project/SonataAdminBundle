@@ -26,21 +26,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AdminSearchBlockService extends AbstractBlockService
+final class AdminSearchBlockService extends AbstractBlockService
 {
     /**
      * @var Pool
      */
-    protected $pool;
+    private $pool;
 
     /**
      * @var SearchHandler
      */
-    protected $searchHandler;
+    private $searchHandler;
 
     /**
      * @var TemplateRegistryInterface

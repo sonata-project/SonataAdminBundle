@@ -76,22 +76,6 @@ class BaseFieldDescriptionTest extends TestCase
         $this->assertTrue($description->isSortable());
     }
 
-    /**
-     * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     */
-    public function testHelpOptions(): void
-    {
-        $description = new FieldDescription();
-
-        $description->setHelp('Please enter an integer');
-        $this->assertSame('Please enter an integer', $description->getHelp());
-
-        $description->setOptions(['help' => 'fooHelp']);
-        $this->assertSame('fooHelp', $description->getHelp());
-    }
-
     public function testAdmin(): void
     {
         $description = new FieldDescription();

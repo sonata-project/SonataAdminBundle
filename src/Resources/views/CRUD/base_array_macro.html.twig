@@ -8,9 +8,10 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 
 #}
-{# NEXT_MAJOR: move inline parameter under options #}
-{% macro render_array(value, inline, options = []) %}
+
+{% macro render_array(value, options = []) %}
     {% set options = {
+        'inline': false,
         'key_translation_domain': false,
         'value_translation_domain': false,
         'display': 'both'
@@ -18,14 +19,14 @@ file that was distributed with this source code.
     {%- apply spaceless -%}
         {%- from _self import render_array -%}
 
-        {%- if not inline -%}
+        {%- if not options.inline -%}
             <ul>
         {%- else -%}
             [
         {%- endif -%}
 
         {%- for key, val in value -%}
-            {%- if not inline -%}
+            {%- if not options.inline -%}
                 <li>
             {%- endif -%}
 
@@ -50,7 +51,7 @@ file that was distributed with this source code.
             {%- endif -%}
 
             {%- if val is iterable -%}
-                {{ render_array(val, inline, options) }}
+                {{ render_array(val, options) }}
             {%- else -%}
                 {%- if options.display in ['both', 'values'] -%}
                     {%- if options.value_translation_domain is same as(false) -%}
@@ -69,16 +70,16 @@ file that was distributed with this source code.
                 {%- endif -%}
             {%- endif -%}
 
-            {%- if not inline -%}
+            {%- if not options.inline -%}
                 </li>
             {%- endif -%}
 
-            {%- if inline == true and not loop.last -%}
+            {%- if options.inline == true and not loop.last -%}
                 ,
             {% endif -%}
         {%- endfor -%}
 
-        {%- if not inline -%}
+        {%- if not options.inline -%}
             </ul>
         {%- else -%}
             ]

@@ -28,46 +28,44 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AclSecurityHandler implements AclSecurityHandlerInterface
+final class AclSecurityHandler implements AclSecurityHandlerInterface
 {
     /**
      * @var TokenStorageInterface
      */
-    protected $tokenStorage;
+    private $tokenStorage;
 
     /**
      * @var AuthorizationCheckerInterface
      */
-    protected $authorizationChecker;
+    private $authorizationChecker;
 
     /**
      * @var MutableAclProviderInterface
      */
-    protected $aclProvider;
+    private $aclProvider;
 
     /**
      * @var array
      */
-    protected $superAdminRoles = [];
+    private $superAdminRoles = [];
 
     /**
      * @var array
      */
-    protected $adminPermissions = [];
+    private $adminPermissions = [];
 
     /**
      * @var array
      */
-    protected $objectPermissions = [];
+    private $objectPermissions = [];
 
     /**
      * @var string
      */
-    protected $maskBuilderClass;
+    private $maskBuilderClass;
 
     public function __construct(
         TokenStorageInterface $tokenStorage,

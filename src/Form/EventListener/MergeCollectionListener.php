@@ -19,16 +19,14 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class MergeCollectionListener implements EventSubscriberInterface
+final class MergeCollectionListener implements EventSubscriberInterface
 {
     /**
      * @var ModelManagerInterface
      */
-    protected $modelManager;
+    private $modelManager;
 
     public function __construct(ModelManagerInterface $modelManager)
     {

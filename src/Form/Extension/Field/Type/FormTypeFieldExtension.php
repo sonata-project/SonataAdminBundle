@@ -19,25 +19,24 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class FormTypeFieldExtension extends AbstractTypeExtension
+final class FormTypeFieldExtension extends AbstractTypeExtension
 {
     /**
      * @var array
      */
-    protected $defaultClasses = [];
+    private $defaultClasses = [];
 
     /**
      * @var array
      */
-    protected $options = [];
+    private $options = [];
 
     public function __construct(array $defaultClasses, array $options)
     {
@@ -146,7 +145,6 @@ class FormTypeFieldExtension extends AbstractTypeExtension
             $view->vars['sonata_admin_enabled'] = false;
         }
 
-        // NEXT_MAJOR: Remove this line
         $view->vars['sonata_admin'] = $sonataAdmin;
     }
 
@@ -199,10 +197,7 @@ class FormTypeFieldExtension extends AbstractTypeExtension
         return $value;
     }
 
-    /**
-     * @return string
-     */
-    protected function getClass(FormBuilderInterface $formBuilder)
+    private function getClass(FormBuilderInterface $formBuilder): string
     {
         foreach ($this->getTypes($formBuilder) as $type) {
             $name = \get_class($type);
@@ -216,9 +211,9 @@ class FormTypeFieldExtension extends AbstractTypeExtension
     }
 
     /**
-     * @return array
+     * @return FormTypeInterface[]
      */
-    protected function getTypes(FormBuilderInterface $formBuilder)
+    private function getTypes(FormBuilderInterface $formBuilder): array
     {
         $types = [];
 

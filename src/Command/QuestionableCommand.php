@@ -48,9 +48,6 @@ abstract class QuestionableCommand extends Command
     /**
      * @param string $questionText
      * @param string $default
-     * @param string $separator
-     *
-     * NEXT_MAJOR: Remove `$separator` argument
      *
      * @return string
      */
@@ -58,8 +55,7 @@ abstract class QuestionableCommand extends Command
         InputInterface $input,
         OutputInterface $output,
         $questionText,
-        $default,
-        $separator
+        $default
     ) {
         $questionHelper = $this->getQuestionHelper();
         $question = new ConfirmationQuestion(

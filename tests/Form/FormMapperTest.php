@@ -21,7 +21,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
-use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilder;
@@ -76,10 +76,6 @@ class FormMapperTest extends TestCase
             ->willReturn($this->createMock(MemberMetadata::class));
         $this->admin->setValidator($validator);
 
-        // NEXT_MAJOR: Remove the calls to `setFormGroups()` and `setFormTabs()`
-        $this->admin->setFormGroups([]);
-        $this->admin->setFormTabs([]);
-
         $securityHandler = $this->createMock(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
@@ -104,8 +100,7 @@ class FormMapperTest extends TestCase
 
         $this->admin->setModelManager($this->modelManager);
 
-        $labelTranslatorStrategy = $this->getMockForAbstractClass(LabelTranslatorStrategyInterface::class);
-        $this->admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
+        $this->admin->setLabelTranslatorStrategy(new NoopLabelTranslatorStrategy());
 
         $this->formMapper = new FormMapper(
             $this->contractor,

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Type;
 
-use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
@@ -29,35 +28,10 @@ use Symfony\Component\PropertyAccess\Exception\NoSuchIndexException;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AdminType extends AbstractType
+final class AdminType extends AbstractType
 {
-    /**
-     * NEXT_MAJOR: Remove this property.
-     *
-     * @var AdminHelper|null
-     */
-    private $adminHelper;
-
-    /**
-     * NEXT_MAJOR: Remove the __construct method.
-     */
-    public function __construct(?AdminHelper $adminHelper = null)
-    {
-        if (null !== $adminHelper) {
-            @trigger_error(sprintf(
-                'Passing argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.72'
-                .' and will be ignored in version 4.0.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
-        $this->adminHelper = $adminHelper;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $admin = clone $this->getAdmin($options);
@@ -158,10 +132,8 @@ class AdminType extends AbstractType
 
     /**
      * @throws \RuntimeException
-     *
-     * @return FieldDescriptionInterface
      */
-    protected function getFieldDescription(array $options)
+    private function getFieldDescription(array $options): FieldDescriptionInterface
     {
         if (!isset($options['sonata_field_description'])) {
             throw new \RuntimeException('Please provide a valid `sonata_field_description` option');
@@ -170,10 +142,7 @@ class AdminType extends AbstractType
         return $options['sonata_field_description'];
     }
 
-    /**
-     * @return AdminInterface
-     */
-    protected function getAdmin(array $options)
+    private function getAdmin(array $options): AdminInterface
     {
         return $this->getFieldDescription($options)->getAssociationAdmin();
     }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
-use Knp\Menu\FactoryInterface as MenuFactoryInterface;
+use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\FormContractorInterface;
@@ -32,17 +32,17 @@ use Sonata\Form\Validator\ErrorElement;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegistryInterface, LifecycleHookProviderInterface, MenuBuilderInterface, ParentAdminInterface, UrlGeneratorInterface
 {
-    public function setMenuFactory(MenuFactoryInterface $menuFactory): void;
+    public function setMenuFactory(FactoryInterface $menuFactory): void;
 
-    public function getMenuFactory(): ?MenuFactoryInterface;
+    public function getMenuFactory(): ?FactoryInterface;
 
     public function setFormContractor(FormContractorInterface $formContractor): void;
 
@@ -55,8 +55,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function getDatagridBuilder(): ?DatagridBuilderInterface;
 
     public function setTranslator(TranslatorInterface $translator): void;
-
-    public function getTranslator(): ?TranslatorInterface;
 
     public function setRequest(Request $request): void;
 
@@ -101,10 +99,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getManagerType(): ?string;
 
-    /**
-     * @param string $context NEXT_MAJOR: remove this argument
-     */
-    public function createQuery($context = 'list'): ProxyQueryInterface;
+    public function createQuery(): ProxyQueryInterface;
 
     /**
      * @return FormBuilderInterface the form builder
@@ -116,11 +111,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function getForm(): ?FormInterface;
 
-    /**
-     * NEXT MAJOR: Remove the throws tag.
-     *
-     * @throws \RuntimeException if no request is set
-     */
     public function getRequest(): Request;
 
     /**
@@ -156,21 +146,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Returns true if the Admin is linked to a parent FieldDescription.
      */
     public function hasParentFieldDescription(): bool;
-
-    /**
-     * translate a message id.
-     *
-     * NEXT_MAJOR: remove this method
-     *
-     * @param string      $id
-     * @param string|null $domain
-     * @param string|null $locale
-     *
-     * @return string the translated string
-     *
-     * @deprecated since sonata-project/admin-bundle 3.9, to be removed in 4.0
-     */
-    public function trans($id, array $parameters = [], $domain = null, $locale = null): string;
 
     /**
      * Returns the parameter representing request id, ie: id or childId.
@@ -279,31 +254,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     public function setSubject(?object $subject): void;
 
-    /**
-     * NEXT MAJOR: return object.
-     */
-    public function getSubject(): ?object;
-
-    /**
-     * NEXT_MAJOR: Remove this method, since it's already in FieldDescriptionRegistryInterface.
-     *
-     * Returns a list FieldDescription.
-     */
-    public function getListFieldDescription(string $name): ?FieldDescriptionInterface;
-
-    /**
-     * NEXT_MAJOR: Remove this method, since it's already in FieldDescriptionRegistryInterface.
-     *
-     * Returns true if the list FieldDescription exists.
-     */
-    public function hasListFieldDescription(string $name): bool;
-
-    /**
-     * NEXT_MAJOR: Remove this method, since it's already in FieldDescriptionRegistryInterface.
-     *
-     * Returns the collection of list FieldDescriptions.
-     */
-    public function getListFieldDescriptions(): array;
+    public function getSubject(): object;
 
     /**
      * Returns the array of allowed export formats.
@@ -356,10 +307,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      */
     public function createObjectSecurity(object $object): void;
 
-    /**
-     * @return AdminInterface|null NEXT_MAJOR: return AdminInterface
-     */
-    public function getParent(): ?self;
+    public function getParent(): self;
 
     public function setParent(self $admin): void;
 
@@ -431,20 +379,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     public function reorderShowGroup(string $group, array $keys): void;
 
     /**
-     * NEXT_MAJOR: Remove this method, since it's already in FieldDescriptionRegistryInterface.
-     *
-     * add a FieldDescription.
-     */
-    public function addFormFieldDescription(string $name, FieldDescriptionInterface $fieldDescription): void;
-
-    /**
-     * NEXT_MAJOR: Remove this method, since it's already in FieldDescriptionRegistryInterface.
-     *
-     * Remove a FieldDescription.
-     */
-    public function removeFormFieldDescription(string $name): void;
-
-    /**
      * Returns true if this admin uses ACL.
      */
     public function isAclEnabled(): bool;
@@ -453,13 +387,6 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
      * Returns list of supported sub classes.
      */
     public function getSubClasses(): array;
-
-    /**
-     * Adds a new class to a list of supported sub classes.
-     *
-     * @param string $subClass
-     */
-    public function addSubClass($subClass): void;
 
     /**
      * Sets the list of supported sub classes.
@@ -520,10 +447,8 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
 
     /**
      * Returns the current child status.
-     *
-     * NEXT_MAJOR: Rename the function isCurrentChild()
      */
-    public function getCurrentChild(): bool;
+    public function isCurrentChild(): bool;
 
     /**
      * Get translation label using the current TranslationStrategy.

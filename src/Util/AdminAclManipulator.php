@@ -22,16 +22,14 @@ use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AdminAclManipulator implements AdminAclManipulatorInterface
+final class AdminAclManipulator implements AdminAclManipulatorInterface
 {
     /**
      * @var string
      */
-    protected $maskBuilderClass;
+    private $maskBuilderClass;
 
     /**
      * @param string $maskBuilderClass

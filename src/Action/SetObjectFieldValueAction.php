@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Action;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
@@ -134,8 +133,7 @@ final class SetObjectFieldValueAction
         if ('' !== $value
             && TemplateRegistry::TYPE_CHOICE === $fieldDescription->getType()
             && null !== $fieldDescription->getOption('class')
-            // NEXT_MAJOR: Replace this call with "$fieldDescription->getOption('class') === $fieldDescription->getTargetModel()".
-            && $this->hasFieldDescriptionAssociationWithClass($fieldDescription, $fieldDescription->getOption('class'))
+            && $fieldDescription->getOption('class') === $fieldDescription->getTargetModel()
         ) {
             $value = $admin->getModelManager()->find($fieldDescription->getOption('class'), $value);
 
@@ -172,11 +170,5 @@ final class SetObjectFieldValueAction
         $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription);
 
         return new JsonResponse($content, Response::HTTP_OK);
-    }
-
-    private function hasFieldDescriptionAssociationWithClass(FieldDescriptionInterface $fieldDescription, string $class): bool
-    {
-        return (method_exists($fieldDescription, 'getTargetModel') && $class === $fieldDescription->getTargetModel())
-            || $class === $fieldDescription->getTargetEntity();
     }
 }

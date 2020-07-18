@@ -15,11 +15,6 @@ namespace Sonata\AdminBundle\Admin;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * @method string|null getTargetModel()
- * @method bool        hasAdmin()
- * @method bool        hasParent()
- * @method bool        hasAssociationAdmin()
  */
 interface FieldDescriptionInterface
 {
@@ -111,13 +106,10 @@ interface FieldDescriptionInterface
 
     /**
      * Returns the parent Admin (only used in nested admin).
-     *
-     * @return AdminInterface|null // NEXT_MAJOR: Return AdminInterface
      */
-    public function getParent(): ?AdminInterface;
+    public function getParent(): AdminInterface;
 
-    // NEXT_MAJOR: Uncomment the following line
-    // public function hasParent(): bool;
+    public function hasParent(): bool;
 
     /**
      * Define the association mapping definition.
@@ -130,15 +122,9 @@ interface FieldDescriptionInterface
     public function getAssociationMapping(): array;
 
     /**
-     * NEXT_MAJOR: Remove this method in favor of `getTargetModel()`.
-     *
      * Returns the related Target object model.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.69. Use `getTargetModel()` instead.
      */
-    public function getTargetEntity(): ?string;
-
-    // public function getTargetModel(): ?string;
+    public function getTargetModel(): ?string;
 
     /**
      * Sets the field mapping information.
@@ -173,13 +159,10 @@ interface FieldDescriptionInterface
 
     /**
      * Returns the associated Admin instance (only used if the field is linked to an Admin).
-     *
-     * @return AdminInterface|null // NEXT_MAJOR: Return AdminInterface
      */
-    public function getAssociationAdmin(): ?AdminInterface;
+    public function getAssociationAdmin(): AdminInterface;
 
-    // NEXT_MAJOR: Uncomment the following line
-    // public function hasAssociationAdmin(): bool;
+    public function hasAssociationAdmin(): bool;
 
     /**
      * Returns true if the FieldDescription is linked to an identifier field.
@@ -203,8 +186,7 @@ interface FieldDescriptionInterface
      */
     public function getAdmin(): AdminInterface;
 
-    // NEXT_MAJOR: Uncomment the following line
-    // public function hasAdmin(): bool;
+    public function hasAdmin(): bool;
 
     /**
      * merge option values related to the provided option name.

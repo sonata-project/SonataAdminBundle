@@ -34,9 +34,6 @@ use Sonata\AdminBundle\Exception\NoValueException;
  *   - link_parameters (o) : add link parameter to the related Admin class when
  *                           the Admin.generateUrl is called
  *   - code : the method name to retrieve the related value
- *   - associated_tostring : (deprecated, use associated_property option)
- *                           the method to retrieve the "string" representation
- *                           of the collection element.
  *   - associated_property : property path to retrieve the "string" representation
  *                           of the collection element.
  *
@@ -179,20 +176,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             unset($options['template']);
         }
 
-        // NEXT_MAJOR: Remove this block.
-        // set help if provided
-        if (isset($options['help'])) {
-            @trigger_error(sprintf(
-                'Passing "help" option to "%s()" is deprecated since sonata-project/admin-bundle 3.x'
-                .' and the option will be removed in 4.0.'
-                .' Use Symfony Form "help" option instead.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-
-            $this->setHelp($options['help'], 'sonata_deprecation_mute');
-            unset($options['help']);
-        }
-
         // set default placeholder
         if (!isset($options['placeholder'])) {
             $options['placeholder'] = 'short_object_description_placeholder';
@@ -235,26 +218,16 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->parent = $parent;
     }
 
-    public function getParent(): ?AdminInterface
+    public function getParent(): AdminInterface
     {
         if (!$this->hasParent()) {
-            @trigger_error(
-                sprintf(
-                    'Calling %s() when there is no parent is deprecated since sonata-project/admin-bundle 3.69'
-                    .' and will throw an exception in 4.0. Use %s::hasParent() to know if there is a parent.',
-                    __METHOD__,
-                    __CLASS__
-                ),
-                E_USER_DEPRECATED
-            );
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
-            // throw new \LogicException(sprintf('%s has no parent.', static::class));
+            throw new \LogicException(sprintf('%s has no parent.', static::class));
         }
 
         return $this->parent;
     }
 
-    public function hasParent()
+    public function hasParent(): bool
     {
         return null !== $this->parent;
     }
@@ -280,21 +253,10 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->associationAdmin->setParentFieldDescription($this);
     }
 
-    public function getAssociationAdmin(): ?AdminInterface
+    public function getAssociationAdmin(): AdminInterface
     {
         if (!$this->hasAssociationAdmin()) {
-            @trigger_error(
-                sprintf(
-                    'Calling %s() when there is no association admin is deprecated since'
-                    .' sonata-project/admin-bundle 3.69 and will throw an exception in 4.0.'
-                    .' Use %s::hasAssociationAdmin() to know if there is an association admin.',
-                    __METHOD__,
-                    __CLASS__
-                ),
-                E_USER_DEPRECATED
-            );
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
-            // throw new \LogicException(sprintf('%s has no association admin.', static::class));
+            throw new \LogicException(sprintf('%s has no association admin.', static::class));
         }
 
         return $this->associationAdmin;
@@ -371,23 +333,13 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public function getAdmin(): AdminInterface
     {
         if (!$this->hasAdmin()) {
-            @trigger_error(
-                sprintf(
-                    'Calling %s() when there is no admin is deprecated since sonata-project/admin-bundle 3.69'
-                    .' and will throw an exception in 4.0. Use %s::hasAdmin() to know if there is an admin.',
-                    __METHOD__,
-                    __CLASS__
-                ),
-                E_USER_DEPRECATED
-            );
-            // NEXT_MAJOR : remove the previous `trigger_error()` call, uncomment the following exception and declare AdminInterface as return type
-            // throw new \LogicException(sprintf('%s has no admin.', static::class));
+            throw new \LogicException(sprintf('%s has no admin.', static::class));
         }
 
         return $this->admin;
     }
 
-    public function hasAdmin()
+    public function hasAdmin(): bool
     {
         return null !== $this->admin;
     }
@@ -418,37 +370,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     public function getMappingType()
     {
         return $this->mappingType;
-    }
-
-    /**
-     * Defines the help message.
-     *
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0. Use Symfony Form "help" option instead.
-     */
-    public function setHelp(string $help): void
-    {
-        if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
-            @trigger_error(sprintf(
-                'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
-                .' Use Symfony Form "help" option instead.',
-                __METHOD__
-            ), E_USER_DEPRECATED);
-        }
-
-        $this->help = $help;
-    }
-
-    public function getHelp(): string
-    {
-        @trigger_error(sprintf(
-            'The "%s()" method is deprecated since sonata-project/admin-bundle 3.x and will be removed in version 4.0.'
-            .' Use Symfony Form "help" option instead.',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-
-        return $this->help;
     }
 
     /**

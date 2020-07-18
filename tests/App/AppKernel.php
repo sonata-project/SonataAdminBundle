@@ -51,10 +51,6 @@ final class AppKernel extends Kernel
             new SonataFormBundle(),
         ];
 
-        if (class_exists(SonataCoreBundle::class)) {
-            $bundles[] = new SonataCoreBundle();
-        }
-
         return $bundles;
     }
 

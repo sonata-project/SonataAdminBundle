@@ -16,21 +16,19 @@ namespace Sonata\AdminBundle\Filter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class FilterFactory implements FilterFactoryInterface
+final class FilterFactory implements FilterFactoryInterface
 {
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    private $container;
 
     /**
      * @var string[]
      */
-    protected $types;
+    private $types;
 
     /**
      * @param string[] $types
@@ -51,15 +49,6 @@ class FilterFactory implements FilterFactoryInterface
 
         if ($id) {
             $filter = $this->container->get($id);
-
-            if ($filter && !class_exists($type)) {
-                @trigger_error(sprintf(
-                    'Referencing a filter by name (%s) is deprecated since version 3.57 and will be removed in 4.0.'
-                    .' Use the fully-qualified type class name instead (%s)',
-                    $type,
-                    \get_class($filter)
-                ), E_USER_DEPRECATED);
-            }
         } elseif (class_exists($type)) {
             $filter = new $type();
         } else {

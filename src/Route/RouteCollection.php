@@ -16,77 +16,63 @@ namespace Sonata\AdminBundle\Route;
 use Symfony\Component\Routing\Route;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class RouteCollection
+final class RouteCollection implements RouteCollectionInterface
 {
     /**
      * @var Route[]
      */
-    protected $elements = [];
+    private $elements = [];
 
     /**
      * @var string
      */
-    protected $baseCodeRoute;
+    private $baseCodeRoute;
 
     /**
      * @var string
      */
-    protected $baseRouteName;
+    private $baseRouteName;
 
     /**
      * @var string
      */
-    protected $baseControllerName;
+    private $baseControllerName;
 
     /**
      * @var string
      */
-    protected $baseRoutePattern;
+    private $baseRoutePattern;
 
     /**
      * @var Route[]
      */
     private $cachedElements = [];
 
-    /**
-     * @param string $baseCodeRoute
-     * @param string $baseRouteName
-     * @param string $baseRoutePattern
-     * @param string $baseControllerName
-     */
-    public function __construct($baseCodeRoute, $baseRouteName, $baseRoutePattern, $baseControllerName)
-    {
+    public function __construct(
+        string $baseCodeRoute,
+        string $baseRouteName,
+        string $baseRoutePattern,
+        string $baseControllerName
+    ) {
         $this->baseCodeRoute = $baseCodeRoute;
         $this->baseRouteName = $baseRouteName;
         $this->baseRoutePattern = $baseRoutePattern;
         $this->baseControllerName = $baseControllerName;
     }
 
-    /**
-     * Add route.
-     *
-     * @param string $name
-     * @param string $pattern   Pattern (will be automatically combined with @see $this->baseRoutePattern and $name
-     * @param string $host
-     * @param string $condition
-     *
-     * @return RouteCollection
-     */
     public function add(
-        $name,
-        $pattern = null,
+        string $name,
+        ?string $pattern = null,
         array $defaults = [],
         array $requirements = [],
         array $options = [],
-        $host = '',
+        string $host = '',
         array $schemes = [],
         array $methods = [],
-        $condition = ''
-    ) {
+        string $condition = ''
+    ): RouteCollectionInterface {
         $pattern = sprintf('%s/%s', $this->baseRoutePattern, $pattern ?: $name);
         $code = $this->getCode($name);
         $routeName = sprintf('%s_%s', $this->baseRouteName, $name);
@@ -114,12 +100,7 @@ class RouteCollection
         return $this;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
-    public function getCode($name)
+    public function getCode(string $name): string
     {
         if (false !== strrpos($name, '.')) {
             return $name;
@@ -128,10 +109,7 @@ class RouteCollection
         return sprintf('%s.%s', $this->baseCodeRoute, $name);
     }
 
-    /**
-     * @return RouteCollection
-     */
-    public function addCollection(self $collection)
+    public function addCollection(RouteCollectionInterface $collection): RouteCollectionInterface
     {
         foreach ($collection->getElements() as $code => $element) {
             $this->addElement($code, $element);
@@ -140,10 +118,7 @@ class RouteCollection
         return $this;
     }
 
-    /**
-     * @return Route[]
-     */
-    public function getElements()
+    public function getElements(): array
     {
         foreach ($this->elements as $code => $element) {
             $this->resolveElement($code);
@@ -152,29 +127,17 @@ class RouteCollection
         return $this->elements;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function has($name)
+    public function has(string $name): bool
     {
         return \array_key_exists($this->getCode($name), $this->elements);
     }
 
-    final public function hasCached(string $name): bool
+    public function hasCached(string $name): bool
     {
         return \array_key_exists($this->getCode($name), $this->cachedElements);
     }
 
-    /**
-     * @param string $name
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return Route
-     */
-    public function get($name)
+    public function get(string $name): Route
     {
         if ($this->has($name)) {
             $code = $this->getCode($name);
@@ -186,22 +149,14 @@ class RouteCollection
         throw new \InvalidArgumentException(sprintf('Element "%s" does not exist.', $name));
     }
 
-    /**
-     * @param string $name
-     *
-     * @return RouteCollection
-     */
-    public function remove($name)
+    public function remove(string $name): RouteCollectionInterface
     {
         unset($this->elements[$this->getCode($name)]);
 
         return $this;
     }
 
-    /**
-     * @throws \InvalidArgumentException
-     */
-    final public function restore(string $name): self
+    public function restore(string $name): RouteCollectionInterface
     {
         if ($this->hasCached($name)) {
             $code = $this->getCode($name);
@@ -213,14 +168,7 @@ class RouteCollection
         throw new \InvalidArgumentException(sprintf('Element "%s" does not exist in cache.', $name));
     }
 
-    /**
-     * Remove all routes except routes in $routeList.
-     *
-     * @param string[]|string $routeList
-     *
-     * @return RouteCollection
-     */
-    public function clearExcept($routeList)
+    public function clearExcept($routeList): RouteCollectionInterface
     {
         if (!\is_array($routeList)) {
             $routeList = [$routeList];
@@ -241,26 +189,14 @@ class RouteCollection
         return $this;
     }
 
-    /**
-     * Remove all routes.
-     *
-     * @return RouteCollection
-     */
-    public function clear()
+    public function clear(): RouteCollectionInterface
     {
         $this->elements = [];
 
         return $this;
     }
 
-    /**
-     * Convert a word in to the format for a symfony action action_name => actionName.
-     *
-     * @param string $action Word to actionify
-     *
-     * @return string Actionified word
-     */
-    public function actionify($action)
+    public function actionify(string $action): string
     {
         if (false !== ($pos = strrpos($action, '.'))) {
             $action = substr($action, $pos + 1);
@@ -275,34 +211,22 @@ class RouteCollection
         return lcfirst(str_replace(' ', '', ucwords(strtr($action, '_-', '  '))));
     }
 
-    /**
-     * @return string
-     */
-    public function getBaseCodeRoute()
+    public function getBaseCodeRoute(): string
     {
         return $this->baseCodeRoute;
     }
 
-    /**
-     * @return string
-     */
-    public function getBaseControllerName()
+    public function getBaseControllerName(): string
     {
         return $this->baseControllerName;
     }
 
-    /**
-     * @return string
-     */
-    public function getBaseRouteName()
+    public function getBaseRouteName(): string
     {
         return $this->baseRouteName;
     }
 
-    /**
-     * @return string
-     */
-    public function getBaseRoutePattern()
+    public function getBaseRoutePattern(): string
     {
         return $this->baseRoutePattern;
     }
@@ -310,13 +234,13 @@ class RouteCollection
     /**
      * @param Route|callable $element
      */
-    final protected function addElement(string $code, $element): void
+    private function addElement(string $code, $element): void
     {
         $this->elements[$code] = $element;
         $this->updateCachedElement($code);
     }
 
-    final protected function updateCachedElement(string $code): void
+    private function updateCachedElement(string $code): void
     {
         $this->cachedElements[$code] = $this->elements[$code];
     }

@@ -14,11 +14,9 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Translator;
 
 /**
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class UnderscoreLabelTranslatorStrategy implements LabelTranslatorStrategyInterface
+final class UnderscoreLabelTranslatorStrategy implements LabelTranslatorStrategyInterface
 {
     public function getLabel($label, $context = '', $type = '')
     {

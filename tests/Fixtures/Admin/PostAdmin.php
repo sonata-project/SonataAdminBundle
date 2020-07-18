@@ -17,11 +17,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 
 class PostAdmin extends AbstractAdmin
 {
-    public function setParentAssociationMapping($associationMapping): void
-    {
-        $this->parentAssociationMapping = $associationMapping;
-    }
-
     protected function configureBatchActions(array $actions): array
     {
         $actions['foo'] = [

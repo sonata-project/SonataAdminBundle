@@ -28,11 +28,9 @@ use Symfony\Contracts\EventDispatcher\Event;
  *   - sonata.admin.event.configure.[form|list|datagrid|show]
  *   - sonata.admin.event.configure.[admin_code].[form|list|datagrid|show] (not implemented yet)
  *
- * @final since sonata-project/admin-bundle 3.52
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class ConfigureEvent extends Event
+final class ConfigureEvent extends Event
 {
     public const TYPE_SHOW = 'show';
     public const TYPE_DATAGRID = 'datagrid';
@@ -42,17 +40,17 @@ class ConfigureEvent extends Event
     /**
      * @var AdminInterface
      */
-    protected $admin;
+    private $admin;
 
     /**
      * @var BaseMapper
      */
-    protected $mapper;
+    private $mapper;
 
     /**
      * @var string
      */
-    protected $type;
+    private $type;
 
     /**
      * @param string $type

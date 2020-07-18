@@ -18,7 +18,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\Form\Validator\ErrorElement;
 
@@ -43,26 +43,19 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
     }
 
-    public function configureRoutes(AdminInterface $admin, RouteCollection $collection): void
-    {
-    }
-
-    public function configureSideMenu(AdminInterface $admin, MenuItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
+    public function configureRoutes(AdminInterface $admin, RouteCollectionInterface $collection): void
     {
     }
 
     public function configureTabMenu(AdminInterface $admin, MenuItemInterface $menu, string $action, ?AdminInterface $childAdmin = null): void
     {
-        // Use configureSideMenu not to mess with previous overrides
-        // NEXT_MAJOR: remove this line
-        $this->configureSideMenu($admin, $menu, $action, $childAdmin);
     }
 
     public function validate(AdminInterface $admin, ErrorElement $errorElement, object $object): void
     {
     }
 
-    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query, string $context = 'list'): void
+    public function configureQuery(AdminInterface $admin, ProxyQueryInterface $query): void
     {
     }
 
@@ -141,5 +134,3 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
     {
     }
 }
-
-class_exists(\Sonata\Form\Validator\ErrorElement::class);

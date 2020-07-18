@@ -190,14 +190,7 @@ final class RetrieveAutocompleteItemsAction
             throw new \RuntimeException(sprintf('The field "%s" does not exist.', $field));
         }
 
-        // NEXT_MAJOR: Remove the check and use `getTargetModel`.
-        if (method_exists($fieldDescription, 'getTargetModel')) {
-            $targetModel = $fieldDescription->getTargetModel();
-        } else {
-            $targetModel = $fieldDescription->getTargetEntity();
-        }
-
-        if (null === $targetModel) {
+        if (null === $fieldDescription->getTargetModel()) {
             throw new \RuntimeException(sprintf('No associated entity with field "%s".', $field));
         }
 
@@ -219,14 +212,7 @@ final class RetrieveAutocompleteItemsAction
             throw new \RuntimeException(sprintf('The field "%s" does not exist.', $field));
         }
 
-        // NEXT_MAJOR: Remove the check and use `getTargetModel`.
-        if (method_exists($fieldDescription, 'getTargetModel')) {
-            $targetModel = $fieldDescription->getTargetModel();
-        } else {
-            $targetModel = $fieldDescription->getTargetEntity();
-        }
-
-        if (null === $targetModel) {
+        if (null === $fieldDescription->getTargetModel()) {
             throw new \RuntimeException(sprintf('No associated entity with field "%s".', $field));
         }
 
