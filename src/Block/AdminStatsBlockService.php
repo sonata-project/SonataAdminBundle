@@ -87,7 +87,7 @@ class AdminStatsBlockService extends AbstractBlockService
         }
     }
 
-    public function execute(BlockContextInterface $blockContext, ?Response $response = null)
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
     {
         $admin = $this->pool->getAdminByAdminCode($blockContext->getSetting('code'));
 
@@ -120,7 +120,7 @@ class AdminStatsBlockService extends AbstractBlockService
         return 'Admin Stats';
     }
 
-    public function configureSettings(OptionsResolver $resolver)
+    public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'icon' => 'fa-line-chart',

@@ -109,7 +109,7 @@ class AdminListBlockService extends AbstractBlockService
         }
     }
 
-    public function execute(BlockContextInterface $blockContext, ?Response $response = null)
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
     {
         $dashboardGroups = $this->pool->getDashboardGroups();
 
@@ -135,7 +135,7 @@ class AdminListBlockService extends AbstractBlockService
         return 'Admin List';
     }
 
-    public function configureSettings(OptionsResolver $resolver)
+    public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'groups' => false,

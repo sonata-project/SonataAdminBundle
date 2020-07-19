@@ -96,6 +96,132 @@ parameters:
             count: 1
             path: ../src/Form/FormMapper.php
 
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\BlockBundle\\\\Block\\\\Service\\\\AbstractBlockService\\:\\:__construct\\(\\) invoked with 2 parameters, 1 required\\.$#"
+            count: 1
+            path: ../src/Block/AdminListBlockService.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\BlockBundle\\\\Block\\\\Service\\\\AbstractBlockService\\:\\:__construct\\(\\) invoked with 2 parameters, 1 required\\.$#"
+            count: 1
+            path: ../src/Block/AdminSearchBlockService.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Method Sonata\\\\BlockBundle\\\\Block\\\\Service\\\\AbstractBlockService\\:\\:__construct\\(\\) invoked with 2 parameters, 1 required\\.$#"
+            count: 1
+            path: ../src/Block/AdminStatsBlockService.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Extension\\\\Field\\\\Type\\\\FormTypeFieldExtension\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Extension/Field/Type/FormTypeFieldExtension.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Extension\\\\Field\\\\Type\\\\MopaCompatibilityTypeFieldExtension\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Extension/Field/Type/MopaCompatibilityTypeFieldExtension.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Type\\\\AclMatrixType\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Type/AclMatrixType.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Type\\\\AdminType\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Type/AdminType.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Type\\\\ChoiceFieldMaskType\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Type/ChoiceFieldMaskType.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Type\\\\Filter\\\\ChoiceType\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Type/Filter/ChoiceType.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Type\\\\Filter\\\\DateRangeType\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Type/Filter/DateRangeType.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Type\\\\Filter\\\\DateTimeRangeType\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Type/Filter/DateTimeRangeType.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Type\\\\Filter\\\\DateTimeType\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Type/Filter/DateTimeType.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Type\\\\Filter\\\\DateType\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Type/Filter/DateType.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Type\\\\Filter\\\\DefaultType\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Type/Filter/DefaultType.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Type\\\\Filter\\\\NumberType\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Type/Filter/NumberType.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Type\\\\ModelAutocompleteType\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Type/ModelAutocompleteType.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Type\\\\ModelHiddenType\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Type/ModelHiddenType.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Type\\\\ModelListType\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Type/ModelListType.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Type\\\\ModelReferenceType\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Type/ModelReferenceType.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Type\\\\ModelType\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Type/ModelType.php
+
+        -
+            # will be fixed in v4. Currently BC break
+            message: "#^Parameter \\$resolver of method Sonata\\\\AdminBundle\\\\Form\\\\Extension\\\\ChoiceTypeExtension\\:\\:setDefaultOptions\\(\\) has invalid typehint type Symfony\\\\Component\\\\OptionsResolver\\\\OptionsResolverInterface\\.$#"
+            count: 1
+            path: ../src/Form/Extension/ChoiceTypeExtension.php
+
 # next 6 errors are due to not installed Doctrine ORM\ODM
         -
             message: "#^Class Doctrine\\\\ODM\\\\MongoDB\\\\PersistentCollection not found\\.$#"
