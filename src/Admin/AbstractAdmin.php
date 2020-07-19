@@ -664,10 +664,14 @@ abstract class AbstractAdmin implements AdminInterface, DomainObjectInterface, A
 
         foreach ($this->getExportFields() as $key => $field) {
             $label = $this->getTranslationLabel($field, 'export', 'label');
+
+            // NEXT_MAJOR: We have to find another way to have a translated label or stop deprecating the translator.
             $transLabel = $this->trans($label);
 
-            // NEXT_MAJOR: Remove this hack, because all field labels will be translated with the major release
-            // No translation key exists
+            // NEXT_MAJOR: Remove the following code in favor of the commented one.
+            // If a key is provided we use it otherwise we use the generated label.
+            // $fieldKey = \is_string($key) ? $key : $transLabel;
+            // $fields[$fieldKey] = $field;
             if ($transLabel === $label) {
                 $fields[$key] = $field;
             } else {
