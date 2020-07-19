@@ -31,7 +31,6 @@ use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\AdminBundle\Util\AdminObjectAclUserManager;
 use Sonata\Exporter\Exporter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
