@@ -47,7 +47,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManager;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -121,7 +121,7 @@ class CRUDController extends AbstractController
     private $adminExporter;
 
     /**
-     * @var CsrfTokenManagerInterface
+     * @var CsrfTokenManager
      */
     private $csrfTokenManager;
 
@@ -152,7 +152,7 @@ class CRUDController extends AbstractController
         AuditManagerInterface $auditManager,
         Exporter $exporter,
         AdminExporter $adminExporter,
-        CsrfTokenManagerInterface $csrfTokenManager,
+        CsrfTokenManager $csrfTokenManager,
         LoggerInterface $logger,
         AdminObjectAclManipulator $adminObjectAclManipulator,
         ?AdminObjectAclUserManager $adminObjectAclUserManager = null
@@ -1345,7 +1345,7 @@ class CRUDController extends AbstractController
         $request = $this->getRequest();
         $token = $request->get('_sonata_csrf_token');
 
-        if ($this->csrfTokenManager instanceof CsrfTokenManagerInterface) {
+        if ($this->csrfTokenManager instanceof CsrfTokenManager) {
             $valid = $this->csrfTokenManager->isTokenValid(new CsrfToken($intention, $token));
         } else {
             return;
@@ -1377,7 +1377,7 @@ class CRUDController extends AbstractController
      */
     protected function getCsrfToken($intention)
     {
-        if ($this->csrfTokenManager instanceof CsrfTokenManagerInterface) {
+        if ($this->csrfTokenManager instanceof CsrfTokenManager) {
             return $this->csrfTokenManager->getToken($intention)->getValue();
         }
 
