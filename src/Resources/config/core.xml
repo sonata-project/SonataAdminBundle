@@ -66,7 +66,7 @@
             <argument type="service" id="sonata.admin.audit.manager"/>
             <argument type="service" id="sonata.exporter.exporter"/>
             <argument type="service" id="sonata.admin.admin_exporter"/>
-            <argument type="service" id="crsf_token_manager"/>
+            <argument type="service" id="security.csrf.token_manager"/>
             <argument type="service" id="logger"/>
             <argument type="service" id="sonata.admin.object.manipulator.acl.admin"/>
             <argument on-invalid="null">%sonata.admin.security.acl_user_manager%</argument>
