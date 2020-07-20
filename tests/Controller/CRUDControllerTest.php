@@ -58,7 +58,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Security\Csrf\CsrfTokenManager;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -132,7 +132,7 @@ class CRUDControllerTest extends TestCase
     private $protectedTestedMethods;
 
     /**
-     * @var CsrfTokenManager
+     * @var CsrfTokenManagerInterface
      */
     private $csrfProvider;
 
@@ -185,7 +185,7 @@ class CRUDControllerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->csrfProvider = $this->getMockBuilder(CsrfTokenManager::class)
+        $this->csrfProvider = $this->getMockBuilder(CsrfTokenManagerInterface::class)
             ->getMock();
 
         $this->csrfProvider
