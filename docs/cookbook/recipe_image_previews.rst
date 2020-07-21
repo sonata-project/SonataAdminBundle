@@ -22,14 +22,14 @@ Pre-requisites
 The recipe
 ----------
 
-SonataAdmin lets us put raw HTML into the 'help' option for any given form field.
+You can use Symfony 'help' and 'help_html' options to put raw HTML into any given form field.
 We are going to use this functionality to embed an image tag when an image exists.
 
 To do this we need to:
 
 - get access to the ``Image`` instance from within ``ImageAdmin``
 - create an image tag based on the Image's URL
-- add a 'help' option to a field on the Image form to display the image tag
+- add a 'help' and 'help_html' option to a field on the Image form to display the image tag
 
 For the sake of this example we will use some basic CSS to restrict the size of
 the preview image (we are not going to generate and save special thumbnails).
@@ -48,19 +48,20 @@ we are manipulating form fields we do this from within ``ImageAdmin::configureFo
             // get the current Image instance
             $image = $this->getSubject();
 
-            // use $fileFieldOptions so we can add other options to the field
-            $fileFieldOptions = ['required' => false];
+            // use $fileFormOptions so we can add other options to the field
+            $fileFormOptions = ['required' => false];
             if ($image && ($webPath = $image->getWebPath())) {
                 // get the container so the full path to the image can be set
                 $container = $this->getConfigurationPool()->getContainer();
                 $fullPath = $container->get('request_stack')->getCurrentRequest()->getBasePath().'/'.$webPath;
 
                 // add a 'help' option containing the preview's img tag
-                $fileFieldOptions['help'] = '<img src="'.$fullPath.'" class="admin-preview"/>';
+                $fileFormOptions['help'] = '<img src="'.$fullPath.'" class="admin-preview"/>';
+                $fileFormOptions['help_html'] = true;
             }
 
             $formMapper
-                ->add('file', 'file', $fileFieldOptions)
+                ->add('file', 'file', $fileFormOptions)
             ;
         }
     }
@@ -77,7 +78,7 @@ We then use CSS to restrict the max size of the image:
 And that is all there is to it!
 
 However, this method does not work when the ``ImageAdmin`` can be embedded in other
-Admins using the ``sonata_type_admin`` field type. For that we need...
+Admins using the ``Sonata\\AdminBundle\\Form\\Type\\AdminType`` field type. For that we need...
 
 Advanced example - works with embedded Admins
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -105,15 +106,16 @@ Admin class is embedded and use a different method::
                 $image = $this->getSubject();
             }
 
-            // use $fileFieldOptions so we can add other options to the field
-            $fileFieldOptions = ['required' => false];
+            // use $fileFormOptions so we can add other options to the field
+            $fileFormOptions = ['required' => false];
             if ($image && ($webPath = $image->getWebPath())) {
                 // add a 'help' option containing the preview's img tag
-                $fileFieldOptions['help'] = '<img src="'.$webPath.'" class="admin-preview"/>';
+                $fileFormOptions['help'] = '<img src="'.$webPath.'" class="admin-preview"/>';
+                $fileFormOptions['help_html'] = true;
             }
 
             $formMapper
-                ->add('file', 'file', $fileFieldOptions)
+                ->add('file', 'file', $fileFormOptions)
             ;
         }
     }
