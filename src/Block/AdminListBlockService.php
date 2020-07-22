@@ -41,20 +41,72 @@ class AdminListBlockService extends AbstractBlockService
     private $templateRegistry;
 
     /**
-     * NEXT_MAJOR: Remove `$templating` argument.
+     * NEXT_MAJOR: Change signature for (Environment $twig, Pool $pool, ?TemplateRegistryInterface $templateRegistry = null).
      *
-     * @param Environment|string $twigOrName
+     * @param Environment|string                  $twigOrName
+     * @param EngineInterface|Pool|null           $poolOrTemplating
+     * @param Pool|TemplateRegistryInterface|null $templateRegistryOrPool
      */
     public function __construct(
         $twigOrName,
-        ?EngineInterface $templating,
-        Pool $pool,
+        ?object $poolOrTemplating,
+        ?object $templateRegistryOrPool,
         ?TemplateRegistryInterface $templateRegistry = null
     ) {
-        parent::__construct($twigOrName, $templating);
+        if ($poolOrTemplating instanceof Pool) {
+            if (!$twigOrName instanceof Environment) {
+                throw new \TypeError(sprintf(
+                    'Argument 1 passed to %s() must be an instance of %s, %s given.',
+                    __METHOD__,
+                    Environment::class,
+                    \is_object($twigOrName) ? 'instance of '.\get_class($twigOrName) : \gettype($twigOrName)
+                ));
+            }
 
-        $this->pool = $pool;
-        $this->templateRegistry = $templateRegistry ?: new TemplateRegistry();
+            if (null !== $templateRegistryOrPool && !$templateRegistryOrPool instanceof TemplateRegistryInterface) {
+                throw new \TypeError(sprintf(
+                    'Argument 3 passed to %s() must be either null or an instance of %s, %s given.',
+                    __METHOD__,
+                    TemplateRegistryInterface::class,
+                    \is_object($twigOrName) ? 'instance of '.\get_class($twigOrName) : \gettype($twigOrName)
+                ));
+            }
+
+            parent::__construct($twigOrName);
+
+            $this->pool = $poolOrTemplating;
+            $this->templateRegistry = $templateRegistryOrPool ?: new TemplateRegistry();
+        } elseif (null === $poolOrTemplating || $poolOrTemplating instanceof EngineInterface) {
+            @trigger_error(sprintf(
+                'Passing %s as argument 2 to %s() is deprecated since sonata-project/admin-bundle 3.x'
+                .' and will throw a \TypeError in version 4.0. You must pass an instance of %s instead.',
+                null === $poolOrTemplating ? 'null' : EngineInterface::class,
+                __METHOD__,
+                Pool::class
+            ), E_USER_DEPRECATED);
+
+            if (!$templateRegistryOrPool instanceof Pool) {
+                throw new \TypeError(sprintf(
+                    'Argument 2 passed to %s() must be an instance of %s, %s given.',
+                    __METHOD__,
+                    Pool::class,
+                    null === $templateRegistryOrPool ? 'null' : 'instance of '.\get_class($templateRegistryOrPool)
+                ));
+            }
+
+            parent::__construct($twigOrName, $poolOrTemplating);
+
+            $this->pool = $templateRegistryOrPool;
+            $this->templateRegistry = $templateRegistry ?: new TemplateRegistry();
+        } else {
+            throw new \TypeError(sprintf(
+                'Argument 2 passed to %s() must be either null or an instance of %s or preferably %s, instance of %s given.',
+                __METHOD__,
+                EngineInterface::class,
+                Pool::class,
+                \get_class($poolOrTemplating)
+            ));
+        }
     }
 
     public function execute(BlockContextInterface $blockContext, ?Response $response = null)

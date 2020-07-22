@@ -21,9 +21,13 @@ use Sonata\BlockBundle\Test\BlockServiceTestCase;
 use Twig\Environment;
 
 /**
+ * NEXT_MAJOR: Remove this class.
+ *
+ * @group legacy
+ *
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class AdminListBlockServiceTest extends BlockServiceTestCase
+class DeprecatedAdminListBlockServiceTest extends BlockServiceTestCase
 {
     /**
      * @var Pool
@@ -44,10 +48,14 @@ class AdminListBlockServiceTest extends BlockServiceTestCase
         $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
     }
 
+    /**
+     * @expectedDeprecation Passing null as argument 2 to Sonata\AdminBundle\Block\AdminListBlockService::__construct() is deprecated since sonata-project/admin-bundle 3.x and will throw a \TypeError in version 4.0. You must pass an instance of Sonata\AdminBundle\Admin\Pool instead.
+     */
     public function testDefaultSettings(): void
     {
         $blockService = new AdminListBlockService(
             $this->createMock(Environment::class),
+            null,
             $this->pool,
             $this->templateRegistry->reveal()
         );
@@ -59,12 +67,13 @@ class AdminListBlockServiceTest extends BlockServiceTestCase
     }
 
     /**
-     * @group legacy
+     * @expectedDeprecation Passing null as argument 2 to Sonata\AdminBundle\Block\AdminListBlockService::__construct() is deprecated since sonata-project/admin-bundle 3.x and will throw a \TypeError in version 4.0. You must pass an instance of Sonata\AdminBundle\Admin\Pool instead.
      */
     public function testOverriddenDefaultSettings(): void
     {
         $blockService = new FakeBlockService(
             $this->createMock(Environment::class),
+            null,
             $this->pool,
             $this->templateRegistry->reveal()
         );
