@@ -47,8 +47,8 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
 
         $this->pool = $this->createMock(Pool::class);
         $this->searchHandler = $this->createMock(SearchHandler::class);
-        $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
-        $this->templateRegistry->getTemplate('search_result_block')->willReturn('@SonataAdmin/Block/block_search_result.html.twig');
+        $this->templateRegistry = $this->createMock(TemplateRegistryInterface::class);
+        $this->templateRegistry->method('getTemplate')->willReturn('@SonataAdmin/Block/block_search_result.html.twig');
     }
 
     public function testDefaultSettings(): void
@@ -69,7 +69,7 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
     {
         $admin = $this->createMock(AbstractAdmin::class);
 
-        $blockService = new AdminSearchBlockService($this->twig, $this->pool, $this->searchHandler, $this->templateRegistry->reveal());
+        $blockService = new AdminSearchBlockService($this->twig, $this->pool, $this->searchHandler, $this->templateRegistry);
         $blockContext = $this->getBlockContext($blockService);
 
         $this->searchHandler->expects(self::once())->method('search')->willReturn(true);
