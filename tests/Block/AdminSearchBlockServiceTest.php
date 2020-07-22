@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminSearchBlockService;
 use Sonata\AdminBundle\Search\SearchHandler;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -35,12 +36,19 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
      */
     private $searchHandler;
 
+    /**
+     * @var TemplateRegistryInterface
+     */
+    private $templateRegistry;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->pool = $this->createMock(Pool::class);
         $this->searchHandler = $this->createMock(SearchHandler::class);
+        $this->templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
+        $this->templateRegistry->getTemplate('search_result_block')->willReturn('@SonataAdmin/Block/block_search_result.html.twig');
     }
 
     public function testDefaultSettings(): void
@@ -55,6 +63,23 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
             'per_page' => 10,
             'icon' => '<i class="fa fa-list"></i>',
         ], $blockContext);
+    }
+
+    public function testGlobalSearchReturnsResponse(): void
+    {
+        $admin = $this->createMock(AbstractAdmin::class);
+
+        $blockService = new AdminSearchBlockService($this->twig, $this->pool, $this->searchHandler, $this->templateRegistry->reveal());
+        $blockContext = $this->getBlockContext($blockService);
+
+        $this->searchHandler->expects(self::once())->method('search')->willReturn(true);
+        $this->pool->expects(self::once())->method('getAdminByAdminCode')->willReturn($admin);
+        $admin->expects(self::once())->method('checkAccess')->with('list');
+
+        $response = $blockService->execute($blockContext);
+
+        static::assertSame('', $response->getContent());
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function testGlobalSearchReturnsEmptyWhenFiltersAreDisabled(): void
