@@ -279,6 +279,9 @@ This code manages the many-to-[one|many] association field popup
         jQuery(form).ajaxSubmit({
             url: url,
             type: type,
+            headers: {
+                Accept: 'application/json'
+            },
             data: data,
             success: function(data) {
                 Admin.log('[{{ id }}|field_dialog_form_action] ajax success');
