@@ -53,14 +53,18 @@ final class ObjectManipulator
         object $object,
         FieldDescriptionInterface $parentFieldDescription
     ): object {
-        $associationMapping = $parentFieldDescription->getAssociationMapping();
+        $mappedBy = $parentFieldDescription->getAssociationMapping()['mappedBy'];
+        if (null === $mappedBy) {
+            return $instance;
+        }
+
         $parentAssociationMappings = $parentFieldDescription->getParentAssociationMappings();
 
         foreach ($parentAssociationMappings as $parentAssociationMapping) {
             $object = self::callGetter($object, $parentAssociationMapping['fieldName']);
         }
 
-        return self::callSetter($instance, $object, $associationMapping['mappedBy']);
+        return self::callSetter($instance, $object, $mappedBy);
     }
 
     /**

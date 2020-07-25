@@ -39,15 +39,15 @@ This is currently limited to scalar types (text, integer, url...) and choice typ
     will be changed to use localized information.
 
     Option for currency type must be an official ISO code, example : EUR for "euros".
-    List of ISO codes : `http://en.wikipedia.org/wiki/List_of_circulating_currencies <http://en.wikipedia.org/wiki/List_of_circulating_currencies>`_
+    List of ISO codes : `https://en.wikipedia.org/wiki/List_of_circulating_currencies <https://en.wikipedia.org/wiki/List_of_circulating_currencies>`_
 
     In ``TemplateRegistry::TYPE_DATE``, ``TemplateRegistry::TYPE_TIME`` and ``TemplateRegistry::TYPE_DATETIME`` field types, ``format`` pattern must match twig's
-    ``date`` filter specification, available at: `http://twig.sensiolabs.org/doc/filters/date.html <http://twig.sensiolabs.org/doc/filters/date.html>`_
+    ``date`` filter specification, available at: `https://twig.symfony.com/doc/2.x/filters/date.html <https://twig.symfony.com/doc/2.x/filters/date.html>`_
 
     In ``TemplateRegistry::TYPE_TIME`` and ``TemplateRegistry::TYPE_DATETIME`` field types, ``timezone`` syntax must match twig's
-    ``date`` filter specification, available at: `http://twig.sensiolabs.org/doc/filters/date.html <http://twig.sensiolabs.org/doc/filters/date.html>`_
-    and php timezone list: `https://php.net/manual/en/timezones.php <https://php.net/manual/en/timezones.php>`_
-    You can use in lists what `view-timezone <http://symfony.com/doc/current/reference/forms/types/datetime.html#view-timezone>`_ allows on forms,
+    ``date`` filter specification, available at: `https://twig.symfony.com/doc/2.x/filters/date.html <https://twig.symfony.com/doc/2.x/filters/date.html>`_
+    and php timezone list: `https://www.php.net/manual/en/timezones.php <https://www.php.net/manual/en/timezones.php>`_
+    You can use in lists what `view-timezone <https://symfony.com/doc/4.4/reference/forms/types/datetime.html#view-timezone>`_ allows on forms,
     a way to render the date in the user timezone::
 
         protected function configureListFields(ListMapper $listMapper)
@@ -278,7 +278,7 @@ You can use the following options:
 Option                      Description
 ========================    ==================================================================
 **strip**                   Strip HTML and PHP tags from a string
-**truncate**                Truncate a string to ``length`` characters beginning from start. Implies strip. Beware of HTML entities. Make sure to configure your HTML editor to disable entities if you want to use truncate. For instance, use `config.entities <http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-entities>`_ for ckeditor
+**truncate**                Truncate a string to ``length`` characters beginning from start. Implies strip. Beware of HTML entities. Make sure to configure your HTML editor to disable entities if you want to use truncate. For instance, use `config.entities <https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-entities>`_ for ckeditor
 **truncate.length**         The length to truncate the string to (default ``30``)
 **truncate.cut**            Determines if whole words must be cut (default ``true``)
 **truncate.ellipsis**       Ellipsis to be appended to the trimmed string (default ``...``)

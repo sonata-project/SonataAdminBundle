@@ -502,7 +502,7 @@ Vocabulary used for Access Control Lists:
   prevent that multiple voters vote on the same class with overlapping bitmasks.
 
 See the cookbook article "`Advanced ACL concepts
-<http://symfony.com/doc/current/cookbook/security/acl_advanced.html#pre-authorization-decisions.>`_"
+<https://symfony.com/doc/current/cookbook/security/acl_advanced.html#pre-authorization-decisions.>`_"
 for the meaning of the different permissions.
 
 How is access granted?
@@ -764,5 +764,5 @@ service to use when retrieving your users.
                 acl_user_manager: my_user_manager
 
 .. _`SonataUserBundle's documentation area`: https://sonata-project.org/bundles/user/master/doc/reference/installation.html
-.. _`changing the access decision strategy`: http://symfony.com/doc/2.2/cookbook/security/voters.html#changing-the-access-decision-strategy
-.. _`create your own voter`: http://symfony.com/doc/2.2/cookbook/security/voters.html
+.. _`changing the access decision strategy`: https://symfony.com/doc/4.4/security/voters.html#changing-the-access-decision-strategy
+.. _`create your own voter`: https://symfony.com/doc/4.4/security/voters.html
