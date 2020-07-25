@@ -2244,7 +2244,7 @@ class AdminTest extends TestCase
     }
 
     /**
-     * NEXT_MAJOR: Remove the assertion about isDefaultFilter method.
+     * NEXT_MAJOR: Remove the assertion about isDefaultFilter method and the legacy group.
      *
      * @group legacy
      *
