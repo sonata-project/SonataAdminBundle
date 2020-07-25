@@ -3154,6 +3154,8 @@ EOT;
     }
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
      * Checks if a filter type is set to a default value.
      *
      * @param string $name

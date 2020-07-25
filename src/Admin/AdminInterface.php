@@ -744,7 +744,7 @@ interface AdminInterface extends AccessRegistryInterface, FieldDescriptionRegist
     /*
      * Checks if a filter type is set to a default value
      */
-//    NEXT_MAJOR: uncomment this method in 4.0
+//    NEXT_MAJOR: remove this method
     // public function isDefaultFilter(string $name): bool;
 
 //    NEXT_MAJOR: uncomment this method in 4.0
