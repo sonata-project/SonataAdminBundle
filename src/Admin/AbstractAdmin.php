@@ -3164,6 +3164,11 @@ EOT;
      */
     final public function isDefaultFilter($name)
     {
+        @trigger_error(sprintf(
+            'Method "%s" is deprecated since sonata-project/admin-bundle 3.x.',
+            __METHOD__
+        ), E_USER_DEPRECATED);
+
         $filter = $this->getFilterParameters();
         $default = $this->getDefaultFilterValues();
 
