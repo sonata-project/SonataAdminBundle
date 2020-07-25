@@ -2248,7 +2248,7 @@ class AdminTest extends TestCase
      *
      * @legacy
      *
-     * @expectDeprecation Method "Sonata\AdminBundle\Admin\AbstractAdmin::isDefaultFilter" is deprecated since sonata-project/admin-bundle 3.x.
+     * @expectedDeprecation Method "Sonata\AdminBundle\Admin\AbstractAdmin::isDefaultFilter" is deprecated since sonata-project/admin-bundle 3.x.
      */
     public function testDefaultFilters(): void
     {
