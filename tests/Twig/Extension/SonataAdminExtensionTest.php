@@ -1936,6 +1936,11 @@ EOT
         ];
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testGetValueFromFieldDescription(): void
     {
         $object = new \stdClass();
@@ -1955,6 +1960,11 @@ EOT
         );
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testGetValueFromFieldDescriptionWithRemoveLoopException(): void
     {
         $object = $this->createMock(\ArrayAccess::class);
@@ -1998,6 +2008,11 @@ EOT
         );
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testGetValueFromFieldDescriptionWithNoValueExceptionNewAdminInstance(): void
     {
         $object = new \stdClass();
