@@ -37,10 +37,6 @@ matrix:
     - php: '7.3'
       env: SYMFONY='dev-master as 4.4.x-dev'
     - php: '7.3'
-      env: SONATA_CORE=3.*
-    - php: '7.3'
-      env: SONATA_CORE='dev-master as 3.x-dev'
-    - php: '7.3'
       env: SONATA_BLOCK=3.*
     - php: '7.3'
       env: SONATA_BLOCK='dev-master as 3.x-dev'
@@ -50,7 +46,6 @@ matrix:
     - php: nightly
     - env: SYMFONY_DEPRECATIONS_HELPER=0
     - env: SYMFONY='dev-master as 4.4.x-dev'
-    - env: SONATA_CORE='dev-master as 3.x-dev'
     - env: SONATA_BLOCK='dev-master as 3.x-dev'
 
 before_install:
