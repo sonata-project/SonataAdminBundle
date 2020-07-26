@@ -55,6 +55,7 @@ file that was distributed with this source code.
             ) %}
 
             {% if field_description.type == constant('Sonata\\AdminBundle\\Templating\\TemplateRegistry::TYPE_DATE') and value is not empty %}
+                {# it is a x-editable format https://vitalets.github.io/x-editable/docs.html#date #}
                 {% set data_value = value|date('Y-m-d', options.timezone|default(null)) %}
             {% elseif field_description.type == constant('Sonata\\AdminBundle\\Templating\\TemplateRegistry::TYPE_BOOLEAN') and value is empty %}
                 {% set data_value = 0 %}
@@ -69,6 +70,9 @@ file that was distributed with this source code.
                   data-value="{{ data_value }}"
                   {% if field_description.label is not same as(false) %}
                     data-title="{{ field_description.label|trans({}, field_description.translationDomain) }}"
+                  {% endif %}
+                  {% if field_description.type == constant('Sonata\\AdminBundle\\Templating\\TemplateRegistry::TYPE_DATE') %}
+                    data-format="yyyy-mm-dd"
                   {% endif %}
                   data-pk="{{ admin.id(object) }}"
                   data-url="{{ url }}" {% endblock %}>

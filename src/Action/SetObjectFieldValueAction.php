@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -111,8 +112,8 @@ final class SetObjectFieldValueAction
             $propertyPath = new PropertyPath($field);
         }
 
-        // Handle date and datetime types have setter expecting a DateTime object
-        if ('' !== $value && \in_array($fieldDescription->getType(), ['date', 'datetime'], true)) {
+        // Handle date type has setter expect a DateTime object
+        if ('' !== $value && TemplateRegistry::TYPE_DATE === $fieldDescription->getType()) {
             $inputTimezone = new \DateTimeZone(date_default_timezone_get());
             $outputTimezone = $fieldDescription->getOption('timezone');
 
@@ -125,13 +126,13 @@ final class SetObjectFieldValueAction
         }
 
         // Handle boolean type transforming the value into a boolean
-        if ('' !== $value && 'boolean' === $fieldDescription->getType()) {
+        if ('' !== $value && TemplateRegistry::TYPE_BOOLEAN === $fieldDescription->getType()) {
             $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
         }
 
         // Handle entity choice association type, transforming the value into entity
         if ('' !== $value
-            && 'choice' === $fieldDescription->getType()
+            && TemplateRegistry::TYPE_CHOICE === $fieldDescription->getType()
             && null !== $fieldDescription->getOption('class')
             // NEXT_MAJOR: Replace this call with "$fieldDescription->getOption('class') === $fieldDescription->getTargetModel()".
             && $this->hasFieldDescriptionAssociationWithClass($fieldDescription, $fieldDescription->getOption('class'))
