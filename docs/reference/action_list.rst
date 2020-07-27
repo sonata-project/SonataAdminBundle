@@ -581,9 +581,9 @@ Checkbox range selection
 Displaying a non-model field
 ----------------------------
 
-.. versionadded:: 3.x
+.. versionadded:: 3.73
 
-  Support for displaying fields not part of the model class was introduced in version 3.x.
+  Support for displaying fields not part of the model class was introduced in version 3.73.
 
 The list view can also display fields that are not part of the model class.
 
