@@ -85,7 +85,7 @@ interface ModelManagerInterface extends DatagridManagerInterface
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle 3.x. To be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.73. To be removed in 4.0.
      * Use AdminInterface::getParentFieldDescription instead.
      *
      * @param array  $parentAssociationMapping
