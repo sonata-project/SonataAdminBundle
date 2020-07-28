@@ -19,9 +19,13 @@ use Sonata\BlockBundle\Test\BlockServiceTestCase;
 use Twig\Environment;
 
 /**
+ * NEXT_MAJOR: Remove this class.
+ *
+ * @group legacy
+ *
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class AdminStatsBlockServiceTest extends BlockServiceTestCase
+class DeprecatedAdminStatsBlockServiceTest extends BlockServiceTestCase
 {
     /**
      * @var Pool
@@ -35,10 +39,14 @@ class AdminStatsBlockServiceTest extends BlockServiceTestCase
         $this->pool = $this->createMock(Pool::class);
     }
 
+    /**
+     * @expectedDeprecation Passing null as argument 2 to Sonata\AdminBundle\Block\AdminStatsBlockService::__construct() is deprecated since sonata-project/admin-bundle 3.x and will throw a \TypeError in version 4.0. You must pass an instance of Sonata\AdminBundle\Admin\Pool instead.
+     */
     public function testDefaultSettings(): void
     {
         $blockService = new AdminStatsBlockService(
             $this->createMock(Environment::class),
+            null,
             $this->pool
         );
         $blockContext = $this->getBlockContext($blockService);

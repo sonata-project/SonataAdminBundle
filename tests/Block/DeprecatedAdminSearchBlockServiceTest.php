@@ -22,9 +22,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
 /**
+ * NEXT_MAJOR: Remove this class.
+ *
+ * @group legacy
+ *
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class AdminSearchBlockServiceTest extends BlockServiceTestCase
+class DeprecatedAdminSearchBlockServiceTest extends BlockServiceTestCase
 {
     /**
      * @var Pool
@@ -44,10 +48,14 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
         $this->searchHandler = $this->createMock(SearchHandler::class);
     }
 
+    /**
+     * @expectedDeprecation Passing null as argument 2 to Sonata\AdminBundle\Block\AdminSearchBlockService::__construct() is deprecated since sonata-project/admin-bundle 3.x and will throw a \TypeError in version 4.0. You must pass an instance of Sonata\AdminBundle\Admin\Pool instead.
+     */
     public function testDefaultSettings(): void
     {
         $blockService = new AdminSearchBlockService(
             $this->createMock(Environment::class),
+            null,
             $this->pool,
             $this->searchHandler
         );
@@ -62,12 +70,16 @@ class AdminSearchBlockServiceTest extends BlockServiceTestCase
         ], $blockContext);
     }
 
+    /**
+     * @expectedDeprecation Passing null as argument 2 to Sonata\AdminBundle\Block\AdminSearchBlockService::__construct() is deprecated since sonata-project/admin-bundle 3.x and will throw a \TypeError in version 4.0. You must pass an instance of Sonata\AdminBundle\Admin\Pool instead.
+     */
     public function testGlobalSearchReturnsEmptyWhenFiltersAreDisabled(): void
     {
         $admin = $this->createMock(AbstractAdmin::class);
 
         $blockService = new AdminSearchBlockService(
             $this->createMock(Environment::class),
+            null,
             $this->pool,
             $this->searchHandler
         );
