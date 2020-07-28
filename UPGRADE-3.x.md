@@ -1,6 +1,19 @@
 UPGRADE 3.x
 ===========
 
+## The following templates have been deprecated
+
+ - `src/Resources/views/CRUD/base_filter_field.html.twig`
+ - `src/Resources/views/CRUD/base_inline_edit_field.html.twig`
+ - `src/Resources/views/CRUD/base_standard_edit_field.html.twig`
+ - `src/Resources/views/CRUD/edit_array.html.twig `
+ - `src/Resources/views/CRUD/edit_boolean.html.twig`
+ - `src/Resources/views/CRUD/edit_file.html.twig`
+ - `src/Resources/views/CRUD/edit_integer.html.twig`
+ - `src/Resources/views/CRUD/edit_sonata_type_immutable_array.html.twig`
+ - `src/Resources/views/CRUD/edit_string.html.twig`
+ - `src/Resources/views/CRUD/edit_text.html.twig`
+
 ## Deprecated `help` option in field description
 
 You MUST use Symfony's [`help`](https://symfony.com/doc/4.4/reference/forms/types/form.html#help) option instead.
