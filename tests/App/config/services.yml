@@ -43,3 +43,8 @@ services:
         arguments: [~, Sonata\AdminBundle\Tests\App\Model\Foo, ~]
         tags:
             - {name: sonata.admin, manager_type: test, label: Empty}
+
+    Sonata\AdminBundle\Tests\App\Admin\TranslatedAdmin:
+        arguments: [~, Sonata\AdminBundle\Tests\App\Model\Translated, ~]
+        tags:
+            - {name: sonata.admin, manager_type: test, group: 'group_label', label: 'admin_label'}
