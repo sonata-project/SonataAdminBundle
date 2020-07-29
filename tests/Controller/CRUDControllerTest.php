@@ -40,6 +40,7 @@ use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Exporter\Writer\JsonWriter;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\DependencyInjection\Container;
@@ -74,6 +75,8 @@ use Twig\Environment;
  */
 class CRUDControllerTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     /**
      * @var CRUDController
      */
@@ -1665,7 +1668,6 @@ class CRUDControllerTest extends TestCase
 
     /**
      * @legacy
-     * @expectedDeprecation In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`
      */
     public function testEditActionAjaxErrorWithoutAcceptApplicationJson(): void
     {
@@ -1706,6 +1708,7 @@ class CRUDControllerTest extends TestCase
             ->method('trans')
             ->willReturn('flash message');
 
+        $this->expectDeprecation('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json` or `Accept: */*`');
         $this->assertInstanceOf(Response::class, $response = $this->controller->editAction(null));
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
@@ -2363,7 +2366,6 @@ class CRUDControllerTest extends TestCase
 
     /**
      * @legacy
-     * @expectedDeprecation In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`
      */
     public function testCreateActionAjaxErrorWithoutAcceptApplicationJson(): void
     {
@@ -2408,6 +2410,7 @@ class CRUDControllerTest extends TestCase
             ->method('trans')
             ->willReturn('flash message');
 
+        $this->expectDeprecation('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json` or `Accept: */*`');
         $this->assertInstanceOf(Response::class, $response = $this->controller->createAction());
         $this->assertSame($this->admin, $this->parameters['admin']);
         $this->assertSame('@SonataAdmin/ajax_layout.html.twig', $this->parameters['base_template']);
