@@ -87,6 +87,9 @@ final class AppKernel extends Kernel
             'session' => ['handler_id' => 'session.handler.native_file', 'storage_id' => 'session.storage.mock_file', 'name' => 'MOCKSESSID'],
             'assets' => null,
             'test' => true,
+            'translator' => [
+                'default_path' => '%kernel.project_dir%/translations',
+            ],
         ]);
 
         $containerBuilder->loadFromExtension('security', [

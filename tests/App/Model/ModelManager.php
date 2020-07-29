@@ -116,7 +116,12 @@ class ModelManager implements ModelManagerInterface, LockInterface
 
     public function getModelInstance($class)
     {
-        return new Foo('test_id', 'foo_name');
+        switch ($class) {
+            case Translated::class:
+                return new Translated();
+            default:
+                return new Foo('test_id', 'foo_name');
+        }
     }
 
     public function getModelCollectionInstance($class)

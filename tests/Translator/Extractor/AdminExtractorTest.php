@@ -121,4 +121,18 @@ final class AdminExtractorTest extends TestCase
 
         $this->adminExtractor->extract([], $catalogue);
     }
+
+    public function testExtractSetsSubject(): void
+    {
+        $this->fooAdmin
+            ->expects($this->exactly(1))
+            ->method('setSubject');
+        $this->fooAdmin
+            ->expects($this->exactly(1))
+            ->method('getNewInstance');
+
+        $catalogue = new MessageCatalogue('en');
+
+        $this->adminExtractor->extract([], $catalogue);
+    }
 }
