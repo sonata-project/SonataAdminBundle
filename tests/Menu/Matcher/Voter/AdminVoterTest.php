@@ -131,7 +131,7 @@ class AdminVoterTest extends AbstractVoterTest
         $childAdmin = $this->createMock(AbstractAdmin::class);
         $childAdmin
             ->method('getBaseCodeRoute')
-            ->willReturn($parentCode.'|'.$childCode)
+            ->willReturn(sprintf('%s|%s', $parentCode, $childCode))
         ;
 
         $parentAdmin

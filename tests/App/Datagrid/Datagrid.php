@@ -22,23 +22,20 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 final class Datagrid implements DatagridInterface
 {
+    /**
+     * @var FormFactoryInterface
+     */
     private $formFactory;
+
+    /**
+     * @var PagerInterface
+     */
     private $pager;
 
     public function __construct(FormFactoryInterface $formFactory, PagerInterface $pager)
     {
         $this->formFactory = $formFactory;
         $this->pager = $pager;
-    }
-
-    public function getSortParameters(FieldDescriptionInterface $fieldDescription)
-    {
-        return [];
-    }
-
-    public function getPaginationParameters(int $page)
-    {
-        return [];
     }
 
     public function getPager()
@@ -114,5 +111,15 @@ final class Datagrid implements DatagridInterface
     public function hasDisplayableFilters()
     {
         return false;
+    }
+
+    public function getSortParameters(FieldDescriptionInterface $fieldDescription): array
+    {
+        return [];
+    }
+
+    public function getPaginationParameters(int $page): array
+    {
+        return [];
     }
 }

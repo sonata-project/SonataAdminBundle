@@ -22,6 +22,9 @@ use Sonata\AdminBundle\Tests\App\Admin\FieldDescription;
 
 class ModelManager implements ModelManagerInterface, LockInterface
 {
+    /**
+     * @var FooRepository
+     */
     private $repository;
 
     public function __construct(FooRepository $repository)
@@ -113,7 +116,12 @@ class ModelManager implements ModelManagerInterface, LockInterface
 
     public function getModelInstance($class)
     {
-        return new Foo('test_id', 'foo_name');
+        switch ($class) {
+            case Translated::class:
+                return new Translated();
+            default:
+                return new Foo('test_id', 'foo_name');
+        }
     }
 
     public function getModelCollectionInstance($class)
@@ -143,6 +151,11 @@ class ModelManager implements ModelManagerInterface, LockInterface
     }
 
     public function getDefaultSortValues($class)
+    {
+        return [];
+    }
+
+    public function getDefaultPerPageOptions(string $class): array
     {
         return [];
     }

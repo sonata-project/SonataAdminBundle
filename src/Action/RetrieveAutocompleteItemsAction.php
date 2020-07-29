@@ -89,7 +89,7 @@ final class RetrieveAutocompleteItemsAction
             $targetAdminAccessAction = $formAutocompleteConfig->getAttribute('target_admin_access_action');
         }
 
-        $searchText = $request->get('q');
+        $searchText = $request->get('q', '');
 
         $targetAdmin = $fieldDescription->getAssociationAdmin();
 
@@ -190,7 +190,14 @@ final class RetrieveAutocompleteItemsAction
             throw new \RuntimeException(sprintf('The field "%s" does not exist.', $field));
         }
 
-        if (null === $fieldDescription->getTargetEntity()) {
+        // NEXT_MAJOR: Remove the check and use `getTargetModel`.
+        if (method_exists($fieldDescription, 'getTargetModel')) {
+            $targetModel = $fieldDescription->getTargetModel();
+        } else {
+            $targetModel = $fieldDescription->getTargetEntity();
+        }
+
+        if (null === $targetModel) {
             throw new \RuntimeException(sprintf('No associated entity with field "%s".', $field));
         }
 
@@ -212,7 +219,14 @@ final class RetrieveAutocompleteItemsAction
             throw new \RuntimeException(sprintf('The field "%s" does not exist.', $field));
         }
 
-        if (null === $fieldDescription->getTargetEntity()) {
+        // NEXT_MAJOR: Remove the check and use `getTargetModel`.
+        if (method_exists($fieldDescription, 'getTargetModel')) {
+            $targetModel = $fieldDescription->getTargetModel();
+        } else {
+            $targetModel = $fieldDescription->getTargetEntity();
+        }
+
+        if (null === $targetModel) {
             throw new \RuntimeException(sprintf('No associated entity with field "%s".', $field));
         }
 

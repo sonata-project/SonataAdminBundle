@@ -18,6 +18,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 
 /**
@@ -118,6 +119,16 @@ class ExplainAdminCommand extends Command
         }
 
         $metadata = $this->validator->getMetadataFor($admin->getClass());
+        if (!$metadata instanceof ClassMetadata) {
+            throw new \UnexpectedValueException(
+                sprintf(
+                    'Cannot read metadata properties of %s because its metadata is an instance of %s instead of %s',
+                    $admin->getClass(),
+                    \get_class($metadata),
+                    ClassMetadata::class
+                )
+            );
+        }
 
         $output->writeln('');
         $output->writeln('<comment>Validation Framework</comment> - http://symfony.com/doc/3.0/book/validation.html');

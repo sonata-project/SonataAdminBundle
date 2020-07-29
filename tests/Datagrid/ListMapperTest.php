@@ -242,9 +242,7 @@ class ListMapperTest extends TestCase
     public function testAddWrongTypeException(): void
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(
-            'Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.'
-        );
+        $this->expectExceptionMessage('Unknown field name in list mapper. Field name should be either of FieldDescriptionInterface interface or string.');
 
         $this->listMapper->add(12345);
     }
@@ -252,13 +250,13 @@ class ListMapperTest extends TestCase
     public function testAutoAddVirtualOption(): void
     {
         foreach (['actions', 'batch', 'select'] as $type) {
-            $this->listMapper->add('_'.$type, $type);
+            $this->listMapper->add(sprintf('_%s', $type), $type);
         }
 
         foreach ($this->fieldDescriptionCollection->getElements() as $field) {
             $this->assertTrue(
                 $field->isVirtual(),
-                'Failed asserting that FieldDescription with type "'.$field->getType().'" is tagged with virtual flag.'
+                sprintf('Failed asserting that FieldDescription with type "%s" is tagged with virtual flag.', $field->getType())
             );
         }
     }

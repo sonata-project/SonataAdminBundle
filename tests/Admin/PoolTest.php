@@ -192,9 +192,7 @@ class PoolTest extends TestCase
         ]);
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Admin service "sonata.news.admin.pos" not found in admin pool. '
-            .'Did you mean "sonata.news.admin.post" '
-            .'or one of those: [sonata.news.admin.category]?');
+        $this->expectExceptionMessage('Admin service "sonata.news.admin.pos" not found in admin pool. Did you mean "sonata.news.admin.post" or one of those: [sonata.news.admin.category]?');
 
         $this->pool->getInstance('sonata.news.admin.pos');
     }

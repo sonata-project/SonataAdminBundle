@@ -177,7 +177,7 @@ shortest code needed to get it working.
 
 .. note::
 
-    If you don't like writing configuration and want to some more magic, 
+    If you don't like writing configuration and want to some more magic,
     have a look at the [SonataAutoConfigureBundle](https://symfony.com/doc/master/bundles/SonataAdminBundle/cookbook/recipe_auto_configure_admin_classes.html)
     described in chapter 24.
 
@@ -220,6 +220,6 @@ entity and learn more about this class.
     If you're not seeing the nice labels, but instead something like
     "link_add", you should make sure that you've `enabled the translator`_.
 
-.. _`enabled the translator`: http://symfony.com/doc/current/book/translation.html#configuration
+.. _`enabled the translator`: https://symfony.com/doc/4.4/translation.html#configuration
 
 In the :doc:`next chapter <the_form_view>`, you're going to look at the form view.

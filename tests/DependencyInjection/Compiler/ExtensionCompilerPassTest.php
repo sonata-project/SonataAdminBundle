@@ -72,8 +72,8 @@ class ExtensionCompilerPassTest extends TestCase
     {
         $this->extension->load([], $container = $this->getContainer());
 
-        $this->assertTrue($container->hasParameter($this->root.'.extension.map'));
-        $this->assertIsArray($extensionMap = $container->getParameter($this->root.'.extension.map'));
+        $this->assertTrue($container->hasParameter(sprintf('%s.extension.map', $this->root)));
+        $this->assertIsArray($extensionMap = $container->getParameter(sprintf('%s.extension.map', $this->root)));
 
         $this->assertArrayHasKey('admins', $extensionMap);
         $this->assertArrayHasKey('excludes', $extensionMap);
@@ -89,7 +89,7 @@ class ExtensionCompilerPassTest extends TestCase
     public function testFlattenEmptyExtensionConfiguration(): void
     {
         $this->extension->load([], $container = $this->getContainer());
-        $extensionMap = $container->getParameter($this->root.'.extension.map');
+        $extensionMap = $container->getParameter(sprintf('%s.extension.map', $this->root));
 
         $method = new \ReflectionMethod(
             ExtensionCompilerPass::class,
@@ -121,7 +121,7 @@ class ExtensionCompilerPassTest extends TestCase
     {
         $config = $this->getConfig();
         $this->extension->load([$config], $container = $this->getContainer());
-        $extensionMap = $container->getParameter($this->root.'.extension.map');
+        $extensionMap = $container->getParameter(sprintf('%s.extension.map', $this->root));
 
         $method = new \ReflectionMethod(
             ExtensionCompilerPass::class,

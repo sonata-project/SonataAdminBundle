@@ -16,6 +16,8 @@ namespace Sonata\AdminBundle\Block;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Search\SearchHandler;
+use Sonata\AdminBundle\Templating\TemplateRegistry;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
@@ -40,12 +42,22 @@ class AdminSearchBlockService extends AbstractBlockService
      */
     protected $searchHandler;
 
-    public function __construct(Environment $twig, Pool $pool, SearchHandler $searchHandler)
-    {
+    /**
+     * @var TemplateRegistryInterface
+     */
+    private $templateRegistry;
+
+    public function __construct(
+        Environment $twig,
+        Pool $pool,
+        SearchHandler $searchHandler,
+        ?TemplateRegistryInterface $templateRegistry = null
+    ) {
         parent::__construct($twig);
 
         $this->pool = $pool;
         $this->searchHandler = $searchHandler;
+        $this->templateRegistry = $templateRegistry ?: new TemplateRegistry();
     }
 
     public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
@@ -75,7 +87,7 @@ class AdminSearchBlockService extends AbstractBlockService
             return $response->setContent('')->setStatusCode(204);
         }
 
-        return $this->renderPrivateResponse($admin->getTemplate('search_result_block'), [
+        return $this->renderPrivateResponse($this->templateRegistry->getTemplate('search_result_block'), [
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
             'admin_pool' => $this->pool,

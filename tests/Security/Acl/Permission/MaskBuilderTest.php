@@ -24,18 +24,18 @@ class MaskBuilderTest extends TestCase
         $this->assertSame(MaskBuilder::ALL_OFF, $builder->getPattern());
 
         $builder->add('view');
-        $this->assertSame(str_repeat('.', 31).'V', $builder->getPattern());
+        $this->assertSame(sprintf('%sV', str_repeat('.', 31)), $builder->getPattern());
 
         $builder->add('owner');
-        $this->assertSame(str_repeat('.', 24).'N......V', $builder->getPattern());
+        $this->assertSame(sprintf('%sN......V', str_repeat('.', 24)), $builder->getPattern());
 
         $builder->add('list');
-        $this->assertSame(str_repeat('.', 19).'L....N......V', $builder->getPattern());
+        $this->assertSame(sprintf('%sL....N......V', str_repeat('.', 19)), $builder->getPattern());
 
         $builder->add('export');
-        $this->assertSame(str_repeat('.', 18).'EL....N......V', $builder->getPattern());
+        $this->assertSame(sprintf('%sEL....N......V', str_repeat('.', 18)), $builder->getPattern());
 
         $builder->add(1 << 10);
-        $this->assertSame(str_repeat('.', 18).'EL.'.MaskBuilder::ON.'..N......V', $builder->getPattern());
+        $this->assertSame(sprintf('%sEL.%s..N......V', str_repeat('.', 18), MaskBuilder::ON), $builder->getPattern());
     }
 }

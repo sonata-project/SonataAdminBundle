@@ -144,10 +144,10 @@ class DefaultRouteGenerator implements RouteGeneratorInterface
 
         // someone provide a code, so it is a child
         if (strpos($name, '.')) {
-            return $codePrefix.'|'.$name;
+            return sprintf('%s|%s', $codePrefix, $name);
         }
 
-        return $codePrefix.'.'.$name;
+        return sprintf('%s.%s', $codePrefix, $name);
     }
 
     private function loadCache(AdminInterface $admin): void

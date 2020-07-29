@@ -147,7 +147,7 @@ class SonataAdminExtensionTest extends TestCase
         $translator->addLoader('xlf', new XliffFileLoader());
         $translator->addResource(
             'xlf',
-            __DIR__.'/../../../src/Resources/translations/SonataAdminBundle.en.xliff',
+            sprintf('%s/../../../src/Resources/translations/SonataAdminBundle.en.xliff', __DIR__),
             'en',
             'SonataAdminBundle'
         );
@@ -194,10 +194,10 @@ class SonataAdminExtensionTest extends TestCase
         $this->environment->addExtension(new FakeTemplateRegistryExtension());
 
         // routing extension
-        $xmlFileLoader = new XmlFileLoader(new FileLocator([__DIR__.'/../../../src/Resources/config/routing']));
+        $xmlFileLoader = new XmlFileLoader(new FileLocator([sprintf('%s/../../../src/Resources/config/routing', __DIR__)]));
         $routeCollection = $xmlFileLoader->load('sonata_admin.xml');
 
-        $xmlFileLoader = new XmlFileLoader(new FileLocator([__DIR__.'/../../Fixtures/Resources/config/routing']));
+        $xmlFileLoader = new XmlFileLoader(new FileLocator([sprintf('%s/../../Fixtures/Resources/config/routing', __DIR__)]));
         $testRouteCollection = $xmlFileLoader->load('routing.xml');
 
         $routeCollection->addCollection($testRouteCollection);
@@ -1869,9 +1869,9 @@ EOT
     public function testDeprecatedTextExtension(string $expected, string $type, $value, array $options): void
     {
         $loader = new StubFilesystemLoader([
-            __DIR__.'/../../../src/Resources/views/CRUD',
+            sprintf('%s/../../../src/Resources/views/CRUD', __DIR__),
         ]);
-        $loader->addPath(__DIR__.'/../../../src/Resources/views/', 'SonataAdmin');
+        $loader->addPath(sprintf('%s/../../../src/Resources/views/', __DIR__), 'SonataAdmin');
         $environment = new Environment($loader, [
             'strict_variables' => true,
             'cache' => false,
@@ -1936,6 +1936,11 @@ EOT
         ];
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testGetValueFromFieldDescription(): void
     {
         $object = new \stdClass();
@@ -1955,6 +1960,11 @@ EOT
         );
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testGetValueFromFieldDescriptionWithRemoveLoopException(): void
     {
         $object = $this->createMock(\ArrayAccess::class);
@@ -1999,6 +2009,11 @@ EOT
         );
     }
 
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
     public function testGetValueFromFieldDescriptionWithNoValueExceptionNewAdminInstance(): void
     {
         $object = new \stdClass();
@@ -2142,7 +2157,7 @@ EOT
             ->willReturnCallback(static function ($value, $default = null) {
                 if ('associated_property' === $value) {
                     return static function ($element): string {
-                        return 'closure '.$element->foo;
+                        return sprintf('closure %s', $element->foo);
                     };
                 }
             });

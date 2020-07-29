@@ -18,6 +18,9 @@ use Sonata\AdminBundle\Tests\App\Model\FooRepository;
 
 final class Pager implements PagerInterface
 {
+    /**
+     * @var FooRepository
+     */
     private $repository;
 
     public function __construct(FooRepository $repository)

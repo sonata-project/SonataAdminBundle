@@ -70,7 +70,7 @@ Using XML:
         </entity>
     </doctrine-mapping>
 
-For more information about this visit the `Doctrine docs <http://doctrine-orm.readthedocs.org/en/latest/reference/transactions-and-concurrency.html?highlight=optimistic#optimistic-locking>`_
+For more information about this visit the `Doctrine docs <https://www.doctrine-project.org/projects/doctrine-orm/en/2.7/reference/transactions-and-concurrency.html#optimistic-locking>`_
 
 .. note::
 

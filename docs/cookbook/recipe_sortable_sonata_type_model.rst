@@ -349,7 +349,7 @@ Now update the ``UserBundle\Admin\UserAdmin.php`` by adding the ``sonata_type_mo
 
 There is two important things that we need to show here :
 * We use the field ``userHasExpectations`` of the user, but we need a list of ``Expectation`` to be displayed, that's explain the use of ``query``.
-* We want to persist ``UserHasExpectations``Entities, but we manage ``Expectation``, so we need to use a custom `ModelTransformer <http://symfony.com/doc/current/cookbook/form/data_transformers.html>`_ to deal with it.
+* We want to persist ``UserHasExpectations``Entities, but we manage ``Expectation``, so we need to use a custom `ModelTransformer <https://symfony.com/doc/4.4/form/data_transformers.html>`_ to deal with it.
 
 Part 4 : Data Transformer
 ^^^^^^^^^^^^^^^^^^^^^^^^^

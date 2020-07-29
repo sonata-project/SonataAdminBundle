@@ -61,20 +61,14 @@ class::
             $admin = $this->isChild() ? $this->getParent() : $this;
             $id = $admin->getRequest()->get('id');
 
-            $menu->addChild('View Playlist', [
-                'uri' => $admin->generateUrl('show', ['id' => $id])
-            ]);
+            $menu->addChild('View Playlist', $admin->generateMenuUrl('show', ['id' => $id]));
 
             if ($this->isGranted('EDIT')) {
-                $menu->addChild('Edit Playlist', [
-                    'uri' => $admin->generateUrl('edit', ['id' => $id])
-                ]);
+                $menu->addChild('Edit Playlist', $admin->generateMenuUrl('edit', ['id' => $id]));
             }
 
             if ($this->isGranted('LIST')) {
-                $menu->addChild('Manage Videos', [
-                    'uri' => $admin->generateUrl('App\Admin\VideoAdmin.list', ['id' => $id])
-                ]);
+                $menu->addChild('Manage Videos', $admin->generateMenuUrl('App\Admin\VideoAdmin.list', ['id' => $id]));
             }
         }
     }

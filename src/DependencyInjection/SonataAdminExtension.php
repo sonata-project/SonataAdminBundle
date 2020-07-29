@@ -68,7 +68,6 @@ final class SonataAdminExtension extends Extension
         $loader->load('menu.xml');
         $loader->load('route.xml');
         $loader->load('twig.xml');
-        $loader->load('twig_string.xml');
         $loader->load('validator.xml');
 
         if (isset($bundles['SonataExporterBundle'])) {
@@ -176,7 +175,7 @@ final class SonataAdminExtension extends Extension
             ->replaceArgument(0, $classes)
             ->replaceArgument(1, $config['options']);
 
-        // remove non used service
+        // NEXT_MAJOR: Remove this block
         if (!isset($bundles['JMSTranslationBundle'])) {
             $container->removeDefinition('sonata.admin.translator.extractor.jms_translator_bundle');
         }

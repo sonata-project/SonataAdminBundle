@@ -1,6 +1,31 @@
 UPGRADE 3.x
 ===========
 
+### Deprecated `Sonata\AdminBundle\Model\ModelManagerInterface::getParentFieldDescription`
+
+Use `Sonata\AdminBundle\Admin\AdminInterface::getParentFieldDescription` instead.
+
+UPGRADE FROM 3.71 to 3.72
+=========================
+
+## Deprecated `SonataAdminBundle\Admin\AdminHelper::addNewInstance()`
+
+Use
+```
+$instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
+SonataAdminBundle\Manipulator\ObjectManipulator::setObject($instance, $object, $fieldDescription);
+```
+Instead of
+```
+$this->adminHelper->addNewInstance($object, $fieldDescription);
+```
+
+The static method `setObject()` avoids the need to inject the admin helper dependency,
+and adds more flexibility with the instance you're adding to the object.
+
+UPGRADE FROM 3.68 to 3.69
+=========================
+
 ## Deprecated `sonata_truncate` Twig filter
 
 This filter has been deprecated in favor of the [`u` filter](https://twig.symfony.com/doc/2.x/filters/u.html):

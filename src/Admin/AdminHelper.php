@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Admin;
 
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Util\ClassUtils;
-use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ODM\MongoDB\PersistentCollection;
 use Doctrine\ORM\PersistentCollection as DoctrinePersistentCollection;
 use Sonata\AdminBundle\Exception\NoValueException;
+use Sonata\AdminBundle\Manipulator\ObjectManipulator;
 use Sonata\AdminBundle\Util\FormBuilderIterator;
 use Sonata\AdminBundle\Util\FormViewIterator;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -161,16 +160,17 @@ class AdminHelper
             $objectCount = null === $value ? 0 : \count($value);
             $postCount = \count($data[$childFormBuilder->getName()]);
 
+            $associationAdmin = $fieldDescription->getAssociationAdmin();
+
             // add new elements to the subject
             while ($objectCount < $postCount) {
                 // append a new instance into the object
-                $this->addNewInstance($form->getData(), $fieldDescription);
+                ObjectManipulator::addInstance($form->getData(), $associationAdmin->getNewInstance(), $fieldDescription);
                 ++$objectCount;
             }
 
-            $newInstance = $this->addNewInstance($form->getData(), $fieldDescription);
+            $newInstance = ObjectManipulator::addInstance($form->getData(), $associationAdmin->getNewInstance(), $fieldDescription);
 
-            $associationAdmin = $fieldDescription->getAssociationAdmin();
             $associationAdmin->setSubject($newInstance);
         }
 
@@ -195,55 +195,26 @@ class AdminHelper
     }
 
     /**
+     * NEXT_MAJOR: remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.72, use to be removed with 4.0.
+     *
      * Add a new instance to the related FieldDescriptionInterface value.
      *
      * @throws \RuntimeException
      */
     public function addNewInstance(object $object, FieldDescriptionInterface $fieldDescription): object
     {
+        @trigger_error(sprintf(
+            'Method %s() is deprecated since sonata-project/admin-bundle 3.72. It will be removed in version 4.0.'
+            .' Use %s::addInstance() instead.',
+            __METHOD__,
+            ObjectManipulator::class
+        ), E_USER_DEPRECATED);
+
         $instance = $fieldDescription->getAssociationAdmin()->getNewInstance();
-        $mapping = $fieldDescription->getAssociationMapping();
-        $parentMappings = $fieldDescription->getParentAssociationMappings();
 
-        $inflector = InflectorFactory::create()->build();
-
-        foreach ($parentMappings as $parentMapping) {
-            $method = sprintf('get%s', $inflector->classify($parentMapping['fieldName']));
-
-            if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
-                /*
-                 * NEXT_MAJOR: Use BadMethodCallException instead
-                 */
-                throw new \RuntimeException(
-                    sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
-                );
-            }
-
-            $object = $object->$method();
-        }
-
-        $method = sprintf('add%s', $inflector->classify($mapping['fieldName']));
-
-        if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
-            $method = rtrim($method, 's');
-
-            if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
-                $method = sprintf('add%s', $inflector->classify($inflector->singularize($mapping['fieldName'])));
-
-                if (!(\is_callable([$object, $method]) && method_exists($object, $method))) {
-                    /*
-                     * NEXT_MAJOR: Use BadMethodCallException instead
-                     */
-                    throw new \RuntimeException(
-                        sprintf('Method %s::%s() does not exist.', ClassUtils::getClass($object), $method)
-                    );
-                }
-            }
-        }
-
-        $object->$method($instance);
-
-        return $instance;
+        return ObjectManipulator::addInstance($object, $instance, $fieldDescription);
     }
 
     /**
@@ -277,9 +248,11 @@ class AdminHelper
         }
 
         if (!empty($currentPath)) {
-            throw new \Exception(
-                sprintf('Could not get element id from %s Failing part: %s', $elementId, $currentPath)
-            );
+            throw new \Exception(sprintf(
+                'Could not get element id from %s Failing part: %s',
+                $elementId,
+                $currentPath
+            ));
         }
 
         return $totalPath;

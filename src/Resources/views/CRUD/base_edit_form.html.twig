@@ -26,8 +26,7 @@
 
             {% block sonata_tab_content %}
                 {% import "@SonataAdmin/CRUD/base_edit_form_macro.html.twig" as form_helper %}
-                {# NEXT_MAJOR: Remove the sonata_deprecation_mute param. #}
-                {% set formtabs = admin.getformtabs('sonata_deprecation_mute') %}
+                {% set formtabs = admin.getformtabs() %}
                 {% set has_tab = ((formtabs|length == 1 and formtabs|keys[0] != 'default') or formtabs|length > 1 ) %}
 
                 <div class="col-md-12">

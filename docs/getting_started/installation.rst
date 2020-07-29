@@ -44,6 +44,9 @@ line in `bundles.php` file of your project::
         Sonata\BlockBundle\SonataBlockBundle::class => ['all' => true],
         Knp\Bundle\MenuBundle\KnpMenuBundle::class => ['all' => true],
         Sonata\AdminBundle\SonataAdminBundle::class => ['all' => true],
+        Sonata\Doctrine\Bridge\Symfony\SonataDoctrineBundle::class => ['all' => true],
+        Sonata\Form\Bridge\Symfony\SonataFormBundle::class => ['all' => true],
+        Sonata\Twig\Bridge\Symfony\SonataTwigBundle::class => ['all' => true],
     ];
 
 Configure the Installed Bundles
@@ -75,7 +78,7 @@ Enable the "translator" service
 -------------------------------
 
 The translator service is required by SonataAdmin to display all labels properly.
-For more information: http://symfony.com/doc/current/translation.html#configuration
+For more information: https://symfony.com/doc/4.4/translation.html#configuration
 
 .. configuration-block::
 
@@ -156,6 +159,6 @@ provided admin functionality for the admin bundle yet. Fortunately, you'll
 learn how to do this in the :doc:`next chapter <creating_an_admin>`.
 
 .. _`installation chapter`: https://getcomposer.org/doc/00-intro.md
-.. _SonataDoctrineORMAdminBundle: http://sonata-project.org/bundles/doctrine-orm-admin/master/doc/index.html
-.. _SonataDoctrineMongoDBAdminBundle: http://sonata-project.org/bundles/mongo-admin/master/doc/index.html
-.. _SonataDoctrinePhpcrAdminBundle: http://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html
+.. _SonataDoctrineORMAdminBundle: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/index.html
+.. _SonataDoctrineMongoDBAdminBundle: https://sonata-project.org/bundles/mongo-admin/master/doc/index.html
+.. _SonataDoctrinePhpcrAdminBundle: https://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html

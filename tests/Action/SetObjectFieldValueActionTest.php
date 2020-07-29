@@ -124,7 +124,25 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
-    public function testSetObjectFieldValueActionWithDate(): void
+    public function getTimeZones(): iterable
+    {
+        $default = new \DateTimeZone(date_default_timezone_get());
+        $custom = new \DateTimeZone('Europe/Rome');
+
+        return [
+            'empty timezone' => [null, $default],
+            'disabled timezone' => [false, $default],
+            'default timezone by name' => [$default->getName(), $default],
+            'default timezone by object' => [$default, $default],
+            'custom timezone by name' => [$custom->getName(), $custom],
+            'custom timezone by object' => [$custom, $custom],
+        ];
+    }
+
+    /**
+     * @dataProvider getTimeZones
+     */
+    public function testSetObjectFieldValueActionWithDate($timezone, \DateTimeZone $expectedTimezone): void
     {
         $object = new Bafoo();
         $request = new Request([
@@ -158,6 +176,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             $container->reveal()
         ));
         $fieldDescription->getOption('editable')->willReturn(true);
+        $fieldDescription->getOption('timezone')->willReturn($timezone);
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
         $fieldDescription->getType()->willReturn('date');
         $fieldDescription->getTemplate()->willReturn('field_template');
@@ -168,52 +187,14 @@ final class SetObjectFieldValueActionTest extends TestCase
         $response = ($this->action)($request);
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-    }
 
-    public function testSetObjectFieldValueActionWithDateTime(): void
-    {
-        $object = new Bafoo();
-        $request = new Request([
-            'code' => 'sonata.post.admin',
-            'objectId' => 42,
-            'field' => 'datetimeProp',
-            'value' => '2020-12-12 23:11:23',
-            'context' => 'list',
-        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        $defaultTimezone = new \DateTimeZone(date_default_timezone_get());
+        $expectedDate = new \DateTime($request->query->get('value'), $expectedTimezone);
+        $expectedDate->setTimezone($defaultTimezone);
 
-        $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
-        $pool = $this->prophesize(Pool::class);
-        $translator = $this->prophesize(TranslatorInterface::class);
-        $propertyAccessor = new PropertyAccessor();
-        $templateRegistry = $this->prophesize(TemplateRegistryInterface::class);
-        $container = $this->prophesize(ContainerInterface::class);
-
-        $this->admin->getObject(42)->willReturn($object);
-        $this->admin->getCode()->willReturn('sonata.post.admin');
-        $this->admin->hasAccess('edit', $object)->willReturn(true);
-        $this->admin->getListFieldDescription('datetimeProp')->willReturn($fieldDescription->reveal());
-        $this->admin->update($object)->shouldBeCalled();
-
-        $templateRegistry->getTemplate('base_list_field')->willReturn('admin_template');
-        $container->get('sonata.post.admin.template_registry')->willReturn($templateRegistry->reveal());
-        $this->pool->getPropertyAccessor()->willReturn($propertyAccessor);
-        $this->twig->addExtension(new SonataAdminExtension(
-            $pool->reveal(),
-            null,
-            $translator->reveal(),
-            $container->reveal()
-        ));
-        $fieldDescription->getOption('editable')->willReturn(true);
-        $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
-        $fieldDescription->getType()->willReturn('datetime');
-        $fieldDescription->getTemplate()->willReturn('field_template');
-        $fieldDescription->getValue(Argument::cetera())->willReturn('some value');
-
-        $this->validator->validate($object)->willReturn(new ConstraintViolationList([]));
-
-        $response = ($this->action)($request);
-
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertInstanceOf(\DateTime::class, $object->getDateProp());
+        $this->assertSame($expectedDate->format('Y-m-d'), $object->getDateProp()->format('Y-m-d'));
+        $this->assertSame($defaultTimezone->getName(), $object->getDateProp()->getTimezone()->getName());
     }
 
     public function testSetObjectFieldValueActionOnARelationField(): void
@@ -254,7 +235,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription->getType()->willReturn('choice');
         $fieldDescription->getOption('editable')->willReturn(true);
         $fieldDescription->getOption('class')->willReturn(Bar::class);
-        $fieldDescription->getTargetEntity()->willReturn(Bar::class);
+        $fieldDescription->getTargetModel()->willReturn(Bar::class);
         $fieldDescription->getAdmin()->willReturn($this->admin->reveal());
         $fieldDescription->getTemplate()->willReturn('field_template');
         $fieldDescription->getValue(Argument::cetera())->willReturn('some value');

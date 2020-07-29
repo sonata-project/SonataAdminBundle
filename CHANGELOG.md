@@ -2,6 +2,49 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.72.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.71.1...3.72.0) - 2020-07-14
+### Added
+- [[#6040](https://github.com/sonata-project/SonataAdminBundle/pull/6040)] Added new `AdminExtractor` to extract translations from the Admin classes ([@franmomu](https://github.com/franmomu))
+
+### Deprecated
+- [[#6040](https://github.com/sonata-project/SonataAdminBundle/pull/6040)] `AdminExtractor` class for JMSTranslationBundle integration ([@franmomu](https://github.com/franmomu))
+
+### Fixed
+- [[#6195](https://github.com/sonata-project/SonataAdminBundle/pull/6195)] Fixed design of validation message error when using a inline table collection. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6171](https://github.com/sonata-project/SonataAdminBundle/pull/6171)] EmbeddedAdmin now correctly set the parent object when creating a new instance. ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6171](https://github.com/sonata-project/SonataAdminBundle/pull/6171)] Error message is correctly displayed for CollectionType ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#6193](https://github.com/sonata-project/SonataAdminBundle/pull/6193)] Fixed default `[]` value for every non-nullable array class properties ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#5799](https://github.com/sonata-project/SonataAdminBundle/pull/5799)] Stop calling `mb_strlen()` on null in `RetrieveAutocompleteItemsAction` ([@mar20](https://github.com/mar20))
+- [[#6183](https://github.com/sonata-project/SonataAdminBundle/pull/6183)] Fix form one-to-many tabs translations ([@EmmanuelVella](https://github.com/EmmanuelVella))
+
+### Removed
+- [[#6199](https://github.com/sonata-project/SonataAdminBundle/pull/6199)] Support for Symfony < 4.4 ([@wbloszyk](https://github.com/wbloszyk))
+
+## [3.71.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.71.0...3.71.1) - 2020-06-30
+### Changed
+- [[#6170](https://github.com/sonata-project/SonataAdminBundle/pull/6170)] Move
+  `twig/extra-bundle` from `require` to `suggest`
+([@wbloszyk](https://github.com/wbloszyk))
+
+### Fixed
+- [[#6170](https://github.com/sonata-project/SonataAdminBundle/pull/6170)] Fix
+  error with missing `u` filter when `twig/extra-bundle` is not registred
+([@wbloszyk](https://github.com/wbloszyk))
+
+## [3.71.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.70.1...3.71.0) - 2020-06-28
+### Added
+- [[#6134](https://github.com/sonata-project/SonataAdminBundle/pull/6134)]
+  Added `StringOperatorType`
+([@napestershine](https://github.com/napestershine))
+
+### Fixed
+- [[#6168](https://github.com/sonata-project/SonataAdminBundle/pull/6168)] Fix
+  unit tests ([@peter-gribanov](https://github.com/peter-gribanov))
+
+## [3.70.1](https://github.com/sonata-project/SonataAdminBundle/compare/3.70.0...3.70.1) - 2020-06-21
+### Fixed
+- Allow `null` argument for `StringExtension` constructor
+
 ## [3.70.0](https://github.com/sonata-project/SonataAdminBundle/compare/3.69.1...3.70.0) - 2020-06-19
 ### Added
 - Added missing `ar` translations

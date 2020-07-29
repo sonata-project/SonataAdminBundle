@@ -1,7 +1,7 @@
 Select2
 =======
 
-The admin comes with `select2 <http://ivaynberg.github.io/select2/>`_ integration
+The admin comes with `select2 <https://select2.org/>`_ integration
 since version 2.2.6. Select2 is a jQuery based replacement for select boxes.
 It supports searching, remote data sets, and infinite scrolling of results.
 

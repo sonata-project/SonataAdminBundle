@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Action;
 
+use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,7 +69,11 @@ final class SetObjectFieldValueAction
         }
 
         if (Request::METHOD_POST !== $request->getMethod()) {
-            return new JsonResponse(sprintf('Invalid request method given "%s", %s expected', $request->getMethod(), Request::METHOD_POST), Response::HTTP_METHOD_NOT_ALLOWED);
+            return new JsonResponse(sprintf(
+                'Invalid request method given "%s", %s expected',
+                $request->getMethod(),
+                Request::METHOD_POST
+            ), Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
         $rootObject = $object = $admin->getObject($objectId);
@@ -106,21 +112,30 @@ final class SetObjectFieldValueAction
             $propertyPath = new PropertyPath($field);
         }
 
-        // Handle date and datetime types have setter expecting a DateTime object
-        if ('' !== $value && \in_array($fieldDescription->getType(), ['date', 'datetime'], true)) {
-            $value = new \DateTime($value);
+        // Handle date type has setter expect a DateTime object
+        if ('' !== $value && TemplateRegistry::TYPE_DATE === $fieldDescription->getType()) {
+            $inputTimezone = new \DateTimeZone(date_default_timezone_get());
+            $outputTimezone = $fieldDescription->getOption('timezone');
+
+            if ($outputTimezone && !$outputTimezone instanceof \DateTimeZone) {
+                $outputTimezone = new \DateTimeZone($outputTimezone);
+            }
+
+            $value = new \DateTime($value, $outputTimezone ?: $inputTimezone);
+            $value->setTimezone($inputTimezone);
         }
 
         // Handle boolean type transforming the value into a boolean
-        if ('' !== $value && 'boolean' === $fieldDescription->getType()) {
+        if ('' !== $value && TemplateRegistry::TYPE_BOOLEAN === $fieldDescription->getType()) {
             $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
         }
 
         // Handle entity choice association type, transforming the value into entity
         if ('' !== $value
-            && 'choice' === $fieldDescription->getType()
+            && TemplateRegistry::TYPE_CHOICE === $fieldDescription->getType()
             && null !== $fieldDescription->getOption('class')
-            && $fieldDescription->getOption('class') === $fieldDescription->getTargetEntity()
+            // NEXT_MAJOR: Replace this call with "$fieldDescription->getOption('class') === $fieldDescription->getTargetModel()".
+            && $this->hasFieldDescriptionAssociationWithClass($fieldDescription, $fieldDescription->getOption('class'))
         ) {
             $value = $admin->getModelManager()->find($fieldDescription->getOption('class'), $value);
 
@@ -152,9 +167,16 @@ final class SetObjectFieldValueAction
         // render the widget
         // todo : fix this, the twig environment variable is not set inside the extension ...
         $extension = $this->twig->getExtension(SonataAdminExtension::class);
+        \assert($extension instanceof SonataAdminExtension);
 
         $content = $extension->renderListElement($this->twig, $rootObject, $fieldDescription);
 
         return new JsonResponse($content, Response::HTTP_OK);
+    }
+
+    private function hasFieldDescriptionAssociationWithClass(FieldDescriptionInterface $fieldDescription, string $class): bool
+    {
+        return (method_exists($fieldDescription, 'getTargetModel') && $class === $fieldDescription->getTargetModel())
+            || $class === $fieldDescription->getTargetEntity();
     }
 }
