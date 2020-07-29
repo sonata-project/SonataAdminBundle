@@ -1563,8 +1563,8 @@ class CRUDController implements ContainerAwareInterface
 
     private function handleXmlHttpRequestErrorResponse(Request $request, FormInterface $form): ?JsonResponse
     {
-        if (!\in_array('application/json', $request->getAcceptableContentTypes(), true)) {
-            @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`', E_USER_DEPRECATED);
+        if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
+            @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json` or `Accept: */*`', E_USER_DEPRECATED);
 
             return null;
         }
@@ -1585,8 +1585,8 @@ class CRUDController implements ContainerAwareInterface
      */
     private function handleXmlHttpRequestSuccessResponse(Request $request, $object): JsonResponse
     {
-        if (!\in_array('application/json', $request->getAcceptableContentTypes(), true)) {
-            @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json`', E_USER_DEPRECATED);
+        if (empty(array_intersect(['application/json', '*/*'], $request->getAcceptableContentTypes()))) {
+            @trigger_error('In next major version response will return 406 NOT ACCEPTABLE without `Accept: application/json` or `Accept: */*`', E_USER_DEPRECATED);
         }
 
         return $this->renderJson([
