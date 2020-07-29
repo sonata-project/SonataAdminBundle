@@ -210,20 +210,6 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
         return $id;
     }
 
-    public function setLocale($locale): void
-    {
-        if ($this->translator instanceof TranslatorInterface) {
-            $this->translator->setLocale($locale);
-        }
-    }
-
-    public function getLocale(): ?string
-    {
-        return $this->translator instanceof TranslatorInterface ?
-            $this->translator->getLocale() :
-            null;
-    }
-
     public function isGranted(AdminInterface $admin, $attributes, $object = null)
     {
         return true;
