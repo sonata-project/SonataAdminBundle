@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Controller;
 
 use Doctrine\Inflector\InflectorFactory;
-use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -32,6 +31,7 @@ use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\AdminBundle\Util\AdminObjectAclUserManager;
 use Sonata\Exporter\Exporter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
@@ -40,6 +40,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -1009,7 +1010,9 @@ class CRUDController extends AbstractController
 
     protected function addFlash(string $type, $message): void
     {
-        $this->session->getFlashBag()->add($type, $message);
+        if ($this->session instanceof Session) {
+            $this->session->getFlashBag()->add($type, $message);
+        }
     }
 
     /**

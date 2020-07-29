@@ -23,6 +23,7 @@ use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Test for AdminExtractor.
@@ -83,6 +84,9 @@ class AdminExtractorTest extends TestCase
 
         $logger = $this->getMockForAbstractClass(LoggerInterface::class);
 
+        $this->fooAdmin
+            ->method('getTranslator')
+            ->willReturn($this->createMock(TranslatorInterface::class));
         $this->pool = $this->getMockBuilder(Pool::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -98,7 +102,7 @@ class AdminExtractorTest extends TestCase
                 'label_catalogue' => 'admin_domain',
             ]]);
 
-        $this->adminExtractor = new AdminExtractor($this->pool, $logger);
+        $this->adminExtractor = new AdminExtractor($this->pool, $this->fooAdmin->getTranslator(), $logger);
         $this->adminExtractor->setLogger($logger);
 
         $this->breadcrumbsBuilder = $this->getMockForAbstractClass(BreadcrumbsBuilderInterface::class);

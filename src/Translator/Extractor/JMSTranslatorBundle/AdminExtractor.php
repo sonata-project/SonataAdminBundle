@@ -48,7 +48,7 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
     private $catalogue;
 
     /**
-     * @var TranslatorInterface|bool
+     * @var TranslatorInterface|null
      */
     private $translator;
 
@@ -67,14 +67,17 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
      */
     private $breadcrumbsBuilder;
 
-    public function __construct(Pool $adminPool, ?LoggerInterface $logger = null)
-    {
+    public function __construct(
+        Pool $adminPool,
+        ?TranslatorInterface $translator,
+        ?LoggerInterface $logger = null
+    ) {
         $this->logger = $logger;
         $this->adminPool = $adminPool;
+        $this->translator = $translator;
 
         // state variable
         $this->catalogue = false;
-        $this->translator = false;
         $this->labelStrategy = false;
         $this->domain = false;
     }
@@ -119,7 +122,6 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
                 $this->trans($label, [], $admin->getTranslationDomain());
             }
 
-            $this->translator = $admin->getTranslator();
             $this->labelStrategy = $admin->getLabelTranslatorStrategy();
             $this->domain = $admin->getTranslationDomain();
 
@@ -210,12 +212,16 @@ final class AdminExtractor implements ExtractorInterface, TranslatorInterface, S
 
     public function setLocale($locale): void
     {
-        $this->translator->setLocale($locale);
+        if ($this->translator instanceof TranslatorInterface) {
+            $this->translator->setLocale($locale);
+        }
     }
 
-    public function getLocale()
+    public function getLocale(): ?string
     {
-        return $this->translator->getLocale();
+        return $this->translator instanceof TranslatorInterface ?
+            $this->translator->getLocale() :
+            null;
     }
 
     public function isGranted(AdminInterface $admin, $attributes, $object = null)
