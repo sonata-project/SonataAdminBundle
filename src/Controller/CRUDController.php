@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Controller;
 
 use Doctrine\Inflector\InflectorFactory;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sonata\AdminBundle\Admin\AdminInterface;
