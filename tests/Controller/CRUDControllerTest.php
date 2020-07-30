@@ -39,6 +39,7 @@ use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Source\SourceIteratorInterface;
 use Sonata\Exporter\Writer\JsonWriter;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -72,6 +73,8 @@ use Twig\Environment;
  */
 class CRUDControllerTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     /**
      * @var CRUDController
      */
